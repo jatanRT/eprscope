@@ -21,7 +21,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.table,
-    magrittr,
     ggplot2,
     patchwork,
     cowplot,
@@ -32,8 +31,10 @@ Imports:
     constants,
     errors,
     R.matlab,
-    roperators
+    roperators,
+    magrittr
 Suggests: 
     knitr,
     kableExtra,
     writexl
+RoxygenNote: 7.1.0

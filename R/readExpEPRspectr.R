@@ -40,13 +40,13 @@
 readExpEPRspectr <- function(path_to_ASC,qfactor=1,Ns=1,cM=1,m=1,origin="xenon"){
   if (origin == "xenon"){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,col.names = c("index","B_G","Intensity")) %>%
-      mutate(B_mT = B_G/10,dIepr_over_dB = Intensity/(qfactor*Ns*m*cM)) %>% select(-c(B_G,Intensity))
+      dplyr::mutate(B_mT = B_G/10,dIepr_over_dB = Intensity/(qfactor*Ns*m*cM)) %>% dplyr::select(-c(B_G,Intensity))
     return(spectrum.data)
   }
   if (origin == "winepr"){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 3,col.names = c("B_G","Intensity")) %>%
-      mutate(B_mT = B_G/10,dIepr_over_dB = Intensity/(qfactor*Ns*m*cM),index = seq_len(nrow(spectrum.data))) %>%
-      select(-c(B_G,Intensity))
+      dplyr::mutate(B_mT = B_G/10,dIepr_over_dB = Intensity/(qfactor*Ns*m*cM),index = seq_len(nrow(spectrum.data))) %>%
+      dplyr::select(-c(B_G,Intensity))
     return(spectrum.data)
   }
 }
