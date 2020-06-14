@@ -41,6 +41,8 @@ readExpEPRspectr <- function(path_to_ASC,qfactor=1,Ns=1,cM=1,m=1,origin="xenon")
   if (origin == "xenon"){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,col.names = c("index","B_G","Intensity")) %>%
       dplyr::mutate(B_mT = B_G/10,dIepr_over_dB = Intensity/(qfactor*Ns*m*cM)) %>% dplyr::select(-c(B_G,Intensity))
+    ## to add pipe operator '%>%' to the whole package one must run:
+    ## 1. 'usethis::use_pipe()' 2. 'devtools::document()'
     return(spectrum.data)
   }
   if (origin == "winepr"){
