@@ -1,11 +1,39 @@
 Package: EPRphysChemSpec
-Type: Package
-Title: What the Package Does (Title Case)
+Type: Data and Spectra Processing in Electron Pramagnetic Resonance Spectroscopy 
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: person("Jan", "Tarabek", email = c("jantar40@protonmail.com",
+    "jan.tarabek@uochb.cas.cz"), role = c("aut", "cre"),
+    comment = c(ORCID = "https://orcid.org/0000-0003-0116-3824"))
+Description: Primary aim of the package is to help with spectra processing 
+    and plotting in Electron Paramagnetic Resonance (EPR) spectroscopy. 
+    It includes functions to find the most important spectral characteristics 
+    like g-factor, linewidth and single/double integrals, especially in spectral 
+    (time) series consisting of many EPR spectra like during electrochemical 
+    or photochemical radical generation. The input-format of all EPR spectra and tables
+    must be in ASCII format (e.g. \code{.txt} or \code{.csv}) which is then transformed
+    into \code{data.frame}. Additionally, simulations of the EPR spectra 
+    and the corresponding parameters provided by MATLAB-EasySpin toolbox and the results 
+    from DFT calculations like g-factor and hyperfine splitting/coupling constants (a/A) 
+    are compared and summarized in table-format in order to analyze the EPR spectra 
+    in the right way.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    data.table,
+    magrittr,
+    ggplot2,
+    patchwork,
+    cowplot,
+    dplyr,
+    tidyr,
+    tibble,
+    stringr,
+    constants,
+    errors,
+    R.matlab,
+    roperators
+Suggests: 
+    knitr,
+    kableExtra,
+    writexl
