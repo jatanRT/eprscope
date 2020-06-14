@@ -44,7 +44,7 @@ Function reads/loads the experimental EPR spectrum recorded by BRUKER spectromet
   in ASCII format by \code{\link[data.table]{fread}} and transforms it into \code{data frame},
   which can be then easily processed by other R 'data science' packages (e.g. by \code{tidyverse} system).
   For this purpose a 'pipe' operator from \code{\link{magrittr}} and heavily used in \code{tidyverse}
-  is applied. Spectral data are normalized by common experimental parameters in order to qualitative compare
+  is applied. Spectral data are normalized by common experimental parameters in order to qualitatively compare
   the intensities of several spectra.
 }
 \examples{
