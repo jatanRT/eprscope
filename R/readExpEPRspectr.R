@@ -11,7 +11,7 @@
 #'
 #' @param path_to_ASC Path to ASCII file/table (e.g. \code{.txt} or \code{.csv})
 #'   with spectral data (Intensity vs B(Field))
-#' @param qfactor Q value (quality factor ) displayed at specific \code{dB} by spectrometer.
+#' @param qfactor Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1
 #' @param Ns Number of scans per sweep, In the case of "Xenon" software, the parameter
 #'   is already included for the intensity normalization, default = 1
