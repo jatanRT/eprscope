@@ -15,7 +15,7 @@
 #' @param B Magnetic flux density (number)
 #' @param unit_B Magnetic flux density unit in "G" or "mT" or "T"
 #'
-#' @return g-value from \eqn{\frac{h \nu}{B \mu_{\mathrm{B}}}}
+#' @return g-value from \eqn{frac{h nu}{B mu_{B}}}
 #'
 #' @examples
 #' \dontrun{
