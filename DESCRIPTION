@@ -31,8 +31,8 @@ Imports:
     constants,
     errors,
     R.matlab,
-    roperators,
-    magrittr
+    magrittr,
+    rlang
 Suggests: 
     knitr,
     kableExtra,
