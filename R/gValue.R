@@ -19,8 +19,7 @@
 #'
 #' @examples
 #' gValue(9.8020458,unit_nu = "GHz",350.214,unit_B = "mT")
-#' gvalue(9.8020458e+9,unit_nu = "Hz",3502.14,unit_B = "G")
-#'
+#' gValue(9.8020458e+9,unit_nu = "Hz",3502.14,unit_B = "G")
 #'
 #'
 #' @export
