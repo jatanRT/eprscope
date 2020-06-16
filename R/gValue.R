@@ -39,5 +39,5 @@ gValue <- function(nu,unit_nu = "GHz",B,unit_B = "mT"){
   } else if (unit_nu == "Hz" & unit_B == "T"){
     g <- (Planck.const*nu)/(Bohr.magnet*B)
   }
-  return(g)
+  return(round(g,digits = 5))
 }
