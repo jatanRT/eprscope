@@ -10,10 +10,10 @@
 #'   and \code{syms$muB} commands, respectively.
 #'
 #'
-#' @param nu Microwave Frequency
-#' @param unit_nu Frequency unit defined by "GHz" or "Hz"
-#' @param B Magnetic flux density
-#' @param unit_B Magnetic flux density unit in "G" or "mT" or "T"
+#' @param nu Numeric, microwave Frequency
+#' @param unit_nu String, frequency unit defined by \code{"GHz"} or \code{"Hz"}
+#' @param B Numeric, magnetic flux density
+#' @param unit_B String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}
 #'
 #' @return g-value from \eqn{(\nu * h)/(\mu_B * B)}. For variables and constants =>
 #'   see description above

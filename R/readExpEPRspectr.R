@@ -9,16 +9,16 @@
 #'   the intensities of several spectra.
 #'
 #'
-#' @param path_to_ASC Path to ASCII file/table (e.g. \code{.txt} or \code{.csv})
+#' @param path_to_ASC String, path to ASCII file/table (e.g. \code{.txt} or \code{.csv})
 #'   with spectral data (Intensity vs B(Field))
-#' @param qfactor Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
+#' @param qfactor Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1
 #' @param Ns Number of scans per sweep, In the case of "Xenon" software, the parameter
 #'   is already included for the intensity normalization, default = 1
-#' @param m Weight of the powder sample in mg, default = 1
-#' @param cM Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
+#' @param m Numeric, weight of the powder sample in mg, default = 1
+#' @param cM Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
 #'   default = 1
-#' @param origin Corresponds to software which was used to acquire the EPR spectra
+#' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
 #'   on whether they were recorded by windows based softw. ("winepr") or by the Linux
 #'   one ("xenon"), default = "xenon"

@@ -13,12 +13,12 @@
 #'   and \code{syms$muB} commands, respectively.
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-#'   must be labeled as \code{B_mT} and that of derivative intensity as \code{dIepr_over_dB},
+#'   must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column can be included as well
-#' @param nu Microwave frequency in \code{GHz}
-#' @param B.reg.start Magnetic flux density in \code{mT} corresponding to \code{starting} border
+#' @param nu Numeric, microwave frequency in \code{GHz}
+#' @param B.reg.start Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
-#' @param B.reg.end Magnetic flux density in \code{mT} corresponding to \code{ending} border
+#' @param B.reg.end Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
 #'
 #' @return \eqn{g_iso}-value ('iso' = 'isotropic') according to \eqn{(\nu * h)/(\mu_B * B)},
