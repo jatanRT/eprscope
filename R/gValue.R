@@ -1,7 +1,7 @@
 #
 #' @title Basic Calculation of g-Factor
 #'
-#' @description Calculation of g-factor from the basic formula (see below).
+#' @description Calculation of g-factor according to fundamental formula (see below).
 #'   The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
 #'   can be entered with common units like \code{G} (Gauss) \code{mT}
 #'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
@@ -10,9 +10,9 @@
 #'   and \code{syms$muB} commands, respectively.
 #'
 #'
-#' @param nu Microwave Frequency (number)
+#' @param nu Microwave Frequency
 #' @param unit_nu Frequency unit defined by "GHz" or "Hz"
-#' @param B Magnetic flux density (number)
+#' @param B Magnetic flux density
 #' @param unit_B Magnetic flux density unit in "G" or "mT" or "T"
 #'
 #' @return g-value from \eqn{(\nu * h)/(\mu_B * B)}. For variables and constants =>
