@@ -7,29 +7,30 @@
 gValue(nu, unit_nu = "GHz", B, unit_B = "mT")
 }
 \arguments{
-\item{nu}{Frequency (number)}
+\item{nu}{Microwave Frequency}
 
 \item{unit_nu}{Frequency unit defined by "GHz" or "Hz"}
 
-\item{B}{Magnetic flux density (number)}
+\item{B}{Magnetic flux density}
 
 \item{unit_B}{Magnetic flux density unit in "G" or "mT" or "T"}
 }
 \value{
-g-value from \eqn{(\nu * h)/(\mu_B * B)}
+g-value from \eqn{(\nu * h)/(\mu_B * B)}. For variables and constants =>
+  see description above
 }
 \description{
-Calculation of g-factor from the basic formula (see below).
-  The magnetic flux density (\code{B}) and frequency (\code{nu}) can be entered
-  with common units like \code{G} (Gauss) \code{mT} (millitesla) or \code{T} (tesla)
-  as well as \code{GHz} or \code{Hz}, respectively.The Planck constant
-  and Bohr magneton are included in \code{\link{constants}} package
-  and their values are taken by \code{syms$h} and \code{syms$muB} commands,
-  respectively.
+Calculation of g-factor according to fundamental formula (see below).
+  The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
+  can be entered with common units like \code{G} (Gauss) \code{mT}
+  (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
+  The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_B}) are included
+  in \code{\link{constants}} package and their values are taken by \code{syms$h}
+  and \code{syms$muB} commands, respectively.
 }
 \examples{
 gValue(9.8020458,unit_nu = "GHz",350.214,unit_B = "mT")
-gValue(9.8020458e+9,unit_nu = "Hz",3502.14,unit_B = "G")
+gValue(nu = 9.8020458e+9,unit_nu = "Hz",B = 3502.14,unit_B = "G")
 
 
 }

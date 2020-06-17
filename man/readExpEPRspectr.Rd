@@ -34,10 +34,11 @@ on whether they were recorded by windows based softw. ("winepr") or by the Linux
 one ("xenon"), default = "xenon"}
 }
 \value{
-data frame with magnetic flux density column (\code{B_mT}) in millitesla;
+data frame/table consisting of magnetic flux density column (\code{B_mT}) in millitesla and
   derivative intensity column (\code{dIepr_over_dB}) in 'procedure defined unit'
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-  which is normalized by the above-described parameters and finally the \code{index} column are displayed
+  which is normalized by the above-described parameters and finally the \code{index} column
+  is displayed as well
 }
 \description{
 Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
@@ -51,7 +52,8 @@ Function reads/loads the experimental EPR spectrum recorded by BRUKER spectromet
 \dontrun{
 readExpEPRspectr(path_to_ASCII_file,qfactor = 3500) ## for the spectrum acquired by "xenon"
 readExpEPRspectr(path_to_ASCII_file,qfactor = 2000,Ns = 20,m = 10,origin = "winepr")
-## for the spectrum acquired by "xenon" (and 20 scans) on a 10 mg powder sample
+## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample
 }
+
 
 }
