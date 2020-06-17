@@ -4,8 +4,10 @@
 #' @description Calculation of the g-value according to fundamental formula. g-related magnetic flux density
 #'   (like \code{B_iso} or \code{B_center}) is directly taken from the symmetric
 #'   (if positive and negative derivative intensities of the spectral line are similar)
-#'   EPR spectrum. The g-related B is computed as the mid-point between the magnetic flux densities
+#'   EPR spectrum. Otherwise the g will be determined innccurately.
+#'   The g-related B is computed as the mid-point between the magnetic flux densities
 #'   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}).
+#'   One can select the B region/span/interval from the spectrum to determine the g-value.
 #'   The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_B}) are included
 #'   in \code{\link{constants}} package and their values are taken by \code{syms$h}
 #'   and \code{syms$muB} commands, respectively.
