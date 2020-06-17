@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue.R
 \name{gValue}
 \alias{gValue}
-\title{Basic Calculation of g-Factor}
+\title{Basic Calculation of the g-Factor}
 \usage{
 gValue(nu, unit_nu = "GHz", B, unit_B = "mT")
 }

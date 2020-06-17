@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue_fromSpectr.R
 \name{gValue_fromSpectr}
 \alias{gValue_fromSpectr}
-\title{Calculation of the g-factor ("position") of the EPR Spectrum}
+\title{Calculation of the g-factor ("position") of EPR Spectrum}
 \usage{
 gValue_fromSpectr(spectrum.data, nu, B.reg.start, B.reg.end)
 }
