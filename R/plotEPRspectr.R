@@ -30,7 +30,8 @@
 #'
 #' @export
 #'
-#' @importFrom ggplot2 ggplot geom_line theme aes size color labs coord_cartesian xlim ylim
+#' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian element_blank element_text unit margin theme_bw
+#'   theme_light theme_minimal theme_classic theme_linedraw
 plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTicks = T){
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   xB <- .data$B_mT ## this is the mask in order to assign variable correctly
