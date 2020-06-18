@@ -30,7 +30,7 @@
 #'
 #' @export
 #'
-#' @importFrom
+#' @importFrom ggplot2 ggplot geom_line theme aes size color labs coord_cartesian xlim ylim
 plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTicks = T){
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   xB <- .data$B_mT ## this is the mask in order to assign variable correctly
@@ -42,9 +42,13 @@ plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTi
   ## The plot depending on theme and whether the Y ticks are displayed or not.
   ## Therefore a theme variable is defined:
   NOyTicks.theme <- theme(axis.text.y = element_blank(),axis.ticks.y = element_blank())
-  ## The lot function:
+  ## The lot function (5 G distance from the y-axis borders ('B.start-0.5','B.end+0.5')):
   simplePlot <- ggplot(spectrum.data) + geom_line(aes(x = xB, y = .data$dIepr_over_dB),size = 0.75,color = line.color) +
-    labs(x = x.label,y = y.label) + coord_cartesian(xlim = c(B.start-0.5,B.end+0.5)) ## 5 G from the borders
+    labs(x = x.label,y = y.label) + coord_cartesian(xlim = c(B.start-0.5,B.end+0.5)) +
+    theme(axis.ticks.length = unit(-6,"pt"),
+          axis.text = element_text(margin = margin(10,10,10,10,unit = "pt")),
+          axis.text.title = element_text(margin = margin(6,6,6,6,unit = "pt")),
+          ) ## theme in order to have ticks inside the graph
   if (plot.theme == "theme_grey"){
     if (isTRUE(yTicks)){
       p <- simplePlot
