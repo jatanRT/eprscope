@@ -47,9 +47,10 @@ plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTi
   simplePlot <- ggplot(spectrum.data) + geom_line(aes(x = xB, y = .data$dIepr_over_dB),size = 0.75,color = line.color) +
     labs(x = x.label,y = y.label) + coord_cartesian(xlim = c(B.start-0.5,B.end+0.5)) +
     theme(axis.ticks.length = unit(-6,"pt"),
-          axis.text = element_text(margin = margin(10,10,10,10,unit = "pt")),
-          axis.text.title = element_text(margin = margin(6,6,6,6,unit = "pt")),
-          ) ## theme in order to have ticks inside the graph
+          axis.text.x = element_text(margin = margin(10,10,4,10,unit = "pt")),
+          axis.text.y = element_text(margin = margin(10,10,10,4,unit = "pt")),
+          axis.title = element_text(margin = margin(2,2,6,6,unit = "pt")),
+    ) ## theme in order to have ticks inside the graph
   if (plot.theme == "theme_grey"){
     if (isTRUE(yTicks)){
       p <- simplePlot
