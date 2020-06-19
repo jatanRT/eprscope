@@ -21,7 +21,7 @@
 #' @examples
 #' gValue(9.8020458,unit_nu = "GHz",350.214,unit_B = "mT")
 #' gValue(nu = 9.8020458e+9,unit_nu = "Hz",B = 3502.14,unit_B = "G")
-#'
+#' gValue(9.5421,"GHz",0.333251,"T")
 #'
 #' @export
 gValue <- function(nu,unit_nu = "GHz",B,unit_B = "mT"){
