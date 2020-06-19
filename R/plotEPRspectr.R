@@ -1,34 +1,53 @@
 #
 ## Plotting simple EPR spectrum
 
-#' @title
+#' @title Simple plotting of the EPR spectrum
 #'
-#' @description
+#' @description Graph/Plot of simple EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
+#'   are in the form of data frame (must contain \code{dIepr_over_dB} and \code{B_mT}, i.e. derivative EPR
+#'   intensity vs. magnetic flux density, respectively, columns). Theme of the graphic spectrum representation
+#'   as well its line color can be varied like in \code{\link{ggplot2}} (see below). A theme
+#'   for \code{publication ready} figures can be also applied based on \code{theme_linedraw()} with displayed
+#'   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
+#'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.})
+#'   ticks (this is common for presenting the EPR spectra). Function ca be additionally combined by \code{+} sign
+#'   with other functions like in \code{\link{ggplot2}}.
 #'
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-#'   must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
+#'   must be labeled as \code{B_mT} (in mT) and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column can be included as well
 #' @param line.color String, line color to plot simple EPR spectrum. All \code{\link{ggplot2}} compatible
 #'   colors are allowed
 #' @param plot.theme String, which calls a ggplot theme. The following ones are defined:
 #'   \itemize{
-#'     \item \code{"theme_grey"} (default one) => gray background with white grid lines
-#'     \item \code{"theme_bw"} => white background with thin gray lines
-#'     \item \code{"theme_light"} => the same as \code{"theme_bw"}
-#'     \item \code{"theme_minimal"}
-#'     \item \code{"theme_classic"}
-#'     \item \code{"theme_pubready"}
+#'     \item \code{"theme_grey"} (default one) => gray background with white grid lines, default theme
+#'     \item \code{"theme_bw"} => white background with thin gray grid lines
+#'     \item \code{"theme_light"} => similar to \code{"theme_bw"} but without pronounced axis black lines
+#'     \item \code{"theme_minimal"} => no axis lines are displayed (nor original neither opposite ones), only grid
+#'     \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
+#'     \item \code{"theme_pubready"} => pronounced axis lines (both for origin and opposite) without the grid,
+#'     theme is proposed for publications.
 #'   }
-#' @param yTicks Boolean,
+#'   Except the last one all above-described themes are standard in \code{\link{ggplot2}}.
+#'   The last one (\code{"theme_pub"}) is modified \code{"theme_linedraw"} from \code{\link{ggplot2}}.
+#' @param yTicks Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text,
+#'   which is usually skipped out in the EPR community, default TRUE
 #'
-#' @return
+#'
+#' @return EPR spectrum graph/plot with key parameter (e.g. line-color and theme) variation
 #'
 #'
 #' @examples
+#' \dontrun{
+#' plotEPRspectr(spectrum.data,"blue",plot.theme = "theme_pubready",yTicks = FALSE)
+#' plotEPRspectr(spectrum.data,line.color = "steelblue","theme_bw")
+#' plotEPRspectr(spectrum.data,"darkred")
+#' }
 #'
 #'
 #' @export
+#'
 #'
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian element_blank element_text unit margin theme_bw
 #'   theme_light theme_minimal theme_classic theme_linedraw
@@ -49,7 +68,7 @@ plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTi
     theme(axis.ticks.length = unit(-6,"pt"),
           axis.text.x = element_text(margin = margin(10,10,4,10,unit = "pt")),
           axis.text.y = element_text(margin = margin(10,10,10,4,unit = "pt")),
-          axis.title = element_text(margin = margin(2,2,6,6,unit = "pt")),
+          axis.title = element_text(margin = margin(2,2,6,6,unit = "pt"))
     ) ## theme in order to have ticks inside the graph
   if (plot.theme == "theme_grey"){
     if (isTRUE(yTicks)){
