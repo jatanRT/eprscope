@@ -10,25 +10,29 @@ readExpEPRspectr(
   Ns = 1,
   cM = 1,
   m = 1,
+  time.series = FALSE,
   origin = "xenon"
 )
 }
 \arguments{
-\item{path_to_ASC}{Path to ASCII file/table (e.g. \code{.txt} or \code{.csv})
-with spectral data (Intensity vs B(Field))}
+\item{path_to_ASC}{String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
+with spectral data (Intensity vs B(Field) with additional 'index' and/or 'time' variables)}
 
-\item{qfactor}{Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
+\item{qfactor}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1}
 
 \item{Ns}{Number of scans per sweep, In the case of "Xenon" software, the parameter
 is already included for the intensity normalization, default = 1}
 
-\item{cM}{Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
+\item{cM}{Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
 default = 1}
 
-\item{m}{Weight of the powder sample in mg, default = 1}
+\item{m}{Numeric, weight of the powder sample in mg, default = 1}
 
-\item{origin}{Corresponds to software which was used to acquire the EPR spectra
+\item{time.series}{Boolean, whether the input ASCII spectrum comes from the time series experiment
+with additional \code{time} column (ONLY IN CASE of "Xenon" software)}
+
+\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
 on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
 on whether they were recorded by windows based softw. ("winepr") or by the Linux
 one ("xenon"), default = "xenon"}
@@ -37,8 +41,8 @@ one ("xenon"), default = "xenon"}
 data frame/table consisting of magnetic flux density column (\code{B_mT}) in millitesla and
   derivative intensity column (\code{dIepr_over_dB}) in 'procedure defined unit'
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-  which is normalized by the above-described parameters and finally the \code{index} column
-  is displayed as well
+  which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
+  (in the case of time series experiment) columns are displayed as well.
 }
 \description{
 Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
@@ -46,13 +50,22 @@ Function reads/loads the experimental EPR spectrum recorded by BRUKER spectromet
   which can be then easily processed by other R 'data science' packages (e.g. by \code{tidyverse} system).
   For this purpose a 'pipe' operator from \code{\link{magrittr}} and heavily used in \code{tidyverse}
   is applied. Spectral data are normalized by common experimental parameters in order to qualitatively compare
-  the intensities of several spectra.
+  the intensities of several spectra. ASCII files/tables are dependent on the software used to record the EPR spectra
+  on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
+  or \code{"winepr"}).Time series spectra (time evolution of EPR spectra) can be read
+  by the \code{time.series = TRUE/FALSE} parameter (ONLY IN CASE of \code{"xenon"} software).
 }
 \examples{
 \dontrun{
 readExpEPRspectr(path_to_ASCII_file,qfactor = 3500) ## for the spectrum acquired by "xenon"
+## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
 readExpEPRspectr(path_to_ASCII_file,qfactor = 2000,Ns = 20,m = 10,origin = "winepr")
-## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample
+## if no parameter intensity normalization is required and spectrum
+## was recorded by "xenon" software:
+readExpEPRspectr(path_to_ASCII_file)
+## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
+## EPR spectroelectrochemistry or photochemistry):
+readExpEPRspectr(path_to_ASC_file,2800,time.series = T)
 }
 
 

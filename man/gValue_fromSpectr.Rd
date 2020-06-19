@@ -8,15 +8,15 @@ gValue_fromSpectr(spectrum.data, nu, B.reg.start, B.reg.end)
 }
 \arguments{
 \item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-must be labeled as \code{B_mT} and that of derivative intensity as \code{dIepr_over_dB},
+must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column can be included as well}
 
-\item{nu}{Microwave frequency in \code{GHz}}
+\item{nu}{Numeric, microwave frequency in \code{GHz}}
 
-\item{B.reg.start}{Magnetic flux density in \code{mT} corresponding to \code{starting} border
+\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
 of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 
-\item{B.reg.end}{Magnetic flux density in \code{mT} corresponding to \code{ending} border
+\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
 of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 }
 \value{
@@ -29,7 +29,7 @@ of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 Calculation of the g-value according to fundamental formula. g-related magnetic flux density
   (like \code{B_iso} or \code{B_center}) is directly taken from the symmetric
   (if positive and negative derivative intensities of the spectral line are similar)
-  EPR spectrum. Otherwise the g will be determined inaccurately.
+  EPR spectrum. Otherwise the g will be determined inaccurately!.
   The g-related B is computed as the mid-point between the magnetic flux densities
   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}).
   One can select the B region/span/interval from the spectrum to determine the g-value.
