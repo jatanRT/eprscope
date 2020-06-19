@@ -21,7 +21,7 @@ with spectral data (Intensity vs B(Field) with additional 'index' and/or 'time' 
 \item{qfactor}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1}
 
-\item{Ns}{Number of scans per sweep, In the case of "Xenon" software, the parameter
+\item{Ns}{Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
 is already included for the intensity normalization, default = 1}
 
 \item{cM}{Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
@@ -30,7 +30,7 @@ default = 1}
 \item{m}{Numeric, weight of the powder sample in mg, default = 1}
 
 \item{time.series}{Boolean, whether the input ASCII spectrum comes from the time series experiment
-with additional \code{time} column (ONLY IN CASE of "Xenon" software)}
+with the additional \code{time} column (ONLY IN CASE of "Xenon" software)}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
 on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
@@ -38,7 +38,7 @@ on whether they were recorded by windows based softw. ("winepr") or by the Linux
 one ("xenon"), default = "xenon"}
 }
 \value{
-data frame/table consisting of magnetic flux density column (\code{B_mT}) in millitesla and
+data frame/table consisting of the magnetic flux density column (\code{B_mT}) in millitesla and the
   derivative intensity column (\code{dIepr_over_dB}) in 'procedure defined unit'
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
   which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
@@ -46,10 +46,10 @@ data frame/table consisting of magnetic flux density column (\code{B_mT}) in mil
 }
 \description{
 Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
-  in ASCII format by \code{\link[data.table]{fread}} and transforms it into \code{data frame},
-  which can be then easily processed by other R 'data science' packages (e.g. by \code{tidyverse} system).
+  in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
+  which can be easily processed by other R 'data science' packages (e.g. by \code{tidyverse} system), afterwards.
   For this purpose a 'pipe' operator from \code{\link{magrittr}} and heavily used in \code{tidyverse}
-  is applied. Spectral data are normalized by common experimental parameters in order to qualitatively compare
+  is applied. Spectral data are normalized by the common experimental parameters in order to qualitatively compare
   the intensities of several spectra. ASCII files/tables are dependent on the software used to record the EPR spectra
   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
   or \code{"winepr"}).Time series spectra (time evolution of EPR spectra) can be read

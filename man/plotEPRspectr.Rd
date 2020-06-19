@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotEPRspectr.R
 \name{plotEPRspectr}
 \alias{plotEPRspectr}
-\title{Simple plotting of the EPR spectrum}
+\title{EPR spectrum Simple Plot}
 \usage{
 plotEPRspectr(spectrum.data, line.color, plot.theme = "theme_grey", yTicks = T)
 }
@@ -16,30 +16,31 @@ colors are allowed}
 
 \item{plot.theme}{String, which calls a ggplot theme. The following ones are defined:
 \itemize{
-  \item \code{"theme_grey"} (default one) => gray background with white grid lines, default theme
-  \item \code{"theme_bw"} => white background with thin gray grid lines
-  \item \code{"theme_light"} => similar to \code{"theme_bw"} but without pronounced axis black lines
-  \item \code{"theme_minimal"} => no axis lines are displayed (nor original neither opposite ones), only grid
+  \item \code{"theme_grey"} (default one) => the gray background with white grid lines, default theme
+  \item \code{"theme_bw"} => the white background with thin gray grid lines
+  \item \code{"theme_light"} => similar to \code{"theme_bw"} but without the pronounced axis black lines
+  \item \code{"theme_minimal"} => no axis lines are displayed (nor original neither opposite ones),
+  only the grid is presented
   \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
   \item \code{"theme_pubready"} => pronounced axis lines (both for origin and opposite) without the grid,
   theme is proposed for publications.
 }
 Except the last one all above-described themes are standard in \code{\link{ggplot2}}.
-The last one (\code{"theme_pub"}) is modified \code{"theme_linedraw"} from \code{\link{ggplot2}}.}
+The last one (\code{"theme_pubready"}) is modified \code{"theme_linedraw"} from the \code{\link{ggplot2}}.}
 
 \item{yTicks}{Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text,
-which is usually skipped out in the EPR community, default TRUE}
+which is usually skipped in the EPR community, default TRUE}
 }
 \value{
 EPR spectrum graph/plot with key parameter (e.g. line-color and theme) variation
 }
 \description{
-Graph/Plot of simple EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
-  are in the form of data frame (must contain \code{dIepr_over_dB} and \code{B_mT}, i.e. derivative EPR
-  intensity vs. magnetic flux density, respectively, columns). Theme of the graphic spectrum representation
-  as well its line color can be varied like in \code{\link{ggplot2}} (see below). A theme
-  for \code{publication ready} figures can be also applied based on \code{theme_linedraw()} with displayed
-  or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
+Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
+  are in the form of data frame (must contain the \code{dIepr_over_dB} and \code{B_mT} columns,
+  i.e. derivative EPR intensity vs. magnetic flux density, respectively). Theme of the graphic
+  spectrum representation as well its line color can be varied like in \code{\link{ggplot2}} (see below).
+  A theme for \code{publication ready} figures can be also applied based on the \code{theme_linedraw()}
+  with displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.})
   ticks (this is common for presenting the EPR spectra). Function ca be additionally combined by \code{+} sign
   with other functions like in \code{\link{ggplot2}}.

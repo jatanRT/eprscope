@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue_fromSpectr.R
 \name{gValue_fromSpectr}
 \alias{gValue_fromSpectr}
-\title{Calculation of the g-factor ("position") of EPR Spectrum}
+\title{Calculation of g-factor ("position") of the EPR Spectrum}
 \usage{
 gValue_fromSpectr(spectrum.data, nu, B.reg.start, B.reg.end)
 }
@@ -26,15 +26,15 @@ of the \code{selected B region} (therefore abbreviation \code{.reg.})}
   corresponding to maximum and minimum of the derivative intensity (\code{dIepr_over_dB})
 }
 \description{
-Calculation of the g-value according to fundamental formula. g-related magnetic flux density
+Calculation of g-value according to fundamental formula. g-related magnetic flux density
   (like \code{B_iso} or \code{B_center}) is directly taken from the symmetric
   (if positive and negative derivative intensities of the spectral line are similar)
   EPR spectrum. Otherwise the g will be determined inaccurately!.
   The g-related B is computed as the mid-point between the magnetic flux densities
   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}).
   One can select the B region/span/interval from the spectrum to determine the g-value.
-  The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_B}) are included
-  in \code{\link{constants}} package and their values are taken by \code{syms$h}
+  The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_B}) are included
+  in \code{\link{constants}} package and their values are taken by the \code{syms$h}
   and \code{syms$muB} commands, respectively.
 }
 \examples{
