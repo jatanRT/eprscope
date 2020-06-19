@@ -2,7 +2,7 @@
 % Please edit documentation in R/readExpEPRspectr.R
 \name{readExpEPRspectr}
 \alias{readExpEPRspectr}
-\title{Read the Experimental ASCII EPR Spectrum}
+\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum}
 \usage{
 readExpEPRspectr(
   path_to_ASC,

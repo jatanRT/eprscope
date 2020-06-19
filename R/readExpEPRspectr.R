@@ -1,5 +1,5 @@
 #
-#' @title Read the Experimental ASCII EPR Spectrum
+#' @title Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum
 #'
 #' @description Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
 #'   in ASCII format by \code{\link[data.table]{fread}} and transforms it into \code{data frame},
