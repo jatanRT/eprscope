@@ -19,7 +19,7 @@
 #'   \item \code{"Potential_V"} => potential (for spectroelectrochemical plots) in V \eqn{E} (V)
 #'   \item \code{"Concentration_mM"} => concentration (of the radicals or paramagnet. species in analyte)
 #'   in mM (common concentration order used in EPR) \eqn{c} (mmol dm^-3) "^" corresponds to superscript
-#'   \item \code{"DeltaBpp_mT"} => Peak-to-Peak spectral linewidth in mT \eqn{Delta B_pp} (mT)
+#'   \item \code{"DeltaBpp_mT"} => Peak-to-Peak spectral linewidth in mT \eqn{\Delta B_pp} (mT)
 #'   }
 #'
 #'
