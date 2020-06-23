@@ -22,9 +22,9 @@
 #'
 #' @examples
 #' plotEPRlabel(B,mT)
-#' plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),p.d.u.,user.defined = T)
-#' plotEPRlabel(quantity = Delta*B[pp],unit = mT,user.defined = F)
-#' plotEPRlabel(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = T)
+#' plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),p.d.u.,user.defined = TRUE)
+#' plotEPRlabel(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
+#' plotEPRlabel(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
 #' plotEPRlabel(c,mmol*dm^-3)
 #'
 #'
@@ -32,7 +32,7 @@
 #'
 #'
 #' @importFrom rlang enquo
-plotEPRlabel <- function(quantity,unit,user.defined = F){
+plotEPRlabel <- function(quantity,unit,user.defined = FALSE){
   ## in 'bquote' bang-bang ('!!') operator does not work
   ## use '.()' instead
   quantity <- enquo(quantity)

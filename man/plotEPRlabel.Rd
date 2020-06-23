@@ -4,35 +4,34 @@
 \alias{plotEPRlabel}
 \title{Labels for Various EPR Spectroscopy Plots}
 \usage{
-plotEPRlabel(axis)
+plotEPRlabel(quantity, unit, user.defined = FALSE)
 }
 \arguments{
-\item{axis}{String, which corresponds to axis label, labels
-are defined for the following quantities and their units:
-\itemize{
-\item \code{"B_mT"} => magnetic flux density in mT (mostly for x-axis) \eqn{B} (mT)
-\item \code{"Deriv_Intensity"} => derivative intensity d\eqn{I_EPR}/d\eqn{B} (p.d.u.),
-"_" corresponds to subscript and p.d.u. is abbreviation of "procedure defined unit" according to
-\href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{IUPAC}
-\item \code{"Time_s"} => time \eqn{Time} (s)
-\item \code{"Integral"} => integral of the derivative intensity EPR spectrum \eqn{Integral} (p.d.u.)
-\item \code{"Double_Integral"} => double integral of the derivative intensity EPR spectrum
-\eqn{Double Integral (p.d.u.)}
-\item \code{"Potential_V"} => potential (for spectroelectrochemical plots) in V \eqn{E} (V)
-\item \code{"Concentration_mM"} => concentration (of the radicals or paramagnet. species in analyte)
-in mM (common concentration order used in EPR) \eqn{c} (mmol dm^-3) "^" corresponds to superscript
-\item \code{"DeltaBpp_mT"} => Peak-to-Peak spectral linewidth in mT \eqn{\Delta B_pp} (mT)
-}}
+\item{quantity}{Variable String (without quotation, sometimes part of it can be quoted, see examples below),
+physical quantity, which should be displayed as the axis title like \eqn{B},
+d\eqn{I}_EPR/d\eqn{B}, \eqn{time}, \eqn{\Delta B_pp}, \code{Double Integral} etc.}
+
+\item{unit}{Variable String (without quotation, sometimes part of it can be quoted, see examples below),
+physical quanity corresponding unit, which should be displayed like \code{mT}, \code{s}, \code{p.d.u.}, etc.}
+
+\item{user.defined}{Boolean, in order to bring more flexibility to display more complicated quantities and units
+based on users requirements (sse examples bellow)}
 }
 \value{
 TODO
 }
 \description{
-TODO
+TODO To write greek symbols, subscript and superscript, see
+  \href{https://www.r-bloggers.com/math-notation-for-r-plot-titles-expression-and-bquote/}{R-Bloggers:Math Notation}
+  and \href{https://www.r-bloggers.com/r-plotmath-functions-combined-with-variable-values/}{R-Bloggers:Plotmath}
+  or \code{\link[grDevices]{plotmath}} (in console write \code{?plotmath})
 }
 \examples{
-plotEPRlabel(axis = "B_mT")
-plotEPRlabel(axis = "Deriv_Intensity")
-plotEPRlabel(axis = "DeltaBpp_mT")
+plotEPRlabel(B,mT)
+plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),p.d.u.,user.defined = TRUE)
+plotEPRlabel(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
+plotEPRlabel(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
+plotEPRlabel(c,mmol*dm^-3)
+
 
 }
