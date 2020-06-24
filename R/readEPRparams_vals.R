@@ -19,7 +19,7 @@
 #'
 #' @export
 #'
-instrum_epr_data_vals <- function(path_to_DSC_or_par,origin = "xenon"){
+readEPRparams_vals <- function(path_to_DSC_or_par,origin = "xenon"){
   ## required string patterns from 'DSC' or 'par' file:
   if (origin == "xenon"){
     str.epr.Instr.params.V <- c("MWFQ","QValue","A1CT","A1SW","B0MA","AVGS","A1RS","MWPW","SPTP","RCTC")
