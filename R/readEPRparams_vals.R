@@ -27,12 +27,12 @@ readEPRparams_vals <- function(path_to_DSC_or_par,origin = "xenon"){
   if (origin == "winepr"){
     str.epr.Instr.params.V <- c("MF","HCF","HSW","RMA","JSD","RES","MP","RCT","RTC")
   }
-  ## select all corresponding lines (which contain string pattern) from 'DSC' of 'par' file:
+  ## select all corresponding lines (which contain string pattern) from 'DSC' or 'par' file:
   str.dsc.sel.V <- sapply(str.epr.Instr.params.V,function(x) grep(x,readLines(path_to_DSC_or_par),value = T))
   ## split these strings into string couples (n=2) by space "  " ("\\s+"):
   str.dsc.sel.split.V <- sapply(str.dsc.sel.V,function(y) stringr::str_split(y,"\\s+",n = 2))
   ## Create a "parameter" data frame ('[[2]]' means second string in line / couple):
-  ## depending on the original parameter list coming from either "xenon" or "winepr" software
+  ## depending on the original parameter list coming either from "xenon" or from "winepr" software
   if (origin == "xenon"){
     data.instrument.V <- data.frame(
       Parameter <- c("Frequency","QValue","Central Field","Sweep Width","Modulation Amplitude",
