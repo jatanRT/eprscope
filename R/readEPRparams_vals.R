@@ -1,18 +1,20 @@
 #
-#' @title
+#' @title TODO
 #'
 #'
-#' @description
+#' @description TODO
 #'
 #'
-#' @param path_to_DSC_or_par
-#' @param origin
+#' @param path_to_DSC_or_par TODO
+#' @param origin TODO
 #'
 #'
-#' @return
+#' @return TODO
 #'
 #'
 #' @examples
+#' TODO
+#' TODO
 #'
 #'
 #' @export
