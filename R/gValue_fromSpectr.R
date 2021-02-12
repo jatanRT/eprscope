@@ -39,13 +39,17 @@
 #' @importFrom dplyr filter select mutate pull between near
 gValue_fromSpectr <- function(spectrum.data,nu,B.reg.start,B.reg.end){
   ## B at minimum of dIepr_over_dB:
-  B.min <- spectrum.data %>% filter(between(.data$B_mT,B.reg.start,B.reg.end)) %>%
-    filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>% pull(.data$B_mT)
+  B.min <- spectrum.data %>%
+    filter(between(.data$B_mT,B.reg.start,B.reg.end)) %>%
+    filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
+    pull(.data$B_mT)
   ## B at maximum of dIepr_over_dB:
-  B.max <- spectrum.data %>% filter(between(.data$B_mT,B.reg.start,B.reg.end)) %>%
-    filter(.data$dIepr_over_dB == max(.data$dIepr_over_dB)) %>% pull(.data$B_mT)
+  B.max <- spectrum.data %>%
+    filter(between(.data$B_mT,B.reg.start,B.reg.end)) %>%
+    filter(.data$dIepr_over_dB == max(.data$dIepr_over_dB)) %>%
+    pull(.data$B_mT)
   ## B between both of them:
-  B.center <- (B.min+B.max)/2
+  B.center <- (B.min + B.max)/2
   ## g -value calculation:
   Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$muB
