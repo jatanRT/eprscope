@@ -28,7 +28,7 @@ TODO To write greek symbols, subscript and superscript, see
 }
 \examples{
 plotEPRlabel(B,mT)
-plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),p.d.u.,user.defined = TRUE)
+plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE)
 plotEPRlabel(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
 plotEPRlabel(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
 plotEPRlabel(c,mmol*dm^-3)
