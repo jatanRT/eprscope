@@ -6,7 +6,7 @@
 #'   can be entered with common units like \code{G} (Gauss) \code{mT}
 #'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
 #'   The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_B}) are included
-#'   in \code{\link[constants]{syms}} package and their values are taken by \code{syms$h}
+#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
 #'   and \code{syms$muB} commands, respectively.
 #'
 #'

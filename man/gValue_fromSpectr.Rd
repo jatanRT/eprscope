@@ -34,7 +34,7 @@ Calculation of g-value according to fundamental formula. g-related magnetic flux
   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}).
   One can select the B region/span/interval from the spectrum to determine the g-value.
   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_B}) are included
-  in \code{\link[constants]{syms}} package and their values are taken by the \code{syms$h}
+  in \code{\link[constants]{syms}} function and their values are taken by the \code{syms$h}
   and \code{syms$muB} commands, respectively.
 }
 \examples{
