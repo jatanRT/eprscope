@@ -4,16 +4,16 @@
 \alias{gValue}
 \title{Basic Calculation of g-factor}
 \usage{
-gValue(nu, unit_nu = "GHz", B, unit_B = "mT")
+gValue(nu, nu_unit = "GHz", B, B_unit = "mT")
 }
 \arguments{
 \item{nu}{Numeric, microwave Frequency}
 
-\item{unit_nu}{String, frequency unit defined by \code{"GHz"} or \code{"Hz"}}
+\item{nu_unit}{String, frequency unit defined by \code{"GHz"} or \code{"Hz"}}
 
 \item{B}{Numeric, magnetic flux density}
 
-\item{unit_B}{String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}}
+\item{B_unit}{String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}}
 }
 \value{
 g-value from \eqn{(\nu * h)/(\mu_B * B)}. For variables and constants =>
@@ -29,8 +29,8 @@ Calculation of g-factor according to fundamental formula (see below).
   and \code{syms$muB} commands, respectively.
 }
 \examples{
-gValue(9.8020458,unit_nu = "GHz",350.214,unit_B = "mT")
-gValue(nu = 9.8020458e+9,unit_nu = "Hz",B = 3502.14,unit_B = "G")
+gValue(9.8020458,nu_unit = "GHz",350.214,B_unit = "mT")
+gValue(nu = 9.8020458e+9,nu_unit = "Hz",B = 3502.14,B_unit = "G")
 gValue(9.5421,"GHz",0.333251,"T")
 
 }

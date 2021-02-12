@@ -11,33 +11,33 @@
 #'
 #'
 #' @param nu Numeric, microwave Frequency
-#' @param unit_nu String, frequency unit defined by \code{"GHz"} or \code{"Hz"}
+#' @param nu_unit String, frequency unit defined by \code{"GHz"} or \code{"Hz"}
 #' @param B Numeric, magnetic flux density
-#' @param unit_B String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}
+#' @param B_unit String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}
 #'
 #' @return g-value from \eqn{(\nu * h)/(\mu_B * B)}. For variables and constants =>
 #'   see description above
 #'
 #' @examples
-#' gValue(9.8020458,unit_nu = "GHz",350.214,unit_B = "mT")
-#' gValue(nu = 9.8020458e+9,unit_nu = "Hz",B = 3502.14,unit_B = "G")
+#' gValue(9.8020458,nu_unit = "GHz",350.214,B_unit = "mT")
+#' gValue(nu = 9.8020458e+9,nu_unit = "Hz",B = 3502.14,B_unit = "G")
 #' gValue(9.5421,"GHz",0.333251,"T")
 #'
 #' @export
-gValue <- function(nu,unit_nu = "GHz",B,unit_B = "mT"){
+gValue <- function(nu,nu_unit = "GHz",B,B_unit = "mT"){
   Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$muB
-  if (unit_nu == "GHz" & unit_B == "mT"){
+  if (nu_unit == "GHz" & B_unit == "mT"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.001)
-  } else if (unit_nu == "Hz" & unit_B == "mT"){
+  } else if (nu_unit == "Hz" & B_unit == "mT"){
     g <- (Planck.const*nu)/(Bohr.magnet*B*0.001)
-  } else if (unit_nu == "Hz" & unit_B == "G"){
+  } else if (nu_unit == "Hz" & B_unit == "G"){
     g <- (Planck.const*nu)/(Bohr.magnet*B*0.0001)
-  } else if (unit_nu == "GHz" & unit_B == "G"){
+  } else if (nu_unit == "GHz" & B_unit == "G"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.0001)
-  } else if (unit_nu == "GHz" & unit_B == "T"){
+  } else if (nu_unit == "GHz" & B_unit == "T"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B)
-  } else if (unit_nu == "Hz" & unit_B == "T"){
+  } else if (nu_unit == "Hz" & B_unit == "T"){
     g <- (Planck.const*nu)/(Bohr.magnet*B)
   }
   return(round(g,digits = 5))
