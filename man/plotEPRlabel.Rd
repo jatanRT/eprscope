@@ -32,6 +32,7 @@ plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = 
 plotEPRlabel(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
 plotEPRlabel(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
 plotEPRlabel(c,mmol*dm^-3)
+plotEPRlabel(Double~~Integral,p.d.u.)
 
 
 }
