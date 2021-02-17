@@ -34,7 +34,8 @@ Imports:
     errors,
     R.matlab,
     magrittr,
-    rlang
+    rlang,
+    pracma
 Suggests: 
     knitr,
     kableExtra,
