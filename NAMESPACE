@@ -3,6 +3,7 @@
 export("%>%")
 export(DeltaBpp_fromSpectr)
 export(gValue)
+export(gValue_fromQCHcomp)
 export(gValue_fromSpectr)
 export(plotEPRlabel)
 export(plotEPRspectr)
