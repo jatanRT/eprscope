@@ -1,5 +1,5 @@
 #
-#' @title Calculation of g-factor ("position") of the EPR Spectrum
+#' @title Calculation of g-factor ("Position") of the EPR Spectrum
 #'
 #' @description Calculation of g-value according to fundamental formula. g-related magnetic flux density
 #'   (like \code{B_iso} or \code{B_center}) is directly taken from the symmetric
