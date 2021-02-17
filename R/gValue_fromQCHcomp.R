@@ -1,0 +1,36 @@
+## Calculate from DFT Gaussian Output
+
+#' @title Calculation of g-factor from Quantum Chemical Computational Output
+#'
+#' @description TODO
+#'
+#' @param delta_g_vec Numeric vector of principal g-values from e.g. Gaussian output
+#' @param mean TODO
+#'
+#' @return TODO
+#'
+#'
+#' @examples
+#' gValue_fromQCHcomp(c(-806.1,1099.9,1417.1))
+#' gValue_fromQCHcomp(c(-543.1,832.8,1089.5),mean = FALSE)
+#'
+#'
+#' @export
+#'
+#'
+gValue_fromQCHcomp <- function(delta_g_vec,mean = TRUE){
+  ## g-factor for free electron (g.e) from `constants` package
+  ## round the g.e to 6 decimal places
+  g.e <- round(-constants::syms$gem,digits = 6)
+  ## g-vector from shifts (`deltas`) and g.e
+  delta_g_vec <- as.vector(delta_g_vec)
+  g_vec <- g.e + delta_g_vec*1e-6
+  ## whether to calculate the mean value or get the g-vector
+  ## as it is
+  if (isTRUE(mean)){
+    gValue <-  mean(g_vec)
+  } else{
+    gValue <- g_vec
+  }
+  return(gValue)
+}
