@@ -1,6 +1,6 @@
 Package: EPRphysChemSpec
 Type: Package
-Title: Data and Spectra Processing in Electron Pramagnetic Resonance Spectroscopy 
+Title: Data and Spectra Processing in Electron Paramagnetic Resonance Spectroscopy 
 Version: 0.1.0
 Authors@R: person("Jan", "Tarabek", email = c("jantar40@protonmail.com",
     "jan.tarabek@uochb.cas.cz"), role = c("aut", "cre"),
