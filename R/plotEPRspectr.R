@@ -6,18 +6,18 @@
 #' @description Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
 #'   are in the form of data frame (must contain the \code{dIepr_over_dB} and \code{B_mT} columns,
 #'   i.e. derivative EPR intensity vs. magnetic flux density, respectively). Theme of the graphic
-#'   spectrum representation as well its line color can be varied like in \code{\link{ggplot2}} (see below).
+#'   spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
 #'   A theme for \code{publication ready} figures can be also applied based on the \code{theme_linedraw()}
 #'   with displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
 #'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.})
 #'   ticks (this is common for presenting the EPR spectra). Function ca be additionally combined by \code{+} sign
-#'   with other functions like in \code{\link{ggplot2}}.
+#'   with other functions like in \pkg{ggplot2}.
 #'
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 #'   must be labeled as \code{B_mT} (in mT) and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column can be included as well
-#' @param line.color String, line color to plot simple EPR spectrum. All \code{\link{ggplot2}} compatible
+#' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed
 #' @param plot.theme String, which calls a ggplot theme. The following ones are defined:
 #'   \itemize{
@@ -30,8 +30,8 @@
 #'     \item \code{"theme_pubready"} => pronounced axis lines (both for origin and opposite) without the grid,
 #'     theme is proposed for publications.
 #'   }
-#'   Except the last one all above-described themes are standard in \code{\link{ggplot2}}.
-#'   The last one (\code{"theme_pubready"}) is modified \code{"theme_linedraw"} from the \code{\link{ggplot2}}.
+#'   Except the last one all above-described themes are standard in \pkg{ggplot2}.
+#'   The last one (\code{"theme_pubready"}) is modified \code{"theme_linedraw"} from the \pkg{ggplot2}.
 #' @param yTicks Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text,
 #'   which is usually skipped in the EPR community, default TRUE
 #'

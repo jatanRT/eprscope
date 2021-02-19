@@ -2,7 +2,7 @@
 % Please edit documentation in R/DeltaBpp_fromSpectr.R
 \name{DeltaBpp_fromSpectr}
 \alias{DeltaBpp_fromSpectr}
-\title{Calculation of Spectral Linewidth (\eqn{\Delta B_pp}) of the EPR Spectrum}
+\title{Calculation of Spectral Linewidth (\eqn{\Delta B_{pp}}) of the EPR Spectrum}
 \usage{
 DeltaBpp_fromSpectr(spectrum.data, B.reg.start, B.reg.end)
 }
@@ -12,19 +12,19 @@ must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIe
 \code{index} column can be included as well}
 
 \item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
-of the \code{selected B region} (therefore abbreviation \code{.reg.})}
+of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 
 \item{B.reg.end}{Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
-of the \code{selected B region} (therefore abbreviation \code{.reg.})}
+of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 }
 \value{
 Difference (the absolute value) of the magnetic flux densities (\code{B}) corresponding to \code{minimum}
-  and \code{maximum} of the derivative intensity (\code{dIepr_over_dB}) => \eqn{\Delta B_pp}
+  and \code{maximum} of the derivative intensity (\code{dIepr_over_dB}) => \eqn{ \Delta B_{pp}}
 }
 \description{
-The function calculates the \eqn{\Delta B_pp} (peak-to-peak) linewidth
+The function calculates the \eqn{\Delta B_{pp}} (peak-to-peak) linewidth
   of EPR spectrum. The difference corresponds to magnetic flux densities corresponding
-  to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{B} region.
+  to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B}} region.
 }
 \examples{
 \dontrun{

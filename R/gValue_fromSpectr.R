@@ -1,14 +1,14 @@
 #
-#' @title Calculation of g-factor ("Position") of the EPR Spectrum
+#' @title Calculation of \eqn{g}-factor ("Position") of the EPR Spectrum
 #'
-#' @description Calculation of g-value according to fundamental formula. g-related magnetic flux density
+#' @description Calculation of g-value according to fundamental formula. \eqn{g}-related magnetic flux density
 #'   (like \code{B_iso} or \code{B_center}) is directly taken from the symmetric
 #'   (if positive and negative derivative intensities of the spectral line are similar)
 #'   EPR spectrum. Otherwise the g will be determined inaccurately!.
 #'   The g-related B is computed as the mid-point between the magnetic flux densities
 #'   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}).
 #'   One can select the B region/span/interval from the spectrum to determine the g-value.
-#'   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_B}) are included
+#'   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
 #'   in \code{\link[constants]{syms}} function and their values are taken by the \code{syms$h}
 #'   and \code{syms$muB} commands, respectively.
 #'
@@ -21,10 +21,10 @@
 #' @param B.reg.end Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
 #'
-#' @return \eqn{g_iso}-value ('iso' = 'isotropic') according to \eqn{(\nu * h)/(\mu_B * B)},
-#'   where the \code{B} comes directly from the EPR spectrum and is actually calculated between
-#'   the \code{B(maximum)} and \code{B(minumum)} (these do not equal to 'B.reg.start' and 'B.reg.min'!)
-#'   corresponding to maximum and minimum of the derivative intensity (\code{dIepr_over_dB})
+#' @return \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)},
+#'   where the \eqn{B} comes directly from the EPR spectrum and is actually calculated between
+#'   the \code{\emph{B}(maximum)} and \code{\emph{B}(minumum)} (THESE DO NOT EQUAL to \code{B.reg.start}
+#'   and \code{B.reg.min}!) corresponding to maximum and minimum of the derivative intensity (\code{dIepr_over_dB})
 #'
 #' @examples
 #' \dontrun{

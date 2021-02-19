@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue.R
 \name{gValue}
 \alias{gValue}
-\title{Basic Calculation of g-factor}
+\title{Basic Calculation of \eqn{g}-factor}
 \usage{
 gValue(nu, nu_unit = "GHz", B, B_unit = "mT")
 }
@@ -16,15 +16,15 @@ gValue(nu, nu_unit = "GHz", B, B_unit = "mT")
 \item{B_unit}{String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}}
 }
 \value{
-g-value from \eqn{(\nu * h)/(\mu_B * B)}. For variables and constants =>
+g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>
   see description above
 }
 \description{
-Calculation of g-factor according to fundamental formula.
-  The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
+Calculation of {g}-factor according to fundamental formula.
+  The magnetic flux density (\code{\emph{B}}) and microwave frequency (\code{nu},\eqn{\nu})
   can be entered with common units like \code{G} (Gauss) \code{mT}
   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
-  The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_B}) are included
+  The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_{B}}) are included
   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
   and \code{syms$muB} commands, respectively.
 }

@@ -39,7 +39,7 @@ one ("xenon"), default = "xenon"}
 }
 \value{
 data frame/table consisting of the magnetic flux density column (\code{B_mT}) in millitesla and the
-  derivative intensity column (\code{dIepr_over_dB}) in 'procedure defined unit'
+  derivative intensity column (\code{dIepr_over_dB}) in \code{procedure defined unit}
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
   which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
   (in the case of time series experiment) columns are displayed as well.
@@ -47,9 +47,9 @@ data frame/table consisting of the magnetic flux density column (\code{B_mT}) in
 \description{
 Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
   in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
-  which can be easily processed by other R 'data science' packages (e.g. by \code{tidyverse} system), afterwards.
-  For this purpose a 'pipe' operator from \code{\link{magrittr}} and heavily used in \code{tidyverse}
-  is applied. Spectral data are normalized by the common experimental parameters in order to qualitatively compare
+  which can be easily processed by other R \code{data science} packages (e.g. by \code{tidyverse} system), afterwards.
+  For this purpose a \code{pipe} operator from \code{\link{magrittr}} is applied.
+  Spectral data are normalized by the common experimental parameters in order to qualitatively compare
   the intensities of several spectra. ASCII files/tables are dependent on the software used to record the EPR spectra
   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
   or \code{"winepr"}).Time series spectra (time evolution of EPR spectra) can be read

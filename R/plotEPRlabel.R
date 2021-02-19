@@ -8,9 +8,9 @@
 #'   or \code{\link[grDevices]{plotmath}} (in console write \code{?plotmath})
 #'
 #'
-#' @param quantity Variable String (without quotation, sometimes part of it can be quoted, see examples below),
+#' @param quantity Variable String (without quotation however, sometimes part of it can be quoted, see examples below),
 #'   physical quantity, which should be displayed as the axis title like \eqn{B},
-#'   d\eqn{I}_EPR/d\eqn{B}, \eqn{time}, \eqn{\Delta B_pp}, \code{Double Integral} etc.
+#'   d\eqn{I_{EPR}}/d\eqn{B}, \eqn{time}, \eqn{\Delta B_{pp}}, \emph{Double Integral} etc.
 #' @param unit Variable String (without quotation, sometimes part of it can be quoted, see examples below),
 #'   physical quanity corresponding unit, which should be displayed like \code{mT}, \code{s}, \code{p.d.u.}, etc.
 #' @param user.defined Boolean, in order to bring more flexibility to display more complicated quantities and units

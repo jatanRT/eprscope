@@ -1,6 +1,6 @@
 ## Calculate from DFT Gaussian Output
 
-#' @title Calculation of g-factor from Quantum Chemical Computational Output
+#' @title Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
 #'
 #' @description TODO
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue_fromQCHcomp.R
 \name{gValue_fromQCHcomp}
 \alias{gValue_fromQCHcomp}
-\title{Calculation of g-factor from Quantum Chemical Computational Output}
+\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output}
 \usage{
 gValue_fromQCHcomp(delta_g_vec, mean = TRUE)
 }

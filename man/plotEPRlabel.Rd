@@ -7,9 +7,9 @@
 plotEPRlabel(quantity, unit, user.defined = FALSE)
 }
 \arguments{
-\item{quantity}{Variable String (without quotation, sometimes part of it can be quoted, see examples below),
+\item{quantity}{Variable String (without quotation however, sometimes part of it can be quoted, see examples below),
 physical quantity, which should be displayed as the axis title like \eqn{B},
-d\eqn{I}_EPR/d\eqn{B}, \eqn{time}, \eqn{\Delta B_pp}, \code{Double Integral} etc.}
+d\eqn{I_{EPR}}/d\eqn{B}, \eqn{time}, \eqn{\Delta B_{pp}}, \emph{Double Integral} etc.}
 
 \item{unit}{Variable String (without quotation, sometimes part of it can be quoted, see examples below),
 physical quanity corresponding unit, which should be displayed like \code{mT}, \code{s}, \code{p.d.u.}, etc.}
