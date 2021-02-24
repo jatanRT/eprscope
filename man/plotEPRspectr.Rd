@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotEPRspectr.R
 \name{plotEPRspectr}
 \alias{plotEPRspectr}
-\title{EPR spectrum Simple Plot}
+\title{EPR Spectrum Simple Plot}
 \usage{
 plotEPRspectr(spectrum.data, line.color, plot.theme = "theme_grey", yTicks = T)
 }
@@ -19,8 +19,6 @@ colors are allowed}
   \item \code{"theme_grey"} (default one) => the gray background with white grid lines, default theme
   \item \code{"theme_bw"} => the white background with thin gray grid lines
   \item \code{"theme_light"} => similar to \code{"theme_bw"} but without the pronounced axis black lines
-  \item \code{"theme_minimal"} => no axis lines are displayed (nor original neither opposite ones),
-  only the grid is presented
   \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
   \item \code{"theme_pubready"} => pronounced axis lines (both for origin and opposite) without the grid,
   theme is proposed for publications.
@@ -28,11 +26,11 @@ colors are allowed}
 Except the last one all above-described themes are standard in \pkg{ggplot2}.
 The last one (\code{"theme_pubready"}) is modified \code{"theme_linedraw"} from the \pkg{ggplot2}.}
 
-\item{yTicks}{Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text,
-which is usually skipped in the EPR community, default TRUE}
+\item{yTicks}{Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
+(not the axis title!), which is usually skipped in the EPR community, default TRUE}
 }
 \value{
-EPR spectrum graph/plot with key parameter (e.g. line-color and theme) variation
+EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme) variation
 }
 \description{
 Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
@@ -42,7 +40,7 @@ Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spec
   A theme for \code{publication ready} figures can be also applied based on the \code{theme_linedraw()}
   with displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.})
-  ticks (this is common for presenting the EPR spectra). Function ca be additionally combined by \code{+} sign
+  ticks (this is common for presenting the EPR spectra). Function can be additionally combined by \code{+} sign
   with other functions like in \pkg{ggplot2}.
 }
 \examples{
