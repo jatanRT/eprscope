@@ -82,7 +82,7 @@ plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTi
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   ## The lot function (5 G distance from the y-axis borders ('B.start-0.5','B.end+0.5')):
   simplePlot <- ggplot(spectrum.data) +
-    geom_line(aes(x = xB, y = .data$dIepr_over_dB),size = 0.75,color = line.color) +
+    geom_line(aes(x = xB, y = .data$dIepr_over_dB),size = 0.75,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = c(B.start - 0.5,B.end + 0.5)
     )
