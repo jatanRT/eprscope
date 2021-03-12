@@ -4,10 +4,12 @@
 \alias{Bextrem_fromSpectr}
 \title{TODO}
 \usage{
-Bextrem_fromSpectr(spectrum.data, B.reg.start, B.reg.end, extrem)
+Bextrem_fromSpectr(spectrum.data, B = "B_mT", B.reg.start, B.reg.end, extrem)
 }
 \arguments{
 \item{spectrum.data}{TODO}
+
+\item{B}{TODO}
 
 \item{B.reg.start}{TODO}
 
