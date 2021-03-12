@@ -4,17 +4,20 @@
 \alias{DeltaBpp_fromSpectr}
 \title{Calculation of Spectral Linewidth (\eqn{\Delta B_{pp}}) of the EPR Spectrum}
 \usage{
-DeltaBpp_fromSpectr(spectrum.data, B.reg.start, B.reg.end)
+DeltaBpp_fromSpectr(spectrum.data, B = "B_mT", B.reg.start, B.reg.end)
 }
 \arguments{
-\item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
-\code{index} column can be included as well}
+\item{spectrum.data}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
+\code{index} column may be included as well}
 
-\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
+\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is ` B = "B_mT" ` (default) or ` B = "B_G" `}
+
+\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
 of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 
-\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
+\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
 of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 }
 \value{
@@ -29,7 +32,8 @@ The function calculates the \eqn{\Delta B_{pp}} (peak-to-peak) linewidth
 \examples{
 \dontrun{
 DeltaBpp_fromSpectr(spectrum.data,320.221,328.331)
-DeltaBpp_fromSpectr(spectrum.data,B.reg.start = 320.221,B.reg.end = 328.331)
+DeltaBpp_fromSpectr(spectrum.data,B = "B_G",3202.11,3283.31)
+DeltaBpp_fromSpectr(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
 }
 
 }
