@@ -12,7 +12,8 @@ must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intens
 \code{index} column may be included as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is ` B = "B_mT" ` (default) or ` B = "B_G" `}
+\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
+or \code{B = "B_G"}}
 
 \item{B.reg.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
 of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
