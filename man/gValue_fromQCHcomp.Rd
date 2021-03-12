@@ -2,12 +2,12 @@
 % Please edit documentation in R/gValue_fromQCHcomp.R
 \name{gValue_fromQCHcomp}
 \alias{gValue_fromQCHcomp}
-\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output}
+\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output (e.g. from Gaussian)}
 \usage{
 gValue_fromQCHcomp(delta_g_vec, mean = TRUE)
 }
 \arguments{
-\item{delta_g_vec}{Numeric vector of principal g-values from e.g. Gaussian output}
+\item{delta_g_vec}{Numeric vector of principal \code{g-value differences} from \eqn{g_e} within e.g. Gaussian output}
 
 \item{mean}{TODO}
 }
