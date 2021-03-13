@@ -2,22 +2,38 @@
 % Please edit documentation in R/gValue_fromSpectr.R
 \name{gValue_fromSpectr}
 \alias{gValue_fromSpectr}
-\title{Calculation of \eqn{g}-factor ("Position") of the EPR Spectrum}
+\title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum}
 \usage{
-gValue_fromSpectr(spectrum.data, nu, B.reg.start, B.reg.end)
+gValue_fromSpectr(
+  spectrum.data,
+  nu,
+  B = "B_mT",
+  B.reg.start,
+  B.reg.end,
+  iso = TRUE
+)
 }
 \arguments{
-\item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
+\item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
 must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column can be included as well}
 
 \item{nu}{Numeric, microwave frequency in \code{GHz}}
+
+\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
+or \code{B = "B_G"}}
 
 \item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
 of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 
 \item{B.reg.end}{Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
 of the \code{selected B region} (therefore abbreviation \code{.reg.})}
+
+\item{iso}{Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
+that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
+(this is the \code{default: iso = TRUE}), or by finding the the \eqn{B} value corresponding
+to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})}
 }
 \value{
 \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)},
@@ -27,20 +43,21 @@ of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 }
 \description{
 Calculation of g-value according to fundamental formula. \eqn{g}-related magnetic flux density
-  (like \code{B_iso} or \code{B_center}) is directly taken from the symmetric
-  (if positive and negative derivative intensities of the spectral line are similar)
-  EPR spectrum. Otherwise the g will be determined inaccurately!.
-  The g-related B is computed as the mid-point between the magnetic flux densities
-  corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}).
-  One can select the B region/span/interval from the spectrum to determine the g-value.
+  (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken from the EPR spectrum.
+  If positive and negative derivative intensities of the spectral line are similar, \eqn{B_{iso}} should be
+  be considered, otherwise the \eqn{B_{center}} must be taken into account to calculate the \eqn{g}-value.
+  The \eqn{g}-related \eqn{B} is computed either as the mid-point between the magnetic flux densities
+  corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB})
+  or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
+  One can select the B region/span/interval from the spectrum to determine the \eqn{g}-value.
   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
   in \code{\link[constants]{syms}} function and their values are taken by the \code{syms$h}
   and \code{syms$muB} commands, respectively.
 }
 \examples{
 \dontrun{
-gValue_fromSpectr(spectrum.data,9.82451,349.8841,351.112)
-gValue_fromSpectr(spectrum.data,nu = 9.82451,B.reg.start = 349.8841,B.reg.end = 351.112)
+gValue_fromSpectr(spectrum.data,9.82451,"B_mT",349.8841,351.112)
+gValue_fromSpectr(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
 }
 
 

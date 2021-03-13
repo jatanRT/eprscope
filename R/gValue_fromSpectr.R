@@ -1,13 +1,13 @@
 #
-#' @title Calculation of \eqn{g}-factor ("Position") of the EPR Spectrum
+#' @title Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum
 #'
 #' @description Calculation of g-value according to fundamental formula. \eqn{g}-related magnetic flux density
 #'   (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken from the EPR spectrum.
-#'   If positive and negative derivative intensities of the spectral line are similar, \eqn{B_{iso}} must
+#'   If positive and negative derivative intensities of the spectral line are similar, \eqn{B_{iso}} should be
 #'   be considered, otherwise the \eqn{B_{center}} must be taken into account to calculate the \eqn{g}-value.
 #'   The \eqn{g}-related \eqn{B} is computed either as the mid-point between the magnetic flux densities
 #'   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB})
-#'   or...TODO
+#'   or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
 #'   One can select the B region/span/interval from the spectrum to determine the \eqn{g}-value.
 #'   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
 #'   in \code{\link[constants]{syms}} function and their values are taken by the \code{syms$h}
@@ -24,7 +24,7 @@
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
 #' @param B.reg.end Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
-#' @param iso Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} values corresponding
+#' @param iso Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 #'   (this is the \code{default: iso = TRUE}), or by finding the the \eqn{B} value corresponding
 #'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})
@@ -46,21 +46,36 @@
 #'
 #' @importFrom dplyr filter select mutate pull between near
 gValue_fromSpectr <- function(spectrum.data,nu,B = "B_mT",B.reg.start,B.reg.end,iso = TRUE){
-  ## B at minimum of dIepr_over_dB:
-  B.min <- spectrum.data %>%
-    filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-    filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
-    pull(.data[[B]])
-  ## B at maximum of dIepr_over_dB:
-  B.max <- spectrum.data %>%
-    filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-    filter(.data$dIepr_over_dB == max(.data$dIepr_over_dB)) %>%
-    pull(.data[[B]])
-  ## B between both of them:
-  B.center <- (B.min + B.max)/2
+  ## B between minimum and maximum of dIepr_over_dB:
+  if (isTRUE(iso)){
+    B.min <- spectrum.data %>%
+      filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
+      filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
+      pull(.data[[B]])
+    ## B at maximum of dIepr_over_dB:
+    B.max <- spectrum.data %>%
+      filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
+      filter(.data$dIepr_over_dB == max(.data$dIepr_over_dB)) %>%
+      pull(.data[[B]])
+    ## B between both of them:
+    B.center <- (B.min + B.max)/2
+    ## B at dIepr_over_dB = 0 (near 0):
+  } else{
+    B.center <- spectrum.data %>%
+      filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
+      filter(near(.data$dIepr_over_dB,0)) %>%
+      filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
+      pull(.data[[B]])
+  }
   ## g -value calculation:
   Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$muB
-  g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center*0.001)
+  g.precurs <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center)
+  if (B == "B_mT"){
+  g <- g.precurs/1e-3
+  }
+  if (B == "B_G"){
+    g <- g.precurs/1e-4
+  }
   return(round(g,digits = 5))
 }
