@@ -72,7 +72,7 @@ gValue_fromSpectr <- function(spectrum.data,nu,B = "B_mT",B.reg.start,B.reg.end,
   Bohr.magnet <- constants::syms$muB
   g.precurs <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center)
   if (B == "B_mT"){
-  g <- g.precurs/1e-3
+    g <- g.precurs/1e-3
   }
   if (B == "B_G"){
     g <- g.precurs/1e-4
