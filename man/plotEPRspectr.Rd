@@ -4,12 +4,22 @@
 \alias{plotEPRspectr}
 \title{EPR Spectrum Simple Plot}
 \usage{
-plotEPRspectr(spectrum.data, line.color, plot.theme = "theme_grey", yTicks = T)
+plotEPRspectr(
+  spectrum.data,
+  B = "B_mT",
+  line.color,
+  plot.theme = "theme_grey",
+  yTicks = T
+)
 }
 \arguments{
 \item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-must be labeled as \code{B_mT} (in mT) and that of the derivative intensity as \code{dIepr_over_dB},
-\code{index} column can be included as well}
+must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
+intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
+
+\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
+or \code{B = "B_G"}}
 
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed}
@@ -34,8 +44,9 @@ EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme) va
 }
 \description{
 Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
-  are in the form of data frame (must contain the \code{dIepr_over_dB} and \code{B_mT} columns,
-  i.e. derivative EPR intensity vs. magnetic flux density, respectively). Theme of the graphic
+  are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
+  (depending on units, data frame may include both of them) columns,
+  i.e. derivative EPR intensity vs. magnetic flux density, respectively. Theme of the graphic
   spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
   A theme for \code{publication ready} figures can be also applied based on the \code{theme_linedraw()}
   with displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
@@ -46,8 +57,8 @@ Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spec
 \examples{
 \dontrun{
 plotEPRspectr(spectrum.data,"blue",plot.theme = "theme_pubready",yTicks = FALSE)
-plotEPRspectr(spectrum.data,line.color = "steelblue","theme_bw")
-plotEPRspectr(spectrum.data,"darkred")
+plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw")
+plotEPRspectr(spectrum.data,"B_mT","darkred")
 }
 
 
