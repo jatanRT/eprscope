@@ -2,7 +2,7 @@
 % Please edit documentation in R/readExpEPRspectr.R
 \name{readExpEPRspectr}
 \alias{readExpEPRspectr}
-\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum}
+\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum and Trasfers it into Data Frame}
 \usage{
 readExpEPRspectr(
   path_to_ASC,
@@ -16,7 +16,7 @@ readExpEPRspectr(
 }
 \arguments{
 \item{path_to_ASC}{String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
-with spectral data (Intensity vs B(Field) with additional 'index' and/or 'time' variables)}
+with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)}
 
 \item{qfactor}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1}
@@ -38,8 +38,9 @@ on whether they were recorded by windows based softw. ("winepr") or by the Linux
 one ("xenon"), default = "xenon"}
 }
 \value{
-data frame/table consisting of the magnetic flux density column (\code{B_mT}) in millitesla and the
-  derivative intensity column (\code{dIepr_over_dB}) in \code{procedure defined unit}
+data frame/table consisting of the magnetic flux density column \code{B_mT}
+  in millitesla (as well as \code{B_G} in gauss) and the derivative intensity column (\code{dIepr_over_dB})
+  in \code{procedure defined unit}
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
   which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
   (in the case of time series experiment) columns are displayed as well.

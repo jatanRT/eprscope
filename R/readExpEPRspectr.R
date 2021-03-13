@@ -1,5 +1,5 @@
 #
-#' @title Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum
+#' @title Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum and Trasfers it into Data Frame
 #'
 #' @description Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
 #'   in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
@@ -13,7 +13,7 @@
 #'
 #'
 #' @param path_to_ASC String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
-#'   with spectral data (Intensity vs B(Field) with additional 'index' and/or 'time' variables)
+#'   with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)
 #' @param qfactor Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1
 #' @param Ns Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
@@ -28,8 +28,9 @@
 #'   on whether they were recorded by windows based softw. ("winepr") or by the Linux
 #'   one ("xenon"), default = "xenon"
 #'
-#' @return data frame/table consisting of the magnetic flux density column (\code{B_mT}) in millitesla and the
-#'   derivative intensity column (\code{dIepr_over_dB}) in \code{procedure defined unit}
+#' @return data frame/table consisting of the magnetic flux density column \code{B_mT}
+#'   in millitesla (as well as \code{B_G} in gauss) and the derivative intensity column (\code{dIepr_over_dB})
+#'   in \code{procedure defined unit}
 #'   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
 #'   which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
 #'   (in the case of time series experiment) columns are displayed as well.
@@ -55,22 +56,25 @@
 readExpEPRspectr <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
   if (origin == "xenon"){
     if (isFALSE(time.series)){
-    spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,col.names = c("index","B_G","Intensity")) %>%
+    spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,
+                                       skip = 1,col.names = c("index","B_G","Intensity")) %>%
       dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM)) %>%
-      dplyr::select(-c(.data$B_G,.data$Intensity))
+      dplyr::select(-.data$Intensity) ## presence of both `B_mT` and `B_G` is required
     ## to add pipe operator '%>%' to the whole package one must run:
     ## 1. 'usethis::use_pipe()' 2. 'devtools::document()'
     } else{
-      spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,col.names = c("index","B_G","time_s","Intensity")) %>%
+      spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
+                                         header = F,skip = 1,col.names = c("index","B_G","time_s","Intensity")) %>%
         dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM)) %>%
-        dplyr::select(-c(.data$B_G,.data$Intensity))
+        dplyr::select(-.data$Intensity)
     }
-    return(spectrum.data)
   }
   if (origin == "winepr"){
-    spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 3,col.names = c("B_G","Intensity")) %>%
-      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM),index = seq_len(nrow(spectrum.data))) %>%
-      dplyr::select(-c(.data$B_G,.data$Intensity))
-    return(spectrum.data)
+    spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
+                                       header = F,skip = 3,col.names = c("B_G","Intensity")) %>%
+      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM),
+                    index = seq_len(nrow(spectrum.data))) %>%
+      dplyr::select(-.data$Intensity)
   }
+  return(spectrum.data)
 }
