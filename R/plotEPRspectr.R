@@ -4,8 +4,9 @@
 #' @title EPR Spectrum Simple Plot
 #'
 #' @description Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
-#'   are in the form of data frame (must contain the \code{dIepr_over_dB} and \code{B_mT} columns,
-#'   i.e. derivative EPR intensity vs. magnetic flux density, respectively). Theme of the graphic
+#'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
+#'   (depending on units, data frame may include both of them) columns,
+#'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Theme of the graphic
 #'   spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
 #'   A theme for \code{publication ready} figures can be also applied based on the \code{theme_linedraw()}
 #'   with displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
@@ -15,8 +16,11 @@
 #'
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-#'   must be labeled as \code{B_mT} (in mT) and that of the derivative intensity as \code{dIepr_over_dB},
-#'   \code{index} column can be included as well
+#'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
+#'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
+#' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
+#'   or \code{B = "B_G"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed
 #' @param plot.theme String, which calls a ggplot theme. The following ones are defined:
@@ -40,8 +44,8 @@
 #' @examples
 #' \dontrun{
 #' plotEPRspectr(spectrum.data,"blue",plot.theme = "theme_pubready",yTicks = FALSE)
-#' plotEPRspectr(spectrum.data,line.color = "steelblue","theme_bw")
-#' plotEPRspectr(spectrum.data,"darkred")
+#' plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw")
+#' plotEPRspectr(spectrum.data,"B_mT","darkred")
 #' }
 #'
 #'
@@ -50,13 +54,17 @@
 #'
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous element_blank element_text
 #'   element_rect dup_axis unit margin theme_bw theme_light theme_minimal theme_classic theme_linedraw
-plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTicks = T){
+plotEPRspectr <- function(spectrum.data,B = "B_mT",line.color,plot.theme = "theme_grey",yTicks = T){
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
-  xB <- .data$B_mT ## this is the mask in order to assign variable correctly
-  B.start <- min(spectrum.data$xB)
-  B.end <- max(spectrum.data$xB)
+  B.start <- min(.data[[B]])
+  B.end <- max(.data[[B]])
   ## Labels for the x and y axis:
-  x.label <- bquote(italic(B)~"("~mT~")")
+  if (B == "B_mT"){
+    x.label <- bquote(italic(B)~"("~mT~")")
+  }
+  if (B == "B_G"){
+    x.label <- bquote(italic(B)~"("~G~")")
+  }
   y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   ## The plot depending on theme and whether the Y ticks are displayed or not.
   ## Therefore a theme variable is defined:
@@ -78,14 +86,20 @@ plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTi
                          panel.border = element_rect(color = "black",fill = NA),
                          plot.background = element_rect(fill = "transparent")
   ) ## theme in order to have ticks inside the graph
-  ## x ticks of the upper axis also insed the ggraph:
+  ## x ticks of the upper axis also inside the graph:
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
-  ## The lot function (5 G distance from the y-axis borders ('B.start-0.5','B.end+0.5')):
+  ## The lot function (5 G distance from the y-axis borders ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
+  if (B == "B_mT"){
+    x.plot.limits <- c(B.start - 0.5,B.end + 0.5)
+  }
+  if (B == "B_G"){
+    x.plot.limits <- c(B.start - 5,B.end + 5)
+  }
   simplePlot <- ggplot(spectrum.data) +
-    geom_line(aes(x = xB, y = .data$dIepr_over_dB),size = 0.75,color = line.color,show.legend = FALSE) +
+    geom_line(aes(x = .data[[B]], y = .data$dIepr_over_dB),
+              size = 0.75,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
-    coord_cartesian(xlim = c(B.start - 0.5,B.end + 0.5)
-    )
+    coord_cartesian(xlim = x.plot.limits)
   if (plot.theme == "theme_grey"){
     if (isTRUE(yTicks)){
       p <- simplePlot +
@@ -131,7 +145,6 @@ plotEPRspectr <- function(spectrum.data,line.color,plot.theme = "theme_grey",yTi
         NOyTicks.theme +
         theme(axis.ticks.length = unit(6,"pt"),
               axis.text.x = element_text(margin = margin(10,8,6,8,unit = "pt"),size = 15),
-              axis.text.y = element_text(margin = margin(8,10,8,0,unit = "pt"),size = 15),
               axis.title.y = element_text(margin = margin(2,12,2,6,unit = "pt"),size = 17),
               axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = 17),
               panel.border = element_rect(color = "black",fill = NA),
