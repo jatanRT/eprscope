@@ -24,8 +24,10 @@ LazyData: true
 Imports: 
     data.table,
     ggplot2,
+    ggtext,
     patchwork,
     cowplot,
+    plotly,
     dplyr,
     tidyr,
     tibble,
