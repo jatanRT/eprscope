@@ -5,18 +5,21 @@
 \title{TODO}
 \usage{
 plot_theme_NoY_ticks(
-  base.theme = theme_gray(),
-  axis.text.size,
-  axis.title.size,
+  basic.theme = theme_gray(),
+  axis.text.size = 15,
+  axis.title.size = 17,
+  grid = TRUE,
   bg.transparent = FALSE
 )
 }
 \arguments{
-\item{base.theme}{TODO}
+\item{basic.theme}{TODO}
 
 \item{axis.text.size}{TODO}
 
 \item{axis.title.size}{TODO}
+
+\item{grid}{TODO}
 
 \item{bg.transparent}{TODO}
 }
