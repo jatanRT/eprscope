@@ -22,6 +22,7 @@
 #'   or \code{B = "B_G"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, default: \code{line.color = "steelblue"}
+#' @param line.size Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}
 #' @param basic.theme Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \itemize{
 #'     \item \code{"theme_gray"} (default one) => the gray background with white grid lines, default theme
@@ -49,7 +50,7 @@
 #' plotEPRspectr(spectrum.data,"B_G")
 #' plotEPRspectr(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
 #' plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-#' plotEPRspectr(spectrum.data,"B_mT","darkred")
+#' plotEPRspectr(spectrum.data,"B_mT","darkred",line.size = 1.2)
 #' }
 #'
 #'
@@ -62,6 +63,7 @@
 plotEPRspectr <- function(spectrum.data,
                           B = "B_mT",
                           line.color = "steelblue",
+                          line.size = 0.75,
                           basic.theme = "theme_gray",
                           axis.text.size = 15,
                           axis.title.size = 17,
@@ -110,7 +112,7 @@ plotEPRspectr <- function(spectrum.data,
   ## Basic simple plot:
   simplePlot <- ggplot(spectrum.data) +
     geom_line(aes(x = .data[[B]], y = .data$dIepr_over_dB),
-              size = 0.75,color = line.color,show.legend = FALSE) +
+              size = line.size,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   ## Conditions for plotting
@@ -173,25 +175,29 @@ plotEPRspectr <- function(spectrum.data,
       if (isTRUE(grid)){
         p <- simplePlot +
           theme_light() +
-          theme.ticks
+          theme.ticks +
+          theme(panel.border = element_blank())
       } else{
         p <- simplePlot +
           theme_light() +
           theme.ticks +
-          theme.Nogrid
+          theme.Nogrid +
+          theme(panel.border = element_blank())
       }
     } else{
       if (isTRUE(grid)){
         p <- simplePlot +
           theme_light() +
           theme.Noticks +
-          axis_x_duplicate
+          axis_x_duplicate +
+          theme(panel.border = element_blank())
       } else{
         p <- simplePlot +
           theme_light() +
           theme.Noticks +
           axis_x_duplicate +
-          theme.Nogrid
+          theme.Nogrid +
+          theme(panel.border = element_blank())
       }
     }
   }

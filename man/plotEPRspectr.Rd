@@ -8,6 +8,7 @@ plotEPRspectr(
   spectrum.data,
   B = "B_mT",
   line.color = "steelblue",
+  line.size = 0.75,
   basic.theme = "theme_gray",
   axis.text.size = 15,
   axis.title.size = 17,
@@ -26,6 +27,8 @@ or \code{B = "B_G"}}
 
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, default: \code{line.color = "steelblue"}}
+
+\item{line.size}{Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}}
 
 \item{basic.theme}{Character/String, which calls a ggplot theme base. The following ones are defined:
 \itemize{
@@ -68,7 +71,7 @@ plotEPRspectr(spectrum.data)
 plotEPRspectr(spectrum.data,"B_G")
 plotEPRspectr(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
 plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-plotEPRspectr(spectrum.data,"B_mT","darkred")
+plotEPRspectr(spectrum.data,"B_mT","darkred",line.size = 1.2)
 }
 
 
