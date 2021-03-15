@@ -4,7 +4,7 @@
 \alias{plotEPRspectr_interactiv}
 \title{TODO}
 \usage{
-plotEPRspectr_interactiv(spectrum.data, B = "B_mT", line.color)
+plotEPRspectr_interactiv(spectrum.data, B = "B_mT", line.color = "steelblue")
 }
 \arguments{
 \item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
@@ -16,7 +16,7 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 or \code{B = "B_G"}}
 
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed}
+colors are allowed, default: \code{line.color = "steelblue"}}
 }
 \value{
 TODO
