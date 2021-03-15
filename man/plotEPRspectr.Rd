@@ -7,9 +7,12 @@
 plotEPRspectr(
   spectrum.data,
   B = "B_mT",
-  line.color,
-  plot.theme = "theme_grey",
-  yTicks = T
+  line.color = "steelblue",
+  basic.theme = theme_gray(),
+  axis.text.size = 15,
+  axis.title.size = 17,
+  grid = TRUE,
+  yTicks = TRUE
 )
 }
 \arguments{
@@ -22,25 +25,31 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 or \code{B = "B_G"}}
 
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed}
+colors are allowed, default: \code{line.color = "steelblue"}}
 
-\item{plot.theme}{String, which calls a ggplot theme. The following ones are defined:
+\item{basic.theme}{Function, which calls a ggplot theme base. The following ones are defined:
 \itemize{
-  \item \code{"theme_grey"} (default one) => the gray background with white grid lines, default theme
-  \item \code{"theme_bw"} => the white background with thin gray grid lines
-  \item \code{"theme_light"} => similar to \code{"theme_bw"} but without the pronounced axis black lines
-  \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
-  \item \code{"theme_pubready"} => pronounced axis lines (both for origin and opposite) without the grid,
-  theme is proposed for publications.
-}
-Except the last one all above-described themes are standard in \pkg{ggplot2}.
-The last one (\code{"theme_pubready"}) is modified \code{"theme_linedraw"} from the \pkg{ggplot2}.}
+  \item \code{theme_gray()} (default one) => the gray background with white grid lines, default theme
+  \item \code{theme_bw()} => the white background with thin gray grid lines
+  \item \code{theme_light()} => similar to \code{theme_bw()} but without the pronounced axis black lines
+  \item \code{theme_classic()} => without grid, pronounced axis lines, however no opposite ones
+  \item \code{theme_linedraw()} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
+  theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
+}}
+
+\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
+default: \code{axis.text.size = 15}}
+
+\item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
+default: \code{axis.title.size = 17}}
+
+\item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, default: \code{grid = TRUE}}
 
 \item{yTicks}{Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
-(not the axis title!), which is usually skipped in the EPR community, default TRUE}
+(not the axis title!), which is usually skipped in the EPR community, default: \code{yTicks = TRUE}}
 }
 \value{
-EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme) variation
+EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
 }
 \description{
 Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
@@ -48,16 +57,17 @@ Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spec
   (depending on units, data frame may include both of them) columns,
   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Theme of the graphic
   spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
-  A theme for \code{publication ready} figures can be also applied based on the \code{theme_linedraw()}
-  with displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
-  see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.})
-  ticks (this is common for presenting the EPR spectra). Function can be additionally combined by \code{+} sign
-  with other functions like in \pkg{ggplot2}.
+  Within a theme \code{y} ticks can be displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
+  see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
+  this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
+  with other functions like in \pkg{ggplot2}, e.g. present or skip \code{grid} within the code.
 }
 \examples{
 \dontrun{
-plotEPRspectr(spectrum.data,"blue",plot.theme = "theme_pubready",yTicks = FALSE)
-plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw")
+plotEPRspectr(spectrum.data)
+plotEPRspectr(spectrum.data,"B_G")
+plotEPRspectr(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
+plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
 plotEPRspectr(spectrum.data,"B_mT","darkred")
 }
 

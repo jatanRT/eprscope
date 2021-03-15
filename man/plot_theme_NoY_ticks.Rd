@@ -8,8 +8,7 @@ plot_theme_NoY_ticks(
   base.theme = theme_gray(),
   axis.text.size,
   axis.title.size,
-  bg.transparent = FALSE,
-  ...
+  bg.transparent = FALSE
 )
 }
 \arguments{
