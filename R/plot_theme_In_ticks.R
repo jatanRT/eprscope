@@ -11,6 +11,7 @@
 #' @param grid TODO
 #' @param bg.transparent TODO
 #'
+#'
 #' @return TODO
 #'
 #'
@@ -19,6 +20,7 @@
 #' TODO
 #'
 #' @export
+#'
 #'
 plot_theme_In_ticks <- function(basic.theme = theme_gray(),
                                  axis.text.size = 15,
