@@ -40,21 +40,21 @@ plot_theme_NoY_ticks <- function(basic.theme = theme_gray(),
   ## theme:
   if (isTRUE(bg.transparent)){
     if (isTRUE(grid)){
-      base.theme %+replace%
+      basic.theme %+replace%
         theme_bas +
         theme(plot.background = element_rect(fill = "transparent"))
     } else{
-      base.theme %+replace%
+      basic.theme %+replace%
         theme_bas +
         theme_Nogrid +
         theme(plot.background = element_rect(fill = "transparent"))
     }
   } else{
     if (isTRUE(grid)){
-      base.theme %+replace%
+      basic.theme %+replace%
         theme_bas
     } else{
-      base.theme %+replace%
+      basic.theme %+replace%
         theme_bas +
         theme_Nogrid
     }
