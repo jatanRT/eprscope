@@ -51,5 +51,5 @@ plotEPRspectr_for_ggplotly <- function(spectrum.data,B = "B_mT",line.color = "st
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   ##
-  return(simpleplot)
+  return(simplePlot)
 }
