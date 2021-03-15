@@ -68,8 +68,8 @@ plotEPRspectr <- function(spectrum.data,
                           grid = TRUE,
                           yTicks = TRUE){
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
-  B.start <- min(.data[[B]])
-  B.end <- max(.data[[B]])
+  B.start <- min(spectrum.data[,B])
+  B.end <- max(spectrum.data[,B])
   ## Labels for the x and y axis:
   if (B == "B_mT"){
     x.label <- bquote(italic(B)~"("~mT~")")
