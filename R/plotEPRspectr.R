@@ -22,13 +22,13 @@
 #'   or \code{B = "B_G"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, default: \code{line.color = "steelblue"}
-#' @param basic.theme Function, which calls a ggplot theme base. The following ones are defined:
+#' @param basic.theme Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \itemize{
-#'     \item \code{theme_gray()} (default one) => the gray background with white grid lines, default theme
-#'     \item \code{theme_bw()} => the white background with thin gray grid lines
-#'     \item \code{theme_light()} => similar to \code{theme_bw()} but without the pronounced axis black lines
-#'     \item \code{theme_classic()} => without grid, pronounced axis lines, however no opposite ones
-#'     \item \code{theme_linedraw()} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
+#'     \item \code{"theme_gray"} (default one) => the gray background with white grid lines, default theme
+#'     \item \code{"theme_bw"} => the white background with thin gray grid lines
+#'     \item \code{"theme_light"} => similar to \code{theme_bw()} but without the pronounced axis black lines
+#'     \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
+#'     \item \code{"theme_linedraw"} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
 #'     theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
 #'   }
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
@@ -62,7 +62,7 @@
 plotEPRspectr <- function(spectrum.data,
                           B = "B_mT",
                           line.color = "steelblue",
-                          basic.theme = theme_gray(),
+                          basic.theme = "theme_gray",
                           axis.text.size = 15,
                           axis.title.size = 17,
                           grid = TRUE,
@@ -114,43 +114,124 @@ plotEPRspectr <- function(spectrum.data,
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   ## Conditions for plotting
-  if (basic.theme == theme_gray() || basic.theme == theme_bw() || basic.theme == theme_light() || basic.theme == theme_linedraw()){
+  if (basic.theme == "theme_gray"){
     if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
-          basic.theme +
+          theme_gray() +
           theme.ticks
       } else{
         p <- simplePlot +
-          basic.theme +
+          theme_gray() +
           theme.ticks +
           theme.Nogrid
       }
     } else{
       if (isTRUE(grid)){
         p <- simplePlot +
-          basic.theme +
+          theme_gray() +
           theme.Noticks +
           axis_x_duplicate
       } else{
         p <- simplePlot +
-          basic.theme +
+          theme_gray() +
           theme.Noticks +
           axis_x_duplicate +
           theme.Nogrid
       }
     }
   }
-  if (basic.theme == theme_classic()){
+  if (basic.theme == "theme_bw"){
+    if (isTRUE(yTicks)){
+      if (isTRUE(grid)){
+        p <- simplePlot +
+          theme_bw() +
+          theme.ticks
+      } else{
+        p <- simplePlot +
+          theme_bw() +
+          theme.ticks +
+          theme.Nogrid
+      }
+    } else{
+      if (isTRUE(grid)){
+        p <- simplePlot +
+          theme_bw() +
+          theme.Noticks +
+          axis_x_duplicate
+      } else{
+        p <- simplePlot +
+          theme_bw() +
+          theme.Noticks +
+          axis_x_duplicate +
+          theme.Nogrid
+      }
+    }
+  }
+  if (basic.theme == "theme_light"){
+    if (isTRUE(yTicks)){
+      if (isTRUE(grid)){
+        p <- simplePlot +
+          theme_light() +
+          theme.ticks
+      } else{
+        p <- simplePlot +
+          theme_light() +
+          theme.ticks +
+          theme.Nogrid
+      }
+    } else{
+      if (isTRUE(grid)){
+        p <- simplePlot +
+          theme_light() +
+          theme.Noticks +
+          axis_x_duplicate
+      } else{
+        p <- simplePlot +
+          theme_light() +
+          theme.Noticks +
+          axis_x_duplicate +
+          theme.Nogrid
+      }
+    }
+  }
+  if (basic.theme == "theme_linedraw"){
+    if (isTRUE(yTicks)){
+      if (isTRUE(grid)){
+        p <- simplePlot +
+          theme_linedraw() +
+          theme.ticks
+      } else{
+        p <- simplePlot +
+          theme_linedraw() +
+          theme.ticks +
+          theme.Nogrid
+      }
+    } else{
+      if (isTRUE(grid)){
+        p <- simplePlot +
+          theme_linedraw() +
+          theme.Noticks +
+          axis_x_duplicate
+      } else{
+        p <- simplePlot +
+          theme_linedraw() +
+          theme.Noticks +
+          axis_x_duplicate +
+          theme.Nogrid
+      }
+    }
+  }
+  if (basic.theme == "theme_classic"){
      if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
-          basic.theme +
+          theme_classic() +
           theme.ticks +
           theme(panel.border = element_blank())
       } else{
         p <- simplePlot +
-          basic.theme +
+          theme_classic() +
           theme.ticks +
           theme.Nogrid +
           theme(panel.border = element_blank())
@@ -158,12 +239,12 @@ plotEPRspectr <- function(spectrum.data,
     } else{
       if (isTRUE(grid)){
         p <- simplePlot +
-          basic.theme +
+          theme_classic() +
           theme.Noticks +
           theme(panel.border = element_blank())
       } else{
         p <- simplePlot +
-          basic.theme +
+          theme_classic() +
           theme.Noticks +
           theme.Nogrid +
           theme(panel.border = element_blank())

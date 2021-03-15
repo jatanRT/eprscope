@@ -8,7 +8,7 @@ plotEPRspectr(
   spectrum.data,
   B = "B_mT",
   line.color = "steelblue",
-  basic.theme = theme_gray(),
+  basic.theme = "theme_gray",
   axis.text.size = 15,
   axis.title.size = 17,
   grid = TRUE,
@@ -27,13 +27,13 @@ or \code{B = "B_G"}}
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, default: \code{line.color = "steelblue"}}
 
-\item{basic.theme}{Function, which calls a ggplot theme base. The following ones are defined:
+\item{basic.theme}{Character/String, which calls a ggplot theme base. The following ones are defined:
 \itemize{
-  \item \code{theme_gray()} (default one) => the gray background with white grid lines, default theme
-  \item \code{theme_bw()} => the white background with thin gray grid lines
-  \item \code{theme_light()} => similar to \code{theme_bw()} but without the pronounced axis black lines
-  \item \code{theme_classic()} => without grid, pronounced axis lines, however no opposite ones
-  \item \code{theme_linedraw()} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
+  \item \code{"theme_gray"} (default one) => the gray background with white grid lines, default theme
+  \item \code{"theme_bw"} => the white background with thin gray grid lines
+  \item \code{"theme_light"} => similar to \code{theme_bw()} but without the pronounced axis black lines
+  \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
+  \item \code{"theme_linedraw"} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
   theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
 }}
 
