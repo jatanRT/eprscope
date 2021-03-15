@@ -114,7 +114,7 @@ plotEPRspectr <- function(spectrum.data,
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   ## Conditions for plotting
-  if (basic.theme == theme_grey() || basic.theme == theme_bw() || basic.theme == theme_light() || basic.theme == theme_linedraw()){
+  if (basic.theme == theme_gray() || basic.theme == theme_bw() || basic.theme == theme_light() || basic.theme == theme_linedraw()){
     if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
