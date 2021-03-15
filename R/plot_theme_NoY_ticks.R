@@ -23,7 +23,7 @@
 #'
 #'
 #' @importFrom ggplot2 %+replace%
-plot_theme_NoY_ticks <- function(base.theme = theme_gray(),axis.text.size,axis.title.size,bg.transparent = FALSE,...){
+plot_theme_NoY_ticks <- function(base.theme = theme_gray(),axis.text.size,axis.title.size,bg.transparent = FALSE){
   ## theme part
   theme_01 <- theme(axis.ticks.length = unit(-6,"pt"),
         axis.text.x = element_text(margin = margin(10,8,6,8,unit = "pt"),size = axis.text.size),
