@@ -7,8 +7,8 @@
 plotEPRspectr_interactive(
   spectrum.data,
   B = "B_mT",
-  line.color = "steelblue",
-  line.size = 0.75
+  line.size = 0.75,
+  time.series = FALSE
 )
 }
 \arguments{
@@ -20,10 +20,10 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 or \code{B = "B_G"}}
 
-\item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, default: \code{line.color = "steelblue"}}
-
 \item{line.size}{Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}}
+
+\item{time.series}{Boolean, whether the input ASCII spectrum data comes from the time series experiment
+with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)}
 }
 \value{
 TODO
@@ -34,5 +34,6 @@ TODO
 \examples{
 TODO
 TODO
+
 
 }
