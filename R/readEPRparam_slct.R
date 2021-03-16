@@ -19,7 +19,7 @@
 #'
 #' @export
 #'
-readEPRparam_slct_val <- function(path_to_DSC,string){
+readEPRparam_slct <- function(path_to_DSC,string){
   ## COMMENT path corresponds to file (.DSC) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
   sel.str.line <- grep(string,readLines(path_to_DSC),value = T)
@@ -27,6 +27,10 @@ readEPRparam_slct_val <- function(path_to_DSC,string){
   ## by 'str_split' comming from 'stringr' pckg.
   sel.str.split <- stringr::str_split(sel.str.line,"[[:space:]]+",n = 2)
   ## COMMENT the result is list, therefore select the second list element ('[[1]][2]')
-  str.value <- as.double(sel.str.split[[1]][2])
-  return(str.value)
+  if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMPLE"){
+    param.slct <- as.character(sel.str.split[[1]][2])
+  } else{
+    param.slct <- as.double(sel.str.split[[1]][2])
+  }
+  return(param.slct)
 }
