@@ -29,7 +29,7 @@
 #'
 #'
 #' @importFrom plotly ggplotly
-plotEPRspectr_interactive <- function(spectrum.data,B = "B_mT",line.size = 0.75,time.series = FALSE){
+plotEPRspectra_interactiv <- function(spectrum.data,B = "B_mT",line.size = 0.75,time.series = FALSE){
   ## plot precursor
   if (isTRUE(time.series)){
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data$dIepr_over_dB,color = .data$times_s)) +

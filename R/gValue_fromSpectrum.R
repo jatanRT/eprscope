@@ -45,7 +45,7 @@
 #'
 #'
 #' @importFrom dplyr filter select mutate pull between near
-gValue_fromSpectr <- function(spectrum.data,nu,B = "B_mT",B.reg.start,B.reg.end,iso = TRUE){
+gValue_fromSpectrum <- function(spectrum.data,nu,B = "B_mT",B.reg.start,B.reg.end,iso = TRUE){
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)){
     B.min <- spectrum.data %>%

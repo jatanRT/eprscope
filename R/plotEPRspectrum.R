@@ -60,7 +60,7 @@
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
 #'   element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
-plotEPRspectr <- function(spectrum.data,
+plotEPRspectrum <- function(spectrum.data,
                           B = "B_mT",
                           line.color = "steelblue",
                           line.size = 0.75,

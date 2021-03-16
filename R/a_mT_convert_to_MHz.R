@@ -20,7 +20,7 @@
 #' @export
 #'
 #'
-a_convert_mT_to_MHz <- function(a,g){
+a_mT_convert_to_MHz <- function(a,g){
   Planck.const <- syms$h
   Bohr.magnet <- syms$muB
   A <- (g*Bohr.magnet*1e-3*a)/(Planck.const*1e+6)

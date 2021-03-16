@@ -34,7 +34,7 @@
 #' @export
 #'
 #'
-DeltaBpp_fromSpectr <- function(spectrum.data,B = "B_mT",B.reg.start,B.reg.end){
+DeltaBpp_fromSpectrum <- function(spectrum.data,B = "B_mT",B.reg.start,B.reg.end){
   ## B corresponding to minimum and maximum derivative intensities
   ## in the selected B region ('B.reg.'):
   B.min <- spectrum.data %>%

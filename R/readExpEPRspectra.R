@@ -53,7 +53,7 @@
 #'
 #'
 #' @importFrom rlang .data
-readExpEPRspectr <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
+readExpEPRspectra <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
   if (origin == "xenon"){
     if (isFALSE(time.series)){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,
