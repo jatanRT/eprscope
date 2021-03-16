@@ -5,7 +5,6 @@
 #' @description TODO
 #'
 #'
-#' @param basic.theme TODO
 #' @param axis.text.size TODO
 #' @param axis.title.size TODO
 #' @param grid TODO
@@ -23,9 +22,7 @@
 #' @export
 #'
 #'
-#' @importFrom ggplot2 %+replace%
-plot_theme_NoY_ticks <- function(basic.theme = theme_gray(),
-                                 axis.text.size = 15,
+plot_theme_NoY_ticks <- function(axis.text.size = 15,
                                  axis.title.size = 17,
                                  grid = TRUE,
                                  bg.transparent = FALSE){
@@ -40,23 +37,20 @@ plot_theme_NoY_ticks <- function(basic.theme = theme_gray(),
   ## theme:
   if (isTRUE(bg.transparent)){
     if (isTRUE(grid)){
-      basic.theme %+replace%
-        theme_bas +
+        thm <- theme_bas +
         theme(plot.background = element_rect(fill = "transparent"))
     } else{
-      basic.theme %+replace%
-        theme_bas +
+        thm <- theme_bas +
         theme_Nogrid +
         theme(plot.background = element_rect(fill = "transparent"))
     }
   } else{
     if (isTRUE(grid)){
-      basic.theme %+replace%
-        theme_bas
+        thm <- theme_bas
     } else{
-      basic.theme %+replace%
-        theme_bas +
+        thm <- theme_bas +
         theme_Nogrid
     }
   }
+  return(thm)
 }

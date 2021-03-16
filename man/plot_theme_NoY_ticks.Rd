@@ -5,7 +5,6 @@
 \title{TODO}
 \usage{
 plot_theme_NoY_ticks(
-  basic.theme = theme_gray(),
   axis.text.size = 15,
   axis.title.size = 17,
   grid = TRUE,
@@ -13,8 +12,6 @@ plot_theme_NoY_ticks(
 )
 }
 \arguments{
-\item{basic.theme}{TODO}
-
 \item{axis.text.size}{TODO}
 
 \item{axis.title.size}{TODO}
