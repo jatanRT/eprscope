@@ -5,23 +5,20 @@
 \title{TODO}
 \usage{
 plot_theme_Out_ticks(
-  basic.theme = theme_gray(),
   axis.text.size = 15,
   axis.title.size = 17,
   grid = TRUE,
-  bg.transparent = FALSE
+  plot.bg.transparent = FALSE
 )
 }
 \arguments{
-\item{basic.theme}{TODO}
-
 \item{axis.text.size}{TODO}
 
 \item{axis.title.size}{TODO}
 
 \item{grid}{TODO}
 
-\item{bg.transparent}{TODO}
+\item{plot.bg.transparent}{TODO}
 }
 \value{
 TODO
@@ -32,5 +29,6 @@ TODO
 \examples{
 TODO
 TODO
+
 
 }

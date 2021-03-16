@@ -5,11 +5,10 @@
 #' @description TODO
 #'
 #'
-#' @param basic.theme TODO
 #' @param axis.text.size TODO
 #' @param axis.title.size TODO
 #' @param grid TODO
-#' @param bg.transparent TODO
+#' @param plot.bg.transparent TODO
 #'
 #'
 #' @return TODO
@@ -19,14 +18,14 @@
 #' TODO
 #' TODO
 #'
+#'
 #' @export
 #'
 #'
-plot_theme_Out_ticks <- function(basic.theme = theme_gray(),
-                                axis.text.size = 15,
-                                axis.title.size = 17,
-                                grid = TRUE,
-                                bg.transparent = FALSE){
+plot_theme_Out_ticks <- function(axis.text.size = 15,
+                                 axis.title.size = 17,
+                                 grid = TRUE,
+                                 plot.bg.transparent = FALSE){
   ## theme parts:
   theme_bas <- theme(axis.ticks.length = unit(6,"pt"),
                      axis.text.x = element_text(margin = margin(4,8,6,8,unit = "pt"),size = axis.text.size),
@@ -36,25 +35,22 @@ plot_theme_Out_ticks <- function(basic.theme = theme_gray(),
                      panel.border = element_rect(color = "black",fill = NA))
   theme_Nogrid <- theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
   ## theme:
-  if (isTRUE(bg.transparent)){
+  if (isTRUE(plot.bg.transparent)){
     if (isTRUE(grid)){
-      basic.theme %+replace%
-        theme_bas +
+        thm <- theme_bas +
         theme(plot.background = element_rect(fill = "transparent"))
     } else{
-      basic.theme %+replace%
-        theme_bas +
+        thm <- theme_bas +
         theme_Nogrid +
         theme(plot.background = element_rect(fill = "transparent"))
     }
   } else{
     if (isTRUE(grid)){
-      basic.theme %+replace%
-        theme_bas
+        thm <- theme_bas
     } else{
-      basic.theme %+replace%
-        theme_bas +
+        thm <- theme_bas +
         theme_Nogrid
     }
   }
+  return(thm)
 }

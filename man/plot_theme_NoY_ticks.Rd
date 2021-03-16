@@ -8,7 +8,7 @@ plot_theme_NoY_ticks(
   axis.text.size = 15,
   axis.title.size = 17,
   grid = TRUE,
-  bg.transparent = FALSE
+  plot.bg.transparent = FALSE
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ plot_theme_NoY_ticks(
 
 \item{grid}{TODO}
 
-\item{bg.transparent}{TODO}
+\item{plot.bg.transparent}{TODO}
 }
 \value{
 TODO
