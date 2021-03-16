@@ -14,6 +14,8 @@
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 #'   or \code{B = "B_G"}
+#' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+#'   name/label is used, default: \code{Intesity = "dIepr_over_dB"}
 #' @param B.reg.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
 #'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
 #' @param B.reg.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
@@ -27,23 +29,23 @@
 #' @examples
 #' \dontrun{
 #' DeltaBpp_fromSpectr(spectrum.data,320.221,328.331)
-#' DeltaBpp_fromSpectr(spectrum.data,B = "B_G",3202.11,3283.31)
+#' DeltaBpp_fromSpectr(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
 #' DeltaBpp_fromSpectr(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
 #' }
 #'
 #' @export
 #'
 #'
-DeltaBpp_fromSpectrum <- function(spectrum.data,B = "B_mT",B.reg.start,B.reg.end){
+DeltaBpp_fromSpectrum <- function(spectrum.data,B = "B_mT",Intensity = "dIepr_over_dB",B.reg.start,B.reg.end){
   ## B corresponding to minimum and maximum derivative intensities
   ## in the selected B region ('B.reg.'):
   B.min <- spectrum.data %>%
     filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-    filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
+    filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
     pull(.data[[B]])
   B.max <- spectrum.data %>%
     filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-    filter(.data$dIepr_over_dB == max(.data$dIepr_over_dB)) %>%
+    filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     pull(.data[[B]])
   ## Delta_B calculation:
   DeltaB_pp <- abs(B.min - B.max)

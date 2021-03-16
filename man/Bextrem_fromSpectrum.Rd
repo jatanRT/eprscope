@@ -4,12 +4,21 @@
 \alias{Bextrem_fromSpectrum}
 \title{TODO}
 \usage{
-Bextrem_fromSpectrum(spectrum.data, B = "B_mT", B.reg.start, B.reg.end, extrem)
+Bextrem_fromSpectrum(
+  spectrum.data,
+  B = "B_mT",
+  Intensity = "dIepr_over_dB",
+  B.reg.start,
+  B.reg.end,
+  extrem
+)
 }
 \arguments{
 \item{spectrum.data}{TODO}
 
 \item{B}{TODO}
+
+\item{Intensity}{TODO}
 
 \item{B.reg.start}{TODO}
 
