@@ -25,8 +25,9 @@ Calculation of {g}-factor according to fundamental formula.
   can be entered with common units like \code{G} (Gauss) \code{mT}
   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
   The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_{B}}) are included
-  in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
-  and \code{syms$muB} commands, respectively.
+  in \code{\link[constants]{syms}} function and their values are taken by \code{syms$hbar*2*pi}
+  (by \code{\link[constants]{syms}} function it is not available directly)
+  and \code{syms$mub} commands, respectively.
 }
 \examples{
 gValue(9.8020458,nu_unit = "GHz",350.214,B_unit = "mT")

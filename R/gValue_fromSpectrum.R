@@ -10,8 +10,9 @@
 #'   or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
 #'   One can select the B region/span/interval from the spectrum to determine the \eqn{g}-value.
 #'   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
-#'   in \code{\link[constants]{syms}} function and their values are taken by the \code{syms$h}
-#'   and \code{syms$muB} commands, respectively.
+#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$hbar*2*pi}
+#'   (by \code{\link[constants]{syms}} function it is not available directly)
+#'   and \code{syms$mub} commands, respectively.
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
 #'   must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
@@ -76,8 +77,8 @@ gValue_fromSpectrum <- function(spectrum.data,
       pull(.data[[B]])
   }
   ## g -value calculation:
-  Planck.const <- constants::syms$h
-  Bohr.magnet <- constants::syms$muB
+  Planck.const <- constants::syms$hbar*2*pi # `h` is not available directly
+  Bohr.magnet <- constants::syms$mub
   g.precurs <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center)
   if (B == "B_mT"){
     g <- g.precurs/1e-3

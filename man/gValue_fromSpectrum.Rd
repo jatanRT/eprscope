@@ -55,8 +55,9 @@ Calculation of g-value according to fundamental formula. \eqn{g}-related magneti
   or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
   One can select the B region/span/interval from the spectrum to determine the \eqn{g}-value.
   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
-  in \code{\link[constants]{syms}} function and their values are taken by the \code{syms$h}
-  and \code{syms$muB} commands, respectively.
+  in \code{\link[constants]{syms}} function and their values are taken by \code{syms$hbar*2*pi}
+  (by \code{\link[constants]{syms}} function it is not available directly)
+  and \code{syms$mub} commands, respectively.
 }
 \examples{
 \dontrun{
