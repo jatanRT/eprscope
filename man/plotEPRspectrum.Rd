@@ -27,7 +27,7 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 or \code{B = "B_G"}}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
+name/label is used (e.g. for simulated or integrated spectra), default: \code{Intesity = "dIepr_over_dB"}}
 
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, default: \code{line.color = "steelblue"}}
@@ -62,8 +62,9 @@ EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme,gri
 Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
   (depending on units, data frame may include both of them) columns,
-  i.e. derivative EPR intensity vs. magnetic flux density, respectively. Theme of the graphic
-  spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
+  i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
+  if integral column is available, can be ploted as well, see examples below.
+  Theme of the graphic spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
   Within a theme \code{y} ticks can be displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
   this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
@@ -71,11 +72,12 @@ Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spec
 }
 \examples{
 \dontrun{
-plotEPRspectr(spectrum.data)
-plotEPRspectr(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
-plotEPRspectr(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
-plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-plotEPRspectr(spectrum.data,"B_mT","darkred",line.size = 1.2)
+plotEPRspectrum(spectrum.data)
+plotEPRspectrum(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
+plotEPRspectrum(spectrum.data,"Integral")
+plotEPRspectrum(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
+plotEPRspectrum(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
+plotEPRspectrum(spectrum.data,"B_mT","darkred",line.size = 1.2)
 }
 
 

@@ -22,7 +22,7 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 or \code{B = "B_G"}}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
+name/label is used (e.g. for integrated or simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
 
 \item{line.size}{Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}}
 

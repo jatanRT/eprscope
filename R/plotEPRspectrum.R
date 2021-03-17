@@ -6,8 +6,9 @@
 #' @description Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
 #'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
 #'   (depending on units, data frame may include both of them) columns,
-#'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Theme of the graphic
-#'   spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
+#'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
+#'   if integral column is available, can be ploted as well, see examples below.
+#'   Theme of the graphic spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
 #'   Within a theme \code{y} ticks can be displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
 #'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
 #'   this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
@@ -21,7 +22,7 @@
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 #'   or \code{B = "B_G"}
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-#'   name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}
+#'   name/label is used (e.g. for simulated or integrated spectra), default: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, default: \code{line.color = "steelblue"}
 #' @param line.size Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}
@@ -48,11 +49,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' plotEPRspectr(spectrum.data)
-#' plotEPRspectr(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
-#' plotEPRspectr(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
-#' plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-#' plotEPRspectr(spectrum.data,"B_mT","darkred",line.size = 1.2)
+#' plotEPRspectrum(spectrum.data)
+#' plotEPRspectrum(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
+#' plotEPRspectrum(spectrum.data,"Integral")
+#' plotEPRspectrum(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
+#' plotEPRspectrum(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
+#' plotEPRspectrum(spectrum.data,"B_mT","darkred",line.size = 1.2)
 #' }
 #'
 #'
@@ -75,14 +77,22 @@ plotEPRspectrum <- function(spectrum.data,
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   B.start <- min(spectrum.data[,B])
   B.end <- max(spectrum.data[,B])
-  ## Labels for the x and y axis:
+  ## Labels for the x and y axis based on conditions for `B` and `Intensity`:
   if (B == "B_mT"){
     x.label <- bquote(italic(B)~"("~mT~")")
   }
   if (B == "B_G"){
     x.label <- bquote(italic(B)~"("~G~")")
   }
-  y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity,c("dB","intens","deriv"),logic = "or",ignore.case = T)){
+    y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
+  }
+  if (sjmisc::str_contains(Intensity,c("integ","ral","single"),logic = "or",ignore.case = T)){
+    y.label <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
+  }
+  if (sjmisc::str_contains(Intensity,c("di","dinteg","double","ii"),logic = "or",ignore.case = T)){
+    y.label <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
+  }
   ## Themes for the spectra, whether the ticks are displayed or not:
   theme.ticks <- theme(axis.ticks.length = unit(6,"pt"),
                        axis.text.x = element_text(margin = margin(4,8,6,8,unit = "pt"),size = axis.text.size),
