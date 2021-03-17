@@ -30,13 +30,23 @@
 #'
 #' @importFrom plotly ggplotly
 plotEPRspectra_interactiv <- function(spectrum.data,B = "B_mT",line.size = 0.75,time.series = FALSE){
+  ## labels
+  if (B == "B_mT"){
+    xlabel = "B (mT)"
+  }
+  if (B == "B_G"){
+    xlabel = "B (G)"
+  }
+  ylabel = "dIepr / dB  (p.d.u.)"
   ## plot precursor
   if (isTRUE(time.series)){
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data$dIepr_over_dB,color = .data$times_s)) +
-      geom_line(size = line.size,show.legend = TRUE)
+      geom_line(size = line.size,show.legend = TRUE) +
+      labs(x = xlabel,y = ylabel)
   } else{
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data$dIepr_over_dB)) +
-      geom_line(size = line.size,show.legend = FALSE)
+      geom_line(size = line.size,show.legend = FALSE) +
+      labs(x = xlabel,y = ylabel)
   }
   ##
   return(ggplotly(simplePlot))
