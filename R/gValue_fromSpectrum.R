@@ -68,11 +68,12 @@ gValue_fromSpectrum <- function(spectrum.data,
       pull(.data[[B]])
     ## B between both of them:
     B.center <- (B.min + B.max)/2
-    ## B at dIepr_over_dB = 0 (near 0):
+    ## B at dIepr_over_dB = 0 (near 0, see next comment):
   } else{
+    ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
     B.center <- spectrum.data %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(near(.data[[Intensity]],0)) %>%
+      filter(near(.data[[Intensity]],0,tol = max(spectrum.data[,Intensity])/100)) %>%
       filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
       pull(.data[[B]])
   }
