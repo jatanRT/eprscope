@@ -22,7 +22,7 @@ must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intens
 or \code{B = "B_G"}}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used, default: \code{Intesity = "dIepr_over_dB"}}
+name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
 
 \item{B.reg.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
 of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}

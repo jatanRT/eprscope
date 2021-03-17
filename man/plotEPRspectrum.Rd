@@ -7,6 +7,7 @@
 plotEPRspectrum(
   spectrum.data,
   B = "B_mT",
+  Intensity = "dIepr_over_dB",
   line.color = "steelblue",
   line.size = 0.75,
   basic.theme = "theme_gray",
@@ -24,6 +25,9 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 or \code{B = "B_G"}}
+
+\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
 
 \item{line.color}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, default: \code{line.color = "steelblue"}}
@@ -68,7 +72,7 @@ Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spec
 \examples{
 \dontrun{
 plotEPRspectr(spectrum.data)
-plotEPRspectr(spectrum.data,"B_G")
+plotEPRspectr(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
 plotEPRspectr(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
 plotEPRspectr(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
 plotEPRspectr(spectrum.data,"B_mT","darkred",line.size = 1.2)

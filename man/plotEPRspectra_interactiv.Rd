@@ -7,6 +7,7 @@
 plotEPRspectra_interactiv(
   spectrum.data,
   B = "B_mT",
+  Intensity = "dIepr_over_dB",
   line.size = 0.75,
   time.series = FALSE
 )
@@ -19,6 +20,9 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 or \code{B = "B_G"}}
+
+\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
 
 \item{line.size}{Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}}
 

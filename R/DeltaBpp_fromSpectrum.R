@@ -15,7 +15,7 @@
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 #'   or \code{B = "B_G"}
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-#'   name/label is used, default: \code{Intesity = "dIepr_over_dB"}
+#'   name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}
 #' @param B.reg.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
 #'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
 #' @param B.reg.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border

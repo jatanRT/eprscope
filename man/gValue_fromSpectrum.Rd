@@ -8,6 +8,7 @@ gValue_fromSpectrum(
   spectrum.data,
   nu,
   B = "B_mT",
+  Intensity = "dIepr_over_dB",
   B.reg.start,
   B.reg.end,
   iso = TRUE
@@ -23,6 +24,9 @@ must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIe
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 or \code{B = "B_G"}}
+
+\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
 
 \item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
 of the \code{selected B region} (therefore abbreviation \code{.reg.})}
@@ -56,7 +60,7 @@ Calculation of g-value according to fundamental formula. \eqn{g}-related magneti
 }
 \examples{
 \dontrun{
-gValue_fromSpectr(spectrum.data,9.82451,"B_mT",349.8841,351.112)
+gValue_fromSpectr(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
 gValue_fromSpectr(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
 }
 

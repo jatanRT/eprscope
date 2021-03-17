@@ -20,6 +20,8 @@
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
 #'   or \code{B = "B_G"}
+#' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+#'   name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}
 #' @param B.reg.start Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
 #' @param B.reg.end Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
@@ -36,7 +38,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' gValue_fromSpectr(spectrum.data,9.82451,"B_mT",349.8841,351.112)
+#' gValue_fromSpectr(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
 #' gValue_fromSpectr(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
 #' }
 #'
@@ -45,17 +47,23 @@
 #'
 #'
 #' @importFrom dplyr filter select mutate pull between near
-gValue_fromSpectrum <- function(spectrum.data,nu,B = "B_mT",B.reg.start,B.reg.end,iso = TRUE){
+gValue_fromSpectrum <- function(spectrum.data,
+                                nu,
+                                B = "B_mT",
+                                Intensity = "dIepr_over_dB",
+                                B.reg.start,
+                                B.reg.end,
+                                iso = TRUE){
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)){
     B.min <- spectrum.data %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
+      filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
       pull(.data[[B]])
     ## B at maximum of dIepr_over_dB:
     B.max <- spectrum.data %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(.data$dIepr_over_dB == max(.data$dIepr_over_dB)) %>%
+      filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
       pull(.data[[B]])
     ## B between both of them:
     B.center <- (B.min + B.max)/2
@@ -63,8 +71,8 @@ gValue_fromSpectrum <- function(spectrum.data,nu,B = "B_mT",B.reg.start,B.reg.en
   } else{
     B.center <- spectrum.data %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(near(.data$dIepr_over_dB,0)) %>%
-      filter(.data$dIepr_over_dB == min(.data$dIepr_over_dB)) %>%
+      filter(near(.data[[Intensity]],0)) %>%
+      filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
       pull(.data[[B]])
   }
   ## g -value calculation:
