@@ -2,7 +2,7 @@
 % Please edit documentation in R/readExpEPRspectra.R
 \name{readExpEPRspectra}
 \alias{readExpEPRspectra}
-\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum and Trasfers it into Data Frame}
+\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum and Transfers it into Data Frame}
 \usage{
 readExpEPRspectra(
   path_to_ASC,
