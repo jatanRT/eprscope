@@ -51,7 +51,7 @@ plotEPRspectra_interactiv <- function(spectrum.data,
       labs(x = xlabel,y = ylabel)
   } else{
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]])) +
-      geom_line(size = line.size,color = "steelblue",show.legend = FALSE) +
+      geom_line(size = line.size,color = "#6600CC",show.legend = FALSE) +
       labs(x = xlabel,y = ylabel)
   }
   ##
