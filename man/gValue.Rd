@@ -9,11 +9,12 @@ gValue(nu, nu_unit = "GHz", B, B_unit = "mT")
 \arguments{
 \item{nu}{Numeric, microwave Frequency}
 
-\item{nu_unit}{String, frequency unit defined by \code{"GHz"} or \code{"Hz"}}
+\item{nu_unit}{String, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu_unit = "GHz"}}
 
 \item{B}{Numeric, magnetic flux density}
 
-\item{B_unit}{String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}}
+\item{B_unit}{String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
+\code{B_unit = "mT"}}
 }
 \value{
 g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>

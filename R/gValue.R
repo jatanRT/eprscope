@@ -12,9 +12,10 @@
 #'
 #'
 #' @param nu Numeric, microwave Frequency
-#' @param nu_unit String, frequency unit defined by \code{"GHz"} or \code{"Hz"}
+#' @param nu_unit String, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu_unit = "GHz"}
 #' @param B Numeric, magnetic flux density
-#' @param B_unit String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}
+#' @param B_unit String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
+#'   \code{B_unit = "mT"}
 #'
 #' @return g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>
 #'   see description above

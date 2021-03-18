@@ -3,32 +3,33 @@
 
 #' @title EPR Spectrum Simple Plot
 #'
-#' @description Graph/Plot of an EPR spectrum based on \code{\link{ggplot2}}-functionality. Spectral data
+#' @description Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spectral data
 #'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
 #'   (depending on units, data frame may include both of them) columns,
 #'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
 #'   if integral column is available, can be ploted as well, see examples below.
-#'   Theme of the graphic spectrum representation as well its line color can be varied like in \pkg{ggplot2} (see below).
-#'   Within a theme \code{y} ticks can be displayed or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
+#'   Theme of the graphic spectrum representation as well its line color can be varied like
+#'   in \code{\pkg{ggplot2}} (see below). Within a theme \code{y} ticks can be displayed
+#'   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
 #'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
 #'   this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
-#'   with other functions like in \pkg{ggplot2}, e.g. present or skip \code{grid} within the code.
+#'   with other functions like in \code{\pkg{ggplot2}}, e.g. present or skip \code{grid} within the code.
 #'
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 #'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
 #'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
+#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-#'   name/label is used (e.g. for simulated or integrated spectra), default: \code{Intesity = "dIepr_over_dB"}
-#' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-#'   colors are allowed, default: \code{line.color = "steelblue"}
-#' @param line.size Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}
+#'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
+#' @param line.color String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
+#'   colors are allowed, \strong{default}: \code{line.color = "steelblue"}
+#' @param line.size Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
 #' @param basic.theme Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \itemize{
-#'     \item \code{"theme_gray"} (default one) => the gray background with white grid lines, default theme
+#'     \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
 #'     \item \code{"theme_bw"} => the white background with thin gray grid lines
 #'     \item \code{"theme_light"} => similar to \code{theme_bw()} but without the pronounced axis black lines
 #'     \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
@@ -36,12 +37,12 @@
 #'     theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
 #'   }
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
-#'   default: \code{axis.text.size = 15}
+#'   \strong{default}: \code{axis.text.size = 15}
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
-#'   default: \code{axis.title.size = 17}
-#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, default: \code{grid = TRUE}
+#'   \strong{default}: \code{axis.title.size = 17}
+#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
 #' @param yTicks Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
-#'   (not the axis title!), which is usually skipped in the EPR community, default: \code{yTicks = TRUE}
+#'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
 #'
 #'
 #' @return EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation

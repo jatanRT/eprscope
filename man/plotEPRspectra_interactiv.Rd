@@ -18,13 +18,13 @@ must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the de
 intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
+\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used (e.g. for integrated or simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}
+name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{line.size}{Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}}
+\item{line.size}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
 
 \item{time.series}{Boolean, whether the input ASCII spectrum data comes from the time series experiment
 with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)}

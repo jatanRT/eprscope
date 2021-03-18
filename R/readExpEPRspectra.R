@@ -3,8 +3,8 @@
 #'
 #' @description Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
 #'   in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
-#'   which can be easily processed by other R \code{data science} packages (e.g. by \code{tidyverse} system), afterwards.
-#'   For this purpose a \code{pipe} operator from \code{\link{magrittr}} is applied.
+#'   which can be easily processed by other R \code{data science} packages (e.g. by \code{\pkg{tidyverse}} system),
+#'    afterwards. For this purpose a \code{pipe} operator from \code{\pkg{magrittr}} is applied.
 #'   Spectral data are normalized by the common experimental parameters in order to qualitatively compare
 #'   the intensities of several spectra. ASCII files/tables are dependent on the software used to record the EPR spectra
 #'   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
@@ -15,18 +15,18 @@
 #' @param path_to_ASC String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
 #'   with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)
 #' @param qfactor Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
-#'   In case of "Xenon" software the parameter is included in \code{.DSC} file, default = 1
+#'   In case of "Xenon" software the parameter is included in \code{.DSC} file, \strong{default = 1}
 #' @param Ns Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
-#'   is already included for the intensity normalization, default = 1
-#' @param m Numeric, weight of the powder sample in mg, default = 1
+#'   is already included for the intensity normalization, \strong{default = 1}
+#' @param m Numeric, weight of the powder sample in mg, \strong{default = 1}
 #' @param cM Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
-#'   default = 1
+#'   \strong{default = 1}
 #' @param time.series Boolean, whether the input ASCII spectrum comes from the time series experiment
-#'   with the additional \code{time} column (ONLY IN CASE of "Xenon" software)
+#'   with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \strong{default = FALSE}
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
 #'   on whether they were recorded by windows based softw. ("winepr") or by the Linux
-#'   one ("xenon"), default = "xenon"
+#'   one ("xenon"), \strong{default = "xenon"}
 #'
 #' @return data frame/table consisting of the magnetic flux density column \code{B_mT}
 #'   in millitesla (as well as \code{B_G} in gauss) and the derivative intensity column (\code{dIepr_over_dB})

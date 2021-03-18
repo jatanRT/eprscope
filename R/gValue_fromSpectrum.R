@@ -1,13 +1,13 @@
 #
 #' @title Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum
 #'
-#' @description Calculation of g-value according to fundamental formula. \eqn{g}-related magnetic flux density
-#'   (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken from the EPR spectrum.
-#'   If positive and negative derivative intensities of the spectral line are similar, \eqn{B_{iso}} should be
-#'   be considered, otherwise the \eqn{B_{center}} must be taken into account to calculate the \eqn{g}-value.
-#'   The \eqn{g}-related \eqn{B} is computed either as the mid-point between the magnetic flux densities
-#'   corresponding to \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB})
-#'   or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
+#' @description Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
+#'   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
+#'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar,
+#'   \eqn{B_{iso}} should be be considered, otherwise the \eqn{B_{center}} must be taken into account
+#'   to calculate the \eqn{g}-value. The \eqn{g}-related \eqn{B} is computed either as the mid-point between
+#'   the magnetic flux densities corresponding to \code{min.} and \code{max.} derivative
+#'   intensities (\code{dIepr_over_dB}) or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
 #'   One can select the B region/span/interval from the spectrum to determine the \eqn{g}-value.
 #'   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
 #'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$hbar*2*pi}
@@ -19,22 +19,22 @@
 #'   \code{index} column can be included as well
 #' @param nu Numeric, microwave frequency in \code{GHz}
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
-#'   or \code{B = "B_G"}
+#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-#'   name/label is used (e.g. for simulated spectra), default: \code{Intesity = "dIepr_over_dB"}
+#'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param B.reg.start Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
 #' @param B.reg.end Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
 #'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
 #' @param iso Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
-#'   (this is the \code{default: iso = TRUE}), or by finding the the \eqn{B} value corresponding
+#'   (this is the \code{\strong{default}: iso = TRUE}), or by finding the the \eqn{B} value corresponding
 #'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})
 #'
 #' @return \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)},
 #'   where the \eqn{B} comes directly from the EPR spectrum and is actually calculated between
-#'   the \code{\emph{B}(maximum)} and \code{\emph{B}(minumum)} (THESE DO NOT EQUAL to \code{B.reg.start}
+#'   the \code{\emph{B}(maximum)} and \code{\emph{B}(minimum)} (THESE DO NOT EQUAL to \code{B.reg.start}
 #'   and \code{B.reg.min}!) corresponding to maximum and minimum of the derivative intensity (\code{dIepr_over_dB})
 #'
 #' @examples
