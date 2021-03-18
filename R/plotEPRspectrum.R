@@ -88,8 +88,8 @@ plotEPRspectrum <- function(spectrum.data,
     y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   }
   if (sjmisc::str_contains(Intensity,
-                           c("single","integral","sinteg","integ","s_integ","single_","singleinteg","sintegral"),
-                           logic = "or",ignore.case = T,switch = T)){
+                           c("single","sinteg","s_integ","single_","singleinteg","sintegral","sInteg_"),
+                           logic = "or",ignore.case = T,switch = F)){
     y.label <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
   }
   if (sjmisc::str_contains(Intensity,
