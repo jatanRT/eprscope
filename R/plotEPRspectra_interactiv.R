@@ -46,10 +46,14 @@ plotEPRspectra_interactiv <- function(spectrum.data,
   if (sjmisc::str_contains(Intensity,c("dB","intens","deriv"),logic = "or",ignore.case = T)){
     ylabel = "dIepr / dB  (p.d.u.)"
   }
-  if (sjmisc::str_contains(Intensity,c("integ","ral","single"),logic = "or",ignore.case = T)){
+  if (sjmisc::str_contains(Intensity,
+                           c("single","integral","sinteg","integ","s_integ","single_","singleinteg","sintegral"),
+                           logic = "or",ignore.case = T,switch = T)){
     ylabel <- "Iepr  (p.d.u.)"
   }
-  if (sjmisc::str_contains(Intensity,c("di","dinteg","double","ii"),logic = "or",ignore.case = T)){
+  if (sjmisc::str_contains(Intensity,
+                           c("double","dinteg","d_integ","double_","doubleinteg","dintegral","di","sec"),
+                           logic = "or",ignore.case = T,switch = F)){
     ylabel <- "DIepr  (p.d.u.)"
   }
   ## plot precursor

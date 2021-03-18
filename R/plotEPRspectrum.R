@@ -87,10 +87,14 @@ plotEPRspectrum <- function(spectrum.data,
   if (sjmisc::str_contains(Intensity,c("dB","intens","deriv"),logic = "or",ignore.case = T)){
     y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   }
-  if (sjmisc::str_contains(Intensity,c("integ","ral","single"),logic = "or",ignore.case = T)){
+  if (sjmisc::str_contains(Intensity,
+                           c("single","integral","sinteg","integ","s_integ","single_","singleinteg","sintegral"),
+                           logic = "or",ignore.case = T,switch = T)){
     y.label <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
   }
-  if (sjmisc::str_contains(Intensity,c("di","dinteg","double","ii"),logic = "or",ignore.case = T)){
+  if (sjmisc::str_contains(Intensity,
+                           c("double","dinteg","d_integ","double_","doubleinteg","dintegral","di","sec"),
+                           logic = "or",ignore.case = T,switch = F)){
     y.label <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
   }
   ## Themes for the spectra, whether the ticks are displayed or not:
