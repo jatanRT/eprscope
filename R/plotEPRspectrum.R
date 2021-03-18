@@ -20,7 +20,7 @@
 #'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
-#'   or \code{B = "B_G"}
+#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated or integrated spectra), default: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
@@ -51,7 +51,7 @@
 #' \dontrun{
 #' plotEPRspectrum(spectrum.data)
 #' plotEPRspectrum(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
-#' plotEPRspectrum(spectrum.data,"Integral")
+#' plotEPRspectrum(spectrum.data,"Integral",B = "B_mT_Sim")
 #' plotEPRspectrum(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
 #' plotEPRspectrum(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
 #' plotEPRspectrum(spectrum.data,"B_mT","darkred",line.size = 1.2)
@@ -77,11 +77,11 @@ plotEPRspectrum <- function(spectrum.data,
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   B.start <- min(spectrum.data[,B])
   B.end <- max(spectrum.data[,B])
-  ## Labels for the x and y axis based on conditions for `B` and `Intensity`:
-  if (B == "B_mT"){
+  ## Labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
+  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~mT~")")
   }
-  if (B == "B_G"){
+  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~G~")")
   }
   if (sjmisc::str_contains(Intensity,c("dB","intens","deriv"),logic = "or",ignore.case = T)){

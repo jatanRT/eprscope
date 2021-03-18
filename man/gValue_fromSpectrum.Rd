@@ -61,8 +61,9 @@ Calculation of g-value according to fundamental formula. \eqn{g}-related magneti
 }
 \examples{
 \dontrun{
-gValue_fromSpectr(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
-gValue_fromSpectr(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
+gValue_fromSpectrum(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
+gValue_fromSpectrum(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
+gValue_fromSpectrum(spectrum.data,9.91024,B = "B_G_Sim",3499,3501)
 }
 
 

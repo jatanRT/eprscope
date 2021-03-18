@@ -11,7 +11,7 @@
 #'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
-#'   or \code{B = "B_G"}
+#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), default: \code{Intesity = "dIepr_over_dB"}
 #' @param line.size Numeric, linewidth of the plot line in \code{pt}, default: \code{line.size = 0.75}
@@ -36,11 +36,11 @@ plotEPRspectra_interactiv <- function(spectrum.data,
                                       Intensity = "dIepr_over_dB",
                                       line.size = 0.75,
                                       time.series = FALSE){
-  ## labels based on `Intensity` and `B` conditions:
-  if (B == "B_mT"){
+  ## labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
+  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     xlabel = "B (mT)"
   }
-  if (B == "B_G"){
+  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     xlabel = "B (G)"
   }
   if (sjmisc::str_contains(Intensity,c("dB","intens","deriv"),logic = "or",ignore.case = T)){

@@ -39,8 +39,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' gValue_fromSpectr(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
-#' gValue_fromSpectr(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
+#' gValue_fromSpectrum(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
+#' gValue_fromSpectrum(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
+#' gValue_fromSpectrum(spectrum.data,9.91024,B = "B_G_Sim",3499,3501)
 #' }
 #'
 #'
@@ -81,10 +82,11 @@ gValue_fromSpectrum <- function(spectrum.data,
   Planck.const <- constants::syms$hbar*2*pi # `h` is not available directly
   Bohr.magnet <- constants::syms$mub
   g.precurs <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center)
-  if (B == "B_mT"){
+  ## Conditions for B column, the name should contain ("B", "mT" or "G"):
+  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     g <- g.precurs/1e-3
   }
-  if (B == "B_G"){
+  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     g <- g.precurs/1e-4
   }
   return(round(g,digits = 5))

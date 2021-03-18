@@ -19,7 +19,7 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (default)
-or \code{B = "B_G"}}
+or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for integrated or simulated spectra), default: \code{Intesity = "dIepr_over_dB"}}

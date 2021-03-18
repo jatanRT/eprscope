@@ -41,9 +41,9 @@ The function calculates the \eqn{\Delta B_{pp}} (peak-to-peak) linewidth
 }
 \examples{
 \dontrun{
-DeltaBpp_fromSpectr(spectrum.data,320.221,328.331)
-DeltaBpp_fromSpectr(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
-DeltaBpp_fromSpectr(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
+DeltaBpp_fromSpectrum(spectrum.data,320.221,328.331)
+DeltaBpp_fromSpectrum(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
+DeltaBpp_fromSpectrum(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
 }
 
 }
