@@ -1,13 +1,24 @@
 #
-#' @title TODO
+#' @title Correction for EPR spectral Time Series Providing the Accurate Time for EPR Spectral Line Appearance
 #'
 #'
 #' @description TODO
 #'
+#'  The time is recorded according to the following scheme:
 #'
-#' @param time TODO
-#' @param N_scans TODO
-#' @param sweep.time TODO
+#'      EPR Spectrum                        EPR Spectrum                        EPR Spectrum
+#'  t[1] ----^v----> t[2]-delay ------> t[2] ----^v----> t[3]-delay ------> t[3] ----^v----> ...
+#'       N_scans*swt            +delay       N_scans*swt            +delay       N_scans*swt
+#'
+#' The recorded times are: t[1],t[2],t[3],...
+#' and `N_scans` corresponds to `number of scans` and `swt` to `sweep time` for individual scan
+#'
+#'
+#' @param time Vector/Column in \code{data frame} corresponding to \code{time} at which
+#'   the individual EPR spectra were recorded
+#' @param N_scans Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
+#'   in EPR time series
+#' @param sweep.time Numeric, time for recording of one EPR spectrum \eqn{=} one accumulation
 #'
 #' @return TODO
 #'

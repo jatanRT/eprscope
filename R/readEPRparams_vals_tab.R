@@ -1,12 +1,16 @@
 #
-#' @title TODO
+#' @title Read the Instrumental Parameters (from \code{DSC} or \code{par} file) to Record the EPR Spectra
+#'   and Transfers it into \code{Table/Data Frame}
 #'
 #'
 #' @description TODO
 #'
 #'
-#' @param path_to_DSC_or_par TODO
-#' @param origin TODO
+#' @param path_to_DSC_or_par String, path to \code{DSC} or \code{par} (depending on OS, see \code{origin} parameter)
+#'   \code{text} files including all instrumental parameters and provided by tdhe EPR machine
+#' @param origin String, corresponding to software which was used to acquire the EPR spectra
+#'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
+#'   by the windows based softw. ("WinEpr") or by the Linux one ("Xenon"), \strong{default = "Xenon"}
 #'
 #'
 #' @return TODO

@@ -2,22 +2,33 @@
 % Please edit documentation in R/time_correct_EPRspectra.R
 \name{time_correct_EPRspectra}
 \alias{time_correct_EPRspectra}
-\title{TODO}
+\title{Correction for EPR spectral Time Series Providing the Accurate Time for EPR Spectral Line Appearance}
 \usage{
 time_correct_EPRspectra(time, N_scans, sweep.time)
 }
 \arguments{
-\item{time}{TODO}
+\item{time}{Vector/Column in \code{data frame} corresponding to \code{time} at which
+the individual EPR spectra were recorded}
 
-\item{N_scans}{TODO}
+\item{N_scans}{Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
+in EPR time series}
 
-\item{sweep.time}{TODO}
+\item{sweep.time}{Numeric, time for recording of one EPR spectrum \eqn{=} one accumulation}
 }
 \value{
 TODO
 }
 \description{
 TODO
+
+ The time is recorded according to the following scheme:
+
+     EPR Spectrum                        EPR Spectrum                        EPR Spectrum
+ t[1] ----^v----> t[2]-delay ------> t[2] ----^v----> t[3]-delay ------> t[3] ----^v----> ...
+      N_scans*swt            +delay       N_scans*swt            +delay       N_scans*swt
+
+The recorded times are: t[1],t[2],t[3],...
+and `N_scans` corresponds to `number of scans` and `swt` to `sweep time` for individual scan
 }
 \examples{
 TODO

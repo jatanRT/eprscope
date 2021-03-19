@@ -2,14 +2,18 @@
 % Please edit documentation in R/readEPRparams_vals_tab.R
 \name{readEPRparams_vals_tab}
 \alias{readEPRparams_vals_tab}
-\title{TODO}
+\title{Read the Instrumental Parameters (from \code{DSC} or \code{par} file) to Record the EPR Spectra
+  and Transfers it into \code{Table/Data Frame}}
 \usage{
 readEPRparams_vals_tab(path_to_DSC_or_par, origin = "xenon")
 }
 \arguments{
-\item{path_to_DSC_or_par}{TODO}
+\item{path_to_DSC_or_par}{String, path to \code{DSC} or \code{par} (depending on OS, see \code{origin} parameter)
+\code{text} files including all instrumental parameters and provided by tdhe EPR machine}
 
-\item{origin}{TODO}
+\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
+on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
+by the windows based softw. ("WinEpr") or by the Linux one ("Xenon"), \strong{default = "Xenon"}}
 }
 \value{
 TODO

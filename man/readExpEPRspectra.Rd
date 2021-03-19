@@ -34,8 +34,8 @@ with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \stro
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
 on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
-on whether they were recorded by windows based softw. ("winepr") or by the Linux
-one ("xenon"), \strong{default = "xenon"}}
+on whether they were recorded by the windows based softw. ("WinEpr") or by the Linux
+one ("Xenon"), \strong{default = "Xenon"}}
 }
 \value{
 data frame/table consisting of the magnetic flux density column \code{B_mT}
@@ -51,7 +51,7 @@ Function reads/loads the experimental EPR spectrum recorded by BRUKER spectromet
   which can be easily processed by other R \code{data science} packages (e.g. by \code{\pkg{tidyverse}} system),
    afterwards. For this purpose a \code{pipe} operator from \code{\pkg{magrittr}} is applied.
   Spectral data are normalized by the common experimental parameters in order to qualitatively compare
-  the intensities of several spectra. ASCII files/tables are dependent on the software used to record the EPR spectra
+  the intensities of several spectra. ASCII files/tables depend on the software used to record the EPR spectra
   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
   or \code{"winepr"}).Time series spectra (time evolution of EPR spectra) can be read
   by the \code{time.series = TRUE/FALSE} parameter (ONLY IN CASE of \code{"xenon"} software).
