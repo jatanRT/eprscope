@@ -55,7 +55,7 @@ presentSimEPRspectrum <- function(exp.spectrum.data,
   both.spectr.data$Norm_dIepr_over_dB_Sim <-
     both.spectr.data$Norm_dIepr_over_dB_Sim - diff_Intens_exp/Intensity.shift.ratio
   ## Shift the B of the simulated spectrum (B/g-factor can be slightly shifted in MATLAB output)
-  both.spectr.data[[B]] <- both.spectr.data[[B]] + B.shift
+  both.spectr.data[[paste(B,"_Sim",sep = "")]] <- both.spectr.data[[paste(B,"_Sim",sep = "")]] + B.shift
   ## B label for the plot:
   if (B == "B_mT"){
     x.label <- plotEPRlabel(B,mT)
