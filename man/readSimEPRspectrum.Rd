@@ -2,7 +2,7 @@
 % Please edit documentation in R/readSimEPRspectrum.R
 \name{readSimEPRspectrum}
 \alias{readSimEPRspectrum}
-\title{Read the Simulated ASCII (\code{.txt}) EPR Spectrum from from \emph{MATLAB} and Transfers it into Data Frame}
+\title{Read the Simulated ASCII (\code{.txt}) EPR Spectrum from \emph{MATLAB} and Transfers it into Data Frame}
 \usage{
 readSimEPRspectrum(path_to_ASC)
 }
