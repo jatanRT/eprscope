@@ -67,10 +67,10 @@ presentSimEPRspectrum <- function(exp.spectrum.data,
   simulation.plot <- both.spectr.data %>%
     ggplot() +
     geom_line(aes(x = .data[[B]],y = .data$dIepr_over_dB,color = "Experiment"),size = line.size) +
-    geom_line(aes(x = .data[[paste(B,"_Sim",sep = "")]],y = .data$dIepr_over_dB_Sim,
+    geom_line(aes(x = .data[[paste(B,"_Sim",sep = "")]],y = .data$Norm_dIepr_over_dB_Sim,
                   color = "Simulation"),size = line.size) +
     scale_color_manual(values = c(line.color.exp,line.color.sim),breaks = c("Experiment","Simulation")) +
-    labs(x = x.label,
+    labs(color = "",x = x.label,
          y = plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))
   ## if the entire table/table should be included
   if (isTRUE(output.table)){
