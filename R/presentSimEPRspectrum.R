@@ -72,7 +72,7 @@ presentSimEPRspectrum <- function(exp.spectrum.data,
          y = plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))
   ## if the entire table/table should be included
   if (isTRUE(output.table)){
-    SimPlotPlusTable <- list(simulation.plot,both.spectr.data)
+    SimPlotPlusTable <- list(plot = simulation.plot,table = both.spectr.data)
   } else{
     SimPlotPlusTable <- simulation.plot
   }
