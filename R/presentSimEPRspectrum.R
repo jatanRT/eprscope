@@ -5,8 +5,8 @@
 #' @description TODO
 #'
 #'
-#' @param exp.spectr.data TODO
-#' @param sim.spectr.data TODO
+#' @param exp.spectrum.data TODO
+#' @param sim.spectrum.data TODO
 #' @param B TODO
 #' @param Intensity.shift.ratio TODO
 #' @param B.shift TODO
@@ -27,8 +27,8 @@
 #'
 #' @export
 #'
-presentSimEPRspectrum <- function(exp.spectr.data,
-                                  sim.spectr.data,
+presentSimEPRspectrum <- function(exp.spectrum.data,
+                                  sim.spectrum.data,
                                   B = "B_mT",
                                   Intensity.shift.ratio = 1.2,
                                   B.shift = 0,
@@ -37,7 +37,7 @@ presentSimEPRspectrum <- function(exp.spectr.data,
                                   line.size = 0.75,
                                   output.table = FALSE){
   ## Join both tables/data frames
-  both.spectr.data <- dplyr::bind_cols(exp.spectr.data,sim.spectr.data)
+  both.spectr.data <- dplyr::bind_cols(exp.spectrum.data,sim.spectrum.data)
   ## Differences in intensity extremes:
   diff_Intens_exp <- max(both.spectr.data$dIepr_over_dB) - min(both.spectr.data$dIepr_over_dB)
   diff_Intens_sim <- max(both.spectr.data$dIepr_over_dB_Sim) - min(both.spectr.data$dIepr_over_dB_Sim)
@@ -79,6 +79,6 @@ presentSimEPRspectrum <- function(exp.spectr.data,
     SimPlotPlusTable <- simulation.plot
   }
 
-  return(PlotPlusTable)
+  return(SimPlotPlusTable)
 
 }
