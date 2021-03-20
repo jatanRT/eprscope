@@ -5,8 +5,8 @@
 \title{TODO}
 \usage{
 presentSimEPRspectrum(
-  exp.spectr.data,
-  sim.spectr.data,
+  exp.spectrum.data,
+  sim.spectrum.data,
   B = "B_mT",
   Intensity.shift.ratio = 1.2,
   B.shift = 0,
@@ -17,9 +17,9 @@ presentSimEPRspectrum(
 )
 }
 \arguments{
-\item{exp.spectr.data}{TODO}
+\item{exp.spectrum.data}{TODO}
 
-\item{sim.spectr.data}{TODO}
+\item{sim.spectrum.data}{TODO}
 
 \item{B}{TODO}
 
