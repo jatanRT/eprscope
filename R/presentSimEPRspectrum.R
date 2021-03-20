@@ -45,11 +45,9 @@ presentSimEPRspectrum <- function(exp.spectrum.data,
   Intens_ratio <- diff_Intens_sim/diff_Intens_exp
   ## scaling the Sim. EPR spectrum intensity to match the Exp. one (new column `Norm_...`):
   if (Intens_ratio != 1){
-    both.spectr.data <- both.spectr.data %>%
-      dplyr::mutate(Norm_dIepr_over_dB_Sim <- .data$dIepr_over_dB_Sim/Intens_ratio)
+    both.spectr.data$Norm_dIepr_over_dB_Sim <- both.spectr.data$dIepr_over_dB_Sim/Intens_ratio
   } else{
-    both.spectr.data <- both.spectr.data %>%
-      dplyr::mutate(Norm_dIepr_over_dB_Sim <- .data$dIepr_over_dB_Sim)
+    both.spectr.data$Norm_dIepr_over_dB_Sim <- both.spectr.data$dIepr_over_dB_Sim
   }
   ## Shift the Sim. spectrum below the Exp. one
   both.spectr.data$Norm_dIepr_over_dB_Sim <-
