@@ -1,12 +1,16 @@
 #
-#' @title TODO
+#' @title Show Comparison Between the Experimental and Simulated EPR Spectrum either by Table or Graphic Format
 #'
 #'
 #' @description TODO
 #'
 #'
-#' @param exp.spectrum.data TODO
-#' @param sim.spectrum.data TODO
+#' @param exp.spectrum.data \strong{Experimental} Spectrum data frame/table where the magnetic flux
+#'   density (in \code{mT}) column is labeled as \code{B_mT} in mT (or \code{B_G} in gauss)
+#'   and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
+#' @param sim.spectrum.data Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
+#'   flux density (in \code{mT}) column must be labeled as \code{B_mT_Sim} in mT (or \code{B_G_Sim} in gauss)
+#'   and that of the derivative intensity as \code{dIepr_over_dB_Sim}
 #' @param B TODO
 #' @param Intensity.shift.ratio TODO
 #' @param B.shift TODO

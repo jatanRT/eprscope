@@ -1,5 +1,5 @@
 #
-#' @title Read the Simulated ASCII (\code{.txt}) EPR Spectrum from \emph{MATLAB} and Transfers it into Data Frame
+#' @title Read the Simulated ASCII (\code{.txt}) EPR Spectrum from \emph{MATLAB} and Transfer it into Data Frame
 #'
 #'
 #' @description TODO

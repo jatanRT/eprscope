@@ -6,12 +6,16 @@
 #'
 #'  The time is recorded according to the following scheme:
 #'
-#'      EPR Spectrum                        EPR Spectrum                        EPR Spectrum
-#'  t[1] ----^v----> t[2]-delay ------> t[2] ----^v----> t[3]-delay ------> t[3] ----^v----> ...
-#'       N_scans*swt            +delay       N_scans*swt            +delay       N_scans*swt
+#'  \tabular{cccccc}{
 #'
-#' The recorded times are: t[1],t[2],t[3],...
-#' and `N_scans` corresponds to `number of scans` and `swt` to `sweep time` for individual scan
+#'            \tab     EPR Spectr.     \tab                   \tab     \tab             \tab   EPR Spectr. \cr
+#'
+#'  \code{t[1]} \tab  ------^v------> \tab \code{t[2]}-delay \tab ---->  \tab \code{t[2]} \tab ------^v-------> ... \cr
+#'
+#'         \tab  \code{N_scans}x\code{swt}  \tab          \tab \code{delay} \tab        \tab \code{N_scans}x\code{swt}
+#' }
+#' The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
+#' and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan
 #'
 #'
 #' @param time Vector/Column in \code{data frame} corresponding to \code{time} at which

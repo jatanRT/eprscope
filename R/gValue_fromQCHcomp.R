@@ -4,8 +4,10 @@
 #'
 #' @description TODO
 #'
-#' @param delta_g_vec Numeric vector of principal \code{g-value differences} from \eqn{g_e} within e.g. Gaussian output
-#' @param mean TODO
+#' @param delta_g_vec Numeric vector of principal \code{g-value differences in 'ppm'}
+#'   from \eqn{g_e} within e.g. Gaussian output
+#' @param mean Boolean, whether to calculated the \code{mean value} of \code{delta_g_vec} elements,
+#'   \strong{default}: \code{mean = TRUE}, or save the entire vector with all principal components
 #'
 #' @return TODO
 #'
