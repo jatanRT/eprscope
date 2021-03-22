@@ -2,7 +2,7 @@
 % Please edit documentation in R/Bextrem_fromSpectrum.R
 \name{Bextrem_fromSpectrum}
 \alias{Bextrem_fromSpectrum}
-\title{TODO}
+\title{Find Extreme (\strong{Min}imum or \strong{Max}imum) within the EPR Spectrum (or its Integrated Form)}
 \usage{
 Bextrem_fromSpectrum(
   spectrum.data,
@@ -10,7 +10,7 @@ Bextrem_fromSpectrum(
   Intensity = "dIepr_over_dB",
   B.reg.start,
   B.reg.end,
-  extrem
+  extreme
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ Bextrem_fromSpectrum(
 
 \item{B.reg.end}{TODO}
 
-\item{extrem}{TODO}
+\item{extreme}{TODO}
 }
 \value{
 TODO

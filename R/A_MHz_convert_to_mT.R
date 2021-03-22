@@ -1,12 +1,13 @@
 #
-#' @title TODO
+#' @title Conversion of Hyperfine Coupling Constants (\code{HFCCs}, \eqn{A} in \code{MHz}) to Hyperfine Splitting
+#'   ones (\code{HFSCs}, \eqn{a} in \code{mT})
 #'
 #'
 #' @description TODO
 #'
 #'
-#' @param A TODO
-#' @param g TODO
+#' @param A Numeric value/Numeric vector corresponding to HFCCs in \code{MHz}
+#' @param g Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})
 #'
 #'
 #' @return TODO

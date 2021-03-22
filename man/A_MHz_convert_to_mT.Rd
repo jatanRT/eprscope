@@ -2,14 +2,15 @@
 % Please edit documentation in R/A_MHz_convert_to_mT.R
 \name{A_MHz_convert_to_mT}
 \alias{A_MHz_convert_to_mT}
-\title{TODO}
+\title{Conversion of Hyperfine Coupling Constants (\code{HFCCs}, \eqn{A} in \code{MHz}) to Hyperfine Splitting
+  ones (\code{HFSCs}, \eqn{a} in \code{mT})}
 \usage{
 A_MHz_convert_to_mT(A, g)
 }
 \arguments{
-\item{A}{TODO}
+\item{A}{Numeric value/Numeric vector corresponding to HFCCs in \code{MHz}}
 
-\item{g}{TODO}
+\item{g}{Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})}
 }
 \value{
 TODO

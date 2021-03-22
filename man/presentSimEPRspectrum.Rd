@@ -38,7 +38,8 @@ presented below the experimental one. The lower the ratio, the 'deeper' the simu
 
 \item{B.shift}{Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
 that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{dafault}:
-\code{B.shift = 0}}
+\code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B = "B_mT"} => \code{B.shift}
+must be in \code{mT}, or if \code{B = "B_G"} then \code{B.shift} must be in \code{G})}
 
 \item{line.color.exp}{String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
 colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}}

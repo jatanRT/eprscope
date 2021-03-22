@@ -1,5 +1,5 @@
 #
-#' @title TODO
+#' @title Find Extreme (\strong{Min}imum or \strong{Max}imum) within the EPR Spectrum (or its Integrated Form)
 #'
 #' @description TODO
 #'
@@ -8,7 +8,7 @@
 #' @param Intensity TODO
 #' @param B.reg.start TODO
 #' @param B.reg.end TODO
-#' @param extrem TODO
+#' @param extreme TODO
 #'
 #' @return TODO
 #'
@@ -29,15 +29,15 @@ Bextrem_fromSpectrum  <-  function(spectrum.data,
                                    Intensity = "dIepr_over_dB",
                                    B.reg.start,
                                    B.reg.end,
-                                   extrem){
-  if (extrem == "min"){
+                                   extreme){
+  if (extreme == "min"){
     B.min  <-  spectrum.data  %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end))  %>%
       filter(.data[[Intensity]] == min(.data[[Intensity]]))  %>%
       pull(.data[[B]])
     return(B.min)
   }
-  if (extrem == "max"){
+  if (extreme == "max"){
     B.max  <-  spectrum.data  %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end))  %>%
       filter(.data[[Intensity]] == max(.data[[Intensity]]))  %>%
