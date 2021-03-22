@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotEPRspectra_interactiv.R
 \name{plotEPRspectra_interactiv}
 \alias{plotEPRspectra_interactiv}
-\title{TODO}
+\title{Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot}
 \usage{
 plotEPRspectra_interactiv(
   spectrum.data,

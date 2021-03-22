@@ -1,6 +1,6 @@
 ## Interactive plotting Simple EPR spectrum by `plotly`
 #
-#' @title TODO
+#' @title Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot
 #'
 #'
 #' @description TODO

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_theme_NoY_ticks.R
 \name{plot_theme_NoY_ticks}
 \alias{plot_theme_NoY_ticks}
-\title{TODO}
+\title{Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)}
 \usage{
 plot_theme_NoY_ticks(
   axis.text.size = 15,
@@ -12,13 +12,16 @@ plot_theme_NoY_ticks(
 )
 }
 \arguments{
-\item{axis.text.size}{TODO}
+\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
+\strong{default}: \code{axis.text.size = 15}}
 
-\item{axis.title.size}{TODO}
+\item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
+\strong{default}: \code{axis.title.size = 17}}
 
-\item{grid}{TODO}
+\item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 
-\item{plot.bg.transparent}{TODO}
+\item{plot.bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
+should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background}
 }
 \value{
 TODO

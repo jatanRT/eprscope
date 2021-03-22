@@ -1,14 +1,17 @@
 #
-#' @title TODO
+#' @title Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)
 #'
 #'
 #' @description TODO
 #'
 #'
-#' @param axis.text.size TODO
-#' @param axis.title.size TODO
-#' @param grid TODO
-#' @param plot.bg.transparent TODO
+#' @param axis.text.size  Numeric, text size (in \code{pt}) for the axes units/descriptions,
+#'   \strong{default}: \code{axis.text.size = 15}
+#' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
+#'   \strong{default}: \code{axis.title.size = 17}
+#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
+#' @param plot.bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
+#'   should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background
 #'
 #'
 #' @return TODO

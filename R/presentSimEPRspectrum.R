@@ -1,5 +1,5 @@
 #
-#' @title Show Comparison Between the Experimental and Simulated EPR Spectrum either by Table or Graphic Format
+#' @title Show Comparison Between the Experimental and Simulated EPR Spectrum by Tabular and/or Graphic Representation
 #'
 #'
 #' @description TODO
@@ -7,17 +7,33 @@
 #'
 #' @param exp.spectrum.data \strong{Experimental} Spectrum data frame/table where the magnetic flux
 #'   density (in \code{mT}) column is labeled as \code{B_mT} in mT (or \code{B_G} in gauss)
-#'   and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
+#'   and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well,
+#'   this is automatic if the \code{\link{readExpEPRspectra}} function is used to read the spectrum in ASCII
 #' @param sim.spectrum.data Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
 #'   flux density (in \code{mT}) column must be labeled as \code{B_mT_Sim} in mT (or \code{B_G_Sim} in gauss)
-#'   and that of the derivative intensity as \code{dIepr_over_dB_Sim}
-#' @param B TODO
-#' @param Intensity.shift.ratio TODO
-#' @param B.shift TODO
-#' @param line.color.exp TODO
-#' @param line.color.sim TODO
-#' @param line.size TODO
-#' @param output.table TODO
+#'   and that of the derivative intensity as \code{dIepr_over_dB_Sim}, this is automatic
+#'   if the \code{\link{readSimEPRspectrum}} function is used to read the spectrum in ASCII
+#' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectra data frames
+#'   either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+#'   or \code{B = "B_G"}. Previous labels refer to \strong{both simulated and experimental spectral data frames}
+#' @param Intensity.shift.ratio Numeric (\strong{cannot be 0}), showing how 'far' is the simulated EPR spectrum
+#'   presented below the experimental one. The lower the ratio, the 'deeper' the simulated spectrum shift,
+#'   \strong{default}: \code{Intensity.shift.ratio = 1.2}, other common values : \code{0.6},\code{0.8},
+#'   \code{1.2},\code{1.1}
+#' @param B.shift Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
+#'   that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{dafault}:
+#'   \code{B.shift = 0}
+#' @param line.color.exp String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
+#'   colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}
+#' @param line.color.sim String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
+#'   colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.exp}
+#' @param line.size Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
+#' @param output.table Boolean, whether the table/data frame, corresponding to graphic spectra comparison
+#'   (this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})
+#'   should be presented as well (\code{output.table = TRUE}), in such case the output is \code{list}
+#'   containing plot (\code{list$plot},graphic representation) as well as containing table
+#'   (\code{list$table}, tabular representation), however the \strong{default} is \code{output.table = FALSE},
+#'   i.e. only graphical representation is shown
 #'
 #'
 #' @return TODO
