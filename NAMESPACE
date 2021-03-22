@@ -2,7 +2,7 @@
 
 export("%>%")
 export(A_MHz_convert_to_mT)
-export(Bextrem_fromSpectrum)
+export(Bextreme_fromSpectrum)
 export(DeltaBpp_fromSpectrum)
 export(a_mT_convert_to_MHz)
 export(gValue)
