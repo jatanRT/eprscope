@@ -18,7 +18,8 @@
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 #'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
-#'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well
+#'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
+#'   (incl. other \code{Intensity} and \code{B} columns) can be read as well
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well

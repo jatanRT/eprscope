@@ -14,17 +14,25 @@ Bextreme_fromSpectrum(
 )
 }
 \arguments{
-\item{spectrum.data}{TODO}
+\item{spectrum.data}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
+\code{index} column may be included as well, integrated/simulated spectra (incl. other \code{Intensity}
+and \code{B} columns) can be read as well}
 
-\item{B}{TODO}
+\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
-\item{Intensity}{TODO}
+\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{B.reg.start}{TODO}
+\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
+of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 
-\item{B.reg.end}{TODO}
+\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
+of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 
-\item{extreme}{TODO}
+\item{extreme}{Character/String with only a two values allowed: \code{"min"} or \code{"max"}}
 }
 \value{
 TODO
