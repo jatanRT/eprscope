@@ -10,7 +10,8 @@
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-#'   by the windows based softw. ("WinEpr") or by the Linux one ("Xenon"), \strong{default = "Xenon"}
+#'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
+#'   \strong{default}: \code{origin = "xenon"}
 #'
 #'
 #' @return TODO

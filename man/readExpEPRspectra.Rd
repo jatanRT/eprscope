@@ -33,9 +33,9 @@ is already included for the intensity normalization, \strong{default = 1}}
 with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \strong{default = FALSE}}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
-on whether they were recorded by the windows based softw. ("WinEpr") or by the Linux
-one ("Xenon"), \strong{default = "Xenon"}}
+on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
+by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
+\strong{default}: \code{origin = "xenon"}}
 }
 \value{
 data frame/table consisting of the magnetic flux density column \code{B_mT}

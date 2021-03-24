@@ -13,7 +13,8 @@ readEPRparams_vals_tab(path_to_DSC_or_par, origin = "xenon")
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
 on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-by the windows based softw. ("WinEpr") or by the Linux one ("Xenon"), \strong{default = "Xenon"}}
+by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
+\strong{default}: \code{origin = "xenon"}}
 }
 \value{
 TODO

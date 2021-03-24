@@ -24,9 +24,9 @@
 #' @param time.series Boolean, whether the input ASCII spectrum comes from the time series experiment
 #'   with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \strong{default = FALSE}
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the ASCII files/tables are slightly different depending
-#'   on whether they were recorded by the windows based softw. ("WinEpr") or by the Linux
-#'   one ("Xenon"), \strong{default = "Xenon"}
+#'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
+#'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
+#'   \strong{default}: \code{origin = "xenon"}
 #'
 #' @return data frame/table consisting of the magnetic flux density column \code{B_mT}
 #'   in millitesla (as well as \code{B_G} in gauss) and the derivative intensity column (\code{dIepr_over_dB})
