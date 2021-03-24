@@ -1,5 +1,5 @@
 #
-#' @title Labels for Various EPR Spectroscopy Plots
+#' @title Labels for Various Plots (Spectroscopy incl. EPR, Voltammetry,...etc)
 #'
 #'
 #' @description TODO To write greek symbols, subscript and superscript, see
@@ -14,26 +14,26 @@
 #' @param unit Variable String (without quotation, sometimes part of it can be quoted, see examples below),
 #'   physical quanity corresponding unit, which should be displayed like \code{mT}, \code{s}, \code{p.d.u.}, etc.
 #' @param user.defined Boolean, in order to bring more flexibility to display more complicated quantities and units
-#'   based on users requirements (sse examples bellow)
+#'   based on users requirements (see examples bellow)
 #'
 #'
 #' @return TODO
 #'
 #'
 #' @examples
-#' plotEPRlabel(B,mT)
-#' plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE)
-#' plotEPRlabel(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
-#' plotEPRlabel(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
-#' plotEPRlabel(c,mmol*dm^-3)
-#' plotEPRlabel(Double~~Integral,p.d.u.)
+#' plotLabelsXYZ(B,mT)
+#' plotLabelsXYZ("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE)
+#' plotLabelsXYZ(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
+#' plotLabelsXYZ(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
+#' plotLabelsXYZ(c,mmol*dm^-3)
+#' plotLabelsXYZ(Double~~Integral,p.d.u.)
 #'
 #'
 #' @export
 #'
 #'
 #' @importFrom rlang enquo
-plotEPRlabel <- function(quantity,unit,user.defined = FALSE){
+plotLabelsXYZ <- function(quantity,unit,user.defined = FALSE){
   ## in 'bquote' bang-bang ('!!') operator does not work
   ## use '.()' instead
   quantity <- enquo(quantity)
