@@ -1,32 +1,38 @@
 #
-#' @title Read the \strong{selected} Instrumental Parameters from \code{.DSC} to Record
-#'   the EPR Spectra (within the \code{Xenon} Software)
+#' @title Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
+#'   the EPR Spectra (within the \code{Xenon} or \code{WinEpr} Software, respectively)
 #'
 #'
 #' @description TODO
 #'
 #'
-#' @param path_to_DSC String, path to \code{.DSC} file including all instrumental parameters provided by the EPR machine
-#' @param string String, within the \code{.DSC} file corresponding to instrumental parameter,
-#'  following \strong{strings are defined}:
+#' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
+#'   parameters provided by the EPR machine
+#' @param string String, within the \code{.DSC} or \code{.par} (at the line beginning) file
+#'   corresponding to instrumental parameter,
+#'  following \strong{strings are defined} (in parenthesis for "winepr" software):
 #'  \tabular{rl}{
 #'   \strong{String}  \tab \strong{Instrumental Parameter} \cr
-#'    "OPER" \tab  operator (of the EPR instrument) \cr
-#'    "CMNT" \tab  comment (in order to describe the measurement) \cr
-#'    "DATE" \tab  date (when the EPR spectrum was recorded) \cr
-#'    "TIME"  \tab  time (when the EPR spectrum was recorded) \cr
+#'    "OPER" ("JON") \tab  operator (of the EPR instrument) \cr
+#'    "CMNT" ("JCO") \tab  comment (in order to describe the measurement) \cr
+#'    "DATE" ("JDA") \tab  date (when the EPR spectrum was recorded) \cr
+#'    "TIME" ("JTM")  \tab  time (when the EPR spectrum was recorded) \cr
 #'    "SAMPLE" \tab   name/decsript. of the sample \cr
-#'    "MWFQ"  \tab microwave frequency in \code{Hz} \cr
+#'    "MWFQ"  ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
 #'    "QValue" \tab   recorded quality-Factor (required for intensity norm.) \cr
-#'    "A1CT" \tab   central field (B) in \code{T} \cr
-#'    "A1SW" \tab   sweep width in \code{T} \cr
-#'    "B0MA" \tab   modulation amplitude in \code{T} \cr
-#'    "AVGS" \tab   number of accumulations for each spectrum \cr
-#'    "A1RS" \tab   number of points/resolution \cr
-#'    "MWPW" \tab   microwave power in \code{W} \cr
-#'    "SPTP" \tab   conversion time in \code{s} \cr
-#'    "RCTC" \tab   time constant in \code{s} \cr
+#'    "A1CT" ("HCF") \tab central field (B) in \code{T} (\code{G}) \cr
+#'    "A1SW" ("HSW") \tab   sweep width in \code{T} (\code{G}) \cr
+#'    "B0MA" ("RMA") \tab   modulation amplitude in \code{T} (\code{G}) \cr
+#'    "AVGS" ("JSD") \tab   number of accumulations for each spectrum \cr
+#'    "A1RS" ("RES") \tab   number of points/resolution \cr
+#'    "MWPW" ("MP") \tab   microwave power in \code{W} (\code{mW}) \cr
+#'    "SPTP" ("RCT") \tab   conversion time in \code{s} (\code{ms}) \cr
+#'    "RCTC" ("RTC") \tab   time constant in \code{s} (ms) \cr
 #'  }
+#' @param origin String, corresponding to software which was used to acquire the EPR spectra
+#'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
+#'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
+#'   \strong{default}: \code{origin = "xenon"}
 #'
 #' @return TODO
 #'
@@ -38,18 +44,27 @@
 #'
 #' @export
 #'
-readEPRparam_slct <- function(path_to_DSC,string){
+readEPRparam_slct <- function(path_to_DSC_or_par,string,origin = "xenon"){
   ## COMMENT path corresponds to file (.DSC) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
-  sel.str.line <- grep(string,readLines(path_to_DSC),value = T)
+  sel.str.line <- grep(string,readLines(path_to_DSC_or_par),value = T)
   ## COMMENT such line is then separated (split) into two ('n = 2') string parts
   ## by 'str_split' comming from 'stringr' pckg.
   sel.str.split <- stringr::str_split(sel.str.line,"[[:space:]]+",n = 2)
-  ## COMMENT the result is list, therefore select the second list element ('[[1]][2]')
-  if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMPLE"){
-    param.slct <- as.character(sel.str.split[[1]][2])
-  } else{
-    param.slct <- as.double(sel.str.split[[1]][2])
+  ## COMMENT the result is list, therefore select the second list element ('[[1]][2]'):
+  if (origin == "xenon"){
+    if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMPLE"){
+      param.slct <- as.character(sel.str.split[[1]][2])
+    } else{
+      param.slct <- as.double(sel.str.split[[1]][2])
+    }
+  }
+  if (origin == "winepr"){
+    if (string == "JON" || string == "JCO" || string == "JDA" || string == "JTM"){
+      param.slct <- as.character(sel.str.split[[1]][2])
+    } else{
+      param.slct <- as.double(sel.str.split[[1]][2])
+    }
   }
   return(param.slct)
 }
