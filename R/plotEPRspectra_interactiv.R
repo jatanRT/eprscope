@@ -59,7 +59,7 @@ plotEPRspectra_interactiv <- function(spectrum.data,
   }
   ## plot precursor
   if (isTRUE(time.series)){
-    simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]],color = .data$times_s)) +
+    simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]],color = .data$time_s)) +
       geom_line(size = line.size,show.legend = TRUE) +
       labs(x = xlabel,y = ylabel)
   } else{
