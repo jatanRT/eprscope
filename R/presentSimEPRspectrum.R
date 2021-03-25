@@ -77,10 +77,10 @@ presentSimEPRspectrum <- function(exp.spectrum.data,
   both.spectr.data[[paste(B,"_Sim",sep = "")]] <- both.spectr.data[[paste(B,"_Sim",sep = "")]] + B.shift
   ## B label for the plot:
   if (B == "B_mT"){
-    x.label <- plotEPRlabel(B,mT)
+    x.label <- plotLabelsXYZ(B,mT)
   }
   if (B == "B_G"){
-    x.label <- plotEPRlabel(B,G)
+    x.label <- plotLabelsXYZ(B,G)
   }
   ## plot variable:
   simulation.plot <- both.spectr.data %>%
@@ -90,7 +90,7 @@ presentSimEPRspectrum <- function(exp.spectrum.data,
                   color = "Simulation"),size = line.size) +
     scale_color_manual(values = c(line.color.exp,line.color.sim),breaks = c("Experiment","Simulation")) +
     labs(color = "",x = x.label,
-         y = plotEPRlabel("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))
+         y = plotLabelsXYZ("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))
   ## if the entire table/table should be included
   if (isTRUE(output.table)){
     SimPlotPlusTable <- list(plot = simulation.plot,table = both.spectr.data)
