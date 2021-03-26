@@ -22,7 +22,7 @@ following \strong{strings are defined} (in parenthesis for "winepr" software):
   "TIME" ("JTM")  \tab  time (when the EPR spectrum was recorded) \cr
   "SAMPLE" \tab   name/decsript. of the sample \cr
   "MWFQ"  ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
-  "QValue" \tab   recorded quality-Factor (required for intensity norm.) \cr
+  "QValue" \tab   recorded quality-Factor (required for intensity norm.) \code{unitless} \cr
   "A1CT" ("HCF") \tab central field (B) in \code{T} (\code{G}) \cr
   "A1SW" ("HSW") \tab   sweep width in \code{T} (\code{G}) \cr
   "B0MA" ("RMA") \tab   modulation amplitude in \code{T} (\code{G}) \cr
@@ -31,6 +31,8 @@ following \strong{strings are defined} (in parenthesis for "winepr" software):
   "MWPW" ("MP") \tab   microwave power in \code{W} (\code{mW}) \cr
   "SPTP" ("RCT") \tab   conversion time in \code{s} (\code{ms}) \cr
   "RCTC" ("RTC") \tab   time constant in \code{s} (ms) \cr
+  "RCAG" ("RRG") \tab  signal receiver gain in \code{dB} (unitless) \cr
+  "ConvFact" \tab conversion factor/instr. calibration constant for quantitative analysis \code{unitless} \cr
 }}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
