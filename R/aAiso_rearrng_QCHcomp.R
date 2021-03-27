@@ -22,7 +22,7 @@
 #'
 #'
 #' @importFrom stringr str_subset str_extract
-aAiso_rearrng_fromQCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
+aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
   A.str <- str_subset(data.col.names,regex("mhz",ignore_case = T))

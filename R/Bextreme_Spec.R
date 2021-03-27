@@ -32,7 +32,7 @@
 ## intensity ('dIepr_over_dB' or other name/label). To select a region / span / interval
 ## (limits are 'B.reg.start','B.reg.end')
 ## of single spectrum in which the extrem ("max" or "min") has to be found
-Bextreme_fromSpectrum  <-  function(spectrum.data,
+Bextreme_Spec  <-  function(spectrum.data,
                                    B = "B_mT",
                                    Intensity = "dIepr_over_dB",
                                    B.reg.start,

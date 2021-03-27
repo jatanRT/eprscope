@@ -13,14 +13,14 @@
 #'
 #'
 #' @examples
-#' gValue_fromQCHcomp(c(-806.1,1099.9,1417.1))
-#' gValue_fromQCHcomp(c(-543.1,832.8,1089.5),mean = FALSE)
+#' gValue_QCHcomp(c(-806.1,1099.9,1417.1))
+#' gValue_QCHcomp(c(-543.1,832.8,1089.5),mean = FALSE)
 #'
 #'
 #' @export
 #'
 #'
-gValue_fromQCHcomp <- function(delta_g_vec,mean = TRUE){
+gValue_QCHcomp <- function(delta_g_vec,mean = TRUE){
   ## g-factor for free electron (g.e) from `constants` package
   ## round the g.e to 6 decimal places
   g.e <- round(-constants::syms$gem,digits = 6)

@@ -28,16 +28,16 @@
 #'
 #' @examples
 #' \dontrun{
-#' DeltaBpp_fromSpectrum(spectrum.data,320.221,328.331)
-#' DeltaBpp_fromSpectrum(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
-#' DeltaBpp_fromSpectrum(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
-#' DeltaBpp_fromSpectrum(spectrum.data,"B_mT_Sim",320.221,328.331)
+#' DeltaBpp_Spec(spectrum.data,320.221,328.331)
+#' DeltaBpp_Spec(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
+#' DeltaBpp_Spec(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
+#' DeltaBpp_Spec(spectrum.data,"B_mT_Sim",320.221,328.331)
 #' }
 #'
 #' @export
 #'
 #'
-DeltaBpp_fromSpectrum <- function(spectrum.data,B = "B_mT",Intensity = "dIepr_over_dB",B.reg.start,B.reg.end){
+DeltaBpp_Spec <- function(spectrum.data,B = "B_mT",Intensity = "dIepr_over_dB",B.reg.start,B.reg.end){
   ## B corresponding to minimum and maximum derivative intensities
   ## in the selected B region ('B.reg.'):
   B.min <- spectrum.data %>%

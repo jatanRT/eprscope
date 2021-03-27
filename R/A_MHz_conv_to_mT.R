@@ -22,7 +22,7 @@
 #'
 #'
 #' @importFrom constants syms
-A_MHz_convert_to_mT <- function(A,g){
+A_MHz_conv_to_mT <- function(A,g){
   Planck.const <- syms$hbar*2*pi
   Bohr.magnet <- syms$mub
   a <- (A*Planck.const*1e+6)/(g*Bohr.magnet*1e-3)
