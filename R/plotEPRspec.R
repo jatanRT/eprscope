@@ -51,12 +51,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' plotEPRspectrum(spectrum.data)
-#' plotEPRspectrum(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
-#' plotEPRspectrum(spectrum.data,"Integral",B = "B_mT_Sim")
-#' plotEPRspectrum(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
-#' plotEPRspectrum(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-#' plotEPRspectrum(spectrum.data,"B_mT","darkred",line.size = 1.2)
+#' plotEPRspec(spectrum.data)
+#' plotEPRspec(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
+#' plotEPRspec(spectrum.data,"Integral",B = "B_mT_Sim")
+#' plotEPRspec(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
+#' plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
+#' plotEPRspec(spectrum.data,"B_mT","darkred",line.size = 1.2)
 #' }
 #'
 #'
@@ -66,7 +66,7 @@
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
-plotEPRspectrum <- function(spectrum.data,
+plotEPRspec <- function(spectrum.data,
                           B = "B_mT",
                           Intensity = "dIepr_over_dB",
                           line.color = "steelblue",

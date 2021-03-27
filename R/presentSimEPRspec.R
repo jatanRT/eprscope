@@ -48,7 +48,7 @@
 #'
 #' @export
 #'
-presentSimEPRspectrum <- function(exp.spectrum.data,
+presentSimEPRspec <- function(exp.spectrum.data,
                                   sim.spectrum.data,
                                   B = "B_mT",
                                   Intensity.shift.ratio = 1.2,

@@ -32,7 +32,7 @@
 #'
 #'
 #' @importFrom plotly ggplotly
-plotEPRspectra_interactiv <- function(spectrum.data,
+plotEPRspecs_interact <- function(spectrum.data,
                                       B = "B_mT",
                                       Intensity = "dIepr_over_dB",
                                       line.size = 0.75,
