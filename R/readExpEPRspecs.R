@@ -37,15 +37,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' readExpEPRspectr(path_to_ASCII_file,qfactor = 3500) ## for the spectrum acquired by "xenon"
+#' readExpEPRspecs(path_to_ASCII_file,qfactor = 3500) ## for the spectrum acquired by "xenon"
 #' ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-#' readExpEPRspectr(path_to_ASCII_file,qfactor = 2000,Ns = 20,m = 10,origin = "winepr")
+#' readExpEPRspecs(path_to_ASCII_file,qfactor = 2000,Ns = 20,m = 10,origin = "winepr")
 #' ## if no parameter intensity normalization is required and spectrum
 #' ## was recorded by "xenon" software:
-#' readExpEPRspectr(path_to_ASCII_file)
+#' readExpEPRspecs(path_to_ASCII_file)
 #' ## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
 #' ## EPR spectroelectrochemistry or photochemistry):
-#' readExpEPRspectr(path_to_ASC_file,2800,time.series = T)
+#' readExpEPRspecs(path_to_ASC_file,2800,time.series = T)
 #' }
 #'
 #'
@@ -53,7 +53,7 @@
 #'
 #'
 #' @importFrom rlang .data
-readExpEPRspectra <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
+readExpEPRspecs <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
   if (origin == "xenon"){
     if (isFALSE(time.series)){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,

@@ -20,12 +20,12 @@ presentSimEPRspec(
 \item{exp.spectrum.data}{\strong{Experimental} Spectrum data frame/table where the magnetic flux
 density (in \code{mT}) column is labeled as \code{B_mT} in mT (or \code{B_G} in gauss)
 and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well,
-this is automatic if the \code{\link{readExpEPRspectra}} function is used to read the spectrum in ASCII}
+this is automatic if the \code{\link{readExpEPRspecs}} function is used to read the spectrum in ASCII}
 
 \item{sim.spectrum.data}{Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
 flux density (in \code{mT}) column must be labeled as \code{B_mT_Sim} in mT (or \code{B_G_Sim} in gauss)
 and that of the derivative intensity as \code{dIepr_over_dB_Sim}, this is automatic
-if the \code{\link{readSimEPRspectrum}} function is used to read the spectrum in ASCII}
+if the \code{\link{readSimEPRspec}} function is used to read the spectrum in ASCII}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectra data frames
 either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
