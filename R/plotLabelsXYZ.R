@@ -34,6 +34,7 @@
 #'
 #' @importFrom rlang enquo
 plotLabelsXYZ <- function(quantity,unit,user.defined = FALSE){
+  #
   ## in 'bquote' bang-bang ('!!') operator does not work
   ## use '.()' instead
   quantity <- enquo(quantity)
@@ -43,5 +44,7 @@ plotLabelsXYZ <- function(quantity,unit,user.defined = FALSE){
   } else{
     l <- bquote(.(quantity)~~.(unit))
   }
+  #
   return(l)
+  #
 }

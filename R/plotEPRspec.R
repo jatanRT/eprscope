@@ -76,9 +76,11 @@ plotEPRspec <- function(spectrum.data,
                           axis.title.size = 17,
                           grid = TRUE,
                           yTicks = TRUE){
+  #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   B.start <- min(spectrum.data[,B])
   B.end <- max(spectrum.data[,B])
+  #
   ## Labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
   if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~mT~")")
@@ -99,6 +101,7 @@ plotEPRspec <- function(spectrum.data,
                            logic = "or",ignore.case = T,switch = F)){
     y.label <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
   }
+  #
   ## Themes for the spectra, whether the ticks are displayed or not:
   theme.ticks <- theme(axis.ticks.length = unit(6,"pt"),
                        axis.text.x = element_text(margin = margin(4,8,6,8,unit = "pt"),size = axis.text.size),
@@ -116,11 +119,13 @@ plotEPRspec <- function(spectrum.data,
                          panel.border = element_rect(color = "black",fill = NA),
                          plot.background = element_rect(fill = "transparent")
   ) ## theme in order to have ticks inside the graph
+  #
   theme.Nogrid <- theme(panel.grid.major = element_blank(),
                         panel.grid.minor = element_blank()
                         ) ## theme with no grid
   ## x ticks of the upper axis also inside the graph:
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  #
   ## The lot function (5 G distance from the y-axis borders ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
   if (B == "B_mT"){
     x.plot.limits <- c(B.start - 0.5,B.end + 0.5)
@@ -128,12 +133,14 @@ plotEPRspec <- function(spectrum.data,
   if (B == "B_G"){
     x.plot.limits <- c(B.start - 5,B.end + 5)
   }
+  #
   ## Basic simple plot:
   simplePlot <- ggplot(spectrum.data) +
     geom_line(aes(x = .data[[B]], y = .data[[Intensity]]),
               size = line.size,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
+  #
   ## Conditions for plotting
   if (basic.theme == "theme_gray"){
     if (isTRUE(yTicks)){
@@ -276,5 +283,7 @@ plotEPRspec <- function(spectrum.data,
       }
     }
   }
+  #
   return(p)
+  #
 }

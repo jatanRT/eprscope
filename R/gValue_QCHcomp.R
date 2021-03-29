@@ -21,12 +21,15 @@
 #'
 #'
 gValue_QCHcomp <- function(delta_g_vec,mean = TRUE){
+  #
   ## g-factor for free electron (g.e) from `constants` package
   ## round the g.e to 6 decimal places
   g.e <- round(-constants::syms$gem,digits = 6)
+  #
   ## g-vector from shifts (`deltas`) and g.e
   delta_g_vec <- as.vector(delta_g_vec)
   g_vec <- g.e + delta_g_vec*1e-6
+  #
   ## whether to calculate the mean value or get the g-vector
   ## as it is
   if (isTRUE(mean)){
@@ -34,5 +37,7 @@ gValue_QCHcomp <- function(delta_g_vec,mean = TRUE){
   } else{
     gValue <- g_vec
   }
+  #
   return(gValue)
+  #
 }

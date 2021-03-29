@@ -56,19 +56,23 @@ gValue_Spec <- function(spectrum.data,
                                 B.reg.start,
                                 B.reg.end,
                                 iso = TRUE){
+  #
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)){
     B.min <- spectrum.data %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
       filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
       pull(.data[[B]])
+    #
     ## B at maximum of dIepr_over_dB:
     B.max <- spectrum.data %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
       filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
       pull(.data[[B]])
+    #
     ## B between both of them:
     B.center <- (B.min + B.max)/2
+    #
     ## B at dIepr_over_dB = 0 (near 0, see next comment):
   } else{
     ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
@@ -82,6 +86,7 @@ gValue_Spec <- function(spectrum.data,
   Planck.const <- constants::syms$hbar*2*pi # `h` is not available directly
   Bohr.magnet <- constants::syms$mub
   g.precurs <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center)
+  #
   ## Conditions for B column, the name should contain ("B", "mT" or "G"):
   if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     g <- g.precurs/1e-3
@@ -89,5 +94,7 @@ gValue_Spec <- function(spectrum.data,
   if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     g <- g.precurs/1e-4
   }
+  #
   return(round(g,digits = 5))
+  #
 }

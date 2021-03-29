@@ -22,8 +22,11 @@
 #'
 #'
 a_mT_conv_to_MHz <- function(a,g){
+  #
   Planck.const <- syms$hbar*2*pi
   Bohr.magnet <- syms$mub
   A <- (g*Bohr.magnet*1e-3*a)/(Planck.const*1e+6)
+  #
   return(A)
+  #
 }

@@ -40,9 +40,14 @@
 ## on the number of scans (`N_scans`) and sweep time (`sweep.time`) for each
 ## spectrum in the kinetic series. Time converted into seconds
 time_correct_EPRspecs  <-  function(time,N_scans,sweep.time){
+  #
   if(N_scans == 0){
+    #
     return(round(time + sweep.time*N_scans + sweep.time/2))
+    #
   } else{
+    #
     return(round(Time + sweep.time*(N_scans - 1) + sweep.time/2))
+    #
   }
 }

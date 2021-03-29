@@ -38,17 +38,22 @@
 #'
 #'
 DeltaBpp_Spec <- function(spectrum.data,B = "B_mT",Intensity = "dIepr_over_dB",B.reg.start,B.reg.end){
+  #
   ## B corresponding to minimum and maximum derivative intensities
   ## in the selected B region ('B.reg.'):
   B.min <- spectrum.data %>%
     filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
     filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
     pull(.data[[B]])
+  #
   B.max <- spectrum.data %>%
     filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
     filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     pull(.data[[B]])
+  #
   ## Delta_B calculation:
   DeltaB_pp <- abs(B.min - B.max)
+  #
   return(round(DeltaB_pp,digits = 2))
+  #
 }

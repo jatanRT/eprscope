@@ -37,6 +37,7 @@ plot_theme_In_ticks <- function(axis.text.size = 15,
                      axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
                      panel.border = element_rect(color = "black",fill = NA))
   theme_Nogrid <- theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
+  #
   ## theme:
   if (isTRUE(plot.bg.transparent)){
     if (isTRUE(grid)){
@@ -55,5 +56,7 @@ plot_theme_In_ticks <- function(axis.text.size = 15,
         theme_Nogrid
     }
   }
+  #
   return(thm)
+  #
 }

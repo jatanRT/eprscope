@@ -43,13 +43,17 @@ Bextreme_Spec  <-  function(spectrum.data,
       filter(between(.data[[B]],B.reg.start,B.reg.end))  %>%
       filter(.data[[Intensity]] == min(.data[[Intensity]]))  %>%
       pull(.data[[B]])
+    #
     return(B.min)
+    #
   }
   if (extreme == "max"){
     B.max  <-  spectrum.data  %>%
       filter(between(.data[[B]],B.reg.start,B.reg.end))  %>%
       filter(.data[[Intensity]] == max(.data[[Intensity]]))  %>%
       pull(.data[[B]])
+    #
     return(B.max)
+    #
   }
 }

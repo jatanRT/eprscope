@@ -60,6 +60,7 @@ readExpEPRspecs <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.ser
                                        skip = 1,col.names = c("index","B_G","Intensity")) %>%
       dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM)) %>%
       dplyr::select(-.data$Intensity) ## presence of both `B_mT` and `B_G` is required
+    #
     ## to add pipe operator '%>%' to the whole package one must run:
     ## 1. 'usethis::use_pipe()' 2. 'devtools::document()'
     } else{
@@ -76,5 +77,7 @@ readExpEPRspecs <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.ser
                     index = seq_len(nrow(spectrum.data))) %>%
       dplyr::select(-.data$Intensity)
   }
+  #
   return(spectrum.data)
+  #
 }

@@ -25,17 +25,23 @@
 #' @export
 #'
 readEPRparams_vals_tab <- function(path_to_DSC_or_par,origin = "xenon"){
+  #
   ## required string patterns from 'DSC' or 'par' file:
   if (origin == "xenon"){
-    str.epr.Instr.params.V <- c("MWFQ","QValue","A1CT","A1SW","B0MA","AVGS","A1RS","MWPW","SPTP","RCTC","RCAG","ConvFact")
+    str.epr.Instr.params.V <- c("MWFQ","QValue","A1CT","A1SW","B0MA",
+                                "AVGS","A1RS","MWPW","SPTP","RCTC","RCAG","ConvFact")
   }
   if (origin == "winepr"){
     str.epr.Instr.params.V <- c("MF","HCF","HSW","RMA","JSD","RES","MP","RCT","RTC","RRG")
   }
+  #
   ## select all corresponding lines (which contain string pattern) from 'DSC' or 'par' file:
-  str.dsc.sel.V <- sapply(str.epr.Instr.params.V,function(x) grep(x,readLines(path_to_DSC_or_par),value = T))
+  str.dsc.sel.V <- sapply(str.epr.Instr.params.V,
+                          function(x) grep(x,readLines(path_to_DSC_or_par),value = T))
+  #
   ## split these strings into string couples (n=2) by space "  " ("\\s+"):
   str.dsc.sel.split.V <- sapply(str.dsc.sel.V,function(y) stringr::str_split(y,"\\s+",n = 2))
+  #
   ## Create a "parameter" data frame ('[[2]]' means second string in line / couple):
   ## depending on the original parameter list coming either from "xenon" or from "winepr" software
   if (origin == "xenon"){
@@ -84,7 +90,7 @@ readEPRparams_vals_tab <- function(path_to_DSC_or_par,origin = "xenon"){
     )
   }
   names(data.instrument.V) <- c("Parameter","Value","Unit")
-
+  #
   return(data.instrument.V)
-
+ #
 }
