@@ -22,7 +22,7 @@ Description: Primary aim of the package is to process and plot spectra in Electr
     thermodynamic parameters (e.g. like G, H, S, K) from quantum chemical (QCH)
     computations can be calculated for the chemical reactions with radicals/paramagnetic
     species involved. Simulation and fitting of the experimental EPR spectra, similar
-    to EasySpin Matlab tollbox is planed for the future.
+    to EasySpin Matlab toolbox is planed for the future.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
