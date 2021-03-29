@@ -13,12 +13,19 @@
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 #'   or \code{B = "B_G"} (\strong{default})
-#' @param B.reg.start TODO
-#' @param B.reg.end TODO
-#' @param B.peak.start TODO
-#' @param B.peak.end TODO
-#' @param poly.degree TODO
-#' @param double.integ TODO
+#' @param B.reg.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
+#'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
+#' @param B.reg.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
+#'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
+#' @param B.peak.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
+#'   of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})
+#' @param B.peak.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
+#'   of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})
+#' @param poly.degree Numeric, degree of polynomial function used to fit the baseline under the single integrated
+#'   curve of \emph{dIepr_over_dB}
+#' @param double.integ Boolean, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
+#'   which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}
+#'
 #'
 #' @return data frame TODO
 #'

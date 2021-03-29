@@ -26,17 +26,23 @@ this can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function fr
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default})}
 
-\item{B.reg.start}{TODO}
+\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
+of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 
-\item{B.reg.end}{TODO}
+\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
+of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 
-\item{B.peak.start}{TODO}
+\item{B.peak.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
+of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})}
 
-\item{B.peak.end}{TODO}
+\item{B.peak.end}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
+of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})}
 
-\item{poly.degree}{TODO}
+\item{poly.degree}{Numeric, degree of polynomial function used to fit the baseline under the single integrated
+curve of \emph{dIepr_over_dB}}
 
-\item{double.integ}{TODO}
+\item{double.integ}{Boolean, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
+which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}}
 }
 \value{
 data frame TODO
