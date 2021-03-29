@@ -17,7 +17,8 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 \strong{default}: \code{origin = "xenon"}}
 }
 \value{
-TODO
+Data frame/table containing instrumental parameters (numeric values not strings) applied
+  to acquire the EPR spectra
 }
 \description{
 TODO

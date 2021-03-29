@@ -40,10 +40,7 @@ that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr
 to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})}
 }
 \value{
-\eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)},
-  where the \eqn{B} comes directly from the EPR spectrum and is actually calculated between
-  the \code{\emph{B}(maximum)} and \code{\emph{B}(minimum)} (THESE DO NOT EQUAL to \code{B.reg.start}
-  and \code{B.reg.min}!) corresponding to maximum and minimum of the derivative intensity (\code{dIepr_over_dB})
+Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}
 }
 \description{
 Calculation of g-value according to fundamental formula (\code{\link{gValue}}).

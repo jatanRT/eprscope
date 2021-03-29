@@ -14,7 +14,9 @@ from \eqn{g_e} within e.g. \strong{Gaussian} or \strong{ORCA} output}
 \strong{default}: \code{mean = TRUE}, or save the entire vector with all principal components}
 }
 \value{
-TODO
+Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components
+  calculated by QCH methods (e.g. DFT) or numeric vector with principal \eqn{g}-components
+  if \code{mean = FALSE}
 }
 \description{
 TODO

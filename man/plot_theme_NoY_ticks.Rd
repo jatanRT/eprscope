@@ -24,7 +24,8 @@ plot_theme_NoY_ticks(
 should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background}
 }
 \value{
-TODO
+Custom \pkg{ggplot2} \code{theme} \code{without Y axis ticks}, to show opposite X axis ticks
+  use: \code{scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))}
 }
 \description{
 TODO

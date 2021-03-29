@@ -17,7 +17,7 @@ structures/variables, see e.g. example above (\code{Sys.\strong{g}}), therefore
 the \strong{default} 'value' is \code{NULL} and \code{string} \strong{is applied only for structures with fields}.}
 }
 \value{
-TODO
+Numeric or String/Character depending on MATLAB variable used for simulation of EPR spectra
 }
 \description{
 TODO

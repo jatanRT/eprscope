@@ -17,7 +17,7 @@
 #'   based on users requirements (see examples bellow)
 #'
 #'
-#' @return TODO
+#' @return Axis labels for different plots
 #'
 #'
 #' @examples

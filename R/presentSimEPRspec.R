@@ -37,7 +37,8 @@
 #'   i.e. only graphical representation is shown
 #'
 #'
-#' @return TODO
+#' @return \pkg{ggplot2} \code{plot} of experimental and simulated spectrum or \code{list} consisting of mentioned-plot
+#'   and the corresponding \code{data frame/table}
 #'
 #'
 #' @examples

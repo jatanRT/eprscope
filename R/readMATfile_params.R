@@ -13,7 +13,7 @@
 #'   the \strong{default} 'value' is \code{NULL} and \code{string} \strong{is applied only for structures with fields}.
 #'
 #'
-#' @return TODO
+#' @return Numeric or String/Character depending on MATLAB variable used for simulation of EPR spectra
 #'
 #'
 #' @examples

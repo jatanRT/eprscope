@@ -36,7 +36,8 @@
 #'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
 #'   \strong{default}: \code{origin = "xenon"}
 #'
-#' @return TODO
+#' @return Numeric or String/Character (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
+#'   parameter applied to record the EPR spectra
 #'
 #'
 #' @examples

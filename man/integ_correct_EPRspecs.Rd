@@ -45,7 +45,9 @@ curve of \emph{dIepr_over_dB}}
 which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}}
 }
 \value{
-data frame TODO
+Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B}) as well as its
+  corresponding \code{single} (column \code{sIntegCorr}) and/or \code{double} (column \code{dIntegCorr})
+  integral corrected against the baseline fit
 }
 \description{
 TODO

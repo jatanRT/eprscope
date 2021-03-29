@@ -35,7 +35,8 @@ of the \code{selected B region} (therefore abbreviation \code{.reg.})}
 \item{extreme}{Character/String with only a two values allowed: \code{"min"} or \code{"max"}}
 }
 \value{
-TODO
+Numeric value of magnetic flux density \eqn{B} corresponding to \code{minimal} or \code{maximal}
+  \code{intensity} within the EPR spectra (or their integrated form)
 }
 \description{
 TODO

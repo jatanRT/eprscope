@@ -14,7 +14,8 @@
 #'   \strong{default}: \code{origin = "xenon"}
 #'
 #'
-#' @return TODO
+#' @return Data frame/table containing instrumental parameters (numeric values not strings) applied
+#'   to acquire the EPR spectra
 #'
 #'
 #' @examples

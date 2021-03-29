@@ -24,7 +24,8 @@
 #'   in EPR time series
 #' @param sweep.time Numeric, time for recording of one EPR spectrum \eqn{=} one accumulation
 #'
-#' @return TODO
+#' @return Numeric value/vector corresponding to accurate time at which the EPR spectra were recorded during
+#'   the kinetic measurements (e.g. like radical stability, electrochemical and/or photochemical measurements)
 #'
 #'
 #' @examples

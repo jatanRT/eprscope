@@ -24,7 +24,7 @@ plot_theme_Out_ticks(
 should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background}
 }
 \value{
-TODO
+Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing outside} the graph panel
 }
 \description{
 TODO

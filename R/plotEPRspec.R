@@ -46,7 +46,7 @@
 #'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
 #'
 #'
-#' @return EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
+#' @return EPR simple spectrum \pkg{ggplot2} graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
 #'
 #'
 #' @examples

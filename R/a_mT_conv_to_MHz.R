@@ -10,7 +10,7 @@
 #' @param g Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})
 #'
 #'
-#' @return TODO
+#' @return Numeric Value/Vector corresponding to HFCCs (\eqn{A}) in \code{MHz}
 #'
 #'
 #' @examples

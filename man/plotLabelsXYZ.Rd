@@ -18,7 +18,7 @@ physical quanity corresponding unit, which should be displayed like \code{mT}, \
 based on users requirements (see examples bellow)}
 }
 \value{
-TODO
+Axis labels for different plots
 }
 \description{
 TODO To write greek symbols, subscript and superscript, see

@@ -27,7 +27,9 @@
 #'   which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}
 #'
 #'
-#' @return data frame TODO
+#' @return Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B}) as well as its
+#'   corresponding \code{single} (column \code{sIntegCorr}) and/or \code{double} (column \code{dIntegCorr})
+#'   integral corrected against the baseline fit
 #'
 #'
 #'

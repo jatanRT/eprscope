@@ -29,7 +29,8 @@ with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn
 e.g. like: \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))}}
 }
 \value{
-Data frame
+Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
+  structure/symmetry
 }
 \description{
 TODO

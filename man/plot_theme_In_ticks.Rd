@@ -24,7 +24,8 @@ plot_theme_In_ticks(
 should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background}
 }
 \value{
-TODO
+Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing inside} the graph panel,
+  to show opposite axis ticks use: \code{scale_..._continuous(sec.axis = dup_axis(name = "",labels = NULL))}
 }
 \description{
 TODO

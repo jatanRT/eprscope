@@ -14,7 +14,7 @@
 #'   should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background
 #'
 #'
-#' @return TODO
+#' @return Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing outside} the graph panel
 #'
 #'
 #' @examples

@@ -9,7 +9,10 @@
 #' @param mean Boolean, whether to calculated the \code{mean value} of \code{delta_g_vec} elements,
 #'   \strong{default}: \code{mean = TRUE}, or save the entire vector with all principal components
 #'
-#' @return TODO
+#'
+#' @return Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components
+#'   calculated by QCH methods (e.g. DFT) or numeric vector with principal \eqn{g}-components
+#'   if \code{mean = FALSE}
 #'
 #'
 #' @examples

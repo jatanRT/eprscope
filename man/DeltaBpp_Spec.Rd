@@ -31,7 +31,7 @@ of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
 }
 \value{
-Difference (the absolute value) of the magnetic flux densities (\code{B}) corresponding to \code{minimum}
+NUmeric Value of \eqn{B} difference (the absolute value) corresponding to \code{minimum}
   and \code{maximum} of the derivative intensity (\code{dIepr_over_dB}) => \eqn{ \Delta B_{pp}}
 }
 \description{

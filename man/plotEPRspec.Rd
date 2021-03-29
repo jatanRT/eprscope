@@ -57,7 +57,7 @@ colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
 (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}}
 }
 \value{
-EPR simple spectrum graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
+EPR simple spectrum \pkg{ggplot2} graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
 }
 \description{
 Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spectral data

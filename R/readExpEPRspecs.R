@@ -28,7 +28,7 @@
 #'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
 #'   \strong{default}: \code{origin = "xenon"}
 #'
-#' @return data frame/table consisting of the magnetic flux density column \code{B_mT}
+#' @return Data frame/table consisting of the magnetic flux density column \code{B_mT}
 #'   in millitesla (as well as \code{B_G} in gauss) and the derivative intensity column (\code{dIepr_over_dB})
 #'   in \code{procedure defined unit}
 #'   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),

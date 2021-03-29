@@ -32,10 +32,8 @@
 #'   (this is the \code{\strong{default}: iso = TRUE}), or by finding the the \eqn{B} value corresponding
 #'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})
 #'
-#' @return \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)},
-#'   where the \eqn{B} comes directly from the EPR spectrum and is actually calculated between
-#'   the \code{\emph{B}(maximum)} and \code{\emph{B}(minimum)} (THESE DO NOT EQUAL to \code{B.reg.start}
-#'   and \code{B.reg.min}!) corresponding to maximum and minimum of the derivative intensity (\code{dIepr_over_dB})
+#' @return Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}
+#'
 #'
 #' @examples
 #' \dontrun{

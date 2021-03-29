@@ -57,7 +57,8 @@ containing plot (\code{list$plot},graphic representation) as well as containing 
 i.e. only graphical representation is shown}
 }
 \value{
-TODO
+\pkg{ggplot2} \code{plot} of experimental and simulated spectrum or \code{list} consisting of mentioned-plot
+  and the corresponding \code{data frame/table}
 }
 \description{
 TODO

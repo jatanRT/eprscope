@@ -31,7 +31,7 @@ name/label is used (e.g. for integrated or simulated spectra), \strong{default}:
 with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)}
 }
 \value{
-TODO
+Interactive EPR spectrum plot/graph based on \pkg{plotly}
 }
 \description{
 TODO

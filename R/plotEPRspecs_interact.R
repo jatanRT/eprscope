@@ -20,7 +20,7 @@
 #'   with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)
 #'
 #'
-#' @return TODO
+#' @return Interactive EPR spectrum plot/graph based on \pkg{plotly}
 #'
 #'
 #' @examples

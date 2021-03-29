@@ -41,7 +41,8 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 \strong{default}: \code{origin = "xenon"}}
 }
 \value{
-TODO
+Numeric or String/Character (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
+  parameter applied to record the EPR spectra
 }
 \description{
 TODO

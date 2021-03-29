@@ -25,7 +25,8 @@
 #'   e.g. like: \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))}
 #'
 #'
-#' @return Data frame
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
+#'   structure/symmetry
 #'
 #'
 #' @examples
