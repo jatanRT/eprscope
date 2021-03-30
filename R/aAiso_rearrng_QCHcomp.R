@@ -42,10 +42,10 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- str_subset(data.col.names,regex("mhz",ignore_case = T))
+  A.str <- str_subset(data.col.names,regex("mhz|megahertz",ignore_case = T))
   a.str <- str_subset(data.col.names,regex("gauss|G|Gauss"))
-  atomic.num.str <- str_subset(data.col.names,regex("No|Num|num|no"))
-  nucl.str <- str_subset(data.col.names,regex("nuc",ignore_case = T))
+  atomic.num.str <- str_subset(data.col.names,regex("No|Num|num|no|no_|num_"))
+  nucl.str <- str_subset(data.col.names,regex("nuc|Nuc_atom|nucleus_",ignore_case = T))
   #
   ## Read the data:
   data.Aa.comput <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,
@@ -82,10 +82,10 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
     group.nucs <- paste(how.many.nucs," x ",nucleo.nucs,mark.nucs," (",num.nucs.str,")",sep = "")
     #
     ## Replicate the previous string variable corresponding to length of a list component/part:
-    nuclear.group <- rep(group.nucs,length(nuclei.list.slct[[k]]))
+    NuclearGroup <- rep(group.nucs,length(nuclei.list.slct[[k]]))
     #
     ## Build up data frame row by row:
-    gal <- data.frame(sal,nuclear.group) ## at first combine by columns
+    gal <- data.frame(sal,NuclearGroup) ## at first combine by columns
     data.slct.nucs.group <- rbind(data.slct.nucs.group,gal)
   }
   ## Group by and summarize (find the mean value of each list component) according
