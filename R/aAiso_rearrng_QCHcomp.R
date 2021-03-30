@@ -42,10 +42,10 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- str_subset(data.col.names,regex("mhz",ignore_case = T))
+  A.str <- str_subset(data.col.names,regex("mhz|megahertz",ignore_case = T))
   a.str <- str_subset(data.col.names,regex("gauss|G|Gauss"))
-  atomic.num.str <- str_subset(data.col.names,regex("No|Num|num|no"))
-  nucl.str <- str_subset(data.col.names,regex("nuc",ignore_case = T))
+  atomic.num.str <- str_subset(data.col.names,regex("No|Num|num|no|no_|num_"))
+  nucl.str <- str_subset(data.col.names,regex("nuc|Nuc_atom|nucleus_",ignore_case = T))
   #
   ## Read the data:
   data.Aa.comput <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,
