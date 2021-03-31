@@ -9,7 +9,8 @@ Description: Primary aim of the package is to process and plot spectra in Electr
     Paramagnetic Resonance (EPR) spectroscopy. It includes functions to find the most important 
     spectral characteristics like g-factor, linewidth, maximal derivative intensities 
     and single/double integrals, especially in spectral (time) series consisting 
-    of many EPR spectra like during electrochemical or photochemical radical generation. 
+    of many EPR spectra like during electrochemical or photochemical radical generation and/or quenching. 
+    For such purpose also rate konstant of simple 1st or 2nd order kinetic can be evaluated as well.
     The input-format of all EPR spectra and tables must be ASCII (e.g. like '.txt', '.csv' or '.asc') 
     which is then transformed into 'data frame' by the own package. Subsequently, the EPR spectra
     ('data frames') can be plotted eiher by common 'ggplot2' scripts or by package own functions. 
