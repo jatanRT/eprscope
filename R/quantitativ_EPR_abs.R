@@ -1,4 +1,36 @@
 #
+#' @title TODO
+#'
+#'
+#' @description TODO
+#'
+#'
+#' @param double.integ TODO
+#' @param tube.id.mm TODO
+#' @param tube.h.mm TODO
+#' @param nu.GHz TODO
+#' @param power.mW TODO
+#' @param modul.amp.mT TODO
+#' @param qValue TODO
+#' @param Nscans TODO
+#' @param rc.gain.dB TODO
+#' @param conv.time.ms TODO
+#' @param Temp.K TODO
+#' @param S TODO
+#' @param microW.cavity TODO
+#'
+#'
+#' @return TODO
+#'
+#'
+#' @examples
+#' TODO
+#' TODO
+#'
+#'
+#' @export
+#'
+#'
 quantitativ_EPR_abs <- function(double.integ,
                                 tube.id.mm,
                                 tube.h.mm,
@@ -31,10 +63,11 @@ quantitativ_EPR_abs <- function(double.integ,
     #
     ## Cavity constants/characteristics:
     point.sample.c.factor <- 8.51e-09 # unitless
-    h.cavity.center <- 61 # in mm
+    #h.cavity.center <- 61 ## in mm, if the sample is properly centered (this is not required)
     h.cavity.length <- 23 # in mm
     #
     ## Polynomial function to characterize intensity distribution within the cavity:
+    ## `y` corresponds to distance from cavity center in mm:
       intensity.poly.function <- function(y) {1.00179 - 0.00307086*y - 0.0265409*y^2 +
         0.000297603*y^3 + 0.000223277*y^4 - 4.53833e-06*y^5 - 4.1451e-07*y^6 +
         1.89417e-08*y^7 - 1.48241e-09*y^8
@@ -43,39 +76,98 @@ quantitativ_EPR_abs <- function(double.integ,
       #
       ## Integration of the polynomial function
       integral.poly.list <- stats::integrate(intensity.poly.function,
-                                        lower = (h.cavity.center - tube.h.mm/2)*1e-3,
-                                        upper = (h.cavity.center + tube.h.mm/2)*1e-3)
+                                             lower = (-tube.h.mm/2),
+                                             upper = (tube.h.mm/2))
       integral.poly <- integral.poly.list[[1]]
       #
       ## Own quantification:
       ## Number of species:
       No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.const*third.quant.factor)
       ## Number of species per effective cm
-      No.paramag.cm.spc <- No.paramag.spc/tube.h.mm/10
+      No.paramag.cm.spc <- (No.paramag.spc/tube.h.mm)*10
+      ## NUmber of species in cm^3:
+      No.paramag.V.spc <- No.paramag.spc/(tube.volume.m3/1e+6)
       ## Number od species => concentration mol*dm^{-3}
-      No.paramag.c <- (No.paramag.spc/Avogadro.No)/(tube.volume.m3/1e3)
+      No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/(tube.volume.m3/1e+3)
       ## Result:
-      Result <- list(N_cm = No.paramag.cm.spc,c_N_mol_dm3 = No.paramag.c)
+      Result <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_N_M = No.paramag.c.spc)
     }
     if (tube.h.mm >= h.cavity.length){
       #
       ## Integration of the polynomial function
       integral.poly.list <- stats::integrate(intensity.poly.function,
-                                             lower = (h.cavity.center - h.cavity.length/2)*1e-3,
-                                             upper = (h.cavity.center + h.cavity.length/2)*1e-3)
+                                             lower = (-h.cavity.length/2),
+                                             upper = (h.cavity.length/2))
       integral.poly <- integral.poly.list[[1]]
       #
       ## Own quantification:
       ## Number of species:
       No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.const*third.quant.factor)
       ## Number of species per effective cm
-      No.paramag.cm.spc <- No.paramag.spc/h.cavity.length/10
+      No.paramag.cm.spc <- (No.paramag.spc/h.cavity.length)*10
+      ## Number of species in cm^3:
+      No.paramag.V.spc <- No.paramag.spc/((h.cavity.length*1e-3)*pi*((tube.id.mm/2)*1e-3)^2/1e6)
       ## Number od species => concentration mol*dm^{-3}
-      No.paramag.c <- (No.paramag.spc/Avogadro.No)/((h.cavity.length*1e-3)*pi*((tube.id.mm/2)*1e-3)^2/1e3)
+      No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/((h.cavity.length*1e-3)*pi*((tube.id.mm/2)*1e-3)^2/1e3)
       ## Result:
-      Result <- list(N_cm = No.paramag.cm.spc,c_N_mol_dm3 = No.paramag.c)
+      Result <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_N_M = No.paramag.c.spc)
     }
   }
-
-
+  if (microW.cavity == "highsensitive"){
+    #
+    ## Cavity constants/characteristics:
+    point.sample.c.factor <- 9.271e-09 # unitless
+    #h.cavity.center <- 62.5 ## in mm, if the sample is properly centered (this is not required)
+    h.cavity.length <- 40 # in mm
+    #
+    ## Polynomial function to characterize intensity distribution within the cavity:
+    ## `y` corresponds to distance from cavity center in mm:
+      intensity.poly.function <- function(y) {0.99652 + 0.00737177*y - 0.00559614*y^2 -
+          2.88221e-05*y^3 + 1.00404e-05*y^4 + 3.43695e-08*y^5 - 5.0404e-09*y^6 -
+          1.4783e-11*y^7 - 1.29132e-12*y^8
+      }
+    if (tube.h.mm < h.cavity.length){
+      #
+      ## Integration of the polynomial function
+      integral.poly.list <- stats::integrate(intensity.poly.function,
+                                             lower = (-tube.h.mm/2),
+                                             upper = (tube.h.mm/2))
+      integral.poly <- integral.poly.list[[1]]
+      #
+      ## Own quantification:
+      ## Number of species:
+      No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.const*third.quant.factor)
+      ## Number of species per effective cm
+      No.paramag.cm.spc <- (No.paramag.spc/tube.h.mm)*10
+      ## NUmber of species in cm^3:
+      No.paramag.V.spc <- No.paramag.spc/(tube.volume.m3/1e+6)
+      ## Number od species => concentration mol*dm^{-3}
+      No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/(tube.volume.m3/1e3)
+      ## Result:
+      Result <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_N_M = No.paramag.c.spc)
+    }
+    if (tube.h.mm >= h.cavity.length){
+      #
+      ## Integration of the polynomial function
+      integral.poly.list <- stats::integrate(intensity.poly.function,
+                                             lower = (-h.cavity.length/2),
+                                             upper = (h.cavity.length/2))
+      integral.poly <- integral.poly.list[[1]]
+      #
+      ## Own quantification:
+      ## Number of species:
+      No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.const*third.quant.factor)
+      ## Number of species per effective cm
+      No.paramag.cm.spc <- (No.paramag.spc/h.cavity.length)*10
+      ## Number of species in cm^3:
+      No.paramag.V.spc <- No.paramag.spc/((h.cavity.length*1e-3)*pi*((tube.id.mm/2)*1e-3)^2/1e6)
+      ## Number od species => concentration mol*dm^{-3}
+      No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/((h.cavity.length*1e-3)*pi*((tube.id.mm/2)*1e-3)^2/1e3)
+      ## Result:
+      Result <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_N_M = No.paramag.c.spc)
+    }
+  }
+   #
+  return(Result)
+  #
 }
