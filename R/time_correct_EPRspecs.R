@@ -42,7 +42,7 @@
 ## spectrum in the kinetic series. Time converted into seconds
 time_correct_EPRspecs  <-  function(time.s,Nscans,sweep.time.s){
   #
-  if(N_scans == 0){
+  if(Nscans == 0){
     #
     return(round(time.s + sweep.time.s*Nscans + sweep.time.s/2))
     #
