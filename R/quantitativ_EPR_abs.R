@@ -2,15 +2,15 @@
 quantitativ_EPR_abs <- function(double.integ,
                                 tube.id.mm,
                                 tube.h.mm,
-                                MWFQ.GHz,
-                                MWPW.mW,
-                                B0MA.mT,
-                                QValue,
-                                AVGS,
-                                RCAG.dB,
-                                SPTP.ms,
+                                nu.GHz,
+                                power.mW,
+                                modul.amp.mT,
+                                qValue,
+                                Nscans,
+                                rc.gain.dB,
+                                conv.time.ms,
                                 Temp.K = 298,
-                                S.quantum.No = 0.5,
+                                S = 0.5,
                                 microW.cavity = "rectangular"){
   #
   ## Physical Constants:
@@ -19,11 +19,11 @@ quantitativ_EPR_abs <- function(double.integ,
   Avogadro.No <- constants::syms$na
   #
   ## Boltzmann factor:
-  n.B <- (Planck.const*MWFQ.GHz*1e+9)/(2*Boltzmann.const*Temp.K)
+  n.B <- (Planck.const*nu.GHz*1e+9)/(2*Boltzmann.const*Temp.K)
   ## Normalization constant Norm.const:
-  Norm.const <- SPTP.ms*AVGS*20*10^(RCAG.dB/20)
+  Norm.const <- conv.time.ms*Nscans*20*10^(rc.gain.dB/20)
   ## `Third` quant. factor in definition:
-  third.quant.factor <- sqrt(MWPW.mW*1e-3)*B0MA.mT*1e-3*QValue*n.B*S.quantum.No*(S.quantum.No + 1)
+  third.quant.factor <- sqrt(power.mW*1e-3)*modul.amp.mT*1e-3*qValue*n.B*S*(S + 1)
   ## Tube volume:
   tube.volume.m3 <- (tube.h.mm*1e-3)*pi*((tube.id.mm/2)*1e-3)^2
   #
