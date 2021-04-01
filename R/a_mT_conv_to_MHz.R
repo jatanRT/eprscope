@@ -6,7 +6,7 @@
 #' @description TODO
 #'
 #'
-#' @param a Numeric value/Numeric vector corresponding to HFSCs in \code{mT} ('line distances' from spectrum)
+#' @param a.mT Numeric value/Numeric vector corresponding to HFSCs in \code{mT} ('line distances' from spectrum)
 #' @param g Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})
 #'
 #'
@@ -21,11 +21,11 @@
 #' @export
 #'
 #'
-a_mT_conv_to_MHz <- function(a,g){
+a_mT_conv_to_MHz <- function(a.mT,g){
   #
   Planck.const <- syms$hbar*2*pi
   Bohr.magnet <- syms$mub
-  A <- (g*Bohr.magnet*1e-3*a)/(Planck.const*1e+6)
+  A <- (g*Bohr.magnet*1e-3*a.mT)/(Planck.const*1e+6)
   #
   return(A)
   #

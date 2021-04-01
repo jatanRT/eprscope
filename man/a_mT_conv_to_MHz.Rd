@@ -5,10 +5,10 @@
 \title{Conversion of Hyperfine Splitting Constants (\code{HFSCs}, \eqn{a} in \code{mT}) to Hyperfine Coupling
   ones (\code{HFCCs}, \eqn{A} in \code{MHz})}
 \usage{
-a_mT_conv_to_MHz(a, g)
+a_mT_conv_to_MHz(a.mT, g)
 }
 \arguments{
-\item{a}{Numeric value/Numeric vector corresponding to HFSCs in \code{mT} ('line distances' from spectrum)}
+\item{a.mT}{Numeric value/Numeric vector corresponding to HFSCs in \code{mT} ('line distances' from spectrum)}
 
 \item{g}{Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})}
 }

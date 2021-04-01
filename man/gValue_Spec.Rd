@@ -6,7 +6,7 @@
 \usage{
 gValue_Spec(
   spectrum.data,
-  nu,
+  nu.GHz,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
   B.reg.start,
@@ -19,7 +19,7 @@ gValue_Spec(
 must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column can be included as well}
 
-\item{nu}{Numeric, microwave frequency in \code{GHz}}
+\item{nu.GHz}{Numeric, microwave frequency in \code{GHz}}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
@@ -59,7 +59,7 @@ Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
 \examples{
 \dontrun{
 gValue_Spec(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
-gValue_Spec(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
+gValue_Spec(spectrum.data,nu.GHz = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
 gValue_Spec(spectrum.data,9.91024,B = "B_G_Sim",3499,3501)
 }
 

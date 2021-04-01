@@ -95,8 +95,8 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
     mutate(mT = .data$Gauss/10) %>%
     select(-c(.data$No,.data$Nucleus,.data$Gauss)) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
-    dplyr::summarize(A_MHz_QCH = round(mean(.data$MegaHertz),digits = 3),
-                     a_mT_QCH = round(mean(.data$mT),digits = 2))
+    dplyr::summarize(Aiso_MHz_QCH = round(mean(.data$MegaHertz),digits = 3),
+                     aiso_mT_QCH = round(mean(.data$mT),digits = 2))
    #
    ## Entire output table:
   return(data.slct.nucs.group)

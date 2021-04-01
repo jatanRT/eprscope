@@ -6,7 +6,7 @@
 \usage{
 readExpEPRspecs(
   path_to_ASC,
-  qfactor = 1,
+  qValue = 1,
   Ns = 1,
   cM = 1,
   m = 1,
@@ -18,7 +18,7 @@ readExpEPRspecs(
 \item{path_to_ASC}{String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
 with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)}
 
-\item{qfactor}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
+\item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, \strong{default = 1}}
 
 \item{Ns}{Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
@@ -58,9 +58,9 @@ Function reads/loads the experimental EPR spectrum recorded by BRUKER spectromet
 }
 \examples{
 \dontrun{
-readExpEPRspecs(path_to_ASCII_file,qfactor = 3500) ## for the spectrum acquired by "xenon"
+readExpEPRspecs(path_to_ASCII_file,qValue = 3500) ## for the spectrum acquired by "xenon"
 ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-readExpEPRspecs(path_to_ASCII_file,qfactor = 2000,Ns = 20,m = 10,origin = "winepr")
+readExpEPRspecs(path_to_ASCII_file,qValue = 2000,Ns = 20,m = 10,origin = "winepr")
 ## if no parameter intensity normalization is required and spectrum
 ## was recorded by "xenon" software:
 readExpEPRspecs(path_to_ASCII_file)

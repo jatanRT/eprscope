@@ -18,11 +18,11 @@
 #' and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan
 #'
 #'
-#' @param time Vector/Column in \code{data frame} corresponding to \code{time} at which
+#' @param time.s Vector/Column in \code{data frame} corresponding to \code{time} (in \code{s}) at which
 #'   the individual EPR spectra were recorded
 #' @param N_scans Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
 #'   in EPR time series
-#' @param sweep.time Numeric, time for recording of one EPR spectrum \eqn{=} one accumulation
+#' @param sweep.time.s Numeric, time (in \code{s}) for recording of one EPR spectrum \eqn{=} one accumulation
 #'
 #' @return Numeric value/vector corresponding to accurate time at which the EPR spectra were recorded during
 #'   the kinetic measurements (e.g. like radical stability, electrochemical and/or photochemical measurements)
@@ -37,18 +37,18 @@
 #'
 #'
 ## when the spectrum is recorded, this can be estimated by the time
-## of the spectrum middle point. The time (`time`) however also depends
-## on the number of scans (`N_scans`) and sweep time (`sweep.time`) for each
+## of the spectrum middle point. The time (`time.s`) however also depends
+## on the number of scans (`N_scans`) and sweep time (`sweep.time.s`) for each
 ## spectrum in the kinetic series. Time converted into seconds
-time_correct_EPRspecs  <-  function(time,N_scans,sweep.time){
+time_correct_EPRspecs  <-  function(time.s,N_scans,sweep.time.s){
   #
   if(N_scans == 0){
     #
-    return(round(time + sweep.time*N_scans + sweep.time/2))
+    return(round(time.s + sweep.time.s*N_scans + sweep.time.s/2))
     #
   } else{
     #
-    return(round(Time + sweep.time*(N_scans - 1) + sweep.time/2))
+    return(round(time.s + sweep.time.s*(N_scans - 1) + sweep.time.s/2))
     #
   }
 }

@@ -17,7 +17,7 @@
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
 #'   must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column can be included as well
-#' @param nu Numeric, microwave frequency in \code{GHz}
+#' @param nu.GHz Numeric, microwave frequency in \code{GHz}
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
@@ -38,7 +38,7 @@
 #' @examples
 #' \dontrun{
 #' gValue_Spec(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
-#' gValue_Spec(spectrum.data,nu = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
+#' gValue_Spec(spectrum.data,nu.GHz = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
 #' gValue_Spec(spectrum.data,9.91024,B = "B_G_Sim",3499,3501)
 #' }
 #'
@@ -48,7 +48,7 @@
 #'
 #' @importFrom dplyr filter select mutate pull between near
 gValue_Spec <- function(spectrum.data,
-                                nu,
+                                nu.GHz,
                                 B = "B_mT",
                                 Intensity = "dIepr_over_dB",
                                 B.reg.start,
@@ -83,7 +83,7 @@ gValue_Spec <- function(spectrum.data,
   ## g -value calculation:
   Planck.const <- constants::syms$hbar*2*pi # `h` is not available directly
   Bohr.magnet <- constants::syms$mub
-  g.precurs <- (Planck.const*nu*1e+9)/(Bohr.magnet*B.center)
+  g.precurs <- (Planck.const*nu.GHz*1e+9)/(Bohr.magnet*B.center)
   #
   ## Conditions for B column, the name should contain ("B", "mT" or "G"):
   if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){

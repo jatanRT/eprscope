@@ -6,7 +6,7 @@
 #' @description TODO
 #'
 #'
-#' @param A Numeric value/Numeric vector corresponding to HFCCs in \code{MHz}
+#' @param A.MHz Numeric value/Numeric vector corresponding to HFCCs in \code{MHz}
 #' @param g Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})
 #'
 #'
@@ -22,11 +22,11 @@
 #'
 #'
 #' @importFrom constants syms
-A_MHz_conv_to_mT <- function(A,g){
+A_MHz_conv_to_mT <- function(A.MHz,g){
   #
   Planck.const <- syms$hbar*2*pi
   Bohr.magnet <- syms$mub
-  a <- (A*Planck.const*1e+6)/(g*Bohr.magnet*1e-3)
+  a <- (A.MHz*Planck.const*1e+6)/(g*Bohr.magnet*1e-3)
   #
   return(a)
   #

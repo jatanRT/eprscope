@@ -14,7 +14,7 @@
 #'
 #' @param path_to_ASC String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
 #'   with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)
-#' @param qfactor Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
+#' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, \strong{default = 1}
 #' @param Ns Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
 #'   is already included for the intensity normalization, \strong{default = 1}
@@ -37,9 +37,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' readExpEPRspecs(path_to_ASCII_file,qfactor = 3500) ## for the spectrum acquired by "xenon"
+#' readExpEPRspecs(path_to_ASCII_file,qValue = 3500) ## for the spectrum acquired by "xenon"
 #' ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-#' readExpEPRspecs(path_to_ASCII_file,qfactor = 2000,Ns = 20,m = 10,origin = "winepr")
+#' readExpEPRspecs(path_to_ASCII_file,qValue = 2000,Ns = 20,m = 10,origin = "winepr")
 #' ## if no parameter intensity normalization is required and spectrum
 #' ## was recorded by "xenon" software:
 #' readExpEPRspecs(path_to_ASCII_file)
@@ -53,12 +53,12 @@
 #'
 #'
 #' @importFrom rlang .data
-readExpEPRspecs <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
+readExpEPRspecs <- function(path_to_ASC,qValue = 1,Ns = 1,cM = 1,m = 1,time.series = FALSE,origin = "xenon"){
   if (origin == "xenon"){
     if (isFALSE(time.series)){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,
                                        skip = 1,col.names = c("index","B_G","Intensity")) %>%
-      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM)) %>%
+      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qValue*Ns*m*cM)) %>%
       dplyr::select(-.data$Intensity) ## presence of both `B_mT` and `B_G` is required
     #
     ## to add pipe operator '%>%' to the whole package one must run:
@@ -66,14 +66,14 @@ readExpEPRspecs <- function(path_to_ASC,qfactor = 1,Ns = 1,cM = 1,m = 1,time.ser
     } else{
       spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
                                          header = F,skip = 1,col.names = c("index","B_G","time_s","Intensity")) %>%
-        dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM)) %>%
+        dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qValue*Ns*m*cM)) %>%
         dplyr::select(-.data$Intensity)
     }
   }
   if (origin == "winepr"){
     spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
                                        header = F,skip = 3,col.names = c("B_G","Intensity")) %>%
-      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qfactor*Ns*m*cM),
+      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qValue*Ns*m*cM),
                     index = seq_len(nrow(spectrum.data))) %>%
       dplyr::select(-.data$Intensity)
   }
