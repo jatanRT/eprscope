@@ -7,9 +7,9 @@
 readExpEPRspecs(
   path_to_ASC,
   qValue = 1,
-  Ns = 1,
-  cM = 1,
-  m = 1,
+  Nscans = 1,
+  c.M = 1,
+  m.mg = 1,
   time.series = FALSE,
   origin = "xenon"
 )
@@ -21,13 +21,13 @@ with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or '
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, \strong{default = 1}}
 
-\item{Ns}{Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
+\item{Nscans}{Number of scans/sweeps per spectrum, in the case of "Xenon" software, the parameter
 is already included for the intensity normalization, \strong{default = 1}}
 
-\item{cM}{Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
+\item{c.M}{Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
 \strong{default = 1}}
 
-\item{m}{Numeric, weight of the powder sample in mg, \strong{default = 1}}
+\item{m.mg}{Numeric, weight of the powder sample in\code{mg}, \strong{default = 1}}
 
 \item{time.series}{Boolean, whether the input ASCII spectrum comes from the time series experiment
 with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \strong{default = FALSE}}
@@ -59,11 +59,14 @@ Function reads/loads the experimental EPR spectrum recorded by BRUKER spectromet
 \examples{
 \dontrun{
 readExpEPRspecs(path_to_ASCII_file,qValue = 3500) ## for the spectrum acquired by "xenon"
+
 ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-readExpEPRspecs(path_to_ASCII_file,qValue = 2000,Ns = 20,m = 10,origin = "winepr")
+readExpEPRspecs(path_to_ASCII_file,qValue = 2000,Nscans = 20,m.mg = 10,origin = "winepr")
+
 ## if no parameter intensity normalization is required and spectrum
 ## was recorded by "xenon" software:
 readExpEPRspecs(path_to_ASCII_file)
+
 ## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
 ## EPR spectroelectrochemistry or photochemistry):
 readExpEPRspecs(path_to_ASC_file,2800,time.series = T)

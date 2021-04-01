@@ -37,6 +37,7 @@ plotEPRspecs_interact <- function(spectrum.data,
                                       Intensity = "dIepr_over_dB",
                                       line.size = 0.75,
                                       time.series = FALSE){
+  #
   ## labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
   if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     xlabel = "B (mT)"
@@ -57,6 +58,7 @@ plotEPRspecs_interact <- function(spectrum.data,
                            logic = "or",ignore.case = T,switch = F)){
     ylabel <- "DIepr  (p.d.u.)"
   }
+  #
   ## plot precursor
   if (isTRUE(time.series)){
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]],color = .data$time_s)) +
@@ -67,6 +69,7 @@ plotEPRspecs_interact <- function(spectrum.data,
       geom_line(size = line.size,color = "#6600CC",show.legend = FALSE) +
       labs(x = xlabel,y = ylabel)
   }
-  ##
+  #
   return(ggplotly(simplePlot))
+  #
 }
