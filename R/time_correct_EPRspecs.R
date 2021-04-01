@@ -20,7 +20,7 @@
 #'
 #' @param time.s Vector/Column in \code{data frame} corresponding to \code{time} (in \code{s}) at which
 #'   the individual EPR spectra were recorded
-#' @param N_scans Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
+#' @param Nscans Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
 #'   in EPR time series
 #' @param sweep.time.s Numeric, time (in \code{s}) for recording of one EPR spectrum \eqn{=} one accumulation
 #'
@@ -40,15 +40,15 @@
 ## of the spectrum middle point. The time (`time.s`) however also depends
 ## on the number of scans (`N_scans`) and sweep time (`sweep.time.s`) for each
 ## spectrum in the kinetic series. Time converted into seconds
-time_correct_EPRspecs  <-  function(time.s,N_scans,sweep.time.s){
+time_correct_EPRspecs  <-  function(time.s,Nscans,sweep.time.s){
   #
   if(N_scans == 0){
     #
-    return(round(time.s + sweep.time.s*N_scans + sweep.time.s/2))
+    return(round(time.s + sweep.time.s*Nscans + sweep.time.s/2))
     #
   } else{
     #
-    return(round(time.s + sweep.time.s*(N_scans - 1) + sweep.time.s/2))
+    return(round(time.s + sweep.time.s*(Nscans - 1) + sweep.time.s/2))
     #
   }
 }

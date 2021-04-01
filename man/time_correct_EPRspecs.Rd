@@ -4,13 +4,13 @@
 \alias{time_correct_EPRspecs}
 \title{Correction for EPR spectral Time Series Providing the Accurate Time for EPR Spectral Line Appearance}
 \usage{
-time_correct_EPRspecs(time.s, N_scans, sweep.time.s)
+time_correct_EPRspecs(time.s, Nscans, sweep.time.s)
 }
 \arguments{
 \item{time.s}{Vector/Column in \code{data frame} corresponding to \code{time} (in \code{s}) at which
 the individual EPR spectra were recorded}
 
-\item{N_scans}{Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
+\item{Nscans}{Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
 in EPR time series}
 
 \item{sweep.time.s}{Numeric, time (in \code{s}) for recording of one EPR spectrum \eqn{=} one accumulation}
