@@ -5,7 +5,7 @@
 #' @description TODO
 #'
 #'
-#' @param double.integ TODO
+#' @param double.integ Numeric, value/vector/column corresponding
 #' @param tube.id.mm TODO
 #' @param tube.h.mm TODO
 #' @param nu.GHz TODO
