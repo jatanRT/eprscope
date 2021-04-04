@@ -6,26 +6,21 @@
 \usage{
 quantitativ_EPR_abs(
   double.integ,
-  tube.id.mm,
-  tube.h.mm,
   nu.GHz,
   power.mW,
   modul.amp.mT,
   qValue,
-  Nscans,
-  rc.gain.dB,
-  conv.time.ms,
+  tube.sample.id.mm,
+  fill.sample.h.mm,
+  Norm.constantant = 1,
   Temp.K = 298,
   S = 0.5,
+  centr.sample.h.mm = 61,
   microW.cavity = "rectangular"
 )
 }
 \arguments{
 \item{double.integ}{TODO}
-
-\item{tube.id.mm}{TODO}
-
-\item{tube.h.mm}{TODO}
 
 \item{nu.GHz}{TODO}
 
@@ -35,15 +30,17 @@ quantitativ_EPR_abs(
 
 \item{qValue}{TODO}
 
-\item{Nscans}{TODO}
+\item{tube.sample.id.mm}{TODO}
 
-\item{rc.gain.dB}{TODO}
+\item{fill.sample.h.mm}{TODO}
 
-\item{conv.time.ms}{TODO}
+\item{Norm.constantant}{TODO}
 
 \item{Temp.K}{TODO}
 
 \item{S}{TODO}
+
+\item{centr.sample.h.mm}{TODO}
 
 \item{microW.cavity}{TODO}
 }
