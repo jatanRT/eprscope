@@ -40,6 +40,6 @@ readEPRparams_slct_kin <- function(path_to_DSC_or_par,origin = "xenon"){
   }
   sweeptime <- resol*convTime
   #
-  return(list(Nscans = NScans,sweepTime = sweeptime))
+  return(list(Nscans = NScans,sweepTime = sweeptime,Npoints = resol))
   #
 }
