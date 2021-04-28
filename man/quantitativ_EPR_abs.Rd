@@ -12,7 +12,7 @@ quantitativ_EPR_abs(
   qValue,
   tube.sample.id.mm,
   fill.sample.h.mm,
-  Norm.constantant = 1,
+  Norm.constant = 1,
   Temp.K = 298,
   S = 0.5,
   centr.sample.h.mm = 61,
@@ -34,7 +34,7 @@ quantitativ_EPR_abs(
 
 \item{fill.sample.h.mm}{TODO}
 
-\item{Norm.constantant}{TODO}
+\item{Norm.constant}{TODO}
 
 \item{Temp.K}{TODO}
 

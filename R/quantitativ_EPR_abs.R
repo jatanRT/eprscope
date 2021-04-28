@@ -12,7 +12,7 @@
 #' @param qValue TODO
 #' @param tube.sample.id.mm TODO
 #' @param fill.sample.h.mm TODO
-#' @param Norm.constantant TODO
+#' @param Norm.constant TODO
 #' @param Temp.K TODO
 #' @param S TODO
 #' @param centr.sample.h.mm TODO
@@ -37,7 +37,7 @@ quantitativ_EPR_abs <- function(double.integ,
                                 qValue,
                                 tube.sample.id.mm,
                                 fill.sample.h.mm,
-                                Norm.constantant = 1,
+                                Norm.constant = 1,
                                 Temp.K = 298,
                                 S = 0.5,
                                 centr.sample.h.mm = 61,
