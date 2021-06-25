@@ -88,7 +88,8 @@ plotEPRspec <- function(spectrum.data,
   if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~G~")")
   }
-  if (sjmisc::str_contains(Intensity,c("dB","_dB","intens","deriv","Intens","Deriv"),logic = "or",ignore.case = F)){
+  if (sjmisc::str_contains(Intensity,c("dB","_dB","intens","deriv","Intens","Deriv","dI_","dIepr"),
+                           logic = "or",ignore.case = F)){
     y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   }
   if (sjmisc::str_contains(Intensity,
