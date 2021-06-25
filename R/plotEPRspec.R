@@ -127,10 +127,10 @@ plotEPRspec <- function(spectrum.data,
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
   ## The lot function (5 G distance from the y-axis borders ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
-  if (B == "B_mT"){
+  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
     x.plot.limits <- c(B.start - 0.5,B.end + 0.5)
   }
-  if (B == "B_G"){
+  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     x.plot.limits <- c(B.start - 5,B.end + 5)
   }
   #
