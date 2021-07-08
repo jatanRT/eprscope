@@ -88,18 +88,53 @@ plotEPRspec <- function(spectrum.data,
   if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~G~")")
   }
-  if (sjmisc::str_contains(Intensity,c("dB","_dB","intens","deriv","Intens","Deriv","dI_","dIepr"),
+  if (sjmisc::str_contains(Intensity,c("dB",
+                                       "_dB",
+                                       "intens",
+                                       "deriv",
+                                       "Intens",
+                                       "Deriv",
+                                       "dIepr"),
                            logic = "or",ignore.case = F)){
     y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   }
   if (sjmisc::str_contains(Intensity,
-                           c("single","sinteg","s_integ","single_","singleinteg","sintegral","sInteg_"),
-                           logic = "or",ignore.case = T,switch = F)){
+                           c("single",
+                             "Single",
+                             "SInteg",
+                             "sinteg",
+                             "s_integ",
+                             "single_",
+                             "singleinteg",
+                             "sintegral",
+                             "integral",
+                             "Integral",
+                             "sInteg_"),
+                           logic = "or",ignore.case = F)){
     y.label <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
   }
   if (sjmisc::str_contains(Intensity,
-                           c("double","dinteg","d_integ","double_","doubleinteg","dintegral","di","sec"),
-                           logic = "or",ignore.case = T,switch = F)){
+                           c("double",
+                             "Double",
+                             "Dinteg",
+                             "DInteg",
+                             "dinteg",
+                             "d_integ",
+                             "D_integ",
+                             "D_Integ",
+                             "double_",
+                             "Double_",
+                             "doubleinteg",
+                             "DoubleInteg",
+                             "Dintegral",
+                             "DIntegral",
+                             "dintegral",
+                             "di",
+                             "DI",
+                             "sec",
+                             "second",
+                             "Second"),
+                           logic = "or",ignore.case = F)){
     y.label <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
   }
   #
