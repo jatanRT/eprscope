@@ -13,7 +13,7 @@ A_MHz_conv_to_mT(A.MHz, g)
 \item{g}{Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})}
 }
 \value{
-Numeric Value/Vector corresponding to HFSCs (\eqn{a}) in \code{mT}
+Numeric Value/Vector corresponding to HFSCs (\eqn{a}) in \code{mT})
 }
 \description{
 TODO
