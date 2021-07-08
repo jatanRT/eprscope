@@ -50,7 +50,7 @@ integ_correct_EPRspecs <- function(spec.integ.data,
   #
   ## Intensity column from spe.integ.data
   integ.string <- str_subset(colnames(spec.integ.data),
-                             regex("single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_",
+                             base::regex("single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_",
                                    ignore_case = T))
   #
   ## select a region / range / interval of a integrated spectrum
@@ -66,7 +66,7 @@ integ_correct_EPRspecs <- function(spec.integ.data,
     filter(!between(.data[[B]],B.peak.start,B.peak.end))
   #
   ## Polynomial baseline fit:
-  integ.baseline.fit <- lm(.data[[integ.string]] ~ stats::poly(.data[[B]],degree = poly.degree),
+  integ.baseline.fit <- stats::lm(.data[[integ.string]] ~ stats::poly(.data[[B]],degree = poly.degree),
                            data = data.NoPeak)
   #
   ## apply fit to data.slct, remove the .resid colum (which is not required),
