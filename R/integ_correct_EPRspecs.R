@@ -50,7 +50,7 @@ integ_correct_EPRspecs <- function(spec.integ.data,
   #
   ## Intensity column from spe.integ.data
   integ.string <- str_subset(colnames(spec.integ.data),
-                             base::regex("single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_",
+                             regex("single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_",
                                    ignore_case = T))
   #
   ## select a region / range / interval of a integrated spectrum
