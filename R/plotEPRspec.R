@@ -144,16 +144,14 @@ plotEPRspec <- function(spectrum.data,
                        axis.text.y = element_text(margin = margin(8,8,8,0,unit = "pt"),size = axis.text.size),
                        axis.title.y = element_text(margin = margin(2,4,2,6,unit = "pt"),size = axis.title.size),
                        axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
-                       panel.border = element_rect(color = "black",fill = NA),
-                       plot.background = element_rect(fill = "transparent")
+                       panel.border = element_rect(color = "black",fill = NA)
   ) ## theme in order to have ticks outside the graph
   theme.Noticks <- theme(axis.ticks.length = unit(-6,"pt"),
                          axis.text.x = element_text(margin = margin(10,8,6,8,unit = "pt"),size = axis.text.size),
                          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
                          axis.title.y = element_text(margin = margin(2,12,2,6,unit = "pt"),size = axis.title.size),
                          axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
-                         panel.border = element_rect(color = "black",fill = NA),
-                         plot.background = element_rect(fill = "transparent")
+                         panel.border = element_rect(color = "black",fill = NA)
   ) ## theme in order to have ticks inside the graph
   #
   theme.Nogrid <- theme(panel.grid.major = element_blank(),
