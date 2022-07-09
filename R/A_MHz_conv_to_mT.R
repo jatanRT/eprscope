@@ -1,12 +1,14 @@
 #
-#' @title Convert Hyperfine Coupling Constants (HFCCs in MHz) to Hyperfine Splitting ones (HFSCs in mT)
+#' Convert Coupling Constants (A, HFCCs in MHz) to Hyperfine Splittings (a, HFSCs in mT).
 #'
 #'
-#' @description Converts HFCCs (\emph{A} values in \code{MHz}) to HFSCs (\emph{a} values in \code{mT})
+#' @description Converts hyperfine coupling constants HFCCs (\emph{A} values in \code{MHz})
+#' to hyperfine splitting constants HFSCs (\emph{a} values in \code{mT})
 #'
 #'
 #' @param A.MHz Numeric value/vector corresponding to HFCCs in \code{MHz}
-#' @param g Numeric value/vector corresponding to actual \emph{g}-factor (\code{unitless}), \strong{default:} \code{g = 2.00231930}
+#' @param g Numeric value/vector corresponding to actual \emph{g}-factor (\code{unitless}),
+#' \strong{default:} \code{g = 2.00231930}
 #'
 #'
 #' @return Numeric value/vector corresponding to HFSCs (\emph{a}) in \code{mT})
