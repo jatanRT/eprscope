@@ -2,22 +2,20 @@
 % Please edit documentation in R/Bextreme_Spec.R
 \name{Bextreme_Spec}
 \alias{Bextreme_Spec}
-\title{Find Extreme (\strong{Min}imum or \strong{Max}imum) within the EPR Spectrum (or its Integrated Form)}
+\title{Find Intensity Extremes within the EPR Spectrum (or its Integrated Form).}
 \usage{
 Bextreme_Spec(
   spectrum.data,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
-  B.reg.start,
-  B.reg.end,
+  Blim,
   extreme
 )
 }
 \arguments{
-\item{spectrum.data}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
-must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
-\code{index} column may be included as well, integrated/simulated spectra (incl. other \code{Intensity}
-and \code{B} columns) can be read as well}
+\item{spectrum.data}{EPR spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+and that of the derivative \code{dIepr_over_dB} or integrated e.g. \code{Intensity}.
+\code{Index} column may be included as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
@@ -26,24 +24,24 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
-of the \code{selected B region} (therefore abbreviation \code{.reg.})}
-
-\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
-of the \code{selected B region} (therefore abbreviation \code{.reg.})}
+\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+of the selected \emph{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
 
 \item{extreme}{Character/String with only a two values allowed: \code{"min"} or \code{"max"}}
 }
 \value{
-Numeric value of magnetic flux density \eqn{B} corresponding to \code{minimal} or \code{maximal}
+Numeric value of magnetic flux density \emph{B} corresponding to \code{minimal} or \code{maximal}
   \code{intensity} within the EPR spectra (or their integrated form)
 }
 \description{
-TODO
+Finding positions (\emph{B} in \code{mT} or \code{G}) of intensity minimum and/or maximum
+within selected region of the EPR spectrum
 }
 \examples{
-TODO
-TODO
+\dontrun{
+Bextreme_Spec(spectrum.data,Blim = c(349.54,359.54),extreme = 'maximum')
+Bextreme_Spec(data.frame,"B_G",Intensity = "Integrated_Intensity",c(3495.4,3595.4),'minimum')
+}
 
 
 }
