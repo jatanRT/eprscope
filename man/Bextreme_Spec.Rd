@@ -25,16 +25,16 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-of the selected \emph{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
+of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
 
 \item{extreme}{Character/String with only a two values allowed: \code{"min"} or \code{"max"}}
 }
 \value{
-Numeric value of magnetic flux density \emph{B} corresponding to \code{minimal} or \code{maximal}
+Numeric value of magnetic flux density \eqn{B} corresponding to \code{minimal} or \code{maximal}
   \code{intensity} within the EPR spectra (or their integrated form)
 }
 \description{
-Finding positions (\emph{B} in \code{mT} or \code{G}) of intensity minimum and/or maximum
+Finding positions (\eqn{B} in \code{mT} or \code{G}) of intensity minimum and/or maximum
 within selected region of the EPR spectrum
 }
 \examples{

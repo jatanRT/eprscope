@@ -2,22 +2,22 @@
 % Please edit documentation in R/A_MHz_conv_to_mT.R
 \name{A_MHz_conv_to_mT}
 \alias{A_MHz_conv_to_mT}
-\title{Convert Coupling Constants (A, HFCCs in MHz) to Hyperfine Splittings (a, HFSCs in mT).}
+\title{Convert Coupling Constants (\eqn{A}, HFCCs in MHz) to Hyperfine Splittings (\eqn{a}, HFSCs in mT).}
 \usage{
 A_MHz_conv_to_mT(A.MHz, g = 2.0023193)
 }
 \arguments{
 \item{A.MHz}{Numeric value/vector corresponding to HFCCs in \code{MHz}}
 
-\item{g}{Numeric value/vector corresponding to actual \emph{g}-factor (\code{unitless}),
-\strong{default:} \code{g = 2.00231930}}
+\item{g}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}),
+\strong{default:} \code{g = 2.00231930} (free electron)}
 }
 \value{
-Numeric value/vector corresponding to HFSCs (\emph{a}) in \code{mT})
+Numeric value/vector corresponding to HFSCs (\eqn{a}) in \code{mT})
 }
 \description{
-Converts hyperfine coupling constants HFCCs (\emph{A} values in \code{MHz})
-to hyperfine splitting constants HFSCs (\emph{a} values in \code{mT})
+Converts hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz})
+to hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
 }
 \examples{
 A_MHz_conv_to_mT(A.MHz = 16)

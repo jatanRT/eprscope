@@ -2,7 +2,7 @@
 #' Find Intensity Extremes within the EPR Spectrum (or its Integrated Form).
 #'
 #'
-#' @description Finding positions (\emph{B} in \code{mT} or \code{G}) of intensity minimum and/or maximum
+#' @description Finding positions (\eqn{B} in \code{mT} or \code{G}) of intensity minimum and/or maximum
 #' within selected region of the EPR spectrum
 #'
 #'
@@ -15,10 +15,10 @@
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-#'   of the selected \emph{B} region, e.g. like `Blim = c(3495.4,3595.4)`
+#'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`
 #' @param extreme Character/String with only a two values allowed: \code{"min"} or \code{"max"}
 #'
-#' @returns Numeric value of magnetic flux density \emph{B} corresponding to \code{minimal} or \code{maximal}
+#' @returns Numeric value of magnetic flux density \eqn{B} corresponding to \code{minimal} or \code{maximal}
 #'   \code{intensity} within the EPR spectra (or their integrated form)
 #'
 #'
