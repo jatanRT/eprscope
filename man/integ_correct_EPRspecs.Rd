@@ -52,7 +52,3 @@ Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B
 \description{
 TODO
 }
-\examples{
-
-
-}

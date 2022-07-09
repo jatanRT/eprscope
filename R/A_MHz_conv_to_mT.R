@@ -1,30 +1,30 @@
 #
-#' @title Conversion of Hyperfine Coupling Constants (\code{HFCCs}, \eqn{A} in \code{MHz}) to Hyperfine Splitting
-#'   ones (\code{HFSCs}, \eqn{a} in \code{mT})
+#' @title Convert Hyperfine Coupling Constants (HFCCs in MHz) to Hyperfine Splitting ones (HFSCs in mT)
 #'
 #'
-#' @description TODO
+#' @description Converts HFCCs (\emph{A} values in \code{MHz}) to HFSCs (\emph{a} values in \code{mT})
 #'
 #'
-#' @param A.MHz Numeric value/Numeric vector corresponding to HFCCs in \code{MHz}
-#' @param g Numeric value/Numeric vector corresponding to actual \eqn{g}-factor (\code{unitless})
+#' @param A.MHz Numeric value/vector corresponding to HFCCs in \code{MHz}
+#' @param g Numeric value/vector corresponding to actual \emph{g}-factor (\code{unitless}), \strong{default:} \code{g = 2.00231930}
 #'
 #'
-#' @return Numeric Value/Vector corresponding to HFSCs (\eqn{a}) in \code{mT})
+#' @return Numeric value/vector corresponding to HFSCs (\emph{a}) in \code{mT})
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' A_MHz_conv_to_mT(A.MHz = 16)
+#' A_MHz_conv_to_mT(20,2.0059)
+#' A_MHz_conv_to_mT(4,g = 2.00036)
 #'
 #'
 #' @export
 #'
 #'
 #' @importFrom constants syms
-A_MHz_conv_to_mT <- function(A.MHz,g){
+A_MHz_conv_to_mT <- function(A.MHz,g = 2.00231930){
   #
-  Planck.const <- syms$hbar*2*pi
+  Planck.const <- syms$h
   Bohr.magnet <- syms$mub
   a <- (A.MHz*Planck.const*1e+6)/(g*Bohr.magnet*1e-3)
   #
