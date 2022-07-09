@@ -11,7 +11,7 @@
 #' \strong{default:} \code{g = 2.00231930}
 #'
 #'
-#' @return Numeric value/vector corresponding to HFSCs (\emph{a}) in \code{mT})
+#' @returns Numeric value/vector corresponding to HFSCs (\emph{a}) in \code{mT})
 #'
 #'
 #' @examples
@@ -30,6 +30,6 @@ A_MHz_conv_to_mT <- function(A.MHz,g = 2.00231930){
   Bohr.magnet <- syms$mub
   a <- (A.MHz*Planck.const*1e+6)/(g*Bohr.magnet*1e-3)
   #
-  return(a)
+  return(round(a,digits = 2))
   #
 }
