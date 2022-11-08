@@ -2,8 +2,8 @@
 % Please edit documentation in R/aAiso_rearrng_QCHcomp.R
 \name{aAiso_rearrng_QCHcomp}
 \alias{aAiso_rearrng_QCHcomp}
-\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations According
-  to Proposed Molecular Structure/Symmetry}
+\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations
+According to Proposed Molecular Structure/Symmetry}
 \usage{
 aAiso_rearrng_QCHcomp(path_to_ASC, data.col.names, nuclei.list.slct)
 }
@@ -33,11 +33,11 @@ Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuc
   structure/symmetry
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

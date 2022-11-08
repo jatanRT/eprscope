@@ -1,8 +1,9 @@
 #
-#' @title Read Parameters/Variables/Fields (including the Simulation ones) from \emph{MATLAB} \code{.mat} File
+#' Read Parameters/Variables/Fields (including the Simulation ones) from \emph{MATLAB} \code{.mat} File
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param path_to_MAT String, path to \code{.mat} MATLAB file with all variables saved in workspace
@@ -17,8 +18,8 @@
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #'
 #' @export

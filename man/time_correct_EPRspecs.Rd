@@ -20,7 +20,7 @@ Numeric value/vector corresponding to accurate time at which the EPR spectra wer
   the kinetic measurements (e.g. like radical stability, electrochemical and/or photochemical measurements)
 }
 \description{
-TODO
+tbc
 
  The time is recorded according to the following scheme:
 
@@ -36,8 +36,8 @@ The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

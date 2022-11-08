@@ -1,5 +1,5 @@
 #
-#' @title Labels for Various Plots (Spectroscopy incl. EPR, Voltammetry,...etc)
+#' Labels for Various Plots (Spectroscopy incl. EPR, Voltammetry,...etc)
 #'
 #'
 #' @description TODO To write greek symbols, subscript and superscript, see

@@ -1,8 +1,9 @@
 #
-#' @title Polynomial Baseline Correction for single-Integrated EPR Spectra + Double Integral Calculation/Presentation
+#' Polynomial Baseline Correction for single-Integrated EPR Spectra + Double Integral Calculation/Presentation
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param spec.integ.data Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
@@ -34,6 +35,7 @@
 #'
 #'
 #' @examples
+#' tbc
 #'
 #'
 #' @export

@@ -1,30 +1,31 @@
 #
-#' @title TODO
+#' TBC (Absolute EPR Quantity)
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
-#' @param double.integ TODO
-#' @param nu.GHz TODO
-#' @param power.mW TODO
-#' @param modul.amp.mT TODO
-#' @param qValue TODO
-#' @param tube.sample.id.mm TODO
-#' @param fill.sample.h.mm TODO
-#' @param Norm.constant TODO
-#' @param Temp.K TODO
-#' @param S TODO
-#' @param centr.sample.h.mm TODO
-#' @param microW.cavity TODO
+#' @param double.integ tbc
+#' @param nu.GHz tbc
+#' @param power.mW tbc
+#' @param modul.amp.mT tbc
+#' @param qValue tbc
+#' @param tube.sample.id.mm tbc
+#' @param fill.sample.h.mm tbc
+#' @param Norm.constant tbc
+#' @param Temp.K tbc
+#' @param S tbc
+#' @param centr.sample.h.mm tbc
+#' @param microW.cavity tbc
 #'
 #'
-#' @return TODO
+#' @return tbc
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #'
 #' @export

@@ -21,11 +21,11 @@ Data frame/table containing instrumental parameters (numeric values not strings)
   to acquire the EPR spectra
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

@@ -50,5 +50,10 @@ Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B
   integral corrected against the baseline fit
 }
 \description{
-TODO
+tbc
+}
+\examples{
+tbc
+
+
 }

@@ -5,8 +5,8 @@
 \title{Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)}
 \usage{
 plot_theme_NoY_ticks(
-  axis.text.size = 15,
-  axis.title.size = 17,
+  axis.text.size = 14,
+  axis.title.size = 15,
   grid = TRUE,
   plot.bg.transparent = FALSE
 )
@@ -28,11 +28,11 @@ Custom \pkg{ggplot2} \code{theme} \code{without Y axis ticks}, to show opposite 
   use: \code{scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))}
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

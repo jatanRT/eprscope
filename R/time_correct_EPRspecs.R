@@ -1,8 +1,9 @@
 #
-#' @title Correction for EPR spectral Time Series Providing the Accurate Time for EPR Spectral Line Appearance
+#' Correction for EPR spectral Time Series Providing the Accurate Time for EPR Spectral Line Appearance
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'  The time is recorded according to the following scheme:
 #'
@@ -29,8 +30,8 @@
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #'
 #' @export

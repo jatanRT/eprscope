@@ -1,8 +1,9 @@
 #
-#' @title Custom \code{ggplot2} Theme with Axis Ticks Oriented Inside the Panel
+#' Custom \code{ggplot2} Theme with Axis Ticks Oriented Inside the Panel
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
@@ -26,8 +27,8 @@
 #' @export
 #'
 #'
-plot_theme_In_ticks <- function(axis.text.size = 15,
-                                axis.title.size = 17,
+plot_theme_In_ticks <- function(axis.text.size = 14,
+                                axis.title.size = 15,
                                 grid = TRUE,
                                 plot.bg.transparent = FALSE){
   ## theme parts:
@@ -39,22 +40,34 @@ plot_theme_In_ticks <- function(axis.text.size = 15,
                      panel.border = element_rect(color = "black",fill = NA))
   theme_Nogrid <- theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
   #
+  ## ticks of the opposite axes also inside the graph:
+  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  axis_y_duplicate <- scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  #
   ## theme:
   if (isTRUE(plot.bg.transparent)){
     if (isTRUE(grid)){
         thm <- theme_bas +
-        theme(plot.background = element_rect(fill = "transparent"))
+          axis_x_duplicate +
+          axis_y_duplicate +
+          theme(plot.background = element_rect(fill = "transparent"))
     } else{
         thm <- theme_bas +
-        theme_Nogrid +
-        theme(plot.background = element_rect(fill = "transparent"))
+          axis_x_duplicate +
+          axis_y_duplicate +
+          theme_Nogrid +
+          theme(plot.background = element_rect(fill = "transparent"))
     }
   } else{
     if (isTRUE(grid)){
-        thm <- theme_bas
+        thm <- theme_bas +
+          axis_x_duplicate +
+          axis_y_duplicate
     } else{
         thm <- theme_bas +
-        theme_Nogrid
+          axis_x_duplicate +
+          axis_y_duplicate +
+          theme_Nogrid
     }
   }
   #

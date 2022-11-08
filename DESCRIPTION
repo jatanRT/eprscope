@@ -1,7 +1,7 @@
 Package: EPRphysChemSpec
 Type: Package
 Title: Data and Spectra Processing in Electron Paramagnetic Resonance Spectroscopy 
-Version: 0.1.0
+Version: 0.1.2
 Authors@R: person("Jan", "Tarabek", email = c("jantar40@protonmail.com",
     "jan.tarabek@uochb.cas.cz"), role = c("aut", "cre"),
     comment = c(ORCID = "https://orcid.org/0000-0003-0116-3824"))
@@ -49,4 +49,4 @@ Suggests:
     knitr,
     kableExtra,
     writexl
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

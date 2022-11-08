@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantitativ_EPR_abs.R
 \name{quantitativ_EPR_abs}
 \alias{quantitativ_EPR_abs}
-\title{TODO}
+\title{TBC (Absolute EPR Quantity)}
 \usage{
 quantitativ_EPR_abs(
   double.integ,
@@ -20,39 +20,39 @@ quantitativ_EPR_abs(
 )
 }
 \arguments{
-\item{double.integ}{TODO}
+\item{double.integ}{tbc}
 
-\item{nu.GHz}{TODO}
+\item{nu.GHz}{tbc}
 
-\item{power.mW}{TODO}
+\item{power.mW}{tbc}
 
-\item{modul.amp.mT}{TODO}
+\item{modul.amp.mT}{tbc}
 
-\item{qValue}{TODO}
+\item{qValue}{tbc}
 
-\item{tube.sample.id.mm}{TODO}
+\item{tube.sample.id.mm}{tbc}
 
-\item{fill.sample.h.mm}{TODO}
+\item{fill.sample.h.mm}{tbc}
 
-\item{Norm.constant}{TODO}
+\item{Norm.constant}{tbc}
 
-\item{Temp.K}{TODO}
+\item{Temp.K}{tbc}
 
-\item{S}{TODO}
+\item{S}{tbc}
 
-\item{centr.sample.h.mm}{TODO}
+\item{centr.sample.h.mm}{tbc}
 
-\item{microW.cavity}{TODO}
+\item{microW.cavity}{tbc}
 }
 \value{
-TODO
+tbc
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

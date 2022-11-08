@@ -1,9 +1,10 @@
 #
-#' @title Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
+#' Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
 #'   the EPR Spectra (within the \code{Xenon} or \code{WinEpr} Software, respectively)
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
@@ -41,8 +42,8 @@
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #'
 #' @export

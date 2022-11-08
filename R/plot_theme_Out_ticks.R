@@ -1,5 +1,5 @@
 #
-#' @title Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside of the Panel
+#' Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside of the Panel
 #'
 #'
 #' @description TODO
@@ -25,8 +25,8 @@
 #' @export
 #'
 #'
-plot_theme_Out_ticks <- function(axis.text.size = 15,
-                                 axis.title.size = 17,
+plot_theme_Out_ticks <- function(axis.text.size = 14,
+                                 axis.title.size = 15,
                                  grid = TRUE,
                                  plot.bg.transparent = FALSE){
   ## theme parts:

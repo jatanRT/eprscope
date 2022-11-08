@@ -1,10 +1,11 @@
 #
-#' @title Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
+#' Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
 #'   the EPR Spectra (within the \code{Xenon} or \code{WinEpr} Software, respectively), \strong{
 #'   required for time correction} (\code{\link{time_correct_EPRspecs}}) of the "kinetic" series
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
@@ -20,8 +21,8 @@
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #' @export
 #'
@@ -31,7 +32,8 @@ readEPRparams_slct_kin <- function(path_to_DSC_or_par,origin = "xenon"){
   if (origin == "xenon"){
     resol <- readEPRparam_slct(path_to_DSC_or_par,string = "A1RS")
     convTime <- readEPRparam_slct(path_to_DSC_or_par,string = "SPTP")
-    NScans <- readEPRparam_slct(path_to_DSC_or_par,string = "AVGS")
+    NScans <- readEPRparam_slct(path_to_DSC_or_par,string = "NbScansToDo")
+    ## for kinetic measurements "AVGS" doesn't work
   }
   if (origin == "winepr"){
     resol <- readEPRparam_slct(path_to_DSC_or_par,string = "RES")

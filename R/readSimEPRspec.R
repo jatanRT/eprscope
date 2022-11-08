@@ -1,19 +1,20 @@
 #
-#' @title Read the Simulated ASCII (\code{.txt}) EPR Spectrum from \emph{MATLAB} and Transfer it into Data Frame
+#' Read the Simulated ASCII (\code{.txt}) EPR Spectrum from \emph{MATLAB} and Transfer it into Data Frame
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param path_to_ASC String, path to ASCII file/table (\code{.txt})
 #'   with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB})
 #'
-#' @return TODO
+#' @return tbc
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #' @export
 #'

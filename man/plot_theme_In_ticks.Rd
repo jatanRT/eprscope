@@ -5,8 +5,8 @@
 \title{Custom \code{ggplot2} Theme with Axis Ticks Oriented Inside the Panel}
 \usage{
 plot_theme_In_ticks(
-  axis.text.size = 15,
-  axis.title.size = 17,
+  axis.text.size = 14,
+  axis.title.size = 15,
   grid = TRUE,
   plot.bg.transparent = FALSE
 )
@@ -28,7 +28,7 @@ Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing inside} the gra
   to show opposite axis ticks use: \code{scale_..._continuous(sec.axis = dup_axis(name = "",labels = NULL))}
 }
 \description{
-TODO
+tbc
 }
 \examples{
 TODO

@@ -45,11 +45,11 @@ Numeric or String/Character (e.g. date or comment) corresponding to selected (\c
   parameter applied to record the EPR spectra
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

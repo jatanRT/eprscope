@@ -1,9 +1,10 @@
 #
-#' @title Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations According
-#'   to Proposed Molecular Structure/Symmetry
+#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations
+#' According to Proposed Molecular Structure/Symmetry
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param path_to_ASC String/Character, pointing to path to ASCII file (\code{txt},\code{csv}...etc) with characteristic
@@ -30,8 +31,8 @@
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #'
 #' @export

@@ -36,8 +36,8 @@ NUmeric Value of \eqn{B} difference (the absolute value) corresponding to \code{
 }
 \description{
 The function calculates the \eqn{\Delta B_{pp}} (peak-to-peak) linewidth
-  of EPR spectrum. The difference corresponds to magnetic flux densities corresponding
-  to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B}} region.
+of EPR spectrum. The difference corresponds to magnetic flux densities corresponding
+to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B}} region.
 }
 \examples{
 \dontrun{

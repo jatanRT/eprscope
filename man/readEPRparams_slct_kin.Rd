@@ -22,10 +22,10 @@ List containing number of scans (\code{Nscans}) and sweep time (\code{sweepTime}
   for time correction during the \code{2D_Field_Delay} experiment ("kinetic" series)
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 }

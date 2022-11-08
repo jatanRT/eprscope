@@ -1,7 +1,5 @@
 #
-## Plotting simple EPR spectrum
-
-#' @title EPR Spectrum Simple Plot
+#' EPR Spectrum Simple Plot
 #'
 #' @description Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spectral data
 #'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}

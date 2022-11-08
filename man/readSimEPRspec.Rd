@@ -11,13 +11,13 @@ readSimEPRspec(path_to_ASC)
 with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB})}
 }
 \value{
-TODO
+tbc
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 }

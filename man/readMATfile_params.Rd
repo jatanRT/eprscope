@@ -20,11 +20,11 @@ the \strong{default} 'value' is \code{NULL} and \code{string} \strong{is applied
 Numeric or String/Character depending on MATLAB variable used for simulation of EPR spectra
 }
 \description{
-TODO
+tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }

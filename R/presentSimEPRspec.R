@@ -1,5 +1,5 @@
 #
-#' @title Show Comparison Between the Experimental and Simulated EPR Spectrum by Tabular and/or Graphic Representation
+#' Show Comparison Between the Experimental and Simulated EPR Spectrum by Tabular and/or Graphic Representation
 #'
 #'
 #' @description TODO

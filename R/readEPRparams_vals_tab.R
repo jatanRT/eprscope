@@ -1,9 +1,10 @@
 #
-#' @title Read the Instrumental Parameters (from \code{.DSC} or \code{.par} file) to Record the EPR Spectra
+#' Read the Instrumental Parameters (from \code{.DSC} or \code{.par} file) to Record the EPR Spectra
 #'   and Transfer it into \code{Table/Data Frame}
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
@@ -19,8 +20,8 @@
 #'
 #'
 #' @examples
-#' TODO
-#' TODO
+#' tbc
+#' tbc
 #'
 #'
 #' @export

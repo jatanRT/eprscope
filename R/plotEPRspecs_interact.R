@@ -1,9 +1,9 @@
-## Interactive plotting Simple EPR spectrum by `plotly`
 #
-#' @title Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot
+#' Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot
 #'
 #'
-#' @description TODO
+#' @description
+#' tbc
 #'
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column

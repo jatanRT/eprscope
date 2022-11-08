@@ -1,11 +1,12 @@
 #
 #'
-#' @title Calculation of Spectral Linewidth (\eqn{\Delta B_{pp}}) of the EPR Spectrum
+#' Calculation of Spectral Linewidth (\eqn{\Delta B_{pp}}) of the EPR Spectrum
 #'
 #'
-#' @description The function calculates the \eqn{\Delta B_{pp}} (peak-to-peak) linewidth
-#'   of EPR spectrum. The difference corresponds to magnetic flux densities corresponding
-#'   to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B}} region.
+#' @description
+#' The function calculates the \eqn{\Delta B_{pp}} (peak-to-peak) linewidth
+#' of EPR spectrum. The difference corresponds to magnetic flux densities corresponding
+#' to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B}} region.
 #'
 #'
 #' @param spectrum.data Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column

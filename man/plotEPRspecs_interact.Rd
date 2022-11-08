@@ -34,7 +34,7 @@ with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE 
 Interactive EPR spectrum plot/graph based on \pkg{plotly}
 }
 \description{
-TODO
+tbc
 }
 \examples{
 TODO
