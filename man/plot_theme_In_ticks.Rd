@@ -31,8 +31,8 @@ Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing inside} the gra
 tbc
 }
 \examples{
-TODO
-TODO
+tbc
+tbc
 
 
 }
