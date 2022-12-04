@@ -170,7 +170,7 @@ plotEPRspec <- function(spectrum.data,
   ## Basic simple plot:
   simplePlot <- ggplot(spectrum.data) +
     geom_line(aes(x = .data[[B]], y = .data[[Intensity]]),
-              linewidth = line.linewidth,color = line.color,show.legend = FALSE) +
+              linewidth = line.width,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   #
