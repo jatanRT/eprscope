@@ -4,13 +4,7 @@
 \alias{DeltaBpp_Spec}
 \title{Calculation of Spectral Linewidth (\eqn{\Delta B_{pp}}) of the EPR Spectrum}
 \usage{
-DeltaBpp_Spec(
-  spectrum.data,
-  B = "B_mT",
-  Intensity = "dIepr_over_dB",
-  B.reg.start,
-  B.reg.end
-)
+DeltaBpp_Spec(spectrum.data, B = "B_mT", Intensity = "dIepr_over_dB", Blim)
 }
 \arguments{
 \item{spectrum.data}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
@@ -24,11 +18,8 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
-of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
-
-\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
-of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
+\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+of the selected \eqn{B} region, e.g. like `Blim = c(349.54,359.54)`}
 }
 \value{
 NUmeric Value of \eqn{B} difference (the absolute value) corresponding to \code{minimum}
@@ -41,10 +32,10 @@ to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B
 }
 \examples{
 \dontrun{
-DeltaBpp_Spec(spectrum.data,320.221,328.331)
-DeltaBpp_Spec(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
-DeltaBpp_Spec(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
-DeltaBpp_Spec(spectrum.data,"B_mT_Sim",320.221,328.331)
+DeltaBpp_Spec(spectrum.data,c(320.221,328.331))
+DeltaBpp_Spec(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",c(3202.11,3283.31))
+DeltaBpp_Spec(spectrum.data,"B_mT",Blim = c(320.221,328.331))
+DeltaBpp_Spec(spectrum.data,"B_mT_Sim",c(320.221,328.331))
 }
 
 }

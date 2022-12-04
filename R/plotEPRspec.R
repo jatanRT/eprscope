@@ -5,7 +5,7 @@
 #'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
 #'   (depending on units, data frame may include both of them) columns,
 #'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
-#'   if integral column is available, can be ploted as well, see examples below.
+#'   if integral column is available, can be plotted as well, see examples below.
 #'   Theme of the graphic spectrum representation as well its line color can be varied like
 #'   in \code{\pkg{ggplot2}} (see below). Within a theme \code{y} ticks can be displayed
 #'   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
@@ -25,7 +25,7 @@
 #'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "steelblue"}
-#' @param line.size Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
+#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param basic.theme Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \itemize{
 #'     \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
@@ -36,9 +36,9 @@
 #'     theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
 #'   }
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
-#'   \strong{default}: \code{axis.text.size = 15}
+#'   \strong{default}: \code{axis.text.size = 14}
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
-#'   \strong{default}: \code{axis.title.size = 17}
+#'   \strong{default}: \code{axis.title.size = 15}
 #' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
 #' @param yTicks Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
 #'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
@@ -52,9 +52,9 @@
 #' plotEPRspec(spectrum.data)
 #' plotEPRspec(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
 #' plotEPRspec(spectrum.data,"Integral",B = "B_mT_Sim")
-#' plotEPRspec(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
-#' plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-#' plotEPRspec(spectrum.data,"B_mT","darkred",line.size = 1.2)
+#' plotEPRspec(spectrum.data,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+#' plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
+#' plotEPRspec(spectrum.data,"B_mT","darkred",line.width = 1.2)
 #' }
 #'
 #'
@@ -65,15 +65,15 @@
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
 plotEPRspec <- function(spectrum.data,
-                          B = "B_mT",
-                          Intensity = "dIepr_over_dB",
-                          line.color = "steelblue",
-                          line.size = 0.75,
-                          basic.theme = "theme_gray",
-                          axis.text.size = 15,
-                          axis.title.size = 17,
-                          grid = TRUE,
-                          yTicks = TRUE){
+                        B = "B_mT",
+                        Intensity = "dIepr_over_dB",
+                        line.color = "steelblue",
+                        line.width = 0.75,
+                        basic.theme = "theme_gray",
+                        axis.title.size = 15,
+                        axis.text.size = 14,
+                        grid = TRUE,
+                        yTicks = TRUE){
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   B.start <- min(spectrum.data[,B])
@@ -92,7 +92,8 @@ plotEPRspec <- function(spectrum.data,
                                        "deriv",
                                        "Intens",
                                        "Deriv",
-                                       "dIepr"),
+                                       "dIepr",
+                                       "dIepr_over"),
                            logic = "or",ignore.case = F)){
     y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   }
@@ -169,7 +170,7 @@ plotEPRspec <- function(spectrum.data,
   ## Basic simple plot:
   simplePlot <- ggplot(spectrum.data) +
     geom_line(aes(x = .data[[B]], y = .data[[Intensity]]),
-              size = line.size,color = line.color,show.legend = FALSE) +
+              linewidth = line.linewidth,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   #

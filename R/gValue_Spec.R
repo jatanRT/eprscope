@@ -3,15 +3,15 @@
 #'
 #' @description Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
-#'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar,
-#'   \eqn{B_{iso}} should be be considered, otherwise the \eqn{B_{center}} must be taken into account
-#'   to calculate the \eqn{g}-value. The \eqn{g}-related \eqn{B} is computed either as the mid-point between
+#'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
+#'   and their distance from the middle of the spectrum equals \eqn{B_{iso}} should be be considered,
+#'   otherwise the \eqn{B_{center}} must be taken into account.
+#'   The \eqn{g}-related \eqn{B} is computed either as the mid-point between
 #'   the magnetic flux densities corresponding to \code{min.} and \code{max.} derivative
 #'   intensities (\code{dIepr_over_dB}) or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
-#'   One can select the B region/span/interval from the spectrum to determine the \eqn{g}-value.
+#'   One can select the B region from the spectrum to determine the \eqn{g}-value.
 #'   The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
-#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$hbar*2*pi}
-#'   (by \code{\link[constants]{syms}} function it is not available directly)
+#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
 #'   and \code{syms$mub} commands, respectively.
 #'
 #' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
@@ -23,10 +23,8 @@
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param B.reg.start Numeric, magnetic flux density in \code{mT} corresponding to \code{starting} border
-#'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
-#' @param B.reg.end Numeric, magnetic flux density in \code{mT} corresponding to \code{ending} border
-#'   of the \code{selected B region} (therefore abbreviation \code{.reg.})
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+#'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`
 #' @param iso Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 #'   (this is the \code{\strong{default}: iso = TRUE}), or by finding the the \eqn{B} value corresponding
@@ -37,9 +35,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' gValue_Spec(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",349.8841,351.112)
-#' gValue_Spec(spectrum.data,nu.GHz = 9.82451,B = "B_G",B.reg.start = 3498.841,B.reg.end = 3511.12,iso = FALSE)
-#' gValue_Spec(spectrum.data,9.91024,B = "B_G_Sim",3499,3501)
+#' gValue_Spec(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",c(349.8841,351.112))
+#' gValue_Spec(spectrum.data,nu.GHz = 9.82451,B = "B_G",Blim = c(3498.841,3511.12),iso = FALSE)
+#' gValue_Spec(spectrum.data,9.91024,B = "B_G_Sim",c(3499,3501))
 #' }
 #'
 #'
@@ -51,37 +49,34 @@ gValue_Spec <- function(spectrum.data,
                                 nu.GHz,
                                 B = "B_mT",
                                 Intensity = "dIepr_over_dB",
-                                B.reg.start,
-                                B.reg.end,
+                                Blim,
                                 iso = TRUE){
   #
+  ## B minimum & maximum
+  B.min <- spectrum.data %>%
+    filter(between(.data[[B]],Blim[1],Blim[2])) %>%
+    filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
+    pull(.data[[B]])
+  #
+  B.max <- spectrum.data %>%
+    filter(between(.data[[B]],Blim[1],Blim[2])) %>%
+    filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
+    pull(.data[[B]])
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)){
-    B.min <- spectrum.data %>%
-      filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
-      pull(.data[[B]])
-    #
-    ## B at maximum of dIepr_over_dB:
-    B.max <- spectrum.data %>%
-      filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
-      pull(.data[[B]])
-    #
-    ## B between both of them:
     B.center <- (B.min + B.max)/2
-    #
     ## B at dIepr_over_dB = 0 (near 0, see next comment):
   } else{
     ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
     B.center <- spectrum.data %>%
-      filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
-      filter(near(.data[[Intensity]],0,tol = max(spectrum.data[,Intensity])/100)) %>%
-      filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
+      filter(between(.data[[B]],B.max,B.min)) %>%
+      mutate(Intens = abs(.data[[Intensity]])) %>%
+      filter(near(Intens,0,tol = max(.data[[Intensity]])/100)) %>%
+      filter(Intens == min(Intens)) %>%
       pull(.data[[B]])
   }
   ## g -value calculation:
-  Planck.const <- constants::syms$hbar*2*pi # `h` is not available directly
+  Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$mub
   g.precurs <- (Planck.const*nu.GHz*1e+9)/(Bohr.magnet*B.center)
   #

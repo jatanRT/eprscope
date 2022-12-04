@@ -8,7 +8,12 @@ plotEPRspecs_interact(
   spectrum.data,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
-  line.size = 0.75,
+  line.color = "steelblue",
+  bg.color = "#e5ecf6",
+  grid.color = "#ffff",
+  line.width = 0.75,
+  axis.title.size = 15,
+  axis.text.size = 14,
   time.series = FALSE
 )
 }
@@ -25,7 +30,20 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{line.size}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
+\item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
+(not for \code{time.series}), therefore \strong{default:} \code{line.color = "steelblue"}}
+
+\item{bg.color}{Character/String corresponding to \strong{background color}}
+
+\item{grid.color}{Character/String corresponding to \strong{grid color}}
+
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
+
+\item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
+\strong{default}: \code{axis.title.size = 15}}
+
+\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
+\strong{default}: \code{axis.text.size = 14}}
 
 \item{time.series}{Boolean, whether the input ASCII spectrum data comes from the time series experiment
 with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)}

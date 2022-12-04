@@ -7,10 +7,8 @@
 integ_correct_EPRspecs(
   spec.integ.data,
   B = "B_G",
-  B.reg.start,
-  B.reg.end,
-  B.peak.start,
-  B.peak.end,
+  Blim,
+  BpeaKlim,
   poly.degree,
   double.integ = FALSE
 )
@@ -26,17 +24,11 @@ this can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function fr
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default})}
 
-\item{B.reg.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
-of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
+\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
 
-\item{B.reg.end}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
-of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})}
-
-\item{B.peak.start}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
-of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})}
-
-\item{B.peak.end}{Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
-of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})}
+\item{BpeaKlim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`}
 
 \item{poly.degree}{Numeric, degree of polynomial function used to fit the baseline under the single integrated
 curve of \emph{dIepr_over_dB}}

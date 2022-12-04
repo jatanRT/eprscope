@@ -12,7 +12,7 @@ presentSimEPRspec(
   B.shift = 0,
   line.color.exp = "red",
   line.color.sim = "blue",
-  line.size = 0.75,
+  line.width = 0.75,
   output.table = FALSE
 )
 }
@@ -47,7 +47,7 @@ colors are allowed, \strong{default}: \code{line.color = "red"}, should be diffe
 \item{line.color.sim}{String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
 colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.exp}}
 
-\item{line.size}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
 
 \item{output.table}{Boolean, whether the table/data frame, corresponding to graphic spectra comparison
 (this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})

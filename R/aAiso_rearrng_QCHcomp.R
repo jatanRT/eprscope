@@ -7,7 +7,7 @@
 #' tbc
 #'
 #'
-#' @param path_to_ASC String/Character, pointing to path to ASCII file (\code{txt},\code{csv}...etc) with characteristic
+#' @param path_to_ASC String/Character, pointing to path of ASCII file (\code{txt},\code{csv}...etc) with characteristic
 #'   \eqn{A_{iso}}/\eqn{a_{iso}} values (either in \code{cm-1} or other units) presented for each atom/nucleus
 #'   (with its corresponding \code{atomic number within the structure} as well as with characteristic
 #'   \code{isotopic number/value}), such an entire table can be copied from \strong{Gaussian} output
@@ -80,7 +80,7 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
     num.nucs.str <- paste(sal[[atomic.num.str]],collapse = ",")
     #
     ## Now combine all four variables by paste:
-    group.nucs <- paste(how.many.nucs," x ",nucleo.nucs,mark.nucs," (",num.nucs.str,")",sep = "")
+    group.nucs <- paste0(how.many.nucs," x ",nucleo.nucs,mark.nucs," (",num.nucs.str,")")
     #
     ## Replicate the previous string variable corresponding to length of a list component/part:
     NuclearGroup <- rep(group.nucs,length(nuclei.list.slct[[k]]))

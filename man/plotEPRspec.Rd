@@ -9,10 +9,10 @@ plotEPRspec(
   B = "B_mT",
   Intensity = "dIepr_over_dB",
   line.color = "steelblue",
-  line.size = 0.75,
+  line.width = 0.75,
   basic.theme = "theme_gray",
-  axis.text.size = 15,
-  axis.title.size = 17,
+  axis.title.size = 15,
+  axis.text.size = 14,
   grid = TRUE,
   yTicks = TRUE
 )
@@ -33,7 +33,7 @@ name/label is used (e.g. for simulated or integrated spectra), \strong{default}:
 \item{line.color}{String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
 colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
 
-\item{line.size}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
 
 \item{basic.theme}{Character/String, which calls a ggplot theme base. The following ones are defined:
 \itemize{
@@ -45,11 +45,11 @@ colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
   theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
 }}
 
-\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 15}}
-
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 17}}
+\strong{default}: \code{axis.title.size = 15}}
+
+\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
+\strong{default}: \code{axis.text.size = 14}}
 
 \item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 
@@ -64,7 +64,7 @@ Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spect
   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
   (depending on units, data frame may include both of them) columns,
   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
-  if integral column is available, can be ploted as well, see examples below.
+  if integral column is available, can be plotted as well, see examples below.
   Theme of the graphic spectrum representation as well its line color can be varied like
   in \code{\pkg{ggplot2}} (see below). Within a theme \code{y} ticks can be displayed
   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
@@ -77,9 +77,9 @@ Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spect
 plotEPRspec(spectrum.data)
 plotEPRspec(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
 plotEPRspec(spectrum.data,"Integral",B = "B_mT_Sim")
-plotEPRspec(spectrum.data,"blue",basic.theme = theme_linedraw(),yTicks = FALSE)
-plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G",theme_bw(),grid = TRUE)
-plotEPRspec(spectrum.data,"B_mT","darkred",line.size = 1.2)
+plotEPRspec(spectrum.data,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
+plotEPRspec(spectrum.data,"B_mT","darkred",line.width = 1.2)
 }
 
 

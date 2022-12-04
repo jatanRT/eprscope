@@ -8,7 +8,7 @@ According to Proposed Molecular Structure/Symmetry}
 aAiso_rearrng_QCHcomp(path_to_ASC, data.col.names, nuclei.list.slct)
 }
 \arguments{
-\item{path_to_ASC}{String/Character, pointing to path to ASCII file (\code{txt},\code{csv}...etc) with characteristic
+\item{path_to_ASC}{String/Character, pointing to path of ASCII file (\code{txt},\code{csv}...etc) with characteristic
 \eqn{A_{iso}}/\eqn{a_{iso}} values (either in \code{cm-1} or other units) presented for each atom/nucleus
 (with its corresponding \code{atomic number within the structure} as well as with characteristic
 \code{isotopic number/value}), such an entire table can be copied from \strong{Gaussian} output

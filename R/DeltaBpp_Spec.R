@@ -17,10 +17,8 @@
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param B.reg.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
-#'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
-#' @param B.reg.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
-#'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+#'   of the selected \eqn{B} region, e.g. like `Blim = c(349.54,359.54)`
 #'
 #'
 #' @return NUmeric Value of \eqn{B} difference (the absolute value) corresponding to \code{minimum}
@@ -29,26 +27,26 @@
 #'
 #' @examples
 #' \dontrun{
-#' DeltaBpp_Spec(spectrum.data,320.221,328.331)
-#' DeltaBpp_Spec(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",3202.11,3283.31)
-#' DeltaBpp_Spec(spectrum.data,"B_mT",B.reg.start = 320.221,B.reg.end = 328.331)
-#' DeltaBpp_Spec(spectrum.data,"B_mT_Sim",320.221,328.331)
+#' DeltaBpp_Spec(spectrum.data,c(320.221,328.331))
+#' DeltaBpp_Spec(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",c(3202.11,3283.31))
+#' DeltaBpp_Spec(spectrum.data,"B_mT",Blim = c(320.221,328.331))
+#' DeltaBpp_Spec(spectrum.data,"B_mT_Sim",c(320.221,328.331))
 #' }
 #'
 #' @export
 #'
 #'
-DeltaBpp_Spec <- function(spectrum.data,B = "B_mT",Intensity = "dIepr_over_dB",B.reg.start,B.reg.end){
+DeltaBpp_Spec <- function(spectrum.data,B = "B_mT",Intensity = "dIepr_over_dB",Blim){
   #
   ## B corresponding to minimum and maximum derivative intensities
   ## in the selected B region ('B.reg.'):
   B.min <- spectrum.data %>%
-    filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
+    filter(between(.data[[B]],Blim[1],Blim[2])) %>%
     filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
     pull(.data[[B]])
   #
   B.max <- spectrum.data %>%
-    filter(between(.data[[B]],B.reg.start,B.reg.end)) %>%
+    filter(between(.data[[B]],Blim[1],Blim[2])) %>%
     filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     pull(.data[[B]])
   #

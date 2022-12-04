@@ -13,10 +13,10 @@ plot_theme_Out_ticks(
 }
 \arguments{
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 15}}
+\strong{default}: \code{axis.text.size = 14}}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 17}}
+\strong{default}: \code{axis.title.size = 15}}
 
 \item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 

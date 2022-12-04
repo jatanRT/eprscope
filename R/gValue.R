@@ -6,8 +6,7 @@
 #'   can be entered with common units like \code{G} (Gauss) \code{mT}
 #'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
 #'   The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_{B}}) are included
-#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$hbar*2*pi}
-#'   (by \code{\link[constants]{syms}} function it is not available directly)
+#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
 #'   and \code{syms$mub} commands, respectively.
 #'
 #'
@@ -27,7 +26,7 @@
 #'
 #' @export
 gValue <- function(nu,nu_unit = "GHz",B,B_unit = "mT"){
-  Planck.const <- constants::syms$hbar*2*pi # `h` is not available directly
+  Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$mub
   if (nu_unit == "GHz" & B_unit == "mT"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.001)

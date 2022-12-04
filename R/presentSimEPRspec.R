@@ -28,7 +28,7 @@
 #'   colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}
 #' @param line.color.sim String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.exp}
-#' @param line.size Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
+#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
 #' @param output.table Boolean, whether the table/data frame, corresponding to graphic spectra comparison
 #'   (this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})
 #'   should be presented as well (\code{output.table = TRUE}), in such case the output is \code{list}
@@ -56,7 +56,7 @@ presentSimEPRspec <- function(exp.spectrum.data,
                                   B.shift = 0,
                                   line.color.exp = "red",
                                   line.color.sim = "blue",
-                                  line.size = 0.75,
+                                  line.width = 0.75,
                                   output.table = FALSE){
   ## Join both tables/data frames
   both.spectr.data <- dplyr::bind_cols(exp.spectrum.data,sim.spectrum.data)
@@ -80,7 +80,7 @@ presentSimEPRspec <- function(exp.spectrum.data,
     both.spectr.data$Norm_dIepr_over_dB_Sim - diff_Intens_exp/Intensity.shift.ratio
   #
   ## Shift the B of the simulated spectrum (B/g-factor can be slightly shifted in MATLAB output)
-  both.spectr.data[[paste(B,"_Sim",sep = "")]] <- both.spectr.data[[paste(B,"_Sim",sep = "")]] + B.shift
+  both.spectr.data[[paste0(B,"_Sim")]] <- both.spectr.data[[paste0(B,"_Sim")]] + B.shift
   #
   ## B label for the plot:
   if (B == "B_mT"){
@@ -93,9 +93,9 @@ presentSimEPRspec <- function(exp.spectrum.data,
   ## plot variable:
   simulation.plot <- both.spectr.data %>%
     ggplot() +
-    geom_line(aes(x = .data[[B]],y = .data$dIepr_over_dB,color = "Experiment"),size = line.size) +
-    geom_line(aes(x = .data[[paste(B,"_Sim",sep = "")]],y = .data$Norm_dIepr_over_dB_Sim,
-                  color = "Simulation"),size = line.size) +
+    geom_line(aes(x = .data[[B]],y = .data$dIepr_over_dB,color = "Experiment"),linewidth = line.width) +
+    geom_line(aes(x = .data[[paste0(B,"_Sim")]],y = .data$Norm_dIepr_over_dB_Sim,
+                  color = "Simulation"),linewidth = line.width) +
     scale_color_manual(values = c(line.color.exp,line.color.sim),breaks = c("Experiment","Simulation")) +
     labs(color = "",x = x.label,
          y = plotLabelsXYZ("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))

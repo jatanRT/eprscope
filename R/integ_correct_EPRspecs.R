@@ -14,14 +14,10 @@
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 #'   or \code{B = "B_G"} (\strong{default})
-#' @param B.reg.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
-#'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
-#' @param B.reg.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
-#'   of the \code{selected \emph{B} region} (therefore abbreviation \code{.reg.})
-#' @param B.peak.start Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{starting} border
-#'   of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})
-#' @param B.peak.end Numeric, magnetic flux density in \code{mT} (\code{G}) corresponding to \code{ending} border
-#'   of the \code{peak/integral \emph{B} region} (therefore abbreviation \code{.reg.})
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+#'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`
+#' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
+#'   of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`
 #' @param poly.degree Numeric, degree of polynomial function used to fit the baseline under the single integrated
 #'   curve of \emph{dIepr_over_dB}
 #' @param double.integ Boolean, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
@@ -43,10 +39,8 @@
 #'
 integ_correct_EPRspecs <- function(spec.integ.data,
                                    B = "B_G",
-                                   B.reg.start,
-                                   B.reg.end,
-                                   B.peak.start,
-                                   B.peak.end,
+                                   Blim,
+                                   BpeaKlim,
                                    poly.degree,
                                    double.integ = FALSE){
   #
@@ -59,13 +53,13 @@ integ_correct_EPRspecs <- function(spec.integ.data,
   ## in which the second integral will be performed
   ## (limits are 'B.reg.start','B.reg.end'):
   data.slct <- spec.integ.data %>%
-    filter(between(.data[[B]],B.reg.start,B.reg.end))
+    filter(between(.data[[B]],Blim[1],Blim[2]))
   #
   ## select region / range / interval of the peak, which will be not
   ## considered ("!") for the baseline correction / fit
   ## (limits are 'B.peak.start','B.peak.end'):
   data.NoPeak <- data.slct %>%
-    filter(!between(.data[[B]],B.peak.start,B.peak.end))
+    filter(!between(.data[[B]],BpeaKlim[1],BpeaKlim[2]))
   #
   ## Polynomial baseline fit:
   integ.baseline.fit <- stats::lm(.data[[integ.string]] ~ stats::poly(.data[[B]],degree = poly.degree),
@@ -80,7 +74,7 @@ integ_correct_EPRspecs <- function(spec.integ.data,
     dplyr::rename(sIntegBaseLinFit = .data[[".fitted"]]) %>%
     dplyr::mutate(sIntegCorr = .data[[integ.string]] - .data$sIntegBaseLinFit) %>%
     dplyr::select(-sIntegBaselinFit) %>%
-    dplyr::mutate(sIntegCorr - min(.data$sIntegCorr))
+    dplyr::mutate(sIntegCorr = sIntegCorr - min(.data$sIntegCorr))
   #
   ## double integral calculation:
   if (isTRUE(double.integ)){

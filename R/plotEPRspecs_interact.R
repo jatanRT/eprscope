@@ -15,9 +15,17 @@
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param line.size Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
+#' @param line.color Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
+#'   (not for \code{time.series}), therefore \strong{default:} \code{line.color = "steelblue"}
+#' @param bg.color Character/String corresponding to \strong{background color}
+#' @param grid.color Character/String corresponding to \strong{grid color}
+#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param time.series Boolean, whether the input ASCII spectrum data comes from the time series experiment
 #'   with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)
+#' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
+#'   \strong{default}: \code{axis.title.size = 15}
+#' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
+#'   \strong{default}: \code{axis.text.size = 14}
 #'
 #'
 #' @return Interactive EPR spectrum plot/graph based on \pkg{plotly}
@@ -33,17 +41,22 @@
 #'
 #' @importFrom plotly ggplotly
 plotEPRspecs_interact <- function(spectrum.data,
-                                      B = "B_mT",
-                                      Intensity = "dIepr_over_dB",
-                                      line.size = 0.75,
-                                      time.series = FALSE){
+                                  B = "B_mT",
+                                  Intensity = "dIepr_over_dB",
+                                  line.color = "steelblue",
+                                  bg.color = "#e5ecf6",
+                                  grid.color = "#ffff",
+                                  line.width = 0.75,
+                                  axis.title.size = 15,
+                                  axis.text.size = 14,
+                                  time.series = FALSE){
   #
   ## labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
   if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
-    xlabel = "B (mT)"
+    xlabel = "<i>B</i> (mT)"
   }
   if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
-    xlabel = "B (G)"
+    xlabel = "<i>B</i> (G)"
   }
   if (sjmisc::str_contains(Intensity,c("dB",
                                        "_dB",
@@ -51,8 +64,9 @@ plotEPRspecs_interact <- function(spectrum.data,
                                        "deriv",
                                        "Intens",
                                        "Deriv",
-                                       "dIepr"),logic = "or",ignore.case = F)){
-    ylabel = "dIepr / dB  (p.d.u.)"
+                                       "dIepr",
+                                       "dIepr_over"),logic = "or",ignore.case = F)){
+    ylabel = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
   if (sjmisc::str_contains(Intensity,
                            c("single",
@@ -67,7 +81,7 @@ plotEPRspecs_interact <- function(spectrum.data,
                              "Integral",
                              "sInteg_"),
                            logic = "or",ignore.case = F)){
-    ylabel <- "Iepr  (p.d.u.)"
+    ylabel <- "<i>I</i><sub>EPR</sub>  (p.d.u.)"
   }
   if (sjmisc::str_contains(Intensity,
                            c("double",
@@ -91,20 +105,46 @@ plotEPRspecs_interact <- function(spectrum.data,
                              "second",
                              "Second"),
                            logic = "or",ignore.case = T,switch = F)){
-    ylabel <- "DIepr  (p.d.u.)"
+    ylabel <- "<i>DI</i><sub>EPR</sub>  (p.d.u.)"
   }
+  #
+  ##layout by `ggplotly`
+  Lay_out <- plotly::layout(
+    plot_bgcolor = bg.color,
+    xaxis = list(title = list(text = xlabel,
+                              font = list(size = axis.title.size)),
+                 tickfont = list(size = axis.text.size),
+                 gridcolor = grid.color),
+    yaxis = list(title = list(text = ylabel,
+                              font = list(size = axis.title.size)),
+                 tickfont = list(size = axis.text.size),
+                 gridcolor = grid.color)
+  )
   #
   ## plot precursor
   if (isTRUE(time.series)){
-    simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]],color = .data$time_s)) +
-      geom_line(size = line.size,show.legend = TRUE) +
-      labs(x = xlabel,y = ylabel)
+    #
+    ## basis defined by `ggplot`
+    simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]],
+                                           y = .data[[Intensity]],
+                                           color = as.factor(.data$time_s))) +
+      geom_line(linewidth = line.width)
+    #
   } else{
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]])) +
-      geom_line(size = line.size,color = "#6600CC",show.legend = FALSE) +
-      labs(x = xlabel,y = ylabel)
+      geom_line(linewidth = line.width,color = line.color)
+  }
+  ## final plot
+  if (isTRUE(time.series)){
+    final_plot <- ggplotly(simplePlot) %>% Lay_out %>%
+      plotly::layout(
+        legend = list(title = list(text = "<i>Time</i> (s)",
+                                  font = list(size = 13)))
+      )
+  } else{
+    final_plot <- ggplotly(simplePlot) %>% Lay_out
   }
   #
-  return(ggplotly(simplePlot))
+  return(final_plot)
   #
 }
