@@ -16,7 +16,7 @@
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-#'   (not for \code{time.series}), therefore \strong{default:} \code{line.color = "steelblue"}
+#'   (not for \code{time.series}), therefore \strong{default:} \code{line.color = "darkviolet"}
 #' @param bg.color Character/String corresponding to \strong{background color}
 #' @param grid.color Character/String corresponding to \strong{grid color}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
@@ -43,7 +43,7 @@
 plotEPRspecs_interact <- function(spectrum.data,
                                   B = "B_mT",
                                   Intensity = "dIepr_over_dB",
-                                  line.color = "steelblue",
+                                  line.color = "darkviolet",
                                   bg.color = "#e5ecf6",
                                   grid.color = "#ffff",
                                   line.width = 0.75,
@@ -65,7 +65,8 @@ plotEPRspecs_interact <- function(spectrum.data,
                                        "Intens",
                                        "Deriv",
                                        "dIepr",
-                                       "dIepr_over"),logic = "or",ignore.case = F)){
+                                       "dIepr_over_dB",
+                                       "dIepr_dB"),logic = "or",ignore.case = F)){
     ylabel = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
   if (sjmisc::str_contains(Intensity,
@@ -104,22 +105,9 @@ plotEPRspecs_interact <- function(spectrum.data,
                              "sec",
                              "second",
                              "Second"),
-                           logic = "or",ignore.case = T,switch = F)){
+                           logic = "or",ignore.case = F,switch = F)){
     ylabel <- "<i>DI</i><sub>EPR</sub>  (p.d.u.)"
   }
-  #
-  ##layout by `ggplotly`
-  Lay_out <- plotly::layout(
-    plot_bgcolor = bg.color,
-    xaxis = list(title = list(text = xlabel,
-                              font = list(size = axis.title.size)),
-                 tickfont = list(size = axis.text.size),
-                 gridcolor = grid.color),
-    yaxis = list(title = list(text = ylabel,
-                              font = list(size = axis.title.size)),
-                 tickfont = list(size = axis.text.size),
-                 gridcolor = grid.color)
-  )
   #
   ## plot precursor
   if (isTRUE(time.series)){
@@ -134,15 +122,35 @@ plotEPRspecs_interact <- function(spectrum.data,
     simplePlot <- ggplot(spectrum.data,aes(x = .data[[B]], y = .data[[Intensity]])) +
       geom_line(linewidth = line.width,color = line.color)
   }
-  ## final plot
+  ## final plot with layout
   if (isTRUE(time.series)){
-    final_plot <- ggplotly(simplePlot) %>% Lay_out %>%
+    final_plot <- ggplotly(simplePlot) %>%
       plotly::layout(
+        plot_bgcolor = bg.color,
+        xaxis = list(title = list(text = xlabel,
+                                  font = list(size = axis.title.size)),
+                     tickfont = list(size = axis.text.size),
+                     gridcolor = grid.color),
+        yaxis = list(title = list(text = ylabel,
+                                  font = list(size = axis.title.size)),
+                     tickfont = list(size = axis.text.size),
+                     gridcolor = grid.color),
         legend = list(title = list(text = "<i>Time</i> (s)",
-                                  font = list(size = 13)))
+                                   font = list(size = 13)))
       )
   } else{
-    final_plot <- ggplotly(simplePlot) %>% Lay_out
+    final_plot <- ggplotly(simplePlot) %>%
+      plotly::layout(
+        plot_bgcolor = bg.color,
+        xaxis = list(title = list(text = xlabel,
+                                  font = list(size = axis.title.size)),
+                     tickfont = list(size = axis.text.size),
+                     gridcolor = grid.color),
+        yaxis = list(title = list(text = ylabel,
+                                  font = list(size = axis.title.size)),
+                     tickfont = list(size = axis.text.size),
+                     gridcolor = grid.color)
+      )
   }
   #
   return(final_plot)

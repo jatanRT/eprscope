@@ -8,7 +8,7 @@ plotEPRspecs_interact(
   spectrum.data,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
-  line.color = "steelblue",
+  line.color = "darkviolet",
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
   line.width = 0.75,
@@ -31,7 +31,7 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
 \item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-(not for \code{time.series}), therefore \strong{default:} \code{line.color = "steelblue"}}
+(not for \code{time.series}), therefore \strong{default:} \code{line.color = "darkviolet"}}
 
 \item{bg.color}{Character/String corresponding to \strong{background color}}
 

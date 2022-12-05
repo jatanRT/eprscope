@@ -93,7 +93,8 @@ plotEPRspec <- function(spectrum.data,
                                        "Intens",
                                        "Deriv",
                                        "dIepr",
-                                       "dIepr_over"),
+                                       "dIepr_over_dB",
+                                       "dIepr_dB"),
                            logic = "or",ignore.case = F)){
     y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
   }

@@ -59,7 +59,8 @@
 readExpEPRspecs <- function(path_to_ASC,
                             qValue = 1,
                             Nscans = 1,
-                            c.M = 1,m.mg = 1,
+                            c.M = 1,
+                            m.mg = 1,
                             time.series = FALSE,
                             origin = "xenon"){
   if (origin == "xenon"){
