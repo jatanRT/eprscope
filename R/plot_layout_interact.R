@@ -1,0 +1,89 @@
+#
+#' Additional Layout for Interactive \code{plotly} Plots
+#'
+#'
+#' @description
+#' tbc
+#'
+#'
+#' @param x.label tbc
+#' @param y.label tbc
+#' @param x.axis.title.family tbc
+#' @param x.axis.title.color tbc
+#' @param x.axis.title.size tbc
+#' @param x.axis.tick.family tbc
+#' @param x.axis.tick.color tbc
+#' @param x.axis.tick.size tbc
+#' @param y.axis.title.family tbc
+#' @param y.axis.title.color tbc
+#' @param y.axis.title.size tbc
+#' @param y.axis.tick.family tbc
+#' @param y.axis.tick.color tbc
+#' @param y.axis.tick.size tbc
+#' @param legend.label tbc
+#' @param legend.label.family tbc
+#' @param legend.label.color tbc
+#' @param legend.label.size tbc
+#' @param bg.color tbc
+#' @param grid.color tbc
+#'
+#'
+#' @return
+#' tbc
+#'
+#' @examples
+#' tbc
+#' tbc
+#'
+#' @export
+#'
+#'
+plot_layout_interact <- function(x.label = "<i>B</i> (mT)",
+                                 y.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
+                                 x.axis.title.family = "Courier New",
+                                 x.axis.title.color = "black",
+                                 x.axis.title.size = 15,
+                                 x.axis.tick.family = "Courier New",
+                                 x.axis.tick.color = "black",
+                                 x.axis.tick.size = 14,
+                                 y.axis.title.family = "Courier New",
+                                 y.axis.title.color = "black",
+                                 y.axis.title.size = 15,
+                                 y.axis.tick.family = "Courier New",
+                                 y.axis.tick.color = "black",
+                                 y.axis.tick.size = 14,
+                                 legend.label = NULL,
+                                 legend.label.family = "Courier New",
+                                 legend.label.color = "black",
+                                 legend.label.size = 13,
+                                 bg.color = "#e5ecf6",
+                                 grid.color = "#ffff"
+                                 ){
+#
+Plotly_layout <- plotly::layout(
+    plot_bgcolor = bg.color,
+    xaxis = list(title = list(text = x.label,
+                              font = list(family = x.axis.title.family,
+                                          color = x.axis.title.color,
+                                          size = x.axis.title.size)),
+                 tickfont = list(family = x.axis.tick.family,
+                                 color = x.axis.tick.color,
+                                 size = x.axis.tick.size),
+                 gridcolor = grid.color),
+    yaxis = list(title = list(text = y.label,
+                              font = list(family = y.axis.title.family,
+                                          color = y.axis.title.color,
+                                          size = y.axis.title.size)),
+                 tickfont = list(family = y.axis.tick.family,
+                                 color = y.axis.tick.color,
+                                 size = y.axis.tick.size),
+                 gridcolor = grid.color),
+    legend = list(title = list(text = legend.label,
+                               font = list(family = legend.label.family,
+                                           color = legend.label.color,
+                                           size = legend.label.size)))
+  )
+  #
+  return(Plotly_layout)
+  #
+}
