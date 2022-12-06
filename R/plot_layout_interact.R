@@ -37,7 +37,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom plotly layout
 plot_layout_interact <- function(x.label = "<i>B</i> (mT)",
                                  y.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
                                  x.axis.title.family = "Courier New",
