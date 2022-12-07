@@ -20,6 +20,8 @@
 #' @param bg.color Character/String corresponding to \strong{background color}
 #' @param grid.color Character/String corresponding to \strong{grid color}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
+#' @param border.line.width tbc
+#' @param border.line.color tbc
 #' @param time.series Boolean, whether the input ASCII spectrum data comes from the time series experiment
 #'   with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
@@ -47,6 +49,8 @@ plotEPRspecs_interact <- function(data.spectrum,
                                   bg.color = "#e5ecf6",
                                   grid.color = "#ffff",
                                   line.width = 0.75,
+                                  border.line.width = 1.2,
+                                  border.line.color = "black",
                                   axis.title.size = 15,
                                   axis.text.size = 14,
                                   time.series = FALSE){
@@ -130,11 +134,15 @@ plotEPRspecs_interact <- function(data.spectrum,
         xaxis = list(title = list(text = xlabel,
                                   font = list(size = axis.title.size)),
                      tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color),
+                     gridcolor = grid.color,
+                     linecolor = toRGB(border.line.color),
+                     linewidth = border.line.width,showline = T,mirror = T),
         yaxis = list(title = list(text = ylabel,
                                   font = list(size = axis.title.size)),
                      tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color),
+                     gridcolor = grid.color,
+                     linecolor = toRGB(border.line.color),
+                     linewidth = border.line.width,showline = T,mirror = T),
         legend = list(title = list(text = "<i>Time</i> (s)",
                                    font = list(size = 13)))
       )
@@ -145,11 +153,15 @@ plotEPRspecs_interact <- function(data.spectrum,
         xaxis = list(title = list(text = xlabel,
                                   font = list(size = axis.title.size)),
                      tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color),
+                     gridcolor = grid.color,
+                     linecolor = toRGB(border.line.color),
+                     linewidth = border.line.width,showline = T,mirror = T),
         yaxis = list(title = list(text = ylabel,
                                   font = list(size = axis.title.size)),
                      tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color)
+                     gridcolor = grid.color,
+                     linecolor = toRGB(border.line.color),
+                     linewidth = border.line.width,showline = T,mirror = T)
       )
   }
   #

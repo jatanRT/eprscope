@@ -28,6 +28,8 @@
 #' @param legend.label.size tbc
 #' @param bg.color tbc
 #' @param grid.color tbc
+#' @param border.line.width tbc
+#' @param border.line.color tbc
 #'
 #'
 #' @return
@@ -61,7 +63,9 @@ plot_layout_interact <- function(p,
                                  legend.label.color = "black",
                                  legend.label.size = 13,
                                  bg.color = "#e5ecf6",
-                                 grid.color = "#ffff"
+                                 grid.color = "#ffff",
+                                 border.line.width = 1.2,
+                                 border.line.color = "black"
                                  ){
 #
 Plotly_layout <- plotly::layout(
@@ -75,7 +79,9 @@ Plotly_layout <- plotly::layout(
                  tickfont = list(family = x.axis.tick.family,
                                  color = x.axis.tick.color,
                                  size = x.axis.tick.size),
-                 gridcolor = grid.color),
+                 gridcolor = grid.color,
+                 linecolor = toRGB(border.line.color),
+                 linewidth = border.line.width,showline = T,mirror = T),
     yaxis = list(title = list(text = y.label,
                               font = list(family = y.axis.title.family,
                                           color = y.axis.title.color,
@@ -83,7 +89,9 @@ Plotly_layout <- plotly::layout(
                  tickfont = list(family = y.axis.tick.family,
                                  color = y.axis.tick.color,
                                  size = y.axis.tick.size),
-                 gridcolor = grid.color),
+                 gridcolor = grid.color,
+                 linecolor = toRGB(border.line.color),
+                 linewidth = border.line.width,showline = T,mirror = T),
     legend = list(title = list(text = legend.label,
                                font = list(family = legend.label.family,
                                            color = legend.label.color,

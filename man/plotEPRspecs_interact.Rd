@@ -12,6 +12,8 @@ plotEPRspecs_interact(
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
   line.width = 0.75,
+  border.line.width = 1.2,
+  border.line.color = "black",
   axis.title.size = 15,
   axis.text.size = 14,
   time.series = FALSE
@@ -38,6 +40,10 @@ name/label is used (e.g. for integrated or simulated spectra), \strong{default}:
 \item{grid.color}{Character/String corresponding to \strong{grid color}}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
+
+\item{border.line.width}{tbc}
+
+\item{border.line.color}{tbc}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
 \strong{default}: \code{axis.title.size = 15}}

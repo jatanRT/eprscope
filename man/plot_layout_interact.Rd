@@ -26,7 +26,9 @@ plot_layout_interact(
   legend.label.color = "black",
   legend.label.size = 13,
   bg.color = "#e5ecf6",
-  grid.color = "#ffff"
+  grid.color = "#ffff",
+  border.line.width = 1.2,
+  border.line.color = "black"
 )
 }
 \arguments{
@@ -73,6 +75,10 @@ plot_layout_interact(
 \item{bg.color}{tbc}
 
 \item{grid.color}{tbc}
+
+\item{border.line.width}{tbc}
+
+\item{border.line.color}{tbc}
 }
 \value{
 tbc
