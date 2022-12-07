@@ -1,11 +1,13 @@
 #
-#' Additional Layout for Interactive \code{plotly} Plots
+#' Additional Layout for Interactive Plots Similar to Layout from Plotly Package
 #'
 #'
 #' @description
 #' tbc
 #'
 #'
+#' @param p tbc
+#' @param data tbc
 #' @param x.label tbc
 #' @param y.label tbc
 #' @param x.axis.title.family tbc
@@ -38,22 +40,24 @@
 #' @export
 #'
 #' @importFrom plotly layout
-plot_layout_interact <- function(x.label = "<i>B</i> (mT)",
+plot_layout_interact <- function(p,
+                                 data = NULL,
+                                 x.label = "<i>B</i> (mT)",
                                  y.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
-                                 x.axis.title.family = "Courier New",
+                                 x.axis.title.family = "Arial",
                                  x.axis.title.color = "black",
                                  x.axis.title.size = 15,
-                                 x.axis.tick.family = "Courier New",
+                                 x.axis.tick.family = "Arial",
                                  x.axis.tick.color = "black",
                                  x.axis.tick.size = 14,
-                                 y.axis.title.family = "Courier New",
+                                 y.axis.title.family = "Arial",
                                  y.axis.title.color = "black",
                                  y.axis.title.size = 15,
-                                 y.axis.tick.family = "Courier New",
+                                 y.axis.tick.family = "Arial",
                                  y.axis.tick.color = "black",
                                  y.axis.tick.size = 14,
                                  legend.label = NULL,
-                                 legend.label.family = "Courier New",
+                                 legend.label.family = "Arial",
                                  legend.label.color = "black",
                                  legend.label.size = 13,
                                  bg.color = "#e5ecf6",
@@ -61,6 +65,8 @@ plot_layout_interact <- function(x.label = "<i>B</i> (mT)",
                                  ){
 #
 Plotly_layout <- plotly::layout(
+    p,
+    data,
     plot_bgcolor = bg.color,
     xaxis = list(title = list(text = x.label,
                               font = list(family = x.axis.title.family,
