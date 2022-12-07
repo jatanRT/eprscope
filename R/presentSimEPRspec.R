@@ -5,11 +5,11 @@
 #' @description TODO
 #'
 #'
-#' @param exp.spectrum.data \strong{Experimental} Spectrum data frame/table where the magnetic flux
+#' @param data.spectrum.exp \strong{Experimental} Spectrum data frame/table where the magnetic flux
 #'   density (in \code{mT}) column is labeled as \code{B_mT} in mT (or \code{B_G} in gauss)
 #'   and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well,
 #'   this is automatic if the \code{\link{readExpEPRspecs}} function is used to read the spectrum in ASCII
-#' @param sim.spectrum.data Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
+#' @param data.spectrum.sim Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
 #'   flux density (in \code{mT}) column must be labeled as \code{B_mT_Sim} in mT (or \code{B_G_Sim} in gauss)
 #'   and that of the derivative intensity as \code{dIepr_over_dB_Sim}, this is automatic
 #'   if the \code{\link{readSimEPRspec}} function is used to read the spectrum in ASCII
@@ -49,17 +49,17 @@
 #'
 #' @export
 #'
-presentSimEPRspec <- function(exp.spectrum.data,
-                                  sim.spectrum.data,
-                                  B = "B_mT",
-                                  Intensity.shift.ratio = 1.2,
-                                  B.shift = 0,
-                                  line.color.exp = "red",
-                                  line.color.sim = "blue",
-                                  line.width = 0.75,
-                                  output.table = FALSE){
+presentSimEPRspec <- function(data.spectrum.exp,
+                              data.spectrum.sim,
+                              B = "B_mT",
+                              Intensity.shift.ratio = 1.2,
+                              B.shift = 0,
+                              line.color.exp = "red",
+                              line.color.sim = "blue",
+                              line.width = 0.75,
+                              output.table = FALSE){
   ## Join both tables/data frames
-  both.spectr.data <- dplyr::bind_cols(exp.spectrum.data,sim.spectrum.data)
+  both.spectr.data <- dplyr::bind_cols(data.spectrum.exp,data.spectrum.sim)
   #
   ## Differences in intensity extremes:
   diff_Intens_exp <- max(both.spectr.data$dIepr_over_dB) - min(both.spectr.data$dIepr_over_dB)

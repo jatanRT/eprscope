@@ -5,7 +5,7 @@
 \title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum}
 \usage{
 gValue_Spec(
-  spectrum.data,
+  data.spectrum,
   nu.GHz,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
@@ -14,14 +14,14 @@ gValue_Spec(
 )
 }
 \arguments{
-\item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
+\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
 must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column can be included as well}
 
 \item{nu.GHz}{Numeric, microwave frequency in \code{GHz}}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
@@ -54,9 +54,9 @@ Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
 }
 \examples{
 \dontrun{
-gValue_Spec(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",c(349.8841,351.112))
-gValue_Spec(spectrum.data,nu.GHz = 9.82451,B = "B_G",Blim = c(3498.841,3511.12),iso = FALSE)
-gValue_Spec(spectrum.data,9.91024,B = "B_G_Sim",c(3499,3501))
+gValue_Spec(data.spectrum,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",c(349.8841,351.112))
+gValue_Spec(data.spectrum,nu.GHz = 9.82451,B = "B_G",Blim = c(3498.841,3511.12),iso = FALSE)
+gValue_Spec(data.spectrum,9.91024,B = "B_G_Sim",c(3499,3501))
 }
 
 

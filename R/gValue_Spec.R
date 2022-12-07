@@ -14,12 +14,12 @@
 #'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
 #'   and \code{syms$mub} commands, respectively.
 #'
-#' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
+#' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
 #'   must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column can be included as well
 #' @param nu.GHz Numeric, microwave frequency in \code{GHz}
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+#'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
@@ -35,9 +35,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' gValue_Spec(spectrum.data,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",c(349.8841,351.112))
-#' gValue_Spec(spectrum.data,nu.GHz = 9.82451,B = "B_G",Blim = c(3498.841,3511.12),iso = FALSE)
-#' gValue_Spec(spectrum.data,9.91024,B = "B_G_Sim",c(3499,3501))
+#' gValue_Spec(data.spectrum,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",c(349.8841,351.112))
+#' gValue_Spec(data.spectrum,nu.GHz = 9.82451,B = "B_G",Blim = c(3498.841,3511.12),iso = FALSE)
+#' gValue_Spec(data.spectrum,9.91024,B = "B_G_Sim",c(3499,3501))
 #' }
 #'
 #'
@@ -45,7 +45,7 @@
 #'
 #'
 #' @importFrom dplyr filter select mutate pull between near
-gValue_Spec <- function(spectrum.data,
+gValue_Spec <- function(data.spectrum,
                                 nu.GHz,
                                 B = "B_mT",
                                 Intensity = "dIepr_over_dB",
@@ -53,12 +53,12 @@ gValue_Spec <- function(spectrum.data,
                                 iso = TRUE){
   #
   ## B minimum & maximum
-  B.min <- spectrum.data %>%
+  B.min <- data.spectrum %>%
     filter(between(.data[[B]],Blim[1],Blim[2])) %>%
     filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
     pull(.data[[B]])
   #
-  B.max <- spectrum.data %>%
+  B.max <- data.spectrum %>%
     filter(between(.data[[B]],Blim[1],Blim[2])) %>%
     filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     pull(.data[[B]])
@@ -68,7 +68,7 @@ gValue_Spec <- function(spectrum.data,
     ## B at dIepr_over_dB = 0 (near 0, see next comment):
   } else{
     ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
-    B.center <- spectrum.data %>%
+    B.center <- data.spectrum %>%
       filter(between(.data[[B]],B.max,B.min)) %>%
       mutate(Intens = abs(.data[[Intensity]])) %>%
       filter(near(Intens,0,tol = max(.data[[Intensity]])/100)) %>%

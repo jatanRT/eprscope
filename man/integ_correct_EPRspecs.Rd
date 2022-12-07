@@ -5,7 +5,7 @@
 \title{Polynomial Baseline Correction for single-Integrated EPR Spectra + Double Integral Calculation/Presentation}
 \usage{
 integ_correct_EPRspecs(
-  spec.integ.data,
+  data.spec.integ,
   B = "B_G",
   Blim,
   BpeaKlim,
@@ -14,7 +14,7 @@ integ_correct_EPRspecs(
 )
 }
 \arguments{
-\item{spec.integ.data}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+\item{data.spec.integ}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column may be included as well, \code{sinlge integrated EPR} \strong{spectrum must be included}
 in column named by \code{"single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_"} ("|" == "or" operator),

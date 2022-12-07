@@ -14,12 +14,12 @@
 #'   with other functions like in \code{\pkg{ggplot2}}, e.g. present or skip \code{grid} within the code.
 #'
 #'
-#' @param spectrum.data Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
+#' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 #'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
 #'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
 #'   (incl. other \code{Intensity} and \code{B} columns) can be read as well
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+#'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
@@ -49,12 +49,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' plotEPRspec(spectrum.data)
-#' plotEPRspec(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
-#' plotEPRspec(spectrum.data,"Integral",B = "B_mT_Sim")
-#' plotEPRspec(spectrum.data,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
-#' plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
-#' plotEPRspec(spectrum.data,"B_mT","darkred",line.width = 1.2)
+#' plotEPRspec(data.spectrum)
+#' plotEPRspec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
+#' plotEPRspec(data.spectrum,"Integral",B = "B_mT_Sim")
+#' plotEPRspec(data.spectrum,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+#' plotEPRspec(data.spectrum,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
+#' plotEPRspec(data.spectrum,"B_mT","darkred",line.width = 1.2)
 #' }
 #'
 #'
@@ -64,7 +64,7 @@
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
-plotEPRspec <- function(spectrum.data,
+plotEPRspec <- function(data.spectrum,
                         B = "B_mT",
                         Intensity = "dIepr_over_dB",
                         line.color = "steelblue",
@@ -76,8 +76,8 @@ plotEPRspec <- function(spectrum.data,
                         yTicks = TRUE){
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
-  B.start <- min(spectrum.data[,B])
-  B.end <- max(spectrum.data[,B])
+  B.start <- min(data.spectrum[,B])
+  B.end <- max(data.spectrum[,B])
   #
   ## Labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
   if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
@@ -169,7 +169,7 @@ plotEPRspec <- function(spectrum.data,
   }
   #
   ## Basic simple plot:
-  simplePlot <- ggplot(spectrum.data) +
+  simplePlot <- ggplot(data.spectrum) +
     geom_line(aes(x = .data[[B]], y = .data[[Intensity]]),
               linewidth = line.width,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +

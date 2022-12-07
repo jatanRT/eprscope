@@ -4,15 +4,15 @@
 \alias{DeltaBpp_Spec}
 \title{Calculation of Spectral Linewidth (\eqn{\Delta B_{pp}}) of the EPR Spectrum}
 \usage{
-DeltaBpp_Spec(spectrum.data, B = "B_mT", Intensity = "dIepr_over_dB", Blim)
+DeltaBpp_Spec(data.spectrum, B = "B_mT", Intensity = "dIepr_over_dB", Blim)
 }
 \arguments{
-\item{spectrum.data}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+\item{data.spectrum}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column may be included as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
@@ -32,10 +32,10 @@ to minimum and maximum of the \code{dIepr_over_dB} in the selected \code{\emph{B
 }
 \examples{
 \dontrun{
-DeltaBpp_Spec(spectrum.data,c(320.221,328.331))
-DeltaBpp_Spec(spectrum.data,B = "B_G",Intensity = "dIepr_over_dB",c(3202.11,3283.31))
-DeltaBpp_Spec(spectrum.data,"B_mT",Blim = c(320.221,328.331))
-DeltaBpp_Spec(spectrum.data,"B_mT_Sim",c(320.221,328.331))
+DeltaBpp_Spec(data.spectrum,c(320.221,328.331))
+DeltaBpp_Spec(data.spectrum,B = "B_G",Intensity = "dIepr_over_dB",c(3202.11,3283.31))
+DeltaBpp_Spec(data.spectrum,"B_mT",Blim = c(320.221,328.331))
+DeltaBpp_Spec(data.spectrum,"B_mT_Sim",c(320.221,328.331))
 }
 
 }

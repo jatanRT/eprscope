@@ -5,7 +5,7 @@
 \title{EPR Spectrum Simple Plot}
 \usage{
 plotEPRspec(
-  spectrum.data,
+  data.spectrum,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
   line.color = "steelblue",
@@ -18,13 +18,13 @@ plotEPRspec(
 )
 }
 \arguments{
-\item{spectrum.data}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
+\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
 intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
 (incl. other \code{Intensity} and \code{B} columns) can be read as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
@@ -74,12 +74,12 @@ Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spect
 }
 \examples{
 \dontrun{
-plotEPRspec(spectrum.data)
-plotEPRspec(spectrum.data,"B_G",Intensity = "dIepr_over_dB_Sim")
-plotEPRspec(spectrum.data,"Integral",B = "B_mT_Sim")
-plotEPRspec(spectrum.data,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
-plotEPRspec(spectrum.data,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
-plotEPRspec(spectrum.data,"B_mT","darkred",line.width = 1.2)
+plotEPRspec(data.spectrum)
+plotEPRspec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
+plotEPRspec(data.spectrum,"Integral",B = "B_mT_Sim")
+plotEPRspec(data.spectrum,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+plotEPRspec(data.spectrum,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
+plotEPRspec(data.spectrum,"B_mT","darkred",line.width = 1.2)
 }
 
 

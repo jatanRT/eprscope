@@ -5,7 +5,7 @@
 \title{Find Intensity Extremes within the EPR Spectrum (or its Integrated Form).}
 \usage{
 Bextreme_Spec(
-  spectrum.data,
+  data.spectrum,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
   Blim,
@@ -13,12 +13,12 @@ Bextreme_Spec(
 )
 }
 \arguments{
-\item{spectrum.data}{EPR spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+\item{data.spectrum}{EPR spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 and that of the derivative \code{dIepr_over_dB} or integrated e.g. \code{Intensity}.
 \code{Index} column may be included as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
@@ -39,7 +39,7 @@ within selected region of the EPR spectrum
 }
 \examples{
 \dontrun{
-Bextreme_Spec(spectrum.data,Blim = c(349.54,359.54),extreme = 'maximum')
+Bextreme_Spec(data.spectrum,Blim = c(349.54,359.54),extreme = 'maximum')
 Bextreme_Spec(data.frame,"B_G",Intensity = "Integrated_Intensity",c(3495.4,3595.4),'minimum')
 }
 

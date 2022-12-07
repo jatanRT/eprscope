@@ -6,7 +6,7 @@
 #' tbc
 #'
 #'
-#' @param spec.integ.data Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
+#' @param data.spec.integ Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 #'   must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column may be included as well, \code{sinlge integrated EPR} \strong{spectrum must be included}
 #'   in column named by \code{"single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_"} ("|" == "or" operator),
@@ -37,7 +37,7 @@
 #' @export
 #'
 #'
-integ_correct_EPRspecs <- function(spec.integ.data,
+integ_correct_EPRspecs <- function(data.spec.integ,
                                    B = "B_G",
                                    Blim,
                                    BpeaKlim,
@@ -45,19 +45,19 @@ integ_correct_EPRspecs <- function(spec.integ.data,
                                    double.integ = FALSE){
   #
   ## Intensity column from spe.integ.data
-  integ.string <- str_subset(colnames(spec.integ.data),
+  integ.string <- str_subset(colnames(data.spec.integ),
                              regex("single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_",
                                    ignore_case = T))
   #
   ## select a region / range / interval of a integrated spectrum
   ## in which the second integral will be performed
-  ## (limits are 'B.reg.start','B.reg.end'):
-  data.slct <- spec.integ.data %>%
+  ## (limits are 'Blim[1]'<=> 'start','Blim[2]' <=> 'end'):
+  data.slct <- data.spec.integ %>%
     filter(between(.data[[B]],Blim[1],Blim[2]))
   #
   ## select region / range / interval of the peak, which will be not
   ## considered ("!") for the baseline correction / fit
-  ## (limits are 'B.peak.start','B.peak.end'):
+  ## (limits are 'BpeaKlim[1]'<=> 'start','BpeaKlim[2]' <=> 'end'):
   data.NoPeak <- data.slct %>%
     filter(!between(.data[[B]],BpeaKlim[1],BpeaKlim[2]))
   #
