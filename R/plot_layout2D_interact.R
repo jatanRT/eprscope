@@ -42,7 +42,7 @@
 #' @export
 #'
 #' @importFrom plotly layout toRGB
-plot_layout_interact <- function(p,
+plot_layout2D_interact <- function(p,
                                  data = NULL,
                                  x.label = "<i>B</i> (mT)",
                                  y.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",

@@ -30,7 +30,7 @@
 #'   \strong{default}: \code{axis.text.size = 14}
 #'
 #'
-#' @return Interactive EPR spectrum plot/graph based on \pkg{plotly}
+#' @return Interactive EPR spectrum/spectra plot/graph based on \pkg{plotly}
 #'
 #'
 #' @examples
@@ -42,7 +42,7 @@
 #'
 #'
 #' @importFrom plotly ggplotly
-plotEPRspecs_interact <- function(data.spectrum,
+plotEPRspecs2D_interact <- function(data.spectrum,
                                   B = "B_mT",
                                   Intensity = "dIepr_over_dB",
                                   line.color = "darkviolet",
