@@ -41,7 +41,7 @@
 #'
 #' @export
 #'
-#' @importFrom plotly layout
+#' @importFrom plotly layout toRGB
 plot_layout_interact <- function(p,
                                  data = NULL,
                                  x.label = "<i>B</i> (mT)",
@@ -80,7 +80,7 @@ Plotly_layout <- plotly::layout(
                                  color = x.axis.tick.color,
                                  size = x.axis.tick.size),
                  gridcolor = grid.color,
-                 linecolor = toRGB(border.line.color),
+                 linecolor = plotly::toRGB(border.line.color),
                  linewidth = border.line.width,showline = T,mirror = T),
     yaxis = list(title = list(text = y.label,
                               font = list(family = y.axis.title.family,
@@ -90,7 +90,7 @@ Plotly_layout <- plotly::layout(
                                  color = y.axis.tick.color,
                                  size = y.axis.tick.size),
                  gridcolor = grid.color,
-                 linecolor = toRGB(border.line.color),
+                 linecolor = plotly::toRGB(border.line.color),
                  linewidth = border.line.width,showline = T,mirror = T),
     legend = list(title = list(text = legend.label,
                                font = list(family = legend.label.family,

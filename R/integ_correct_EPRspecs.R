@@ -43,6 +43,9 @@ integ_correct_EPRspecs <- function(data.spec.integ,
                                    BpeaKlim,
                                    poly.degree,
                                    double.integ = FALSE){
+  ## 'Temporary' processing variables
+  sIntegBaseLinFit <- NULL
+  sIntegCorr <- NULL
   #
   ## Intensity column from spe.integ.data
   integ.string <- str_subset(colnames(data.spec.integ),

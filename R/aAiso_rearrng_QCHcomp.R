@@ -41,6 +41,9 @@
 #' @importFrom stringr str_subset str_extract regex
 aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
   #
+  ## 'Temporary' processing variables
+  mT <- NULL
+  #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
   A.str <- str_subset(data.col.names,regex("mhz|megahertz",ignore_case = T))

@@ -58,6 +58,7 @@ presentSimEPRspec <- function(data.spectrum.exp,
                               line.color.sim = "blue",
                               line.width = 0.75,
                               output.table = FALSE){
+  #
   ## Join both tables/data frames
   both.spectr.data <- dplyr::bind_cols(data.spectrum.exp,data.spectrum.sim)
   #
@@ -84,10 +85,10 @@ presentSimEPRspec <- function(data.spectrum.exp,
   #
   ## B label for the plot:
   if (B == "B_mT"){
-    x.label <- plotLabelsXYZ(B,mT)
+    x.label <- EPRphysChemSpec::plotLabelsXYZ(B,mT)
   }
   if (B == "B_G"){
-    x.label <- plotLabelsXYZ(B,G)
+    x.label <- EPRphysChemSpec::plotLabelsXYZ(B,G)
   }
   #
   ## plot variable:

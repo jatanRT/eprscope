@@ -51,6 +51,8 @@ gValue_Spec <- function(data.spectrum,
                                 Intensity = "dIepr_over_dB",
                                 Blim,
                                 iso = TRUE){
+  ## 'Temporary' processing variables
+  AbsIntens <- NULL
   #
   ## B minimum & maximum
   B.min <- data.spectrum %>%
@@ -70,9 +72,9 @@ gValue_Spec <- function(data.spectrum,
     ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
     B.center <- data.spectrum %>%
       filter(between(.data[[B]],B.max,B.min)) %>%
-      mutate(Intens = abs(.data[[Intensity]])) %>%
-      filter(near(Intens,0,tol = max(.data[[Intensity]])/100)) %>%
-      filter(Intens == min(Intens)) %>%
+      mutate(AbsIntens = abs(.data[[Intensity]])) %>%
+      filter(near(AbsIntens,0,tol = max(.data[[Intensity]])/100)) %>%
+      filter(AbsIntens == min(AbsIntens)) %>%
       pull(.data[[B]])
   }
   ## g -value calculation:
