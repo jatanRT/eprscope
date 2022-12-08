@@ -41,10 +41,10 @@ that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \st
 \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B = "B_mT"} => \code{B.shift}
 must be in \code{mT}, or if \code{B = "B_G"} then \code{B.shift} must be in \code{G})}
 
-\item{line.color.exp}{String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
+\item{line.color.exp}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}}
 
-\item{line.color.sim}{String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
+\item{line.color.sim}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.exp}}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}

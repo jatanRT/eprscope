@@ -2,7 +2,7 @@
 #' @title Basic Calculation of \eqn{g}-factor
 #'
 #' @description Calculation of {g}-factor according to fundamental formula.
-#'   The magnetic flux density (\code{\emph{B}}) and microwave frequency (\code{nu},\eqn{\nu})
+#'   The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
 #'   can be entered with common units like \code{G} (Gauss) \code{mT}
 #'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
 #'   The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_{B}}) are included

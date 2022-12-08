@@ -32,7 +32,7 @@ of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
 
 \item{iso}{Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
-(this is the \code{\strong{default}: iso = TRUE}), or by finding the the \eqn{B} value corresponding
+(this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
 to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})}
 }
 \value{

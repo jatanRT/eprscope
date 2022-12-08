@@ -1,17 +1,17 @@
 #
 #' EPR Spectrum Simple Plot
 #'
-#' @description Graph/Plot of an EPR spectrum based on \code{\pkg{ggplot2}}-functionality. Spectral data
+#' @description Graph/Plot of an EPR spectrum based on \pkg{ggplot2}-functionality. Spectral data
 #'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
 #'   (depending on units, data frame may include both of them) columns,
 #'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
 #'   if integral column is available, can be plotted as well, see examples below.
 #'   Theme of the graphic spectrum representation as well its line color can be varied like
-#'   in \code{\pkg{ggplot2}} (see below). Within a theme \code{y} ticks can be displayed
+#'   in \pkg{ggplot2} (see below). Within a theme \code{y} ticks can be displayed
 #'   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
 #'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
 #'   this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
-#'   with other functions like in \code{\pkg{ggplot2}}, e.g. present or skip \code{grid} within the code.
+#'   with other functions like in \pkg{ggplot2}, e.g. present or skip \code{grid} within the code.
 #'
 #'
 #' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
@@ -23,7 +23,7 @@
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param line.color String, line color to plot simple EPR spectrum. All \code{\pkg{ggplot2}} compatible
+#' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "steelblue"}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param basic.theme Character/String, which calls a ggplot theme base. The following ones are defined:
