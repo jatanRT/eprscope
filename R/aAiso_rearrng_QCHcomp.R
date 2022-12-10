@@ -31,8 +31,13 @@
 #'
 #'
 #' @examples
-#' tbc
-#' tbc
+#' \dontrun{
+#' aAiso_rearrng_QCHcomp(
+#' "./iso_values_Gaussian.txt",
+#' c("No","Nucleus","au","Megahertz","Gauss","10^n4_cm^n1"),
+#' list(3,c(21,22),c(20,23),c(24,25),c(27,26))
+#' )
+#' }
 #'
 #'
 #' @export

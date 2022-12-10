@@ -59,6 +59,10 @@ presentSimEPRspec <- function(data.spectrum.exp,
                               line.width = 0.75,
                               output.table = FALSE){
   #
+  ## 'Temporary' processing variables
+  mT <- NULL
+  G <- NULL
+  #
   ## Join both tables/data frames
   both.spectr.data <- dplyr::bind_cols(data.spectrum.exp,data.spectrum.sim)
   #

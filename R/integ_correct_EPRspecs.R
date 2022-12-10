@@ -76,7 +76,7 @@ integ_correct_EPRspecs <- function(data.spec.integ,
     dplyr::select(-.data[[".resid"]]) %>%
     dplyr::rename(sIntegBaseLinFit = .data[[".fitted"]]) %>%
     dplyr::mutate(sIntegCorr = .data[[integ.string]] - .data$sIntegBaseLinFit) %>%
-    dplyr::select(-sIntegBaselinFit) %>%
+    dplyr::select(-sIntegBaseLinFit) %>%
     dplyr::mutate(sIntegCorr = sIntegCorr - min(.data$sIntegCorr))
   #
   ## double integral calculation:
