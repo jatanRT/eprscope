@@ -5,7 +5,7 @@
 \title{Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot}
 \usage{
 plotEPRspecs2D_interact(
-  data.spectrum,
+  data.spectra,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
   line.color = "darkviolet",
@@ -20,13 +20,13 @@ plotEPRspecs2D_interact(
 )
 }
 \arguments{
-\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
+\item{data.spectra}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
 intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
 (incl. other \code{Intensity} and \code{B} columns) can be read as well}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+\code{data.spectra} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}

@@ -6,12 +6,12 @@
 #' tbc
 #'
 #'
-#' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
+#' @param data.spectra Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
 #'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
 #'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
 #'   (incl. other \code{Intensity} and \code{B} columns) can be read as well
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
+#'   \code{data.spectra} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
@@ -42,7 +42,7 @@
 #'
 #'
 #' @importFrom plotly ggplotly
-plotEPRspecs2D_interact <- function(data.spectrum,
+plotEPRspecs2D_interact <- function(data.spectra,
                                   B = "B_mT",
                                   Intensity = "dIepr_over_dB",
                                   line.color = "darkviolet",
@@ -117,13 +117,13 @@ plotEPRspecs2D_interact <- function(data.spectrum,
   if (isTRUE(time.series)){
     #
     ## basis defined by `ggplot`
-    simplePlot <- ggplot(data.spectrum,aes(x = .data[[B]],
+    simplePlot <- ggplot(data.spectra,aes(x = .data[[B]],
                                            y = .data[[Intensity]],
                                            color = as.factor(.data$time_s))) +
       geom_line(linewidth = line.width)
     #
   } else{
-    simplePlot <- ggplot(data.spectrum,aes(x = .data[[B]], y = .data[[Intensity]])) +
+    simplePlot <- ggplot(data.spectra,aes(x = .data[[B]], y = .data[[Intensity]])) +
       geom_line(linewidth = line.width,color = line.color)
   }
   ## final plot with layout
