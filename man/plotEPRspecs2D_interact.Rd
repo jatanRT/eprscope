@@ -8,12 +8,14 @@ plotEPRspecs2D_interact(
   data.spectra,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
+  time = "time_s",
   line.color = "darkviolet",
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
   line.width = 0.75,
   border.line.width = 1.2,
   border.line.color = "black",
+  legend.label,
   axis.title.size = 15,
   axis.text.size = 14,
   time.series = FALSE
@@ -32,6 +34,8 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
+\item{time}{tbc}
+
 \item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
 (not for \code{time.series}), therefore \strong{default:} \code{line.color = "darkviolet"}}
 
@@ -44,6 +48,8 @@ name/label is used (e.g. for integrated or simulated spectra), \strong{default}:
 \item{border.line.width}{tbc}
 
 \item{border.line.color}{tbc}
+
+\item{legend.label}{tbc}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
 \strong{default}: \code{axis.title.size = 15}}

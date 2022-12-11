@@ -109,7 +109,9 @@ plotEPRspec <- function(data.spectrum,
                              "sintegral",
                              "integral",
                              "Integral",
-                             "sInteg_"),
+                             "sInteg_",
+                             "sInteg",
+                             "singleI"),
                            logic = "or",ignore.case = F)){
     y.label <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
   }
@@ -133,7 +135,9 @@ plotEPRspec <- function(data.spectrum,
                              "DI",
                              "sec",
                              "second",
-                             "Second"),
+                             "Second",
+                             "dInteg",
+                             "doubleI"),
                            logic = "or",ignore.case = F)){
     y.label <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
   }
