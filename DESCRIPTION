@@ -32,6 +32,7 @@ Imports:
     ggplot2,
     plotly,
     dplyr,
+    tidyr,
     broom,
     stringr,
     sjmisc,
