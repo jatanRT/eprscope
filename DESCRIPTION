@@ -19,7 +19,7 @@ Description: Primary aim of the package is to process and plot spectra in Electr
     parameters provided by MATLAB-EasySpin toolbox and the results from quantum chemical calculations 
     like g-factor and hyperfine splitting/coupling constants (a/A) can be compared and summarized 
     in table-format in order to analyze the EPR spectra. Package also contains 
-    functions to process data/spectra for analytical (quantitave) purposes, i.e. how many radicals,
+    functions to process data/spectra for analytical (quantitative) purposes, i.e. how many radicals,
     paramagnetic centers can be found in the analyte/sample. Finally, theoretical reactional 
     thermodynamic parameters (e.g. like G, H, S, K) from quantum chemical (QCH)
     computations and quantitative EPR as well as simulation and fitting of the experimental EPR spectra, 
