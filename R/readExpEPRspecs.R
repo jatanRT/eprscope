@@ -4,7 +4,7 @@
 #' @description Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
 #'   in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
 #'   which can be easily processed by other R \code{data science} packages (e.g. by \pkg{tidyverse} system),
-#'    afterwards. For this purpose a \code{pipe} operator from \pkg{magrittr} is applied.
+#'    afterwards. For this purpose a \code{pipe} operator `%>%` is applied.
 #'   Spectral data are normalized by the common experimental parameters in order to qualitatively compare
 #'   the intensities of several spectra. ASCII files/tables depend on the software used to record the EPR spectra
 #'   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
@@ -65,24 +65,36 @@ readExpEPRspecs <- function(path_to_ASC,
                             origin = "xenon"){
   if (origin == "xenon"){
     if (isFALSE(time.series)){
-    spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",header = F,
-                                       skip = 1,col.names = c("index","B_G","Intensity")) %>%
-      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M)) %>%
+    spectrum.data <- data.table::fread(path_to_ASC,
+                                       sep = "auto",
+                                       header = F,
+                                       skip = 1,
+                                       col.names = c("index","B_G","Intensity")) %>%
+      dplyr::mutate(B_mT = .data$B_G/10,
+                    dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M)) %>%
       dplyr::select(-.data$Intensity) ## presence of both `B_mT` and `B_G` is required
     #
     ## to add pipe operator '%>%' to the whole package one must run:
     ## 1. 'usethis::use_pipe()' 2. 'devtools::document()'
     } else{
-      spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
-                                         header = F,skip = 1,col.names = c("index","B_G","time_s","Intensity")) %>%
-        dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M)) %>%
+      spectrum.data <- data.table::fread(path_to_ASC,
+                                         sep = "auto",
+                                         header = F,
+                                         skip = 1,
+                                         col.names = c("index","B_G","time_s","Intensity")) %>%
+        dplyr::mutate(B_mT = .data$B_G/10,
+                      dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M)) %>%
         dplyr::select(-.data$Intensity)
     }
   }
   if (origin == "winepr"){
-    spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
-                                       header = F,skip = 3,col.names = c("B_G","Intensity")) %>%
-      dplyr::mutate(B_mT = .data$B_G/10,dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
+    spectrum.data <- data.table::fread(path_to_ASC,
+                                       sep = "auto",
+                                       header = F,
+                                       skip = 3,
+                                       col.names = c("B_G","Intensity")) %>%
+      dplyr::mutate(B_mT = .data$B_G/10,
+                    dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
                     index = seq_len(nrow(spectrum.data))) %>%
       dplyr::select(-.data$Intensity)
   }

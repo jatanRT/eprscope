@@ -49,7 +49,7 @@ Data frame/table consisting of the magnetic flux density column \code{B_mT}
 Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
   in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
   which can be easily processed by other R \code{data science} packages (e.g. by \pkg{tidyverse} system),
-   afterwards. For this purpose a \code{pipe} operator from \pkg{magrittr} is applied.
+   afterwards. For this purpose a \code{pipe} operator `%>%` is applied.
   Spectral data are normalized by the common experimental parameters in order to qualitatively compare
   the intensities of several spectra. ASCII files/tables depend on the software used to record the EPR spectra
   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
