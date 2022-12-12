@@ -17,6 +17,13 @@
 #' @param x.label tbc
 #' @param y.label tbc
 #' @param z.label tbc
+#' @param x.bg.color tbc
+#' @param x.grid.color tbc
+#' @param y.bg.color tbc
+#' @param y.grid.color tbc
+#' @param z.bg.color tbc
+#' @param z.grid.color tbc
+#' @param output.matrix.table tbc
 #'
 #'
 #' @return tbc
@@ -40,7 +47,14 @@ plotEPRspecs3D_interact <- function(data.time.spectra,
                                     Blim,
                                     x.label = "<i>B</i> (mT)",
                                     y.label = "<i>Time</i> (s)",
-                                    z.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)"){
+                                    z.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
+                                    x.bg.color = "rgb(220, 220,220)",
+                                    x.grid.color = "rgb(255, 255, 255)",
+                                    y.bg.color = "rgb(220, 220,220)",
+                                    y.grid.color = "rgb(255, 255, 255)",
+                                    z.bg.color = "rgb(220, 220,220)",
+                                    z.grid.color = "rgb(255, 255, 255)",
+                                    output.matrix.table = FALSE){
   #
   ## `time` as factor
   data.time.spectra[[time]] <- as.factor(data.time.spectra[[time]])
@@ -81,18 +95,18 @@ plotEPRspecs3D_interact <- function(data.time.spectra,
                           plotly::layout(
                             scene = list(
                               xaxis = list(title = list(text = x.label),
-                                           gridcolor = "rgb(255, 255, 255)",
+                                           gridcolor = x.grid.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = "rgb(220, 220,220)",
+                                           backgroundcolor = x.bg.color,
                                            range = Blim),
                               yaxis = list(title = list(text = y.label),
-                                           gridcolor = "rgb(255, 255, 255)",
+                                           gridcolor = y.grid.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = "rgb(220, 220,220)"),
+                                           backgroundcolor = y.bg.color),
                               zaxis = list(title = list(text = z.label),
-                                           gridcolor = "rgb(255, 255, 255)",
+                                           gridcolor = z.grid.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = "rgb(220, 220,220)")
+                                           backgroundcolor = z.bg.color)
                           )) %>%
                           plotly::colorbar(title = z.label)
   }
@@ -115,6 +129,20 @@ plotEPRspecs3D_interact <- function(data.time.spectra,
                           plotly::colorbar(title = z.label)
   }
   #
-  return(final_plot)
+  ## matrix table output
+  if (isTRUE(output.matrix.table)){
+    ## re-transpose
+    Intensity_matrix <- t(Intensity_matrix)
+    ## matrix -> data frame
+    matrix_to_df_table <- as.data.frame(Intensity_matrix)
+    ## column names
+    colnames(matrix_to_df_table) <- as.character(time_select_df[[time]])
+    ## return both plot and table in list
+    final_plotPlusTable <- list(plot = final_plot,table = matrix_to_df_table)
+  } else{
+    final_plotPlusTable <- final_plot ## no table/df included
+  }
+  #
+  return(final_plotPlusTable)
   #
 }

@@ -15,7 +15,14 @@ plotEPRspecs3D_interact(
   Blim,
   x.label = "<i>B</i> (mT)",
   y.label = "<i>Time</i> (s)",
-  z.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)"
+  z.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
+  x.bg.color = "rgb(220, 220,220)",
+  x.grid.color = "rgb(255, 255, 255)",
+  y.bg.color = "rgb(220, 220,220)",
+  y.grid.color = "rgb(255, 255, 255)",
+  z.bg.color = "rgb(220, 220,220)",
+  z.grid.color = "rgb(255, 255, 255)",
+  output.matrix.table = FALSE
 )
 }
 \arguments{
@@ -40,6 +47,20 @@ plotEPRspecs3D_interact(
 \item{y.label}{tbc}
 
 \item{z.label}{tbc}
+
+\item{x.bg.color}{tbc}
+
+\item{x.grid.color}{tbc}
+
+\item{y.bg.color}{tbc}
+
+\item{y.grid.color}{tbc}
+
+\item{z.bg.color}{tbc}
+
+\item{z.grid.color}{tbc}
+
+\item{output.matrix.table}{tbc}
 }
 \value{
 tbc
