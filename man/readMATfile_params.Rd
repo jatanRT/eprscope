@@ -23,8 +23,10 @@ Numeric or String/Character depending on MATLAB variable used for simulation of 
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 
 }

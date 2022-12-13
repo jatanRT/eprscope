@@ -22,6 +22,9 @@ tbc
 Draw Molecule by `rcdk` Defined by SMILES
 }
 \examples{
+\dontrun{
 tbc
+tbc
+}
 
 }

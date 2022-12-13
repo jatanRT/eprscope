@@ -48,8 +48,10 @@ Numeric or String/Character (e.g. date or comment) corresponding to selected (\c
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 
 }

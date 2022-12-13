@@ -25,7 +25,9 @@ List containing number of scans (\code{Nscans}) and sweep time (\code{sweepTime}
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 }

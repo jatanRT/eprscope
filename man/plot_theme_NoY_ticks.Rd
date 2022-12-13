@@ -31,8 +31,10 @@ Custom \pkg{ggplot2} \code{theme} \code{without Y axis ticks}, to show opposite 
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 
 }

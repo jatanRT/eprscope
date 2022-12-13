@@ -31,7 +31,9 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' tbc
+#' }
 #'
 #'
 #' @export

@@ -36,8 +36,10 @@ The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 
 }

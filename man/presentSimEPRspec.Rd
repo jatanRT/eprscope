@@ -64,9 +64,11 @@ i.e. only graphical representation is shown}
 TODO
 }
 \examples{
+\dontrun{
 TODO
 TODO
 TODO
+}
 
 
 }

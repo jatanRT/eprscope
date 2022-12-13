@@ -24,8 +24,10 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' tbc
 #' tbc
+#' }
 #'
 #'
 #' @export

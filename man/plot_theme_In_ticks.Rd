@@ -31,8 +31,10 @@ Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing inside} the gra
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 
 }

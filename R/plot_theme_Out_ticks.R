@@ -18,8 +18,10 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' TODO
 #' TODO
+#' }
 #'
 #'
 #' @export

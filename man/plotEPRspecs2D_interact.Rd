@@ -67,8 +67,9 @@ Interactive EPR spectrum/spectra plot/graph based on \pkg{plotly}
 tbc
 }
 \examples{
+\dontrun{
 TODO
 TODO
-
+}
 
 }

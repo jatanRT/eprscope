@@ -42,9 +42,11 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' TODO
 #' TODO
 #' TODO
+#' }
 #'
 #'
 #' @export

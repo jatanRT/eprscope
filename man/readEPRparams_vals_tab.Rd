@@ -24,8 +24,10 @@ Data frame/table containing instrumental parameters (numeric values not strings)
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 
 }

@@ -17,7 +17,9 @@ tbc
 tbc
 }
 \examples{
+\dontrun{
 tbc
 tbc
+}
 
 }

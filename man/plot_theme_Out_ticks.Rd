@@ -30,8 +30,10 @@ Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing outside} the gr
 TODO
 }
 \examples{
+\dontrun{
 TODO
 TODO
+}
 
 
 }
