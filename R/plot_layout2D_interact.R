@@ -68,7 +68,7 @@ plot_layout2D_interact <- function(p,
                                  border.line.color = "black"
                                  ){
 #
-Plotly_layout <- plotly::layout(
+Plotly_layout_0 <- plotly::layout(
     p,
     data,
     plot_bgcolor = bg.color,
@@ -91,12 +91,18 @@ Plotly_layout <- plotly::layout(
                                  size = y.axis.tick.size),
                  gridcolor = grid.color,
                  linecolor = plotly::toRGB(border.line.color),
-                 linewidth = border.line.width,showline = T,mirror = T),
-    legend = list(title = list(text = legend.label,
-                               font = list(family = legend.label.family,
-                                           color = legend.label.color,
-                                           size = legend.label.size)))
+                 linewidth = border.line.width,showline = T,mirror = T)
   )
+if (is.null(legend.label)){
+  Plotly_layout <- Plotly_layout_0
+} else{
+  Plotly_layout <- Plotly_layout_0 %>%
+    plotly::layout(legend = list(title = list(text = legend.label,
+                                              font = list(family = legend.label.family,
+                                                          color = legend.label.color,
+                                                          size = legend.label.size)))
+                  )
+}
   #
   return(Plotly_layout)
   #
