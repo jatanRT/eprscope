@@ -29,6 +29,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.table,
+    stats,
     ggplot2,
     plotly,
     dplyr,
@@ -37,6 +38,7 @@ Imports:
     stringr,
     sjmisc,
     constants,
+    errors,
     rcdk,
     graphics,
     R.matlab,
