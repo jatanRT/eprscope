@@ -1,7 +1,7 @@
 #
 #' Draw Molecule by `rcdk` Defined by SMILES
 #'
-#' @param molecule tbc
+#' @param molecules tbc
 #' @param name tbc
 #' @param sma tbc
 #' @param ... tbc
@@ -23,7 +23,7 @@
 #' @importFrom graphics rasterImage text par
 ## function to plot molecule (https://riveradelgado.com/post/2021/04/18/chemistry-in-r/),
 ## which is not available in `rcdk`
-drawMolecule_rcdk <- function(molecule, name = NULL, sma = NULL, ...){
+drawMolecules_rcdk <- function(molecules, name = NULL, sma = NULL, ...){
   ## molecule an object as returned by rcdk::load.molecules or rcdk::parse.smiles()
   ## name a character for the name of the molecule,
   ## sma a character witht the smarts string as passed onto get.depictor()
@@ -35,7 +35,7 @@ drawMolecule_rcdk <- function(molecule, name = NULL, sma = NULL, ...){
     zoom = 6, sma = sma, ...
   )
   #
-  molecule_sdf <- rcdk::view.image.2d(molecule[[1]],depictor = dep)
+  molecules_sdf <- rcdk::view.image.2d(molecules,depictor = dep)
   #
   ## Remove extra margins around the molecule
   graphics::par(mar = c(0,0,0,0))
@@ -46,7 +46,7 @@ drawMolecule_rcdk <- function(molecule, name = NULL, sma = NULL, ...){
        axes = F)
   #
   ## draw and annotate molecule
-  graphics::rasterImage(molecule_sdf, 1,1, 10,10)
-  graphics::text(x = 5.5,y = 1.1,deparse(substitute(molecule)))
+  graphics::rasterImage(molecules_sdf, 1,1, 10,10)
+  graphics::text(x = 5.5,y = 1.1,deparse(substitute(molecules)))
   #
 }
