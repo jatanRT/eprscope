@@ -2,8 +2,8 @@
 
 export("%>%")
 export(A_MHz_conv_to_mT)
-export(Bextreme_Spec)
-export(DeltaBpp_Spec)
+export(DeltaXpp_Spec)
+export(Xextreme_Spec)
 export(aAiso_rearrng_QCHcomp)
 export(a_mT_conv_to_MHz)
 export(drawMolecules_rcdk)
