@@ -2,15 +2,15 @@
 % Please edit documentation in R/plotEPRspec.R
 \name{plotEPRspec}
 \alias{plotEPRspec}
-\title{EPR Spectrum Simple Plot}
+\title{EPR/ENDOR Spectrum Simple Plot}
 \usage{
 plotEPRspec(
   data.spectrum,
-  B = "B_mT",
+  x = "B_mT",
   Intensity = "dIepr_over_dB",
   line.color = "steelblue",
   line.width = 0.75,
-  basic.theme = "theme_gray",
+  theme.basic = "theme_gray",
   axis.title.size = 15,
   axis.text.size = 14,
   grid = TRUE,
@@ -18,14 +18,12 @@ plotEPRspec(
 )
 }
 \arguments{
-\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
-intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
-(incl. other \code{Intensity} and \code{B} columns) can be read as well}
+\item{data.spectrum}{SEPR/ENDOR spectrum data frame/table with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
+or \eqn{g}-Value or \eqn{RF} (in \code{MHz}) column and that of the derivative \code{dIepr_over_dB}
+or integrated \code{Intensity}. \code{Index} column may be included as well.}
 
-\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
+\item{x}{Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
+or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
@@ -35,7 +33,7 @@ colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
 
-\item{basic.theme}{Character/String, which calls a ggplot theme base. The following ones are defined:
+\item{theme.basic}{Character/String, which calls a ggplot theme base. The following ones are defined:
 \itemize{
   \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
   \item \code{"theme_bw"} => the white background with thin gray grid lines
@@ -60,11 +58,10 @@ colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
 EPR simple spectrum \pkg{ggplot2} graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
 }
 \description{
-Graph/Plot of an EPR spectrum based on \pkg{ggplot2}-functionality. Spectral data
-  are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
-  (depending on units, data frame may include both of them) columns,
-  i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
-  if integral column is available, can be plotted as well, see examples below.
+Graph/Plot of an EPR/ENDOR spectrum based on \pkg{ggplot2}-functionality. Spectral data
+  are in the form of data frame, which must contain the \code{dIepr_over_dB} (or its corresponding integrated
+  form,\code{Iepr}) and the following \code{x}-axis quantities like \eqn{B} (in \code{mT} or \code{G})
+  or \eqn{g}-Value (dimensionless) or \eqn{RF} (radio-frequency in \code{MHz})
   Theme of the graphic spectrum representation as well its line color can be varied like
   in \pkg{ggplot2} (see below). Within a theme \code{y} ticks can be displayed
   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
@@ -76,10 +73,10 @@ Graph/Plot of an EPR spectrum based on \pkg{ggplot2}-functionality. Spectral dat
 \dontrun{
 plotEPRspec(data.spectrum)
 plotEPRspec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
-plotEPRspec(data.spectrum,"Integral",B = "B_mT_Sim")
-plotEPRspec(data.spectrum,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
-plotEPRspec(data.spectrum,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
-plotEPRspec(data.spectrum,"B_mT","darkred",line.width = 1.2)
+plotEPRspec(data.spectrum,x = "B_mT_Sim","Integral")
+plotEPRspec(data.spectrum,line.color = "blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+plotEPRspec(data.spectrum,x = "g_Value",theme.basic = "theme_bw",grid = TRUE)
+plotEPRspec(data.spectrum,x = "RF_MHz",line.color = "darkred",line.width = 1.2)
 }
 
 

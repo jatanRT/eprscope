@@ -1,11 +1,10 @@
 #
-#' EPR Spectrum Simple Plot
+#' EPR/ENDOR Spectrum Simple Plot
 #'
-#' @description Graph/Plot of an EPR spectrum based on \pkg{ggplot2}-functionality. Spectral data
-#'   are in the form of data frame, which must contain the \code{dIepr_over_dB} and \code{B_mT}/\code{B_G}
-#'   (depending on units, data frame may include both of them) columns,
-#'   i.e. derivative EPR intensity vs. magnetic flux density, respectively. Integrated spectra,
-#'   if integral column is available, can be plotted as well, see examples below.
+#' @description Graph/Plot of an EPR/ENDOR spectrum based on \pkg{ggplot2}-functionality. Spectral data
+#'   are in the form of data frame, which must contain the \code{dIepr_over_dB} (or its corresponding integrated
+#'   form,\code{Iepr}) and the following \code{x}-axis quantities like \eqn{B} (in \code{mT} or \code{G})
+#'   or \eqn{g}-Value (dimensionless) or \eqn{RF} (radio-frequency in \code{MHz})
 #'   Theme of the graphic spectrum representation as well its line color can be varied like
 #'   in \pkg{ggplot2} (see below). Within a theme \code{y} ticks can be displayed
 #'   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
@@ -14,19 +13,17 @@
 #'   with other functions like in \pkg{ggplot2}, e.g. present or skip \code{grid} within the code.
 #'
 #'
-#' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-#'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
-#'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
-#'   (incl. other \code{Intensity} and \code{B} columns) can be read as well
-#' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
+#' @param data.spectrum SEPR/ENDOR spectrum data frame/table with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
+#'   or \eqn{g}-Value or \eqn{RF} (in \code{MHz}) column and that of the derivative \code{dIepr_over_dB}
+#'   or integrated \code{Intensity}. \code{Index} column may be included as well.
+#' @param x Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
+#'   or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "steelblue"}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
-#' @param basic.theme Character/String, which calls a ggplot theme base. The following ones are defined:
+#' @param theme.basic Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \itemize{
 #'     \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
 #'     \item \code{"theme_bw"} => the white background with thin gray grid lines
@@ -51,10 +48,10 @@
 #' \dontrun{
 #' plotEPRspec(data.spectrum)
 #' plotEPRspec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
-#' plotEPRspec(data.spectrum,"Integral",B = "B_mT_Sim")
-#' plotEPRspec(data.spectrum,"blue",basic.theme = "theme_linedraw",yTicks = FALSE)
-#' plotEPRspec(data.spectrum,line.color = "steelblue",B = "B_G","theme_bw",grid = TRUE)
-#' plotEPRspec(data.spectrum,"B_mT","darkred",line.width = 1.2)
+#' plotEPRspec(data.spectrum,x = "B_mT_Sim","Integral")
+#' plotEPRspec(data.spectrum,line.color = "blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+#' plotEPRspec(data.spectrum,x = "g_Value",theme.basic = "theme_bw",grid = TRUE)
+#' plotEPRspec(data.spectrum,x = "RF_MHz",line.color = "darkred",line.width = 1.2)
 #' }
 #'
 #'
@@ -65,26 +62,41 @@
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
 plotEPRspec <- function(data.spectrum,
-                        B = "B_mT",
+                        x = "B_mT",
                         Intensity = "dIepr_over_dB",
                         line.color = "steelblue",
                         line.width = 0.75,
-                        basic.theme = "theme_gray",
+                        theme.basic = "theme_gray",
                         axis.title.size = 15,
                         axis.text.size = 14,
                         grid = TRUE,
                         yTicks = TRUE){
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
-  B.start <- min(data.spectrum[,B])
-  B.end <- max(data.spectrum[,B])
+  x.start <- min(data.spectrum[,x])
+  x.end <- max(data.spectrum[,x])
   #
-  ## Labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
-  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
+  ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
+  if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~mT~")")
   }
-  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
+  if (sjmisc::str_contains(x,c("B","G"),logic = "and",ignore.case = F)){
     x.label <- bquote(italic(B)~"("~G~")")
+  }
+  if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
+    x.label <- bquote(italic(RF)~"("~MHz~")")
+  }
+  if (sjmisc::str_contains(x,c("g",
+                               "g_value",
+                               "g_Value",
+                               "gval",
+                               "gVal",
+                               "g_factor",
+                               "g_Factor",
+                               "gfac",
+                               "gFac"),
+                           logic = "or",ignore.case = F)){
+    x.label <- bquote(italic(g))
   }
   if (sjmisc::str_contains(Intensity,c("dB",
                                        "_dB",
@@ -151,7 +163,7 @@ plotEPRspec <- function(data.spectrum,
                        panel.border = element_rect(color = "black",fill = NA)
   ) ## theme in order to have ticks outside the graph
   theme.Noticks <- theme(axis.ticks.length = unit(-6,"pt"),
-                         axis.text.x = element_text(margin = margin(10,8,6,8,unit = "pt"),size = axis.text.size),
+                         axis.text.x = element_text(margin = margin(8,8,6,8,unit = "pt"),size = axis.text.size),
                          axis.text.y = element_blank(), axis.ticks.y = element_blank(),
                          axis.title.y = element_text(margin = margin(2,12,2,6,unit = "pt"),size = axis.title.size),
                          axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
@@ -164,23 +176,38 @@ plotEPRspec <- function(data.spectrum,
   ## x ticks of the upper axis also inside the graph:
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
-  ## The lot function (5 G distance from the y-axis borders ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
-  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
-    x.plot.limits <- c(B.start - 0.5,B.end + 0.5)
+  ## The plot function (distance from the y-axis borders e.g. ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
+  if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
+    x.plot.limits <- c(x.start - 0.5,x.end + 0.5)
   }
-  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
-    x.plot.limits <- c(B.start - 5,B.end + 5)
+  if (sjmisc::str_contains(x,c("B","G"),logic = "and",ignore.case = F)){
+    x.plot.limits <- c(x.start - 5,x.end + 5)
+  }
+  if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
+    x.plot.limits <- c(x.start - 3,x.end + 3)
+  }
+  if (sjmisc::str_contains(x,c("g",
+                               "g_value",
+                               "g_Value",
+                               "gval",
+                               "gVal",
+                               "g_factor",
+                               "g_Factor",
+                               "gfac",
+                               "gFac"),
+                           logic = "or",ignore.case = F)){
+    x.plot.limits <- c(x.start - 0.0002,x.end + 0.0002)
   }
   #
   ## Basic simple plot:
   simplePlot <- ggplot(data.spectrum) +
-    geom_line(aes(x = .data[[B]], y = .data[[Intensity]]),
+    geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
               linewidth = line.width,color = line.color,show.legend = FALSE) +
     labs(x = x.label,y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   #
   ## Conditions for plotting
-  if (basic.theme == "theme_gray"){
+  if (theme.basic == "theme_gray"){
     if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
@@ -207,7 +234,7 @@ plotEPRspec <- function(data.spectrum,
       }
     }
   }
-  if (basic.theme == "theme_bw"){
+  if (theme.basic == "theme_bw"){
     if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
@@ -234,7 +261,7 @@ plotEPRspec <- function(data.spectrum,
       }
     }
   }
-  if (basic.theme == "theme_light"){
+  if (theme.basic == "theme_light"){
     if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
@@ -265,7 +292,7 @@ plotEPRspec <- function(data.spectrum,
       }
     }
   }
-  if (basic.theme == "theme_linedraw"){
+  if (theme.basic == "theme_linedraw"){
     if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +
@@ -292,7 +319,7 @@ plotEPRspec <- function(data.spectrum,
       }
     }
   }
-  if (basic.theme == "theme_classic"){
+  if (theme.basic == "theme_classic"){
      if (isTRUE(yTicks)){
       if (isTRUE(grid)){
         p <- simplePlot +

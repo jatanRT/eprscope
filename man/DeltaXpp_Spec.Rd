@@ -14,7 +14,7 @@ or integrated \code{Intensity}. \code{Index} column may be included as well.}
 \item{x}{Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
 or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
 
-\item{Intensity}{CCharacter/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,

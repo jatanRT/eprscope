@@ -2,10 +2,11 @@
 % Please edit documentation in R/readExpEPRspecs.R
 \name{readExpEPRspecs}
 \alias{readExpEPRspecs}
-\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR Spectrum and Transfer it into Data Frame}
+\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR/ENDOR Spectrum and Transfer it into Data Frame}
 \usage{
 readExpEPRspecs(
   path_to_ASC,
+  x = "B_G",
   qValue = 1,
   Nscans = 1,
   c.M = 1,
@@ -17,6 +18,9 @@ readExpEPRspecs(
 \arguments{
 \item{path_to_ASC}{String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
 with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)}
+
+\item{x}{String related to recorded "EPR" or "ENDOR" spectrum. \strong{Only two 'values' are allowed:}
+\code{x = "B_G"} or  \code{x = "RF_MHz"}}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, \strong{default = 1}}
@@ -39,21 +43,21 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 }
 \value{
 Data frame/table consisting of the magnetic flux density column \code{B_mT}
-  in millitesla (as well as \code{B_G} in gauss) and the derivative intensity column (\code{dIepr_over_dB})
-  in \code{procedure defined unit}
+  in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz} (in case of ENDOR spectrum) and the derivative
+  intensity column (\code{dIepr_over_dB}) in \code{procedure defined unit}
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
   which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
   (in the case of time series experiment) columns are displayed as well.
 }
 \description{
-Function reads/loads the experimental EPR spectrum recorded by BRUKER spectrometers
+Function reads/loads the experimental EPR/ENDOR spectrum recorded by BRUKER spectrometers
   in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
-  which can be easily processed by other R \code{data science} packages (e.g. by \pkg{tidyverse} system),
-   afterwards. For this purpose a \code{pipe} operator `%>%` is applied.
+  which can be easily processed by other R packages (e.g. by \pkg{tidyverse} system), afterwards.
   Spectral data are normalized by the common experimental parameters in order to qualitatively compare
   the intensities of several spectra. ASCII files/tables depend on the software used to record the EPR spectra
   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
-  or \code{"winepr"}).Time series spectra (time evolution of EPR spectra) can be read
+  or \code{"winepr"}). To distinguish between EPR and ENDOR spectrum a general \code{x}-axis quantity with two \code{x}s
+  \code{x = "B_G"} or \code{x = "RF_MHz"} is available. Time series spectra (time evolution of EPR spectra) can be read
   by the \code{time.series = TRUE/FALSE} parameter (ONLY IN CASE of \code{"xenon"} software).
 }
 \examples{
@@ -67,9 +71,12 @@ readExpEPRspecs(path_to_ASCII_file,qValue = 2000,Nscans = 20,m.mg = 10,origin = 
 ## was recorded by "xenon" software:
 readExpEPRspecs(path_to_ASCII_file)
 
+## for the ENDOR spectrum recorded by "xenon"
+readExpEPRspec(path_to_ASCII_file,x = "RF_MHz",Nscans = 40)
+
 ## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
 ## EPR spectroelectrochemistry or photochemistry):
-readExpEPRspecs(path_to_ASC_file,2800,time.series = T)
+readExpEPRspecs(path_to_ASC_file,x = "B_G",qValue = 2800,time.series = T)
 }
 
 
