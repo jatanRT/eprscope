@@ -10,8 +10,8 @@
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}
 #' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
-#' @param plot.bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-#'   should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background
+#' @param bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
+#'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background
 #'
 #'
 #' @return Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing outside} the graph panel
@@ -30,7 +30,7 @@
 plot_theme_Out_ticks <- function(axis.text.size = 14,
                                  axis.title.size = 15,
                                  grid = TRUE,
-                                 plot.bg.transparent = FALSE){
+                                 bg.transparent = FALSE){
   ## theme parts:
   theme_bas <- theme(axis.ticks.length = unit(6,"pt"),
                      axis.text.x = element_text(margin = margin(4,8,6,8,unit = "pt"),size = axis.text.size),
@@ -41,7 +41,7 @@ plot_theme_Out_ticks <- function(axis.text.size = 14,
   theme_Nogrid <- theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
   #
   ## theme:
-  if (isTRUE(plot.bg.transparent)){
+  if (isTRUE(bg.transparent)){
     if (isTRUE(grid)){
         thm <- theme_bas +
         theme(plot.background = element_rect(fill = "transparent"))

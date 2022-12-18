@@ -28,7 +28,7 @@
 #'
 #' @export
 #'
-readEPRparams_vals_tab <- function(path_to_DSC_or_par,origin = "xenon"){
+readEPR_params_vals_tab <- function(path_to_DSC_or_par,origin = "xenon"){
   #
   ## required string patterns from 'DSC' or 'par' file:
   if (origin == "xenon"){

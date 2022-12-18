@@ -21,7 +21,7 @@
 #' @export
 #'
 #'
-readSimEPRspec <- function(path_to_ASC){
+readEPR_Sim_Spec <- function(path_to_ASC){
   spectrum.data <- data.table::fread(path_to_ASC,sep = "auto",
                                      col.names = c("B_mT_Sim","dIepr_over_dB_Sim")) %>%
     dplyr::mutate(B_G_Sim = .data$B_mT_Sim*10)

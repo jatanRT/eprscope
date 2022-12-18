@@ -45,7 +45,7 @@
 #'
 #'
 #' @importFrom plotly ggplotly
-plotEPRspecs2D_interact <- function(data.spectra,
+plot_EPR_Specs2D_interact <- function(data.spectra,
                                   B = "B_mT",
                                   Intensity = "dIepr_over_dB",
                                   time = "time_s",

@@ -39,7 +39,7 @@
 #' @export
 #'
 #'
-integ_correct_EPRspecs <- function(data.spec.integ,
+integ_correct_EPR_Specs <- function(data.spec.integ,
                                    B = "B_G",
                                    Blim,
                                    BpeaKlim,

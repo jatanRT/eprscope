@@ -40,7 +40,7 @@
 #' @export
 #'
 #'
-plotEPRspecs3D_interact <- function(data.time.spectra,
+plot_EPR_Specs3D_interact <- function(data.time.spectra,
                                     B = "B_mT",
                                     Intensity = "dIepr_over_dB",
                                     time = "time_s",

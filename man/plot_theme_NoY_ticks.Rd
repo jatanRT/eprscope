@@ -8,7 +8,7 @@ plot_theme_NoY_ticks(
   axis.text.size = 14,
   axis.title.size = 15,
   grid = TRUE,
-  plot.bg.transparent = FALSE
+  bg.transparent = FALSE
 )
 }
 \arguments{
@@ -20,8 +20,8 @@ plot_theme_NoY_ticks(
 
 \item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 
-\item{plot.bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-should be transparent, \strong{default}: \code{plot.bg.transparent = FALSE}, i.e. no transparent background}
+\item{bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
+should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background}
 }
 \value{
 Custom \pkg{ggplot2} \code{theme} \code{without Y axis ticks}, to show opposite X axis ticks

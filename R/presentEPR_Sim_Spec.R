@@ -8,11 +8,11 @@
 #' @param data.spectrum.exp \strong{Experimental} Spectrum data frame/table where the magnetic flux
 #'   density (in \code{mT}) column is labeled as \code{B_mT} in mT (or \code{B_G} in gauss)
 #'   and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well,
-#'   this is automatic if the \code{\link{readExpEPRspecs}} function is used to read the spectrum in ASCII
+#'   this is automatic if the \code{\link{readEPR_Exp_Specs}} function is used to read the spectrum in ASCII
 #' @param data.spectrum.sim Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
 #'   flux density (in \code{mT}) column must be labeled as \code{B_mT_Sim} in mT (or \code{B_G_Sim} in gauss)
 #'   and that of the derivative intensity as \code{dIepr_over_dB_Sim}, this is automatic
-#'   if the \code{\link{readSimEPRspec}} function is used to read the spectrum in ASCII
+#'   if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectra data frames
 #'   either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"}. Previous labels refer to \strong{both simulated and experimental spectral data frames}
@@ -51,7 +51,7 @@
 #'
 #' @export
 #'
-presentSimEPRspec <- function(data.spectrum.exp,
+presentEPR_Sim_Spec <- function(data.spectrum.exp,
                               data.spectrum.sim,
                               B = "B_mT",
                               Intensity.shift.ratio = 1.2,
@@ -91,10 +91,10 @@ presentSimEPRspec <- function(data.spectrum.exp,
   #
   ## B label for the plot:
   if (B == "B_mT"){
-    x.label <- EPRphysChemSpec::plotLabelsXYZ(B,mT)
+    x.label <- plot_labels_xyz(B,mT)
   }
   if (B == "B_G"){
-    x.label <- EPRphysChemSpec::plotLabelsXYZ(B,G)
+    x.label <- plot_labels_xyz(B,G)
   }
   #
   ## plot variable:
@@ -105,7 +105,7 @@ presentSimEPRspec <- function(data.spectrum.exp,
                   color = "Simulation"),linewidth = line.width) +
     scale_color_manual(values = c(line.color.exp,line.color.sim),breaks = c("Experiment","Simulation")) +
     labs(color = "",x = x.label,
-         y = plotLabelsXYZ("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))
+         y = plot_labels_xyz("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE))
   #
   ## if the entire table/table should be included
   if (isTRUE(output.table)){

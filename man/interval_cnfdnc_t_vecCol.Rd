@@ -8,7 +8,7 @@ interval_cnfdnc_t_vecCol(
   data.vec.col,
   level.cnfdnc = 0.95,
   lw.tail = TRUE,
-  separate = TRUE
+  separate = FALSE
 )
 }
 \arguments{

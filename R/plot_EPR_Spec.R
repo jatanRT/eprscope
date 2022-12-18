@@ -46,12 +46,12 @@
 #'
 #' @examples
 #' \dontrun{
-#' plotEPRspec(data.spectrum)
-#' plotEPRspec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
-#' plotEPRspec(data.spectrum,x = "B_mT_Sim","Integral")
-#' plotEPRspec(data.spectrum,line.color = "blue",basic.theme = "theme_linedraw",yTicks = FALSE)
-#' plotEPRspec(data.spectrum,x = "g_Value",theme.basic = "theme_bw",grid = TRUE)
-#' plotEPRspec(data.spectrum,x = "RF_MHz",line.color = "darkred",line.width = 1.2)
+#' plot_EPR_Spec(data.spectrum)
+#' plot_EPR_Spec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
+#' plot_EPR_Spec(data.spectrum,x = "B_mT_Sim","Integral")
+#' plot_EPR_Spec(data.spectrum,line.color = "blue",basic.theme = "theme_linedraw",yTicks = FALSE)
+#' plot_EPR_Spec(data.spectrum,x = "g_Value",theme.basic = "theme_bw",grid = TRUE)
+#' plot_EPR_Spec(data.spectrum,x = "RF_MHz",line.color = "darkred",line.width = 1.2)
 #' }
 #'
 #'
@@ -61,7 +61,7 @@
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
-plotEPRspec <- function(data.spectrum,
+plot_EPR_Spec <- function(data.spectrum,
                         x = "B_mT",
                         Intensity = "dIepr_over_dB",
                         line.color = "steelblue",

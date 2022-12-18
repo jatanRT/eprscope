@@ -39,21 +39,21 @@
 #'
 #' @examples
 #' \dontrun{
-#' readExpEPRspecs(path_to_ASCII_file,qValue = 3500) ## for the spectrum acquired by "xenon"
+#' readEPR_Exp_Specs(path_to_ASCII_file,qValue = 3500) ## for the spectrum acquired by "xenon"
 #'
 #' ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-#' readExpEPRspecs(path_to_ASCII_file,qValue = 2000,Nscans = 20,m.mg = 10,origin = "winepr")
+#' readEPR_Exp_Specs(path_to_ASCII_file,qValue = 2000,Nscans = 20,m.mg = 10,origin = "winepr")
 #'
 #' ## if no parameter intensity normalization is required and spectrum
 #' ## was recorded by "xenon" software:
-#' readExpEPRspecs(path_to_ASCII_file)
+#' readEPR_Exp_Specs(path_to_ASCII_file)
 #'
 #' ## for the ENDOR spectrum recorded by "xenon"
-#' readExpEPRspec(path_to_ASCII_file,x = "RF_MHz",Nscans = 40)
+#' readEPR_Exp_Specs(path_to_ASCII_file,x = "RF_MHz",Nscans = 40)
 #'
 #' ## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
 #' ## EPR spectroelectrochemistry or photochemistry):
-#' readExpEPRspecs(path_to_ASC_file,x = "B_G",qValue = 2800,time.series = T)
+#' readEPR_Exp_Specs(path_to_ASC_file,x = "B_G",qValue = 2800,time.series = T)
 #' }
 #'
 #'
@@ -61,7 +61,7 @@
 #'
 #'
 #' @importFrom rlang .data
-readExpEPRspecs <- function(path_to_ASC,
+readEPR_Exp_Specs <- function(path_to_ASC,
                             x = "B_G", ## only two 'values' "B_G" or "RF_MHz"
                             qValue = 1,
                             Nscans = 1,

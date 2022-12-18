@@ -27,7 +27,7 @@
 #' @export
 #'
 #'
-readMATfile_params <- function(path_to_MAT,
+readMAT_params_file <- function(path_to_MAT,
                                str.var,
                                field.var = NULL){
   data.params <- R.matlab::readMat(path_to_MAT)

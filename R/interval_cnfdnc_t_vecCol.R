@@ -25,7 +25,7 @@
 interval_cnfdnc_t_vecCol <- function(data.vec.col,
                                      level.cnfdnc = 0.95,
                                      lw.tail = TRUE,
-                                     separate = TRUE){
+                                     separate = FALSE){
   #
   ## alpha (significance level)
   level.sgnfcn <- 1-level.cnfdnc

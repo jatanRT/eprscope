@@ -1,7 +1,7 @@
 #
 #' Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
 #'   the EPR Spectra (within the \code{Xenon} or \code{WinEpr} Software, respectively), \strong{
-#'   required for time correction} (\code{\link{time_correct_EPRspecs}}) of the "kinetic" series
+#'   required for time correction} (\code{\link{time_correct_EPR_Specs}}) of the "kinetic" series
 #'
 #'
 #' @description
@@ -29,18 +29,18 @@
 #' @export
 #'
 #'
-readEPRparams_slct_kin <- function(path_to_DSC_or_par,origin = "xenon"){
+readEPR_params_slct_kin <- function(path_to_DSC_or_par,origin = "xenon"){
   ## Load all required parameters from `.DSC` or `.par`
   if (origin == "xenon"){
-    resol <- readEPRparam_slct(path_to_DSC_or_par,string = "A1RS")
-    convTime <- readEPRparam_slct(path_to_DSC_or_par,string = "SPTP")
-    NScans <- readEPRparam_slct(path_to_DSC_or_par,string = "NbScansToDo")
+    resol <- readEPR_param_slct(path_to_DSC_or_par,string = "A1RS")
+    convTime <- readEPR_param_slct(path_to_DSC_or_par,string = "SPTP")
+    NScans <- readEPR_param_slct(path_to_DSC_or_par,string = "NbScansToDo")
     ## for kinetic measurements "AVGS" doesn't work
   }
   if (origin == "winepr"){
-    resol <- readEPRparam_slct(path_to_DSC_or_par,string = "RES")
-    convTime <- readEPRparam_slct(path_to_DSC_or_par,string = "RCT")
-    NScans <- readEPRparam_slct(path_to_DSC_or_par,string = "JSD")
+    resol <- readEPR_param_slct(path_to_DSC_or_par,string = "RES")
+    convTime <- readEPR_param_slct(path_to_DSC_or_par,string = "RCT")
+    NScans <- readEPR_param_slct(path_to_DSC_or_par,string = "JSD")
   }
   sweeptime <- resol*convTime
   #

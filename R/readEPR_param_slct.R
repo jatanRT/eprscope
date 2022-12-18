@@ -50,7 +50,7 @@
 #'
 #' @export
 #'
-readEPRparam_slct <- function(path_to_DSC_or_par,string,origin = "xenon"){
+readEPR_param_slct <- function(path_to_DSC_or_par,string,origin = "xenon"){
   #
   ## path corresponds to file (.DSC) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"

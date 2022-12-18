@@ -21,19 +21,19 @@
 #'
 #'
 #' @examples
-#' plotLabelsXYZ(B,mT)
-#' plotLabelsXYZ("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE)
-#' plotLabelsXYZ(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
-#' plotLabelsXYZ(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
-#' plotLabelsXYZ(c,mmol*dm^-3)
-#' plotLabelsXYZ(Double~~Integral,p.d.u.)
+#' plot_labels_xyz(B,mT)
+#' plot_labels_xyz("d"~italic(I)[EPR]~"/"~"d"~italic(B),"("~p.d.u.~")",user.defined = TRUE)
+#' plot_labels_xyz(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
+#' plot_labels_xyz(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
+#' plot_labels_xyz(c,mmol*dm^-3)
+#' plot_labels_xyz(Double~~Integral,p.d.u.)
 #'
 #'
 #' @export
 #'
 #'
 #' @importFrom rlang enquo
-plotLabelsXYZ <- function(quantity,unit,user.defined = FALSE){
+plot_labels_xyz <- function(quantity,unit,user.defined = FALSE){
   #
   ## in 'bquote' bang-bang ('!!') operator does not work
   ## use '.()' instead
