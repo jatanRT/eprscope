@@ -37,7 +37,7 @@
 ## intensity ('dIepr_over_dB' or other name/label). To select a region / span / interval
 ## (limits are `xlim`, `xlim[1]` <=> 'start',`xlim[2]` <=> 'end')
 ## of single spectrum in which the extreme ("max" or "min") needs to be found
-Xextreme_Spec  <-  function(data.spectrum,
+extremeX_Spec  <-  function(data.spectrum,
                             x = "B_mT",
                             Intensity = "dIepr_over_dB",
                             xlim,
