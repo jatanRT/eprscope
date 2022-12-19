@@ -36,7 +36,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
   ## theme parts:
   theme_bas <- theme(axis.ticks.length = unit(-6,"pt"),
                      axis.text.x = element_text(margin = margin(8,8,6,8,unit = "pt"),size = axis.text.size),
-                     axis.text.y = element_text(margin = margin(8,10,8,0,unit = "pt"),size = axis.text.size),
+                     axis.text.y = element_text(margin = margin(6,8,8,0,unit = "pt"),size = axis.text.size),
                      axis.title.y = element_text(margin = margin(2,12,2,6,unit = "pt"),size = axis.title.size),
                      axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
                      panel.border = element_rect(color = "black",fill = NA))
