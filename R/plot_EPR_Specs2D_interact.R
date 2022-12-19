@@ -10,9 +10,8 @@
 #'   must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
 #'   intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
 #'   (incl. other \code{Intensity} and \code{B} columns) can be read as well
-#' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{data.spectra} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
+#' @param x Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
+#'   or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param time tbc
@@ -46,7 +45,7 @@
 #'
 #' @importFrom plotly ggplotly
 plot_EPR_Specs2D_interact <- function(data.spectra,
-                                  B = "B_mT",
+                                  x = "B_mT",
                                   Intensity = "dIepr_over_dB",
                                   time = "time_s",
                                   line.color = "darkviolet",
@@ -60,12 +59,27 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                   axis.text.size = 14,
                                   time.series = FALSE){
   #
-  ## labels based on `Intensity` and `B` (`B` must contain either "B" and "mT" or "B" and "G") conditions:
-  if (sjmisc::str_contains(B,c("B","mT"),logic = "and",ignore.case = F)){
-    xlabel = "<i>B</i> (mT)"
+  ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
+  if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
+    xlabel <- "<i>B</i> (mT)"
   }
-  if (sjmisc::str_contains(B,c("B","G"),logic = "and",ignore.case = F)){
-    xlabel = "<i>B</i> (G)"
+  if (sjmisc::str_contains(x,c("B","G"),logic = "and",ignore.case = F)){
+    xlabel <- "<i>B</i> (G)"
+  }
+  if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
+    xlabel <- "<i>RF</i> (MHz)"
+  }
+  if (sjmisc::str_contains(x,c("g",
+                               "g_value",
+                               "g_Value",
+                               "gval",
+                               "gVal",
+                               "g_factor",
+                               "g_Factor",
+                               "gfac",
+                               "gFac"),
+                           logic = "or",ignore.case = F)){
+    xlabel <- "<i>g</i>"
   }
   if (sjmisc::str_contains(Intensity,c("dB",
                                        "_dB",
@@ -126,13 +140,13 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   if (isTRUE(time.series)){
     #
     ## basis defined by `ggplot`
-    simplePlot <- ggplot(data.spectra,aes(x = .data[[B]],
+    simplePlot <- ggplot(data.spectra,aes(x = .data[[x]],
                                            y = .data[[Intensity]],
                                            color = as.factor(.data[[time]]))) +
       geom_line(linewidth = line.width)
     #
   } else{
-    simplePlot <- ggplot(data.spectra,aes(x = .data[[B]], y = .data[[Intensity]])) +
+    simplePlot <- ggplot(data.spectra,aes(x = .data[[x]], y = .data[[Intensity]])) +
       geom_line(linewidth = line.width,color = line.color)
   }
   ## final plot with layout

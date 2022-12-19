@@ -6,7 +6,7 @@
 \usage{
 plot_EPR_Specs2D_interact(
   data.spectra,
-  B = "B_mT",
+  x = "B_mT",
   Intensity = "dIepr_over_dB",
   time = "time_s",
   line.color = "darkviolet",
@@ -27,9 +27,8 @@ must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the de
 intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
 (incl. other \code{Intensity} and \code{B} columns) can be read as well}
 
-\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{data.spectra} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
+\item{x}{Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
+or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
