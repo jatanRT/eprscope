@@ -113,7 +113,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                                            col.names = c(x,"Intensity")) %>%
           dplyr::mutate(B_mT = .data[[x]]/10,
                         dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
-                        index = seq_len(nrow(spectrum.data))) %>%
+                        index = seq_len(length(.data$Intensity))) %>%
           dplyr::select(-.data$Intensity)
       } else{
         spectrum.data <- data.table::fread(path_to_ASC,
@@ -122,18 +122,18 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                                            skip = 3,
                                            col.names = c(x,"Intensity")) %>%
           dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans,
-                        index = seq_len(nrow(spectrum.data))) %>%
+                        index = seq_len(length(.data$Intensity))) %>%
           dplyr::select(-.data$Intensity)
       }
     } else{
       spectrum.data <- data.table::fread(path_to_ASC,
                                          sep = "auto",
                                          header = F,
-                                         skip = 3,
+                                         skip = 4,
                                          col.names = c(x,"time_s","Intensity")) %>%
         dplyr::mutate(B_mT = .data[[x]]/10,
                       dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
-                      index = seq_len(nrow(spectrum.data))) %>%
+                      index = seq_len(length(.data$Intensity))) %>%
         dplyr::select(-.data$Intensity)
     }
   }
