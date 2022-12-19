@@ -6,29 +6,29 @@
 \usage{
 plot_EPR_Specs3D_interact(
   data.time.spectra,
-  B = "B_mT",
+  x = "B_mT",
   Intensity = "dIepr_over_dB",
   time = "time_s",
   plot.type = "surface",
   scheme.color = "Viridis",
   contour.labels = FALSE,
   Blim,
-  x.label = "<i>B</i> (mT)",
-  y.label = "<i>Time</i> (s)",
-  z.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
-  x.bg.color = "rgb(220, 220,220)",
-  x.grid.color = "rgb(255, 255, 255)",
-  y.bg.color = "rgb(220, 220,220)",
-  y.grid.color = "rgb(255, 255, 255)",
-  z.bg.color = "rgb(220, 220,220)",
-  z.grid.color = "rgb(255, 255, 255)",
+  xlab = "<i>B</i> (mT)",
+  ylab = "<i>Time</i> (s)",
+  zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
+  bg.color.x = "rgb(220, 220,220)",
+  grid.color.x = "rgb(255, 255, 255)",
+  bg.color.y = "rgb(220, 220,220)",
+  grid.color.y = "rgb(255, 255, 255)",
+  bg.color.z = "rgb(220, 220,220)",
+  grid.color.z = "rgb(255, 255, 255)",
   output.matrix.table = FALSE
 )
 }
 \arguments{
 \item{data.time.spectra}{tbc}
 
-\item{B}{tbc}
+\item{x}{tbc}
 
 \item{Intensity}{tbc}
 
@@ -42,23 +42,23 @@ plot_EPR_Specs3D_interact(
 
 \item{Blim}{tbc}
 
-\item{x.label}{tbc}
+\item{xlab}{tbc}
 
-\item{y.label}{tbc}
+\item{ylab}{tbc}
 
-\item{z.label}{tbc}
+\item{zlab}{tbc}
 
-\item{x.bg.color}{tbc}
+\item{bg.color.x}{tbc}
 
-\item{x.grid.color}{tbc}
+\item{grid.color.x}{tbc}
 
-\item{y.bg.color}{tbc}
+\item{bg.color.y}{tbc}
 
-\item{y.grid.color}{tbc}
+\item{grid.color.y}{tbc}
 
-\item{z.bg.color}{tbc}
+\item{bg.color.z}{tbc}
 
-\item{z.grid.color}{tbc}
+\item{grid.color.z}{tbc}
 
 \item{output.matrix.table}{tbc}
 }
