@@ -7,24 +7,24 @@
 plot_layout2D_interact(
   p,
   data = NULL,
-  x.label = "<i>B</i> (mT)",
-  y.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
-  x.axis.title.family = "Arial",
-  x.axis.title.color = "black",
-  x.axis.title.size = 15,
-  x.axis.tick.family = "Arial",
-  x.axis.tick.color = "black",
-  x.axis.tick.size = 14,
-  y.axis.title.family = "Arial",
-  y.axis.title.color = "black",
-  y.axis.title.size = 15,
-  y.axis.tick.family = "Arial",
-  y.axis.tick.color = "black",
-  y.axis.tick.size = 14,
-  legend.label = NULL,
-  legend.label.family = "Arial",
-  legend.label.color = "black",
-  legend.label.size = 13,
+  xlab = "<i>B</i> (mT)",
+  ylab = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
+  axis.title.x.family = "Arial",
+  axis.title.x.color = "black",
+  axis.title.x.size = 15,
+  axis.text.x.family = "Arial",
+  axis.text.x.color = "black",
+  axis.text.x.size = 14,
+  axis.title.y.family = "Arial",
+  axis.title.y.color = "black",
+  axis.title.y.size = 15,
+  axis.text.y.family = "Arial",
+  axis.text.y.color = "black",
+  axis.text.y.size = 14,
+  legend.title = NULL,
+  legend.title.family = "Arial",
+  legend.title.color = "black",
+  legend.title.size = 13,
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
   border.line.width = 1.2,
@@ -36,41 +36,41 @@ plot_layout2D_interact(
 
 \item{data}{tbc}
 
-\item{x.label}{tbc}
+\item{xlab}{tbc}
 
-\item{y.label}{tbc}
+\item{ylab}{tbc}
 
-\item{x.axis.title.family}{tbc}
+\item{axis.title.x.family}{tbc}
 
-\item{x.axis.title.color}{tbc}
+\item{axis.title.x.color}{tbc}
 
-\item{x.axis.title.size}{tbc}
+\item{axis.title.x.size}{tbc}
 
-\item{x.axis.tick.family}{tbc}
+\item{axis.text.x.family}{tbc}
 
-\item{x.axis.tick.color}{tbc}
+\item{axis.text.x.color}{tbc}
 
-\item{x.axis.tick.size}{tbc}
+\item{axis.text.x.size}{tbc}
 
-\item{y.axis.title.family}{tbc}
+\item{axis.title.y.family}{tbc}
 
-\item{y.axis.title.color}{tbc}
+\item{axis.title.y.color}{tbc}
 
-\item{y.axis.title.size}{tbc}
+\item{axis.title.y.size}{tbc}
 
-\item{y.axis.tick.family}{tbc}
+\item{axis.text.y.family}{tbc}
 
-\item{y.axis.tick.color}{tbc}
+\item{axis.text.y.color}{tbc}
 
-\item{y.axis.tick.size}{tbc}
+\item{axis.text.y.size}{tbc}
 
-\item{legend.label}{tbc}
+\item{legend.title}{tbc}
 
-\item{legend.label.family}{tbc}
+\item{legend.title.family}{tbc}
 
-\item{legend.label.color}{tbc}
+\item{legend.title.color}{tbc}
 
-\item{legend.label.size}{tbc}
+\item{legend.title.size}{tbc}
 
 \item{bg.color}{tbc}
 

@@ -8,24 +8,24 @@
 #'
 #' @param p tbc
 #' @param data tbc
-#' @param x.label tbc
-#' @param y.label tbc
-#' @param x.axis.title.family tbc
-#' @param x.axis.title.color tbc
-#' @param x.axis.title.size tbc
-#' @param x.axis.tick.family tbc
-#' @param x.axis.tick.color tbc
-#' @param x.axis.tick.size tbc
-#' @param y.axis.title.family tbc
-#' @param y.axis.title.color tbc
-#' @param y.axis.title.size tbc
-#' @param y.axis.tick.family tbc
-#' @param y.axis.tick.color tbc
-#' @param y.axis.tick.size tbc
-#' @param legend.label tbc
-#' @param legend.label.family tbc
-#' @param legend.label.color tbc
-#' @param legend.label.size tbc
+#' @param xlab tbc
+#' @param ylab tbc
+#' @param axis.title.x.family tbc
+#' @param axis.title.x.color tbc
+#' @param axis.title.x.size tbc
+#' @param axis.text.x.family tbc
+#' @param axis.text.x.color tbc
+#' @param axis.text.x.size tbc
+#' @param axis.title.y.family tbc
+#' @param axis.title.y.color tbc
+#' @param axis.title.y.size tbc
+#' @param axis.text.y.family tbc
+#' @param axis.text.y.color tbc
+#' @param axis.text.y.size tbc
+#' @param legend.title tbc
+#' @param legend.title.family tbc
+#' @param legend.title.color tbc
+#' @param legend.title.size tbc
 #' @param bg.color tbc
 #' @param grid.color tbc
 #' @param border.line.width tbc
@@ -46,24 +46,24 @@
 #' @importFrom plotly layout toRGB
 plot_layout2D_interact <- function(p,
                                  data = NULL,
-                                 x.label = "<i>B</i> (mT)",
-                                 y.label = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
-                                 x.axis.title.family = "Arial",
-                                 x.axis.title.color = "black",
-                                 x.axis.title.size = 15,
-                                 x.axis.tick.family = "Arial",
-                                 x.axis.tick.color = "black",
-                                 x.axis.tick.size = 14,
-                                 y.axis.title.family = "Arial",
-                                 y.axis.title.color = "black",
-                                 y.axis.title.size = 15,
-                                 y.axis.tick.family = "Arial",
-                                 y.axis.tick.color = "black",
-                                 y.axis.tick.size = 14,
-                                 legend.label = NULL,
-                                 legend.label.family = "Arial",
-                                 legend.label.color = "black",
-                                 legend.label.size = 13,
+                                 xlab = "<i>B</i> (mT)",
+                                 ylab = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
+                                 axis.title.x.family = "Arial",
+                                 axis.title.x.color = "black",
+                                 axis.title.x.size = 15,
+                                 axis.text.x.family = "Arial",
+                                 axis.text.x.color = "black",
+                                 axis.text.x.size = 14,
+                                 axis.title.y.family = "Arial",
+                                 axis.title.y.color = "black",
+                                 axis.title.y.size = 15,
+                                 axis.text.y.family = "Arial",
+                                 axis.text.y.color = "black",
+                                 axis.text.y.size = 14,
+                                 legend.title = NULL,
+                                 legend.title.family = "Arial",
+                                 legend.title.color = "black",
+                                 legend.title.size = 13,
                                  bg.color = "#e5ecf6",
                                  grid.color = "#ffff",
                                  border.line.width = 1.2,
@@ -74,35 +74,35 @@ Plotly_layout_0 <- plotly::layout(
     p,
     data,
     plot_bgcolor = bg.color,
-    xaxis = list(title = list(text = x.label,
-                              font = list(family = x.axis.title.family,
-                                          color = x.axis.title.color,
-                                          size = x.axis.title.size)),
-                 tickfont = list(family = x.axis.tick.family,
-                                 color = x.axis.tick.color,
-                                 size = x.axis.tick.size),
+    xaxis = list(title = list(text = xlab,
+                              font = list(family = axis.title.x.family,
+                                          color = axis.title.x.color,
+                                          size = axis.title.x.size)),
+                 tickfont = list(family = axis.text.x.family,
+                                 color = axis.text.x.color,
+                                 size = axis.text.x.size),
                  gridcolor = grid.color,
                  linecolor = plotly::toRGB(border.line.color),
                  linewidth = border.line.width,showline = T,mirror = T),
-    yaxis = list(title = list(text = y.label,
-                              font = list(family = y.axis.title.family,
-                                          color = y.axis.title.color,
-                                          size = y.axis.title.size)),
-                 tickfont = list(family = y.axis.tick.family,
-                                 color = y.axis.tick.color,
-                                 size = y.axis.tick.size),
+    yaxis = list(title = list(text = ylab,
+                              font = list(family = axis.title.y.family,
+                                          color = axis.title.y.color,
+                                          size = axis.title.y.size)),
+                 tickfont = list(family = axis.text.y.family,
+                                 color = axis.text.y.color,
+                                 size = axis.text.y.size),
                  gridcolor = grid.color,
                  linecolor = plotly::toRGB(border.line.color),
                  linewidth = border.line.width,showline = T,mirror = T)
   )
-if (is.null(legend.label)){
+if (is.null(legend.title)){
   Plotly_layout <- Plotly_layout_0
 } else{
   Plotly_layout <- Plotly_layout_0 %>%
-    plotly::layout(legend = list(title = list(text = legend.label,
-                                              font = list(family = legend.label.family,
-                                                          color = legend.label.color,
-                                                          size = legend.label.size)))
+    plotly::layout(legend = list(title = list(text = legend.title,
+                                              font = list(family = legend.title.family,
+                                                          color = legend.title.color,
+                                                          size = legend.title.size)))
                   )
 }
   #
