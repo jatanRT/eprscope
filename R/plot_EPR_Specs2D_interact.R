@@ -22,7 +22,7 @@
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
-#' @param legend.label tbc
+#' @param legend.title tbc
 #' @param time.series Boolean, whether the input ASCII spectrum data comes from the time series experiment
 #'   with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
@@ -54,7 +54,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                   line.width = 0.75,
                                   border.line.width = 1.2,
                                   border.line.color = "black",
-                                  legend.label,
+                                  legend.title,
                                   axis.title.size = 15,
                                   axis.text.size = 14,
                                   time.series = FALSE){
@@ -166,7 +166,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                      gridcolor = grid.color,
                      linecolor = plotly::toRGB(border.line.color),
                      linewidth = border.line.width,showline = T,mirror = T),
-        legend = list(title = list(text = legend.label,
+        legend = list(title = list(text = legend.title,
                                    font = list(size = 13)))
       )
   } else{
