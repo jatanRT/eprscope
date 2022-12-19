@@ -71,16 +71,24 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                             origin = "xenon"){
   if (origin == "xenon"){
     if (isFALSE(time.series)){
-    spectrum.data <- data.table::fread(path_to_ASC,
-                                       sep = "auto",
-                                       header = F,
-                                       skip = 1,
-                                       col.names = c("index",x,"Intensity")) %>%
-      {if(x == "B_G") dplyr::mutate(B_mT = .data[[x]]/10,
-                                    dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M))
-        else dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans)
-          } %>%
-      dplyr::select(-.data$Intensity) ## presence of both `B_mT` and `B_G` is required
+      if (x == "B_G"){
+        spectrum.data <- data.table::fread(path_to_ASC,
+                                           sep = "auto",
+                                           header = F,
+                                           skip = 1,
+                                           col.names = c("index",x,"Intensity")) %>%
+          dplyr::mutate(B_mT = .data[[x]]/10,
+                        dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M)) %>%
+          dplyr::select(-.data$Intensity)
+      } else{
+        spectrum.data <- data.table::fread(path_to_ASC,
+                                           sep = "auto",
+                                           header = F,
+                                           skip = 1,
+                                           col.names = c("index",x,"Intensity")) %>%
+          dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans) %>%
+          dplyr::select(-.data$Intensity)
+      }
     #
     ## to add pipe operator '%>%' to the whole package one must run:
     ## 1. 'usethis::use_pipe()' 2. 'devtools::document()'
@@ -97,18 +105,26 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   if (origin == "winepr"){
     if (isFALSE(time.series)){
-      spectrum.data <- data.table::fread(path_to_ASC,
-                                         sep = "auto",
-                                         header = F,
-                                         skip = 3,
-                                         col.names = c(x,"Intensity")) %>%
-        {if(x == "B_G") dplyr::mutate(B_mT = .data[[x]]/10,
-                                      dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
-                                      index = seq_len(nrow(spectrum.data)))
-          else dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans,
-                             index = seq_len(nrow(spectrum.data)))
-        } %>%
-        dplyr::select(-.data$Intensity)
+      if (x == "B_G"){
+        spectrum.data <- data.table::fread(path_to_ASC,
+                                           sep = "auto",
+                                           header = F,
+                                           skip = 3,
+                                           col.names = c(x,"Intensity")) %>%
+          dplyr::mutate(B_mT = .data[[x]]/10,
+                        dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
+                        index = seq_len(nrow(spectrum.data))) %>%
+          dplyr::select(-.data$Intensity)
+      } else{
+        spectrum.data <- data.table::fread(path_to_ASC,
+                                           sep = "auto",
+                                           header = F,
+                                           skip = 3,
+                                           col.names = c(x,"Intensity")) %>%
+          dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans,
+                        index = seq_len(nrow(spectrum.data))) %>%
+          dplyr::select(-.data$Intensity)
+      }
     } else{
       spectrum.data <- data.table::fread(path_to_ASC,
                                          sep = "auto",
