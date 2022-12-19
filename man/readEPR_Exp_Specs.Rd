@@ -34,7 +34,7 @@ is already included for the intensity normalization, \strong{default = 1}}
 \item{m.mg}{Numeric, weight of the powder sample in\code{mg}, \strong{default = 1}}
 
 \item{time.series}{Boolean, whether the input ASCII spectrum comes from the time series experiment
-with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \strong{default = FALSE}}
+with the additional \code{time} column, \strong{default = FALSE}}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
 on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
@@ -58,7 +58,7 @@ Function reads/loads the experimental EPR/ENDOR spectrum recorded by BRUKER spec
   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
   or \code{"winepr"}). To distinguish between EPR and ENDOR spectrum a general \code{x}-axis quantity with two \code{x}s
   \code{x = "B_G"} or \code{x = "RF_MHz"} is available. Time series spectra (time evolution of EPR spectra) can be read
-  by the \code{time.series = TRUE/FALSE} parameter (ONLY IN CASE of \code{"xenon"} software).
+  by the \code{time.series = TRUE/FALSE} parameter.
 }
 \examples{
 \dontrun{

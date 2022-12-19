@@ -9,7 +9,7 @@
 #'   on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
 #'   or \code{"winepr"}). To distinguish between EPR and ENDOR spectrum a general \code{x}-axis quantity with two \code{x}s
 #'   \code{x = "B_G"} or \code{x = "RF_MHz"} is available. Time series spectra (time evolution of EPR spectra) can be read
-#'   by the \code{time.series = TRUE/FALSE} parameter (ONLY IN CASE of \code{"xenon"} software).
+#'   by the \code{time.series = TRUE/FALSE} parameter.
 #'
 #'
 #' @param path_to_ASC String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
@@ -24,7 +24,7 @@
 #' @param c.M Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
 #'   \strong{default = 1}
 #' @param time.series Boolean, whether the input ASCII spectrum comes from the time series experiment
-#'   with the additional \code{time} column (ONLY IN CASE of "Xenon" software), \strong{default = FALSE}
+#'   with the additional \code{time} column, \strong{default = FALSE}
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
 #'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
@@ -76,7 +76,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                                        header = F,
                                        skip = 1,
                                        col.names = c("index",x,"Intensity")) %>%
-      {if(x == "B_G") dplyr::mutate(B_mT = .data$x/10,
+      {if(x == "B_G") dplyr::mutate(B_mT = .data[[x]]/10,
                                     dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M))
         else dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans)
           } %>%
@@ -89,25 +89,37 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                                          sep = "auto",
                                          header = F,
                                          skip = 1,
-                                         col.names = c("index","B_G","time_s","Intensity")) %>%
-        dplyr::mutate(B_mT = .data$B_G/10,
+                                         col.names = c("index",x,"time_s","Intensity")) %>%
+        dplyr::mutate(B_mT = .data[[x]]/10,
                       dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M)) %>%
         dplyr::select(-.data$Intensity)
     }
   }
   if (origin == "winepr"){
-    spectrum.data <- data.table::fread(path_to_ASC,
-                                       sep = "auto",
-                                       header = F,
-                                       skip = 3,
-                                       col.names = c(x,"Intensity")) %>%
-      {if(x == "B_G") dplyr::mutate(B_mT = .data$B_G/10,
-                                    dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
-                                    index = seq_len(nrow(spectrum.data)))
-        else dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans,
-                           index = seq_len(nrow(spectrum.data)))
-          } %>%
-      dplyr::select(-.data$Intensity)
+    if (isFALSE(time.series)){
+      spectrum.data <- data.table::fread(path_to_ASC,
+                                         sep = "auto",
+                                         header = F,
+                                         skip = 3,
+                                         col.names = c(x,"Intensity")) %>%
+        {if(x == "B_G") dplyr::mutate(B_mT = .data[[x]]/10,
+                                      dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
+                                      index = seq_len(nrow(spectrum.data)))
+          else dplyr::mutate(dIepr_over_dB = .data$Intensity/Nscans,
+                             index = seq_len(nrow(spectrum.data)))
+        } %>%
+        dplyr::select(-.data$Intensity)
+    } else{
+      spectrum.data <- data.table::fread(path_to_ASC,
+                                         sep = "auto",
+                                         header = F,
+                                         skip = 3,
+                                         col.names = c(x,"time_s","Intensity")) %>%
+        dplyr::mutate(B_mT = .data[[x]]/10,
+                      dIepr_over_dB = .data$Intensity/(qValue*Nscans*m.mg*c.M),
+                      index = seq_len(nrow(spectrum.data))) %>%
+        dplyr::select(-.data$Intensity)
+    }
   }
   #
   return(spectrum.data)
