@@ -12,16 +12,16 @@ plot_EPR_Specs3D_interact(
   plot.type = "surface",
   scheme.color = "Viridis",
   contour.labels = FALSE,
-  Blim,
+  xlim,
   xlab = "<i>B</i> (mT)",
   ylab = "<i>Time</i> (s)",
   zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
-  bg.color.x = "rgb(220, 220,220)",
-  grid.color.x = "rgb(255, 255, 255)",
-  bg.color.y = "rgb(220, 220,220)",
-  grid.color.y = "rgb(255, 255, 255)",
-  bg.color.z = "rgb(220, 220,220)",
-  grid.color.z = "rgb(255, 255, 255)",
+  bg.x.color = "rgb(220, 220,220)",
+  grid.x.color = "rgb(255, 255, 255)",
+  bg.y.color = "rgb(220, 220,220)",
+  grid.y.color = "rgb(255, 255, 255)",
+  bg.z.color = "rgb(220, 220,220)",
+  grid.z.color = "rgb(255, 255, 255)",
   output.matrix.table = FALSE
 )
 }
@@ -40,7 +40,7 @@ plot_EPR_Specs3D_interact(
 
 \item{contour.labels}{tbc}
 
-\item{Blim}{tbc}
+\item{xlim}{tbc}
 
 \item{xlab}{tbc}
 
@@ -48,17 +48,17 @@ plot_EPR_Specs3D_interact(
 
 \item{zlab}{tbc}
 
-\item{bg.color.x}{tbc}
+\item{bg.x.color}{tbc}
 
-\item{grid.color.x}{tbc}
+\item{grid.x.color}{tbc}
 
-\item{bg.color.y}{tbc}
+\item{bg.y.color}{tbc}
 
-\item{grid.color.y}{tbc}
+\item{grid.y.color}{tbc}
 
-\item{bg.color.z}{tbc}
+\item{bg.z.color}{tbc}
 
-\item{grid.color.z}{tbc}
+\item{grid.z.color}{tbc}
 
 \item{output.matrix.table}{tbc}
 }

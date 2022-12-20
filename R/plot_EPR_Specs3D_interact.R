@@ -13,16 +13,16 @@
 #' @param plot.type tbc
 #' @param scheme.color tbc
 #' @param contour.labels tbc
-#' @param Blim tbc
+#' @param xlim tbc
 #' @param xlab tbc
 #' @param ylab tbc
 #' @param zlab tbc
-#' @param bg.color.x tbc
-#' @param grid.color.x tbc
-#' @param bg.color.y tbc
-#' @param grid.color.y tbc
-#' @param bg.color.z tbc
-#' @param grid.color.z tbc
+#' @param bg.x.color tbc
+#' @param grid.x.color tbc
+#' @param bg.y.color tbc
+#' @param grid.y.color tbc
+#' @param bg.z.color tbc
+#' @param grid.z.color tbc
 #' @param output.matrix.table tbc
 #'
 #'
@@ -47,16 +47,16 @@ plot_EPR_Specs3D_interact <- function(data.time.spectra,
                                     plot.type = "surface",
                                     scheme.color = "Viridis",
                                     contour.labels = FALSE,
-                                    Blim,
+                                    xlim,
                                     xlab = "<i>B</i> (mT)",
                                     ylab = "<i>Time</i> (s)",
                                     zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
-                                    bg.color.x = "rgb(220, 220,220)",
-                                    grid.color.x = "rgb(255, 255, 255)",
-                                    bg.color.y = "rgb(220, 220,220)",
-                                    grid.color.y = "rgb(255, 255, 255)",
-                                    bg.color.z = "rgb(220, 220,220)",
-                                    grid.color.z = "rgb(255, 255, 255)",
+                                    bg.x.color = "rgb(220, 220,220)",
+                                    grid.x.color = "rgb(255, 255, 255)",
+                                    bg.y.color = "rgb(220, 220,220)",
+                                    grid.y.color = "rgb(255, 255, 255)",
+                                    bg.z.color = "rgb(220, 220,220)",
+                                    grid.z.color = "rgb(255, 255, 255)",
                                     output.matrix.table = FALSE){
   #
   ## `time` as factor
@@ -98,18 +98,18 @@ plot_EPR_Specs3D_interact <- function(data.time.spectra,
                           plotly::layout(
                             scene = list(
                               xaxis = list(title = list(text = xlab),
-                                           gridcolor = grid.color.x,
+                                           gridcolor = grid.x.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = bg.color.x,
-                                           range = Blim),
+                                           backgroundcolor = bg.x.color,
+                                           range = xlim),
                               yaxis = list(title = list(text = ylab),
-                                           gridcolor = grid.color.y,
+                                           gridcolor = grid.y.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = bg.color.y),
+                                           backgroundcolor = bg.y.color),
                               zaxis = list(title = list(text = zlab),
-                                           gridcolor = grid.color.z,
+                                           gridcolor = grid.z.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = bg.color.z)
+                                           backgroundcolor = bg.z.color)
                           )) %>%
                           plotly::colorbar(title = zlab)
   }
@@ -126,7 +126,7 @@ plot_EPR_Specs3D_interact <- function(data.time.spectra,
                           )) %>%
                           plotly::layout(
                             xaxis = list(title = list(text = xlab),
-                                         range = Blim),
+                                         range = xlim),
                             yaxis = list(title = list(text = ylab))
                           ) %>%
                           plotly::colorbar(title = zlab)
