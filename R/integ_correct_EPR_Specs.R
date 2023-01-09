@@ -9,11 +9,13 @@
 #' @param data.spec.integ Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 #'   must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 #'   \code{index} column may be included as well, \code{sinlge integrated EPR} \strong{spectrum must be included}
-#'   in column named by \code{"single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_"} ("|" == "or" operator),
-#'   this can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function from \emph{B} and \emph{dIepr_over_dB}
+#'   as column. Integrated `column/form` can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function
+#'   from \emph{B} and \emph{dIepr_over_dB}
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 #'   or \code{B = "B_G"} (\strong{default})
+#' @param Integral Character/String pointing to single integral \code{column} of EPR spectrum data frame
+#'   \code{spectrum.data} (\strong{default}: \code{Integral = "single_integ"})
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
@@ -41,6 +43,7 @@
 #'
 integ_correct_EPR_Specs <- function(data.spec.integ,
                                    B = "B_G",
+                                   Integral = "single_integ",
                                    Blim,
                                    BpeaKlim,
                                    poly.degree,
@@ -48,11 +51,6 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
   ## 'Temporary' processing variables
   sIntegBaseLinFit <- NULL
   sIntegCorr <- NULL
-  #
-  ## Intensity column from spe.integ.data
-  integ.string <- str_subset(colnames(data.spec.integ),
-                             regex("single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_",
-                                   ignore_case = T))
   #
   ## select a region / range / interval of a integrated spectrum
   ## in which the second integral will be performed
@@ -67,7 +65,7 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
     filter(!between(.data[[B]],BpeaKlim[1],BpeaKlim[2]))
   #
   ## Polynomial baseline fit:
-  integ.baseline.fit <- stats::lm(.data[[integ.string]] ~ stats::poly(.data[[B]],degree = poly.degree),
+  integ.baseline.fit <- stats::lm(.data[[Integral]] ~ stats::poly(.data[[B]],degree = poly.degree),
                            data = data.NoPeak)
   #
   ## apply fit to data.slct, remove the .resid colum (which is not required),
@@ -77,7 +75,7 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
   data.slct <- broom::augment(integ.baseline.fit,newdata = data.slct) %>%
     dplyr::select(-.data[[".resid"]]) %>%
     dplyr::rename(sIntegBaseLinFit = .data[[".fitted"]]) %>%
-    dplyr::mutate(sIntegCorr = .data[[integ.string]] - .data$sIntegBaseLinFit) %>%
+    dplyr::mutate(sIntegCorr = .data[[Integral]] - .data$sIntegBaseLinFit) %>%
     dplyr::select(-sIntegBaseLinFit) %>%
     dplyr::mutate(sIntegCorr = sIntegCorr - min(.data$sIntegCorr))
   #
