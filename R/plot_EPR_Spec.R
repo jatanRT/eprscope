@@ -84,7 +84,7 @@ plot_EPR_Spec <- function(data.spectrum,
     x.label <- bquote(italic(B)~"("~G~")")
   }
   if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
-    x.label <- bquote(italic(RF)~"("~MHz~")")
+    x.label <- bquote(italic(nu)[RF]~"("~MHz~")")
   }
   if (sjmisc::str_contains(x,c("g",
                                "g_value",
