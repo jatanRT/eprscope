@@ -7,6 +7,7 @@
 integ_correct_EPR_Specs(
   data.spec.integ,
   B = "B_G",
+  Integral = "single_integ",
   Blim,
   BpeaKlim,
   poly.degree,
@@ -17,12 +18,15 @@ integ_correct_EPR_Specs(
 \item{data.spec.integ}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column may be included as well, \code{sinlge integrated EPR} \strong{spectrum must be included}
-in column named by \code{"single|sinteg|s_integ|single_|singleinteg|sintegral|sInteg_"} ("|" == "or" operator),
-this can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function from \emph{B} and \emph{dIepr_over_dB}}
+as column. Integrated `column/form` can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function
+from \emph{B} and \emph{dIepr_over_dB}}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default})}
+
+\item{Integral}{Character/String pointing to single integral \code{column} of EPR spectrum data frame
+\code{spectrum.data} (\strong{default}: \code{Integral = "single_integ"})}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}

@@ -33,6 +33,7 @@ plot_labels_xyz(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
 plot_labels_xyz(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
 plot_labels_xyz(c,mmol*dm^-3)
 plot_labels_xyz(Double~~Integral,p.d.u.)
+plot_labels_xyz(italic(nu)[RF],"("~MHz~")",user.defined = TRUE)
 
 
 }
