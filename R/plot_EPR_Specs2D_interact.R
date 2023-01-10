@@ -67,7 +67,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
     xlabel <- "<i>B</i> (G)"
   }
   if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
-    xlabel <- "<i>&nu;</i><sub>RF</sub> (MHz)"
+    xlabel <- "<i>&#957;</i><sub>RF</sub> (MHz)"
   }
   if (sjmisc::str_contains(x,c("g",
                                "g_value",
