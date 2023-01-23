@@ -112,7 +112,8 @@ plot_EPR_Specs3D_interact <- function(data.time.spectra,
                                            backgroundcolor = bg.z.color,
                                            tickformat = ".1e")
                           )) %>%
-                          plotly::colorbar(title = zlab)
+                          plotly::colorbar(title = zlab,
+                                           tickformat = ".1e")
   }
   #
   if (plot.type == "contour"){
