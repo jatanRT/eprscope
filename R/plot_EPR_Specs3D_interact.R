@@ -109,7 +109,8 @@ plot_EPR_Specs3D_interact <- function(data.time.spectra,
                               zaxis = list(title = list(text = zlab),
                                            gridcolor = grid.z.color,
                                            showbackground = TRUE,
-                                           backgroundcolor = bg.z.color)
+                                           backgroundcolor = bg.z.color,
+                                           tickformat = ".1e")
                           )) %>%
                           plotly::colorbar(title = zlab)
   }
@@ -129,7 +130,8 @@ plot_EPR_Specs3D_interact <- function(data.time.spectra,
                                          range = xlim),
                             yaxis = list(title = list(text = ylab))
                           ) %>%
-                          plotly::colorbar(title = zlab)
+                          plotly::colorbar(title = zlab,
+                                           tickformat = ".1e")
   }
   #
   ## matrix table output
