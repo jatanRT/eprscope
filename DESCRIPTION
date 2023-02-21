@@ -44,9 +44,14 @@ Imports:
     R.matlab,
     magrittr,
     rlang,
-    pracma
-Suggests: 
+    pracma,
     knitr,
+    htmlwidgets,
+    webshot2
+Suggests: 
     kableExtra,
-    writexl
+    quarto,
+    writexl,
+    flextable,
+    openxlsx
 RoxygenNote: 7.2.3
