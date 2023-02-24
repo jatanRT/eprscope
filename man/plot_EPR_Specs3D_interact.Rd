@@ -12,7 +12,7 @@ plot_EPR_Specs3D_interact(
   plot.type = "surface",
   scheme.color = "Viridis",
   contour.labels = FALSE,
-  xlim,
+  xlim = NULL,
   xlab = "<i>B</i> (mT)",
   ylab = "<i>Time</i> (s)",
   zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
