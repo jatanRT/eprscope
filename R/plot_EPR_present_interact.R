@@ -19,14 +19,24 @@
 #' @export
 #'
 #'
-#' @importFrom knitr pandoc_to
+#' @importFrom knitr pandoc_to is_latex_output
 #' @importFrom htmlwidgets saveWidget
 #' @importFrom webshot2 webshot
 plot_EPR_present_interact <- function(plot,
                                       size.width = 700,
                                       size.height = 500,
                                       size.resolv.f = 2){
-  if(knitr::pandoc_to("pdf","docx")){
+  if(knitr::is_latex_output()){
+    saveWidget(widget = plot,
+               file = paste0(deparse(substitute(plot)),".html"),
+               selfcontained = F)
+    webshot(url = paste0(deparse(substitute(plot)),".html"),
+            file = paste0(deparse(substitute(plot)),".png"),
+            delay = 2,
+            vwidth = 700,
+            vheight = 500,
+            zoom = 2)
+  } else if(knitr::pandoc_to(fmt = "docx")){
     saveWidget(widget = plot,
                file = paste0(deparse(substitute(plot)),".html"),
                selfcontained = F)
@@ -37,6 +47,6 @@ plot_EPR_present_interact <- function(plot,
             vheight = 500,
             zoom = 2)
   } else{
-    return(plot)
+    plot
   }
 }
