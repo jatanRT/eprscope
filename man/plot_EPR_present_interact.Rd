@@ -5,14 +5,14 @@
 \title{Presents/Saves Interactive Plotly-Plot/-Graph Depending on Output Document Format}
 \usage{
 plot_EPR_present_interact(
-  plot,
+  p,
   size.width = 700,
   size.height = 500,
   size.resolv.f = 2
 )
 }
 \arguments{
-\item{plot}{tbc}
+\item{p}{tbc}
 
 \item{size.width}{tbc}
 
