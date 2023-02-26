@@ -40,12 +40,12 @@ plot_EPR_present_interact <- function(p,
   #
   ## Conditions
   if (knitr::is_latex_output()){
-    return(widget)
-    return(webshot)
+    widget
+    webshot
   } else if (knitr::pandoc_to(fmt = "docx")){
-    return(widget)
-    return(webshot)
+    widget
+    webshot
   } else{
-    return(p)
+    p
   }
 }
