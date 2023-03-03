@@ -47,43 +47,45 @@ readEPR_Exp_Specs_multif <- function(pattern,
                           pattern = file.name.pattern,
                           full.names = TRUE)
   #
-  ## select only `.DSC` or `.par` files
   if (origin == "xenon"){
+    ## select only `.DSC` files
     files.params <- grep(pattern = ".DSC",
                          files.raw,
                          value = TRUE)
+    ## to obtain `QValues` (from all `.DSC` files) run the following
+    qValues.from.files <- sapply(files.params,
+                                 function(x) readEPR_param_slct(x,string = "QValue"))
+    ## to obtain microwave frequencies `MWFQ` (from all `.DSC` files),
+    ## required for g value calculations
+    mwfq.string <- "MWFQ"
+
   }
   if (origin == "winepr"){
+    ## select only `.par` files
     files.params <- grep(pattern = ".par",
                          files.raw,
                          value = TRUE)
-  }
-  #
-  ## delete `files.raw` which is not required anymore
-  files.raw <- NULL
-  ##
-  ## to obtain `QValues` (from all `.DSC` files) run the following
-  if (origin == "xenon"){
-    qValues.from.files <- sapply(files.params,
-                                 function(x) readEPR_param_slct(x,string = "QValue"))
-  }
-  if (origin == "winepr"){
+    ## to obtain `QValues` run the following
     if (is.null(qValues)){
       cat(" 'qValues' vector is not provided. Please, define! ")
     } else{
       qValues.from.files <- qValues
     }
+    ## to obtain microwave frequencies `MWFQ` (from all `.par` files),
+    ## required for g value calculations
+    mwfq.string <- "MW"
   }
   #
-  ## to obtain microwave frequencies `MWFQ` (from all `.DSC` files),
-  ## required fro g valuesd
-  if (origin == "xenon"){
-    mwfreq.from.files <- sapply(files.params,
-                                function(y) readEPR_param_slct(y,string = "MWFQ"))
-  }
+  ## delete `files.raw` which is not required anymore
+  files.raw <- NULL
+  #
+  ## all frequencies
+  mwfreq.from.files <- sapply(files.params,
+                              function(y) readEPR_param_slct(y,
+                                                             string = mwfq.string,
+                                                             origin = origin))
+
   if (origin == "winepr"){
-    mwfreq.from.files <- sapply(files.params,
-                                function(y) readEPR_param_slct(y, string = "MF"))
     ## conversion from "GHz" to "Hz"
     mwfreq.from.files <- mwfreq.from.files*1e9
   }
@@ -91,7 +93,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
   ## the entire database of all spectra with intensity correction
   ## to `qValue` + new column with `g`-factors
   spectra.datab.from.files <-
-    Map(function(s,t,u) readEPR_Exp_Specs(s,qValue = t) %>%
+    Map(function(s,t,u) readEPR_Exp_Specs(s,qValue = t,origin = origin) %>%
           dplyr::mutate(g_Value = gValue(nu = u,nu_unit = "Hz",B = .data[["B_mT"]])),
         files.asc,
         qValues.from.files,
