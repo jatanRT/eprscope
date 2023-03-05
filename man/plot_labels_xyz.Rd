@@ -29,8 +29,12 @@ TODO To write greek symbols, subscript and superscript, see
 \examples{
 plot_labels_xyz(B,mT)
 plot_labels_xyz(d~italic(I)[EPR]~"/"~d~italic(B),p.d.u.)
-plot_labels_xyz(quantity = Delta*B[pp],unit = mT,user.defined = FALSE)
-plot_labels_xyz(E,"("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),user.defined = TRUE)
+plot_labels_xyz(quantity = Delta*B[pp],
+                unit = mT,
+                user.defined = FALSE)
+plot_labels_xyz(E,
+                "("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),
+                user.defined = TRUE)
 plot_labels_xyz(c,mmol*dm^-3)
 plot_labels_xyz(Double~~Integral,p.d.u.)
 plot_labels_xyz(italic(nu)[RF],MHz)
