@@ -2,40 +2,81 @@
 % Please edit documentation in R/readEPR_Exp_Specs_multif.R
 \name{readEPR_Exp_Specs_multif}
 \alias{readEPR_Exp_Specs_multif}
-\title{Load Several/Multiple EPR Spectral Data Files into one List/Database.}
+\title{Load Several/Multiple EPR Spectral Data Files}
 \usage{
 readEPR_Exp_Specs_multif(
   pattern,
-  path_to_ASC,
-  path_to_DSC_or_par,
+  dir_ASC,
+  dir_DSC_or_par,
+  type = "epr",
   origin = "xenon",
   qValues = NULL,
-  names
+  names,
+  tidy = FALSE,
+  variable = NULL
 )
 }
 \arguments{
-\item{pattern}{tbc}
+\item{pattern}{String/Character, inherited from \code{\link[base]{list.files}}, which appear in the file name
+as a 'specimen'.}
 
-\item{path_to_ASC}{tbc}
+\item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
+the `ascii` files are stored}
 
-\item{path_to_DSC_or_par}{tbc}
+\item{dir_DSC_or_par}{path (defined by \code{\link[base]{file.path}} String/Character) to directory
+where the files (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+or normalize intensities) are stored}
 
-\item{origin}{tbc}
+\item{type}{String/Character pointing either to \code{"epr"} (\strong{default}, having the \code{x = "B_G"}
+in the spectrum) or to \code{"endor"} spectra (having the \code{x = "RF_MHz"} in the spectrum)}
 
-\item{qValues}{tbc}
+\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
+on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
+\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}}
 
-\item{names}{tbc}
+\item{qValues}{Numeric Vector, `Q Value` (sensitivity factors to normalize EPR intensity) either loaded from
+files incl. parameters (`.DSC` or `.par`) by this function/R.script (therefore \code{qValues = NULL},
+\strong{default}) or in case of \code{origin = "winepr"} it have to provided by the operator of a spectrometer}
+
+\item{names}{String/Character Vector corresponding to values of \strong{additional quantity}
+(e.g. temperature,microwave power...etc) being varied by the individual experiments}
+
+\item{tidy}{Boolean, whether to transform the list of data frames into long table (`tidy`) format,
+\strong{default}: \code{tidy = F}}
+
+\item{variable}{String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
+of the variable/quantity altered by the experiments related to individual spectra/data}
 }
 \value{
-List of Data Frames Corresponding to Multiple Spectral Data Files
+List of Data Frames (or `long table` format) corresponding to multiple spectral data files/database
 }
 \description{
-Function the load EPR spectra from several/multiple files. tbc
+Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
+ parameters (`DSC` or `par`) at once and transforms it into a database list of data frames. Function is based
+ on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.
+ According to variable experiment quantity (e.g. temperature,microwave power...etc), `names` and `variable`
+ (in case of `tidy = T`) parameters have to be provided. If intensity normalization by e.g. like concentration,
+ sample weight...etc is required, it can be performed afterwards (generally, except the Q values, it is not included
+ in the transformation process).
 }
 \examples{
 \dontrun{
-tbc
-tbc
+## Spectra recorded by "Xenon" software
+readEPR_Exp_Specs_multif("Sample_VT_",
+                         file.path(".","ASCII_data_dir"),
+                         file.path(".","DSC_data_dir"),
+                         type = "endor",
+                         names = c("210","220","230","240"),
+                         tidy = T,
+                         variable = "Temperature_K")
+
+## Specctra recorded by "WinEPR" sofware
+readEPR_Exp_Specs_multif("Sample_VT_",
+                         file.path(".","ASCII_data_dir"),
+                         file.path(".","DSC_data_dir"),
+                         origin = "winepr",
+                         names = c("210","220","230","240"),
+                         qValues =c(3400,3501,3600,2800))
 }
 
 

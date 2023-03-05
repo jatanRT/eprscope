@@ -2,11 +2,11 @@
 % Please edit documentation in R/readEPR_Exp_Specs.R
 \name{readEPR_Exp_Specs}
 \alias{readEPR_Exp_Specs}
-\title{Read the Experimental ASCII (\code{.txt}, \code{.csv} or \code{.asc}) EPR/ENDOR Spectrum and Transfer it into Data Frame}
+\title{Read the Experimental ASCII Data of EPR/ENDOR Spectra}
 \usage{
 readEPR_Exp_Specs(
   path_to_ASC,
-  x = "B_G",
+  type = "epr",
   qValue = 1,
   Nscans = 1,
   c.M = 1,
@@ -17,10 +17,11 @@ readEPR_Exp_Specs(
 }
 \arguments{
 \item{path_to_ASC}{String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
-with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables)}
+with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables),
+it can be also defined by \code{\link[base]{file.path}}}
 
-\item{x}{String related to recorded "EPR" or "ENDOR" spectrum. \strong{Only two 'values' are allowed:}
-\code{x = "B_G"} or  \code{x = "RF_MHz"}}
+\item{type}{String/Character pointing either to \code{"epr"} (\strong{default}, having the `x = "B_G"`
+in the spectrum) or to \code{"endor"} spectra (having the x = `x = "RF_MHz"` in the spectrum)}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, \strong{default = 1}}
@@ -36,10 +37,9 @@ is already included for the intensity normalization, \strong{default = 1}}
 \item{time.series}{Boolean, whether the input ASCII spectrum comes from the time series experiment
 with the additional \code{time} column, \strong{default = FALSE}}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
-\strong{default}: \code{origin = "xenon"}}
+\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
+on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
+\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}}
 }
 \value{
 Data frame/table consisting of the magnetic flux density column \code{B_mT}
@@ -50,33 +50,32 @@ Data frame/table consisting of the magnetic flux density column \code{B_mT}
   (in the case of time series experiment) columns are displayed as well.
 }
 \description{
-Function reads/loads the experimental EPR/ENDOR spectrum recorded by BRUKER spectrometers
-  in ASCII format by the \code{\link[data.table]{fread}} function and transforms it into \code{data frame},
+Reads experimental EPR/ENDOR spectra recorded by BRUKER spectrometers
+  in ASCII format (\code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
   which can be easily processed by other R packages (e.g. by \pkg{tidyverse} system), afterwards.
-  Spectral data are normalized by the common experimental parameters in order to qualitatively compare
-  the intensities of several spectra. ASCII files/tables depend on the software used to record the EPR spectra
-  on BRUKER spectrometers and are slightly different. This is mirrored by \code{origin} parameter (with \code{"xenon"}
-  or \code{"winepr"}). To distinguish between EPR and ENDOR spectrum a general \code{x}-axis quantity with two \code{x}s
-  \code{x = "B_G"} or \code{x = "RF_MHz"} is available. Time series spectra (time evolution of EPR spectra) can be read
+  Spectral data (intensities) are normalized by the common experimental parameters like Q-factor, concentration...etc.
+  ASCII files/tables depend on the software used to acquire the EPR spectra. This is mirrored by \code{origin}
+  parameter. To distinguish between EPR and ENDOR spectrum a general \code{type}-parameter is defined
+  \code{type = "epr"} or \code{type = "endor"}. Time series (time evolution of EPR spectra) can be read
   by the \code{time.series = TRUE/FALSE} parameter.
 }
 \examples{
 \dontrun{
-readEPR_Exp_Specs(path_to_ASCII_file,qValue = 3500) ## for the spectrum acquired by "xenon"
+readEPR_Exp_Specs(path_to_ASC,qValue = 3500) ## for the spectrum acquired by "xenon"
 
 ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-readEPR_Exp_Specs(path_to_ASCII_file,qValue = 2000,Nscans = 20,m.mg = 10,origin = "winepr")
+readEPR_Exp_Specs(path_to_ASC,qValue = 2000,Nscans = 20,m.mg = 10,origin = "winepr")
 
 ## if no parameter intensity normalization is required and spectrum
 ## was recorded by "xenon" software:
-readEPR_Exp_Specs(path_to_ASCII_file)
+readEPR_Exp_Specs(path_to_ASC = file.path(".","ASCII_Folder","EPR_spectrum.txt"))
 
 ## for the ENDOR spectrum recorded by "xenon"
-readEPR_Exp_Specs(path_to_ASCII_file,x = "RF_MHz",Nscans = 40)
+readEPR_Exp_Specs(path_to_ASC,type = "endor",Nscans = 40)
 
 ## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
 ## EPR spectroelectrochemistry or photochemistry):
-readEPR_Exp_Specs(path_to_ASC_file,x = "B_G",qValue = 2800,time.series = T)
+readEPR_Exp_Specs(path_to_ASC,type = "epr",qValue = 2800,time.series = T)
 }
 
 
