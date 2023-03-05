@@ -21,7 +21,9 @@
 #' @examples
 #' \dontrun{
 #' interval_cnfdnc_t_vecCol(c(0.025,0.020,0.031,0.022,0.035))
-#' interval_cnfdnc_t_vecCol(c(0.025,0.020,0.031,0.022,0.035),level.cnfdnc = 0.99,separate = F)
+#' interval_cnfdnc_t_vecCol(c(0.025,0.020,0.031,0.022,0.035),
+#'                          level.cnfdnc = 0.99,
+#'                          separate = F)
 #' }
 #'
 #' @export
