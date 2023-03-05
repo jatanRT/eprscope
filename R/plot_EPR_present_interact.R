@@ -1,5 +1,9 @@
 #
-#' Presents/Saves Interactive Plotly-Plot/-Graph Depending on Output Document Format
+#' Present/Save Interactive Plotly-Plot/-Graph
+#'
+#'
+#' @description Depending on Output Document Format
+#'
 #'
 #' @param p tbc
 #' @param size.width tbc

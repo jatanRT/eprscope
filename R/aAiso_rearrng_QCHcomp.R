@@ -1,15 +1,11 @@
 #
 #' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations
-#' According to Proposed Molecular Structure/Symmetry
 #'
 #'
 #' @description
-#' tbc
-#'
-#'
-#' @param path_to_ASC String/Character, pointing to path of ASCII file (\code{txt},\code{csv}...etc) with characteristic
-#'   \eqn{A_{iso}}/\eqn{a_{iso}} values (either in \code{cm-1} or other units) presented for each atom/nucleus
-#'   (with its corresponding \code{atomic number within the structure} as well as with characteristic
+#' Provides table from Gaussian/ORCA output text file to summarize \eqn{A_{iso}}/\eqn{a_{iso}} values
+#' according to proposed molecular structure/symmetry. The `A`/`a` values are computed for each atom/nucleus
+#' (with its corresponding \code{atomic number within the structure} as well as with characteristic
 #'   \code{isotopic number/value}), such an entire table can be copied from \strong{Gaussian} output
 #'   (after \code{'Isotropic Fermi Contact Couplings'} line) or can be constructed from \strong{ORCA} output,
 #'   example for such file (from \strong{Gaussian}):
@@ -19,6 +15,11 @@
 #'    17 \tab N(14) \tab 13.99707 \tab 4.9945 \tab 4.66892 \cr
 #'    28 \tab H(1) \tab 16.34971 \tab 5.83398 \tab 5.45368 \cr
 #'   }
+#'
+#'
+#' @param path_to_ASC String/Character, pointing to path of ASCII file (\code{txt},\code{csv}...etc,
+#' it may be also provided by \code{\link[base]{file.path}}) incl. characteristic
+#'   \eqn{A_{iso}} or \eqn{a_{iso}} values
 #' @param data.col.names String/Character vector containing names of all columns from QCH Computational output,
 #'   for the names see the example in \code{path_to_ASC}, they must contain atomic/structure number, isotopic value
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss

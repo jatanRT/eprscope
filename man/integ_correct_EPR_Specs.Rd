@@ -2,7 +2,7 @@
 % Please edit documentation in R/integ_correct_EPR_Specs.R
 \name{integ_correct_EPR_Specs}
 \alias{integ_correct_EPR_Specs}
-\title{Polynomial Baseline Correction for single-Integrated EPR Spectra + Double Integral Calculation/Presentation}
+\title{Polynomial Baseline Correction for single-Integrated EPR Spectra}
 \usage{
 integ_correct_EPR_Specs(
   data.spec.integ,
@@ -18,8 +18,7 @@ integ_correct_EPR_Specs(
 \item{data.spec.integ}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}) column
 must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column may be included as well, \code{sinlge integrated EPR} \strong{spectrum must be included}
-as column. Integrated `column/form` can be obtained by \code{\link[pracma:trapz]{pracma::cumtrapz}} function
-from \emph{B} and \emph{dIepr_over_dB}}
+as column.}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
@@ -46,11 +45,18 @@ Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B
   integral corrected against the baseline fit
 }
 \description{
-tbc
+Single-integrated spectrum (from original derivative form) can be obtained
+ by \code{\link[pracma:trapz]{pracma::cumtrapz}} function
+ taken into account \emph{B} and \emph{dIepr_over_dB}. Double Integral Calculation/Presentation
+ may be also provided by this function, if \code{double.integ = T}
 }
 \examples{
 \dontrun{
-tbc
+integ_correct_EPR_Specs(EPR_spectral_data_table,
+                        B = "B_mT",
+                        Blim = c(348.2,351.1),
+                        BpeaKlim = c(349,350),
+                        poly.degree = 3)
 }
 
 

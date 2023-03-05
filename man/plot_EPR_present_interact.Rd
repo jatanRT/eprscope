@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_present_interact.R
 \name{plot_EPR_present_interact}
 \alias{plot_EPR_present_interact}
-\title{Presents/Saves Interactive Plotly-Plot/-Graph Depending on Output Document Format}
+\title{Present/Save Interactive Plotly-Plot/-Graph}
 \usage{
 plot_EPR_present_interact(
   p,
@@ -24,7 +24,7 @@ plot_EPR_present_interact(
 Plot format depending on the output document one
 }
 \description{
-Presents/Saves Interactive Plotly-Plot/-Graph Depending on Output Document Format
+Depending on Output Document Format
 }
 \examples{
 \dontrun{

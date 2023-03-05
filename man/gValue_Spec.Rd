@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue_Spec.R
 \name{gValue_Spec}
 \alias{gValue_Spec}
-\title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum}
+\title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data}
 \usage{
 gValue_Spec(
   data.spectrum,
@@ -14,8 +14,8 @@ gValue_Spec(
 )
 }
 \arguments{
-\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or ) column
-must be labeled as \code{B_mT} and that of the derivative intensity as \code{dIepr_over_dB},
+\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or \code{G}) column
+must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
 \code{index} column can be included as well}
 
 \item{nu.GHz}{Numeric, microwave frequency in \code{GHz}}
@@ -42,15 +42,8 @@ Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu
 Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
-  and their distance from the middle of the spectrum equals \eqn{B_{iso}} should be be considered,
+  and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
   otherwise the \eqn{B_{center}} must be taken into account.
-  The \eqn{g}-related \eqn{B} is computed either as the mid-point between
-  the magnetic flux densities corresponding to \code{min.} and \code{max.} derivative
-  intensities (\code{dIepr_over_dB}) or by \eqn{B}-value corresponding to \eqn{dIepr_over_dB} very close to zero.
-  One can select the B region from the spectrum to determine the \eqn{g}-value.
-  The Planck constant (\eqn{h}) and the Bohr magneton (\eqn{\mu_{B}}) are included
-  in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
-  and \code{syms$mub} commands, respectively.
 }
 \examples{
 \dontrun{

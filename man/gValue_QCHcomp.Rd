@@ -2,7 +2,7 @@
 % Please edit documentation in R/gValue_QCHcomp.R
 \name{gValue_QCHcomp}
 \alias{gValue_QCHcomp}
-\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output (e.g. from Gaussian)}
+\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output}
 \usage{
 gValue_QCHcomp(delta_g_vec, mean = TRUE)
 }
@@ -19,7 +19,9 @@ Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) com
   if \code{mean = FALSE}
 }
 \description{
-TODO
+\eqn{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.
+Therefore the function takes these values and calculates the entire \eqn{g}-values or parses
+the corresponding mean value
 }
 \examples{
 gValue_QCHcomp(c(-806.1,1099.9,1417.1))

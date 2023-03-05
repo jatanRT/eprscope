@@ -1,8 +1,10 @@
 ## Calculate from DFT Gaussian Output
 
-#' @title Calculation of \eqn{g}-factor from Quantum Chemical Computational Output (e.g. from Gaussian)
+#' Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
 #'
-#' @description TODO
+#' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.
+#' Therefore the function takes these values and calculates the entire \eqn{g}-values or parses
+#' the corresponding mean value
 #'
 #' @param delta_g_vec Numeric vector of principal \code{g-value differences in 'ppm'}
 #'   from \eqn{g_e} within e.g. \strong{Gaussian} or \strong{ORCA} output
