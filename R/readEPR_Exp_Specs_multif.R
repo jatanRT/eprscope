@@ -163,7 +163,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
     #
   } else{
     if (is.null(variable)){
-      cat(" 'variable' string is not provided. Please, define! ")
+      stop(" 'variable' string is not provided. Please, define! ")
     } else{
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-
