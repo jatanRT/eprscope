@@ -1,14 +1,15 @@
 #
-#' Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
-#'   the EPR Spectra (within the \code{Xenon} or \code{WinEpr} Software, respectively)
+#' Read the \strong{Selected} EPR Instrumental Parameters and Information
 #'
 #'
 #' @description
-#' tbc
+#'  Function takes the \strong{selected} instrumental parameters or information
+#'  from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}
+#'  or \code{WinEpr} Software, respectively)
 #'
 #'
 #' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
-#'   parameters provided by the EPR machine
+#'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
 #' @param string String, within the \code{.DSC} or \code{.par} (at the line beginning) file
 #'   corresponding to instrumental parameter,
 #'  following \strong{strings are defined} (in parenthesis for "winepr" software):
@@ -18,7 +19,7 @@
 #'    "CMNT" ("JCO") \tab  comment (in order to describe the measurement) \cr
 #'    "DATE" ("JDA") \tab  date (when the EPR spectrum was recorded) \cr
 #'    "TIME" ("JTM")  \tab  time (when the EPR spectrum was recorded) \cr
-#'    "SAMPLE" \tab   name/decsript. of the sample \cr
+#'    "SAMP" \tab   name/decsript. of the sample \cr
 #'    "MWFQ"  ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
 #'    "QValue" \tab   recorded quality-Factor (required for intensity norm.) \code{unitless} \cr
 #'    "A1CT" ("HCF") \tab central field (B) in \code{T} (\code{G}) \cr
@@ -43,8 +44,22 @@
 #'
 #' @examples
 #' \dontrun{
-#' tbc
-#' tbc
+#' ## Reading modulation amplitude from 'Xenon' spectrometer file
+#' readEPR_param_slct(path_to_DSC_or_par,
+#'                    string = "B0MA")
+#'
+#' ## Reading Q Value from 'Xenon' spectrometer file
+#' read_param_slct(file.path(".",
+#'                           "dir_DSC",
+#'                           "EPR_spectrum.DSC"),
+#'                 string = "QValue")
+#'
+#' ## Reading `date` from 'WinEPR' spectrometer file
+#' read_param_slct(file.path(".",
+#'                           "dir_par",
+#'                           "EPR_spectrum.par"),
+#'                 string = "JDA",
+#'                 origin = "winepr")
 #' }
 #'
 #'
@@ -62,7 +77,7 @@ readEPR_param_slct <- function(path_to_DSC_or_par,string,origin = "xenon"){
   #
   ## the result is list, therefore select the second list element ('[[1]][2]'):
   if (origin == "xenon"){
-    if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMPLE"){
+    if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMP"){
       param.slct <- as.character(sel.str.split[[1]][2])
     } else{
       param.slct <- as.double(sel.str.split[[1]][2])

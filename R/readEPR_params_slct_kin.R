@@ -1,11 +1,12 @@
 #
-#' Read the \strong{selected} Instrumental Parameters from \code{.DSC} or \code{.par} to Record
-#'   the EPR Spectra (within the \code{Xenon} or \code{WinEpr} Software, respectively), \strong{
-#'   required for time correction} (\code{\link{time_correct_EPR_Specs}}) of the "kinetic" series
+#' Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Time Series} Experiment
 #'
 #'
 #' @description
-#' tbc
+#'  Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
+#'  experiment from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
+#'  or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
+#'  spectra, see \code{\link{time_correct_EPR_Specs}}
 #'
 #'
 #' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
@@ -17,13 +18,16 @@
 #'
 #'
 #' @return List containing number of scans (\code{Nscans}) and sweep time (\code{sweepTime}) required
-#'   for time correction during the \code{2D_Field_Delay} experiment ("kinetic" series)
+#'   for time correction during the \code{2D_Field_Delay} experiment ("kinetic" time series)
 #'
 #'
 #' @examples
 #' \dontrun{
-#' tbc
-#' tbc
+#' readEPR_params_slct_kin(path_to_DSC_or_par)
+#' readEPR_params_slct_kin(file.path(".",
+#'                                   "dir_par",
+#'                                   "EPR_spectrum.par"),
+#'                         origin = "winepr")
 #' }
 #'
 #' @export
