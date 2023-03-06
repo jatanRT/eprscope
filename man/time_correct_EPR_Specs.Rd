@@ -30,7 +30,7 @@ tbc
 
  \code{t[1]} \tab  ------^v------> \tab \code{t[2]}-delay \tab ---->  \tab \code{t[2]} \tab ------^v-------> ... \cr
 
-        \tab  \code{N_scans}x\code{swt}  \tab          \tab \code{delay} \tab        \tab \code{N_scans}x\code{swt}
+        \tab  \code{N_scans}*\code{swt}  \tab          \tab \code{delay} \tab        \tab \code{N_scans}*\code{swt}
 }
 The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan

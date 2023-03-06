@@ -30,8 +30,14 @@ Calculation of {g}-factor according to fundamental formula.
   and \code{syms$mub} commands, respectively.
 }
 \examples{
-gValue(9.8020458,nu_unit = "GHz",350.214,B_unit = "mT")
-gValue(nu = 9.8020458e+9,nu_unit = "Hz",B = 3502.14,B_unit = "G")
+gValue(9.8020458,
+       nu_unit = "GHz",
+       350.214,
+       B_unit = "mT")
+gValue(nu = 9.8020458e+9,
+       nu_unit = "Hz",
+       B = 3502.14,
+       B_unit = "G")
 gValue(9.5421,"GHz",0.333251,"T")
 
 }

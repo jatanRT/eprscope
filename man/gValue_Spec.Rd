@@ -47,9 +47,20 @@ Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
 }
 \examples{
 \dontrun{
-gValue_Spec(data.spectrum,9.82451,"B_mT",Intensity = "dIepr_over_dB_Sim",c(349.8841,351.112))
-gValue_Spec(data.spectrum,nu.GHz = 9.82451,B = "B_G",Blim = c(3498.841,3511.12),iso = FALSE)
-gValue_Spec(data.spectrum,9.91024,B = "B_G_Sim",c(3499,3501))
+gValue_Spec(data.spectrum,
+            9.82451,
+            "B_mT",
+            Intensity = "dIepr_over_dB_Sim",
+            c(349.8841,351.112))
+gValue_Spec(data.spectrum,
+            nu.GHz = 9.82451,
+            B = "B_G",
+            Blim = c(3498.841,3511.12),
+            iso = FALSE)
+gValue_Spec(data.spectrum,
+            9.91024,
+            B = "B_G_Sim",
+            c(3499,3501))
 }
 
 

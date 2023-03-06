@@ -72,11 +72,24 @@ Graph/Plot of an EPR/ENDOR spectrum based on \pkg{ggplot2}-functionality. Spectr
 \examples{
 \dontrun{
 plot_EPR_Spec(data.spectrum)
-plot_EPR_Spec(data.spectrum,"B_G",Intensity = "dIepr_over_dB_Sim")
-plot_EPR_Spec(data.spectrum,x = "B_mT_Sim","Integral")
-plot_EPR_Spec(data.spectrum,line.color = "blue",basic.theme = "theme_linedraw",yTicks = FALSE)
-plot_EPR_Spec(data.spectrum,x = "g_Value",theme.basic = "theme_bw",grid = TRUE)
-plot_EPR_Spec(data.spectrum,x = "RF_MHz",line.color = "darkred",line.width = 1.2)
+plot_EPR_Spec(data.spectrum,
+              "B_G",
+              Intensity = "dIepr_over_dB_Sim")
+plot_EPR_Spec(data.spectrum,
+              x = "B_mT_Sim",
+              "Integral")
+plot_EPR_Spec(data.spectrum,
+              line.color = "blue",
+              basic.theme = "theme_linedraw",
+              yTicks = FALSE)
+plot_EPR_Spec(data.spectrum,
+              x = "g_Value",
+              theme.basic = "theme_bw",
+              grid = TRUE)
+plot_EPR_Spec(data.spectrum,
+              x = "RF_MHz",
+              line.color = "darkred",
+              line.width = 1.2)
 }
 
 

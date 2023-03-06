@@ -38,21 +38,37 @@
 #'
 #' @examples
 #' \dontrun{
-#' readEPR_Exp_Specs(path_to_ASC,qValue = 3500) ## for the spectrum acquired by "xenon"
+#' ## for the spectrum acquired by "xenon"
+#' readEPR_Exp_Specs(path_to_ASC,
+#'                   qValue = 3500)
 #'
-#' ## for the spectrum acquired by "winepr" (and 20 scans) on a 10 mg powder sample:
-#' readEPR_Exp_Specs(path_to_ASC,qValue = 2000,Nscans = 20,m.mg = 10,origin = "winepr")
+#' ## for the spectrum acquired by "winepr"
+#' ## (and 20 scans) on a 10 mg powder sample:
+#' readEPR_Exp_Specs(path_to_ASC,
+#'                   qValue = 2000,
+#'                   Nscans = 20,
+#'                   m.mg = 10,
+#'                   origin = "winepr")
 #'
-#' ## if no parameter intensity normalization is required and spectrum
+#' ## if no parameter intensity normalization
+#' ## is required and spectrum
 #' ## was recorded by "xenon" software:
-#' readEPR_Exp_Specs(path_to_ASC = file.path(".","ASCII_Folder","EPR_spectrum.txt"))
+#' readEPR_Exp_Specs(path_to_ASC = file.path(".",
+#'                                           "ASCII_Folder",
+#'                                           "EPR_spectrum.txt"))
 #'
 #' ## for the ENDOR spectrum recorded by "xenon"
-#' readEPR_Exp_Specs(path_to_ASC,type = "endor",Nscans = 40)
+#' readEPR_Exp_Specs(path_to_ASC,
+#'                   type = "endor",
+#'                   Nscans = 40)
 #'
-#' ## Example for time series experiment (evolution of EPR spectra in time, e.g. in case of
+#' ## Example for time series experiment (evolution of EPR spectra
+#' ##  in time, e.g. in case of
 #' ## EPR spectroelectrochemistry or photochemistry):
-#' readEPR_Exp_Specs(path_to_ASC,type = "epr",qValue = 2800,time.series = T)
+#' readEPR_Exp_Specs(path_to_ASC,
+#'                   type = "epr",
+#'                   qValue = 2800,
+#'                   time.series = T)
 #' }
 #'
 #'

@@ -28,10 +28,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' DeltaXpp_Spec(data.spectrum,c(320.221,328.331))
-#' DeltaXpp_Spec(data.spectrum,B = "B_G",Intensity = "dIepr_over_dB",c(3202.11,3283.31))
-#' DeltaXpp_Spec(data.spectrum,"RF_MHz",xlim = c(10,42))
-#' DeltaXpp_Spec(data.spectrum,"B_mT_Sim",c(320.221,328.331))
+#' DeltaXpp_Spec(data.spectrum,
+#'               c(320.221,328.331))
+#' DeltaXpp_Spec(data.spectrum,
+#'               B = "B_G",
+#'               Intensity = "dIepr_over_dB",
+#'               c(3202.11,3283.31))
+#' DeltaXpp_Spec(data.spectrum,
+#'               "RF_MHz",
+#'               xlim = c(10,42))
+#' DeltaXpp_Spec(data.spectrum,
+#'               "B_mT_Sim",
+#'               c(320.221,328.331))
 #' }
 #'
 #' @export

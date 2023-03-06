@@ -24,8 +24,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' extremeX_Spec(data.spectrum,xlim = c(349.54,359.54),extreme = 'min')
-#' extremeX_Spec(data.frame,"g_Value",Intensity = "Integrated_Intensity",c(2.007,2.000),'max')
+#' extremeX_Spec(data.spectrum,
+#'               xlim = c(349.54,359.54),
+#'               extreme = 'min')
+#' extremeX_Spec(data.frame,
+#'               "g_Value",
+#'               Intensity = "Integrated_Intensity",
+#'               c(2.007,2.000),
+#'               'max')
 #' }
 #'
 #'
