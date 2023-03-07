@@ -40,13 +40,13 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,origin = "xenon"){
   if (origin == "xenon"){
     str.epr.Instr.params.V <- c("MWFQ","QValue","A1CT","A1SW","B0MA",
                                 "AVGS","NbScansDone","NbScansToDo","A1RS",
-                                "MWPW","SPTP","RCTC","RCAG","ConvFact") ## corresp. to value
+                                "MWPW","SPTP","RCTC","RCAG","STMP","B0MF","ConvFact") ## corresp. to value
     #
     str.epr.Instr.params.Ch <- c("OPER","DATE","TIME","CMNT","SAMP") ## corresp. to character
   }
   if (origin == "winepr"){
     str.epr.Instr.params.V <- c("MF","HCF","HSW","RMA","JSD",
-                                "RES","MP","RCT","RTC","RRG") ## corresp. to value
+                                "RES","MP","RCT","RTC","TE","RRG") ## corresp. to value
     #
     str.epr.Instr.params.Ch <- c("JON","JDA","JTM","JCO") ## corresp. to character
   }
@@ -68,8 +68,9 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,origin = "xenon"){
   if (origin == "xenon"){
     data.instrument.V <- data.frame(
       Parameter <- c("Frequency","QValue","Central Field","Sweep Width","Modulation Amplitude",
-                   "Number of Scans","Num. of Scans Done","Num. of Scans ToDo","Number of Points",
-                   "Power","Conversion Time","Sweep Time","Time Constant","Receiver Gain","Conversion Factor"),
+                   "Num. of Scans","Num. of Scans Done","Num. of Scans ToDo","Number of Points",
+                   "Power","Conversion Time","Sweep Time","Time Constant","Receiver Gain",
+                   "Temperature","Modulation Frequency","Conversion Factor"),
       Value <- c(as.double(as.character(str.dsc.sel.split.V$MWFQ[[2]]))*1e-9,
                  as.double(as.character(str.dsc.sel.split.V$QValue[[2]])),
                as.double(as.character(str.dsc.sel.split.V$A1CT[[2]]))*1e+3,
@@ -85,9 +86,11 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,origin = "xenon"){
                  as.double(as.character(str.dsc.sel.split.V$A1RS[[2]])),
                as.double(as.character(str.dsc.sel.split.V$RCTC[[2]])),
                as.double(as.character(str.dsc.sel.split.V$RCAG[[2]])),
+               as.double(as.character(str.dsc.sel.split.V$STMP[[2]])),
+               as.double(as.character(str.dsc.sel.split.V$B0MF[[2]]))*1e-3,
                as.double(as.character(str.dsc.sel.split.V$ConvFact[[2]]))),
       Unit <- c("GHz","Unitless","mT","mT","mT","Unitless","Unitless","Unitless",
-                "Unitless","mW","s","s","s","dB","Unitless")
+                "Unitless","mW","s","s","s","dB","K","KHz","Unitless")
     )
     data.instrument.Ch <- data.frame(
       Parameter <- c("Operator","Date","Recording Time","Comment","Sample"),
@@ -102,7 +105,7 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,origin = "xenon"){
     data.instrument.V <- data.frame(
       Parameter <- c("Frequency","Central Field","Sweep Width","Modulation Amplitude",
                      "Number of Scans","Number of Points","Power","Conversion Time",
-                     "Sweep Time","Acquire Time","Time Constant","Receiver Gain"),
+                     "Sweep Time","Acquire Time","Time Constant","Temperature","Receiver Gain"),
       Value <- c(as.double(as.character(str.dsc.sel.split.V$MF[[2]])),
                  as.double(as.character(str.dsc.sel.split.V$HCF[[2]]))*0.1,
                  as.double(as.character(str.dsc.sel.split.V$HSW[[2]]))*0.1,
@@ -117,8 +120,9 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,origin = "xenon"){
                    as.double(as.character(str.dsc.sel.split.V$RES[[2]]))*
                    as.double(as.character(str.dsc.sel.split.V$JSD[[2]])),
                  as.double(as.character(str.dsc.sel.split.V$RTC[[2]])),
+                 as.double(as.character(str.dsc.sel.split.V$TE[[2]])),
                  as.double(as.character(str.dsc.sel.split.V$RRG[[2]]))),
-      Unit <- c("GHz","mT","mT","mT","Unitless","Unitless","mW","s","s","s","s","Unitless")
+      Unit <- c("GHz","mT","mT","mT","Unitless","Unitless","mW","s","s","s","s","K","Unitless")
     )
     data.instrument.Ch <- data.frame(
       Parameter <- c("Operator","Date","Recording Time","Comment","Sample"),
