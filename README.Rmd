@@ -1,0 +1,7 @@
+
+# EPRphysChemSpec <img src='man/figures/logo.png' align="right" height="139" />
+
+## Overview
+
+The main goal of this package is extend the available software for Electron Paramagnetic Resonance
+Spectroscopy (EPR)
