@@ -18,18 +18,20 @@ Description: Primary aim of the package is to process and plot
              consisting of many EPR spectra like during electro-
              chemical or photochemical radical generation 
              and/or decomposition/decay. For such purpose also 
-             rate konstant of simple 1st or 2nd order kinetics 
+             rate konstant of simple kinetic models 
              can be evaluated as well. The input-format 
              of all EPR spectra and tables must be ASCII 
              (e.g. like '.txt', '.csv' or '.asc') which is then
-             transformed into 'data frame' by the own package. 
-             Subsequently, the EPR spectra ('data frames') 
-             can be plotted eiher by common 'ggplot2' scripts 
-             or by package own functions incl. interactive 
-             formats based on 'plotly' package. Additionally, 
-             simulations of the EPR spectra and the corresponding 
-             parameters provided by MATLAB-EasySpin toolbox 
-             and the results from quantum chemical calculations
+             transformed into 'data frame'. Package enables
+             automatic reading of ASCII spetra from BRUKER 
+             spectrometers. Subsequently, the EPR spectra 
+             ('data frames') can be plotted eiher by common 
+             'ggplot2' scripts or by package own functions incl. 
+             interactive formats based on 'plotly' package. 
+             Additionally, simulations of the EPR spectra 
+             and the corresponding parameters provided 
+             by MATLAB-EasySpin toolbox and the results 
+             from quantum chemical calculations
              like g-factor and hyperfine splitting/coupling 
              constants (a/A) can be compared and summarized 
              in table-format in order to analyze the EPR spectra. 
