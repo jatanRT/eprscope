@@ -15,7 +15,6 @@ quantitativ_EPR_abs(
   Norm.constant = 1,
   Temp.K = 298,
   S = 0.5,
-  centr.sample.h.mm = 61,
   microW.cavity = "rectangular"
 )
 }
@@ -39,8 +38,6 @@ quantitativ_EPR_abs(
 \item{Temp.K}{tbc}
 
 \item{S}{tbc}
-
-\item{centr.sample.h.mm}{tbc}
 
 \item{microW.cavity}{tbc}
 }
