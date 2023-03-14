@@ -2,7 +2,7 @@
 % Please edit documentation in R/time_correct_EPR_Specs.R
 \name{time_correct_EPR_Specs}
 \alias{time_correct_EPR_Specs}
-\title{Correction for EPR spectral Time Series Providing the Accurate Time for EPR Spectral Line Appearance}
+\title{Correction for EPR spectral Time Series}
 \usage{
 time_correct_EPR_Specs(time.s, Nscans, sweep.time.s)
 }
@@ -20,7 +20,7 @@ Numeric value/vector corresponding to accurate time at which the EPR spectra wer
   the kinetic measurements (e.g. like radical stability, electrochemical and/or photochemical measurements)
 }
 \description{
-tbc
+Providing the Accurate Time for EPR Spectral Line Appearance
 
  The time is recorded according to the following scheme:
 
