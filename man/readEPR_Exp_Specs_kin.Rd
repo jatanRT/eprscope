@@ -8,6 +8,8 @@ readEPR_Exp_Specs_kin(
   file.rootname,
   dir_ASC,
   dir_DSC_or_par,
+  time.unit = "s",
+  col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
   origin = "xenon",
   qValue = NULL
 )
@@ -22,9 +24,20 @@ the `ascii` file is stored}
 where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 or normalize intensities) is stored}
 
+\item{time.unit}{Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+\strong{Default}: \code{time.unit = "s"}}
+
+\item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+column/variable names (see also \code{\link{readEPR_Exp_Specs}}).
+A safe rule of thumb is to use column names incl. physical quantity notation with its units,
+\code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+to simulated EPR spectrum abscissa)...etc, \strong{default}:
+\code{col.names = c("index","B_G","time_s",dIepr_over_dB)}.}
+
 \item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
 on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}}
+\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
+Only the two above-mentioned  characters/strings are available due to reading parameter files.}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
@@ -50,6 +63,10 @@ readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                       file.path(".","ASCII_data_dir"),
                       file.path(".","DSC_data_dir"),
+                      time.unit = "min",
+                      col.names = c("B_G",
+                                    "time_min",
+                                    "Intensity"),
                       origin = "winepr",
                       qValue = 2900)
 

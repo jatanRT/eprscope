@@ -34,6 +34,7 @@
 #'
 #' @export
 #'
+#'
 readEPR_params_tabs <- function(path_to_DSC_or_par,origin = "xenon"){
   #
   ## required string patterns from 'DSC' or 'par' file:

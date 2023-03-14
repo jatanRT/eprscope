@@ -1,14 +1,14 @@
 #
-#' Load Several/Multiple EPR Spectral Data Files
+#' Load Several/Multiple EPR Spectral Data Files with Parameters
 #'
 #'
 #' @description Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
 #'  parameters (`DSC` or `par`) at once and transforms it into a database list of data frames. Function is based
 #'  on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.
-#'  According to variable experiment quantity (e.g. temperature,microwave power...etc), `names` and `variable`
-#'  (in case of `tidy = T`) parameters have to be provided. If intensity normalization by e.g. like concentration,
-#'  sample weight...etc is required, it can be performed afterwards (generally, except the Q values, it is not included
-#'  in the transformation process).
+#'  According to variable experiment quantity (e.g. temperature,microwave power,recording time...etc),
+#'  `names` and `variable` (in case of `tidy = T`) parameters have to be provided. If intensity normalization
+#'  by e.g. like concentration, sample weight...etc is required, it can be performed afterwards
+#'  (generally, except the Q values, it is not included in the transformation process).
 #'
 #'
 #' @param pattern String/Character, inherited from \code{\link[base]{list.files}}, which appear in the file name
@@ -18,11 +18,19 @@
 #' @param dir_DSC_or_par path (defined by \code{\link[base]{file.path}} String/Character) to directory
 #'  where the files (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 #'  or normalize intensities) are stored
-#' @param type String/Character pointing either to \code{"epr"} (\strong{default}, having the \code{x = "B_G"}
-#'  in the spectrum) or to \code{"endor"} spectra (having the \code{x = "RF_MHz"} in the spectrum)
+#' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
+#'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
+#'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+#'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.
+#' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+#'   column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
+#'   A safe rule of thumb is to use column names incl. physical quantity notation with its units,
+#'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
+#'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
 #' @param qValues Numeric Vector, `Q Value` (sensitivity factors to normalize EPR intensity) either loaded from
 #'  files incl. parameters (`.DSC` or `.par`) by this function/R.script (therefore \code{qValues = NULL},
 #'  \strong{default}) or in case of \code{origin = "winepr"} it have to provided by the operator of a spectrometer
@@ -39,19 +47,24 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## Spectra recorded by "Xenon" software
+#' ## Multiple ENDOR spectra recorded by "Xenon" software
+#' ## reading and transforming into `longtable`
 #' readEPR_Exp_Specs_multif("Sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
-#'                          type = "endor",
+#'                          x.unit = "MHz",
+#'                          col.names = c("index",
+#'                                        "RF_MHz",
+#'                                        "Intensity")
 #'                          names = c("210","220","230","240"),
 #'                          tidy = T,
 #'                          variable = "Temperature_K")
 #'
-#' ## Specctra recorded by "WinEPR" sofware
+#' ## Multiple EPR spectra recorded by "WinEPR" sofware
 #' readEPR_Exp_Specs_multif("Sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
+#'                          col.names = c("B_G","dIepr_over_dB"),
 #'                          origin = "winepr",
 #'                          names = c("210","220","230","240"),
 #'                          qValues =c(3400,3501,3600,2800))
@@ -65,7 +78,10 @@
 readEPR_Exp_Specs_multif <- function(pattern,
                                      dir_ASC,
                                      dir_DSC_or_par,
-                                     type = "epr",
+                                     x.unit = "G",
+                                     col.names = c("index",
+                                                   "B_G",
+                                                   "dIepr_over_dB"),
                                      origin = "xenon",
                                      qValues = NULL,
                                      names,
@@ -76,6 +92,8 @@ readEPR_Exp_Specs_multif <- function(pattern,
   new_variable <- NULL
   g_Value <- NULL
   index <- NULL
+  #
+  ## --------------------------- FILES AND PARAMETERS ------------------------------
   #
   ## file name pattern which has to be the same for `ASC`+`DSC`
   ## or `.spc` and `.par`
@@ -134,20 +152,53 @@ readEPR_Exp_Specs_multif <- function(pattern,
     mwfreq.from.files <- mwfreq.from.files*1e9
   }
   #
-  if (type == "epr"){
-    ## the entire database of all spectra with intensity correction
+  ## --------------------------- SPECTRAL DATA READING  ------------------------------
+  #
+  if (x.unit == "G" || x.unit == "mT"){
+    ## the all spectra with intensity correction
     ## to `qValue` + new column with `g`-factors
+    #
+    ## However prior to the operation above `x`/`B` has to be defined
+    x = grep("B|G|mT",col.names,value = TRUE)[[1]]
+    #
     spectra.datab.from.files <-
-      Map(function(s,t,u) readEPR_Exp_Specs(s,qValue = t,type = "epr",origin = origin) %>%
-            dplyr::mutate(g_Value = gValue(nu = u,nu_unit = "Hz",B = .data[["B_mT"]])),
+      Map(function(s,t,u) readEPR_Exp_Specs(s,
+                                            qValue = t,
+                                            x.unit = x.unit,
+                                            col.names = col.names,
+                                            origin = origin) %>%
+            dplyr::mutate(g_Value = gValue(nu = u,
+                                           nu.unit = "Hz",
+                                           B = .data[[x]],
+                                           B.unit = x.unit)),
           files.asc,
           qValues.from.files,
           mwfreq.from.files)
   }
-  if (type == "endor"){
-    ## the entire database of all spectra with intensity correction to `qValue`
+  #
+  if (x.unit == "Unitless"){
+    ## the all spectra with intensity correction
+    #
     spectra.datab.from.files <-
-      Map(function(s,t) readEPR_Exp_Specs(s,qValue = t,type = "endor",origin = origin),
+      Map(function(s,t) readEPR_Exp_Specs(s,
+                                          qValue = t,
+                                          x.unit = x.unit,
+                                          col.names = col.names,
+                                          origin = origin),
+          files.asc,
+          qValues.from.files)
+  }
+  #
+  if (x.unit == "MHz"){
+    ## the entire database of all spectra with intensity correction to `qValue`
+
+    #
+    spectra.datab.from.files <-
+      Map(function(s,t) readEPR_Exp_Specs(s,
+                                          qValue = t,
+                                          x.unit = x.unit,
+                                          col.names = col.names,
+                                          origin = origin),
           files.asc,
           qValues.from.files)
   }
