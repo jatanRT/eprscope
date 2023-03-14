@@ -11,40 +11,40 @@
 #'
 #'
 #' @param nu Numeric, microwave Frequency
-#' @param nu_unit String, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu_unit = "GHz"}
+#' @param nu.unit String, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu.unit = "GHz"}
 #' @param B Numeric, magnetic flux density
-#' @param B_unit String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
-#'   \code{B_unit = "mT"}
+#' @param B.unit String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
+#'   \code{B.unit = "mT"}
 #'
 #' @return g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>
 #'   see description above
 #'
 #' @examples
 #' gValue(9.8020458,
-#'        nu_unit = "GHz",
+#'        nu.unit = "GHz",
 #'        350.214,
-#'        B_unit = "mT")
+#'        B.unit = "mT")
 #' gValue(nu = 9.8020458e+9,
-#'        nu_unit = "Hz",
+#'        nu.unit = "Hz",
 #'        B = 3502.14,
-#'        B_unit = "G")
+#'        B.unit = "G")
 #' gValue(9.5421,"GHz",0.333251,"T")
 #'
 #' @export
-gValue <- function(nu,nu_unit = "GHz",B,B_unit = "mT"){
+gValue <- function(nu,nu.unit = "GHz",B,B.unit = "mT"){
   Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$mub
-  if (nu_unit == "GHz" & B_unit == "mT"){
+  if (nu.unit == "GHz" & B.unit == "mT"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.001)
-  } else if (nu_unit == "Hz" & B_unit == "mT"){
+  } else if (nu.unit == "Hz" & B.unit == "mT"){
     g <- (Planck.const*nu)/(Bohr.magnet*B*0.001)
-  } else if (nu_unit == "Hz" & B_unit == "G"){
+  } else if (nu.unit == "Hz" & B.unit == "G"){
     g <- (Planck.const*nu)/(Bohr.magnet*B*0.0001)
-  } else if (nu_unit == "GHz" & B_unit == "G"){
+  } else if (nu.unit == "GHz" & B.unit == "G"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.0001)
-  } else if (nu_unit == "GHz" & B_unit == "T"){
+  } else if (nu.unit == "GHz" & B.unit == "T"){
     g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B)
-  } else if (nu_unit == "Hz" & B_unit == "T"){
+  } else if (nu.unit == "Hz" & B.unit == "T"){
     g <- (Planck.const*nu)/(Bohr.magnet*B)
   }
   return(round(g,digits = 5))

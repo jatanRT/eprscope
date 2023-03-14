@@ -20,7 +20,7 @@
 #' @param path_to_ASC String/Character, pointing to path of ASCII file (\code{txt},\code{csv}...etc,
 #' it may be also provided by \code{\link[base]{file.path}}) incl. characteristic
 #'   \eqn{A_{iso}} or \eqn{a_{iso}} values
-#' @param data.col.names String/Character vector containing names of all columns from QCH Computational output,
+#' @param col.names String/Character vector containing names of all columns from QCH Computational output,
 #'   for the names see the example in \code{path_to_ASC}, they must contain atomic/structure number, isotopic value
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss
 #' @param nuclei.list.slct Values/Numeric list for rearrangement of selected atoms/nuclei according to symmetry,
@@ -45,21 +45,21 @@
 #'
 #'
 #' @importFrom stringr str_subset str_extract regex
-aAiso_rearrng_QCHcomp <- function(path_to_ASC,data.col.names,nuclei.list.slct){
+aAiso_rearrng_QCHcomp <- function(path_to_ASC,col.names,nuclei.list.slct){
   #
   ## 'Temporary' processing variables
   mT <- NULL
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- str_subset(data.col.names,regex("mhz|megahertz",ignore_case = T))
-  a.str <- str_subset(data.col.names,regex("gauss|G|Gauss"))
-  atomic.num.str <- str_subset(data.col.names,regex("No|Num|num|no|no_|num_"))
-  nucl.str <- str_subset(data.col.names,regex("nuc|Nuc_atom|nucleus_",ignore_case = T))
+  A.str <- str_subset(col.names,regex("mhz|megahertz",ignore_case = T))
+  a.str <- str_subset(col.names,regex("gauss|G|Gauss"))
+  atomic.num.str <- str_subset(col.names,regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
+  nucl.str <- str_subset(col.names,regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM",ignore_case = T))
   #
   ## Read the data:
   data.Aa.comput <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,
-                                      col.names = data.col.names) %>%
+                                      col.names = col.names) %>%
     mutate(MegaHertz = abs(round(.data[[A.str]],digits = 3)),
            Gauss = abs(round(.data[[a.str]],digits = 2))) %>%
     select(c(.data[[atomic.num.str]],.data[[nucl.str]],.data$MegaHertz,.data$Gauss))

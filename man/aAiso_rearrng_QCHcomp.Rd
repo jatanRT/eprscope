@@ -4,14 +4,14 @@
 \alias{aAiso_rearrng_QCHcomp}
 \title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations}
 \usage{
-aAiso_rearrng_QCHcomp(path_to_ASC, data.col.names, nuclei.list.slct)
+aAiso_rearrng_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 }
 \arguments{
 \item{path_to_ASC}{String/Character, pointing to path of ASCII file (\code{txt},\code{csv}...etc,
 it may be also provided by \code{\link[base]{file.path}}) incl. characteristic
   \eqn{A_{iso}} or \eqn{a_{iso}} values}
 
-\item{data.col.names}{String/Character vector containing names of all columns from QCH Computational output,
+\item{col.names}{String/Character vector containing names of all columns from QCH Computational output,
 for the names see the example in \code{path_to_ASC}, they must contain atomic/structure number, isotopic value
 with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss}
 
