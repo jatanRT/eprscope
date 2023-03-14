@@ -2,12 +2,14 @@
 % Please edit documentation in R/presentEPR_Sim_Spec.R
 \name{presentEPR_Sim_Spec}
 \alias{presentEPR_Sim_Spec}
-\title{Show Comparison Between the Experimental and Simulated EPR Spectrum by Tabular and/or Graphic Representation}
+\title{Comparison Between the Experimental and Simulated EPR Spectrum}
 \usage{
 presentEPR_Sim_Spec(
   data.spectrum.exp,
   data.spectrum.sim,
-  B = "B_mT",
+  B.unit = "mT",
+  Intensity.exp = "dIepr_over_dB",
+  Intensity.sim = "dIeprSim_over_dB",
   Intensity.shift.ratio = 1.2,
   B.shift = 0,
   line.color.exp = "red",
@@ -17,19 +19,26 @@ presentEPR_Sim_Spec(
 )
 }
 \arguments{
-\item{data.spectrum.exp}{\strong{Experimental} Spectrum data frame/table where the magnetic flux
-density (in \code{mT}) column is labeled as \code{B_mT} in mT (or \code{B_G} in gauss)
-and that of the derivative intensity as \code{dIepr_over_dB}, \code{index} column can be included as well,
-this is automatic if the \code{\link{readEPR_Exp_Specs}} function is used to read the spectrum in ASCII}
+\item{data.spectrum.exp}{\strong{Experimental} Spectrum data frame/table incl. magnetic flux
+density (in \code{mT} or \code{G}) column and labeled as \code{B_mT} in mT (or \code{B_G} in gauss) +
+it contains intensity column as \code{dIepr_over_dB}, \code{index} column can be included as well,}
 
-\item{data.spectrum.sim}{Data frame/table corresponding to \strong{simulated} spectrum where the magnetic
-flux density (in \code{mT}) column must be labeled as \code{B_mT_Sim} in mT (or \code{B_G_Sim} in gauss)
-and that of the derivative intensity as \code{dIepr_over_dB_Sim}, this is automatic
+\item{data.spectrum.sim}{Data frame/table corresponding to \strong{simulated} spectrum incl. \strong{magnetic
+flux density} (in \code{mT} or \code{G}) \strong{column must be labeled as} \code{Bsim_mT} in mT
+(or \code{Bsim_G} in gauss) + it contains intensity as well, this is automatic
 if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII}
 
-\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectra data frames
-either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-or \code{B = "B_G"}. Previous labels refer to \strong{both simulated and experimental spectral data frames}}
+\item{B.unit}{Character/String pointing to unit of quantity (coming from original data) which
+is to be presented on \eqn{B} abscissa of the EPR spectrum,
+like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}}
+
+\item{Intensity.exp}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+name/label is used (e.g. for integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
+
+\item{Intensity.sim}{Character/String pointing to \code{intensity column} of the simulated spectrum
+if other than \code{dIeprSim_over_dB} name/label is used (e.g. for integrated spectra),
+\strong{default}: \code{Intesity = "dIeprSim_over_dB"}, this is automatic if
+the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII}
 
 \item{Intensity.shift.ratio}{Numeric (\strong{cannot be 0}), showing how 'far' is the simulated EPR spectrum
 presented below the experimental one. The lower the ratio, the 'deeper' the simulated spectrum shift,
@@ -38,8 +47,8 @@ presented below the experimental one. The lower the ratio, the 'deeper' the simu
 
 \item{B.shift}{Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
 that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{dafault}:
-\code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B = "B_mT"} => \code{B.shift}
-must be in \code{mT}, or if \code{B = "B_G"} then \code{B.shift} must be in \code{G})}
+\code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
+\code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G})}
 
 \item{line.color.exp}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}}
@@ -57,11 +66,11 @@ containing plot (\code{list$plot},graphic representation) as well as containing 
 i.e. only graphical representation is shown}
 }
 \value{
-\pkg{ggplot2} \code{plot} of experimental and simulated spectrum or \code{list} consisting of mentioned-plot
-  and the corresponding \code{data frame/table}
+\pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated fromm)
+  spectrum or \code{list} consisting of mentioned-plot and the corresponding \code{data frame/table}
 }
 \description{
-TODO
+TODO by Tabular and/or Graphic Representation
 }
 \examples{
 \dontrun{

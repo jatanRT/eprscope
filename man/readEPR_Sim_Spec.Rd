@@ -2,19 +2,33 @@
 % Please edit documentation in R/readEPR_Sim_Spec.R
 \name{readEPR_Sim_Spec}
 \alias{readEPR_Sim_Spec}
-\title{Read the Simulated ASCII (\code{.txt}) EPR Spectrum from \emph{MATLAB} and Transfer it into Data Frame}
+\title{Read the Simulated ASCII EPR Spectrum from \emph{MATLAB}}
 \usage{
-readEPR_Sim_Spec(path_to_ASC)
+readEPR_Sim_Spec(
+  path_to_ASC,
+  B.unit = "mT",
+  col.names = c("Bsim_mT", "dIeprSim_over_dB")
+)
 }
 \arguments{
 \item{path_to_ASC}{String, path to ASCII file/table (\code{.txt})
-with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB})}
+with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB}).
+The path can be also defined by \code{\link[base]{file.path}}}
+
+\item{B.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
+\code{column.names} parameter) which is to be presented on \eqn{B} abscissa of the EPR spectrum,
+like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}}
+
+\item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
+with its units, \code{Quantity_Unit} like \code{"Bsim_G"} or \code{"Bsim_mT"} (e.g. pointing
+to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("Bsim_mT","dIeprSim_over_dB")}.}
 }
 \value{
 tbc
 }
 \description{
-tbc
+(\code{.txt}) and Transfer it into Data Frame
 }
 \examples{
 \dontrun{
