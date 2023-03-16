@@ -1,5 +1,5 @@
 #
-#' Present/Save Interactive Plotly-Plot/-Graph
+#' Present/Save Interactive Plotly-Plot/-Graph for Publication (HTML,PDF,Word)
 #'
 #'
 #' @description Depending on Output Document Format
