@@ -5,8 +5,8 @@
 #' @description Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
 #'  parameters (`DSC` or `par`) at once and transforms it into a database list of data frames. Function is based
 #'  on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.
-#'  According to variable experiment quantity (e.g. temperature,microwave power,recording time...etc),
-#'  `names` and `variable` (in case of `tidy = T`) parameters have to be provided. If intensity normalization
+#'  According to  experiment quantity (e.g. temperature,microwave power,recording time...etc),
+#'  `names` and `var2nd` (in case of `tidy = T`) parameters have to be provided. If intensity normalization
 #'  by e.g. like concentration, sample weight...etc is required, it can be performed afterwards
 #'  (generally, except the Q values, it is not included in the transformation process).
 #'
@@ -38,8 +38,9 @@
 #'  (e.g. temperature,microwave power...etc) being varied by the individual experiments
 #' @param tidy Boolean, whether to transform the list of data frames into long table (`tidy`) format,
 #'  \strong{default}: \code{tidy = F}
-#' @param variable String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
-#'  of the variable/quantity altered by the experiments related to individual spectra/data
+#' @param var2nd String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
+#'  of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
+#'  altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.
 #'
 #'
 #' @return List of Data Frames (or `long table` format) corresponding to multiple spectral data files/database
@@ -58,7 +59,7 @@
 #'                                        "Intensity")
 #'                          names = c("210","220","230","240"),
 #'                          tidy = T,
-#'                          variable = "Temperature_K")
+#'                          var2nd = "Temperature_K")
 #'
 #' ## Multiple EPR spectra recorded by "WinEPR" sofware
 #' readEPR_Exp_Specs_multif("Sample_VT_",
@@ -86,7 +87,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
                                      qValues = NULL,
                                      names,
                                      tidy = FALSE,
-                                     variable = NULL){
+                                     var2nd = NULL){
   #
   ## 'Temporary' processing variables
   new_variable <- NULL
@@ -213,19 +214,19 @@ readEPR_Exp_Specs_multif <- function(pattern,
     return(spectra.datab.from.files)
     #
   } else{
-    if (is.null(variable)){
-      stop(" 'variable' string is not provided. Please, define! ")
+    if (is.null(var2nd)){
+      stop(" 'var2nd' string is not provided. Please, define! ")
     } else{
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-
-        dplyr::bind_rows(spectra.datab.from.files,.id = variable) %>%
+        dplyr::bind_rows(spectra.datab.from.files,.id = var2nd) %>%
         dplyr::select(-.data$index) %>% ## remove index
-        dplyr::mutate(new_variable = as.numeric(.data[[variable]])) %>% ##new column
+        dplyr::mutate(new_variable = as.numeric(.data[[var2nd]])) %>% ##new column
         dplyr::mutate(new_variable = as.factor(new_variable)) %>%
-        dplyr::select(-.data[[variable]]) %>% ## delete old col.
-        dplyr::rename(!!quo_name(variable) := new_variable) ## rename new col. by the name of the old one
-      ## the the latter can be expressed also by `dplyr::rename(!!variable := new_variable)`
-      ## or by `dplyr::rename(!!rlang::sym(variable) := new_variable)`
+        dplyr::select(-.data[[var2nd]]) %>% ## delete old col.
+        dplyr::rename(!!quo_name(var2nd) := new_variable) ## rename new col. by the name of the old one
+      ## the the latter can be expressed also by `dplyr::rename(!!var2nd := new_variable)`
+      ## or by `dplyr::rename(!!rlang::sym(var2nd) := new_variable)`
       #
       return(spectra.datab.from.files)
       #

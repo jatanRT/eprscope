@@ -2,13 +2,13 @@
 % Please edit documentation in R/plot_EPR_Specs3D_interact.R
 \name{plot_EPR_Specs3D_interact}
 \alias{plot_EPR_Specs3D_interact}
-\title{Interactive (incl. Zooming, Data Reading...etc) 3D Plot for Time Series of EPR Spectra}
+\title{Interactive (incl. Zooming, Data Reading...etc) 3D Plot for the Series of EPR Spectra}
 \usage{
 plot_EPR_Specs3D_interact(
-  data.time.spectra,
+  data.series.spectra,
   x = "B_mT",
   Intensity = "dIepr_over_dB",
-  time = "time_s",
+  var2nd = "time_s",
   plot.type = "surface",
   scheme.color = "Viridis",
   contour.labels = FALSE,
@@ -16,6 +16,8 @@ plot_EPR_Specs3D_interact(
   xlab = "<i>B</i> (mT)",
   ylab = "<i>Time</i> (s)",
   zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
+  axis.title.size = 12,
+  axis.text.size = 11,
   bg.x.color = "rgb(220, 220,220)",
   grid.x.color = "rgb(255, 255, 255)",
   bg.y.color = "rgb(220, 220,220)",
@@ -26,17 +28,33 @@ plot_EPR_Specs3D_interact(
 )
 }
 \arguments{
-\item{data.time.spectra}{tbc}
+\item{data.series.spectra}{tbc}
 
 \item{x}{tbc}
 
 \item{Intensity}{tbc}
 
-\item{time}{tbc}
+\item{var2nd}{String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
+`Electrochemical Potential`,`Microwave Power`...etc) altered upon individual experiments as a second variable
+(\code{var2nd}) and related to spectra/data. Data must be available in \strong{long table} (or \strong{tidy})
+\strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}), usually like time series, where the ASCII data
+are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s" and "Intensity" must be supplied).
+\strong{Default}: \code{var2nd = "time_s"}.}
 
-\item{plot.type}{tbc}
+\item{plot.type}{Character/String, inherited from \code{\link[plotly]{plot_ly}}, specifying the trace. Only two
+character/strings are available: \code{plot.type = "surface"} (for 3D surface plots) or \code{plot.type = "contour"}
+(\strong{default}, for 2D contour plots)}
 
-\item{scheme.color}{tbc}
+\item{scheme.color}{Character/String corresponding to \code{colorscale}.
+See also \href{https://plotly.com/r/reference/surface/#surface}{R>Figure Reference>surface Traces}
+or \href{https://plotly.com/r/reference/contour/#contour}{R>Figure Reference>contour Traces} and parameter `colorscales`.
+The colorscale must be an array containing arrays mapping a normalized value to an rgb, rgba, hex, hsl, hsv,
+or named color string. At minimum, a mapping for the lowest (0) and highest (1) values are required. For example,
+`[[0, 'rgb(0,0,255)']`, `[1, 'rgb(255,0,0)']]`. To control the bounds of the colorscale in color space,
+use `cmin` and `cmax`. Alternatively, `colorscale` may be a palette name string of the following list:
+\code{"Blackbody"},\code{"Bluered"},\code{"Blues"},\code{"Cividis"},\code{"Earth"},\code{"Electric"},\code{"Greens"},
+\code{"Greys"},\code{"Hot"},\code{"Jet"},\code{"Picnic"},\code{"Portland"},\code{"Rainbow"},\code{"RdBu"},\code{"Reds"},
+\code{"Viridis"},\code{"YlGnBu"},\code{"YlOrRd"}. \strong{Default}: \code{scheme.color = "Viridis"}}
 
 \item{contour.labels}{tbc}
 
@@ -47,6 +65,10 @@ plot_EPR_Specs3D_interact(
 \item{ylab}{tbc}
 
 \item{zlab}{tbc}
+
+\item{axis.title.size}{tbc}
+
+\item{axis.text.size}{tbc}
 
 \item{bg.x.color}{tbc}
 

@@ -14,17 +14,25 @@
 #'   or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param time tbc
+#' @param var2nd String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
+#'   `Electrochemical Potential`,`Microwave Power`...etc) altered upon individual experiments as a second variable
+#'   (\code{var2nd}) and related to spectra/data (see also \code{var2nd.series} parameter). Data must be available
+#'   in \strong{long table} (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+#'   \strong{Default}: \code{var2nd = NULL}. If \code{var2nd.series = FALSE}, otherwise \strong{usually}
+#'   \code{var2nd = "time_s"} if \code{var2nd.series = TRUE}
 #' @param line.color Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-#'   (not for \code{time.series}), therefore \strong{default:} \code{line.color = "darkviolet"}
+#'   (not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}
 #' @param bg.color Character/String corresponding to \strong{background color}
 #' @param grid.color Character/String corresponding to \strong{grid color}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
 #' @param legend.title tbc
-#' @param time.series Boolean, whether the input ASCII spectrum data comes from the time series experiment
-#'   with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)
+#' @param legend.title.size tbc
+#' @param var2nd.series Boolean, whether the input ASCII spectrum data comes from the series of experiments
+#'   each corresponding to alteration of a second variable (usually like time series, see also parameter \code{var2nd})
+#'   where the ASCII data are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s"
+#'   and "Intensity" must be supplied). \strong{Deffault}: \code{var2nd.series = FALSE}.
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
@@ -47,7 +55,7 @@
 plot_EPR_Specs2D_interact <- function(data.spectra,
                                   x = "B_mT",
                                   Intensity = "dIepr_over_dB",
-                                  time = "time_s",
+                                  var2nd = NULL,
                                   line.color = "darkviolet",
                                   bg.color = "#e5ecf6",
                                   grid.color = "#ffff",
@@ -55,9 +63,10 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                   border.line.width = 1.2,
                                   border.line.color = "black",
                                   legend.title = NULL,
+                                  legend.title.size = 13,
                                   axis.title.size = 15,
                                   axis.text.size = 14,
-                                  time.series = FALSE){
+                                  var2nd.series = FALSE){
   #
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
@@ -137,20 +146,24 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   }
   #
   ## plot precursor
-  if (isTRUE(time.series)){
-    #
-    ## basis defined by `ggplot`
-    simplePlot <- ggplot(data.spectra,aes(x = .data[[x]],
-                                           y = .data[[Intensity]],
-                                           color = as.factor(.data[[time]]))) +
-      geom_line(linewidth = line.width)
-    #
+  if (isTRUE(var2nd.series)){
+    if (is.null(var2nd)){
+      stop(" 'var2nd' string is not provided. Please, define! ")
+    } else{
+      #
+      ## basis defined by `ggplot`
+      simplePlot <- ggplot(data.spectra,aes(x = .data[[x]],
+                                            y = .data[[Intensity]],
+                                            color = as.factor(.data[[var2nd]]))) +
+        geom_line(linewidth = line.width)
+      #
+    }
   } else{
     simplePlot <- ggplot(data.spectra,aes(x = .data[[x]], y = .data[[Intensity]])) +
       geom_line(linewidth = line.width,color = line.color)
   }
   ## final plot with layout
-  if (isTRUE(time.series)){
+  if (isTRUE(var2nd.series)){
     final_plot <- ggplotly(simplePlot) %>%
       plotly::layout(
         plot_bgcolor = bg.color,
@@ -167,7 +180,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                      linecolor = plotly::toRGB(border.line.color),
                      linewidth = border.line.width,showline = T,mirror = T),
         legend = list(title = list(text = legend.title,
-                                   font = list(size = 13)))
+                                   font = list(size = legend.title.size)))
       )
   } else{
     final_plot <- ggplotly(simplePlot) %>%

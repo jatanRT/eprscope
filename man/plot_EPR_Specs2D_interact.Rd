@@ -8,7 +8,7 @@ plot_EPR_Specs2D_interact(
   data.spectra,
   x = "B_mT",
   Intensity = "dIepr_over_dB",
-  time = "time_s",
+  var2nd = NULL,
   line.color = "darkviolet",
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
@@ -16,9 +16,10 @@ plot_EPR_Specs2D_interact(
   border.line.width = 1.2,
   border.line.color = "black",
   legend.title = NULL,
+  legend.title.size = 13,
   axis.title.size = 15,
   axis.text.size = 14,
-  time.series = FALSE
+  var2nd.series = FALSE
 )
 }
 \arguments{
@@ -33,10 +34,15 @@ or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{time}{tbc}
+\item{var2nd}{String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
+`Electrochemical Potential`,`Microwave Power`...etc) altered upon individual experiments as a second variable
+(\code{var2nd}) and related to spectra/data (see also \code{var2nd.series} parameter). Data must be available
+in \strong{long table} (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+\strong{Default}: \code{var2nd = NULL}. If \code{var2nd.series = FALSE}, otherwise \strong{usually}
+\code{var2nd = "time_s"} if \code{var2nd.series = TRUE}}
 
 \item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-(not for \code{time.series}), therefore \strong{default:} \code{line.color = "darkviolet"}}
+(not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}}
 
 \item{bg.color}{Character/String corresponding to \strong{background color}}
 
@@ -50,14 +56,18 @@ name/label is used (e.g. for integrated or simulated spectra), \strong{default}:
 
 \item{legend.title}{tbc}
 
+\item{legend.title.size}{tbc}
+
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
 \strong{default}: \code{axis.title.size = 15}}
 
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
 \strong{default}: \code{axis.text.size = 14}}
 
-\item{time.series}{Boolean, whether the input ASCII spectrum data comes from the time series experiment
-with the additional \code{time} (labeled as \code{time_s}) column (ONLY IN CASE of "Xenon" software)}
+\item{var2nd.series}{Boolean, whether the input ASCII spectrum data comes from the series of experiments
+each corresponding to alteration of a second variable (usually like time series, see also parameter \code{var2nd})
+where the ASCII data are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s"
+and "Intensity" must be supplied). \strong{Deffault}: \code{var2nd.series = FALSE}.}
 }
 \value{
 Interactive EPR spectrum/spectra plot/graph based on \pkg{plotly}
