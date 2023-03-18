@@ -82,6 +82,34 @@ plot_EPR_Specs3D_interact <- function(data.series.spectra,
   ## `var2nd` (e.g. time) as factor to properly present
   data.series.spectra[[var2nd]] <- as.factor(data.series.spectra[[var2nd]])
   #
+  ## Length of the `var2nd`
+  var2nd_select_df <- data.series.spectra %>%
+    dplyr::group_by(.data[[var2nd]]) %>%
+    dplyr::group_keys()
+  #
+  var2nd_select_len <- length(var2nd_select_df[[var2nd]])
+  #
+  ## Scaling var2nd due to HIGH LOAD of "CONTOUR RENDERING"
+  ## Also the "SURFACE RENDERING" will be affected as well
+  ##    ||
+  ##    \/
+  ## var2nd length => how many points + conditions + filtering
+  if (var2nd_select_len >= 80 & var2nd_select_len < 160){
+    var2nd_select_df <- var2nd_select_df[seq(1,var2nd_select_len,by = 2),]
+  }
+  if (var2nd_select_len >= 160){
+    var2nd_select_df <- var2nd_select_df[seq(1,var2nd_select_len,by = 4),]
+  }
+  #
+  ## Filtering, accordingly (only those `var2nd` values defined above in `data.series.spectra`)
+  data.series.spectra <- data.series.spectra %>%
+    dplyr::filter(.data[[var2nd]] %in% var2nd_select_df[[var2nd]])
+  #
+  ## select NEW!!!UPDATED!!! `var2nd` !!! data frame values for `yaxis` within 3D plot
+  # var2nd_select_df <- data.series.spectra %>%
+  #   dplyr::group_by(.data[[var2nd]]) %>%
+  #   dplyr::group_keys()
+  #
   ## convert data from 'long' to 'wide' table format & finally to matrix
   Intensity_matrix <- data.series.spectra %>%
     dplyr::select(.data[[var2nd]],.data[[x]],.data[[Intensity]]) %>%
@@ -90,27 +118,6 @@ plot_EPR_Specs3D_interact <- function(data.series.spectra,
     as.matrix()
   ## transpose matrix in order to present 3D spectra properly
   Intensity_matrix <- t(Intensity_matrix)
-  #
-  ## select `var2nd` data frame values for `yaxis` within 3D plot
-  var2nd_select_df <- data.series.spectra %>%
-    dplyr::group_by(.data[[var2nd]]) %>%
-    dplyr::group_keys()
-  #
-  ## Scaling var2nd due to HIGH LOAD of "CONTOUR RENDERING"
-  ## Also the "SURFACE RENDERING" will be affected as well
-  ##    ||
-  ##    \/
-  ## var2nd length => how many points + conditions
-  var2nd_select_len <- length(var2nd_select_df[[var2nd]])
-  if (var2nd_select_len < 80){
-    var2nd_select_df[[var2nd]] <- var2nd_select_df[[var2nd]]
-  }
-  if (var2nd_select_len >= 80 & var2nd_select_len < 160){
-    var2nd_select_df[[var2nd]] <- var2nd_select_df[[var2nd]][seq(1,var2nd_select_len,by = 2)]
-  }
-  if (var2nd_select_len >= 160){
-    var2nd_select_df[[var2nd]] <- var2nd_select_df[[var2nd]][seq(1,var2nd_select_len,by = 4)]
-  }
   #
   ## select x data frame column for `xaxis` within 3D plot
   X_select_df <- data.series.spectra %>%
