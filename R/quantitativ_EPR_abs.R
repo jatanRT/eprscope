@@ -87,9 +87,6 @@ quantitativ_EPR_abs <- function(double.integ,
       No.paramag.V.spc <- No.paramag.spc/((h.cavity.length*1e-3)*pi*((tube.sample.id.mm/2)*1e-3)^2/1e6)
       ## Number od species => concentration mol*dm^{-3}
       No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/((h.cavity.length*1e-3)*pi*((tube.sample.id.mm/2)*1e-3)^2/1e3)
-      #
-      ## Result:
-      No_paramagSpecies <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_M = No.paramag.c.spc)
     }
     if (fill.sample.h.mm < h.cavity.length){
       #
@@ -108,9 +105,6 @@ quantitativ_EPR_abs <- function(double.integ,
       No.paramag.V.spc <- No.paramag.spc/(tube.volume.m3/1e+6)
       ## Number od species => concentration mol*dm^{-3}
       No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/(tube.volume.m3/1e+3)
-      #
-      ## Result:
-      No_paramagSpecies <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_M = No.paramag.c.spc)
     }
   }
   if (microW.cavity == "highsensitive"){
@@ -144,9 +138,6 @@ quantitativ_EPR_abs <- function(double.integ,
       No.paramag.V.spc <- No.paramag.spc/((h.cavity.length*1e-3)*pi*((tube.sample.id.mm/2)*1e-3)^2/1e6)
       ## Number od species => concentration mol*dm^{-3}
       No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/((h.cavity.length*1e-3)*pi*((tube.sample.id.mm/2)*1e-3)^2/1e3)
-      #
-      ## Result:
-      No_paramagSpecies <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_M = No.paramag.c.spc)
     }
     if (fill.sample.h.mm < h.cavity.length){
       #
@@ -165,12 +156,13 @@ quantitativ_EPR_abs <- function(double.integ,
       No.paramag.V.spc <- No.paramag.spc/(tube.volume.m3/1e+6)
       ## Number od species => concentration mol*dm^{-3}
       No.paramag.c.spc <- (No.paramag.spc/Avogadro.No)/(tube.volume.m3/1e+3)
-      #
-      ## Result:
-      No_paramagSpecies <- list(N_cm = No.paramag.cm.spc,N_cm3 = No.paramag.V.spc,c_M = No.paramag.c.spc)
     }
   }
-   #
+  ## Result:
+  No_paramagSpecies <- c("N_cm" = No.paramag.cm.spc,
+                         "N_cm3" = No.paramag.V.spc,
+                         "c_M" = No.paramag.c.spc)
+  #
   return(No_paramagSpecies)
   #
 }
