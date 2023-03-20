@@ -25,7 +25,7 @@ otherwise, \eqn{P[X>x]}}
 shown as a list with (mean) `value` & `uncertaity` names, otherwise, the result is in the format \eqn{value\pm uncertainty}}
 }
 \value{
-List of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty} format depending \code{separate} parameter
+Named vector of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty} format depending \code{separate} parameter
 }
 \description{
 Mean value and uncertainty (according to Sudent's t-Distribution) corresponding to column

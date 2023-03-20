@@ -16,7 +16,7 @@
 #' @param separate Boolean, whether to separate the mean value and the uncertainty, if \code{TRUE}, the result is
 #'  shown as a list with (mean) `value` & `uncertaity` names, otherwise, the result is in the format \eqn{value\pm uncertainty}
 #'
-#' @return List of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty} format depending \code{separate} parameter
+#' @return Named vector of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty} format depending \code{separate} parameter
 #'
 #' @examples
 #' \dontrun{
@@ -53,7 +53,8 @@ interval_cnfdnc_t_vecCol <- function(data.vec.col,
   #
   ## calculation
   if (isTRUE(separate)){
-    value.cnfdnc <- list(value = mean(data.vec.col),uncertainty = uncrt.data)
+    value.cnfdnc <- c("value" = mean(data.vec.col),
+                      "uncertainty" = uncrt.data)
   } else{
     value.cnfdnc <- errors::set_errors(mean(data.vec.col),uncrt.data)
   }
