@@ -47,6 +47,7 @@
 #' @export
 #'
 #'
+#' @importFrom pracma cumtrapz
 integ_correct_EPR_Specs <- function(data.spec.integ,
                                    B = "B_G",
                                    integ.single = "single_integ",
@@ -88,7 +89,7 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
   ## double integral calculation:
   if (isTRUE(double.integ)){
     result.integ.data <- data.slct %>%
-      dplyr::mutate(dIntegCorr = pracma::cumtrapz(.data[[B]],sIntegCorr))
+      dplyr::mutate(dIntegCorr = pracma::cumtrapz(.data[[B]],sIntegCorr)[,1])
   } else{
     result.integ.data <- data.slct
   }

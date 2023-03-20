@@ -144,14 +144,14 @@ quantitativ_EPR_sim <- function(data.spectra.series,
   result_df_base <- data.specs.sim %>%
     dplyr::group_by(.data[[var2nd]]) %>%
     dplyr::mutate(!!rlang::quo_name(integ.single) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                      .data[[Intensity.sim]]))
+                                                                      .data[[Intensity.sim]])[,1])
   if (isFALSE(output.area)){
     if (is.null(integ.double)){
       result_df <- result_df_base
     } else{
       result_df <- result_df_base %>%
         dplyr::mutate(!!rlang::quo_name(integ.double) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                          .data[[integ.single]]))
+                                                                          .data[[integ.single]])[,1])
     }
   } else{
     if (is.null(integ.double)){
@@ -160,7 +160,7 @@ quantitativ_EPR_sim <- function(data.spectra.series,
     } else{
       result_df <- result_df_base %>%
         dplyr::mutate(!!rlang::quo_name(integ.double) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                          .data[[integ.single]])) %>%
+                                                                          .data[[integ.single]])[,1]) %>%
         dplyr::summarize(AreaSim = max(.data[[integ.double]]))
     }
   }
