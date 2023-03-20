@@ -6,7 +6,7 @@
 #' tbc
 #'
 #'
-#' @param data.series.spectra tbc
+#' @param data.spectra.series tbc
 #' @param x tbc
 #' @param Intensity tbc
 #' @param var2nd String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
@@ -58,7 +58,7 @@
 #' @export
 #'
 #'
-plot_EPR_Specs3D_interact <- function(data.series.spectra,
+plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                     x = "B_mT",
                                     Intensity = "dIepr_over_dB",
                                     var2nd = "time_s",
@@ -80,10 +80,10 @@ plot_EPR_Specs3D_interact <- function(data.series.spectra,
                                     output.matrix.table = FALSE){
   #
   ## `var2nd` (e.g. time) as factor to properly present
-  data.series.spectra[[var2nd]] <- as.factor(data.series.spectra[[var2nd]])
+  data.spectra.series[[var2nd]] <- as.factor(data.spectra.series[[var2nd]])
   #
   ## Length of the `var2nd`
-  var2nd_select_df <- data.series.spectra %>%
+  var2nd_select_df <- data.spectra.series %>%
     dplyr::group_by(.data[[var2nd]]) %>%
     dplyr::group_keys()
   #
@@ -101,17 +101,17 @@ plot_EPR_Specs3D_interact <- function(data.series.spectra,
     var2nd_select_df <- var2nd_select_df[seq(1,var2nd_select_len,by = 4),]
   }
   #
-  ## Filtering, accordingly (only those `var2nd` values defined above in `data.series.spectra`)
-  data.series.spectra <- data.series.spectra %>%
+  ## Filtering, accordingly (only those `var2nd` values defined above in `data.spectra.series`)
+  data.spectra.series <- data.spectra.series %>%
     dplyr::filter(.data[[var2nd]] %in% var2nd_select_df[[var2nd]])
   #
   ## select NEW!!!UPDATED!!! `var2nd` !!! data frame values for `yaxis` within 3D plot
-  # var2nd_select_df <- data.series.spectra %>%
+  # var2nd_select_df <- data.spectra.series %>%
   #   dplyr::group_by(.data[[var2nd]]) %>%
   #   dplyr::group_keys()
   #
   ## convert data from 'long' to 'wide' table format & finally to matrix
-  Intensity_matrix <- data.series.spectra %>%
+  Intensity_matrix <- data.spectra.series %>%
     dplyr::select(.data[[var2nd]],.data[[x]],.data[[Intensity]]) %>%
     tidyr::pivot_wider(names_from = .data[[var2nd]],values_from = .data[[Intensity]]) %>%
     dplyr::select(-.data[[x]]) %>%
@@ -120,7 +120,7 @@ plot_EPR_Specs3D_interact <- function(data.series.spectra,
   Intensity_matrix <- t(Intensity_matrix)
   #
   ## select x data frame column for `xaxis` within 3D plot
-  X_select_df <- data.series.spectra %>%
+  X_select_df <- data.spectra.series %>%
     dplyr::filter(.data[[var2nd]] == .data[[var2nd]][1])
   #
   ## own 3D plot (different types "surface","contour","")

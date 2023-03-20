@@ -5,7 +5,7 @@
 #' @description tbc
 #'
 #'
-#' @param data.spectra.exp tbc
+#' @param data.spectra.series tbc
 #' @param path_to_ASC_sim tbc
 #' @param var2nd tbc
 #' @param B.unit tbc
@@ -31,7 +31,7 @@
 #'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange
-quantitativ_EPR_sim <- function(data.spectra.exp,
+quantitativ_EPR_sim <- function(data.spectra.series,
                                 path_to_ASC_sim,
                                 var2nd = "time_s",
                                 B.unit = "G",
@@ -51,7 +51,7 @@ quantitativ_EPR_sim <- function(data.spectra.exp,
   #
   ## checking number of points for experimental and simulated spectra
   ## experimental
-  resolution.exp <- data.spectra.exp %>%
+  resolution.exp <- data.spectra.series %>%
     dplyr::filter(.data[[var2nd]] == .data[[var2nd]][1]) %>%
     dim.data.frame()
   resolution.exp <- resolution.exp[1]
@@ -64,13 +64,13 @@ quantitativ_EPR_sim <- function(data.spectra.exp,
     ## ...going ahead, combining the experimental
     ## and simulated (non-processed, original) spectra into one long-table format
     ## (for each `vr2nd` added column of simulated spectrum)
-    data.specs.sim <- data.spectra.exp %>%
+    data.specs.sim <- data.spectra.series %>%
       dplyr::group_by(.data[[var2nd]]) %>%
       dplyr::mutate(!!rlang::quo_name(Intensity.sim) := data.spec.sim[[Intensity.sim]])
     #
     ## delete the original data (not needed anymore)
     ## substituted by `data.specs.sim`
-    rm(data.spectra.exp)
+    rm(data.spectra.series)
   }
   #
   ## new function for optimization to fit the simulated

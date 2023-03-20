@@ -5,7 +5,7 @@
 \title{Quantify Area of Simulated EPR Spectral Series Instead of Experimental One}
 \usage{
 quantitativ_EPR_sim(
-  data.spectra.exp,
+  data.spectra.series,
   path_to_ASC_sim,
   var2nd = "time_s",
   B.unit = "G",
@@ -17,7 +17,7 @@ quantitativ_EPR_sim(
 )
 }
 \arguments{
-\item{data.spectra.exp}{tbc}
+\item{data.spectra.series}{tbc}
 
 \item{path_to_ASC_sim}{tbc}
 

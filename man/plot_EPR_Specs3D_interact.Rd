@@ -5,7 +5,7 @@
 \title{Interactive (incl. Zooming, Data Reading...etc) 3D Plot for the Series of EPR Spectra}
 \usage{
 plot_EPR_Specs3D_interact(
-  data.series.spectra,
+  data.spectra.series,
   x = "B_mT",
   Intensity = "dIepr_over_dB",
   var2nd = "time_s",
@@ -28,7 +28,7 @@ plot_EPR_Specs3D_interact(
 )
 }
 \arguments{
-\item{data.series.spectra}{tbc}
+\item{data.spectra.series}{tbc}
 
 \item{x}{tbc}
 
