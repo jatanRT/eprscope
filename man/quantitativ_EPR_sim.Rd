@@ -31,7 +31,7 @@ quantitativ_EPR_sim(
 
 \item{integ.single}{tbc}
 
-\item{integ.double}{tbc}
+\item{integ.double}{tbc can be also \code{NULL} if case of single integral spectral series input}
 
 \item{output.area}{tbc}
 }

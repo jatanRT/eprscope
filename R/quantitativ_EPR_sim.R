@@ -12,7 +12,7 @@
 #' @param Intensity.exp tbc
 #' @param Intensity.sim tbc
 #' @param integ.single tbc
-#' @param integ.double tbc
+#' @param integ.double tbc can be also \code{NULL} if case of single integral spectral series input
 #' @param output.area tbc
 #'
 #'
@@ -140,21 +140,29 @@ quantitativ_EPR_sim <- function(data.spectra.series,
   ## removing the `data.specs.sim.modif` & `data.spec.sim` which is not needed anymore
   rm(data.specs.sim.modif,data.spec.sim)
   #
+  ## base for the output data frame
+  result_df_base <- data.specs.sim %>%
+    dplyr::group_by(.data[[var2nd]]) %>%
+    dplyr::mutate(!!rlang::quo_name(integ.single) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                                      .data[[Intensity.sim]]))
   if (isFALSE(output.area)){
-    result_df <- data.specs.sim %>%
-      dplyr::group_by(.data[[var2nd]]) %>%
-      dplyr::mutate(!!rlang::quo_name(integ.single) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                        .data[[Intensity.sim]])) %>%
-      dplyr::mutate(!!rlang::quo_name(integ.double) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                        .data[[integ.single]]))
+    if (is.null(integ.double)){
+      result_df <- result_df_base
+    } else{
+      result_df <- result_df_base %>%
+        dplyr::mutate(!!rlang::quo_name(integ.double) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                                          .data[[integ.single]]))
+    }
   } else{
-    result_df <- data.specs.sim %>%
-      dplyr::group_by(.data[[var2nd]]) %>%
-      dplyr::mutate(!!rlang::quo_name(integ.single) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                        .data[[Intensity.sim]])) %>%
-      dplyr::mutate(!!rlang::quo_name(integ.double) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                                        .data[[integ.single]])) %>%
-      dplyr::summarize(AreaSim = max(.data[[integ.double]]))
+    if (is.null(integ.double)){
+      result_df <- result_df_base %>%
+        dplyr::summarize(AreaSim = max(.data[[integ.single]]))
+    } else{
+      result_df <- result_df_base %>%
+        dplyr::mutate(!!rlang::quo_name(integ.double) := pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                                          .data[[integ.single]])) %>%
+        dplyr::summarize(AreaSim = max(.data[[integ.double]]))
+    }
   }
   #
   return(result_df)
