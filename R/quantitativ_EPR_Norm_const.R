@@ -37,6 +37,6 @@ quantitativ_EPR_Norm_const <- function(conv.time.ms,
   ## Constant Calculation
   Const <- conv.time.ms*Nscans*20*10^rg.dB.20
   #
-  return(round(Const,digits = 3))
+  return(round(Const))
   #
 }

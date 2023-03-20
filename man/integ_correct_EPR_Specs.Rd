@@ -7,7 +7,7 @@
 integ_correct_EPR_Specs(
   data.spec.integ,
   B = "B_G",
-  Integral = "single_integ",
+  integ.single = "single_integ",
   Blim,
   BpeaKlim,
   poly.degree,
@@ -24,8 +24,8 @@ as column.}
 \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default})}
 
-\item{Integral}{Character/String pointing to single integral \code{column} of EPR spectrum data frame
-\code{spectrum.data} (\strong{default}: \code{Integral = "single_integ"})}
+\item{integ.single}{Character/String pointing to single integral \code{column} of EPR spectrum data frame
+\code{spectrum.data} (\strong{default}: \code{integ.single = "single_integ"})}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}

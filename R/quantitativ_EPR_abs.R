@@ -6,7 +6,7 @@
 #' tbc
 #'
 #'
-#' @param double.integ tbc
+#' @param integ.double tbc
 #' @param nu.GHz tbc
 #' @param power.mW tbc
 #' @param modul.amp.mT tbc
@@ -32,7 +32,7 @@
 #' @export
 #'
 #'
-quantitativ_EPR_abs <- function(double.integ,
+quantitativ_EPR_abs <- function(integ.double,
                                 nu.GHz,
                                 power.mW,
                                 modul.amp.mT,
@@ -80,7 +80,7 @@ quantitativ_EPR_abs <- function(double.integ,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
+      No.paramag.spc <- integ.double/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc/h.cavity.length)*10
       ## Number of species in cm^3:
@@ -98,7 +98,7 @@ quantitativ_EPR_abs <- function(double.integ,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
+      No.paramag.spc <- integ.double/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc/fill.sample.h.mm)*10
       ## NUmber of species in cm^3:
@@ -131,7 +131,7 @@ quantitativ_EPR_abs <- function(double.integ,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
+      No.paramag.spc <- integ.double/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc/h.cavity.length)*10
       ## Number of species in cm^3:
@@ -149,7 +149,7 @@ quantitativ_EPR_abs <- function(double.integ,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- double.integ/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
+      No.paramag.spc <- integ.double/((point.sample.c.factor/integral.poly)*Norm.constant*third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc/fill.sample.h.mm)*10
       ## NUmber of species in cm^3:

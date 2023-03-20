@@ -16,8 +16,8 @@
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 #'   or \code{B = "B_G"} (\strong{default})
-#' @param Integral Character/String pointing to single integral \code{column} of EPR spectrum data frame
-#'   \code{spectrum.data} (\strong{default}: \code{Integral = "single_integ"})
+#' @param integ.single Character/String pointing to single integral \code{column} of EPR spectrum data frame
+#'   \code{spectrum.data} (\strong{default}: \code{integ.single = "single_integ"})
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
@@ -49,7 +49,7 @@
 #'
 integ_correct_EPR_Specs <- function(data.spec.integ,
                                    B = "B_G",
-                                   Integral = "single_integ",
+                                   integ.single = "single_integ",
                                    Blim,
                                    BpeaKlim,
                                    poly.degree,
@@ -71,7 +71,7 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
     filter(!between(.data[[B]],BpeaKlim[1],BpeaKlim[2]))
   #
   ## Polynomial baseline fit:
-  integ.baseline.fit <- stats::lm(.data[[Integral]] ~ stats::poly(.data[[B]],degree = poly.degree),
+  integ.baseline.fit <- stats::lm(.data[[integ.single]] ~ stats::poly(.data[[B]],degree = poly.degree),
                            data = data.NoPeak)
   #
   ## apply fit to data.slct, remove the .resid colum (which is not required),
@@ -81,7 +81,7 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
   data.slct <- broom::augment(integ.baseline.fit,newdata = data.slct) %>%
     dplyr::select(-.data[[".resid"]]) %>%
     dplyr::rename(sIntegBaseLinFit = .data[[".fitted"]]) %>%
-    dplyr::mutate(sIntegCorr = .data[[Integral]] - .data$sIntegBaseLinFit) %>%
+    dplyr::mutate(sIntegCorr = .data[[integ.single]] - .data$sIntegBaseLinFit) %>%
     dplyr::select(-sIntegBaseLinFit) %>%
     dplyr::mutate(sIntegCorr = sIntegCorr - min(.data$sIntegCorr))
   #

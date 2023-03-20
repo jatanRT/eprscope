@@ -5,7 +5,7 @@
 \title{TBC (Absolute EPR Quantity)}
 \usage{
 quantitativ_EPR_abs(
-  double.integ,
+  integ.double,
   nu.GHz,
   power.mW,
   modul.amp.mT,
@@ -19,7 +19,7 @@ quantitativ_EPR_abs(
 )
 }
 \arguments{
-\item{double.integ}{tbc}
+\item{integ.double}{tbc}
 
 \item{nu.GHz}{tbc}
 
