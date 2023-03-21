@@ -644,10 +644,10 @@ Paramagnetic Resonance</a>) spectroscopy. The package doesn’t want to
 replace the great EPR simulation/processing <a href="https://www.easyspin.org/">EasySpin Toolbox</a> for <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> .
 Rather, it may be considered like a complimentary package/toolbox with
 practical functions which have to be otherwise performed by the
-combination of several software platforms like <em>MS Office</em>,
-<em>Orgin/SigmaPlot/Igor</em> (in general graphing software) as well as
-acquisition/processing software supplied by the EPR spectrometer
-producers (see e.g. <a href="https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html"><em>Xenon/WinEPR</em></a>).
+combination of several proprietary software platforms like <em>MS
+Office</em>, <em>Orgin/SigmaPlot/Igor</em> (in general graphing
+software) as well as acquisition/processing software supplied by the EPR
+spectrometer manufacturers (see e.g. <a href="https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html"><em>Xenon/WinEPR</em></a>).
 These involve the following principal operations:</p>
 <ul>
 <li><p>Reading the universal ASCII data format (e.g. like
@@ -655,14 +655,14 @@ These involve the following principal operations:</p>
 transforming into tables (data frames) incl. operations like intensity
 normalization and conversion between magnetic flux density (<em>B</em>)
 units (<span class="math inline">\(\mathrm{G} \Leftrightarrow
-\mathrm{mT}\)</span>). Additionally, the available functions enable the
-automatic reading of time series experiments like a kinetic one
-(e.g. also with the combination of <em>in situ</em> electrochemistry or
+\mathrm{mT}\)</span>). Additionally, the functions enable the automatic
+reading of time series experiments like a kinetic one (e.g. also with
+the combination of <em>in situ</em> electrochemistry or
 photochemistry/irradiation) or reading and processing several EPR
-spectra data/files at once for the series of individual experiments/data
-files upon changing the quantities like (time,microwave power,
-electrochemical potential, temperature, concentration…etc.). Finally,
-reading the <em>MATLAB</em> (<code>.mat</code>) files and the
+spectra data/files, at once, for the series of individual
+experiments/data files upon changing the quantities like time,microwave
+power, electrochemical potential, temperature, concentration…etc.
+Finally, reading the <em>MATLAB</em> (<code>.mat</code>) files and the
 instrumental parameter ones ( in case of <em>BRUKER</em> instruments, so
 far<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> )
 and the corresponding parameter extraction can be performed as
@@ -672,9 +672,22 @@ dependency on other quantities (like already mentioned above) as well as
 presentation of simulated spectra are provided by several functions
 based on either <a href="https://ggplot2.tidyverse.org/">ggplot2</a>
 package/system (one of the most comprehensive visualization system in
-data science and data analytics) or interactive <a href="https://plotly.com/r/">plotly</a> graphing library. Especially the
-later …</p></li>
-<li><p>Blah</p></li>
+data science and data analytics) or interactive <a href="https://plotly.com/r/">plotly</a> graphing library. Especially,
+the later may represent a valuable alternative to EPR instrumental
+software or other proprietary graphing systems, because it includes
+visualization tools like zooming, panning, data/values hovering and much
+more.</p></li>
+<li><p>Quantifying the number of paramagnetic species (e.g. radicals)
+based on integrated forms of derivative EPR spectra and instrumental
+parameters. In this respect also baseline polynomial corrections are
+included to precisely evaluate the double integrals by numeric <a href="https://mathworld.wolfram.com/TrapezoidalRule.html">trapezoidal
+method</a>. In case of lower signal-to-noise ratios i.e. in noisy EPR
+spectra, they can be optimized by least-square fitting of simulated ones
+(e.g. from EasySpin) and single or double integrals can be evaluated
+using the optimized intensity of the simulated EPR spectrum. This is
+particularly advantageous in (time) series of many noisy EPR spectra.
+…operations were only available within the acquisition-processing
+software…</p></li>
 <li><p>Blah</p></li>
 </ul>
 <h1 id="installation">Installation</h1>
