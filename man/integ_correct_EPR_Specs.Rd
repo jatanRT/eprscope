@@ -11,7 +11,8 @@ integ_correct_EPR_Specs(
   Blim,
   BpeaKlim,
   poly.degree,
-  double.integ = FALSE
+  double.integ = FALSE,
+  output.vector = FALSE
 )
 }
 \arguments{
@@ -38,11 +39,15 @@ curve of \emph{dIepr_over_dB}}
 
 \item{double.integ}{Boolean, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
 which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}}
+
+\item{output.vector}{Boolean, whether to "vectorize" the result in order to use it (in a form of additional
+data frame column) for quantitative analysis of a EPR spectral series (for each individual spectrum).
+\strong{Default}: \code{output.vector = FALSE}}
 }
 \value{
-Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B}) as well as its
+Data frame/table  (or vector/column) including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B}) as well as its
   corresponding \code{single} (column \code{sIntegCorr}) and/or \code{double} (column \code{dIntegCorr})
-  integral corrected against the baseline fit
+  integral corrected against the baseline fit.
 }
 \description{
 Single-integrated spectrum (from original derivative form) can be obtained
@@ -56,7 +61,8 @@ integ_correct_EPR_Specs(EPR_spectral_data_table,
                         B = "B_mT",
                         Blim = c(348.2,351.1),
                         BpeaKlim = c(349,350),
-                        poly.degree = 3)
+                        poly.degree = 3,
+                        output.vector = TRUE)
 }
 
 

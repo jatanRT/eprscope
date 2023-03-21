@@ -26,11 +26,14 @@
 #'   curve of \emph{dIepr_over_dB}
 #' @param double.integ Boolean, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
 #'   which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}
+#' @param output.vector Boolean, whether to "vectorize" the result in order to use it (in a form of additional
+#'   data frame column) for quantitative analysis of a EPR spectral series (for each individual spectrum).
+#'   \strong{Default}: \code{output.vector = FALSE}
 #'
 #'
-#' @return Data frame/table including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B}) as well as its
+#' @return Data frame/table  (or vector/column) including the EPR spectral data (\emph{dIepr_over_dB} vs \eqn{B}) as well as its
 #'   corresponding \code{single} (column \code{sIntegCorr}) and/or \code{double} (column \code{dIntegCorr})
-#'   integral corrected against the baseline fit
+#'   integral corrected against the baseline fit.
 #'
 #'
 #'
@@ -40,7 +43,8 @@
 #'                         B = "B_mT",
 #'                         Blim = c(348.2,351.1),
 #'                         BpeaKlim = c(349,350),
-#'                         poly.degree = 3)
+#'                         poly.degree = 3,
+#'                         output.vector = TRUE)
 #' }
 #'
 #'
@@ -54,7 +58,8 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
                                    Blim,
                                    BpeaKlim,
                                    poly.degree,
-                                   double.integ = FALSE){
+                                   double.integ = FALSE,
+                                   output.vector = FALSE){
   ## 'Temporary' processing variables
   sIntegBaseLinFit <- NULL
   sIntegCorr <- NULL
@@ -88,10 +93,18 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
   #
   ## double integral calculation:
   if (isTRUE(double.integ)){
-    result.integ.data <- data.slct %>%
-      dplyr::mutate(dIntegCorr = pracma::cumtrapz(.data[[B]],sIntegCorr)[,1])
+    if (isTRUE(output.vector)){
+      result.integ.data <- pracma::cumtrapz(data.slct[[B]],data.slct$sIntegCorr)[,1]
+    } else {
+      result.integ.data <- data.slct %>%
+        dplyr::mutate(dIntegCorr = pracma::cumtrapz(.data[[B]],sIntegCorr)[,1])
+    }
   } else{
-    result.integ.data <- data.slct
+    if (isTRUE(output.vector)){
+      result.integ.data <- data.slct$sIntegCorr
+    } else{
+      result.integ.data <- data.slct
+    }
   }
   #
   return(result.integ.data)
