@@ -653,13 +653,27 @@ These involve the following principal operations:</p>
 <li><p>Reading the universal ASCII data format (e.g. like
 <code>.asc</code>, <code>.txt</code>, <code>.csv</code>) and
 transforming into tables (data frames) incl. operations like intensity
-normalization, conversion between magnetic flux density (<span class="math inline">\(B\)</span>) units (<span class="math inline">\(\mathrm{G} \Leftrightarrow \mathrm{mT}\)</span>).
-Additionally, the available functions enable the automatic reading of
-time series experiments like in kinetic series (e.g. also with the
-combination of <em>in situ</em> electrochemistry or
+normalization and conversion between magnetic flux density (<em>B</em>)
+units (<span class="math inline">\(\mathrm{G} \Leftrightarrow
+\mathrm{mT}\)</span>). Additionally, the available functions enable the
+automatic reading of time series experiments like a kinetic one
+(e.g. also with the combination of <em>in situ</em> electrochemistry or
 photochemistry/irradiation) or reading and processing several EPR
-spectra data/files at once for the series of individual
-experiments</p></li>
+spectra data/files at once for the series of individual experiments/data
+files upon changing the quantities like (time,microwave power,
+electrochemical potential, temperature, concentration…etc.). Finally,
+reading the <em>MATLAB</em> (<code>.mat</code>) files and the
+instrumental parameter ones ( in case of <em>BRUKER</em> instruments, so
+far<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> )
+and the corresponding parameter extraction can be performed as
+well.</p></li>
+<li><p>Plotting the EPR spectra incl. time series/kinetics or their
+dependency on other quantities (like already mentioned above) as well as
+presentation of simulated spectra are provided by several functions
+based on either <a href="https://ggplot2.tidyverse.org/">ggplot2</a>
+package/system (one of the most comprehensive visualization system in
+data science and data analytics) or interactive <a href="https://plotly.com/r/">plotly</a> graphing library. Especially the
+later …</p></li>
 <li><p>Blah</p></li>
 <li><p>Blah</p></li>
 </ul>
@@ -667,6 +681,13 @@ experiments</p></li>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="do">## So far, the package can be installed by</span></span></code></pre></div>
 <h1 id="usage">Usage</h1>
 <p>Blah</p>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>Reading parameter files from additional EPR
+instruments/manufacturers can be added acccordingly<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
 
 </body>
 </html>

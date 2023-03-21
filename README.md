@@ -19,13 +19,28 @@ These involve the following principal operations:
 
 - Reading the universal ASCII data format (e.g. like `.asc`, `.txt`,
   `.csv`) and transforming into tables (data frames) incl. operations
-  like intensity normalization, conversion between magnetic flux density
-  ($B$) units ($\mathrm{G} \Leftrightarrow \mathrm{mT}$). Additionally,
-  the available functions enable the automatic reading of time series
-  experiments like in kinetic series (e.g. also with the combination of
-  *in situ* electrochemistry or photochemistry/irradiation) or reading
-  and processing several EPR spectra data/files at once for the series
-  of individual experiments
+  like intensity normalization and conversion between magnetic flux
+  density (*B*) units ($\mathrm{G} \Leftrightarrow \mathrm{mT}$).
+  Additionally, the available functions enable the automatic reading of
+  time series experiments like a kinetic one (e.g. also with the
+  combination of *in situ* electrochemistry or
+  photochemistry/irradiation) or reading and processing several EPR
+  spectra data/files at once for the series of individual
+  experiments/data files upon changing the quantities like
+  (time,microwave power, electrochemical potential, temperature,
+  concentration…etc.). Finally, reading the *MATLAB* (`.mat`) files and
+  the instrumental parameter ones ( in case of *BRUKER* instruments, so
+  far[^1] ) and the corresponding parameter extraction can be performed
+  as well.
+
+- Plotting the EPR spectra incl. time series/kinetics or their
+  dependency on other quantities (like already mentioned above) as well
+  as presentation of simulated spectra are provided by several functions
+  based on either [ggplot2](https://ggplot2.tidyverse.org/)
+  package/system (one of the most comprehensive visualization system in
+  data science and data analytics) or interactive
+  [plotly](https://plotly.com/r/) graphing library. Especially the later
+  …
 
 - Blah
 
@@ -40,3 +55,6 @@ These involve the following principal operations:
 # Usage
 
 Blah
+
+[^1]: Reading parameter files from additional EPR
+    instruments/manufacturers can be added acccordingly
