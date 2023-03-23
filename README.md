@@ -58,7 +58,14 @@ These involve the following principal operation groups:
   Such operations have been available only on EPR
   instruments/spectrometers, up to now.
 
-- Blah
+- Last but not least, there are functions to find extremes (maxima,
+  minima), linewidths (incl. 𝚫*B*<sub>pp</sub>) as well as *g*-values
+  directly from the spectral data. Eexperimentally (or by spectral
+  simulations) determined EPR spectral parameters like *g*-values and
+  hyperfine coupling (*A*)/splitting (*a*) constants are quite often
+  compared to theoretically predicted by quantum chemical calculations
+  (e.g. by [Density Functional Theory](https://gaussian.com/dft/)).
+  Therefore
 
 # Installation
 

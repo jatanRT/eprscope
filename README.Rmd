@@ -15,7 +15,7 @@ The main goal of this package is to bring handy functions corresponding to "ever
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
--   Blah
+-   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
 
 [^1]: Reading parameter files from additional EPR instruments/manufacturers can be added acccordingly
 
