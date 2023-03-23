@@ -1,4 +1,4 @@
-Package: EPRphysChemSpec
+Package: eprscope
 Type: Package
 Title: Data and Spectra Processing in Electron Paramagnetic Resonance Spectroscopy 
 Version: 0.1.6
