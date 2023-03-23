@@ -19,7 +19,7 @@ drawMolecules_rcdk(molecules, name = NULL, sma = NULL, ...)
 tbc
 }
 \description{
-Draw Molecule by `rcdk` Defined by SMILES
+A short description...
 }
 \examples{
 \dontrun{

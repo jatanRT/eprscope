@@ -1,6 +1,12 @@
 #
 #' Draw Molecule by `rcdk` Defined by SMILES
 #'
+#'
+#' @description
+#' A short description...
+#'
+#'
+#'
 #' @param molecules tbc
 #' @param name tbc
 #' @param sma tbc
