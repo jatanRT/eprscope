@@ -1,7 +1,7 @@
-eprscope
+EPRSCOPE
 ================
 
-# Overview <img src="man/figures/logo.png" align="right" height="139"/>
+# Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
 The main goal of this package is to bring handy functions corresponding
 to “everyday” data processing/operations in EPR ([Electron Paramagnetic
@@ -16,7 +16,7 @@ several proprietary software platforms like *MS Office*,
 acquisition/processing software supplied by the EPR spectrometer
 manufacturers (see
 e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)).
-These involve the following principal operations:
+These involve the following principal operation groups:
 
 - Reading the universal ASCII data format (e.g. like `.asc`, `.txt`,
   `.csv`) and transforming into tables (data frames) incl. operations
@@ -37,13 +37,12 @@ These involve the following principal operations:
   dependency on other quantities (like already mentioned above) as well
   as presentation of simulated spectra are provided by several functions
   based on either [ggplot2](https://ggplot2.tidyverse.org/)
-  package/system (one of the most comprehensive visualization system in
-  data science and data analytics) or interactive
-  [plotly](https://plotly.com/r/) graphing library. Especially, the
-  later may represent a valuable alternative to EPR instrumental
-  software or other proprietary graphing systems, because it includes
-  visualization tools like zooming, panning, data/values hovering and
-  much more.
+  package/system (one of the most comprehensive system for data
+  visualization) or interactive [plotly](https://plotly.com/r/) graphing
+  library. Especially, the later may represent a valuable alternative to
+  EPR instrumental software or other proprietary graphing systems,
+  because it includes visualization tools like zooming, panning,
+  data/values hovering and much more.
 
 - Quantifying the number of paramagnetic species (e.g. radicals) based
   on integrated forms of derivative EPR spectra and instrumental
@@ -56,8 +55,8 @@ These involve the following principal operations:
   EasySpin) and single or double integrals can be evaluated using the
   optimized intensity of the simulated EPR spectrum. This is
   particularly advantageous in (time) series of many noisy EPR spectra.
-  …operations were only available within the acquisition-processing
-  software…
+  Such operations have been available only on EPR
+  instruments/spectrometers, up to now.
 
 - Blah
 
