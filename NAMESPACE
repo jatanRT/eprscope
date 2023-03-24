@@ -3,6 +3,7 @@
 export("%>%")
 export(A_MHz_conv_to_mT)
 export(DeltaXpp_Spec)
+export(FWHMx_Spec)
 export(aAiso_rearrng_QCHcomp)
 export(a_mT_conv_to_MHz)
 export(drawMolecules_rcdk)
