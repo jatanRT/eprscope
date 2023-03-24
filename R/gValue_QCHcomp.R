@@ -7,7 +7,7 @@
 #' the corresponding mean value from `Gaussian` or `ORCA` output.
 #'
 #' @param path_to_QCHoutput Character/String corresponding to path of `Gaussian` or `ORCA` output text files
-#'   incl. all \eqn{g}-values. \code{link[base]{file.path}} can be applied to get the full/relative path.
+#'   incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
 #' @param mean Boolean, whether to calculate the \code{mean value/iso} from principal components,
 #'   \strong{default}: \code{mean = TRUE}, or save the entire vector with all these components
 #' @param origin Character/String pointing to origin of DFT EPR calculation parameters <=> which

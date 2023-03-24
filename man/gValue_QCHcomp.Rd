@@ -8,7 +8,7 @@ gValue_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 }
 \arguments{
 \item{path_to_QCHoutput}{Character/String corresponding to path of `Gaussian` or `ORCA` output text files
-incl. all \eqn{g}-values. \code{link[base]{file.path}} can be applied to get the full/relative path.}
+incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.}
 
 \item{mean}{Boolean, whether to calculate the \code{mean value/iso} from principal components,
 \strong{default}: \code{mean = TRUE}, or save the entire vector with all these components}
