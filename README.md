@@ -1,4 +1,4 @@
-EPRSCOPE
+eprscope
 ================
 
 # Overview <img src="man/figures/logo_new.png" align="right" height="139"/>

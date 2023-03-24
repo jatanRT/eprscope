@@ -1,5 +1,5 @@
 ---
-title: "EPRSCOPE"
+title: "eprscope"
 output: 
   github_document:
     keep_html: true
