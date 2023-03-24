@@ -31,21 +31,30 @@
 #' gValue(9.5421,"GHz",0.333251,"T")
 #'
 #' @export
-gValue <- function(nu,nu.unit = "GHz",B,B.unit = "mT"){
+gValue <- function(nu,
+                   nu.unit = "GHz",
+                   B,
+                   B.unit = "mT") {
+  #
+  ## Fundamental Physical Constants
   Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$mub
-  if (nu.unit == "GHz" & B.unit == "mT"){
-    g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.001)
-  } else if (nu.unit == "Hz" & B.unit == "mT"){
-    g <- (Planck.const*nu)/(Bohr.magnet*B*0.001)
-  } else if (nu.unit == "Hz" & B.unit == "G"){
-    g <- (Planck.const*nu)/(Bohr.magnet*B*0.0001)
-  } else if (nu.unit == "GHz" & B.unit == "G"){
-    g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B*0.0001)
-  } else if (nu.unit == "GHz" & B.unit == "T"){
-    g <- (Planck.const*nu*1e+9)/(Bohr.magnet*B)
-  } else if (nu.unit == "Hz" & B.unit == "T"){
-    g <- (Planck.const*nu)/(Bohr.magnet*B)
+  #
+  ## Conditions to calculate `g`
+  if (nu.unit == "GHz" & B.unit == "mT") {
+    g <- (Planck.const * nu * 1e+9) / (Bohr.magnet * B * 0.001)
+  } else if (nu.unit == "Hz" & B.unit == "mT") {
+    g <- (Planck.const * nu) / (Bohr.magnet * B * 0.001)
+  } else if (nu.unit == "Hz" & B.unit == "G") {
+    g <- (Planck.const * nu) / (Bohr.magnet * B * 0.0001)
+  } else if (nu.unit == "GHz" & B.unit == "G") {
+    g <- (Planck.const * nu * 1e+9) / (Bohr.magnet * B * 0.0001)
+  } else if (nu.unit == "GHz" & B.unit == "T") {
+    g <- (Planck.const * nu * 1e+9) / (Bohr.magnet * B)
+  } else if (nu.unit == "Hz" & B.unit == "T") {
+    g <- (Planck.const * nu) / (Bohr.magnet * B)
   }
-  return(round(g,digits = 5))
+  #
+  return(round(g, digits = 5))
+  #
 }

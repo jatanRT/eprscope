@@ -4,7 +4,12 @@
 \alias{DeltaXpp_Spec}
 \title{Calculation of Spectral Linewidth ( e.g. \eqn{\Delta B_{pp}}) of the EPR/ENDOR Spectrum}
 \usage{
-DeltaXpp_Spec(data.spectrum, x = "B_mT", Intensity = "dIepr_over_dB", xlim)
+DeltaXpp_Spec(
+  data.spectrum,
+  x = "B_mT",
+  Intensity = "dIepr_over_dB",
+  xlim = NULL
+)
 }
 \arguments{
 \item{data.spectrum}{EPR/ENDOR spectrum data frame/table with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
@@ -19,7 +24,8 @@ name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesit
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
 e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
-or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless)}
+or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
+to entire `x` range)}
 }
 \value{
 Numeric value of difference of \code{x}-axis quantity like \eqn{B},\eqn{g},\eqn{RF} (the absolute value)

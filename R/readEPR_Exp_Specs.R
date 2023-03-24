@@ -117,124 +117,137 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               sep = "auto",
                               skip = 1,
                               x.unit = "G",
-                              col.names = c("index",
-                                            "B_G",
-                                            "dIepr_over_dB"),
+                              col.names = c(
+                                "index",
+                                "B_G",
+                                "dIepr_over_dB"
+                              ),
                               qValue = 1,
                               Nscans = 1,
                               c.M = 1,
                               m.mg = 1,
                               time.series = FALSE,
-                              origin = "xenon"){
+                              origin = "xenon") {
   ## 'Temporary' processing variables
   Norm_Intensity <- NULL
   #
   ## basic data frame by `fread`, it is processed/mutated bellow
   ## and transfered into `spectrum.data`
-  if (origin == "xenon" || origin == "txt" || origin == "csv"){
+  if (origin == "xenon" || origin == "txt" || origin == "csv") {
     spectrum.data.origin <- data.table::fread(path_to_ASC,
-                                              sep = sep,
-                                              header = FALSE,
-                                              skip = skip,
-                                              col.names = col.names)
+      sep = sep,
+      header = FALSE,
+      skip = skip,
+      col.names = col.names
+    )
   }
-  if (origin == "winepr"){
-    if (isFALSE(time.series)){
+  if (origin == "winepr") {
+    if (isFALSE(time.series)) {
       spectrum.data.origin <- data.table::fread(path_to_ASC,
-                                                sep = "auto",
-                                                header = FALSE,
-                                                skip = 3,
-                                                col.names = col.names)
-    } else{
+        sep = "auto",
+        header = FALSE,
+        skip = 3,
+        col.names = col.names
+      )
+    } else {
       spectrum.data.origin <- data.table::fread(path_to_ASC,
-                                                sep = "auto",
-                                                header = FALSE,
-                                                skip = 4,
-                                                col.names = col.names)
+        sep = "auto",
+        header = FALSE,
+        skip = 4,
+        col.names = col.names
+      )
     }
   }
   #
   ## select column character string from col.names corresponding
   ## to `x (B)` and `rf (MHz)` and/or `time`
-  if (isFALSE(time.series)){
-    if (x.unit == "Unitless"){
-      x = grep("g",col.names,value = TRUE)
+  if (isFALSE(time.series)) {
+    if (x.unit == "Unitless") {
+      x <- grep("g", col.names, value = TRUE)
     }
-    if (x.unit == "G" || x.unit == "mT"){
-      x = grep("B|G|mT",col.names,value = TRUE)[[1]]
+    if (x.unit == "G" || x.unit == "mT") {
+      x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
       ## `[[1]]` selection is due to fact that intensity
       ## could be `dIepr_over_dB` which also has `B` within
       ## the character string
       ## `|` \equiv `or`
     }
-    if (x.unit == "MHz"){
-      x = grep("rf|RF|MHz|radio|Radio",col.names,value = TRUE)
+    if (x.unit == "MHz") {
+      x <- grep("rf|RF|MHz|radio|Radio", col.names, value = TRUE)
     }
-  } else{
-    if (x.unit == "Unitless"){
-      x = grep("g",col.names,value = TRUE)
-      time = grep("time|Time|tim|Tim",col.names,value = TRUE)
+  } else {
+    if (x.unit == "Unitless") {
+      x <- grep("g", col.names, value = TRUE)
+      time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
     }
-    if (x.unit == "G" || x.unit == "mT"){
-      x = grep("B|G|mT",col.names,value = TRUE)[[1]]
-      time = grep("time|Time",col.names,value = TRUE)
+    if (x.unit == "G" || x.unit == "mT") {
+      x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
+      time <- grep("time|Time", col.names, value = TRUE)
     }
-    if (x.unit == "MHz"){
-      x = grep("rf|RF|MHz|radio|Radio",col.names,value = TRUE)
-      time = grep("time|Time",col.names,value = TRUE)
+    if (x.unit == "MHz") {
+      x <- grep("rf|RF|MHz|radio|Radio", col.names, value = TRUE)
+      time <- grep("time|Time", col.names, value = TRUE)
     }
   }
   #
   ## select intesity column character string
-  Intensity = grep("I|Intens|intens",col.names,value = TRUE)
+  Intensity <- grep("I|Intens|intens", col.names, value = TRUE)
   #
   ##
-  if (origin == "xenon" || origin == "txt" || origin == "csv"){
-    if (x.unit == "G"){
+  if (origin == "xenon" || origin == "txt" || origin == "csv") {
+    if (x.unit == "G") {
       ## For intesity 1.) Create new normalized intensity column
       ## 2.) Delete the 'old' intensity column
       ## 3.) Rename the new column by the 'old' name (incl. in col.names),
       ##     however, first off all it must be unquoted
       ##     therefore, !!rlang::quo_name(Intensity) := Norm_Intensity
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(B_mT = .data[[x]]/10,
-                      Norm_Intensity = .data[[Intensity]]/(qValue*Nscans*m.mg*c.M)) %>%
+        dplyr::mutate(
+          B_mT = .data[[x]] / 10,
+          Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M)
+        ) %>%
         dplyr::select(-.data[[Intensity]]) %>%
         dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
     }
-    if (x.unit == "MHz"){
+    if (x.unit == "MHz") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(Norm_Intensity = .data[[Intensity]]/Nscans) %>%
+        dplyr::mutate(Norm_Intensity = .data[[Intensity]] / Nscans) %>%
         dplyr::select(-.data[[Intensity]]) %>%
         dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
     }
-    if (x.unit == "mT" || x.unit == "Unitless"){
+    if (x.unit == "mT" || x.unit == "Unitless") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(Norm_Intensity = .data[[Intensity]]/(qValue*Nscans*m.mg*c.M)) %>%
+        dplyr::mutate(Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M)) %>%
         dplyr::select(-.data[[Intensity]]) %>%
         dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
     }
   }
-  if (origin == "winepr"){
-    if (x.unit == "G"){
+  if (origin == "winepr") {
+    if (x.unit == "G") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(B_mT = .data[[x]]/10,
-                      Norm_Intensity = .data[[Intensity]]/(qValue*Nscans*m.mg*c.M),
-                      index = seq_len(length(.data[[Intensity]]))) %>%
+        dplyr::mutate(
+          B_mT = .data[[x]] / 10,
+          Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
+          index = seq_len(length(.data[[Intensity]]))
+        ) %>%
         dplyr::select(-.data[[Intensity]]) %>%
         dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
     }
-    if (x.unit == "MHz"){
+    if (x.unit == "MHz") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(Norm_Intensity = .data[[Intensity]]/Nscans,
-                      index = seq_len(length(.data[[Intensity]]))) %>%
+        dplyr::mutate(
+          Norm_Intensity = .data[[Intensity]] / Nscans,
+          index = seq_len(length(.data[[Intensity]]))
+        ) %>%
         dplyr::select(-.data[[Intensity]]) %>%
         dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
     }
-    if (x.unit == "mT" || x.unit == "Unitless"){
+    if (x.unit == "mT" || x.unit == "Unitless") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(Norm_Intensity = .data[[Intensity]]/(qValue*Nscans*m.mg*c.M),
-                      index = seq_len(length(.data[[Intensity]]))) %>%
+        dplyr::mutate(
+          Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
+          index = seq_len(length(.data[[Intensity]]))
+        ) %>%
         dplyr::select(-.data[[Intensity]]) %>%
         dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
     }

@@ -26,29 +26,34 @@
 #' tbc
 #' }
 #'
+#'
 #' @export
 #'
 #'
 readEPR_Sim_Spec <- function(path_to_ASC,
                              B.unit = "mT",
-                             col.names = c("Bsim_mT","dIeprSim_over_dB")){
+                             col.names = c(
+                               "Bsim_mT",
+                               "dIeprSim_over_dB"
+                             )) {
   #
   spectrum.data <- data.table::fread(path_to_ASC,
-                                     sep = "auto",
-                                     col.names = col.names)
+    sep = "auto",
+    col.names = col.names
+  )
   #
   ## x for spectrum data
-  x = col.names[1]
+  x <- col.names[1]
   #
-  if (B.unit == "mT"){
+  if (B.unit == "mT") {
     spectrum.data <- spectrum.data %>%
-      dplyr::mutate(Bsim_G = .data[[x]]*10)
+      dplyr::mutate(Bsim_G = .data[[x]] * 10)
   }
-  if (B.unit == "G"){
+  if (B.unit == "G") {
     spectrum.data <- spectrum.data %>%
-      dplyr::mutate(Bsim_mT = .data[[x]]/10)
+      dplyr::mutate(Bsim_mT = .data[[x]] / 10)
   }
   #
   return(spectrum.data)
- #
+  #
 }

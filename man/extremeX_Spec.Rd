@@ -8,8 +8,8 @@ extremeX_Spec(
   data.spectrum,
   x = "B_mT",
   Intensity = "dIepr_over_dB",
-  xlim,
-  extreme
+  xlim = NULL,
+  extreme = "max"
 )
 }
 \arguments{
@@ -25,9 +25,10 @@ name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesit
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
 e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
-or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless)}
+or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
+to entire `x` range)}
 
-\item{extreme}{Character/String with only a two values allowed: \code{"min"} or \code{"max"}}
+\item{extreme}{Character/String with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default})}
 }
 \value{
 Numeric value of \code{x}-axis quantity like \eqn{B},\eqn{g},\eqn{RF} corresponding
@@ -45,8 +46,7 @@ extremeX_Spec(data.spectrum,
 extremeX_Spec(data.frame,
               "g_Value",
               Intensity = "Integrated_Intensity",
-              c(2.007,2.000),
-              'max')
+              c(2.007,2.000))
 }
 
 

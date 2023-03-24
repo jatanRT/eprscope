@@ -45,16 +45,18 @@
 #'
 #'
 #' @importFrom rlang enquo
-plot_labels_xyz <- function(quantity,unit,user.defined = FALSE){
+plot_labels_xyz <- function(quantity,
+                            unit,
+                            user.defined = FALSE) {
   #
   ## in 'bquote' bang-bang ('!!') operator does not work
   ## use '.()' instead
   quantity <- enquo(quantity)
   unit <- enquo(unit)
-  if (isFALSE(user.defined)){
-    l <- bquote(italic(.(quantity))~~"("~.(unit)~")")
-  } else{
-    l <- bquote(.(quantity)~~.(unit))
+  if (isFALSE(user.defined)) {
+    l <- bquote(italic(.(quantity)) ~ ~"(" ~ .(unit) ~ ")")
+  } else {
+    l <- bquote(.(quantity) ~ ~ .(unit))
   }
   #
   return(l)

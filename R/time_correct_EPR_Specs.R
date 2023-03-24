@@ -43,15 +43,17 @@
 ## of the spectrum middle point. The time (`time.s`) however also depends
 ## on the number of scans (`N_scans`) and sweep time (`sweep.time.s`) for each
 ## spectrum in the kinetic series. Time converted into seconds
-time_correct_EPR_Specs  <-  function(time.s,Nscans,sweep.time.s){
+time_correct_EPR_Specs <- function(time.s,
+                                   Nscans,
+                                   sweep.time.s) {
   #
-  if(Nscans == 0){
+  if (Nscans == 0) {
     #
-    return(round(time.s + sweep.time.s*Nscans + sweep.time.s/2))
+    return(round(time.s + sweep.time.s * Nscans + sweep.time.s / 2))
     #
-  } else{
+  } else {
     #
-    return(round(time.s + sweep.time.s*(Nscans - 1) + sweep.time.s/2))
+    return(round(time.s + sweep.time.s * (Nscans - 1) + sweep.time.s / 2))
     #
   }
 }

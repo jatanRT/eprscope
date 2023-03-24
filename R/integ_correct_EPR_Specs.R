@@ -19,7 +19,8 @@
 #' @param integ.single Character/String pointing to single integral \code{column} of EPR spectrum data frame
 #'   \code{spectrum.data} (\strong{default}: \code{integ.single = "single_integ"})
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-#'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`
+#'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
+#'   to entire `B` range).
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`
 #' @param poly.degree Numeric, degree of polynomial function used to fit the baseline under the single integrated
@@ -53,38 +54,48 @@
 #'
 #' @importFrom pracma cumtrapz
 integ_correct_EPR_Specs <- function(data.spec.integ,
-                                   B = "B_G",
-                                   integ.single = "single_integ",
-                                   Blim,
-                                   BpeaKlim,
-                                   poly.degree,
-                                   double.integ = FALSE,
-                                   output.vector = FALSE){
+                                    B = "B_G",
+                                    integ.single = "single_integ",
+                                    Blim = NULL,
+                                    BpeaKlim,
+                                    poly.degree,
+                                    double.integ = FALSE,
+                                    output.vector = FALSE) {
   ## 'Temporary' processing variables
   sIntegBaseLinFit <- NULL
   sIntegCorr <- NULL
+  #
+  ## Define limits
+  if (is.null(Blim)) {
+    ## the entire data region
+    Blim <- c(min(data.spec.integ[[B]]), max(data.spec.integ[[B]]))
+  } else {
+    ## otherwise use predefined vector
+    Blim <- Blim
+  }
   #
   ## select a region / range / interval of a integrated spectrum
   ## in which the second integral will be performed
   ## (limits are 'Blim[1]'<=> 'start','Blim[2]' <=> 'end'):
   data.slct <- data.spec.integ %>%
-    filter(between(.data[[B]],Blim[1],Blim[2]))
+    filter(between(.data[[B]], Blim[1], Blim[2]))
   #
   ## select region / range / interval of the peak, which will be not
   ## considered ("!") for the baseline correction / fit
   ## (limits are 'BpeaKlim[1]'<=> 'start','BpeaKlim[2]' <=> 'end'):
   data.NoPeak <- data.slct %>%
-    filter(!between(.data[[B]],BpeaKlim[1],BpeaKlim[2]))
+    filter(!between(.data[[B]], BpeaKlim[1], BpeaKlim[2]))
   #
   ## Polynomial baseline fit:
-  integ.baseline.fit <- stats::lm(.data[[integ.single]] ~ stats::poly(.data[[B]],degree = poly.degree),
-                           data = data.NoPeak)
+  integ.baseline.fit <- stats::lm(.data[[integ.single]] ~ stats::poly(.data[[B]], degree = poly.degree),
+    data = data.NoPeak
+  )
   #
   ## apply fit to data.slct, remove the .resid colum (which is not required),
   ## rename column with fit, subtract the baseline,
   ## then shift the integral baseline up having all the values > 0 (subtract its minimum)
   ## and finally calculate the double integral
-  data.slct <- broom::augment(integ.baseline.fit,newdata = data.slct) %>%
+  data.slct <- broom::augment(integ.baseline.fit, newdata = data.slct) %>%
     dplyr::select(-.data[[".resid"]]) %>%
     dplyr::rename(sIntegBaseLinFit = .data[[".fitted"]]) %>%
     dplyr::mutate(sIntegCorr = .data[[integ.single]] - .data$sIntegBaseLinFit) %>%
@@ -92,17 +103,17 @@ integ_correct_EPR_Specs <- function(data.spec.integ,
     dplyr::mutate(sIntegCorr = sIntegCorr - min(.data$sIntegCorr))
   #
   ## double integral calculation:
-  if (isTRUE(double.integ)){
-    if (isTRUE(output.vector)){
-      result.integ.data <- pracma::cumtrapz(data.slct[[B]],data.slct$sIntegCorr)[,1]
+  if (isTRUE(double.integ)) {
+    if (isTRUE(output.vector)) {
+      result.integ.data <- pracma::cumtrapz(data.slct[[B]], data.slct$sIntegCorr)[, 1]
     } else {
       result.integ.data <- data.slct %>%
-        dplyr::mutate(dIntegCorr = pracma::cumtrapz(.data[[B]],sIntegCorr)[,1])
+        dplyr::mutate(dIntegCorr = pracma::cumtrapz(.data[[B]], sIntegCorr)[, 1])
     }
-  } else{
-    if (isTRUE(output.vector)){
+  } else {
+    if (isTRUE(output.vector)) {
       result.integ.data <- data.slct$sIntegCorr
-    } else{
+    } else {
       result.integ.data <- data.slct
     }
   }

@@ -18,7 +18,8 @@
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param xlim Numeric vector corresponding to border limits of the selected \eqn{x} region,
 #'   e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
-#'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless)
+#'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
+#'   to entire `x` range)
 #'
 #'
 #' @return Numeric value of difference of \code{x}-axis quantity like \eqn{B},\eqn{g},\eqn{RF} (the absolute value)
@@ -48,23 +49,31 @@
 DeltaXpp_Spec <- function(data.spectrum,
                           x = "B_mT",
                           Intensity = "dIepr_over_dB",
-                          xlim){
+                          xlim = NULL) {
+  ## Define limits
+  if (is.null(xlim)) {
+    ## the entire data region
+    xlim <- c(min(data.spectrum[[x]]), max(data.spectrum[[x]]))
+  } else {
+    ## otherwise use predefined vector
+    xlim <- xlim
+  }
   #
   ## x corresponding to minimum and maximum derivative intensities
   ## in the selected x region:
   x.min <- data.spectrum %>%
-    filter(between(.data[[x]],xlim[1],xlim[2])) %>%
+    filter(between(.data[[x]], xlim[1], xlim[2])) %>%
     filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
     pull(.data[[x]])
   #
   x.max <- data.spectrum %>%
-    filter(between(.data[[x]],xlim[1],xlim[2])) %>%
+    filter(between(.data[[x]], xlim[1], xlim[2])) %>%
     filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     pull(.data[[x]])
   #
   ## Delta_B calculation:
   DeltaX_pp <- abs(x.min - x.max)
   #
-  return(round(DeltaX_pp,digits = 2))
+  return(round(DeltaX_pp, digits = 2))
   #
 }

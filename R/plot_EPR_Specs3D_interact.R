@@ -47,7 +47,6 @@
 #' @return tbc
 #'
 #'
-#'
 #' @examples
 #' \dontrun{
 #' tbc
@@ -59,25 +58,25 @@
 #'
 #'
 plot_EPR_Specs3D_interact <- function(data.spectra.series,
-                                    x = "B_mT",
-                                    Intensity = "dIepr_over_dB",
-                                    var2nd = "time_s",
-                                    plot.type = "surface",
-                                    scheme.color = "Viridis",
-                                    contour.labels = FALSE,
-                                    xlim = NULL,
-                                    xlab = "<i>B</i> (mT)",
-                                    ylab = "<i>Time</i> (s)",
-                                    zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
-                                    axis.title.size = 12,
-                                    axis.text.size = 11,
-                                    bg.x.color = "rgb(220, 220,220)",
-                                    grid.x.color = "rgb(255, 255, 255)",
-                                    bg.y.color = "rgb(220, 220,220)",
-                                    grid.y.color = "rgb(255, 255, 255)",
-                                    bg.z.color = "rgb(220, 220,220)",
-                                    grid.z.color = "rgb(255, 255, 255)",
-                                    output.matrix.table = FALSE){
+                                      x = "B_mT",
+                                      Intensity = "dIepr_over_dB",
+                                      var2nd = "time_s",
+                                      plot.type = "surface",
+                                      scheme.color = "Viridis",
+                                      contour.labels = FALSE,
+                                      xlim = NULL,
+                                      xlab = "<i>B</i> (mT)",
+                                      ylab = "<i>Time</i> (s)",
+                                      zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)",
+                                      axis.title.size = 12,
+                                      axis.text.size = 11,
+                                      bg.x.color = "rgb(220, 220,220)",
+                                      grid.x.color = "rgb(255, 255, 255)",
+                                      bg.y.color = "rgb(220, 220,220)",
+                                      grid.y.color = "rgb(255, 255, 255)",
+                                      bg.z.color = "rgb(220, 220,220)",
+                                      grid.z.color = "rgb(255, 255, 255)",
+                                      output.matrix.table = FALSE) {
   #
   ## `var2nd` (e.g. time) as factor to properly present
   data.spectra.series[[var2nd]] <- as.factor(data.spectra.series[[var2nd]])
@@ -94,11 +93,11 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ##    ||
   ##    \/
   ## var2nd length => how many points + conditions + filtering
-  if (var2nd_select_len >= 80 & var2nd_select_len < 160){
-    var2nd_select_df <- var2nd_select_df[seq(1,var2nd_select_len,by = 2),]
+  if (var2nd_select_len >= 80 & var2nd_select_len < 160) {
+    var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 2), ]
   }
-  if (var2nd_select_len >= 160){
-    var2nd_select_df <- var2nd_select_df[seq(1,var2nd_select_len,by = 4),]
+  if (var2nd_select_len >= 160) {
+    var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 4), ]
   }
   #
   ## Filtering, accordingly (only those `var2nd` values defined above in `data.spectra.series`)
@@ -112,8 +111,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #
   ## convert data from 'long' to 'wide' table format & finally to matrix
   Intensity_matrix <- data.spectra.series %>%
-    dplyr::select(.data[[var2nd]],.data[[x]],.data[[Intensity]]) %>%
-    tidyr::pivot_wider(names_from = .data[[var2nd]],values_from = .data[[Intensity]]) %>%
+    dplyr::select(.data[[var2nd]], .data[[x]], .data[[Intensity]]) %>%
+    tidyr::pivot_wider(names_from = .data[[var2nd]], values_from = .data[[Intensity]]) %>%
     dplyr::select(-.data[[x]]) %>%
     as.matrix()
   ## transpose matrix in order to present 3D spectra properly
@@ -124,132 +123,196 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     dplyr::filter(.data[[var2nd]] == .data[[var2nd]][1])
   #
   ## own 3D plot (different types "surface","contour","")
-  if (plot.type == "surface"){
-    if (isTRUE(contour.labels)){
-      base_plot <- plotly::plot_ly(x = ~X_select_df[[x]],
-                                   y = ~var2nd_select_df[[var2nd]],
-                                   z = ~Intensity_matrix,
-                                   type = plot.type,
-                                   colorscale = scheme.color,
-                                   contours = list(
-                                     z = list(
-                                       show = TRUE,
-                                       usecolormap = TRUE,
-                                       highlightcolor = "#ff0000",
-                                       project = list(z = TRUE))
-                                   )
+  if (plot.type == "surface") {
+    if (isTRUE(contour.labels)) {
+      base_plot <- plotly::plot_ly(
+        x = ~ X_select_df[[x]],
+        y = ~ var2nd_select_df[[var2nd]],
+        z = ~Intensity_matrix,
+        type = plot.type,
+        colorscale = scheme.color,
+        contours = list(
+          z = list(
+            show = TRUE,
+            usecolormap = TRUE,
+            highlightcolor = "#ff0000",
+            project = list(z = TRUE)
+          )
+        )
       )
-    } else{
-      base_plot <- plotly::plot_ly(x = ~X_select_df[[x]],
-                                   y = ~var2nd_select_df[[var2nd]],
-                                   z = ~Intensity_matrix,
-                                   type = plot.type,
-                                   colorscale = scheme.color)
+    } else {
+      base_plot <- plotly::plot_ly(
+        x = ~ X_select_df[[x]],
+        y = ~ var2nd_select_df[[var2nd]],
+        z = ~Intensity_matrix,
+        type = plot.type,
+        colorscale = scheme.color
+      )
     }
-    if (is.null(xlim)){
+    if (is.null(xlim)) {
       final_plot <- base_plot %>%
         plotly::layout(
           scene = list(
-            xaxis = list(title = list(text = xlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         gridcolor = grid.x.color,
-                         showbackground = TRUE,
-                         backgroundcolor = bg.x.color),
-            yaxis = list(title = list(text = ylab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         gridcolor = grid.y.color,
-                         showbackground = TRUE,
-                         backgroundcolor = bg.y.color),
-            zaxis = list(title = list(text = zlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         gridcolor = grid.z.color,
-                         showbackground = TRUE,
-                         backgroundcolor = bg.z.color,
-                         tickformat = ".1e")
-          )) %>%
-        plotly::colorbar(title = list(text = zlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         tickformat = ".1e")
-    } else{
+            xaxis = list(
+              title = list(
+                text = xlab,
+                font = list(size = axis.title.size)
+              ),
+              tickfont = list(size = axis.text.size),
+              gridcolor = grid.x.color,
+              showbackground = TRUE,
+              backgroundcolor = bg.x.color
+            ),
+            yaxis = list(
+              title = list(
+                text = ylab,
+                font = list(size = axis.title.size)
+              ),
+              tickfont = list(size = axis.text.size),
+              gridcolor = grid.y.color,
+              showbackground = TRUE,
+              backgroundcolor = bg.y.color
+            ),
+            zaxis = list(
+              title = list(
+                text = zlab,
+                font = list(size = axis.title.size)
+              ),
+              tickfont = list(size = axis.text.size),
+              gridcolor = grid.z.color,
+              showbackground = TRUE,
+              backgroundcolor = bg.z.color,
+              tickformat = ".1e"
+            )
+          )
+        ) %>%
+        plotly::colorbar(
+          title = list(
+            text = zlab,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          tickformat = ".1e"
+        )
+    } else {
       final_plot <- base_plot %>%
         plotly::layout(
           scene = list(
-            xaxis = list(title = list(text = xlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         gridcolor = grid.x.color,
-                         showbackground = TRUE,
-                         backgroundcolor = bg.x.color,
-                         range = xlim),
-            yaxis = list(title = list(text = ylab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         gridcolor = grid.y.color,
-                         showbackground = TRUE,
-                         backgroundcolor = bg.y.color),
-            zaxis = list(title = list(text = zlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         gridcolor = grid.z.color,
-                         showbackground = TRUE,
-                         backgroundcolor = bg.z.color,
-                         tickformat = ".1e")
-          )) %>%
-        plotly::colorbar(title = list(text = zlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         tickformat = ".1e")
+            xaxis = list(
+              title = list(
+                text = xlab,
+                font = list(size = axis.title.size)
+              ),
+              tickfont = list(size = axis.text.size),
+              gridcolor = grid.x.color,
+              showbackground = TRUE,
+              backgroundcolor = bg.x.color,
+              range = xlim
+            ),
+            yaxis = list(
+              title = list(
+                text = ylab,
+                font = list(size = axis.title.size)
+              ),
+              tickfont = list(size = axis.text.size),
+              gridcolor = grid.y.color,
+              showbackground = TRUE,
+              backgroundcolor = bg.y.color
+            ),
+            zaxis = list(
+              title = list(
+                text = zlab,
+                font = list(size = axis.title.size)
+              ),
+              tickfont = list(size = axis.text.size),
+              gridcolor = grid.z.color,
+              showbackground = TRUE,
+              backgroundcolor = bg.z.color,
+              tickformat = ".1e"
+            )
+          )
+        ) %>%
+        plotly::colorbar(
+          title = list(
+            text = zlab,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          tickformat = ".1e"
+        )
     }
   }
   #
-  if (plot.type == "contour"){
-    base_plot <- plotly::plot_ly(x = ~X_select_df[[x]],
-                          y = ~var2nd_select_df[[var2nd]],
-                          z = ~Intensity_matrix,
-                          type = plot.type,
-                          colorscale = scheme.color,
-                          contours = list(
-                            coloring = "heatmap", # for continuous color presentation
-                            showlabels = contour.labels
-                          ))
-    if (is.null(xlim)){
+  if (plot.type == "contour") {
+    base_plot <- plotly::plot_ly(
+      x = ~ X_select_df[[x]],
+      y = ~ var2nd_select_df[[var2nd]],
+      z = ~Intensity_matrix,
+      type = plot.type,
+      colorscale = scheme.color,
+      contours = list(
+        coloring = "heatmap", # for continuous color presentation
+        showlabels = contour.labels
+      )
+    )
+    if (is.null(xlim)) {
       final_plot <- base_plot %>%
         plotly::layout(
-          xaxis = list(title = list(text = xlab,
-                                    font = list(size = axis.title.size)),
-                       tickfont = list(size = axis.text.size)),
-          yaxis = list(title = list(text = ylab,
-                                    font = list(size = axis.title.size)),
-                       tickfont = list(size = axis.text.size))
+          xaxis = list(
+            title = list(
+              text = xlab,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size)
+          ),
+          yaxis = list(
+            title = list(
+              text = ylab,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size)
+          )
         ) %>%
-        plotly::colorbar(title = list(text = zlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         tickformat = ".1e")
-    } else{
+        plotly::colorbar(
+          title = list(
+            text = zlab,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          tickformat = ".1e"
+        )
+    } else {
       final_plot <- base_plot %>%
         plotly::layout(
-          xaxis = list(title = list(text = xlab,
-                                    font = list(size = axis.title.size)),
-                       tickfont = list(size = axis.text.size),
-                       range = xlim),
-          yaxis = list(title = list(text = ylab,
-                                    font = list(size = axis.title.size)),
-                       tickfont = list(size = axis.text.size))
+          xaxis = list(
+            title = list(
+              text = xlab,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size),
+            range = xlim
+          ),
+          yaxis = list(
+            title = list(
+              text = ylab,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size)
+          )
         ) %>%
-        plotly::colorbar(title = list(text = zlab,
-                                      font = list(size = axis.title.size)),
-                         tickfont = list(size = axis.text.size),
-                         tickformat = ".1e")
+        plotly::colorbar(
+          title = list(
+            text = zlab,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          tickformat = ".1e"
+        )
     }
   }
   #
   ## matrix table output
-  if (isTRUE(output.matrix.table)){
+  if (isTRUE(output.matrix.table)) {
     ## re-transpose
     Intensity_matrix <- t(Intensity_matrix)
     ## matrix -> data frame
@@ -257,8 +320,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     ## column names
     colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd]])
     ## return both plot and table in list
-    final_plotPlusTable <- list(plot = final_plot,table = matrix_to_df_table)
-  } else{
+    final_plotPlusTable <- list(plot = final_plot, table = matrix_to_df_table)
+  } else {
     final_plotPlusTable <- final_plot ## no table/df included
   }
   #

@@ -67,28 +67,30 @@
 #'
 #' @export
 #'
-readEPR_param_slct <- function(path_to_DSC_or_par,string,origin = "xenon"){
+readEPR_param_slct <- function(path_to_DSC_or_par,
+                               string,
+                               origin = "xenon") {
   #
   ## path corresponds to file (.DSC) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
-  sel.str.line <- grep(string,readLines(path_to_DSC_or_par),value = T)
+  sel.str.line <- grep(string, readLines(path_to_DSC_or_par), value = T)
   #
   ## such line is then separated (split) into two ('n = 2') string parts
   ## by 'str_split' comming from 'stringr' pckg.
-  sel.str.split <- stringr::str_split(sel.str.line,"[[:space:]]+",n = 2)
+  sel.str.split <- stringr::str_split(sel.str.line, "[[:space:]]+", n = 2)
   #
   ## the result is list, therefore select the second list element ('[[1]][2]'):
-  if (origin == "xenon"){
-    if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMP"){
+  if (origin == "xenon") {
+    if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMP") {
       param.slct <- as.character(sel.str.split[[1]][2])
-    } else{
+    } else {
       param.slct <- as.double(sel.str.split[[1]][2])
     }
   }
-  if (origin == "winepr"){
-    if (string == "JON" || string == "JCO" || string == "JDA" || string == "JTM"){
+  if (origin == "winepr") {
+    if (string == "JON" || string == "JCO" || string == "JDA" || string == "JTM") {
       param.slct <- as.character(sel.str.split[[1]][2])
-    } else{
+    } else {
       param.slct <- as.double(sel.str.split[[1]][2])
     }
   }

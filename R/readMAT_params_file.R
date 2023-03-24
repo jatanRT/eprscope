@@ -28,16 +28,16 @@
 #'
 #'
 readMAT_params_file <- function(path_to_MAT,
-                               str.var,
-                               field.var = NULL){
+                                str.var,
+                                field.var = NULL) {
   data.params <- R.matlab::readMat(path_to_MAT)
   #
-  if (is.null(field.var)){
+  if (is.null(field.var)) {
     params <- data.params[[str.var]]
-  } else{
-    params <- data.params[[str.var]][, ,1][[field.var]]
+  } else {
+    params <- data.params[[str.var]][, , 1][[field.var]]
   }
   #
   return(params)
- #
+  #
 }

@@ -33,31 +33,42 @@
 interval_cnfdnc_t_vecCol <- function(data.vec.col,
                                      level.cnfdnc = 0.95,
                                      lw.tail = TRUE,
-                                     separate = FALSE){
+                                     separate = FALSE) {
   #
   ## alpha (significance level)
-  level.sgnfcn <- 1-level.cnfdnc
+  level.sgnfcn <- 1 - level.cnfdnc
   #
   ## number of experiments
   n.data <- length(data.vec.col)
   #
   ## `qt` value
-  if (isTRUE(lw.tail)){
-    qt.data <- stats::qt(p = 1-level.sgnfcn/2,df = n.data - 1,lower.tail = lw.tail)
-  } else{
-    qt.data <- stats::qt(p = level.sgnfcn/2,df = n.data - 1,lower.tail = lw.tail)
+  if (isTRUE(lw.tail)) {
+    qt.data <- stats::qt(
+      p = 1 - level.sgnfcn / 2,
+      df = n.data - 1,
+      lower.tail = lw.tail
+    )
+  } else {
+    qt.data <- stats::qt(
+      p = level.sgnfcn / 2,
+      df = n.data - 1,
+      lower.tail = lw.tail
+    )
   }
   #
   ## uncertainty
-  uncrt.data <- qt.data*(stats::sd(data.vec.col)/sqrt(n.data))
+  uncrt.data <- qt.data * (stats::sd(data.vec.col) / sqrt(n.data))
   #
   ## calculation
-  if (isTRUE(separate)){
-    value.cnfdnc <- c("value" = mean(data.vec.col),
-                      "uncertainty" = uncrt.data)
-  } else{
-    value.cnfdnc <- errors::set_errors(mean(data.vec.col),uncrt.data)
+  if (isTRUE(separate)) {
+    value.cnfdnc <- c(
+      "value" = mean(data.vec.col),
+      "uncertainty" = uncrt.data
+    )
+  } else {
+    value.cnfdnc <- errors::set_errors(mean(data.vec.col), uncrt.data)
   }
+  #
   return(value.cnfdnc)
   #
 }

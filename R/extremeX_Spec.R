@@ -15,8 +15,10 @@
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param xlim Numeric vector corresponding to border limits of the selected \eqn{x} region,
 #'   e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
-#'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless)
-#' @param extreme Character/String with only a two values allowed: \code{"min"} or \code{"max"}
+#'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
+#'   to entire `x` range)
+#' @param extreme Character/String with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default})
+#'
 #'
 #' @returns Numeric value of \code{x}-axis quantity like \eqn{B},\eqn{g},\eqn{RF} corresponding
 #'  to \code{minimal} or \code{maximal} \code{intensity} within the EPR/ENDOR spectrum (or its integrated form)
@@ -30,8 +32,7 @@
 #' extremeX_Spec(data.frame,
 #'               "g_Value",
 #'               Intensity = "Integrated_Intensity",
-#'               c(2.007,2.000),
-#'               'max')
+#'               c(2.007,2.000))
 #' }
 #'
 #'
@@ -43,27 +44,36 @@
 ## intensity ('dIepr_over_dB' or other name/label). To select a region / span / interval
 ## (limits are `xlim`, `xlim[1]` <=> 'start',`xlim[2]` <=> 'end')
 ## of single spectrum in which the extreme ("max" or "min") needs to be found
-extremeX_Spec  <-  function(data.spectrum,
-                            x = "B_mT",
-                            Intensity = "dIepr_over_dB",
-                            xlim,
-                            extreme){
-  if (extreme == "min"){
-    x.min  <-  data.spectrum  %>%
-      filter(between(.data[[x]],xlim[1],xlim[2]))  %>%
-      filter(.data[[Intensity]] == min(.data[[Intensity]]))  %>%
+extremeX_Spec <- function(data.spectrum,
+                          x = "B_mT",
+                          Intensity = "dIepr_over_dB",
+                          xlim = NULL,
+                          extreme = "max") {
+  #
+  ## Define limits
+  if (is.null(xlim)) {
+    ## the entire data region
+    xlim <- c(min(data.spectrum[[x]]), max(data.spectrum[[x]]))
+  } else {
+    ## otherwise use predefined vector
+    xlim <- xlim
+  }
+  if (extreme == "min") {
+    x.min <- data.spectrum %>%
+      filter(between(.data[[x]], xlim[1], xlim[2])) %>%
+      filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
       pull(.data[[x]])
     #
-    return(round(x.min,digits = 2))
+    return(round(x.min, digits = 2))
     #
   }
-  if (extreme == "max"){
-    x.max  <-  data.spectrum  %>%
-      filter(between(.data[[x]],xlim[1],xlim[2]))  %>%
-      filter(.data[[Intensity]] == max(.data[[Intensity]]))  %>%
+  if (extreme == "max") {
+    x.max <- data.spectrum %>%
+      filter(between(.data[[x]], xlim[1], xlim[2])) %>%
+      filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
       pull(.data[[x]])
     #
-    return(round(x.max,digits = 2))
+    return(round(x.max, digits = 2))
     #
   }
 }

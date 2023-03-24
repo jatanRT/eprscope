@@ -8,7 +8,7 @@ integ_correct_EPR_Specs(
   data.spec.integ,
   B = "B_G",
   integ.single = "single_integ",
-  Blim,
+  Blim = NULL,
   BpeaKlim,
   poly.degree,
   double.integ = FALSE,
@@ -29,7 +29,8 @@ or \code{B = "B_G"} (\strong{default})}
 \code{spectrum.data} (\strong{default}: \code{integ.single = "single_integ"})}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
+of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
+to entire `B` range).}
 
 \item{BpeaKlim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`}

@@ -29,27 +29,31 @@
 plot_EPR_present_interact <- function(p,
                                       size.width = 700,
                                       size.height = 500,
-                                      size.resolv.f = 2){
+                                      size.resolv.f = 2) {
   #
   ## widget and webshot
-  widget <- saveWidget(widget = p,
-                       file = paste0(deparse(substitute(p)),".html"),
-                       selfcontained = FALSE)
-  webshot <- webshot(url = paste0(deparse(substitute(p)),".html"),
-                     file = paste0(deparse(substitute(p)),".png"),
-                     delay = 2,
-                     vwidth = size.width,
-                     vheight = size.height,
-                     zoom = size.resolv.f)
+  widget <- saveWidget(
+    widget = p,
+    file = paste0(deparse(substitute(p)), ".html"),
+    selfcontained = FALSE
+  )
+  webshot <- webshot(
+    url = paste0(deparse(substitute(p)), ".html"),
+    file = paste0(deparse(substitute(p)), ".png"),
+    delay = 2,
+    vwidth = size.width,
+    vheight = size.height,
+    zoom = size.resolv.f
+  )
   #
   ## Conditions
-  if (knitr::is_latex_output()){
+  if (knitr::is_latex_output()) {
     widget
     webshot
-  } else if (knitr::pandoc_to(fmt = "docx")){
+  } else if (knitr::pandoc_to(fmt = "docx")) {
     widget
     webshot
-  } else{
+  } else {
     p
   }
 }

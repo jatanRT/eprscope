@@ -45,32 +45,40 @@
 #'
 #'
 #' @importFrom stringr str_subset str_extract regex
-aAiso_rearrng_QCHcomp <- function(path_to_ASC,col.names,nuclei.list.slct){
+aAiso_rearrng_QCHcomp <- function(path_to_ASC,
+                                  col.names,
+                                  nuclei.list.slct) {
   #
   ## 'Temporary' processing variables
   mT <- NULL
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- str_subset(col.names,regex("mhz|megahertz",ignore_case = T))
-  a.str <- str_subset(col.names,regex("gauss|G|Gauss"))
-  atomic.num.str <- str_subset(col.names,regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
-  nucl.str <- str_subset(col.names,regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM",ignore_case = T))
+  A.str <- str_subset(col.names, regex("mhz|megahertz", ignore_case = T))
+  a.str <- str_subset(col.names, regex("gauss|G|Gauss"))
+  atomic.num.str <- str_subset(col.names, regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
+  nucl.str <- str_subset(col.names, regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM", ignore_case = T))
   #
   ## Read the data:
-  data.Aa.comput <- data.table::fread(path_to_ASC,sep = "auto",header = F,skip = 1,
-                                      col.names = col.names) %>%
-    mutate(MegaHertz = abs(round(.data[[A.str]],digits = 3)),
-           Gauss = abs(round(.data[[a.str]],digits = 2))) %>%
-    select(c(.data[[atomic.num.str]],.data[[nucl.str]],.data$MegaHertz,.data$Gauss))
+  data.Aa.comput <- data.table::fread(path_to_ASC,
+    sep = "auto", header = F, skip = 1,
+    col.names = col.names
+  ) %>%
+    mutate(
+      MegaHertz = abs(round(.data[[A.str]], digits = 3)),
+      Gauss = abs(round(.data[[a.str]], digits = 2))
+    ) %>%
+    select(c(.data[[atomic.num.str]], .data[[nucl.str]], .data$MegaHertz, .data$Gauss))
   #
   ## Own function to rearrange A/a according to `nuclei.list.slct`
   ## Build up new rearranged data frame for Nuclei A/a:
-  data.slct.nucs.group <- data.frame(No = integer(),Nucleus = character(),
-                              MegaHertz = double(),Gauss = double(),NuclearGroup = character())
+  data.slct.nucs.group <- data.frame(
+    No = integer(), Nucleus = character(),
+    MegaHertz = double(), Gauss = double(), NuclearGroup = character()
+  )
   #
   ## cycle for each `nuclei.list.slct` component
-  for (k in 1:length(nuclei.list.slct)){
+  for (k in 1:length(nuclei.list.slct)) {
     #
     ## Filter atomic numbers from each part of the list:
     sal <- data.Aa.comput %>%
@@ -80,35 +88,37 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,col.names,nuclei.list.slct){
     how.many.nucs <- length(nuclei.list.slct[[k]])
     #
     ## Extract atomic/nuclear label:
-    mark.nucs <- str_extract(sal[[nucl.str]][1],"[[:alpha:]]+")
+    mark.nucs <- str_extract(sal[[nucl.str]][1], "[[:alpha:]]+")
     #
     ## Extract isotope number:
-    nucleo.nucs <- str_extract(sal[[nucl.str]][1],"[[:digit:]]+")
+    nucleo.nucs <- str_extract(sal[[nucl.str]][1], "[[:digit:]]+")
     #
     ## Extract atomic/nuclear numbers and collapse it into one string:
-    num.nucs.str <- paste(sal[[atomic.num.str]],collapse = ",")
+    num.nucs.str <- paste(sal[[atomic.num.str]], collapse = ",")
     #
     ## Now combine all four variables by paste:
-    group.nucs <- paste0(how.many.nucs," x ",nucleo.nucs,mark.nucs," (",num.nucs.str,")")
+    group.nucs <- paste0(how.many.nucs, " x ", nucleo.nucs, mark.nucs, " (", num.nucs.str, ")")
     #
     ## Replicate the previous string variable corresponding to length of a list component/part:
-    NuclearGroup <- rep(group.nucs,length(nuclei.list.slct[[k]]))
+    NuclearGroup <- rep(group.nucs, length(nuclei.list.slct[[k]]))
     #
     ## Build up data frame row by row:
-    gal <- data.frame(sal,NuclearGroup) ## at first combine by columns
-    data.slct.nucs.group <- rbind(data.slct.nucs.group,gal)
+    gal <- data.frame(sal, NuclearGroup) ## at first combine by columns
+    data.slct.nucs.group <- rbind(data.slct.nucs.group, gal)
   }
   ## Group by and summarize (find the mean value of each list component) according
   ## to `nuclei.list.slct` (symmetry) and previous `for loop`:
   #
   data.slct.nucs.group <- data.slct.nucs.group %>%
-    mutate(mT = .data$Gauss/10) %>%
-    select(-c(.data$No,.data$Nucleus,.data$Gauss)) %>%
+    mutate(mT = .data$Gauss / 10) %>%
+    select(-c(.data$No, .data$Nucleus, .data$Gauss)) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
-    dplyr::summarize(Aiso_MHz_QCH = round(mean(.data$MegaHertz),digits = 3),
-                     aiso_mT_QCH = round(mean(.data$mT),digits = 2))
-   #
-   ## Entire output table:
+    dplyr::summarize(
+      Aiso_MHz_QCH = round(mean(.data$MegaHertz), digits = 3),
+      aiso_mT_QCH = round(mean(.data$mT), digits = 2)
+    )
+  #
+  ## Entire output table:
   return(data.slct.nucs.group)
   #
 }

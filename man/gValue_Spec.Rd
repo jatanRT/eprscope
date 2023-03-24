@@ -9,7 +9,7 @@ gValue_Spec(
   nu.GHz,
   B = "B_mT",
   Intensity = "dIepr_over_dB",
-  Blim,
+  Blim = NULL,
   iso = TRUE
 )
 }
@@ -28,7 +28,8 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`}
+of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
+to entire `B` range).}
 
 \item{iso}{Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}

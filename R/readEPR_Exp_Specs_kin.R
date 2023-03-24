@@ -62,85 +62,102 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
                                   dir_ASC,
                                   dir_DSC_or_par,
                                   time.unit = "s",
-                                  col.names = c("index",
-                                                "B_G",
-                                                "time_s",
-                                                "dIepr_over_dB"),
+                                  col.names = c(
+                                    "index",
+                                    "B_G",
+                                    "time_s",
+                                    "dIepr_over_dB"
+                                  ),
                                   origin = "xenon",
-                                  qValue = NULL){
+                                  qValue = NULL) {
   #
   ## file rootname which has to be the same for `ASC`+`DSC`
   ## or `.spc` and `.par`and corresponds to file name without extension
   #
-  if (origin == "xenon"){
+  if (origin == "xenon") {
     ## path to `asc` file
-    path.to.asc <- file.path(dir_ASC,
-                             paste0(file.rootname,".txt"))
+    path.to.asc <- file.path(
+      dir_ASC,
+      paste0(file.rootname, ".txt")
+    )
     #
     ## path to `DSC` or `par`
-    path.to.dsc.par <- file.path(dir_DSC_or_par,
-                                 paste0(file.rootname,".DSC"))
+    path.to.dsc.par <- file.path(
+      dir_DSC_or_par,
+      paste0(file.rootname, ".DSC")
+    )
     #
     ## Qvalue
-    qValue.obtain <- readEPR_param_slct(path.to.dsc.par,string = "QValue")
+    qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue")
   }
-  if (origin == "winepr"){
+  if (origin == "winepr") {
     ## path to asc
-    path.to.asc <- file.path(dir_ASC,
-                             paste0(file.rootname,".asc"))
+    path.to.asc <- file.path(
+      dir_ASC,
+      paste0(file.rootname, ".asc")
+    )
     #
     ## path to `par`
-    path.to.dsc.par <- file.path(dir_DSC_or_par,
-                                 paste0(file.rootname,".par"))
+    path.to.dsc.par <- file.path(
+      dir_DSC_or_par,
+      paste0(file.rootname, ".par")
+    )
     #
     ## to obtain `QValue` run the following
-    if (is.null(qValue)){
+    if (is.null(qValue)) {
       stop(" 'qValue' is not provided. Please, define! ")
-    } else{
+    } else {
       qValue.obtain <- qValue
     }
   }
   #
   ## 'Kinetic' instrum. params
-  instrument.params.kinet <- readEPR_params_slct_kin(path.to.dsc.par,origin = origin)
+  instrument.params.kinet <- readEPR_params_slct_kin(path.to.dsc.par, origin = origin)
   #
   ## Intensity variable
-  Intensity <- grep("I|Intens|intens",col.names,value = TRUE)
+  Intensity <- grep("I|Intens|intens", col.names, value = TRUE)
   #
   ## Time variable
-  time <- grep("time|Time|tim|Tim",col.names,value = TRUE)
+  time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
   #
   ## Load spectral data
   data.spectra.time <- readEPR_Exp_Specs(path.to.asc,
-                                         qValue = qValue.obtain,
-                                         col.names = col.names,
-                                         time.series = T,
-                                         origin = origin) %>%
+    qValue = qValue.obtain,
+    col.names = col.names,
+    time.series = T,
+    origin = origin
+  ) %>%
     dplyr::filter(.data[[Intensity]] != 0) ## only non-zero intensities selected
-    #
-    ## recalculate  the time
-    if (time.unit == "s"){
-      data.spectra.time[[time]] <- time_correct_EPR_Specs(time.s = data.spectra.time[[time]],
-                                                         Nscans = instrument.params.kinet$Nscans,
-                                                         sweep.time.s = instrument.params.kinet$sweepTime)
-    }
-    if (time.unit == "min"){
-      data.spectra.time[[time]] = time_correct_EPR_Specs(time.s = data.spectra.time[[time]]*60,
-                                                         Nscans = instrument.params.kinet$Nscans,
-                                                         sweep.time.s = instrument.params.kinet$sweepTime)
-    }
-    if (time.unit == "h"){
-      data.spectra.time[[time]] = time_correct_EPR_Specs(time.s = data.spectra.time[[time]]*3600,
-                                                         Nscans = instrument.params.kinet$Nscans,
-                                                         sweep.time.s = instrument.params.kinet$sweepTime)
-    }
+  #
+  ## recalculate  the time
+  if (time.unit == "s") {
+    data.spectra.time[[time]] <- time_correct_EPR_Specs(
+      time.s = data.spectra.time[[time]],
+      Nscans = instrument.params.kinet$Nscans,
+      sweep.time.s = instrument.params.kinet$sweepTime
+    )
+  }
+  if (time.unit == "min") {
+    data.spectra.time[[time]] <- time_correct_EPR_Specs(
+      time.s = data.spectra.time[[time]] * 60,
+      Nscans = instrument.params.kinet$Nscans,
+      sweep.time.s = instrument.params.kinet$sweepTime
+    )
+  }
+  if (time.unit == "h") {
+    data.spectra.time[[time]] <- time_correct_EPR_Specs(
+      time.s = data.spectra.time[[time]] * 3600,
+      Nscans = instrument.params.kinet$Nscans,
+      sweep.time.s = instrument.params.kinet$sweepTime
+    )
+  }
   #
   ## corrected time
   time.corrected <- data.spectra.time %>%
     dplyr::group_by(.data[[time]]) %>%
     dplyr::group_keys()
   #
-  data.all.spectra <- list(data = data.spectra.time,time = time.corrected[[time]])
+  data.all.spectra <- list(data = data.spectra.time, time = time.corrected[[time]])
   #
   return(data.all.spectra)
   #

@@ -80,14 +80,16 @@ readEPR_Exp_Specs_multif <- function(pattern,
                                      dir_ASC,
                                      dir_DSC_or_par,
                                      x.unit = "G",
-                                     col.names = c("index",
-                                                   "B_G",
-                                                   "dIepr_over_dB"),
+                                     col.names = c(
+                                       "index",
+                                       "B_G",
+                                       "dIepr_over_dB"
+                                     ),
                                      origin = "xenon",
                                      qValues = NULL,
                                      names,
                                      tidy = FALSE,
-                                     var2nd = NULL){
+                                     var2nd = NULL) {
   #
   ## 'Temporary' processing variables
   new_variable <- NULL
@@ -101,37 +103,46 @@ readEPR_Exp_Specs_multif <- function(pattern,
   file.name.pattern <- pattern
   #
   ## path to all `asc` files
-  files.asc <- list.files(path = dir_ASC,
-                          pattern = file.name.pattern,
-                          full.names = TRUE)
+  files.asc <- list.files(
+    path = dir_ASC,
+    pattern = file.name.pattern,
+    full.names = TRUE
+  )
   #
   ## path to all `raw` (`.DSC`+`.DTA` or `.par`+`.spc`) files
-  files.raw <- list.files(path = dir_DSC_or_par,
-                          pattern = file.name.pattern,
-                          full.names = TRUE)
+  files.raw <- list.files(
+    path = dir_DSC_or_par,
+    pattern = file.name.pattern,
+    full.names = TRUE
+  )
   #
-  if (origin == "xenon"){
+  if (origin == "xenon") {
     ## select only `.DSC` files
-    files.params <- grep(pattern = ".DSC",
-                         files.raw,
-                         value = TRUE)
+    files.params <- grep(
+      pattern = ".DSC",
+      files.raw,
+      value = TRUE
+    )
     ## to obtain `QValues` (from all `.DSC` files) run the following
-    qValues.from.files <- sapply(files.params,
-                                 function(x) readEPR_param_slct(x,string = "QValue"))
+    qValues.from.files <- sapply(
+      files.params,
+      function(x) readEPR_param_slct(x, string = "QValue")
+    )
     ## to obtain microwave frequencies `MWFQ` (from all `.DSC` files),
     ## required for g value calculations
     mwfq.string <- "MWFQ"
-
   }
-  if (origin == "winepr"){
+  if (origin == "winepr") {
     ## select only `.par` files
-    files.params <- grep(pattern = ".par",
-                         files.raw,
-                         value = TRUE)
+    files.params <- grep(
+      pattern = ".par",
+      files.raw,
+      value = TRUE
+    )
     ## to obtain `QValues` run the following
-    if (is.null(qValues)){
+    if (is.null(qValues)) {
       stop(" 'qValues' vector is not provided. Please, define! ")
-    } else{
+    } else {
       qValues.from.files <- qValues
     }
     ## to obtain microwave frequencies `MWFQ` (from all `.par` files),
@@ -143,65 +154,87 @@ readEPR_Exp_Specs_multif <- function(pattern,
   files.raw <- NULL
   #
   ## all frequencies
-  mwfreq.from.files <- sapply(files.params,
-                              function(y) readEPR_param_slct(y,
-                                                             string = mwfq.string,
-                                                             origin = origin))
+  mwfreq.from.files <- sapply(
+    files.params,
+    function(y) {
+      readEPR_param_slct(y,
+        string = mwfq.string,
+        origin = origin
+      )
+    }
+  )
 
-  if (origin == "winepr"){
+  if (origin == "winepr") {
     ## conversion from "GHz" to "Hz"
-    mwfreq.from.files <- mwfreq.from.files*1e9
+    mwfreq.from.files <- mwfreq.from.files * 1e9
   }
   #
   ## --------------------------- SPECTRAL DATA READING  ------------------------------
   #
-  if (x.unit == "G" || x.unit == "mT"){
+  if (x.unit == "G" || x.unit == "mT") {
     ## the all spectra with intensity correction
     ## to `qValue` + new column with `g`-factors
     #
     ## However prior to the operation above `x`/`B` has to be defined
-    x = grep("B|G|mT",col.names,value = TRUE)[[1]]
+    x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
     #
     spectra.datab.from.files <-
-      Map(function(s,t,u) readEPR_Exp_Specs(s,
-                                            qValue = t,
-                                            x.unit = x.unit,
-                                            col.names = col.names,
-                                            origin = origin) %>%
-            dplyr::mutate(g_Value = gValue(nu = u,
-                                           nu.unit = "Hz",
-                                           B = .data[[x]],
-                                           B.unit = x.unit)),
-          files.asc,
-          qValues.from.files,
-          mwfreq.from.files)
+      Map(
+        function(s, t, u) {
+          readEPR_Exp_Specs(s,
+            qValue = t,
+            x.unit = x.unit,
+            col.names = col.names,
+            origin = origin
+          ) %>%
+            dplyr::mutate(g_Value = gValue(
+              nu = u,
+              nu.unit = "Hz",
+              B = .data[[x]],
+              B.unit = x.unit
+            ))
+        },
+        files.asc,
+        qValues.from.files,
+        mwfreq.from.files
+      )
   }
   #
-  if (x.unit == "Unitless"){
+  if (x.unit == "Unitless") {
     ## the all spectra with intensity correction
     #
     spectra.datab.from.files <-
-      Map(function(s,t) readEPR_Exp_Specs(s,
-                                          qValue = t,
-                                          x.unit = x.unit,
-                                          col.names = col.names,
-                                          origin = origin),
-          files.asc,
-          qValues.from.files)
+      Map(
+        function(s, t) {
+          readEPR_Exp_Specs(s,
+            qValue = t,
+            x.unit = x.unit,
+            col.names = col.names,
+            origin = origin
+          )
+        },
+        files.asc,
+        qValues.from.files
+      )
   }
   #
-  if (x.unit == "MHz"){
+  if (x.unit == "MHz") {
     ## the entire database of all spectra with intensity correction to `qValue`
 
     #
     spectra.datab.from.files <-
-      Map(function(s,t) readEPR_Exp_Specs(s,
-                                          qValue = t,
-                                          x.unit = x.unit,
-                                          col.names = col.names,
-                                          origin = origin),
-          files.asc,
-          qValues.from.files)
+      Map(
+        function(s, t) {
+          readEPR_Exp_Specs(s,
+            qValue = t,
+            x.unit = x.unit,
+            col.names = col.names,
+            origin = origin
+          )
+        },
+        files.asc,
+        qValues.from.files
+      )
   }
   #
   ## rename spectra according to desired parameter/quantity/...etc dependecy
@@ -209,19 +242,19 @@ readEPR_Exp_Specs_multif <- function(pattern,
   names(spectra.datab.from.files) <- names
   #
   ## Weather to create a long table format (`tidy`) or not
-  if (isFALSE(tidy)){
+  if (isFALSE(tidy)) {
     #
     return(spectra.datab.from.files)
     #
-  } else{
-    if (is.null(var2nd)){
+  } else {
+    if (is.null(var2nd)) {
       stop(" 'var2nd' string is not provided. Please, define! ")
-    } else{
+    } else {
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-
-        dplyr::bind_rows(spectra.datab.from.files,.id = var2nd) %>%
+        dplyr::bind_rows(spectra.datab.from.files, .id = var2nd) %>%
         dplyr::select(-.data$index) %>% ## remove index
-        dplyr::mutate(new_variable = as.numeric(.data[[var2nd]])) %>% ##new column
+        dplyr::mutate(new_variable = as.numeric(.data[[var2nd]])) %>% ## new column
         dplyr::mutate(new_variable = as.factor(new_variable)) %>%
         dplyr::select(-.data[[var2nd]]) %>% ## delete old col.
         dplyr::rename(!!quo_name(var2nd) := new_variable) ## rename new col. by the name of the old one
