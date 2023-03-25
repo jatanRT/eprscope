@@ -42,7 +42,7 @@ gValue_QCHcomp <- function(path_to_QCHoutput,
   ## g-Value indicator based on `origin`
   if (origin == "gaussian"){
     gval.indicator <- "g shifts relative"
-    start.read.line <- grep(gval.indicator)
+    start.read.line <- grep(gval.indicator,qchfile)
     qchfile.select.g <- qchfile[start.read.line + 1]
     #
     ## character line split into string elements
@@ -50,11 +50,11 @@ gValue_QCHcomp <- function(path_to_QCHoutput,
                                            pattern = "[[:space:]]+")
     #
     ## select only number strings
-    vector.string.dg <- unlist(vector.string.dg) ## `str_split` results in list
+    qchfile.select.g <- unlist(qchfile.select.g) ## `str_split` results in list
     #
-    vector.string.dg <- c(qchfile.select.g[2],
-                          qchfile.select.g[4],
-                          qchfile.select.g[6])
+    vector.string.dg <- c(qchfile.select.g[3],
+                          qchfile.select.g[5],
+                          qchfile.select.g[7])
     #
     #
     ## numeric values (in `Gaussian` they are already presented in ppm)
@@ -62,7 +62,7 @@ gValue_QCHcomp <- function(path_to_QCHoutput,
   }
   if (origin == "orca"){
     gval.indicator <- "Delta-g"
-    start.read.line <- grep(gval.indicator)
+    start.read.line <- grep(gval.indicator,qchfile)
     qchfile.select.g <- qchfile[start.read.line]
     #
     ## character line split into string elements
@@ -70,11 +70,11 @@ gValue_QCHcomp <- function(path_to_QCHoutput,
                                            pattern = "[[:space:]]+")
     #
     ## select only number strings
-    vector.string.dg <- unlist(vector.string.dg) ## `str_split` results in list
+    qchfile.select.g <- unlist(qchfile.select.g) ## `str_split` results in list
     #
-    vector.string.dg <- c(qchfile.select.g[2],
-                          qchfile.select.g[3],
-                          qchfile.select.g[4])
+    vector.string.dg <- c(qchfile.select.g[3],
+                          qchfile.select.g[4],
+                          qchfile.select.g[5])
     #
     ## numeric values (in `ORCA` they are in form 1e-6)
     vector.dg <- as.numeric(as.character(vector.string.dg))*1e6
