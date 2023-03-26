@@ -1,5 +1,5 @@
 #
-#' Convert Splitting Constants (\eqn{a}, HFSCs in mT) to Hyperfine Couplings (\eqn{A}, HFCCs in MHz).
+#' Convert Splitting Constants (\eqn{a} in mT) to Coupling ones (\eqn{A} in MHz).
 #'
 #'
 #' @description Converts hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
@@ -15,15 +15,15 @@
 #'
 #'
 #' @examples
-#' a_mT_conv_to_MHz(a.mT = 0.5)
-#' a_mT_conv_to_MHz(0.6,2.0059)
-#' a_mT_conv_to_MHz(0.15,g = 2.00036)
+#' convert_a_mT_to_A(a.mT = 0.5)
+#' convert_a_mT_to_A(0.6,2.0059)
+#' convert_a_mT_to_A(0.15,g = 2.00036)
 #'
 #'
 #' @export
 #'
 #'
-a_mT_conv_to_MHz <- function(a.mT,g = 2.00231930){
+convert_a_mT_to_A <- function(a.mT,g = 2.00231930){
   #
   Planck.const <- syms$h
   Bohr.magnet <- syms$mub

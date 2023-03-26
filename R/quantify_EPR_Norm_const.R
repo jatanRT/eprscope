@@ -17,19 +17,19 @@
 #'
 #'
 #' @examples
-#' quantitativ_EPR_Norm_const(conv.time.ms = 6.4,
-#'                           Nscans = 6,
-#'                           rg.dB = 30)
-#' quantitativ_EPR_Norm_const(conv.time.ms = 13.52,
-#'                           Nscans = 100,
-#'                           rg.dB = 24)
+#' quantify_EPR_Norm_const(conv.time.ms = 6.4,
+#'                         Nscans = 6,
+#'                         rg.dB = 30)
+#' quantify_EPR_Norm_const(conv.time.ms = 13.52,
+#'                         Nscans = 100,
+#'                         rg.dB = 24)
 #'
 #' @export
 #'
 #'
-quantitativ_EPR_Norm_const <- function(conv.time.ms,
-                                       Nscans,
-                                       rg.dB){
+quantify_EPR_Norm_const <- function(conv.time.ms,
+                                    Nscans,
+                                    rg.dB){
   #
   ## Receiver Gain devided by '20'
   rg.dB.20 <- rg.dB/20

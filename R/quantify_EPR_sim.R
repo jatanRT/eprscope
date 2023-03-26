@@ -31,15 +31,15 @@
 #'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange
-quantitativ_EPR_sim <- function(data.spectra.series,
-                                path_to_ASC_sim,
-                                var2nd = "time_s",
-                                B.unit = "G",
-                                Intensity.exp = "dIepr_over_dB",
-                                Intensity.sim = "dIeprSim_over_dB",
-                                integ.single = "sIntegral_Sim",
-                                integ.double = "dIntegral_Sim",
-                                output.area = TRUE) {
+quantify_EPR_sim <- function(data.spectra.series,
+                             path_to_ASC_sim,
+                             var2nd = "time_s",
+                             B.unit = "G",
+                             Intensity.exp = "dIepr_over_dB",
+                             Intensity.sim = "dIeprSim_over_dB",
+                             integ.single = "sIntegral_Sim",
+                             integ.double = "dIntegral_Sim",
+                             output.area = TRUE) {
   ## 'Temporary' processing variables
   AreaSim <- NULL
   #

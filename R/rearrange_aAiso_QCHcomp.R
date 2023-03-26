@@ -33,7 +33,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' aAiso_rearrng_QCHcomp(
+#' rearrange_aAiso_QCHcomp(
 #' "./iso_values_Gaussian.txt",
 #' c("No","Nucleus","au","Megahertz","Gauss","10^n4_cm^n1"),
 #' list(3,c(21,22),c(20,23),c(24,25),c(27,26))
@@ -45,9 +45,9 @@
 #'
 #'
 #' @importFrom stringr str_subset str_extract regex
-aAiso_rearrng_QCHcomp <- function(path_to_ASC,
-                                  col.names,
-                                  nuclei.list.slct) {
+rearrange_aAiso_QCHcomp <- function(path_to_ASC,
+                                    col.names,
+                                    nuclei.list.slct) {
   #
   ## 'Temporary' processing variables
   mT <- NULL
@@ -57,7 +57,7 @@ aAiso_rearrng_QCHcomp <- function(path_to_ASC,
   A.str <- str_subset(col.names, regex("mhz|megahertz", ignore_case = T))
   a.str <- str_subset(col.names, regex("gauss|G|Gauss"))
   atomic.num.str <- str_subset(col.names, regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
-  nucl.str <- str_subset(col.names, regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM", ignore_case = T))
+  nucl.str <- str_subset(col.names, regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM|atom", ignore_case = T))
   #
   ## Read the data:
   data.Aa.comput <- data.table::fread(path_to_ASC,

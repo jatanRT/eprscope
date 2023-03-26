@@ -32,17 +32,17 @@
 #' @export
 #'
 #'
-quantitativ_EPR_abs <- function(integ.double,
-                                nu.GHz,
-                                power.mW,
-                                modul.amp.mT,
-                                qValue,
-                                tube.sample.id.mm,
-                                fill.sample.h.mm,
-                                Norm.constant = 1,
-                                Temp.K = 298,
-                                S = 0.5,
-                                microW.cavity = "rectangular") {
+quantify_EPR_abs <- function(integ.double,
+                             nu.GHz,
+                             power.mW,
+                             modul.amp.mT,
+                             qValue,
+                             tube.sample.id.mm,
+                             fill.sample.h.mm,
+                             Norm.constant = 1,
+                             Temp.K = 298,
+                             S = 0.5,
+                             microW.cavity = "rectangular") {
   #
   ## Physical Constants:
   Planck.const <- constants::syms$h

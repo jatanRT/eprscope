@@ -1,5 +1,5 @@
 #
-#' Correction for EPR spectral Time Series
+#' Time Correction for Experimental EPR Spectral Time Series
 #'
 #'
 #' @description
@@ -43,7 +43,7 @@
 ## of the spectrum middle point. The time (`time.s`) however also depends
 ## on the number of scans (`N_scans`) and sweep time (`sweep.time.s`) for each
 ## spectrum in the kinetic series. Time converted into seconds
-time_correct_EPR_Specs <- function(time.s,
+correct_time_Exp_Specs <- function(time.s,
                                    Nscans,
                                    sweep.time.s) {
   #

@@ -131,21 +131,21 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
   #
   ## recalculate  the time
   if (time.unit == "s") {
-    data.spectra.time[[time]] <- time_correct_EPR_Specs(
+    data.spectra.time[[time]] <- correct_time_Exp_Specs(
       time.s = data.spectra.time[[time]],
       Nscans = instrument.params.kinet$Nscans,
       sweep.time.s = instrument.params.kinet$sweepTime
     )
   }
   if (time.unit == "min") {
-    data.spectra.time[[time]] <- time_correct_EPR_Specs(
+    data.spectra.time[[time]] <- correct_time_Exp_Specs(
       time.s = data.spectra.time[[time]] * 60,
       Nscans = instrument.params.kinet$Nscans,
       sweep.time.s = instrument.params.kinet$sweepTime
     )
   }
   if (time.unit == "h") {
-    data.spectra.time[[time]] <- time_correct_EPR_Specs(
+    data.spectra.time[[time]] <- correct_time_Exp_Specs(
       time.s = data.spectra.time[[time]] * 3600,
       Nscans = instrument.params.kinet$Nscans,
       sweep.time.s = instrument.params.kinet$sweepTime

@@ -40,7 +40,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' integ_correct_EPR_Specs(EPR_spectral_data_table,
+#' correct_integ_EPR_Specs(EPR_spectral_data_table,
 #'                         B = "B_mT",
 #'                         Blim = c(348.2,351.1),
 #'                         BpeaKlim = c(349,350),
@@ -53,7 +53,7 @@
 #'
 #'
 #' @importFrom pracma cumtrapz
-integ_correct_EPR_Specs <- function(data.spec.integ,
+correct_integ_EPR_Specs <- function(data.spec.integ,
                                     B = "B_G",
                                     integ.single = "single_integ",
                                     Blim = NULL,
