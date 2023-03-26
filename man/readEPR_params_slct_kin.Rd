@@ -23,7 +23,7 @@ List containing number of scans (\code{Nscans}) and sweep time (\code{sweepTime}
 Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
  experiment from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
  or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
- spectra, see \code{\link{time_correct_EPR_Specs}}
+ spectra, see \code{\link{correct_time_Exp_Specs}}
 }
 \examples{
 \dontrun{
