@@ -71,14 +71,14 @@ gValue_Spec <- function(data.spectrum,
   #
   ## B minimum & maximum
   B.min <- data.spectrum %>%
-    filter(between(.data[[B]], Blim[1], Blim[2])) %>%
-    filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
-    pull(.data[[B]])
+    dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2])) %>%
+    dplyr::filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
+    dplyr::pull(.data[[B]])
   #
   B.max <- data.spectrum %>%
-    filter(between(.data[[B]], Blim[1], Blim[2])) %>%
-    filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
-    pull(.data[[B]])
+    dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2])) %>%
+    dplyr::filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
+    dplyr::pull(.data[[B]])
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)) {
     B.center <- (B.min + B.max) / 2
@@ -86,11 +86,11 @@ gValue_Spec <- function(data.spectrum,
   } else {
     ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
     B.center <- data.spectrum %>%
-      filter(between(.data[[B]], B.max, B.min)) %>%
-      mutate(AbsIntens = abs(.data[[Intensity]])) %>%
-      filter(near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 100)) %>%
-      filter(AbsIntens == min(AbsIntens)) %>%
-      pull(.data[[B]])
+      dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
+      dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%
+      dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 100)) %>%
+      dplyr::filter(AbsIntens == min(AbsIntens)) %>%
+      dplyr::pull(.data[[B]])
   }
   ## g -value calculation:
   Planck.const <- constants::syms$h

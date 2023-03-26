@@ -2,7 +2,7 @@
 #' Normalization Constant Calculation for Quantitative EPR Analysis
 #'
 #'
-#' @description Normalization Constant used by \code{\link{quantitativ_EPR_abs}}
+#' @description Normalization Constant used by \code{\link{quantify_EPR_abs}}
 #'
 #'
 #' @param conv.time.ms Numeric, \strong{Conversion time in milliseconds}, can be obtained

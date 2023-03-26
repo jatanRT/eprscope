@@ -79,19 +79,22 @@ readEPR_param_slct <- function(path_to_DSC_or_par,
   ## by 'str_split' comming from 'stringr' pckg.
   sel.str.split <- stringr::str_split(sel.str.line, "[[:space:]]+", n = 2)
   #
-  ## the result is list, therefore select the second list element ('[[1]][2]'):
+  ## the result is list, therefore select the second list element ('[[1]][2]'),
+  ## therefore unlist the `sel.str.split`
+  sel.str.split <- unlist(sel.str.split)
+  #
   if (origin == "xenon") {
     if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMP") {
-      param.slct <- as.character(sel.str.split[[1]][2])
+      param.slct <- as.character(sel.str.split[2])
     } else {
-      param.slct <- as.double(sel.str.split[[1]][2])
+      param.slct <- as.double(sel.str.split[2])
     }
   }
   if (origin == "winepr") {
     if (string == "JON" || string == "JCO" || string == "JDA" || string == "JTM") {
-      param.slct <- as.character(sel.str.split[[1]][2])
+      param.slct <- as.character(sel.str.split[2])
     } else {
-      param.slct <- as.double(sel.str.split[[1]][2])
+      param.slct <- as.double(sel.str.split[2])
     }
   }
   #

@@ -53,20 +53,20 @@
 #'
 #' @importFrom plotly ggplotly
 plot_EPR_Specs2D_interact <- function(data.spectra,
-                                  x = "B_mT",
-                                  Intensity = "dIepr_over_dB",
-                                  var2nd = NULL,
-                                  line.color = "darkviolet",
-                                  bg.color = "#e5ecf6",
-                                  grid.color = "#ffff",
-                                  line.width = 0.75,
-                                  border.line.width = 1.2,
-                                  border.line.color = "black",
-                                  legend.title = NULL,
-                                  legend.title.size = 13,
-                                  axis.title.size = 15,
-                                  axis.text.size = 14,
-                                  var2nd.series = FALSE){
+                                      x = "B_mT",
+                                      Intensity = "dIepr_over_dB",
+                                      var2nd = NULL,
+                                      line.color = "darkviolet",
+                                      bg.color = "#e5ecf6",
+                                      grid.color = "#ffff",
+                                      line.width = 0.75,
+                                      border.line.width = 1.2,
+                                      border.line.color = "black",
+                                      legend.title = NULL,
+                                      legend.title.size = 13,
+                                      axis.title.size = 15,
+                                      axis.text.size = 14,
+                                      var2nd.series = FALSE){
   #
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){

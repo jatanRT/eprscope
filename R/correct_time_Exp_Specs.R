@@ -1,5 +1,5 @@
 #
-#' Time Correction for Experimental EPR Spectral Time Series
+#' Time Correction for Experimental CW EPR Spectral Time Series
 #'
 #'
 #' @description
@@ -39,8 +39,9 @@
 #' @export
 #'
 #'
-## when the spectrum is recorded, this can be estimated by the time
-## of the spectrum middle point. The time (`time.s`) however also depends
+## when a CW EPR spectrum is recorded, this can be estimated by the time
+## of the spectrum middle point. Usually, the middle of an EPR signal
+## is set as a `central field` (CF). The time (`time.s`) however also depends
 ## on the number of scans (`N_scans`) and sweep time (`sweep.time.s`) for each
 ## spectrum in the kinetic series. Time converted into seconds
 correct_time_Exp_Specs <- function(time.s,
@@ -50,6 +51,9 @@ correct_time_Exp_Specs <- function(time.s,
   if (Nscans == 0) {
     #
     return(round(time.s + sweep.time.s * Nscans + sweep.time.s / 2))
+    ## It corresponds to `time.s + sweep.time.s/2`, however
+    ## the formula is written in such form in order to be consistent
+    ## with that presented below
     #
   } else {
     #

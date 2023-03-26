@@ -75,15 +75,15 @@
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
 #'   theme_minimal theme_classic theme_linedraw
 plot_EPR_Spec <- function(data.spectrum,
-                        x = "B_mT",
-                        Intensity = "dIepr_over_dB",
-                        line.color = "steelblue",
-                        line.width = 0.75,
-                        theme.basic = "theme_gray",
-                        axis.title.size = 15,
-                        axis.text.size = 14,
-                        grid = TRUE,
-                        yTicks = TRUE){
+                          x = "B_mT",
+                          Intensity = "dIepr_over_dB",
+                          line.color = "steelblue",
+                          line.width = 0.75,
+                          theme.basic = "theme_gray",
+                          axis.title.size = 15,
+                          axis.text.size = 14,
+                          grid = TRUE,
+                          yTicks = TRUE){
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   x.start <- min(data.spectrum[,x])

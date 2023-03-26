@@ -54,21 +54,21 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- str_subset(col.names, regex("mhz|megahertz", ignore_case = T))
-  a.str <- str_subset(col.names, regex("gauss|G|Gauss"))
-  atomic.num.str <- str_subset(col.names, regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
-  nucl.str <- str_subset(col.names, regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM|atom", ignore_case = T))
+  A.str <- stringr::str_subset(col.names, regex("mhz|megahertz", ignore_case = T))
+  a.str <- stringr::str_subset(col.names, regex("gauss|G|Gauss"))
+  atomic.num.str <- stringr::str_subset(col.names, regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
+  nucl.str <- stringr::str_subset(col.names, regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM|atom", ignore_case = T))
   #
   ## Read the data:
   data.Aa.comput <- data.table::fread(path_to_ASC,
     sep = "auto", header = F, skip = 1,
     col.names = col.names
   ) %>%
-    mutate(
+    dplyr::mutate(
       MegaHertz = abs(round(.data[[A.str]], digits = 3)),
       Gauss = abs(round(.data[[a.str]], digits = 2))
     ) %>%
-    select(c(.data[[atomic.num.str]], .data[[nucl.str]], .data$MegaHertz, .data$Gauss))
+    dplyr::select(c(.data[[atomic.num.str]], .data[[nucl.str]], .data$MegaHertz, .data$Gauss))
   #
   ## Own function to rearrange A/a according to `nuclei.list.slct`
   ## Build up new rearranged data frame for Nuclei A/a:
@@ -82,16 +82,16 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
     #
     ## Filter atomic numbers from each part of the list:
     sal <- data.Aa.comput %>%
-      filter(.data[[atomic.num.str]] %in% nuclei.list.slct[[k]])
+      dplyr::filter(.data[[atomic.num.str]] %in% nuclei.list.slct[[k]])
     #
     ## How many atoms/nuclei are included in each list part:
     how.many.nucs <- length(nuclei.list.slct[[k]])
     #
     ## Extract atomic/nuclear label:
-    mark.nucs <- str_extract(sal[[nucl.str]][1], "[[:alpha:]]+")
+    mark.nucs <- stringr::str_extract(sal[[nucl.str]][1], "[[:alpha:]]+")
     #
     ## Extract isotope number:
-    nucleo.nucs <- str_extract(sal[[nucl.str]][1], "[[:digit:]]+")
+    nucleo.nucs <- stringr::str_extract(sal[[nucl.str]][1], "[[:digit:]]+")
     #
     ## Extract atomic/nuclear numbers and collapse it into one string:
     num.nucs.str <- paste(sal[[atomic.num.str]], collapse = ",")
@@ -110,8 +110,8 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
   ## to `nuclei.list.slct` (symmetry) and previous `for loop`:
   #
   data.slct.nucs.group <- data.slct.nucs.group %>%
-    mutate(mT = .data$Gauss / 10) %>%
-    select(-c(.data$No, .data$Nucleus, .data$Gauss)) %>%
+    dplyr::mutate(mT = .data$Gauss / 10) %>%
+    dplyr::select(-c(.data$No, .data$Nucleus, .data$Gauss)) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
     dplyr::summarize(
       Aiso_MHz_QCH = round(mean(.data$MegaHertz), digits = 3),

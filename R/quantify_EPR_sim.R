@@ -64,7 +64,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   if (resolution.exp != resolution.sim) {
     stop(" Number of points for experimental & simulated spectrum do not match ! ")
   } else {
-    ## ...going ahead, combining the experimental
+    ## ...keep going:-), combining the experimental
     ## and simulated (non-processed, original) spectra into one long-table format
     ## (for each `vr2nd` added column of simulated spectrum)
     data.specs.sim <- data.spectra.series %>%

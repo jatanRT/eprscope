@@ -6,7 +6,7 @@
 #'  Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
 #'  experiment from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
 #'  or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
-#'  spectra, see \code{\link{time_correct_EPR_Specs}}
+#'  spectra, see \code{\link{correct_time_Exp_Specs}}
 #'
 #'
 #' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
@@ -45,7 +45,7 @@ readEPR_params_slct_kin <- function(path_to_DSC_or_par,origin = "xenon"){
     NScans <- readEPR_param_slct(path_to_DSC_or_par,
                                  string = "NbScansToDo",
                                  origin = origin)
-    ## for kinetic measurements "AVGS" doesn't work
+    ## for kinetic measurements "AVGS" doesn't work, therefore select "NbScansToDo"
   }
   if (origin == "winepr"){
     resol <- readEPR_param_slct(path_to_DSC_or_par,

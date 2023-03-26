@@ -16,8 +16,8 @@
 #'   are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s" and "Intensity" must be supplied).
 #'   \strong{Default}: \code{var2nd = "time_s"}.
 #' @param plot.type Character/String, inherited from \code{\link[plotly]{plot_ly}}, specifying the trace. Only two
-#'   character/strings are available: \code{plot.type = "surface"} (for 3D surface plots) or \code{plot.type = "contour"}
-#'   (\strong{default}, for 2D contour plots)
+#'   character/strings are available: \code{plot.type = "surface"} (\strong{default}, for 3D surface plots)
+#'   or \code{plot.type = "contour"} (for 2D contour plots).
 #' @param scheme.color Character/String corresponding to \code{colorscale}.
 #'   See also \href{https://plotly.com/r/reference/surface/#surface}{R>Figure Reference>surface Traces}
 #'   or \href{https://plotly.com/r/reference/contour/#contour}{R>Figure Reference>contour Traces} and parameter `colorscales`.

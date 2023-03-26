@@ -1,5 +1,5 @@
 #
-#' Polynomial Baseline Correction for single-Integrated EPR Spectra
+#' Polynomial Baseline Correction for Single-Integrated EPR Spectra
 #'
 #'
 #' @description

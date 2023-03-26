@@ -48,7 +48,7 @@ FWHMx_Spec <- function(data.spec.integ,
   xs.init <- data.spec.integ %>%
     dplyr::filter(dplyr::between(.data[[x]],
                                  xlim[1],xlim[2])) %>%
-    dplyr::filter(near(.data[[Intensity]],
+    dplyr::filter(dplyr::near(.data[[Intensity]],
                        max(.data[[Intensity]])/2,
                        tol = max(.data[[Intensity]])/64))
   # ==================================================================================

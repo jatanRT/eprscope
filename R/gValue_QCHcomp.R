@@ -50,7 +50,8 @@ gValue_QCHcomp <- function(path_to_QCHoutput,
                                            pattern = "[[:space:]]+")
     #
     ## select only number strings
-    qchfile.select.g <- unlist(qchfile.select.g) ## `str_split` results in list
+    ## `str_split` results in list therefore it has to be unlisted
+    qchfile.select.g <- unlist(qchfile.select.g)
     #
     vector.string.dg <- c(qchfile.select.g[3],
                           qchfile.select.g[5],
