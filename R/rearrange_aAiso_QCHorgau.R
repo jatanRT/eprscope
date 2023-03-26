@@ -47,8 +47,8 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     qchfile.select.A <- stringr::str_split(qchfile.select.A,pattern = "\\s+")
     #
     ## starting to create a data frame, the first row line is the header,
-    ## therefore start form [[2]]
-    table.select.A <- data.frame("No" = qchfile.select.A[[2]][2], ## start from [[2]] = `second row/line`
+    ## therefore start form [[2]] `second row/line`
+    table.select.A <- data.frame("No" = qchfile.select.A[[2]][2],
                                  "Nucleus" = qchfile.select.A[[2]][3],
                                  "Megahertz" = qchfile.select.A[[2]][5],
                                  "Gauss" = qchfile.select.A[[2]][6])
@@ -81,7 +81,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## Select only part of `qchfile` with EPR params. with all lines down
     qchfile.select <- qchfile[-(1:start.reading.line-1)]
     #
-    i## output file in-between:-) =>
+    ## output file in-between:-) =>
     if (isTRUE(output.text.file)){
       fileConn <- ifelse(is.null(output.text.path),
                          stop(" Please define `.txt` file path to be saved ! "),
