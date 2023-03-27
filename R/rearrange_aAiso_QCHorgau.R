@@ -1,10 +1,40 @@
-# Rearrangement for Gaussian & ORCA outputs
+#'
+#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Gaussian & ORCA Computations
+#'
+#'
+#' @description
+#' A short description...the same like \code{\link{rearrange_aAiso_QCHcomp}} something...
+#'
+#'
+#'
+#' @param path_to_QCHoutput tbc
+#' @param No_nuclei tbc
+#' @param nuclei.list.slct tbc
+#' @param origin tbc
+#' @param output.text.origin tbc
+#' @param output.text.path tbc
+#'
+#'
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
+#'   structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} computational output
+#'   files.
+#'
+#'
+#' @examples
+#' \dontrun{
+#' tbc
+#' tbc
+#' }
+#'
+#' @export
+#'
+#'
 rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
                                      No_nuclei,
                                      nuclei.list.slct,
                                      origin = "gaussian",
-                                     output.text.file = FALSE,
-                                     output.text.path = NULL){
+                                     output.text.origin = FALSE,
+                                     output.text.path = NULL) {
   #
   ## 'Temporary' processing variables
   mT <- NULL
@@ -17,7 +47,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## ============================ READING `qchfiles` ==============================
   #
   ## Processing of output file depending on the origin
-  if (origin == "gaussian"){
+  if (origin == "gaussian") {
     #
     ## number of atoms + 1
     ## because it also reads the header, therefore must be an additional line
@@ -25,116 +55,139 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     #
     ## indicator (String) to select specific lines (indices) from `qchfile`
     indicator.line <- "Fermi Contact"
-    start.reading.line <- grep(indicator.line,qchfile)
+    start.reading.line <- grep(indicator.line, qchfile)
     #
     ## selecting all couplings (file lines/row),
     ## however there are two `start.reading.line`
     ## character strings in Gaussian EPR Output
     ## therefore, select only the first one
-    qchfile.select.A <- qchfile[start.reading.line[1]+1:No_nuclei_atoms_mod]
+    qchfile.select.A <- qchfile[start.reading.line[1] + 1:No_nuclei_atoms_mod]
     #
-    ## output file in-between:-) =>
-    if (isTRUE(output.text.file)){
+    ## output original gaussian data file file in-between:-) =>
+    if (isTRUE(output.text.origin)) {
       fileConn <- ifelse(is.null(output.text.path),
-                         stop(" Please define `.txt` file path to be saved ! "),
-                         file(output.text.path))
-      writeLines(qchfile.select.A,fileConn)
+        stop(" Please define `.txt` file path to be saved ! "),
+        file(output.text.path)
+      )
+      writeLines(qchfile.select.A, fileConn)
       close(fileConn)
     }
     #
     ## each line of `qchfile.select.A` is a long string therefore,
     ## it must be split into individual pieces
-    qchfile.select.A <- stringr::str_split(qchfile.select.A,pattern = "\\s+")
+    qchfile.select.A <- stringr::str_split(qchfile.select.A, pattern = "\\s+")
     #
-    ## starting to create a data frame, the first row line is the header,
+    ## create a data frame, the first row line is the header,
     ## therefore start form [[2]] `second row/line`
-    table.select.A <- data.frame("No" = qchfile.select.A[[2]][2],
-                                 "Nucleus" = qchfile.select.A[[2]][3],
-                                 "Megahertz" = qchfile.select.A[[2]][5],
-                                 "Gauss" = qchfile.select.A[[2]][6])
-    #
-    ## ...keep going the same for the upcoming lines
-    for (i in 3:No_Nuclei_Atoms_Mod){
-      table.select.B <- data.frame("No" = qchfile.select.A[[i]][2],
-                                   "Nucleus" = qchfile.select.A[[i]][3],
-                                   "Megahertz" = qchfile.select.A[[i]][5],
-                                   "Gauss" = qchfile.select.A[[i]][6])
+    for (i in 2:No_nuclei_atoms_mod) {
+      table.select.B <- data.frame(
+        "No" = qchfile.select.A[[i]][2],
+        "Nucleus" = qchfile.select.A[[i]][3],
+        "Megahertz" = qchfile.select.A[[i]][5],
+        "Gauss" = qchfile.select.A[[i]][6]
+      )
       #
-      table.select.A <- rbind(table.select.A,table.select.B)
+      table.select.A <- rbind(table.select.A, table.select.B)
     }
     #
     ## converting columns into character and numeric (double) format
     table.select.A$No <- as.double(as.character(table.select.A$No))
     table.select.A$Nucleus <- as.character(table.select.A$Nucleus)
-    for (j in 3:length(colnames(table.select.A))){
-      table.select.A[,j] <- as.double(as.character(table.select.A[,j]))
+    for (j in 3:length(colnames(table.select.A))) {
+      table.select.A[, j] <- as.double(as.character(table.select.A[, j]))
     }
     #
   }
-  if (origin == "orca"){
+  if (origin == "orca") {
     ## indicator (String) to select specific lines (indices) from `qchfile`
     ## in the case of `ORCA` this indicator tells that this is the last part
     ## of `qchfile` with EPR parameters (`ORCA`) has different output file
     ## structure in comparison to `Gaussian`
     main.indicator.line <- "ELECTRIC AND MAGNETIC HYPERFINE STRUCTURE"
-    start.reading.line <- grep(main.indicator.line,qchfile)
+    start.reading.line <- grep(main.indicator.line, qchfile)
     ## Select only part of `qchfile` with EPR params. with all lines down
-    qchfile.select <- qchfile[-(1:start.reading.line-1)]
+    qchfile.select <- qchfile[-(1:start.reading.line - 1)]
     #
-    ## output file in-between:-) =>
-    if (isTRUE(output.text.file)){
+    ## output original orca data file in-between:-) =>
+    if (isTRUE(output.text.origin)) {
       fileConn <- ifelse(is.null(output.text.path),
-                         stop(" Please define `.txt` file path to be saved ! "),
-                         file(output.text.path))
-      writeLines(qchfile.select,fileConn)
+        stop(" Please define `.txt` file path to be saved ! "),
+        file(output.text.path)
+      )
+      writeLines(qchfile.select, fileConn)
       close(fileConn)
     }
     ## Reading the lines with relevant information (Atoms + A HF couplings)
     ## Atoms/Nuclei
     nucleus.indicator <- "Nucleus"
-    nuclei.lines <- grep(nucleus.indicator,qchfile.select)
+    nuclei.lines <- grep(nucleus.indicator, qchfile.select)
     ## reading only for selected number of atoms
-    nuclei.qchfile.select <- lapply(seq(No_nuclei_atoms),
-                                    function(x) qchfile.select[nuclei.lines][[x]])
+    nuclei.qchfile.select <- lapply(
+      seq(No_nuclei_atoms),
+      function(x) qchfile.select[nuclei.lines][[x]]
+    )
     ## splitting the strings
-    nuclei.qchfile.select <- stringr::str_split(nuclei.qchfile.select,pattern = "\\s+")
-    ## separate atomic/nucleus number and atomic/nucleus label + isotope
-    nuclei.qchfile.select.n <- sapply(seq(nuclei.qchfile.select),
-                                      function(n) stringr::str_extract(nuclei.qchfile.select[[n]][2],
-                                                                       "[[:digit:]]+"))
-    nuclei.qchfile.select.L <- sapply(seq(nuclei.qchfile.select),
-                                      function(L) stringr::str_extract(nuclei.qchfile.select[[L]][2],
-                                                                       "[[:alpha:]]+"))
-    nuclei.qchfile.select.I <- sapply(seq(nuclei.qchfile.select),
-                                      function(I) nuclei.qchfile.select[[I]][5])
-    ## combine last two vectors into one like `H(1)` in order to be consistent with the Gaussian output
-    nuclei.qchfile.select.LI <- mapply(function(L,I) paste(c(L,"(",I,")"),collapse = ""),
-                                       nuclei.qchfile.select.L,
-                                       nuclei.qchfile.select.I)
+    nuclei.qchfile.select <- stringr::str_split(nuclei.qchfile.select, pattern = "\\s+")
+    ## separate atomic/nucleus number (`n`) and atomic/nucleus label (`L`) + isotope (`I`)
+    nuclei.qchfile.select.n <- sapply(
+      seq(nuclei.qchfile.select),
+      function(n) {
+        stringr::str_extract(
+          nuclei.qchfile.select[[n]][2],
+          "[[:digit:]]+"
+        )
+      }
+    )
+    nuclei.qchfile.select.L <- sapply(
+      seq(nuclei.qchfile.select),
+      function(L) {
+        stringr::str_extract(
+          nuclei.qchfile.select[[L]][2],
+          "[[:alpha:]]+"
+        )
+      }
+    )
+    nuclei.qchfile.select.I <- sapply(
+      seq(nuclei.qchfile.select),
+      function(I) nuclei.qchfile.select[[I]][5]
+    )
+    ## combine last two vectors into one like `H(1)` in order to be consistent
+    ## with the Gaussian output
+    nuclei.qchfile.select.LI <- mapply(
+      function(L, I) paste(c(L, "(", I, ")"), collapse = ""),
+      nuclei.qchfile.select.L,
+      nuclei.qchfile.select.I
+    )
     #
     ## A values
-    A.indicator <- "A\\(iso\\)" ## there are parenthesis, therefore one should escape the backslashes
-    A.lines <- grep(A.indicator,qchfile.select)
+    A.indicator <- "A\\(iso\\)" ## there are parenthesis,
+    ## therefore one should escape the backslashes
+    A.lines <- grep(A.indicator, qchfile.select)
     ## reading only for selected number of atoms
-    A.qchfile.select <- lapply(seq(No_nuclei_atoms), function(y) qchfile.select[A.lines][[y]])
+    A.qchfile.select <- lapply(seq(No_nuclei_atoms),
+                               function(y) qchfile.select[A.lines][[y]])
     ## splitting the strings
-    A.qchfile.select <- stringr::str_split(A.qchfile.select,pattern = "\\s+")
+    A.qchfile.select <- stringr::str_split(A.qchfile.select, pattern = "\\s+")
     ## select the A iso values by [[i]][6] for i-th list/line element
-    A.qchfile.select.iso <- sapply(seq(A.qchfile.select),
-                                   function(i) A.qchfile.select[[i]][6])
+    A.qchfile.select.iso <- sapply(
+      seq(A.qchfile.select),
+      function(i) A.qchfile.select[[i]][6]
+    )
     #
-    ## Generate data frame,
+    ## Generate the data frame,
     ## first of all define numeric columns
     A.qchfile.select.iso.mhz <- as.numeric(as.character(A.qchfile.select.iso))
-    A.qchfile.select.iso.gauss <- convert_A_MHz_to_a(as.numeric(as.character(A.qchfile.select.iso)))*10
+    A.qchfile.select.iso.gauss <- convert_A_MHz_to_a(as.numeric(as.character(A.qchfile.select.iso))) * 10
     #
-    table.select.A <- data.frame("No" = nuclei.qchfile.select.n,
-                                 "Nucleus" = nuclei.qchfile.select.LI,
-                                 "Megahertz" = A.qchfile.select.iso.mhz,
-                                 "Gauss" = A.qchfile.select.iso.gauss)
+    table.select.A <- data.frame(
+      "No" = nuclei.qchfile.select.n,
+      "Nucleus" = nuclei.qchfile.select.LI,
+      "Megahertz" = A.qchfile.select.iso.mhz,
+      "Gauss" = A.qchfile.select.iso.gauss
+    )
   }
   #
-  ## ## delete original variable which is not required anymore
+  ## ## delete original variable which is big and not required anymore
   rm(qchfile) ## instead of `qchfile <- NULL`
   #
   ## ================ PROCESSING (REARRANGEMENT) of `table.select.A` ==================
@@ -143,8 +196,51 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## Build up new rearranged data frame for Nuclei A/a:
   data.slct.nucs.group <- data.frame(
     No = integer(), Nucleus = character(),
-    MegaHertz = double(), Gauss = double(), NuclearGroup = character())
+    MegaHertz = double(), Gauss = double(), NuclearGroup = character()
+  )
   #
-  ## TBC TBC !!!! from `rearrange_aAiso_QCHcomput` function
+  ## cycle for each `nuclei.list.slct` component
+  for (k in 1:length(nuclei.list.slct)) {
+    #
+    ## Filter atomic numbers from each part of the list:
+    sal <- table.select.A %>%
+      dplyr::filter(.data$No %in% nuclei.list.slct[[k]])
+    #
+    ## How many atoms/nuclei are included in each list part:
+    how.many.nucs <- length(nuclei.list.slct[[k]])
+    #
+    ## Extract atomic/nuclear label:
+    mark.nucs <- stringr::str_extract(sal$Nucleus[1], "[[:alpha:]]+")
+    #
+    ## Extract isotope number:
+    nucleo.nucs <- stringr::str_extract(sal$Nucleus[1], "[[:digit:]]+")
+    #
+    ## Extract atomic/nuclear numbers and collapse it into one string:
+    num.nucs.str <- paste(sal$No, collapse = ",")
+    #
+    ## Now combine all four variables by paste:
+    group.nucs <- paste0(how.many.nucs, " x ", nucleo.nucs, mark.nucs, " (", num.nucs.str, ")")
+    #
+    ## Replicate the previous string variable corresponding to length of a list component/part:
+    NuclearGroup <- rep(group.nucs, length(nuclei.list.slct[[k]]))
+    #
+    ## Build up data frame row by row:
+    gal <- data.frame(sal, NuclearGroup) ## at first combine by columns
+    data.slct.nucs.group <- rbind(data.slct.nucs.group, gal)
+  }
+  ## Group by and summarize (find the mean value of each list component) according
+  ## to `nuclei.list.slct` (symmetry) and previous `for loop`:
+  #
+  data.slct.nucs.group <- data.slct.nucs.group %>%
+    dplyr::mutate(mT = .data$Gauss / 10) %>%
+    dplyr::select(-c(.data$No, .data$Nucleus, .data$Gauss)) %>%
+    dplyr::group_by(.data$NuclearGroup) %>%
+    dplyr::summarize(
+      Aiso_MHz_QCH = round(mean(.data$MegaHertz), digits = 3),
+      aiso_mT_QCH = round(mean(.data$mT), digits = 2)
+    )
+  #
+  ## Finally rearranged data frame
+  return(data.slct.nucs.group)
   #
 }
