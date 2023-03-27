@@ -78,6 +78,8 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     qchfile.select.A <- stringr::str_split(qchfile.select.A, pattern = "\\s+")
     #
     ## create a data frame, the first row line is the header,
+    table.select.A <- data.frame("No" = character(), "Nucleus" = character(),
+                                 "Megahertz" = character(),"Gauss" = character())
     ## therefore start form [[2]] `second row/line`
     for (i in 2:No_nuclei_atoms_mod) {
       table.select.B <- data.frame(
@@ -87,7 +89,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
         "Gauss" = qchfile.select.A[[i]][6]
       )
       #
-      table.select.A <- rbind(table.select.A, table.select.B)
+      table.select.A <- rbind(table.select.A,table.select.B)
     }
     #
     ## converting columns into character and numeric (double) format
@@ -195,8 +197,8 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## Own function to rearrange A/a according to `nuclei.list.slct`
   ## Build up new rearranged data frame for Nuclei A/a:
   data.slct.nucs.group <- data.frame(
-    No = integer(), Nucleus = character(),
-    MegaHertz = double(), Gauss = double(), NuclearGroup = character()
+    "No" = integer(), "Nucleus" = character(),
+    "Megahertz" = double(), "Gauss" = double(), "NuclearGroup" = character()
   )
   #
   ## cycle for each `nuclei.list.slct` component
@@ -236,7 +238,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     dplyr::select(-c(.data$No, .data$Nucleus, .data$Gauss)) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
     dplyr::summarize(
-      Aiso_MHz_QCH = round(mean(.data$MegaHertz), digits = 3),
+      Aiso_MHz_QCH = round(mean(.data$Megahertz), digits = 3),
       aiso_mT_QCH = round(mean(.data$mT), digits = 2)
     )
   #
