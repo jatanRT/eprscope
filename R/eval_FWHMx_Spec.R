@@ -25,10 +25,10 @@
 #' @export
 #'
 #'
-FWHMx_Spec <- function(data.spec.integ,
-                       x = "B_G",
-                       Intensity = "single_integ",
-                       xlim = NULL){
+eval_FWHMx_Spec <- function(data.spec.integ,
+                            x = "B_G",
+                            Intensity = "single_integ",
+                            xlim = NULL){
   ## 'Temporary' processing variables
   # NO
   #

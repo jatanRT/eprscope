@@ -26,13 +26,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' extremeX_Spec(data.spectrum,
-#'               xlim = c(349.54,359.54),
-#'               extreme = 'min')
-#' extremeX_Spec(data.frame,
-#'               "g_Value",
-#'               Intensity = "Integrated_Intensity",
-#'               c(2.007,2.000))
+#' eval_extremeX_Spec(data.spectrum,
+#'                    xlim = c(349.54,359.54),
+#'                    extreme = 'min')
+#' eval_extremeX_Spec(data.frame,
+#'                    "g_Value",
+#'                    Intensity = "Integrated_Intensity",
+#'                    c(2.007,2.000))
 #' }
 #'
 #'
@@ -44,11 +44,11 @@
 ## intensity ('dIepr_over_dB' or other name/label). To select a region / span / interval
 ## (limits are `xlim`, `xlim[1]` <=> 'start',`xlim[2]` <=> 'end')
 ## of single spectrum in which the extreme ("max" or "min") needs to be found
-extremeX_Spec <- function(data.spectrum,
-                          x = "B_mT",
-                          Intensity = "dIepr_over_dB",
-                          xlim = NULL,
-                          extreme = "max") {
+eval_extremeX_Spec <- function(data.spectrum,
+                               x = "B_mT",
+                               Intensity = "dIepr_over_dB",
+                               xlim = NULL,
+                               extreme = "max") {
   #
   ## Define limits
   if (is.null(xlim)) {

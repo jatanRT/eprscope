@@ -22,17 +22,17 @@
 #'
 #' @examples
 #' \dontrun{
-#' gValue_QCHcomp("./InputData/DFTcomputs/RadicalDFToutput.inp.log")
-#' gValue_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
-#'                mean = FALSE,
-#'                origin = "orca")
+#' eval_gFactor_QCHcomp("./InputData/DFTcomputs/RadicalDFToutput.inp.log")
+#' eval_gFactor_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
+#'                     mean = FALSE,
+#'                     origin = "orca")
 #' }
 #'
 #'
 #' @export
 #'
 #'
-gValue_QCHcomp <- function(path_to_QCHoutput,
+eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
                            mean = TRUE,
                            origin = "gaussian"){
   #

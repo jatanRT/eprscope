@@ -1,7 +1,7 @@
 #
 #' @title Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
 #'
-#' @description Calculation of g-value according to fundamental formula (\code{\link{gValue}}).
+#' @description Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
 #'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
 #'   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
@@ -20,7 +20,7 @@
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
 #'   to entire `B` range).
-#' @param iso Boolean, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
+#' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 #'   (this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
 #'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})
@@ -30,20 +30,20 @@
 #'
 #' @examples
 #' \dontrun{
-#' gValue_Spec(data.spectrum,
-#'             9.82451,
-#'             "B_mT",
-#'             Intensity = "dIepr_over_dB_Sim",
-#'             c(349.8841,351.112))
-#' gValue_Spec(data.spectrum,
-#'             nu.GHz = 9.82451,
-#'             B = "B_G",
-#'             Blim = c(3498.841,3511.12),
-#'             iso = FALSE)
-#' gValue_Spec(data.spectrum,
-#'             9.91024,
-#'             B = "B_G_Sim",
-#'             c(3499,3501))
+#' eval_gFactor_Spec(data.spectrum,
+#'                   9.82451,
+#'                   "B_mT",
+#'                   Intensity = "dIepr_over_dB_Sim",
+#'                   c(349.8841,351.112))
+#' eval_gFactor_Spec(data.spectrum,
+#'                   nu.GHz = 9.82451,
+#'                   B = "B_G",
+#'                   Blim = c(3498.841,3511.12),
+#'                   iso = FALSE)
+#' eval_gFactor_Spec(data.spectrum,
+#'                   9.91024,
+#'                   B = "B_G_Sim",
+#'                   c(3499,3501))
 #' }
 #'
 #'
@@ -51,12 +51,12 @@
 #'
 #'
 #' @importFrom dplyr filter select mutate pull between near
-gValue_Spec <- function(data.spectrum,
-                        nu.GHz,
-                        B = "B_mT",
-                        Intensity = "dIepr_over_dB",
-                        Blim = NULL,
-                        iso = TRUE) {
+eval_gFactor_Spec <- function(data.spectrum,
+                              nu.GHz,
+                              B = "B_mT",
+                              Intensity = "dIepr_over_dB",
+                              Blim = NULL,
+                              iso = TRUE) {
   ## 'Temporary' processing variables
   AbsIntens <- NULL
   #

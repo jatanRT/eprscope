@@ -29,7 +29,7 @@
 #' @importFrom graphics rasterImage text par
 ## function to plot molecule (https://riveradelgado.com/post/2021/04/18/chemistry-in-r/),
 ## which is not available in `rcdk`
-drawMolecules_rcdk <- function(molecules, name = NULL, sma = NULL, ...){
+draw_molecules_rcdk <- function(molecules, name = NULL, sma = NULL, ...){
   ## molecule an object as returned by rcdk::load.molecules or rcdk::parse.smiles()
   ## name a character for the name of the molecule,
   ## sma a character witht the smarts string as passed onto get.depictor()

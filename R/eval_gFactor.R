@@ -1,5 +1,5 @@
 #
-#' @title Basic Calculation of \eqn{g}-factor
+#' @title Basic Calculation of \eqn{g}-Factor
 #'
 #' @description Calculation of {g}-factor according to fundamental formula.
 #'   The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
@@ -20,21 +20,21 @@
 #'   see description above
 #'
 #' @examples
-#' gValue(9.8020458,
-#'        nu.unit = "GHz",
-#'        350.214,
-#'        B.unit = "mT")
-#' gValue(nu = 9.8020458e+9,
-#'        nu.unit = "Hz",
-#'        B = 3502.14,
-#'        B.unit = "G")
-#' gValue(9.5421,"GHz",0.333251,"T")
+#' eval_gFactor(9.8020458,
+#'              nu.unit = "GHz",
+#'              350.214,
+#'              B.unit = "mT")
+#' eval_gFactor(nu = 9.8020458e+9,
+#'              nu.unit = "Hz",
+#'              B = 3502.14,
+#'              B.unit = "G")
+#' eval_gFactor(9.5421,"GHz",0.333251,"T")
 #'
 #' @export
-gValue <- function(nu,
-                   nu.unit = "GHz",
-                   B,
-                   B.unit = "mT") {
+eval_gFactor <- function(nu,
+                         nu.unit = "GHz",
+                         B,
+                         B.unit = "mT") {
   #
   ## Fundamental Physical Constants
   Planck.const <- constants::syms$h
