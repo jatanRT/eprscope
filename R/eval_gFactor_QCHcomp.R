@@ -33,8 +33,8 @@
 #'
 #'
 eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
-                           mean = TRUE,
-                           origin = "gaussian"){
+                                 mean = TRUE,
+                                 origin = "gaussian"){
   #
   ## reading the output files from GAUSSIAN or ORCA
   qchfile <- readLines(path_to_QCHoutput)

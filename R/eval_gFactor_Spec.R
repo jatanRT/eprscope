@@ -60,14 +60,9 @@ eval_gFactor_Spec <- function(data.spectrum,
   ## 'Temporary' processing variables
   AbsIntens <- NULL
   #
-  ## Define limits
-  if (is.null(Blim)) {
-    ## the entire data region
-    Blim <- c(min(data.spectrum[[B]]), max(data.spectrum[[B]]))
-  } else {
-    ## otherwise use predefined vector
-    Blim <- Blim
-  }
+  ## Define limits if `Blim = NULL` take the entire data region
+  ## otherwise use predefined vector
+  Blim <- ifelse(is.null(Blim),c(min(data.spectrum[[B]]),max(data.spectrum[[B]])),Blim)
   #
   ## B minimum & maximum
   B.min <- data.spectrum %>%

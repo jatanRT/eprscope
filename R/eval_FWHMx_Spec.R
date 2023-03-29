@@ -27,20 +27,17 @@
 #'
 eval_FWHMx_Spec <- function(data.spec.integ,
                             x = "B_G",
-                            Intensity = "single_integ",
+                            Intensity = "single_Integ",
                             xlim = NULL){
   ## 'Temporary' processing variables
   # NO
   #
-  ## Define limits
-  if (is.null(xlim)){
-    ## the entire data region
-    xlim <- c(min(data.spec.integ[[x]]),max(data.spec.integ[[x]]))
-  } else{
-    ## otherwise use predefined vector
-    xlim = xlim
-  }
-  # ======= This is not required, however it's better to select a narrow region ======
+  ## Define limits if `xlim = NULL` take the entire data region
+  ## otherwise use predefined vector
+  xlim <- ifelse(is.null(xlim),c(min(data.spectrum[[x]]),max(data.spectrum[[x]])),xlim)
+  #
+  # ===== This is not required, however it's better to select a narrow region at the beginning =====
+  #
   ## see also `which.min` function below
   ## Selecting `x region`
   ## variable set as `xs.init` (data frame) +
@@ -51,6 +48,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
     dplyr::filter(dplyr::near(.data[[Intensity]],
                        max(.data[[Intensity]])/2,
                        tol = max(.data[[Intensity]])/64))
+  #
   # ==================================================================================
   #
   ## calculate `x.max` corresponding to max(Intensity)

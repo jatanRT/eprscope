@@ -50,14 +50,10 @@ eval_extremeX_Spec <- function(data.spectrum,
                                xlim = NULL,
                                extreme = "max") {
   #
-  ## Define limits
-  if (is.null(xlim)) {
-    ## the entire data region
-    xlim <- c(min(data.spectrum[[x]]), max(data.spectrum[[x]]))
-  } else {
-    ## otherwise use predefined vector
-    xlim <- xlim
-  }
+  ## Define limits if `xlim = NULL` take the entire data region
+  ## otherwise use predefined vector
+  xlim <- ifelse(is.null(xlim),c(min(data.spectrum[[x]]),max(data.spectrum[[x]])),xlim)
+  #
   if (extreme == "min") {
     x.min <- data.spectrum %>%
       filter(between(.data[[x]], xlim[1], xlim[2])) %>%
