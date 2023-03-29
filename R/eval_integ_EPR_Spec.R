@@ -3,11 +3,13 @@
 #'
 #'
 #' @description
-#'  Evaluates integrated EPR spectrum with option to correct baseline by polynomial of \code{poly.degree}
-#'  grade. Single-integrated spectrum (from original derivative form) can be obtained
-#'  by \code{\link[pracma:trapz]{pracma::cumtrapz}} function
-#'  taken into account \emph{B} and \emph{dIepr_over_dB}. Double Integral Calculation/Presentation
-#'  may be also provided by this function, if \code{double.integ = T}
+#'  Evaluates integrated EPR spectra depending on input data (corresponding to either derivative or single integrated
+#'  EPR signal form) with option to correct the single integral baseline by polynomial of \code{poly.degree}
+#'  level. Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. For the purpose
+#'  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
+#'  Therefore, depending on \eqn{B} unit (either \code{"G"} or \code{"mT"}) the resulting integral data
+#'  have to be optionally (in case of \code{"mT"}) multiplied by factor of \code{10} because
+#'  \eqn{1 \text{mT}\equiv 10 \text{G}}.
 #'
 #'
 #' @param data.spectrum Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}))
@@ -18,34 +20,40 @@
 #' @param Intensity Character/String pointing to \code{column} of either derivative
 #'   (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 #'   spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectrum}.
-#' @param B.unit Character/String
+#' @param B.unit Character/String, description TBC
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL}
 #'   (corresponding to entire `B` range).
+#' @param correct.integ, Logical, description TBC
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`.
 #' @param poly.degree Numeric, degree of polynomial function used to fit the baseline under the single integrated
 #'   curve of the original EPR spectrum.
 #' @param double.integ Logical, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
 #'   which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}.
+#' @param output.vecs Logical, description TBC
 #'
 #'
 #' @return Data frame/table including the EPR spectral data (general \emph{Intensity}
 #'   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
-#'   (column \code{single_Integ}) and/or \code{double} (column \code{double_Integ} required
-#'   for quantitative analysis). Single integrals (corresponding to either derivative or already
-#'   integrated EPR spectra) can be optionally corrected against the polynomial baseline
-#'   fit (column \code{single_Integ_correct}).
+#'   (\strong{column} \code{single_Integ}) and/or \code{double} (\strong{column} \code{double_Integ} required
+#'   for quantitative analysis) integrals. Single integrals (referred to either derivative or already
+#'   single integrated EPR spectra) can be optionally corrected by the polynomial baseline
+#'   fit (\strong{column} \code{single_Integ_correct}). If \code{output.vecs = TRUE} the integrals
+#'   can be called by
 #'
 #'
 #'
 #' @examples
 #' \dontrun{
 #' eval_integ_EPR_Spec(EPR_spectral_data_table,
-#'                     B = "B_mT",
+#'                     B = "FieldB",
+#'                     B.unit = "mT"
 #'                     Blim = c(348.2,351.1),
+#'                     correct.integ = TRUE,
 #'                     BpeaKlim = c(349,350),
-#'                     poly.degree = 3)
+#'                     poly.degree = 3,
+#'                     double.integ = TRUE)
 #' }
 #'
 #'
@@ -61,7 +69,9 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                                 correct.integ = FALSE,
                                 BpeaKlim = NULL,
                                 poly.degree = NULL,
-                                double.integ = FALSE) {
+                                double.integ = FALSE,
+                                output.vecs = FALSE) {
+  #
   ## 'Temporary' processing variables
   single_Integ <- NULL
   double_Integ <- NULL
@@ -213,6 +223,22 @@ eval_integ_EPR_Spec <- function(data.spectrum,
     }
   }
   #
-  return(data.spectrum)
+  ## Vectorized output for the EPR spectral series
+  if (isFALSE(output.vecs)){
+    integrate.results <- data.spectrum
+  } else{
+    if (isFALSE(double.integ)){
+      integrate.results <- ifelse(isFALSE(correct.integ),
+                                  data.spectrum$single_Integ,
+                                  data.spectrum$single_Integ_correct)
+    } else{
+      integrate.results <- list(single = ifelse(isFALSE(correct.integ),
+                                                data.spectrum$single_Integ,
+                                                data.spectrum$single_Integ_correct),
+                                double = data.spectrum$double_Integ)
+    }
+  }
+  #
+  return(integrate.results)
   #
 }
