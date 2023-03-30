@@ -3,49 +3,62 @@
 #'
 #'
 #' @description
-#'  Evaluates integrated EPR spectra depending on input data (corresponding to either derivative or single integrated
-#'  EPR signal form) with option to correct the single integral baseline by polynomial of \code{poly.degree}
+#'  Evaluates integration of EPR spectra depending on input data (corresponding to either derivative or single integrated
+#'  EPR signal form) with option to correct the single integral baseline by the polynomial of \code{poly.degree}
 #'  level. Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. For the purpose
 #'  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
 #'  Therefore, depending on \eqn{B} unit (either \code{"G"} or \code{"mT"}) the resulting integral data
 #'  have to be optionally (in case of \code{"mT"}) multiplied by factor of \code{10} because
-#'  \eqn{1 \text{mT}\equiv 10 \text{G}}.
+#'  \eqn{1 \text{mT}\equiv 10 \text{G}}. Such correction is already included in the `R` function/script.
 #'
 #'
 #' @param data.spectrum Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}))
 #'   and that of the derivative or already single integrated intensity. \code{Index} column may be already presented as well.
 #' @param B Character/String pointing to magnetic flux density \code{column} (in the original \code{data.spectrum})
 #'   either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} or \code{B = "BField"}...etc
-#'   or \code{B = "B_G"} (\strong{default}). If
+#'   or \code{B = "B_G"} (\strong{default}).
 #' @param Intensity Character/String pointing to \code{column} of either derivative
 #'   (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 #'   spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectrum}.
-#' @param B.unit Character/String, description TBC
+#' @param B.unit Character/String pointing to unit of magnetic flux density (coming from original data) which
+#'   is to be presented on \eqn{B} abscissa of the EPR spectrum,
+#'   like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}.
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL}
 #'   (corresponding to entire `B` range).
-#' @param correct.integ, Logical, description TBC
+#' @param correct.integ, Logical, whether to correct the integral by baseline model fit.
+#'   \strong{Default}: \code{correct.integ = FALSE}.
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`.
 #' @param poly.degree Numeric, degree of polynomial function used to fit the baseline under the single integrated
 #'   curve of the original EPR spectrum.
 #' @param double.integ Logical, whether to present (column in data frame) the double integral of \emph{dIepr_over_dB},
 #'   which is required for quantitative analysis, \strong{default}: \code{double.integ = FALSE}.
-#' @param output.vecs Logical, description TBC
+#' @param output.vecs Logical, whether the `integral` \code{columns} are presented within the entire
+#'   data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
+#'   additional processing by \pkg{dplyr}.
 #'
 #'
 #' @return Data frame/table including the EPR spectral data (general \emph{Intensity}
 #'   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
 #'   (\strong{column} \code{single_Integ}) and/or \code{double} (\strong{column} \code{double_Integ} required
-#'   for quantitative analysis) integrals. Single integrals (referred to either derivative or already
+#'   for quantitative analysis) integrals. Single integrals (referred either to derivative or already
 #'   single integrated EPR spectra) can be optionally corrected by the polynomial baseline
 #'   fit (\strong{column} \code{single_Integ_correct}). If \code{output.vecs = TRUE} the integrals
-#'   can be called by
+#'   are either simple vectors (in case of \code{correct.integ = FALSE}) or can be called from a \strong{list}
+#'   by \code{...[["single"]]} (or \code{...$single}), corresponding to single integral (or integrated form of
+#'   EPR spectrum), or by \code{...[["double"]]} (or \code{...$double}) corresponding to doubly integrated (
+#'   or single integrated EPR spectra originally presented already in single integrals) EPR spectral data.
+#'   This is especially useful for spectral (time) series EPR data, which can be handily processed
+#'   \code{\link[dplyr]{group_by}} using `pipe` operators (\code{\link[magrittr]{\%>\%}}).
 #'
 #'
 #'
 #' @examples
 #' \dontrun{
+#' ## Evaluation of single corrected (by polynomial degree = 3) as well as double
+#' ## integrals corresponding to original derivative EPR spectrum.
+#' ## Integrals are presented as a columns within the en tire data frame
 #' eval_integ_EPR_Spec(EPR_spectral_data_table,
 #'                     B = "FieldB",
 #'                     B.unit = "mT"
@@ -54,6 +67,17 @@
 #'                     BpeaKlim = c(349,350),
 #'                     poly.degree = 3,
 #'                     double.integ = TRUE)
+#'
+#' ## Double integral evaluation corresponding to original non-corrected
+#' ## integral/intensity (non-derivative EPR signal). Double Integral
+#' ## (which is actually single integral of the original form, however
+#' ## possesses the sigmoidal curve form) is exported into vectors list
+#' eval_integ_EPR_Spec(EPR_spectral_data_table,
+#'                     B = "B_G",
+#'                     B.unit = "G",
+#'                     double.integ = TRUE,
+#'                     output.vecs = TRUE)
+#'
 #' }
 #'
 #'
@@ -73,6 +97,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                                 output.vecs = FALSE) {
   #
   ## 'Temporary' processing variables
+  . <- NULL
   single_Integ <- NULL
   double_Integ <- NULL
   sIntegBaseLinFit <- NULL
@@ -88,15 +113,15 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   ## otherwise each integration has to be multiplied by 10,
   ## because 1 mT = 10 G
   ## First of all define vectors with intensity column names =>
-  deriv.EPR.intensities <- c("dB","_dB","intens","deriv","Intens",
+  slct.vec.deriv.EPR.intens <- c("dB","_dB","intens","deriv","Intens",
                              "Deriv","dIepr","dIepr_over_dB","dIepr_dB",
-                             "MW_Absorp")
+                             "MW_Absorp","MW_intens","MW_Intens")
   ## &
-  integ.EPR.intensities <- c("single","Single","SInteg","sinteg","s_integ",
+  slct.vec.integ.EPR.intens <- c("single","Single","SInteg","sinteg","s_integ",
                              "single_","singleinteg","sintegral","integral",
                              "Integral","sInteg_","sInteg","singleI","integ","Integ")
   #
-  if (sjmisc::str_contains(Intensity,deriv.EPR.intensities,logic = "or",ignore.case = F)){
+  if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
     #
     ## primary data for integration
     data.spectrum <- data.spectrum %>%
@@ -116,7 +141,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                  dplyr::mutate(double_Integ = pracma::cumtrapz(.data[[B]],.data$single_Integ)[,1]*10)) }
     }
   }
-  if (sjmisc::str_contains(Intensity,integ.EPR.intensities, logic = "or",ignore.case = F)){
+  if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
     #
     ## primary integrated data
     data.spectrum <- data.spectrum %>%
@@ -149,7 +174,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         stop( " The degree of a polynomial to model the baseline is not defined. Please, specify ! " )
       } else{
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
-        if (sjmisc::str_contains(Intensity,deriv.EPR.intensities,logic = "or",ignore.case = F)){
+        if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
           ## Polynomial baseline fit:
           integ.baseline.fit <- stats::lm(data.NoPeak$single_Integ ~ stats::poly(data.NoPeak[[B]],
                                                                                  degree = poly.degree),
@@ -185,7 +210,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
-        if (sjmisc::str_contains(Intensity,integ.EPR.intensities, logic = "or",ignore.case = F)){
+        if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
           ## Polynomial baseline fit:
           integ.baseline.fit <- stats::lm(data.NoPeak[[Intensity]] ~ stats::poly(data.NoPeak[[B]],
                                                                                  degree = poly.degree),
@@ -232,10 +257,18 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                                   data.spectrum$single_Integ,
                                   data.spectrum$single_Integ_correct)
     } else{
-      integrate.results <- list(single = ifelse(isFALSE(correct.integ),
-                                                data.spectrum$single_Integ,
-                                                data.spectrum$single_Integ_correct),
-                                double = data.spectrum$double_Integ)
+      if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
+        integrate.results <- list(single = ifelse(isFALSE(correct.integ),
+                                                  data.spectrum$single_Integ,
+                                                  data.spectrum$single_Integ_correct),
+                                  double = data.spectrum$double_Integ)
+      }
+      if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
+        integrate.results <- list(single = ifelse(isFALSE(correct.integ),
+                                                  data.spectrum$Intensity,
+                                                  data.spectrum$single_Integ_correct),
+                                  double = data.spectrum$double_Integ)
+      }
     }
   }
   #

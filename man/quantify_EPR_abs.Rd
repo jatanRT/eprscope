@@ -9,7 +9,7 @@ quantify_EPR_abs(
   nu.GHz,
   power.mW,
   modul.amp.mT,
-  qValue,
+  qValue = 1,
   tube.sample.id.mm,
   fill.sample.h.mm,
   Norm.constant = 1,

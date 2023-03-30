@@ -11,8 +11,8 @@ quantify_EPR_sim(
   B.unit = "G",
   Intensity.exp = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
-  integ.single = "sIntegral_Sim",
-  integ.double = "dIntegral_Sim",
+  single.integ = "sIntegral_Sim",
+  double.integ = "dIntegral_Sim",
   output.area = TRUE
 )
 }
@@ -29,9 +29,9 @@ quantify_EPR_sim(
 
 \item{Intensity.sim}{tbc}
 
-\item{integ.single}{tbc}
+\item{single.integ}{tbc}
 
-\item{integ.double}{tbc can be also \code{NULL} if case of single integral spectral series input}
+\item{double.integ}{tbc can be also \code{NULL} if case of single integral spectral series input}
 
 \item{output.area}{tbc}
 }
