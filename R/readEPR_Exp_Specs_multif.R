@@ -141,7 +141,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
     )
     ## to obtain `QValues` run the following
     if (is.null(qValues)) {
-      stop(" 'qValues' vector is not provided. Please, define! ")
+      stop(" 'qValues' vector is not specified. Please, define! ")
     } else {
       qValues.from.files <- qValues
     }
@@ -176,7 +176,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
     ## to `qValue` + new column with `g`-factors
     #
     ## However prior to the operation above `x`/`B` has to be defined
-    x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
+    x <- grep("B|G|mT|BField|Field", col.names, value = TRUE)[[1]]
     #
     spectra.datab.from.files <-
       Map(
@@ -248,7 +248,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
     #
   } else {
     if (is.null(var2nd)) {
-      stop(" 'var2nd' string is not provided. Please, define! ")
+      stop(" 'var2nd' string is not specified. Please, define! ")
     } else {
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-

@@ -7,7 +7,7 @@
 eval_FWHMx_Spec(
   data.spec.integ,
   x = "B_G",
-  Intensity = "single_integ",
+  Intensity = "single_Integ",
   xlim = NULL
 )
 }

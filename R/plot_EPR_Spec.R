@@ -83,162 +83,134 @@ plot_EPR_Spec <- function(data.spectrum,
                           axis.title.size = 15,
                           axis.text.size = 14,
                           grid = TRUE,
-                          yTicks = TRUE){
+                          yTicks = TRUE) {
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
-  x.start <- min(data.spectrum[,x])
-  x.end <- max(data.spectrum[,x])
+  x.start <- min(data.spectrum[, x])
+  x.end <- max(data.spectrum[, x])
   #
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
-  if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
-    x.label <- bquote(italic(B)~"("~mT~")")
+  ## Select labels by defining the corresponding vectors
+  slct.vec.x.g <- c(
+    "g", "g_value", "g_Value", "gval", "gVal",
+    "g_factor", "g_Factor", "gfac", "gFac"
+  )
+  #
+  slct.vec.deriv.EPR.intens <- c(
+    "dB", "_dB", "intens", "deriv", "Intens",
+    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
+    "MW_Absorp", "MW_intens", "MW_Intens"
+  )
+  #
+  slct.vec.integ.EPR.intens <- c(
+    "single", "Single", "SInteg", "sinteg", "s_integ",
+    "single_", "singleinteg", "sintegral", "integral",
+    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+  )
+  #
+  slct.vec.Dinteg.EPR.intens <- c(
+    "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
+    "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
+    "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
+    "di", "DI", "Second", "dInteg", "doubleI"
+  )
+  #
+  ## label <=> selection
+  if (sjmisc::str_contains(x, c("B_mT", "mT", "BField_mT", "Field_mT"), logic = "or")) {
+    x.label <- bquote(italic(B) ~ "(" ~ mT ~ ")")
   }
-  if (sjmisc::str_contains(x,c("B","G"),logic = "and",ignore.case = F)){
-    x.label <- bquote(italic(B)~"("~G~")")
+  if (sjmisc::str_contains(x, c("B_G", "G", "BField_G", "Field_G"), logic = "or")) {
+    x.label <- bquote(italic(B) ~ "(" ~ G ~ ")")
   }
-  if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
-    x.label <- bquote(italic(nu)[RF]~"("~MHz~")")
+  if (sjmisc::str_contains(x, c("RF", "MHz", "radio", "radio_f", "freq"),
+    logic = "or",
+    ignore.case = T
+  )) {
+    x.label <- bquote(italic(nu)[RF] ~ "(" ~ MHz ~ ")")
   }
-  if (sjmisc::str_contains(x,c("g",
-                               "g_value",
-                               "g_Value",
-                               "gval",
-                               "gVal",
-                               "g_factor",
-                               "g_Factor",
-                               "gfac",
-                               "gFac"),
-                           logic = "or",ignore.case = F)){
+  if (sjmisc::str_contains(x, slct.vec.x.g, logic = "or")) {
     x.label <- bquote(italic(g))
   }
-  if (sjmisc::str_contains(Intensity,c("dB",
-                                       "_dB",
-                                       "intens",
-                                       "deriv",
-                                       "Intens",
-                                       "Deriv",
-                                       "dIepr",
-                                       "dIepr_over_dB",
-                                       "dIepr_dB"),
-                           logic = "or",ignore.case = F)){
-    y.label <- bquote("d"~italic(I)[EPR]~"/"~"d"~italic(B)~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+    y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity,
-                           c("single",
-                             "Single",
-                             "SInteg",
-                             "sinteg",
-                             "s_integ",
-                             "single_",
-                             "singleinteg",
-                             "sintegral",
-                             "integral",
-                             "Integral",
-                             "sInteg_",
-                             "sInteg",
-                             "singleI"),
-                           logic = "or",ignore.case = F)){
-    y.label <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+    y.label <- bquote(italic(I)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity,
-                           c("double",
-                             "Double",
-                             "Dinteg",
-                             "DInteg",
-                             "dinteg",
-                             "d_integ",
-                             "D_integ",
-                             "D_Integ",
-                             "double_",
-                             "Double_",
-                             "doubleinteg",
-                             "DoubleInteg",
-                             "Dintegral",
-                             "DIntegral",
-                             "dintegral",
-                             "di",
-                             "DI",
-                             "sec",
-                             "second",
-                             "Second",
-                             "dInteg",
-                             "doubleI"),
-                           logic = "or",ignore.case = F)){
-    y.label <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity, slct.vec.Dinteg.EPR.intens, logic = "or")) {
+    y.label <- bquote(italic(DI)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
   ## Themes for the spectra, whether the ticks are displayed or not:
-  theme.ticks <- theme(axis.ticks.length = unit(6,"pt"),
-                       axis.text.x = element_text(margin = margin(4,6,6,6,unit = "pt"),size = axis.text.size),
-                       axis.text.y = element_text(margin = margin(6,6,6,0,unit = "pt"),size = axis.text.size),
-                       axis.title.y = element_text(margin = margin(2,4,2,6,unit = "pt"),size = axis.title.size),
-                       axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
-                       panel.border = element_rect(color = "black",fill = NA)
+  theme.ticks <- theme(
+    axis.ticks.length = unit(6, "pt"),
+    axis.text.x = element_text(margin = margin(4, 6, 6, 6, unit = "pt"), size = axis.text.size),
+    axis.text.y = element_text(margin = margin(6, 6, 6, 0, unit = "pt"), size = axis.text.size),
+    axis.title.y = element_text(margin = margin(2, 4, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    panel.border = element_rect(color = "black", fill = NA)
   ) ## theme in order to have ticks outside the graph
-  theme.Noticks <- theme(axis.ticks.length = unit(-6,"pt"),
-                         axis.text.x = element_text(margin = margin(6,6,6,6,unit = "pt"),size = axis.text.size),
-                         axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-                         axis.title.y = element_text(margin = margin(2,8,2,6,unit = "pt"),size = axis.title.size),
-                         axis.title.x = element_text(margin = margin(2,6,2,6,unit = "pt"),size = axis.title.size),
-                         panel.border = element_rect(color = "black",fill = NA)
+  theme.Noticks <- theme(
+    axis.ticks.length = unit(-6, "pt"),
+    axis.text.x = element_text(margin = margin(6, 6, 6, 6, unit = "pt"), size = axis.text.size),
+    axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+    axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    panel.border = element_rect(color = "black", fill = NA)
   ) ## theme in order to have ticks inside the graph
   #
-  theme.Nogrid <- theme(panel.grid.major = element_blank(),
-                        panel.grid.minor = element_blank()
-                        ) ## theme with no grid
+  theme.Nogrid <- theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  ) ## theme with no grid
   ## x ticks of the upper axis also inside the graph:
-  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL))
   #
   ## The plot function (distance from the y-axis borders e.g. ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
-  if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
-    x.plot.limits <- c(x.start - 0.5,x.end + 0.5)
+  if (sjmisc::str_contains(x, c("B_mT", "mT", "BField_mT", "Field_mT"), logic = "or")) {
+    x.plot.limits <- c(x.start - 0.5, x.end + 0.5)
   }
-  if (sjmisc::str_contains(x,c("B","G"),logic = "and",ignore.case = F)){
-    x.plot.limits <- c(x.start - 5,x.end + 5)
+  if (sjmisc::str_contains(x, c("B_G", "G", "BField_G", "Field_G"), logic = "or")) {
+    x.plot.limits <- c(x.start - 5, x.end + 5)
   }
-  if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
-    x.plot.limits <- c(x.start - 3,x.end + 3)
+  if (sjmisc::str_contains(x, c("RF", "MHz", "radio", "radio_f", "freq"),
+    logic = "or",
+    ignore.case = T
+  )) {
+    x.plot.limits <- c(x.start - 3, x.end + 3)
   }
-  if (sjmisc::str_contains(x,c("g",
-                               "g_value",
-                               "g_Value",
-                               "gval",
-                               "gVal",
-                               "g_factor",
-                               "g_Factor",
-                               "gfac",
-                               "gFac"),
-                           logic = "or",ignore.case = F)){
-    x.plot.limits <- c(x.start - 0.0002,x.end + 0.0002)
+  if (sjmisc::str_contains(x, slct.vec.x.g, logic = "or")) {
+    x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
   }
   #
   ## Basic simple plot:
   simplePlot <- ggplot(data.spectrum) +
     geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
-              linewidth = line.width,color = line.color,show.legend = FALSE) +
-    labs(x = x.label,y = y.label) +
+      linewidth = line.width, color = line.color, show.legend = FALSE
+    ) +
+    labs(x = x.label, y = y.label) +
     coord_cartesian(xlim = x.plot.limits)
   #
   ## Conditions for plotting
-  if (theme.basic == "theme_gray"){
-    if (isTRUE(yTicks)){
-      if (isTRUE(grid)){
+  if (theme.basic == "theme_gray") {
+    if (isTRUE(yTicks)) {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_gray() +
           theme.ticks
-      } else{
+      } else {
         p <- simplePlot +
           theme_gray() +
           theme.ticks +
           theme.Nogrid
       }
-    } else{
-      if (isTRUE(grid)){
+    } else {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_gray() +
           theme.Noticks +
           axis_x_duplicate
-      } else{
+      } else {
         p <- simplePlot +
           theme_gray() +
           theme.Noticks +
@@ -247,25 +219,25 @@ plot_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (theme.basic == "theme_bw"){
-    if (isTRUE(yTicks)){
-      if (isTRUE(grid)){
+  if (theme.basic == "theme_bw") {
+    if (isTRUE(yTicks)) {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_bw() +
           theme.ticks
-      } else{
+      } else {
         p <- simplePlot +
           theme_bw() +
           theme.ticks +
           theme.Nogrid
       }
-    } else{
-      if (isTRUE(grid)){
+    } else {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_bw() +
           theme.Noticks +
           axis_x_duplicate
-      } else{
+      } else {
         p <- simplePlot +
           theme_bw() +
           theme.Noticks +
@@ -274,28 +246,28 @@ plot_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (theme.basic == "theme_light"){
-    if (isTRUE(yTicks)){
-      if (isTRUE(grid)){
+  if (theme.basic == "theme_light") {
+    if (isTRUE(yTicks)) {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_light() +
           theme.ticks +
           theme(panel.border = element_blank())
-      } else{
+      } else {
         p <- simplePlot +
           theme_light() +
           theme.ticks +
           theme.Nogrid +
           theme(panel.border = element_blank())
       }
-    } else{
-      if (isTRUE(grid)){
+    } else {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_light() +
           theme.Noticks +
           axis_x_duplicate +
           theme(panel.border = element_blank())
-      } else{
+      } else {
         p <- simplePlot +
           theme_light() +
           theme.Noticks +
@@ -305,25 +277,25 @@ plot_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (theme.basic == "theme_linedraw"){
-    if (isTRUE(yTicks)){
-      if (isTRUE(grid)){
+  if (theme.basic == "theme_linedraw") {
+    if (isTRUE(yTicks)) {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_linedraw() +
           theme.ticks
-      } else{
+      } else {
         p <- simplePlot +
           theme_linedraw() +
           theme.ticks +
           theme.Nogrid
       }
-    } else{
-      if (isTRUE(grid)){
+    } else {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_linedraw() +
           theme.Noticks +
           axis_x_duplicate
-      } else{
+      } else {
         p <- simplePlot +
           theme_linedraw() +
           theme.Noticks +
@@ -332,27 +304,27 @@ plot_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (theme.basic == "theme_classic"){
-     if (isTRUE(yTicks)){
-      if (isTRUE(grid)){
+  if (theme.basic == "theme_classic") {
+    if (isTRUE(yTicks)) {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_classic() +
           theme.ticks +
           theme(panel.border = element_blank())
-      } else{
+      } else {
         p <- simplePlot +
           theme_classic() +
           theme.ticks +
           theme.Nogrid +
           theme(panel.border = element_blank())
       }
-    } else{
-      if (isTRUE(grid)){
+    } else {
+      if (isTRUE(grid)) {
         p <- simplePlot +
           theme_classic() +
           theme.Noticks +
           theme(panel.border = element_blank())
-      } else{
+      } else {
         p <- simplePlot +
           theme_classic() +
           theme.Noticks +

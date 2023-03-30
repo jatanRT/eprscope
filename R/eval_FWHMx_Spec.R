@@ -34,7 +34,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
   #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
-  xlim <- ifelse(is.null(xlim),c(min(data.spectrum[[x]]),max(data.spectrum[[x]])),xlim)
+  xlim <- ifelse(is.null(xlim),c(min(data.spec.integ[[x]]),max(data.spec.integ[[x]])),xlim)
   #
   # ===== This is not required, however it's better to select a narrow region at the beginning =====
   #

@@ -9,8 +9,8 @@
 #' @param path_to_ASC String, path to ASCII file/table (\code{.txt})
 #'   with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB}).
 #'   The path can be also defined by \code{\link[base]{file.path}}
-#' @param B.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
-#'   \code{column.names} parameter) which is to be presented on \eqn{B} abscissa of the EPR spectrum,
+#' @param B.unit Character/String pointing to unit of magnetic flux density (coming from original data, see also
+#'   \code{column.names} parameter) which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation

@@ -28,7 +28,7 @@ flux density} (in \code{mT} or \code{G}) \strong{column must be labeled as} \cod
 (or \code{Bsim_G} in gauss) + it contains intensity as well, this is automatic
 if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII}
 
-\item{B.unit}{Character/String pointing to unit of quantity (coming from original data) which
+\item{B.unit}{Character/String pointing to unit of magnetic flux density (coming from original data) which
 is to be presented on \eqn{B} abscissa of the EPR spectrum,
 like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}}
 
@@ -66,7 +66,7 @@ containing plot (\code{list$plot},graphic representation) as well as containing 
 i.e. only graphical representation is shown}
 }
 \value{
-\pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated fromm)
+\pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated formm)
   spectrum or \code{list} consisting of mentioned-plot and the corresponding \code{data frame/table}
 }
 \description{

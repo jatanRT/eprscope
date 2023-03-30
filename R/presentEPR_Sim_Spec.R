@@ -12,7 +12,7 @@
 #'   flux density} (in \code{mT} or \code{G}) \strong{column must be labeled as} \code{Bsim_mT} in mT
 #'   (or \code{Bsim_G} in gauss) + it contains intensity as well, this is automatic
 #'   if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII
-#' @param B.unit Character/String pointing to unit of quantity (coming from original data) which
+#' @param B.unit Character/String pointing to unit of magnetic flux density (coming from original data) which
 #'   is to be presented on \eqn{B} abscissa of the EPR spectrum,
 #'   like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}
 #' @param Intensity.exp Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
@@ -42,7 +42,7 @@
 #'   i.e. only graphical representation is shown
 #'
 #'
-#' @return \pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated fromm)
+#' @return \pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated formm)
 #'   spectrum or \code{list} consisting of mentioned-plot and the corresponding \code{data frame/table}
 #'
 #'
@@ -68,7 +68,7 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
                                 line.color.exp = "red",
                                 line.color.sim = "blue",
                                 line.width = 0.75,
-                                output.table = FALSE){
+                                output.table = FALSE) {
   #
   ## 'Temporary' processing variables
   mT <- NULL
@@ -76,120 +76,109 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
   B <- NULL
   #
   ## Join both tables/data frames
-  both.spectr.data <- dplyr::bind_cols(data.spectrum.exp,data.spectrum.sim)
+  both.spectr.data <- dplyr::bind_cols(data.spectrum.exp, data.spectrum.sim)
   #
   ## Differences in intensity extremes:
   diff_Intens_exp <- max(both.spectr.data[[Intensity.exp]]) - min(both.spectr.data[[Intensity.exp]])
   diff_Intens_sim <- max(both.spectr.data[[Intensity.sim]]) - min(both.spectr.data[[Intensity.sim]])
   #
   ## Ratio of both above:
-  Intens_ratio <- diff_Intens_sim/diff_Intens_exp
+  Intens_ratio <- diff_Intens_sim / diff_Intens_exp
   #
   ## scaling the Sim. EPR spectrum intensity to match the Exp. one (new column `Norm_...`):
-  if (Intens_ratio != 1){
-    both.spectr.data[[paste0("Norm_",Intensity.sim)]] <- both.spectr.data[[Intensity.sim]]/Intens_ratio
-  } else{
-    both.spectr.data[[paste0("Norm_",Intensity.sim)]] <- both.spectr.data[[Intensity.sim]]
+  if (Intens_ratio != 1) {
+    both.spectr.data[[paste0("Norm_", Intensity.sim)]] <- both.spectr.data[[Intensity.sim]] / Intens_ratio
+  } else {
+    both.spectr.data[[paste0("Norm_", Intensity.sim)]] <- both.spectr.data[[Intensity.sim]]
   }
   #
   ## Shift the Sim. spectrum below the Exp. one
-  both.spectr.data[[paste0("Norm_",Intensity.sim)]] <-
-    both.spectr.data[[paste0("Norm_",Intensity.sim)]] - diff_Intens_exp/Intensity.shift.ratio
+  both.spectr.data[[paste0("Norm_", Intensity.sim)]] <-
+    both.spectr.data[[paste0("Norm_", Intensity.sim)]] - diff_Intens_exp / Intensity.shift.ratio
   #
   ## Shift the B of the simulated spectrum (B/g-factor can be slightly shifted in MATLAB output)
-  both.spectr.data[[paste0("Bsim_",B.unit)]] <- both.spectr.data[[paste0("Bsim_",B.unit)]] + B.shift
+  both.spectr.data[[paste0("Bsim_", B.unit)]] <- both.spectr.data[[paste0("Bsim_", B.unit)]] + B.shift
   #
   ## B (x) label for the plot:
-  if (B.unit == "mT"){
-    xlab <- plot_labels_xyz(B,mT)
+  if (B.unit == "mT") {
+    xlab <- plot_labels_xyz(B, mT)
   }
-  if (B.unit == "G"){
-    xlab <- plot_labels_xyz(B,G)
+  if (B.unit == "G") {
+    xlab <- plot_labels_xyz(B, G)
   }
   #
+  ## Labels based on `Intensity` conditions:
+  ## Select labels by defining the corresponding vectors
+  slct.vec.deriv.EPR.intens <- c(
+    "dB", "_dB", "intens", "deriv", "Intens",
+    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
+    "MW_Absorp"
+  )
+  #
+  slct.vec.integ.EPR.intens <- c(
+    "single", "Single", "SInteg", "sinteg", "s_integ",
+    "single_", "singleinteg", "sintegral", "integral",
+    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+  )
+  #
+  slct.vec.Dinteg.EPR.intens <- c(
+    "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
+    "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
+    "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
+    "di", "DI", "Second", "dInteg", "doubleI"
+  )
+  #
   ## Intensity (y) label depending on intensity (derivative, integrated...)
-  if (sjmisc::str_contains(Intensity.exp,c("dB",
-                                       "_dB",
-                                       "intens",
-                                       "deriv",
-                                       "Intens",
-                                       "Deriv",
-                                       "dIepr",
-                                       "dIepr_over_dB",
-                                       "dIepr_dB"),
-                           logic = "or",ignore.case = F)){
-    ylab <- bquote(d*italic(I)[EPR]~"/"~d*italic(B)~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity.exp, slct.vec.deriv.EPR.intens, logic = "or")) {
+    ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity.exp,
-                           c("single",
-                             "Single",
-                             "SInteg",
-                             "sinteg",
-                             "s_integ",
-                             "single_",
-                             "singleinteg",
-                             "sintegral",
-                             "integral",
-                             "Integral",
-                             "sInteg_",
-                             "sInteg",
-                             "singleI"),
-                           logic = "or",ignore.case = F)){
-    ylab <- bquote(italic(I)[EPR]~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity.exp, slct.vec.integ.EPR.intens, logic = "or")) {
+    ylab <- bquote(italic(I)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity.exp,
-                           c("double",
-                             "Double",
-                             "Dinteg",
-                             "DInteg",
-                             "dinteg",
-                             "d_integ",
-                             "D_integ",
-                             "D_Integ",
-                             "double_",
-                             "Double_",
-                             "doubleinteg",
-                             "DoubleInteg",
-                             "Dintegral",
-                             "DIntegral",
-                             "dintegral",
-                             "di",
-                             "DI",
-                             "sec",
-                             "second",
-                             "Second",
-                             "dInteg",
-                             "doubleI"),
-                           logic = "or",ignore.case = F)){
-    ylab <- bquote(italic(DI)[EPR]~~"("~p.d.u.~")")
+  if (sjmisc::str_contains(Intensity.exp, slct.vec.Dinteg.EPR.intens, logic = "or")) {
+    ylab <- bquote(italic(DI)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
   ## plot variable:
   simulation.plot <- both.spectr.data %>%
     ggplot() +
-    geom_line(aes(x = .data[[paste0("B_",B.unit)]],
-                  y = .data[[Intensity.exp]],
-                  color = "Experiment"),
-              linewidth = line.width) +
-    geom_line(aes(x = .data[[paste0("Bsim_",B.unit)]],
-                  y = .data[[Intensity.sim]],
-                  color = "Simulation"),
-              linewidth = line.width) +
-    scale_color_manual(values = c(line.color.exp,
-                                  line.color.sim),
-                       breaks = c("Experiment","Simulation")) +
-    labs(color = "",
-         x = xlab,
-         y = ylab)
+    geom_line(
+      aes(
+        x = .data[[paste0("B_", B.unit)]],
+        y = .data[[Intensity.exp]],
+        color = "Experiment"
+      ),
+      linewidth = line.width
+    ) +
+    geom_line(
+      aes(
+        x = .data[[paste0("Bsim_", B.unit)]],
+        y = .data[[Intensity.sim]],
+        color = "Simulation"
+      ),
+      linewidth = line.width
+    ) +
+    scale_color_manual(
+      values = c(
+        line.color.exp,
+        line.color.sim
+      ),
+      breaks = c("Experiment", "Simulation")
+    ) +
+    labs(
+      color = "",
+      x = xlab,
+      y = ylab
+    )
 
   #
   ## if the entire table/table should be included
-  if (isTRUE(output.table)){
-    SimPlotPlusTable <- list(plot = simulation.plot,table = both.spectr.data)
-  } else{
+  if (isTRUE(output.table)) {
+    SimPlotPlusTable <- list(plot = simulation.plot, table = both.spectr.data)
+  } else {
     SimPlotPlusTable <- simulation.plot
   }
   #
   return(SimPlotPlusTable)
- #
+  #
 }

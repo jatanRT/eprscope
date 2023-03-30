@@ -66,138 +66,136 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                       legend.title.size = 13,
                                       axis.title.size = 15,
                                       axis.text.size = 14,
-                                      var2nd.series = FALSE){
+                                      var2nd.series = FALSE) {
   #
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
-  if (sjmisc::str_contains(x,c("B","mT"),logic = "and",ignore.case = F)){
+  ## Select labels by defining the corresponding vectors
+  slct.vec.x.g <- c(
+    "g", "g_value", "g_Value", "gval", "gVal",
+    "g_factor", "g_Factor", "gfac", "gFac"
+  )
+  #
+  slct.vec.deriv.EPR.intens <- c(
+    "dB", "_dB", "intens", "deriv", "Intens",
+    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
+    "MW_Absorp", "MW_intens", "MW_Intens"
+  )
+  #
+  slct.vec.integ.EPR.intens <- c(
+    "single", "Single", "SInteg", "sinteg", "s_integ",
+    "single_", "singleinteg", "sintegral", "integral",
+    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+  )
+  #
+  slct.vec.Dinteg.EPR.intens <- c(
+    "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
+    "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
+    "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
+    "di", "DI", "Second", "dInteg", "doubleI"
+  )
+  #
+  ## label <=> selection
+  ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
+  if (sjmisc::str_contains(x, c("B_mT", "mT", "BField_mT", "Field_mT"), logic = "or")) {
     xlabel <- "<i>B</i> (mT)"
   }
-  if (sjmisc::str_contains(x,c("B","G"),logic = "and",ignore.case = F)){
+  if (sjmisc::str_contains(x, c("B_G", "G", "BField_G", "Field_G"), logic = "or")) {
     xlabel <- "<i>B</i> (G)"
   }
-  if (sjmisc::str_contains(x,c("RF","MHz"),logic = "and",ignore.case = T)){
+  if (sjmisc::str_contains(x, c("RF", "MHz", "radio", "radio_f", "freq"),
+    logic = "or",
+    ignore.case = T
+  )) {
     xlabel <- "<i>&#957;</i><sub>RF</sub> (MHz)"
   }
-  if (sjmisc::str_contains(x,c("g",
-                               "g_value",
-                               "g_Value",
-                               "gval",
-                               "gVal",
-                               "g_factor",
-                               "g_Factor",
-                               "gfac",
-                               "gFac"),
-                           logic = "or",ignore.case = F)){
+  if (sjmisc::str_contains(x, slct.vec.x.g, logic = "or")) {
     xlabel <- "<i>g</i>"
   }
-  if (sjmisc::str_contains(Intensity,c("dB",
-                                       "_dB",
-                                       "intens",
-                                       "deriv",
-                                       "Intens",
-                                       "Deriv",
-                                       "dIepr",
-                                       "dIepr_over_dB",
-                                       "dIepr_dB"),logic = "or",ignore.case = F)){
-    ylabel = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
+  if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+    ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
-  if (sjmisc::str_contains(Intensity,
-                           c("single",
-                             "Single",
-                             "SInteg",
-                             "sinteg",
-                             "s_integ",
-                             "single_",
-                             "singleinteg",
-                             "sintegral",
-                             "integral",
-                             "Integral",
-                             "sInteg_",
-                             "sInteg",
-                             "singleI"),
-                           logic = "or",ignore.case = F)){
+  if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
     ylabel <- "<i>I</i><sub>EPR</sub>  (p.d.u.)"
   }
-  if (sjmisc::str_contains(Intensity,
-                           c("double",
-                             "Double",
-                             "Dinteg",
-                             "DInteg",
-                             "dinteg",
-                             "d_integ",
-                             "D_integ",
-                             "D_Integ",
-                             "double_",
-                             "Double_",
-                             "doubleinteg",
-                             "DoubleInteg",
-                             "Dintegral",
-                             "DIntegral",
-                             "dintegral",
-                             "di",
-                             "DI",
-                             "sec",
-                             "second",
-                             "Second",
-                             "dInteg",
-                             "doubleI"),
-                           logic = "or",ignore.case = F,switch = F)){
+  if (sjmisc::str_contains(Intensity, slct.vec.Dinteg.EPR.intens,
+    logic = "or", switch = F
+  )) {
     ylabel <- "<i>DI</i><sub>EPR</sub>  (p.d.u.)"
   }
   #
   ## plot precursor
-  if (isTRUE(var2nd.series)){
-    if (is.null(var2nd)){
+  if (isTRUE(var2nd.series)) {
+    if (is.null(var2nd)) {
       stop(" 'var2nd' string is not provided. Please, define! ")
-    } else{
+    } else {
       #
       ## basis defined by `ggplot`
-      simplePlot <- ggplot(data.spectra,aes(x = .data[[x]],
-                                            y = .data[[Intensity]],
-                                            color = as.factor(.data[[var2nd]]))) +
+      simplePlot <- ggplot(data.spectra, aes(
+        x = .data[[x]],
+        y = .data[[Intensity]],
+        color = as.factor(.data[[var2nd]])
+      )) +
         geom_line(linewidth = line.width)
       #
     }
-  } else{
-    simplePlot <- ggplot(data.spectra,aes(x = .data[[x]], y = .data[[Intensity]])) +
-      geom_line(linewidth = line.width,color = line.color)
+  } else {
+    simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
+      geom_line(linewidth = line.width, color = line.color)
   }
   ## final plot with layout
-  if (isTRUE(var2nd.series)){
+  if (isTRUE(var2nd.series)) {
     final_plot <- ggplotly(simplePlot) %>%
       plotly::layout(
         plot_bgcolor = bg.color,
-        xaxis = list(title = list(text = xlabel,
-                                  font = list(size = axis.title.size)),
-                     tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color,
-                     linecolor = plotly::toRGB(border.line.color),
-                     linewidth = border.line.width,showline = T,mirror = T),
-        yaxis = list(title = list(text = ylabel,
-                                  font = list(size = axis.title.size)),
-                     tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color,
-                     linecolor = plotly::toRGB(border.line.color),
-                     linewidth = border.line.width,showline = T,mirror = T),
-        legend = list(title = list(text = legend.title,
-                                   font = list(size = legend.title.size)))
+        xaxis = list(
+          title = list(
+            text = xlabel,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          gridcolor = grid.color,
+          linecolor = plotly::toRGB(border.line.color),
+          linewidth = border.line.width, showline = T, mirror = T
+        ),
+        yaxis = list(
+          title = list(
+            text = ylabel,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          gridcolor = grid.color,
+          linecolor = plotly::toRGB(border.line.color),
+          linewidth = border.line.width, showline = T, mirror = T
+        ),
+        legend = list(title = list(
+          text = legend.title,
+          font = list(size = legend.title.size)
+        ))
       )
-  } else{
+  } else {
     final_plot <- ggplotly(simplePlot) %>%
       plotly::layout(
         plot_bgcolor = bg.color,
-        xaxis = list(title = list(text = xlabel,
-                                  font = list(size = axis.title.size)),
-                     tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color,
-                     linecolor = plotly::toRGB(border.line.color),
-                     linewidth = border.line.width,showline = T,mirror = T),
-        yaxis = list(title = list(text = ylabel,
-                                  font = list(size = axis.title.size)),
-                     tickfont = list(size = axis.text.size),
-                     gridcolor = grid.color,
-                     linecolor = plotly::toRGB(border.line.color),
-                     linewidth = border.line.width,showline = T,mirror = T)
+        xaxis = list(
+          title = list(
+            text = xlabel,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          gridcolor = grid.color,
+          linecolor = plotly::toRGB(border.line.color),
+          linewidth = border.line.width, showline = T, mirror = T
+        ),
+        yaxis = list(
+          title = list(
+            text = ylabel,
+            font = list(size = axis.title.size)
+          ),
+          tickfont = list(size = axis.text.size),
+          gridcolor = grid.color,
+          linecolor = plotly::toRGB(border.line.color),
+          linewidth = border.line.width, showline = T, mirror = T
+        )
       )
   }
   #

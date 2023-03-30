@@ -45,7 +45,8 @@ In case of "Xenon" software the parameter is included in \code{.DSC} file, there
 like \code{qValue = 3400}}
 }
 \value{
-List of spectral data (incl. time) in tidy long table format (`data`) + corrected time vector (`time`)
+List of spectral data (incl. time) in tidy long table format (\code{data}) + corrected
+   time vector (\code{time})
 }
 \description{
 The function reads the EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment`

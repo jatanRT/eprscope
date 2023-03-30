@@ -30,7 +30,8 @@
 #'   like \code{qValue = 3400}
 #'
 #'
-#' @return List of spectral data (incl. time) in tidy long table format (`data`) + corrected time vector (`time`)
+#' @return List of spectral data (incl. time) in tidy long table format (\code{data}) + corrected
+#'    time vector (\code{time})
 #'
 #'
 #' @examples
@@ -115,7 +116,7 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
   instrument.params.kinet <- readEPR_params_slct_kin(path.to.dsc.par, origin = origin)
   #
   ## Intensity variable
-  Intensity <- grep("I|Intens|intens", col.names, value = TRUE)
+  Intensity <- grep("I|Intens|intens|MW_Abs|MW_Intens", col.names, value = TRUE)
   #
   ## Time variable
   time <- grep("time|Time|tim|Tim", col.names, value = TRUE)

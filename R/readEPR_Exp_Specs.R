@@ -166,14 +166,14 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       x <- grep("g", col.names, value = TRUE)
     }
     if (x.unit == "G" || x.unit == "mT") {
-      x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
+      x <- grep("B|G|mT|BField|Field", col.names, value = TRUE)[[1]]
       ## `[[1]]` selection is due to fact that intensity
       ## could be `dIepr_over_dB` which also has `B` within
       ## the character string
       ## `|` \equiv `or`
     }
     if (x.unit == "MHz") {
-      x <- grep("rf|RF|MHz|radio|Radio", col.names, value = TRUE)
+      x <- grep("rf|RF|MHz|radio|Radio|freq|Freq", col.names, value = TRUE)
     }
   } else {
     if (x.unit == "Unitless") {
@@ -182,16 +182,16 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     }
     if (x.unit == "G" || x.unit == "mT") {
       x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
-      time <- grep("time|Time", col.names, value = TRUE)
+      time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
     }
     if (x.unit == "MHz") {
-      x <- grep("rf|RF|MHz|radio|Radio", col.names, value = TRUE)
-      time <- grep("time|Time", col.names, value = TRUE)
+      x <- grep("rf|RF|MHz|radio|Radio|freq|Freq", col.names, value = TRUE)
+      time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
     }
   }
   #
   ## select intesity column character string
-  Intensity <- grep("I|Intens|intens", col.names, value = TRUE)
+  Intensity <- grep("I|Intens|intens|MW_Abs|MW_Intens", col.names, value = TRUE)
   #
   ##
   if (origin == "xenon" || origin == "txt" || origin == "csv") {
