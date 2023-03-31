@@ -11,8 +11,8 @@ quantify_EPR_sim(
   B.unit = "G",
   Intensity.exp = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
-  single.integ = "sIntegral_Sim",
-  double.integ = "dIntegral_Sim",
+  single.integ = "single_IntegSim",
+  double.integ = "double_IntegSim",
   output.area = TRUE
 )
 }

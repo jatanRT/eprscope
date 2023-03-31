@@ -37,8 +37,8 @@ quantify_EPR_sim <- function(data.spectra.series,
                              B.unit = "G",
                              Intensity.exp = "dIepr_over_dB",
                              Intensity.sim = "dIeprSim_over_dB",
-                             single.integ = "sIntegral_Sim",
-                             double.integ = "dIntegral_Sim",
+                             single.integ = "single_IntegSim",
+                             double.integ = "double_IntegSim",
                              output.area = TRUE) {
   ## 'Temporary' processing variables
   AreaSim <- NULL
@@ -72,7 +72,7 @@ quantify_EPR_sim <- function(data.spectra.series,
       dplyr::mutate(!!rlang::quo_name(Intensity.sim) := data.spec.sim[[Intensity.sim]])
     #
     ## delete the original data (not needed anymore)
-    ## substituted by `data.specs.sim`
+    ## already substituted by `data.specs.sim`
     rm(data.spectra.series)
   }
   #
