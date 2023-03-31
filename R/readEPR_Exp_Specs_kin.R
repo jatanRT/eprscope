@@ -106,7 +106,7 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
     #
     ## to obtain `QValue` run the following
     if (is.null(qValue)) {
-      stop(" 'qValue' is not provided. Please, define! ")
+      stop(" 'qValue' is not specified. Please, define! ")
     } else {
       qValue.obtain <- qValue
     }

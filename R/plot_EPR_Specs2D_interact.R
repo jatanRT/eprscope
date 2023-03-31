@@ -126,7 +126,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   ## plot precursor
   if (isTRUE(var2nd.series)) {
     if (is.null(var2nd)) {
-      stop(" 'var2nd' string is not provided. Please, define! ")
+      stop(" 'var2nd' string is not specified. Please, define! ")
     } else {
       #
       ## basis defined by `ggplot`

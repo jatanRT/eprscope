@@ -29,12 +29,14 @@ eval_FWHMx_Spec <- function(data.spec.integ,
                             x = "B_G",
                             Intensity = "single_Integ",
                             xlim = NULL){
+  #
   ## 'Temporary' processing variables
-  # NO
+  . <- NULL
   #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
-  xlim <- ifelse(is.null(xlim),c(min(data.spec.integ[[x]]),max(data.spec.integ[[x]])),xlim)
+  data.x.region <- c(min(data.spec.integ[[x]]),max(data.spec.integ[[x]]))
+  xlim %>% `if`(is.null(xlim),data.x.region, .)
   #
   # ===== This is not required, however it's better to select a narrow region at the beginning =====
   #

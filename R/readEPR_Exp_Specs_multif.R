@@ -200,27 +200,9 @@ readEPR_Exp_Specs_multif <- function(pattern,
       )
   }
   #
-  if (x.unit == "Unitless") {
+  if (x.unit == "Unitless" || x.unit == "MHz") {
     ## the all spectra with intensity correction
-    #
-    spectra.datab.from.files <-
-      Map(
-        function(s, t) {
-          readEPR_Exp_Specs(s,
-            qValue = t,
-            x.unit = x.unit,
-            col.names = col.names,
-            origin = origin
-          )
-        },
-        files.asc,
-        qValues.from.files
-      )
-  }
-  #
-  if (x.unit == "MHz") {
     ## the entire database of all spectra with intensity correction to `qValue`
-
     #
     spectra.datab.from.files <-
       Map(

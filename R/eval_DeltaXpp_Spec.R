@@ -52,9 +52,13 @@ eval_DeltaXpp_Spec <- function(data.spectrum,
                                Intensity = "dIepr_over_dB",
                                xlim = NULL) {
   #
+  ## 'Temporary' processing variables
+  . <- NULL
+  #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
-  xlim <- ifelse(is.null(xlim),c(min(data.spectrum[[x]]),max(data.spectrum[[x]])),xlim)
+  data.x.region <- c(min(data.spectrum[[x]]),max(data.spectrum[[x]]))
+  xlim %>% `if`(is.null(xlim),data.x.region, .)
   #
   ## x corresponding to minimum and maximum derivative intensities
   ## in the selected x region:
