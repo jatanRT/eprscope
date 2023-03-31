@@ -107,7 +107,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   ## Define limits if `Blim = NULL` take the entire data region
   ## otherwise use predefined vector
   data.B.region <- c(min(data.spectrum[[B]]),max(data.spectrum[[B]]))
-  Blim %>% `if`(is.null(Blim),data.B.region, .)
+  Blim <- Blim %>% `if`(is.null(Blim),data.B.region, .)
   #
   ## evaluating primary integral based on `Intensity`
   ## and `B` (`B.unit` has to be in "G") parameter
