@@ -129,7 +129,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   #
   if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
     #
-    ## integration depending on `B` unit
+    ## integration depending on `B` unit and delete index afterwards
     if (B.unit == "G"){
       data.spectrum <- data.spectrum %>%
         dplyr::mutate(single_Integ = pracma::cumtrapz(.data[[B]],
@@ -211,8 +211,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           if (B.unit == "G"){
             if (isFALSE(double.integ)){
               data.spectrum <- data.spectrum %>%
-                # remove index and previous double integral (if present)
-                dplyr::select(-.data$index) %>%
+                ## remove previous double integral (if present)
                 `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
 
@@ -225,8 +224,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           if (B.unit == "mT"){
             if (isFALSE(double.integ)){
               data.spectrum <- data.spectrum %>%
-                # remove index and previous double integral (if present)
-                dplyr::select(-.data$index) %>%
+                ## remove previous double integral (if present)
                 `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
             } else{
@@ -258,8 +256,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           if (B.unit == "G"){
             if (isFALSE(double.integ)){
               data.spectrum <- data.spectrum %>%
-                # remove index and previous double integral (if present)
-                dplyr::select(-.data$index) %>%
+                ## remove previous double integral (if present)
                 `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
             } else{
@@ -270,8 +267,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           if (B.unit == "mT"){
             if (isFALSE(double.integ)){
               data.spectrum <- data.spectrum %>%
-                # remove index and previous double integral (if present)
-                dplyr::select(-.data$index) %>%
+                ## remove previous double integral (if present)
                 `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
             } else{
@@ -287,6 +283,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   ## Vectorized output for the EPR spectral series
   if (isFALSE(output.vecs)){
     integrate.results <- data.spectrum
+      ## delete `index` column which is not required anymore
+      if (any(grepl("index",colnames(data.spectrum)))) {
+        data.spectrum$index <- NULL
+      }
   } else{
     if (isFALSE(double.integ)){
       ## bacause `ifelse()` does not work for vectors
