@@ -18,12 +18,13 @@ eval_integ_EPR_Spec(
 )
 }
 \arguments{
-\item{data.spectrum}{Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}))
-and that of the derivative or already single integrated intensity. \code{Index} column may be already presented as well.}
+\item{data.spectrum}{Spectrum data frame/table with magnetic flux density (in \code{mT}
+or \code{G})) and that of the derivative or already single integrated intensity.
+\code{Index} column may be already present as well.}
 
-\item{B}{Character/String pointing to magnetic flux density \code{column} (in the original \code{data.spectrum})
-either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} or \code{B = "BField"}...etc
-or \code{B = "B_G"} (\strong{default}).}
+\item{B}{Character/String pointing to magnetic flux density \code{column} (in the original
+\code{data.spectrum}) either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
+or \code{B = "BField"}...etc or \code{B = "B_G"} (\strong{default}).}
 
 \item{B.unit}{Character/String pointing to unit of magnetic flux density (coming from original data) which
 is to be presented on \eqn{B} abscissa of the EPR spectrum,
@@ -37,7 +38,7 @@ spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data fr
 of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL}
 (corresponding to entire `B` range).}
 
-\item{correct.integ, }{Logical, whether to correct the integral by baseline model fit.
+\item{correct.integ}{Logical, whether to correct the integral by baseline model fit.
 \strong{Default}: \code{correct.integ = FALSE}.}
 
 \item{BpeaKlim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
@@ -68,7 +69,7 @@ Data frame/table including the EPR spectral data (general \emph{Intensity}
   \code{\link[dplyr]{group_by}} using `pipe` operators (\code{\link[magrittr]{\%>\%}}).
 }
 \description{
-Evaluates integration of EPR spectra depending on input data (corresponding to either derivative or single integrated
+Evaluates integrals of EPR spectra depending on input data (corresponding to either derivative or single integrated
  EPR signal form) with option to correct the single integral baseline by the polynomial of \code{poly.degree}
  level. Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. For the purpose
  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).

@@ -3,7 +3,7 @@
 #'
 #'
 #' @description
-#'  Evaluates integration of EPR spectra depending on input data (corresponding to either derivative or single integrated
+#'  Evaluates integrals of EPR spectra depending on input data (corresponding to either derivative or single integrated
 #'  EPR signal form) with option to correct the single integral baseline by the polynomial of \code{poly.degree}
 #'  level. Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. For the purpose
 #'  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
@@ -12,11 +12,12 @@
 #'  \eqn{1 \text{mT}\equiv 10 \text{G}}. Such correction is already included in the `R` function/script.
 #'
 #'
-#' @param data.spectrum Spectrum data frame/table with magnetic flux density (in \code{mT} or \code{G}))
-#'   and that of the derivative or already single integrated intensity. \code{Index} column may be already presented as well.
-#' @param B Character/String pointing to magnetic flux density \code{column} (in the original \code{data.spectrum})
-#'   either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} or \code{B = "BField"}...etc
-#'   or \code{B = "B_G"} (\strong{default}).
+#' @param data.spectrum Spectrum data frame/table with magnetic flux density (in \code{mT}
+#'   or \code{G})) and that of the derivative or already single integrated intensity.
+#'   \code{Index} column may be already present as well.
+#' @param B Character/String pointing to magnetic flux density \code{column} (in the original
+#'   \code{data.spectrum}) either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
+#'   or \code{B = "BField"}...etc or \code{B = "B_G"} (\strong{default}).
 #' @param Intensity Character/String pointing to \code{column} of either derivative
 #'   (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 #'   spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectrum}.
@@ -26,7 +27,7 @@
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL}
 #'   (corresponding to entire `B` range).
-#' @param correct.integ, Logical, whether to correct the integral by baseline model fit.
+#' @param correct.integ Logical, whether to correct the integral by baseline model fit.
 #'   \strong{Default}: \code{correct.integ = FALSE}.
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`.
@@ -100,8 +101,8 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   . <- NULL
   single_Integ <- NULL
   double_Integ <- NULL
-  sIntegBaseLinFit <- NULL
-  IntensBaseLinFit <- NULL
+  baseline_Integ_fit <- NULL
+  baseline_Intens_fit <- NULL
   single_Integ_correct <- NULL
   #
   ## Define limits if `Blim = NULL` take the entire data region
@@ -189,8 +190,9 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
         if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
           ## Polynomial baseline fit:
-          integ.baseline.fit <- stats::lm(data.NoPeak$single_Integ ~ stats::poly(data.NoPeak[[B]],
-                                                                                 degree = poly.degree),
+          #
+          ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
+          integ.baseline.fit <- stats::lm(single_Integ ~ stats::poly(get(B),degree = poly.degree),
                                           data = data.NoPeak)
           #
           ## apply fit to data.spectrum
@@ -198,29 +200,37 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ## remove the .resid colum (which is not required),
             dplyr::select(-.data[[".resid"]]) %>%
             ## rename column with fit
-            dplyr::rename(sIntegBaseLinFit = .data[[".fitted"]]) %>%
+            dplyr::rename(baseline_Integ_fit = .data[[".fitted"]]) %>%
             ## subtract the baseline
-            dplyr::mutate(single_Integ_correct = .data$single_Integ - .data$sIntegBaseLinFit) %>%
-            ##  delete `sIntegBaseLinFit` which is not required anymore
+            dplyr::mutate(single_Integ_correct = .data$single_Integ - .data$baseline_Integ_fit) %>%
+            ##  keep `baselin_integ_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
-            dplyr::select(-sIntegBaseLinFit) %>%
             dplyr::mutate(single_Integ_correct = single_Integ_correct - min(.data$single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G"){
             if (isFALSE(double.integ)){
-              data.spectrum <- data.spectrum
+              data.spectrum <- data.spectrum %>%
+                # remove index and previous double integral (if present)
+                dplyr::select(-.data$index) %>%
+                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                     dplyr::select(-double_Integ), .)
+
             } else{
-              ## uncorrected double integral is overwritten
+              ## uncorrected double integral is `overwritten`
               data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
                                                              data.spectrum$single_Integ_correct)[,1]
             }
           }
           if (B.unit == "mT"){
             if (isFALSE(double.integ)){
-              data.spectrum <- data.spectrum
+              data.spectrum <- data.spectrum %>%
+                # remove index and previous double integral (if present)
+                dplyr::select(-.data$index) %>%
+                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                     dplyr::select(-double_Integ), .)
             } else{
-              ## uncorrected double integral is overwritten
+              ## uncorrected double integral is `overwritten`
               data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
                                                              data.spectrum$single_Integ_correct)[,1]*10
            }
@@ -229,8 +239,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
         if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
           ## Polynomial baseline fit:
-          integ.baseline.fit <- stats::lm(data.NoPeak[[Intensity]] ~ stats::poly(data.NoPeak[[B]],
-                                                                                 degree = poly.degree),
+          integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B),degree = poly.degree),
                                           data = data.NoPeak)
           #
           ## apply fit to data.spectrum
@@ -238,18 +247,21 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ## remove the .resid colum (which is not required),
             dplyr::select(-.data[[".resid"]]) %>%
             ## rename column with fit
-            dplyr::rename(IntensBaseLinFit = .data[[".fitted"]]) %>%
+            dplyr::rename(baseline_Intens_fit = .data[[".fitted"]]) %>%
             ## subtract the baseline
-            dplyr::mutate(single_Integ_correct = .data[[Intensity]] - .data$IntensBaseLinFit) %>%
-            ##  delete `IntensBaseLinFit` which is not required anymore
+            dplyr::mutate(single_Integ_correct = .data[[Intensity]] - .data$baseline_Intens_fit) %>%
+            ##  keep `baseline_Intens_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
-            dplyr::select(-IntensBaseLinFit) %>%
             dplyr::mutate(single_Integ_correct = single_Integ_correct - min(.data$single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G"){
             if (isFALSE(double.integ)){
-              data.spectrum <- data.spectrum
+              data.spectrum <- data.spectrum %>%
+                # remove index and previous double integral (if present)
+                dplyr::select(-.data$index) %>%
+                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                     dplyr::select(-double_Integ), .)
             } else{
               data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
                                                              data.spectrum$single_Integ_correct)[,1]
@@ -257,7 +269,11 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           }
           if (B.unit == "mT"){
             if (isFALSE(double.integ)){
-              data.spectrum <- data.spectrum
+              data.spectrum <- data.spectrum %>%
+                # remove index and previous double integral (if present)
+                dplyr::select(-.data$index) %>%
+                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                     dplyr::select(-double_Integ), .)
             } else{
               data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
                                                              data.spectrum$single_Integ_correct)[,1]*10
