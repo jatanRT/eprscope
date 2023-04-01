@@ -107,93 +107,110 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   #
   ## Define limits if `Blim = NULL` take the entire data region
   ## otherwise use predefined vector
-  data.B.region <- c(min(data.spectrum[[B]]),max(data.spectrum[[B]]))
-  Blim <- Blim %>% `if`(is.null(Blim),data.B.region, .)
+  data.B.region <- c(min(data.spectrum[[B]]), max(data.spectrum[[B]]))
+  Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
   #
   ## evaluating primary integral based on `Intensity`
   ## and `B` (`B.unit` has to be in "G") parameter
   ## otherwise each integration has to be multiplied by 10,
   ## because 1 mT = 10 G
   ## First of all define vectors with intensity column names =>
-  slct.vec.deriv.EPR.intens <- c("dB","_dB","intens","deriv","Intens",
-                             "Deriv","dIepr","dIepr_over_dB","dIepr_dB",
-                             "MW_Absorp","MW_intens","MW_Intens")
+  slct.vec.deriv.EPR.intens <- c(
+    "dB", "_dB", "intens", "deriv", "Intens",
+    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
+    "MW_Absorp", "MW_intens", "MW_Intens"
+  )
   ## &
-  slct.vec.integ.EPR.intens <- c("single","Single","SInteg","sinteg","s_integ",
-                             "single_","singleinteg","sintegral","integral",
-                             "Integral","sInteg_","sInteg","singleI","integ","Integ")
+  slct.vec.integ.EPR.intens <- c(
+    "single", "Single", "SInteg", "sinteg", "s_integ",
+    "single_", "singleinteg", "sintegral", "integral",
+    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+  )
   #
   ## primary data for integration
   data.spectrum <- data.spectrum %>%
-    dplyr::filter(dplyr::between(.data[[B]],Blim[1],Blim[2]))
+    dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
   #
-  if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
+  if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
     #
     ## integration depending on `B` unit and delete index afterwards
-    if (B.unit == "G"){
+    if (B.unit == "G") {
       data.spectrum <- data.spectrum %>%
-        dplyr::mutate(single_Integ = pracma::cumtrapz(.data[[B]],
-                                                      .data[[Intensity]])[,1])
-      if (isFALSE(double.integ)){
+        dplyr::mutate(single_Integ = pracma::cumtrapz(
+          .data[[B]],
+          .data[[Intensity]]
+        )[, 1])
+      if (isFALSE(double.integ)) {
         data.spectrum <- data.spectrum
-      } else{
-        data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                       data.spectrum$single_Integ)[,1]
+      } else {
+        data.spectrum$double_Integ <- pracma::cumtrapz(
+          data.spectrum[[B]],
+          data.spectrum$single_Integ
+        )[, 1]
       }
     }
-    if (B.unit == "mT"){
+    if (B.unit == "mT") {
       data.spectrum <- data.spectrum %>%
-        dplyr::mutate(single_Integ = pracma::cumtrapz(.data[[B]],
-                                                      .data[[Intensity]])[,1]*10)
-      if (isFALSE(double.integ)){
+        dplyr::mutate(single_Integ = pracma::cumtrapz(
+          .data[[B]],
+          .data[[Intensity]]
+        )[, 1] * 10)
+      if (isFALSE(double.integ)) {
         data.spectrum <- data.spectrum
-      } else{
-        data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                       data.spectrum$single_Integ)[,1]*10
+      } else {
+        data.spectrum$double_Integ <- pracma::cumtrapz(
+          data.spectrum[[B]],
+          data.spectrum$single_Integ
+        )[, 1] * 10
       }
     }
   }
-  if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
+  if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
     #
     ## integration depending on `B` unit
-    if (B.unit == "G"){
-      if (isFALSE(double.integ)){
+    if (B.unit == "G") {
+      if (isFALSE(double.integ)) {
         data.spectrum <- data.spectrum
       } else {
-        data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                       data.spectrum[[Intensity]])[,1]
+        data.spectrum$double_Integ <- pracma::cumtrapz(
+          data.spectrum[[B]],
+          data.spectrum[[Intensity]]
+        )[, 1]
       }
     }
-    if (B.unit == "mT"){
-      if (isFALSE(double.integ)){
+    if (B.unit == "mT") {
+      if (isFALSE(double.integ)) {
         data.spectrum <- data.spectrum
-      } else{
-        data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                       data.spectrum[[Intensity]])[,1]*10
+      } else {
+        data.spectrum$double_Integ <- pracma::cumtrapz(
+          data.spectrum[[B]],
+          data.spectrum[[Intensity]]
+        )[, 1] * 10
       }
     }
   }
   #
   ## Integral baseline correction
-  if (isTRUE(correct.integ)){
+  if (isTRUE(correct.integ)) {
     # select region / range / interval of the peak, which won't be
     ## considered ("!") for the baseline correction / fit
     ## (limits are 'BpeaKlim[1]'<=> 'start','BpeaKlim[2]' <=> 'end'):
-    if (is.null(BpeaKlim)){
+    if (is.null(BpeaKlim)) {
       stop(" The `B`-range for the peak baseline correction is not defined. Please, specify the range ! ")
-    } else{
+    } else {
       data.NoPeak <- data.spectrum %>%
         filter(!between(.data[[B]], BpeaKlim[1], BpeaKlim[2]))
-      if (is.null(poly.degree)){
-        stop( " The degree of a polynomial to model the baseline is not defined. Please, specify ! " )
-      } else{
+      if (is.null(poly.degree)) {
+        stop(" The degree of a polynomial to model the baseline is not defined. Please, specify ! ")
+      } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
-        if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
+        if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
           ## Polynomial baseline fit:
           #
           ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
-          integ.baseline.fit <- stats::lm(single_Integ ~ stats::poly(get(B),degree = poly.degree),
-                                          data = data.NoPeak)
+          integ.baseline.fit <- stats::lm(single_Integ ~ stats::poly(get(B), degree = poly.degree),
+            data = data.NoPeak
+          )
           #
           ## apply fit to data.spectrum
           data.spectrum <- broom::augment(integ.baseline.fit, newdata = data.spectrum) %>%
@@ -208,37 +225,45 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             dplyr::mutate(single_Integ_correct = single_Integ_correct - min(.data$single_Integ_correct))
           #
           ## integration depending on `B` unit
-          if (B.unit == "G"){
-            if (isFALSE(double.integ)){
+          if (B.unit == "G") {
+            if (isFALSE(double.integ)) {
               data.spectrum <- data.spectrum %>%
                 ## remove previous double integral (if present)
-                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
-                     dplyr::select(-double_Integ), .)
-
-            } else{
+                `if`(
+                  any(grepl("double_Integ", colnames(data.spectrum))),
+                  dplyr::select(-double_Integ), .
+                )
+            } else {
               ## uncorrected double integral is `overwritten`
-              data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                             data.spectrum$single_Integ_correct)[,1]
+              data.spectrum$double_Integ <- pracma::cumtrapz(
+                data.spectrum[[B]],
+                data.spectrum$single_Integ_correct
+              )[, 1]
             }
           }
-          if (B.unit == "mT"){
-            if (isFALSE(double.integ)){
+          if (B.unit == "mT") {
+            if (isFALSE(double.integ)) {
               data.spectrum <- data.spectrum %>%
                 ## remove previous double integral (if present)
-                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
-                     dplyr::select(-double_Integ), .)
-            } else{
+                `if`(
+                  any(grepl("double_Integ", colnames(data.spectrum))),
+                  dplyr::select(-double_Integ), .
+                )
+            } else {
               ## uncorrected double integral is `overwritten`
-              data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                             data.spectrum$single_Integ_correct)[,1]*10
-           }
+              data.spectrum$double_Integ <- pracma::cumtrapz(
+                data.spectrum[[B]],
+                data.spectrum$single_Integ_correct
+              )[, 1] * 10
+            }
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
-        if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
+        if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
           ## Polynomial baseline fit:
-          integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B),degree = poly.degree),
-                                          data = data.NoPeak)
+          integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
+            data = data.NoPeak
+          )
           #
           ## apply fit to data.spectrum
           data.spectrum <- broom::augment(integ.baseline.fit, newdata = data.spectrum) %>%
@@ -253,26 +278,34 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             dplyr::mutate(single_Integ_correct = single_Integ_correct - min(.data$single_Integ_correct))
           #
           ## integration depending on `B` unit
-          if (B.unit == "G"){
-            if (isFALSE(double.integ)){
+          if (B.unit == "G") {
+            if (isFALSE(double.integ)) {
               data.spectrum <- data.spectrum %>%
                 ## remove previous double integral (if present)
-                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
-                     dplyr::select(-double_Integ), .)
-            } else{
-              data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                             data.spectrum$single_Integ_correct)[,1]
+                `if`(
+                  any(grepl("double_Integ", colnames(data.spectrum))),
+                  dplyr::select(-double_Integ), .
+                )
+            } else {
+              data.spectrum$double_Integ <- pracma::cumtrapz(
+                data.spectrum[[B]],
+                data.spectrum$single_Integ_correct
+              )[, 1]
             }
           }
-          if (B.unit == "mT"){
-            if (isFALSE(double.integ)){
+          if (B.unit == "mT") {
+            if (isFALSE(double.integ)) {
               data.spectrum <- data.spectrum %>%
                 ## remove previous double integral (if present)
-                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
-                     dplyr::select(-double_Integ), .)
-            } else{
-              data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
-                                                             data.spectrum$single_Integ_correct)[,1]*10
+                `if`(
+                  any(grepl("double_Integ", colnames(data.spectrum))),
+                  dplyr::select(-double_Integ), .
+                )
+            } else {
+              data.spectrum$double_Integ <- pracma::cumtrapz(
+                data.spectrum[[B]],
+                data.spectrum$single_Integ_correct
+              )[, 1] * 10
             }
           }
         }
@@ -281,34 +314,41 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   }
   #
   ## Vectorized output for the EPR spectral series
-  if (isFALSE(output.vecs)){
+  if (isFALSE(output.vecs)) {
     integrate.results <- data.spectrum
-      ## delete `index` column which is not required anymore
-      if (any(grepl("index",colnames(data.spectrum)))) {
-        data.spectrum$index <- NULL
-      }
-  } else{
-    if (isFALSE(double.integ)){
+    ## delete `index` column which is not required anymore
+    if (any(grepl("index", colnames(data.spectrum)))) {
+      data.spectrum$index <- NULL
+    }
+  } else {
+    if (isFALSE(double.integ)) {
       ## bacause `ifelse()` does not work for vectors
       ## it hast be replaced by `switch()` function, like =>
       ## integrated <- FALSE
       ## a <- "Derivative Intensity", b <- "Integrated Intensity"
       ## switch(2-isFALSE(integrated),a,b) =>
-      integrate.results <- switch(2-isFALSE(correct.integ),
-                                  data.spectrum$single_Integ,
-                                  data.spectrum$single_Integ_correct)
-    } else{
-      if (sjmisc::str_contains(Intensity,slct.vec.deriv.EPR.intens,logic = "or")){
-        integrate.results <- list(single = switch(2-isFALSE(correct.integ),
-                                                  data.spectrum$single_Integ,
-                                                  data.spectrum$single_Integ_correct),
-                                  double = data.spectrum$double_Integ)
+      integrate.results <- switch(2 - isFALSE(correct.integ),
+        data.spectrum$single_Integ,
+        data.spectrum$single_Integ_correct
+      )
+    } else {
+      if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+        integrate.results <- list(
+          single = switch(2 - isFALSE(correct.integ),
+            data.spectrum$single_Integ,
+            data.spectrum$single_Integ_correct
+          ),
+          double = data.spectrum$double_Integ
+        )
       }
-      if (sjmisc::str_contains(Intensity,slct.vec.integ.EPR.intens, logic = "or")){
-        integrate.results <- list(single = switch(2-isFALSE(correct.integ),
-                                                  data.spectrum$Intensity,
-                                                  data.spectrum$single_Integ_correct),
-                                  double = data.spectrum$double_Integ)
+      if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+        integrate.results <- list(
+          single = switch(2 - isFALSE(correct.integ),
+            data.spectrum$Intensity,
+            data.spectrum$single_Integ_correct
+          ),
+          double = data.spectrum$double_Integ
+        )
       }
     }
   }
