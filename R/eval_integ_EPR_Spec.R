@@ -213,7 +213,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               data.spectrum <- data.spectrum %>%
                 # remove index and previous double integral (if present)
                 dplyr::select(-.data$index) %>%
-                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
 
             } else{
@@ -227,7 +227,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               data.spectrum <- data.spectrum %>%
                 # remove index and previous double integral (if present)
                 dplyr::select(-.data$index) %>%
-                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
             } else{
               ## uncorrected double integral is `overwritten`
@@ -260,7 +260,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               data.spectrum <- data.spectrum %>%
                 # remove index and previous double integral (if present)
                 dplyr::select(-.data$index) %>%
-                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
             } else{
               data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
@@ -272,7 +272,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               data.spectrum <- data.spectrum %>%
                 # remove index and previous double integral (if present)
                 dplyr::select(-.data$index) %>%
-                `if`(grepl("double_Integ",colnames(data.spectrum)),
+                `if`(any(grepl("double_Integ",colnames(data.spectrum))),
                      dplyr::select(-double_Integ), .)
             } else{
               data.spectrum$double_Integ <- pracma::cumtrapz(data.spectrum[[B]],
