@@ -315,11 +315,13 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   #
   ## Vectorized output for the EPR spectral series
   if (isFALSE(output.vecs)) {
-    integrate.results <- data.spectrum
     ## delete `index` column which is not required anymore
     if (any(grepl("index", colnames(data.spectrum)))) {
       data.spectrum$index <- NULL
     }
+    #
+    integrate.results <- data.spectrum
+    #
   } else {
     if (isFALSE(double.integ)) {
       ## bacause `ifelse()` does not work for vectors
