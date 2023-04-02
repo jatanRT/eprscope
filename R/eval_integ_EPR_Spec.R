@@ -40,19 +40,38 @@
 #'   additional processing by \pkg{dplyr}.
 #'
 #'
-#' @return Data frame/table including the EPR spectral data (general \emph{Intensity}
+#' @return The integration results may be divided into following types depending on the above-described
+#'   parameters/arguments. Generally, they are either data frames incl. the original data and the integrals
+#'   (\code{output.vecs = FALSE}) or vectors corresponding to individual baseline corrected/uncorrected
+#'   integrals (\code{output.vecs = TRUE}). This is especially useful for spectral (time) series EPR data,
+#'   which can be handily processed \code{\link[dplyr]{group_by}} using `pipe` operators (\code{\link[magrittr]{\%>\%}}).
+#'   \itemize{
+#'   \item Data frame/table including the EPR spectral data (general \emph{Intensity}
 #'   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
-#'   (\strong{column} \code{single_Integ}) and/or \code{double} (\strong{column} \code{double_Integ} required
-#'   for quantitative analysis) integrals. Single integrals (referred either to derivative or already
-#'   single integrated EPR spectra) can be optionally corrected by the polynomial baseline
-#'   fit (\strong{column} \code{single_Integ_correct}). If \code{output.vecs = TRUE} the integrals
-#'   are either simple vectors (in case of \code{correct.integ = FALSE}) or can be called from a \strong{list}
-#'   by \code{...[["single"]]} (or \code{...$single}), corresponding to single integral (or integrated form of
-#'   EPR spectrum), or by \code{...[["double"]]} (or \code{...$double}) corresponding to doubly integrated (
-#'   or single integrated EPR spectra originally presented already in single integrals) EPR spectral data.
-#'   This is especially useful for spectral (time) series EPR data, which can be handily processed
-#'   \code{\link[dplyr]{group_by}} using `pipe` operators (\code{\link[magrittr]{\%>\%}}).
-#'
+#'   (\strong{column} \code{single_Integ}) integral. This is the case if only a single uncorrected integral
+#'   is required.
+#'   \item Data frame/table with single integral/intensity already corrected by a certain degree
+#'   of polynomial baseline (fitted to experimental baseline without peak). Single integrals are referred either
+#'   to derivative or already single integrated EPR spectra where corrected integral \code{column}
+#'   id denoted as \code{single_Integ_correct}. This is the case for \code{correct.integ = TRUE}
+#'   and \code{double.integ = FALSE} + \code{output.vecs = FALSE}.
+#'   \item The above-described data frame/table with \code{single} and \code{double} integral \strong{column}
+#'   (\code{double_Integ}) essential for quantitative analysis. This is the case for \code{output.vecs = FALSE}
+#'   and \code{correct.integ = FALSE}.
+#'   \item Data frame/table in case of \code{correct.integ = TRUE}, \code{double.integ = TRUE}
+#'   and \code{output.vecs = FALSE}. It contains the original data (as in all previous cases) + corrected
+#'   single integral (\code{single_Integ_correct}) and double integral (\code{double_Integ}) which
+#'   is evaluated from the baseline corrected single one. Therefor such double integral is suitable for
+#'   the accurate determination of radical (paramagnetic centers) amount.
+#'   \item Numeric vector corresponding to baseline uncorrected (or corrected) single integral
+#'   in case of \code{double.integ = FALSE} + \code{output.vecs = TRUE}.
+#'   \item List of numeric vectors corresponding to  `single` (corrected or uncorrected denpending
+#'   on \code{correct.integ} parameter/argument) and `double` integrals (\code{double.integ = TRUE}).
+#'   In such case the integrals are called by \code{list} names like \code{...[["single"]]}
+#'   (or \code{...$single}), corresponding to single integral (or integrated form of EPR spectrum),
+#'   or by \code{...[["double"]]} (or \code{...$double}) corresponding to doubly integrated
+#'   (or single integrated EPR spectra originally presented already in single integrals) EPR spectral data.
+#'   }
 #'
 #'
 #' @examples
@@ -315,7 +334,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   #
   ## Vectorized output for the EPR spectral series
   if (isFALSE(output.vecs)) {
-    ## delete `index` column which is not required anymore
+    ## delete `index` column which is not necessary anymore
     if (any(grepl("index", colnames(data.spectrum)))) {
       data.spectrum$index <- NULL
     }
