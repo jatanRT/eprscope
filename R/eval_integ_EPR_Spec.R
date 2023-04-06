@@ -105,6 +105,8 @@
 #'
 #'
 #' @importFrom pracma cumtrapz
+#' @importFrom dplyr relocate
+#' @importFrom tidyselect last_col
 eval_integ_EPR_Spec <- function(data.spectrum,
                                 B = "B_G",
                                 B.unit = "G",
@@ -332,12 +334,16 @@ eval_integ_EPR_Spec <- function(data.spectrum,
     }
   }
   #
-  ## Vectorized output for the EPR spectral series
+  ## Data Frame or Vectorized output for the EPR spectral series
   if (isFALSE(output.vecs)) {
     ## delete `index` column which is not necessary anymore
     if (any(grepl("index", colnames(data.spectrum)))) {
       data.spectrum$index <- NULL
     }
+    #
+    ## reorder columns in data frame
+    data.spectrum <- data.spectrum %>%
+      dplyr::relocate(double_Integ, .after = tidyselect::last_col())
     #
     integrate.results <- data.spectrum
     #
