@@ -7,45 +7,47 @@ Authors@R: person("Jan", "Tarabek",
            "jan.tarabek@uochb.cas.cz"), 
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0116-3824"))
-Description: Primary aim of the package is to process and plot 
-             spectra in Electron Paramagnetic Resonance (EPR) 
-             spectroscopy and Electron-Nuclear Double Resonance
-             (ENDOR). Both mostly in continuous wave (CW) mode. 
-             It includes functions to find the most important 
-             spectral characteristics like g-factor, linewidth, 
-             maximal derivative intensities and single/double 
+Description: Primary aim of the package is to process, analyze
+             and plot EPR spectra in Electron Paramagnetic 
+             Resonance (EPR) spectroscopy and Electron-Nuclear 
+             Double Resonance (ENDOR). Package functions/scripts
+             work well not only for continuous wave (CW) 
+             EPR/ENDOR, however most of them maybe also used 
+             for pulsed EPR. Package contains functions to find
+             the most important spectral characteristics 
+             like g-factor, linewidth, maximal derivative
+             or integral intensities and single/double 
              integrals, especially in spectral (time) series 
-             consisting of many EPR spectra like during electro-
-             chemical or photochemical radical generation 
-             and/or decomposition/decay. For such purpose also 
-             rate konstant of simple kinetic models 
-             can be evaluated as well. The input-format 
-             of all EPR spectra and tables must be ASCII 
-             (e.g. like '.txt', '.csv' or '.asc') which is then
-             transformed into 'data frame'. Package enables
-             automatic reading of ASCII spetra from BRUKER 
-             spectrometers. Subsequently, the EPR spectra 
-             ('data frames') can be plotted eiher by common 
-             'ggplot2' scripts or by package own functions incl. 
-             interactive formats based on 'plotly' package. 
-             Additionally, simulations of the EPR spectra 
-             and the corresponding parameters provided 
-             by MATLAB-EasySpin toolbox and the results 
+             consisting of many EPR spectra like during variable
+             temperature experiments, electrochemical 
+             or photochemical radical generation 
+             and/or decomposition/decay...etc. 
+             Package also contains functions to process 
+             data/spectra for analytical (quantitative) purposes, 
+             i.e. how many radicals, paramagnetic centers 
+             can be found in the analyte/sample. 
+             For such objective also rate constants considering
+             different kinetic models can be evaluated as well. 
+             The key feature of the package resides in processing
+             of the universal ASCII text formats 
+             (e.g. like '.txt', '.csv' or '.asc') from scratch. 
+             No proprietary formats are used and from such 
+             point of view the package is in accordance with 
+             the FAIR data principles. Upon 'reading' 
+             (also providing automatic procedures 
+             for BRUKER/MAGNETTECH spectrometers) the spectal 
+             data are transformed into universal 'data frame'
+             R format. Subsequently, the EPR spectra 
+             ('data frames') can be plotted and are fully
+             consistent with the 'ggplot2' package or interactive 
+             formats based on 'plotly'. Additionally, simulations
+             of the EPR spectra and the corresponding parameters
+             provided by MATLAB-EasySpin toolbox and the results 
              from quantum chemical calculations
              like g-factor and hyperfine splitting/coupling 
              constants (a/A) can be compared and summarized 
              in table-format in order to analyze the EPR spectra. 
-             Package also contains functions to process 
-             data/spectra for analytical (quantitative) purposes, 
-             i.e. how many radicals, paramagnetic centers 
-             can be found in the analyte/sample. Finally, 
-             theoretical reactional thermodynamic parameters 
-             (e.g. like G, H, S, K) from quantum chemical (QCH) 
-             computations and quantitative EPR as well as 
-             simulation and fitting of the experimental 
-             EPR spectra, similar to EasySpin Matlab toolbox, 
-             are planed for the future.
-License: GPL-3
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
