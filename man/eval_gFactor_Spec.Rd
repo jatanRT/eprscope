@@ -7,7 +7,8 @@
 eval_gFactor_Spec(
   data.spectrum,
   nu.GHz,
-  B = "B_mT",
+  B.unit = "G",
+  B = "B_G",
   Intensity = "dIepr_over_dB",
   Blim = NULL,
   iso = TRUE
@@ -15,10 +16,12 @@ eval_gFactor_Spec(
 }
 \arguments{
 \item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or \code{G}) column
-must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
-\code{index} column can be included as well}
+can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
+or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.}
 
 \item{nu.GHz}{Numeric, microwave frequency in \code{GHz}}
+
+\item{B.unit}{description tbc}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
@@ -44,23 +47,28 @@ Calculation of g-value according to fundamental formula (\code{\link{eval_gFacto
   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
-  otherwise the \eqn{B_{center}} must be taken into account.
+  otherwise the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
+  the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
 }
 \examples{
 \dontrun{
 eval_gFactor_Spec(data.spectrum,
                   9.82451,
-                  "B_mT",
+                  B.unit = "mT",
+                  "Field_mT",
                   Intensity = "dIepr_over_dB_Sim",
                   c(349.8841,351.112))
 eval_gFactor_Spec(data.spectrum,
                   nu.GHz = 9.82451,
+                  B.unit = "G",
                   B = "B_G",
                   Blim = c(3498.841,3511.12),
                   iso = FALSE)
 eval_gFactor_Spec(data.spectrum,
                   9.91024,
+                  B.unit = "G",
                   B = "B_G_Sim",
+                  Intensity = "Integral_Intensity",
                   c(3499,3501))
 }
 

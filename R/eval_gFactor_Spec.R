@@ -5,13 +5,15 @@
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
 #'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
 #'   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
-#'   otherwise the \eqn{B_{center}} must be taken into account.
+#'   otherwise the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
+#'   the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
 #'
 #'
 #' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT} or \code{G}) column
-#'   must be labeled as \code{B_mT} (or \code{B_G}) and that of the derivative intensity as \code{dIepr_over_dB},
-#'   \code{index} column can be included as well
+#'   can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
+#'   or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.
 #' @param nu.GHz Numeric, microwave frequency in \code{GHz}
+#' @param B.unit description tbc
 #' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
@@ -32,17 +34,21 @@
 #' \dontrun{
 #' eval_gFactor_Spec(data.spectrum,
 #'                   9.82451,
-#'                   "B_mT",
+#'                   B.unit = "mT",
+#'                   "Field_mT",
 #'                   Intensity = "dIepr_over_dB_Sim",
 #'                   c(349.8841,351.112))
 #' eval_gFactor_Spec(data.spectrum,
 #'                   nu.GHz = 9.82451,
+#'                   B.unit = "G",
 #'                   B = "B_G",
 #'                   Blim = c(3498.841,3511.12),
 #'                   iso = FALSE)
 #' eval_gFactor_Spec(data.spectrum,
 #'                   9.91024,
+#'                   B.unit = "G",
 #'                   B = "B_G_Sim",
+#'                   Intensity = "Integral_Intensity",
 #'                   c(3499,3501))
 #' }
 #'
@@ -53,7 +59,8 @@
 #' @importFrom dplyr filter select mutate pull between near
 eval_gFactor_Spec <- function(data.spectrum,
                               nu.GHz,
-                              B = "B_mT",
+                              B.unit = "G",
+                              B = "B_G",
                               Intensity = "dIepr_over_dB",
                               Blim = NULL,
                               iso = TRUE) {
@@ -65,6 +72,21 @@ eval_gFactor_Spec <- function(data.spectrum,
   ## otherwise use predefined vector
   data.B.region <- c(min(data.spectrum[[B]]),max(data.spectrum[[B]]))
   Blim <- Blim %>% `if`(is.null(Blim),data.B.region, .)
+  #
+  ## First of all define vectors with intensity column names =>
+  ## in order to defferentiate between derivative and integrated
+  ## EPR spectra
+  slct.vec.deriv.EPR.intens <- c(
+    "dB", "_dB", "intens", "deriv", "Intens",
+    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
+    "MW_Absorp", "MW_intens", "MW_Intens"
+  )
+  ## &
+  slct.vec.integ.EPR.intens <- c(
+    "single", "Single", "SInteg", "sinteg", "s_integ",
+    "single_", "singleinteg", "sintegral", "integral",
+    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+  )
   #
   ## B minimum & maximum
   B.min <- data.spectrum %>%
@@ -78,16 +100,26 @@ eval_gFactor_Spec <- function(data.spectrum,
     dplyr::pull(.data[[B]])
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)) {
-    B.center <- (B.min + B.max) / 2
-    ## B at dIepr_over_dB = 0 (near 0, see next comment):
+    if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")){
+      B.center <- (B.min + B.max) / 2
+      ## B at dIepr_over_dB = 0 (near 0, see next comment on `B.center`):
+    }
+    if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")){
+      B.center <- B.max
+    }
   } else {
-    ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
-    B.center <- data.spectrum %>%
-      dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
-      dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%
-      dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 100)) %>%
-      dplyr::filter(AbsIntens == min(AbsIntens)) %>%
-      dplyr::pull(.data[[B]])
+    if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")){
+      ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
+      B.center <- data.spectrum %>%
+        dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
+        dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%
+        dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 100)) %>%
+        dplyr::filter(AbsIntens == min(AbsIntens)) %>%
+        dplyr::pull(.data[[B]])
+    }
+    if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")){
+      B.center <- B.max
+    }
   }
   ## g -value calculation:
   Planck.const <- constants::syms$h
@@ -95,10 +127,10 @@ eval_gFactor_Spec <- function(data.spectrum,
   g.precurs <- (Planck.const * nu.GHz * 1e+9) / (Bohr.magnet * B.center)
   #
   ## Conditions for B column, the name should contain ("B", "mT" or "G"):
-  if (sjmisc::str_contains(B, c("B", "mT"), logic = "and", ignore.case = F)) {
+  if (B.unit == "mT") {
     g <- g.precurs / 1e-3
   }
-  if (sjmisc::str_contains(B, c("B", "G"), logic = "and", ignore.case = F)) {
+  if (B.unit == "G") {
     g <- g.precurs / 1e-4
   }
   #
