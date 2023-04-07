@@ -35,7 +35,7 @@ Description: Primary aim of the package is to process, analyze
              point of view the package is in accordance with 
              the FAIR data principles. Upon 'reading' 
              (also providing automatic procedures 
-             for BRUKER/MAGNETTECH spectrometers) the spectal 
+             for most common EPR spectrometers) the spectral 
              data are transformed into universal 'data frame'
              R format. Subsequently, the EPR spectra 
              ('data frames') can be plotted and are fully
@@ -47,7 +47,7 @@ Description: Primary aim of the package is to process, analyze
              like g-factor and hyperfine splitting/coupling 
              constants (a/A) can be compared and summarized 
              in table-format in order to analyze the EPR spectra. 
-License: MIT + file LICENSE
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
