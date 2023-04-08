@@ -112,32 +112,35 @@ plot_EPR_Spec <- function(data.spectrum,
     "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
     "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
     "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI"
+    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm"
   )
   #
   ## label <=> selection
-  if (sjmisc::str_contains(x, c("B_mT", "mT", "BField_mT", "Field_mT"), logic = "or")) {
+  ## & the plot function (distance from the y-axis borders
+  ## e.g. ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
+  if (any(grepl(x, "B_mT|mT|BField_mT|Field_mT"))) {
     x.label <- bquote(italic(B) ~ "(" ~ mT ~ ")")
+    x.plot.limits <- c(x.start - 0.5, x.end + 0.5)
   }
-  if (sjmisc::str_contains(x, c("B_G", "G", "BField_G", "Field_G"), logic = "or")) {
+  if (any(grepl(x, "B_G|G|BField_G|Field_G"))) {
     x.label <- bquote(italic(B) ~ "(" ~ G ~ ")")
+    x.plot.limits <- c(x.start - 5, x.end + 5)
   }
-  if (sjmisc::str_contains(x, c("RF", "MHz", "radio", "radio_f", "freq"),
-    logic = "or",
-    ignore.case = T
-  )) {
+  if (any(grepl(x, "RF|MHz|radio|radio_f|freq",ignore.case = T))) {
     x.label <- bquote(italic(nu)[RF] ~ "(" ~ MHz ~ ")")
+    x.plot.limits <- c(x.start - 3, x.end + 3)
   }
-  if (sjmisc::str_contains(x, slct.vec.x.g, logic = "or")) {
+  if (any(grepl(x,paste(slct.vec.x.g,collapse = "|")))) {
     x.label <- bquote(italic(g))
+    x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
     y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
     y.label <- bquote(italic(I)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.Dinteg.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.Dinteg.EPR.intens,collapse = "|")))) {
     y.label <- bquote(italic(DI)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
@@ -165,23 +168,6 @@ plot_EPR_Spec <- function(data.spectrum,
   ) ## theme with no grid
   ## x ticks of the upper axis also inside the graph:
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL))
-  #
-  ## The plot function (distance from the y-axis borders e.g. ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
-  if (sjmisc::str_contains(x, c("B_mT", "mT", "BField_mT", "Field_mT"), logic = "or")) {
-    x.plot.limits <- c(x.start - 0.5, x.end + 0.5)
-  }
-  if (sjmisc::str_contains(x, c("B_G", "G", "BField_G", "Field_G"), logic = "or")) {
-    x.plot.limits <- c(x.start - 5, x.end + 5)
-  }
-  if (sjmisc::str_contains(x, c("RF", "MHz", "radio", "radio_f", "freq"),
-    logic = "or",
-    ignore.case = T
-  )) {
-    x.plot.limits <- c(x.start - 3, x.end + 3)
-  }
-  if (sjmisc::str_contains(x, slct.vec.x.g, logic = "or")) {
-    x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
-  }
   #
   ## Basic simple plot:
   simplePlot <- ggplot(data.spectrum) +

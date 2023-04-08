@@ -54,10 +54,16 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- stringr::str_subset(col.names, regex("mhz|megahertz", ignore_case = T))
-  a.str <- stringr::str_subset(col.names, regex("gauss|G|Gauss"))
-  atomic.num.str <- stringr::str_subset(col.names, regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
-  nucl.str <- stringr::str_subset(col.names, regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM|atom", ignore_case = T))
+  A.str <- stringr::str_subset(col.names,
+                               regex("mhz|megahertz",
+                                     ignore_case = T))
+  a.str <- stringr::str_subset(col.names,
+                               regex("gauss|G|Gauss"))
+  atomic.num.str <- stringr::str_subset(col.names,
+                                        regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
+  nucl.str <- stringr::str_subset(col.names,
+                                  regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM|atom",
+                                        ignore_case = T))
   #
   ## Read the data:
   data.Aa.comput <- data.table::fread(path_to_ASC,
@@ -68,7 +74,10 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
       MegaHertz = abs(round(.data[[A.str]], digits = 3)),
       Gauss = abs(round(.data[[a.str]], digits = 2))
     ) %>%
-    dplyr::select(c(.data[[atomic.num.str]], .data[[nucl.str]], .data$MegaHertz, .data$Gauss))
+    dplyr::select(c(.data[[atomic.num.str]],
+                    .data[[nucl.str]],
+                    .data$MegaHertz,
+                    .data$Gauss))
   #
   ## Own function to rearrange A/a according to `nuclei.list.slct`
   ## Build up new rearranged data frame for Nuclei A/a:

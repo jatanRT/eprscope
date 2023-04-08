@@ -125,17 +125,17 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
     "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
     "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
     "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI"
+    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm"
   )
   #
   ## Intensity (y) label depending on intensity (derivative, integrated...)
-  if (sjmisc::str_contains(Intensity.exp, slct.vec.deriv.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity.exp,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
     ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity.exp, slct.vec.integ.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity.exp,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
     ylab <- bquote(italic(I)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (sjmisc::str_contains(Intensity.exp, slct.vec.Dinteg.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity.exp,paste(slct.vec.Dinteg.EPR.intens,collapse = "|")))) {
     ylab <- bquote(italic(DI)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
   }
   #

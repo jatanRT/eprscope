@@ -152,7 +152,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   data.spectrum <- data.spectrum %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
   #
-  if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
     #
     ## integration depending on `B` unit and delete index afterwards
     if (B.unit == "G") {
@@ -186,7 +186,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
     #
     ## integration depending on `B` unit
     if (B.unit == "G") {
@@ -225,7 +225,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         stop(" The degree of a polynomial to model the baseline is not defined. Please, specify ! ")
       } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
-        if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+        if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
           ## Polynomial baseline fit:
           #
           ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
@@ -280,7 +280,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
-        if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+        if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
           ## Polynomial baseline fit:
           integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
             data = data.NoPeak
@@ -359,7 +359,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         data.spectrum$single_Integ_correct
       )
     } else {
-      if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+      if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectrum$single_Integ,
@@ -368,7 +368,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           double = data.spectrum$double_Integ
         )
       }
-      if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+      if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectrum$Intensity,

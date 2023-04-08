@@ -70,8 +70,8 @@ eval_gFactor_Spec <- function(data.spectrum,
   #
   ## Define limits if `Blim = NULL` take the entire data region
   ## otherwise use predefined vector
-  data.B.region <- c(min(data.spectrum[[B]]),max(data.spectrum[[B]]))
-  Blim <- Blim %>% `if`(is.null(Blim),data.B.region, .)
+  data.B.region <- c(min(data.spectrum[[B]]), max(data.spectrum[[B]]))
+  Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
   #
   ## First of all define vectors with intensity column names =>
   ## in order to defferentiate between derivative and integrated
@@ -100,15 +100,16 @@ eval_gFactor_Spec <- function(data.spectrum,
     dplyr::pull(.data[[B]])
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)) {
-    if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")){
+    ## `sjmisc::str_contains` can be replaced by `any(grepl())` and `regex` `|` `or` sign
+    if (any(grepl(Intensity, paste(slct.vec.deriv.EPR.intens, collapse = "|")))) {
       B.center <- (B.min + B.max) / 2
       ## B at dIepr_over_dB = 0 (near 0, see next comment on `B.center`):
     }
-    if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")){
+    if (any(grepl(Intensity, paste(slct.vec.integ.EPR.intens, collapse = "|")))) {
       B.center <- B.max
     }
   } else {
-    if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")){
+    if (any(grepl(Intensity, paste(slct.vec.deriv.EPR.intens, collapse = "|")))) {
       ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
       B.center <- data.spectrum %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
@@ -117,7 +118,7 @@ eval_gFactor_Spec <- function(data.spectrum,
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
-    if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")){
+    if (any(grepl(Intensity, paste(slct.vec.integ.EPR.intens, collapse = "|")))) {
       B.center <- B.max
     }
   }

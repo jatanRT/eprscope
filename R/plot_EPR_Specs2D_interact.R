@@ -91,35 +91,30 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
     "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
     "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
     "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI"
+    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm"
   )
   #
   ## label <=> selection
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
-  if (sjmisc::str_contains(x, c("B_mT", "mT", "BField_mT", "Field_mT"), logic = "or")) {
+  if (any(grepl(x, "B_mT|mT|BField_mT|Field_mT"))) {
     xlabel <- "<i>B</i> (mT)"
   }
-  if (sjmisc::str_contains(x, c("B_G", "G", "BField_G", "Field_G"), logic = "or")) {
+  if (any(grepl(x, "B_G|G|BField_G|Field_G"))) {
     xlabel <- "<i>B</i> (G)"
   }
-  if (sjmisc::str_contains(x, c("RF", "MHz", "radio", "radio_f", "freq"),
-    logic = "or",
-    ignore.case = T
-  )) {
+  if (any(grepl(x, "RF|MHz|radio|radio_f|freq",ignore.case = T))) {
     xlabel <- "<i>&#957;</i><sub>RF</sub> (MHz)"
   }
-  if (sjmisc::str_contains(x, slct.vec.x.g, logic = "or")) {
+  if (any(grepl(x,paste(slct.vec.x.g,collapse = "|")))) {
     xlabel <- "<i>g</i>"
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.deriv.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
     ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.integ.EPR.intens, logic = "or")) {
+  if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
     ylabel <- "<i>I</i><sub>EPR</sub>  (p.d.u.)"
   }
-  if (sjmisc::str_contains(Intensity, slct.vec.Dinteg.EPR.intens,
-    logic = "or", switch = F
-  )) {
+  if (any(grepl(Intensity,paste(slct.vec.Dinteg.EPR.intens,collapse = "|")))) {
     ylabel <- "<i>DI</i><sub>EPR</sub>  (p.d.u.)"
   }
   #
