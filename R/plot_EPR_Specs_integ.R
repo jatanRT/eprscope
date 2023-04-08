@@ -22,8 +22,8 @@
 #' @param separate.integ.scales Character/String corresponding to how the axis scales should or shouldn't be fixed,
 #'   unless the \code{separate.integs = FALSE}. Inherited from \code{\link[ggplot2]{facet_wrap}}.
 #'   Following expressions are available => \code{"fixed"}, \code{"free"} or in one dimension \code{"free_x"}
-#'   or \code{"free_y"}. \strong{Default}: \code{separate.integ.scales = FALSE}
-#'   in case of \code{separate.integs = NULL}.
+#'   or \code{"free_y"}. \strong{Default}: \code{separate.integ.scales = NULL}
+#'   in case of \code{separate.integs = FALSE}.
 #'
 #'
 #' @return tbc
