@@ -7,6 +7,7 @@
 plot_EPR_Specs2D_interact(
   data.spectra,
   x = "B_mT",
+  x.unit = "mT",
   Intensity = "dIepr_over_dB",
   var2nd = NULL,
   line.color = "darkviolet",
@@ -30,6 +31,11 @@ intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, 
 
 \item{x}{Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
 or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
+
+\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
+\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
+like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}

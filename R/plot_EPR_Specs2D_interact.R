@@ -12,6 +12,10 @@
 #'   (incl. other \code{Intensity} and \code{B} columns) can be read as well
 #' @param x Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
 #'   or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}
+#' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
+#'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
+#'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+#'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param var2nd String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
@@ -54,6 +58,7 @@
 #' @importFrom plotly ggplotly
 plot_EPR_Specs2D_interact <- function(data.spectra,
                                       x = "B_mT",
+                                      x.unit = "mT",
                                       Intensity = "dIepr_over_dB",
                                       var2nd = NULL,
                                       line.color = "darkviolet",
@@ -71,7 +76,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   ## Select labels by defining the corresponding vectors
   slct.vec.x.g <- c(
-    "g", "g_value", "g_Value", "gval", "gVal",
+    "g_value", "g_Value", "gval", "gVal",
     "g_factor", "g_Factor", "gfac", "gFac"
   )
   #
@@ -83,39 +88,43 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   #
   slct.vec.integ.EPR.intens <- c(
     "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral",
-    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+    "single_", "singleinteg", "sintegral", "integral_Single",
+    "Integral_single", "sInteg_", "sInteg", "singleI",
+    "Sinteg", "Single_", "integral_single", "SingleI",
+    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
+    "IntegralSingl", "intergralSingl", "IntegSingl",
+    "integSingl", "IntegSingl", "integSingl"
   )
   #
   slct.vec.Dinteg.EPR.intens <- c(
-    "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
+    "double", "Double", "Dinteg", "DInteg", "dinteg",
+    "d_integ", "dInteg", "doubleInteg", "second", "Idouble",
     "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
     "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm"
+    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm",
+    "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
+    "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
+    "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
+    "integSigm", "IntegDoub", "integDoub"
   )
   #
   ## label <=> selection
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
-  if (any(grepl(x, "B_mT|mT|BField_mT|Field_mT"))) {
-    xlabel <- "<i>B</i> (mT)"
+  if (x.unit == "G" || x.unit == "mT") {
+    xlabel <- paste0("<i>B</i> (",x.unit,")")
   }
-  if (any(grepl(x, "B_G|G|BField_G|Field_G"))) {
-    xlabel <- "<i>B</i> (G)"
+  if (x.unit == "MHz") {
+    xlabel <- paste0("<i>&#957;</i><sub>RF</sub> (",x.unit,")")
   }
-  if (any(grepl(x, "RF|MHz|radio|radio_f|freq",ignore.case = T))) {
-    xlabel <- "<i>&#957;</i><sub>RF</sub> (MHz)"
-  }
-  if (any(grepl(x,paste(slct.vec.x.g,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x))) {
     xlabel <- "<i>g</i>"
   }
-  if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
     ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
-  if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
-    ylabel <- "<i>I</i><sub>EPR</sub>  (p.d.u.)"
-  }
-  if (any(grepl(Intensity,paste(slct.vec.Dinteg.EPR.intens,collapse = "|")))) {
-    ylabel <- "<i>DI</i><sub>EPR</sub>  (p.d.u.)"
+  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity)) ||
+      any(grepl(paste(slct.vec.Dinteg.EPR.intens,collapse = "|"), Intensity))) {
+    ylabel <- "<i>Intensity</i>  (p.d.u.)"
   }
   #
   ## plot precursor

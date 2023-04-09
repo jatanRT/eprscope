@@ -18,6 +18,10 @@
 #'   or integrated \code{Intensity}. \code{Index} column may be included as well.
 #' @param x Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
 #'   or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}
+#' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
+#'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
+#'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+#'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
@@ -48,21 +52,24 @@
 #' \dontrun{
 #' plot_EPR_Spec(data.spectrum)
 #' plot_EPR_Spec(data.spectrum,
-#'               "B_G",
+#'               x = "B_G",
+#'               x.unit = "G",
 #'               Intensity = "dIepr_over_dB_Sim")
 #' plot_EPR_Spec(data.spectrum,
 #'               x = "B_mT_Sim",
-#'               "Integral")
+#'               "singleInteg")
 #' plot_EPR_Spec(data.spectrum,
 #'               line.color = "blue",
 #'               basic.theme = "theme_linedraw",
 #'               yTicks = FALSE)
 #' plot_EPR_Spec(data.spectrum,
 #'               x = "g_Value",
+#'               x.unit = "Unitless",
 #'               theme.basic = "theme_bw",
 #'               grid = TRUE)
 #' plot_EPR_Spec(data.spectrum,
 #'               x = "RF_MHz",
+#'               x.unit = "MHz",
 #'               line.color = "darkred",
 #'               line.width = 1.2)
 #' }
@@ -76,6 +83,7 @@
 #'   theme_minimal theme_classic theme_linedraw
 plot_EPR_Spec <- function(data.spectrum,
                           x = "B_mT",
+                          x.unit = "mT",
                           Intensity = "dIepr_over_dB",
                           line.color = "steelblue",
                           line.width = 0.75,
@@ -92,7 +100,7 @@ plot_EPR_Spec <- function(data.spectrum,
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   ## Select labels by defining the corresponding vectors
   slct.vec.x.g <- c(
-    "g", "g_value", "g_Value", "gval", "gVal",
+    "g_value", "g_Value", "gval", "gVal",
     "g_factor", "g_Factor", "gfac", "gFac"
   )
   #
@@ -104,44 +112,47 @@ plot_EPR_Spec <- function(data.spectrum,
   #
   slct.vec.integ.EPR.intens <- c(
     "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral",
-    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+    "single_", "singleinteg", "sintegral", "integral_Single",
+    "Integral_single", "sInteg_", "sInteg", "singleI",
+    "Sinteg", "Single_", "integral_single", "SingleI",
+    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
+    "IntegralSingl", "intergralSingl", "IntegSingl",
+    "integSingl", "IntegSingl", "integSingl"
   )
   #
   slct.vec.Dinteg.EPR.intens <- c(
-    "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
+    "double", "Double", "Dinteg", "DInteg", "dinteg",
+    "d_integ", "dInteg", "doubleInteg", "second", "Idouble",
     "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
     "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm"
+    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm",
+    "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
+    "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
+    "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
+    "integSigm", "IntegDoub", "integDoub"
   )
   #
   ## label <=> selection
   ## & the plot function (distance from the y-axis borders
-  ## e.g. ('B.start-0.5(or 5)','B.end+0.5 (or 5)')):
-  if (any(grepl(x, "B_mT|mT|BField_mT|Field_mT"))) {
-    x.label <- bquote(italic(B) ~ "(" ~ mT ~ ")")
-    x.plot.limits <- c(x.start - 0.5, x.end + 0.5)
+  ## e.g. ('B.start-0.5 (or 5 or 3)','B.end+0.5 (or 5 or 3)')):
+  if (x.unit == "mT" || x.unit == "G") {
+    x.label <- bquote(italic(B) ~ "(" ~ .(x.unit) ~ ")")
+    x.plot.limits <- c(x.start - 1, x.end + 1)
   }
-  if (any(grepl(x, "B_G|G|BField_G|Field_G"))) {
-    x.label <- bquote(italic(B) ~ "(" ~ G ~ ")")
-    x.plot.limits <- c(x.start - 5, x.end + 5)
-  }
-  if (any(grepl(x, "RF|MHz|radio|radio_f|freq",ignore.case = T))) {
-    x.label <- bquote(italic(nu)[RF] ~ "(" ~ MHz ~ ")")
+  if (x.unit == "MHz") {
+    x.label <- bquote(italic(nu)[RF] ~ "(" ~ .(x.unit) ~ ")")
     x.plot.limits <- c(x.start - 3, x.end + 3)
   }
-  if (any(grepl(x,paste(slct.vec.x.g,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x))) {
     x.label <- bquote(italic(g))
     x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
   }
-  if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
     y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
-    y.label <- bquote(italic(I)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
-  }
-  if (any(grepl(Intensity,paste(slct.vec.Dinteg.EPR.intens,collapse = "|")))) {
-    y.label <- bquote(italic(DI)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
+  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity)) ||
+      any(grepl(paste(slct.vec.Dinteg.EPR.intens,collapse = "|"), Intensity))) {
+    y.label <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
   ## Themes for the spectra, whether the ticks are displayed or not:

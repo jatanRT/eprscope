@@ -84,8 +84,12 @@ eval_gFactor_Spec <- function(data.spectrum,
   ## &
   slct.vec.integ.EPR.intens <- c(
     "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral",
-    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+    "single_", "singleinteg", "sintegral", "integral_Single",
+    "Integral_single", "sInteg_", "sInteg", "singleI",
+    "Sinteg", "Single_", "integral_single", "SingleI",
+    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
+    "IntegralSingl", "intergralSingl", "IntegSingl",
+    "integSingl", "IntegSingl", "integSingl"
   )
   #
   ## B minimum & maximum
@@ -101,15 +105,15 @@ eval_gFactor_Spec <- function(data.spectrum,
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)) {
     ## `sjmisc::str_contains` can be replaced by `any(grepl())` and `regex` `|` `or` sign
-    if (any(grepl(Intensity, paste(slct.vec.deriv.EPR.intens, collapse = "|")))) {
+    if (any(grepl(paste(slct.vec.deriv.EPR.intens, collapse = "|"), Intensity))) {
       B.center <- (B.min + B.max) / 2
       ## B at dIepr_over_dB = 0 (near 0, see next comment on `B.center`):
     }
-    if (any(grepl(Intensity, paste(slct.vec.integ.EPR.intens, collapse = "|")))) {
+    if (any(grepl(paste(slct.vec.integ.EPR.intens, collapse = "|"), Intensity))) {
       B.center <- B.max
     }
   } else {
-    if (any(grepl(Intensity, paste(slct.vec.deriv.EPR.intens, collapse = "|")))) {
+    if (any(grepl(paste(slct.vec.deriv.EPR.intens, collapse = "|"), Intensity))) {
       ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
       B.center <- data.spectrum %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
@@ -118,7 +122,7 @@ eval_gFactor_Spec <- function(data.spectrum,
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
-    if (any(grepl(Intensity, paste(slct.vec.integ.EPR.intens, collapse = "|")))) {
+    if (any(grepl(paste(slct.vec.integ.EPR.intens, collapse = "|"),Intensity))) {
       B.center <- B.max
     }
   }

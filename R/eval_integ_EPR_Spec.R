@@ -151,15 +151,19 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   ## &
   slct.vec.integ.EPR.intens <- c(
     "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral",
-    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+    "single_", "singleinteg", "sintegral", "integral_Single",
+    "Integral_single", "sInteg_", "sInteg", "singleI",
+    "Sinteg", "Single_", "integral_single", "SingleI",
+    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
+    "IntegralSingl", "intergralSingl", "IntegSingl",
+    "integSingl", "IntegSingl", "integSingl"
   )
   #
   ## primary data for integration
   data.spectrum <- data.spectrum %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
   #
-  if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
     #
     ## integration depending on `B` unit
     if (B.unit == "G") {
@@ -193,7 +197,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity))) {
     #
     ## integration depending on `B` unit
     if (B.unit == "G") {
@@ -232,7 +236,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         stop(" The degree of a polynomial to model the baseline is not defined. Please, specify ! ")
       } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
-        if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
+        if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
           ## Polynomial baseline fit:
           #
           ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
@@ -287,7 +291,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
-        if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
+        if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity))) {
           ## Polynomial baseline fit:
           integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
             data = data.NoPeak
@@ -366,7 +370,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         data.spectrum$single_Integ_correct
       )
     } else {
-      if (any(grepl(Intensity,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
+      if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectrum$single_Integ,
@@ -375,7 +379,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           sigmoid = data.spectrum$sigmoid_Integ
         )
       }
-      if (any(grepl(Intensity,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
+      if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity))) {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectrum$Intensity,

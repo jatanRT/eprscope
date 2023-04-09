@@ -7,6 +7,7 @@
 plot_EPR_Spec(
   data.spectrum,
   x = "B_mT",
+  x.unit = "mT",
   Intensity = "dIepr_over_dB",
   line.color = "steelblue",
   line.width = 0.75,
@@ -24,6 +25,11 @@ or integrated \code{Intensity}. \code{Index} column may be included as well.}
 
 \item{x}{Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
 or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
+
+\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
+\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
+like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
@@ -73,21 +79,24 @@ Graph/Plot of an EPR/ENDOR spectrum based on \pkg{ggplot2}-functionality. Spectr
 \dontrun{
 plot_EPR_Spec(data.spectrum)
 plot_EPR_Spec(data.spectrum,
-              "B_G",
+              x = "B_G",
+              x.unit = "G",
               Intensity = "dIepr_over_dB_Sim")
 plot_EPR_Spec(data.spectrum,
               x = "B_mT_Sim",
-              "Integral")
+              "singleInteg")
 plot_EPR_Spec(data.spectrum,
               line.color = "blue",
               basic.theme = "theme_linedraw",
               yTicks = FALSE)
 plot_EPR_Spec(data.spectrum,
               x = "g_Value",
+              x.unit = "Unitless",
               theme.basic = "theme_bw",
               grid = TRUE)
 plot_EPR_Spec(data.spectrum,
               x = "RF_MHz",
+              x.unit = "MHz",
               line.color = "darkred",
               line.width = 1.2)
 }

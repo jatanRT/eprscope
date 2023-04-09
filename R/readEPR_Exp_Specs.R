@@ -178,16 +178,14 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   } else {
     if (x.unit == "Unitless") {
       x <- grep("g", col.names, value = TRUE)
-      time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
     }
     if (x.unit == "G" || x.unit == "mT") {
       x <- grep("B|G|mT", col.names, value = TRUE)[[1]]
-      time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
     }
     if (x.unit == "MHz") {
       x <- grep("rf|RF|MHz|radio|Radio|freq|Freq", col.names, value = TRUE)
-      time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
     }
+    time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
   }
   #
   ## select intesity column character string

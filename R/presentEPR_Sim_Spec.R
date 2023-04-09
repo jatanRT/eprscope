@@ -71,8 +71,6 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
                                 output.table = FALSE) {
   #
   ## 'Temporary' processing variables
-  mT <- NULL
-  G <- NULL
   B <- NULL
   #
   ## Join both tables/data frames
@@ -100,43 +98,45 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
   both.spectr.data[[paste0("Bsim_", B.unit)]] <- both.spectr.data[[paste0("Bsim_", B.unit)]] + B.shift
   #
   ## B (x) label for the plot:
-  if (B.unit == "mT") {
-    xlab <- plot_labels_xyz(B, mT)
-  }
-  if (B.unit == "G") {
-    xlab <- plot_labels_xyz(B, G)
-  }
+    xlab <- bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")")
   #
   ## Labels based on `Intensity` conditions:
   ## Select labels by defining the corresponding vectors
   slct.vec.deriv.EPR.intens <- c(
     "dB", "_dB", "intens", "deriv", "Intens",
     "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
-    "MW_Absorp"
+    "MW_Absorp", "MW_intens", "MW_Intens"
   )
   #
   slct.vec.integ.EPR.intens <- c(
     "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral",
-    "Integral", "sInteg_", "sInteg", "singleI", "integ", "Integ"
+    "single_", "singleinteg", "sintegral", "integral_Single",
+    "Integral_single", "sInteg_", "sInteg", "singleI",
+    "Sinteg", "Single_", "integral_single", "SingleI",
+    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
+    "IntegralSingl", "intergralSingl", "IntegSingl",
+    "integSingl", "IntegSingl", "integSingl"
   )
   #
   slct.vec.Dinteg.EPR.intens <- c(
-    "double", "Double", "Dinteg", "DInteg", "dinteg", "d_integ",
+    "double", "Double", "Dinteg", "DInteg", "dinteg",
+    "d_integ", "dInteg", "doubleInteg", "second", "Idouble",
     "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
     "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm"
+    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm",
+    "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
+    "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
+    "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
+    "integSigm", "IntegDoub", "integDoub"
   )
   #
   ## Intensity (y) label depending on intensity (derivative, integrated...)
-  if (any(grepl(Intensity.exp,paste(slct.vec.deriv.EPR.intens,collapse = "|")))) {
+  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity.exp))) {
     ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (any(grepl(Intensity.exp,paste(slct.vec.integ.EPR.intens,collapse = "|")))) {
-    ylab <- bquote(italic(I)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
-  }
-  if (any(grepl(Intensity.exp,paste(slct.vec.Dinteg.EPR.intens,collapse = "|")))) {
-    ylab <- bquote(italic(DI)[EPR] ~ ~"(" ~ p.d.u. ~ ")")
+  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity.exp)) ||
+      any(grepl(paste(slct.vec.Dinteg.EPR.intens,collapse = "|"), Intensity.exp))) {
+    ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
   ## plot variable:
