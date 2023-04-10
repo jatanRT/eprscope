@@ -10,7 +10,7 @@
 #' @param data.spectra.integ tbc
 #' @param B tbc
 #' @param B.unit tbc
-#' @param B.lim tbc
+#' @param Blim tbc
 #' @param ylim tbc
 #' @param select.integs tbc
 #' @param line.width tbc
@@ -43,7 +43,7 @@
 plot_EPR_Specs_integ <- function(data.spectra.integ,
                                  B = "B_G",
                                  B.unit = "G",
-                                 B.lim = NULL,
+                                 Blim = NULL,
                                  ylim = NULL,
                                  select.integs = c(
                                    "single_Integ",

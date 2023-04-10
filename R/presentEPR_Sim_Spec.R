@@ -26,7 +26,7 @@
 #'   \strong{default}: \code{Intensity.shift.ratio = 1.2}, other common values : \code{0.6},\code{0.8},
 #'   \code{1.2},\code{1.1}
 #' @param B.shift Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
-#'   that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{dafault}:
+#'   that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
 #'   \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
 #'   \code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G})
 #' @param line.color.exp String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible

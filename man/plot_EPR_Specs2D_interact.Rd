@@ -24,28 +24,36 @@ plot_EPR_Specs2D_interact(
 )
 }
 \arguments{
-\item{data.spectra}{Spectrum data frame/table where the magnetic flux density (in \code{mT}) column
-must be labeled as \code{B_mT} in mT (or \code{B_G} in gauss) and that of the derivative
-intensity as \code{dIepr_over_dB}, \code{index} column can be included as well, integrated/simulated spectra
-(incl. other \code{Intensity} and \code{B} columns) can be read as well}
+\item{data.spectra}{Spectrum data frame/table containing magnetic flux density, \eqn{g}-value
+or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
+in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
+can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
+integrated or simulated spectra intensities are present, they can be labeled accordingly.
+See also \code{Intensity} parameter/argument. For spectral series the second independent variable
+\code{var2nd} column (like e.g. \code{var2nd = "time_s"}) must be available. In such case
+the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameters/arguments
+\code{var2nd} and \code{var2nd.series}).}
 
-\item{x}{Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
-or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
+\item{x}{Character/String pointing to \code{x}-axis/column quantity in original \code{data.spectrum} like
+magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
+\strong{default}: \code{x = "B_mT"}.}
 
 \item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
 \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
 like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
-\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used (e.g. for integrated or simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
+\item{Intensity}{Character/String pointing to \code{intensity column} in the original \code{data.spectrum}
+if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
+\strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{var2nd}{String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
-`Electrochemical Potential`,`Microwave Power`...etc) altered upon individual experiments as a second variable
-(\code{var2nd}) and related to spectra/data (see also \code{var2nd.series} parameter). Data must be available
-in \strong{long table} (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
-\strong{Default}: \code{var2nd = NULL}. If \code{var2nd.series = FALSE}, otherwise \strong{usually}
-\code{var2nd = "time_s"} if \code{var2nd.series = TRUE}}
+\item{var2nd}{String/Character referred to name of the second independent variable/quantity
+column (e.g. like `time`,`Temperature`, `Electrochemical Potential`,`Microwave Power`...etc)
+altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data
+(see also \code{var2nd.series} parameter). Data must be available in \strong{long table} (or \strong{tidy})
+\strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}). \strong{Default}: \code{var2nd = NULL}
+if \code{var2nd.series = FALSE}. Otherwise \strong{usually} \code{var2nd = "time_s"}
+if \code{var2nd.series = TRUE}}
 
 \item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
 (not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}}
@@ -70,7 +78,7 @@ in \strong{long table} (or \strong{tidy}) \strong{format} (see also \code{\link{
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
 \strong{default}: \code{axis.text.size = 14}}
 
-\item{var2nd.series}{Boolean, whether the input ASCII spectrum data comes from the series of experiments
+\item{var2nd.series}{Logical, whether the input ASCII spectrum data comes from the series of experiments
 each corresponding to alteration of a second variable (usually like time series, see also parameter \code{var2nd})
 where the ASCII data are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s"
 and "Intensity" must be supplied). \strong{Deffault}: \code{var2nd.series = FALSE}.}

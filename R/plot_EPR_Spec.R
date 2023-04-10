@@ -22,11 +22,17 @@
 #'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.
+#' @param xlim Numeric vector corresponding to border limits of the selected \eqn{x} region,
+#'   e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
+#'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
+#'   to entire `x` range)
 #' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "steelblue"}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
+#' @param border.line.width tbc
+#' @param border.line.color tbc
 #' @param theme.basic Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \itemize{
 #'     \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
@@ -40,8 +46,10 @@
 #'   \strong{default}: \code{axis.text.size = 14}
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}
-#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
-#' @param yTicks Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
+#' @param legend.title tbc
+#' @param legend.title.size tbc
+#' @param grid Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
+#' @param yTicks Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
 #'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
 #'
 #'
@@ -57,7 +65,7 @@
 #'               Intensity = "dIepr_over_dB_Sim")
 #' plot_EPR_Spec(data.spectrum,
 #'               x = "B_mT_Sim",
-#'               "singleInteg")
+#'               "single_Integ")
 #' plot_EPR_Spec(data.spectrum,
 #'               line.color = "blue",
 #'               basic.theme = "theme_linedraw",
@@ -84,18 +92,31 @@
 plot_EPR_Spec <- function(data.spectrum,
                           x = "B_mT",
                           x.unit = "mT",
+                          xlim = NULL,
                           Intensity = "dIepr_over_dB",
                           line.color = "steelblue",
                           line.width = 0.75,
+                          border.line.width = 0.5,
+                          border.line.color = "black",
                           theme.basic = "theme_gray",
                           axis.title.size = 15,
                           axis.text.size = 14,
+                          legend.title = NULL,
+                          legend.title.size = 13,
                           grid = TRUE,
                           yTicks = TRUE) {
   #
+  ## 'Temporary' processing variables
+  . <- NULL
+  #
+  ## Define limits if `xlim = NULL` take the entire data region
+  ## otherwise use predefined vector
+  data.x.region <- c(min(data.spectrum[[x]]),max(data.spectrum[[x]]))
+  xlim <- xlim %>% `if`(is.null(xlim),data.x.region, .)
+  #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
-  x.start <- min(data.spectrum[, x])
-  x.end <- max(data.spectrum[, x])
+  x.start <- xlim[1]
+  x.end <- xlim[2]
   #
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   ## Select labels by defining the corresponding vectors
@@ -162,7 +183,7 @@ plot_EPR_Spec <- function(data.spectrum,
     axis.text.y = element_text(margin = margin(6, 6, 6, 0, unit = "pt"), size = axis.text.size),
     axis.title.y = element_text(margin = margin(2, 4, 2, 6, unit = "pt"), size = axis.title.size),
     axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-    panel.border = element_rect(color = "black", fill = NA)
+    panel.border = element_rect(color = border.line.color, fill = NA,linewidth = border.line.width)
   ) ## theme in order to have ticks outside the graph
   theme.Noticks <- theme(
     axis.ticks.length = unit(-6, "pt"),
@@ -170,7 +191,7 @@ plot_EPR_Spec <- function(data.spectrum,
     axis.text.y = element_blank(), axis.ticks.y = element_blank(),
     axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
     axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-    panel.border = element_rect(color = "black", fill = NA)
+    panel.border = element_rect(color = border.line.color, fill = NA,linewidth = border.line.width)
   ) ## theme in order to have ticks inside the graph
   #
   theme.Nogrid <- theme(
@@ -181,12 +202,48 @@ plot_EPR_Spec <- function(data.spectrum,
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL))
   #
   ## Basic simple plot:
-  simplePlot <- ggplot(data.spectrum) +
-    geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
-      linewidth = line.width, color = line.color, show.legend = FALSE
-    ) +
-    labs(x = x.label, y = y.label) +
-    coord_cartesian(xlim = x.plot.limits)
+  if (is.null(legend.title)){
+    simplePlot <- ggplot(data.spectrum) +
+      geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
+                linewidth = line.width, color = line.color, show.legend = FALSE
+      ) +
+      labs(x = x.label, y = y.label) +
+      coord_cartesian(xlim = x.plot.limits)
+  } else{
+    #
+    ## legend definition
+    legend.strings <- stringr::str_split(legend.title,pattern = "[[:space:]]+")
+    legend.strings <- unlist(legend.strings)
+    if (length(legend.strings) == 1){
+      legend.title <- bquote(italic(.(legend.strings[1])))
+    }
+    if (length(legend.strings) == 2){
+      if (any(grepl("\\(",legend.strings))){
+        legend.title <- bquote(italic(.(legend.strings[1]))~~.(legend.strings[2]))
+      } else{
+        legend.title <- bquote(atop(italic(.(legend.strings[1])),
+                                    italic(.(legend.strings[2]))))
+      }
+    }
+    if (length(legend.strings) == 3){
+      if (any(grepl("\\(",legend.strings))){
+        legend.title <- bquote(atop(italic(.(legend.strings[1])),
+                                    italic(.(legend.strings[2])),
+                                    .(legend.strings[3])))
+      } else{
+        legend.title <- bquote(atop(italic(.(legend.strings[1])),
+                                    italic(.(legend.strings[2])),
+                                    italic(.(legend.strings[3]))))
+      }
+    }
+    #
+    simplePlot <- ggplot(data.spectrum) +
+      geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
+                linewidth = line.width) +
+      coord_cartesian(xlim = x.plot.limits) +
+      scale_color_manual(values = line.color) +
+      labs(color = legend.title, x = x.label, y = y.label)
+  }
   #
   ## Conditions for plotting
   if (theme.basic == "theme_gray") {

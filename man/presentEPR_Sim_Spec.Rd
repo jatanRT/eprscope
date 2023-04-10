@@ -46,7 +46,7 @@ presented below the experimental one. The lower the ratio, the 'deeper' the simu
 \code{1.2},\code{1.1}}
 
 \item{B.shift}{Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
-that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{dafault}:
+that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
 \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
 \code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G})}
 

@@ -8,12 +8,17 @@ plot_EPR_Spec(
   data.spectrum,
   x = "B_mT",
   x.unit = "mT",
+  xlim = NULL,
   Intensity = "dIepr_over_dB",
   line.color = "steelblue",
   line.width = 0.75,
+  border.line.width = 0.5,
+  border.line.color = "black",
   theme.basic = "theme_gray",
   axis.title.size = 15,
   axis.text.size = 14,
+  legend.title = NULL,
+  legend.title.size = 13,
   grid = TRUE,
   yTicks = TRUE
 )
@@ -31,6 +36,11 @@ or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}}
 like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
+\item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
+e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
+or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
+to entire `x` range)}
+
 \item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
@@ -38,6 +48,10 @@ name/label is used (e.g. for simulated or integrated spectra), \strong{default}:
 colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
+
+\item{border.line.width}{tbc}
+
+\item{border.line.color}{tbc}
 
 \item{theme.basic}{Character/String, which calls a ggplot theme base. The following ones are defined:
 \itemize{
@@ -55,9 +69,13 @@ colors are allowed, \strong{default}: \code{line.color = "steelblue"}}
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
 \strong{default}: \code{axis.text.size = 14}}
 
-\item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+\item{legend.title}{tbc}
 
-\item{yTicks}{Boolean, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
+\item{legend.title.size}{tbc}
+
+\item{grid}{Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+
+\item{yTicks}{Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
 (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}}
 }
 \value{
@@ -84,7 +102,7 @@ plot_EPR_Spec(data.spectrum,
               Intensity = "dIepr_over_dB_Sim")
 plot_EPR_Spec(data.spectrum,
               x = "B_mT_Sim",
-              "singleInteg")
+              "single_Integ")
 plot_EPR_Spec(data.spectrum,
               line.color = "blue",
               basic.theme = "theme_linedraw",

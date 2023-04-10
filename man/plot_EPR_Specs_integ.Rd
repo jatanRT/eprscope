@@ -8,7 +8,7 @@ plot_EPR_Specs_integ(
   data.spectra.integ,
   B = "B_G",
   B.unit = "G",
-  B.lim = NULL,
+  Blim = NULL,
   ylim = NULL,
   select.integs = c("single_Integ", "baseline_Integ_fit", "single_Integ_correct"),
   line.width = 0.75,
@@ -27,7 +27,7 @@ plot_EPR_Specs_integ(
 
 \item{B.unit}{tbc}
 
-\item{B.lim}{tbc}
+\item{Blim}{tbc}
 
 \item{ylim}{tbc}
 
