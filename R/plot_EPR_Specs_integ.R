@@ -12,7 +12,7 @@
 #' @param B.unit tbc
 #' @param Blim tbc
 #' @param ylim tbc
-#' @param select.integs tbc
+#' @param slct.integs tbc
 #' @param line.width tbc
 #' @param axis.title.size tbc
 #' @param axis.text.size tbc
@@ -45,7 +45,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
                                  B.unit = "G",
                                  Blim = NULL,
                                  ylim = NULL,
-                                 select.integs = c(
+                                 slct.integs = c(
                                    "single_Integ",
                                    "baseline_Integ_fit",
                                    "single_Integ_correct"
@@ -66,7 +66,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
   ## 1st entire y region
   data.B.region <- data.B.region <- c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
   #
-  single.integ <- select.integs[1]
+  single.integ <- slct.integs[1]
   data.y.region <- c(
     min(data.spectra.integ[[single.integ]]) - max(data.spectra.integ[[single.integ]]) / 10,
     max(data.spectra.integ[[single.integ]]) + max(data.spectra.integ[[single.integ]]) / 10
@@ -107,13 +107,13 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
   ## Plot only specific integrals or corrections
   if (isFALSE(separate.integs)) {
     plot.integs <- data.spectra.integ.new %>%
-      dplyr::filter(Integrals %in% select.integs) %>%
+      dplyr::filter(Integrals %in% slct.integs) %>%
       ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
       geom_line(linewidth = line.width) +
       labs(
         x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
         y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")"),
-        color = "Integrated\nEPR Spectra"
+        color = bquote(atop(italic(Integrated),EPR~~italic(Spectra)))
       ) +
       plot_themes +
       scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
@@ -123,7 +123,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
       stop(" Please specify the `separate.integ.scales` for the facets ! ")
     } else {
       plot.integs <- data.spectra.integ.new %>%
-        dplyr::filter(Integrals %in% select.integs) %>%
+        dplyr::filter(Integrals %in% slct.integs) %>%
         ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
         geom_line(linewidth = line.width, show.legend = FALSE) +
         facet_wrap(~ .data$Integrals,

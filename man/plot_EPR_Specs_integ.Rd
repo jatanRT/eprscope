@@ -10,7 +10,7 @@ plot_EPR_Specs_integ(
   B.unit = "G",
   Blim = NULL,
   ylim = NULL,
-  select.integs = c("single_Integ", "baseline_Integ_fit", "single_Integ_correct"),
+  slct.integs = c("single_Integ", "baseline_Integ_fit", "single_Integ_correct"),
   line.width = 0.75,
   axis.title.size = 15,
   axis.text.size = 14,
@@ -31,7 +31,7 @@ plot_EPR_Specs_integ(
 
 \item{ylim}{tbc}
 
-\item{select.integs}{tbc}
+\item{slct.integs}{tbc}
 
 \item{line.width}{tbc}
 
