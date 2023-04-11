@@ -293,7 +293,7 @@ plot_EPR_Specs <- function(data.spectra,
         legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
         #
         simplePlot <- ggplot(data.spectra) +
-          geom_line(aes(x = .data[[x]],y = .data[Intensity],color = .data[[var2nd]]),
+          geom_line(aes(x = .data[[x]],y = .data[[Intensity]],color = .data[[var2nd]]),
                     line.width = line.width) +
           coord_cartesian(xlim = x.plot.limits) +
           scale_color_gradientn(colors = line.colors) +
