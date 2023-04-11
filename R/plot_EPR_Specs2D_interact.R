@@ -76,10 +76,13 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                       border.line.width = 1.2,
                                       border.line.color = "black",
                                       legend.title = NULL,
-                                      legend.title.size = 13,
+                                      legend.title.size = NULL,
                                       axis.title.size = 15,
                                       axis.text.size = 14,
                                       var2nd.series = FALSE) {
+  #
+  ## 'Temporary' processing variables
+  . <- NULL
   #
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   ## Select labels by defining the corresponding vectors
@@ -138,7 +141,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   ## plot precursor
   if (isTRUE(var2nd.series)) {
     if (is.null(var2nd)) {
-      stop(" 'var2nd' string is not specified. Please, define! ")
+      stop(" `var2nd` string is not specified. Please, define ! ")
     } else {
       #
       ## basis defined by `ggplot`
@@ -156,34 +159,41 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   }
   ## final plot with layout
   if (isTRUE(var2nd.series)) {
-    final_plot <- ggplotly(simplePlot) %>%
-      plotly::layout(
-        plot_bgcolor = bg.color,
-        xaxis = list(
-          title = list(
-            text = xlabel,
-            font = list(size = axis.title.size)
+    if (is.null(legend.title)){
+      stop(" `legend.title` is not specified. Please, define ! ")
+    } else{
+      ## Legend title
+      legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
+      #
+      final_plot <- ggplotly(simplePlot) %>%
+        plotly::layout(
+          plot_bgcolor = bg.color,
+          xaxis = list(
+            title = list(
+              text = xlabel,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size),
+            gridcolor = grid.color,
+            linecolor = plotly::toRGB(border.line.color),
+            linewidth = border.line.width, showline = T, mirror = T
           ),
-          tickfont = list(size = axis.text.size),
-          gridcolor = grid.color,
-          linecolor = plotly::toRGB(border.line.color),
-          linewidth = border.line.width, showline = T, mirror = T
-        ),
-        yaxis = list(
-          title = list(
-            text = ylabel,
-            font = list(size = axis.title.size)
+          yaxis = list(
+            title = list(
+              text = ylabel,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size),
+            gridcolor = grid.color,
+            linecolor = plotly::toRGB(border.line.color),
+            linewidth = border.line.width, showline = T, mirror = T
           ),
-          tickfont = list(size = axis.text.size),
-          gridcolor = grid.color,
-          linecolor = plotly::toRGB(border.line.color),
-          linewidth = border.line.width, showline = T, mirror = T
-        ),
-        legend = list(title = list(
-          text = legend.title,
-          font = list(size = legend.title.size)
-        ))
-      )
+          legend = list(title = list(
+            text = legend.title,
+            font = list(size = legend.title.size)
+          ))
+        )
+    }
   } else {
     final_plot <- ggplotly(simplePlot) %>%
       plotly::layout(

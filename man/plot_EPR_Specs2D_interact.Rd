@@ -17,7 +17,7 @@ plot_EPR_Specs2D_interact(
   border.line.width = 1.2,
   border.line.color = "black",
   legend.title = NULL,
-  legend.title.size = 13,
+  legend.title.size = NULL,
   axis.title.size = 15,
   axis.text.size = 14,
   var2nd.series = FALSE

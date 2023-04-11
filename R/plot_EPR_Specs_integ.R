@@ -24,6 +24,8 @@
 #'   Following expressions are available => \code{"fixed"}, \code{"free"} or in one dimension \code{"free_x"}
 #'   or \code{"free_y"}. \strong{Default}: \code{separate.integ.scales = NULL}
 #'   in case of \code{separate.integs = FALSE}.
+#' @param output.table Logical, description tbc...table in `tidy` (long) format...for additional plotting by `plotly`
+#'   (see \code{\link{plot_EPR_Specs2D_interact}})
 #'
 #'
 #' @return tbc
@@ -56,7 +58,8 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
                                  legend.title.size = 13,
                                  legend.text.size = 11,
                                  separate.integs = FALSE,
-                                 separate.integ.scales = NULL) {
+                                 separate.integ.scales = NULL,
+                                 output.table = FALSE) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -149,6 +152,13 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
   ## the old data frame is not required anymore
   rm(data.spectra.integ)
   #
-  return(plot.integs)
+  ## if the entire table/table should be included
+  if (isFALSE(output.table)){
+    results.integ <- plot.integs
+  } else{
+    results.integ <- list(plot = plot.integs,table = data.spectra.integ.new)
+  }
+  #
+  return(results.integ)
   #
 }
