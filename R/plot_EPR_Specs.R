@@ -100,7 +100,7 @@
 #'               x = "Field",
 #'               x.unit = "G",
 #'               var2nd = "time_s",
-#'               line.colors = c("blue","green","red"),
+#'               line.colors = grDevices::rainbow(6),
 #'               basic.theme = "theme_linedraw",
 #'               legend.title = "Time (s)",
 #'               legend.title.size = 13,
@@ -294,7 +294,7 @@ plot_EPR_Specs <- function(data.spectra,
         #
         simplePlot <- ggplot(data.spectra) +
           geom_line(aes(x = .data[[x]],y = .data[[Intensity]],color = .data[[var2nd]]),
-                    line.width = line.width) +
+                    linewidth = line.width) +
           coord_cartesian(xlim = x.plot.limits) +
           scale_color_gradientn(colors = line.colors) +
           labs(color = legend.title, x = x.label, y = y.label) +
