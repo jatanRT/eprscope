@@ -70,7 +70,7 @@ Following color definitions are allowed =>
 \itemize{
   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 1}
   \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
-  \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, code{cm.colors(n)} where the number
+  \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
   of colors \eqn{n \geq 1} should be specified.
   See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
   and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color Palettes}
