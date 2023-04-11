@@ -1,23 +1,29 @@
 #
-#' EPR/ENDOR Spectrum Simple Plot
+#' Essential Plotting of EPR/ENDOR Spectrum/Spectra
 #'
-#' @description Graph/Plot of an EPR/ENDOR spectrum based on \pkg{ggplot2}-functionality. Spectral data
-#'   are in the form of data frame, which must contain the \code{dIepr_over_dB} (or its corresponding integrated
-#'   form,\code{Iepr}) and the following \code{x}-axis quantities like \eqn{B} (in \code{mT} or \code{G})
-#'   or \eqn{g}-Value (dimensionless) or \eqn{RF} (radio-frequency in \code{MHz})
-#'   Theme of the graphic spectrum representation as well its line color can be varied like
-#'   in \pkg{ggplot2} (see below). Within a theme \code{y} ticks can be displayed
-#'   or skipped \code{y} (\code{dIepr_over_dB} in 'procedure defined unit',
+#' @description Graph/Plot of an EPR/ENDOR spectrum/spectra ('overlay' plot) based on \pkg{ggplot2}-functionality.
+#'   Spectral data are in the form of data frame (details see below).
+#'   Theme of the graphic spectrum representation as well its line colors can be varied like
+#'   in \pkg{ggplot2}. Within a theme \code{y} ticks can be displayed
+#'   or skipped \code{y} (e.g. \code{dIepr_over_dB} in 'procedure defined unit',
 #'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
 #'   this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
-#'   with other functions like in \pkg{ggplot2}, e.g. present or skip \code{grid} within the code.
+#'   with other functions (e.g. with \code{\link{plot_theme_In_ticks}}) like in \pkg{ggplot2},
+#'   e.g. present or skip \code{grid} within the code.
 #'
 #'
-#' @param data.spectrum SEPR/ENDOR spectrum data frame/table with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
-#'   or \eqn{g}-Value or \eqn{RF} (in \code{MHz}) column and that of the derivative \code{dIepr_over_dB}
-#'   or integrated \code{Intensity}. \code{Index} column may be included as well.
-#' @param x Character/String pointing to \code{x}-axis/column quantity like magnetic flux density \eqn{B}, \eqn{g}-Value
-#'   or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}
+#' @param data.spectra Spectrum data frame/table containing magnetic flux density, \eqn{g}-value
+#'   or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
+#'   in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
+#'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
+#'   integrated or simulated spectra intensities are present, they can be labeled accordingly.
+#'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
+#'   \code{var2nd} column (like e.g. \code{var2nd = "time_s"}) must be available. In such case
+#'   the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameters/arguments
+#'   \code{var2nd} and \code{var2nd.series}).
+#' @param x Character/String pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
+#'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
+#'   \strong{default}: \code{x = "B_mT"}.
 #' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
 #'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
@@ -26,10 +32,28 @@
 #'   e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
 #'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
 #'   to entire `x` range)
-#' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-#'   name/label is used (e.g. for simulated or integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param line.color String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-#'   colors are allowed, \strong{default}: \code{line.color = "steelblue"}
+#' @param var2nd String/Character referred to name of the second independent variable/quantity
+#'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+#'   `Microwave Power`...etc) altered upon individual experiments as a second variable (\code{var2nd})
+#'   and related to spectra/data (see also \code{var2nd.series} parameter/argument). Data must be available
+#'   in \strong{long table} (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+#'   \strong{Default}: \code{var2nd = NULL} if \code{var2nd.series = FALSE}. Otherwise \strong{usually}
+#'   \code{var2nd = "time_s"} if \code{var2nd.series = TRUE}.
+#' @param Intensity Character/String pointing to \code{intensity column} in the original \code{data.spectra}
+#'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
+#'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
+#' @param line.colors Character string, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
+#'   colors are allowed, \strong{default}: \code{line.colors = "steelblue"}. In case of \code{var2nd.series = TRUE}
+#'   the parameter/argument is identical with the \code{colors} one from \code{\link[ggplot2]{scale_colour_gradientn}}
+#'   Following color definitions are allowed =>
+#'   \itemize{
+#'     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 1}
+#'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
+#'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, code{cm.colors(n)} where the number
+#'     of colors \eqn{n \geq 1} should be specified.
+#'     See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
+#'     and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color Palettes}
+#'   }
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
@@ -46,39 +70,52 @@
 #'   \strong{default}: \code{axis.text.size = 14}
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}
-#' @param legend.title tbc
+#' @param legend.title Character string tbc
 #' @param legend.title.size tbc
+#' @param legend.text.size description
+#' @param var2nd.series Logical, whether the input ASCII spectrum data comes from the series of experiments
+#'   each corresponding to alteration of a second variable (usually like time series, see also parameter \code{var2nd})
+#'   where the ASCII data are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s"
+#'   and "Intensity" must be supplied). \strong{Deffault}: \code{var2nd.series = FALSE}.
 #' @param grid Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
 #' @param yTicks Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
 #'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
 #'
 #'
-#' @return EPR simple spectrum \pkg{ggplot2} graph/plot with key parameter (e.g. line-color and theme,grid...etc.) variation
+#' @return EPR spectrum/spectra ('overlay' plot) by \pkg{ggplot2} with key parameter
+#'   (e.g. line-color and theme,grid...etc.) variation
 #'
 #'
 #' @examples
 #' \dontrun{
-#' plot_EPR_Spec(data.spectrum)
-#' plot_EPR_Spec(data.spectrum,
+#' plot_EPR_Specs(data.spectra)
+#' plot_EPR_Specs(data.spectra,
 #'               x = "B_G",
 #'               x.unit = "G",
 #'               Intensity = "dIepr_over_dB_Sim")
-#' plot_EPR_Spec(data.spectrum,
+#' plot_EPR_Specs(data.spectra,
 #'               x = "B_mT_Sim",
-#'               "single_Integ")
-#' plot_EPR_Spec(data.spectrum,
-#'               line.color = "blue",
+#'               Intensity = "single_Integ")
+#' plot_EPR_Specs(data.spectra,
+#'               x = "Field",
+#'               x.unit = "G",
+#'               var2nd = "time_s",
+#'               line.colors = c("blue","green","red"),
 #'               basic.theme = "theme_linedraw",
+#'               legend.title = "Time (s)",
+#'               legend.title.size = 13,
+#'               legend.text.size = 11,
+#'               var2nd.series = TRUE,
 #'               yTicks = FALSE)
-#' plot_EPR_Spec(data.spectrum,
+#' plot_EPR_Specs(data.spectra,
 #'               x = "g_Value",
 #'               x.unit = "Unitless",
 #'               theme.basic = "theme_bw",
 #'               grid = TRUE)
-#' plot_EPR_Spec(data.spectrum,
+#' plot_EPR_Specs(data.spectra,
 #'               x = "RF_MHz",
 #'               x.unit = "MHz",
-#'               line.color = "darkred",
+#'               line.colors = "darkred",
 #'               line.width = 1.2)
 #' }
 #'
@@ -88,30 +125,33 @@
 #'
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
-#'   theme_minimal theme_classic theme_linedraw
-plot_EPR_Spec <- function(data.spectrum,
-                          x = "B_mT",
-                          x.unit = "mT",
-                          xlim = NULL,
-                          Intensity = "dIepr_over_dB",
-                          line.color = "steelblue",
-                          line.width = 0.75,
-                          border.line.width = 0.5,
-                          border.line.color = "black",
-                          theme.basic = "theme_gray",
-                          axis.title.size = 15,
-                          axis.text.size = 14,
-                          legend.title = NULL,
-                          legend.title.size = 13,
-                          grid = TRUE,
-                          yTicks = TRUE) {
+#'   theme_minimal theme_classic theme_linedraw scale_color_gradientn theme
+plot_EPR_Specs <- function(data.spectra,
+                           x = "B_mT",
+                           x.unit = "mT",
+                           xlim = NULL,
+                           var2nd = NULL,
+                           Intensity = "dIepr_over_dB",
+                           line.colors = "steelblue",
+                           line.width = 0.75,
+                           border.line.width = 0.5,
+                           border.line.color = "black",
+                           theme.basic = "theme_gray",
+                           axis.title.size = 15,
+                           axis.text.size = 14,
+                           legend.title = NULL,
+                           legend.title.size = NULL,
+                           legend.text.size = NULL,
+                           var2nd.series = FALSE,
+                           grid = TRUE,
+                           yTicks = TRUE) {
   #
   ## 'Temporary' processing variables
   . <- NULL
   #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
-  data.x.region <- c(min(data.spectrum[[x]]),max(data.spectrum[[x]]))
+  data.x.region <- c(min(data.spectra[[x]]),max(data.spectra[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim),data.x.region, .)
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
@@ -203,9 +243,9 @@ plot_EPR_Spec <- function(data.spectrum,
   #
   ## Basic simple plot:
   if (is.null(legend.title)){
-    simplePlot <- ggplot(data.spectrum) +
+    simplePlot <- ggplot(data.spectra) +
       geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
-                linewidth = line.width, color = line.color, show.legend = FALSE
+                linewidth = line.width, color = line.colors, show.legend = FALSE
       ) +
       labs(x = x.label, y = y.label) +
       coord_cartesian(xlim = x.plot.limits)
@@ -237,12 +277,36 @@ plot_EPR_Spec <- function(data.spectrum,
       }
     }
     #
-    simplePlot <- ggplot(data.spectrum) +
-      geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
-                linewidth = line.width) +
-      coord_cartesian(xlim = x.plot.limits) +
-      scale_color_manual(values = line.color) +
-      labs(color = legend.title, x = x.label, y = y.label)
+    if (isFALSE(var2nd.series)){
+      simplePlot <- ggplot(data.spectra) +
+        geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
+                  linewidth = line.width) +
+        coord_cartesian(xlim = x.plot.limits) +
+        scale_color_manual(values = line.colors) +
+        labs(color = legend.title, x = x.label, y = y.label)
+    } else{
+      if (is.null(var2nd) || is.null(legend.title)){
+        stop(" The `var2nd` string and/or `legend.title` is/are not specified. Please, define ! ")
+      } else{
+        ## Legend title and text
+        legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
+        legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
+        #
+        simplePlot <- ggplot(data.spectra) +
+          geom_line(aes(x = .data[[x]],y = .data[Intensity],color = .data[[var2nd]]),
+                    line.width = line.width) +
+          coord_cartesian(xlim = x.plot.limits) +
+          scale_color_gradientn(colors = line.colors) +
+          labs(color = legend.title, x = x.label, y = y.label) +
+          theme(legend.title = element_text(size = legend.title.size),
+                legend.text = element_text(size = legend.text.size))
+        #
+        ## DOPLNIT OVERLAY SELECT PLOT !!!
+        #
+      }
+      #
+    }
+    #
   }
   #
   ## Conditions for plotting
