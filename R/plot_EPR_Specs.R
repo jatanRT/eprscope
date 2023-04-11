@@ -302,6 +302,9 @@ plot_EPR_Specs <- function(data.spectra,
                 legend.text = element_text(size = legend.text.size))
         #
         ## DOPLNIT OVERLAY SELECT PLOT !!!
+        # data.spectra <- data.spectra %>%
+        #   dplyr::filter(.data[[var2nd]] %in% slct.var2nd) %>%
+        #   dplyr::mutate(!!rlang::quo_name(var2nd) := as.factor(.data[[var2nd]]))
         #
       }
       #
