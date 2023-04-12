@@ -66,9 +66,19 @@
 #' ## for the spectrum acquired by "winepr"
 #' ## (and 20 scans) on a 10 mg powder sample:
 #' readEPR_Exp_Specs(path_to_ASC,
+#'                   skip = 3,
 #'                   qValue = 2000,
 #'                   Nscans = 20,
 #'                   m.mg = 10,
+#'                   origin = "winepr")
+#'
+#' ## series of spectra (e.g. like time series) acquired by "winepr"
+#' readEPR_Exp_Specs(path_to_ASC,
+#'                   skip = 4,
+#'                   col.names = c("B_G",
+#'                                 "Slice",
+#'                                 "dIepr_over_dB"),
+#'                   time.series = TRUE,
 #'                   origin = "winepr")
 #'
 #' ## if no parameter intensity normalization
@@ -113,6 +123,7 @@
 #'
 #'
 #' @importFrom rlang .data quo_name :=
+#' @importFrom stats na.omit
 readEPR_Exp_Specs <- function(path_to_ASC,
                               sep = "auto",
                               skip = 1,
@@ -129,7 +140,9 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               time.series = FALSE,
                               origin = "xenon") {
   ## 'Temporary' processing variables
-  Norm_Intensity <- NULL
+  B_G <- NULL
+  B_mT <- NULL
+  . <- NULL
   #
   ## basic data frame by `fread`, it is processed/mutated bellow
   ## and transfered into `spectrum.data`
@@ -143,19 +156,30 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   if (origin == "winepr") {
     if (isFALSE(time.series)) {
+      ## `skip` definition
+      skip <- skip %>% `if`(skip != 3,3, .)
+      #
       spectrum.data.origin <- data.table::fread(path_to_ASC,
         sep = "auto",
         header = FALSE,
-        skip = 3,
+        skip = skip,
         col.names = col.names
       )
     } else {
+      ## `skip` definition
+      skip <- skip %>% `if`(skip != 4,4, .)
+      #
       spectrum.data.origin <- data.table::fread(path_to_ASC,
         sep = "auto",
         header = FALSE,
-        skip = 4,
+        skip = skip,
+        fill = TRUE,
+        na.strings = c("","Intensity","X [G]","Y []"),
         col.names = col.names
-      )
+      ) %>%
+        dplyr::filter(!grepl("Slice",.data[[col.names[1]]])) %>%
+        stats::na.omit() %>%
+        dplyr::mutate(B_G = as.double(.data[[col.names[1]]]))
     }
   }
   #
@@ -194,30 +218,23 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ##
   if (origin == "xenon" || origin == "txt" || origin == "csv") {
     if (x.unit == "G") {
-      ## For intesity 1.) Create new normalized intensity column
-      ## 2.) Delete the 'old' intensity column
-      ## 3.) Rename the new column by the 'old' name (incl. in col.names),
+      ## For intesity 1.) Normalized intensity
+      ## 2.) Overwrite the 'old' Intensity col
       ##     however, first off all it must be unquoted
       ##     therefore, !!rlang::quo_name(Intensity) := Norm_Intensity
       spectrum.data <- spectrum.data.origin %>%
         dplyr::mutate(
           B_mT = .data[[x]] / 10,
-          Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M)
-        ) %>%
-        dplyr::select(-.data[[Intensity]]) %>%
-        dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
+          !!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M)
+        )
     }
     if (x.unit == "MHz") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(Norm_Intensity = .data[[Intensity]] / Nscans) %>%
-        dplyr::select(-.data[[Intensity]]) %>%
-        dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
+        dplyr::mutate(!!rlang::quo_name(Intensity) := .data[[Intensity]] / Nscans)
     }
     if (x.unit == "mT" || x.unit == "Unitless") {
       spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M)) %>%
-        dplyr::select(-.data[[Intensity]]) %>%
-        dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
+        dplyr::mutate(!!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M))
     }
   }
   if (origin == "winepr") {
@@ -225,29 +242,23 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       spectrum.data <- spectrum.data.origin %>%
         dplyr::mutate(
           B_mT = .data[[x]] / 10,
-          Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
+          !!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
           index = seq_len(length(.data[[Intensity]]))
-        ) %>%
-        dplyr::select(-.data[[Intensity]]) %>%
-        dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
+        )
     }
     if (x.unit == "MHz") {
       spectrum.data <- spectrum.data.origin %>%
         dplyr::mutate(
-          Norm_Intensity = .data[[Intensity]] / Nscans,
+          !!rlang::quo_name(Intensity) := .data[[Intensity]] / Nscans,
           index = seq_len(length(.data[[Intensity]]))
-        ) %>%
-        dplyr::select(-.data[[Intensity]]) %>%
-        dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
+        )
     }
     if (x.unit == "mT" || x.unit == "Unitless") {
       spectrum.data <- spectrum.data.origin %>%
         dplyr::mutate(
-          Norm_Intensity = .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
+          !!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
           index = seq_len(length(.data[[Intensity]]))
-        ) %>%
-        dplyr::select(-.data[[Intensity]]) %>%
-        dplyr::rename(!!rlang::quo_name(Intensity) := Norm_Intensity)
+        )
     }
   }
   #
