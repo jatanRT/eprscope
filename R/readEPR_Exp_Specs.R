@@ -211,15 +211,15 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   ## change any other `origin` accordingly
   if (origin != "winepr" & origin != "xenon"){
-    sep = sep,
-    header = header,
-    skip = skip,
-    na.strings = na.strings,
-    select = select,
-    drop = drop,
-    col.names = col.names,
-    encoding = encoding,
-    fill = fill,
+    sep = sep
+    header = header
+    skip = skip
+    na.strings = na.strings
+    select = select
+    drop = drop
+    col.names = col.names
+    encoding = encoding
+    fill = fill
     blank.lines.skip = blank.lines.skip
   }
   #
