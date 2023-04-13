@@ -1,8 +1,9 @@
 #
-#' Read the Experimental ASCII Data of EPR/ENDOR Spectra
+#' Read the Experimental ASCII or other Text-Based Data Related to EPR/ENDOR Spectra
 #'
-#' @description Reads experimental EPR/ENDOR spectra recorded by BRUKER spectrometers
-#'   in ASCII format (\code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
+#' @description The function is based on \code{\link[data.table]{fread}} with the purpose to read
+#'   experimental EPR/ENDOR spectra or other original related (preprocessed) data from EPR spectrometers
+#'   in ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
 #'   which can be easily processed by other R packages (e.g. by \pkg{tidyverse} system), afterwards.
 #'   Spectral data (intensities) are normalized by the common experimental parameters like Q-factor, concentration...etc.
 #'   ASCII files/tables depend on the origin/software used to acquire the EPR spectra. This is mirrored by \code{origin}
@@ -17,36 +18,45 @@
 #' @param skip Number, inherited from \code{\link[data.table]{fread}}, representing the number of ASCII data rows
 #'   which do not contain data/rows or columns names. It automatically avoids irregular header information
 #'   before the column names row/line, \strong{default}: \code{skip = 1}.
-#' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
-#'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-#'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
-#'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.
+#' @param header Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param na.strings Character vector, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param select Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param drop Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param encoding Character/String, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param fill Logical, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param blank.lines.skip Logical, inherited from \code{\link[data.table]{fread}}...TBC
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#'   The \code{sep}, \code{skip} as well as \code{col.names} parameters strongly depends on the origin
-#'   of ASCII input data file (see also \code{origin} parameter), however these parameters are present
-#'   to make a `read` function flexible for any kind of ASCII data format.
+#' @param col.char2num Logical, description...converting character column to numeric format... TBC
+#' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+#'   to abscissa (\eqn{x}-axis) in spectra or other plots.
+#' @param Intensity Numeric index related to \code{col.names} pointing to `general` intensity,
+#'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
+#'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+#'   \eqn{y}-axis in spectra or other plots.
+#' @param convert_B_G2mT Logical (\strong{default}: \code{convert_B_G2mT}) description... convert \eqn{B}
+#'   in Gauss to millitesla
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
 #'   in case of ` "Xenon" ` software the parameter is included in \code{.DSC} file, \strong{default}:
 #'   \code{qValue = 1}
-#' @param Nscans Number of scans/sweeps per spectrum, in the case of ` "Xenon" ` software, the parameter
-#'   is already included for the intensity normalization, \strong{default}: \code{Nscans = 1}
-#' @param c.M Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
-#'   \strong{default}: \code{c.M = 1}
-#' @param m.mg Numeric, weight of the powder sample in\code{mg}, \strong{default}: \code{m.mg = 1}
+#' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
+#'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+#'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+#'   \code{norm.vec.add = NULL}.
 #' @param time.series Boolean, whether the input ASCII data come from the time series experiment
 #'   with the additional \code{time} column, \strong{default}: \code{time.series = FALSE}
 #' @param origin String/Character corresponding to \strong{origin} of the ASCII data, like from
-#'   BRUKER spectrometers (from which are data loaded automatically using the default parameters).
-#'   Options are summarized in the following table =>
+#'   most common spectrometers (from which are data loaded automatically using the default parameters).
+#'   Options are summarized in the following table (Any other specific `origin` may be added later) =>
 #'   \tabular{rl}{
 #'   \strong{String} \tab \strong{Description} \cr
-#'   "xenon" \tab \strong{default} automatically loads from BRUKER `Xenon` softw with dafault params. \cr
-#'   "winepr" \tab automatically loads from BRUKER `WinEpr` softw. \cr
-#'   "csv" \tab general, to read `csv` ASCII data (parameters, see above must be adjusted accordingly) \cr
-#'   "txt" \tab general, to read `txt` ASCII data (parameters, see above must be adjusted accordingly) \cr
+#'   "xenon" \tab \strong{default} automatically loads data from `Xenon` software with dafault params. \cr
+#'   "winepr" \tab automatically loads data from `WinEpr` software \cr
+#'   "other" (arbitrary string) \tab general, loads any other `origin` data ( like `csv`, `txt`, `asc`) incl.
+#'   data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
+#'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
 #'   }
 #'
 #' @return Data frame/table consisting of the unitless \code{g-factor} or the magnetic flux density
@@ -122,21 +132,30 @@
 #' @export
 #'
 #'
+#' @importFrom data.frame fread
 #' @importFrom rlang .data quo_name :=
 #' @importFrom stats na.omit
 readEPR_Exp_Specs <- function(path_to_ASC,
                               sep = "auto",
                               skip = 1,
-                              x.unit = "G",
+                              header = FALSE,
+                              na.strings = NULL,
+                              select = NULL,
+                              drop = NULL,
+                              encoding = "unknown",
+                              fill = FALSE,
+                              blank.lines.skip = FALSE,
                               col.names = c(
                                 "index",
                                 "B_G",
                                 "dIepr_over_dB"
                               ),
+                              col.char2num = FALSE,
+                              x = 2,
+                              Intensity = 3,
+                              convert_B_G2mT = TRUE,
                               qValue = 1,
-                              Nscans = 1,
-                              c.M = 1,
-                              m.mg = 1,
+                              norm.vec.add = NULL,
                               time.series = FALSE,
                               origin = "xenon") {
   ## 'Temporary' processing variables
@@ -144,47 +163,98 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   B_mT <- NULL
   . <- NULL
   #
-  ## basic data frame by `fread`, it is processed/mutated bellow
-  ## and transfered into `spectrum.data`
-  if (origin == "xenon" || origin == "txt" || origin == "csv") {
-    spectrum.data.origin <- data.table::fread(path_to_ASC,
-      sep = sep,
-      header = FALSE,
-      skip = skip,
-      col.names = col.names
-    )
-  }
+  ## general normalization
+  norm.vec.add <- norm.vec.add %>% `if`(is.null(norm.vec.add),1, .)
+  norm.const <- prod(sapply(norm.vec.add, function(n) 1/n))
+  #
+  ## basic `fread` parameters to read the spectral data
   if (origin == "winepr") {
     if (isFALSE(time.series)) {
-      ## `skip` definition
+      ## parameter definition
+      sep <- sep %>% `if`(sep != "auto", "auto", .)
+      header <- header %>% `if`(isTRUE(header),FALSE, .)
       skip <- skip %>% `if`(skip != 3,3, .)
+      na.strings <- NULL
+      select <- NULL
+      drop <- NULL
+      encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
+      fill <- fill %>% `if`(isTRUE(fill),FALSE, .)
+      blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
+
       #
-      spectrum.data.origin <- data.table::fread(path_to_ASC,
-        sep = "auto",
-        header = FALSE,
-        skip = skip,
-        col.names = col.names
-      )
     } else {
-      ## `skip` definition
+      ## parameter definition
+      sep <- sep %>% `if`(sep != "auto", "auto", .)
+      header <- header %>% `if`(isTRUE(header),FALSE, .)
       skip <- skip %>% `if`(skip != 4,4, .)
+      fill <- fill %>% `if`(isFALSE(fill),TRUE, .)
+      blank.lines.skip <- blank.lines.skip %>% `if`(isFALSE(blank.lines.skip),TRUE, .)
+      na.strings <- na.strings %>% `if`(is.null(na.strings),
+                                        c("Intensity","X [G]","Y []"), .)
+      select <- NULL
+      drop <- NULL
+      encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
       #
-      spectrum.data.origin <- data.table::fread(path_to_ASC,
-        sep = "auto",
-        header = FALSE,
-        skip = skip,
-        fill = TRUE,
-        na.strings = c("","Intensity","X [G]","Y []"),
-        col.names = col.names
-      ) %>%
-        dplyr::filter(!grepl("Slice",.data[[col.names[1]]])) %>%
-        stats::na.omit() %>%
-        dplyr::mutate(B_G = as.double(.data[[col.names[1]]]))
+    }
+  }
+  if (origin == "xenon"){
+    ## parameter definition
+    sep <- sep %>% `if`(sep != "auto", "auto", .)
+    header <- header %>% `if`(isTRUE(header),FALSE, .)
+    skip <- skip %>% `if`(skip != 1,1, .)
+    na.strings <- NULL
+    select <- NULL
+    drop <- NULL
+    encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
+    fill <- fill %>% `if`(isTRUE(fill),FALSE, .)
+    blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
+  }
+  ## change any other `origin` accordingly
+  if (origin != "winepr" & origin != "xenon"){
+    sep = sep,
+    header = header,
+    skip = skip,
+    na.strings = na.strings,
+    select = select,
+    drop = drop,
+    col.names = col.names,
+    encoding = encoding,
+    fill = fill,
+    blank.lines.skip = blank.lines.skip
+  }
+  #
+  ## basic data frame by `fread` incl. the above defined parameters
+  spectrum.data.origin <- data.table::fread(path_to_ASC,
+                                            sep = sep,
+                                            header = header,
+                                            skip = skip,
+                                            na.strings = na.strings,
+                                            select = select,
+                                            drop = drop,
+                                            col.names = col.names,
+                                            encoding = encoding,
+                                            fill = fill,
+                                            blank.lines.skip = blank.lines.skip
+  ) %>%
+    `if`(origin == "winepr" & isTRUE(time.series),
+         dplyr::filter(grepl("Slice",.data[[1]])), .) %>%
+    `if`(origin == "winepr" & isTRUE(time.series),
+         stats::na.omit(), .)
+  #
+  ## Condition to convert any character column to numeric format
+  if (isTRUE(col.char2num)){
+    for (i in seq(ncol(spectrum.data.origin))){
+      if (class(spectrum.data.origin[[i]]) == "character"){
+        spectrum.data.origin[[i]] <- as.double(spectrum.data.origin[[i]])
+      }
     }
   }
   #
-  ## select column character string from col.names corresponding
-  ## to `x (B)` and `rf (MHz)` and/or `time`
+
+  ## TO BE COMPLETED !!
+
+  ## TO BE COMPLETED !!
+
   if (isFALSE(time.series)) {
     if (x.unit == "Unitless") {
       x <- grep("g", col.names, value = TRUE)
