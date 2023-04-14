@@ -19,6 +19,7 @@
 #'   which do not contain data/rows or columns names. It automatically avoids irregular header information
 #'   before the column names row/line, \strong{default}: \code{skip = 1}.
 #' @param header Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC
+#'   if \code{header = TRUE} then \code{col.names = NULL}
 #' @param na.strings Character vector, inherited from \code{\link[data.table]{fread}}...TBC
 #' @param select Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC
 #' @param drop Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC
@@ -29,6 +30,7 @@
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+#'   Can be also NULL if \code{header = TRUE}
 #' @param col.char2num Logical, description...converting character column to numeric format... TBC
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
@@ -38,10 +40,11 @@
 #'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 #'   \eqn{y}-axis in spectra or other plots.
 #' @param time.series Numeric index related to \code{col.names} pointing to `time` column for time series
-#'   EPR spectra or spectral parameters (e.g. like intensity, integral/area) changing upon time.
-#'   \strong{Default}: \code{time.series = NULL}.
-#' @param convert_B_G2mT Logical (\strong{default}: \code{convert_B_G2mT = TRUE}) description...
-#'   convert \eqn{B} in Gauss to millitesla
+#'   EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
+#'   use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
+#'   to kinetic-like experiments. \strong{Default}: \code{time.series = NULL}.
+#' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
+#'   convert \eqn{B} in Gauss <=> millitesla...
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
 #'   in case of ` "Xenon" ` software the parameter is included in \code{.DSC} file, \strong{default}:
 #'   \code{qValue = 1}
@@ -80,17 +83,23 @@
 #' readEPR_Exp_Specs(path_to_ASC,
 #'                   skip = 3,
 #'                   qValue = 2000,
-#'                   Nscans = 20,
-#'                   m.mg = 10,
+#'                   norm.vec.add = c(20,10),
 #'                   origin = "winepr")
 #'
 #' ## series of spectra (e.g. like time series) acquired by "winepr"
+#' ## (in such case there are `na.strings` between spectral `slices`)
 #' readEPR_Exp_Specs(path_to_ASC,
 #'                   skip = 4,
+#'                   fill = TRUE,
+#'                   blank.lines.skip = TRUE,
+#'                   na.strings = c("Intensity","X [G]","Y []"),
 #'                   col.names = c("B_G",
 #'                                 "Slice",
 #'                                 "dIepr_over_dB"),
-#'                   time.series = TRUE,
+#'                   col.char2num = TRUE,
+#'                   x = 1,
+#'                   Intensity = 3,
+#'                   time.series = 2,
 #'                   origin = "winepr")
 #'
 #' ## if no parameter intensity normalization
@@ -101,12 +110,15 @@
 #'                                           "EPR_spectrum.txt"))
 #'
 #' ## for the ENDOR spectrum recorded by "xenon"
+#' ## by 40 accumulation sweeps
 #' readEPR_Exp_Specs("./Data/ENDOR_spectrum.txt",
 #'                   x.unit = "MHz",
 #'                   col.names = c("index",
 #'                                 "RF_MHz",
 #'                                 "dIepr_over_dB"),
-#'                   Nscans = 40)
+#'                   x = 2,
+#'                   Intensity = 3,
+#'                   norm.vec.add = 40)
 #'
 #' ## Example for time series experiment (evolution of EPR spectra
 #' ##  in time, e.g. in case of
@@ -117,17 +129,40 @@
 #'                                 "B_G",
 #'                                 "time_s",
 #'                                 "dIepr_over_dB"),
+#'                   x = 2,
+#'                   Intensity = 4,
 #'                   qValue = 2800,
-#'                   time.series = T)
+#'                   time.series = 3)
 #'
 #' ## General example to read "csv" data,
 #' ## including column "B_mT" and "Intensity"
+#' ## first row corresponds. to column names
 #' readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
 #'                   sep = ",", ## or "auto"
 #'                   skip = 2,
+#'                   header = TRUE,
 #'                   x.unit = "mT",
-#'                   col.names = c("B_mT","Intensity"),
+#'                   col.names = NULL,
+#'                   x = 1,
+#'                   Intensity = 2,
 #'                   origin = "csv")
+#'
+#' ## Reading file data from (and preprocessed) by "xenon" software
+#' ## corresponding to kinetics where `Area` and `time` are incl.
+#' ## are part of the data as columns
+#' readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
+#'                   skip = 1,
+#'                   col.names = c("Radical",
+#'                                 "Slice",
+#'                                 "Time",
+#'                                 "g_factor",
+#'                                 "Line_Width",
+#'                                 "Line_Shape",
+#'                                 "Area"),
+#'                    x = 3,
+#'                    x.unit = "s",
+#'                    Intensity = 7,
+#'                    qValue = 3600)
 #' }
 #'
 #'
@@ -157,7 +192,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               x.unit = "G",
                               Intensity = 3,
                               time.series = NULL,
-                              convert_B_G2mT = TRUE,
+                              convertB.unit = TRUE,
                               qValue = 1,
                               norm.vec.add = NULL,
                               origin = "xenon") {
@@ -254,73 +289,39 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     }
   }
   #
-  ## `Intensity` and `x` column character string definitions
+  ## `Intensity` and `x` as well as `time` column
+  ## character string definitions
+  if (isTRUE(header) & is.null(col.names)){
+    col.names <- colnames(spectrum.data.origin)
+  }
   IntensityAxis <- col.names[Intensity]
   xAxis <- col.names[x]
+  #timeAxis <- col.names[time.series]
   ## new `spectra.data`
-  if (x.unit == "G"){
+  #
+  ## Common EPR Spectra
+  ## Unit condition
+  G.unit.cond <- if (x.unit == "G") TRUE else FALSE
+  #
+  if (x.unit == "G" || x.unit = "mT"){
     spectra.data <- spectrum.data.origin %>%
-      `if`(isTRUE(convert_B_G2mT),
-           dplyr::mutate(B_mT = .data[[xAxis]]/10), .) %>%
+      `if`(isTRUE(convertB.unit),
+           dplyr::mutate(!!rlang::quo_name(paste0("B_",x.unit)) := .data[[xAxis]]*switch(2 - isTRUE(G.unit.cond),10,1/10)), .) %>%
       dplyr::mutate(!!rlang::quo_name(IntensityAxis) := .data[[IntensityAxis]]*norm.multiply.qValue*norm.multiply.const)
   }
+  ## ENDOR Spectra
   if (x.unit == "MHz"){
     spectra.data <- spectrum.data.origin %>%
       dplyr::mutate(!!rlang::quo_name(IntensityAxis) := .data[[IntensityAxis]]*norm.multiply.const)
   }
-
-  ## TO BE COMPLETED !!
-
-  ## TO BE COMPLETED !!
-
-
+  ## Any other Spectra like with g-Value or Intensity/Area vs time
+  ## or Intensity vs power relationship
+  if (x.unit != "G" & x.unit !="mT" & x.unit != "MHz"){
+    spectra.data <- spectrum.data.origin %>%
+      dplyr::mutate(!!rlang::quo_name(IntensityAxis) := .data[[IntensityAxis]]*norm.multiply.qValue*norm.multiply.const)
+  }
   #
-  ##
-  if (origin == "xenon" || origin == "txt" || origin == "csv") {
-    if (x.unit == "G") {
-      ## For intesity 1.) Normalized intensity
-      ## 2.) Overwrite the 'old' Intensity col
-      ##     however, first off all it must be unquoted
-      ##     therefore, !!rlang::quo_name(Intensity) := Norm_Intensity
-      spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(
-          B_mT = .data[[x]] / 10,
-          !!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M)
-        )
-    }
-    if (x.unit == "MHz") {
-      spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(Intensity) := .data[[Intensity]] / Nscans)
-    }
-    if (x.unit == "mT" || x.unit == "Unitless") {
-      spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M))
-    }
-  }
-  if (origin == "winepr") {
-    if (x.unit == "G") {
-      spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(
-          B_mT = .data[[x]] / 10,
-          !!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
-          index = seq_len(length(.data[[Intensity]]))
-        )
-    }
-    if (x.unit == "MHz") {
-      spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(
-          !!rlang::quo_name(Intensity) := .data[[Intensity]] / Nscans,
-          index = seq_len(length(.data[[Intensity]]))
-        )
-    }
-    if (x.unit == "mT" || x.unit == "Unitless") {
-      spectrum.data <- spectrum.data.origin %>%
-        dplyr::mutate(
-          !!rlang::quo_name(Intensity) := .data[[Intensity]] / (qValue * Nscans * m.mg * c.M),
-          index = seq_len(length(.data[[Intensity]]))
-        )
-    }
-  }
+  ## TO BE COMPLETED !! for `winepr` system and time.series => convert `Slice` into time
   #
   return(spectra.data)
   #
