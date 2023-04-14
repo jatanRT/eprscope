@@ -32,7 +32,7 @@
 #' ## Calculate Potential after 30 s, starting from 200 mV
 #' ## (vs Reference Electrode) into cathodic direction
 #' ## (reduction) by 5 mV/s
-#' convert_time_to_var(15,var0 = 0.2,var.rate = - 0.005)
+#' convert_time_to_var(30,var0 = 0.2,var.rate = - 0.005)
 #' #
 #' ## Heating sample after 5 min starting from 293 K
 #' ## by the temperature rate of 0.5 K/s
