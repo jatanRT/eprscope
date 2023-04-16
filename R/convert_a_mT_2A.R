@@ -15,15 +15,15 @@
 #'
 #'
 #' @examples
-#' convert_a_mT_to_A(a.mT = 0.5)
-#' convert_a_mT_to_A(0.6,2.0059)
-#' convert_a_mT_to_A(0.15,g = 2.00036)
+#' convert_a_mT_2A(a.mT = 0.5)
+#' convert_a_mT_2A(0.6,2.0059)
+#' convert_a_mT_2A(0.15,g = 2.00036)
 #'
 #'
 #' @export
 #'
 #'
-convert_a_mT_to_A <- function(a.mT,g = 2.00231930){
+convert_a_mT_2A <- function(a.mT,g = 2.00231930){
   #
   Planck.const <- syms$h
   Bohr.magnet <- syms$mub

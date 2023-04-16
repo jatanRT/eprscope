@@ -15,16 +15,16 @@
 #'
 #'
 #' @examples
-#' convert_A_MHz_to_a(A.MHz = 16)
-#' convert_A_MHz_to_a(20,2.0059)
-#' convert_A_MHz_to_a(4,g = 2.00036)
+#' convert_A_MHz_2a(A.MHz = 16)
+#' convert_A_MHz_2a(20,2.0059)
+#' convert_A_MHz_2a(4,g = 2.00036)
 #'
 #'
 #' @export
 #'
 #'
 #' @importFrom constants syms
-convert_A_MHz_to_a <- function(A.MHz,g = 2.00231930){
+convert_A_MHz_2a <- function(A.MHz,g = 2.00231930){
   #
   Planck.const <- syms$h
   Bohr.magnet <- syms$mub

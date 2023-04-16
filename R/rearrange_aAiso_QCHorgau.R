@@ -179,7 +179,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## Generate the data frame,
     ## first of all define numeric columns
     A.qchfile.select.iso.mhz <- as.numeric(as.character(A.qchfile.select.iso))
-    A.qchfile.select.iso.gauss <- convert_A_MHz_to_a(as.numeric(as.character(A.qchfile.select.iso))) * 10
+    A.qchfile.select.iso.gauss <- convert_A_MHz_2a(as.numeric(as.character(A.qchfile.select.iso))) * 10
     #
     table.select.A <- data.frame(
       "No" = nuclei.qchfile.select.n,

@@ -32,24 +32,24 @@
 #' ## Calculate Potential after 30 s, starting from 200 mV
 #' ## (vs Reference Electrode) into cathodic direction
 #' ## (reduction) by 5 mV/s
-#' convert_time_to_var(30,var0 = 0.2,var.rate = - 0.005)
+#' convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
 #' #
 #' ## Heating sample after 5 min starting from 293 K
 #' ## by the temperature rate of 0.5 K/s
-#' convert_time_to_var(5,
-#'                     time.unit = "min",
-#'                     var0 = 293,
-#'                     var.rate = 0.5)
+#' convert_time2var(5,
+#'                  time.unit = "min",
+#'                  var0 = 293,
+#'                  var.rate = 0.5)
 #'
 #'
 #' @export
 #'
 #'
-convert_time_to_var <- function(time,
-                                time.unit = "s",
-                                var0,
-                                var.switch = NULL,
-                                var.rate) {
+convert_time2var <- function(time,
+                             time.unit = "s",
+                             var0,
+                             var.switch = NULL,
+                             var.rate) {
   #
   # convert time to `s` depending on `time.unit`
   if (time.unit == "min") {
