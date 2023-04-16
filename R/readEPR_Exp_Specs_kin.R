@@ -184,7 +184,11 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
   if (time.unit == "h") {
     times <- times * 3600
   }
-  if (time.unit == "unitless") {
+  ## Definition for `time.delta.slice.s`
+  time.delta.slice.s <- time.delta.slice.s %>% `if`(is.null(time.delta.slice.s),1, .)
+  #
+  ## `time` if spectra are recorded as `slices` series
+  if (time.unit == "unitless" & !is.null(time.delta.slice.s)) {
     times <- times * time.delta.slice.s
   }
   data.spectra.time[[timeString]] <- correct_time_Exp_Specs(
