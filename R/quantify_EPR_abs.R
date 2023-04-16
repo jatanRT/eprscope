@@ -36,18 +36,24 @@ quantify_EPR_abs <- function(integ.double,
                              nu.GHz,
                              power.mW,
                              modul.amp.mT,
-                             qValue = 1,
+                             qValue = NULL,
                              tube.sample.id.mm,
                              fill.sample.h.mm,
-                             Norm.constant = 1,
+                             Norm.constant = NULL,
                              Temp.K = 298,
                              S = 0.5,
                              microW.cavity = "rectangular") {
   #
+  ## 'Temporary' processing variables
+  . <- NULL
   ## Physical Constants:
   Planck.const <- constants::syms$h
   Boltzmann.const <- constants::syms$k
   Avogadro.No <- constants::syms$na
+  #
+  ## Definition for `qValue` and `Norm.constant`
+  qValue <- qValue %>% `if`(is.null(qValue), 1, .)
+  Norm.constant <- Norm.constant %>% `if`(is.null(Norm.constant), 1, .)
   #
   ## Boltzmann factor:
   n.B <- (Planck.const * nu.GHz * 1e+9) / (2 * Boltzmann.const * Temp.K)

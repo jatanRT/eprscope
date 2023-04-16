@@ -9,10 +9,10 @@ quantify_EPR_abs(
   nu.GHz,
   power.mW,
   modul.amp.mT,
-  qValue = 1,
+  qValue = NULL,
   tube.sample.id.mm,
   fill.sample.h.mm,
-  Norm.constant = 1,
+  Norm.constant = NULL,
   Temp.K = 298,
   S = 0.5,
   microW.cavity = "rectangular"
