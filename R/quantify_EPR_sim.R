@@ -7,7 +7,12 @@
 #'
 #' @param data.spectra.series tbc
 #' @param path_to_ASC_sim tbc
-#' @param var2nd tbc
+#' @param var2nd.series String/Character referred to name of the second independent variable/quantity
+#'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+#'   `Microwave Power`...etc) altered upon individual experiments as a second variable
+#'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
+#'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+#'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
 #' @param B.unit tbc
 #' @param Intensity.exp tbc
 #' @param Intensity.sim tbc
@@ -33,7 +38,7 @@
 #' @importFrom dplyr arrange
 quantify_EPR_sim <- function(data.spectra.series,
                              path_to_ASC_sim,
-                             var2nd = "time_s",
+                             var2nd.series = "time_s",
                              B.unit = "G",
                              Intensity.exp = "dIepr_over_dB",
                              Intensity.sim = "dIeprSim_over_dB",
@@ -55,7 +60,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## checking number of points for experimental and simulated spectra
   ## experimental
   resolution.exp <- data.spectra.series %>%
-    dplyr::filter(.data[[var2nd]] == .data[[var2nd]][1]) %>%
+    dplyr::filter(.data[[var2nd.series]] == .data[[var2nd.series]][1]) %>%
     dim.data.frame()
   resolution.exp <- resolution.exp[1]
   ## simulated spectrum
@@ -66,9 +71,9 @@ quantify_EPR_sim <- function(data.spectra.series,
   } else {
     ## ...keep going:-), combining the experimental
     ## and simulated (non-processed, original) spectra into one long-table format
-    ## (for each `vr2nd` added column of simulated spectrum)
+    ## (for each `vr2nd.series` added column of simulated spectrum)
     data.specs.sim <- data.spectra.series %>%
-      dplyr::group_by(.data[[var2nd]]) %>%
+      dplyr::group_by(.data[[var2nd.series]]) %>%
       dplyr::mutate(!!rlang::quo_name(Intensity.sim) := data.spec.sim[[Intensity.sim]])
     #
     ## delete the original data (not needed anymore)
@@ -82,18 +87,18 @@ quantify_EPR_sim <- function(data.spectra.series,
     with(data, sum((data[[Intensity.exp]] - (par[1] + par[2] * data[[Intensity.sim]]))^2))
   }
   #
-  ## `var2nd` sequence (e.g. like time sequence)
+  ## `var2nd.series` sequence (e.g. like time sequence)
   var2nd_df <- data.specs.sim %>%
-    dplyr::group_by(.data[[var2nd]]) %>%
+    dplyr::group_by(.data[[var2nd.series]]) %>%
     dplyr::group_keys()
   ## vector of `var2nd` sequence
-  var2nd_seq <- var2nd_df[[var2nd]]
+  var2nd_seq <- var2nd_df[[var2nd.series]]
   #
   ## data split into data list with filtering
   ## to be ready to optimize each individual spectrum
   data.list <- lapply(
     var2nd_seq,
-    function(t) subset(data.specs.sim, data.specs.sim[[var2nd]] == t)
+    function(t) subset(data.specs.sim, data.specs.sim[[var2nd.series]] == t)
   )
   #
   ## optimization list by data.list
@@ -142,15 +147,15 @@ quantify_EPR_sim <- function(data.spectra.series,
   )
   names(data.specs.sim.modif) <- c(var2nd_seq, paste0("Bsim_", B.unit))
   #
-  ## transformation from wide table to long table with properly arranged `var2nd`
+  ## transformation from wide table to long table with properly arranged `var2nd.series`
   data.specs.sim.modif <- data.specs.sim.modif %>%
     tidyr::pivot_longer(!.data[[paste0("Bsim_", B.unit)]],
-      names_to = var2nd,
+      names_to = var2nd.series,
       values_to = Intensity.sim
     )
-  data.specs.sim.modif[[var2nd]] <- as.double(as.character(data.specs.sim.modif[[var2nd]]))
+  data.specs.sim.modif[[var2nd.series]] <- as.double(as.character(data.specs.sim.modif[[var2nd.series]]))
   data.specs.sim.modif <- data.specs.sim.modif %>%
-    dplyr::arrange(.data[[var2nd]])
+    dplyr::arrange(.data[[var2nd.series]])
   #
   ## the `Intensity.sim` is replaced by the newer one
   data.specs.sim[[Intensity.sim]] <- NULL
@@ -162,7 +167,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## base for the output data frame
   if (B.unit == "G"){
     result_df_base <- data.specs.sim %>%
-      dplyr::group_by(.data[[var2nd]]) %>%
+      dplyr::group_by(.data[[var2nd.series]]) %>%
       dplyr::mutate(!!rlang::quo_name(single.integ) := pracma::cumtrapz(
         .data[[paste0("B_", B.unit)]], ## BE AWARE OF B.UNITS and INTEGRAL EVALUATION
         .data[[Intensity.sim]]
@@ -171,7 +176,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   }
   if (B.unit == "mT"){
     result_df_base <- data.specs.sim %>%
-      dplyr::group_by(.data[[var2nd]]) %>%
+      dplyr::group_by(.data[[var2nd.series]]) %>%
       dplyr::mutate(!!rlang::quo_name(single.integ) := pracma::cumtrapz(
         .data[[paste0("B_", B.unit)]], ## BE AWARE OF B.UNITS and INTEGRAL EVALUATION
         .data[[Intensity.sim]]

@@ -47,7 +47,7 @@
 #'  (e.g. temperature,microwave power...etc) being varied by the individual experiments
 #' @param tidy Logical, whether to transform the list of data frames into long table (`tidy`) format,
 #'  \strong{default}: \code{tidy = F}
-#' @param var2nd.series String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
+#' @param var2nd.series String/Character, if \code{tidy = T} (see `tidy` parameter/argument) it is referred to name
 #'  of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
 #'  altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.
 #' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
@@ -233,7 +233,7 @@ readEPR_Exp_Specs_multif <- function(pattern,
     #
   } else {
     if (is.null(var2nd.series)) {
-      stop(" 'var2nd' string is not specified. Please, define! ")
+      stop(" 'var2nd.series' string is not specified. Please, define! ")
     } else {
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-

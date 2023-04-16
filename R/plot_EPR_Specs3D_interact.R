@@ -9,12 +9,12 @@
 #' @param data.spectra.series tbc
 #' @param x tbc
 #' @param Intensity tbc
-#' @param var2nd String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
-#'   `Electrochemical Potential`,`Microwave Power`...etc) altered upon individual experiments as a second variable
-#'   (\code{var2nd}) and related to spectra/data. Data must be available in \strong{long table} (or \strong{tidy})
-#'   \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}), usually like time series, where the ASCII data
-#'   are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s" and "Intensity" must be supplied).
-#'   \strong{Default}: \code{var2nd = "time_s"}.
+#' @param var2nd.series String/Character referred to name of the second independent variable/quantity
+#'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+#'   `Microwave Power`...etc) altered upon individual experiments as a second variable
+#'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
+#'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+#'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
 #' @param plot.type Character/String, inherited from \code{\link[plotly]{plot_ly}}, specifying the trace. Only two
 #'   character/strings are available: \code{plot.type = "surface"} (\strong{default}, for 3D surface plots)
 #'   or \code{plot.type = "contour"} (for 2D contour plots).
@@ -60,7 +60,7 @@
 plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       x = "B_mT",
                                       Intensity = "dIepr_over_dB",
-                                      var2nd = "time_s",
+                                      var2nd.series = "time_s",
                                       plot.type = "surface",
                                       scheme.color = "Viridis",
                                       contour.labels = FALSE,
@@ -78,21 +78,21 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       grid.z.color = "rgb(255, 255, 255)",
                                       output.matrix.df = FALSE) {
   #
-  ## `var2nd` (e.g. time) as factor to properly present
-  data.spectra.series[[var2nd]] <- as.factor(data.spectra.series[[var2nd]])
+  ## `var2nd.series` (e.g. time) as factor to properly present
+  data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
   #
-  ## Length of the `var2nd`
+  ## Length of the `var2nd.series`
   var2nd_select_df <- data.spectra.series %>%
-    dplyr::group_by(.data[[var2nd]]) %>%
+    dplyr::group_by(.data[[var2nd.series]]) %>%
     dplyr::group_keys()
   #
-  var2nd_select_len <- length(var2nd_select_df[[var2nd]])
+  var2nd_select_len <- length(var2nd_select_df[[var2nd.series]])
   #
-  ## Scaling var2nd due to HIGH LOAD of "CONTOUR RENDERING"
+  ## Scaling var2nd.series due to HIGH LOAD of "CONTOUR RENDERING"
   ## Also the "SURFACE RENDERING" will be affected as well
   ##    ||
   ##    \/
-  ## var2nd length => how many points + conditions + filtering
+  ## var2nd.series length => how many points + conditions + filtering
   if (var2nd_select_len >= 80 & var2nd_select_len < 160) {
     var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 2), ]
   }
@@ -100,19 +100,19 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 4), ]
   }
   #
-  ## Filtering, accordingly (only those `var2nd` values defined above in `data.spectra.series`)
+  ## Filtering, accordingly (only those `var2nd.series` values defined above in `data.spectra.series`)
   data.spectra.series <- data.spectra.series %>%
-    dplyr::filter(.data[[var2nd]] %in% var2nd_select_df[[var2nd]])
+    dplyr::filter(.data[[var2nd.series]] %in% var2nd_select_df[[var2nd.series]])
   #
-  ## select NEW!!!UPDATED!!! `var2nd` !!! data frame values for `yaxis` within 3D plot
+  ## select NEW!!!UPDATED!!! `var2nd.series` !!! data frame values for `yaxis` within 3D plot
   # var2nd_select_df <- data.spectra.series %>%
-  #   dplyr::group_by(.data[[var2nd]]) %>%
+  #   dplyr::group_by(.data[[var2nd.series]]) %>%
   #   dplyr::group_keys()
   #
   ## convert data from 'long' to 'wide' table format & finally to matrix
   Intensity_matrix <- data.spectra.series %>%
-    dplyr::select(.data[[var2nd]], .data[[x]], .data[[Intensity]]) %>%
-    tidyr::pivot_wider(names_from = .data[[var2nd]], values_from = .data[[Intensity]]) %>%
+    dplyr::select(.data[[var2nd.series]], .data[[x]], .data[[Intensity]]) %>%
+    tidyr::pivot_wider(names_from = .data[[var2nd.series]], values_from = .data[[Intensity]]) %>%
     dplyr::select(-.data[[x]]) %>%
     as.matrix()
   ## transpose matrix in order to present 3D spectra properly
@@ -120,15 +120,15 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #
   ## select x data frame column for `xaxis` within 3D plot
   X_select_df <- data.spectra.series %>%
-    dplyr::filter(.data[[var2nd]] == .data[[var2nd]][1])
+    dplyr::filter(.data[[var2nd.series]] == .data[[var2nd.series]][1])
   #
   ## own 3D plot (different types "surface","contour","")
   if (plot.type == "surface") {
     if (isTRUE(contour.labels)) {
       base_plot <- plotly::plot_ly(
         x = ~ X_select_df[[x]],
-        y = ~ var2nd_select_df[[var2nd]],
-        z = ~Intensity_matrix,
+        y = ~ var2nd_select_df[[var2nd.series]],
+        z = ~ Intensity_matrix,
         type = plot.type,
         colorscale = scheme.color,
         contours = list(
@@ -143,8 +143,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     } else {
       base_plot <- plotly::plot_ly(
         x = ~ X_select_df[[x]],
-        y = ~ var2nd_select_df[[var2nd]],
-        z = ~Intensity_matrix,
+        y = ~ var2nd_select_df[[var2nd.series]],
+        z = ~ Intensity_matrix,
         type = plot.type,
         colorscale = scheme.color
       )
@@ -246,8 +246,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   if (plot.type == "contour") {
     base_plot <- plotly::plot_ly(
       x = ~ X_select_df[[x]],
-      y = ~ var2nd_select_df[[var2nd]],
-      z = ~Intensity_matrix,
+      y = ~ var2nd_select_df[[var2nd.series]],
+      z = ~ Intensity_matrix,
       type = plot.type,
       colorscale = scheme.color,
       contours = list(
@@ -318,7 +318,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     ## matrix -> data frame
     matrix_to_df_table <- as.data.frame(Intensity_matrix)
     ## column names
-    colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd]])
+    colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd.series]])
     ## return both plot and table in list
     final_plotPlusTable <- list(plot = final_plot, df = matrix_to_df_table)
   } else {

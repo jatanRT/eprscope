@@ -9,7 +9,7 @@ plot_EPR_Specs(
   x = "B_mT",
   x.unit = "mT",
   xlim = NULL,
-  var2nd = NULL,
+  var2nd.series = NULL,
   Intensity = "dIepr_over_dB",
   line.colors = "steelblue",
   line.width = 0.75,
@@ -21,7 +21,6 @@ plot_EPR_Specs(
   legend.title = NULL,
   legend.title.size = NULL,
   legend.text.size = NULL,
-  var2nd.series = FALSE,
   grid = TRUE,
   yTicks = TRUE
 )
@@ -33,9 +32,9 @@ in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 integrated or simulated spectra intensities are present, they can be labeled accordingly.
 See also \code{Intensity} parameter/argument. For spectral series the second independent variable
-\code{var2nd} column (like e.g. \code{var2nd = "time_s"}) must be available. In such case
-the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameters/arguments
-\code{var2nd} and \code{var2nd.series}).}
+\code{var2nd.series} column (like e.g. \code{var2nd.series = "time_s"}) must be available. In such case
+the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameter/argument
+\code{var2nd.series}).}
 
 \item{x}{Character/String pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
 like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
@@ -51,22 +50,21 @@ e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2
 or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
 to entire `x` range)}
 
-\item{var2nd}{String/Character referred to name of the second independent variable/quantity
+\item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
-`Microwave Power`...etc) altered upon individual experiments as a second variable (\code{var2nd})
-and related to spectra/data (see also \code{var2nd.series} parameter/argument). Data must be available
-in \strong{long table} (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
-\strong{Default}: \code{var2nd = NULL} if \code{var2nd.series = FALSE}. Otherwise \strong{usually}
-\code{var2nd = "time_s"} if \code{var2nd.series = TRUE}.}
+`Microwave Power`...etc) altered upon individual experiments as a second variable
+(\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
+(or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+\strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
 \item{Intensity}{Character/String pointing to \code{intensity column} in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{line.colors}{Character string, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, \strong{default}: \code{line.colors = "steelblue"}. In case of \code{var2nd.series = TRUE}
-the parameter/argument is identical with the \code{colors} one from \code{\link[ggplot2]{scale_colour_gradientn}}
-Following color definitions are allowed =>
+colors are allowed, \strong{default}: \code{line.colors = "steelblue"}. In case of \code{var2nd.series}
+is not NULL the parameter/argument is identical with the \code{colors} one from
+\code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions are allowed =>
 \itemize{
   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 1}
   \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
@@ -103,11 +101,6 @@ Following color definitions are allowed =>
 \item{legend.title.size}{tbc}
 
 \item{legend.text.size}{description}
-
-\item{var2nd.series}{Logical, whether the input ASCII spectrum data comes from the series of experiments
-each corresponding to alteration of a second variable (usually like time series, see also parameter \code{var2nd})
-where the ASCII data are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s"
-and "Intensity" must be supplied). \strong{Deffault}: \code{var2nd.series = FALSE}.}
 
 \item{grid}{Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 

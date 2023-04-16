@@ -8,7 +8,7 @@ plot_EPR_Specs3D_interact(
   data.spectra.series,
   x = "B_mT",
   Intensity = "dIepr_over_dB",
-  var2nd = "time_s",
+  var2nd.series = "time_s",
   plot.type = "surface",
   scheme.color = "Viridis",
   contour.labels = FALSE,
@@ -34,12 +34,12 @@ plot_EPR_Specs3D_interact(
 
 \item{Intensity}{tbc}
 
-\item{var2nd}{String/Character referred to name of the variable/quantity column (e.g. like `time`,`Temperature`,
-`Electrochemical Potential`,`Microwave Power`...etc) altered upon individual experiments as a second variable
-(\code{var2nd}) and related to spectra/data. Data must be available in \strong{long table} (or \strong{tidy})
-\strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}), usually like time series, where the ASCII data
-are in the long table/tidy format (e.g. for time series => 3 columns like "B_mT","time_s" and "Intensity" must be supplied).
-\strong{Default}: \code{var2nd = "time_s"}.}
+\item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
+column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+`Microwave Power`...etc) altered upon individual experiments as a second variable
+(\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
+(or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+\strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
 \item{plot.type}{Character/String, inherited from \code{\link[plotly]{plot_ly}}, specifying the trace. Only two
 character/strings are available: \code{plot.type = "surface"} (\strong{default}, for 3D surface plots)

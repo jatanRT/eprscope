@@ -7,7 +7,7 @@
 quantify_EPR_sim(
   data.spectra.series,
   path_to_ASC_sim,
-  var2nd = "time_s",
+  var2nd.series = "time_s",
   B.unit = "G",
   Intensity.exp = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
@@ -21,7 +21,12 @@ quantify_EPR_sim(
 
 \item{path_to_ASC_sim}{tbc}
 
-\item{var2nd}{tbc}
+\item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
+column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+`Microwave Power`...etc) altered upon individual experiments as a second variable
+(\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
+(or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+\strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
 \item{B.unit}{tbc}
 

@@ -72,7 +72,7 @@ weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{D
 \item{tidy}{Logical, whether to transform the list of data frames into long table (`tidy`) format,
 \strong{default}: \code{tidy = F}}
 
-\item{var2nd.series}{String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
+\item{var2nd.series}{String/Character, if \code{tidy = T} (see `tidy` parameter/argument) it is referred to name
 of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
 altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.}
 
