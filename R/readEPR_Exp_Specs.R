@@ -47,7 +47,7 @@
 #'   convert \eqn{B} in Gauss <=> millitesla...
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
 #'   in case of ` "Xenon" ` software the parameter is included in \code{.DSC} file, \strong{default}:
-#'   \code{qValue = 1}
+#'   \code{qValue = NULL}
 #' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
 #'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 #'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
@@ -152,24 +152,19 @@
 #' ## are part of the data as columns
 #' readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
 #'                   skip = 1,
-#'                   col.names = c("Radical",
-#'                                 "Slice",
-#'                                 "Time",
-#'                                 "g_factor",
-#'                                 "Line_Width",
-#'                                 "Line_Shape",
-#'                                 "Area"),
-#'                    x = 3,
-#'                    x.unit = "s",
-#'                    Intensity = 7,
-#'                    qValue = 3600)
+#'                   select = c(3,7)
+#'                   col.names = c("Time","Area"),
+#'                   x = 3,
+#'                   x.unit = "s",
+#'                   Intensity = 7,
+#'                   qValue = 3600)
 #' }
 #'
 #'
 #' @export
 #'
 #'
-#' @importFrom data.frame fread
+#' @importFrom data.table fread
 #' @importFrom rlang .data quo_name :=
 #' @importFrom stats na.omit
 readEPR_Exp_Specs <- function(path_to_ASC,
@@ -193,7 +188,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               Intensity = 3,
                               time.series = NULL,
                               convertB.unit = TRUE,
-                              qValue = 1,
+                              qValue = NULL,
                               norm.vec.add = NULL,
                               origin = "xenon") {
   ## 'Temporary' processing variables
@@ -202,88 +197,94 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   . <- NULL
   #
   ## general normalization
-  norm.vec.add <- norm.vec.add %>% `if`(is.null(norm.vec.add),1, .)
-  norm.multiply.const <- prod(sapply(norm.vec.add, function(n) 1/n))
-  norm.multiply.qValue <- 1/qValue
+  qValue <- qValue %>% `if`(is.null(qValue), 1, .)
+  norm.vec.add <- norm.vec.add %>% `if`(is.null(norm.vec.add), 1, .)
+  norm.multiply.const <- prod(sapply(norm.vec.add, function(n) 1 / n))
+  norm.multiply.qValue <- 1 / qValue
   #
   ## basic `fread` parameters to read the spectral data
   if (origin == "winepr") {
     if (is.null(time.series)) {
       ## parameter definition
       sep <- sep %>% `if`(sep != "auto", "auto", .)
-      header <- header %>% `if`(isTRUE(header),FALSE, .)
-      skip <- skip %>% `if`(skip != 3,3, .)
-      na.strings <- na.strings %>% `if`(!is.null(na.strings),NULL, .)
-      select <- select %>% `if`(!is.null(select),NULL, .)
-      drop <- drop %>% `if`(!is.null(drop),NULL, .)
+      header <- header %>% `if`(isTRUE(header), FALSE, .)
+      skip <- skip %>% `if`(skip != 3, 3, .)
+      na.strings <- na.strings %>% `if`(!is.null(na.strings), NULL, .)
+      select <- select %>% `if`(!is.null(select), NULL, .)
+      drop <- drop %>% `if`(!is.null(drop), NULL, .)
       encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
-      fill <- fill %>% `if`(isTRUE(fill),FALSE, .)
+      fill <- fill %>% `if`(isTRUE(fill), FALSE, .)
       blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
 
       #
     } else {
       ## parameter definition
       sep <- sep %>% `if`(sep != "auto", "auto", .)
-      header <- header %>% `if`(isTRUE(header),FALSE, .)
-      skip <- skip %>% `if`(skip != 4,4, .)
-      fill <- fill %>% `if`(isFALSE(fill),TRUE, .)
-      blank.lines.skip <- blank.lines.skip %>% `if`(isFALSE(blank.lines.skip),TRUE, .)
-      na.strings <- na.strings %>% `if`(is.null(na.strings),
-                                        c("Intensity","X [G]","Y []"), .)
-      select <- select %>% `if`(!is.null(select),NULL, .)
-      drop <- drop %>% `if`(!is.null(drop),NULL, .)
+      header <- header %>% `if`(isTRUE(header), FALSE, .)
+      skip <- skip %>% `if`(skip != 4, 4, .)
+      fill <- fill %>% `if`(isFALSE(fill), TRUE, .)
+      blank.lines.skip <- blank.lines.skip %>% `if`(isFALSE(blank.lines.skip), TRUE, .)
+      na.strings <- na.strings %>% `if`(
+        is.null(na.strings),
+        c("Intensity", "X [G]", "Y []"), .
+      )
+      select <- select %>% `if`(!is.null(select), NULL, .)
+      drop <- drop %>% `if`(!is.null(drop), NULL, .)
       encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
       #
     }
   }
-  if (origin == "xenon"){
+  if (origin == "xenon") {
     ## parameter definition
     sep <- sep %>% `if`(sep != "auto", "auto", .)
-    header <- header %>% `if`(isTRUE(header),FALSE, .)
-    skip <- skip %>% `if`(skip != 1,1, .)
-    na.strings <- na.strings %>% `if`(!is.null(na.strings),NULL, .)
-    select <- select %>% `if`(!is.null(select),NULL, .)
-    drop <- drop %>% `if`(!is.null(drop),NULL, .)
+    header <- header %>% `if`(isTRUE(header), FALSE, .)
+    skip <- skip %>% `if`(skip != 1, 1, .)
+    na.strings <- na.strings %>% `if`(!is.null(na.strings), NULL, .)
+    select <- select %>% `if`(!is.null(select), NULL, .)
+    drop <- drop %>% `if`(!is.null(drop), NULL, .)
     encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
-    fill <- fill %>% `if`(isTRUE(fill),FALSE, .)
+    fill <- fill %>% `if`(isTRUE(fill), FALSE, .)
     blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
   }
   ## change any other `origin` accordingly
-  if (origin != "winepr" & origin != "xenon"){
-    sep = sep
-    header = header
-    skip = skip
-    na.strings = na.strings
-    select = select
-    drop = drop
-    col.names = col.names
-    encoding = encoding
-    fill = fill
-    blank.lines.skip = blank.lines.skip
+  if (origin != "winepr" & origin != "xenon") {
+    sep <- sep
+    header <- header
+    skip <- skip
+    na.strings <- na.strings
+    select <- select
+    drop <- drop
+    col.names <- col.names
+    encoding <- encoding
+    fill <- fill
+    blank.lines.skip <- blank.lines.skip
   }
   #
   ## basic data frame by `fread` incl. the above defined parameters
   spectrum.data.origin <- data.table::fread(path_to_ASC,
-                                            sep = sep,
-                                            header = header,
-                                            skip = skip,
-                                            na.strings = na.strings,
-                                            select = select,
-                                            drop = drop,
-                                            col.names = col.names,
-                                            encoding = encoding,
-                                            fill = fill,
-                                            blank.lines.skip = blank.lines.skip
-  ) %>%
-    `if`(origin == "winepr" & !is.null(time.series),
-         dplyr::filter(grepl("Slice",.data[[1]])), .) %>%
-    `if`(origin == "winepr" & !is.null(time.series),
-         stats::na.omit(), .)
+    sep = sep,
+    header = header,
+    skip = skip,
+    na.strings = na.strings,
+    select = select,
+    drop = drop,
+    col.names = col.names,
+    encoding = encoding,
+    fill = fill,
+    blank.lines.skip = blank.lines.skip
+  )
+  ## condition for `winepr`
+  if (origin == "winepr" & !is.null(time.series)) {
+    spectrum.data.origin <- spectrum.data.origin %>%
+      dplyr::filter(!grepl("Slice", .data[[1]])) %>%
+      stats::na.omit()
+  }
   #
   ## Condition to convert any character column to numeric format
-  if (isTRUE(col.char2num)){
-    for (i in seq(ncol(spectrum.data.origin))){
-      if (class(spectrum.data.origin[[i]]) == "character"){
+  ## to check character => `inherits(x,"character")`
+  if (isTRUE(col.char2num)) {
+    for (i in seq(ncol(spectrum.data.origin))) {
+      if (inherits(spectrum.data.origin[[i]],"character")) {
         spectrum.data.origin[[i]] <- as.double(spectrum.data.origin[[i]])
       }
     }
@@ -291,34 +292,37 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   #
   ## `Intensity` and `x` as well as `time` column
   ## character string definitions
-  if (isTRUE(header) & is.null(col.names)){
+  if (isTRUE(header) & is.null(col.names)) {
     col.names <- colnames(spectrum.data.origin)
   }
-  IntensityAxis <- col.names[Intensity]
-  xAxis <- col.names[x]
-  #timeAxis <- col.names[time.series]
+  IntensityString <- col.names[Intensity] ## `Intensity` string
+  xString <- col.names[x] ## `x` string
+  # timeAxis <- col.names[time.series]
   ## new `spectra.data`
   #
   ## Common EPR Spectra
   ## Unit condition
   G.unit.cond <- if (x.unit == "G") TRUE else FALSE
   #
-  if (x.unit == "G" || x.unit = "mT"){
+  if (x.unit == "G" || x.unit == "mT") {
     spectra.data <- spectrum.data.origin %>%
-      `if`(isTRUE(convertB.unit),
-           dplyr::mutate(!!rlang::quo_name(paste0("B_",x.unit)) := .data[[xAxis]]*switch(2 - isTRUE(G.unit.cond),10,1/10)), .) %>%
-      dplyr::mutate(!!rlang::quo_name(IntensityAxis) := .data[[IntensityAxis]]*norm.multiply.qValue*norm.multiply.const)
+      `if`(
+        isTRUE(convertB.unit),
+        dplyr::mutate(!!rlang::quo_name(paste0("B_", x.unit)) := spectrum.data.origin[[xString]] *
+          switch(2 - isTRUE(G.unit.cond),
+            10,
+            1 / 10
+          )), .
+      ) %>%
+      dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+        norm.multiply.qValue * norm.multiply.const)
   }
-  ## ENDOR Spectra
-  if (x.unit == "MHz"){
-    spectra.data <- spectrum.data.origin %>%
-      dplyr::mutate(!!rlang::quo_name(IntensityAxis) := .data[[IntensityAxis]]*norm.multiply.const)
-  }
-  ## Any other Spectra like with g-Value or Intensity/Area vs time
+  ## Any other Spectra like ENDOR or with g-Value or Intensity/Area vs time
   ## or Intensity vs power relationship
-  if (x.unit != "G" & x.unit !="mT" & x.unit != "MHz"){
+  if (x.unit != "G" & x.unit != "mT") {
     spectra.data <- spectrum.data.origin %>%
-      dplyr::mutate(!!rlang::quo_name(IntensityAxis) := .data[[IntensityAxis]]*norm.multiply.qValue*norm.multiply.const)
+      dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+        norm.multiply.qValue * norm.multiply.const)
   }
   #
   ## TO BE COMPLETED !! for `winepr` system and time.series => convert `Slice` into time

@@ -1,36 +1,58 @@
 #
-#' Read Spectral Data of Time Dependent Experiments (e.g. like Kinetics)
+#' Read and Process Spectral Data of Time Dependent CW EPR Experiments (e.g. like Kinetics)
 #'
 #'
-#' @description The function reads the EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment`
-#'  in "Xenon" acquisition/processing software)
+#' @description The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wave (CW)
+#'  EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment` in "Xenon"
+#'  acquisition/processing software). Function includes automatic time correction for CW EPR
+#'  \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 #'
 #'
 #' @param file.rootname String/Character corresponding to `file name` without `extension`
-#' @param dir_ASC path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
-#'   the `ascii` file is stored
-#' @param dir_DSC_or_par path (defined by \code{\link[base]{file.path}} String/Character) to directory
-#'   where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
-#'   or normalize intensities) is stored
+#' @param dir_ASC Charecter/String path (can be defined by \code{\link[base]{file.path}}, String/Character)
+#'   to directory where the `ascii` file is stored.
+#' @param dir_DSC_or_par Character/String path (can be defined by \code{\link[base]{file.path}} String/Character)
+#'   to directory where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+#'   or normalize intensities) is stored.
 #' @param time.unit Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 #'   \strong{Default}: \code{time.unit = "s"}
+#' @param time.delta.slice.s Numeric, time span/interval in seconds between `slices`...TBC,
+#'   e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names (see also \code{\link{readEPR_Exp_Specs}}).
 #'   A safe rule of thumb is to use column names incl. physical quantity notation with its units,
 #'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}:
 #'   \code{col.names = c("index","B_G","time_s",dIepr_over_dB)}.
-#' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
-#'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-#'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-#'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
+#' @param col.char2num Logical, description...converting character column to numeric format... TBC
+#' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+#'   to abscissa (\eqn{x}-axis) in spectra or other plots.
+#' @param x.unit Character/String ...TBC only "mT" and "G" are available
+#' @param Intensity Numeric index related to \code{col.names} pointing to `general` intensity,
+#'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
+#'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+#'   \eqn{y}-axis in spectra or other plots.
+#' @param time.series Numeric index related to \code{col.names} pointing to `time` column for time series
+#'   EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
+#'   use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
+#'   to kinetic-like experiments. \strong{Default}: \code{time.series = 3}.
+#' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
+#'   convert \eqn{B} in Gauss <=> millitesla...
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 #'   \code{qValue = NULL}. If EPR spectra were acquired by the "Winepr" software Q value must be defined
 #'   like \code{qValue = 3400}
+#' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
+#'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+#'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+#'   \code{norm.vec.add = NULL}.
+#' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
+#'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
+#'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
+#'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
 #'
 #'
-#' @return List of spectral data (incl. time) in tidy long table format (\code{data}) + corrected
+#' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
 #'    time vector (\code{time})
 #'
 #'
@@ -46,12 +68,19 @@
 #' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 #'                       file.path(".","ASCII_data_dir"),
 #'                       file.path(".","DSC_data_dir"),
-#'                       time.unit = "min",
-#'                       col.names = c("B_G",
-#'                                     "time_min",
+#'                       time.unit = "s",
+#'                       time.delta.slice.s = 24.1,
+#'                       col.names = c("index",
+#'                                     "B_G",
+#'                                     "Slice",
 #'                                     "Intensity"),
-#'                       origin = "winepr",
-#'                       qValue = 2900)
+#'                       col.char2num = TRUE,
+#'                       x = 2,
+#'                       x.unit = "G",
+#'                       Intensity = 4,
+#'                       time.series = 2,
+#'                       qValue = 2900,
+#'                       origin = "winepr")
 #'
 #' }
 #'
@@ -63,18 +92,30 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
                                   dir_ASC,
                                   dir_DSC_or_par,
                                   time.unit = "s",
+                                  time.delta.slice.s = NULL,
                                   col.names = c(
                                     "index",
                                     "B_G",
                                     "time_s",
                                     "dIepr_over_dB"
                                   ),
-                                  origin = "xenon",
-                                  qValue = NULL) {
+                                  col.char2num = FALSE,
+                                  x = 2,
+                                  x.unit = "G",
+                                  Intensity = 4,
+                                  time.series = 3,
+                                  convertB.unit = TRUE,
+                                  qValue = NULL,
+                                  norm.vec.add = NULL,
+                                  origin = "xenon") {
+  #
+  ## 'Temporary' processing variables
+  . <- NULL
   #
   ## file rootname which has to be the same for `ASC`+`DSC`
   ## or `.spc` and `.par`and corresponds to file name without extension
   #
+  ## ================= Reading Files & Parameters ==================
   if (origin == "xenon") {
     ## path to `asc` file
     path.to.asc <- file.path(
@@ -104,61 +145,60 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
       paste0(file.rootname, ".par")
     )
     #
-    ## to obtain `QValue` run the following
-    if (is.null(qValue)) {
-      stop(" 'qValue' is not specified. Please, define! ")
-    } else {
-      qValue.obtain <- qValue
-    }
+    ## Qvalue definition
+    qValue.obtain <- qValue %>% `if`(is.null(qValue), 1, .)
   }
   #
   ## 'Kinetic' instrum. params
   instrument.params.kinet <- readEPR_params_slct_kin(path.to.dsc.par, origin = origin)
   #
-  ## Intensity variable
-  Intensity <- grep("I|Intens|intens|MW_Abs|MW_Intens", col.names, value = TRUE)
+  ## ================= Reading Data & Processing ==================
   #
-  ## Time variable
-  time <- grep("time|Time|tim|Tim", col.names, value = TRUE)
+  ## `Intensity` variable string
+  IntensityString <- col.names[Intensity]
+  #
+  ## `time` variable string
+  timeString <- col.names[time.series]
   #
   ## Load spectral data
   data.spectra.time <- readEPR_Exp_Specs(path.to.asc,
-    qValue = qValue.obtain,
     col.names = col.names,
-    time.series = T,
+    col.char2num = col.char2num,
+    x = x,
+    Intensity = Intensity,
+    time.series = time.series,
+    convertB.unit = convertB.unit,
+    qValue = qValue.obtain,
+    norm.vec.add = norm.vec.add,
     origin = origin
   ) %>%
-    dplyr::filter(.data[[Intensity]] != 0) ## only non-zero intensities selected
+    dplyr::filter(.data[[IntensityString]] != 0) ## only non-zero intensities selected
   #
   ## recalculate  the time
-  if (time.unit == "s") {
-    data.spectra.time[[time]] <- correct_time_Exp_Specs(
-      time.s = data.spectra.time[[time]],
-      Nscans = instrument.params.kinet$Nscans,
-      sweep.time.s = instrument.params.kinet$sweepTime
-    )
-  }
+  ## time var for `data.spectra.time`
+  times <- data.spectra.time[[timeString]]
+  #
   if (time.unit == "min") {
-    data.spectra.time[[time]] <- correct_time_Exp_Specs(
-      time.s = data.spectra.time[[time]] * 60,
-      Nscans = instrument.params.kinet$Nscans,
-      sweep.time.s = instrument.params.kinet$sweepTime
-    )
+    times <- times * 60
   }
   if (time.unit == "h") {
-    data.spectra.time[[time]] <- correct_time_Exp_Specs(
-      time.s = data.spectra.time[[time]] * 3600,
-      Nscans = instrument.params.kinet$Nscans,
-      sweep.time.s = instrument.params.kinet$sweepTime
-    )
+    times <- times * 3600
   }
+  if (time.unit == "unitless") {
+    times <- times * time.delta.slice.s
+  }
+  data.spectra.time[[timeString]] <- correct_time_Exp_Specs(
+    time.s = times,
+    Nscans = instrument.params.kinet$Nscans,
+    sweep.time.s = instrument.params.kinet$sweepTime
+  )
   #
   ## corrected time
   time.corrected <- data.spectra.time %>%
-    dplyr::group_by(.data[[time]]) %>%
+    dplyr::group_by(.data[[timeString]]) %>%
     dplyr::group_keys()
   #
-  data.all.spectra <- list(data = data.spectra.time, time = time.corrected[[time]])
+  data.all.spectra <- list(df = data.spectra.time, time = time.corrected[[timeString]])
   #
   return(data.all.spectra)
   #

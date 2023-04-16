@@ -2,19 +2,28 @@
 % Please edit documentation in R/readEPR_Exp_Specs.R
 \name{readEPR_Exp_Specs}
 \alias{readEPR_Exp_Specs}
-\title{Read the Experimental ASCII Data of EPR/ENDOR Spectra}
+\title{Read the Experimental ASCII or other Text-Based Data Related to EPR/ENDOR Spectra}
 \usage{
 readEPR_Exp_Specs(
   path_to_ASC,
   sep = "auto",
   skip = 1,
-  x.unit = "G",
+  header = FALSE,
+  na.strings = NULL,
+  select = NULL,
+  drop = NULL,
+  encoding = "unknown",
+  fill = FALSE,
+  blank.lines.skip = FALSE,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  qValue = 1,
-  Nscans = 1,
-  c.M = 1,
-  m.mg = 1,
-  time.series = FALSE,
+  col.char2num = FALSE,
+  x = 2,
+  x.unit = "G",
+  Intensity = 3,
+  time.series = NULL,
+  convertB.unit = TRUE,
+  qValue = NULL,
+  norm.vec.add = NULL,
   origin = "xenon"
 )
 }
@@ -30,43 +39,66 @@ like \code{","},\code{"\t"}...etc \strong{default}: \code{sep = "auto"}.}
 which do not contain data/rows or columns names. It automatically avoids irregular header information
 before the column names row/line, \strong{default}: \code{skip = 1}.}
 
-\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
-\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
-or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.}
+\item{header}{Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC
+if \code{header = TRUE} then \code{col.names = NULL}}
+
+\item{na.strings}{Character vector, inherited from \code{\link[data.table]{fread}}...TBC}
+
+\item{select}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC}
+
+\item{drop}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC}
+
+\item{encoding}{Character/String, inherited from \code{\link[data.table]{fread}}...TBC}
+
+\item{fill}{Logical, inherited from \code{\link[data.table]{fread}}...TBC}
+
+\item{blank.lines.skip}{Logical, inherited from \code{\link[data.table]{fread}}...TBC}
 
 \item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-The \code{sep}, \code{skip} as well as \code{col.names} parameters strongly depends on the origin
-of ASCII input data file (see also \code{origin} parameter), however these parameters are present
-to make a `read` function flexible for any kind of ASCII data format.}
+Can be also NULL if \code{header = TRUE}}
+
+\item{col.char2num}{Logical, description...converting character column to numeric format... TBC}
+
+\item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+to abscissa (\eqn{x}-axis) in spectra or other plots.}
+
+\item{x.unit}{Character/String ...TBC}
+
+\item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
+like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
+integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+\eqn{y}-axis in spectra or other plots.}
+
+\item{time.series}{Numeric index related to \code{col.names} pointing to `time` column for time series
+EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
+use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
+to kinetic-like experiments. \strong{Default}: \code{time.series = NULL}.}
+
+\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
+convert \eqn{B} in Gauss <=> millitesla...}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
 in case of ` "Xenon" ` software the parameter is included in \code{.DSC} file, \strong{default}:
-\code{qValue = 1}}
+\code{qValue = NULL}}
 
-\item{Nscans}{Number of scans/sweeps per spectrum, in the case of ` "Xenon" ` software, the parameter
-is already included for the intensity normalization, \strong{default}: \code{Nscans = 1}}
-
-\item{c.M}{Numeric, Concentration of the analyte (e.g. radical) in solution (sample) in mol*dm^{-3},
-\strong{default}: \code{c.M = 1}}
-
-\item{m.mg}{Numeric, weight of the powder sample in\code{mg}, \strong{default}: \code{m.mg = 1}}
-
-\item{time.series}{Boolean, whether the input ASCII data come from the time series experiment
-with the additional \code{time} column, \strong{default}: \code{time.series = FALSE}}
+\item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector involving
+all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+\code{norm.vec.add = NULL}.}
 
 \item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
-BRUKER spectrometers (from which are data loaded automatically using the default parameters).
-Options are summarized in the following table =>
+most common spectrometers (from which are data loaded automatically using the default parameters).
+Options are summarized in the following table (Any other specific `origin` may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
-"xenon" \tab \strong{default} automatically loads from BRUKER `Xenon` softw with dafault params. \cr
-"winepr" \tab automatically loads from BRUKER `WinEpr` softw. \cr
-"csv" \tab general, to read `csv` ASCII data (parameters, see above must be adjusted accordingly) \cr
-"txt" \tab general, to read `txt` ASCII data (parameters, see above must be adjusted accordingly) \cr
+"xenon" \tab \strong{default} automatically loads data from `Xenon` software with dafault params. \cr
+"winepr" \tab automatically loads data from `WinEpr` software \cr
+"other" (arbitrary string) \tab general, loads any other `origin` data ( like `csv`, `txt`, `asc`) incl.
+data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
+\code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
 }}
 }
 \value{
@@ -79,12 +111,13 @@ Data frame/table consisting of the unitless \code{g-factor} or the magnetic flux
   (in the case of time series experiment) columns are displayed as well.
 }
 \description{
-Reads experimental EPR/ENDOR spectra recorded by BRUKER spectrometers
-  in ASCII format (\code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
+The function is based on \code{\link[data.table]{fread}} with the purpose to read
+  experimental EPR/ENDOR spectra or other original related (preprocessed) data from EPR spectrometers
+  in ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
   which can be easily processed by other R packages (e.g. by \pkg{tidyverse} system), afterwards.
   Spectral data (intensities) are normalized by the common experimental parameters like Q-factor, concentration...etc.
   ASCII files/tables depend on the origin/software used to acquire the EPR spectra. This is mirrored by \code{origin}
-  parameter. Time series (time evolution of EPR spectra) can be read by the \code{time.series = TRUE/FALSE} parameter.
+  parameter. Time series (time evolution of EPR spectra) can be read by the \code{time.series} parameter.
 }
 \examples{
 \dontrun{
@@ -95,9 +128,25 @@ readEPR_Exp_Specs(path_to_ASC,
 ## for the spectrum acquired by "winepr"
 ## (and 20 scans) on a 10 mg powder sample:
 readEPR_Exp_Specs(path_to_ASC,
+                  skip = 3,
                   qValue = 2000,
-                  Nscans = 20,
-                  m.mg = 10,
+                  norm.vec.add = c(20,10),
+                  origin = "winepr")
+
+## series of spectra (e.g. like time series) acquired by "winepr"
+## (in such case there are `na.strings` between spectral `slices`)
+readEPR_Exp_Specs(path_to_ASC,
+                  skip = 4,
+                  fill = TRUE,
+                  blank.lines.skip = TRUE,
+                  na.strings = c("Intensity","X [G]","Y []"),
+                  col.names = c("B_G",
+                                "Slice",
+                                "dIepr_over_dB"),
+                  col.char2num = TRUE,
+                  x = 1,
+                  Intensity = 3,
+                  time.series = 2,
                   origin = "winepr")
 
 ## if no parameter intensity normalization
@@ -108,12 +157,15 @@ readEPR_Exp_Specs(path_to_ASC = file.path(".",
                                           "EPR_spectrum.txt"))
 
 ## for the ENDOR spectrum recorded by "xenon"
+## by 40 accumulation sweeps
 readEPR_Exp_Specs("./Data/ENDOR_spectrum.txt",
                   x.unit = "MHz",
                   col.names = c("index",
                                 "RF_MHz",
                                 "dIepr_over_dB"),
-                  Nscans = 40)
+                  x = 2,
+                  Intensity = 3,
+                  norm.vec.add = 40)
 
 ## Example for time series experiment (evolution of EPR spectra
 ##  in time, e.g. in case of
@@ -124,17 +176,35 @@ readEPR_Exp_Specs(path_to_ASC,
                                 "B_G",
                                 "time_s",
                                 "dIepr_over_dB"),
+                  x = 2,
+                  Intensity = 4,
                   qValue = 2800,
-                  time.series = T)
+                  time.series = 3)
 
 ## General example to read "csv" data,
 ## including column "B_mT" and "Intensity"
+## first row corresponds. to column names
 readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
                   sep = ",", ## or "auto"
                   skip = 2,
+                  header = TRUE,
                   x.unit = "mT",
-                  col.names = c("B_mT","Intensity"),
+                  col.names = NULL,
+                  x = 1,
+                  Intensity = 2,
                   origin = "csv")
+
+## Reading file data from (and preprocessed) by "xenon" software
+## corresponding to kinetics where `Area` and `time` are incl.
+## are part of the data as columns
+readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
+                  skip = 1,
+                  select = c(3,7)
+                  col.names = c("Time","Area"),
+                  x = 3,
+                  x.unit = "s",
+                  Intensity = 7,
+                  qValue = 3600)
 }
 
 

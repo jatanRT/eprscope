@@ -8,18 +8,23 @@ readEPR_Exp_Specs_multif(
   pattern,
   dir_ASC,
   dir_DSC_or_par,
-  x.unit = "G",
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  origin = "xenon",
+  col.char2num = FALSE,
+  x = 2,
+  x.unit = "G",
+  Intensity = 3,
+  convertB.unit = TRUE,
   qValues = NULL,
+  norm.list.add = NULL,
   names,
   tidy = FALSE,
-  var2nd = NULL
+  var2nd.series = NULL,
+  origin = "xenon"
 )
 }
 \arguments{
-\item{pattern}{String/Character, inherited from \code{\link[base]{list.files}}, which appear in the file name
-as a 'specimen'.}
+\item{pattern}{String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
+at the beginning of a file name.}
 
 \item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 the `ascii` files are stored}
@@ -28,35 +33,53 @@ the `ascii` files are stored}
 where the files (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 or normalize intensities) are stored}
 
-\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
-\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
-or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.}
-
 \item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
 A safe rule of thumb is to use column names incl. physical quantity notation with its units,
 \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
 
-\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
-on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-Only the two above-mentioned  characters/strings are available due to reading parameter files.}
+\item{col.char2num}{Logical, description...converting character column to numeric format... TBC}
+
+\item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+to abscissa (\eqn{x}-axis) in spectra or other plots.}
+
+\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
+\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
+like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.}
+
+\item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
+like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
+integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+\eqn{y}-axis in spectra or other plots.}
+
+\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
+convert \eqn{B} in Gauss <=> millitesla...}
 
 \item{qValues}{Numeric Vector, `Q Value` (sensitivity factors to normalize EPR intensity) either loaded from
 files incl. parameters (`.DSC` or `.par`) by this function/R.script (therefore \code{qValues = NULL},
-\strong{default}) or in case of \code{origin = "winepr"} it have to provided by the operator of a spectrometer}
+\strong{default}) or in case of \code{origin = "winepr"} it have to provided by the spectrometer operator.}
+
+\item{norm.list.add}{Numeric list of vectors. Additional normalization constants in form of vectors involving
+all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+\code{norm.list.add = NULL}.}
 
 \item{names}{String/Character Vector corresponding to values of \strong{additional quantity}
 (e.g. temperature,microwave power...etc) being varied by the individual experiments}
 
-\item{tidy}{Boolean, whether to transform the list of data frames into long table (`tidy`) format,
+\item{tidy}{Logical, whether to transform the list of data frames into long table (`tidy`) format,
 \strong{default}: \code{tidy = F}}
 
-\item{var2nd}{String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
+\item{var2nd.series}{String/Character, if \code{tidy = T} (see `tidy` parameter) it is referred to name
 of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
 altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.}
+
+\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
+on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
+\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
+Only the two above-mentioned  characters/strings are available due to reading parameter files.}
 }
 \value{
 List of Data Frames (or `long table` format) corresponding to multiple spectral data files/database
@@ -72,27 +95,37 @@ Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl
 }
 \examples{
 \dontrun{
-## Multiple ENDOR spectra recorded by "Xenon" software
+## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
 ## reading and transforming into `longtable`
-readEPR_Exp_Specs_multif("Sample_VT_",
+readEPR_Exp_Specs_multif(pattern = "Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
-                         x.unit = "MHz",
                          col.names = c("index",
                                        "RF_MHz",
-                                       "Intensity")
+                                       "Intensity"),
+                         x = 2,
+                         x.unit = "MHz",
+                         Intensity = 3,
                          names = c("210","220","230","240"),
-                         tidy = T,
-                         var2nd = "Temperature_K")
+                         tidy = TRUE,
+                         var2nd.series = "Temperature_K")
 
-## Multiple EPR spectra recorded by "WinEPR" sofware
+## Multiple EPR spectra recorded at different temperatures
+## by "WinEPR" software. Experiment performed with powder
+## sample (m = 10 mg) and each spectrum acquired
+## as 7 accumulations. The resulting database as list of data frames
 readEPR_Exp_Specs_multif("Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
                          col.names = c("B_G","dIepr_over_dB"),
-                         origin = "winepr",
+                         col.char2num = TRUE,
+                         x = 1,
+                         x.unit = "G",
+                         Intensity = 2,
                          names = c("210","220","230","240"),
-                         qValues =c(3400,3501,3600,2800))
+                         qValues =c(3400,3501,3600,2800),
+                         norm.list.add = list(rep(c(10,7),times = 4)),
+                         origin = "winepr")
 }
 
 

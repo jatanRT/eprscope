@@ -2,30 +2,41 @@
 % Please edit documentation in R/readEPR_Exp_Specs_kin.R
 \name{readEPR_Exp_Specs_kin}
 \alias{readEPR_Exp_Specs_kin}
-\title{Read Spectral Data of Time Dependent Experiments (e.g. like Kinetics)}
+\title{Read and Process Spectral Data of Time Dependent CW EPR Experiments (e.g. like Kinetics)}
 \usage{
 readEPR_Exp_Specs_kin(
   file.rootname,
   dir_ASC,
   dir_DSC_or_par,
   time.unit = "s",
+  time.delta.slice.s = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
-  origin = "xenon",
-  qValue = NULL
+  col.char2num = FALSE,
+  x = 2,
+  x.unit = "G",
+  Intensity = 4,
+  time.series = 3,
+  convertB.unit = TRUE,
+  qValue = NULL,
+  norm.vec.add = NULL,
+  origin = "xenon"
 )
 }
 \arguments{
 \item{file.rootname}{String/Character corresponding to `file name` without `extension`}
 
-\item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
-the `ascii` file is stored}
+\item{dir_ASC}{Charecter/String path (can be defined by \code{\link[base]{file.path}}, String/Character)
+to directory where the `ascii` file is stored.}
 
-\item{dir_DSC_or_par}{path (defined by \code{\link[base]{file.path}} String/Character) to directory
-where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
-or normalize intensities) is stored}
+\item{dir_DSC_or_par}{Character/String path (can be defined by \code{\link[base]{file.path}} String/Character)
+to directory where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+or normalize intensities) is stored.}
 
 \item{time.unit}{Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 \strong{Default}: \code{time.unit = "s"}}
+
+\item{time.delta.slice.s}{Numeric, time span/interval in seconds between `slices`...TBC,
+e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.}
 
 \item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names (see also \code{\link{readEPR_Exp_Specs}}).
@@ -34,23 +45,50 @@ A safe rule of thumb is to use column names incl. physical quantity notation wit
 to simulated EPR spectrum abscissa)...etc, \strong{default}:
 \code{col.names = c("index","B_G","time_s",dIepr_over_dB)}.}
 
-\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
-on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-Only the two above-mentioned  characters/strings are available due to reading parameter files.}
+\item{col.char2num}{Logical, description...converting character column to numeric format... TBC}
+
+\item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+to abscissa (\eqn{x}-axis) in spectra or other plots.}
+
+\item{x.unit}{Character/String ...TBC only "mT" and "G" are available}
+
+\item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
+like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
+integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+\eqn{y}-axis in spectra or other plots.}
+
+\item{time.series}{Numeric index related to \code{col.names} pointing to `time` column for time series
+EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
+use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
+to kinetic-like experiments. \strong{Default}: \code{time.series = 3}.}
+
+\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
+convert \eqn{B} in Gauss <=> millitesla...}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 \code{qValue = NULL}. If EPR spectra were acquired by the "Winepr" software Q value must be defined
 like \code{qValue = 3400}}
+
+\item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector involving
+all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+\code{norm.vec.add = NULL}.}
+
+\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
+on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
+\code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
+Only the two above-mentioned  characters/strings are available due to reading parameter files.}
 }
 \value{
-List of spectral data (incl. time) in tidy long table format (\code{data}) + corrected
+List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
    time vector (\code{time})
 }
 \description{
-The function reads the EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment`
- in "Xenon" acquisition/processing software)
+The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wave (CW)
+ EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment` in "Xenon"
+ acquisition/processing software). Function includes automatic time correction for CW EPR
+ \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 }
 \examples{
 \dontrun{
@@ -64,12 +102,19 @@ readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                       file.path(".","ASCII_data_dir"),
                       file.path(".","DSC_data_dir"),
-                      time.unit = "min",
-                      col.names = c("B_G",
-                                    "time_min",
+                      time.unit = "s",
+                      time.delta.slice.s = 24.1,
+                      col.names = c("index",
+                                    "B_G",
+                                    "Slice",
                                     "Intensity"),
-                      origin = "winepr",
-                      qValue = 2900)
+                      col.char2num = TRUE,
+                      x = 2,
+                      x.unit = "G",
+                      Intensity = 4,
+                      time.series = 2,
+                      qValue = 2900,
+                      origin = "winepr")
 
 }
 
