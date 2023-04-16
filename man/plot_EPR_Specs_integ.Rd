@@ -18,7 +18,7 @@ plot_EPR_Specs_integ(
   legend.text.size = 11,
   separate.integs = FALSE,
   separate.integ.scales = NULL,
-  output.table = FALSE
+  output.df = FALSE
 )
 }
 \arguments{
@@ -52,8 +52,8 @@ Following expressions are available => \code{"fixed"}, \code{"free"} or in one d
 or \code{"free_y"}. \strong{Default}: \code{separate.integ.scales = NULL}
 in case of \code{separate.integs = FALSE}.}
 
-\item{output.table}{Logical, description tbc...table in `tidy` (long) format...for additional plotting by `plotly`
-(see \code{\link{plot_EPR_Specs2D_interact}})}
+\item{output.df}{Logical, description tbc...data frame/table in `tidy` (long) format...for additional
+plotting by `plotly` (see \code{\link{plot_EPR_Specs2D_interact}})}
 }
 \value{
 tbc

@@ -41,7 +41,7 @@
 #' @param grid.y.color tbc
 #' @param bg.z.color tbc
 #' @param grid.z.color tbc
-#' @param output.matrix.table tbc
+#' @param output.matrix.df tbc
 #'
 #'
 #' @return tbc
@@ -76,7 +76,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       grid.y.color = "rgb(255, 255, 255)",
                                       bg.z.color = "rgb(220, 220,220)",
                                       grid.z.color = "rgb(255, 255, 255)",
-                                      output.matrix.table = FALSE) {
+                                      output.matrix.df = FALSE) {
   #
   ## `var2nd` (e.g. time) as factor to properly present
   data.spectra.series[[var2nd]] <- as.factor(data.spectra.series[[var2nd]])
@@ -312,7 +312,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   }
   #
   ## matrix table output
-  if (isTRUE(output.matrix.table)) {
+  if (isTRUE(output.matrix.df)) {
     ## re-transpose
     Intensity_matrix <- t(Intensity_matrix)
     ## matrix -> data frame
@@ -320,7 +320,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     ## column names
     colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd]])
     ## return both plot and table in list
-    final_plotPlusTable <- list(plot = final_plot, table = matrix_to_df_table)
+    final_plotPlusTable <- list(plot = final_plot, df = matrix_to_df_table)
   } else {
     final_plotPlusTable <- final_plot ## no table/df included
   }

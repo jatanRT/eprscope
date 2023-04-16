@@ -34,11 +34,11 @@
 #' @param line.color.sim String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.exp}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}
-#' @param output.table Boolean, whether the table/data frame, corresponding to graphic spectra comparison
+#' @param output.df Logical, whether the table/data frame, corresponding to graphic spectra comparison
 #'   (this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})
-#'   should be presented as well (\code{output.table = TRUE}), in such case the output is \code{list}
+#'   should be presented as well (\code{output.df = TRUE}), in such case the output is \code{list}
 #'   containing plot (\code{list$plot},graphic representation) as well as containing table
-#'   (\code{list$table}, tabular representation), however the \strong{default} is \code{output.table = FALSE},
+#'   (\code{list$df}, tabular representation), however the \strong{default} is \code{output.df = FALSE},
 #'   i.e. only graphical representation is shown
 #'
 #'
@@ -68,7 +68,7 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
                                 line.color.exp = "red",
                                 line.color.sim = "blue",
                                 line.width = 0.75,
-                                output.table = FALSE) {
+                                output.df = FALSE) {
   #
   ## 'Temporary' processing variables
   B <- NULL
@@ -173,8 +173,8 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
 
   #
   ## if the entire table/table should be included
-  if (isTRUE(output.table)) {
-    SimPlotPlusTable <- list(plot = simulation.plot, table = both.spectr.data)
+  if (isTRUE(output.df)) {
+    SimPlotPlusTable <- list(plot = simulation.plot, df = both.spectr.data)
   } else {
     SimPlotPlusTable <- simulation.plot
   }

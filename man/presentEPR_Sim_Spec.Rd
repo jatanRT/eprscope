@@ -15,7 +15,7 @@ presentEPR_Sim_Spec(
   line.color.exp = "red",
   line.color.sim = "blue",
   line.width = 0.75,
-  output.table = FALSE
+  output.df = FALSE
 )
 }
 \arguments{
@@ -58,11 +58,11 @@ colors are allowed, \strong{default}: \code{line.color = "blue"}, should be diff
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
 
-\item{output.table}{Boolean, whether the table/data frame, corresponding to graphic spectra comparison
+\item{output.df}{Logical, whether the table/data frame, corresponding to graphic spectra comparison
 (this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})
-should be presented as well (\code{output.table = TRUE}), in such case the output is \code{list}
+should be presented as well (\code{output.df = TRUE}), in such case the output is \code{list}
 containing plot (\code{list$plot},graphic representation) as well as containing table
-(\code{list$table}, tabular representation), however the \strong{default} is \code{output.table = FALSE},
+(\code{list$df}, tabular representation), however the \strong{default} is \code{output.df = FALSE},
 i.e. only graphical representation is shown}
 }
 \value{

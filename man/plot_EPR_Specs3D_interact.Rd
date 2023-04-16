@@ -24,7 +24,7 @@ plot_EPR_Specs3D_interact(
   grid.y.color = "rgb(255, 255, 255)",
   bg.z.color = "rgb(220, 220,220)",
   grid.z.color = "rgb(255, 255, 255)",
-  output.matrix.table = FALSE
+  output.matrix.df = FALSE
 )
 }
 \arguments{
@@ -82,7 +82,7 @@ use `cmin` and `cmax`. Alternatively, `colorscale` may be a palette name string 
 
 \item{grid.z.color}{tbc}
 
-\item{output.matrix.table}{tbc}
+\item{output.matrix.df}{tbc}
 }
 \value{
 tbc
