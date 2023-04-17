@@ -16,7 +16,7 @@ readEPR_Exp_Specs(
   fill = FALSE,
   blank.lines.skip = FALSE,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  col.char2num = FALSE,
+  colClasses = NULL,
   x = 2,
   x.unit = "G",
   Intensity = 3,
@@ -39,14 +39,13 @@ like \code{","},\code{"\t"}...etc \strong{default}: \code{sep = "auto"}.}
 which do not contain data/rows or columns names. It automatically avoids irregular header information
 before the column names row/line, \strong{default}: \code{skip = 1}.}
 
-\item{header}{Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC
-if \code{header = TRUE} then \code{col.names = NULL}}
+\item{header}{Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC}
 
 \item{na.strings}{Character vector, inherited from \code{\link[data.table]{fread}}...TBC}
 
-\item{select}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC}
+\item{select}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.}
 
-\item{drop}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC}
+\item{drop}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.}
 
 \item{encoding}{Character/String, inherited from \code{\link[data.table]{fread}}...TBC}
 
@@ -58,9 +57,13 @@ if \code{header = TRUE} then \code{col.names = NULL}}
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-Can be also NULL if \code{header = TRUE}}
+The default (for original \code{\link[data.table]{fread}}) is to use the header column if present or detected,
+or if not `"V"` followed by the column number.}
 
-\item{col.char2num}{Logical, description...converting character column to numeric format... TBC}
+\item{colClasses}{List, inherited from \code{\link[data.table]{fread}}... TBC
+e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
+or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
+\strong{Default}: \code{colClasses = NULL}.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}

@@ -19,12 +19,13 @@
 #' @param time.delta.slice.s Numeric, time span/interval in seconds between `slices`...TBC,
 #'   e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
-#'   column/variable names (see also \code{\link{readEPR_Exp_Specs}}).
-#'   A safe rule of thumb is to use column names incl. physical quantity notation with its units,
-#'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa)...etc, \strong{default}:
-#'   \code{col.names = c("index","B_G","time_s",dIepr_over_dB)}.
-#' @param col.char2num Logical, description...converting character column to numeric format... TBC
+#'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
+#'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+#' @param colClasses List, inherited from \code{\link[data.table]{fread}}... TBC
+#'   e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
+#'   or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
+#'   \strong{Default}: \code{colClasses = NULL}.
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character/String ...TBC only "mT" and "G" are available
@@ -99,7 +100,7 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
                                     "time_s",
                                     "dIepr_over_dB"
                                   ),
-                                  col.char2num = FALSE,
+                                  colClasses = NULL,
                                   x = 2,
                                   x.unit = "G",
                                   Intensity = 4,
@@ -163,7 +164,7 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
   ## Load spectral data
   data.spectra.time <- readEPR_Exp_Specs(path.to.asc,
     col.names = col.names,
-    col.char2num = col.char2num,
+    colClasses = colClasses,
     x = x,
     Intensity = Intensity,
     time.series = time.series,

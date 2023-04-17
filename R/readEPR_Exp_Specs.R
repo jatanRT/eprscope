@@ -19,10 +19,9 @@
 #'   which do not contain data/rows or columns names. It automatically avoids irregular header information
 #'   before the column names row/line, \strong{default}: \code{skip = 1}.
 #' @param header Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC
-#'   if \code{header = TRUE} then \code{col.names = NULL}
 #' @param na.strings Character vector, inherited from \code{\link[data.table]{fread}}...TBC
-#' @param select Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC
-#' @param drop Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC
+#' @param select Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.
+#' @param drop Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.
 #' @param encoding Character/String, inherited from \code{\link[data.table]{fread}}...TBC
 #' @param fill Logical, inherited from \code{\link[data.table]{fread}}...TBC
 #' @param blank.lines.skip Logical, inherited from \code{\link[data.table]{fread}}...TBC
@@ -30,8 +29,12 @@
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#'   Can be also NULL if \code{header = TRUE}
-#' @param col.char2num Logical, description...converting character column to numeric format... TBC
+#'   The default (for original \code{\link[data.table]{fread}}) is to use the header column if present or detected,
+#'   or if not `"V"` followed by the column number.
+#' @param colClasses List, inherited from \code{\link[data.table]{fread}}... TBC
+#'   e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
+#'   or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
+#'   \strong{Default}: \code{colClasses = NULL}.
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character/String ...TBC
@@ -185,7 +188,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                                 "B_G",
                                 "dIepr_over_dB"
                               ),
-                              col.char2num = FALSE,
+                              colClasses = NULL,
                               x = 2,
                               x.unit = "G",
                               Intensity = 3,
@@ -218,6 +221,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
       fill <- fill %>% `if`(isTRUE(fill), FALSE, .)
       blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
+      colClasses <- colClasses
 
       #
     } else {
@@ -234,6 +238,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       select <- select %>% `if`(!is.null(select), NULL, .)
       drop <- drop %>% `if`(!is.null(drop), NULL, .)
       encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
+      colClasses <- colClasses
       #
     }
   }
@@ -248,6 +253,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
     fill <- fill %>% `if`(isTRUE(fill), FALSE, .)
     blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
+    colClasses <- colClasses
   }
   ## change any other `origin` accordingly
   if (origin != "winepr" & origin != "xenon") {
@@ -261,6 +267,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     encoding <- encoding
     fill <- fill
     blank.lines.skip <- blank.lines.skip
+    colClasses <- colClasses
   }
   #
   ## basic data frame by `fread` incl. the above defined parameters
@@ -271,6 +278,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     na.strings = na.strings,
     select = select,
     drop = drop,
+    colClasses = colClasses,
     col.names = col.names,
     encoding = encoding,
     fill = fill,
@@ -281,23 +289,26 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     spectrum.data.origin <- spectrum.data.origin %>%
       dplyr::filter(!grepl("Slice", .data[[colnames(spectrum.data.origin)[1]]])) %>%
       stats::na.omit()
+    ## in order to be sure that this column will appear as numeric
+    spectrum.data.origin[[1]] <- as.double(spectrum.data.origin[[1]])
   }
   #
   ## Condition to convert any character column to numeric format
   ## to check character => `inherits(x,"character")`
-  if (isTRUE(col.char2num)) {
-    for (i in seq(ncol(spectrum.data.origin))) {
-      if (inherits(spectrum.data.origin[[i]],"character")) {
-        spectrum.data.origin[[i]] <- as.double(spectrum.data.origin[[i]])
-      }
-    }
-  }
+  ## THIS IS REPLACED BY `fread` `colClasses`
+  # if (isTRUE(col.char2num)) {
+  #   for (i in seq(ncol(spectrum.data.origin))) {
+  #     if (inherits(spectrum.data.origin[[i]],"character")) {
+  #       spectrum.data.origin[[i]] <- as.double(spectrum.data.origin[[i]])
+  #     }
+  #   }
+  # }
   #
   ## `Intensity` and `x` as well as `time` column
   ## character string definitions
-  if (isTRUE(header) & is.null(col.names)) {
-    col.names <- colnames(spectrum.data.origin)
-  }
+  # if (isTRUE(header)) {
+  #   col.names <- colnames(spectrum.data.origin)
+  # }
   IntensityString <- col.names[Intensity] ## `Intensity` string
   xString <- col.names[x] ## `x` string
   # timeAxis <- col.names[time.series]

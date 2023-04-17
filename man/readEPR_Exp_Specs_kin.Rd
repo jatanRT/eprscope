@@ -11,7 +11,7 @@ readEPR_Exp_Specs_kin(
   time.unit = "s",
   time.delta.slice.s = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
-  col.char2num = FALSE,
+  colClasses = NULL,
   x = 2,
   x.unit = "G",
   Intensity = 4,
@@ -39,13 +39,14 @@ or normalize intensities) is stored.}
 e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.}
 
 \item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
-column/variable names (see also \code{\link{readEPR_Exp_Specs}}).
-A safe rule of thumb is to use column names incl. physical quantity notation with its units,
-\code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum abscissa)...etc, \strong{default}:
-\code{col.names = c("index","B_G","time_s",dIepr_over_dB)}.}
+column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
+with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
 
-\item{col.char2num}{Logical, description...converting character column to numeric format... TBC}
+\item{colClasses}{List, inherited from \code{\link[data.table]{fread}}... TBC
+e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
+or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
+\strong{Default}: \code{colClasses = NULL}.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}

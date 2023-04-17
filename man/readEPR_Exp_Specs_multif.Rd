@@ -9,7 +9,7 @@ readEPR_Exp_Specs_multif(
   dir_ASC,
   dir_DSC_or_par,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  col.char2num = FALSE,
+  colClasses = NULL,
   x = 2,
   x.unit = "G",
   Intensity = 3,
@@ -39,7 +39,10 @@ A safe rule of thumb is to use column names incl. physical quantity notation wit
 \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
 
-\item{col.char2num}{Logical, description...converting character column to numeric format... TBC}
+\item{colClasses}{List, inherited from \code{\link[data.table]{fread}}... TBC
+e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
+or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
+\strong{Default}: \code{colClasses = NULL}.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
@@ -118,7 +121,7 @@ readEPR_Exp_Specs_multif("Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
                          col.names = c("B_G","dIepr_over_dB"),
-                         col.char2num = TRUE,
+                         colClasses = list(numeric = 1),
                          x = 1,
                          x.unit = "G",
                          Intensity = 2,
