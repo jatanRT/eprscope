@@ -245,14 +245,14 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (origin == "xenon") {
     ## parameter definition
     sep <- sep %>% `if`(sep != "auto", "auto", .)
-    header <- header %>% `if`(isTRUE(header), FALSE, .)
-    skip <- skip %>% `if`(skip != 1, 1, .)
+    header <- header
+    skip <- skip
     na.strings <- na.strings %>% `if`(!is.null(na.strings), NULL, .)
-    select <- select %>% `if`(!is.null(select), NULL, .)
-    drop <- drop %>% `if`(!is.null(drop), NULL, .)
+    select <- select
+    drop <- drop
     encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
-    fill <- fill %>% `if`(isTRUE(fill), FALSE, .)
-    blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
+    fill <- fill
+    blank.lines.skip <- blank.lines.skip
     colClasses <- colClasses
   }
   ## change any other `origin` accordingly
