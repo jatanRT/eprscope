@@ -129,6 +129,9 @@ readEPR_Exp_Specs(path_to_ASC,
 ## (and 20 scans) on a 10 mg powder sample:
 readEPR_Exp_Specs(path_to_ASC,
                   skip = 3,
+                  col.names = c("B_G","dIepr_over_dB"),
+                  x = 1,
+                  Intensity = 2,
                   qValue = 2000,
                   norm.vec.add = c(20,10),
                   origin = "winepr")

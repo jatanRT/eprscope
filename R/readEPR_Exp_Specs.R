@@ -82,6 +82,9 @@
 #' ## (and 20 scans) on a 10 mg powder sample:
 #' readEPR_Exp_Specs(path_to_ASC,
 #'                   skip = 3,
+#'                   col.names = c("B_G","dIepr_over_dB"),
+#'                   x = 1,
+#'                   Intensity = 2,
 #'                   qValue = 2000,
 #'                   norm.vec.add = c(20,10),
 #'                   origin = "winepr")
@@ -305,17 +308,21 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   G.unit.cond <- if (x.unit == "G") TRUE else FALSE
   #
   if (x.unit == "G" || x.unit == "mT") {
-    spectra.data <- spectrum.data.origin %>%
-      `if`(
-        isTRUE(convertB.unit),
-        dplyr::mutate(!!rlang::quo_name(paste0("B_", x.unit)) := spectrum.data.origin[[xString]] *
-          switch(2 - isTRUE(G.unit.cond),
-            10,
-            1 / 10
-          )), .
-      ) %>%
-      dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
-        norm.multiply.qValue * norm.multiply.const)
+    if (isTRUE(convertB.unit)){
+      spectra.data <- spectrum.data.origin %>%
+        dplyr::mutate(!!rlang::quo_name(paste0("B_", x.unit)) := .data[[xString]] *
+                        switch(2 - isTRUE(G.unit.cond),
+                               10,
+                               1 / 10
+                        )) %>%
+        dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+                        norm.multiply.qValue * norm.multiply.const)
+    } else{
+      spectra.data <- spectrum.data.origin %>%
+        dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+                        norm.multiply.qValue * norm.multiply.const)
+    }
+
   }
   ## Any other Spectra like ENDOR or with g-Value or Intensity/Area vs time
   ## or Intensity vs power relationship
