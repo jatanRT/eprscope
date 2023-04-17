@@ -279,7 +279,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## condition for `winepr`
   if (origin == "winepr" & !is.null(time.series)) {
     spectrum.data.origin <- spectrum.data.origin %>%
-      dplyr::filter(!grepl("Slice", .data[[1]])) %>%
+      dplyr::filter(!grepl("Slice", .data[[colnames(spectrum.data.origin)[1]]])) %>%
       stats::na.omit()
   }
   #
@@ -306,11 +306,18 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## Common EPR Spectra
   ## Unit condition
   G.unit.cond <- if (x.unit == "G") TRUE else FALSE
+  ## intial `B`/`Field` Character string condition
+  if (grepl("B|BF",xString)){
+    xString.init <- "B_"
+  }
+  if (grepl("Fiel|fiel",xString)){
+    xString.init <- "Field_"
+  }
   #
   if (x.unit == "G" || x.unit == "mT") {
     if (isTRUE(convertB.unit)){
       spectra.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(paste0("B_", switch(2-isTRUE(G.unit.cond),"mT","G"))) := .data[[xString]] *
+        dplyr::mutate(!!rlang::quo_name(paste0(xString.init, switch(2-isTRUE(G.unit.cond),"mT","G"))) := .data[[xString]] *
                         switch(2 - isTRUE(G.unit.cond),
                                1 / 10,
                                10
