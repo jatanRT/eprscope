@@ -61,30 +61,39 @@ eval_FWHMx_Spec <- function(data.spec.integ,
   #
   ## set the condition for the closest values individually
   ## for x < `x.max` & x > `x.max`
-  if (xs.init[[x]] < x.max){
-    ## filter x values
-    x.init.low <- xs.init %>%
-      dplyr::filter(.data[[x]] < x.max)
-    ## intensity condition
-    Intens.cond <- which.min(abs(x.init.low[[Intensity]]-max(x.init.low[[Intensity]])/2))
-    ## finding x
-    x.init.low <- x.init.low %>%
-      dplyr::filter(.data[[Intensity]] == Intens.cond) %>%
-      dplyr::pull(.data[[x]])
-  }
-  if (xs.init[[x]] > x.max){
-    ## filter x values
-    x.init.high <- xs.init %>%
-      dplyr::filter(.data[[x]] > x.max)
-    ## intensity condition
-    Intens.cond <- which.min(abs(x.init.high[[Intensity]]-max(x.init.high[[Intensity]])/2))
-    ## finding x
-    x.init.high <- x.init.high %>%
-      dplyr::filter(.data[[Intensity]] == Intens.cond) %>%
-      dplyr::pull(.data[[x]])
+  ## however individual values must be compared => create a loop
+  ## for all `x` of the `xs.init`
+  for (p in seq(xs.init[[x]])){
+    if (xs.init[[x]][p] < x.max){
+      ## filter x values
+      x.init.low <- xs.init %>%
+        dplyr::filter(.data[[x]] < x.max)
+      ## intensity condition by `which.min` and results in indices (res. one line df)
+      ## => it is just like dplyr filtering, therefore
+      Intens.cond.left <- which.min(abs(x.init.low[[Intensity]]-max(data.spec.integ[[Intensity]])/2))
+      Intens.cond.left <- x.init.low[Intens.cond.left] %>% dplyr::pull(.data[[Intensity]])
+      ## finding x
+      x.init.low <- x.init.low %>%
+        dplyr::filter(.data[[Intensity]] == Intens.cond.left) %>%
+        dplyr::pull(.data[[x]])
+    }
+    if (xs.init[[x]][p] > x.max){
+      ## filter x values
+      x.init.high <- xs.init %>%
+        dplyr::filter(.data[[x]] > x.max)
+      ## intensity condition by `which.min` and results in indices (res. one line df)
+      ## => it is just like dplyr filtering, therefore
+      Intens.cond.right <- which.min(abs(x.init.high[[Intensity]]-max(data.spec.integ[[Intensity]])/2))
+      Intens.cond.right <- x.init.high[Intens.cond.right] %>% dplyr::pull(.data[[Intensity]])
+      ## finding x
+      x.init.high <- x.init.high %>%
+        dplyr::filter(.data[[Intensity]] == Intens.cond.right) %>%
+        dplyr::pull(.data[[x]])
+    }
+    #
   }
   #
-  FWHM <- round(abs(x.init.low - x.init.high),digits = 4)
+  FWHM <- round(abs(x.init.low - x.init.high),digits = 3)
   #
   return(FWHM)
   #

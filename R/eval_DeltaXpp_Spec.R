@@ -75,6 +75,6 @@ eval_DeltaXpp_Spec <- function(data.spectrum,
   ## Delta_B calculation:
   DeltaX_pp <- abs(x.min - x.max)
   #
-  return(round(DeltaX_pp, digits = 2))
+  return(round(DeltaX_pp, digits = 3))
   #
 }
