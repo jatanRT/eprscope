@@ -310,10 +310,10 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (x.unit == "G" || x.unit == "mT") {
     if (isTRUE(convertB.unit)){
       spectra.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(paste0("B_", x.unit)) := .data[[xString]] *
+        dplyr::mutate(!!rlang::quo_name(paste0("B_", switch(2-isTRUE(G.unit.cond),"mT","G"))) := .data[[xString]] *
                         switch(2 - isTRUE(G.unit.cond),
-                               10,
-                               1 / 10
+                               1 / 10,
+                               10
                         )) %>%
         dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
                         norm.multiply.qValue * norm.multiply.const)
