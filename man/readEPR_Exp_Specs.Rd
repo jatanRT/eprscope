@@ -124,14 +124,20 @@ The function is based on \code{\link[data.table]{fread}} with the purpose to rea
 }
 \examples{
 \dontrun{
-## for the spectrum acquired by "xenon"
+## simple EPR spectrum acquired by "xenon"
+## and with `B` conversion "G" <=> mT
 readEPR_Exp_Specs(path_to_ASC,
                   qValue = 3500)
 
-## for the spectrum acquired by "winepr"
+## simple EPR spectrum acquired by "xenon"
+## and without `B` conversion "G" <=> mT
+readEPR_Exp_Specs(path_to_ASC,
+                  convertB.unit = FALSE,
+                  qValue = 3500)
+
+## for the simple spectrum acquired by "winepr"
 ## (and 20 scans) on a 10 mg powder sample:
 readEPR_Exp_Specs(path_to_ASC,
-                  skip = 3,
                   col.names = c("B_G","dIepr_over_dB"),
                   x = 1,
                   Intensity = 2,
@@ -139,24 +145,18 @@ readEPR_Exp_Specs(path_to_ASC,
                   norm.vec.add = c(20,10),
                   origin = "winepr")
 
-## series of spectra (e.g. like time series) acquired by "winepr"
-## (in such case there are `na.strings` between spectral `slices`)
+## EPR time series acquired by "winepr"
 readEPR_Exp_Specs(path_to_ASC,
-                  skip = 4,
-                  fill = TRUE,
-                  blank.lines.skip = TRUE,
-                  na.strings = c("Intensity","X [G]","Y []"),
                   col.names = c("B_G",
                                 "Slice",
                                 "dIepr_over_dB"),
-                  col.char2num = TRUE,
                   x = 1,
                   Intensity = 3,
                   time.series = 2,
                   origin = "winepr")
 
 ## if no parameter intensity normalization
-## is required and spectrum
+## is required and a simple spectrum
 ## was recorded by "xenon" software:
 readEPR_Exp_Specs(path_to_ASC = file.path(".",
                                           "ASCII_Folder",
@@ -165,19 +165,20 @@ readEPR_Exp_Specs(path_to_ASC = file.path(".",
 ## for the ENDOR spectrum recorded by "xenon"
 ## by 40 accumulation sweeps
 readEPR_Exp_Specs("./Data/ENDOR_spectrum.txt",
-                  x.unit = "MHz",
                   col.names = c("index",
                                 "RF_MHz",
                                 "dIepr_over_dB"),
                   x = 2,
+                  x.unit = "MHz",
                   Intensity = 3,
                   norm.vec.add = 40)
 
-## Example for time series experiment (evolution of EPR spectra
-##  in time, e.g. in case of
+## example for "xenon" time series experiment
+## (evolution of EPR spectra in time, e.g. in case of
 ## EPR spectroelectrochemistry or photochemistry):
+## together with `B` conversion "G" <=> mT
+## and intensity normalized against `qValue`
 readEPR_Exp_Specs(path_to_ASC,
-                  x.unit = "G",
                   col.names = c("index",
                                 "B_G",
                                 "time_s",
@@ -187,30 +188,30 @@ readEPR_Exp_Specs(path_to_ASC,
                   qValue = 2800,
                   time.series = 3)
 
-## General example to read "csv" data,
-## including column "B_mT" and "Intensity"
-## first row corresponds. to column names
+## reading simple spectrum from the new "magnettech"
+## acquisition software
 readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
-                  sep = ",", ## or "auto"
-                  skip = 2,
-                  header = TRUE,
+                  skip = 88,
+                  col.names = c("B_mT","dIepr_over_dB"),
+                  x = 1,
                   x.unit = "mT",
-                  col.names = NULL,
+                  Intensity = 2,
+                  origin = "magnettech")
+
+## reading file data from (and pre-processed) by "xenon" software
+## corresponding to kinetics where `Area` and `time` are
+## data columns, however there are many columns and one should
+## select only the two mentioned above + normalize `Area`
+## against the `qValue`
+readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
+                  header = T,
+                  fill = T,
+                  select = c(3,7),
+                  col.names = c("time_s","Area"),
+                  x.unit = "s",
                   x = 1,
                   Intensity = 2,
-                  origin = "csv")
-
-## Reading file data from (and preprocessed) by "xenon" software
-## corresponding to kinetics where `Area` and `time` are incl.
-## are part of the data as columns
-readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
-                  skip = 1,
-                  select = c(3,7)
-                  col.names = c("Time","Area"),
-                  x = 3,
-                  x.unit = "s",
-                  Intensity = 7,
-                  qValue = 3600)
+                  qValue = 1700)
 }
 
 
