@@ -130,8 +130,8 @@ readEPR_Exp_Specs_multif <- function(pattern,
   #
   ## file name pattern which has to be the same for `txt`+`DSC`
   ## or `.asc` and `.par`
-  file.name.pattern.asc <- paste0("^",pattern,".*\\.(txt|asc|csv)")
-  file.name.pattern.params <- paste0("^",pattern,".*\\.(DSC|par)")
+  file.name.pattern.asc <- paste0("^",pattern,".*\\.(txt|asc|csv)$")
+  file.name.pattern.params <- paste0("^",pattern,".*\\.(DSC|par)$")
   #
   ## path to all `asc` files
   files.asc <- list.files(
