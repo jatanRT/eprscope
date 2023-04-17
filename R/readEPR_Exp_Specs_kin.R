@@ -62,8 +62,8 @@
 #' ## Reading by the "Xenon" software
 #' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 #'                       file.path(".","ASCII_data_dir"),
-#'                       file.path(".","DSC_data_dir"),
-#'                       origin = "xenon")
+#'                       file.path(".","DSC_data_dir")
+#'                       )
 #'
 #' ## Reading by the "WinEPR" software
 #' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
@@ -75,7 +75,7 @@
 #'                                     "B_G",
 #'                                     "Slice",
 #'                                     "Intensity"),
-#'                       col.char2num = TRUE,
+#'                       colClasses = NULL,
 #'                       x = 2,
 #'                       x.unit = "G",
 #'                       Intensity = 4,

@@ -41,7 +41,7 @@
 #'   convert \eqn{B} in Gauss <=> millitesla...
 #' @param qValues Numeric Vector, `Q Value` (sensitivity factors to normalize EPR intensity) either loaded from
 #'  files incl. parameters (`.DSC` or `.par`) by this function/R.script (therefore \code{qValues = NULL},
-#'  \strong{default}) or in case of \code{origin = "winepr"} it have to provided by the spectrometer operator.
+#'  \strong{default}) or in case of \code{origin = "winepr"} they have to be provided by the spectrometer operator.
 #' @param norm.list.add Numeric list of vectors. Additional normalization constants in form of vectors involving
 #'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 #'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
@@ -87,12 +87,11 @@
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
 #'                          col.names = c("B_G","dIepr_over_dB"),
-#'                          colClasses = list(numeric = 1),
 #'                          x = 1,
 #'                          x.unit = "G",
 #'                          Intensity = 2,
 #'                          names = c("210","220","230","240"),
-#'                          qValues =c(3400,3501,3600,2800),
+#'                          qValues = c(3400,3501,3600,2800),
 #'                          norm.list.add = list(rep(c(10,7),times = 4)),
 #'                          origin = "winepr")
 #' }
