@@ -127,7 +127,7 @@ presentEPR_Sim_Spec <- function(data.spectrum.exp,
     "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
     "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
     "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
-    "integSigm", "IntegDoub", "integDoub"
+    "integSigm", "IntegDoub", "integDoub", "area", "Area", "AREA"
   )
   #
   ## Intensity (y) label depending on intensity (derivative, integrated...)

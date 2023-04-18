@@ -110,7 +110,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
     "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
     "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
     "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
-    "integSigm", "IntegDoub", "integDoub"
+    "integSigm", "IntegDoub", "integDoub", "area", "Area", "AREA"
   )
   #
   ## label <=> selection
