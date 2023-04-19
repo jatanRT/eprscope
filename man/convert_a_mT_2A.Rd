@@ -19,7 +19,7 @@ Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz})
 Converts hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
   to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz}) according to following
   relation:
-  \deqn{A = \frac{a\,g\,\mu_{\text{B}}}{h}}
+  \deqn{A = (a\,g\,\mu_{\text{B}}) / h}
 }
 \examples{
 convert_a_mT_2A(a.mT = 0.5)

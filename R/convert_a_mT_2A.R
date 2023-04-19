@@ -5,7 +5,7 @@
 #' @description Converts hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
 #'   to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz}) according to following
 #'   relation:
-#'   \deqn{A = \frac{a\,g\,\mu_{\text{B}}}{h}}
+#'   \deqn{A = (a\,g\,\mu_{\text{B}}) / h}
 #'
 #'
 #' @param a.mT Numeric value/vector of HFSCs in \code{mT} ('line distances' from EPR spectrum)
