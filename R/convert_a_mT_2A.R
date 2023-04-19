@@ -3,12 +3,14 @@
 #'
 #'
 #' @description Converts hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
-#' to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz})
+#'   to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz}) according to following
+#'   relation:
+#'   \deqn{A = \frac{a\,g\,\mu_{\text{B}}}{h}}
 #'
 #'
 #' @param a.mT Numeric value/vector of HFSCs in \code{mT} ('line distances' from EPR spectrum)
-#' @param g Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}),
-#' \strong{default:} \code{g = 2.00231930} (free electron)
+#' @param g Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
+#' \strong{Default:} \code{g = 2.00231930} (corresp. to free electron)
 #'
 #'
 #' @returns Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz})

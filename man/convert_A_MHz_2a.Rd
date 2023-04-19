@@ -9,15 +9,17 @@ convert_A_MHz_2a(A.MHz, g = 2.0023193)
 \arguments{
 \item{A.MHz}{Numeric value/vector corresponding to HFCCs in \code{MHz}}
 
-\item{g}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}),
-\strong{default:} \code{g = 2.00231930} (free electron)}
+\item{g}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
+\strong{Default:} \code{g = 2.00231930} ( corresp. to free electron)}
 }
 \value{
 Numeric value/vector corresponding to HFSCs (\eqn{a}) in \code{mT})
 }
 \description{
 Converts hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz})
-to hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
+  to hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT}) according to following
+  relation:
+  \deqn{a = \frac{A\,h}{g\,\mu_{\text{B}}}}
 }
 \examples{
 convert_A_MHz_2a(A.MHz = 16)

@@ -9,15 +9,17 @@ convert_a_mT_2A(a.mT, g = 2.0023193)
 \arguments{
 \item{a.mT}{Numeric value/vector of HFSCs in \code{mT} ('line distances' from EPR spectrum)}
 
-\item{g}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}),
-\strong{default:} \code{g = 2.00231930} (free electron)}
+\item{g}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
+\strong{Default:} \code{g = 2.00231930} (corresp. to free electron)}
 }
 \value{
 Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz})
 }
 \description{
 Converts hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
-to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz})
+  to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz}) according to following
+  relation:
+  \deqn{A = \frac{a\,g\,\mu_{\text{B}}}{h}}
 }
 \examples{
 convert_a_mT_2A(a.mT = 0.5)

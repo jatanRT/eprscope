@@ -10,14 +10,15 @@ correct_time_Exp_Specs(time.s, Nscans, sweep.time.s)
 \item{time.s}{Numeric value/vector/column in \code{data frame} corresponding to \code{time} (in \code{s})
 at which the individual EPR spectra were recorded (supplied by the EPR acquisition software).}
 
-\item{Nscans}{Numeric, number of accumulation (number of scans \code{AVGS}) for each spectrum
-in EPR time series.}
+\item{Nscans}{Numeric, number of accumulation (number of scans usually denoted as \code{AVGS})
+for each spectrum in EPR time series.}
 
 \item{sweep.time.s}{Numeric, time (in \code{s}) for recording of one EPR spectrum \eqn{=} one accumulation.}
 }
 \value{
 Numeric value/vector corresponding to accurate time at which the EPR spectra were recorded during
-  the kinetic measurements (e.g. like radical stability, electrochemical and/or photochemical measurements)
+  the kinetic measurements (e.g. like radical formation, stability, electrochemical and/or photochemical
+  measurements).
 }
 \description{
 Providing the accurate time for EPR spectral line appearance, because usually the middle of the EPR spectrum is
@@ -37,10 +38,10 @@ Providing the accurate time for EPR spectral line appearance, because usually th
 The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan.
 The parameters can be obtained by \code{\link{readEPR_params_slct_kin}} or other functions which can read
-instrumental parameters.
+the instrumental parameters.
 }
 \examples{
-## 12 s recorded by spectrometer, 6 accumulations by sweep time 6 s
+## 12 s recorded by spectrometer, 6 accumulations by sweep time of 6 s
 correct_time_Exp_Specs(12,Nscans = 6,6)
 
 

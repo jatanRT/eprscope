@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_time2var.R
 \name{convert_time2var}
 \alias{convert_time2var}
-\title{Convert Time into Variable Linearly Changing on Time}
+\title{Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}}
 \usage{
 convert_time2var(time, time.unit = "s", var0, var.switch = NULL, var.rate)
 }
@@ -10,23 +10,22 @@ convert_time2var(time, time.unit = "s", var0, var.switch = NULL, var.rate)
 \item{time}{Numeric, value or vector corresponding to time (points) upon which the variable \code{var}
 is changed.}
 
-\item{time.unit}{Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+\item{time.unit}{Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 \strong{Default}: \code{time.unit = "s"}}
 
 \item{var0}{Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
-negative electrochemical potential) of variable (\code{var}) from which the linear \code{var} change
-is taking place.}
+negative electrochemical potential) of variable (\code{var}).}
 
-\item{var.switch}{Numeric, the switching value, when a linear \strong{cyclic change} (or 'triangular ramp')
-of \code{var} upon time is applied/happening (e.g. like cyclic voltammetry).
-\strong{Default}: \code{var.switch = NULL} (in case there is no cyclic change).}
+\item{var.switch}{Numeric, the switching point \code{var} value, when a linear \strong{cyclic change}
+(or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
+\strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).}
 
 \item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (\strong{INCL. ALSO NEGATIVE SIGN,
 if required}, e.g. like in case of electrochemical reduction or sample cooling).}
 }
 \value{
 Numeric value or vector of variable (e.g. like electrochem. potential or temperature...etc)
-  linearly dependent upon time.
+  linearly changing upon time.
 }
 \description{
 Conversion of time into variable \code{var} which is linearly changed upon time like

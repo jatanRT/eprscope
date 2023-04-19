@@ -1,5 +1,5 @@
 #'
-#' Convert Time into Variable Linearly Changing on Time
+#' Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}
 #'
 #'
 #' @description
@@ -12,20 +12,19 @@
 #'
 #' @param time Numeric, value or vector corresponding to time (points) upon which the variable \code{var}
 #'   is changed.
-#' @param time.unit Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+#' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 #'   \strong{Default}: \code{time.unit = "s"}
 #' @param var0 Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
-#'   negative electrochemical potential) of variable (\code{var}) from which the linear \code{var} change
-#'   is taking place.
-#' @param var.switch Numeric, the switching value, when a linear \strong{cyclic change} (or 'triangular ramp')
-#'   of \code{var} upon time is applied/happening (e.g. like cyclic voltammetry).
-#'   \strong{Default}: \code{var.switch = NULL} (in case there is no cyclic change).
+#'   negative electrochemical potential) of variable (\code{var}).
+#' @param var.switch Numeric, the switching point \code{var} value, when a linear \strong{cyclic change}
+#'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
+#'   \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).
 #' @param var.rate Numeric, corresponding to rate of linear \code{var} change (\strong{INCL. ALSO NEGATIVE SIGN,
 #'   if required}, e.g. like in case of electrochemical reduction or sample cooling).
 #'
 #'
 #' @return Numeric value or vector of variable (e.g. like electrochem. potential or temperature...etc)
-#'   linearly dependent upon time.
+#'   linearly changing upon time.
 #'
 #'
 #' @examples
