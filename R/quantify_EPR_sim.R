@@ -36,6 +36,7 @@
 #'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange
+#' @importFrom collapse fsubset
 quantify_EPR_sim <- function(data.spectra.series,
                              path_to_ASC_sim,
                              var2nd.series = "time_s",
@@ -98,7 +99,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## to be ready to optimize each individual spectrum
   data.list <- lapply(
     var2nd_seq,
-    function(t) subset(data.specs.sim, data.specs.sim[[var2nd.series]] == t)
+    function(t) collapse::fsubset(data.specs.sim, data.specs.sim[[var2nd.series]] == t)
   )
   #
   ## optimization list by data.list
@@ -138,7 +139,7 @@ quantify_EPR_sim <- function(data.spectra.series,
     )
   #
   ## matrix transformed into data frame
-  data.specs.sim.modif <- data.frame(data.specs.sim.modif)
+  data.specs.sim.modif <- collapse::qDF(data.specs.sim.modif)
   ## modifying & changing the column names (incl. adding column of `B`
   ## in order to properly work with `pivot_longer` (see below))
   data.specs.sim.modif <- cbind(
@@ -216,7 +217,7 @@ quantify_EPR_sim <- function(data.spectra.series,
             .data[[single.integ]]
           )[, 1]
           ) %>%
-          dplyr::summarize(AreaSim = max(.data[[double.integ]]))
+          collapse::fsummarize(AreaSim = max(.data[[double.integ]]))
       }
       if (B.unit == "mT"){
         result_df <- result_df_base %>%
@@ -225,7 +226,7 @@ quantify_EPR_sim <- function(data.spectra.series,
             .data[[single.integ]]
           )[, 1]*10
           ) %>%
-          dplyr::summarize(AreaSim = max(.data[[double.integ]]))
+          collapse::fsummarize(AreaSim = max(.data[[double.integ]]))
       }
     }
   }

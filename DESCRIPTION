@@ -60,6 +60,7 @@ Imports:
     broom,
     stringr,
     constants,
+    collapse,
     errors,
     rcdk,
     graphics,
