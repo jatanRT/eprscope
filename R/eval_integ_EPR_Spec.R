@@ -112,8 +112,6 @@
 #'
 #'
 #' @importFrom pracma cumtrapz
-#' @importFrom dplyr relocate
-#' @importFrom tidyselect last_col
 eval_integ_EPR_Spec <- function(data.spectrum,
                                 B = "B_G",
                                 B.unit = "G",
@@ -353,8 +351,9 @@ eval_integ_EPR_Spec <- function(data.spectrum,
     }
     #
     ## reorder columns in data frame
+    ## `sigmoiod_integ` as last
     data.spectrum <- data.spectrum %>%
-      dplyr::relocate(sigmoid_Integ, .after = tidyselect::last_col())
+      dplyr::select(-sigmoid_Integ,sigmoid_Integ)
     #
     integrate.results <- data.spectrum
     #

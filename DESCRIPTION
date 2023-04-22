@@ -56,7 +56,6 @@ Imports:
     plotly,
     dplyr,
     tidyr,
-    tidyselect,
     broom,
     stringr,
     constants,
