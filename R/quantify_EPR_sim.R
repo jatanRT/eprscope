@@ -281,7 +281,7 @@ quantify_EPR_sim <- function(data.spectra.series,
     ## from the `fundamental` data frame
     for (d in 2:length(data.specs.orig.sim)){
       data.specs.sim <- data.specs.sim %>%
-        dplyr::select(-dplyr::matches(paste0("Sim.*_",LETTERS[d])))
+        dplyr::select(-dplyr::matches(paste0("Sim.*_",LETTERS[d],"$")))
     }
     #
     for (d in 2:length(data.specs.orig.sim)) {
@@ -322,7 +322,7 @@ quantify_EPR_sim <- function(data.spectra.series,
     data.specs.sim <- data.specs.sim %>%
       dplyr::group_by(.data[[var2nd.series]]) %>%
       dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_aLL")) :=
-                      rowSums(dplyr::across(dplyr::matches("Sim.*_[[:upper:]]"))))
+                      rowSums(dplyr::across(dplyr::matches("Sim.*_[[:upper:]]$"))))
   }
   #
   ## INTEGRATION
