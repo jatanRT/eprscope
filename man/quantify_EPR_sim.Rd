@@ -2,24 +2,31 @@
 % Please edit documentation in R/quantify_EPR_sim.R
 \name{quantify_EPR_sim}
 \alias{quantify_EPR_sim}
-\title{Quantify Area of Simulated EPR Spectral Series Instead of Experimental One}
+\title{Quantify (Component) Area of Simulated EPR Spectral Series Instead of Experimental One}
 \usage{
 quantify_EPR_sim(
   data.spectra.series,
-  path_to_ASC_sim,
+  dir_ASC_sim,
+  pattern_sim,
   var2nd.series = "time_s",
   B.unit = "G",
-  Intensity.exp = "dIepr_over_dB",
+  Intensity.exp = "dIeprExp_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
+  optim.method = "slsqp",
+  optim.params.init,
+  optim.params.lower = NULL,
+  optim.params.upper = NULL,
   single.integ = "single_IntegSim",
   double.integ = "double_IntegSim",
-  output.area = TRUE
+  output.area.stat = TRUE
 )
 }
 \arguments{
 \item{data.spectra.series}{tbc}
 
-\item{path_to_ASC_sim}{tbc}
+\item{dir_ASC_sim}{tbc}
+
+\item{pattern_sim}{description}
 
 \item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
@@ -34,11 +41,24 @@ column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Ele
 
 \item{Intensity.sim}{tbc}
 
+\item{optim.method}{Character string description tbc...following methods from \pkg{nloptr} are available:
+\code{optim.method = "slsqp"} (\strong{default}), \code{optim.method = "neldermead"},
+\code{optim.method = "mma"} and \code{optim.method = "ccsaq"}...tbc}
+
+\item{optim.params.init}{Numeric vector...description tbc...inherited from \code{x0} parameter/argument
+of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc}
+
+\item{optim.params.lower}{Numeric vector...description tbc...inherited from \code{lower} parameter/argument
+of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
+
+\item{optim.params.upper}{Numeric vector...description tbc...inherited from \code{upper} parameter/argument
+of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
+
 \item{single.integ}{tbc}
 
 \item{double.integ}{tbc can be also \code{NULL} if case of single integral spectral series input}
 
-\item{output.area}{tbc}
+\item{output.area.stat}{tbc}
 }
 \value{
 tbc

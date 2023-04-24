@@ -45,8 +45,8 @@
 #'
 #'
 #' @importFrom tidyr pivot_longer
-#' @importFrom dplyr arrange
-#' @importFrom collapse fsubset
+#' @importFrom dplyr arrange matches across
+#' @importFrom collapse fsubset qDF fsummarize
 #' @importFrom nloptr slsqp neldermead mma ccsaq
 quantify_EPR_sim <- function(data.spectra.series,
                              dir_ASC_sim,
@@ -64,7 +64,12 @@ quantify_EPR_sim <- function(data.spectra.series,
                              output.area.stat = TRUE) {
   ## 'Temporary' processing variables
   . <- NULL
-  AreaSim <- NULL
+  Bsim_mT <- NULL
+  Area_Sim_aLL <- NULL
+  Optim_intercept <- NULL
+  Optim_minLSQ_sum <- NULL
+  Optim_No_iters <- NULL
+  Optim_N_converg <- NULL
   #
   ## Reading simulated EPR spectra from MATLAB
   ## sim file paths
@@ -77,7 +82,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   #
   ## checking number of points for experimental and simulated spectra
   ## experimental
-  resolution.exp <- data.specs.exp %>%
+  resolution.exp <- data.spectra.series %>%
     dplyr::filter(.data[[var2nd.series]] == .data[[var2nd.series]][1]) %>%
     dim.data.frame()
   resolution.exp <- resolution.exp[1]
@@ -94,7 +99,7 @@ quantify_EPR_sim <- function(data.spectra.series,
     stop(" Number of points for experimental & simulated spectra do not match ! ")
   } else{
     ## adding columns (simulated spectral parts) in a loop
-    data.specs.sim <- data.specs.exp
+    data.specs.sim <- data.spectra.series
     for (d in seq(data.specs.orig.sim)) {
       data.specs.sim <- data.specs.sim %>%
         dplyr::group_by(.data[[var2nd.series]]) %>%
@@ -103,7 +108,7 @@ quantify_EPR_sim <- function(data.spectra.series,
     }
     #
     ## delete the original data (not needed anymore)
-    rm(data.specs.exp,data.all.specs.exp)
+    rm(data.spectra.series)
   }
   ## parameterize and sum of all simulated spectral components (max = 6 !)
   ## `x0 \equiv par`
@@ -143,7 +148,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   #
   ## min. function for optimization incl. `fit_params_specs()`
   min_residuals <- function(data,col.name.pattern,x0){
-    with(data,sum((data[["dIeprExp_over_dB"]] - fit_params_specs(data,col.name.pattern,x0))^2))
+    with(data,sum((data[[Intensity.exp]] - fit_params_specs(data,col.name.pattern,x0))^2))
   }
   #
   ## `var2nd.series` sequence (e.g. like time sequence)
@@ -222,7 +227,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                                          byrow = TRUE))
   ## column names ("intensity spectral weights")
   colnames(optim.list.x0n.df) <- sapply(seq(ncol(optim.list.x0n.df)),
-                                        function(n) paste0("weight_Sim",LETTERS[n]))
+                                        function(n) paste0("weight_Sim_",LETTERS[n]))
   #
   ## minimal value for the least-square optimization method
   optim.vec.min.val <- sapply(seq_along(optimization.list),
@@ -236,124 +241,246 @@ quantify_EPR_sim <- function(data.spectra.series,
   optim.vec.no.converg <- sapply(seq_along(optimization.list),
                                  function(l) optimization.list[[l]]$convergence)
   #
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ## creating matrix (`mapply` is creating vectors) with modified simulations
-  ## calculating by previous coefficients obtained from optimization
-  data.specs.sim.modif <-
-    mapply(
-      function(s, t) s + t * data.spec.sim[[Intensity.sim]],
-      optim.vec.c1,
-      optim.vec.c2
-    )
+  ## creating matrix (`mapply` is creating vectors) with modified ONLY 1st SIMULATION
+  ## taking into account the coefficients obtained from optimization
+  ## ADDITIONAL SIMULATIONS WILL BE ADDED LATER
+  data.specs.sim.modif <- c()
+  data.specs.sim.modif[[1]] <-
+    mapply(function(s,t) s + t*data.specs.orig.sim[[1]][[2]],
+           optim.vec.x01,
+           optim.list.x0n.df$weight_Sim_A)
   #
   ## matrix transformed into data frame
-  data.specs.sim.modif <- collapse::qDF(data.specs.sim.modif)
-  ## modifying & changing the column names (incl. adding column of `B`
-  ## in order to properly work with `pivot_longer` (see below))
-  data.specs.sim.modif <- cbind(
-    data.specs.sim.modif,
-    data.spec.sim[[paste0("Bsim_", B.unit)]]
-  )
-  names(data.specs.sim.modif) <- c(var2nd_seq, paste0("Bsim_", B.unit))
+  data.specs.sim.modif[[1]] <- collapse::qDF(data.specs.sim.modif[[1]])
+  ## changing the column names
+  names(data.specs.sim.modif[[1]]) <- var2nd_seq
+  ## adding column of `B` in order to properly work with `pivot_longer` (see below)
+  data.specs.sim.modif[[1]] <- cbind(data.specs.sim.modif[[1]],
+                                     data.specs.orig.sim[[1]][[1]])
+  ## renaming the last column with `B`
+  names(data.specs.sim.modif[[1]])[ncol(data.specs.sim.modif[[1]])] <- "Bsim_mT"
   #
-  ## transformation from wide table to long table with properly arranged `var2nd.series`
-  data.specs.sim.modif <- data.specs.sim.modif %>%
-    tidyr::pivot_longer(!.data[[paste0("Bsim_", B.unit)]],
-      names_to = var2nd.series,
-      values_to = Intensity.sim
-    )
-  data.specs.sim.modif[[var2nd.series]] <- as.double(as.character(data.specs.sim.modif[[var2nd.series]]))
-  data.specs.sim.modif <- data.specs.sim.modif %>%
+  ## transformation from wide table to long table with properly arranged var2nd.series
+  data.specs.sim.modif[[1]] <- data.specs.sim.modif[[1]] %>%
+    tidyr::pivot_longer(!Bsim_mT,
+                        names_to = var2nd.series,
+                        values_to = paste0(Intensity.sim,"_",LETTERS[1])) %>%
+    dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                    as.double(as.character(.data[[var2nd.series]]))) %>%
     dplyr::arrange(.data[[var2nd.series]])
   #
-  ## the `Intensity.sim` is replaced by the newer one
-  data.specs.sim[[Intensity.sim]] <- NULL
-  data.specs.sim[[Intensity.sim]] <- data.specs.sim.modif[[Intensity.sim]]
+  ## the last column of the previous data added to origin complex data frame `data.specs.sim`
+  data.specs.sim[[paste0(Intensity.sim,"_",LETTERS[1])]] <- NULL
+  data.specs.sim[[paste0(Intensity.sim,"_",LETTERS[1])]] <-
+    data.specs.sim.modif[[1]][[paste0(Intensity.sim,"_",LETTERS[1])]]
   #
-  ## removing the `data.specs.sim.modif` & `data.spec.sim` which is not needed anymore
-  rm(data.specs.sim.modif, data.spec.sim)
+  ## creating matrix (`mapply` is creating vectors) with modified ADDITIONAL SIMULATIONs (B,...)
+  ## taking into account the coefficients obtained from optimization
+  if (length(data.specs.orig.sim) > 1){
+    ## however before delete all `B` & additional... simulations
+    ## from the `fundamental` data frame
+    for (d in 2:length(data.specs.orig.sim)){
+      data.specs.sim <- data.specs.sim %>%
+        dplyr::select(-dplyr::matches(paste0("Sim.*_",LETTERS[d])))
+    }
+    #
+    for (d in 2:length(data.specs.orig.sim)) {
+      data.specs.sim.modif[[d]] <-
+        mapply(function(w) w*data.specs.orig.sim[[d]][[2]],
+               optim.list.x0n.df[[d]])
+      #
+      ## matrix transformed into data frame
+      data.specs.sim.modif[[d]] <- collapse::qDF(data.specs.sim.modif[[d]])
+      ## changing the column names
+      names(data.specs.sim.modif[[d]]) <- var2nd_seq
+      ## adding column of `B` in order to properly work with `pivot_longer` (see below)
+      data.specs.sim.modif[[d]] <- cbind(data.specs.sim.modif[[d]],
+                                         data.specs.orig.sim[[d]][[1]])
+      ## renaming the last column with `B`
+      names(data.specs.sim.modif[[d]])[ncol(data.specs.sim.modif[[d]])] <- "Bsim_mT"
+      #
+      ## transformation from wide table to long table with properly arranged time
+      data.specs.sim.modif[[d]] <- data.specs.sim.modif[[d]] %>%
+        tidyr::pivot_longer(!Bsim_mT,
+                            names_to = var2nd.series,
+                            values_to = paste0(Intensity.sim,"_",LETTERS[d])) %>%
+        dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                        as.double(as.character(.data[[var2nd.series]]))) %>%
+        dplyr::arrange(.data[[var2nd.series]])
+      #
+      ## adding all columns from the previous temporary data frames to `data.specs.sim`
+      data.specs.sim[[paste0(Intensity.sim,"_",LETTERS[d])]] <- data.specs.sim.modif[[d]][[3]]
+    }
+    #
+  }
   #
-  ## base for the output data frame
+  ## removing the `data.specs.sim.modif` which is not needed anymore
+  rm(data.specs.sim.modif)
+  #
+  ## Sum of all simulated spectra intensities
+  if (length(data.specs.orig.sim) > 1){
+    data.specs.sim <- data.specs.sim %>%
+      dplyr::group_by(.data[[var2nd.series]]) %>%
+      dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_aLL")) :=
+                      rowSums(dplyr::across(dplyr::matches("Sim.*_[[:upper:]]"))))
+  }
+  #
+  ## INTEGRATION
+  ## data substitution/renaming
+  result_df_base <- data.specs.sim
+  #
   if (B.unit == "G"){
-    result_df_base <- data.specs.sim %>%
-      dplyr::group_by(.data[[var2nd.series]]) %>%
-      dplyr::mutate(!!rlang::quo_name(single.integ) := pracma::cumtrapz(
-        .data[[paste0("B_", B.unit)]], ## BE AWARE OF B.UNITS and INTEGRAL EVALUATION
-        .data[[Intensity.sim]]
-      )[, 1]
-      )
+    ## single integration
+    for (d in seq(data.specs.orig.sim)) {
+      result_df_base <- result_df_base %>%
+        dplyr::group_by(.data[[var2nd.series]]) %>%
+        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
+                        pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
+                                         .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1])
+    }
+    if (length(data.specs.orig.sim) > 1){
+      ## single integration of the overall spectrum/signal
+      result_df_base <- result_df_base %>%
+        dplyr::group_by(.data[[var2nd.series]]) %>%
+        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
+                        pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                         .data[[paste0(Intensity.sim,"_aLL")]])[,1])
+    }
+   #
   }
+  #
   if (B.unit == "mT"){
-    result_df_base <- data.specs.sim %>%
-      dplyr::group_by(.data[[var2nd.series]]) %>%
-      dplyr::mutate(!!rlang::quo_name(single.integ) := pracma::cumtrapz(
-        .data[[paste0("B_", B.unit)]], ## BE AWARE OF B.UNITS and INTEGRAL EVALUATION
-        .data[[Intensity.sim]]
-      )[, 1]*10
-      )
+    ## single integration
+    for (d in seq(data.specs.orig.sim)) {
+      result_df_base <- result_df_base %>%
+        dplyr::group_by(.data[[var2nd.series]]) %>%
+        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
+                        pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
+                                         .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1]*10)
+    }
+    if (length(data.specs.orig.sim) > 1){
+      ## single integration of the overall spectrum/signal
+      result_df_base <- result_df_base %>%
+        dplyr::group_by(.data[[var2nd.series]]) %>%
+        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
+                        pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                         .data[[paste0(Intensity.sim,"_aLL")]])[,1]*10)
+    }
+    #
+    ## remove `data.specs.sim` which is not required anymore
+    rm(data.specs.sim)
+    #
   }
-  if (isFALSE(output.area.stat)) {
-    if (is.null(double.integ)) {
+  #
+  if (isFALSE(output.area.stat)){
+    if (is.null(double.integ)){
       result_df <- result_df_base
-    } else {
+    } else{
+      ## double_integrals
+      ## data substitution/renaming
+      result_df <- result_df_base
       if (B.unit == "G"){
-        result_df <- result_df_base %>%
-          dplyr::mutate(!!rlang::quo_name(double.integ) := pracma::cumtrapz(
-            .data[[paste0("B_", B.unit)]], ## BE AWARE OF B.UNITS and INTEGRAL EVALUATION
-            .data[[single.integ]]
-          )[, 1]
-          )
+        for(d in seq(data.specs.orig.sim)){
+          result_df <- result_df %>%
+            dplyr::group_by(.data[[var2nd.series]]) %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_",LETTERS[d])]])[,1])
+        }
+        #
+        if (length(data.specs.orig.sim) > 1){
+          result_df <- result_df %>%
+            dplyr::group_by(.data[[var2nd.series]]) %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_aLL")]])[,1])
+        }
       }
       if (B.unit == "mT"){
-        result_df <- result_df_base %>%
-          dplyr::mutate(!!rlang::quo_name(double.integ) := pracma::cumtrapz(
-            .data[[paste0("B_", B.unit)]],
-            .data[[single.integ]]
-          )[, 1]*10
-          )
+        for(d in seq(data.specs.orig.sim)){
+          result_df <- result_df %>%
+            dplyr::group_by(.data[[var2nd.series]]) %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]*10)
+        }
+        #
+        if (length(data.specs.orig.sim) > 1){
+          result_df <- result_df %>%
+            dplyr::group_by(.data[[var2nd.series]]) %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_aLL")]])[,1]*10)
+        }
       }
     }
-  } else {
-    if (is.null(double.integ)) {
-      result_df <- result_df_base %>%
-        dplyr::summarize(AreaSim = max(.data[[single.integ]]))
-    } else {
+  } else{
+    ## calculation of areas by `summarize` + add statistic/info from optimization
+    if (is.null(double.integ)){
+      ## data substitution/renaming
+      result_df <- result_df_base
+      ## summarize in loop for all components
+      for(d in seq(data.specs.orig.sim)){
+        result_df <- result_df %>%
+          dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
+                             max(.data[[paste0(single.integ,"_",LETTERS[d])]])) %>%
+          dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
+                          optim.list.x0n.df[[d]])
+      }
+      if (length(data.specs.orig.sim) > 1){
+        result_df <- result_df %>%
+          dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]]))
+      }
+    } else{
+      ## double_integrals
+      ## data substitution/renaming
+      result_df <- result_df_base
       if (B.unit == "G"){
-        result_df <- result_df_base %>%
-          dplyr::mutate(!!rlang::quo_name(double.integ) := pracma::cumtrapz(
-            .data[[paste0("B_", B.unit)]],
-            .data[[single.integ]]
-          )[, 1]
-          ) %>%
-          collapse::fsummarize(AreaSim = max(.data[[double.integ]]))
+        for (d in seq(data.specs.orig.sim)){
+          result_df <- result_df %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]) %>%
+            dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
+                               max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
+            dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
+                            optim.list.x0n.df[[d]])
+        }
+        if (length(data.specs.orig.sim) > 1){
+          result_df <- result_df %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_aLL")]])[,1]) %>%
+            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]]))
+        }
       }
       if (B.unit == "mT"){
-        result_df <- result_df_base %>%
-          dplyr::mutate(!!rlang::quo_name(double.integ) := pracma::cumtrapz(
-            .data[[paste0("B_", B.unit)]],
-            .data[[single.integ]]
-          )[, 1]*10
-          ) %>%
-          collapse::fsummarize(AreaSim = max(.data[[double.integ]]))
+        for (d in seq(data.specs.orig.sim)){
+          result_df <- result_df %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]*10) %>%
+            dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
+                               max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
+            dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
+                            optim.list.x0n.df[[d]])
+        }
+        if (length(data.specs.orig.sim) > 1){
+          result_df <- result_df %>%
+            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                             .data[[paste0(single.integ,"_aLL")]])[,1]*10) %>%
+            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]]))
+        }
       }
     }
+    #
+    ## adding available info/statistics about optimization
+    result_df <- result_df %>%
+      dplyr::mutate(Optim_intercept = optim.vec.x01) %>%
+      dplyr::mutate(Optim_minLSQ_sum = optim.vec.min.val) %>%
+      dplyr::mutate(Optim_No_iters = optim.vec.no.iter) %>%
+      dplyr::mutate(Optim_N_converg = optim.vec.no.converg)
   }
   #
   return(result_df)
