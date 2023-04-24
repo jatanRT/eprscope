@@ -417,27 +417,25 @@ quantify_EPR_sim <- function(data.spectra.series,
   } else{
     ## calculation of areas by `summarize` + add statistic/info from optimization
     if (is.null(double.integ)){
-      ## data substitution/renaming
-      result_df <- result_df_base
       ## summarize in loop for all components
+      result_df <- c()
       for(d in seq(data.specs.orig.sim)){
-        result_df <- result_df %>%
+        result_df[[d]] <- result_df_base %>%
           dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                              max(.data[[paste0(single.integ,"_",LETTERS[d])]])) %>%
           dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
                           optim.list.x0n.df[[d]])
+        result_df <- cbind.data.frame(result_df,result_df[[d]])
       }
       if (length(data.specs.orig.sim) > 1){
-        result_df <- result_df %>%
-          dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]]))
+        result_df[["Area_Sim_aLL"]] <- dplyr::summarize(result_df_base, max(.data[[paste0(single.integ,"_aLL")]]))
       }
     } else{
       ## double_integrals
-      ## data substitution/renaming
-      result_df <- result_df_base
+      result_df <- c()
       if (B.unit == "G"){
         for (d in seq(data.specs.orig.sim)){
-          result_df <- result_df %>%
+          result_df[[d]] <- result_df_base %>%
             dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]) %>%
@@ -445,18 +443,20 @@ quantify_EPR_sim <- function(data.spectra.series,
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
             dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
+          result_df <- cbind.data.frame(result_df,result_df[[d]])
         }
         if (length(data.specs.orig.sim) > 1){
-          result_df <- result_df %>%
+          result_df_Sim_aLL <- result_df_base %>%
             dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_aLL")]])[,1]) %>%
-            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]]))
+            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]]))
+          result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
         }
       }
       if (B.unit == "mT"){
         for (d in seq(data.specs.orig.sim)){
-          result_df <- result_df %>%
+          result_df[[d]] <- result_df_base %>%
             dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]*10) %>%
@@ -464,13 +464,15 @@ quantify_EPR_sim <- function(data.spectra.series,
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
             dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
+          result_df <- cbind.data.frame(result_df,result_df[[d]])
         }
         if (length(data.specs.orig.sim) > 1){
-          result_df <- result_df %>%
+          result_df_Sim_aLL <- result_df_base %>%
             dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_aLL")]])[,1]*10) %>%
-            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]]))
+            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]]))
+          result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
         }
       }
     }
