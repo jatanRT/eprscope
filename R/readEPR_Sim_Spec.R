@@ -37,6 +37,10 @@ readEPR_Sim_Spec <- function(path_to_ASC,
                                "dIeprSim_over_dB"
                              )) {
   #
+  ## 'Temporary' processing variables
+  Bsim_G <- NULL
+  Bsim_mT <- NULL
+  #
   spectrum.data <- data.table::fread(path_to_ASC,
     sep = "auto",
     col.names = col.names
@@ -47,11 +51,15 @@ readEPR_Sim_Spec <- function(path_to_ASC,
   #
   if (B.unit == "mT") {
     spectrum.data <- spectrum.data %>%
-      dplyr::mutate(Bsim_G = .data[[x]] * 10)
+      dplyr::mutate(Bsim_G = .data[[x]] * 10) %>%
+      ## reordering columns
+      dplyr::select(Bsim_G,.data[[col.names[1]]],.data[[col.names[2]]])
   }
   if (B.unit == "G") {
     spectrum.data <- spectrum.data %>%
-      dplyr::mutate(Bsim_mT = .data[[x]] / 10)
+      dplyr::mutate(Bsim_mT = .data[[x]] / 10) %>%
+      ## reordering columns
+      dplyr::select(.data[[col.names[1]]],Bsim_mT,.data[[col.names[2]]])
   }
   #
   return(spectrum.data)

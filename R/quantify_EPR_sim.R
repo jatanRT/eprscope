@@ -1,5 +1,5 @@
 #
-#' Quantify (Component) Area of Simulated EPR Spectral Series Instead of Experimental One
+#' Quantify (Components) Area of Simulated EPR Spectral Series Instead of Experimental One
 #'
 #'
 #' @description tbc
@@ -53,7 +53,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                              pattern_sim,
                              var2nd.series = "time_s",
                              B.unit = "G",
-                             Intensity.exp = "dIeprExp_over_dB",
+                             Intensity.exp = "dIepr_over_dB",
                              Intensity.sim = "dIeprSim_over_dB",
                              optim.method = "slsqp",
                              optim.params.init,
@@ -64,7 +64,6 @@ quantify_EPR_sim <- function(data.spectra.series,
                              output.area.stat = TRUE) {
   ## 'Temporary' processing variables
   . <- NULL
-  Bsim_mT <- NULL
   Area_Sim_aLL <- NULL
   Optim_intercept <- NULL
   Optim_minLSQ_sum <- NULL
@@ -104,7 +103,7 @@ quantify_EPR_sim <- function(data.spectra.series,
       data.specs.sim <- data.specs.sim %>%
         dplyr::group_by(.data[[var2nd.series]]) %>%
         dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_",LETTERS[d])) :=
-                        data.specs.orig.sim[[d]][[2]])
+                        data.specs.orig.sim[[d]][[Intensity.sim]])
     }
     #
     ## delete the original data (not needed anymore)
@@ -194,8 +193,8 @@ quantify_EPR_sim <- function(data.spectra.series,
   #
   ## Definition of `lower` and `upper` optim. limits of initial params.
   ## e.g following
-  lower.limits <- rep(0,times = length(data.specs.orig.sim))
-  upper.limits <- rep(0.8,times = length(data.specs.orig.sim))
+  lower.limits <- rep(0,times = length(data.specs.orig.sim) + 1)
+  upper.limits <- rep(0.8,times = length(data.specs.orig.sim) + 1)
   optim.params.lower <- optim.params.lower %>%
     `if`(is.null(optim.params.lower), lower.limits, .)
   optim.params.upper <- optim.params.upper %>%
@@ -246,7 +245,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## ADDITIONAL SIMULATIONS WILL BE ADDED LATER
   data.specs.sim.modif <- c()
   data.specs.sim.modif[[1]] <-
-    mapply(function(s,t) s + t*data.specs.orig.sim[[1]][[2]],
+    mapply(function(s,t) s + t*data.specs.orig.sim[[1]][[Intensity.sim]],
            optim.vec.x01,
            optim.list.x0n.df$weight_Sim_A)
   #
@@ -256,13 +255,13 @@ quantify_EPR_sim <- function(data.spectra.series,
   names(data.specs.sim.modif[[1]]) <- var2nd_seq
   ## adding column of `B` in order to properly work with `pivot_longer` (see below)
   data.specs.sim.modif[[1]] <- cbind(data.specs.sim.modif[[1]],
-                                     data.specs.orig.sim[[1]][[1]])
+                                     data.specs.orig.sim[[1]][[paste0("Bsim_",B.unit)]])
   ## renaming the last column with `B`
-  names(data.specs.sim.modif[[1]])[ncol(data.specs.sim.modif[[1]])] <- "Bsim_mT"
+  names(data.specs.sim.modif[[1]])[ncol(data.specs.sim.modif[[1]])] <- paste0("Bsim_",B.unit)
   #
   ## transformation from wide table to long table with properly arranged var2nd.series
   data.specs.sim.modif[[1]] <- data.specs.sim.modif[[1]] %>%
-    tidyr::pivot_longer(!Bsim_mT,
+    tidyr::pivot_longer(!.data[[paste0("Bsim_",B.unit)]],
                         names_to = var2nd.series,
                         values_to = paste0(Intensity.sim,"_",LETTERS[1])) %>%
     dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
@@ -286,7 +285,7 @@ quantify_EPR_sim <- function(data.spectra.series,
     #
     for (d in 2:length(data.specs.orig.sim)) {
       data.specs.sim.modif[[d]] <-
-        mapply(function(w) w*data.specs.orig.sim[[d]][[2]],
+        mapply(function(w) w*data.specs.orig.sim[[d]][[Intensity.sim]],
                optim.list.x0n.df[[d]])
       #
       ## matrix transformed into data frame
@@ -295,13 +294,13 @@ quantify_EPR_sim <- function(data.spectra.series,
       names(data.specs.sim.modif[[d]]) <- var2nd_seq
       ## adding column of `B` in order to properly work with `pivot_longer` (see below)
       data.specs.sim.modif[[d]] <- cbind(data.specs.sim.modif[[d]],
-                                         data.specs.orig.sim[[d]][[1]])
+                                         data.specs.orig.sim[[d]][[paste0("Bsim_",B.unit)]])
       ## renaming the last column with `B`
-      names(data.specs.sim.modif[[d]])[ncol(data.specs.sim.modif[[d]])] <- "Bsim_mT"
+      names(data.specs.sim.modif[[d]])[ncol(data.specs.sim.modif[[d]])] <- paste0("Bsim_",B.unit)
       #
       ## transformation from wide table to long table with properly arranged time
       data.specs.sim.modif[[d]] <- data.specs.sim.modif[[d]] %>%
-        tidyr::pivot_longer(!Bsim_mT,
+        tidyr::pivot_longer(!.data[[paste0("Bsim_",B.unit)]],
                             names_to = var2nd.series,
                             values_to = paste0(Intensity.sim,"_",LETTERS[d])) %>%
         dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
@@ -309,7 +308,8 @@ quantify_EPR_sim <- function(data.spectra.series,
         dplyr::arrange(.data[[var2nd.series]])
       #
       ## adding all columns from the previous temporary data frames to `data.specs.sim`
-      data.specs.sim[[paste0(Intensity.sim,"_",LETTERS[d])]] <- data.specs.sim.modif[[d]][[3]]
+      data.specs.sim[[paste0(Intensity.sim,"_",LETTERS[d])]] <-
+        data.specs.sim.modif[[d]][[paste0(Intensity.sim,"_",LETTERS[d])]]
     }
     #
   }

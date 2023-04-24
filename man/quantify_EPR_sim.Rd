@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantify_EPR_sim.R
 \name{quantify_EPR_sim}
 \alias{quantify_EPR_sim}
-\title{Quantify (Component) Area of Simulated EPR Spectral Series Instead of Experimental One}
+\title{Quantify (Components) Area of Simulated EPR Spectral Series Instead of Experimental One}
 \usage{
 quantify_EPR_sim(
   data.spectra.series,
@@ -10,7 +10,7 @@ quantify_EPR_sim(
   pattern_sim,
   var2nd.series = "time_s",
   B.unit = "G",
-  Intensity.exp = "dIeprExp_over_dB",
+  Intensity.exp = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
   optim.method = "slsqp",
   optim.params.init,
