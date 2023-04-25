@@ -199,7 +199,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## Definition of `lower` and `upper` optim. limits of initial params.
   ## e.g following
   lower.limits <- rep(0,times = length(data.specs.orig.sim) + 1)
-  upper.limits <- rep(0.8,times = length(data.specs.orig.sim) + 1)
+  upper.limits <- rep(0.9,times = length(data.specs.orig.sim) + 1)
   optim.params.lower <- optim.params.lower %>%
     `if`(is.null(optim.params.lower), lower.limits, .)
   optim.params.upper <- optim.params.upper %>%
