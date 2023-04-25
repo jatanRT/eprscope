@@ -425,10 +425,15 @@ quantify_EPR_sim <- function(data.spectra.series,
                              max(.data[[paste0(single.integ,"_",LETTERS[d])]])) %>%
           dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
                           optim.list.x0n.df[[d]])
-        result_df <- cbind.data.frame(result_df,result_df[[d]])
       }
+      ## the resulting data frame (without additional var2nd columns)
+      result_df <- data.frame(result_df) %>% dplyr::select(-dplyr::matches("\\.[[:digit:]]"))
+      #
       if (length(data.specs.orig.sim) > 1){
-        result_df[["Area_Sim_aLL"]] <- dplyr::summarize(result_df_base, max(.data[[paste0(single.integ,"_aLL")]]))
+        result_df_Sim_aLL <- result_df_base %>%
+          dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(single.integ,"_aLL")]])) %>%
+          dplyr::select(-.data[[var2nd.series]])
+        result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
       }
     } else{
       ## double_integrals
@@ -443,14 +448,18 @@ quantify_EPR_sim <- function(data.spectra.series,
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
             dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
-          result_df <- cbind.data.frame(result_df,result_df[[d]])
         }
+        ## the resulting data frame (without additional var2nd columns)
+        result_df <- data.frame(result_df) %>% dplyr::select(-dplyr::matches("\\.[[:digit:]]"))
+
+        #
         if (length(data.specs.orig.sim) > 1){
           result_df_Sim_aLL <- result_df_base %>%
             dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_aLL")]])[,1]) %>%
-            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]]))
+            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
+            dplyr::select(-.data[[var2nd.series]])
           result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
         }
       }
@@ -464,14 +473,18 @@ quantify_EPR_sim <- function(data.spectra.series,
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
             dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
-          result_df <- cbind.data.frame(result_df,result_df[[d]])
         }
+        ## the resulting data frame (without additional var2nd columns)
+        result_df <- data.frame(result_df) %>% dplyr::select(-dplyr::matches("\\.[[:digit:]]"))
+
+        #
         if (length(data.specs.orig.sim) > 1){
           result_df_Sim_aLL <- result_df_base %>%
             dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_aLL")]])[,1]*10) %>%
-            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]]))
+            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
+            dplyr::select(-.data[[var2nd.series]])
           result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
         }
       }
