@@ -34,8 +34,14 @@ readMAT_params_file <- function(path_to_MAT,
   #
   if (is.null(field.var)) {
     params <- data.params[[str.var]]
+    ## this is a list and take it's names
+    names(params) <- rownames(params)
+    ## and finally the `rownames` are not required anymore
+    rownames(params) <- NULL
   } else {
     params <- data.params[[str.var]][, , 1][[field.var]]
+    ## this is a matrix and convert it into vector
+    params <- as.vector(params)
   }
   #
   return(params)
