@@ -90,8 +90,13 @@ quantify_EPR_sim <- function(data.spectra.series,
                            function(r) dim.data.frame(r)[1])
   #
   ## condition to check resolution of all simulations
-  resolution.check <- sapply(seq(resolution.sim),
-                             function(c) if (resolution.sim[c] == resolution.exp) TRUE else FALSE)
+  if (length(data.specs.orig.sim) > 1){
+    resolution.check <- sapply(seq(resolution.sim),
+                               function(c) if (resolution.sim[c] == resolution.exp) TRUE else FALSE)
+  } else{
+    resolution.check <- if (resolution.sim == resolution.exp) TRUE else FALSE
+  }
+
   ## add simulated (non-processed, original) spectra into one long-table format
   ## to all experimental spectra
   if (isFALSE(any(resolution.check))){
