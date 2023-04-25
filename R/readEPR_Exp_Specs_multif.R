@@ -196,33 +196,54 @@ readEPR_Exp_Specs_multif <- function(pattern,
   ## However prior to the operation above `x`/`B` has to be defined
   xString <- col.names[x]
   #
-  spectra.datab.from.files <-
-    Map(
-      function(r, s, t, u) {
-        readEPR_Exp_Specs(r,
-          col.names = col.names,
-          colClasses = colClasses,
-          x = x,
-          x.unit = x.unit,
-          Intensity = Intensity,
-          convertB.unit = convertB.unit,
-          qValue = s,
-          norm.vec.add = t,
-          origin = origin
-        ) %>%
-          `if`(x.unit == "G" & x.unit == "mT",
-          dplyr::mutate(g_Value = eval_gFactor(
-            nu = u,
-            nu.unit = "Hz",
-            B = .data[[xString]],
-            B.unit = x.unit
-          )), .)
-      },
-      files.asc,
-      qValues.from.files,
-      norm.list.add,
-      mwfreq.from.files
-    )
+  if (x.unit == "G" || x.unit == "mT"){
+    spectra.datab.from.files <-
+      Map(
+        function(r, s, t, u) {
+          readEPR_Exp_Specs(r,
+                            col.names = col.names,
+                            colClasses = colClasses,
+                            x = x,
+                            x.unit = x.unit,
+                            Intensity = Intensity,
+                            convertB.unit = convertB.unit,
+                            qValue = s,
+                            norm.vec.add = t,
+                            origin = origin
+          ) %>%
+            dplyr::mutate(g_Value = eval_gFactor(
+              nu = u,
+              nu.unit = "Hz",
+              B = .data[[xString]],
+              B.unit = x.unit
+            ))
+        },
+        files.asc,
+        qValues.from.files,
+        norm.list.add,
+        mwfreq.from.files
+      )
+  } else {
+    spectra.datab.from.files <-
+      Map(
+        function(r, s, t) {
+          readEPR_Exp_Specs(r,
+                            col.names = col.names,
+                            colClasses = colClasses,
+                            x = x,
+                            x.unit = x.unit,
+                            Intensity = Intensity,
+                            convertB.unit = convertB.unit,
+                            qValue = s,
+                            norm.vec.add = t,
+                            origin = origin
+          )
+        },
+        files.asc,
+        qValues.from.files,
+        norm.list.add
+      )
+  }
   #
   ## rename spectra according to desired parameter/quantity/...etc. dependency
   ## see params. above
