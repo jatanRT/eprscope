@@ -2,22 +2,25 @@
 % Please edit documentation in R/readMAT_params_file.R
 \name{readMAT_params_file}
 \alias{readMAT_params_file}
-\title{Read Parameters/Variables/Fields (including the Simulation ones) from \emph{MATLAB} \code{.mat} File}
+\title{Reads all Parameters (incl. the Simulation ones) from \emph{MATLAB} \code{.mat} File}
 \usage{
-readMAT_params_file(path_to_MAT, str.var, field.var = NULL)
+readMAT_params_file(path_to_MAT, str.var = NULL, field.var = NULL)
 }
 \arguments{
-\item{path_to_MAT}{String, path to \code{.mat} MATLAB file with all variables saved in workspace}
+\item{path_to_MAT}{Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.
+The file path can be also defined by \code{\link[base]{file.path}}.}
 
-\item{str.var}{String, \code{structure/variable}, which may contain \code{fields}, e.g. like \code{Sys}
-and \code{g} => \strong{Sys}.g, respectively}
+\item{str.var}{Character string, \code{structure/variable}, which may contain \code{fields}, e.g. like \code{Sys}
+and \code{g} => \strong{Sys}.g, respectively. \strong{Default}: \code{str.var = NULL}.}
 
-\item{field.var}{String, \code{field variable after 'dot'}, which is available only for certain
+\item{field.var}{Character string, \code{field variable after 'dot'}, which is available only for certain
 structures/variables, see e.g. example above (Sys.\strong{g}), therefore
-the \strong{default} 'value' is \code{NULL} and \code{string} \strong{is applied only for structures with fields}.}
+the \strong{default} 'value' is \code{NULL} and the \code{string} \strong{is applied only for structures with fields}.}
 }
 \value{
-Numeric or String/Character depending on MATLAB variable used for simulation of EPR spectra
+Unless the \code{str.var} and/or \code{field.var} not specified, the output is \code{list} with all original
+  parameters/structures from MATLAB file. Otherwise, the function returns either numeric or character \code{vector/value},
+  depending on `class` of the original parameter/field variable.
 }
 \description{
 tbc
