@@ -603,19 +603,17 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       grepl("^A \\[k1\\] <-- \\(x=.*R --> \\[k2\\] B$",model.react)){
     plot.base <- ggplot(result.df.plot) +
       geom_point(aes(x = .data[["time"]],
-                 y = .data[["R"]]),
-                 size = 2.4,
+                     y = .data[["R"]]),
+                 size = 2.0,
                  shape = 18,
-                 color = "darkviolet") +
-      geom_line()
+                 color = "darkviolet")
   } else {
     plot.base <- ggplot(result.df.plot) +
       geom_point(aes(x = .data[["time"]],
-                 y = .data[["qvar"]],
-                 color = .data[["Species"]]),
-                 size = 2.4,
-                 shape = 18) +
-      geom_line() +
+                     y = .data[["qvar"]],
+                     color = .data[["Species"]]),
+                     size = 2.0,
+                     shape = 18) +
       theme(legend.title = element_text(size = 14),
             legend.text = element_text(size = 13))
   }
@@ -624,7 +622,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   plotR <- plot.base +
     labs(title = model.react,
          x = bquote(italic(Time)~~"("~s~")"),
-         y = bquote(italic(Quantitative~Variable)~~bolditalic(qvar))) +
+         y = bquote(italic(Quantitative~~Variable)~~bolditalic(qvar))) +
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
