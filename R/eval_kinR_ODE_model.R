@@ -1,4 +1,39 @@
 #
+#' Radical Kinetic Models Solved by Ordinary Differential Equations (ODE) for Visualization and Fitting
+#'
+#'
+#' @description
+#'   A short description...
+#'   \tabular{lcll}{
+#'    \strong{Reaction Scheme} \tab \strong{model.react} \tab \strong{kin.params} \tab \strong{Description} \cr
+  #'  \eqn{(x=1)\text{R} \overrightarrow{k_1} \text{B}} \tab "(x=1)R --> [k1] B" \tab \code{k1},\code{qvar0R} \tab Blah \cr
+#'   }
+#'
+#'
+#'
+#' @param model.react parameter/argument tbc
+#' @param model.expr.diff parmeter/argument tbc
+#' @param kin.params parameter/argument tbc
+#' @param data.expr parameter/argument tbc
+#' @param time.expr.series parameter/argument tbc
+#' @param qvar.expr parameter/argument tbc
+#'
+#'
+#' @return tbc
+#'
+#'
+#' @examples
+#' \dontrun{
+#' tbc
+#' tbc
+#' }
+#'
+#'
+#' @export
+#'
+#'
+#' @importFrom deSolve ode
+#' @importFrom ggplot2 geom_point
 eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,2 or n
                                 model.expr.diff = FALSE,
                                 kin.params = c(k1 = 0.001,
@@ -13,7 +48,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   #
   ## Data definition
   if (!is.null(data.expr)){
-    if (is.null(time.expr.series) || is.null(qvar.expr.series)){
+    if (is.null(time.expr.series) || is.null(qvar.expr)){
       stop(" The time series of the experimental data (`time.expr.series`)\n
            or the corresponding quantitative variable (`qvar.expr`)\n
            is not specified. Please, define ! ")
@@ -56,7 +91,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   if (model.react == "(x=1)R --> [k1] B"){
     #
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x){
+    react_rates_diff_01 <- function(t,qvar,kin.params,c_x){
       ## t <- time vector
       ## qvar <- concentration, double EPR integral, (`qvar` \equiv "quantitative varialble")
       ## number of radicals...etc. vector
@@ -91,13 +126,13 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     if (stoichiom_coeff(model.react) == "n"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_01,
                              parms = list(k1 = k1,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_01,
                              parms = list(k1 = k1))
     }
     #
@@ -118,7 +153,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   if (model.react == "(x=1)A --> [k1] R"){
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x){
+    react_rates_diff_02 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
       if (c_x == "n"){
         n <- kin.params$n
@@ -152,13 +187,13 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     if (stoichiom_coeff(model.react) == "n"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_02,
                              parms = list(k1 = k1,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_02,
                              parms = list(k1 = k1))
     }
     #
@@ -179,7 +214,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   if (model.react == "(x=1)A --> [k1] (x=1)R --> [k2] C"){
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x){
+    react_rates_diff_03 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
       k2 <- kin.params$k2
       if (c_x == "n"){
@@ -217,13 +252,13 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     if (stoichiom_coeff(model.react) == "n"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_03,
                              parms = list(k1 = k1,k2 = k2,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_03,
                              parms = list(k1 = k1,k2 = k2))
     }
     #
@@ -244,7 +279,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   if (model.react == "(x=1)R <==> [k1] [k2] B"){
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x){
+    react_rates_diff_04 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
       k2 <- kin.params$k2
       if (c_x == "n"){
@@ -280,13 +315,13 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     if (stoichiom_coeff(model.react) == "n"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_04,
                              parms = list(k1 = k1,k2 = k2,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_04,
                              parms = list(k1 = k1,k2 = k2))
     }
     #
@@ -307,7 +342,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   if (model.react == "(x=1)A <==> [k1] [k2] (x=1)R"){
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x){
+    react_rates_diff_05 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
       k2 <- kin.params$k2
       if (c_x == "n"){
@@ -343,13 +378,13 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     if (stoichiom_coeff(model.react) == "n"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_05,
                              parms = list(k1 = k1,k2 = k2,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_05,
                              parms = list(k1 = k1,k2 = k2))
     }
     #
@@ -370,7 +405,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   if (model.react == "A [k1] <-- (x=1)R --> [k2] B"){
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x){
+    react_rates_diff_06 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
       k2 <- kin.params$k2
       if (c_x == "n"){
@@ -402,13 +437,13 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     if (stoichiom_coeff(model.react) == "n"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_06,
                              parms = list(k1 = k1,k2 = k2,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             func = react_rate_diff,
+                             func = react_rates_diff_06,
                              parms = list(k1 = k1,k2 = k2))
     }
     #
@@ -429,7 +464,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   if (model.react == "(x=1)A + (y=1)B --> [k1] R"){
     ## functions for derivative solution of kinetic equation
-    react_rates_diff <- function(t,qvar,kin.params,c_x,c_y){
+    react_rates_diff_07 <- function(t,qvar,kin.params,c_x,c_y){
       k1 <- kin.params$k1
       if (c_x == "n" & inherits(c_y,"numeric")){
         n <- kin.params$n
@@ -483,7 +518,8 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
         stoichiom_coeff(model.react,coeff = "y") == "m"){
       m <- kin.params["m"]
     }
-    if (x == "n" & y == "m"){
+    if (stoichiom_coeff(model.react) == "n" &
+        stoichiom_coeff(model.react,coeff = "y") == "m"){
       n <- kin.params["n"]
       m <- kin.params["m"]
     }
@@ -493,7 +529,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
                              c_y = stoichiom_coeff(model.react,coeff = "y"),
-                             func = react_rate_diff,
+                             func = react_rates_diff_07,
                              parms = list(k1 = k1,n = n))
     }
     if (inherits(stoichiom_coeff(model.react),"numeric") &
@@ -501,21 +537,23 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
                              c_y = stoichiom_coeff(model.react,coeff = "y"),
-                             func = react_rate_diff,
+                             func = react_rates_diff_07,
                              parms = list(k1 = k1,m = m))
     }
-    if (x == "n" & y == "m"){
+    if (stoichiom_coeff(model.react) == "n" &
+        stoichiom_coeff(model.react,coeff = "y") == "m"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
                              c_y = stoichiom_coeff(model.react,coeff = "y"),
-                             func = react_rate_diff,
+                             func = react_rates_diff_07,
                              parms = list(k1 = k1,n = n,m = m))
     }
-    if (inherits(x,"numeric") & inherits(y,"numeric")){
+    if (inherits(stoichiom_coeff(model.react),"numeric") &
+        inherits(stoichiom_coeff(model.react,coeff = "y"),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
                              c_y = stoichiom_coeff(model.react,coeff = "y"),
-                             func = react_rate_diff,
+                             func = react_rates_diff_07,
                              parms = list(k1 = k1))
     }
     #
@@ -558,10 +596,10 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   #
   ## the entire plot
-  plot <- plot.base +
+  plotR <- plot.base +
     labs(title = model.react,
-         x = plot_labels_xyz(Time,s),
-         y = bquote(italic(Quantitative Variable)~~bolditalic(qvar))) +
+         x = bquote(italic(Time)~~"("~s~")"),
+         y = bquote(italic(Quantitative~Variable)~~bolditalic(qvar))) +
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
@@ -569,7 +607,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   #
   ## RESULTS
   if (isFALSE(model.expr.diff)){
-    return(list(df = result.df,plot = plot))
+    return(list(df = result.df,plot = plotR))
   } else{
     return(diff.model.expr)
   }

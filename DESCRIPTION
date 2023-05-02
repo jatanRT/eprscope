@@ -60,6 +60,7 @@ Imports:
     stringr,
     constants,
     collapse,
+    deSolve,
     nloptr,
     errors,
     rcdk,
