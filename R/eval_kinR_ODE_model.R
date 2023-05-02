@@ -113,7 +113,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     #
   }
   #
-  if (model.react == "(x=1)R --> [k1] B"){
+  if (grepl("^\\(x=.*R --> \\[k1\\] B$",model.react)){
     #
     ## functions for derivative solution of kinetic equation
     react_rates_diff_01 <- function(t,qvar,kin.params,c_x){
@@ -176,7 +176,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     ## data frame for plotting
     result.df.plot <- result.df
   }
-  if (model.react == "(x=1)A --> [k1] R"){
+  if (grepl("^\\(x=.*A --> \\[k1\\] R$",model.react)){
     ## functions for derivative solution of kinetic equation
     react_rates_diff_02 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
@@ -237,7 +237,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       tidyr::pivot_longer(!time,names_to = "Species",values_to = "qvar") %>%
       dplyr::arrange(time)
   }
-  if (model.react == "(x=1)A --> [k1] (x=1)R --> [k2] C"){
+  if (grepl("^\\(x=.*A --> \\[k1\\] \\(x=.*R --> \\[k2\\] C$",model.react)){
     ## functions for derivative solution of kinetic equation
     react_rates_diff_03 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
@@ -302,7 +302,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       tidyr::pivot_longer(!time,names_to = "Species",values_to = "qvar") %>%
       dplyr::arrange(time)
   }
-  if (model.react == "(x=1)R <==> [k1] [k2] B"){
+  if (grepl("^\\(x=.*R <==> \\[k1\\] \\[k2\\] B$",model.react)){
     ## functions for derivative solution of kinetic equation
     react_rates_diff_04 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
@@ -365,7 +365,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       tidyr::pivot_longer(!time,names_to = "Species",values_to = "qvar") %>%
       dplyr::arrange(time)
   }
-  if (model.react == "(x=1)A <==> [k1] [k2] (x=1)R"){
+  if (grepl("^\\(x=.*A <==> \\[k1\\] \\[k2\\] \\(x=.*R$",model.react)){
     ## functions for derivative solution of kinetic equation
     react_rates_diff_05 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
@@ -428,7 +428,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       tidyr::pivot_longer(!time,names_to = "Species",values_to = "qvar") %>%
       dplyr::arrange(time)
   }
-  if (model.react == "A [k1] <-- (x=1)R --> [k2] B"){
+  if (grepl("^A \\[k1\\] <-- \\(x=.*R --> \\[k2\\] B$",model.react)){
     ## functions for derivative solution of kinetic equation
     react_rates_diff_06 <- function(t,qvar,kin.params,c_x){
       k1 <- kin.params$k1
@@ -487,7 +487,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     ## data frame for plotting
     result.df.plot <- result.df
   }
-  if (model.react == "(x=1)A + (y=1)B --> [k1] R"){
+  if (grepl("^\\(x=.*A \\+ \\(y=.*B --> \\[k1\\] R$",model.react)){
     ## functions for derivative solution of kinetic equation
     react_rates_diff_07 <- function(t,qvar,kin.params,c_x,c_y){
       k1 <- kin.params$k1
@@ -599,8 +599,8 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   }
   #
   ## kinetics-behavior plots
-  if (model.react == "(x=1)R --> [k1] B" ||
-      model.react == "A [k1] <-- (x=1)R --> [k2] B"){
+  if (grepl("^\\(x=.*R --> \\[k1\\] B$",model.react) ||
+      grepl("^A \\[k1\\] <-- \\(x=.*R --> \\[k2\\] B$",model.react)){
     plot.base <- ggplot(result.df.plot) +
       geom_point(aes(x = .data[["time"]],
                  y = .data[["R"]]),
