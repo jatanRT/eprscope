@@ -30,10 +30,36 @@ eval_kinR_ODE_model(
 tbc
 }
 \description{
-A short description...
-  \tabular{lcll}{
-   \strong{Reaction Scheme} \tab \strong{model.react} \tab \strong{kin.params} \tab \strong{Description} \cr
- \eqn{(x=1)\text{R} \overrightarrow{k_1} \text{B}} \tab "(x=1)R --> [k1] B" \tab \code{k1},\code{qvar0R} \tab Blah \cr
+A short description ...
+  \tabular{lcl}{
+  \strong{Reaction Scheme} \tab | \tab \strong{model.react} \cr
+  ------------------------ \tab | \tab -------------------- \cr
+  \eqn{(x=1)\text{R} \xrightarrow{k_1} \text{B}} \tab | \tab \code{"(x=1)R --> [k1] B"} \cr
+   \eqn{(x=1)\text{A} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A --> [k1] R"} \cr
+   \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{C}} \tab | \tab
+   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \cr
+   \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab \code{"(x=1)R <==> [k1] [k2] B"} \cr
+  }
+
+  Additional description ...
+  \tabular{ccl}{
+  \strong{model.react} \tab | \tab \strong{Description} \cr
+  -------------------- \tab | \tab -------------------- \cr
+  \code{"(x=1)R --> [k1] B"} \tab | \tab Blah Blah Blah \cr
+  \code{"(x=1)A --> [k1] R"} \tab | \tab Blah Blah Blah \cr
+  \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab Blah Blah Blah \cr
+  \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab Blah Blah Blah \cr
+  }
+
+  More additional description ...
+  \tabular{ccl}{
+  \strong{model.react} \tab | \tab \strong{kin.params} \cr
+  -------------------- \tab | \tab ------------------- \cr
+  \code{"(x=1)R --> [k1] B"} \tab | \tab \code{k1}, \code{qvar0R}, (\code{n}) \cr
+  \code{"(x=1)A --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
+  \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A}, \code{qvar0R}, \code{qvar0C},
+  (\code{n}) \cr
+  \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, \code{qvar0B}, (\code{n}) \cr
   }
 }
 \examples{
