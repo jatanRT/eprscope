@@ -19,7 +19,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
            is not specified. Please, define ! ")
     } else{
       time.expr <- data.expr[[time.expr.series]]
-      final.time <- max(data.expr[[time.expr.series]]) 
+      final.time <- max(data.expr[[time.expr.series]])
     }
   }
   #
@@ -58,7 +58,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     ## functions for derivative solution of kinetic equation
     react_rates_diff <- function(t,qvar,kin.params,c_x){
       ## t <- time vector
-      ## qvar <- concentration, double EPR integral, (`qvar` \equiv "quantitative varialble") 
+      ## qvar <- concentration, double EPR integral, (`qvar` \equiv "quantitative varialble")
       ## number of radicals...etc. vector
       ## kin.rate.params <- rate constant and coeffs.
       k1 <- kin.params$k1
@@ -105,10 +105,12 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result) %>%
       `if`(!is.null(data.expr),
            dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    ## the first col. is `time` and 2nd has to be renamed
+    names(result.df)[2] <- "R"
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[[2]]
+      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
     }
     #
     ## data frame for plotting
@@ -414,10 +416,12 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result) %>%
       `if`(!is.null(data.expr),
            dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    ## the first col. is `time` and 2nd has to be renamed
+    names(result.df)[2] <- "R"
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[[2]]
+      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
     }
     #
     ## data frame for plotting
@@ -471,11 +475,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     #
     ## rate constant and other params. definition
     k1 <- kin.params["k1"]
-    if (stoichiom_coeff(model.react) == "n" & 
+    if (stoichiom_coeff(model.react) == "n" &
         inherits(stoichiom_coeff(model.react,coeff = "y"),"numeric")){
       n <- kin.params["n"]
     }
-    if (inherits(stoichiom_coeff(model.react),"numeric") & 
+    if (inherits(stoichiom_coeff(model.react),"numeric") &
         stoichiom_coeff(model.react,coeff = "y") == "m"){
       m <- kin.params["m"]
     }
@@ -484,33 +488,33 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       m <- kin.params["m"]
     }
     ## solving `ordinary diff. equation(s)`
-    if (stoichiom_coeff(model.react) == "n" & 
+    if (stoichiom_coeff(model.react) == "n" &
         inherits(stoichiom_coeff(model.react,coeff = "y"),"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             c_y = stoichiom_coeff(model.react,coeff = "y"), 
+                             c_y = stoichiom_coeff(model.react,coeff = "y"),
                              func = react_rate_diff,
                              parms = list(k1 = k1,n = n))
     }
-    if (inherits(stoichiom_coeff(model.react),"numeric") & 
+    if (inherits(stoichiom_coeff(model.react),"numeric") &
         stoichiom_coeff(model.react,coeff = "y") == "m"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             c_y = stoichiom_coeff(model.react,coeff = "y"), 
+                             c_y = stoichiom_coeff(model.react,coeff = "y"),
                              func = react_rate_diff,
                              parms = list(k1 = k1,m = m))
     }
     if (x == "n" & y == "m"){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             c_y = stoichiom_coeff(model.react,coeff = "y"), 
+                             c_y = stoichiom_coeff(model.react,coeff = "y"),
                              func = react_rate_diff,
                              parms = list(k1 = k1,n = n,m = m))
     }
     if (inherits(x,"numeric") & inherits(y,"numeric")){
       result <- deSolve::ode(y = qvar0,times = t,
                              c_x = stoichiom_coeff(model.react),
-                             c_y = stoichiom_coeff(model.react,coeff = "y"), 
+                             c_y = stoichiom_coeff(model.react,coeff = "y"),
                              func = react_rate_diff,
                              parms = list(k1 = k1))
     }
@@ -530,5 +534,44 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
       tidyr::pivot_longer(!time,names_to = "Species",values_to = "qvar") %>%
       dplyr::arrange(time)
   }
-  #  
+  #
+  ## kinetics-behavior plots
+  if (model.react == "(x=1)R --> [k1] B" ||
+      model.react == "A [k1] <-- (x=1)R --> [k2] B"){
+    plot.base <- ggplot(result.df.plot) +
+      geom_point(aes(x = .data[["time"]],
+                 y = .data[["R"]]),
+                 size = 2.4,
+                 shape = 18,
+                 color = "darkviolet") +
+      geom_line()
+  } else {
+    plot.base <- ggplot(result.df.plot) +
+      geom_point(aes(x = .data[["time"]],
+                 y = .data[["qvar"]],
+                 color = .data[["Species"]]),
+                 size = 2.4,
+                 shape = 18) +
+      geom_line() +
+      theme(legend.title = element_text(size = 14),
+            legend.text = element_text(size = 13))
+  }
+  #
+  ## the entire plot
+  plot <- plot.base +
+    labs(title = model.react,
+         x = plot_labels_xyz(Time,s),
+         y = bquote(italic(Quantitative Variable)~~bolditalic(qvar))) +
+    plot_theme_In_ticks() +
+    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+    scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+    theme(plot.title = element_text(hjust = 0.5))
+  #
+  ## RESULTS
+  if (isFALSE(model.expr.diff)){
+    return(list(df = result.df,plot = plot))
+  } else{
+    return(diff.model.expr)
+  }
+#
 }
