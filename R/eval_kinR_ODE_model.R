@@ -162,9 +162,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+    if (!is.null(data.expr)){
+      result.df <- result.df %>%
+        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+    }
     ## the first col. is `time` and 2nd has to be renamed
     names(result.df)[2] <- "R"
     #
@@ -223,9 +225,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+      if (!is.null(data.expr)){
+        result.df <- result.df %>%
+          dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+      }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
@@ -288,9 +292,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+      if (!is.null(data.expr)){
+        result.df <- result.df %>%
+          dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+      }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
@@ -351,9 +357,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+      if (!is.null(data.expr)){
+        result.df <- result.df %>%
+          dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+      }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
@@ -414,9 +422,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+      if (!is.null(data.expr)){
+        result.df <- result.df %>%
+          dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+      }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
@@ -473,9 +483,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+      if (!is.null(data.expr)){
+        result.df <- result.df %>%
+          dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+      }
     ## the first col. is `time` and 2nd has to be renamed
     names(result.df)[2] <- "R"
     #
@@ -583,9 +595,11 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     }
     #
     ## conversion into data frame
-    result.df <- data.frame(result) %>%
-      `if`(!is.null(data.expr),
-           dplyr::filter(time %in% data.expr[[time.expr.series]]), .)
+    result.df <- data.frame(result)
+      if (!is.null(data.expr)){
+        result.df <- result.df %>%
+          dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+      }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)){
       ## difference
