@@ -57,6 +57,7 @@ Imports:
     dplyr,
     tidyr,
     broom,
+    minpack.lm,
     stringr,
     constants,
     collapse,
