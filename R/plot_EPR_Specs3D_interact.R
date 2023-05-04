@@ -56,7 +56,7 @@
 #'
 #' @export
 #'
-#' @importFrom collapse qM qDF
+#'
 plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       x = "B_mT",
                                       Intensity = "dIepr_over_dB",
@@ -114,7 +114,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     dplyr::select(.data[[var2nd.series]], .data[[x]], .data[[Intensity]]) %>%
     tidyr::pivot_wider(names_from = .data[[var2nd.series]], values_from = .data[[Intensity]]) %>%
     dplyr::select(-.data[[x]]) %>%
-    collapse::qM()
+    as.matrix()
   ## transpose matrix in order to present 3D spectra properly
   Intensity_matrix <- t(Intensity_matrix)
   #
@@ -316,7 +316,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     ## re-transpose
     Intensity_matrix <- t(Intensity_matrix)
     ## matrix -> data frame
-    matrix_to_df_table <- collapse::qDF(Intensity_matrix)
+    matrix_to_df_table <- as.data.frame(Intensity_matrix)
     ## column names
     colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd.series]])
     ## return both plot and table in list

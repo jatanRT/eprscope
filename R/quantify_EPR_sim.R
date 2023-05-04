@@ -46,7 +46,6 @@
 #'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange matches across
-#' @importFrom collapse fsubset qDF fsummarize
 #' @importFrom nloptr slsqp neldermead mma ccsaq
 quantify_EPR_sim <- function(data.spectra.series,
                              dir_ASC_sim,
@@ -166,7 +165,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## to be ready to optimize each individual spectrum
   data.list <- lapply(
     var2nd_seq,
-    function(t) collapse::fsubset(data.specs.sim, data.specs.sim[[var2nd.series]] == t)
+    function(t) subset(data.specs.sim, data.specs.sim[[var2nd.series]] == t)
   )
   ## optimization function
   optim.func <- function(method = "slsqp",x0,fn,lower,upper,data,col.name.pattern){
@@ -255,7 +254,7 @@ quantify_EPR_sim <- function(data.spectra.series,
            optim.list.x0n.df$weight_Sim_A)
   #
   ## matrix transformed into data frame
-  data.specs.sim.modif[[1]] <- collapse::qDF(data.specs.sim.modif[[1]])
+  data.specs.sim.modif[[1]] <- as.data.frame(data.specs.sim.modif[[1]])
   ## changing the column names
   names(data.specs.sim.modif[[1]]) <- var2nd_seq
   ## adding column of `B` in order to properly work with `pivot_longer` (see below)
@@ -294,7 +293,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                optim.list.x0n.df[[d]])
       #
       ## matrix transformed into data frame
-      data.specs.sim.modif[[d]] <- collapse::qDF(data.specs.sim.modif[[d]])
+      data.specs.sim.modif[[d]] <- as.data.frame(data.specs.sim.modif[[d]])
       ## changing the column names
       names(data.specs.sim.modif[[d]]) <- var2nd_seq
       ## adding column of `B` in order to properly work with `pivot_longer` (see below)

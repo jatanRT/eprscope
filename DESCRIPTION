@@ -60,7 +60,6 @@ Imports:
     minpack.lm,
     stringr,
     constants,
-    collapse,
     deSolve,
     nloptr,
     errors,
@@ -75,7 +74,10 @@ Imports:
     webshot2
 Suggests: 
     kableExtra,
-    quarto,
+    cowplot,
+    grid,
+    gridExtra,
+    patchwork,
     writexl,
     flextable,
     openxlsx
