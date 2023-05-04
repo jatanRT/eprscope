@@ -19,8 +19,8 @@
 #' @return Named vector of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty} format depending \code{separate} parameter
 #'
 #' @examples
-#' eval_interval_cnfd_t_vec(c(0.025,0.020,0.031,0.022,0.035))
-#' eval_interval_cnfd_t_vec(c(0.025,0.020,0.031,0.022,0.035),
+#' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035))
+#' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
 #'                          level.cnfd = 0.99,
 #'                          separate = FALSE)
 #'
@@ -29,10 +29,10 @@
 #'
 #' @importFrom stats qt sd
 #' @importFrom errors set_errors
-eval_interval_cnfd_t_vec <- function(data.vec.col,
-                                     level.cnfd = 0.95,
-                                     lw.tail = TRUE,
-                                     separate = FALSE) {
+eval_interval_cnfd_tVec <- function(data.vec.col,
+                                    level.cnfd = 0.95,
+                                    lw.tail = TRUE,
+                                    separate = FALSE) {
   #
   ## alpha (significance level)
   level.sgnf <- 1 - level.cnfd
