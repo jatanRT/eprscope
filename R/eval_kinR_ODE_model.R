@@ -650,7 +650,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     labs(title = model.react,
          caption = caption.char.vec,
          x = bquote(italic(Time)~~"("~s~")"),
-         y = bquote(italic(Quantitative~~Variable)~~bolditalic(qvar))) +
+         y = bquote(italic(Quantitative~~Variable)~~~~bolditalic(qvar))) +
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +

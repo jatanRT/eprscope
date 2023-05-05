@@ -147,10 +147,16 @@ eval_kinR_EPR_modelFit <- function(data.spectra.series,
                        guide = guide_legend(override.aes = list(shape = c(16, NA),
                                                                 linetype = c("blank", "solid"))))
   #
+  ## Caption
+  # plot.params.names <- lapply(names(predict.model.params),
+  #                                    function(i) bquote(bolditalic(string2lang(.(i)))))
+  # plot.caption <- Map(function(i,j) bquote(.(i) == .(j)),plot.params.names,predict.model.params)
   ## final.plot
   plot.fit <- plot.fit.base +
     labs(title = model.react,
          color = "",
+         caption = "Least-Square Fit by Levenberg-Marquardt Algorithm and
+                    Numerical Solution of Ordinary Differential Equations System.",
          x = bquote(italic(Time)~~"("~s~")"),
          y = bquote(italic(Integral~~Intensity)~~"("~p.d.u.~")")) +
     plot_theme_In_ticks() +
