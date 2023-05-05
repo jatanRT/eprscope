@@ -39,6 +39,10 @@ A short description ...
    \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{C}} \tab | \tab
    \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \cr
    \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab \code{"(x=1)R <==> [k1] [k2] B"} \cr
+   \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} \text{R}} \tab | \tab \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \cr
+   \eqn{\text{A} \xleftarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{B}} \tab | \tab
+   \code{"A [k1] <-- (x=1)R --> [k2] B"} \cr
+   \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
   }
 
   Additional description ...
@@ -49,6 +53,9 @@ A short description ...
   \code{"(x=1)A --> [k1] R"} \tab | \tab Blah Blah Blah \cr
   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab Blah Blah Blah \cr
   \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab Blah Blah Blah \cr
+  \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab Blah Blah Blah \cr
+  \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab Blah Blah Blah \cr
+  \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab Blah Blah Blah \cr
   }
 
   More additional description ...
@@ -60,6 +67,9 @@ A short description ...
   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A}, \code{qvar0R}, \code{qvar0C},
   (\code{n}) \cr
   \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, \code{qvar0B}, (\code{n}) \cr
+  \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
+  \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, (\code{n}) \cr
+  \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0B}, \code{qvar0R}, (\code{n}) \cr
   }
 }
 \examples{
