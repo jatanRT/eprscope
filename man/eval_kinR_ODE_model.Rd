@@ -43,8 +43,8 @@ the \code{model.react} character string. Defined/Allowed values are \code{"(x=1)
 and \code{"(x=n)"}. \strong{The latest notation (\code{"(x=n)"}) is USED ONLY FOR FITTING},
 see \code{\link{eval_kinR_EPR_modelFit}}, in order to also consider a possible non-integer stoichiometric
 coefficients. If equal coefficients are given for both sides of (partial) reaction
-they have to be changed equally (e.g. like \code{"(x=2)A <==> [k1] [k2] (x=2)R"}). These stoichiometric coefficients
-may be varied independently.}
+they have to be changed equally (e.g. like \code{"(x=2)A <==> [k1] [k2] (x=2)R"}). Otherwise, the stoichiometric
+coefficients may be varied independently (e.g. like in \code{"(x=1)A + (y=2)B --> [k1] R"}).}
 
 \item{model.expr.diff}{parmeter/argument tbc}
 
