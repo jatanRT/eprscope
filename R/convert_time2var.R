@@ -10,12 +10,12 @@
 #' electrochemical/voltammetric or variable temperature experiment.
 #'
 #'
-#' @param time Numeric, value or vector corresponding to time (points) upon which the variable \code{var}
+#' @param time Numeric, value or vector corresponding to time (points) where the variable \code{var}
 #'   is changed.
 #' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
-#'   \strong{Default}: \code{time.unit = "s"}
+#'   \strong{Default}: \code{time.unit = "s"}.
 #' @param var0 Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
-#'   negative electrochemical potential) of variable (\code{var}).
+#'   negative electrochemical potential) of the variable (\code{var}).
 #' @param var.switch Numeric, the switching point \code{var} value, when a linear \strong{cyclic change}
 #'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
 #'   \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).
@@ -29,8 +29,7 @@
 #'
 #' @examples
 #' ## Calculate Potential after 30 s, starting from 200 mV
-#' ## (vs Reference Electrode) into cathodic direction
-#' ## (reduction) by 5 mV/s
+#' ## into cathodic direction (reduction) by 5 mV/s
 #' convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
 #' #
 #' ## Heating sample after 5 min starting from 293 K

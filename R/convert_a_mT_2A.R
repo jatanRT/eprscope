@@ -2,18 +2,21 @@
 #' Convert Splitting Constants (\eqn{a} in mT) to Coupling ones (\eqn{A} in MHz).
 #'
 #'
-#' @description Converts hyperfine splitting constants HFSCs (\eqn{a} values in \code{mT})
-#'   to hyperfine coupling constants HFCCs (\eqn{A} values in \code{MHz}) according to following
+#' @description Function converts hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
+#'   into hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz}) according to following
 #'   relation:
 #'   \deqn{A = (a\,g\,\mu_{\text{B}}) / h}
+#'   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
+#'   Both latter can be obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively
+#'   from the \pkg{constants} package. Conversion is suitable for EPR simulations and/or ENDOR.
 #'
 #'
 #' @param a.mT Numeric value/vector of HFSCs in \code{mT} ('line distances' from EPR spectrum)
 #' @param g Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
-#' \strong{Default:} \code{g = 2.00231930} (corresp. to free electron)
+#' \strong{Default:} \code{g = 2.00231930} (corresponding to free electron).
 #'
 #'
-#' @returns Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz})
+#' @returns Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz}).
 #'
 #'
 #' @examples

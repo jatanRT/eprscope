@@ -1,22 +1,9 @@
 #
-#' Radical Kinetic Models Solved by Ordinary Differential Equations (ODE) for Visualization and Fitting
+#' Kinetic Models Solved by Ordinary Differential Equations (ODE) for Visualization and Fitting of Radical Reactions
 #'
 #'
 #' @description
 #'   A short description ...
-#'   \tabular{lcl}{
-#'   \strong{Reaction Scheme} \tab | \tab \strong{model.react} \cr
-#'   ------------------------ \tab | \tab -------------------- \cr
-#'   \eqn{(x=1)\text{R} \xrightarrow{k_1} \text{B}} \tab | \tab \code{"(x=1)R --> [k1] B"} \cr
-#'    \eqn{(x=1)\text{A} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A --> [k1] R"} \cr
-#'    \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{C}} \tab | \tab
-#'    \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \cr
-#'    \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab \code{"(x=1)R <==> [k1] [k2] B"} \cr
-#'    \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} \text{R}} \tab | \tab \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \cr
-#'    \eqn{\text{A} \xleftarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{B}} \tab | \tab
-#'    \code{"A [k1] <-- (x=1)R --> [k2] B"} \cr
-#'    \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
-#'   }
 #'
 #'   Additional description ...
 #'   \tabular{ccl}{
@@ -46,7 +33,34 @@
 #'   }
 #'
 #'
-#' @param model.react parameter/argument tbc
+#' @param model.react Character string denoting a specific radical (\code{"R"}) reaction related to changes in integral
+#'   intensities in EPR spectral time series. Arrow show the direction of reaction (\code{"-->"}, irreversible
+#'   or \code{"<==>", reversible}). Rate constants are indicated by square brackets after the arrows.
+#'   Notation inherited from \href{https://www.ctan.org/pkg/mhchem?lang=en}{\eqn{\LaTeX} `mhchem` package}.
+#'   Following reaction schemes are the most common used to describe the integral intensity and/or radical
+#'   concentration/amount changes during the EPR time series experiment.
+#'   \tabular{lcl}{
+#'   \strong{Reaction Scheme} \tab | \tab \strong{model.react} \cr
+#'   ------------------------ \tab | \tab -------------------- \cr
+#'   \eqn{(x=1)\text{R} \xrightarrow{k_1} \text{B}} \tab | \tab \code{"(x=1)R --> [k1] B"} \cr
+#'    \eqn{(x=1)\text{A} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A --> [k1] R"} \cr
+#'    \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{C}} \tab | \tab
+#'    \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \cr
+#'    \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab \code{"(x=1)R <==> [k1] [k2] B"} \cr
+#'    \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} \text{R}} \tab | \tab \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \cr
+#'    \eqn{\text{A} \xleftarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{B}} \tab | \tab
+#'    \code{"A [k1] <-- (x=1)R --> [k2] B"} \cr
+#'    \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
+#'   }
+#'   Couple of examples are also given in the description. The function is relatively flexible and enables later addition
+#'   of any other reaction schemes describing the EPR time series experiments (you may ask developer(s) via `github issue`).
+#'   The stoichiometric coefficient (e.g. like \code{"(x=1)"} or code{"(y=1)"}) can be varied within
+#'   the \code{model.react} character string. Defined/Allowed values are \code{"(x=1)"},  \code{"(x=2)"}
+#'   and \code{"(x=n)"}. \strong{The latest notation (\code{"(x=n)"}) is USED ONLY FOR FITTING},
+#'   see \code{\link{eval_kinR_EPR_modelFit}}, in order to also consider a possible non-integer stoichiometric
+#'   coefficients. If equal coefficients are given for both sides of (partial) reaction
+#'   they have to be changed equally (e.g. like \code{"(x=2)A <==> [k1] [k2] (x=2)R"}). These stoichiometric coefficients
+#'   may be varied independently.
 #' @param model.expr.diff parmeter/argument tbc
 #' @param kin.params parameter/argument tbc
 #' @param data.expr parameter/argument tbc
