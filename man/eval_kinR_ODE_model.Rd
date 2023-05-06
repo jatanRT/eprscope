@@ -27,11 +27,14 @@ concentration/amount changes during the EPR time series experiment.
  \eqn{(x=1)\text{A} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A --> [k1] R"} \cr
  \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{C}} \tab | \tab
  \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \cr
- \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab \code{"(x=1)R <==> [k1] [k2] B"} \cr
- \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} \text{R}} \tab | \tab \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \cr
+ \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab
+ \code{"(x=1)R <==> [k1] [k2] B"} \cr
+ \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} (x=1)\text{R}} \tab | \tab
+ \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \cr
  \eqn{\text{A} \xleftarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{B}} \tab | \tab
  \code{"A [k1] <-- (x=1)R --> [k2] B"} \cr
- \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
+ \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab
+ \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
 }
 Couple of examples are also given in the description. The function is relatively flexible and enables later addition
 of any other reaction schemes describing the EPR time series experiments (you may ask developer(s) via `github issue`).
