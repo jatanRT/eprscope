@@ -38,32 +38,49 @@
 #'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
+#' @param var2nd.series.slct.by Numeric, ... tbc ... description
 #' @param Intensity Character/String pointing to \code{intensity column} in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
-#' @param line.colors Character string, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-#'   colors are allowed, \strong{default}: \code{line.colors = "steelblue"}. In case of \code{var2nd.series}
-#'   is not NULL the parameter/argument is identical with the \code{colors} one from
-#'   \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions are allowed =>
-#'   \itemize{
-#'     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 1}
-#'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
-#'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
-#'     of colors \eqn{n \geq 1} should be specified.
-#'     See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
-#'     and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color Palettes}
-#'   }
+#' @param line.colors Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
+#'   colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
+#'   For series of EPR spectra two colorscales are used
+#'   \describe{
+#'   \item {\strong{Continuous}.}{This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
+#'   and \code{var2nd.series.slct.by = NULL}. The \code{line.colors} argument is identical with the continuous
+#'   \code{colorscales} one from \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions
+#'   are allowed =>
+  #'   \itemize{
+  #'     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+  #'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
+  #'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
+  #'     of colors \eqn{n \geq 2} should be specified.
+  #'     See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
+  #'     and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color
+  #'     Palettes}
+  #'   }}
+#'   \item {\strong{Discrete}.}{This is the case when both \code{var2nd.series}
+#'   as well as \code{var2nd.series.slct.by} are \strong{DISTINCT} from \code{NULL}. Following color definitions
+#'   are allowed =>
+  #'   \itemize{
+  #'   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+  #'   \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
+  #'   These involve \code{"magma"} (or \code{"A"}), \code{"inferno"} (or \code{"B"}), \code{"plasma"} (or \code{"C"}),
+  #'   \code{"viridis"} (or \code{"D"}), \code{"cividis"} (or \code{"E"}), \code{"rocket"} (or \code{"F"}),
+  #'   \code{"mako"} (or \code{"G"}) and \code{"turbo"} (or \code{"H"})
+  #'   }}
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
 #' @param theme.basic Character/String, which calls a ggplot theme base. The following ones are defined:
-#'   \itemize{
-#'     \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
-#'     \item \code{"theme_bw"} => the white background with thin gray grid lines
-#'     \item \code{"theme_light"} => similar to \code{theme_bw()} but without the pronounced axis black lines
-#'     \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
-#'     \item \code{"theme_linedraw"} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
-#'     theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
+#'   \describe{
+#'     \item {\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
+#'     \item {\code{"theme_bw"}}{ => the white background with thin gray grid lines}
+#'     \item {\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
+#'     \item {\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
+#'     \item {\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
+#'     as well as the grid-lines, theme is proposed \strong{for publications}
+#'     (if the \code{grid} is set to \code{FALSE})}
 #'   }
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
 #'   \strong{default}: \code{axis.text.size = 14}
@@ -94,13 +111,12 @@
 #' plot_EPR_Specs(data.spectra,
 #'               x = "Field",
 #'               x.unit = "G",
-#'               var2nd = "time_s",
+#'               var2nd.series = "time_s",
 #'               line.colors = grDevices::rainbow(6),
 #'               basic.theme = "theme_linedraw",
 #'               legend.title = "Time (s)",
 #'               legend.title.size = 13,
 #'               legend.text.size = 11,
-#'               var2nd.series = TRUE,
 #'               yTicks = FALSE)
 #' plot_EPR_Specs(data.spectra,
 #'               x = "g_Value",
@@ -120,12 +136,13 @@
 #'
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
 #'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
-#'   theme_minimal theme_classic theme_linedraw scale_color_gradientn theme
+#'   theme_minimal theme_classic theme_linedraw scale_color_gradientn theme scale_color_viridis_d
 plot_EPR_Specs <- function(data.spectra,
                            x = "B_mT",
                            x.unit = "mT",
                            xlim = NULL,
                            var2nd.series = NULL,
+                           var2nd.series.slct.by = NULL,
                            Intensity = "dIepr_over_dB",
                            line.colors = "steelblue",
                            line.width = 0.75,
@@ -287,7 +304,9 @@ plot_EPR_Specs <- function(data.spectra,
         legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
         #
         simplePlot <- ggplot(data.spectra) +
-          geom_line(aes(x = .data[[x]],y = .data[[Intensity]],color = .data[[var2nd.series]]),
+          geom_line(aes(x = .data[[x]],
+                        y = .data[[Intensity]],
+                        color = .data[[var2nd.series]]),
                     linewidth = line.width) +
           coord_cartesian(xlim = x.plot.limits) +
           scale_color_gradientn(colors = line.colors) +
@@ -295,10 +314,50 @@ plot_EPR_Specs <- function(data.spectra,
           theme(legend.title = element_text(size = legend.title.size),
                 legend.text = element_text(size = legend.text.size))
         #
-        ## DOPLNIT OVERLAY SELECT PLOT !!!
-        # data.spectra <- data.spectra %>%
-        #   dplyr::filter(.data[[var2nd.series]] %in% slct.var2nd.series) %>%
-        #   dplyr::mutate(!!rlang::quo_name(var2nd.series) := as.factor(.data[[var2nd.series]]))
+        if (!is.null(var2nd.series.slct.by)){
+          ## OVERLAY SELECT PLOT
+          ## `var2nd.series` definition
+          var2nd.series.df <- data.spectra %>%
+            dplyr::group_by(.data[[var2nd.series]]) %>%
+            dplyr::group_keys()
+          #
+          var2nd.series.keys <- var2nd.series.df[[var2nd.series]]
+          var2nd.series.len <- length(var2nd.series.keys)
+          #
+          data.spectra <- data.spectra %>%
+            dplyr::filter(.data[[var2nd.series]] %in% var2nd.series.keys[seq(1,var2nd.series.len,
+                                                                             by = var2nd.series.slct.by)]) %>%
+            dplyr::mutate(!!rlang::quo_name(var2nd.series) := as.factor(.data[[var2nd.series]]))
+          #
+          ## simple plot without color
+          simplePlot.nocolor <- ggplot(data.spectra) +
+            geom_line(aes(x = .data[[x]],
+                          y = .data[[Intensity]],
+                          color = .data[[var2nd.series]]),
+                      linewidth = line.width) +
+            coord_cartesian(xlim = x.plot.limits)
+          #
+          ## colors definition for the plot
+          if (length(line.colors) > 1){
+            plot.vector.colors <- colorRampPalette(line.colors)(var2nd.series.len)
+            #
+            simplePlot <- simplePlot.nocolor +
+              scale_color_manual(values = plot.vector.colors) +
+              labs(color = legend.title, x = x.label, y = y.label) +
+              theme(legend.title = element_text(size = legend.title.size),
+                    legend.text = element_text(size = legend.text.size))
+          }
+          if (length(line.colors) == 1){
+            plot.vector.colors <- line.colors
+            #
+            simplePlot <- simplePlot.nocolor +
+              scale_color_viridis_d(option = plot.vector.colors) +
+              labs(color = legend.title, x = x.label, y = y.label) +
+              theme(legend.title = element_text(size = legend.title.size),
+                    legend.text = element_text(size = legend.text.size))
+          }
+         #
+        }
         #
       }
       #

@@ -76,6 +76,7 @@ Suggests:
     kableExtra,
     cowplot,
     grid,
+    RColorBrewer,
     gridExtra,
     patchwork,
     writexl,
