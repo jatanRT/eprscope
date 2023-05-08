@@ -10,6 +10,7 @@ plot_EPR_Specs(
   x.unit = "mT",
   xlim = NULL,
   var2nd.series = NULL,
+  var2nd.series.slct.by = NULL,
   Intensity = "dIepr_over_dB",
   line.colors = "steelblue",
   line.width = 0.75,
@@ -57,22 +58,46 @@ column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Ele
 (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
+\item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the plot,
+like e.g. display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
+fourth (\code{var2nd.series.slct.by = 4})...etc. spectrum. The argument is used in case
+\code{var2nd.series} is \strong{NOT NULL} (e.g. \code{var2nd.series = "time_s"}) and one wants to present
+separated labels/levels for spectra (not the continuous one). Recommended max. number of spectra/lines
+is 12.}
+
 \item{Intensity}{Character/String pointing to \code{intensity column} in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{line.colors}{Character string, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, \strong{default}: \code{line.colors = "steelblue"}. In case of \code{var2nd.series}
-is not NULL the parameter/argument is identical with the \code{colors} one from
-\code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions are allowed =>
-\itemize{
-  \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 1}
-  \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
-  \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
-  of colors \eqn{n \geq 1} should be specified.
-  See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
-  and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color Palettes}
-}}
+\item{line.colors}{Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
+  colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
+  For series of EPR spectra two colorscales are used
+  \enumerate{
+  \item \strong{Continuous.} This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
+  and \code{var2nd.series.slct.by = NULL}. The \code{line.colors} argument is identical with the continuous
+  \code{colorscales} one from \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions
+  are allowed =>
+  \itemize{
+    \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+    \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
+    \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
+    of colors \eqn{n \geq 2} should be specified.
+    See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
+    and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color
+    Palettes}
+  }
+
+  \item \strong{Discrete.} This is the case when both \code{var2nd.series}
+  as well as \code{var2nd.series.slct.by} are \strong{DISTINCT} from \code{NULL}. Following color definitions
+  are allowed =>
+  \itemize{
+  \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+  \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
+  These involve \code{"magma"} (or \code{"A"}), \code{"inferno"} (or \code{"B"}), \code{"plasma"} (or \code{"C"}),
+  \code{"viridis"} (or \code{"D"}), \code{"cividis"} (or \code{"E"}), \code{"rocket"} (or \code{"F"}),
+  \code{"mako"} (or \code{"G"}) and \code{"turbo"} (or \code{"H"})
+  }
+  }}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
 
@@ -81,13 +106,14 @@ is not NULL the parameter/argument is identical with the \code{colors} one from
 \item{border.line.color}{tbc}
 
 \item{theme.basic}{Character/String, which calls a ggplot theme base. The following ones are defined:
-\itemize{
-  \item \code{"theme_gray"} (\strong{default} one) => the gray background with white grid lines
-  \item \code{"theme_bw"} => the white background with thin gray grid lines
-  \item \code{"theme_light"} => similar to \code{theme_bw()} but without the pronounced axis black lines
-  \item \code{"theme_classic"} => without grid, pronounced axis lines, however no opposite ones
-  \item \code{"theme_linedraw"} => pronounced axis lines (both for origin and opposite) as well as the grid-lines,
-  theme is proposed \strong{for publications} (if the \code{grid} is set to \code{FALSE})
+\describe{
+  \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
+  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines}
+  \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
+  \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
+  \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
+  as well as the grid-lines, theme is proposed \strong{for publications}
+  (if the \code{grid} is set to \code{FALSE})}
 }}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
@@ -135,13 +161,12 @@ plot_EPR_Specs(data.spectra,
 plot_EPR_Specs(data.spectra,
               x = "Field",
               x.unit = "G",
-              var2nd = "time_s",
+              var2nd.series = "time_s",
               line.colors = grDevices::rainbow(6),
               basic.theme = "theme_linedraw",
               legend.title = "Time (s)",
               legend.title.size = 13,
               legend.text.size = 11,
-              var2nd.series = TRUE,
               yTicks = FALSE)
 plot_EPR_Specs(data.spectra,
               x = "g_Value",

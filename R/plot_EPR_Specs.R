@@ -38,47 +38,54 @@
 #'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
-#' @param var2nd.series.slct.by Numeric, ... tbc ... description
+#' @param var2nd.series.slct.by Numeric, number corresponding to each \eqn{n-th} presented spectrum in the plot,
+#'   like e.g. display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
+#'   fourth (\code{var2nd.series.slct.by = 4})...etc. spectrum. The argument is used in case
+#'   \code{var2nd.series} is \strong{NOT NULL} (e.g. \code{var2nd.series = "time_s"}) and one wants to present
+#'   separated labels/levels for spectra (not the continuous one). Recommended max. number of spectra/lines
+#'   is 12.
 #' @param Intensity Character/String pointing to \code{intensity column} in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
 #' @param line.colors Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
 #'   colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
 #'   For series of EPR spectra two colorscales are used
-#'   \describe{
-#'   \item {\strong{Continuous}.}{This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
+#'   \enumerate{
+#'   \item \strong{Continuous.} This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
 #'   and \code{var2nd.series.slct.by = NULL}. The \code{line.colors} argument is identical with the continuous
 #'   \code{colorscales} one from \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions
 #'   are allowed =>
-  #'   \itemize{
-  #'     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
-  #'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
-  #'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
-  #'     of colors \eqn{n \geq 2} should be specified.
-  #'     See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
-  #'     and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color
-  #'     Palettes}
-  #'   }}
-#'   \item {\strong{Discrete}.}{This is the case when both \code{var2nd.series}
+#'   \itemize{
+#'     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+#'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
+#'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
+#'     of colors \eqn{n \geq 2} should be specified.
+#'     See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
+#'     and \href{https://developer.r-project.org/Blog/public/2019/04/01/hcl-based-color-palettes-in-grdevices/}{HCL Color
+#'     Palettes}
+#'   }
+#'
+#'   \item \strong{Discrete.} This is the case when both \code{var2nd.series}
 #'   as well as \code{var2nd.series.slct.by} are \strong{DISTINCT} from \code{NULL}. Following color definitions
 #'   are allowed =>
-  #'   \itemize{
-  #'   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
-  #'   \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
-  #'   These involve \code{"magma"} (or \code{"A"}), \code{"inferno"} (or \code{"B"}), \code{"plasma"} (or \code{"C"}),
-  #'   \code{"viridis"} (or \code{"D"}), \code{"cividis"} (or \code{"E"}), \code{"rocket"} (or \code{"F"}),
-  #'   \code{"mako"} (or \code{"G"}) and \code{"turbo"} (or \code{"H"})
-  #'   }}
+#'   \itemize{
+#'   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+#'   \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
+#'   These involve \code{"magma"} (or \code{"A"}), \code{"inferno"} (or \code{"B"}), \code{"plasma"} (or \code{"C"}),
+#'   \code{"viridis"} (or \code{"D"}), \code{"cividis"} (or \code{"E"}), \code{"rocket"} (or \code{"F"}),
+#'   \code{"mako"} (or \code{"G"}) and \code{"turbo"} (or \code{"H"})
+#'   }
+#'   }
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
 #' @param theme.basic Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \describe{
-#'     \item {\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-#'     \item {\code{"theme_bw"}}{ => the white background with thin gray grid lines}
-#'     \item {\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
-#'     \item {\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
-#'     \item {\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
+#'     \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
+#'     \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines}
+#'     \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
+#'     \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
+#'     \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
 #'     as well as the grid-lines, theme is proposed \strong{for publications}
 #'     (if the \code{grid} is set to \code{FALSE})}
 #'   }
@@ -339,7 +346,7 @@ plot_EPR_Specs <- function(data.spectra,
           #
           ## colors definition for the plot
           if (length(line.colors) > 1){
-            plot.vector.colors <- colorRampPalette(line.colors)(var2nd.series.len)
+            plot.vector.colors <- grDevices::colorRampPalette(line.colors)(var2nd.series.len)
             #
             simplePlot <- simplePlot.nocolor +
               scale_color_manual(values = plot.vector.colors) +
