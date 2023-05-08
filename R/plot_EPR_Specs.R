@@ -346,7 +346,8 @@ plot_EPR_Specs <- function(data.spectra,
           #
           ## colors definition for the plot
           if (length(line.colors) > 1){
-            plot.vector.colors <- grDevices::colorRampPalette(line.colors)(var2nd.series.len)
+            plot.vector.colors <-
+              grDevices::colorRampPalette(colors = line.colors)(length(data.spectra[[var2nd.series]]))
             #
             simplePlot <- simplePlot.nocolor +
               scale_color_manual(values = plot.vector.colors) +
