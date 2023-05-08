@@ -107,34 +107,52 @@
 #'
 #' @examples
 #' \dontrun{
-#' plot_EPR_Specs(data.spectra)
-#' plot_EPR_Specs(data.spectra,
+#' ## simple plot of an EPR spectrum with `B` in `mT`
+#' ## and `dIepr_over_dB_Sim` in `p.d.u.` (derivative intensity)
+#' plot_EPR_Specs(data.spectrum)
+#' #
+#' ## simple plot of an EPR spectrum with `B` in `G`
+#' ## and `dIepr_over_dB_Sim` in `p.d.u.` (derivative intensity)
+#' plot_EPR_Specs(data.spectrum,
 #'               x = "B_G",
 #'               x.unit = "G",
-#'               Intensity = "dIepr_over_dB_Sim")
-#' plot_EPR_Specs(data.spectra,
-#'               x = "B_mT_Sim",
+#'               Intensity = "dIepr_over_dB")
+#' #
+#' ## single integrated EPR spectrum with `B` in `G`
+#' ## and `single_Integ` in `p.d.u.` (single integrated intensity)
+#' plot_EPR_Specs(data.spectrum.integ,
+#'               x = "B_G",
+#'               x.unit = "G"
 #'               Intensity = "single_Integ")
+#' #
+#' ## Continuous display of time series EPR spectra selecting
+#' ## continuous colorscale (see argument `line.colors`
+#' ## and color definitions `1.`)
 #' plot_EPR_Specs(data.spectra,
-#'               x = "Field",
-#'               x.unit = "G",
-#'               var2nd.series = "time_s",
-#'               line.colors = grDevices::rainbow(6),
-#'               basic.theme = "theme_linedraw",
-#'               legend.title = "Time (s)",
-#'               legend.title.size = 13,
-#'               legend.text.size = 11,
-#'               yTicks = FALSE)
+#'                var2nd.series = "time_s",
+#'                xlim = c(340,357.5),
+#'                line.colors = grDevices::hcl.colors(8,palette = "Roma"),
+#'                legend.title = "Time (s)",
+#'                yTicks = F)
+#' #
+#' ## Separated display of time series EPR spectra selecting
+#' ## discrete colorscale (see argument `line.colors`
+#' ## and color definitions `2.`). Each 8-th spectrum from
+#' ## original plot is presented
 #' plot_EPR_Specs(data.spectra,
-#'               x = "g_Value",
-#'               x.unit = "Unitless",
-#'               theme.basic = "theme_bw",
-#'               grid = TRUE)
-#' plot_EPR_Specs(data.spectra,
-#'               x = "RF_MHz",
-#'               x.unit = "MHz",
-#'               line.colors = "darkred",
-#'               line.width = 1.2)
+#'                var2nd.series = "time_s",
+#'                var2nd.series.slct.by = 8,
+#'                xlim = c(340,357.5),
+#'                line.colors = c("darkblue","darkorange","darkviolet"),
+#'                legend.title = "Time (s)")
+#' #
+#' ## Plotting simple ENDOR spectrum displayed
+#' ## as a "darkred" `line.colors`
+#' plot_EPR_Specs(data.spectrum,
+#'                x = "RF_MHz",
+#'                x.unit = "MHz",
+#'                line.colors = "darkred",
+#'                line.width = 1.2)
 #' }
 #'
 #'
