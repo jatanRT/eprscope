@@ -60,12 +60,12 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
   ## select all corresponding lines (which contain string pattern) from 'DSC' or 'par' file:
   str.dsc.sel.V <- sapply(
     str.epr.Instr.params.V,
-    function(x) grep(x, readLines(path_to_DSC_or_par), value = T)
+    function(x) grep(x, readLines(path_to_DSC_or_par), value = TRUE)
   )
   #
   str.dsc.sel.Ch <- sapply(
     str.epr.Instr.params.Ch,
-    function(w) grep(w, readLines(path_to_DSC_or_par), value = T)
+    function(w) grep(w, readLines(path_to_DSC_or_par), value = TRUE)
   )
   #
   ## split these strings into string couples (n=2) by space "  " ("\\s+"):

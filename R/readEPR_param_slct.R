@@ -73,7 +73,7 @@ readEPR_param_slct <- function(path_to_DSC_or_par,
   #
   ## path corresponds to file (.DSC) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
-  sel.str.line <- grep(string, readLines(path_to_DSC_or_par), value = T)
+  sel.str.line <- grep(string, readLines(path_to_DSC_or_par), value = TRUE)
   #
   ## such line is then separated (split) into two ('n = 2') string parts
   ## by 'str_split' comming from 'stringr' pckg.
