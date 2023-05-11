@@ -2,6 +2,9 @@
 #' Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description
 #' tbc
 #'

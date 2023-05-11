@@ -2,6 +2,9 @@
 #' Plotting Integrated Forms of EPR Spectra Acquired by \code{\link{eval_integ_EPR_Spec}}
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description
 #' tbc
 #'

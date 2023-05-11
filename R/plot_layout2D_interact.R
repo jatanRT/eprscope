@@ -2,6 +2,9 @@
 #' Additional Layout for Interactive Plots Similar to Layout from Plotly Package
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description
 #' tbc
 #'

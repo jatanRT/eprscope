@@ -2,6 +2,9 @@
 #' Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside of the Panel
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description TODO
 #'
 #'

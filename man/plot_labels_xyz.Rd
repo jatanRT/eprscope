@@ -28,23 +28,45 @@ TODO To write greek symbols, subscript and superscript, see
 }
 \examples{
 plot_labels_xyz(B,mT)
+#
 plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),
                 "("~p.d.u.~")",
                 user.defined = TRUE)
+#
 plot_labels_xyz(quantity = Delta*B[pp],
                 unit = "("~mT~")",
                 user.defined = TRUE)
+#
 plot_labels_xyz(t,s)
+#
 plot_labels_xyz(T,K)
+#
 plot_labels_xyz(E,
                 "("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),
                 user.defined = TRUE)
+#
 plot_labels_xyz(c,mmol~dm^-3)
+#
 plot_labels_xyz(Double~~Integral,
                 p.d.u.,
                 user.defined = FALSE)
+#
 plot_labels_xyz(italic(nu)[RF],"("~MHz~")",
                 user.defined = TRUE)
 
 
 }
+\seealso{
+Other Visualization and Graphics: 
+\code{\link{plot_EPR_Specs2D_interact}()},
+\code{\link{plot_EPR_Specs3D_interact}()},
+\code{\link{plot_EPR_Specs_integ}()},
+\code{\link{plot_EPR_Specs}()},
+\code{\link{plot_EPR_present_interact}()},
+\code{\link{plot_layout2D_interact}()},
+\code{\link{plot_theme_In_ticks}()},
+\code{\link{plot_theme_NoY_ticks}()},
+\code{\link{plot_theme_Out_ticks}()},
+\code{\link{presentEPR_Sim_Spec}()}
+}
+\concept{Visualization and Graphics}

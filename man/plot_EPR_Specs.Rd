@@ -108,7 +108,7 @@ if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or int
 \item{theme.basic}{Character/String, which calls a ggplot theme base. The following ones are defined:
 \describe{
   \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines}
+  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, theme is proposed \strong{for publications}}
   \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
   \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
   \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
@@ -200,3 +200,17 @@ plot_EPR_Specs(data.spectrum,
 
 
 }
+\seealso{
+Other Visualization and Graphics: 
+\code{\link{plot_EPR_Specs2D_interact}()},
+\code{\link{plot_EPR_Specs3D_interact}()},
+\code{\link{plot_EPR_Specs_integ}()},
+\code{\link{plot_EPR_present_interact}()},
+\code{\link{plot_labels_xyz}()},
+\code{\link{plot_layout2D_interact}()},
+\code{\link{plot_theme_In_ticks}()},
+\code{\link{plot_theme_NoY_ticks}()},
+\code{\link{plot_theme_Out_ticks}()},
+\code{\link{presentEPR_Sim_Spec}()}
+}
+\concept{Visualization and Graphics}

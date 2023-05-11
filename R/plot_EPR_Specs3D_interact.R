@@ -2,6 +2,9 @@
 #' Interactive (incl. Zooming, Data Reading...etc) 3D Plot for the Series of EPR Spectra
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description
 #' tbc
 #'

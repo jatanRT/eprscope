@@ -1,6 +1,10 @@
 #
 #' Essential Plotting of EPR/ENDOR Spectrum/Spectra
 #'
+#'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description Graph/Plot of an EPR/ENDOR spectrum/spectra ('overlay' plot) based on \pkg{ggplot2}-functionality.
 #'   Spectral data are in the form of data frame (details see below).
 #'   Theme of the graphic spectrum representation as well its line colors can be varied like
@@ -82,7 +86,7 @@
 #' @param theme.basic Character/String, which calls a ggplot theme base. The following ones are defined:
 #'   \describe{
 #'     \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-#'     \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines}
+#'     \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, theme is proposed \strong{for publications}}
 #'     \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
 #'     \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
 #'     \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)

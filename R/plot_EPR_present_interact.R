@@ -2,6 +2,9 @@
 #' Present/Save Interactive Plotly-Plot/-Graph for Publication (HTML,PDF,Word)
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description Depending on Output Document Format
 #'
 #'

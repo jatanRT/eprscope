@@ -2,6 +2,9 @@
 #' Labels for Various Plots (Spectroscopy incl. EPR, Voltammetry,...etc)
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description TODO To write greek symbols, subscript and superscript, see
 #'   \href{https://www.r-bloggers.com/math-notation-for-r-plot-titles-expression-and-bquote/}{R-Bloggers:Math Notation}
 #'   and \href{https://www.r-bloggers.com/r-plotmath-functions-combined-with-variable-values/}{R-Bloggers:Plotmath}
@@ -22,21 +25,29 @@
 #'
 #' @examples
 #' plot_labels_xyz(B,mT)
+#' #
 #' plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),
 #'                 "("~p.d.u.~")",
 #'                 user.defined = TRUE)
+#' #
 #' plot_labels_xyz(quantity = Delta*B[pp],
 #'                 unit = "("~mT~")",
 #'                 user.defined = TRUE)
+#' #
 #' plot_labels_xyz(t,s)
+#' #
 #' plot_labels_xyz(T,K)
+#' #
 #' plot_labels_xyz(E,
 #'                 "("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),
 #'                 user.defined = TRUE)
+#' #
 #' plot_labels_xyz(c,mmol~dm^-3)
+#' #
 #' plot_labels_xyz(Double~~Integral,
 #'                 p.d.u.,
 #'                 user.defined = FALSE)
+#' #
 #' plot_labels_xyz(italic(nu)[RF],"("~MHz~")",
 #'                 user.defined = TRUE)
 #'
