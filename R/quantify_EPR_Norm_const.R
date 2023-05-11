@@ -33,13 +33,13 @@
 #'
 quantify_EPR_Norm_const <- function(conv.time.ms,
                                     Nscans,
-                                    rg.dB){
+                                    rg.dB) {
   #
   ## Receiver Gain devided by '20'
-  rg.dB.20 <- rg.dB/20
+  rg.dB.20 <- rg.dB / 20
   #
   ## Constant Calculation
-  Const <- conv.time.ms*Nscans*20*10^rg.dB.20
+  Const <- conv.time.ms * Nscans * 20 * 10^rg.dB.20
   #
   return(round(Const))
   #

@@ -128,7 +128,7 @@ eval_gFactor_Spec <- function(data.spectrum,
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
-    if (any(grepl(paste(slct.vec.integ.EPR.intens, collapse = "|"),Intensity))) {
+    if (any(grepl(paste(slct.vec.integ.EPR.intens, collapse = "|"), Intensity))) {
       B.center <- B.max
     }
   }

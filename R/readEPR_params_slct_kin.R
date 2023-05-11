@@ -36,33 +36,39 @@
 #' @export
 #'
 #'
-readEPR_params_slct_kin <- function(path_to_DSC_or_par,origin = "xenon"){
+readEPR_params_slct_kin <- function(path_to_DSC_or_par, origin = "xenon") {
   ## Load all required parameters from `.DSC` or `.par`
-  if (origin == "xenon"){
+  if (origin == "xenon") {
     resol <- readEPR_param_slct(path_to_DSC_or_par,
-                                string = "A1RS",
-                                origin = origin)
+      string = "A1RS",
+      origin = origin
+    )
     convTime <- readEPR_param_slct(path_to_DSC_or_par,
-                                   string = "SPTP",
-                                   origin = origin)
+      string = "SPTP",
+      origin = origin
+    )
     NScans <- readEPR_param_slct(path_to_DSC_or_par,
-                                 string = "NbScansToDo",
-                                 origin = origin)
+      string = "NbScansToDo",
+      origin = origin
+    )
     ## for kinetic measurements "AVGS" doesn't work, therefore select "NbScansToDo"
   }
-  if (origin == "winepr"){
+  if (origin == "winepr") {
     resol <- readEPR_param_slct(path_to_DSC_or_par,
-                                string = "RES",
-                                origin = origin)
+      string = "RES",
+      origin = origin
+    )
     convTime <- readEPR_param_slct(path_to_DSC_or_par,
-                                   string = "RCT",
-                                   origin = origin)
+      string = "RCT",
+      origin = origin
+    )
     NScans <- readEPR_param_slct(path_to_DSC_or_par,
-                                 string = "JSD",
-                                 origin = origin)
+      string = "JSD",
+      origin = origin
+    )
   }
-  sweeptime <- resol*convTime
+  sweeptime <- resol * convTime
   #
-  return(list(Nscans = NScans,sweepTime = sweeptime,Npoints = resol))
+  return(list(Nscans = NScans, sweepTime = sweeptime, Npoints = resol))
   #
 }
