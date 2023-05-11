@@ -38,11 +38,8 @@ eval_gFactor_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
 
 }
 \seealso{
-Other Evaluations: 
-\code{\link{eval_DeltaXpp_Spec}()},
-\code{\link{eval_FWHMx_Spec}()},
-\code{\link{eval_extremeX_Spec}()},
-\code{\link{eval_gFactor_Spec}()},
-\code{\link{eval_interval_cnfd_tVec}()}
+Other Evaluations and Quantum Chemistry: 
+\code{\link{rearrange_aAiso_QCHcomp}()},
+\code{\link{rearrange_aAiso_QCHorgau}()}
 }
-\concept{Evaluations}
+\concept{Evaluations and Quantum Chemistry}

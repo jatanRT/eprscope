@@ -1,5 +1,9 @@
-#
-#' @title Basic Calculation of \eqn{g}-Factor
+#'
+#' Basic Calculation of \eqn{g}-Factor
+#'
+#'
+#' @family Evaluations
+#'
 #'
 #' @description Calculation of {g}-factor according to fundamental formula.
 #'   The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
@@ -11,9 +15,9 @@
 #'
 #'
 #' @param nu Numeric, microwave Frequency
-#' @param nu.unit String, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu.unit = "GHz"}
+#' @param nu.unit Character string, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu.unit = "GHz"}
 #' @param B Numeric, magnetic flux density
-#' @param B.unit String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
+#' @param B.unit Character string, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
 #'   \code{B.unit = "mT"}
 #'
 #' @return g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>
@@ -24,10 +28,12 @@
 #'              nu.unit = "GHz",
 #'              350.214,
 #'              B.unit = "mT")
+#' #
 #' eval_gFactor(nu = 9.8020458e+9,
 #'              nu.unit = "Hz",
 #'              B = 3502.14,
 #'              B.unit = "G")
+#' #
 #' eval_gFactor(9.5421,"GHz",0.333251,"T")
 #'
 #' @export

@@ -2,7 +2,7 @@
 #' Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
 #'
 #'
-#' @family Evaluations
+#' @family Evaluations and Quantum Chemistry
 #'
 #'
 #' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.

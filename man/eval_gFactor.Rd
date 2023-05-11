@@ -9,11 +9,11 @@ eval_gFactor(nu, nu.unit = "GHz", B, B.unit = "mT")
 \arguments{
 \item{nu}{Numeric, microwave Frequency}
 
-\item{nu.unit}{String, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu.unit = "GHz"}}
+\item{nu.unit}{Character string, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu.unit = "GHz"}}
 
 \item{B}{Numeric, magnetic flux density}
 
-\item{B.unit}{String, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
+\item{B.unit}{Character string, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
 \code{B.unit = "mT"}}
 }
 \value{
@@ -34,10 +34,21 @@ eval_gFactor(9.8020458,
              nu.unit = "GHz",
              350.214,
              B.unit = "mT")
+#
 eval_gFactor(nu = 9.8020458e+9,
              nu.unit = "Hz",
              B = 3502.14,
              B.unit = "G")
+#
 eval_gFactor(9.5421,"GHz",0.333251,"T")
 
 }
+\seealso{
+Other Evaluations: 
+\code{\link{eval_DeltaXpp_Spec}()},
+\code{\link{eval_FWHMx_Spec}()},
+\code{\link{eval_extremeX_Spec}()},
+\code{\link{eval_gFactor_Spec}()},
+\code{\link{eval_interval_cnfd_tVec}()}
+}
+\concept{Evaluations}

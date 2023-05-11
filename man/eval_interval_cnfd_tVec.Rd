@@ -44,7 +44,7 @@ Other Evaluations:
 \code{\link{eval_DeltaXpp_Spec}()},
 \code{\link{eval_FWHMx_Spec}()},
 \code{\link{eval_extremeX_Spec}()},
-\code{\link{eval_gFactor_QCHcomp}()},
-\code{\link{eval_gFactor_Spec}()}
+\code{\link{eval_gFactor_Spec}()},
+\code{\link{eval_gFactor}()}
 }
 \concept{Evaluations}

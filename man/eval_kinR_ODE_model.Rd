@@ -155,6 +155,9 @@ eval_kinR_ODE_model(model.react = "(x=2)A --> [k1] R",
 \seealso{
 Other Evaluations and Quantification: 
 \code{\link{eval_integ_EPR_Spec}()},
-\code{\link{eval_kinR_EPR_modelFit}()}
+\code{\link{eval_kinR_EPR_modelFit}()},
+\code{\link{quantify_EPR_Norm_const}()},
+\code{\link{quantify_EPR_abs}()},
+\code{\link{quantify_EPR_sim}()}
 }
 \concept{Evaluations and Quantification}

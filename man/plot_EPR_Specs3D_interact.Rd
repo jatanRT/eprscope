@@ -100,6 +100,7 @@ tbc
 }
 \seealso{
 Other Visualization and Graphics: 
+\code{\link{draw_molecules_rcdk}()},
 \code{\link{plot_EPR_Specs2D_interact}()},
 \code{\link{plot_EPR_Specs_integ}()},
 \code{\link{plot_EPR_Specs}()},

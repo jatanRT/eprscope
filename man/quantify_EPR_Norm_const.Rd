@@ -26,8 +26,18 @@ Normalization Constant used by \code{\link{quantify_EPR_abs}}
 quantify_EPR_Norm_const(conv.time.ms = 6.4,
                         Nscans = 6,
                         rg.dB = 30)
+#
 quantify_EPR_Norm_const(conv.time.ms = 13.52,
                         Nscans = 100,
                         rg.dB = 24)
 
 }
+\seealso{
+Other Evaluations and Quantification: 
+\code{\link{eval_integ_EPR_Spec}()},
+\code{\link{eval_kinR_EPR_modelFit}()},
+\code{\link{eval_kinR_ODE_model}()},
+\code{\link{quantify_EPR_abs}()},
+\code{\link{quantify_EPR_sim}()}
+}
+\concept{Evaluations and Quantification}

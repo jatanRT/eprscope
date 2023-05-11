@@ -74,3 +74,12 @@ tbc
 
 
 }
+\seealso{
+Other Evaluations and Quantification: 
+\code{\link{eval_integ_EPR_Spec}()},
+\code{\link{eval_kinR_EPR_modelFit}()},
+\code{\link{eval_kinR_ODE_model}()},
+\code{\link{quantify_EPR_Norm_const}()},
+\code{\link{quantify_EPR_abs}()}
+}
+\concept{Evaluations and Quantification}

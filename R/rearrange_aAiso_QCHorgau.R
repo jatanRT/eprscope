@@ -2,6 +2,9 @@
 #' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Gaussian & ORCA Computations
 #'
 #'
+#' @family Evaluations and Quantum Chemistry
+#'
+#'
 #' @description
 #' A short description...the same like \code{\link{rearrange_aAiso_QCHcomp}} something...
 #'

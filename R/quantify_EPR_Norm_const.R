@@ -2,6 +2,9 @@
 #' Normalization Constant Calculation for Quantitative EPR Analysis
 #'
 #'
+#' @family Evaluations and Quantification
+#'
+#'
 #' @description Normalization Constant used by \code{\link{quantify_EPR_abs}}
 #'
 #'
@@ -20,6 +23,7 @@
 #' quantify_EPR_Norm_const(conv.time.ms = 6.4,
 #'                         Nscans = 6,
 #'                         rg.dB = 30)
+#' #
 #' quantify_EPR_Norm_const(conv.time.ms = 13.52,
 #'                         Nscans = 100,
 #'                         rg.dB = 24)

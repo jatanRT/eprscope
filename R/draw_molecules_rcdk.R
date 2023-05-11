@@ -2,6 +2,9 @@
 #' Draw Molecule by `rcdk` Defined by SMILES
 #'
 #'
+#' @family Visualization and Graphics
+#'
+#'
 #' @description
 #' A short description...
 #'

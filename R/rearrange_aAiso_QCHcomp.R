@@ -2,6 +2,9 @@
 #' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations
 #'
 #'
+#' @family Evaluations and Quantum Chemistry
+#'
+#'
 #' @description
 #' Provides table from Gaussian/ORCA output text file to summarize \eqn{A_{iso}}/\eqn{a_{iso}} values
 #' according to proposed molecular structure/symmetry. The `A`/`a` values are computed for each atom/nucleus

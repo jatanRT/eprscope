@@ -2,6 +2,9 @@
 #' TBC (Absolute EPR Quantity)
 #'
 #'
+#' @family Evaluations and Quantification
+#'
+#'
 #' @description
 #' tbc
 #'
