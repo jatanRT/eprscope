@@ -47,3 +47,10 @@ correct_time_Exp_Specs(12,Nscans = 6,6)
 
 
 }
+\seealso{
+Other Conversions and Corrections: 
+\code{\link{convert_A_MHz_2a}()},
+\code{\link{convert_a_mT_2A}()},
+\code{\link{convert_time2var}()}
+}
+\concept{Conversions and Corrections}

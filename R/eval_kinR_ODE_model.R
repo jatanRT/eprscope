@@ -2,6 +2,9 @@
 #' Quantitative Kinetic Model Profiles by Numeric Solution of ODE for Visualization and Fitting of the Radical Reactions.
 #'
 #'
+#' @family Evaluations and Quantification
+#'
+#'
 #' @description
 #'   The primary aim of the function is to get an idea of theoretical quantitative (e.g. like concentration/amount/integral intensity)
 #'   kinetic profile for various model reactions where the radical(s) ("R") are involved in the processes.
@@ -113,7 +116,7 @@
 #' kin.test.01 <- eval_kinR_ODE_model(model.react = "(x=2)R --> [k1] B",
 #'                                    kin.params = c(k1 = 0.012,
 #'                                                   qvar0R = 0.08))
-#' kin.test.01$plot
+#' head(kin.test.01$df,n = 10)
 #' #
 #' ## consecutive reactions
 #' kin.test.02 <- eval_kinR_ODE_model(model.react = "(x=1)A --> [k1] (x=1)R --> [k2] C",
@@ -123,6 +126,17 @@
 #'                                                   qvar0R = 0.002,
 #'                                                   qvar0C = 0))
 #' kin.test.02$plot
+#' #
+#' \dontrun{
+#' ## taking onto account the experimental time series
+#' eval_kinR_ODE_model(model.react = "(x=2)A --> [k1] R",
+#'                     model.expr.diff = FALSE,
+#'                     kin.params = c(k1 = 0.005,
+#'                                    qvar0A = 0.05,
+#'                                    qvar0R = 0),
+#'                     data.expr = data.spectra.series,
+#'                     time.expr.series = "time_s")
+#' }
 #'
 #'
 #' @export

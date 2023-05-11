@@ -3,6 +3,9 @@
 #' Calculation of Spectral Linewidth ( e.g. \eqn{\Delta B_{pp}}) of the EPR/ENDOR Spectrum
 #'
 #'
+#' @family Evaluations
+#'
+#'
 #' @description
 #' The function calculates the \code{peak-to-peak} (distance between of the \eqn{x}-axis
 #' projection of "min" and "max" derivative intensities) linewidth

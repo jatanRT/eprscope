@@ -2,6 +2,9 @@
 #' Evaluating Full Width at Half-Maximum (FWHM) from Spectra
 #'
 #'
+#' @family Evaluations
+#'
+#'
 #' @description
 #' A short description...
 #'

@@ -1,16 +1,20 @@
-## Calculate from DFT Gaussian Output
-
+#'
 #' Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
+#'
+#'
+#' @family Evaluations
+#'
 #'
 #' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.
 #' Therefore the function takes these values and calculates the entire \eqn{g}-values or parses
 #' the corresponding mean value from `Gaussian` or `ORCA` output.
 #'
-#' @param path_to_QCHoutput Character/String corresponding to path of `Gaussian` or `ORCA` output text files
+#'
+#' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files
 #'   incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
-#' @param mean Boolean, whether to calculate the \code{mean value/iso} from principal components,
-#'   \strong{default}: \code{mean = TRUE}, or save the entire vector with all these components
-#' @param origin Character/String pointing to origin of DFT EPR calculation parameters <=> which
+#' @param mean Logical, whether to calculate the \code{mean value/iso} from principal components,
+#'   \strong{default}: \code{mean = TRUE}, or save the entire vector with all the components
+#' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 #'   or \code{"orca"}
 #'

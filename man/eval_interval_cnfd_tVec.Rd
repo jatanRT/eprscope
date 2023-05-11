@@ -39,3 +39,12 @@ eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
                          separate = FALSE)
 
 }
+\seealso{
+Other Evaluations: 
+\code{\link{eval_DeltaXpp_Spec}()},
+\code{\link{eval_FWHMx_Spec}()},
+\code{\link{eval_extremeX_Spec}()},
+\code{\link{eval_gFactor_QCHcomp}()},
+\code{\link{eval_gFactor_Spec}()}
+}
+\concept{Evaluations}

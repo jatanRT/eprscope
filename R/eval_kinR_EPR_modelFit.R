@@ -2,12 +2,15 @@
 #' Radical Kinetic Models Fitted to Experimental Data (Integrals/Areas \emph{vs.} Time)
 #'
 #'
+#' @family Evaluations and Quantification
+#'
+#'
 #' @description
 #' A short description...
 #'
 #'
 #'
-#' @param data.spectra.series tbc
+#' @param data.spectra.integ tbc
 #' @param time.unit Character string ... argument/parameter... tbc
 #' @param time.series Character string ... argument/parameter... tbc
 #' @param qvarR Character string ... argument/parameter... tbc
@@ -34,7 +37,7 @@
 #'
 #' @importFrom minpack.lm nls.lm
 #' @importFrom ggplot2 guide_legend
-eval_kinR_EPR_modelFit <- function(data.spectra.series,
+eval_kinR_EPR_modelFit <- function(data.spectra.integ,
                                    time.unit = "s",
                                    time.series = "time_s",
                                    qvarR = "Area",
@@ -51,15 +54,15 @@ eval_kinR_EPR_modelFit <- function(data.spectra.series,
   fitted <- NULL
   ## convert time if other than `s` appears
   if (time.unit == "min"){
-    data.spectra.series[[time.series]] <- data.spectra.series[[time.series]]*60
+    data.spectra.integ[[time.series]] <- data.spectra.integ[[time.series]]*60
     ## rename `time.series`
-    names(data.spectra.series[[time.series]]) <- "time_s"
+    names(data.spectra.integ[[time.series]]) <- "time_s"
 
   }
   if (time.unit == "h"){
-    data.spectra.series[[time.series]] <- data.spectra.series[[time.series]]*3600
+    data.spectra.integ[[time.series]] <- data.spectra.integ[[time.series]]*3600
     ## rename `time.series`
-    names(data.spectra.series[[time.series]]) <- "time_s"
+    names(data.spectra.integ[[time.series]]) <- "time_s"
   }
   #
   ## corrected time for CW EPR experiment
@@ -72,31 +75,25 @@ eval_kinR_EPR_modelFit <- function(data.spectra.series,
       instrum.params.kin <- readEPR_params_slct_kin(path_to_DSC_or_par,origin = origin)
       #
       ## correct time
-      data.spectra.series[[time.series]] <- correct_time_Exp_Specs(time.s = data.spectra.series[[time.series]],
+      data.spectra.integ[[time.series]] <- correct_time_Exp_Specs(time.s = data.spectra.integ[[time.series]],
                                                                    Nscans = instrum.params.kin$Nscans,
                                                                    sweep.time.s = instrum.params.kin$sweepTime)
       #
     }
   } else{
-    data.spectra.series[[time.series]] <- data.spectra.series[[time.series]]
+    data.spectra.integ[[time.series]] <- data.spectra.integ[[time.series]]
   }
   #
-
-  ## Integrals evaluation .... `data.spectra.series` can be universal
-
-  ## ....
-
-
   ## ---------------------------- DERIVATIVE FORM Fit -----------------------------
-
+  #
   ## Fit by solution of Ordinary Differential equations
-
+  #
   if (algorithm.fit.kin == "diff-LM"){
     model.react.kin.fit <- minpack.lm::nls.lm(par = params.guess,
                                               fn = eval_kinR_ODE_model,
                                               model.react = model.react,
                                               model.expr.diff = TRUE,
-                                              data.expr = data.spectra.series,
+                                              data.expr = data.spectra.integ,
                                               time.expr.series = time.series,
                                               qvar.expr = qvarR)
     #
@@ -118,13 +115,13 @@ eval_kinR_EPR_modelFit <- function(data.spectra.series,
     model.expr.time <- eval_kinR_ODE_model(model.react = model.react,
                                            model.expr.diff = FALSE,
                                            kin.params = predict.model.params,
-                                           data.expr = data.spectra.series,
+                                           data.expr = data.spectra.integ,
                                            time.expr.series = time.series,
                                            qvar.expr = qvarR)
     #
     ## starting new data frame only with `time` and `qvar` &
     ## merge both data frames (add `fitted` columns)
-    new.predict.df <- data.spectra.series %>%
+    new.predict.df <- data.spectra.integ %>%
       dplyr::select(.data[[time.series]],.data[[qvarR]]) %>%
       dplyr::mutate(fitted = model.expr.time$df[["R"]])
     #

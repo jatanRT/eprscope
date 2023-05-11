@@ -2,6 +2,9 @@
 #' Time Correction for Experimental CW EPR Spectral Time Series
 #'
 #'
+#' @family Conversions and Corrections
+#'
+#'
 #' @description
 #'  Function provides the accurate time for EPR spectral line appearance. Usually the middle of the EPR spectrum is
 #'  is set up as the CF (`central field`) for the spectrum sweep. The actual time at the middle/crossing point

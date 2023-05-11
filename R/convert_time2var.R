@@ -2,6 +2,9 @@
 #' Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}
 #'
 #'
+#' @family Conversions and Corrections
+#'
+#'
 #' @description
 #' Conversion of time into variable \code{var} which is linearly changed upon time like
 #' \deqn{var = var0 + rate\times t}
@@ -38,6 +41,18 @@
 #'                  time.unit = "min",
 #'                  var0 = 293,
 #'                  var.rate = 0.5)
+#' \dontrun{
+#' ## Create/Evaluate column in EPR time series data frame
+#' ## containing the applied cell potential (in V) from the simultaneously
+#' ## performed electrochemical reduction experiment (e.g. cyclic voltammetry).
+#' ## Time series column is labeled as "time_s"
+#' data.spectra.series <- data.spectra.series %>%
+#'   dplyr::mutate(E_V_potential = convert_time2var(time_s,
+#'                                                  time.unit = "s",
+#'                                                  var0 = -0.1,
+#'                                                  var.switch = -1.5,
+#'                                                  var.rate = -0.004))
+#' }
 #'
 #'
 #' @export

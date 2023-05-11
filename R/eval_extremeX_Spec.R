@@ -2,6 +2,9 @@
 #' Find Intensity Extremes within the EPR/ENDOR Spectrum (incl. Integrated Form).
 #'
 #'
+#' @family Evaluations
+#'
+#'
 #' @description Finding \code{x} positions like \eqn{B} ( in \code{mT} or \code{G}) or \eqn{g}
 #' or \eqn{RF} (in \code{MHz}) of intensity minimum and/or maximum within selected region of the EPR/ENDOR spectrum
 #'

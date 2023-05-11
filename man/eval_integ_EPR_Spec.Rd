@@ -63,31 +63,35 @@ The integration results may be divided into following types depending on the abo
   integrals (\code{output.vecs = TRUE}). This is especially useful for spectral (time) series EPR data,
   which can be handily processed by \code{\link[dplyr]{group_by}} using the
   `pipe` operators (\code{\link[magrittr]{\%>\%}}).
-  \itemize{
+  \enumerate{
   \item Data frame/table including the EPR spectral data (general \emph{Intensity}
   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
   (\strong{column} \code{single_Integ}) integral. This is the case if only a single uncorrected integral
   is required.
+
   \item Data frame/table with single integral/intensity already corrected by a certain degree
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals are referred either
-  to derivative or already single integrated EPR spectra where corrected integral \code{column}
+  to derivative or already integrated EPR spectra where corrected integral \code{column}
   id denoted as \code{single_Integ_correct}. This is the case for \code{correct.integ = TRUE}
   and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
-  \item The above-described data frame/table with \code{single} and \code{double/sigmoid} integral \strong{column}
+
+  \item Data frame with \code{single} and \code{double/sigmoid} integral \strong{column}
   (\code{sigmoid_Integ}) essential for quantitative analysis. This is the case for \code{output.vecs = FALSE}
   and \code{correct.integ = FALSE}.
-  \item Data frame/table in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
-  and \code{output.vecs = FALSE}. It contains the original data (as in all previous cases) + corrected
+
+  \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
+  and \code{output.vecs = FALSE}. It contains the original data + corrected
   single integral (\code{single_Integ_correct}) and double/sigmoid integral (\code{sigmoid_Integ}) which
   is evaluated from the baseline corrected single one. Therefore such double/sigmoid integral
   is suitable for the accurate determination of radical (paramagnetic centers) amount.
-  \item Numeric vector corresponding to baseline uncorrected (or corrected) single integral
+
+  \item Numeric vector corresponding to baseline uncorrected/corrected single integral
   in case of \code{sigmoid.integ = FALSE} + \code{output.vecs = TRUE}.
-  \item List of numeric vectors corresponding to  `single` (corrected or uncorrected depending
-  on \code{correct.integ} parameter/argument) and `sigmoid` integrals (\code{sigmoid.integ = TRUE}).
-  In such case the integrals are called by \code{list} names like \code{...[["single"]]}
-  (or \code{...$single}), corresponding to single integral (or already original integrated form of EPR spectrum),
-  or by \code{...[["sigmoid"]]} (or \code{...$sigmoid}) corresponding to double integrated
+
+  \item List of numeric vectors corresponding to  \strong{`single`} (corrected or uncorrected depending
+  on \code{correct.integ} parameter/argument) and \strong{`sigmoid`} integrals (\code{sigmoid.integ = TRUE}).
+  In such case integrals are called by \code{list} names like \code{...[["single"]]}
+  (\code{...$single}) or by \code{...[["sigmoid"]]} (\code{...$sigmoid}) corresponding to double integrated
   (or single integrated EPR spectra originally presented already in single integrals) EPR spectral data.
   }
 }
@@ -96,7 +100,7 @@ Evaluates integrals of EPR spectra depending on input data (corresponding to eit
  EPR signal form) with option to correct the single integral baseline by the polynomial of \code{poly.degree}
  level. Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. For the purpose
  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
- Therefore, depending on \eqn{B} unit (either \code{"G"} or \code{"mT"}) the resulting integral data
+ Therefore, depending on \eqn{B} unit (either \code{"G"} or \code{"mT"}) each resulting integral data/column
  have to be optionally (in case of \code{"mT"}) multiplied by factor of \code{10} because
  \eqn{1 \text{mT}\equiv 10 \text{G}}. Such correction is already included in the `R` function/script.
  Instead of `double integral/integ.` the term `sigmoid integral/integ.` is used. `Double integral`
@@ -105,30 +109,49 @@ Evaluates integrals of EPR spectra depending on input data (corresponding to eit
 }
 \examples{
 \dontrun{
-## Evaluation of single corrected (by polynomial degree = 3) as well as double
-## (sigmoid) integrals corresponding to original derivative EPR spectrum.
-## Integrals are presented as a columns within the entire data frame
-eval_integ_EPR_Spec(EPR_spectral_data_table,
-                    B = "FieldB",
-                    B.unit = "mT"
-                    Blim = c(348.2,351.1),
-                    correct.integ = TRUE,
-                    BpeaKlim = c(349,350),
+## Single integration with default arguments
+eval_integ_EPR_Spec(data.spectrum)
+#
+## Integration gathering the double/sigmoid integral
+## without baseline correction
+eval_integ_EPR_Spec(data.spectrum,
+                    sigmoid.integ = T)
+#
+## baseline correction (by the polynomial of the 3rd level) for
+## the single integral as well as evaluating the sigmoid integral,
+## single integral peak is located in the region of c(3430,3560) G
+eval_integ_EPR_Spec(data.spectrum,
+                    correct.integ = T,
+                    BpeaKlim = c(3430,3560),
                     poly.degree = 3,
-                    sigmoid.integ = TRUE)
-
-## Integral evaluation corresponding to original non-corrected
-## integral/intensity (non-derivative EPR signal). The Integral
-## (which is actually single integral of the original form, however
-## possesses the sigmoidal curve shape) is exported into vectors list
-eval_integ_EPR_Spec(EPR_spectral_data_table,
-                    B = "B_G",
-                    B.unit = "G",
-                    Intensity = "Integrated",
-                    sigmoid.integ = TRUE,
-                    output.vecs = TRUE)
-
+                    sigmoid.integ = T)
+#
+## vectorized output of the uncorrected `sigmoid integral`
+eval_integ_EPR_Spec(data.spectrum,sigmoid.integ = T,output.vecs = T)[["sigmoid"]]
+#
+## incorporation of vectorized integration into data "pipe" ("\%>\%")
+## `dplyr` processing of EPR spectral time series, creating column
+## with `sigmoid` integral
+## where its corresponding single integral (intensity) has undergone
+## a baseline correction, finally the max. value of the all sigmoid
+## integrals along the time is summarized in data frame
+## for quantitative or kinetic analysis
+data.integrals <- data.spectra \%>\%
+  dplyr::group_by(time_s) \%>\%
+  dplyr::mutate(sigmoid_Integ = eval_integ_EPR_Spec(dplyr::pick(B_G,dIepr_over_dB),
+                                                    correct.integ = T,
+                                                    BpeaKlim = c(3430,3560),
+                                                    poly.degree = 3,
+                                                    sigmoid.integ = T,
+                                                    output.vecs = T)$sigmoid) \%>\%
+ dplyr::summarize(Area = max(sigmoid_Integ))
 }
 
 
 }
+\seealso{
+Other Evaluations and Quantification: 
+\code{\link{eval_kinR_EPR_modelFit}()},
+\code{\link{eval_kinR_ODE_model}()}
+}
+\concept{Evaluations and Quantification}

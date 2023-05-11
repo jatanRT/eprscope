@@ -5,7 +5,7 @@
 \title{Radical Kinetic Models Fitted to Experimental Data (Integrals/Areas \emph{vs.} Time)}
 \usage{
 eval_kinR_EPR_modelFit(
-  data.spectra.series,
+  data.spectra.integ,
   time.unit = "s",
   time.series = "time_s",
   qvarR = "Area",
@@ -18,7 +18,7 @@ eval_kinR_EPR_modelFit(
 )
 }
 \arguments{
-\item{data.spectra.series}{tbc}
+\item{data.spectra.integ}{tbc}
 
 \item{time.unit}{Character string ... argument/parameter... tbc}
 
@@ -52,3 +52,9 @@ tbc
 
 
 }
+\seealso{
+Other Evaluations and Quantification: 
+\code{\link{eval_integ_EPR_Spec}()},
+\code{\link{eval_kinR_ODE_model}()}
+}
+\concept{Evaluations and Quantification}

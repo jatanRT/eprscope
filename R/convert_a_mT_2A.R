@@ -2,6 +2,9 @@
 #' Convert Splitting Constants (\eqn{a} in mT) to Coupling ones (\eqn{A} in MHz).
 #'
 #'
+#' @family Conversions and Corrections
+#'
+#'
 #' @description Function converts hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
 #'   into hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz}) according to following
 #'   relation:

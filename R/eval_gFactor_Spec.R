@@ -1,5 +1,9 @@
-#
-#' @title Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
+#'
+#' Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
+#'
+#'
+#' @family Evaluations
+#'
 #'
 #' @description Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
@@ -14,10 +18,10 @@
 #'   or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.
 #' @param nu.GHz Numeric, microwave frequency in \code{GHz}
 #' @param B.unit description tbc
-#' @param B Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+#' @param B Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
-#' @param Intensity Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+#' @param Intensity Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
@@ -38,12 +42,14 @@
 #'                   "Field_mT",
 #'                   Intensity = "dIepr_over_dB_Sim",
 #'                   c(349.8841,351.112))
+#' #
 #' eval_gFactor_Spec(data.spectrum,
 #'                   nu.GHz = 9.82451,
 #'                   B.unit = "G",
 #'                   B = "B_G",
 #'                   Blim = c(3498.841,3511.12),
 #'                   iso = FALSE)
+#' #
 #' eval_gFactor_Spec(data.spectrum,
 #'                   9.91024,
 #'                   B.unit = "G",

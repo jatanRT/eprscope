@@ -2,6 +2,9 @@
 #' Confidence Interval of a Vector/Data Frame-Column
 #'
 #'
+#' @family Evaluations
+#'
+#'
 #' @description Mean value and uncertainty (according to Sudent's t-Distribution) corresponding to column
 #'  (within data frame) or vector which characterize dispersion of individual values elements
 #'  (e.g. double integrals in quantitative EPR analysis)

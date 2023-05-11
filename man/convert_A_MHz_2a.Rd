@@ -31,3 +31,10 @@ convert_A_MHz_2a(4,g = 2.00036)
 
 
 }
+\seealso{
+Other Conversions and Corrections: 
+\code{\link{convert_a_mT_2A}()},
+\code{\link{convert_time2var}()},
+\code{\link{correct_time_Exp_Specs}()}
+}
+\concept{Conversions and Corrections}

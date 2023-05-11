@@ -23,11 +23,11 @@ or single integrated intensity like \code{Integrated_Intensity}, \code{index} co
 
 \item{B.unit}{description tbc}
 
-\item{B}{Character/String pointing to magnetic flux density \code{column} of EPR spectrum data frame
+\item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
 
-\item{Intensity}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+\item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
@@ -58,12 +58,14 @@ eval_gFactor_Spec(data.spectrum,
                   "Field_mT",
                   Intensity = "dIepr_over_dB_Sim",
                   c(349.8841,351.112))
+#
 eval_gFactor_Spec(data.spectrum,
                   nu.GHz = 9.82451,
                   B.unit = "G",
                   B = "B_G",
                   Blim = c(3498.841,3511.12),
                   iso = FALSE)
+#
 eval_gFactor_Spec(data.spectrum,
                   9.91024,
                   B.unit = "G",
@@ -74,3 +76,12 @@ eval_gFactor_Spec(data.spectrum,
 
 
 }
+\seealso{
+Other Evaluations: 
+\code{\link{eval_DeltaXpp_Spec}()},
+\code{\link{eval_FWHMx_Spec}()},
+\code{\link{eval_extremeX_Spec}()},
+\code{\link{eval_gFactor_QCHcomp}()},
+\code{\link{eval_interval_cnfd_tVec}()}
+}
+\concept{Evaluations}

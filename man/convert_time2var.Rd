@@ -45,6 +45,25 @@ convert_time2var(5,
                  time.unit = "min",
                  var0 = 293,
                  var.rate = 0.5)
+\dontrun{
+## Create/Evaluate column in EPR time series data frame
+## containing the applied cell potential (in V) from the simultaneously
+## performed electrochemical reduction experiment (e.g. cyclic voltammetry).
+## Time series column is labeled as "time_s"
+data.spectra.series <- data.spectra.series \%>\%
+  dplyr::mutate(E_V_potential = convert_time2var(time_s,
+                                                 time.unit = "s",
+                                                 var0 = -0.1,
+                                                 var.switch = -1.5,
+                                                 var.rate = -0.004))
+}
 
 
 }
+\seealso{
+Other Conversions and Corrections: 
+\code{\link{convert_A_MHz_2a}()},
+\code{\link{convert_a_mT_2A}()},
+\code{\link{correct_time_Exp_Specs}()}
+}
+\concept{Conversions and Corrections}

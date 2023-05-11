@@ -7,13 +7,13 @@
 eval_gFactor_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 }
 \arguments{
-\item{path_to_QCHoutput}{Character/String corresponding to path of `Gaussian` or `ORCA` output text files
+\item{path_to_QCHoutput}{Character string corresponding to path of `Gaussian` or `ORCA` output text files
 incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.}
 
-\item{mean}{Boolean, whether to calculate the \code{mean value/iso} from principal components,
-\strong{default}: \code{mean = TRUE}, or save the entire vector with all these components}
+\item{mean}{Logical, whether to calculate the \code{mean value/iso} from principal components,
+\strong{default}: \code{mean = TRUE}, or save the entire vector with all the components}
 
-\item{origin}{Character/String pointing to origin of DFT EPR calculation parameters <=> which
+\item{origin}{Character string pointing to origin of DFT EPR calculation parameters <=> which
 software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 or \code{"orca"}}
 }
@@ -37,3 +37,12 @@ eval_gFactor_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
 
 
 }
+\seealso{
+Other Evaluations: 
+\code{\link{eval_DeltaXpp_Spec}()},
+\code{\link{eval_FWHMx_Spec}()},
+\code{\link{eval_extremeX_Spec}()},
+\code{\link{eval_gFactor_Spec}()},
+\code{\link{eval_interval_cnfd_tVec}()}
+}
+\concept{Evaluations}
