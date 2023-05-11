@@ -21,6 +21,7 @@ Notation inherited from \href{https://www.ctan.org/pkg/mhchem?lang=en}{\eqn{\LaT
 Following reaction schemes are the most common used to describe the integral intensity and/or radical
 concentration/amount changes during the EPR time series experiment.
 \tabular{lcl}{
+------------------------ \tab | \tab -------------------- \cr
 \strong{Reaction Scheme} \tab | \tab \strong{`model.react`} \cr
 ------------------------ \tab | \tab -------------------- \cr
 \eqn{(x=1)\text{R} \xrightarrow{k_1} \text{B}} \tab | \tab \code{"(x=1)R --> [k1] B"} \cr
@@ -35,6 +36,7 @@ concentration/amount changes during the EPR time series experiment.
  \code{"A [k1] <-- (x=1)R --> [k2] B"} \cr
  \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab
  \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
+ ------------------------ \tab | \tab -------------------- \cr
 }
 Couple of examples are also given in the description. The function is relatively flexible and enables later addition
 of any other reaction schemes describing the EPR time series experiments (you may ask developer(s) via `github issue`).
@@ -60,6 +62,7 @@ The initial values are denoted as \code{qvar0X} (e.g. qvar0R for radical or qvar
 The components of \code{kin.params} numeric vector depend on \code{model.react} like summarized in the
 following table =>
 \tabular{ccl}{
+-------------------- \tab | \tab ------------------- \cr
 \strong{`model.react`} \tab | \tab \strong{Essential `kin.params` components} \cr
 -------------------- \tab | \tab ------------------- \cr
 \code{"(x=1)R --> [k1] B"} \tab | \tab \code{k1}, \code{qvar0R}, (\code{n}) \cr
@@ -70,6 +73,7 @@ following table =>
 \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
 \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, (\code{n}) \cr
 \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0B}, \code{qvar0R}, (\code{n}) \cr
+-------------------- \tab | \tab ------------------- \cr
 }}
 
 \item{data.expr}{R data frame containing the integral intensities/areas under the curves calculated
@@ -107,6 +111,7 @@ The primary aim of the function is to get an idea of theoretical quantitative (e
   The most applied kinetic models for radical reactions in EPR spectroscopy are summarized below (see also \code{model.react} function
   argument).
   \tabular{ccl}{
+  -------------------- \tab | \tab -------------------- \cr
   \strong{`model.react`} \tab | \tab \strong{Description} \cr
   -------------------- \tab | \tab -------------------- \cr
   \code{"(x=1)R --> [k1] B"} \tab | \tab Basic irreversible forward reaction, e.g. like irrev. dimerization (if \code{"(x=2)"}). \cr
@@ -121,6 +126,7 @@ The primary aim of the function is to get an idea of theoretical quantitative (e
   or two radical diffusion forming different product than without diffusion like recombination (\code{"(x=2)"}). \cr
   \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab Radical formation by chemical reaction like oxidation, reduction or
   spin trapping (transient radical is not visible within the common EPR time scale). \cr
+  -------------------- \tab | \tab -------------------- \cr
   }
 }
 \examples{
@@ -146,8 +152,20 @@ eval_kinR_ODE_model(model.react = "(x=2)A --> [k1] R",
                     kin.params = c(k1 = 0.005,
                                    qvar0A = 0.05,
                                    qvar0R = 0),
-                    data.expr = data.spectra.series,
+                    data.expr = data.spectra.integ,
                     time.expr.series = "time_s")
+#
+## using `eval_kinR_ODE_model` function for fitting
+## of the experimental data in the previous case
+minpack.lm::nls.lm(par = c(k1 = 0.005,
+                           qvar0A = 0.05,
+                           qvar0R = 0),
+                   fn = eval_kinR_ODE_model,
+                   model.react = "(x=2)A --> [k1] R",
+                   model.expr.diff = TRUE,
+                   data.expr = data.spectra.integ,
+                   time.expr.series = "time_s",
+                   qvar.expr = "Area")
 }
 
 
