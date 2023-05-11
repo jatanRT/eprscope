@@ -2,6 +2,9 @@
 #' Read the EPR Instrumental Parameters and Experiment Information
 #'
 #'
+#' @family Data Reading
+#'
+#'
 #' @description
 #' Function takes the instrumental parameters (from \code{.DSC} or \code{.par} file) applied
 #' to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.

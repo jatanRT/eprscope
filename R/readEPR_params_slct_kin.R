@@ -2,6 +2,9 @@
 #' Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Time Series} Experiment
 #'
 #'
+#' @family Data Reading
+#'
+#'
 #' @description
 #'  Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
 #'  experiment from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the `Xenon`

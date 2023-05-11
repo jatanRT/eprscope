@@ -2,6 +2,9 @@
 #' Read and Process Spectral Data of Time Dependent CW EPR Experiments (e.g. like Kinetics)
 #'
 #'
+#' @family Data Reading
+#'
+#'
 #' @description The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wave (CW)
 #'  EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment` in "Xenon"
 #'  acquisition/processing software). Function includes automatic time correction for CW EPR

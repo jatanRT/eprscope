@@ -2,6 +2,9 @@
 #' Load Several/Multiple EPR Spectral Data Files with Parameters
 #'
 #'
+#' @family Data Reading
+#'
+#'
 #' @description Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
 #'  parameters (`DSC` or `par`) at once and transforms it into a database list of data frames. Function is based
 #'  on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.

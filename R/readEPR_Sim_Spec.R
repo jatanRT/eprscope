@@ -2,6 +2,9 @@
 #' Read the Simulated ASCII EPR Spectrum from \emph{MATLAB}
 #'
 #'
+#' @family Data Reading
+#'
+#'
 #' @description
 #' (\code{.txt}) and Transfer it into Data Frame
 #'

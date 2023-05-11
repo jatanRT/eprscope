@@ -132,3 +132,14 @@ readEPR_Exp_Specs_multif("Sample_VT_",
 
 
 }
+\seealso{
+Other Data Reading: 
+\code{\link{readEPR_Exp_Specs_kin}()},
+\code{\link{readEPR_Exp_Specs}()},
+\code{\link{readEPR_Sim_Spec}()},
+\code{\link{readEPR_param_slct}()},
+\code{\link{readEPR_params_slct_kin}()},
+\code{\link{readEPR_params_tabs}()},
+\code{\link{readMAT_params_file}()}
+}
+\concept{Data Reading}

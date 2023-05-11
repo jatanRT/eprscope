@@ -2,11 +2,13 @@
 #' Read all Parameters (incl. the Simulation ones) from \emph{MATLAB} \code{.mat} File
 #'
 #'
+#' @family Data Reading
+#'
+#'
 #' @description
 #' Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a `.mat`
 #' simulation file from MATLAB incl. structures/variables and fields. It can be also used to read and store
 #' simulated EPR spectrum in the form of `data frame`.
-#'
 #'
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.

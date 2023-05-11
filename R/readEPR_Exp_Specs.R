@@ -1,6 +1,10 @@
 #
 #' Read the Experimental ASCII or other Text-Based Data Related to EPR/ENDOR Spectra
 #'
+#'
+#' @family Data Reading
+#'
+#'
 #' @description The function is based on \code{\link[data.table]{fread}} with the purpose to read
 #'   experimental EPR/ENDOR spectra or other original related (preprocessed) data from EPR spectrometers
 #'   in ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
