@@ -18,7 +18,7 @@
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
 #' @param B.unit tbc
-#' @param Intensity.exp tbc
+#' @param Intensity.expr tbc
 #' @param Intensity.sim tbc
 #' @param optim.method Character string description tbc...following methods from \pkg{nloptr} are available:
 #'   \code{optim.method = "slsqp"} (\strong{default}), \code{optim.method = "neldermead"},
@@ -55,7 +55,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                              pattern_sim,
                              var2nd.series = "time_s",
                              B.unit = "G",
-                             Intensity.exp = "dIepr_over_dB",
+                             Intensity.expr = "dIepr_over_dB",
                              Intensity.sim = "dIeprSim_over_dB",
                              optim.method = "slsqp",
                              optim.params.init,
@@ -154,7 +154,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   #
   ## min. function for optimization incl. `fit_params_specs()`
   min_residuals <- function(data,col.name.pattern,x0){
-    with(data,sum((data[[Intensity.exp]] - fit_params_specs(data,col.name.pattern,x0))^2))
+    with(data,sum((data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,x0))^2))
   }
   #
   ## `var2nd.series` sequence (e.g. like time sequence)

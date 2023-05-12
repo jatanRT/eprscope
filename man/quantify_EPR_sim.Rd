@@ -10,7 +10,7 @@ quantify_EPR_sim(
   pattern_sim,
   var2nd.series = "time_s",
   B.unit = "G",
-  Intensity.exp = "dIepr_over_dB",
+  Intensity.expr = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
   optim.method = "slsqp",
   optim.params.init,
@@ -37,7 +37,7 @@ column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Ele
 
 \item{B.unit}{tbc}
 
-\item{Intensity.exp}{tbc}
+\item{Intensity.expr}{tbc}
 
 \item{Intensity.sim}{tbc}
 

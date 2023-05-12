@@ -5,69 +5,69 @@
 \title{Comparison Between the Experimental and Simulated EPR Spectrum}
 \usage{
 presentEPR_Sim_Spec(
-  data.spectrum.exp,
+  data.spectrum.expr,
   data.spectrum.sim,
   B.unit = "mT",
-  Intensity.exp = "dIepr_over_dB",
+  Intensity.expr = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
   Intensity.shift.ratio = 1.2,
   B.shift = 0,
-  line.color.exp = "red",
+  line.color.expr = "red",
   line.color.sim = "blue",
   line.width = 0.75,
   output.df = FALSE
 )
 }
 \arguments{
-\item{data.spectrum.exp}{\strong{Experimental} Spectrum data frame/table incl. magnetic flux
-density (in \code{mT} or \code{G}) column and labeled as \code{B_mT} in mT (or \code{B_G} in gauss) +
-it contains intensity column as \code{dIepr_over_dB}, \code{index} column can be included as well,}
+\item{data.spectrum.expr}{\strong{Experimental} spectrum data frame incl. magnetic flux
+density (in \code{mT} or \code{G}) column which are labeled as \code{B_mT} in mT (or \code{B_G} in gauss) +
+it contains intensity column as \code{dIepr_over_dB}, \code{index} column can be included as well.}
 
-\item{data.spectrum.sim}{Data frame/table corresponding to \strong{simulated} spectrum incl. \strong{magnetic
-flux density} (in \code{mT} or \code{G}) \strong{column must be labeled as} \code{Bsim_mT} in mT
-(or \code{Bsim_G} in gauss) + it contains intensity as well, this is automatic
-if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII}
+\item{data.spectrum.sim}{Data frame corresponding to \strong{simulated} spectrum incl. \strong{magnetic
+flux density} (in \code{mT} or \code{G}) like \code{Bsim_mT} in mT
+(or \code{Bsim_G} in gauss) + it contains intensity as well, column names are taken automatically
+if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII.}
 
 \item{B.unit}{Character/String pointing to unit of magnetic flux density (coming from original data) which
 is to be presented on \eqn{B} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}}
+like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}.}
 
-\item{Intensity.exp}{Character/String pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used (e.g. for integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
+\item{Intensity.expr}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+name/label is used (e.g. for integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{Intensity.sim}{Character/String pointing to \code{intensity column} of the simulated spectrum
+\item{Intensity.sim}{Character string pointing to \code{intensity column} of the simulated spectrum
 if other than \code{dIeprSim_over_dB} name/label is used (e.g. for integrated spectra),
 \strong{default}: \code{Intesity = "dIeprSim_over_dB"}, this is automatic if
-the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII}
+the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII.}
 
 \item{Intensity.shift.ratio}{Numeric (\strong{cannot be 0}), showing how 'far' is the simulated EPR spectrum
 presented below the experimental one. The lower the ratio, the 'deeper' the simulated spectrum shift,
 \strong{default}: \code{Intensity.shift.ratio = 1.2}, other common values : \code{0.6},\code{0.8},
-\code{1.2},\code{1.1}}
+\code{1.2},\code{1.1}.}
 
 \item{B.shift}{Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
 that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
 \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
-\code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G})}
+\code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G}).}
 
-\item{line.color.exp}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}}
+\item{line.color.expr}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
+colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}.}
 
 \item{line.color.sim}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.exp}}
+colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.expr}.}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}}
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}.}
 
-\item{output.df}{Logical, whether the table/data frame, corresponding to graphic spectra comparison
+\item{output.df}{Logical, whether the data frame, corresponding to graphic spectra comparison
 (this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})
 should be presented as well (\code{output.df = TRUE}), in such case the output is \code{list}
-containing plot (\code{list$plot},graphic representation) as well as containing table
+containing plot (\code{list$plot},graphic representation) as well as containing the data frame
 (\code{list$df}, tabular representation), however the \strong{default} is \code{output.df = FALSE},
-i.e. only graphical representation is shown}
+i.e. only graphical representation is shown.}
 }
 \value{
-\pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated formm)
-  spectrum or \code{list} consisting of mentioned-plot and the corresponding \code{data frame/table}
+\pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated form)
+  spectrum or \code{list} consisting of plot and the corresponding data frame \code{df}
 }
 \description{
 TODO by Tabular and/or Graphic Representation
