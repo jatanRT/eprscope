@@ -149,19 +149,22 @@ The primary aim of the function is to get an idea of theoretical quantitative (e
   }
 }
 \examples{
-## irreversible dimerization quantitative kinetic profile plot
-kin.test.01 <- eval_kinR_ODE_model(model.react = "(x=2)R --> [k1] B",
-                                   kin.params = c(k1 = 0.012,
-                                                  qvar0R = 0.08))
+## irreversible dimerization quantitative kinetic profile
+## table (df) with first 10 observations/rows
+kin.test.01 <-
+ eval_kinR_ODE_model(model.react = "(x=2)R --> [k1] B",
+                     kin.params = c(k1 = 0.012,
+                                    qvar0R = 0.08))
 head(kin.test.01$df,n = 10)
 #
-## consecutive reactions
-kin.test.02 <- eval_kinR_ODE_model(model.react = "(x=1)A --> [k1] (x=1)R --> [k2] C",
-                                   kin.params = c(k1 = 0.01,
-                                                  k2 = 0.015,
-                                                  qvar0A = 0.02,
-                                                  qvar0R = 0.002,
-                                                  qvar0C = 0))
+## consecutive reactions and preesenting plot
+kin.test.02 <-
+ eval_kinR_ODE_model(model.react = "(x=1)A --> [k1] (x=1)R --> [k2] C",
+                     kin.params = c(k1 = 0.01,
+                                    k2 = 0.015,
+                                    qvar0A = 0.02,
+                                    qvar0R = 0.002,
+                                    qvar0C = 0))
 kin.test.02$plot
 #
 \dontrun{
