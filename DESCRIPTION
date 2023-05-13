@@ -73,13 +73,16 @@ Imports:
     htmlwidgets,
     webshot2
 Suggests: 
-    kableExtra,
-    cowplot,
     grid,
-    RColorBrewer,
+    osfr,
+    DT,
+    cowplot,
     gridExtra,
     patchwork,
     writexl,
     flextable,
-    openxlsx
+    openxlsx,
+    kableExtra,
+    RColorBrewer,
+    modelsummary
 RoxygenNote: 7.2.3
