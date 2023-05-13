@@ -1,48 +1,58 @@
 #
-#' Quantitative Kinetic Model Profiles by Numeric Solution of ODE for Visualization and Fitting of the Radical Reactions.
+#' Quantitative Kinetic Model Profiles by Numeric Solution of ODE for Visualization
+#' and Fitting of the Radical Reactions.
 #'
 #'
 #' @family Evaluations and Quantification
 #'
 #'
 #' @description
-#'   The primary aim of the function is to get an idea of theoretical quantitative (e.g. like concentration/amount/integral intensity)
-#'   kinetic profile for various model reactions where the radical(s) ("R") are involved in the processes.
-#'   Secondary purpose is to fit the experimental EPR spectral time series outputs (e.g. like integral intensity/area under
-#'   the spectral curve \emph{vs} time) in order to gather the rate constants (\eqn{k}) of radical ("R") formation
-#'   and/or decomposition. Quantitative kinetic profiles are not evaluated by integration of the kinetic equations,
-#'   however by numeric solution of the Ordinary Differential Equations
-#'   (\href{http://desolve.r-forge.r-project.org/index.html}{ODE}, see also \pkg{deSolve} package).
-#'   Therefore, higher number of models is available than for integrated differential equations because their
-#'   solution is quite often highly demanding. The function is inspired by
+#'   The primary aim of the function is to get an idea of theoretical quantitative (e.g. like
+#'   concentration/amount/integral intensity) kinetic profile for various model reactions where
+#'   the radical(s) ("R") are involved in the processes.
+#'   Secondary purpose is to fit the experimental EPR spectral time series outputs, e.g. like integral
+#'   intensity (area under the spectral curve) \emph{vs} time in order to gather the rate constants
+#'   (\eqn{k}) of radical ("R") formation and/or decomposition. Quantitative kinetic profiles
+#'   are not evaluated by integration of the kinetic equations, however by numeric solution of the Ordinary
+#'   Differential Equations (\href{http://desolve.r-forge.r-project.org/index.html}{ODE}, see also
+#'   \pkg{deSolve} package). Therefore, higher number of models is available than for integrated
+#'   differential equations because their solution is quite often highly demanding.
+#'   The function is inspired by
 #'   \href{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}{R-bloggers
 #'   article}.
-#'   The most applied kinetic models for radical reactions in EPR spectroscopy are summarized below (see also \code{model.react} function
-#'   argument).
+#'   The most applied kinetic models for radical reactions in EPR spectroscopy are summarized below
+#'   (see also \code{model.react} function argument).
 #'   \tabular{ccl}{
 #'   -------------------- \tab | \tab -------------------- \cr
 #'   \strong{`model.react`} \tab | \tab \strong{Description} \cr
 #'   -------------------- \tab | \tab -------------------- \cr
-#'   \code{"(x=1)R --> [k1] B"} \tab | \tab Basic irreversible forward reaction, e.g. like irrev. dimerization (if \code{"(x=2)"}). \cr
-#'   \code{"(x=1)A --> [k1] R"} \tab | \tab Basic irreversible radical formation, e.g. like irrev. \eqn{\text{e}^-} transfer. \cr
-#'   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab Consecutive reactions, e.g. like comproportionation (or homogeneous
+#'   \code{"(x=1)R --> [k1] B"} \tab | \tab Basic irreversible forward reaction,
+#'   e.g. like irrev. dimerization (if \code{"(x=2)"}). \cr
+#'   \code{"(x=1)A --> [k1] R"} \tab | \tab Basic irreversible radical formation,
+#'   e.g. like irrev. \eqn{\text{e}^-} transfer. \cr
+#'   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab Consecutive reactions,
+#'   e.g. like comproportionation (or homogeneous
 #'   \eqn{\text{e}^-} transfer, for \code{"(x=2)"}) + follow up irrev. dimerization. \cr
-#'   \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab Basic reversible radical quenching, e.g. like rev. (\eqn{\pi-\pi} dimerization). \cr
-#'   \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab Basic reversible radical formation, e.g. from rev.
+#'   \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab Basic reversible radical quenching,
+#'   e.g. like rev. (\eqn{\pi-\pi} dimerization). \cr
+#'   \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab Basic reversible radical formation,
+#'   e.g. from rev.
 #'   comproportionation/disproportionation (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}},
 #'   for \code{"(x=2)"}). \cr
-#'   \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab Basic parallel reactions, e.g. like radical decomposition and isomerization
-#'   or two radical diffusion forming different product than without diffusion like recombination (\code{"(x=2)"}). \cr
-#'   \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab Radical formation by chemical reaction like oxidation, reduction or
-#'   spin trapping (transient radical is not visible within the common EPR time scale). \cr
+#'   \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab Basic parallel reactions,
+#'   e.g. like radical decomposition and isomerization or two radical diffusion forming different product
+#'   than without diffusion like recombination (\code{"(x=2)"}). \cr
+#'   \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab Radical formation by chemical reaction like oxidation,
+#'   reduction or spin trapping (transient radical is not visible within the common EPR time scale). \cr
 #'   -------------------- \tab | \tab -------------------- \cr
 #'   }
 #'
 #'
-#' @param model.react Character string denoting a specific radical (\code{"R"}) reaction related to changes in integral
-#'   intensities in EPR spectral time series. Arrow show the direction of reaction (\code{"-->"}, irreversible
-#'   or \code{"<==>", reversible}). Rate constants are indicated by square brackets after the arrows.
-#'   Notation inherited from \href{https://www.ctan.org/pkg/mhchem?lang=en}{\eqn{\LaTeX} `mhchem` package}.
+#' @param model.react Character string denoting a specific radical (\code{"R"}) reaction related to
+#'   changes in integral intensities in EPR spectral time series. Arrow shows direction of the reaction
+#'   (\code{"-->"}, irreversible or \code{"<==>", reversible}). Rate constants are indicated by square
+#'   brackets after the arrows. Such notation inherited from
+#'   \href{https://www.ctan.org/pkg/mhchem?lang=en}{\eqn{\LaTeX} `mhchem` package}.
 #'   Following reaction schemes are the most common used to describe the integral intensity and/or radical
 #'   concentration/amount changes during the EPR time series experiment.
 #'   \tabular{lcl}{
@@ -63,24 +73,25 @@
 #'    \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
 #'    ------------------------ \tab | \tab -------------------- \cr
 #'   }
-#'   Couple of examples are also given in the description. The function is relatively flexible and enables later addition
-#'   of any other reaction schemes describing the EPR time series experiments (you may ask developer(s) via `github issue`).
-#'   The stoichiometric coefficient (e.g. like \code{"(x=1)"} or \code{"(y=1)"}) can be varied within
-#'   the \code{model.react} character string. Defined/Allowed values are \code{"(x=1)"},  \code{"(x=2)"}
-#'   and \code{"(x=n)"}. \strong{The latest NOTATION (\code{"(x=n)"}) is USED ONLY FOR FITTING},
-#'   see \code{\link{eval_kinR_EPR_modelFit}}, in order to take into account a possible non-integer stoichiometric
-#'   coefficients. If equal coefficients are given for both sides of (partial) reaction
-#'   they have to be changed equally (e.g. like \code{"(x=2)A <==> [k1] [k2] (x=2)R"}). Otherwise, the stoichiometric
-#'   coefficients may be varied independently (e.g. like in \code{"(x=1)A + (y=2)B --> [k1] R"}).
-#'   \strong{Default}: \code{model.react = "(x=1)R --> [k1] B"}.
+#'   Couple of examples are also given in the description. The function is relatively flexible and enables
+#'   later addition of any other reaction schemes describing the EPR time series experiments
+#'   (YOU MAY ASK DEVELOPER(S) via `github issue`). The stoichiometric coefficient (e.g. like \code{"(x=1)"}
+#'   or \code{"(y=1)"}) can be varied within the \code{model.react} character string.
+#'   Defined/Allowed values are \code{"(x=1)"},  \code{"(x=2)"} and \code{"(x=n)"}.
+#'   \strong{The latest NOTATION (\code{"(x=n)"}) is USED ONLY FOR FITTING},
+#'   see \code{\link{eval_kinR_EPR_modelFit}} or the examples below. The reason is to take into account
+#'   a possible non-integer stoichiometric coefficients. If equal coefficients are given for both sides
+#'   of (partial) reaction they have to be changed equally (e.g. like \code{"(x=2)A <==> [k1] [k2] (x=2)R"}).
+#'   Otherwise, the stoichiometric coefficients may be varied independently
+#'   (e.g. like in \code{"(x=1)A + (y=2)B --> [k1] R"}). \strong{Default}: \code{model.react = "(x=1)R --> [k1] B"}.
 #' @param model.expr.diff Logical, difference between the integral intensities/areas under the curves calculated
-#'   using the experimental data and those generated by the model. By \strong{default} the argument is \strong{FALSE}
-#'   and it is ONLY ACTIVATED (\code{model.expr.diff = TRUE}) IN CASE KINETIC MODEL FITTING PROCEDURE
-#'   (see also \code{\link{eval_kinR_EPR_modelFit}}).
-#' @param kin.params Named numeric vector containing rate constants as well as initial radical or other reactant/product
-#'   concentration/integral intensities/areas...etc. Therefore, a general \code{qvar} (\strong{q}uantitative
-#'   \strong{var}iable) was defined which may actually reflect all the mentioned quantities.
-#'   \strong{Default}: \code{kin.params = c(k1 = 0.001,qvar0R = 0.02)}.
+#'   using the experimental data and those generated by the model. By \strong{default} the argument
+#'   is \strong{FALSE} and it is ONLY ACTIVATED (\code{model.expr.diff = TRUE}) IN CASE KINETIC MODEL
+#'   FITTING PROCEDURE (see also \code{\link{eval_kinR_EPR_modelFit}} or examples below).
+#' @param kin.params Named numeric vector containing rate constants as well as initial radical
+#'   or other reactant/product concentration/integral intensities/areas...etc. Therefore, a general
+#'   \code{qvar} (\strong{q}uantitative \strong{var}iable) was defined which may actually reflect
+#'   all the mentioned quantities. \strong{Default}: \code{kin.params = c(k1 = 0.001,qvar0R = 0.02)}.
 #'   The initial values are denoted as \code{qvar0X} (e.g. qvar0R for radical or qvar0A for reactant).
 #'   The components of \code{kin.params} numeric vector depend on \code{model.react} like summarized in the
 #'   following table =>
@@ -90,31 +101,39 @@
 #'   -------------------- \tab | \tab ------------------- \cr
 #'   \code{"(x=1)R --> [k1] B"} \tab | \tab \code{k1}, \code{qvar0R}, (\code{n}) \cr
 #'   \code{"(x=1)A --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
-#'   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A}, \code{qvar0R}, \code{qvar0C},
-#'   (\code{n}) \cr
-#'   \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, \code{qvar0B}, (\code{n}) \cr
-#'   \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
+#'   \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A},
+#'   \code{qvar0R}, \code{qvar0C}, (\code{n}) \cr
+#'   \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R},
+#'   \code{qvar0B}, (\code{n}) \cr
+#'   \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A},
+#'   \code{qvar0R}, (\code{n}) \cr
 #'   \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, (\code{n}) \cr
-#'   \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0B}, \code{qvar0R}, (\code{n}) \cr
+#'   \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0B},
+#'   \code{qvar0R}, (\code{n}) \cr
 #'   -------------------- \tab | \tab ------------------- \cr
 #'   }
 #' @param data.expr R data frame containing the integral intensities/areas under the curves calculated
 #'   using the \strong{experimental data} as well as time column. These two essential columns
-#'   are described by character strings like bellow (see the last two arguments). The \code{data.expr} MUST BE USED
-#'   IN CASE IF THE EXPERIMENTAL TIME HAS TO BE INCLUDED IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPR. DATA
-#'   BY THE KINETIC MODEL). \strong{Default}: \code{data.expr = NULL}.
-#' @param time.expr.series Character string pointing to `time` \strong{column name} in the original \code{data.expr} data frame.
-#'   \strong{Default}: \code{time.expr.series = NULL} (in case of experimental data aren't taken into account).
-#' @param qvar.expr Character string pointing to `qvar` \strong{column name} in the original \code{data.expr} data frame.
-#'   \strong{Default}: \code{qvar.expr = NULL} (in case of experimental data aren't taken into account).
+#'   are described by character strings like bellow (see the last two arguments).
+#'   The \code{data.expr} MUST BE USED ONLY IN CASE IF THE EXPERIMENTAL TIME HAS TO BE INCLUDED
+#'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPR. DATA BY THE KINETIC MODEL).
+#'   \strong{Default}: \code{data.expr = NULL}.
+#' @param time.expr.series Character string pointing to `time` \strong{column name} in the original
+#'   \code{data.expr} data frame. \strong{Default}: \code{time.expr.series = NULL} (in case of experimental
+#'   data aren't taken into account).
+#' @param qvar.expr Character string pointing to `qvar` \strong{column name} in the original
+#'   \code{data.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (in case of experimental
+#'   data aren't taken into account).
 #'
 #'
-#' @return If the function is not used for fitting of the experimental and processed data, the result is \code{list}.
-#'   It consists of data frame (\code{df}) and \code{plot} containing \code{time} (within the plot presented as abscissa)
-#'   column and `qvar`, quantitative variable, columns (or points in the plot => \eqn{y}-axis) corresponding to quantities
-#'   of different relevant species denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. Applying function
-#'   for the fitting procedure requires \code{model.expr.diff = TRUE} and therefore the result is difference between
-#'   the integral intensities/areas under the curves calculated using the experimental data and those generated by the model.
+#' @return If the function is not used for fitting of the experimental and processed data, the result
+#'   is \code{list}. It consists of data frame (\code{df}) and \code{plot} containing \code{time}
+#'   (within the plot presented as abscissa) column and `qvar`, quantitative variable, columns
+#'   (or points in the plot => \eqn{y}-axis) corresponding to quantities of different relevant species
+#'   denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. Applying function for the fitting procedure
+#'   requires \code{model.expr.diff = TRUE} and therefore the result is difference between
+#'   the integral intensities/areas under the curves calculated using the experimental data
+#'   and those generated by the model.
 #'
 #'
 #' @examples
