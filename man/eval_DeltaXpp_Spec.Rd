@@ -61,6 +61,7 @@ Other Evaluations:
 \code{\link{eval_extremeX_Spec}()},
 \code{\link{eval_gFactor_Spec}()},
 \code{\link{eval_gFactor}()},
-\code{\link{eval_interval_cnfd_tVec}()}
+\code{\link{eval_interval_cnfd_tVec}()},
+\code{\link{eval_nu_ENDOR}()}
 }
 \concept{Evaluations}
