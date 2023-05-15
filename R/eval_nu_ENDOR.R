@@ -6,29 +6,49 @@
 #'
 #'
 #' @description
-#' A short description...tbc...
+#'   Larmor/ENDOR frequency calculations for analysis in EPR/Electron Nuclear Double Resonance. This a function
+#'   similar to e.g. available online => \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
+#'   Calclator}. The frequency in MHz is calculated according to relation
+#'   \deqn{\nu_{\text{ENDOR}}^{} = - (1/h)\,\mu_{\text{N}}^{}\,g_{\text{n}}^{}\,B\,10^{-6}}
+#'   where \eqn{h} is the Planck's constant, \eqn{\mu_{\text{N}}^{}} is the nuclear magneton
+#'   available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\text{n}}^{}}
+#'   is the nuclear \eqn{g}-factor of the specific nucleus (reported in the package \code{isotope_df} data frame
+#'   as \code{g_Nuclear}) and finally, the \eqn{B} denotes the magnetic flux density at which the ENDOR spectra
+#'   are recorded (see also \code{B.val} in arguments below). The \eqn{10^{-6}} coeff.is referred to resulting
+#'   frequency in MHz.
 #'
 #'
-#' @param nucleus Character string in form of e.g. \code{"14N"}...tbc.
-#' @param B.unit Character string denoting the magnetic flux density \eqn{B} unit.
-#' @param B.val Numeric, magnetic flux density \eqn{B} \code{value}.
+#' @param nucle_us_i (Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
+#'   pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \eqn{g}-factors
+#'   for those nuclei are taken from the package \code{isotope_df} data frame. Se also documentation
+#'   \code{?eprscope::isotope_db}.
+#' @param B.unit Character string denoting the magnetic flux density \eqn{B} unit. \strong{Default}: \code{B.unit = "G"}.
+#' @param B.val Numeric, magnetic flux density \eqn{B} \code{value}. This actually corresponds to \eqn{B} at which
+#'   the EPR signal is saturated to record the ENDOR spectrum/spectra.
 #'
 #'
-#' @return Numeric value or vector...tbc...
+#' @return Numeric value or vector of nuclear Larmor/ENDOR frequencies in MHz for selected nuclei at \eqn{B} = \code{B.val}.
 #'
 #'
 #' @examples
-#' \dontrun{
-#' tbc
-#' tbc
-#' }
+#' ## Larmor/ENDOR frequency for only selected nucleus
+#' ## e.g. "14N" at 3486 G
+#' eval_nu_ENDOR(nucle_us_i = "14N",
+#'               B.val = 3486)
+#' #
+#' ## Larmor/ENDOR frequency for selected nuclei
+#' ## e.g. "1H" and "31P" at saturation
+#' ## field of B = 349.9 mT
+#' eval_nu_ENDOR(nucle_us_i = c("1H","31P"),
+#'               B.unit = "mT",
+#'               B.val = 349.9)
 #'
 #'
 #' @export
 #'
 #'
-eval_nu_ENDOR <- function(nucleus,
-                          B.unit,
+eval_nu_ENDOR <- function(nucle_us_i,
+                          B.unit = "G",
                           B.val){
   #
   ## 'Temporary' processing variables
@@ -50,13 +70,23 @@ eval_nu_ENDOR <- function(nucleus,
   #
   ## load the specific nucleus and its properties
   ## from the `isotope_db` and select its g-value: `g_Nuclear`
-  g_Nuclear.nucleus <- eprscope::isotope_db %>%
-    dplyr::filter(Isotope == nucleus) %>%
-    dplyr::pull(g_Nuclear)
+  ## for "vectorized" nuclei
+  if (length(nucle_us_i) > 1){
+    g_Nuclear.nucle.us.i <- sapply(seq(nucle_us_i),
+                                   function(i) eprscope::isotope_db %>%
+                                     dplyr::filter(Isotope == nucle_us_i[i]) %>%
+                                     dplyr::pull(g_Nuclear))
+  } else {
+    #
+    ## just for one nucleus
+    g_Nuclear.nucle.us.i <- eprscope::isotope_db %>%
+      dplyr::filter(Isotope == nucle_us_i) %>%
+      dplyr::pull(g_Nuclear)
+  }
   #
   ## ENDOR frequency (in MHz) calculation:
   nu_ENDOR <- - (1/Planck.const) *
-    g_Nuclear.nucleus * nuclear.mu * B.val * 1e-6
+    g_Nuclear.nucle.us.i * nuclear.mu * B.val * 1e-6
   #
   return(nu_ENDOR)
   #
