@@ -84,7 +84,9 @@ Suggests:
     openxlsx,
     kableExtra,
     RColorBrewer,
-    modelsummary
+    modelsummary,
+    rmarkdown
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
+VignetteBuilder: knitr
