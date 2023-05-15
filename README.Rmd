@@ -16,7 +16,7 @@ The main goal of this package is to bring handy functions corresponding to "ever
 ## So far, the package can be installed by =>
 
 # install.packages("remotes")
-remotes::install_github("https://github.com/jatanRT/eprscope.git")
+# remotes::install_github("https://github.com/jatanRT/eprscope.git")
 
 ```
 

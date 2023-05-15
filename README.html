@@ -610,69 +610,18 @@ Paramagnetic Resonance</a>) spectroscopy. The package doesn’t want to
 replace the great EPR simulation/processing <a href="https://www.easyspin.org/">EasySpin Toolbox</a> for <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> .
 Rather, it may be considered like a complimentary package/toolbox with
 practical functions which have to be otherwise performed by the
-combination of several proprietary software platforms like <em>MS
-Office</em>, <em>Orgin/SigmaPlot/Igor</em> (in general graphing
-software) as well as acquisition/processing software supplied by the EPR
-spectrometer manufacturers (see e.g. <a href="https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html"><em>Xenon/WinEPR</em></a>).
-These involve the following principal operation groups:</p>
-<ul>
-<li><p>Reading the universal ASCII data format (e.g. like
-<code>.asc</code>, <code>.txt</code>, <code>.csv</code>) and
-transforming into tables (data frames) incl. operations like intensity
-normalization and conversion between magnetic flux density (<em>B</em>)
-units (G ⟺ mT). Additionally, the functions enable the automatic reading
-of time series experiments like a kinetic one (e.g. also with the
-combination of <em>in situ</em> electrochemistry or
-photochemistry/irradiation) or reading and processing several EPR
-spectra data/files, at once, for the series of individual
-experiments/data files upon changing the quantities like time,microwave
-power, electrochemical potential, temperature, concentration…etc.
-Finally, reading the <em>MATLAB</em> (<code>.mat</code>) files and the
-instrumental parameter ones ( in case of <em>BRUKER</em> instruments, so
-far<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> )
-and the corresponding parameter extraction can be performed as
-well.</p></li>
-<li><p>Plotting the EPR spectra incl. time series/kinetics or their
-dependency on other quantities (like already mentioned above) as well as
-presentation of simulated spectra are provided by several functions
-based on either <a href="https://ggplot2.tidyverse.org/">ggplot2</a>
-package/system (one of the most comprehensive system for data
-visualization) or interactive <a href="https://plotly.com/r/">plotly</a>
-graphing library. Especially, the later may represent a valuable
-alternative to EPR instrumental software or other proprietary graphing
-systems, because it includes visualization tools like zooming, panning,
-data/values hovering and much more.</p></li>
-<li><p>Quantifying the number of paramagnetic species (e.g. radicals)
-based on integrated forms of derivative EPR spectra and instrumental
-parameters. In this respect also baseline polynomial corrections are
-included to precisely evaluate the double integrals by numeric <a href="https://mathworld.wolfram.com/TrapezoidalRule.html">trapezoidal
-method</a>. In case of lower signal-to-noise ratios i.e. in noisy EPR
-spectra, they can be optimized by least-square fitting of simulated ones
-(e.g. from EasySpin) and single or double integrals can be evaluated
-using the optimized intensity of the simulated EPR spectrum. This is
-particularly advantageous in (time) series of many noisy EPR spectra.
-Such operations have been available only on EPR
-instruments/spectrometers, up to now.</p></li>
-<li><p>Last but not least, there are functions to find extremes (maxima,
-minima), linewidths (incl. 𝚫<em>B</em><sub>pp</sub>) as well as
-<em>g</em>-values directly from the spectral data. Eexperimentally (or
-by spectral simulations) determined EPR spectral parameters like
-<em>g</em>-values and hyperfine coupling (<em>A</em>)/splitting
-(<em>a</em>) constants are quite often compared to theoretically
-predicted by quantum chemical calculations (e.g. by <a href="https://gaussian.com/dft/">Density Functional Theory</a>).
-Therefore</p></li>
-</ul>
+combination of acquisition/processing software supplied by the EPR
+spectrometer manufacturers (see e.g. <a href="https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html"><em>Xenon/WinEPR</em></a>)
+as well as several proprietary software platforms like <em>MS
+Office</em>, <em>Orgin/SigmaPlot/Igor</em> (in general text editing and
+graphing software).</p>
 <h1 id="installation">Installation</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="do">## So far, the package can be installed by</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="do">## So far, the package can be installed by =&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># remotes::install_github(&quot;https://github.com/jatanRT/eprscope.git&quot;)</span></span></code></pre></div>
 <h1 id="usage">Usage</h1>
 <p>Blah</p>
-<div class="footnotes footnotes-end-of-document">
-<hr />
-<ol>
-<li id="fn1"><p>Reading parameter files from additional EPR
-instruments/manufacturers can be added acccordingly<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
-</div>
 
 </body>
 </html>
