@@ -73,9 +73,10 @@ Imports:
     htmlwidgets,
     webshot2
 Suggests: 
+    DT
     grid,
     osfr,
-    DT,
+    icons,
     cowplot,
     gridExtra,
     patchwork,
