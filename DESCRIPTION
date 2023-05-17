@@ -73,7 +73,7 @@ Imports:
     htmlwidgets,
     webshot2
 Suggests: 
-    DT
+    DT,
     grid,
     osfr,
     icons,
