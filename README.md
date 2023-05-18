@@ -22,8 +22,8 @@ as well as several proprietary software platforms like *MS Office*,
 ``` r
 ## So far, the package can be installed by =>
 
-# install.packages("remotes")
-# remotes::install_github("https://github.com/jatanRT/eprscope.git")
+# install.packages("devtools")
+# devtools::install_github("jatanRT/eprscope.git")
 ```
 
 # Usage
