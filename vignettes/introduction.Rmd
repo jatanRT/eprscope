@@ -1,6 +1,8 @@
 ---
 title: "Introduction"
 output: rmarkdown::html_vignette
+bibliography: introduction.bib
+csl: iso690-numeric-en.csl
 vignette: >
   %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
@@ -23,17 +25,11 @@ library(icons)
 
 ## Why `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` for EPR
 
-The usual way of the physico-chemical scientific workflow (e.g. in spectroscopy) consists in data transformation from the instrument via creation of figures and tables and finally using them in reports, publications or thesis. Quite often it may happen that several software packages/tools are applied on this way incl. the proprietary ones which are available at least as an acquisition/processing software at the instrument capable of basic or more advanced operations with the EPR outcomes/spectra. As already mentioned (see `README` file on the title page) there is a great open source toolbox for EPR spectroscopists[^1], however only working under proprietary *MATLAB*[^2], which can handle the raw files from the EPR machines process them and create a reports in interactive form[^3] or in `.pdf`. There are however only a few examples of fully open source packages working
+The usual way of the physico-chemical scientific workflow (e.g. in spectroscopy) consists in data transformation from the instrument via creation of figures and tables and finally using them in reports, publications or thesis. Quite often it may happen that several software packages/tools are applied on this way incl. the proprietary ones which are available at least as an acquisition/processing software at the instrument capable of basic or more advanced operations with the EPR outcomes/spectra. As already mentioned (see `README` file on the title page) there is a great open source toolbox for EPR spectroscopists[@Easyspin2023], however only working under proprietary *MATLAB*[@Matlab2023], which can handle the raw files from the EPR machines process them and create a reports in interactive form[@MatlabLE2023] or in `.pdf`. There are however only a few examples of fully open source EPR packages working under *Python*[@FOSSspec2022].
 
-[^1]: [see EasySpin MATLAB toolbox](https://www.easyspin.org/)
+The *R statistical language* is not so widely used as the general purpose language *Python*, which is also applied in many scientific fields. However, owing to its nature, the `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` is very much focused on mathematics, statistics and, last but not least, on data processing and analysis especially in research and academia. Even though it's so specific it actually represents an advantage in data handling. Therefore, it has been very much established also in chemistry, physics and biology, pharma industry as well as in economy.
 
-    [EasySpin GitHub Repository](https://github.com/StollLab/EasySpin)
-
-[^2]: [see MATLAB: Math, Graphics, Programming](https://www.mathworks.com/products/matlab.html?s_tid=hp_products_matlab)
-
-[^3]: [MATLAB Live Editor](https://www.mathworks.com/products/matlab/live-editor.html)
-
--   Reading the universal ASCII data format (e.g. like `.asc`, `.txt`, `.csv`) and transforming into tables (data frames) incl. operations like intensity normalization and conversion between magnetic flux density (*B*) units (G ⟺ mT). Additionally, the functions enable the automatic reading of time series experiments like a kinetic one (e.g. also with the combination of *in situ* electrochemistry or photochemistry/irradiation) or reading and processing several EPR spectra data/files, at once, for the series of individual experiments/data files upon changing the quantities like time,microwave power, electrochemical potential, temperature, concentration...etc. Finally, reading the *MATLAB* (`.mat`) files and the instrumental parameter ones ( in case of *BRUKER* instruments, so far[^4] ) and the corresponding parameter extraction can be performed as well.
+-   Reading the universal ASCII data format (e.g. like `.asc`, `.txt`, `.csv`) and transforming into tables (data frames) incl. operations like intensity normalization and conversion between magnetic flux density (*B*) units (G ⟺ mT). Additionally, the functions enable the automatic reading of time series experiments like a kinetic one (e.g. also with the combination of *in situ* electrochemistry or photochemistry/irradiation) or reading and processing several EPR spectra data/files, at once, for the series of individual experiments/data files upon changing the quantities like time,microwave power, electrochemical potential, temperature, concentration...etc. Finally, reading the *MATLAB* (`.mat`) files and the instrumental parameter ones ( in case of *BRUKER* instruments, so far[^1] ) and the corresponding parameter extraction can be performed as well.
 
 -   Plotting the EPR spectra incl. time series/kinetics or their dependency on other quantities (like already mentioned above) as well as presentation of simulated spectra are provided by several functions based on either [ggplot2](https://ggplot2.tidyverse.org/) package/system (one of the most comprehensive system for data visualization) or interactive [plotly](https://plotly.com/r/) graphing library. Especially, the later may represent a valuable alternative to EPR instrumental software or other proprietary graphing systems, because it includes visualization tools like zooming, panning, data/values hovering and much more.
 
@@ -41,4 +37,4 @@ The usual way of the physico-chemical scientific workflow (e.g. in spectroscopy)
 
 -   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
 
-[^4]: Reading parameter files from additional EPR instruments/manufacturers can be added acccordingly
+[^1]: Reading parameter files from additional EPR instruments/manufacturers can be added acccordingly
