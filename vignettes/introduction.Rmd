@@ -1,6 +1,8 @@
 ---
 title: "Introduction"
-output: rmarkdown::html_vignette
+output: 
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
 bibliography: introduction.bib
 csl: iso690-numeric-en.csl
 vignette: >
@@ -21,26 +23,39 @@ $\require{mhchem}$
 ```{r setup, include = FALSE}
 library(eprscope)
 library(icons)
+library(knitr)
 ```
 
-## Why `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` for EPR ?
+## Why `r icons::bioicons("R")` for EPR ? Comprehensive Rationale. {.unnumbered}
 
-The usual way of the physico-chemical scientific workflow (e.g. in spectroscopy) consists in data transformation from the instrument via creation of figures and tables and finally using them in reports, publications or thesis. Quite often it may happen that several software packages/tools are applied on this way incl. the proprietary ones which are available at least as an acquisition/processing software at the instrument capable of basic or more advanced operations with the EPR outcomes/spectra. As already mentioned (see `README` file on the title page) there is a great open source toolbox for EPR spectroscopists [@Easyspin2023] however, only working under proprietary *MATLAB* [@Matlab2023], which can handle the raw files from the EPR machines process them and create reports in an interactive form [@MatlabLE2023] or in `.pdf`. There are however only a few examples of fully open source EPR packages working under *Python* [@FOSSspec2022].
+The usual way of the physico-chemical scientific workflow (e.g. in spectroscopy) consists in data transformation from the instrument via creation of figures and tables and finally using them in reports, publications or thesis. Quite often it may happen that several software packages/tools are applied on this way incl. the proprietary ones which are available at least as an acquisition/processing software at the instrument capable of basic or more advanced operations with the EPR outcomes/spectra. As already mentioned (see `README` file on the title page) there is an excelent open source toolbox for EPR spectroscopists [@Easyspin2023] however, only working under proprietary *MATLAB* [@Matlab2023], which can handle the raw files from the EPR machines process them and create reports in an interactive form [@MatlabLE2023] or in `.pdf`. There are however only a few examples of fully open source EPR packages working under *Python* `r icons::ionicons("logo-python")` [@FOSSspec2022].
 
-The open source *R statistical language* is not so widely used as the general purpose language *Python*, which is also applied in many scientific fields [@Fangohr2021; @Staveren2022; @VaughanPy2023]. However, owing to its nature, the `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` is very much **focused on mathematics, statistics, graphing (it was actually built for such a purpose) and, last but not least, on data processing and analysis especially in research and academia**. Even though it's so specific it actually represents an advantage in data handling. Therefore, it has been very much established also in chemistry and physics [@PhysChemR2023], biology [@BiocondR2023], pharma industry [@PositPharma2023; @Pharmaverse2023] as well as in economics [@PositFinance2023; @BusinessSci2021]. It is no coincidence that many big companies, universities or financial and healthcare institutions rely on multiplatform[^1] `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` [@Rcosortium2023; @PositDS2023].
+The open source *R statistical language* [@Rmanual2023] is not so widely used as the general purpose language `r icons::ionicons("logo-python")`, which is also applied in many scientific fields [@Fangohr2021; @Staveren2022; @VaughanPy2023]. However, owing to its nature, the `r icons::bioicons("R")` is very much **focused on mathematics, statistics, graphing (it was actually built for such a purpose) and, last but not least, on data processing and analysis especially in research and academia**. Even though it's so specific it actually represents an advantage in data handling. Therefore, it has been very much established also in chemistry and physics [@PhysChemR2023], biology [@BiocondR2023], pharma industry [@PositPharma2023; @Pharmaverse2023] as well as in economics [@PositFinance2023; @BusinessSci2021]. It is no coincidence that many big companies, universities or financial and healthcare institutions rely on multiplatform[^1] `r icons::bioicons("R")` [@Rconsortium2023; @PositDS2023].
 
-[^1]: The `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` is available for all three main operating systems =\> `r icons::icon_style(ionicons("logo-windows"),fill = "blue")` `r icons::icon_style(ionicons("logo-apple"),fill = "gray")` `r icons::icon_style(ionicons("logo-tux"),fill = "black")`
+[^1]: The `r icons::bioicons("R")` is available for all three main operating systems =\> `r icons::icon_style(ionicons("logo-windows"),fill = "blue")` `r icons::icon_style(ionicons("logo-apple"),fill = "gray")` `r icons::icon_style(ionicons("logo-tux"),fill = "black")`
 
-Because the `r icons::icon_style(fontawesome("r-project"),fill = 'blue')` belongs to the **family of programming languages** (two of them are already mentioned above + see also e.g. like *GNU Octave* [@GNUoctave2023], *Julia* [@JliaLang2023] or *Observable* [@Observable2023]) it also **provides reproducible workflow functionality. This is especially important for process validation in research and academia**. Namely, one can easily follow all the data and visualization operations unlike the other software with "icon-based" procedures.
+Because the `r icons::bioicons("R")` belongs to the **family of programming languages** it also **provides reproducible workflow functionality. This is especially important for process validation in research and academia**. Namely, one can easily follow all the data and visualization operations unlike the other software with "icon-based" procedures. Moreover, **such a data handling together with the outstanding visualization/graphing** [@ggplotWickh2016; @ggplotext2016; @ggplot23e2023] **and publishing capabilities** [@BookdownBook2016; @BoookdownMan2023; @Quarto2022; @RmarkdownBook2020; @RmarkdownMan2023] **makes it a very powerful tool in the research area**. Hence, the decision to create a package for EPR spectroscopy in `r icons::bioicons("R")` was strongly supported by the aforementioned features. Despite the fact that `r icons::bioicons("R")` is slightly more difficult to learn than e.g. `r icons::ionicons("logo-python")` .
 
--   Reading the universal ASCII data format (e.g. like `.asc`, `.txt`, `.csv`) and transforming into tables (data frames) incl. operations like intensity normalization and conversion between magnetic flux density (*B*) units (G ⟺ mT). Additionally, the functions enable the automatic reading of time series experiments like a kinetic one (e.g. also with the combination of *in situ* electrochemistry or photochemistry/irradiation) or reading and processing several EPR spectra data/files, at once, for the series of individual experiments/data files upon changing the quantities like time,microwave power, electrochemical potential, temperature, concentration...etc. Finally, reading the *MATLAB* (`.mat`) files and the instrumental parameter ones ( in case of *BRUKER* instruments, so far[^2] ) and the corresponding parameter extraction can be performed as well.
+Last but not least, **the entire** `r icons::bioicons("R")` **ecosystem with thousands of packages** `r icons::icon_style(fontawesome("box-open"), fill = "brown")` [@BiocondR2023; @Rforge2023; @Rforge2009; @Rmanual2023] **and *RStudio* IDE**[^2] [@Rstudio2023] **support workflows which are free from any other additional software (toolboxes)**. Therefore, together with perfectly and uniform structured `r icons::icon_style(fontawesome("box-open"), fill = "brown")` documentation (which is already available in the *RStudio*) it represents excellent facilitation of the data processing workflows by extensive reducing of many steps which are otherwise required with several software as already mentioned above. Great spectroscopy `r icons::icon_style(fontawesome("box-open"), fill = "brown")` have been developed in `r icons::bioicons("R")` e.g. for IR, MS, NMR, Fluorescence, UV-Vis(-NIR), Raman.
+
+[^2]: Integrated Development Environment
+
+Blah ... tbc
+
+```{r scheme-intro, echo=FALSE, out.width="91%", fig.cap="Scheme...tbc"}
+#
+include_graphics("imgs/introduction_a.png",dpi = 200)
+#
+```
+
+Blah ... tbc see Figure \@ref(fig:scheme-intro) ...tbc
+
+-   Reading the universal ASCII data format (e.g. like `.asc`, `.txt`, `.csv`) and transforming into tables (data frames) incl. operations like intensity normalization and conversion between magnetic flux density (*B*) units (G ⟺ mT). Additionally, the functions enable the automatic reading of time series experiments like a kinetic one (e.g. also with the combination of *in situ* electrochemistry or photochemistry/irradiation) or reading and processing several EPR spectra data/files, at once, for the series of individual experiments/data files upon changing the quantities like time,microwave power, electrochemical potential, temperature, concentration...etc. Finally, reading the *MATLAB* (`.mat`) files and the instrumental parameter ones ( in case of *BRUKER* instruments, so far) and the corresponding parameter extraction can be performed as well.
 
 -   Plotting the EPR spectra incl. time series/kinetics or their dependency on other quantities (like already mentioned above) as well as presentation of simulated spectra are provided by several functions based on either [ggplot2](https://ggplot2.tidyverse.org/) package/system (one of the most comprehensive system for data visualization) or interactive [plotly](https://plotly.com/r/) graphing library. Especially, the later may represent a valuable alternative to EPR instrumental software or other proprietary graphing systems, because it includes visualization tools like zooming, panning, data/values hovering and much more.
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
 -   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
-
-[^2]: Reading parameter files from additional EPR instruments/manufacturers can be added acccordingly
 
 ## References
