@@ -82,11 +82,11 @@ Suggests:
     patchwork,
     writexl,
     flextable,
-    openxlsx,
     kableExtra,
     RColorBrewer,
     modelsummary,
-    rmarkdown
+    rmarkdown,
+    bookdown
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
