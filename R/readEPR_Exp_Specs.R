@@ -276,7 +276,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   #
   ## basic data frame by `fread` incl. the above defined parameters
-  spectrum.data.origin <- data.table::fread(path_to_ASC,
+  spectrum.data.origin <- data.table::fread(file = path_to_ASC,
     sep = sep,
     header = header,
     skip = skip,
