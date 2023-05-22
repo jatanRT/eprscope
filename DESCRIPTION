@@ -75,7 +75,10 @@ Imports:
 Suggests: 
     DT,
     grid,
+    rvest,
     osfr,
+    utils,
+    R.utils,
     icons,
     cowplot,
     gridExtra,
