@@ -77,7 +77,6 @@ Suggests:
     grid,
     rvest,
     osfr,
-    utils,
     R.utils,
     icons,
     cowplot,
