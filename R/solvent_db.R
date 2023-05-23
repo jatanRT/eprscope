@@ -1,19 +1,39 @@
 #' Solvent Properties Data Frame (Database) for EPR/ENDOR
 #'
-#' Data frame summarizing the ...tbc
+#' Data frame summarizing the most important solvent properties for EPR/ENDOR which are required
+#' for variable temperature (VT) experiments and EPR spectroelectrochemistry.
+#' The main properties were collected from \href{https://organicchemistrydata.org/solvents/}{Division of Organic Chemeistry
+#' of the ACS}
+#' and \href{https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf}{Sigma-Aldrich}.
+#' Additional resources (e.g. for viscosities) are \href{https://pubchem.ncbi.nlm.nih.gov/}{PubChem NCBI}
+#' and \href{https://www.accudynetest.com/visc_table.html}{ACCU DYNE TEST}. Besides that, the polarity of solvents
+#' (expressed by the relative permitivity \code{Dielectric_Const}) is important parameter to decide which tube/cell
+#' has to be used for an experiment at specific temperature (unless the measurements performed directly in liquid \eqn{\text{N_2}})
+#' => for polar solvents use capillaries or special "flat" cells (e.g. like for EPR spectroelectrochemistry),
+#' while for less polar solvents common quartz tubes
+#' (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied.
 #'
-#' @format A data frame with 46 rows and 9 variables/columns:
+#' @format A data frame with 46 rows and 10 variables/columns:
 #' \describe{
-#'   \item{No_Proton}{Numeric, proton number.}
-#'   \item{Isotope}{Character string ponting to isotope in format like "14N".}
-#'   \item{Stability}{Character string pointing either to stable, "STB", or radio-active, "RA", isotope.}
-#'   \item{Name}{Character string corresponding to isotope name.}
-#'   \item{Spin}{Numeric, denoting the spin quantum number.}
-#'   \item{g_Nuclear}{Numeric, corresponding to nuclear \eqn{g}-factor (\eqn{g_{\text{n}}^{}}).}
-#'   \item{Abund_Natur_Percent}{Numeric, pointing to natural abundance of an isotope in \eqn{\%}.}
-#'   \item{Q_Barn}{Numeric, corresponding to nuclear quadrupolar moment in \eqn{10^{-28}\,\text{m}^2}.}
-#'   \item{nu_ENDOR_MHz_035T}{Numeric, specific Larmor/ENDOR frequency (\eqn{\nu_{\text{ENDOR}}^{}})
-#'         at \eqn{0.35\,\text{T}}.}
+#'   \item{Solvent}{Character, solvent name.}
+#'   \item{Formula}{Character ponting to molecular formula.}
+#'   \item{MW}{Numeric, pointing to relative molecular weight.}
+#'   \item{Boiling_Point_oC}{Numeric corresponding to \strong{boling} point in `°C`.}
+#'   \item{Melting_Point_oC}{Numeric, corresponding \strong{melting} point in `°C`.}
+#'   \item{Density_gmL}{Numeric, corresponding to density in \eqn{\text{g}\,\text{mL}^{-1}}.}
+#'   \item{Solubility_g100gW}{Character, pointing solubilities in water expressed
+#'         in \eqn{\text{g}\,(100\,\text{g~of~H_2O})^{-1}}. 2. Solubility of THF in water is rather complex.}
+#'   \item{Dielectric_Const}{Character, corresponding to relative .}
+#'   \item{Flash_Point_oC}{Numeric, pointing to flash point in `°C`.}
+#'   \item{Viscosity_cp}{Character which corresponds to solvent dynamic viscosity
+#'         in \eqn{\text{cp}\equiv 1\,\text{mPa}\,\text{s}}. The values were collected from
+#'         \href{https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf}{Sigma-Aldrich}
+#'         for 20°C;
+#'         \href{https://pubchem.ncbi.nlm.nih.gov/}{PubChem NCBI} for 20°C and 25°C
+#'         and from \href{https://www.accudynetest.com/visc_table.html}{ACCU DYNE TEST} for 20°C, 25°C or 30°C.}
 #' }
-#' @source \url{https://easyspin.org/easyspin/documentation/isotopetable.html}
+#' @source \url{https://organicchemistrydata.org/solvents/}
+#' @source \url{https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf}
+#' @source \url{https://pubchem.ncbi.nlm.nih.gov/}
+#' @source \url{https://www.accudynetest.com/visc_table.html}
 "solvent_db"
