@@ -4,7 +4,14 @@
 \alias{convert_time2var}
 \title{Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}}
 \usage{
-convert_time2var(time, time.unit = "s", var0, var.switch = NULL, var.rate)
+convert_time2var(
+  time,
+  time.unit = "s",
+  var0,
+  var.switch = NULL,
+  var.rate,
+  var.rate.unit = "s^{-1}"
+)
 }
 \arguments{
 \item{time}{Numeric, value or vector corresponding to time (points) where the variable \code{var}
@@ -22,6 +29,8 @@ negative electrochemical potential) of the variable (\code{var}).}
 
 \item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (\strong{INCL. ALSO NEGATIVE SIGN,
 if required}, e.g. like in case of electrochemical reduction or sample cooling).}
+
+\item{var.rate.unit}{Character string ...tbc...defined by \code{"s^{-1}"},\code{"min^{-1}"} or \code{"h^{-1}"}}
 }
 \value{
 Numeric value or vector of variable (e.g. like electrochem. potential or temperature...etc)
@@ -29,34 +38,36 @@ Numeric value or vector of variable (e.g. like electrochem. potential or tempera
 }
 \description{
 Conversion of time into variable \code{var} which is linearly changed upon time like
-\deqn{var = var0 + rate\times t}
-This is especially suitable for time conversion of EPR time series experiments
-(see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
-electrochemical/voltammetric or variable temperature experiment.
+  \deqn{var = var0 + rate\times t}
+  This is especially suitable for time conversion of EPR time series experiments
+  (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
+  electrochemical/voltammetric or variable temperature experiment. If cyclic series experiment is performed
+  (e.g. like cyclic voltammetry)...tbc
 }
 \examples{
 ## Calculate Potential after 30 s, starting from 200 mV
-## into cathodic direction (reduction) by 5 mV/s
+## into cathodic direction (reduction) by 5 mV s^{-1}
 convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
 #
 ## Heating sample after 5 min starting from 293 K
-## by the temperature rate of 0.5 K/s
+## by the temperature rate of 4 K min^{-1}
 convert_time2var(5,
                  time.unit = "min",
                  var0 = 293,
-                 var.rate = 0.5)
-\dontrun{
-## Create/Evaluate column in EPR time series data frame
-## containing the applied cell potential (in V) from the simultaneously
-## performed electrochemical reduction experiment (e.g. cyclic voltammetry).
-## Time series column is labeled as "time_s"
-data.spectra.series <- data.spectra.series \%>\%
-  dplyr::mutate(E_V_potential = convert_time2var(time_s,
-                                                 time.unit = "s",
-                                                 var0 = -0.1,
-                                                 var.switch = -1.5,
-                                                 var.rate = -0.004))
-}
+                 var.rate = 4,
+                 var.rate.unit = "min^{-1}")
+#
+## Create/Evaluate vector containing the applied cell potential (in V)
+## from the simultaneously performed electrochemical oxidation
+## experiment (e.g. cyclic voltammetry from -0.1V to 0.45V and back to -0.1V).
+## Time series vector is labeled as "time_s"
+time_s <- seq(0,360,by = 18)
+E_V <- convert_time2var(time = time_s,
+                        var0 = -0.1,
+                        var.switch = 0.45,
+                        var.rate = 0.003)
+E_V
+
 
 
 }
