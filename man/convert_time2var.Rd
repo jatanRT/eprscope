@@ -30,7 +30,10 @@ negative electrochemical potential) of the variable (\code{var}).}
 \item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (\strong{INCL. ALSO NEGATIVE SIGN,
 if required}, e.g. like in case of electrochemical reduction or sample cooling).}
 
-\item{var.rate.unit}{Character string ...tbc...defined by \code{"s^{-1}"},\code{"min^{-1}"} or \code{"h^{-1}"}}
+\item{var.rate.unit}{Character string corresponding to \code{var.rate} unit defined
+by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
+\code{"min^{-1}"} \eqn{\equiv \text{min}^{-1}} or \code{"h^{-1}"} \eqn{\equiv \text{h}^{-1}}.
+\strong{Default}: \code{var.rate.unit = "s^{-1}"}.}
 }
 \value{
 Numeric value or vector of variable (e.g. like electrochem. potential or temperature...etc)
@@ -41,8 +44,13 @@ Conversion of time into variable \code{var} which is linearly changed upon time 
   \deqn{var = var0 + rate\times t}
   This is especially suitable for time conversion of EPR time series experiments
   (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
-  electrochemical/voltammetric or variable temperature experiment. If cyclic series experiment is performed
-  (e.g. like cyclic voltammetry)...tbc
+  electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
+  is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
+  like =>
+  \deqn{var = var0 + rate\times t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
+  \deqn{var = var_{\text{switch}} - rate\times (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
+  where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
+  at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
 }
 \examples{
 ## Calculate Potential after 30 s, starting from 200 mV
@@ -57,10 +65,11 @@ convert_time2var(5,
                  var.rate = 4,
                  var.rate.unit = "min^{-1}")
 #
-## Create/Evaluate vector containing the applied cell potential (in V)
-## from the simultaneously performed electrochemical oxidation
-## experiment (e.g. cyclic voltammetry from -0.1V to 0.45V and back to -0.1V).
-## Time series vector is labeled as "time_s"
+## Create/Evaluate vector containing the applied
+## cell potential (in V) from the simultaneously
+## performed electrochemical oxidation experiment
+## (e.g. cyclic voltammetry from -0.1V to 0.45V and back
+## to -0.1V). Time series vector is labeled as "time_s".
 time_s <- seq(0,360,by = 18)
 E_V <- convert_time2var(time = time_s,
                         var0 = -0.1,
