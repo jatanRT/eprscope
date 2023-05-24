@@ -54,7 +54,7 @@
 #'                         var0 = -0.1,
 #'                         var.switch = 0.45,
 #'                         var.rate = 0.003)
-#' E_V
+#' as.matrix(E_V)
 #'
 #'
 #'
