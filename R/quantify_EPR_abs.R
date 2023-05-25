@@ -1,18 +1,23 @@
 #
-#' TBC (Absolute EPR Quantity)
+#' Absolute Quantification of Radicals/Spins in the Most Common EPR Cavities
 #'
 #'
 #' @family Evaluations and Quantification
 #'
 #'
 #' @description
-#' tbc
+#'   There are two approaches how to quantify the number of paramagnetic species/radicals/spins. The \strong{relative} one
+#'   needs a standard sample with a known number and can be evaluated by the sigmoid integral ratio of the sample under study
+#'   and that of the standard. Whereas the \strong{absolute} method do not need the reference sample however, it requires
+#'   a precise cavity signal calibration as well as standardized cell geometry. Both are provided by the EPR instrument
+#'   and lab-glass manufacturers. In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value)
+#'   can be expressed as follows =>
 #'
 #'
-#' @param integ.double tbc
+#' @param integ.sigmoid.max tbc
 #' @param nu.GHz tbc
-#' @param power.mW tbc
-#' @param modul.amp.mT tbc
+#' @param P.mW tbc
+#' @param Bm.mT tbc
 #' @param qValue tbc
 #' @param tube.sample.id.mm tbc
 #' @param fill.sample.h.mm tbc
@@ -35,10 +40,10 @@
 #' @export
 #'
 #'
-quantify_EPR_abs <- function(integ.double,
+quantify_EPR_abs <- function(integ.sigmoid.max,
                              nu.GHz,
-                             power.mW,
-                             modul.amp.mT,
+                             P.mW,
+                             Bm.mT,
                              qValue = NULL,
                              tube.sample.id.mm,
                              fill.sample.h.mm,
@@ -61,7 +66,7 @@ quantify_EPR_abs <- function(integ.double,
   ## Boltzmann factor:
   n.B <- (Planck.const * nu.GHz * 1e+9) / (2 * Boltzmann.const * Temp.K)
   ## `Third` quantification factor in definition:
-  third.quant.factor <- sqrt(power.mW * 1e-3) * modul.amp.mT * 1e-3 * qValue * n.B * S * (S + 1)
+  third.quant.factor <- sqrt(P.mW * 1e-3) * Bm.mT * 1e-3 * qValue * n.B * S * (S + 1)
   ## Tube volume:
   tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
   #
@@ -91,13 +96,16 @@ quantify_EPR_abs <- function(integ.double,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- integ.double / ((point.sample.c.factor / integral.poly) * Norm.constant * third.quant.factor)
+      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
+                                           Norm.constant * third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc / h.cavity.length) * 10
       ## Number of species in cm^3:
-      No.paramag.V.spc <- No.paramag.spc / ((h.cavity.length * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e6)
+      No.paramag.V.spc <- No.paramag.spc / ((h.cavity.length * 1e-3) * pi *
+                                              ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e6)
       ## Number od species => concentration mol*dm^{-3}
-      No.paramag.c.spc <- (No.paramag.spc / Avogadro.No) / ((h.cavity.length * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e3)
+      No.paramag.c.spc <- (No.paramag.spc / Avogadro.No) / ((h.cavity.length * 1e-3) * pi *
+                                                              ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e3)
     }
     if (fill.sample.h.mm < h.cavity.length) {
       #
@@ -110,7 +118,8 @@ quantify_EPR_abs <- function(integ.double,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- integ.double / ((point.sample.c.factor / integral.poly) * Norm.constant * third.quant.factor)
+      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
+                                           Norm.constant * third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc / fill.sample.h.mm) * 10
       ## NUmber of species in cm^3:
@@ -145,13 +154,16 @@ quantify_EPR_abs <- function(integ.double,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- integ.double / ((point.sample.c.factor / integral.poly) * Norm.constant * third.quant.factor)
+      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
+                                           Norm.constant * third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc / h.cavity.length) * 10
       ## Number of species in cm^3:
-      No.paramag.V.spc <- No.paramag.spc / ((h.cavity.length * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e6)
+      No.paramag.V.spc <- No.paramag.spc / ((h.cavity.length * 1e-3) * pi *
+                                              ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e6)
       ## Number od species => concentration mol*dm^{-3}
-      No.paramag.c.spc <- (No.paramag.spc / Avogadro.No) / ((h.cavity.length * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e3)
+      No.paramag.c.spc <- (No.paramag.spc / Avogadro.No) / ((h.cavity.length * 1e-3) * pi *
+                                                              ((tube.sample.id.mm / 2) * 1e-3)^2 / 1e3)
     }
     if (fill.sample.h.mm < h.cavity.length) {
       #
@@ -164,7 +176,8 @@ quantify_EPR_abs <- function(integ.double,
       #
       ## Own quantification:
       ## Number of species:
-      No.paramag.spc <- integ.double / ((point.sample.c.factor / integral.poly) * Norm.constant * third.quant.factor)
+      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
+                                           Norm.constant * third.quant.factor)
       ## Number of species per effective cm
       No.paramag.cm.spc <- (No.paramag.spc / fill.sample.h.mm) * 10
       ## NUmber of species in cm^3:
@@ -175,8 +188,8 @@ quantify_EPR_abs <- function(integ.double,
   }
   ## Result:
   No_paramagSpecies <- c(
-    "N_cm" = No.paramag.cm.spc,
-    "N_cm3" = No.paramag.V.spc,
+    "N_per_cm" = No.paramag.cm.spc,
+    "N_per_cm3" = No.paramag.V.spc,
     "c_M" = No.paramag.c.spc
   )
   #

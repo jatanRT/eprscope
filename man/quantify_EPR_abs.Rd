@@ -2,13 +2,13 @@
 % Please edit documentation in R/quantify_EPR_abs.R
 \name{quantify_EPR_abs}
 \alias{quantify_EPR_abs}
-\title{TBC (Absolute EPR Quantity)}
+\title{Absolute Quantification of Radicals/Spins in the Most Common EPR Cavities}
 \usage{
 quantify_EPR_abs(
-  integ.double,
+  integ.sigmoid.max,
   nu.GHz,
-  power.mW,
-  modul.amp.mT,
+  P.mW,
+  Bm.mT,
   qValue = NULL,
   tube.sample.id.mm,
   fill.sample.h.mm,
@@ -19,13 +19,13 @@ quantify_EPR_abs(
 )
 }
 \arguments{
-\item{integ.double}{tbc}
+\item{integ.sigmoid.max}{tbc}
 
 \item{nu.GHz}{tbc}
 
-\item{power.mW}{tbc}
+\item{P.mW}{tbc}
 
-\item{modul.amp.mT}{tbc}
+\item{Bm.mT}{tbc}
 
 \item{qValue}{tbc}
 
@@ -45,7 +45,12 @@ quantify_EPR_abs(
 tbc
 }
 \description{
-tbc
+There are two approaches how to quantify the number of paramagnetic species/radicals/spins. The \strong{relative} one
+  needs a standard sample with a known number and can be evaluated by the sigmoid integral ratio of the sample under study
+  and that of the standard. Whereas the \strong{absolute} method do not need the reference sample however, it requires
+  a precise cavity signal calibration as well as standardized cell geometry. Both are provided by the EPR instrument
+  and lab-glass manufacturers. In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value)
+  can be expressed as follows =>
 }
 \examples{
 \dontrun{
