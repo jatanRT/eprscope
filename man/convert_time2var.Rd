@@ -40,15 +40,15 @@ Numeric value or vector of variable (e.g. like electrochem. potential or tempera
   linearly changing upon time.
 }
 \description{
-Conversion of time into variable \code{var} which is linearly changed upon time like
-  \deqn{var = var0 + rate\times t}
+Conversion of time (\eqn{t}) into variable \code{var} (\eqn{var}) which is linearly changed upon time like
+  \deqn{var = var0 + rate~ t}
   This is especially suitable for time conversion of EPR time series experiments
   (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
   electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
   is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
   like =>
-  \deqn{var = var0 + rate\times t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
-  \deqn{var = var_{\text{switch}} - rate\times (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
+  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
+  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
   where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
   at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
 }
