@@ -12,6 +12,7 @@
 #'   a precise cavity signal calibration as well as standardized cell geometry. Both are provided by the EPR instrument
 #'   and lab-glass manufacturers. In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value)
 #'   can be expressed as follows =>
+#'   \deqn{Integral_{\text{sigmoid}} = (c/f(B_1,B_{\text{m}}))\,()\,[]\,}
 #'
 #'
 #' @param integ.sigmoid.max tbc
