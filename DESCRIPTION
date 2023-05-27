@@ -70,26 +70,30 @@ Imports:
     rlang,
     pracma,
     knitr,
-    htmlwidgets,
-    webshot2
+    Rdpack
 Suggests: 
     DT,
+    rio,
     grid,
     rvest,
     osfr,
     R.utils,
+    report,
     icons,
     cowplot,
     gridExtra,
     patchwork,
-    writexl,
+    openxlsx,
+    webshot2,
     flextable,
     kableExtra,
+    htmlwidgets,
     RColorBrewer,
     modelsummary,
     rmarkdown,
     bookdown
 RoxygenNote: 7.2.3
+RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
