@@ -11,8 +11,10 @@
 #'   by the sigmoid integral ratio of the sample under study and that of the standard.
 #'   Whereas the \strong{absolute} method do not need the reference sample however, it requires
 #'   a precise cavity signal calibration as well as standardized cell geometry. Both are provided
-#'   by the EPR instrument and lab-glass manufacturers. In case of absolute quantitative EPR analysis
-#'   the sigmoid integral (its maximum value), \eqn{I_{\text{sigmoid}}},can be expressed as follows =>
+#'   by the EPR instrument and lab-glass manufacturers (see e.g.
+#'   \href{https://hirschmann-laborgeraete.de/en/artikelgruppe/96001}{Hirschmann Capillaries}).
+#'   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
+#'   \eqn{I_{\text{sigmoid}}},can be expressed as follows =>
 #'   \deqn{I_{\text{sigmoid}} = (c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}\,N_{\text{Scans}})\,
 #'   [\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)]\,N_{\text{Spins}}}
 #'   where  \eqn{c} is the point sample calibration factor (supplied by the spectrometer manufacturer);
@@ -20,11 +22,14 @@
 #'   and \eqn{B_{\text{m}}} and actually it corresponds to integrated intensity distribution within
 #'   the cavity/probehead for different sample length and positions. Such intensity distribution
 #'   is expressed by polynomial and is supplied by the manufacturer as well. Additional quantities
-#'   ...tbc.
+#'   are the following => \eqn{G_{\text{R}}} is receiver gain; \eqn{t_{\text{C}}} corresponds to
+#'   conversion time; \eqn{N_{\text{Scans}}} is the number of scans/accumulations. Because the receiver
+#'   gain is expressed in \eqn{\text{dB}}...tbc.
 #'
 #'
 #' @references{
 #'   \insertRef{eatonQepr2010}{eprscope}
+#'   \insertRef{hirschCapill2023}{eprscope}
 #' }
 #'
 #'
@@ -44,7 +49,11 @@
 #' @param microW.cavity tbc
 #'
 #'
-#' @return tbc
+#' @return Named vector with \code{"N_per_cm"} number of spins per effective centimeter (which is the cm
+#'   around, \eqn{\pm 5\,\text{mm}}, the maximum of the intensity distribution curve within the cavity
+#'   \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"N_per_cm^3"} corresponding
+#'   to number of spins per \eqn{\text{cm}^3} and finally the \code{"c_M"} denotes the concentration
+#'   in \eqn{\text{mol}\,\text{dm}^{-3}}.
 #'
 #'
 #' @examples
@@ -206,7 +215,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
   ## Result:
   No_paramagSpecies <- c(
     "N_per_cm" = No.paramag.cm.spc,
-    "N_per_cm3" = No.paramag.V.spc,
+    "N_per_cm^3" = No.paramag.V.spc,
     "c_M" = No.paramag.c.spc
   )
   #
