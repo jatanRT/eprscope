@@ -27,20 +27,18 @@
 #'
 #'
 #' @importFrom knitr pandoc_to is_latex_output
-#' @importFrom htmlwidgets saveWidget
-#' @importFrom webshot2 webshot
 plot_EPR_present_interact <- function(p,
                                       size.width = 700,
                                       size.height = 500,
                                       size.resolv.f = 2) {
   #
   ## widget and webshot
-  widget <- saveWidget(
+  widget <- htmlwidgets::saveWidget(
     widget = p,
     file = paste0(deparse(substitute(p)), ".html"),
     selfcontained = FALSE
   )
-  webshot <- webshot(
+  webshot <- webshot2::webshot(
     url = paste0(deparse(substitute(p)), ".html"),
     file = paste0(deparse(substitute(p)), ".png"),
     delay = 2,
