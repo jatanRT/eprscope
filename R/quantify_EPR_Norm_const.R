@@ -7,13 +7,13 @@
 #'
 #' @description Normalization constant used by \code{\link{quantify_EPR_abs}}. This constant
 #'   can be evaluated from the following expression =>
-#'   \deqn{N_{\text{norm}} = t_{\text{C}}\,N_{\text{Scans}}\,20\,10^{(G_{\text{R}}/20)}}
+#'   \deqn{N_{\text{norm}} = t_{\text{C}}\,N_{\text{Scans}}\,(20)\,10^{(G_{\text{R}}/20)}}
 #'   where \eqn{t_{\text{C}}} depicts the conversion time in \eqn{\text{ms}}; \eqn{N_{\text{Scans}}}
 #'   corresponds to number of scans and \eqn{G_{\text{R}}} is the receiver gain in \eqn{\text{dB}}.
 #'   One can gather all three parameters by \code{\link{readEPR_param_slct}} function from the
 #'   corresponding `.DSC` or `.par` file. \strong{If during the recording of EPR spectra the option}
-#'   `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options) \strong{is activated
-#'   the intensity is already normalized and it doesn't require any additional normalization.}.
+#'   `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options) \strong{is activated,
+#'   THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL NORMALIZATION !}.
 #'   See also \code{\link{quantify_EPR_abs}}.
 #'
 #'
