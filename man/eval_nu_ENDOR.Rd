@@ -9,13 +9,13 @@ eval_nu_ENDOR(nucle_us_i, B.unit = "G", B.val)
 \arguments{
 \item{nucle_us_i}{(Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
 pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \eqn{g}-factors
-for those nuclei are taken from the package \code{isotope_df} data frame. Se also documentation
-\code{?eprscope::isotope_db}.}
+for those nuclei are taken from the package \code{isotopes_ds} data frame. Se also documentation
+\code{?eprscope::isotopes_ds}.}
 
 \item{B.unit}{Character string denoting the magnetic flux density \eqn{B} unit. \strong{Default}: \code{B.unit = "G"}.}
 
 \item{B.val}{Numeric, magnetic flux density \eqn{B} \code{value}. This actually corresponds to \eqn{B} at which
-the EPR signal is saturated to record the ENDOR spectrum/spectra.}
+the EPR signal saturates to record the ENDOR spectrum/spectra.}
 }
 \value{
 Numeric value or vector of nuclear Larmor/ENDOR frequencies in MHz for selected nuclei at \eqn{B} = \code{B.val}.
@@ -27,7 +27,7 @@ Larmor/ENDOR frequency calculations for analysis in EPR/Electron Nuclear Double 
   \deqn{\nu_{\text{ENDOR}}^{} = - (1/h)\,\mu_{\text{N}}^{}\,g_{\text{n}}^{}\,B\,10^{-6}}
   where \eqn{h} is the Planck's constant, \eqn{\mu_{\text{N}}^{}} is the nuclear magneton
   available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\text{n}}^{}}
-  is the nuclear \eqn{g}-factor of the specific nucleus (reported in the package \code{isotope_df} data frame
+  is the nuclear \eqn{g}-factor of the specific nucleus (reported in the package \code{isotopes_ds} data frame
   as \code{g_Nuclear}) and finally, the \eqn{B} denotes the magnetic flux density at which the ENDOR spectra
   are recorded (see also \code{B.val} in arguments below). The \eqn{10^{-6}} coeff.is referred to resulting
   frequency in MHz.

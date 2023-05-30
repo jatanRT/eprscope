@@ -1,4 +1,4 @@
-## code to prepare `isotope_db` dataset goes here
+## code to prepare `isotopes_ds` dataset goes here
 #
 ## Required libraries
 library(dplyr)
@@ -10,14 +10,14 @@ Planck.const <- constants::syms$h
 nuclear.mu <- constants::syms$mun ## Nuclear magneton
 #
 ## path to table in `.txt` format
-isotope.db.raw.path <- system.file("extdata",
-                                   "isotopes_DB.txt",
-                                   package = "eprscope")
+isotopes.ds.raw.path <- system.file("extdata",
+                                    "isotopes_DS.txt",
+                                    package = "eprscope")
 #
-## database taken from `easyspin` and slightly modified its format
+## dataset taken from `easyspin` and slightly modified its format
 #
 ## pre-processing database into package
-isotope_db <- fread(isotope.db.raw.path,
+isotopes_ds <- fread(isotopes.ds.raw.path,
                     sep = "auto",
                     skip = 47,
                     col.names = c("No_Proton",
@@ -34,4 +34,4 @@ isotope_db <- fread(isotope.db.raw.path,
                   1e-6)
 #
 ## save resulting data frame as an `.rda` file
-usethis::use_data(isotope_db, compress = "xz", overwrite = TRUE)
+usethis::use_data(isotopes_ds, compress = "xz", overwrite = TRUE)

@@ -1,5 +1,5 @@
 #'
-#' Reading Solvent Properties from `solvent_db` Data Frame (Database)
+#' Reading Solvent Properties from `solvents_ds` Data Frame (Database)
 #'
 #'
 #' @family Data Reading
@@ -42,7 +42,7 @@
 readEPR_solvent_props <- function(solvent,prop = NULL){
   #
   ## Select only specific `solvent` row/observation
-  solvent_slct <- eprscope::solvent_db %>%
+  solvent_slct <- eprscope::solvents_ds %>%
     dplyr::filter(grepl(solvent,.data$Solvent))
   #
   if (is.null(prop)){
@@ -58,7 +58,7 @@ readEPR_solvent_props <- function(solvent,prop = NULL){
         dplyr::pull(dplyr::contains(prop))
       ## or like
       # solvent_slct %>%
-      #   dplyr::pull(.data[[grep(prop,names(eprscope::solvent_db),
+      #   dplyr::pull(.data[[grep(prop,names(eprscope::solvents_ds),
       #                           ignore.case = TRUE,
       #                           value = TRUE)]])
     } else {

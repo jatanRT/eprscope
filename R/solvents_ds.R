@@ -1,4 +1,4 @@
-#' Solvent Properties Data Frame (Database) for EPR/ENDOR
+#' Solvent Properties Data Frame (Dataset) for EPR/ENDOR
 #'
 #' Data frame summarizing the most important solvent properties for EPR/ENDOR which are required
 #' for variable temperature (VT) experiments and EPR spectroelectrochemistry.
@@ -36,4 +36,4 @@
 #' @source \url{https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf}
 #' @source \url{https://pubchem.ncbi.nlm.nih.gov/}
 #' @source \url{https://www.accudynetest.com/visc_table.html}
-"solvent_db"
+"solvents_ds"

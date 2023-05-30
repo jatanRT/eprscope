@@ -1,24 +1,24 @@
-## code to prepare `solvent_db` dataset goes here
+## code to prepare `solvents_ds` dataset goes here
 #
 ## Required libraries
 library(dplyr)
 library(rvest)
 #
-## import the `url` of solvents database from American Chemical
+## import the `url` of solvents dataset from American Chemical
 ## Society/Division of Organic Chemistry (online source)
 solvent.link <- "https://organicchemistrydata.org/solvents/"
 #
 ## read the table by `rvest`
 solvent.page <- rvest::read_html(solvent.link)
-solvent_db <- solvent.page %>%
+solvents_ds <- solvent.page %>%
   rvest::html_node("table") %>%
   rvest::html_table() %>%
   ## replace "--" and "??" by "NA"
   dplyr::mutate(dplyr::across(c(2,3,7,8,9), na_if, "--"))
-solvent_db[solvent_db == "??"] <- NA
+solvents_ds[solvents_ds == "??"] <- NA
 #
 ## rename columns
-names(solvent_db) <- c("Solvent",
+names(solvents_ds) <- c("Solvent",
                        "Formula",
                        "MW",
                        "Boiling_Point_oC",
@@ -28,7 +28,7 @@ names(solvent_db) <- c("Solvent",
                        "Dielectric_Const",
                        "Flash_Point_oC")
 ## convert columns
-solvent_db <- solvent_db %>%
+solvents_ds <- solvents_ds %>%
   dplyr::mutate(MW = as.numeric(MW),
                 Boiling_Point_oC = as.numeric(Boiling_Point_oC),
                 Melting_Point_oC = as.numeric(Melting_Point_oC),
@@ -39,7 +39,7 @@ solvent_db <- solvent_db %>%
 ## https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf
 ## + PubChem (https://pubchem.ncbi.nlm.nih.gov/) => viscosities at 20°C or 25°C
 ## + "ACCU DYNE TEST" https://www.accudynetest.com/visc_table.html#014 viscosities at 20°C, 25°C and 30°C
-solvent_db$Viscosity_cp <- c("1.31(25)","0.32","0.37","0.65",
+solvents_ds$Viscosity_cp <- c("1.31(25)","0.32","0.37","0.65",
                              "2.95","2.54","0.42(15)","2.25",
                              "0.97","0.80","0.58","0.98",
                              "0.79","0.30","0.24(48)","0.46(25)",
@@ -53,4 +53,4 @@ solvent_db$Viscosity_cp <- c("1.31(25)","0.32","0.37","0.65",
                              "0.581","0.65")
 #
 ## save resulting data frame as an `.rda` file
-usethis::use_data(solvent_db,compress = "xz", overwrite = TRUE)
+usethis::use_data(solvents_ds,compress = "xz", overwrite = TRUE)

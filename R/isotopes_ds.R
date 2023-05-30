@@ -1,9 +1,9 @@
-#' Nuclear Isotope Data Frame (Database) with ENDOR Frequencies
+#' Nuclear Isotope Data Frame (Dataset) with ENDOR Frequencies
 #'
-#' Data frame summarizing the essential characteristics of nuclei in EPR spectroscopy. This database
+#' Data frame/Dataset summarizing the essential characteristics of nuclei in EPR spectroscopy. This dataset
 #' was taken form \href{https://easyspin.org/easyspin/documentation/isotopetable.html}{`EasySpin` toolbox}
 #' and only it's format was slightly modified. Therefore, IT CONTAINS THE ENTIRE INFORMATION
-#' LIKE THE ORIGINAL DATABASE (see the SOURCE BELOW). For better orientation in ENDOR spectra,
+#' LIKE THE ORIGINAL DATASET (see the SOURCE BELOW). For better orientation in ENDOR spectra,
 #' column with the Larmor/ENDOR frequencies (in MHz) at 0.35 T was added according to =>
 #' \deqn{\nu_{\text{ENDOR}}^{} = - (1/h)\,\mu_{\text{N}}^{}\,g_{\text{n}}^{}\,B\,10^{-6}}
 #' where \eqn{h} is the Planck's constant, \eqn{\mu_{\text{N}}^{}} is the nuclear magneton
@@ -25,4 +25,4 @@
 #'         at \eqn{0.35\,\text{T}}.}
 #' }
 #' @source \url{https://easyspin.org/easyspin/documentation/isotopetable.html}
-"isotope_db"
+"isotopes_ds"
