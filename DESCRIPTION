@@ -79,6 +79,7 @@ Suggests:
     osfr,
     R.utils,
     report,
+    tibble,
     icons,
     cowplot,
     gridExtra,
