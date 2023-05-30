@@ -7,27 +7,31 @@
 readEPR_solvent_props(solvent, prop = NULL)
 }
 \arguments{
-\item{solvent}{Character string pointing to solvent name (or any string from solvent name/abbreviation),
+\item{solvent}{Character string pointing to solvent name (or any string from the solvent name/abbreviation),
 e.g. like \code{solvent = "DMSO"},\code{solvent = "acetone"}, \code{solvent = "xylene"}.
 If more than one rows/observations are being returned (e.g. in case of \code{solvent = "xylene"}) => additional
-solvent specification must be provided like e.g. \code{solvent = "o-xylene"}.}
+solvent specification must be provided e.g. like \code{solvent = "o-xylene"}.}
 
-\item{prop}{Character string...tbc...}
+\item{prop}{Character string related to a data frame variable/column/property e.g. like \code{"boiling"},
+\code{"formula"}, \code{"dens"}, \code{"dielectric"}...etc.}
 }
 \value{
-description...tbc...
+Data frame (row/rows) of selected solvent(s) an the corresponding properties. If a specific property
+  is called like, e.g. \code{code = "melting"} (\eqn{\equiv} melting point in °C), the function returns
+  \code{value/character}.
 }
 \description{
-A short description...tbc...
+Gathering the solvent properties from `solvents_ds` see \code{\link{solvents_ds}} in order to pick-up only
+  a specific solvent (\code{solvent} argument) and its corresponding properties (\code{prop} argument).
 }
 \examples{
 ## Properties of `DMSO`
-print(tibble::as_tibble(readEPR_solvent_props("DMSO")),
-      width = 80,n = 40)
+solvent_01 <- readEPR_solvent_props("DMSO")
+print(tibble::as_tibble(solvent_01),width = 80)
 #
 ## All `xylene` solvent specifications
-print(tibble::as_tibble(readEPR_solvent_props(solvent = "xylene")),
-      width = 80,n = 40)
+solvent_02 <- readEPR_solvent_props(solvent = "xylene")
+print(tibble::as_tibble(solvent_02),width = 80,n = 3)
 #
 ## Boiling point of `o-xylene`
 readEPR_solvent_props(solvent = "o-xylene",
