@@ -1,5 +1,6 @@
 #' Nuclear Isotope Data Frame (Dataset) with ENDOR Frequencies
 #'
+#'
 #' Data frame/Dataset summarizing the essential characteristics of nuclei in EPR spectroscopy. This dataset
 #' was taken form \href{https://easyspin.org/easyspin/documentation/isotopetable.html}{`EasySpin` toolbox}
 #' and only it's format was slightly modified. Therefore, IT CONTAINS THE ENTIRE INFORMATION
@@ -10,6 +11,10 @@
 #' available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\text{n}}^{}}
 #' is the nuclear \eqn{g}-factor of the specific nucleus (reported in the data frame as \code{g_Nuclear})
 #' and finally, the \eqn{B = 0.35\,\text{T}} denotes the magnetic flux density.
+#'
+#'
+#' @family Built-In Datasets
+#'
 #'
 #' @format A data frame with 351 rows and 9 variables/columns:
 #' \describe{

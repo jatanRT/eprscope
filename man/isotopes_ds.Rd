@@ -37,4 +37,9 @@ available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\te
 is the nuclear \eqn{g}-factor of the specific nucleus (reported in the data frame as \code{g_Nuclear})
 and finally, the \eqn{B = 0.35\,\text{T}} denotes the magnetic flux density.
 }
+\seealso{
+Other Built-In Datasets: 
+\code{\link{solvents_ds}}
+}
+\concept{Built-In Datasets}
 \keyword{datasets}

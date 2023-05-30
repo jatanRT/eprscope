@@ -51,4 +51,9 @@ has to be used for an experiment at specific temperature (unless the measurement
 while for less polar solvents common quartz tubes
 (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied.
 }
+\seealso{
+Other Built-In Datasets: 
+\code{\link{isotopes_ds}}
+}
+\concept{Built-In Datasets}
 \keyword{datasets}

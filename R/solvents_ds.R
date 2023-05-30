@@ -1,5 +1,6 @@
 #' Solvent Properties Data Frame (Dataset) for EPR/ENDOR
 #'
+#'
 #' Data frame summarizing the most important solvent properties for EPR/ENDOR which are required
 #' for variable temperature (VT) experiments and EPR spectroelectrochemistry.
 #' The main properties were collected from \href{https://organicchemistrydata.org/solvents/}{Division of Organic Chemeistry
@@ -12,6 +13,10 @@
 #' => for polar solvents use capillaries or special "flat" cells (e.g. like for EPR spectroelectrochemistry),
 #' while for less polar solvents common quartz tubes
 #' (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied.
+#'
+#'
+#' @family Built-In Datasets
+#'
 #'
 #' @format A data frame with 46 rows and 10 variables/columns:
 #' \describe{
