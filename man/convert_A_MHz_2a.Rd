@@ -16,12 +16,12 @@ convert_A_MHz_2a(A.MHz, g = 2.0023193)
 Numeric value/vector corresponding to HFSCs (\eqn{a}) in \code{mT}).
 }
 \description{
-Function converts hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz})
+Converting hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz})
   into hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT}) according to following
   relation:
   \deqn{a = A\,h / (g\,\mu_{\text{B}})}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
-  Both latter can be obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively
+  Both latter were obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively
   from the \pkg{constants} package. Conversion is suitable for EPR simulations and/or ENDOR.
 }
 \examples{

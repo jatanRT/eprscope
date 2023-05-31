@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_FWHMx_Spec.R
 \name{eval_FWHMx_Spec}
 \alias{eval_FWHMx_Spec}
-\title{Evaluating Full Width at Half-Maximum (FWHM) from Spectra}
+\title{Evaluating Full Width at Half-Maximum (FWHM) from integrated EPR Spectra}
 \usage{
 eval_FWHMx_Spec(
   data.spec.integ,
@@ -12,19 +12,31 @@ eval_FWHMx_Spec(
 )
 }
 \arguments{
-\item{data.spec.integ}{tbc}
+\item{data.spec.integ}{Data frame containing \eqn{x} column/variable like magnetic flux density, \eqn{B}
+(in in \code{mT} or \code{G}) or \eqn{g}-factor/value (unitless) and integrated intensity
+(common absorption-like spectrum) column/variable.}
 
-\item{x}{tbc}
+\item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original
+\code{data.spec.integ}) like magnetic flux density \eqn{B} (in \code{mT} or \code{G}) or \eqn{g}-Value
+(unitless), \strong{default}: \code{x = "B_G"}.}
 
-\item{Intensity}{tbc}
+\item{Intensity}{Character string pointing to name of the \code{intensity column/variable}
+(in the original \code{data.spec.integ}) if other than \code{single_Integ} (\strong{default}) name/label
+is used (e.g. "Integral_Intensity" or "integral").}
 
-\item{xlim}{tbc}
+\item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
+e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless).
+\strong{Default}: \code{xlim = NULL} (corresponding to entire `x` range).}
 }
 \value{
-tbc
+Numeric value of the FWHM directly from EPR spectrum, depending on \code{x} variable =>
+  either in \code{mT}/\code{G} or unitless in case if \eqn{g}-factor is presented on abscissa.
 }
 \description{
-A short description...
+Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity. For such purpose
+  the EPR spectrum has to be in single integrated form (common absorption-like spectrum) and not in the derivative,
+  e.g. like with \code{dIepr_over_dB} y-axis/variable. If this is not the case, the derivative EPR spectrum
+  can be integrated by \code{\link{eval_integ_EPR_Spec}}.
 }
 \examples{
 \dontrun{

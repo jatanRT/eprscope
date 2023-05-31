@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'  Function provides the accurate time for EPR spectral line appearance. Usually the middle of the EPR spectrum is
+#'  Providing the accurate time for EPR spectral line/spectrum appearance. Usually the middle of the EPR spectrum is
 #'  is set up as the CF (`central field`) for the spectrum sweep. The actual time at the middle/crossing point
 #'  is different from that recorder by the EPR acquisition software, see below. This is especially important
 #'  in determining the kinetics of radical generation or decay.
@@ -23,20 +23,20 @@
 #' }
 #' The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 #' and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan.
-#' The parameters can be obtained by \code{\link{readEPR_params_slct_kin}} or other functions which can read
+#' These parameters can be obtained by \code{\link{readEPR_params_slct_kin}} or other functions which can read
 #' the instrumental parameters.
 #'
 #'
 #' @param time.s Numeric value/vector/column in \code{data frame} corresponding to \code{time} (in \code{s})
 #'   at which the individual EPR spectra were recorded (supplied by the EPR acquisition software).
-#' @param Nscans Numeric, number of accumulation (number of scans usually denoted as \code{AVGS})
+#' @param Nscans Numeric, number of accumulations (number of scans usually denoted as \code{AVGS})
 #'   for each spectrum in EPR time series.
 #' @param sweep.time.s Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{=} one accumulation.
 #'
 #'
-#' @return Numeric value/vector corresponding to accurate time at which the EPR spectra were recorded during
-#'   the kinetic measurements (e.g. like radical formation, stability, electrochemical and/or photochemical
-#'   measurements).
+#' @return Numeric value/vector corresponding to accurate time at which the middle (on \eqn{B} abscissa) EPR spectra
+#'   were recorded during the kinetic measurements (e.g. like radical formation, stability, electrochemical
+#'   and/or photochemical measurements).
 #'
 #'
 #' @examples

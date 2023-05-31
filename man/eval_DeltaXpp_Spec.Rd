@@ -12,43 +12,45 @@ eval_DeltaXpp_Spec(
 )
 }
 \arguments{
-\item{data.spectrum}{EPR/ENDOR spectrum data frame/table with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
-or \eqn{g}-Value or \eqn{RF} (in \code{MHz}) column and that of the derivative \code{dIepr_over_dB}
+\item{data.spectrum}{EPR/ENDOR spectrum data frame with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
+or \eqn{g}-Value or \eqn{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
 \code{Intensity}. \code{Index} column may be included as well.}
 
-\item{x}{Character/String pointing to \code{x}-axis/column (in the original \code{data.spectrum}) quantity
+\item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectrum})
 like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.}
 
-\item{Intensity}{Character/String pointing to \code{intensity column} ((in the original \code{data.spectrum}))
-if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra) please, define.
+\item{Intensity}{Character string pointing to name of the \code{intensity column/variable} ((in the original \code{data.spectrum}))
+if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
 \strong{Default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
 e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
 or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-to entire `x` range)}
+to entire `x` range).}
 }
 \value{
 Numeric value of difference of \code{x}-axis quantity like \eqn{B},\eqn{g},\eqn{RF} (the absolute value)
   corresponding to \code{minimum} and \code{maximum} of the derivative intensity (\code{dIepr_over_dB})
-  in EPR/ENDOR spectrum
+  in EPR/ENDOR spectrum.
 }
 \description{
-The function calculates the \code{peak-to-peak} (distance between of the \eqn{x}-axis
-projection of "min" and "max" derivative intensities) linewidth
-of an EPR/ENDOR spectrum.
+Calculating the \code{peak-to-peak} (distance between of the \eqn{x}-axis
+  projection of "min" and "max" derivative intensities) linewidth of an EPR/ENDOR spectrum.
 }
 \examples{
 \dontrun{
 eval_DeltaXpp_Spec(data.spectrum,
                    c(320.221,328.331))
+#
 eval_DeltaXpp_Spec(data.spectrum,
                    B = "B_G",
                    Intensity = "dIepr_over_dB",
                    c(3202.11,3283.31))
+#
 eval_DeltaXpp_Spec(data.spectrum,
                    "RF_MHz",
                    xlim = c(10,42))
+#
 eval_DeltaXpp_Spec(data.spectrum,
                    "B_mT_Sim",
                    c(320.221,328.331))
