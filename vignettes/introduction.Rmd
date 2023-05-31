@@ -13,7 +13,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knitr-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -28,7 +28,7 @@ library(icons)
 library(knitr)
 ```
 
-## Why `r icons::bioicons("R")` for EPR ? Comprehensive Rationale. {.unnumbered}
+## Why `r icons::bioicons("R")` for EPR ? A Comprehensive Rationale (Not only for `r icons::bioicons("R")` Users). {.unnumbered}
 
 The usual way of the physico-chemical scientific workflow (e.g. in spectroscopy) consists in data transformation from the instrument via creation of figures and tables and finally using them in reports, publications or thesis. Quite often it may happen that several software packages/tools are applied on this way incl. the proprietary ones which are available at least as an acquisition/processing software at the instrument capable of basic or more advanced operations with the EPR outcomes/spectra. As already mentioned (see `README` file on the title page) there is an excelent open source toolbox for EPR spectroscopists [@Easyspin2023] however, only working under proprietary *MATLAB* [@Matlab2023], which can handle the raw files from the EPR machines process them and create reports in an interactive form [@MatlabLE2023] or in `.pdf`. There are however only a few examples of fully open source EPR packages working under *Python* `r icons::ionicons("logo-python")` [@FOSSspec2022].
 
@@ -38,11 +38,9 @@ The open source *R statistical language* [@Rmanual2023] is not so widely used as
 
 Because the `r icons::bioicons("R")` belongs to the **family of programming languages** it also **provides reproducible workflow functionality. This is especially important for process validation in research and academia**. Namely, one can easily follow all the data and visualization operations unlike the other software with "icon-based" procedures. Moreover, **such a data handling together with the outstanding visualization/graphing** [@ggplotWickh2016; @ggplotext2016; @ggplot23e2023] **and publishing capabilities** [@BookdownBook2016; @BoookdownMan2023; @Quarto2022; @RmarkdownBook2020; @RmarkdownMan2023] **makes it a very powerful tool in the research area**. Hence, the decision to create a package for EPR spectroscopy in `r icons::bioicons("R")` was strongly supported by the aforementioned features, despite the fact that `r icons::bioicons("R")` is slightly more difficult to learn than e.g. `r icons::ionicons("logo-python")` .
 
-Last but not least, **the entire** `r icons::bioicons("R")` **ecosystem with thousands of packages** `r icons::icon_style(fontawesome("box-open"), fill = "brown")` [@BiocondR2023; @Rforge2023; @Rforge2009; @Rmanual2023] **and *RStudio* IDE**[^2] [@Rstudio2023] **support workflows which are almost free from any other additional software (toolboxes)**. Therefore, **together with perfectly and uniform structured** `r icons::icon_style(fontawesome("box-open"), fill = "brown")` documentation (which is already available in the *RStudio*) **it represents an excellent facilitation of the data processing workflows by extensive reducing of many steps which are otherwise performed by several software programmes** as already mentioned above. Great spectroscopy `r icons::icon_style(fontawesome("box-open"), fill = "brown")` have been developed in `r icons::bioicons("R")` e.g. for IR, MS, NMR, Fluorescence, UV-Vis(-NIR), Raman. However, non of them, even the general one like [{ChemoSpec}](https://bryanhanson.github.io/ChemoSpec/) or [{hyperSpec}](https://r-hyperspec.github.io/hyperSpec/index.html), could be used for EPR, which actually possesses a special position among the spectroscopies due to the paramagnetic (unpaired electronic state) origin of the studied molecules . <!--# TODO doplnit liter. -->
+Last but not least, **the entire** `r icons::bioicons("R")` **ecosystem with thousands of packages** `r icons::icon_style(fontawesome("box-open"), fill = "brown")` [@BiocondR2023; @Rforge2023; @Rforge2009; @Rmanual2023] **and *RStudio* IDE**[^2] [@Rstudio2023] **support workflows which are almost free from any other additional software (toolboxes)**. Therefore, **together with perfectly and uniform structured** `r icons::icon_style(fontawesome("box-open"), fill = "brown")` documentation (which is already available in the *RStudio*) **it represents an excellent facilitation of the data processing workflows by extensive reducing of many steps which are otherwise performed by several software programms** as already mentioned above. Great spectroscopy `r icons::icon_style(fontawesome("box-open"), fill = "brown")` have been developed in `r icons::bioicons("R")` e.g. for IR, MS, NMR, Fluorescence, UV-Vis(-NIR), Raman. However, non of them, even the general one like [{ChemoSpec}](https://bryanhanson.github.io/ChemoSpec/) or [{hyperSpec}](https://r-hyperspec.github.io/hyperSpec/index.html), could be used for EPR, which actually possesses a special position among the spectroscopies due to the paramagnetic (unpaired electronic state) origin of the studied molecules . <!--# TODO doplnit liter. -->
 
 [^2]: Integrated Development Environment
-
-Blah ... tbc
 
 ```{r scheme-intro, echo=FALSE, out.width="91%", fig.cap="Scheme...tbc"}
 #
@@ -50,6 +48,6 @@ include_graphics("imgs/introduction_a.png",dpi = 200)
 #
 ```
 
-Blah ... tbc see Figure \@ref(fig:scheme-intro) ...tbc and `vignette("functionality")` blah
+Unlike the *EasySpin* [@Easyspin2023], that is more focused on the simulation of EPR spectra, the primary aim of `{eprscope}` package is to process and analyze EPR spectral data similarly to functionality of the acquisition/processing software available at spectrometers. This is otherwise quite often not available in other software packages/toolboxes (e. g. like the option to perform a quantitative EPR analysis). Blah ... tbc see Figure \@ref(fig:scheme-intro) ...tbc and `vignette("functionality")` blah
 
 ## References
