@@ -1,26 +1,32 @@
 #
-#' Read the Simulated ASCII EPR Spectrum from \emph{MATLAB}
+#' Read the Simulated ASCII EPR Spectrum from \emph{MATLAB/EasySpin}
 #'
 #'
 #' @family Data Reading
 #'
 #'
 #' @description
-#' (\code{.txt}) and Transfer it into Data Frame
+#'   Loading the raw `.txt` data of a simulated EPR spectrum from \emph{MATLAB/EasySpin}. The `ASCII` data (\code{.txt})
+#'   is automatically converted into data frame.
 #'
 #'
-#' @param path_to_ASC String, path to ASCII file/table (\code{.txt})
+#' @param path_to_ASC Character string, path to ASCII file/table (\code{.txt})
 #'   with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB}).
 #'   The path can be also defined by \code{\link[base]{file.path}}
-#' @param B.unit Character/String pointing to unit of magnetic flux density (coming from original data, see also
+#' @param B.unit Character string pointing to unit of magnetic flux density (coming from original data, see also
 #'   \code{column.names} parameter) which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}
-#' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+#' @param col.names Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
-#'   with its units, \code{Quantity_Unit} like \code{"Bsim_G"} or \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("Bsim_mT","dIeprSim_over_dB")}.
+#'   with its unit => \code{Quantity_Unit}, e.g. like \code{"Bsim_G"} or \code{"Bsim_mT"} (e.g. pointing
+#'   to simulated EPR spectrum abscissa). \strong{Default}: \code{col.names = c("Bsim_mT","dIeprSim_over_dB")}.
+#'   \strong{Though one can choose an arbitrary intensity column name of the simulated spectrum} (the \strong{default} name
+#'   is \code{dIeprSim_over_dB}), the additional \strong{processing of the data/spectrum
+#'   either by} \code{\link{presentEPR_Sim_Spec}} \strong{or by} \code{\link{quantify_EPR_sim}} \strong{require
+#'   that the corresponding names have to be changed accordingly}.
 #'
-#' @return tbc
+#' @return Data frame (consisting of magnetic flux density and intensity variables/columns) of a simulated
+#'   spectrum from \emph{MATLAB/EasySpin}.
 #'
 #'
 #' @examples
@@ -44,7 +50,7 @@ readEPR_Sim_Spec <- function(path_to_ASC,
   Bsim_G <- NULL
   Bsim_mT <- NULL
   #
-  spectrum.data <- data.table::fread(path_to_ASC,
+  spectrum.data <- data.table::fread(file = path_to_ASC,
     sep = "auto",
     col.names = col.names
   )
