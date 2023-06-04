@@ -50,6 +50,6 @@ include_graphics("imgs/introduction_a.png",dpi = 200)
 #
 ```
 
-... tbc see Figure \@ref(fig:scheme-intro) ...tbc and `vignette("functionality")` blah...
+As mentioned above, the data analysis workflow also covers the dissemination/sharing the result from analysis mostly by tables, figures, papers, webpages or blogs. ... tbc see Figure \@ref(fig:scheme-intro) ...tbc and `vignette("functionality")` blah...
 
 ## References
