@@ -17,21 +17,13 @@
 #'   or \code{type = "sdf"}/\code{type = "SDF"}. \strong{Default}: \code{type = "smiles"}.
 #' @param mol.names Character vector pointing to name of molecules/compounds, e.g. like
 #'   \code{mol.names = c("acetone")} or \code{mol.names = c("PBN","DMPO")}.
+#' @param mol.names.color Character string pointing to displayed font color of the chemical structure
+#'   name. \strong{Default}: \code{mol.names.color = "black"}.
 #' @param sma Character string allowing to highlight sub-structures using `SMARTS`
 #'   (\strong{SM}ILES \strong{A}rbitrary \strong{T}arget \strong{S}pecification) to highlight
 #'   common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.
-#' @param annotate Character string to interpret the molecular structure elements like =>
-#'   \tabular{rcl}{
-#'   ---------------- \tab | \tab ----------------------------- \cr
-#'   \strong{Mol. Structure Element}  \tab | \tab \strong{Annotate Text String} \cr
-#'   ---------------- \tab | \tab ----------------------------- \cr
-#'   `atom numbers` \tab | \tab \code{annotate = "number"} \cr
-#'   `atom mapping` \tab | \tab \code{annotate = "mapidx"} \cr
-#'   `color map` \tab | \tab \code{annotate = "colmap"} \cr
-#'   `atom value` \tab | \tab \code{annotate = "atomvalue"} \cr
-#'   ---------------- \tab | \tab ----------------------------- \cr
-#'   }
-#'   \strong{Default}: \code{annotate = "off"}.
+#' @param annotate Character string, whether to display (\code{annotate = "number"}) or do not display
+#'   (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.
 #' @param style Character string denoting the plotting style like =>
 #'   \tabular{rcl}{
 #'   ---------------- \tab | \tab ----------------------------- \cr
@@ -49,10 +41,11 @@
 #'   can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
 #'   \code{abbr = "groups"} creating an abbreviation for `groups`; \code{abbr = "reagents"} creating
 #'   an abbreviation for `reagents` or \code{abbr = "on"} to abbreviate the both latter.
-#' @param supressh Logical, denoting whether to suppress displaying the hydrogen atoms.
+#'   The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "of"}!
+#' @param suppressh Logical, denoting whether to suppress displaying the hydrogen atoms.
+#'   The `smiles` or `sdf` STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 #'   \strong{Default}: \code{supressh = TRUE}.
-#' @param ... Additional options/arguments for \code{\link[rcdk]{get.depictor}} or displaying
-#'   the name of compound(s) like color, font, ...etc (see \code{\link[graphics]{text}}).
+#' @param ... Additional options/arguments for \code{\link[rcdk]{get.depictor}}.
 #'
 #'
 #' @return
@@ -75,11 +68,12 @@
 draw_molecules_rcdk <- function(molecules,
                                 type = "smiles", ## or "sdf"
                                 mol.names = NULL,
+                                mol.names.color = "black",
                                 sma = NULL,
                                 annotate = "off",
                                 style = "cow",
                                 abbr = "off",
-                                supressh = TRUE,
+                                suppressh = TRUE,
                                 ...){
   ## molecules is string vector, however it is converted into an object
   ## as returned by rcdk::load.molecules or rcdk::parse.smiles() => see below;
@@ -89,13 +83,14 @@ draw_molecules_rcdk <- function(molecules,
   ##
   # Image aesthetics `depictor`
   dep <- rcdk::get.depictor(
-    width = 600, height = 400,
+    width = 600,
+    height = 400,
     zoom = 6,
     sma = sma,
     annotate = annotate,
     style = style,
     abbr = abbr,
-    suppressh = supressh,
+    suppressh = suppressh,
     ...
   )
   #
@@ -130,9 +125,15 @@ draw_molecules_rcdk <- function(molecules,
     #
     ## drawing test based on `mol.names`
     if (is.null(mol.names)){
-      graphics::text(x = 5.5,y = 1.1,labels = c("mol. structure viewer"),col = "gray",...)
+      graphics::text(x = 5.5,
+                     y = 1.1,
+                     labels = c("mol. structure viewer"),
+                     col = "gray")
     } else{
-      graphics::text(x = 5.5,y = 1.1,labels = mol.names[[i]],...)
+      graphics::text(x = 5.5,
+                     y = 1.1,
+                     labels = mol.names[[i]],
+                     col = mol.names.color)
     }
     #
   }
