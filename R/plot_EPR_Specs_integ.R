@@ -116,6 +116,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
       dplyr::filter(Integrals %in% slct.integs) %>%
       ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
       geom_line(linewidth = line.width) +
+      coord_cartesian(xlim = Blim,ylim = ylim) +
       labs(
         x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
         y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")"),
@@ -132,6 +133,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
         dplyr::filter(Integrals %in% slct.integs) %>%
         ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
         geom_line(linewidth = line.width, show.legend = FALSE) +
+        coord_cartesian(xlim = Blim,ylim = ylim) +
         facet_wrap(~ .data$Integrals,
                    scales = separate.integ.scales,
                    #labeller = label_parsed,
