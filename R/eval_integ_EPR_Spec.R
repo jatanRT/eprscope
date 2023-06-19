@@ -405,11 +405,17 @@ eval_integ_EPR_Spec <- function(data.spectrum,
       data.spectrum$index <- NULL
     }
     #
-    ## reorder columns in data frame
-    ## `sigmoiod_integ` as last
-    data.spectrum <- data.spectrum %>%
-      dplyr::select(-.data$sigmoid_Integ,.data$sigmoid_Integ) %>%
-      dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
+    if (isFALSE(sigmoid.integ)){
+      data.spectrum <- data.spectrum
+    } else {
+      ## reorder columns in data frame
+      ## `sigmoiod_integ` as last
+      data.spectrum <- data.spectrum %>%
+        dplyr::select(-sigmoid_Integ,sigmoid_Integ)
+      #
+      data.spectrum <- data.spectrum %>%
+        dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
+    }
     #
     integrate.results <- data.spectrum
     #
