@@ -8,6 +8,9 @@ plot_theme_Out_ticks(
   axis.text.size = 14,
   axis.title.size = 15,
   grid = TRUE,
+  border.line.color = "black",
+  border.line.type = "solid",
+  border.line.width = 0.5,
   bg.transparent = FALSE
 )
 }
@@ -19,6 +22,12 @@ plot_theme_Out_ticks(
 \strong{default}: \code{axis.title.size = 15}}
 
 \item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+
+\item{border.line.color}{description...tbc...}
+
+\item{border.line.type}{description ...tbc...}
+
+\item{border.line.width}{description ...tbc...}
 
 \item{bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
 should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background}

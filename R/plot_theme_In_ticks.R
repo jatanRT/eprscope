@@ -14,6 +14,9 @@
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}
 #' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
+#' @param border.line.color description...tbc...
+#' @param border.line.type description ...tbc...
+#' @param border.line.width description ...tbc...
 #' @param bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
 #'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background
 #'
@@ -35,6 +38,9 @@
 plot_theme_In_ticks <- function(axis.text.size = 14,
                                 axis.title.size = 15,
                                 grid = TRUE,
+                                border.line.color = "black",
+                                border.line.type = "solid",
+                                border.line.width = 0.5,
                                 bg.transparent = FALSE) {
   ## theme parts:
   theme_bas <- theme(
@@ -43,7 +49,10 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
     axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
     axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
     axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-    panel.border = element_rect(color = "black", fill = NA)
+    panel.border = element_rect(color = border.line.color,
+                                linetype = border.line.type,
+                                linewidth = border.line.width,
+                                fill = NA)
   )
   theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   #
