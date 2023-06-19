@@ -138,6 +138,7 @@ eval_integ_EPR_Spec(data.spectrum,sigmoid.integ = T,output.vecs = T)[["sigmoid"]
 ## for quantitative or kinetic analysis
 data.integrals <- data.spectra \%>\%
   dplyr::group_by(time_s) \%>\%
+  dplyr::filter(dplyr::between(B_G,3390,3600)) \%>\% ## limits for the integral (!!! Blim = NULL !!!)
   dplyr::mutate(sigmoid_Integ = eval_integ_EPR_Spec(dplyr::pick(B_G,dIepr_over_dB),
                                                     correct.integ = T,
                                                     BpeaKlim = c(3430,3560),

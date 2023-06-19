@@ -118,6 +118,7 @@
 #' ## for quantitative or kinetic analysis
 #' data.integrals <- data.spectra %>%
 #'   dplyr::group_by(time_s) %>%
+#'   dplyr::filter(dplyr::between(B_G,3390,3600)) %>% ## limits for the integral (!!! Blim = NULL !!!)
 #'   dplyr::mutate(sigmoid_Integ = eval_integ_EPR_Spec(dplyr::pick(B_G,dIepr_over_dB),
 #'                                                     correct.integ = T,
 #'                                                     BpeaKlim = c(3430,3560),
@@ -200,7 +201,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         #
         ## rescale the `sigmoid_Integ` => from 0 to max
         data.spectrum <- data.spectrum %>%
-          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+          dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
       }
     }
     if (B.unit == "mT") {
@@ -219,7 +220,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         #
         ## rescale the `sigmoid_Integ` => from 0 to max
         data.spectrum <- data.spectrum %>%
-          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+          dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
       }
     }
   }
@@ -237,7 +238,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         #
         ## rescale the `sigmoid_Integ` => from 0 to max
         data.spectrum <- data.spectrum %>%
-          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+          dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
       }
     }
     if (B.unit == "mT") {
@@ -251,7 +252,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         #
         ## rescale the `sigmoid_Integ` => from 0 to max
         data.spectrum <- data.spectrum %>%
-          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+          dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
       }
     }
   }
@@ -289,7 +290,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ##  keep `baselin_integ_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
           data.spectrum <- data.spectrum %>%
-            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - single_Integ_correct))
+            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G") {
@@ -309,7 +310,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               #
               ## rescale the `sigmoid_Integ` => from 0 to max
               data.spectrum <- data.spectrum %>%
-                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+                dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
             }
           }
           if (B.unit == "mT") {
@@ -329,7 +330,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               #
               ## rescale the `sigmoid_Integ` => from 0 to max
               data.spectrum <- data.spectrum %>%
-                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+                dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
             }
           }
         }
@@ -351,7 +352,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ##  keep `baseline_Intens_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
           data.spectrum <- data.spectrum %>%
-            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - single_Integ_correct))
+            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G") {
@@ -370,7 +371,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               #
               ## rescale the `sigmoid_Integ` => from 0 to max
               data.spectrum <- data.spectrum %>%
-                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+                dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
             }
           }
           if (B.unit == "mT") {
@@ -389,7 +390,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               #
               ## rescale the `sigmoid_Integ` => from 0 to max
               data.spectrum <- data.spectrum %>%
-                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
+                dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
             }
           }
         }
@@ -407,7 +408,8 @@ eval_integ_EPR_Spec <- function(data.spectrum,
     ## reorder columns in data frame
     ## `sigmoiod_integ` as last
     data.spectrum <- data.spectrum %>%
-      dplyr::select(-sigmoid_Integ,sigmoid_Integ)
+      dplyr::select(-.data$sigmoid_Integ,.data$sigmoid_Integ) %>%
+      dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
     #
     integrate.results <- data.spectrum
     #
