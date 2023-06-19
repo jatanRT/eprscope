@@ -197,6 +197,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           data.spectrum[[B]],
           data.spectrum$single_Integ
         )[, 1]
+        #
+        ## rescale the `sigmoid_Integ` => from 0 to max
+        data.spectrum <- data.spectrum %>%
+          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
       }
     }
     if (B.unit == "mT") {
@@ -212,6 +216,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           data.spectrum[[B]],
           data.spectrum$single_Integ
         )[, 1] * 10
+        #
+        ## rescale the `sigmoid_Integ` => from 0 to max
+        data.spectrum <- data.spectrum %>%
+          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
       }
     }
   }
@@ -226,6 +234,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           data.spectrum[[B]],
           data.spectrum[[Intensity]]
         )[, 1]
+        #
+        ## rescale the `sigmoid_Integ` => from 0 to max
+        data.spectrum <- data.spectrum %>%
+          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
       }
     }
     if (B.unit == "mT") {
@@ -236,6 +248,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           data.spectrum[[B]],
           data.spectrum[[Intensity]]
         )[, 1] * 10
+        #
+        ## rescale the `sigmoid_Integ` => from 0 to max
+        data.spectrum <- data.spectrum %>%
+          dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
       }
     }
   }
@@ -269,10 +285,11 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ## rename column with fit
             dplyr::rename(baseline_Integ_fit = .data[[".fitted"]]) %>%
             ## subtract the baseline
-            dplyr::mutate(single_Integ_correct = .data$single_Integ - .data$baseline_Integ_fit) %>%
+            dplyr::mutate(single_Integ_correct = .data$single_Integ - .data$baseline_Integ_fit)
             ##  keep `baselin_integ_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
-            dplyr::mutate(single_Integ_correct = single_Integ_correct - min(.data$single_Integ_correct))
+          data.spectrum <- data.spectrum %>%
+            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G") {
@@ -289,6 +306,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                 data.spectrum[[B]],
                 data.spectrum$single_Integ_correct
               )[, 1]
+              #
+              ## rescale the `sigmoid_Integ` => from 0 to max
+              data.spectrum <- data.spectrum %>%
+                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
             }
           }
           if (B.unit == "mT") {
@@ -305,6 +326,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                 data.spectrum[[B]],
                 data.spectrum$single_Integ_correct
               )[, 1] * 10
+              #
+              ## rescale the `sigmoid_Integ` => from 0 to max
+              data.spectrum <- data.spectrum %>%
+                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
             }
           }
         }
@@ -322,10 +347,11 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ## rename column with fit
             dplyr::rename(baseline_Intens_fit = .data[[".fitted"]]) %>%
             ## subtract the baseline
-            dplyr::mutate(single_Integ_correct = .data[[Intensity]] - .data$baseline_Intens_fit) %>%
+            dplyr::mutate(single_Integ_correct = .data[[Intensity]] - .data$baseline_Intens_fit)
             ##  keep `baseline_Intens_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
-            dplyr::mutate(single_Integ_correct = single_Integ_correct - min(.data$single_Integ_correct))
+          data.spectrum <- data.spectrum %>%
+            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G") {
@@ -341,6 +367,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                 data.spectrum[[B]],
                 data.spectrum$single_Integ_correct
               )[, 1]
+              #
+              ## rescale the `sigmoid_Integ` => from 0 to max
+              data.spectrum <- data.spectrum %>%
+                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
             }
           }
           if (B.unit == "mT") {
@@ -356,6 +386,10 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                 data.spectrum[[B]],
                 data.spectrum$single_Integ_correct
               )[, 1] * 10
+              #
+              ## rescale the `sigmoid_Integ` => from 0 to max
+              data.spectrum <- data.spectrum %>%
+                dplyr::mutate(sigmoid_Integ = abs(min(sigmoid_Integ)-sigmoid_Integ))
             }
           }
         }
