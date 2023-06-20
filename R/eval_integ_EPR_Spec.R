@@ -118,7 +118,7 @@
 #' ## for quantitative or kinetic analysis
 #' data.integrals <- data.spectra %>%
 #'   dplyr::group_by(time_s) %>%
-#'   dplyr::filter(dplyr::between(B_G,3390,3600)) %>% ## limits for the integral (!!! Blim = NULL !!!)
+#'   dplyr::filter(dplyr::between(B_G,3390,3600)) %>%
 #'   dplyr::mutate(sigmoid_Integ = eval_integ_EPR_Spec(dplyr::pick(B_G,dIepr_over_dB),
 #'                                                     correct.integ = T,
 #'                                                     BpeaKlim = c(3430,3560),
@@ -126,6 +126,8 @@
 #'                                                     sigmoid.integ = T,
 #'                                                     output.vecs = T)$sigmoid) %>%
 #'  dplyr::summarize(Area = max(sigmoid_Integ))
+#' ## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,
+#' ## it must be `Blim = NULL`, however by `dplyr::between()` !!!
 #' }
 #'
 #'
