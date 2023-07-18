@@ -124,7 +124,7 @@ eval_gFactor_Spec <- function(data.spectrum,
       B.center <- data.spectrum %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
         dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%
-        dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 100)) %>%
+        dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 2)) %>%
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
