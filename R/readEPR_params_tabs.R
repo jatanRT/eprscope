@@ -41,26 +41,43 @@
 readEPR_params_tabs <- function(path_to_DSC_or_par,
                                 origin = "xenon") {
   #
+  ## condition for checking the temperature
+  ## ## "STMP" is sometimes missing, therefore =>
+  if (origin == "xenon"){
+    temperature.check <- isTRUE(any(grepl("STMP",readLines(path_to_DSC_or_par))))
+  }
+  if (origin == "winepr"){
+    temperature.check <- isTRUE(any(grepl("TE",readLines(path_to_DSC_or_par))))
+  }
+  #
   ## required string patterns from 'DSC' or 'par' file:
   if (origin == "xenon") {
-    str.epr.Instr.params.V <- c(
+    str.epr.Instr.params.V <- ifelse(isTRUE(temperature.check),c(
       "MWFQ", "QValue", "A1CT", "A1SW", "B0MA",
       "AVGS", "NbScansDone", "NbScansToDo", "A1RS",
       "MWPW", "SPTP", "RCTC", "RCAG", "STMP", "B0MF", "ConvFact"
-    ) ## corresp. to value
+    ),c(
+      "MWFQ", "QValue", "A1CT", "A1SW", "B0MA",
+      "AVGS", "NbScansDone", "NbScansToDo", "A1RS",
+      "MWPW", "SPTP", "RCTC", "RCAG", "B0MF", "ConvFact"
+    )) ## corresp. to value
     #
     str.epr.Instr.params.Ch <- c("OPER", "DATE", "TIME", "CMNT", "SAMP") ## corresp. to character
   }
   if (origin == "winepr") {
-    str.epr.Instr.params.V <- c(
+    str.epr.Instr.params.V <- ifelse(isTRUE(temperature.check),c(
       "MF", "HCF", "HSW", "RMA", "JSD",
       "RES", "MP", "RCT", "RTC", "TE", "RRG"
-    ) ## corresp. to value
+    ),c(
+      "MF", "HCF", "HSW", "RMA", "JSD",
+      "RES", "MP", "RCT", "RTC", "RRG"
+    )) ## corresp. to value
     #
     str.epr.Instr.params.Ch <- c("JON", "JDA", "JTM", "JCO") ## corresp. to character
   }
   #
   ## select all corresponding lines (which contain string pattern) from 'DSC' or 'par' file:
+  ## reading parameters and the correspond. values
   str.dsc.sel.V <- sapply(
     str.epr.Instr.params.V,
     function(x) grep(x, readLines(path_to_DSC_or_par), value = TRUE)
@@ -80,36 +97,62 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
   ## depending on the original parameter list coming either from "xenon" or from "winepr" software
   if (origin == "xenon") {
     data.instrument.V <- data.frame(
-      Parameter <- c(
+      Parameter <- ifelse(isTRUE(temperature.check), c(
         "Frequency", "QValue", "Central Field", "Sweep Width", "Modulation Amplitude",
         "Num. of Scans", "Num. of Scans Done", "Num. of Scans ToDo", "Number of Points",
         "Power", "Conversion Time", "Sweep Time", "Time Constant", "Receiver Gain",
-        "Temperature", "Modulation Frequency", "Conversion Factor"
-      ),
-      Value <- c(
-        as.double(as.character(str.dsc.sel.split.V$MWFQ[[2]])) * 1e-9,
-        as.double(as.character(str.dsc.sel.split.V$QValue[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$A1CT[[2]])) * 1e+3,
-        as.double(as.character(str.dsc.sel.split.V$A1SW[[2]])) * 1e+3,
-        as.double(as.character(str.dsc.sel.split.V$B0MA[[2]])) * 1e+3,
-        as.double(as.character(str.dsc.sel.split.V$AVGS[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$NbScansDone[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$NbScansToDo[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$A1RS[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$MWPW[[2]])) * 1e+3,
-        as.double(as.character(str.dsc.sel.split.V$SPTP[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$SPTP[[2]])) *
-          as.double(as.character(str.dsc.sel.split.V$A1RS[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RCTC[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RCAG[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$STMP[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$B0MF[[2]])) * 1e-3,
-        as.double(as.character(str.dsc.sel.split.V$ConvFact[[2]]))
-      ),
-      Unit <- c(
+        "Temperature","Modulation Frequency", "Conversion Factor"
+      ),c(
+        "Frequency", "QValue", "Central Field", "Sweep Width", "Modulation Amplitude",
+        "Num. of Scans", "Num. of Scans Done", "Num. of Scans ToDo", "Number of Points",
+        "Power", "Conversion Time", "Sweep Time", "Time Constant", "Receiver Gain",
+        "Modulation Frequency", "Conversion Factor"
+      )),
+      Value <- ifelse(isTRUE(temperature.check),c(
+        as.numeric(str.dsc.sel.split.V$MWFQ[[2]]) * 1e-9,
+        as.numeric(str.dsc.sel.split.V$QValue[[2]]),
+        as.numeric(str.dsc.sel.split.V$A1CT[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$A1SW[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$B0MA[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$AVGS[[2]]),
+        as.numeric(str.dsc.sel.split.V$NbScansDone[[2]]),
+        as.numeric(str.dsc.sel.split.V$NbScansToDo[[2]]),
+        as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
+        as.numeric(str.dsc.sel.split.V$MWPW[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$SPTP[[2]]),
+        as.numeric(str.dsc.sel.split.V$SPTP[[2]]) *
+          as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCTC[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCAG[[2]]),
+        as.numeric(str.dsc.sel.split.V$STMP[[2]]),
+        as.numeric(str.dsc.sel.split.V$B0MF[[2]]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$ConvFact[[2]])
+      ),c(
+        as.numeric(str.dsc.sel.split.V$MWFQ[[2]]) * 1e-9,
+        as.numeric(str.dsc.sel.split.V$QValue[[2]]),
+        as.numeric(str.dsc.sel.split.V$A1CT[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$A1SW[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$B0MA[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$AVGS[[2]]),
+        as.numeric(str.dsc.sel.split.V$NbScansDone[[2]]),
+        as.numeric(str.dsc.sel.split.V$NbScansToDo[[2]]),
+        as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
+        as.numeric(str.dsc.sel.split.V$MWPW[[2]]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$SPTP[[2]]),
+        as.numeric(str.dsc.sel.split.V$SPTP[[2]]) *
+          as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCTC[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCAG[[2]]),
+        as.numeric(str.dsc.sel.split.V$B0MF[[2]]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$ConvFact[[2]])
+      )),
+      Unit <- ifelse(isTRUE(temperature.check),c(
         "GHz", "Unitless", "mT", "mT", "mT", "Unitless", "Unitless", "Unitless",
-        "Unitless", "mW", "s", "s", "s", "dB", "K", "KHz", "Unitless"
-      )
+        "Unitless", "mW", "s", "s", "s", "dB","K", "KHz", "Unitless"
+      ),c(
+        "GHz", "Unitless", "mT", "mT", "mT", "Unitless", "Unitless", "Unitless",
+        "Unitless", "mW", "s", "s", "s", "dB","KHz", "Unitless"
+      ))
     )
     data.instrument.Ch <- data.frame(
       Parameter <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
@@ -130,22 +173,22 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
         "Sweep Time", "Acquire Time", "Time Constant", "Temperature", "Receiver Gain"
       ),
       Value <- c(
-        as.double(as.character(str.dsc.sel.split.V$MF[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$HCF[[2]])) * 0.1,
-        as.double(as.character(str.dsc.sel.split.V$HSW[[2]])) * 0.1,
-        as.double(as.character(str.dsc.sel.split.V$RMA[[2]])) * 0.1,
-        as.double(as.character(str.dsc.sel.split.V$JSD[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RES[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$MP[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RCT[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RCT[[2]])) *
-          as.double(as.character(str.dsc.sel.split.V$RES[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RCT[[2]])) *
-          as.double(as.character(str.dsc.sel.split.V$RES[[2]])) *
-          as.double(as.character(str.dsc.sel.split.V$JSD[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RTC[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$TE[[2]])),
-        as.double(as.character(str.dsc.sel.split.V$RRG[[2]]))
+        as.numeric(str.dsc.sel.split.V$MF[[2]]),
+        as.numeric(str.dsc.sel.split.V$HCF[[2]]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$HSW[[2]]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$RMA[[2]]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$JSD[[2]]),
+        as.numeric(str.dsc.sel.split.V$RES[[2]]),
+        as.numeric(str.dsc.sel.split.V$MP[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCT[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCT[[2]]) *
+          as.numeric(str.dsc.sel.split.V$RES[[2]]),
+        as.numeric(str.dsc.sel.split.V$RCT[[2]]) *
+          as.numeric(str.dsc.sel.split.V$RES[[2]]) *
+          as.numeric(str.dsc.sel.split.V$JSD[[2]]),
+        as.numeric(str.dsc.sel.split.V$RTC[[2]]),
+        as.numeric(str.dsc.sel.split.V$TE[[2]]),
+        as.numeric(str.dsc.sel.split.V$RRG[[2]])
       ),
       Unit <- c("GHz", "mT", "mT", "mT", "Unitless", "Unitless", "mW", "s", "s", "s", "s", "K", "Unitless")
     )
