@@ -44,10 +44,10 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
   . <- NULL
   #
   ## condition for checking the temperature because
-  ## "STMP" is sometimes missing + basic quantities
+  ## "STMP"/"TE" (at the beginning of the line) is sometimes missing + basic quantities
   ## character vector
   if (origin == "xenon"){
-    temperature.check <- isTRUE(any(grepl("STMP",readLines(path_to_DSC_or_par))))
+    temperature.check <- isTRUE(any(grepl("^STMP",readLines(path_to_DSC_or_par))))
     #
     str.epr.Instr.params.V <- c(
       "MWFQ", "QValue", "A1CT", "A1SW", "B0MA",
@@ -56,7 +56,7 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     )
   }
   if (origin == "winepr"){
-    temperature.check <- isTRUE(any(grepl("TE",readLines(path_to_DSC_or_par))))
+    temperature.check <- isTRUE(any(grepl("^TE",readLines(path_to_DSC_or_par))))
     #
     str.epr.Instr.params.V <- c(
       "MF", "HCF", "HSW", "RMA", "JSD",
@@ -99,13 +99,15 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
   str.dsc.sel.split.Ch <- sapply(str.dsc.sel.Ch, function(z) stringr::str_split(z, "\\s+", n = 2))
   #
   ## Parameters, Values and Units Definitions:
+  ## based upon `temperature.check` (TRUE or FALSE) condition =>
   if (origin == "xenon"){
-    Parameter <- c(
+    ParameterV <- c(
       "Frequency", "QValue", "Central Field", "Sweep Width", "Modulation Amplitude",
       "Num. of Scans", "Num. of Scans Done", "Num. of Scans ToDo", "Number of Points",
       "Power", "Conversion Time", "Sweep Time", "Time Constant", "Receiver Gain",
       "Temperature","Modulation Frequency", "Conversion Factor"
     )
+    ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-15])
     Value <- c(
       as.numeric(str.dsc.sel.split.V$MWFQ[[2]]) * 1e-9,
       as.numeric(str.dsc.sel.split.V$QValue[[2]]),
@@ -126,17 +128,20 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
       as.numeric(str.dsc.sel.split.V$B0MF[[2]]) * 1e-3,
       as.numeric(str.dsc.sel.split.V$ConvFact[[2]])
     )
+    Value <- Value %>% `if`(isTRUE(temperature.check),.,Value[-15])
     Unit <- c(
       "GHz", "Unitless", "mT", "mT", "mT", "Unitless", "Unitless", "Unitless",
       "Unitless", "mW", "s", "s", "s", "dB","K", "KHz", "Unitless"
     )
+    Unit <- Unit %>% `if`(isTRUE(temperature.check),.,Unit[-15])
   }
   if (origin == "winepr"){
-    Parameter <- c(
+    ParameterV <- c(
       "Frequency", "Central Field", "Sweep Width", "Modulation Amplitude",
       "Number of Scans", "Number of Points", "Power", "Conversion Time",
       "Sweep Time", "Acquire Time", "Time Constant", "Temperature", "Receiver Gain"
     )
+    ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-12])
     Value <- c(
       as.numeric(str.dsc.sel.split.V$MF[[2]]),
       as.numeric(str.dsc.sel.split.V$HCF[[2]]) * 0.1,
@@ -155,25 +160,23 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
       as.numeric(str.dsc.sel.split.V$TE[[2]]),
       as.numeric(str.dsc.sel.split.V$RRG[[2]])
     )
-    Unit <- c("GHz", "mT", "mT", "mT", "Unitless", "Unitless", "mW", "s", "s", "s", "s", "K", "Unitless")
+    Value <- Value %>% `if`(isTRUE(temperature.check),.,Value[-12])
+    Unit <- c("GHz", "mT", "mT", "mT", "Unitless",
+              "Unitless", "mW", "s", "s", "s", "s",
+              "K", "Unitless")
+    Unit <- Unit %>% `if`(isTRUE(temperature.check),.,Unit[-12])
   }
   #
   ## Create a "parameter" data frame ('[[2]]' means second string in line / couple):
-  ## depending on the original parameter list coming either from "xenon" or from "winepr" software
+  ## data frame from values
+  data.instrument.V <- data.frame(
+    ParameterV,Value,Unit
+  )
+  #
+  ## data frame from characters
   if (origin == "xenon") {
-    data.instrument.V <- data.frame(
-      Parameter <- Parameter %>% `if`(isTRUE(temperature.check),
-                                      .,
-                                      Parameter[-15]),
-      Value <- Value %>% `if`(isTRUE(temperature.check),
-                              .,
-                              Value[-15]),
-      Unit <- Unit %>% `if`(isTRUE(temperature.check),
-                            .,
-                            Unit[-15])
-    )
     data.instrument.Ch <- data.frame(
-      Parameter <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
+      ParameterCh <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
       Information <- c(
         as.character(str.dsc.sel.split.Ch$OPER[[2]]),
         as.character(str.dsc.sel.split.Ch$DATE[[2]]),
@@ -184,19 +187,8 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     )
   }
   if (origin == "winepr") {
-    data.instrument.V <- data.frame(
-      Parameter <- Parameter %>% `if`(isTRUE(temperature.check),
-                                      .,
-                                      Parameter[-12]),
-      Value <- Value %>% `if`(isTRUE(temperature.check),
-                              .,
-                              Value[-12]),
-      Unit <- Unit %>% `if`(isTRUE(temperature.check),
-                            .,
-                            Unit[-12])
-      )
     data.instrument.Ch <- data.frame(
-      Parameter <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
+      ParameterCh <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
       Information <- c(
         as.character(str.dsc.sel.split.Ch$JON[[2]]),
         as.character(str.dsc.sel.split.Ch$JDA[[2]]),
