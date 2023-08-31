@@ -19,10 +19,14 @@
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
 #'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
 #'   \strong{default}: \code{origin = "xenon"}
+#' @param interact Charater, whether or not display tables by \code{\link[DT]{datatable}}. \strong{Default}:
+#'   \code{interact = NULL}. To display interactive table with parameters: \code{interact = "params"} aa well as
+#'   to display that of the additional information: \code{interact = ""info}.
 #'
 #'
 #' @return List of data frames/tables containing instrumental parameters (\code{params}) and information (\code{info}),
-#'  i.e. numeric values & strings related to an EPR experiment
+#'  i.e. numeric values & character strings related to an EPR experiment. Both data frames tables may be depicted
+#'  in the form of interactive tables by \code{interact} function argument.
 #'
 #'
 #' @examples
@@ -31,7 +35,8 @@
 #' readEPR_params_tabs(file.path(".",
 #'                               "dir_par",
 #'                               "EPR_spectrum.par"),
-#'                     origin = "winepr")
+#'                     origin = "winepr",
+#'                     interact = params)
 #' }
 #'
 #'
@@ -39,7 +44,8 @@
 #'
 #'
 readEPR_params_tabs <- function(path_to_DSC_or_par,
-                                origin = "xenon") {
+                                origin = "xenon",
+                                interact = NULL) {
   ## 'Temporary' processing variables
   . <- NULL
   #
@@ -82,21 +88,21 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
   }
   #
   ## select all corresponding lines (which contain string pattern) from 'DSC' or 'par' file:
-  ## reading parameters and the correspond. values
+  ## reading parameters and the correspond. values at the beginning of the line => +"^"
   str.dsc.sel.V <- sapply(
     str.epr.Instr.params.V,
-    function(x) grep(x, readLines(path_to_DSC_or_par), value = TRUE)
+    function(x) grep(paste0("^",x), readLines(path_to_DSC_or_par), value = TRUE)
   )
   #
   str.dsc.sel.Ch <- sapply(
     str.epr.Instr.params.Ch,
-    function(w) grep(w, readLines(path_to_DSC_or_par), value = TRUE)
+    function(w) grep(paste0("^",w), readLines(path_to_DSC_or_par), value = TRUE)
   )
   #
-  ## split these strings into string couples (n=2) by space "  " ("\\s+"):
-  str.dsc.sel.split.V <- sapply(str.dsc.sel.V, function(y) stringr::str_split(y, "\\s+", n = 2))
+  ## split these strings into string couples (n=2) by space "  " ("\\s+")
+  str.dsc.sel.split.V <- lapply(str.dsc.sel.V, function(y) unlist(stringr::str_split(y, "\\s+", n = 2)))
   #
-  str.dsc.sel.split.Ch <- sapply(str.dsc.sel.Ch, function(z) stringr::str_split(z, "\\s+", n = 2))
+  str.dsc.sel.split.Ch <- lapply(str.dsc.sel.Ch, function(z) unlist(stringr::str_split(z, "\\s+", n = 2)))
   #
   ## Parameters, Values and Units Definitions:
   ## based upon `temperature.check` (TRUE or FALSE) condition =>
@@ -110,44 +116,44 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-15])
     if (isTRUE(temperature.check)){
       Value <- c(
-        as.numeric(str.dsc.sel.split.V$MWFQ[[2]]) * 1e-9,
-        as.numeric(str.dsc.sel.split.V$QValue[[2]]),
-        as.numeric(str.dsc.sel.split.V$A1CT[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$A1SW[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$B0MA[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$AVGS[[2]]),
-        as.numeric(str.dsc.sel.split.V$NbScansDone[[2]]),
-        as.numeric(str.dsc.sel.split.V$NbScansToDo[[2]]),
-        as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
-        as.numeric(str.dsc.sel.split.V$MWPW[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$SPTP[[2]]),
-        as.numeric(str.dsc.sel.split.V$SPTP[[2]]) *
-          as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCTC[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCAG[[2]]),
-        as.numeric(str.dsc.sel.split.V$STMP[[2]]),
-        as.numeric(str.dsc.sel.split.V$B0MF[[2]]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$ConvFact[[2]])
+        as.numeric(str.dsc.sel.split.V$MWFQ[2]) * 1e-9,
+        as.numeric(str.dsc.sel.split.V$QValue[2]),
+        as.numeric(str.dsc.sel.split.V$A1CT[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$A1SW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$B0MA[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$AVGS[2]),
+        as.numeric(str.dsc.sel.split.V$NbScansDone[2]),
+        as.numeric(str.dsc.sel.split.V$NbScansToDo[2]),
+        as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$MWPW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$SPTP[2]),
+        as.numeric(str.dsc.sel.split.V$SPTP[2]) *
+          as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$RCTC[2]),
+        as.numeric(str.dsc.sel.split.V$RCAG[2]),
+        as.numeric(str.dsc.sel.split.V$STMP[2]),
+        as.numeric(str.dsc.sel.split.V$B0MF[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$ConvFact[2])
       )
     } else{
       Value <- c(
-        as.numeric(str.dsc.sel.split.V$MWFQ[[2]]) * 1e-9,
-        as.numeric(str.dsc.sel.split.V$QValue[[2]]),
-        as.numeric(str.dsc.sel.split.V$A1CT[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$A1SW[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$B0MA[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$AVGS[[2]]),
-        as.numeric(str.dsc.sel.split.V$NbScansDone[[2]]),
-        as.numeric(str.dsc.sel.split.V$NbScansToDo[[2]]),
-        as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
-        as.numeric(str.dsc.sel.split.V$MWPW[[2]]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$SPTP[[2]]),
-        as.numeric(str.dsc.sel.split.V$SPTP[[2]]) *
-          as.numeric(str.dsc.sel.split.V$A1RS[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCTC[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCAG[[2]]),
-        as.numeric(str.dsc.sel.split.V$B0MF[[2]]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$ConvFact[[2]])
+        as.numeric(str.dsc.sel.split.V$MWFQ[2]) * 1e-9,
+        as.numeric(str.dsc.sel.split.V$QValue[2]),
+        as.numeric(str.dsc.sel.split.V$A1CT[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$A1SW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$B0MA[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$AVGS[2]),
+        as.numeric(str.dsc.sel.split.V$NbScansDone[2]),
+        as.numeric(str.dsc.sel.split.V$NbScansToDo[2]),
+        as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$MWPW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$SPTP[2]),
+        as.numeric(str.dsc.sel.split.V$SPTP[2]) *
+          as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$RCTC[2]),
+        as.numeric(str.dsc.sel.split.V$RCAG[2]),
+        as.numeric(str.dsc.sel.split.V$B0MF[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$ConvFact[2])
       )
     }
     Unit <- c(
@@ -165,40 +171,40 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-12])
     if (isTRUE(temperature.check)){
       Value <- c(
-        as.numeric(str.dsc.sel.split.V$MF[[2]]),
-        as.numeric(str.dsc.sel.split.V$HCF[[2]]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$HSW[[2]]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$RMA[[2]]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$JSD[[2]]),
-        as.numeric(str.dsc.sel.split.V$RES[[2]]),
-        as.numeric(str.dsc.sel.split.V$MP[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCT[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCT[[2]]) *
-          as.numeric(str.dsc.sel.split.V$RES[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCT[[2]]) *
-          as.numeric(str.dsc.sel.split.V$RES[[2]]) *
-          as.numeric(str.dsc.sel.split.V$JSD[[2]]),
-        as.numeric(str.dsc.sel.split.V$RTC[[2]]),
-        as.numeric(str.dsc.sel.split.V$TE[[2]]),
-        as.numeric(str.dsc.sel.split.V$RRG[[2]])
+        as.numeric(str.dsc.sel.split.V$MF[2]),
+        as.numeric(str.dsc.sel.split.V$HCF[2]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$HSW[2]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$RMA[2]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$JSD[2]),
+        as.numeric(str.dsc.sel.split.V$RES[2]),
+        as.numeric(str.dsc.sel.split.V$MP[2]),
+        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
+          as.numeric(str.dsc.sel.split.V$RES[2]),
+        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
+          as.numeric(str.dsc.sel.split.V$RES[2]) *
+          as.numeric(str.dsc.sel.split.V$JSD[2]),
+        as.numeric(str.dsc.sel.split.V$RTC[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$TE[2]),
+        as.numeric(str.dsc.sel.split.V$RRG[2])
       )
     } else {
       Value <- c(
-        as.numeric(str.dsc.sel.split.V$MF[[2]]),
-        as.numeric(str.dsc.sel.split.V$HCF[[2]]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$HSW[[2]]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$RMA[[2]]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$JSD[[2]]),
-        as.numeric(str.dsc.sel.split.V$RES[[2]]),
-        as.numeric(str.dsc.sel.split.V$MP[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCT[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCT[[2]]) *
-          as.numeric(str.dsc.sel.split.V$RES[[2]]),
-        as.numeric(str.dsc.sel.split.V$RCT[[2]]) *
-          as.numeric(str.dsc.sel.split.V$RES[[2]]) *
-          as.numeric(str.dsc.sel.split.V$JSD[[2]]),
-        as.numeric(str.dsc.sel.split.V$RTC[[2]]),
-        as.numeric(str.dsc.sel.split.V$RRG[[2]])
+        as.numeric(str.dsc.sel.split.V$MF[2]),
+        as.numeric(str.dsc.sel.split.V$HCF[2]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$HSW[2]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$RMA[2]) * 0.1,
+        as.numeric(str.dsc.sel.split.V$JSD[2]),
+        as.numeric(str.dsc.sel.split.V$RES[2]),
+        as.numeric(str.dsc.sel.split.V$MP[2]),
+        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
+          as.numeric(str.dsc.sel.split.V$RES[2]),
+        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
+          as.numeric(str.dsc.sel.split.V$RES[2]) *
+          as.numeric(str.dsc.sel.split.V$JSD[2]),
+        as.numeric(str.dsc.sel.split.V$RTC[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$RRG[2])
       )
     }
     Unit <- c("GHz", "mT", "mT", "mT", "Unitless",
@@ -207,7 +213,7 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     Unit <- Unit %>% `if`(isTRUE(temperature.check),.,Unit[-12])
   }
   #
-  ## Create a "parameter" data frame ('[[2]]' means second string in line / couple):
+  ## Create a "parameter" data frame ('[2]' means second string in line / couple):
   ## data frame from values
   data.instrument.V <- data.frame(
     ParameterV,Value,Unit
@@ -218,28 +224,44 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     data.instrument.Ch <- data.frame(
       ParameterCh <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
       Information <- c(
-        as.character(str.dsc.sel.split.Ch$OPER[[2]]),
-        as.character(str.dsc.sel.split.Ch$DATE[[2]]),
-        as.character(str.dsc.sel.split.Ch$TIME[[2]]),
-        as.character(str.dsc.sel.split.Ch$CMNT[[2]]),
-        as.character(str.dsc.sel.split.Ch$SAMP[[2]])
+        as.character(str.dsc.sel.split.Ch$OPER[2]),
+        as.character(str.dsc.sel.split.Ch$DATE[2]),
+        as.character(str.dsc.sel.split.Ch$TIME[2]),
+        as.character(str.dsc.sel.split.Ch$CMNT[2]),
+        as.character(str.dsc.sel.split.Ch$SAMP[2])
       )
     )
   }
   if (origin == "winepr") {
     data.instrument.Ch <- data.frame(
-      ParameterCh <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
+      ParameterCh <- c("Operator", "Date", "Recording Time", "Comment"),
       Information <- c(
-        as.character(str.dsc.sel.split.Ch$JON[[2]]),
-        as.character(str.dsc.sel.split.Ch$JDA[[2]]),
-        as.character(str.dsc.sel.split.Ch$JTM[[2]]),
-        as.character(str.dsc.sel.split.Ch$JCO[[2]])
+        as.character(str.dsc.sel.split.Ch$JON[2]),
+        as.character(str.dsc.sel.split.Ch$JDA[2]),
+        as.character(str.dsc.sel.split.Ch$JTM[2]),
+        as.character(str.dsc.sel.split.Ch$JCO[2])
       )
     )
   }
   names(data.instrument.V) <- c("Parameter", "Value", "Unit")
   names(data.instrument.Ch) <- c("Parameter", "Information")
   #
-  return(list(params = data.instrument.V, info = data.instrument.Ch))
+  tab.list <- list(params = data.instrument.V, info = data.instrument.Ch)
+  #
+  ## interactive table by `DT` pkg.
+  if (is.null(interact)){
+    return(tab.list)
+  } else {
+    if (interact == "params"){
+      params.values <- DT::datatable(tab.list$params)
+      return(params.values)
+    }
+    if (interact == "info"){
+      info.character <- DT::datatable(tab.list$info)
+      return(info.character)
+    }
+    #
+  }
+
   #
 }
