@@ -41,19 +41,58 @@
 #'
 readEPR_Sim_Spec <- function(path_to_ASC,
                              B.unit = "mT",
-                             col.names = c(
-                               "Bsim_mT",
-                               "dIeprSim_over_dB"
-                             )) {
+                             sim.origin = "easyspin", ## add "xenon" and "simfonia" ?
+                             ) {
   #
   ## 'Temporary' processing variables
   Bsim_G <- NULL
   Bsim_mT <- NULL
   #
-  spectrum.data <- data.table::fread(file = path_to_ASC,
-    sep = "auto",
-    col.names = col.names
-  )
+  ## data frame columns
+  col.names.essential <- c("Bsim","dIeprSim_over_dB")
+  #
+  ## x-axis/column for B + y-axis/column for intensity
+  x.col.string <- paste0(col.names.essential[1],"_",B.unit)
+  y.col.string <- paste0(col.names.essential[2])
+  #
+  ## Conditions depending on "origin"
+  if (sim.origin == "easyspin"){
+    spectrum.data <- data.table::fread(file = path_to_ASC,
+                                       sep = "auto",
+                                       col.names = c(x.col.string,
+                                                     y.col.string)
+    )
+  }
+  if (sim.origin == "xenon"){
+    spectrum.data <- data.table::fread(file = path_to_ASC,
+                                       sep = "auto",
+                                       header = FALSE,
+                                       select = c(2,3),
+                                       col.names = c(x.col.string,
+                                                     y.col.string))
+  }
+  if (sim.origin == "simfonia"){
+    spectrum.data ##...to be completed
+  }
+  #
+
+
+
+
+
+
+  if (B.unit == "mT") {
+    spectrum.data <- spectrum.data %>%
+      dplyr::mutate(Bsim_G = .data[[x.col.string]] * 10) %>%
+      ## reordering columns
+      dplyr::select(Bsim_G, .data[[x.col.string]], .data[[y.col.string]])
+  }
+
+
+
+
+
+
   #
   ## x for spectrum data
   x <- col.names[1]
