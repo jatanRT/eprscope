@@ -41,7 +41,7 @@
 #'
 readEPR_Sim_Spec <- function(path_to_ASC,
                              B.unit = "mT",
-                             sim.origin = "easyspin", ## add "xenon" and "simfonia" ?
+                             sim.origin = "easyspin", ## add "xenon" and "simfonia" aas well as "csv"
                              ) {
   #
   ## 'Temporary' processing variables
@@ -72,7 +72,33 @@ readEPR_Sim_Spec <- function(path_to_ASC,
                                                      y.col.string))
   }
   if (sim.origin == "simfonia"){
-    spectrum.data ##...to be completed
+    ## There are two file types 'txt' and 'asc' therefore
+    ## they have to differentiated
+    ## patterns
+    simf.data.file <- readLines(path_to_ASC)
+    simf.data.pattern.read.01 <- unlist(stringr::str_split(simf.data.file[5],
+                                                           pattern = "[[:space:]]+",
+                                                           n = 5))
+    simf.data.pattern.read.02 <- unlist(stringr::str_split(simf.data.file[6],
+                                                           pattern = "---"))
+    ## conditions
+    simf.data.condition.01 <- grepl("Data",simf.data.pattern.read.01[2])
+    simf.data.condition.02 <- grepl("--",simf.data.pattern.read.02[length(simf.data.pattern.read.02)])
+    #
+    if (isTRUE(simf.data.condition.01) & isTRUE(simf.data.condition.02)){
+      ## reading simfonia '.txt'
+      spectrum.data <- data.table::fread(file = path_to_ASC,
+                                         sep = "auto",
+                                         header = FALSE,
+                                         skip = 6,
+                                         select = c(2,3),
+                                         col.names = c(x.col.string,
+                                                       y.col.string))
+    } else{
+      ## reading simfonia '.asc'
+      TBC
+    }
+   #
   }
   #
 

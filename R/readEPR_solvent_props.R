@@ -52,7 +52,7 @@ readEPR_solvent_props <- function(solvent, prop = NULL) {
   if (is.null(prop)) {
     #
     ## one-row data frame
-    olvent_slct <- solvent_slct
+    solvent_slct <- solvent_slct
     #
   } else {
     #
