@@ -2,39 +2,40 @@
 % Please edit documentation in R/readEPR_Sim_Spec.R
 \name{readEPR_Sim_Spec}
 \alias{readEPR_Sim_Spec}
-\title{Read the Simulated ASCII EPR Spectrum from \emph{MATLAB/EasySpin}}
+\title{Read the Simulated ASCII EPR Spectrum}
 \usage{
 readEPR_Sim_Spec(
   path_to_ASC,
   B.unit = "mT",
-  col.names = c("Bsim_mT", "dIeprSim_over_dB")
+  Intensity.sim = "dIeprSim_over_dB",
+  sim.origin = "easyspin"
 )
 }
 \arguments{
-\item{path_to_ASC}{Character string, path to ASCII file/table (\code{.txt})
-with spectral data (\eqn{Intensity vs B}(Field) obtained from \emph{MATLAB}).
-The path can be also defined by \code{\link[base]{file.path}}}
+\item{path_to_ASC}{Character string, path to ASCII file/table
+with simulated spectral data (\eqn{Intensity vs B}(Field) obtained from various sources.
+The path can be also defined by \code{\link[base]{file.path}}.}
 
-\item{B.unit}{Character string pointing to unit of magnetic flux density (coming from original data, see also
-\code{column.names} parameter) which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
-like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}}
+\item{B.unit}{Character string pointing to unit of magnetic flux density \strong{coming from the original data}
+which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
+like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}.}
 
-\item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
-column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
-with its unit => \code{Quantity_Unit}, e.g. like \code{"Bsim_G"} or \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum abscissa). \strong{Default}: \code{col.names = c("Bsim_mT","dIeprSim_over_dB")}.
-\strong{Though one can choose an arbitrary intensity column name of the simulated spectrum} (the \strong{default} name
-is \code{dIeprSim_over_dB}), the additional \strong{processing of the data/spectrum
-either by} \code{\link{presentEPR_Sim_Spec}} \strong{or by} \code{\link{quantify_EPR_sim}} \strong{require
-that the corresponding names have to be changed accordingly}.}
+\item{Intensity.sim}{Character string pointing to \strong{intensity column} of the data frame
+corresponding to EPR simulated spectrum. If used together with quantification of radicals,
+this argument must be equal to that of the \code{\link{quantify_EPR_sim}}.}
+
+\item{sim.origin}{Character string referring to "origin" of the simulated ASCII data.
+There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
+\code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.}
 }
 \value{
-Data frame (consisting of magnetic flux density and intensity variables/columns) of a simulated
-  spectrum from \emph{MATLAB/EasySpin}.
+Data frame consisting of magnetic flux density and intensity variable/column corresponding
+  to simulated EPR spectrum.
 }
 \description{
-Loading the raw `.txt` data of a simulated EPR spectrum from \emph{MATLAB/EasySpin}. The `ASCII` data (\code{.txt})
-  is automatically converted into data frame.
+Loading the raw `.txt`,`.asc` or `.csv` data of a simulated EPR spectrum from different sources like
+  `EasySpin` (Matlab), `Xenon` (EPR spectrometer), `SimFonia` (WinEPR system) or `csv` (universal format
+  or MS Excel). The `ASCII` data is automatically converted into data frame.
 }
 \examples{
 \dontrun{

@@ -14,21 +14,18 @@
 #' @param path_to_ASC Character string, path to ASCII file/table
 #'   with simulated spectral data (\eqn{Intensity vs B}(Field) obtained from various sources.
 #'   The path can be also defined by \code{\link[base]{file.path}}.
-#' @param B.unit Character string pointing to unit of magnetic flux density (\strong{coming from the original data},
-#'   see also \code{column.names} parameter) which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
+#' @param B.unit Character string pointing to unit of magnetic flux density \strong{coming from the original data}
+#'   which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}.
-#' @param Intensity.sim Character string
-#' @param sim.origin Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
-#'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
-#'   with its unit => \code{Quantity_Unit}, e.g. like \code{"Bsim_G"} or \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa). \strong{Default}: \code{col.names = c("Bsim_mT","dIeprSim_over_dB")}.
-#'   \strong{Though one can choose an arbitrary intensity column name of the simulated spectrum} (the \strong{default} name
-#'   is \code{dIeprSim_over_dB}), the additional \strong{processing of the data/spectrum
-#'   either by} \code{\link{presentEPR_Sim_Spec}} \strong{or by} \code{\link{quantify_EPR_sim}} \strong{require
-#'   that the corresponding names have to be changed accordingly}.
+#' @param Intensity.sim Character string pointing to \strong{intensity column} of the data frame
+#'   corresponding to EPR simulated spectrum. If used together with quantification of radicals,
+#'   this argument must be equal to that of the \code{\link{quantify_EPR_sim}}.
+#' @param sim.origin Character string referring to "origin" of the simulated ASCII data.
+#'   There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
+#'   \code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.
 #'
-#' @return Data frame consisting of magnetic flux density and intensity variables/columns corresponding
-#'   simulated to simulated EPR spectrum.
+#' @return Data frame consisting of magnetic flux density and intensity variable/column corresponding
+#'   to simulated EPR spectrum.
 #'
 #'
 #' @examples
@@ -44,7 +41,7 @@
 readEPR_Sim_Spec <- function(path_to_ASC,
                              B.unit = "mT",
                              Intensity.sim = "dIeprSim_over_dB",
-                             sim.origin = "easyspin", ## add "xenon" and "simfonia" as well as "csv"
+                             sim.origin = "easyspin"
                              ) {
   #
   ## 'Temporary' processing variables
@@ -73,8 +70,7 @@ readEPR_Sim_Spec <- function(path_to_ASC,
   }
   if (sim.origin == "simfonia"){
     ## There are two file types 'txt' and 'asc' therefore
-    ## they have to differentiated
-    ## patterns
+    ## they have to be differentiated by the corresponding pattern
     simf.data.file <- readLines(path_to_ASC)
     simf.data.pattern.read.01 <- unlist(stringr::str_split(simf.data.file[5],
                                                            pattern = "[[:space:]]+",
