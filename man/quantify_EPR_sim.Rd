@@ -8,6 +8,7 @@ quantify_EPR_sim(
   data.spectra.series,
   dir_ASC_sim,
   pattern_sim,
+  origin_sim = "easyspin",
   var2nd.series = "time_s",
   B.unit = "G",
   Intensity.expr = "dIepr_over_dB",
@@ -27,6 +28,8 @@ quantify_EPR_sim(
 \item{dir_ASC_sim}{tbc}
 
 \item{pattern_sim}{description}
+
+\item{origin_sim}{description from}
 
 \item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
@@ -56,7 +59,7 @@ of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
 
 \item{single.integ}{tbc}
 
-\item{double.integ}{tbc can be also \code{NULL} if case of single integral spectral series input}
+\item{double.integ}{tbc can be also \code{NULL} in case of single integral spectral series input}
 
 \item{output.area.stat}{tbc}
 }

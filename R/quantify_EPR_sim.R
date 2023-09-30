@@ -11,6 +11,7 @@
 #' @param data.spectra.series tbc
 #' @param dir_ASC_sim tbc
 #' @param pattern_sim description
+#' @param origin_sim description from
 #' @param var2nd.series String/Character referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
@@ -30,7 +31,7 @@
 #' @param optim.params.upper Numeric vector...description tbc...inherited from \code{upper} parameter/argument
 #'   of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.
 #' @param single.integ tbc
-#' @param double.integ tbc can be also \code{NULL} if case of single integral spectral series input
+#' @param double.integ tbc can be also \code{NULL} in case of single integral spectral series input
 #' @param output.area.stat tbc
 #'
 #'
@@ -53,6 +54,7 @@
 quantify_EPR_sim <- function(data.spectra.series,
                              dir_ASC_sim,
                              pattern_sim,
+                             origin_sim = "easyspin",
                              var2nd.series = "time_s",
                              B.unit = "G",
                              Intensity.expr = "dIepr_over_dB",
@@ -79,7 +81,11 @@ quantify_EPR_sim <- function(data.spectra.series,
                                     pattern = pattern.sim.files,
                                     full.names = TRUE)
   ## load all simulation spectral parts at once
-  data.specs.orig.sim <- lapply(sim.file.orig.paths, function(f) readEPR_Sim_Spec(f))
+  data.specs.orig.sim <- lapply(sim.file.orig.paths,
+                                function(f) readEPR_Sim_Spec(f,
+                                                             B.unit = B.unit,
+                                                             Intensity.sim = Intensity.sim,
+                                                             sim.origin = origin_sim))
   #
   ## checking number of points for experimental and simulated spectra
   ## experimental
