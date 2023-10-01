@@ -2,6 +2,7 @@
 
 export("%>%")
 export(convert_A_MHz_2a)
+export(convert_B)
 export(convert_a_mT_2A)
 export(convert_time2var)
 export(correct_time_Exp_Specs)
