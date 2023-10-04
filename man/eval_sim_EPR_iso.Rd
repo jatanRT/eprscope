@@ -8,7 +8,7 @@ eval_sim_EPR_iso(
   g.iso = 2.00232,
   B.CF,
   B.SW,
-  B.unit,
+  B.unit = "G",
   Npoints,
   nu.GHz = 9.8,
   nuclear.system = NULL,
@@ -43,8 +43,9 @@ on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"
 \item{nu.GHz}{Numeric value equal to either hypothetical or applied microwave frequency in \strong{GHz}
 to record/simulate the EPR spectrum. \strong{Default}: \code{nu.GHz = 9.8} (usually applied X-band frequency).}
 
-\item{nuclear.system}{Complex (nested) list containing the information about groups of equivalent nuclei
-interacting with the unpaired electron, like \code{nuclear.system} ...tbc...}
+\item{nuclear.system}{List containing the information about groups of equivalent nuclei
+interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
+it could be either nested or simple.}
 
 \item{natur.abund}{...tbc...}
 

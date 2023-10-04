@@ -27,8 +27,9 @@
 #'   (\eqn{\equiv } resolution).
 #' @param nu.GHz Numeric value equal to either hypothetical or applied microwave frequency in \strong{GHz}
 #'   to record/simulate the EPR spectrum. \strong{Default}: \code{nu.GHz = 9.8} (usually applied X-band frequency).
-#' @param nuclear.system Complex (nested) list containing the information about groups of equivalent nuclei
-#'   interacting with the unpaired electron, like \code{nuclear.system} ...tbc...
+#' @param nuclear.system List containing the information about groups of equivalent nuclei
+#'   interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
+#'   it could be either nested or simple.
 #' @param natur.abund ...tbc...
 #' @param lineGL.DeltaBpp ...tbc...
 #' @param lineGL.content ...tbc...
@@ -52,7 +53,7 @@
 eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              B.CF,
                              B.SW,
-                             B.unit,
+                             B.unit = "G",
                              Npoints,
                              nu.GHz = 9.8,
                              nuclear.system = NULL,
@@ -62,25 +63,31 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              Intensity.sim = "dIeprSim_over_dB",
                              plot.sim.interact = FALSE){
   #
-  ## 'Temporary' processing variables
-
-  #
-  ## `nuclear.system` definition if `nuclear.system != NULL`
-  if (!is.null(nuclear.system)){
-    ## reordering the `nuclear.system` from the highest A_iso to the lowest one
-    nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
-    #
-    ## Interacting system of nuclei - definition (extracting from the list)
-    ## ready for several nuclear groups of equivalent nuclei
-    nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
-    N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
-    A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
-  }
-  #
   ## Constants
   Planck.const <- constants::syms$h
   nuclear.mu <- constants::syms$mun ## Nuclear magneton
   Bohr.mu <- constants::syms$mub ## Bohr magneton
+  #
+  ## `nuclear.system` definition if `nuclear.system != NULL`
+  if (!is.null(nuclear.system)){
+    ## check if the list is nested (several groups) or simple (only one group)
+    nested_list <- any(sapply(nuclear.system, is.list))
+    if (isFALSE(nested_list)){
+      ## Interacting system of nuclei - definition (extracting from the list)
+      ## ready for several nuclear groups of equivalent nuclei
+      nucle_us_i <- nuclear.system[[1]]
+      N_nuclei <- nuclear.system[[2]]
+      A_iso_MHz <- nuclear.system[[3]]
+    } else{
+      ## reordering the `nuclear.system` from the highest A_iso to the lowest one
+      nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
+      #
+      ## similarly like for simple list:
+      nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
+      N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
+      A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
+    }
+  }
   #
   ## Data frame (`B` + `g`) for the simulated B region
   B.g.sim.df <- data.frame(B = seq(B.CF - B.SW / 2,B.CF + B.SW / 2,length.out = Npoints))
@@ -416,7 +423,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
     B.g.sim.df[[Intensity.sim]] <- deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                   B.0 = B_iso)
+                                                   B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
   } else{
     ## Simulated derivative EPR spectrum if `nuclear.system != NULL`
     ## Frequency/B + spectra calculations depending on number of nuclear groups
