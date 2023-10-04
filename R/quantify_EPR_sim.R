@@ -10,7 +10,7 @@
 #'
 #' @param data.spectra.series tbc
 #' @param dir_ASC_sim tbc
-#' @param pattern_sim description
+#' @param pattern_name_sim description
 #' @param origin_sim description from
 #' @param var2nd.series String/Character referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
@@ -53,7 +53,7 @@
 #' @importFrom nloptr slsqp neldermead mma ccsaq
 quantify_EPR_sim <- function(data.spectra.series,
                              dir_ASC_sim,
-                             pattern_sim,
+                             pattern_name_sim,
                              origin_sim = "easyspin",
                              var2nd.series = "time_s",
                              B.unit = "G",
@@ -76,7 +76,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   #
   ## Reading simulated EPR spectra from MATLAB
   ## sim file paths
-  pattern.sim.files <- paste0("^",pattern_sim,".*\\.txt$")
+  pattern.sim.files <- paste0("^",pattern_name_sim,".*\\.txt$|.*\\.csv$|.*\\.asc$")
   sim.file.orig.paths <- list.files(path = dir_ASC_sim,
                                     pattern = pattern.sim.files,
                                     full.names = TRUE)
