@@ -430,7 +430,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## (1) NUMBER of NUCLEAR GROUPS >= 1
     #
-    if (length(nuclear.system) >= 1){
+    if (length(nuclear.system) >= 1 || isFALSE(nested_list)){
       ## frequency for the biggest A_iso
       B_for_m_spin_values1 <-
         sapply(1:length(m_spin_values[[1]]), function(f)
