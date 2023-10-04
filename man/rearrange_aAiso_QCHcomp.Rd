@@ -50,6 +50,7 @@ list(3,c(21,22),c(20,23),c(24,25),c(27,26))
 \seealso{
 Other Evaluations and Quantum Chemistry: 
 \code{\link{eval_gFactor_QCHcomp}()},
+\code{\link{eval_sim_EPR_iso}()},
 \code{\link{rearrange_aAiso_QCHorgau}()}
 }
 \concept{Evaluations and Quantum Chemistry}
