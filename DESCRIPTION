@@ -31,9 +31,10 @@ Description: Primary aim of the package is to process, analyze
              The key feature of the package resides in processing
              of the universal ASCII text formats 
              (e.g. like '.txt', '.csv' or '.asc') from scratch. 
-             No proprietary formats are used and in this respect
-             the package is in accordance with the FAIR data 
-             principles. Upon 'reading' (also providing automatic 
+             No proprietary formats are used (except the MATLAB 
+             EasySpin outputs) and in this respect the package 
+             is in accordance with the FAIR data principles. 
+             Upon 'reading' (also providing automatic 
              procedures for the most common EPR spectrometers)
              the spectral data are transformed into universal
              'data frame' R format. Subsequently, the EPR spectra 
@@ -75,7 +76,6 @@ Suggests:
     DT,
     rio,
     grid,
-    rvest,
     osfr,
     R.utils,
     report,
