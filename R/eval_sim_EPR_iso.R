@@ -78,6 +78,9 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       nucle_us_i <- nuclear.system[[1]]
       N_nuclei <- nuclear.system[[2]]
       A_iso_MHz <- nuclear.system[[3]]
+      ## redefinition of `nuclear.system` list to calculate the spectra without
+      ## any additional conditions
+      nuclear.system <- list(nuclear.system)
     } else{
       ## reordering the `nuclear.system` from the highest A_iso to the lowest one
       nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
@@ -430,7 +433,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## (1) NUMBER of NUCLEAR GROUPS >= 1
     #
-    if (length(nuclear.system) >= 1 || isFALSE(nested_list)){
+    if (length(nuclear.system) >= 1){
       ## frequency for the biggest A_iso
       B_for_m_spin_values1 <-
         sapply(1:length(m_spin_values[[1]]), function(f)
