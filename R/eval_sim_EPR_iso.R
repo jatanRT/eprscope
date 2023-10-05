@@ -73,23 +73,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## check if the list is nested (several groups) or simple (only one group)
     nested_list <- any(sapply(nuclear.system, is.list))
     if (isFALSE(nested_list)){
-      ## Interacting system of nuclei - definition (extracting from the list)
-      ## ready for several nuclear groups of equivalent nuclei
-      nucle_us_i <- nuclear.system[[1]]
-      N_nuclei <- nuclear.system[[2]]
-      A_iso_MHz <- nuclear.system[[3]]
       ## redefinition of `nuclear.system` list to calculate the spectra without
       ## any additional conditions
       nuclear.system <- list(nuclear.system)
-    } else{
-      ## reordering the `nuclear.system` from the highest A_iso to the lowest one
-      nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
-      #
-      ## similarly like for simple list:
-      nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
-      N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
-      A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
     }
+    ## reordering the `nuclear.system` from the highest A_iso to the lowest one
+    nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
+    #
+    ## similarly like for simple list:
+    nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
+    N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
+    A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
   }
   #
   ## Data frame (`B` + `g`) for the simulated B region
