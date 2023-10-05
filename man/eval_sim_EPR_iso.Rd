@@ -16,6 +16,7 @@ eval_sim_EPR_iso(
   lineGL.DeltaBpp = list(1, NULL),
   lineGL.content = list(1, NULL),
   Intensity.sim = "dIeprSim_over_dB",
+  Intensity.group.sum = FALSE,
   plot.sim.interact = FALSE
 )
 }
@@ -54,6 +55,9 @@ it could be either nested or simple.}
 \item{lineGL.content}{...tbc...}
 
 \item{Intensity.sim}{...tbc...}
+
+\item{Intensity.group.sum}{description ...tbc...in case of the isotopes with their natural abundance,
+then it requires \code{natur.abund = TRUE}}
 
 \item{plot.sim.interact}{description ...tbc...}
 }

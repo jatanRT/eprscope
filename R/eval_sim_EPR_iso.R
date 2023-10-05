@@ -34,6 +34,8 @@
 #' @param lineGL.DeltaBpp ...tbc...
 #' @param lineGL.content ...tbc...
 #' @param Intensity.sim ...tbc...
+#' @param Intensity.group.sum description ...tbc...in case of the isotopes with their natural abundance,
+#'   then it requires \code{natur.abund = TRUE}
 #' @param plot.sim.interact description ...tbc...
 #'
 #'
@@ -61,6 +63,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              lineGL.DeltaBpp = list(1,NULL),
                              lineGL.content = list(1,NULL),
                              Intensity.sim = "dIeprSim_over_dB",
+                             Intensity.group.sum = FALSE,
                              plot.sim.interact = FALSE){
   #
   ## Constants
@@ -456,16 +459,14 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         } else {
           abund_nuclear1 <- abund_nuclear[1]
         }
-        Sim_Intensity <-
+        Sim_Intensity1 <-
           Map(function(u,v)
           {u * abund_nuclear1 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
           intensity_pattern_nuclei[[1]],
           near_B_for_m_spin_values1[[paste0("B_",B.unit)]]
           )
         ## Sum of the spectral line intensities
-        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity)
-        ## List `Sim_Intensity` is not required anymore
-        rm(Sim_Intensity)
+        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity1)
       }
     }
     #
@@ -510,16 +511,24 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
             natur.abund = natur.abund,
             nuclear.abund = abund_nuclear)
         ## Spectral line intensities
-        Sim_Intensity <-
+        Sim_Intensity2 <-
           Map(function(u,v)
           {u * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
           intensity_pattern_nuclei_total,
           near_B_for_m_spin_values2[[paste0("B_",B.unit)]]
           )
-        ## Sum of the spectral line intensities
-        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity)
-        ## List `Sim_Intensity` is not required anymore
-        rm(Sim_Intensity)
+        ## Intensity sum corresponding to natural abundace of the corrsponding
+        ## isotopes (satillite lines)
+        if (isFALSE(Intensity.group.sum)){
+          ## Sum of the spectral line intensities
+          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity2)
+          ## List `Sim_Intensity2` is not required anymore
+          rm(Sim_Intensity2)
+        } else{
+          ## Sum of the all spectral line intensities (1 + 2)
+          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity2) +
+            Reduce("+",Sim_Intensity1)
+        }
       }
     }
     #
@@ -564,16 +573,25 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
             natur.abund = natur.abund,
             nuclear.abund = abund_nuclear)
         ## Spectral line intensities
-        Sim_Intensity <-
+        Sim_Intensity3 <-
           Map(function(u,v)
           {u * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
           intensity_pattern_nuclei_total,
           near_B_for_m_spin_values3[[paste0("B_",B.unit)]]
           )
-        ## Sum of the spectral line intensities
-        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity)
-        ## List `Sim_Intensity` is not required anymore
-        rm(Sim_Intensity)
+        ## Intensity sum corresponding to natural abundace of the corrsponding
+        ## isotopes (satillite lines)
+        if (isFALSE(Intensity.group.sum)){
+          ## Sum of the spectral line intensities
+          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity3)
+          ## List `Sim_Intensity3` is not required anymore
+          rm(Sim_Intensity3)
+        } else{
+          ## Sum of the all spectral line intensities (1 + 2 + 3)
+          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity3) +
+            Reduce("+",Sim_Intensity2) +
+            Reduce("+",Sim_Intensity1)
+        }
       }
     }
     #
@@ -617,16 +635,26 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
             natur.abund = natur.abund,
             nuclear.abund = abund_nuclear)
         ## Spectral line intensities
-        Sim_Intensity <-
+        Sim_Intensity4 <-
           Map(function(u,v)
           {u * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
           intensity_pattern_nuclei_total,
           near_B_for_m_spin_values4[[paste0("B_",B.unit)]]
           )
-        ## Sum of the spectral line intensities
-        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity)
-        ## List `Sim_Intensity` is not required anymore
-        rm(Sim_Intensity)
+        ## Intensity sum corresponding to natural abundace of the corrsponding
+        ## isotopes (satillite lines)
+        if (isFALSE(Intensity.group.sum)){
+          ## Sum of the spectral line intensities
+          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity4)
+          ## List `Sim_Intensity4` is not required anymore
+          rm(Sim_Intensity4)
+        } else{
+          ## Sum of the all spectral line intensities (1 + 2 + 3 + 4)
+          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity4) +
+            Reduce("+",Sim_Intensity3) +
+            Reduce("+",Sim_Intensity2) +
+            Reduce("+",Sim_Intensity1)
+        }
       }
     }
     #
@@ -669,17 +697,27 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
           natur.abund = natur.abund,
           nuclear.abund = abund_nuclear)
       ## Spectral line intensities
-      Sim_Intensity <-
+      Sim_Intensity5 <-
         Map(function(u,v)
         {u * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
         intensity_pattern_nuclei_total,
         near_B_for_m_spin_values5[[paste0("B_",B.unit)]]
         )
-      ## Sum of the spectral line intensities
-      B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity)
-      ## List `Sim_Intensity` is not required anymore
-      rm(Sim_Intensity)
-      #
+      ## Intensity sum corresponding to natural abundace of the corrsponding
+      ## isotopes (satillite lines)
+      if (isFALSE(Intensity.group.sum)){
+        ## Sum of the spectral line intensities
+        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity5)
+        ## List `Sim_Intensity5` is not required anymore
+        rm(Sim_Intensity5)
+      } else{
+        ## Sum of the all spectral line intensities (1 + 2 + 3 + 4 + 5)
+        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity5) +
+          Reduce("+",Sim_Intensity4) +
+          Reduce("+",Sim_Intensity3) +
+          Reduce("+",Sim_Intensity2) +
+          Reduce("+",Sim_Intensity1)
+      }
     }
     #
     ## number of groups can be extended in the future
