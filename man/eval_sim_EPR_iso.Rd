@@ -46,7 +46,7 @@ to record/simulate the EPR spectrum. \strong{Default}: \code{nu.GHz = 9.8} (usua
 
 \item{nuclear.system}{List containing the information about groups of equivalent nuclei
 interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
-it could be either nested or simple.}
+it could be either nested or simple. Actually the number of groups is limited to 6.}
 
 \item{natur.abund}{...tbc...}
 
