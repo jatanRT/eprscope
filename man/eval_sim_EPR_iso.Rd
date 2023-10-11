@@ -16,7 +16,6 @@ eval_sim_EPR_iso(
   lineGL.DeltaBpp = list(1, NULL),
   lineGL.content = list(1, NULL),
   Intensity.sim = "dIeprSim_over_dB",
-  Intensity.group.sum = FALSE,
   plot.sim.interact = FALSE
 )
 }
@@ -56,9 +55,6 @@ it could be either nested or simple. Actually the number of groups is limited to
 
 \item{Intensity.sim}{...tbc...}
 
-\item{Intensity.group.sum}{description ...tbc...in case of the isotopes with their natural abundance,
-then it requires \code{natur.abund = TRUE}}
-
 \item{plot.sim.interact}{description ...tbc...}
 }
 \value{
@@ -75,10 +71,4 @@ tbc
 
 
 }
-\seealso{
-Other Evaluations and Quantum Chemistry: 
-\code{\link{eval_gFactor_QCHcomp}()},
-\code{\link{rearrange_aAiso_QCHcomp}()},
-\code{\link{rearrange_aAiso_QCHorgau}()}
-}
-\concept{Evaluations and Quantum Chemistry}
+\concept{Evaluations and Simulation}

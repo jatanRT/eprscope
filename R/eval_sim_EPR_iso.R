@@ -2,7 +2,7 @@
 #' Simulation of Isotropic EPR Spectra
 #'
 #'
-#' @family Evaluations and Quantum Chemistry
+#' @family Evaluations and Simulation
 #'
 #'
 #' @description
@@ -34,8 +34,6 @@
 #' @param lineGL.DeltaBpp ...tbc...
 #' @param lineGL.content ...tbc...
 #' @param Intensity.sim ...tbc...
-#' @param Intensity.group.sum description ...tbc...in case of the isotopes with their natural abundance,
-#'   then it requires \code{natur.abund = TRUE}
 #' @param plot.sim.interact description ...tbc...
 #'
 #'
@@ -51,7 +49,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom dplyr all_of any_of
 eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              B.CF,
                              B.SW,
@@ -63,7 +61,6 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              lineGL.DeltaBpp = list(1,NULL),
                              lineGL.content = list(1,NULL),
                              Intensity.sim = "dIeprSim_over_dB",
-                             Intensity.group.sum = FALSE,
                              plot.sim.interact = FALSE){
   #
   ## Constants
@@ -729,24 +726,29 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## isotopes (satellite lines)
     if (length(nuclear.system) >= 2){
       for (j in 2:length(Sim_Intensity)){
-        if (isFALSE(Intensity.group.sum)){
-          ## Sum of the spectral line intensities
-          B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[j]])
-        } else{
-          ## Sum of the all spectral line intensities ([[1]] + [[2]] + ...)
-          # B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[1]]) +
-          #   Reduce("+",Sim_Intensity[[2]]) +
-          #   ...
-          Sim_Vectors <- sapply(Sim_Intensity, function(k) Reduce("+",k))
-          B.g.sim.df[[Intensity.sim]] <- rowSums(Sim_Vectors)
-        }
+        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[j]])
+        ## the following code only in case if sum of the individual `nuclear.systems`
+        ## is requuired =>
+        #
+        # if (isFALSE(Intensity.group.sum)){
+        #   ## Sum of the spectral line intensities
+        #   B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[j]])
+        # } else{
+        #   ## Sum of the all spectral line intensities ([[1]] + [[2]] + ...)
+        #   # B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[1]]) +
+        #   #   Reduce("+",Sim_Intensity[[2]]) +
+        #   #   ...
+        #   Sim_Vectors <- sapply(Sim_Intensity, function(k) Reduce("+",k))
+        #   B.g.sim.df[[Intensity.sim]] <- rowSums(Sim_Vectors)
+        # }
       }
     }
   }
   #
   ## Reducing columns in the final data frame
   B.g.sim.df <- B.g.sim.df %>%
-    dplyr::select(.data$B_G,.data$B_mT,.data[[Intensity.sim]])
+    dplyr::select(dplyr::all_of(c("B_G","B_mT",Intensity.sim)))
+    # dplyr::select(.data$B_G,.data$B_mT,.data[[Intensity.sim]])
   ## Plotting the EPR spectrum
   spectrum.sim.plot <-
     ggplot(data = B.g.sim.df,

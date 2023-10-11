@@ -39,7 +39,6 @@ eval_gFactor_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
 }
 \seealso{
 Other Evaluations and Quantum Chemistry: 
-\code{\link{eval_sim_EPR_iso}()},
 \code{\link{rearrange_aAiso_QCHcomp}()},
 \code{\link{rearrange_aAiso_QCHorgau}()}
 }

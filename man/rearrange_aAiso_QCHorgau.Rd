@@ -44,7 +44,6 @@ tbc
 \seealso{
 Other Evaluations and Quantum Chemistry: 
 \code{\link{eval_gFactor_QCHcomp}()},
-\code{\link{eval_sim_EPR_iso}()},
 \code{\link{rearrange_aAiso_QCHcomp}()}
 }
 \concept{Evaluations and Quantum Chemistry}
