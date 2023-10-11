@@ -9,8 +9,7 @@ Authors@R: person("Jan", "Tarabek",
            comment = c(ORCID = "0000-0003-0116-3824"))
 Description: Primary aim of the package is to process, analyze
              and plot EPR spectra in Electron Paramagnetic 
-             Resonance (EPR) spectroscopy and Electron-Nuclear 
-             Double Resonance (ENDOR). Package functions/scripts
+             Resonance (EPR) spectroscopy. Package functions/scripts
              can be applied not only for continuous wave (CW) 
              EPR/ENDOR, however most of them may be also used 
              for 1D pulsed EPR. Package contains functions to find
