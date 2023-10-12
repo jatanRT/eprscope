@@ -10,10 +10,11 @@ plot_EPR_Specs2D_interact(
   x.unit = "mT",
   Intensity = "dIepr_over_dB",
   var2nd.series = NULL,
+  lineSpecs.form = "derivative",
   line.color = "darkviolet",
+  line.width = 0.75,
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
-  line.width = 0.75,
   border.line.width = 1.2,
   border.line.color = "black",
   legend.title = NULL,
@@ -53,14 +54,18 @@ column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Ele
 (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+line form of the analyzed EPR spectrum/data.}
+
 \item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-(not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}}
+(not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}.}
+
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
 
 \item{bg.color}{Character/String corresponding to \strong{background color}}
 
 \item{grid.color}{Character/String corresponding to \strong{grid color}}
-
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
 
 \item{border.line.width}{tbc}
 

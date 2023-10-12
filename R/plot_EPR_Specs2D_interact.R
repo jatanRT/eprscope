@@ -34,11 +34,14 @@
 #'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
+#'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+#'   line form of the analyzed EPR spectrum/data.
 #' @param line.color Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-#'   (not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}
+#'   (not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}.
+#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param bg.color Character/String corresponding to \strong{background color}
 #' @param grid.color Character/String corresponding to \strong{grid color}
-#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
 #' @param legend.title tbc
@@ -67,10 +70,11 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                       x.unit = "mT",
                                       Intensity = "dIepr_over_dB",
                                       var2nd.series = NULL,
+                                      lineSpecs.form = "derivative",
                                       line.color = "darkviolet",
+                                      line.width = 0.75,
                                       bg.color = "#e5ecf6",
                                       grid.color = "#ffff",
-                                      line.width = 0.75,
                                       border.line.width = 1.2,
                                       border.line.color = "black",
                                       legend.title = NULL,
@@ -88,34 +92,6 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
     "g_factor", "g_Factor", "gfac", "gFac"
   )
   #
-  slct.vec.deriv.EPR.intens <- c(
-    "dB", "_dB", "intens", "deriv", "Intens",
-    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
-    "MW_Absorp", "MW_intens", "MW_Intens"
-  )
-  #
-  slct.vec.integ.EPR.intens <- c(
-    "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral_Single",
-    "Integral_single", "sInteg_", "sInteg", "singleI",
-    "Sinteg", "Single_", "integral_single", "SingleI",
-    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
-    "IntegralSingl", "intergralSingl", "IntegSingl",
-    "integSingl", "IntegSingl", "integSingl"
-  )
-  #
-  slct.vec.Dinteg.EPR.intens <- c(
-    "double", "Double", "Dinteg", "DInteg", "dinteg",
-    "d_integ", "dInteg", "doubleInteg", "second", "Idouble",
-    "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
-    "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm",
-    "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
-    "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
-    "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
-    "integSigm", "IntegDoub", "integDoub", "area", "Area", "AREA"
-  )
-  #
   ## label <=> selection
   ## Labels based on `Intensity` and `x` quantity (B, g, RF) conditions:
   if (x.unit == "G" || x.unit == "mT") {
@@ -127,11 +103,10 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x))) {
     xlabel <- "<i>g</i>"
   }
-  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
+  if (lineSpecs.form == "derivative") {
     ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
-  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity)) ||
-      any(grepl(paste(slct.vec.Dinteg.EPR.intens,collapse = "|"), Intensity))) {
+  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
     ylabel <- "<i>Intensity</i>  (p.d.u.)"
   }
   #

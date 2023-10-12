@@ -31,8 +31,8 @@
 #'   interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
 #'   it could be either nested or simple. Actually the number of groups is limited to 6.
 #' @param natur.abund ...tbc...
-#' @param lineSpecs.form description...tbc... either \code{"derivative"} (\strong{default}) or \code{"integrated"}
-#'   or equal to latter \code{"absorption"}
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+#'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
 #' @param lineGL.DeltaB ...tbc...is corresponding either to \eqn{\Delta B_{\mathrm{pp}}} in case of derivative
 #'   line form or \eqn{FWHM} in case of integrated line form...tbc..
 #' @param lineGL.content ...tbc...
@@ -388,6 +388,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## Definition for the Derivative as well as Integrated EPR Spectral Line Forms
   ## Pseudo-Voight is only required because =>
   ## x*Gaussian(derivative) + y*Lorentzian(derivative)
+  ## see also https://easyspin.org/easyspin/documentation/lineshapes.html
   deriv_line_form <- function(B,
                               B.0,
                               g.x = lineGL.content[[1]],

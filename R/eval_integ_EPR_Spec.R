@@ -27,6 +27,8 @@
 #' @param Intensity Character/String pointing to \code{column} of either derivative
 #'   (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 #'   spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectrum}.
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+#'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
 #' @param B.unit Character/String pointing to unit of magnetic flux density (coming from original data) which
 #'   is to be presented on \eqn{B} abscissa of the EPR spectrum,
 #'   like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}.
@@ -98,9 +100,10 @@
 #'                     sigmoid.integ = T)
 #' #
 #' ## baseline correction (by the polynomial of the 3rd level) for
-#' ## the single integral as well as evaluating the sigmoid integral,
+#' ## the single integrated spec. as well as evaluating the sigmoid integral,
 #' ## single integral peak is located in the region of c(3430,3560) G
 #' eval_integ_EPR_Spec(data.spectrum,
+#'                     lineSpec.form = "absorption",
 #'                     correct.integ = T,
 #'                     BpeaKlim = c(3430,3560),
 #'                     poly.degree = 3,
@@ -139,6 +142,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
                                 B = "B_G",
                                 B.unit = "G",
                                 Intensity = "dIepr_over_dB",
+                                lineSpecs.form = "derivative",
                                 Blim = NULL,
                                 correct.integ = FALSE,
                                 BpeaKlim = NULL,
@@ -163,28 +167,12 @@ eval_integ_EPR_Spec <- function(data.spectrum,
   ## and `B` (`B.unit` has to be in "G") parameter
   ## otherwise each integration has to be multiplied by 10,
   ## because 1 mT = 10 G
-  ## First of all define vectors with intensity column names =>
-  slct.vec.deriv.EPR.intens <- c(
-    "dB", "_dB", "intens", "deriv", "Intens",
-    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
-    "MW_Absorp", "MW_intens", "MW_Intens"
-  )
-  ## &
-  slct.vec.integ.EPR.intens <- c(
-    "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral_Single",
-    "Integral_single", "sInteg_", "sInteg", "singleI",
-    "Sinteg", "Single_", "integral_single", "SingleI",
-    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
-    "IntegralSingl", "intergralSingl", "IntegSingl",
-    "integSingl", "IntegSingl", "integSingl"
-  )
   #
   ## primary data for integration
   data.spectrum <- data.spectrum %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
   #
-  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
+  if (lineSpecs.form == "derivative") {
     #
     ## integration depending on `B` unit
     if (B.unit == "G") {
@@ -226,7 +214,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
       }
     }
   }
-  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity))) {
+  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
     #
     ## integration depending on `B` unit
     if (B.unit == "G") {
@@ -273,7 +261,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         stop(" The degree of a polynomial to model the baseline is not defined. Please, specify ! ")
       } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
-        if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
+        if (lineSpecs.form == "derivative") {
           ## Polynomial baseline fit:
           #
           ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
@@ -337,7 +325,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
-        if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity))) {
+        if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
           ## Polynomial baseline fit:
           integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
             data = data.NoPeak
@@ -433,7 +421,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
         data.spectrum$single_Integ_correct
       )
     } else {
-      if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
+      if (lineSpecs.form == "derivative") {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectrum$single_Integ,
@@ -442,7 +430,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
           sigmoid = data.spectrum$sigmoid_Integ
         )
       }
-      if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity))) {
+      if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectrum$Intensity,

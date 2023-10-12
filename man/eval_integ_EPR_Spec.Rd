@@ -9,6 +9,7 @@ eval_integ_EPR_Spec(
   B = "B_G",
   B.unit = "G",
   Intensity = "dIepr_over_dB",
+  lineSpecs.form = "derivative",
   Blim = NULL,
   correct.integ = FALSE,
   BpeaKlim = NULL,
@@ -33,6 +34,9 @@ like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code
 \item{Intensity}{Character/String pointing to \code{column} of either derivative
 (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectrum}.}
+
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+(i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL}
@@ -118,9 +122,10 @@ eval_integ_EPR_Spec(data.spectrum,
                     sigmoid.integ = T)
 #
 ## baseline correction (by the polynomial of the 3rd level) for
-## the single integral as well as evaluating the sigmoid integral,
+## the single integrated spec. as well as evaluating the sigmoid integral,
 ## single integral peak is located in the region of c(3430,3560) G
 eval_integ_EPR_Spec(data.spectrum,
+                    lineSpec.form = "absorption",
                     correct.integ = T,
                     BpeaKlim = c(3430,3560),
                     poly.degree = 3,

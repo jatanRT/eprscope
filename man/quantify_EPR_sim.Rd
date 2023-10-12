@@ -7,7 +7,7 @@
 quantify_EPR_sim(
   data.spectra.series,
   dir_ASC_sim,
-  pattern_name_sim,
+  name_pattern_sim,
   origin_sim = "easyspin",
   var2nd.series = "time_s",
   B.unit = "G",
@@ -27,7 +27,7 @@ quantify_EPR_sim(
 
 \item{dir_ASC_sim}{tbc}
 
-\item{pattern_name_sim}{description}
+\item{name_pattern_sim}{description}
 
 \item{origin_sim}{description from}
 

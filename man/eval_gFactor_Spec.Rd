@@ -10,6 +10,7 @@ eval_gFactor_Spec(
   B.unit = "G",
   B = "B_G",
   Intensity = "dIepr_over_dB",
+  lineSpecs.form = "derivative",
   Blim = NULL,
   iso = TRUE
 )
@@ -29,6 +30,9 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
+
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+(i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
@@ -71,6 +75,7 @@ eval_gFactor_Spec(data.spectrum,
                   B.unit = "G",
                   B = "B_G_Sim",
                   Intensity = "Integral_Intensity",
+                  lineSpecs.form = "integrated",
                   c(3499,3501))
 }
 

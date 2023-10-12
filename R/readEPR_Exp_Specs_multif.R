@@ -14,7 +14,7 @@
 #'  (generally, except the Q values, it is not included in the transformation process).
 #'
 #'
-#' @param pattern String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
+#' @param name_pattern String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
 #'  at the beginning of a file name.
 #' @param dir_ASC path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 #'  the `ascii` files are stored
@@ -69,7 +69,7 @@
 #' \dontrun{
 #' ## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
 #' ## reading and transforming into `longtable`
-#' readEPR_Exp_Specs_multif(pattern = "Sample_VT_",
+#' readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
 #'                          col.names = c("index",
@@ -104,7 +104,7 @@
 #'
 #'
 #' @importFrom rlang quo_name :=
-readEPR_Exp_Specs_multif <- function(pattern,
+readEPR_Exp_Specs_multif <- function(name_pattern,
                                      dir_ASC,
                                      dir_DSC_or_par,
                                      col.names = c(
@@ -133,8 +133,8 @@ readEPR_Exp_Specs_multif <- function(pattern,
   #
   ## file name pattern which has to be the same for `txt`+`DSC`
   ## or `.asc` and `.par`
-  file.name.pattern.asc <- paste0("^",pattern,".*\\.(txt|asc|csv)$")
-  file.name.pattern.params <- paste0("^",pattern,".*\\.(DSC|par)$")
+  file.name.pattern.asc <- paste0("^",name_pattern,".*\\.(txt|asc|csv)$")
+  file.name.pattern.params <- paste0("^",name_pattern,".*\\.(DSC|par)$")
   #
   ## path to all `asc` files
   files.asc <- list.files(

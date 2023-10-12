@@ -51,6 +51,9 @@
 #' @param Intensity Character/String pointing to \code{intensity column} in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
+#'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+#'   line form of the analyzed EPR spectrum/data.
 #' @param line.colors Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
 #'   colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
 #'   For series of EPR spectra two colorscales are used
@@ -127,7 +130,8 @@
 #' plot_EPR_Specs(data.spectrum.integ,
 #'               x = "B_G",
 #'               x.unit = "G"
-#'               Intensity = "single_Integ")
+#'               Intensity = "single_Integ",
+#'               lineSpecs.form = "absorption")
 #' #
 #' ## Continuous display of time series EPR spectra selecting
 #' ## continuous colorscale (see argument `line.colors`
@@ -150,13 +154,14 @@
 #'                line.colors = c("darkblue","darkorange","darkviolet"),
 #'                legend.title = "Time (s)")
 #' #
-#' ## Plotting simple ENDOR spectrum displayed
+#' ## Plotting simple CW ENDOR spectrum displayed
 #' ## as a "darkred" `line.colors`
 #' plot_EPR_Specs(data.spectrum,
 #'                x = "RF_MHz",
 #'                x.unit = "MHz",
 #'                line.colors = "darkred",
-#'                line.width = 1.2)
+#'                line.width = 1.2,
+#'                lineSpecs.form = "derivative")
 #' }
 #'
 #'
@@ -173,6 +178,7 @@ plot_EPR_Specs <- function(data.spectra,
                            var2nd.series = NULL,
                            var2nd.series.slct.by = NULL,
                            Intensity = "dIepr_over_dB",
+                           lineSpecs.form = "derivative",
                            line.colors = "steelblue",
                            line.width = 0.75,
                            border.line.width = 0.5,
@@ -205,34 +211,6 @@ plot_EPR_Specs <- function(data.spectra,
     "g_factor", "g_Factor", "gfac", "gFac"
   )
   #
-  slct.vec.deriv.EPR.intens <- c(
-    "dB", "_dB", "intens", "deriv", "Intens",
-    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
-    "MW_Absorp", "MW_intens", "MW_Intens"
-  )
-  #
-  slct.vec.integ.EPR.intens <- c(
-    "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral_Single",
-    "Integral_single", "sInteg_", "sInteg", "singleI",
-    "Sinteg", "Single_", "integral_single", "SingleI",
-    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
-    "IntegralSingl", "intergralSingl", "IntegSingl",
-    "integSingl", "IntegSingl", "integSingl"
-  )
-  #
-  slct.vec.Dinteg.EPR.intens <- c(
-    "double", "Double", "Dinteg", "DInteg", "dinteg",
-    "d_integ", "dInteg", "doubleInteg", "second", "Idouble",
-    "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
-    "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm",
-    "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
-    "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
-    "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
-    "integSigm", "IntegDoub", "integDoub", "area", "Area", "AREA"
-  )
-  #
   ## label <=> selection
   ## & the plot function (distance from the y-axis borders
   ## e.g. ('B.start-0.5 (or 5 or 3)','B.end+0.5 (or 5 or 3)')):
@@ -248,11 +226,10 @@ plot_EPR_Specs <- function(data.spectra,
     x.label <- bquote(italic(g))
     x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
   }
-  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity))) {
+  if (lineSpecs.form == "derivative") {
     y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity)) ||
-      any(grepl(paste(slct.vec.Dinteg.EPR.intens,collapse = "|"), Intensity))) {
+  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
     y.label <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #

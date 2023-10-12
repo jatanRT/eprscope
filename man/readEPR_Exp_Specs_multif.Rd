@@ -5,7 +5,7 @@
 \title{Load Several/Multiple EPR Spectral Data Files with Parameters}
 \usage{
 readEPR_Exp_Specs_multif(
-  pattern,
+  name_pattern,
   dir_ASC,
   dir_DSC_or_par,
   col.names = c("index", "B_G", "dIepr_over_dB"),
@@ -23,7 +23,7 @@ readEPR_Exp_Specs_multif(
 )
 }
 \arguments{
-\item{pattern}{String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
+\item{name_pattern}{String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
 at the beginning of a file name.}
 
 \item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
@@ -100,7 +100,7 @@ Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl
 \dontrun{
 ## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
 ## reading and transforming into `longtable`
-readEPR_Exp_Specs_multif(pattern = "Sample_VT_",
+readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
                          col.names = c("index",

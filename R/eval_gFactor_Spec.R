@@ -23,6 +23,8 @@
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
 #' @param Intensity Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+#'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
 #'   to entire `B` range).
@@ -55,6 +57,7 @@
 #'                   B.unit = "G",
 #'                   B = "B_G_Sim",
 #'                   Intensity = "Integral_Intensity",
+#'                   lineSpecs.form = "integrated",
 #'                   c(3499,3501))
 #' }
 #'
@@ -68,6 +71,7 @@ eval_gFactor_Spec <- function(data.spectrum,
                               B.unit = "G",
                               B = "B_G",
                               Intensity = "dIepr_over_dB",
+                              lineSpecs.form = "derivative",
                               Blim = NULL,
                               iso = TRUE) {
   ## 'Temporary' processing variables
@@ -78,25 +82,6 @@ eval_gFactor_Spec <- function(data.spectrum,
   ## otherwise use predefined vector
   data.B.region <- c(min(data.spectrum[[B]]), max(data.spectrum[[B]]))
   Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
-  #
-  ## First of all define vectors with intensity column names =>
-  ## in order to defferentiate between derivative and integrated
-  ## EPR spectra
-  slct.vec.deriv.EPR.intens <- c(
-    "dB", "_dB", "intens", "deriv", "Intens",
-    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
-    "MW_Absorp", "MW_intens", "MW_Intens"
-  )
-  ## &
-  slct.vec.integ.EPR.intens <- c(
-    "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral_Single",
-    "Integral_single", "sInteg_", "sInteg", "singleI",
-    "Sinteg", "Single_", "integral_single", "SingleI",
-    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
-    "IntegralSingl", "intergralSingl", "IntegSingl",
-    "integSingl", "IntegSingl", "integSingl"
-  )
   #
   ## B minimum & maximum
   B.min <- data.spectrum %>%
@@ -110,16 +95,15 @@ eval_gFactor_Spec <- function(data.spectrum,
     dplyr::pull(.data[[B]])
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)) {
-    ## `sjmisc::str_contains` can be replaced by `any(grepl())` and `regex` `|` `or` sign
-    if (any(grepl(paste(slct.vec.deriv.EPR.intens, collapse = "|"), Intensity))) {
+    if (lineSpecs.form == "derivative") {
       B.center <- (B.min + B.max) / 2
       ## B at dIepr_over_dB = 0 (near 0, see next comment on `B.center`):
     }
-    if (any(grepl(paste(slct.vec.integ.EPR.intens, collapse = "|"), Intensity))) {
+    if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
       B.center <- B.max
     }
   } else {
-    if (any(grepl(paste(slct.vec.deriv.EPR.intens, collapse = "|"), Intensity))) {
+    if (lineSpecs.form == "derivative") {
       ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
       B.center <- data.spectrum %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
@@ -128,7 +112,7 @@ eval_gFactor_Spec <- function(data.spectrum,
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
-    if (any(grepl(paste(slct.vec.integ.EPR.intens, collapse = "|"), Intensity))) {
+    if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
       B.center <- B.max
     }
   }

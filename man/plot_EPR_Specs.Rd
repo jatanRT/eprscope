@@ -12,6 +12,7 @@ plot_EPR_Specs(
   var2nd.series = NULL,
   var2nd.series.slct.by = NULL,
   Intensity = "dIepr_over_dB",
+  lineSpecs.form = "derivative",
   line.colors = "steelblue",
   line.width = 0.75,
   border.line.width = 0.5,
@@ -68,6 +69,10 @@ is 12.}
 \item{Intensity}{Character/String pointing to \code{intensity column} in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
+
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+line form of the analyzed EPR spectrum/data.}
 
 \item{line.colors}{Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
   colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
@@ -166,7 +171,8 @@ plot_EPR_Specs(data.spectrum,
 plot_EPR_Specs(data.spectrum.integ,
               x = "B_G",
               x.unit = "G"
-              Intensity = "single_Integ")
+              Intensity = "single_Integ",
+              lineSpecs.form = "absorption")
 #
 ## Continuous display of time series EPR spectra selecting
 ## continuous colorscale (see argument `line.colors`
@@ -189,13 +195,14 @@ plot_EPR_Specs(data.spectra,
                line.colors = c("darkblue","darkorange","darkviolet"),
                legend.title = "Time (s)")
 #
-## Plotting simple ENDOR spectrum displayed
+## Plotting simple CW ENDOR spectrum displayed
 ## as a "darkred" `line.colors`
 plot_EPR_Specs(data.spectrum,
                x = "RF_MHz",
                x.unit = "MHz",
                line.colors = "darkred",
-               line.width = 1.2)
+               line.width = 1.2,
+               lineSpecs.form = "derivative")
 }
 
 

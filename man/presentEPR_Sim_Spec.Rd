@@ -12,6 +12,7 @@ presentEPR_Sim_Spec(
   Intensity.sim = "dIeprSim_over_dB",
   Intensity.shift.ratio = 1.2,
   B.shift = 0,
+  lineSpecs.form = "derivative",
   line.color.expr = "red",
   line.color.sim = "blue",
   line.width = 0.75,
@@ -49,6 +50,10 @@ presented below the experimental one. The lower the ratio, the 'deeper' the simu
 that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
 \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
 \code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G}).}
+
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+line form of the analyzed EPR spectrum/data.}
 
 \item{line.color.expr}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}.}

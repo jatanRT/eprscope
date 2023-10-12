@@ -32,6 +32,9 @@
 #'   that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
 #'   \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
 #'   \code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G}).
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
+#'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+#'   line form of the analyzed EPR spectrum/data.
 #' @param line.color.expr String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}.
 #' @param line.color.sim String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
@@ -68,6 +71,7 @@ presentEPR_Sim_Spec <- function(data.spectrum.expr,
                                 Intensity.sim = "dIeprSim_over_dB",
                                 Intensity.shift.ratio = 1.2,
                                 B.shift = 0,
+                                lineSpecs.form = "derivative",
                                 line.color.expr = "red",
                                 line.color.sim = "blue",
                                 line.width = 0.75,
@@ -106,51 +110,25 @@ presentEPR_Sim_Spec <- function(data.spectrum.expr,
   ## New data frame with both spectra
   ## (select only required columns/variables)
   both.spectr.data <- both.spectr.data %>%
-    dplyr::select(.data[[paste0("Bsim_", B.unit)]],
-                  .data[[paste0("B_",B.unit)]],
-                  .data[[Intensity.sim]],
-                  .data[[Intensity.expr]],
-                  .data[[paste0("Norm_",Intensity.sim)]])
+    dplyr::select(dplyr::all_of(c(paste0("Bsim_", B.unit),
+                                  paste0("B_",B.unit),
+                                  Intensity.sim,
+                                  Intensity.expr,
+                                  paste0("Norm_",Intensity.sim))))
+    # dplyr::select(.data[[paste0("Bsim_", B.unit)]],
+    #               .data[[paste0("B_",B.unit)]],
+    #               .data[[Intensity.sim]],
+    #               .data[[Intensity.expr]],
+    #               .data[[paste0("Norm_",Intensity.sim)]])
   #
   ## B (x) label for the plot:
     xlab <- bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")")
   #
-  ## Labels based on `Intensity` conditions:
-  ## Select labels by defining the corresponding vectors
-  slct.vec.deriv.EPR.intens <- c(
-    "dB", "_dB", "intens", "deriv", "Intens",
-    "Deriv", "dIepr", "dIepr_over_dB", "dIepr_dB",
-    "MW_Absorp", "MW_intens", "MW_Intens"
-  )
-  #
-  slct.vec.integ.EPR.intens <- c(
-    "single", "Single", "SInteg", "sinteg", "s_integ",
-    "single_", "singleinteg", "sintegral", "integral_Single",
-    "Integral_single", "sInteg_", "sInteg", "singleI",
-    "Sinteg", "Single_", "integral_single", "SingleI",
-    "SingleInteg", "Isingle", "iSingle", "singleInteg", "ISingle",
-    "IntegralSingl", "intergralSingl", "IntegSingl",
-    "integSingl", "IntegSingl", "integSingl"
-  )
-  #
-  slct.vec.Dinteg.EPR.intens <- c(
-    "double", "Double", "Dinteg", "DInteg", "dinteg",
-    "d_integ", "dInteg", "doubleInteg", "second", "Idouble",
-    "D_integ", "D_Integ", "double_", "Double_", "doubleinteg",
-    "DoubleInteg", "Dintegral", "DIntegral", "dintegral",
-    "di", "DI", "Second", "dInteg", "doubleI", "sigm", "Sigm",
-    "Idouble", "iDouble", "IDouble", "iSigm", "Isigm", "ISigm",
-    "dIntegral", "integral_doub", "integral_Doub", "integral_Sigm",
-    "IntegralDoub", "intergralDoub", "integral_sigm", "IntegSigm",
-    "integSigm", "IntegDoub", "integDoub", "area", "Area", "AREA"
-  )
-  #
   ## Intensity (y) label depending on intensity (derivative, integrated...)
-  if (any(grepl(paste(slct.vec.deriv.EPR.intens,collapse = "|"), Intensity.expr))) {
+  if (lineSpecs.form == "derivative") {
     ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (any(grepl(paste(slct.vec.integ.EPR.intens,collapse = "|"), Intensity.expr)) ||
-      any(grepl(paste(slct.vec.Dinteg.EPR.intens,collapse = "|"), Intensity.expr))) {
+  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
     ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
