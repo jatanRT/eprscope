@@ -25,8 +25,9 @@ Description: Primary aim of the package is to process, analyze
              data/spectra for analytical (quantitative) purposes, 
              i.e. how many radicals, paramagnetic centers 
              can be found in the analyte/sample. 
-             For such objective also rate constants considering
-             different kinetic models can be evaluated as well. 
+             For such reason also rate constants, considering
+             different kinetic models, can be evaluated as well
+             to describe the radical reactions.
              The key feature of the package resides in processing
              of the universal ASCII text formats 
              (e.g. like '.txt', '.csv' or '.asc') from scratch. 
@@ -37,15 +38,17 @@ Description: Primary aim of the package is to process, analyze
              procedures for the most common EPR spectrometers)
              the spectral data are transformed into universal
              'data frame' R format. Subsequently, the EPR spectra 
-             ('data frames') can be plotted and are fully
-             consistent with the 'ggplot2' package or interactive 
+             can be plotted and are fully consistent either with 
+             the 'ggplot2' package or with interactive 
              formats based on 'plotly'. Additionally, simulations
-             of the EPR spectra and the corresponding parameters
+             of the EPR spectra in simple form are included
+             in the package. Advanced simulation parameters
              provided by MATLAB-EasySpin toolbox and the results 
-             from quantum chemical calculations
-             like g-factor and hyperfine splitting/coupling 
-             constants (a/A) can be compared and summarized 
-             in table-format in order to analyze the EPR spectra. 
+             from quantum chemical calculations like g-factor 
+             and hyperfine splitting/coupling constants (a/A) 
+             can be compared and summarized in table-format 
+             in order to analyze the EPR spectra by the most 
+             effective way.
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
