@@ -462,7 +462,6 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## it is not necessary because the relative intensities within the pattern are important,
   ## for the integrated form it is OK
   intensities <- function(data.frame.sim,
-                          B.unit = B.unit,
                           B.values.breit.rabi,
                           intensity.pattern,
                           line.form){
