@@ -22,7 +22,7 @@
 #' @param B.unit Character string pointing to unit of magnetic flux density which is to be presented
 #'   on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
 #'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS like \code{B.CF},
-#'   \code{B.SW} AND \code{lineGL.DeltaBpp} !
+#'   \code{B.SW} AND \code{lineGL.DeltaB} !
 #' @param Npoints Numeric value corresponding to number of points of the entire \code{B.SW}
 #'   (\eqn{\equiv } resolution).
 #' @param nu.GHz Numeric value equal to either hypothetical or applied microwave frequency in \strong{GHz}
@@ -31,7 +31,10 @@
 #'   interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
 #'   it could be either nested or simple. Actually the number of groups is limited to 6.
 #' @param natur.abund ...tbc...
-#' @param lineGL.DeltaBpp ...tbc...
+#' @param lineSpecs.form description...tbc... either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+#'   or equal to latter \code{"absorption"}
+#' @param lineGL.DeltaB ...tbc...is corresponding either to \eqn{\Delta B_{\mathrm{pp}}} in case of derivative
+#'   line form or \eqn{FWHM} in case of integrated line form...tbc..
 #' @param lineGL.content ...tbc...
 #' @param Intensity.sim ...tbc...
 #' @param plot.sim.interact description ...tbc...
@@ -58,7 +61,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              nu.GHz = 9.8,
                              nuclear.system = NULL,
                              natur.abund = FALSE,
-                             lineGL.DeltaBpp = list(1,NULL),
+                             lineSpecs.form = "derivative",
+                             lineGL.DeltaB = list(1,NULL),
                              lineGL.content = list(1,NULL),
                              Intensity.sim = "dIeprSim_over_dB",
                              plot.sim.interact = FALSE){
@@ -381,17 +385,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## corresponding actual `B_iso`
   B_iso <- near_g_iso_df %>% dplyr::pull(.data$B_T)
   #
-  ## Definition for the Derivative EPR Spectral Line Forms
+  ## Definition for the Derivative as well as Integrated EPR Spectral Line Forms
   ## Pseudo-Voight is only required because =>
   ## x*Gaussian(derivative) + y*Lorentzian(derivative)
   deriv_line_form <- function(B,
                               B.0,
                               g.x = lineGL.content[[1]],
                               l.y = lineGL.content[[2]],
-                              gDeltaBpp = lineGL.DeltaBpp[[1]],
-                              lDeltaBpp = lineGL.DeltaBpp[[2]]){
+                              gDeltaBpp = lineGL.DeltaB[[1]],
+                              lDeltaBpp = lineGL.DeltaB[[2]]){
     #
-    ## B.0 line center
+    ## B.0 line center crossing `0` because of derivative form
     ## DeltaBpp linewidth
     #
     ## condition for the coefficients & line-width
@@ -415,13 +419,87 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     return(intens_deriv)
   }
+  ## integral form of the spectral line
+  integ_line_form <- function(B,
+                              B.0,
+                              g.x = lineGL.content[[1]],
+                              l.y = lineGL.content[[2]],
+                              gDeltaB = lineGL.DeltaB[[1]],
+                              lDeltaB = lineGL.DeltaB[[2]]){
+    #
+    ## B.0 line center maximum because of integral form
+    ## FWHM linewidth corresponding to `lineGL.DeltaB`
+    #
+    gGamma.deltaB <- gDeltaB / sqrt(2 * log(2))
+    lGamma.deltaB <- lDeltaB / sqrt(3)
+    ## condition for the coefficients & line-width
+    if (is.null(lDeltaB) & is.null(l.y)){
+      ## Gaussian
+      intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
+        exp(-2 * ((B - B.0) / gGamma.deltaB)^2))
+    }
+    if (is.null(gDeltaB) & is.null(g.x)){
+      ## Lorentzian
+      intens_integ <- l.y * ((2 / (pi * sqrt(3))) * (1 / lGamma.deltaB) *
+        (1 + (4/3) * ((B - B.0) / lGamma.deltaB)^2)^(-1))
+    }
+    if (!is.null(g.x) & !is.null(l.y) & !is.null(gDeltaB) & !is.null(lDeltaB)){
+      ## x*Gaussian(integrated) + y*Lorentzian(integrated) <=> pseudo Voightian
+      intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
+                               exp(-2 * ((B - B.0) / gGamma.deltaB)^2)) +
+        l.y * ((2 / (pi * sqrt(3))) * (1 / lGamma.deltaB) *
+                 (1 + (4/3) * ((B - B.0) / lGamma.deltaB)^2)^(-1))
+    }
+    #
+    return(intens_integ)
+  }
+  #
+  ## Function to calculate intensities based on pattern, magnetic flux density (from Breit-Rabi)
+  ## as well as line form => either derivative or integrated one (see `length(nuclear.system) >= 1`
+  ## below). This function is applied for `length(nuclear.system) >= 2`
+  ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
+  ## otherwise the derivative intensity will be twice so high (abs of - + abs of +), although
+  ## it is not necessary because the relative intensities within the pattern are important,
+  ## for the integrated form it is OK
+  intensities <- function(data.frame.sim,
+                          B.unit = B.unit,
+                          B.values.breit.rabi,
+                          intensity.pattern,
+                          line.form){
+    if (line.form == "derivative"){
+      intens <-
+        Map(function(u,v)
+        {u * 0.5 * deriv_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v)},
+        intensity.pattern,
+        B.values.breit.rabi
+        )
+    }
+    if (line.form == "integrated" || line.form == "absorption"){
+      intens <-
+        Map(function(u,v)
+        {u * integ_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v)},
+        intensity.pattern,
+        B.values.breit.rabi
+        )
+    }
+    #
+    return(intens)
+    #
+  }
   #
   #
   ## CALCULATING ENERGIES/Bs, INTENSITY PATTERNS and EPR SPECTRA for ALL e-N INTERACTIONS
+  #
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
-    B.g.sim.df[[Intensity.sim]] <- deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                   B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
+    if (lineSpecs.form == "derivative"){
+      B.g.sim.df[[Intensity.sim]] <- deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                                                     B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
+    }
+    if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption"){
+      B.g.sim.df[[Intensity.sim]] <- integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                                                     B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
+    }
   } else{
     ## Simulated derivative EPR spectrum if `nuclear.system != NULL`
     ## Frequency/B + spectra calculations depending on number of nuclear groups
@@ -461,7 +539,6 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
       ## otherwise the derivative intensity will be twice so high (abs of - + abs of +), although
       ## it is not necessary because the relative intensities within the pattern are important,
-      ## for the integrated intensities (common absorption lines) it is OK
       Sim_Intensity[[1]] <-
         Map(function(u,v)
         {u * 0.5 * abund_nuclear1 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
@@ -498,7 +575,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                    which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values2[[l]][x]))
           )
       }
-      ## summarizing in the actual 2 vector list and deleting the previous list
+      ## summarizing in the actual 2 vector list
       near_row_for_m_spin_values2 <- unlist(near_row_for_m_spin_values2,use.names = FALSE)
       ## selecting the rows based on previous indices
       near_B_for_m_spin_values2 <-
@@ -513,13 +590,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
           nuclear.abund = abund_nuclear)
       ## Spectral line intensities
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## see above at `length(nuclear.system) >= 1`
+      ## see above at `length(nuclear.system) >= 1` as well as the `intensities()` function above
       Sim_Intensity[[2]] <-
-        Map(function(u,v)
-        {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity_pattern_nuclei_total,
-        near_B_for_m_spin_values2[[paste0("B_",B.unit)]]
-        )
+        intensities(data.frame.sim = B.g.sim.df,
+                    B.values.breit.rabi = near_B_for_m_spin_values2[[paste0("B_",B.unit)]],
+                    intensity.pattern = intensity_pattern_nuclei_total,
+                    line.form = lineSpecs.form)
+        # Map(function(u,v)
+        # {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
+        # intensity_pattern_nuclei_total,
+        # near_B_for_m_spin_values2[[paste0("B_",B.unit)]]
+        # )
     }
     #
     ## (3) NUMBER of NUCLEAR GROUPS >= 3
@@ -548,7 +629,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                    which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values3[[l]][x]))
           )
       }
-      ## summarizing in the actual 3 vector list and deleting the previous list
+      ## summarizing in the actual 3 vector list
       near_row_for_m_spin_values3 <- unlist(near_row_for_m_spin_values3,use.names = FALSE)
       ## selecting the rows based on previous indices
       near_B_for_m_spin_values3 <-
@@ -565,11 +646,15 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
       ## see above at `length(nuclear.system) >= 1`
       Sim_Intensity[[3]] <-
-        Map(function(u,v)
-        {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity_pattern_nuclei_total,
-        near_B_for_m_spin_values3[[paste0("B_",B.unit)]]
-        )
+        intensities(data.frame.sim = B.g.sim.df,
+                    B.values.breit.rabi = near_B_for_m_spin_values3[[paste0("B_",B.unit)]],
+                    intensity.pattern = intensity_pattern_nuclei_total,
+                    line.form = lineSpecs.form)
+        # Map(function(u,v)
+        # {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
+        # intensity_pattern_nuclei_total,
+        # near_B_for_m_spin_values3[[paste0("B_",B.unit)]]
+        # )
     }
     #
     ## (4) NUMBER of NUCLEAR GROUPS >= 4
@@ -598,7 +683,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                    which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values4[[l]][x]))
           )
       }
-      ## summarizing in the actual 4 vector list and deleting the previous list
+      ## summarizing in the actual 4 vector list
       near_row_for_m_spin_values4 <- unlist(near_row_for_m_spin_values4,use.names = FALSE)
       ## selecting the rows based on previous indices
       near_B_for_m_spin_values4 <-
@@ -615,11 +700,15 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
       ## see above at `length(nuclear.system) >= 1`
       Sim_Intensity[[4]] <-
-        Map(function(u,v)
-        {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity_pattern_nuclei_total,
-        near_B_for_m_spin_values4[[paste0("B_",B.unit)]]
-        )
+        intensities(data.frame.sim = B.g.sim.df,
+                    B.values.breit.rabi = near_B_for_m_spin_values4[[paste0("B_",B.unit)]],
+                    intensity.pattern = intensity_pattern_nuclei_total,
+                    line.form = lineSpecs.form)
+        # Map(function(u,v)
+        # {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
+        # intensity_pattern_nuclei_total,
+        # near_B_for_m_spin_values4[[paste0("B_",B.unit)]]
+        # )
     }
     #
     ## (5) NUMBER of NUCLEAR GROUPS >= 5
@@ -648,7 +737,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                    which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values5[[l]][x]))
           )
       }
-      ## summarizing in the actual 5 vector list and deleting the previous list
+      ## summarizing in the actual 5 vector list
       near_row_for_m_spin_values5 <- unlist(near_row_for_m_spin_values5,use.names = FALSE)
       ## selecting the rows based on previous indices
       near_B_for_m_spin_values5 <-
@@ -664,11 +753,15 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
       ## see above at `length(nuclear.system) >= 1`
       Sim_Intensity[[5]] <-
-        Map(function(u,v)
-        {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity_pattern_nuclei_total,
-        near_B_for_m_spin_values5[[paste0("B_",B.unit)]]
-        )
+        intensities(data.frame.sim = B.g.sim.df,
+                    B.values.breit.rabi = near_B_for_m_spin_values5[[paste0("B_",B.unit)]],
+                    intensity.pattern = intensity_pattern_nuclei_total,
+                    line.form = lineSpecs.form)
+        # Map(function(u,v)
+        # {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
+        # intensity_pattern_nuclei_total,
+        # near_B_for_m_spin_values5[[paste0("B_",B.unit)]]
+        # )
     }
     #
     ## (6) NUMBER of NUCLEAR GROUPS = 6 (number of groups can be extended in the future)
@@ -697,7 +790,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                    which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values6[[l]][x]))
           )
       }
-      ## summarizing in the actual 6 vector list and deleting the previous list
+      ## summarizing in the actual 6 vector list
       near_row_for_m_spin_values6 <- unlist(near_row_for_m_spin_values6,use.names = FALSE)
       ## selecting the rows based on previous indices
       near_B_for_m_spin_values6 <-
@@ -713,11 +806,10 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
       ## see above at `length(nuclear.system) >= 1`
       Sim_Intensity[[6]] <-
-        Map(function(u,v)
-        {u * 0.5 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity_pattern_nuclei_total,
-        near_B_for_m_spin_values6[[paste0("B_",B.unit)]]
-        )
+        intensities(data.frame.sim = B.g.sim.df,
+                    B.values.breit.rabi = near_B_for_m_spin_values6[[paste0("B_",B.unit)]],
+                    intensity.pattern = intensity_pattern_nuclei_total,
+                    line.form = lineSpecs.form)
     }
     #
     ## number of groups can be extended in the future

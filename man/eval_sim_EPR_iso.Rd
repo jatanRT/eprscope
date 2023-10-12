@@ -13,7 +13,8 @@ eval_sim_EPR_iso(
   nu.GHz = 9.8,
   nuclear.system = NULL,
   natur.abund = FALSE,
-  lineGL.DeltaBpp = list(1, NULL),
+  lineSpecs.form = "derivative",
+  lineGL.DeltaB = list(1, NULL),
   lineGL.content = list(1, NULL),
   Intensity.sim = "dIeprSim_over_dB",
   plot.sim.interact = FALSE
@@ -35,7 +36,7 @@ BE EQUAL TO \code{B.unit} !}
 \item{B.unit}{Character string pointing to unit of magnetic flux density which is to be presented
 on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
 \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS like \code{B.CF},
-\code{B.SW} AND \code{lineGL.DeltaBpp} !}
+\code{B.SW} AND \code{lineGL.DeltaB} !}
 
 \item{Npoints}{Numeric value corresponding to number of points of the entire \code{B.SW}
 (\eqn{\equiv } resolution).}
@@ -49,7 +50,11 @@ it could be either nested or simple. Actually the number of groups is limited to
 
 \item{natur.abund}{...tbc...}
 
-\item{lineGL.DeltaBpp}{...tbc...}
+\item{lineSpecs.form}{description...tbc... either \code{"derivative"} (\strong{default}) or \code{"integrated"}
+or equal to latter \code{"absorption"}}
+
+\item{lineGL.DeltaB}{...tbc...is corresponding either to \eqn{\Delta B_{\mathrm{pp}}} in case of derivative
+line form or \eqn{FWHM} in case of integrated line form...tbc..}
 
 \item{lineGL.content}{...tbc...}
 
