@@ -842,13 +842,20 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     dplyr::select(dplyr::all_of(c("B_G","B_mT",Intensity.sim)))
     # dplyr::select(.data$B_G,.data$B_mT,.data[[Intensity.sim]])
   ## Plotting the EPR spectrum
+  ## y-axis label depending on derivative or integrated line form
+  if (lineSpecs.form == "derivative"){
+    ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
+  }
+  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption"){
+    ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+  }
   spectrum.sim.plot <-
     ggplot(data = B.g.sim.df,
            aes(x = .data[[paste0("B_",B.unit)]],
                y = .data[[Intensity.sim]])) +
     geom_line(color = "blue",linewidth = 0.75) +
     labs(x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
-         y = bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")) +
+         y = ylab) +
     plot_theme_NoY_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
@@ -859,7 +866,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     return(plot_EPR_Specs2D_interact(data.spectra = B.g.sim.df,
                                      x = paste0("B_",B.unit),
                                      x.unit = B.unit,
-                                     Intensity = Intensity.sim))
+                                     Intensity = Intensity.sim,
+                                     lineSpecs.form = lineSpecs.form))
   }
   #
 }
