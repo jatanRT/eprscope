@@ -433,7 +433,7 @@ eval_integ_EPR_Spec <- function(data.spectrum,
       if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
-            data.spectrum$Intensity,
+            data.spectrum[[Intensity]],
             data.spectrum$single_Integ_correct
           ),
           sigmoid = data.spectrum$sigmoid_Integ
