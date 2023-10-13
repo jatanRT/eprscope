@@ -493,12 +493,16 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   #
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
-    B.g.sim.df[[Intensity.sim]] <- switch(2-line.form.cond,
-                                          deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                          B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit)),
-                                          integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                          B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
-                                          )
+    if (isFALSE(natur.abund)){
+      B.g.sim.df[[Intensity.sim]] <- switch(2-line.form.cond,
+                                            deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                                                            B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit)),
+                                            integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                                                            B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
+      )
+    } else{
+      stop("No interacting nuclei. Please define `natur.abund = FALSE` ! ")
+    }
     #
   } else{
     ## Simulated derivative EPR spectrum if `nuclear.system != NULL`
