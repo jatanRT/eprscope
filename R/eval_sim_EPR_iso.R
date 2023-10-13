@@ -455,6 +455,9 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     return(intens_integ)
   }
   #
+  ## Condition for derivative or integrated line form spectrum
+  line.form.cond <- ifelse(lineSpecs.form == "derivative",TRUE,FALSE)
+  #
   ## Function to calculate intensities based on pattern, magnetic flux density (from Breit-Rabi)
   ## as well as line form => either derivative or integrated one (see `length(nuclear.system) >= 1`
   ## below). This function is applied for `length(nuclear.system) >= 2`
@@ -466,22 +469,20 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                           B.values.breit.rabi,
                           intensity.pattern,
                           line.form){
-    if (line.form == "derivative"){
-      intens <-
-        Map(function(u,v)
-        {u * 0.5 * deriv_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity.pattern,
-        B.values.breit.rabi
-        )
-    }
-    if (line.form == "integrated" || line.form == "absorption"){
-      intens <-
-        Map(function(u,v)
-        {u * integ_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v)},
-        intensity.pattern,
-        B.values.breit.rabi
-        )
-    }
+    #
+    ## condition for derivative/integrated form
+    line.form.condN <- ifelse(line.form == "derivative",TRUE,FALSE)
+    ## intensity =>
+    intens <-
+      Map(function(u,v)
+      {switch(2-line.form.condN,
+              u * 0.5 * deriv_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v),
+              u * integ_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v)
+              )
+      },
+      intensity.pattern,
+      B.values.breit.rabi
+      )
     #
     return(intens)
     #
@@ -492,14 +493,13 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   #
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
-    if (lineSpecs.form == "derivative"){
-      B.g.sim.df[[Intensity.sim]] <- deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                     B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
-    }
-    if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption"){
-      B.g.sim.df[[Intensity.sim]] <- integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                     B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
-    }
+    B.g.sim.df[[Intensity.sim]] <- switch(2-line.form.cond,
+                                          deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                                                          B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit)),
+                                          integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                                                          B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
+                                          )
+    #
   } else{
     ## Simulated derivative EPR spectrum if `nuclear.system != NULL`
     ## Frequency/B + spectra calculations depending on number of nuclear groups
@@ -539,9 +539,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
       ## otherwise the derivative intensity will be twice so high (abs of - + abs of +), although
       ## it is not necessary because the relative intensities within the pattern are important,
+      #
+      ## condition (`line.form.cond`) for derivative/integrated form see above
+      #
+      ## intensity =>
       Sim_Intensity[[1]] <-
         Map(function(u,v)
-        {u * 0.5 * abund_nuclear1 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)},
+        {switch(2-line.form.cond,
+                u * 0.5 * abund_nuclear1 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v),
+                u * abund_nuclear1 * integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)
+                )
+          },
         intensity_pattern_nuclei[[1]],
         near_B_for_m_spin_values1[[paste0("B_",B.unit)]]
         )
@@ -843,12 +851,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     # dplyr::select(.data$B_G,.data$B_mT,.data[[Intensity.sim]])
   ## Plotting the EPR spectrum
   ## y-axis label depending on derivative or integrated line form
-  if (lineSpecs.form == "derivative"){
-    ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
-  }
-  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption"){
-    ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
-  }
+  ylab <- switch(2-line.form.cond,
+                 bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")"),
+                 bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+                 )
+  #
   spectrum.sim.plot <-
     ggplot(data = B.g.sim.df,
            aes(x = .data[[paste0("B_",B.unit)]],
