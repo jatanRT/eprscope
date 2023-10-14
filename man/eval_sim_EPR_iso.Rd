@@ -6,11 +6,10 @@
 \usage{
 eval_sim_EPR_iso(
   g.iso = 2.00232,
-  B.CF,
-  B.SW,
+  instrum.params = c(cf = 3500, sw = 200, points = 2048, mwGHz = 9.8),
+  path_to_DSC_or_par = NULL,
+  origin = NULL,
   B.unit = "G",
-  Npoints,
-  nu.GHz = 9.8,
   nuclear.system = NULL,
   natur.abund = FALSE,
   lineSpecs.form = "derivative",
@@ -22,39 +21,64 @@ eval_sim_EPR_iso(
 }
 \arguments{
 \item{g.iso}{Numeric value, guess of the isotropic \eqn{g}-factor. It may also possess a `NULL`
-(\code{g.iso = NULL}) in case of the `B.CF` corresponding \eqn{g} is equal to `g.iso`. \strong{Default}:
-\code{g.iso = 2.00232} (the approximate \eqn{g} of the free electron).}
+value if the \eqn{g} corresponding to "central field" is equal to `g.iso`.
+\strong{Default}: \code{g.iso = 2.00232} (the approximate \eqn{g} of the free electron).}
 
-\item{B.CF}{Numeric value of the "\strong{c}entral \strong{f}ield" i.e. the central position
-of magnetic flux density \eqn{B} within the spectral sweep => see also argument \code{B.SW}.
-\code{B.CF} UNIT (the corresp. B.CF value) MUST BE EQUAL TO \code{B.unit} !}
+\item{instrum.params}{Named numeric vector containing instrumental parameters required
+for the simulation =>
+\tabular{ll}{
+\code{cf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
+\code{sw} \tab "sweep width" (magnetic flux density recording region,
+\eqn{B_{\text{SW}}}) \cr
+\code{points} \tab number of spectral points (corresponding to resolution) within
+the "sweep width" \cr
+\code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+EPR spectrum \cr
+}
+\strong{Default} values are chosen to cover the EPR spectra of common organic radical.
+If \code{instrum.params = NULL} then parameters are provided by \code{path_to_DSC_or_par}
+as well as by \code{origin}.}
 
-\item{B.SW}{Numeric value equal to the \eqn{B} region (\eqn{B.CF - B.SW / 2}, eqn{B.CF + B.SW / 2})
-of the spectral "\strong{s}weep \strong{w}idth". \code{B.SW} UNIT (the corresp. B.CF value) MUST
-BE EQUAL TO \code{B.unit} !}
+\item{path_to_DSC_or_par}{Character string, path (also provided by \code{\link[base]{file.path}})
+to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+\code{text} files including all instrumental parameters and provided by the EPR machine.
+\strong{Default}: \code{path_to_DSC_or_par = NULL} in case if the \code{instrum.params}
+is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_DSC_or_par}
+AS WELL AS \code{origin} MUST BE DEFINED !}
+
+\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
+on BRUKER spectrometers, because the files are slightly different depending on whether they
+were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
+one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
+the parameters (i.e. exactly if \code{path_to_DSC_or_par = NULL}).}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density which is to be presented
 on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
-\strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS like \code{B.CF},
-\code{B.SW} AND \code{lineGL.DeltaB} !}
-
-\item{Npoints}{Numeric value corresponding to number of points of the entire \code{B.SW}
-(\eqn{\equiv } resolution).}
-
-\item{nu.GHz}{Numeric value equal to either hypothetical or applied microwave frequency in \strong{GHz}
-to record/simulate the EPR spectrum. \strong{Default}: \code{nu.GHz = 9.8} (usually applied X-band frequency).}
+\strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
+like `cf` and `sw` within the \code{instrum.params} AS WELL AS THOSE IN \code{lineGL.DeltaB} !}
 
 \item{nuclear.system}{List containing the information about groups of equivalent nuclei
-interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
-it could be either nested or simple. Actually the number of groups is limited to 6.}
+interacting with the unpaired electron, e.g. like \code{nuclear.system = list("14N",1,45)}.
+This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
+denotes \strong{the number of nuclei} within the group and \strong{the third number}
+is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in summary
+it corresponds to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
+is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
+A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
+\code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. Actually,
+the number of groups is limited to 6 which covers the vast majority of organic radicals
+and can be extended in the future. \strong{Default}: \code{nuclear.system = NULL} in case
+if no interaction with electron surrounding nuclei is considered and only single
+line EPR spectrum is expected.}
 
 \item{natur.abund}{...tbc...}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
-(i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
+of the analyzed EPR spectrum/data.}
 
-\item{lineGL.DeltaB}{...tbc...is corresponding either to \eqn{\Delta B_{\mathrm{pp}}} in case of derivative
-line form or \eqn{FWHM} in case of integrated line form...tbc..}
+\item{lineGL.DeltaB}{...tbc...is corresponding either to \eqn{\Delta B_{\text{pp}}}
+in case of derivative line form or \eqn{FWHM} in case of integrated line form...tbc..}
 
 \item{lineGL.content}{...tbc...}
 

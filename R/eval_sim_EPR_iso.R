@@ -11,30 +11,56 @@
 #'
 #'
 #' @param g.iso Numeric value, guess of the isotropic \eqn{g}-factor. It may also possess a `NULL`
-#'   (\code{g.iso = NULL}) in case of the `B.CF` corresponding \eqn{g} is equal to `g.iso`. \strong{Default}:
-#'   \code{g.iso = 2.00232} (the approximate \eqn{g} of the free electron).
-#' @param B.CF Numeric value of the "\strong{c}entral \strong{f}ield" i.e. the central position
-#'   of magnetic flux density \eqn{B} within the spectral sweep => see also argument \code{B.SW}.
-#'   \code{B.CF} UNIT (the corresp. B.CF value) MUST BE EQUAL TO \code{B.unit} !
-#' @param B.SW Numeric value equal to the \eqn{B} region (\eqn{B.CF - B.SW / 2}, eqn{B.CF + B.SW / 2})
-#'   of the spectral "\strong{s}weep \strong{w}idth". \code{B.SW} UNIT (the corresp. B.CF value) MUST
-#'   BE EQUAL TO \code{B.unit} !
+#'   value if the \eqn{g} corresponding to "central field" is equal to `g.iso`.
+#'   \strong{Default}: \code{g.iso = 2.00232} (the approximate \eqn{g} of the free electron).
+#' @param instrum.params Named numeric vector containing instrumental parameters required
+#'   for the simulation =>
+#'   \tabular{ll}{
+#'   \code{cf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
+#'   \code{sw} \tab "sweep width" (magnetic flux density recording region,
+#'   \eqn{B_{\text{SW}}}) \cr
+#'   \code{points} \tab number of spectral points (corresponding to resolution) within
+#'   the "sweep width" \cr
+#'   \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+#'   EPR spectrum \cr
+#'   }
+#'   \strong{Default} values are chosen to cover the EPR spectra of common organic radical.
+#'   If \code{instrum.params = NULL} then parameters are provided by \code{path_to_DSC_or_par}
+#'   as well as by \code{origin}.
+#' @param path_to_DSC_or_par Character string, path (also provided by \code{\link[base]{file.path}})
+#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+#'   \code{text} files including all instrumental parameters and provided by the EPR machine.
+#'   \strong{Default}: \code{path_to_DSC_or_par = NULL} in case if the \code{instrum.params}
+#'   is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_DSC_or_par}
+#'   AS WELL AS \code{origin} MUST BE DEFINED !
+#' @param origin String, corresponding to software which was used to acquire the EPR spectra
+#'   on BRUKER spectrometers, because the files are slightly different depending on whether they
+#'   were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
+#'   one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
+#'   the parameters (i.e. exactly if \code{path_to_DSC_or_par = NULL}).
 #' @param B.unit Character string pointing to unit of magnetic flux density which is to be presented
 #'   on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
-#'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS like \code{B.CF},
-#'   \code{B.SW} AND \code{lineGL.DeltaB} !
-#' @param Npoints Numeric value corresponding to number of points of the entire \code{B.SW}
-#'   (\eqn{\equiv } resolution).
-#' @param nu.GHz Numeric value equal to either hypothetical or applied microwave frequency in \strong{GHz}
-#'   to record/simulate the EPR spectrum. \strong{Default}: \code{nu.GHz = 9.8} (usually applied X-band frequency).
+#'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
+#'   like `cf` and `sw` within the \code{instrum.params} AS WELL AS THOSE IN \code{lineGL.DeltaB} !
 #' @param nuclear.system List containing the information about groups of equivalent nuclei
-#'   interacting with the unpaired electron, like \code{nuclear.system} ...tbc...if only one,
-#'   it could be either nested or simple. Actually the number of groups is limited to 6.
+#'   interacting with the unpaired electron, e.g. like \code{nuclear.system = list("14N",1,45)}.
+#'   This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
+#'   denotes \strong{the number of nuclei} within the group and \strong{the third number}
+#'   is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in summary
+#'   it corresponds to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
+#'   is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
+#'   A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
+#'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. Actually,
+#'   the number of groups is limited to 6 which covers the vast majority of organic radicals
+#'   and can be extended in the future. \strong{Default}: \code{nuclear.system = NULL} in case
+#'   if no interaction with electron surrounding nuclei is considered and only single
+#'   line EPR spectrum is expected.
 #' @param natur.abund ...tbc...
-#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
-#'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
-#' @param lineGL.DeltaB ...tbc...is corresponding either to \eqn{\Delta B_{\mathrm{pp}}} in case of derivative
-#'   line form or \eqn{FWHM} in case of integrated line form...tbc..
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
+#'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
+#'   of the analyzed EPR spectrum/data.
+#' @param lineGL.DeltaB ...tbc...is corresponding either to \eqn{\Delta B_{\text{pp}}}
+#'   in case of derivative line form or \eqn{FWHM} in case of integrated line form...tbc..
 #' @param lineGL.content ...tbc...
 #' @param Intensity.sim ...tbc...
 #' @param plot.sim.interact description ...tbc...
@@ -54,11 +80,15 @@
 #'
 #' @importFrom dplyr all_of any_of
 eval_sim_EPR_iso <- function(g.iso = 2.00232,
-                             B.CF,
-                             B.SW,
+                             instrum.params = c(
+                               cf = 3500,
+                               sw = 200,
+                               points = 2048,
+                               mwGHz = 9.8
+                             ),
+                             path_to_DSC_or_par = NULL,
+                             origin = NULL,
                              B.unit = "G",
-                             Npoints,
-                             nu.GHz = 9.8,
                              nuclear.system = NULL,
                              natur.abund = FALSE,
                              lineSpecs.form = "derivative",
@@ -88,6 +118,48 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
     N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
     A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
+  }
+  #
+  ## Extracting instrumental parameter values from `.DSC` or `.par` files
+  ## or from named numeric vector above
+  if (is.null(path_to_DSC_or_par)){
+    if (is.null(instrum.params)){
+      stop(" Please, define `instrum.params` like central field, MW freq.,... ! ")
+    } else {
+      B.CF <- unname(instrum.params["cf"])
+      B.SW <- unname(instrum.params["sw"])
+      Npoints <- unname(instrum.params["points"])
+      nu.GHz <- unname(instrum.params["mwGHz"])
+    }
+  } else{
+    if (!is.null(instrum.params)){
+      stop(" Parameters are extracted from file, please provide `instrum.params = NULL` ! ")
+    } else{
+      if (is.null(origin)){
+        stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
+      } else{
+        ## reading the table and extracting values form table
+        params.df <- readEPR_params_tabs(path_to_DSC_or_par,origin = origin)$params
+        #
+        B.CF <- params.df %>%
+          dplyr::filter(.data$Parameter == "Central Field") %>%
+          dplyr::pull(dplyr::all_of(c("Value"))) %>% convert_B(B.unit = "mT",B.2unit = B.unit)
+        #
+        B.SW <- params.df %>%
+          dplyr::filter(.data$Parameter == "Sweep Width") %>%
+          dplyr::pull(dplyr::all_of(c("Value"))) %>% convert_B(B.unit = "mT",B.2unit = B.unit)
+        #
+        Npoints <- params.df %>%
+          dplyr::filter(.data$Parameter == "Number of Points") %>%
+          dplyr::pull(dplyr::all_of(c("Value")))
+        #
+        nu.GHz <- params.df %>%
+          dplyr::filter(.data$Parameter == "Frequency") %>%
+          dplyr::pull(dplyr::all_of(c("Value")))
+        ## not required anymore =>
+        rm(params.df)
+      }
+    }
   }
   #
   ## Data frame (`B` + `g`) for the simulated B region
@@ -494,14 +566,15 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
     if (isFALSE(natur.abund)){
-      B.g.sim.df[[Intensity.sim]] <- switch(2-line.form.cond,
-                                            deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                            B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit)),
-                                            integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
-                                                            B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
+      B.g.sim.df[[Intensity.sim]] <-
+        switch(2-line.form.cond,
+               deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                               B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit)),
+               integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
+                               B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
       )
     } else{
-      stop("No interacting nuclei. Please define `natur.abund = FALSE` ! ")
+      stop(" There are no interacting nuclei. Please define `natur.abund = FALSE` ! ")
     }
     #
   } else{
