@@ -139,25 +139,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
       } else{
         ## reading the table and extracting values form table
-        params.df <- readEPR_params_tabs(path_to_DSC_or_par,origin = origin)$params
-        #
-        B.CF <- params.df %>%
-          dplyr::filter(.data$Parameter == "Central Field") %>%
-          dplyr::pull(dplyr::all_of(c("Value"))) %>% convert_B(B.unit = "mT",B.2unit = B.unit)
-        #
-        B.SW <- params.df %>%
-          dplyr::filter(.data$Parameter == "Sweep Width") %>%
-          dplyr::pull(dplyr::all_of(c("Value"))) %>% convert_B(B.unit = "mT",B.2unit = B.unit)
-        #
-        Npoints <- params.df %>%
-          dplyr::filter(.data$Parameter == "Number of Points") %>%
-          dplyr::pull(dplyr::all_of(c("Value")))
-        #
-        nu.GHz <- params.df %>%
-          dplyr::filter(.data$Parameter == "Frequency") %>%
-          dplyr::pull(dplyr::all_of(c("Value")))
-        ## not required anymore =>
-        rm(params.df)
+        instr.params.vec <- readEPR_params_for_sim(path_to_DSC_or_par,origin = origin,B.unit = B.unit)
+        B.CF <- unname(instr.params.vec["cf"])
+        B.SW <- unname(instr.params.vec["sw"])
+        Npoints <- unname(instr.params.vec["points"])
+        nu.GHz <- unname(instr.params.vec["mwGHz"])
       }
     }
   }
