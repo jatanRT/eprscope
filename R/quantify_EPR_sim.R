@@ -2,7 +2,7 @@
 #' Quantify (Components) Area of Simulated EPR Spectral Series Instead of Experimental One
 #'
 #'
-#' @family Evaluations and Quantification
+#' @family Simulation and Optimization
 #'
 #'
 #' @description tbc

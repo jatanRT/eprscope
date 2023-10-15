@@ -100,4 +100,8 @@ tbc
 
 
 }
-\concept{Evaluations and Simulation}
+\seealso{
+Other Simulation and Optimization: 
+\code{\link{quantify_EPR_sim}()}
+}
+\concept{Simulation and Optimization}

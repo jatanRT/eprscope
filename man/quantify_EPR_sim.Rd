@@ -78,11 +78,7 @@ tbc
 
 }
 \seealso{
-Other Evaluations and Quantification: 
-\code{\link{eval_integ_EPR_Spec}()},
-\code{\link{eval_kinR_EPR_modelFit}()},
-\code{\link{eval_kinR_ODE_model}()},
-\code{\link{quantify_EPR_Norm_const}()},
-\code{\link{quantify_EPR_abs}()}
+Other Simulation and Optimization: 
+\code{\link{eval_sim_EPR_iso}()}
 }
-\concept{Evaluations and Quantification}
+\concept{Simulation and Optimization}

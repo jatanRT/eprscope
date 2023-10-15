@@ -2,7 +2,7 @@
 #' Simulation of Isotropic EPR Spectra
 #'
 #'
-#' @family Evaluations and Simulation
+#' @family Simulation and Optimization
 #'
 #'
 #' @description
