@@ -7,7 +7,7 @@
 presentEPR_Sim_Spec(
   data.spectrum.expr,
   data.spectrum.sim,
-  B.unit = "mT",
+  B.unit = "G",
   Intensity.expr = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
   Intensity.shift.ratio = 1.2,
@@ -21,30 +21,33 @@ presentEPR_Sim_Spec(
 }
 \arguments{
 \item{data.spectrum.expr}{\strong{Experimental} spectrum data frame incl. magnetic flux
-density (in \code{mT} or \code{G}) column which are labeled as \code{B_mT} in mT (or \code{B_G} in gauss) +
-it contains intensity column as \code{dIepr_over_dB}, \code{index} column can be included as well.}
+density (in \code{mT} or \code{G}) column which are labeled as \code{B_mT}
+in mT (or \code{B_G} in gauss) + it contains intensity column as \code{dIepr_over_dB},
+\code{index} column can be included as well.}
 
 \item{data.spectrum.sim}{Data frame corresponding to \strong{simulated} spectrum incl. \strong{magnetic
-flux density} (in \code{mT} or \code{G}) like \code{Bsim_mT} in mT
-(or \code{Bsim_G} in gauss) + it contains intensity as well, column names are taken automatically
+flux density} (in \code{mT} or \code{G}) like \code{Bsim_mT} in mT (or \code{Bsim_G} in gauss) +
+it contains intensity as well, column names are taken automatically
 if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII.}
 
-\item{B.unit}{Character/String pointing to unit of magnetic flux density (coming from original data) which
-is to be presented on \eqn{B} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}.}
+\item{B.unit}{Character/String pointing to unit of magnetic flux density (coming from original data)
+which is to be presented on \eqn{B} abscissa of the EPR spectrum,
+like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "G"}.}
 
-\item{Intensity.expr}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
-name/label is used (e.g. for integrated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
+\item{Intensity.expr}{Character string pointing to \code{intensity column} if other
+than \code{dIepr_over_dB} name/label is used (e.g. for integrated spectra),
+\strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{Intensity.sim}{Character string pointing to \code{intensity column} of the simulated spectrum
 if other than \code{dIeprSim_over_dB} name/label is used (e.g. for integrated spectra),
 \strong{default}: \code{Intesity = "dIeprSim_over_dB"}, this is automatic if
 the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII.}
 
-\item{Intensity.shift.ratio}{Numeric (\strong{cannot be 0}), showing how 'far' is the simulated EPR spectrum
-presented below the experimental one. The lower the ratio, the 'deeper' the simulated spectrum shift,
-\strong{default}: \code{Intensity.shift.ratio = 1.2}, other common values : \code{0.6},\code{0.8},
-\code{1.2},\code{1.1}.}
+\item{Intensity.shift.ratio}{Numeric (\strong{CANNOT BE `0`}), showing how 'far' is the simulated
+EPR spectrum presented below the experimental one. The lower the ratio, the 'deeper' the simulated
+spectrum shift, \strong{default}: \code{Intensity.shift.ratio = 1.2}, other common
+values : \code{0.6},\code{0.8}, \code{1.2},\code{1.1}. IF the \code{Intensity.shift.ration = NULL}
+BOTH SPECTRA ARE PRESENTED IN OVERAY MODE !}
 
 \item{B.shift}{Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
 that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
@@ -56,19 +59,22 @@ or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can
 line form of the analyzed EPR spectrum/data.}
 
 \item{line.color.expr}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, \strong{default}: \code{line.color = "red"}, should be different from \code{line.color.sim}.}
+colors are allowed, \strong{default}: \code{line.color = "red"}, should be different
+from \code{line.color.sim}.}
 
 \item{line.color.sim}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
-colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different from \code{line.color.expr}.}
+colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different
+from \code{line.color.expr}.}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.size = 0.75}.}
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}:
+\code{line.size = 0.75}.}
 
 \item{output.df}{Logical, whether the data frame, corresponding to graphic spectra comparison
-(this actually corresponds to joining the above-mentioned data frames by \code{\link[dplyr:bind]{dplyr::bind_cols}})
-should be presented as well (\code{output.df = TRUE}), in such case the output is \code{list}
-containing plot (\code{list$plot},graphic representation) as well as containing the data frame
-(\code{list$df}, tabular representation), however the \strong{default} is \code{output.df = FALSE},
-i.e. only graphical representation is shown.}
+(this actually corresponds to joining the above-mentioned data frames
+by \code{\link[dplyr:bind]{dplyr::bind_cols}}) should be presented as well (\code{output.df = TRUE}),
+in such case the output is \code{list} containing plot (\code{list$plot},graphic representation)
+as well as containing the data frame (\code{list$df}, tabular representation), however
+the \strong{default} is \code{output.df = FALSE}, i.e. only graphical representation is shown.}
 }
 \value{
 \pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated form)
