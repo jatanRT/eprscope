@@ -9,6 +9,9 @@
 #' A short description...tbc...of the EPR simulation
 #'
 #'
+#' @details
+#' Additional details...
+#'
 #'
 #' @param g.iso Numeric value, guess of the isotropic \eqn{g}-factor. It may also possess a `NULL`
 #'   value if the \eqn{g} corresponding to "central field" is equal to `g.iso`.
@@ -24,12 +27,12 @@
 #'   \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
 #'   EPR spectrum \cr
 #'   }
-#'   \strong{Default} values are chosen to cover the EPR spectra of common organic radical.
+#'   \strong{Default} values are chosen to cover the EPR spectra of common organic radicals.
 #'   If \code{instrum.params = NULL} then parameters are provided by \code{path_to_DSC_or_par}
 #'   as well as by \code{origin}.
-#' @param path_to_DSC_or_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
-#'   \code{text} files including all instrumental parameters and provided by the EPR machine.
+#' @param path_to_DSC_or_par Character string, path (can be also gathered by \code{\link[base]{file.path}})
+#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} argument)
+#'   \code{text} files including all instrumental parameters from the EPR machine.
 #'   \strong{Default}: \code{path_to_DSC_or_par = NULL} in case if the \code{instrum.params}
 #'   is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_DSC_or_par}
 #'   AS WELL AS \code{origin} MUST BE DEFINED !
@@ -47,7 +50,7 @@
 #'   This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
 #'   denotes \strong{the number of nuclei} within the group and \strong{the third number}
 #'   is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in summary
-#'   it corresponds to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
+#'   it refers to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
 #'   is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
 #'   A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
 #'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. Actually,
@@ -55,15 +58,35 @@
 #'   and can be extended in the future. \strong{Default}: \code{nuclear.system = NULL} in case
 #'   if no interaction with electron surrounding nuclei is considered and only single
 #'   line EPR spectrum is expected.
-#' @param natur.abund ...tbc...
+#' @param natur.abund Logical, whether the natural abundance of the interacting nuclei
+#'   is taken into the calculation of intensity pattern of the simulated EPR spectrum.
+#'   \strong{Default}: \code{natur.abund = FALSE} which is to be kept for the calculation of a single-line
+#'   EPR spectrum without the hyperfine splitting.
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 #'   of the analyzed EPR spectrum/data.
-#' @param lineGL.DeltaB ...tbc...is corresponding either to \eqn{\Delta B_{\text{pp}}}
-#'   in case of derivative line form or \eqn{FWHM} in case of integrated line form...tbc..
-#' @param lineGL.content ...tbc...
-#' @param Intensity.sim ...tbc...
-#' @param plot.sim.interact description ...tbc...
+#' @param lineGL.DeltaB List of two values referred to \emph{Gaussian} (G) and \emph{Lorentzian} (L)
+#'   spectral line-forms, respectively. For the "pure" \emph{Gaussian} only the first value is numeric
+#'   and the second one is \code{NULL} => e.g. like \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
+#'   For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g. like
+#'   \code{lineGL.DeltaB = list(NULL,0.5)}. If the linear combination of both
+#'   line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voightian},
+#'   then both values are numeric (e.g. like \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
+#'   to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The `DeltaB` corresponds to either
+#'   \eqn{\Delta B_{\text{pp}}} (if \code{lineSpecs.form = "derivative"}) or to \eqn{FWHM}
+#'   (if \code{lineSpecs.form = "integrated"} or if \code{lineSpecs.form = "absorption"}).
+#'   The unit of values must coincide with those used in \code{instrum.params} as well as with \code{B.unit}.
+#' @param lineG.content Numeric value between `0` and `1` referring to content of \emph{Gaussian} line form.
+#'   If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
+#'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
+#'   (e.g. like \code{lineG.content = 0.5}) represents the linear combination (for the example above
+#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voightian}.
+#' @param Intensity.sim Character string pointing to column of simulated EPR intensity within the related
+#'   data frame, which is also available in the output list. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
+#' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive `plotly` graph
+#'   (see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{dafault}),
+#'   then the output contains the data frame as well as `ggplot2` based plot of the simulated EPR spectrum
+#'   within a list.
 #'
 #'
 #' @return ...list...tbc or interactive simulated `plotly` spectrum
@@ -93,7 +116,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              natur.abund = FALSE,
                              lineSpecs.form = "derivative",
                              lineGL.DeltaB = list(1,NULL),
-                             lineGL.content = list(1,NULL),
+                             lineG.content = 1,
                              Intensity.sim = "dIeprSim_over_dB",
                              plot.sim.interact = FALSE){
   #
@@ -114,7 +137,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## reordering the `nuclear.system` from the highest A_iso to the lowest one
     nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
     #
-    ## similarly like for simple list:
+    ## extract list components and put them into vectors
     nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
     N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
     A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
@@ -133,7 +156,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     }
   } else{
     if (!is.null(instrum.params)){
-      stop(" Parameters are extracted from file, please provide `instrum.params = NULL` ! ")
+      stop(" Parameters are extracted from file, please define `instrum.params = NULL` ! ")
     } else{
       if (is.null(origin)){
         stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
@@ -449,8 +472,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## see also https://easyspin.org/easyspin/documentation/lineshapes.html
   deriv_line_form <- function(B,
                               B.0,
-                              g.x = lineGL.content[[1]],
-                              l.y = lineGL.content[[2]],
+                              g.x = lineG.content,
+                              l.y = 1 - lineG.content,
                               gDeltaBpp = lineGL.DeltaB[[1]],
                               lDeltaBpp = lineGL.DeltaB[[2]]){
     #
@@ -458,17 +481,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## DeltaBpp linewidth
     #
     ## condition for the coefficients & line-width
-    if (is.null(lDeltaBpp) & is.null(l.y)){
+    if (is.null(lDeltaBpp) & l.y == 0){
       ## Gaussian
       intens_deriv <- g.x * (- 4 * sqrt(2/pi) * (1/gDeltaBpp^2) * ((B - B.0)/gDeltaBpp) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2))
     }
-    if (is.null(gDeltaBpp) & is.null(g.x)){
+    if (is.null(gDeltaBpp) & g.x == 0){
       ## Lorentzian
       intens_deriv <- l.y * (- 16 * (1/(pi * 3 * sqrt(3))) * ((B - B.0)/lDeltaBpp^3) *
                                (1 + 4/3 * ((B - B.0)/lDeltaBpp)^2)^(-2))
     }
-    if (!is.null(g.x) & !is.null(l.y) & !is.null(gDeltaBpp) & !is.null(lDeltaBpp)){
+    if (g.x != 0 & l.y != 0 & !is.null(gDeltaBpp) & !is.null(lDeltaBpp)){
       ## x*Gaussian(derivative) + y*Lorentzian(derivative) <=> pseudo Voightian
       intens_deriv <- g.x * (- 4 * sqrt(2/pi) * (1/gDeltaBpp^2) * ((B - B.0)/gDeltaBpp) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2)) +
@@ -481,8 +504,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## integral form of the spectral line
   integ_line_form <- function(B,
                               B.0,
-                              g.x = lineGL.content[[1]],
-                              l.y = lineGL.content[[2]],
+                              g.x = lineG.content,
+                              l.y = 1 - lineG.content,
                               gDeltaB = lineGL.DeltaB[[1]],
                               lDeltaB = lineGL.DeltaB[[2]]){
     #
@@ -492,17 +515,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     gGamma.deltaB <- gDeltaB / sqrt(2 * log(2))
     lGamma.deltaB <- lDeltaB / sqrt(3)
     ## condition for the coefficients & line-width
-    if (is.null(lDeltaB) & is.null(l.y)){
+    if (is.null(lDeltaB) & l.y == 0){
       ## Gaussian
       intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
         exp(-2 * ((B - B.0) / gGamma.deltaB)^2))
     }
-    if (is.null(gDeltaB) & is.null(g.x)){
+    if (is.null(gDeltaB) & g.x == 0){
       ## Lorentzian
       intens_integ <- l.y * ((2 / (pi * sqrt(3))) * (1 / lGamma.deltaB) *
         (1 + (4/3) * ((B - B.0) / lGamma.deltaB)^2)^(-1))
     }
-    if (!is.null(g.x) & !is.null(l.y) & !is.null(gDeltaB) & !is.null(lDeltaB)){
+    if (g.x != 0 & l.y != 0 & !is.null(gDeltaB) & !is.null(lDeltaB)){
       ## x*Gaussian(integrated) + y*Lorentzian(integrated) <=> pseudo Voightian
       intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
                                exp(-2 * ((B - B.0) / gGamma.deltaB)^2)) +

@@ -14,7 +14,7 @@ eval_sim_EPR_iso(
   natur.abund = FALSE,
   lineSpecs.form = "derivative",
   lineGL.DeltaB = list(1, NULL),
-  lineGL.content = list(1, NULL),
+  lineG.content = 1,
   Intensity.sim = "dIeprSim_over_dB",
   plot.sim.interact = FALSE
 )
@@ -35,13 +35,13 @@ the "sweep width" \cr
 \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
 EPR spectrum \cr
 }
-\strong{Default} values are chosen to cover the EPR spectra of common organic radical.
+\strong{Default} values are chosen to cover the EPR spectra of common organic radicals.
 If \code{instrum.params = NULL} then parameters are provided by \code{path_to_DSC_or_par}
 as well as by \code{origin}.}
 
-\item{path_to_DSC_or_par}{Character string, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
-\code{text} files including all instrumental parameters and provided by the EPR machine.
+\item{path_to_DSC_or_par}{Character string, path (can be also gathered by \code{\link[base]{file.path}})
+to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} argument)
+\code{text} files including all instrumental parameters from the EPR machine.
 \strong{Default}: \code{path_to_DSC_or_par = NULL} in case if the \code{instrum.params}
 is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_DSC_or_par}
 AS WELL AS \code{origin} MUST BE DEFINED !}
@@ -62,7 +62,7 @@ interacting with the unpaired electron, e.g. like \code{nuclear.system = list("1
 This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
 denotes \strong{the number of nuclei} within the group and \strong{the third number}
 is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in summary
-it corresponds to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
+it refers to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
 is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
 A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
 \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. Actually,
@@ -71,26 +71,49 @@ and can be extended in the future. \strong{Default}: \code{nuclear.system = NULL
 if no interaction with electron surrounding nuclei is considered and only single
 line EPR spectrum is expected.}
 
-\item{natur.abund}{...tbc...}
+\item{natur.abund}{Logical, whether the natural abundance of the interacting nuclei
+is taken into the calculation of intensity pattern of the simulated EPR spectrum.
+\strong{Default}: \code{natur.abund = FALSE} which is to be kept for the calculation of a single-line
+EPR spectrum without the hyperfine splitting.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 of the analyzed EPR spectrum/data.}
 
-\item{lineGL.DeltaB}{...tbc...is corresponding either to \eqn{\Delta B_{\text{pp}}}
-in case of derivative line form or \eqn{FWHM} in case of integrated line form...tbc..}
+\item{lineGL.DeltaB}{List of two values referred to \emph{Gaussian} (G) and \emph{Lorentzian} (L)
+spectral line-forms, respectively. For the "pure" \emph{Gaussian} only the first value is numeric
+and the second one is \code{NULL} => e.g. like \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
+For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g. like
+\code{lineGL.DeltaB = list(NULL,0.5)}. If the linear combination of both
+line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voightian},
+then both values are numeric (e.g. like \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
+to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The `DeltaB` corresponds to either
+\eqn{\Delta B_{\text{pp}}} (if \code{lineSpecs.form = "derivative"}) or to \eqn{FWHM}
+(if \code{lineSpecs.form = "integrated"} or if \code{lineSpecs.form = "absorption"}).
+The unit of values must coincide with those used in \code{instrum.params} as well as with \code{B.unit}.}
 
-\item{lineGL.content}{...tbc...}
+\item{lineG.content}{Numeric value between `0` and `1` referring to content of \emph{Gaussian} line form.
+If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
+and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
+(e.g. like \code{lineG.content = 0.5}) represents the linear combination (for the example above
+with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voightian}.}
 
-\item{Intensity.sim}{...tbc...}
+\item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related
+data frame, which is also available in the output list. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
-\item{plot.sim.interact}{description ...tbc...}
+\item{plot.sim.interact}{Logical, whether to display the simulated spectrum by interactive `plotly` graph
+(see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{dafault}),
+then the output contains the data frame as well as `ggplot2` based plot of the simulated EPR spectrum
+within a list.}
 }
 \value{
 ...list...tbc or interactive simulated `plotly` spectrum
 }
 \description{
 A short description...tbc...of the EPR simulation
+}
+\details{
+Additional details...
 }
 \examples{
 \dontrun{
