@@ -65,7 +65,7 @@
 #' @importFrom stringr str_detect regex
 ## function to plot molecules inspired by https://riveradelgado.com/post/2021/04/18/chemistry-in-r/,
 ## which is not available in `rcdk`
-draw_molecules_rcdk <- function(molecules,
+draw_molecules_by_rcdk <- function(molecules,
                                 type = "smiles", ## or "sdf"
                                 mol.names = NULL,
                                 mol.names.color = "black",

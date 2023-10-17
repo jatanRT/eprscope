@@ -58,7 +58,7 @@ plot_labels_xyz(italic(nu)[RF],"("~MHz~")",
 }
 \seealso{
 Other Visualization and Graphics: 
-\code{\link{draw_molecules_rcdk}()},
+\code{\link{draw_molecules_by_rcdk}()},
 \code{\link{plot_EPR_Specs2D_interact}()},
 \code{\link{plot_EPR_Specs3D_interact}()},
 \code{\link{plot_EPR_Specs_integ}()},
