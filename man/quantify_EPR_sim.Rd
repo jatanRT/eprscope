@@ -79,6 +79,7 @@ tbc
 }
 \seealso{
 Other Simulation and Optimization: 
+\code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{eval_sim_EPR_iso}()}
 }
 \concept{Simulation and Optimization}
