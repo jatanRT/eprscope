@@ -19,7 +19,26 @@
 #' @param plot.sim.interact Logical ...tbc ...
 #'
 #'
-#' @return List or interactive plotly ...tbc...
+#' @return List of the following data frames and plots in case of \code{plot.sim.interact = FALSE} =>
+#'
+#'   * long-format data frame with simulation components A, B, C, ...(e.g. representing the individual
+#'     radicals) as categorical variable + magnetic flux density and intensity denoted as \code{df}
+#'
+#'   * data frame with simulation components A, B, C ...and their corresponding double/single
+#'     integrals (`areas`) and with their related ratios to overall integral sum (`weighted_areas`)
+#'     denoted as \code{df.areas}
+#'
+#'   * data frame with the overall intensity (+ magnetic flux density) as well as integral sum
+#'     from all simulation components denoted as \code{df.sum}
+#'
+#'   * overlay plot with all simulated components with their corresponding intensities defined
+#'     by \code{Intensity.sim.coeffs.vec} denoted as \code{plot.comps}
+#'
+#'   * plot displaying the sum of all simulation components denoted as \code{plot.sum}.
+#'
+#'   If \code{plot.sim.interact} is activated (i.e. possesses either \code{"components"}
+#'   or \code{"sum"} values) interactive plots (based on `plotly`) are presented either with
+#'   all individual components or with the overall simulated sum EPR spectrum, respectively.
 #'
 #'
 #' @examples
