@@ -937,6 +937,40 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     # dplyr::select(.data$B_G,.data$B_mT,.data[[Intensity.sim]])
   ## Plotting the EPR spectrum
   ## y-axis label depending on derivative or integrated line form
+  ## First of all create title and caption character vector
+  ## condition
+  nucs.sys.cond <- if (is.null(nuclear.system)) TRUE else FALSE
+  char.title <-
+    switch(2-nucs.sys.cond,
+           "Non-Interacting Paramagnetic Center/Radical",
+           mapply(function(x,y,z)
+           paste0("A(" ,x, "x",y,") = ",z," MHz"),
+           N_nuclei,
+           nucle_us_i,
+           A_iso_MHz))
+  if (!is.null(nuclear.system)){
+    char.title <- paste(unname(char.title), collapse = ", ")
+  }
+  ## caption
+  if (is.null(lineGL.DeltaB[[1]])){
+    char.caption <- bquote(
+      italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == 0~~.(B.unit)~~
+        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[2]])~~.(B.unit)
+    )
+  }
+  if (is.null(lineGL.DeltaB[[2]])){
+    char.caption <- bquote(
+      italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == .(lineGL.DeltaB[[1]])~~.(B.unit)~~
+        ~Delta~italic(B)[L] == 0~~.(B.unit)
+    )
+  }
+  if (!is.null(lineGL.DeltaB[[1]]) & !is.null(lineGL.DeltaB[[2]])){
+    char.caption <- bquote(
+      italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == .(lineGL.DeltaB[[1]])~~.(B.unit)~~
+        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[1]])~~.(B.unit)
+    )
+  }
+  #
   ylab <- switch(2-line.form.cond,
                  bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")"),
                  bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
@@ -947,10 +981,13 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
            aes(x = .data[[paste0("B_",B.unit)]],
                y = .data[[Intensity.sim]])) +
     geom_line(color = "blue",linewidth = 0.75) +
-    labs(x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
+    labs(title = paste("EPR Spectrum Simulation of ",char.title,sep = "\n"),
+         caption = char.caption,
+         x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
          y = ylab) +
     plot_theme_NoY_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+    theme(plot.title = element_text(hjust = 0.5,size = 15))
   #
   ## result list with data frame and plot
   if (isFALSE(plot.sim.interact)){
@@ -960,7 +997,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                      x = paste0("B_",B.unit),
                                      x.unit = B.unit,
                                      Intensity = Intensity.sim,
-                                     lineSpecs.form = lineSpecs.form))
+                                     lineSpecs.form = lineSpecs.form)
+           )
   }
   #
 }
