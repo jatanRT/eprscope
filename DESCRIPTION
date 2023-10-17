@@ -9,17 +9,17 @@ Authors@R: person("Jan", "Tarabek",
            comment = c(ORCID = "0000-0003-0116-3824"))
 Description: Primary aim of the package is to process, analyze
              and plot EPR spectra in Electron Paramagnetic 
-             Resonance (EPR) spectroscopy. Package functions/scripts
-             can be applied not only for continuous wave (CW) 
-             EPR/ENDOR, however most of them may be also used 
-             for 1D pulsed EPR. Package contains functions to find
-             the most important spectral characteristics 
-             like g-factor, linewidth, maximal derivative
-             or integral intensities and single/double 
-             integrals, especially in spectral (time) series 
-             consisting of many EPR spectra like during variable
-             temperature experiments, electrochemical 
-             or photochemical radical generation 
+             Resonance (EPR) spectroscopy in chemistry. Package 
+             functions/scripts can be applied not only 
+             for continuous wave (CW) EPR/ENDOR, however most 
+             of them may be also used for 1D pulsed EPR. 
+             Package contains functions to find the most 
+             important spectral characteristics like g-factor, 
+             linewidth, maximal derivative or integral intensities 
+             and single/double integrals, especially in spectral 
+             (time) series consisting of many EPR spectra like 
+             during variable temperature experiments, 
+             electrochemical or photochemical radical generation 
              and/or decomposition/decay...etc. 
              Package also contains functions to process 
              data/spectra for analytical (quantitative) purposes, 
@@ -40,15 +40,15 @@ Description: Primary aim of the package is to process, analyze
              'data frame' R format. Subsequently, the EPR spectra 
              can be plotted and are fully consistent either with 
              the 'ggplot2' package or with interactive 
-             formats based on 'plotly'. Additionally, simulations
-             of the EPR spectra in simple form are included
-             in the package. Advanced simulation parameters
-             provided by MATLAB-EasySpin toolbox and the results 
-             from quantum chemical calculations like g-factor 
-             and hyperfine splitting/coupling constants (a/A) 
-             can be compared and summarized in table-format 
-             in order to analyze the EPR spectra by the most 
-             effective way.
+             formats based on the 'plotly'. Additionally, 
+             simulations of the EPR spectra in simple form 
+             are included in the package. Advanced simulation 
+             parameters provided by MATLAB-EasySpin toolbox 
+             and the results from quantum chemical calculations 
+             like g-factor and hyperfine splitting/coupling 
+             constants (a/A) can be compared and summarized 
+             in table-format in order to analyze the EPR spectra 
+             by the most effective way.
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
