@@ -944,7 +944,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     switch(2-nucs.sys.cond,
            "Non-Interacting Paramagnetic Center/Radical",
            mapply(function(x,y,z)
-           paste0("A(" ,x, "x",y,") = ",z," MHz"),
+           paste0("A(",x," x ",y,") = ",z," MHz"),
            N_nuclei,
            nucle_us_i,
            A_iso_MHz))
