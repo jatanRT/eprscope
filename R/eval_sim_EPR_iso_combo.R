@@ -42,10 +42,18 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' TODO
-#' TODO
-#' }
+#' ## Simulation of EPR spectrum of TEMPO (nitroxyl) radical with 13C satellites
+#' ## and hyperfine coupling constants A(1 x 14N) = 45 MHz and A(1 x 13C) = 18 MHz.
+#' sim.tempo.13c <- eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
+#'                                         nuclear.system = list(list("14N",1,45),
+#'                                                               list(list("14N",1,45),
+#'                                                                    list("13C",1,18))),
+#'                                         natur.abund.vec = c(TRUE,TRUE),
+#'                                         lineGL.DeltaB = list(list(1.2,NULL),
+#'                                                              list(1.2,NULL)),
+#'                                         lineG.content.vec = c(1,1),
+#'                                         Intensity.sim.coeffs.vec = c(1,1))
+#' sim.tempo.13c$plot.sum + ggplot2::coord_cartesian(xlim = c(3425,3550))
 #'
 #'
 #' @export

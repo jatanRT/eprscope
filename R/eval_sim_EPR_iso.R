@@ -93,13 +93,29 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' tbc
-#' tbc
-#' }
+#' ## Simulation of luteolin radical anion with the following
+#' ## four hyperfine coupling constants A(1 x 1H) = 3.1 MHz,
+#' ## A(1 x 1H) = 2.8 MHz, A(1 x 1H) = 8.0 MHz
+#' ## and A(1 x 1H) = 4.1 MHz. One may check out the simulation
+#' ## at https://doi.org/10.1016/j.electacta.2013.06.136 (Fig. 6)
+#' sim.luteol <- eval_sim_EPR_iso(g.iso = 2.00495,
+#'                               instrum.params = c(cf = 339.367,
+#'                                                  sw = 5.9,
+#'                                                  points = 2048,
+#'                                                  mwGHz = 9.5294),
+#'                               nuclear.system = list(list("1H",1,3.1),
+#'                                                     list("1H",1,2.8),
+#'                                                     list("1H",1,8.0),
+#'                                                     list("1H",1,4.1)),
+#'                               lineGL.DeltaB = list(0.034,0.034),
+#'                               lineG.content = 0.6,
+#'                               B.unit = "mT",
+#'                               natur.abund = TRUE)
+#' sim.luteol$plot + ggplot2::coord_cartesian(xlim = c(338,341))
 #'
 #'
 #' @export
+#'
 #'
 #' @importFrom dplyr all_of any_of
 eval_sim_EPR_iso <- function(g.iso = 2.00232,
@@ -949,7 +965,18 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
            nucle_us_i,
            A_iso_MHz))
   if (!is.null(nuclear.system)){
-    char.title <- paste(unname(char.title), collapse = ", ")
+    ## separate description into two lines
+    if (length(char.title) <= 3){
+        char.title <- paste(unname(char.title), collapse = " ")
+        char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
+    }
+    if (length(char.title) > 3){
+      char.title1L <- paste(unname(char.title[1:3]), collapse = " ") ## 1st Line
+      char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = " ") ## 2nd Line
+      char.title.title <- paste("EPR Spectrum Simulation of ",char.title1L,char.title2L,sep = "\n")
+    }
+  } else {
+    char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
   }
   ## caption
   if (is.null(lineGL.DeltaB[[1]])){
@@ -981,7 +1008,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
            aes(x = .data[[paste0("B_",B.unit)]],
                y = .data[[Intensity.sim]])) +
     geom_line(color = "blue",linewidth = 0.75) +
-    labs(title = paste("EPR Spectrum Simulation of ",char.title,sep = "\n"),
+    labs(title = char.title.title,
          caption = char.caption,
          x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
          y = ylab) +

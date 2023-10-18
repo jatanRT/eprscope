@@ -116,10 +116,25 @@ A short description...tbc...of the EPR simulation
 Additional details...
 }
 \examples{
-\dontrun{
-tbc
-tbc
-}
+## Simulation of luteolin radical anion with the following
+## four hyperfine coupling constants A(1 x 1H) = 3.1 MHz,
+## A(1 x 1H) = 2.8 MHz, A(1 x 1H) = 8.0 MHz
+## and A(1 x 1H) = 4.1 MHz. One may check out the simulation
+## at https://doi.org/10.1016/j.electacta.2013.06.136 (Fig. 6)
+sim.luteol <- eval_sim_EPR_iso(g.iso = 2.00495,
+                              instrum.params = c(cf = 339.367,
+                                                 sw = 5.9,
+                                                 points = 2048,
+                                                 mwGHz = 9.5294),
+                              nuclear.system = list(list("1H",1,3.1),
+                                                    list("1H",1,2.8),
+                                                    list("1H",1,8.0),
+                                                    list("1H",1,4.1)),
+                              lineGL.DeltaB = list(0.034,0.034),
+                              lineG.content = 0.6,
+                              B.unit = "mT",
+                              natur.abund = TRUE)
+sim.luteol$plot + ggplot2::coord_cartesian(xlim = c(338,341))
 
 
 }
