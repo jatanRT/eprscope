@@ -1,7 +1,7 @@
 Package: eprscope
 Type: Package
 Title: Data and Spectra Processing in Electron Paramagnetic Resonance Spectroscopy 
-Version: 0.1.8
+Version: 0.1.9
 Authors@R: person("Jan", "Tarabek",
            email = c("jantar40@protonmail.com",
            "jan.tarabek@uochb.cas.cz"), 
