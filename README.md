@@ -1,7 +1,7 @@
 eprscope
 ================
 
-# Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
+## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
 The key objective of this fully open source package is to bring handy
 functions corresponding to “everyday” data processing/analysis in EPR
@@ -20,7 +20,7 @@ and/or by several proprietary software platforms like *MS Office* and/or
 *Orgin/SigmaPlot/Igor* i.e. in general text editing in combination with
 a graphing software.
 
-# Installation
+## Installation
 
 ``` r
 ## So far, the package can be installed by =>
@@ -29,16 +29,16 @@ a graphing software.
 # devtools::install_github("jatanRT/eprscope.git")
 ```
 
-Before the installation of `{eprscope}`, please make sure that you have
-already followed the instructions for `{nloptr}` [package
+Before the installation, please make sure that you have already followed
+the instructions for [{nloptr} package
 installation](https://astamm.github.io/nloptr/) depending on the
 operating system. This package is required for the proper running of
 optimization/fitting functions of the `{eprscope}` .
 
-# Usage
+## Usage
 
 Blah
 
-# Acknowledgements
+## Acknowledgements
 
 Blah
