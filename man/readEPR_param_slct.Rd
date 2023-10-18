@@ -81,8 +81,8 @@ Other Data Reading:
 \code{\link{readEPR_Exp_Specs_multif}()},
 \code{\link{readEPR_Exp_Specs}()},
 \code{\link{readEPR_Sim_Spec}()},
-\code{\link{readEPR_params_for_sim}()},
 \code{\link{readEPR_params_slct_kin}()},
+\code{\link{readEPR_params_slct_sim}()},
 \code{\link{readEPR_params_tabs}()},
 \code{\link{readEPR_solvent_props}()},
 \code{\link{readMAT_params_file}()}

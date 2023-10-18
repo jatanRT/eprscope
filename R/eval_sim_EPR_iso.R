@@ -162,7 +162,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
       } else{
         ## reading the table and extracting values form table
-        instr.params.vec <- readEPR_params_for_sim(path_to_DSC_or_par,origin = origin,B.unit = B.unit)
+        instr.params.vec <- readEPR_params_slct_sim(path_to_DSC_or_par,origin = origin,B.unit = B.unit)
         B.CF <- unname(instr.params.vec["cf"])
         B.SW <- unname(instr.params.vec["sw"])
         Npoints <- unname(instr.params.vec["points"])

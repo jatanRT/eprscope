@@ -42,9 +42,9 @@
 #'
 ## function to read instrumental parameters from `.DSC` or `.par`
 ## required for simulation
-readEPR_params_for_sim <- function(path_to_DSC_or_par,
-                                   origin = "xenon",
-                                   B.unit = "G"){
+readEPR_params_slct_sim <- function(path_to_DSC_or_par,
+                                    origin = "xenon",
+                                    B.unit = "G"){
   #
   ## reading the table and extracting values form table
   params.df <- readEPR_params_tabs(path_to_DSC_or_par,origin = origin)$params
