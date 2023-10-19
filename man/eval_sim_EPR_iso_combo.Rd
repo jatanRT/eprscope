@@ -113,6 +113,15 @@ sim.tempo.13c <- eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
                                         lineG.content.vec = c(1,1),
                                         Intensity.sim.coeffs.vec = c(1,1))
 sim.tempo.13c$plot.sum + ggplot2::coord_cartesian(xlim = c(3425,3550))
+#
+## ...and the corresponding data frame =>
+sim.tempo.13c$df.sum[1000:1005,]
+#
+## The data frame with all components =>
+sim.tempo.13c$df[1000:1005,]
+#
+## The data frame with all integrals (areas)
+sim.tempo.13c$df.areas
 
 
 }

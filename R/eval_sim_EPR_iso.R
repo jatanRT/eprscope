@@ -112,6 +112,9 @@
 #'                               B.unit = "mT",
 #'                               natur.abund = TRUE)
 #' sim.luteol$plot + ggplot2::coord_cartesian(xlim = c(338,341))
+#' #
+#' ## ...and the corresponding data frame =>
+#' utils::head(sim.luteol$df)
 #'
 #'
 #' @export
@@ -1018,8 +1021,15 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   #
   ## result list with data frame and plot
   if (isFALSE(plot.sim.interact)){
+    ## B within the final data frame should be renamed to "Bsim_..."
+    ## in order to be consistent with other `sim` functions
+    B.g.sim.df <- B.g.sim.df %>%
+      dplyr::rename_with(~ c("Bsim_G","Bsim_mT"),dplyr::all_of(c("B_G","B_mT")))
+    #
     return(list(plot = spectrum.sim.plot,df = B.g.sim.df))
+    #
   } else{
+    #
     return(plot_EPR_Specs2D_interact(data.spectra = B.g.sim.df,
                                      x = paste0("B_",B.unit),
                                      x.unit = B.unit,

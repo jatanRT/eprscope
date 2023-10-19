@@ -135,6 +135,9 @@ sim.luteol <- eval_sim_EPR_iso(g.iso = 2.00495,
                               B.unit = "mT",
                               natur.abund = TRUE)
 sim.luteol$plot + ggplot2::coord_cartesian(xlim = c(338,341))
+#
+## ...and the corresponding data frame =>
+utils::head(sim.luteol$df)
 
 
 }

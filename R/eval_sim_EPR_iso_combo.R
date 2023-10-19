@@ -54,6 +54,15 @@
 #'                                         lineG.content.vec = c(1,1),
 #'                                         Intensity.sim.coeffs.vec = c(1,1))
 #' sim.tempo.13c$plot.sum + ggplot2::coord_cartesian(xlim = c(3425,3550))
+#' #
+#' ## ...and the corresponding data frame =>
+#' sim.tempo.13c$df.sum[1000:1005,]
+#' #
+#' ## The data frame with all components =>
+#' sim.tempo.13c$df[1000:1005,]
+#' #
+#' ## The data frame with all integrals (areas)
+#' sim.tempo.13c$df.areas
 #'
 #'
 #' @export
@@ -133,9 +142,9 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   df.systems.weighted.integ.long <- df.systems.weighted.long %>%
     dplyr::group_by(.data$Sim_Components) %>%
     dplyr::mutate(Sim_sigmoid_Integs =
-                    eval_integ_EPR_Spec(dplyr::pick(dplyr::all_of(c(paste0("B_",B.unit),
+                    eval_integ_EPR_Spec(dplyr::pick(dplyr::all_of(c(paste0("Bsim_",B.unit),
                                                                     Intensity.sim))),
-                                        B = paste0("B_",B.unit),
+                                        B = paste0("Bsim_",B.unit),
                                         B.unit = B.unit,
                                         Intensity = Intensity.sim,
                                         lineSpecs.form = lineSpecs.form,
@@ -157,7 +166,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   ## Overall Integration
   df.systems.weighted.wide$Sim_sigmoid_Integ <-
     eval_integ_EPR_Spec(df.systems.weighted.wide,
-                        B = paste0("B_",B.unit),
+                        B = paste0("Bsim_",B.unit),
                         B.unit = B.unit,
                         Intensity = paste0(Intensity.sim,"_Sum"),
                         lineSpecs.form = lineSpecs.form,
@@ -166,8 +175,8 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   ## delete/-select columns A,B,C,...etc
   df.systems.weighted.wide <-
     df.systems.weighted.wide %>%
-    dplyr::select(dplyr::all_of(c("B_mT",
-                                  "B_G",
+    dplyr::select(dplyr::all_of(c("Bsim_mT",
+                                  "Bsim_G",
                                   "Sim_sigmoid_Integ",
                                   paste0(Intensity.sim,"_Sum"))))
   ## instead of =>
@@ -196,7 +205,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   #
   plot.sim.comps.overlay <-
     ggplot(data = df.systems.weighted.long,
-           aes(x = .data[[paste0("B_",B.unit)]],
+           aes(x = .data[[paste0("Bsim_",B.unit)]],
                y = .data[[Intensity.sim]],
                color = .data$Sim_Components)) +
     geom_line(linewidth = 0.75) +
@@ -217,7 +226,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   ## the overall/sum plot
   plot.sim.sum <-
     ggplot(data = df.systems.weighted.wide) +
-    geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+    geom_line(aes(x = .data[[paste0("Bsim_",B.unit)]],
                   y = .data[[paste0(Intensity.sim,"_Sum")]]),
               linewidth = 0.75,
               color = "blue") +
@@ -236,7 +245,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   } else{
     if (plot.sim.interact == "components"){
       result.sim <- plot_EPR_Specs2D_interact(data.spectra = df.systems.weighted.long,
-                                              x = paste0("B_",B.unit),
+                                              x = paste0("Bsim_",B.unit),
                                               x.unit = B.unit,
                                               Intensity = Intensity.sim,
                                               var2nd.series = "Sim_Components",
@@ -246,7 +255,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     }
     if (plot.sim.interact == "sum"){
       result.sim <- plot_EPR_Specs2D_interact(data.spectra = df.systems.weighted.wide,
-                                              x = paste0("B_",B.unit),
+                                              x = paste0("Bsim_",B.unit),
                                               x.unit = B.unit,
                                               Intensity = paste0(Intensity.sim,"_Sum"),
                                               lineSpecs.form = lineSpecs.form)
