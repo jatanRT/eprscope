@@ -1,17 +1,20 @@
 ---
-title: "Basic Functionality"
+title: "Basic Functionality Demonstration - Worflow to Process and Analyze EPR Spectrum of the Wuster's Blue"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
-number_sections: FALSE
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+number_sections: TRUE
 link-citations: TRUE
+bibliography: functionality.bib
+csl: iso690-numeric-en.csl
 vignette: >
   %\VignetteIndexEntry{Basic Functionality}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knitr-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -26,7 +29,7 @@ library(icons)
 library(knitr)
 ```
 
-## Something {.unnumbered}
+# Introduction
 
 BlahBlahBlah
 
