@@ -29,9 +29,9 @@ isotopes_ds <- fread(isotopes.ds.raw.path,
                                   "Abund_Natur_Percent",
                                   "Q_Barn")) %>%
   ## adding the ENDOR frequencies (in MHz) at 0.35 T
-  dplyr::mutate(nu_ENDOR_MHz_035T = - (1/Planck.const) *
+  dplyr::mutate(nu_ENDOR_MHz_035T = - round(((1/Planck.const) *
                   g_Nuclear * nuclear.mu * 0.35 *
-                  1e-6)
+                  1e-6),digits = 3))
 #
 ## save resulting data frame as an `.rda` file
 usethis::use_data(isotopes_ds, compress = "xz", overwrite = TRUE)
