@@ -1,9 +1,9 @@
 #'
-#' Loading Data Files for Package Examples
+#' Loading Built-in Data Files for Package Examples
 #'
 #'
 #' @description
-#' Loads data files which are required to demonstrate the the package functionality
+#' Loads built-in package data files which are required to demonstrate the the package functionality
 #' by the examples within documentation.
 #'
 #'

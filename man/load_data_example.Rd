@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_data_example.R
 \name{load_data_example}
 \alias{load_data_example}
-\title{Loading Data Files for Package Examples}
+\title{Loading Built-in Data Files for Package Examples}
 \usage{
 load_data_example(file = NULL)
 }
@@ -10,7 +10,7 @@ load_data_example(file = NULL)
 \item{file}{Character string corresponding to file name + extension.}
 }
 \description{
-Loads data files which are required to demonstrate the the package functionality
+Loads built-in package data files which are required to demonstrate the the package functionality
 by the examples within documentation.
 }
 \examples{
