@@ -30,7 +30,7 @@ plot_EPR_Specs_integ(
 
 \item{Blim}{tbc}
 
-\item{ylim}{tbc}
+\item{ylim}{tbc...doesn't apply for separated integrals...it works only for overlay}
 
 \item{slct.integs}{tbc}
 

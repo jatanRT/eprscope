@@ -14,7 +14,7 @@
 #' @param B tbc
 #' @param B.unit tbc
 #' @param Blim tbc
-#' @param ylim tbc
+#' @param ylim tbc...doesn't apply for separated integrals...it works only for overlay
 #' @param slct.integs tbc
 #' @param line.width tbc
 #' @param axis.title.size tbc
@@ -68,14 +68,21 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
   . <- NULL
   Integrals <- NULL
   #
-  ## y range to present integrated spectrum and baseline correction
+  ## B and y range to present integrated spectrum and baseline correction
   ## 1st entire y region
   data.B.region <- data.B.region <- c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
   #
-  single.integ <- slct.integs[1]
+  ## condition to present intensity region (which has the max integral ?)
+  max.integs.vec <- sapply(slct.integs, function(m) max(data.spectra.integ[[m]]))
+  max.integs.df <- data.frame("slct_Integrals" = slct.integs,
+                              "max_Integral" = max.integs.vec)
+  max.integ <- max.integs.df %>%
+    dplyr::filter(.data[["max_Integral"]] == max(.data[["max_Integral"]])) %>%
+    dplyr::pull(.data[["slct_Integrals"]])
+  ## therefore
   data.y.region <- c(
-    min(data.spectra.integ[[single.integ]]) - max(data.spectra.integ[[single.integ]]) / 10,
-    max(data.spectra.integ[[single.integ]]) + max(data.spectra.integ[[single.integ]]) / 10
+    min(data.spectra.integ[[max.integ]]) - max(data.spectra.integ[[max.integ]]) / 10,
+    max(data.spectra.integ[[max.integ]]) + max(data.spectra.integ[[max.integ]]) / 10
   )
   ## B & y range condition
   Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
@@ -133,7 +140,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
         dplyr::filter(Integrals %in% slct.integs) %>%
         ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
         geom_line(linewidth = line.width, show.legend = FALSE) +
-        coord_cartesian(xlim = Blim,ylim = ylim) +
+        coord_cartesian(xlim = Blim) +
         facet_wrap(~ .data$Integrals,
                    scales = separate.integ.scales,
                    #labeller = label_parsed,
@@ -149,13 +156,14 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
         scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
         theme(
           strip.background = element_rect(fill = "#363636"),
-          strip.text = element_text(size = 13, color = "white", face = "bold")
+          strip.text = element_text(size = 13, color = "white", face = "bold"),
+          panel.spacing = ggplot2::unit(10,"pt")
         )
     }
   }
   #
   ## the old data frame is not required anymore
-  rm(data.spectra.integ)
+  rm(data.spectra.integ, max.integs.df)
   #
   ## if the entire table/table should be included
   if (isFALSE(output.df)){
