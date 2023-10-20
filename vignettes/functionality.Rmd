@@ -1,5 +1,5 @@
 ---
-title: "Basic Functionality Demonstration - Worflow to Process and Analyze EPR Spectrum of the Wuster's Blue"
+title: "Basic Functionality - Processing and Analysis of the Wuster's Blue EPR Spectrum"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
@@ -31,7 +31,9 @@ library(knitr)
 
 # Introduction
 
-BlahBlahBlah
+The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of the Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]. Therefore, it changes its state from diamagnetic (not visible by EPR) to paramagnetic one (with one unpaired electron) which is observable by characteristic EPR spectrum as shown below. Moreover, such change is not only observable by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. However, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**.
+
+Blah
 
 and
 
@@ -42,3 +44,5 @@ and
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
 -   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
+
+# References {.unnumbered}
