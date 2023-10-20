@@ -40,15 +40,15 @@ common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
 
 \item{style}{Character string denoting the plotting style like =>
 \tabular{rcl}{
----------------- \tab | \tab ----------------------------- \cr
-\strong{Plotting Style}  \tab | \tab \strong{Style Text String} \cr
----------------- \tab | \tab ----------------------------- \cr
-`color on black` \tab | \tab \code{style = "cob"} \cr
-`color on white` \tab | \tab \code{style = "cow"} \cr
-`black on white` \tab | \tab \code{style = "bow"} \cr
-`white on black` \tab | \tab \code{style = "wob"} \cr
-`neon on black` \tab | \tab \code{style = "nob"} \cr
----------------- \tab | \tab ----------------------------- \cr
+----------------  \tab ----------------------------- \cr
+\strong{Plotting Style} \tab \strong{Style Text String} \cr
+----------------  \tab ----------------------------- \cr
+`color on black`  \tab \code{style = "cob"} \cr
+`color on white`  \tab \code{style = "cow"} \cr
+`black on white`  \tab \code{style = "bow"} \cr
+`white on black` \tab \code{style = "wob"} \cr
+`neon on black`  \tab \code{style = "nob"} \cr
+---------------- \tab ----------------------------- \cr
 }
 \strong{Default}: \code{style = "cow"}.}
 

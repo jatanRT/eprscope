@@ -26,15 +26,15 @@
 #'   (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.
 #' @param style Character string denoting the plotting style like =>
 #'   \tabular{rcl}{
-#'   ---------------- \tab | \tab ----------------------------- \cr
-#'   \strong{Plotting Style}  \tab | \tab \strong{Style Text String} \cr
-#'   ---------------- \tab | \tab ----------------------------- \cr
-#'   `color on black` \tab | \tab \code{style = "cob"} \cr
-#'   `color on white` \tab | \tab \code{style = "cow"} \cr
-#'   `black on white` \tab | \tab \code{style = "bow"} \cr
-#'   `white on black` \tab | \tab \code{style = "wob"} \cr
-#'   `neon on black` \tab | \tab \code{style = "nob"} \cr
-#'   ---------------- \tab | \tab ----------------------------- \cr
+#'   ----------------  \tab ----------------------------- \cr
+#'   \strong{Plotting Style} \tab \strong{Style Text String} \cr
+#'   ----------------  \tab ----------------------------- \cr
+#'   `color on black`  \tab \code{style = "cob"} \cr
+#'   `color on white`  \tab \code{style = "cow"} \cr
+#'   `black on white`  \tab \code{style = "bow"} \cr
+#'   `white on black` \tab \code{style = "wob"} \cr
+#'   `neon on black`  \tab \code{style = "nob"} \cr
+#'   ---------------- \tab ----------------------------- \cr
 #'   }
 #'   \strong{Default}: \code{style = "cow"}.
 #' @param abbr Character string which controls how the structure is displayed. Following options
@@ -66,15 +66,15 @@
 ## function to plot molecules inspired by https://riveradelgado.com/post/2021/04/18/chemistry-in-r/,
 ## which is not available in `rcdk`
 draw_molecules_by_rcdk <- function(molecules,
-                                type = "smiles", ## or "sdf"
-                                mol.names = NULL,
-                                mol.names.color = "black",
-                                sma = NULL,
-                                annotate = "off",
-                                style = "cow",
-                                abbr = "off",
-                                suppressh = TRUE,
-                                ...){
+                                   type = "smiles", ## or "sdf"
+                                   mol.names = NULL,
+                                   mol.names.color = "black",
+                                   sma = NULL,
+                                   annotate = "off",
+                                   style = "cow",
+                                   abbr = "off",
+                                   suppressh = TRUE,
+                                   ...){
   ## molecules is string vector, however it is converted into an object
   ## as returned by rcdk::load.molecules or rcdk::parse.smiles() => see below;
   ## name a character for the name of the molecule,
@@ -102,7 +102,7 @@ draw_molecules_by_rcdk <- function(molecules,
   if (stringr::str_detect(type,stringr::regex("SDF",ignore_case = TRUE))){
     #
     ## create a list similar as in the previous case
-    molekels <- rcdk::load.molecules(molecules)
+    molekels <- rcdk::load.molecules(molfiles = molecules)
   }
   #
   ## molecules for the entire list
