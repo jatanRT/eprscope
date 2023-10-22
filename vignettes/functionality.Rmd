@@ -31,9 +31,26 @@ library(knitr)
 
 # Introduction
 
-The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of the Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]. Therefore, it changes its state from diamagnetic (not visible by EPR) to paramagnetic one (with one unpaired electron) which is observable by characteristic EPR spectrum as shown below. Moreover, such change is not only observable by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. However, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**.
+The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of the Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]. Therefore, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**.
 
-Blah
+Structure of the investigated compound can be depicted by following function based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/) an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
+
+```{r draw-molecule,fig.width=6,fig.height=4}
+
+## radical cation of previosly described Wuster's Blue or radical cation
+## N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD)
+draw_molecule_by_rcdk(
+  molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
+  type = "smiles",
+  style = "cob",
+  mol.name = expression(TMPD^+.~"("~Wuster*"'"*s~Blue~")"),
+  mol.name.color = "yellow",
+  suppressh = F
+)
+
+```
+
+The EPR spectroelectrochemical experiment was done
 
 and
 
@@ -44,5 +61,7 @@ and
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
 -   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
+
+-   ASCII output (*Bruker* spectrometer by \`WinEpr\` acquisition soft.) from EPR *in situ* simultaneous spectroelectrochemical experiment during cyclovoltammetric (CV) oxidation (+ re-reduction) of *N,N,N',N'*-Tetramethyl-p-phenylenediamine (TMPD) in 0.3 M TBAPF~6~/DMSO. Concentration prior to oxidation =\> c = 1 mM. Experiment performed directly in standard rectangular probehead and RT EPR spectroelectrochemical cell. Cyclovoltammetric scan rate 0.003 V s^-1^, potential (*vs* Ag-*quasiref.* electrode) scaned from -0.1 V to 0.45 and back to -0.1 V. 21 EPR spectra recorded during the CV scan. Second EPR experiment performed potentiostatically at 0.308 V (*vs* Ag-*quasiref.* electrode) as an accumulation of 20 spectra. \`.par\` files contain list of instrumental parameters.
 
 # References {.unnumbered}
