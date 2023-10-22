@@ -9,6 +9,7 @@ draw_molecule_by_rcdk(
   type = "smiles",
   mol.name = NULL,
   mol.name.color = "black",
+  mol.name.xy.posit = c(8.2, 1.2),
   sma = NULL,
   annotate = "off",
   style = "cow",
@@ -26,10 +27,16 @@ pointing to \code{".sdf"} files.}
 or \code{type = "sdf"}/\code{type = "SDF"}. \strong{Default}: \code{type = "smiles"}.}
 
 \item{mol.name}{Character string pointing to name of molecule/compound, e.g. like
-\code{mol.name = c("acetone")} or \code{mol.name = c("PBN")}.}
+\code{mol.name = c("acetone")} or \code{mol.name = c("PBN")}. If \code{mol.name = NULL}
+(\strong{default}) a character string "mol. structure viewer" with gray color
+is shown.}
 
 \item{mol.name.color}{Character string pointing to displayed font color of the chemical structure
 name. \strong{Default}: \code{mol.name.color = "black"}.}
+
+\item{mol.name.xy.posit}{Numeric vector matching the x,y-position of the \code{mol.name}
+label within the image having the size of "(1,1,10,10)" =>
+see \code{\link[graphics]{rasterImage}}.}
 
 \item{sma}{Character string allowing to highlight sub-structures using `SMARTS`
 (\strong{SM}ILES \strong{A}rbitrary \strong{T}arget \strong{S}pecification) to highlight
@@ -78,13 +85,14 @@ draw_molecule_by_rcdk("CN(C)C1=C([H])C([H])=C(N(C)C)C([H])=C1[H]",
                       type = "smiles",
                       sma = "cN")
 #
-## draw N,N,N',N'-tetramethyl-p-phenylenediamine based
-## on `smiles` code character, with hydrogen atoms
-## and "TMPD" name of the molecule
-draw_molecule_by_rcdk("CN(C)C1=C([H])C([H])=C(N(C)C)C([H])=C1[H]",
+## draw N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical
+## cation based on `smiles` code character, with hydrogen atoms
+## and molecule name label = "TMPD^(+.)"
+draw_molecule_by_rcdk("CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
                       type = "smiles",
-                      suppressh = FALSE,
-                      mol.name = "TMPD")
+                      mol.name = expression(TMPD^(+.)),
+                      mol.name.color = "blue",
+                      suppressh = FALSE)
 #
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based
 ## on `sdf` file path ("TMPD.sdf") with "color on black"
