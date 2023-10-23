@@ -11,53 +11,65 @@
 #'
 #'
 #' @details
-#'   This constant
-#'   can be evaluated from the following expression =>
-#'   \deqn{N_{\text{norm}} = t_{\text{C}}\,N_{\text{Scans}}\,(20)\,10^{(G_{\text{R}}/20)}}
-#'   where \eqn{t_{\text{C}}} depicts the conversion time in \eqn{\text{ms}}; \eqn{N_{\text{Scans}}}
-#'   corresponds to number of scans and \eqn{G_{\text{R}}} is the receiver gain in \eqn{\text{dB}}.
-#'   One can gather all three parameters by \code{\link{readEPR_param_slct}} function from the
-#'   corresponding `.DSC` or `.par` file. \strong{If during the recording of EPR spectra the option}
-#'   `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options) \strong{is activated,
-#'   THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL NORMALIZATION !}.
-#'   See also \code{\link{quantify_EPR_abs}}...define also for "winepr" system
+#'   The normalization constant is defined by expression used in "xenon" processing/acquisition
+#'   software =>
+#'   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,N_{\text{Scans}}\,(20)\,
+#'   10^{(G_{\text{R}}(\text{dB})/20)}}
+#'   where \eqn{t_{\text{C}}(\text{ms})} depicts the conversion time in \eqn{\text{ms}};
+#'   \eqn{N_{\text{Scans}}} corresponds to number of scans and \eqn{G_{\text{R}}(\text{dB})}
+#'   is the receiver gain in \eqn{\text{dB}}. Within the "winepr" sofware, the normalization constant
+#'   is defined by following relation =>
+#'   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,G_{\text{R}}\,
+#'   (N_{\text{Scans}} - 1)\,/\,B_{\text{SW}}(\text(G))}
+#'   where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text(G))} correspond to unitless receiver gain
+#'   and sweep width in Gauss, respectively. One can gather all parameters
+#'   by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
+#'   the corresponding `.DSC` or `.par` file. \strong{If during the recording of EPR spectra
+#'   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
+#'   \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL
+#'   NORMALIZATION !}. See also \code{\link{quantify_EPR_abs}}.
 #'
 #'
 #'
-#'
+#' @inheritParams readEPR_param_slct
 #' @param conv.time.ms Numeric, conversion time in milliseconds.
 #' @param Nscans Numeric, number of scans.
-#' @param rg Numeric, receiver gain in dB or unitless ("winepr")
-#' @param sweep.width Numeric..either in "G" or "mT".tbc...\strong{Default}: NULL
-#' @param origin Character string ...tbc...
+#' @param rg Numeric, receiver gain in dB (in case if \code{origin = "xenone"}) or unitless
+#'   (in case if \code{origin = "winepr"}).
+#' @param sw Numeric, experimental sweep width (magnetic flux density recording region,
+#'   \eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{sw = NULL}.
 #'
 #'
-#' @return Numeric value of normalization constant for quantitative EPR.
+#' @return Numeric value of normalization constant for quantitative EPR and intensity normalization.
 #'
 #'
 #' @examples
-#' quantify_EPR_Norm_const(conv.time.ms = 6.4,
-#'                         Nscans = 6,
-#'                         rg = 30,
+#' quantify_EPR_Norm_const(conv.time.ms = 8.2,
+#'                         Nscans = 10,
+#'                         rg = 32,
 #'                         origin = "xenon")
 #' #
-#' quantify_EPR_Norm_const(conv.time.ms = 13.52,
-#'                         sweep.width = 100,
-#'                         Nscans = 100,
-#'                         rg = 2.4e+4,
+#' quantify_EPR_Norm_const(conv.time.ms = 4.1,
+#'                         sw = 180,
+#'                         Nscans = 10,
+#'                         rg = 3.2e+4,
 #'                         origin = "winepr")
+#'
 #'
 #' @export
 #'
 #'
 quantify_EPR_Norm_const <- function(conv.time.ms,
                                     Nscans,
-                                    sweep.width = NULL,
+                                    sw = NULL,
                                     rg,
                                     origin = "xenon") {
   #
+  ## 'Temporary' processing variables
+  . <- NULL
+  #
   ## Definition of the sweep width
-  sweep.width <- sweep.width %>% `if`(is.null(sweep.width),1,.)
+  sw <- sw %>% `if`(is.null(sw),1,.)
   #
   ## Calculation depending on the origin
   if (origin == "xenon"){
@@ -68,7 +80,7 @@ quantify_EPR_Norm_const <- function(conv.time.ms,
     Const <- conv.time.ms * Nscans * 20 * 10^rg.dB.20
   }
   if (origin == "winepr"){
-    Const <- (conv.time.ms * rg * (Nscans - 1)) / sweep.width
+    Const <- (conv.time.ms * rg * (Nscans - 1)) / sw
   }
   #
   return(round(Const))
