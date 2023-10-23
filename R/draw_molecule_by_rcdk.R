@@ -15,15 +15,16 @@
 #'   pointing to \code{".sdf"} files.
 #' @param type Character string ...tbc... either \code{type = "smiles"}/\code{type = "SMILES"}
 #'   or \code{type = "sdf"}/\code{type = "SDF"}. \strong{Default}: \code{type = "smiles"}.
-#' @param mol.name Character string pointing to name of molecule/compound, e.g. like
-#'   \code{mol.name = c("acetone")} or \code{mol.name = c("PBN")}. If \code{mol.name = NULL}
+#' @param mol.label Character string pointing to name label of the molecule/compound, e.g. like
+#'   \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 #'   (\strong{default}) a character string "mol. structure viewer" with gray color
 #'   is shown.
-#' @param mol.name.color Character string pointing to displayed font color of the chemical structure
-#'   name. \strong{Default}: \code{mol.name.color = "black"}.
-#' @param mol.name.xy.posit Numeric vector matching the x,y-position of the \code{mol.name}
+#' @param mol.label.color Character string pointing to displayed font color of the chemical structure
+#'   label. \strong{Default}: \code{mol.label.color = "black"}.
+#' @param mol.label.xy.posit Numeric vector matching the x,y-position of the \code{mol.label}
 #'   label within the image having the size of "(1,1,10,10)" =>
-#'   see \code{\link[graphics]{rasterImage}}.
+#'   see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
+#'   => the label is positioned in the bottom right corner.
 #' @param sma Character string allowing to highlight sub-structures using `SMARTS`
 #'   (\strong{SM}ILES \strong{A}rbitrary \strong{T}arget \strong{S}pecification) to highlight
 #'   common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.
@@ -70,8 +71,8 @@
 #' ## and molecule name label = "TMPD^(+.)"
 #' draw_molecule_by_rcdk("CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
 #'                       type = "smiles",
-#'                       mol.name = expression(TMPD^(+.)),
-#'                       mol.name.color = "blue",
+#'                       mol.label = expression(TMPD^+.),
+#'                       mol.label.color = "blue",
 #'                       suppressh = FALSE)
 #' #
 #' ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based
@@ -93,9 +94,9 @@
 ## which is not available in `rcdk`
 draw_molecule_by_rcdk <- function(molecule,
                                   type = "smiles", ## or "sdf"
-                                  mol.name = NULL,
-                                  mol.name.color = "black",
-                                  mol.name.xy.posit = c(8.2,1.2),
+                                  mol.label = NULL,
+                                  mol.label.color = "black",
+                                  mol.label.xy.posit = c(8.2,1.2),
                                   sma = NULL,
                                   annotate = "off",
                                   style = "cow",
@@ -145,17 +146,17 @@ draw_molecule_by_rcdk <- function(molecule,
   ## draw and annotate molecule
   graphics::rasterImage(molecule_sdf,1,1,10,10)
   #
-  ## drawing `mol.name`
-  if (is.null(mol.name)){
-    graphics::text(x = mol.name.xy.posit[1],
-                   y = mol.name.xy.posit[2],
+  ## drawing `mol.label`
+  if (is.null(mol.label)){
+    graphics::text(x = mol.label.xy.posit[1],
+                   y = mol.label.xy.posit[2],
                    labels = c("mol. structure viewer"),
                    col = "gray")
   } else{
-    graphics::text(x = mol.name.xy.posit[1],
-                   y = mol.name.xy.posit[2],
-                   labels = mol.name,
-                   col = mol.name.color)
+    graphics::text(x = mol.label.xy.posit[1],
+                   y = mol.label.xy.posit[2],
+                   labels = mol.label,
+                   col = mol.label.color)
   }
   #
 }

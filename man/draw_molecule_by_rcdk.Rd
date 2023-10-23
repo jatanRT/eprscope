@@ -7,9 +7,9 @@
 draw_molecule_by_rcdk(
   molecule,
   type = "smiles",
-  mol.name = NULL,
-  mol.name.color = "black",
-  mol.name.xy.posit = c(8.2, 1.2),
+  mol.label = NULL,
+  mol.label.color = "black",
+  mol.label.xy.posit = c(8.2, 1.2),
   sma = NULL,
   annotate = "off",
   style = "cow",
@@ -26,17 +26,18 @@ pointing to \code{".sdf"} files.}
 \item{type}{Character string ...tbc... either \code{type = "smiles"}/\code{type = "SMILES"}
 or \code{type = "sdf"}/\code{type = "SDF"}. \strong{Default}: \code{type = "smiles"}.}
 
-\item{mol.name}{Character string pointing to name of molecule/compound, e.g. like
-\code{mol.name = c("acetone")} or \code{mol.name = c("PBN")}. If \code{mol.name = NULL}
+\item{mol.label}{Character string pointing to name label of the molecule/compound, e.g. like
+\code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 (\strong{default}) a character string "mol. structure viewer" with gray color
 is shown.}
 
-\item{mol.name.color}{Character string pointing to displayed font color of the chemical structure
-name. \strong{Default}: \code{mol.name.color = "black"}.}
+\item{mol.label.color}{Character string pointing to displayed font color of the chemical structure
+label. \strong{Default}: \code{mol.label.color = "black"}.}
 
-\item{mol.name.xy.posit}{Numeric vector matching the x,y-position of the \code{mol.name}
+\item{mol.label.xy.posit}{Numeric vector matching the x,y-position of the \code{mol.label}
 label within the image having the size of "(1,1,10,10)" =>
-see \code{\link[graphics]{rasterImage}}.}
+see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
+=> the label is positioned in the bottom right corner.}
 
 \item{sma}{Character string allowing to highlight sub-structures using `SMARTS`
 (\strong{SM}ILES \strong{A}rbitrary \strong{T}arget \strong{S}pecification) to highlight
@@ -90,8 +91,8 @@ draw_molecule_by_rcdk("CN(C)C1=C([H])C([H])=C(N(C)C)C([H])=C1[H]",
 ## and molecule name label = "TMPD^(+.)"
 draw_molecule_by_rcdk("CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
                       type = "smiles",
-                      mol.name = expression(TMPD^(+.)),
-                      mol.name.color = "blue",
+                      mol.label = expression(TMPD^+.),
+                      mol.label.color = "blue",
                       suppressh = FALSE)
 #
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based

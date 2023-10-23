@@ -43,8 +43,8 @@ draw_molecule_by_rcdk(
   molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
   type = "smiles",
   style = "cob",
-  mol.name = expression(TMPD^+.~"("~Wuster*"'"*s~Blue~")"),
-  mol.name.color = "yellow",
+  mol.label = expression(TMPD^+.~"("~Wuster*"'"*s~Blue~")"),
+  mol.label.color = "yellow",
   suppressh = F
 )
 
