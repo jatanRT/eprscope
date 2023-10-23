@@ -96,7 +96,7 @@ Finally conversion of the second data frame (`tmpd.params$params`) into interact
 
 ```{r instrum-params-reaad-DT-interact}
 
-## function `datatable` from `DT` package
+## by function `datatable` from the `DT` package
 DT::datatable(data = tmpd.params$params)
 
 ```
@@ -125,7 +125,7 @@ head(tmpd.data.norm.01)
 
 ```
 
-An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units are quite often use to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine spitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
+An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units is quite often used to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine spitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
 
 [^1]: For such reason there are arguments `x` and `Intensity` , pointing to original column indices, in order to properly pick up the corresponding variables.
 
@@ -134,10 +134,13 @@ An arbitrary character string may be chosen for the column names (`col.names`)[^
 ## calculation of the advanced normalization constant
 ## by selected parameters from the table above
 conv.time.ms <- 8 ## conversion time in milliseconds
-receiver.gain <- 39905.25 ## unitless or dB
+receiver.gain <- 39905.25 ## unitless
+sweep.width <- 120 ## in G
 adv.norm.constant <- quantify_EPR_Norm_const(conv.time.ms = conv.time.ms,
                                              Nscans = 20,
-                                             rg.dB = receiver.gain)
+                                             rg = receiver.gain,
+                                             sw = sweep.width,
+                                             origin = "winepr")
 #
 ## Therefore, the reading of the experimental 
 ## data file =>
