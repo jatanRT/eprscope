@@ -2,7 +2,7 @@
 % Please edit documentation in R/draw_molecule_by_rcdk.R
 \name{draw_molecule_by_rcdk}
 \alias{draw_molecule_by_rcdk}
-\title{Draw Molecule by `rcdk` Defined by SMILES}
+\title{Draw Molecule by `rcdk` Defined by SMILES or SDF}
 \usage{
 draw_molecule_by_rcdk(
   molecule,
