@@ -40,8 +40,8 @@ The normalization constant is defined by expression used in "xenon" processing/a
   is the receiver gain in \eqn{\text{dB}}. Within the "winepr" sofware, the normalization constant
   is defined by following relation =>
   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,G_{\text{R}}\,
-  (N_{\text{Scans}} - 1)\,/\,B_{\text{SW}}(\text(G))}
-  where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text(G))} correspond to unitless receiver gain
+  (N_{\text{Scans}} - 1)\,/\,B_{\text{SW}}(\text{G})}
+  where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text{G})} correspond to unitless receiver gain
   and sweep width in Gauss, respectively. One can gather all parameters
   by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
   the corresponding `.DSC` or `.par` file. \strong{If during the recording of EPR spectra
