@@ -4,6 +4,7 @@ output:
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
     mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    toc: TRUE
 number_sections: TRUE
 link-citations: TRUE
 bibliography: functionality.bib
@@ -31,14 +32,24 @@ library(knitr)
 
 # Introduction
 
-The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of the Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]. Therefore, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**.
+The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of the Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]:
 
-Structure of the investigated compound can be depicted by following function based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/) an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
+```{=tex}
+\begin{equation}
+\ce{TMPD <=>[-e^-] TMPD^{.+}}
+(\#eq:tmpdoxid)
+\end{equation}
+```
+where $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuster's reagent) abbreviation. Therefore, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**. Such an example will demonstrate the main workflow to process and analyse the EPR spectra by the `r icons::icon_style(fontawesome("box-open"), fill = "brown")` . The $\ce{TMPD^{.+}}$ was generated electrochemically by potentiostatic electrolysis at 0.308 V (*vs* Ag-*quasiref.* electrode) of the corresponding $1\,\mathrm{mM}$ $\ce{TMPD}$ solution in 0.3 M TBAPF~6~/DMSO.
 
-```{r draw-molecule,fig.width=6,fig.height=4}
+# Drawing of Molecular Structures
 
-## radical cation of previosly described Wuster's Blue or radical cation
-## N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD)
+Structure of the investigated compound can be depicted by the following function (`draw_molecule_by_rcdk()`) based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/) an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
+
+```{r draw-molecule,fig.width=7,fig.height=5}
+
+## radical cation of previosly described Wuster's Reagent equivalent
+## to radical cation  of N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD)
 draw_molecule_by_rcdk(
   molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
   type = "smiles",
@@ -50,18 +61,103 @@ draw_molecule_by_rcdk(
 
 ```
 
-The EPR spectroelectrochemical experiment was done
+This function belongs to the package family/section `Visualization and Graphics` and enables to create image of molecular structures either by [SMILES and SMART codes](https://chem.libretexts.org/Courses/Fordham_University/Chem1102%3A_Drug_Discovery_-_From_the_Laboratory_to_the_Clinic/05%3A_Organic_Molecules/5.08%3A_Line_Notation_(SMILES_and_InChI)) or by loading a **S**tructure **D**ata **F**ile (`.sdf`) [@Sakari2022].
 
-and
+# Reading Text Files
 
--   Reading the universal ASCII data format (e.g. like `.asc`, `.txt`, `.csv`) and transforming into tables (data frames) incl. operations like intensity normalization and conversion between magnetic flux density (*B*) units (G ⟺ mT). Additionally, the functions enable the automatic reading of time series experiments like a kinetic one (e.g. also with the combination of *in situ* electrochemistry or photochemistry/irradiation) or reading and processing several EPR spectra data/files, at once, for the series of individual experiments/data files upon changing the quantities like time,microwave power, electrochemical potential, temperature, concentration...etc. Finally, reading the *MATLAB* (`.mat`) files and the instrumental parameter ones ( in case of *BRUKER* instruments, so far) and the corresponding parameter extraction can be performed as well.
+To process the EPR spectral data it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` or `.par` format). The information incl. in these files is required to e.g. normalize the Intensity (like $\mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
+
+Reading of the instrumental parameters from `.DSC` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes like e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
+
+```{r instrum-params-reaad-df-info}
+
+## built-in package file => "TMPD_specelchem_accu_b.par"
+tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
+#
+## reading the parameter file coming from "winepr" acquisition softw.
+tmpd.params <- readEPR_params_tabs(path_to_DSC_or_par = tmpd.params.file,
+                                      origin = "winepr")
+#
+## the output `tmpd.params` is list consisting
+## of the "info" data frame (contaning characters)
+tmpd.params$info ## or `tmpd.params[["info"]]`
+
+```
+
+```{r instrum-params-reaad-df-params}
+
+## and the second data frame is the "params" one
+## containing parameters, their values and units
+tmpd.params$params ## or `tmpd.params[["params"]]`
+
+```
+
+Finally conversion of the second data frame (`tmpd.params$params`) into interactive table ➨
+
+```{r instrum-params-reaad-DT-interact}
+
+## function `datatable` from `DT` package
+DT::datatable(data = tmpd.params$params)
+
+```
+
+The `origin` argument from reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within "xenon"/"magnetech" software, the "winepr" intensity has to be normalized after the measurement if one wants to compare the intensities of two or more EPR spectra. Thus, the reading of the $\ce{TMPD^{.+}}$ spectral data by `readEPR_Exp_Specs()` proceeds as follows ➨
+
+```{r spectral-data-read-norm-basic}
+
+## built-in package file => "TMPD_specelchem_accu_b.asc"
+tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+
+## The intensity will be normalized by Q value (sensitivity factor)
+## and the number of scans (`Nscans`). From the previous parameter/info 
+## reading we know: Q = 3500, Nscans = 20, therefore, reading
+## the experimental spectra =>
+tmpd.data.norm.01 <- readEPR_Exp_Specs(path_to_ASC = tmpd.data.file,
+                                       col.names = c("B_G","dIepr_over_dB"),
+                                       x = 1,
+                                       Intensity = 2,
+                                       qValue = 3500,
+                                       norm.vec.add = 20,
+                                       origin = "winepr")
+#
+## data frame preview
+head(tmpd.data.norm.01)
+
+```
+
+An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units are quite often use to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine spitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
+
+[^1]: For such reason there are arguments `x` and `Intensity` , pointing to original column indices, in order to properly pick up the corresponding variables.
+
+```{r spectral-data-read-norm}
+
+## calculation of the advanced normalization constant
+## by selected parameters from the table above
+conv.time.ms <- 8 ## conversion time in milliseconds
+receiver.gain <- 39905.25 ## unitless or dB
+adv.norm.constant <- quantify_EPR_Norm_const(conv.time.ms = conv.time.ms,
+                                             Nscans = 20,
+                                             rg.dB = receiver.gain)
+#
+## Therefore, the reading of the experimental 
+## data file =>
+tmpd.data.norm.02 <- readEPR_Exp_Specs(path_to_ASC = tmpd.data.file,
+                                       col.names = c("B_G","dIepr_over_dB"),
+                                       x = 1,
+                                       Intensity = 2,
+                                       qValue = 3500,
+                                       norm.vec.add = adv.norm.constant,
+                                       origin = "winepr")
+#
+## data frame preview
+head(tmpd.data.norm.02)
+
+```
 
 -   Plotting the EPR spectra incl. time series/kinetics or their dependency on other quantities (like already mentioned above) as well as presentation of simulated spectra are provided by several functions based on either [ggplot2](https://ggplot2.tidyverse.org/) package/system (one of the most comprehensive system for data visualization) or interactive [plotly](https://plotly.com/r/) graphing library. Especially, the later may represent a valuable alternative to EPR instrumental software or other proprietary graphing systems, because it includes visualization tools like zooming, panning, data/values hovering and much more.
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
 -   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
-
--   ASCII output (*Bruker* spectrometer by \`WinEpr\` acquisition soft.) from EPR *in situ* simultaneous spectroelectrochemical experiment during cyclovoltammetric (CV) oxidation (+ re-reduction) of *N,N,N',N'*-Tetramethyl-p-phenylenediamine (TMPD) in 0.3 M TBAPF~6~/DMSO. Concentration prior to oxidation =\> c = 1 mM. Experiment performed directly in standard rectangular probehead and RT EPR spectroelectrochemical cell. Cyclovoltammetric scan rate 0.003 V s^-1^, potential (*vs* Ag-*quasiref.* electrode) scaned from -0.1 V to 0.45 and back to -0.1 V. 21 EPR spectra recorded during the CV scan. Second EPR experiment performed potentiostatically at 0.308 V (*vs* Ag-*quasiref.* electrode) as an accumulation of 20 spectra. \`.par\` files contain list of instrumental parameters.
 
 # References {.unnumbered}
