@@ -4,7 +4,7 @@
 \alias{quantify_EPR_Norm_const}
 \title{Normalization Constant Calculation for Quantitative EPR Analysis}
 \usage{
-quantify_EPR_Norm_const(conv.time.ms, Nscans, sw = NULL, rg, origin = "xenon")
+quantify_EPR_Norm_const(conv.time.ms, Nscans, sw = NULL, rg, rg.unit = "dB")
 }
 \arguments{
 \item{conv.time.ms}{Numeric, conversion time in milliseconds.}
@@ -14,31 +14,28 @@ quantify_EPR_Norm_const(conv.time.ms, Nscans, sw = NULL, rg, origin = "xenon")
 \item{sw}{Numeric, experimental sweep width (magnetic flux density recording region,
 \eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{sw = NULL}.}
 
-\item{rg}{Numeric, receiver gain in dB (in case if \code{origin = "xenone"}) or unitless
-(in case if \code{origin = "winepr"}).}
+\item{rg}{Numeric, receiver gain value.}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
-\strong{default}: \code{origin = "xenon"}}
+\item{rg.unit}{Character string corresponding to unit of the receiver gain.
+Either \code{rg.unit = "db"} (\code{rg.unit = "dB"}, \strong{default})
+or \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}).}
 }
 \value{
-Numeric value of normalization constant for quantitative EPR and intensity normalization.
+Numeric value of the normalization constant for quantitative EPR and intensity normalization.
 }
 \description{
 Normalization constant used by \code{\link{quantify_EPR_abs}} or to normalize
-  the EPR spectrum intensity. The calculation depends on the acquisition/processing software
-  characterized by the \code{origin} argument.
+  the EPR spectrum intensity. The calculation depends on expression of the receiver gain.
 }
 \details{
-The normalization constant is defined by expression used in "xenon" processing/acquisition
-  software =>
+For the receiver gain expressed in \eqn{\text{dB}} units the normalization constant is defined
+  by the following relation  =>
   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,N_{\text{Scans}}\,(20)\,
   10^{(G_{\text{R}}(\text{dB})/20)}}
   where \eqn{t_{\text{C}}(\text{ms})} depicts the conversion time in \eqn{\text{ms}};
   \eqn{N_{\text{Scans}}} corresponds to number of scans and \eqn{G_{\text{R}}(\text{dB})}
-  is the receiver gain in \eqn{\text{dB}}. Within the "winepr" sofware, the normalization constant
-  is defined by following relation =>
+  is the receiver gain in \eqn{\text{dB}}. In case the receiver gain is unitless, the normalization
+  constant is defined by =>
   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,G_{\text{R}}\,
   (N_{\text{Scans}} - 1)\,/\,B_{\text{SW}}(\text{G})}
   where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text{G})} correspond to unitless receiver gain
@@ -52,14 +49,13 @@ The normalization constant is defined by expression used in "xenon" processing/a
 \examples{
 quantify_EPR_Norm_const(conv.time.ms = 8.2,
                         Nscans = 10,
-                        rg = 32,
-                        origin = "xenon")
+                        rg = 32)
 #
-quantify_EPR_Norm_const(conv.time.ms = 4.1,
+quantify_EPR_Norm_const(conv.time.ms = 13.1,
                         sw = 180,
                         Nscans = 10,
                         rg = 3.2e+4,
-                        origin = "winepr")
+                        rg.unit = "Unitless")
 
 
 }
