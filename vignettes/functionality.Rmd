@@ -1,5 +1,6 @@
 ---
-title: "Basic Functionality - Processing and Analysis of the Wuster's Blue EPR Spectrum"
+title: "Basic Functionality"
+subtitle: "Processing and Analysis of the Wuster's Blue EPR Spectrum"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
@@ -18,7 +19,12 @@ vignette: >
 ```{r knitr-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7.2,
+  fig.height = 4.8
+)
+options(
+  rmarkdown.html_vignette.check_title = FALSE
 )
 ```
 
@@ -28,6 +34,7 @@ $\require{mhchem}$
 library(eprscope)
 library(icons)
 library(knitr)
+library(patchwork)
 ```
 
 # Introduction
@@ -46,10 +53,10 @@ where $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuste
 
 Structure of the investigated compound can be depicted by the following function (`draw_molecule_by_rcdk()`) based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/) an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
 
-```{r draw-molecule,fig.width=7,fig.height=5}
+```{r draw-molecule}
 
 ## radical cation of previosly described Wuster's Reagent equivalent
-## to radical cation  of N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD)
+## to N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical cation
 draw_molecule_by_rcdk(
   molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
   type = "smiles",
@@ -101,7 +108,7 @@ DT::datatable(data = tmpd.params$params)
 
 ```
 
-The `origin` argument from reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within "xenon"/"magnetech" software, the "winepr" intensity has to be normalized after the measurement if one wants to compare the intensities of two or more EPR spectra. Thus, the reading of the $\ce{TMPD^{.+}}$ spectral data by `readEPR_Exp_Specs()` proceeds as follows ➨
+The `origin` argument from reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within "xenon"/"magnetech" software, the "winepr" intensity has to be normalized after the measurement if one wants to compare the intensities of two or more EPR spectra. Thus, the reading of the $\ce{TMPD^{.+}}$ spectral data by `readEPR_Exp_Specs()` proceeds as follows with the output in form the universal `data frame` format ➨
 
 ```{r spectral-data-read-norm-basic}
 
@@ -162,7 +169,65 @@ head(tmpd.data.norm.02)
 
 ```
 
--   Plotting the EPR spectra incl. time series/kinetics or their dependency on other quantities (like already mentioned above) as well as presentation of simulated spectra are provided by several functions based on either [ggplot2](https://ggplot2.tidyverse.org/) package/system (one of the most comprehensive system for data visualization) or interactive [plotly](https://plotly.com/r/) graphing library. Especially, the later may represent a valuable alternative to EPR instrumental software or other proprietary graphing systems, because it includes visualization tools like zooming, panning, data/values hovering and much more.
+# Data Visualization
+
+All the data related to EPR spectroscopy can be visualized by the famous [{ggplot2}](https://ggplot2.tidyverse.org/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, the latter includes tools like zooming, panning, data/values hovering and much more. Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
+
+[^2]: *The Grammar of Graphics* is a concept how the graphs/plots are built. It is based on fact that graphs may consist of several component/layers (e.g. like data layer, geometry layer, aesthetic layer...etc) similarly to processing of a bitmap-image in the photo-editor. The term "*grammar*" corresponds to structure of a sentence in language and thus it may represent a structure of the graph/plot in R programming language.
+
+## Static Plots by `{ggplot2}` and `{patchwork}`
+
+The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra as well as those within the series (e.g. like time series $\equiv$ kinetic measurements). Now, by means of this function and by the [{patchwork}](https://patchwork.data-imaginist.com/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` , we can compare the EPR spectra with basic and "advanced" normalization ➨
+
+```{r spectral-data-norm01-visual}
+
+## Plotting the spectrum with basic normalization
+## the B abscissa can be presented either in "mT" (default) or "G" 
+## plot title is added by `labs()` function from `{ggplot2}` package
+tmpd.plot.norm.01 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.01) + 
+  ggplot2::labs(title = "Basic Normalization")
+#
+## preview
+tmpd.plot.norm.01
+
+```
+
+Comparison of both spectra with different normalization
+
+```{r spectral-data-norm0102-visual}
+
+## Spectrum with the "advanced" normalization without y/Intensity label
+## because the EPR spectra will be displayed close to each other in two columns
+tmpd.plot.norm.02 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
+  ggplot2::labs(title = "Advanced Normalization",y = "")
+#
+## Both spectra together by `{patchwork}` package
+tmpd.plot.norm.0102 <- tmpd.plot.norm.01 + tmpd.plot.norm.02
+
+## to save figure `ggsave()` function from `{ggplot2}` is applied
+# ggsave("path_to_image_file",
+#        plot = tmpd.plot.norm.0102,
+#        width = 7,
+#        height = 5,
+#        units = "in",
+#        dpi = 300)
+
+## preview of EPR spectra with different intensities
+tmpd.plot.norm.0102
+
+```
+
+## Interactive Plot by `{plotly}`
+
+In order to explore the EPR spectrum in details, function `plot_EPR_Specs2D_interact()` is applied. Additionally, it can be also used for series of EPR spectra similarly like `plot_EPR_Specs()`. The last spectrum with advanced normalization ➨
+
+```{r spectral-data-norm02-visual}
+
+## comment + preview
+plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
+
+
+```
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
