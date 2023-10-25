@@ -47,7 +47,7 @@ The *Wuster's* reagent got his name according to *C. Wuster* who discovered the 
 (\#eq:tmpdoxid)
 \end{equation}
 ```
-where $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuster's reagent) abbreviation. Therefore, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**. Such an example will demonstrate the main workflow to process and analyse the EPR spectra by the `r icons::icon_style(fontawesome("box-open"), fill = "brown")` . The $\ce{TMPD^{.+}}$ was generated electrochemically by potentiostatic electrolysis at 0.308 V (*vs* Ag-*quasiref.* electrode) of the corresponding $1\,\mathrm{mM}$ $\ce{TMPD}$ solution in 0.3 M TBAPF~6~/DMSO.
+where $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuster's reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation \@ref(eq:tmpdoxid)) appears far behind ($\approx (0.5-0.6)\,\mathrm{V}$) from the first one [@Dadpou2018]. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum, as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**. Such an example will demonstrate the main workflow to process and analyse the EPR spectra by the `{eprscope}` `r icons::icon_style(fontawesome("box-open"), fill = "brown")` . The $\ce{TMPD^{.+}}$ was generated electrochemically by potentiostatic electrolysis at 0.308 V (*vs* Ag-*quasiref.* electrode) of the corresponding $1\,\mathrm{mM}$ $\ce{TMPD}$ solution in 0.3 M TBAPF~6~/DMSO.
 
 # Drawing of Molecular Structures
 
@@ -133,7 +133,7 @@ head(tmpd.data.norm.01)
 
 ```
 
-An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units is quite often used to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine spitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
+An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units is quite often used to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine splitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
 
 [^1]: For such reason there are arguments `x` and `Intensity` , pointing to original column indices, in order to properly pick up the corresponding variables.
 
@@ -179,7 +179,7 @@ All the data related to EPR spectroscopy can be visualized by the famous [{ggplo
 
 The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra as well as those within the series (e.g. like time series $\equiv$ kinetic measurements). Now, by means of this function and by the [{patchwork}](https://patchwork.data-imaginist.com/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` , we can compare the EPR spectra with basic and "advanced" normalization ➨
 
-```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\ce{TMPD^{.+}}$ in $0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $0.308\\,\\mathrm{V}$ vs Ag-quasiref."}
+```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\ce{TMPD^{.+}}$ in $0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensityvity Q-factor, 'qValue'."}
 
 ## Plotting the spectrum with basic normalization
 ## the B abscissa can be presented either in "mT" (default) or "G" 
@@ -231,7 +231,7 @@ In order to explore the EPR spectrum in details (to read values, zoom or save th
 ```{r spectral-data-norm02-visual}
 
 ## preview + by hovering over the spectrum a toolbar appears in the upper 
-## right corner + x,y values directly from the spectrum can be read
+## right corner + `B`, `dIepr_over_dB` values can be read directly from the spectrum
 plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
 
 
