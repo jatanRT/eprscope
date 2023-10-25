@@ -25,8 +25,8 @@
 #'   \strong{Default}: \code{B.unit = "G"}.
 #'
 #'
-#' @return Named numeric vector consisting of \code{"cf"} ("central field" value in `B.unit`),
-#'   \code{"sw"} ("sweep width" value in `B.unit`), \code{"points"} ("number of points" value)
+#' @return List consisting of \code{"Bcf"} ("central field" value in `B.unit`),
+#'   \code{"Bsw"} ("sweep width" value in `B.unit`), \code{"Npoints"} ("number of points" value)
 #'   and \code{"mwGHz"} ("microwave frequency" value in `GHz`).
 #'
 #'
@@ -71,6 +71,6 @@ readEPR_params_slct_sim <- function(path_to_DSC_or_par,
   ## not required anymore =>
   rm(params.df)
   #
-  named.params.vec <- c("cf" = B.CF,"sw" = B.SW,"points" = Npoints,"mwGHz" = nu.GHz)
-  return(named.params.vec)
+  named.params.list <- list(Bcf = B.CF,Bsw = B.SW,Npoints = Npoints,mwGHz = nu.GHz)
+  return(named.params.list)
 }

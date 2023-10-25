@@ -6,6 +6,11 @@
 #'
 #'
 #' @description
+#'   A short description...TBC...
+#'
+#'
+#'
+#' @details
 #'   There are two approaches how to quantify the number of paramagnetic species/radicals/spins.
 #'   The \strong{relative} one needs a standard sample with a known number and can be evaluated
 #'   by the sigmoid integral ratio of the sample under study and that of the standard.
@@ -29,6 +34,7 @@
 #'
 #' @references{
 #'   \insertRef{eatonQepr2010}{eprscope}
+#'
 #'   \insertRef{hirschCapill2023}{eprscope}
 #' }
 #'
@@ -36,23 +42,34 @@
 #' @importFrom Rdpack reprompt
 #'
 #'
-#' @param integ.sigmoid.max tbc
-#' @param nu.GHz tbc
-#' @param P.mW tbc
-#' @param Bm.mT tbc
-#' @param qValue tbc
-#' @param tube.sample.id.mm tbc
-#' @param fill.sample.h.mm tbc
-#' @param Norm.constant tbc
-#' @param Temp.K tbc
-#' @param S tbc
-#' @param microW.cavity tbc
+#' @inheritParams eval_sim_EPR_iso
+#' @param integ.sigmoid.max Numeric...tbc...
+#' @param instrum.params Named numeric vector containing instrumental parameters required
+#'   for the quantification =>
+#'   \tabular{ll}{
+#'   \code{PmW} \tab power of the MW source in mW \cr
+#'   \code{BmmT} \tab modulation amplitude (magnetic flux density modulation,
+#'   \eqn{B_{\text{m}}}) in mT \cr
+#'   \code{TK} \tab temperature in K \cr
+#'   \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+#'   EPR spectrum \cr
+#'   }
+#'   \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
+#'   from the \code{path_to_DSC_or_par} based on the \code{origin}.
+#' @param qValue Numeric, ...tbc... default NULL
+#' @param tube.sample.id.mm Numeric, ...tbc...
+#' @param fill.sample.h.mm Numeric, ...tbc...
+#' @param Norm.constant Numeric, ...tbc...
+#' @param Temper.K Numeric ...description... tbc default NULL
+#' @param S Numeric, ...tbc...
+#' @param microW.cavity Character string, ...tbc... \strong{Default}:
+#'   \code{microW.cavity = "rectangular"}.
 #'
 #'
-#' @return Named vector with \code{"N_per_cm"} number of spins per effective centimeter (which is the cm
+#' @return List with \code{"Ncm"} number of spins per effective centimeter (which is the cm
 #'   around, \eqn{\pm 5\,\text{mm}}, the maximum of the intensity distribution curve within the cavity
-#'   \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"N_per_cm^3"} corresponding
-#'   to number of spins per \eqn{\text{cm}^3} and finally the \code{"c_M"} denotes the concentration
+#'   \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"Ncm3"} corresponding
+#'   to number of spins per \eqn{\text{cm}^3} and finally the \code{"cM"} denotes the concentration
 #'   in \eqn{\text{mol}\,\text{dm}^{-3}}.
 #'
 #'
@@ -67,14 +84,14 @@
 #'
 #'
 quantify_EPR_abs <- function(integ.sigmoid.max,
-                             nu.GHz,
-                             P.mW,
-                             Bm.mT,
+                             instrum.params = NULL, ##  otherwise c(mwGHz,PmW,BmmT,TK = 298)
+                             path_to_DSC_or_par,
+                             origin = "xenon",
                              qValue = NULL,
                              tube.sample.id.mm,
                              fill.sample.h.mm,
                              Norm.constant = NULL,
-                             Temp.K = 298,
+                             Temper.K = NULL,
                              S = 0.5,
                              microW.cavity = "rectangular") {
   #
@@ -88,6 +105,40 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
   ## Definition for `qValue` and `Norm.constant`
   qValue <- qValue %>% `if`(is.null(qValue), 1, .)
   Norm.constant <- Norm.constant %>% `if`(is.null(Norm.constant), 1, .)
+  #
+  ## Additional instrumental parameters
+  ## Extracting instrumental parameter values from `.DSC` or `.par` files
+  ## or from named numeric vector above
+  if (is.null(path_to_DSC_or_par)){
+    if (is.null(instrum.params)){
+      stop(" Please, define `instrum.params` like modulation amplitude, MW freq.,... ! ")
+    } else {
+      Bm.mT <- unname(instrum.params["BmmT"])
+      P.mW <- unname(instrum.params["PmW"])
+      Temp.K <- unname(instrum.params["TK"])
+      nu.GHz <- unname(instrum.params["mwGHz"])
+    }
+  } else{
+    if (!is.null(instrum.params)){
+      stop(" Parameters are extracted from file, please define `instrum.params = NULL` ! ")
+    } else{
+      if (is.null(origin)){
+        stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
+      } else{
+        ## reading the table and extracting values form table
+        instr.params.list <- readEPR_params_slct_sim(path_to_DSC_or_par,origin = origin)
+        Bm.mT <- instrum.params.list$BmmT
+        P.mW <- instrum.params.list$PmW
+        Temp.K <- instrum.params.list$TK
+        nu.GHz <- instrum.params.list$mwGHz
+      }
+    }
+  }
+  ## Two step condition definition for temperature !
+  ## 1st check against `Temper.K`
+  Temp.K <- Temp.K %>% `if`(is.null(Temp.K), Temper.K, .)
+  ## 2nd check if `Temper.K` was NULL
+  Temp.K <- Temp.K %>% `if`(is.null(Temp.K), 298, .)
   #
   ## Boltzmann factor:
   n.B <- (Planck.const * nu.GHz * 1e+9) / (2 * Boltzmann.const * Temp.K)
@@ -174,10 +225,10 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
   }
   #
   ## RESULT:
-  No_paramagSpecies <- c(
-    "N_per_cm" = No.paramag.cm.spc,
-    "N_per_cm^3" = No.paramag.V.spc,
-    "c_M" = No.paramag.c.spc
+  No_paramagSpecies <- list(
+    Ncm = No.paramag.cm.spc,
+    Ncm3 = No.paramag.V.spc,
+    cM = No.paramag.c.spc
   )
   #
   return(No_paramagSpecies)

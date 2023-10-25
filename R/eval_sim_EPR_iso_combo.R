@@ -10,16 +10,16 @@
 #'
 #'
 #' @inheritParams eval_sim_EPR_iso
-#' @param g.iso.vec Nemeric vector...tbc...
+#' @param g.iso.vec Numeric vector...tbc...
 #' @param nuclear.system Nested list ...tbc...
 #' @param natur.abund.vec Logical vector ...tbc ...
 #' @param lineGL.DeltaB Nested list ...tbc ...
 #' @param lineG.content.vec Numeric vector ...tbc...
-#' @param Intensity.sim.coeffs.vec Numeriv vector ...tbc...
-#' @param plot.sim.interact Logical ...tbc ...
+#' @param Intensity.sim.coeffs.vec Numeric vector ...tbc...
+#' @param plot.sim.interact Character string "components" or "sum" or NULL (\code{default})
 #'
 #'
-#' @return List of the following data frames and plots in case of \code{plot.sim.interact = FALSE} =>
+#' @return List of the following data frames and plots in case of \code{plot.sim.interact = NULL} =>
 #'
 #'   * long-format data frame with simulation components A, B, C, ...(e.g. representing the individual
 #'     radicals) as categorical variable + magnetic flux density and intensity denoted as \code{df}
@@ -69,9 +69,9 @@
 #'
 #'
 eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
-                                   instrum.params =c(cf = 3500,
-                                                     sw = 200,
-                                                     points = 2048,
+                                   instrum.params =c(Bcf = 3500,
+                                                     Bsw = 200,
+                                                     Npoints = 2048,
                                                      mwGHz = 9.8),
                                    B.unit = "G", ## default
                                    path_to_DSC_or_par = NULL, ## default
@@ -236,7 +236,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
   ## list of the all results and/or plots
-  if (isFALSE(plot.sim.interact)){
+  if (is.null(plot.sim.interact)){
     result.sim <- list(df = df.systems.weighted.integ.long,
                        df.areas = df.systems.areas,
                        df.sum = df.systems.weighted.wide,
