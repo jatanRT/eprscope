@@ -171,7 +171,7 @@ head(tmpd.data.norm.02)
 
 # Data Visualization
 
-All the data related to EPR spectroscopy can be visualized by the famous [{ggplot2}](https://ggplot2.tidyverse.org/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, the latter includes tools like zooming, panning, data/values hovering and much more. Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
+All the data related to EPR spectroscopy can be visualized by the famous [{ggplot2}](https://ggplot2.tidyverse.org/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, the latter includes tools like zooming, panning, data/values hovering and [much more](https://plotly.com/r/configuration-options/). Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
 
 [^2]: *The Grammar of Graphics* is a concept how the graphs/plots are built. It is based on fact that graphs may consist of several component/layers (e.g. like data layer, geometry layer, aesthetic layer...etc) similarly to processing of a bitmap-image in the photo-editor. The term "*grammar*" corresponds to structure of a sentence in language and thus it may represent a structure of the graph/plot in R programming language.
 
@@ -179,7 +179,7 @@ All the data related to EPR spectroscopy can be visualized by the famous [{ggplo
 
 The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra as well as those within the series (e.g. like time series $\equiv$ kinetic measurements). Now, by means of this function and by the [{patchwork}](https://patchwork.data-imaginist.com/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` , we can compare the EPR spectra with basic and "advanced" normalization ➨
 
-```{r spectral-data-norm01-visual}
+```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\ce{TMPD^{.+}}$ in $0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $0.308\\,\\mathrm{V}$ vs Ag-quasiref."}
 
 ## Plotting the spectrum with basic normalization
 ## the B abscissa can be presented either in "mT" (default) or "G" 
@@ -192,9 +192,9 @@ tmpd.plot.norm.01
 
 ```
 
-Comparison of both spectra with different normalization
+Comparison of both spectra with different normalization ➨
 
-```{r spectral-data-norm0102-visual}
+```{r spectral-data-norm0102-visual,fig.cap="Comparison of $\\ce{TMPD^{.+}}$ EPR spectra with different intensity normalization."}
 
 ## Spectrum with the "advanced" normalization without y/Intensity label
 ## because the EPR spectra will be displayed close to each other in two columns
@@ -203,27 +203,35 @@ tmpd.plot.norm.02 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.02) +
 #
 ## Both spectra together by `{patchwork}` package
 tmpd.plot.norm.0102 <- tmpd.plot.norm.01 + tmpd.plot.norm.02
-
-## to save figure `ggsave()` function from `{ggplot2}` is applied
-# ggsave("path_to_image_file",
-#        plot = tmpd.plot.norm.0102,
-#        width = 7,
-#        height = 5,
-#        units = "in",
-#        dpi = 300)
-
+#
 ## preview of EPR spectra with different intensities
 tmpd.plot.norm.0102
 
 ```
 
+If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual) the function `ggsave()` from `{ggplot2}` package can be used ➨
+
+```{r spectral-data-norm0102-visua-save}
+
+## to save plot `tmpd.plot.norm.0102` with the size
+## of (7 x 5) inches and the resolution of dpi = 200
+ggplot2::ggsave("imgs/TMPD_EPR_Norm_compar.png",
+                plot = tmpd.plot.norm.0102,
+                width = 7,
+                height = 5,
+                units = "in",
+                dpi = 200)
+
+```
+
 ## Interactive Plot by `{plotly}`
 
-In order to explore the EPR spectrum in details, function `plot_EPR_Specs2D_interact()` is applied. Additionally, it can be also used for series of EPR spectra similarly like `plot_EPR_Specs()`. The last spectrum with advanced normalization ➨
+In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied. Additionally, it can be also used for series of EPR spectra similarly like `plot_EPR_Specs()`. The last spectrum with the advanced normalization can be plotted like ➨
 
 ```{r spectral-data-norm02-visual}
 
-## comment + preview
+## preview + by hovering over the spectrum a toolbar appears in the upper 
+## right corner + x,y values directly from the spectrum can be read
 plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
 
 
