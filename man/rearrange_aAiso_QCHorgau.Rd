@@ -14,17 +14,25 @@ rearrange_aAiso_QCHorgau(
 )
 }
 \arguments{
-\item{path_to_QCHoutput}{tbc}
+\item{path_to_QCHoutput}{Character string corresponding to path of `Gaussian` or `ORCA` output text files.}
 
-\item{No_nuclei}{tbc}
+\item{No_nuclei}{Numeric value equal to number of atoms/nuclei within the calculated structure.}
 
-\item{nuclei.list.slct}{tbc}
+\item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
+e.g. like: \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
+correspond to indices of atoms/nuclei in the ASCII text file.}
 
-\item{origin}{tbc}
+\item{origin}{Character string pointing to origin of DFT EPR calculation parameters <=> which
+software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
+or \code{"orca"}.}
 
-\item{output.text.origin}{tbc}
+\item{output.text.origin}{Logical, whether to write a text file containing the extracted
+\eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined by \code{path_to-QCHoutput}.
+\strong{Default}: \code{output.text.origin = FALSE}.}
 
-\item{output.text.path}{tbc}
+\item{output.text.path}{Character string which coincides with path to file containing
+the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined
+by \code{path_to-QCHoutput}. See the previous argument.}
 }
 \value{
 Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group

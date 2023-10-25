@@ -11,11 +11,11 @@ eval_gFactor_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.}
 
 \item{mean}{Logical, whether to calculate the \code{mean value/iso} from principal components,
-\strong{default}: \code{mean = TRUE}, or save the entire vector with all the components}
+\strong{default}: \code{mean = TRUE}, or save the entire vector with all the components.}
 
 \item{origin}{Character string pointing to origin of DFT EPR calculation parameters <=> which
 software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
-or \code{"orca"}}
+or \code{"orca"}.}
 }
 \value{
 Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components

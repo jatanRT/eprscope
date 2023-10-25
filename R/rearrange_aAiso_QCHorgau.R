@@ -9,13 +9,18 @@
 #' A short description...the same like \code{\link{rearrange_aAiso_QCHcomp}} something...
 #'
 #'
-#'
-#' @param path_to_QCHoutput tbc
-#' @param No_nuclei tbc
-#' @param nuclei.list.slct tbc
-#' @param origin tbc
-#' @param output.text.origin tbc
-#' @param output.text.path tbc
+#' @inheritParams rearrange_aAiso_QCHcomp
+#' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files.
+#' @param No_nuclei Numeric value equal to number of atoms/nuclei within the calculated structure.
+#' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
+#'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
+#'   or \code{"orca"}.
+#' @param output.text.origin Logical, whether to write a text file containing the extracted
+#'   \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined by \code{path_to-QCHoutput}.
+#'   \strong{Default}: \code{output.text.origin = FALSE}.
+#' @param output.text.path Character string which coincides with path to file containing
+#'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined
+#'   by \code{path_to-QCHoutput}. See the previous argument.
 #'
 #'
 #' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
@@ -53,7 +58,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   if (origin == "gaussian") {
     #
     ## number of atoms + 1
-    ## because it also reads the header, therefore must be an additional line
+    ## because it also reads the header therefore, there must be an additional line
     No_nuclei_atoms_mod <- No_nuclei_atoms + 1
     #
     ## indicator (String) to select specific lines (indices) from `qchfile`
@@ -238,11 +243,11 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   #
   data.slct.nucs.group <- data.slct.nucs.group %>%
     dplyr::mutate(mT = .data$Gauss / 10) %>%
-    dplyr::select(-c(.data$No, .data$Nucleus, .data$Gauss)) %>%
+    dplyr::select(dplyr::any_of(c("No","Nucleus","Gauss"))) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
     dplyr::summarize(
-      Aiso_MHz_QCH = round(mean(.data$Megahertz), digits = 3),
-      aiso_mT_QCH = round(mean(.data$mT), digits = 2)
+      Aiso_MHz_QCH = abs(round(mean(.data$Megahertz), digits = 3)),
+      aiso_mT_QCH = abs(round(mean(.data$mT), digits = 2))
     )
   #
   ## Finally rearranged data frame
