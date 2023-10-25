@@ -48,10 +48,7 @@ plot_EPR_present_interact <- function(p,
   )
   #
   ## Conditions
-  if (knitr::is_latex_output()) {
-    widget
-    webshot
-  } else if (knitr::pandoc_to(fmt = "docx")) {
+  if (knitr::is_latex_output() || knitr::pandoc_to(fmt = "docx")) {
     widget
     webshot
   } else {
