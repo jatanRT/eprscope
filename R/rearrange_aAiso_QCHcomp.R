@@ -133,7 +133,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
   #
   data.slct.nucs.group <- data.slct.nucs.group %>%
     dplyr::mutate(mT = .data$Gauss / 10) %>%
-    dplyr::select(-dplyr::any_of(c("No","Nucleus","Gauss"))) %>%
+    dplyr::select(-dplyr::all_of(c("No","Nucleus","Gauss"))) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
     dplyr::summarize(
       Aiso_MHz_QCH = abs(round(mean(.data$MegaHertz), digits = 3)),
