@@ -55,8 +55,8 @@ Structure of the investigated compound can be depicted by the following function
 
 ```{r draw-molecule}
 
-## radical cation of previosly described Wuster's Reagent equivalent
-## to N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical cation
+# radical cation of previosly described Wuster's Reagent equivalent
+# to N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical cation
 draw_molecule_by_rcdk(
   molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
   type = "smiles",
@@ -70,7 +70,7 @@ draw_molecule_by_rcdk(
 
 This function belongs to the package family/section `Visualization and Graphics` and enables to create image of molecular structures either by [SMILES and SMART codes](https://chem.libretexts.org/Courses/Fordham_University/Chem1102%3A_Drug_Discovery_-_From_the_Laboratory_to_the_Clinic/05%3A_Organic_Molecules/5.08%3A_Line_Notation_(SMILES_and_InChI)) or by loading a **S**tructure **D**ata **F**ile (`.sdf`) [@Sakari2022].
 
-# Reading Text Files
+# Reading Text Files and Writing Data Frames
 
 To process the EPR spectral data it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` or `.par` format). The information incl. in these files is required to e.g. normalize the Intensity (like $\mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
 
@@ -78,24 +78,24 @@ Reading of the instrumental parameters from `.DSC` or `.par` files (correspondin
 
 ```{r instrum-params-reaad-df-info}
 
-## built-in package file => "TMPD_specelchem_accu_b.par"
+# built-in package file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
-## reading the parameter file coming from "winepr" acquisition softw.
+# reading the parameter file coming from "winepr" acquisition softw.
 tmpd.params <- readEPR_params_tabs(path_to_DSC_or_par = tmpd.params.file,
                                    origin = "winepr")
 #
-## the output `tmpd.params` is list consisting
-## of the "info" data frame (contaning characters)
-tmpd.params$info ## or `tmpd.params[["info"]]`
+# the output `tmpd.params` is list consisting
+# of the "info" data frame (contaning characters)
+tmpd.params$info # or `tmpd.params[["info"]]`
 
 ```
 
 ```{r instrum-params-reaad-df-params}
 
-## and the second data frame is the "params" one
-## containing parameters, their values and units
-tmpd.params$params ## or `tmpd.params[["params"]]`
+# and the second data frame is the "params" one
+# containing parameters, their values and units
+tmpd.params$params # or `tmpd.params[["params"]]`
 
 ```
 
@@ -103,7 +103,7 @@ Finally conversion of the second data frame (`tmpd.params$params`) into interact
 
 ```{r instrum-params-reaad-DT-interact}
 
-## by function `datatable` from the `DT` package
+# by function `datatable` from the `DT` package
 DT::datatable(data = tmpd.params$params)
 
 ```
@@ -112,12 +112,12 @@ The `origin` argument from reading functions reflects the differences in the ASC
 
 ```{r spectral-data-read-norm-basic}
 
-## built-in package file => "TMPD_specelchem_accu_b.asc"
+# built-in package file => "TMPD_specelchem_accu_b.asc"
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
-## The intensity will be normalized by Q value (sensitivity factor)
-## and the number of scans (`Nscans`). From the previous parameter/info reading 
-## we know: Q = 3500, Nscans = 20. Therefore, reading of the experimental spectra =>
+# The intensity will be normalized by Q value (sensitivity factor)
+# and the number of scans (`Nscans`). From the previous parameter/info reading 
+# we know: Q = 3500, Nscans = 20. Therefore, reading of the experimental spectra =>
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
@@ -128,7 +128,7 @@ tmpd.data.norm.01 <- readEPR_Exp_Specs(
   origin = "winepr"
 )
 #
-## data frame preview
+# data frame preview 
 head(tmpd.data.norm.01)
 
 ```
@@ -139,11 +139,11 @@ An arbitrary character string may be chosen for the column names (`col.names`)[^
 
 ```{r spectral-data-read-norm}
 
-## calculation of the advanced normalization constant
-## by selected parameters from the table above
-conv.time.ms <- 8 ## conversion time in milliseconds
-receiver.gain <- 39905.25 ## unitless
-sweep.width <- 120 ## in G
+# calculation of the advanced normalization constant
+# by selected parameters from the table above
+conv.time.ms <- 8 # conversion time in milliseconds
+receiver.gain <- 39905.25 # unitless
+sweep.width <- 120 # in G
 adv.norm.constant <- quantify_EPR_Norm_const(
   conv.time.ms = conv.time.ms,
   Nscans = 20,
@@ -152,8 +152,8 @@ adv.norm.constant <- quantify_EPR_Norm_const(
   Bsw = sweep.width
 )
 #
-## Therefore, the reading of the experimental 
-## data file =>
+# Therefore, the reading of the experimental 
+# data file =>
 tmpd.data.norm.02 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
@@ -164,10 +164,12 @@ tmpd.data.norm.02 <- readEPR_Exp_Specs(
   origin = "winepr"
 )
 #
-## data frame preview
+# data frame preview
 head(tmpd.data.norm.02)
 
 ```
+
+Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/) (example of interactive data frame by [{DT}](https://rstudio.github.io/DT/) is already shown above). Among them libraries like ...TBC(gt,flextable,kebleExtra)...
 
 # Data Visualization
 
@@ -181,13 +183,13 @@ The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra 
 
 ```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\ce{TMPD^{.+}}$ in $0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensityvity Q-factor, 'qValue'."}
 
-## Plotting the spectrum with basic normalization
-## the B abscissa can be presented either in "mT" (default) or "G" 
-## plot title is added by `labs()` function from `{ggplot2}` package
+# Plotting the spectrum with basic normalization
+# the B abscissa can be presented either in "mT" (default) or "G" 
+# plot title is added by `labs()` function from `{ggplot2}` package
 tmpd.plot.norm.01 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.01) + 
   ggplot2::labs(title = "Basic Normalization")
 #
-## preview
+# preview
 tmpd.plot.norm.01
 
 ```
@@ -196,15 +198,15 @@ Comparison of both spectra with different normalization ➨
 
 ```{r spectral-data-norm0102-visual,fig.cap="Comparison of $\\ce{TMPD^{.+}}$ EPR spectra with different intensity normalization."}
 
-## Spectrum with the "advanced" normalization without y/Intensity label
-## because the EPR spectra will be displayed close to each other in two columns
+# Spectrum with the "advanced" normalization without y/Intensity label
+# because the EPR spectra will be displayed close to each other in two columns
 tmpd.plot.norm.02 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
   ggplot2::labs(title = "Advanced Normalization",y = "")
 #
-## Both spectra together by `{patchwork}` package
+# Both spectra together by `{patchwork}` package
 tmpd.plot.norm.0102 <- tmpd.plot.norm.01 + tmpd.plot.norm.02
 #
-## preview of EPR spectra with different intensities
+# preview of EPR spectra with different intensities
 tmpd.plot.norm.0102
 
 ```
@@ -213,14 +215,17 @@ If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual
 
 ```{r spectral-data-norm0102-visua-save}
 
-## to save plot `tmpd.plot.norm.0102` with the size
-## of (7 x 5) inches and the resolution of dpi = 200
+# to save plot `tmpd.plot.norm.0102` with the size
+# of (7 x 5) inches and the resolution of dpi = 200
 ggplot2::ggsave("imgs/TMPD_EPR_Norm_compar.png",
                 plot = tmpd.plot.norm.0102,
                 width = 7,
                 height = 5,
                 units = "in",
                 dpi = 200)
+
+# other image formats like `.pdf`, `.tex`,`.jpeg`, `.eps`,
+# `.bmp`, `.svg` or `.tiff` can be used as well
 
 ```
 
@@ -230,8 +235,8 @@ In order to explore the EPR spectrum in details (to read values, zoom or save th
 
 ```{r spectral-data-norm02-visual}
 
-## preview + by hovering over the spectrum a toolbar appears in the upper 
-## right corner + `B`, `dIepr_over_dB` values can be read directly from the spectrum
+# preview + by hovering over the spectrum a toolbar appears in the upper 
+# right corner + `B`, `dIepr_over_dB` values can be read directly from the spectrum
 plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
 
 
