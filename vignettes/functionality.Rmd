@@ -149,7 +149,7 @@ adv.norm.constant <- quantify_EPR_Norm_const(
   Nscans = 20,
   rg = receiver.gain,
   rg.unit = "Unitless",
-  sw = sweep.width
+  Bsw = sweep.width
 )
 #
 ## Therefore, the reading of the experimental 

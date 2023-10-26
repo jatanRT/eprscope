@@ -4,15 +4,15 @@
 \alias{quantify_EPR_Norm_const}
 \title{Normalization Constant Calculation for Quantitative EPR Analysis}
 \usage{
-quantify_EPR_Norm_const(conv.time.ms, Nscans, sw = NULL, rg, rg.unit = "dB")
+quantify_EPR_Norm_const(conv.time.ms, Nscans, Bsw = NULL, rg, rg.unit = "dB")
 }
 \arguments{
 \item{conv.time.ms}{Numeric, conversion time in milliseconds.}
 
 \item{Nscans}{Numeric, number of scans.}
 
-\item{sw}{Numeric, experimental sweep width (magnetic flux density recording region,
-\eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{sw = NULL}.}
+\item{Bsw}{Numeric, experimental sweep width (magnetic flux density recording region,
+\eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{Bsw = NULL}.}
 
 \item{rg}{Numeric, receiver gain value.}
 
@@ -52,7 +52,7 @@ quantify_EPR_Norm_const(conv.time.ms = 8.2,
                         rg = 32)
 #
 quantify_EPR_Norm_const(conv.time.ms = 13.1,
-                        sw = 180,
+                        Bsw = 180,
                         Nscans = 10,
                         rg = 3.2e+4,
                         rg.unit = "Unitless")

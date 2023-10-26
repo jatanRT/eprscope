@@ -16,8 +16,13 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 \strong{default}: \code{origin = "xenon"}}
 }
 \value{
-List containing number of scans (\code{Nscans}) and sweep time (\code{sweepTime}) required
-  for time correction during the \code{2D_Field_Delay} experiment ("kinetic" time series)
+List containing:
+  * number of scans (\code{Nscans})
+
+  * sweep time (\code{swTime}) required for time correction during the \code{2D_Field_Delay}
+    experiment ("kinetic" time series)
+
+  * number of points (\code{Npoints})
 }
 \description{
 Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}

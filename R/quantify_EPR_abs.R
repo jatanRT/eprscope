@@ -1,12 +1,12 @@
 #
-#' Absolute Quantification of Radicals/Spins in the Most Common EPR Cavities
+#' Absolute Quantification of Radicals/Spins
 #'
 #'
 #' @family Evaluations and Quantification
 #'
 #'
 #' @description
-#'   A short description...TBC...
+#'   A short description...TBC...in the Most Common EPR Cavities
 #'
 #'
 #'
@@ -43,7 +43,7 @@
 #'
 #'
 #' @inheritParams eval_sim_EPR_iso
-#' @param integ.sigmoid.max Numeric...tbc...
+#' @param integ.sigmoid.max Numeric value of entire EPR spectrum sigmoid integral.
 #' @param instrum.params Named numeric vector containing instrumental parameters required
 #'   for the quantification =>
 #'   \tabular{ll}{
@@ -56,21 +56,30 @@
 #'   }
 #'   \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
 #'   from the \code{path_to_DSC_or_par} based on the \code{origin}.
-#' @param qValue Numeric, ...tbc... default NULL
-#' @param tube.sample.id.mm Numeric, ...tbc...
-#' @param fill.sample.h.mm Numeric, ...tbc...
-#' @param Norm.constant Numeric, ...tbc...
-#' @param Temp.K Numeric ...description... tbc default NULL
+#' @param qValue Numeric value of the sensitivity `Q` factor. For the processed EPR spectra by
+#'   the `{eprscope}` package the \code{integ.sigmoid.max} is usually normalized by the `Q` value.
+#'   Therefore, \strong{default}: \code{qValue = NULL}.
+#' @param tube.sample.id.mm Numeric value equal to internal diameter (in `mm`) of the tube/cell used
+#'   for the quantitative EPR experiment.
+#' @param fill.sample.h.mm Numeric value equal to sample height (in `mm`) within the tube/cell.
+#' @param Norm.const Numeric value corresponding to normalization constant (see
+#'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
+#'   when the EPR spectrum was normalized by that constant either upon measurement or during processing.
+#' @param Temp.K Numeric
 #' @param S Numeric, ...tbc...
 #' @param microW.cavity Character string, ...tbc... \strong{Default}:
 #'   \code{microW.cavity = "rectangular"}.
 #'
 #'
-#' @return List with \code{"Ncm"} number of spins per effective centimeter (which is the cm
-#'   around, \eqn{\pm 5\,\text{mm}}, the maximum of the intensity distribution curve within the cavity
-#'   \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"Ncm3"} corresponding
-#'   to number of spins per \eqn{\text{cm}^3} and finally the \code{"cM"} denotes the concentration
-#'   in \eqn{\text{mol}\,\text{dm}^{-3}}.
+#' @return List of the following quantities:
+#'   * \code{"Ncm"} number of spins per effective centimeter. It is defined
+#'     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
+#'     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
+#'     the equation above.
+#'
+#'   * \code{"Ncm3"} corresponding to number of spins per \eqn{\text{cm}^3}
+#'
+#'   * \code{"cM"} denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
 #'
 #'
 #' @examples
@@ -90,7 +99,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
                              qValue = NULL,
                              tube.sample.id.mm,
                              fill.sample.h.mm,
-                             Norm.constant = NULL,
+                             Norm.const = NULL,
                              Temp.K = NULL,
                              S = 0.5,
                              microW.cavity = "rectangular") {
@@ -102,9 +111,9 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
   Boltzmann.const <- constants::syms$k
   Avogadro.No <- constants::syms$na
   #
-  ## Definition for `qValue` and `Norm.constant`
+  ## Definition for `qValue` and `Norm.const`
   qValue <- qValue %>% `if`(is.null(qValue), 1, .)
-  Norm.constant <- Norm.constant %>% `if`(is.null(Norm.constant), 1, .)
+  Norm.const <- Norm.const %>% `if`(is.null(Norm.const), 1, .)
   #
   ## Additional instrumental parameters
   ## Extracting instrumental parameter values from `.DSC` or `.par` files
@@ -134,8 +143,8 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
       }
     }
   }
-  ## Two step condition definition for temperature !
-  ## 1st check against `Temper.K`
+  ## Two step conditions for the definition of temperature !
+  ## 1st check against `Temp.K`
   Temper.K <- Temper.K %>% `if`(is.null(Temper.K), Temp.K, .)
   ## 2nd check if `Temper.K` was NULL
   Temper.K <- Temper.K %>% `if`(is.null(Temper.K), 298, .)
@@ -193,7 +202,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
     ## Own quantification:
     ## Number of species:
     No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
-                                             Norm.constant * third.quant.factor)
+                                             Norm.const * third.quant.factor)
     ## Number of species per effective cm
     No.paramag.cm.spc <- (No.paramag.spc / h.cavity.length) * 10
     ## Number of species in cm^3:
@@ -215,7 +224,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
     ## Own quantification:
     ## Number of species:
     No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
-                                             Norm.constant * third.quant.factor)
+                                             Norm.const * third.quant.factor)
     ## Number of species per effective cm
     No.paramag.cm.spc <- (No.paramag.spc / fill.sample.h.mm) * 10
     ## NUmber of species in cm^3:

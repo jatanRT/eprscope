@@ -83,7 +83,7 @@ Only the two above-mentioned  characters/strings are available due to reading pa
 }
 \value{
 List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
-   time vector (\code{time})
+   time vector (\code{time}).
 }
 \description{
 The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wave (CW)

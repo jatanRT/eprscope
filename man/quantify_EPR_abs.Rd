@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantify_EPR_abs.R
 \name{quantify_EPR_abs}
 \alias{quantify_EPR_abs}
-\title{Absolute Quantification of Radicals/Spins in the Most Common EPR Cavities}
+\title{Absolute Quantification of Radicals/Spins}
 \usage{
 quantify_EPR_abs(
   integ.sigmoid.max,
@@ -12,14 +12,14 @@ quantify_EPR_abs(
   qValue = NULL,
   tube.sample.id.mm,
   fill.sample.h.mm,
-  Norm.constant = NULL,
+  Norm.const = NULL,
   Temp.K = NULL,
   S = 0.5,
   microW.cavity = "rectangular"
 )
 }
 \arguments{
-\item{integ.sigmoid.max}{Numeric...tbc...}
+\item{integ.sigmoid.max}{Numeric value of entire EPR spectrum sigmoid integral.}
 
 \item{instrum.params}{Named numeric vector containing instrumental parameters required
 for the quantification =>
@@ -47,15 +47,20 @@ were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or
 one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
 the parameters (i.e. exactly if \code{path_to_DSC_or_par = NULL}).}
 
-\item{qValue}{Numeric, ...tbc... default NULL}
+\item{qValue}{Numeric value of the sensitivity `Q` factor. For the processed EPR spectra by
+the `{eprscope}` package the \code{integ.sigmoid.max} is usually normalized by the `Q` value.
+Therefore, \strong{default}: \code{qValue = NULL}.}
 
-\item{tube.sample.id.mm}{Numeric, ...tbc...}
+\item{tube.sample.id.mm}{Numeric value equal to internal diameter (in `mm`) of the tube/cell used
+for the quantitative EPR experiment.}
 
-\item{fill.sample.h.mm}{Numeric, ...tbc...}
+\item{fill.sample.h.mm}{Numeric value equal to sample height (in `mm`) within the tube/cell.}
 
-\item{Norm.constant}{Numeric, ...tbc...}
+\item{Norm.const}{Numeric value corresponding to normalization constant (see
+\code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
+when the EPR spectrum was normalized by that constant either upon measurement or during processing.}
 
-\item{Temp.K}{Numeric ...description... tbc default NULL}
+\item{Temp.K}{Numeric}
 
 \item{S}{Numeric, ...tbc...}
 
@@ -63,14 +68,18 @@ the parameters (i.e. exactly if \code{path_to_DSC_or_par = NULL}).}
 \code{microW.cavity = "rectangular"}.}
 }
 \value{
-List with \code{"Ncm"} number of spins per effective centimeter (which is the cm
-  around, \eqn{\pm 5\,\text{mm}}, the maximum of the intensity distribution curve within the cavity
-  \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"Ncm3"} corresponding
-  to number of spins per \eqn{\text{cm}^3} and finally the \code{"cM"} denotes the concentration
-  in \eqn{\text{mol}\,\text{dm}^{-3}}.
+List of the following quantities:
+  * \code{"Ncm"} number of spins per effective centimeter. It is defined
+    as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
+    distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
+    the equation above.
+
+  * \code{"Ncm3"} corresponding to number of spins per \eqn{\text{cm}^3}
+
+  * \code{"cM"} denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
 }
 \description{
-A short description...TBC...
+A short description...TBC...in the Most Common EPR Cavities
 }
 \details{
 There are two approaches how to quantify the number of paramagnetic species/radicals/spins.

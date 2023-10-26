@@ -20,8 +20,13 @@
 #'   \strong{default}: \code{origin = "xenon"}
 #'
 #'
-#' @return List containing number of scans (\code{Nscans}) and sweep time (\code{sweepTime}) required
-#'   for time correction during the \code{2D_Field_Delay} experiment ("kinetic" time series)
+#' @return List containing:
+#'   * number of scans (\code{Nscans})
+#'
+#'   * sweep time (\code{swTime}) required for time correction during the \code{2D_Field_Delay}
+#'     experiment ("kinetic" time series)
+#'
+#'   * number of points (\code{Npoints})
 #'
 #'
 #' @examples
@@ -69,6 +74,6 @@ readEPR_params_slct_kin <- function(path_to_DSC_or_par, origin = "xenon") {
   }
   sweeptime <- resol * convTime
   #
-  return(list(Nscans = NScans, sweepTime = sweeptime, Npoints = resol))
+  return(list(Nscans = NScans, swTime = sweeptime, Npoints = resol))
   #
 }

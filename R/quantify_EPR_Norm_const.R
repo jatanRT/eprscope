@@ -36,8 +36,8 @@
 #' @param rg.unit Character string corresponding to unit of the receiver gain.
 #'   Either \code{rg.unit = "db"} (\code{rg.unit = "dB"}, \strong{default})
 #'   or \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}).
-#' @param sw Numeric, experimental sweep width (magnetic flux density recording region,
-#'   \eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{sw = NULL}.
+#' @param Bsw Numeric, experimental sweep width (magnetic flux density recording region,
+#'   \eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{Bsw = NULL}.
 #'
 #'
 #' @return Numeric value of the normalization constant for quantitative EPR and intensity normalization.
@@ -49,7 +49,7 @@
 #'                         rg = 32)
 #' #
 #' quantify_EPR_Norm_const(conv.time.ms = 13.1,
-#'                         sw = 180,
+#'                         Bsw = 180,
 #'                         Nscans = 10,
 #'                         rg = 3.2e+4,
 #'                         rg.unit = "Unitless")
@@ -60,7 +60,7 @@
 #'
 quantify_EPR_Norm_const <- function(conv.time.ms,
                                     Nscans,
-                                    sw = NULL,
+                                    Bsw = NULL,
                                     rg,
                                     rg.unit = "dB") {
   #
@@ -68,7 +68,7 @@ quantify_EPR_Norm_const <- function(conv.time.ms,
   . <- NULL
   #
   ## Definition of the sweep width
-  sw <- sw %>% `if`(is.null(sw),1,.)
+  Bsw <- Bsw %>% `if`(is.null(Bsw),1,.)
   #
   ## Calculation depending on the origin
   if (rg.unit == "db" || rg.unit == "dB"){
@@ -79,7 +79,7 @@ quantify_EPR_Norm_const <- function(conv.time.ms,
     Const <- conv.time.ms * Nscans * 20 * 10^rg.dB.20
   }
   if (rg.unit == "unitless" || rg.unit == "Unitless"){
-    Const <- (conv.time.ms * rg * (Nscans - 1)) / sw
+    Const <- (conv.time.ms * rg * (Nscans - 1)) / Bsw
   }
   #
   return(round(Const))

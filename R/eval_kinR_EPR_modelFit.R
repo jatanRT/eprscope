@@ -79,7 +79,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
       data.spectra.integ[[time.series]] <- correct_time_Exp_Specs(
         time.s = data.spectra.integ[[time.series]],
         Nscans = instrum.params.kin$Nscans,
-        sweep.time.s = instrum.params.kin$sweepTime
+        sweep.time.s = instrum.params.kin$swTime
       )
       #
     }
@@ -192,7 +192,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
   fit.summary <- list(
     df = new.predict.df,
     plot = plot.fit,
-    coeff = summar.react.kin.fit.df,
+    coeffs = summar.react.kin.fit.df,
     niter = iters.react.kin.fit,
     resid.sum.sqr = residsq.react.kin.fit,
     converg = converg.react.kin.fit

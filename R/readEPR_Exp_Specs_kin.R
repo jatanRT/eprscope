@@ -57,7 +57,7 @@
 #'
 #'
 #' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
-#'    time vector (\code{time})
+#'    time vector (\code{time}).
 #'
 #'
 #' @examples
@@ -198,10 +198,10 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
   data.spectra.time[[timeString]] <- correct_time_Exp_Specs(
     time.s = times,
     Nscans = instrument.params.kinet$Nscans,
-    sweep.time.s = instrument.params.kinet$sweepTime
+    sweep.time.s = instrument.params.kinet$swTime
   )
   #
-  ## corrected time
+  ## corrected time df
   time.corrected <- data.spectra.time %>%
     dplyr::group_by(.data[[timeString]]) %>%
     dplyr::group_keys()
