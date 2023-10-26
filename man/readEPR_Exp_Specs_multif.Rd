@@ -85,7 +85,7 @@ on BRUKER spectrometers, i.e. whether they were recorded by the windows based so
 Only the two above-mentioned  characters/strings are available due to reading parameter files.}
 }
 \value{
-List of Data Frames (or `long table` format) corresponding to multiple spectral data files/database
+List of Data Frames (or `long table` format) corresponding to multiple spectral data files/data sets.
 }
 \description{
 Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental

@@ -47,7 +47,7 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 }
 \value{
 Numeric or String/Character (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
-  parameter applied to record the EPR spectra
+  parameter applied to record the EPR spectra.
 }
 \description{
 Function takes the \strong{selected} instrumental parameters or information

@@ -62,7 +62,7 @@
 #'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
 #'
 #'
-#' @return List of Data Frames (or `long table` format) corresponding to multiple spectral data files/database
+#' @return List of Data Frames (or `long table` format) corresponding to multiple spectral data files/data sets.
 #'
 #'
 #' @examples

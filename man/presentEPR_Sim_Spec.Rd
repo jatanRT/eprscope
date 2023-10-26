@@ -78,7 +78,7 @@ the \strong{default} is \code{output.df = FALSE}, i.e. only graphical representa
 }
 \value{
 \pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated form)
-  spectrum or \code{list} consisting of plot and the corresponding data frame \code{df}
+  spectrum or \code{list} consisting of plot and the corresponding data frame \code{df}.
 }
 \description{
 TODO by Tabular and/or Graphic Representation

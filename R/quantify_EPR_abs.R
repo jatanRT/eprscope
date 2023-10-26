@@ -72,14 +72,15 @@
 #'
 #'
 #' @return List of the following quantities:
-#'   * \code{"Ncm"} number of spins per effective centimeter. It is defined
+#'
+#'   * \code{Ncm}, number of spins per effective centimeter. It is defined
 #'     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
 #'     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
 #'     the equation above.
 #'
-#'   * \code{"Ncm3"} corresponding to number of spins per \eqn{\text{cm}^3}
+#'   * \code{Ncm3}, corresponding to number of spins per \eqn{\text{cm}^3}
 #'
-#'   * \code{"cM"} denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
+#'   * \code{cM}, denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
 #'
 #'
 #' @examples

@@ -55,7 +55,7 @@
 #'
 #'
 #' @return \pkg{ggplot2} \code{plot} of experimental and simulated EPR (in derivative or integrated form)
-#'   spectrum or \code{list} consisting of plot and the corresponding data frame \code{df}
+#'   spectrum or \code{list} consisting of plot and the corresponding data frame \code{df}.
 #'
 #'
 #' @examples

@@ -22,9 +22,15 @@ and \code{"central field"} (see \code{\link{eval_sim_EPR_iso}}).
 \strong{Default}: \code{B.unit = "G"}.}
 }
 \value{
-List consisting of \code{"Bcf"} ("central field" value in `B.unit`),
-  \code{"Bsw"} ("sweep width" value in `B.unit`), \code{"Npoints"} ("number of points" value)
-  and \code{"mwGHz"} ("microwave frequency" value in `GHz`).
+List consisting of:
+
+  * \code{Bcf}, "central field" value in `B.unit`
+
+  * \code{Bsw}, "sweep width" value in `B.unit`)
+
+  * \code{Npoints}, "number of points" value
+
+  * \code{mwGHz}, "microwave frequency" value in `GHz`
 }
 \description{
 Reading the \code{.DSC} or \code{.par} file to extract the important parameters like

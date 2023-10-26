@@ -25,9 +25,15 @@
 #'   \strong{Default}: \code{B.unit = "G"}.
 #'
 #'
-#' @return List consisting of \code{"Bcf"} ("central field" value in `B.unit`),
-#'   \code{"Bsw"} ("sweep width" value in `B.unit`), \code{"Npoints"} ("number of points" value)
-#'   and \code{"mwGHz"} ("microwave frequency" value in `GHz`).
+#' @return List consisting of:
+#'
+#'   * \code{Bcf}, "central field" value in `B.unit`
+#'
+#'   * \code{Bsw}, "sweep width" value in `B.unit`)
+#'
+#'   * \code{Npoints}, "number of points" value
+#'
+#'   * \code{mwGHz}, "microwave frequency" value in `GHz`
 #'
 #'
 #' @examples

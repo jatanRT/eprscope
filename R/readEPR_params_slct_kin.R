@@ -21,6 +21,7 @@
 #'
 #'
 #' @return List containing:
+#'
 #'   * number of scans (\code{Nscans})
 #'
 #'   * sweep time (\code{swTime}) required for time correction during the \code{2D_Field_Delay}

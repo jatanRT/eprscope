@@ -48,7 +48,7 @@
 #'   \strong{default}: \code{origin = "xenon"}
 #'
 #' @return Numeric or String/Character (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
-#'   parameter applied to record the EPR spectra
+#'   parameter applied to record the EPR spectra.
 #'
 #'
 #' @examples

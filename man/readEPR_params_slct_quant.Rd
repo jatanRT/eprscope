@@ -17,9 +17,15 @@ were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or
 one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.}
 }
 \value{
-List consisting of \code{"BmmT"} ("modulation amplitude" value  in `mT`),
-  \code{"PmW"} ("microwave source power" value in `mW`), \code{"TK"} ("temperature" value in `K`)
-  and \code{"mwGHz"} ("microwave frequency" value in `GHz`).
+List consisting of:
+
+  * \code{BmmT}, "modulation amplitude" value  in `mT`
+
+  * \code{PmW}, "microwave source power" value in `mW`
+
+  * \code{TK}, "temperature" value in `K`
+
+  * \code{mwGHz}, "microwave frequency" value in `GHz`.
 }
 \description{
 Reading the \code{.DSC} or \code{.par} file to extract the important parameters like

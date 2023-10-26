@@ -36,8 +36,8 @@
 #'
 #'   * plot displaying the sum of all simulation components denoted as \code{plot.sum}.
 #'
-#'   If \code{plot.sim.interact} is activated (i.e. possesses either \code{"components"}
-#'   or \code{"sum"} values) interactive plots (based on `plotly`) are presented either with
+#'   If \code{plot.sim.interact} is activated (i.e. possesses either \code{components}
+#'   or \code{sum} values) interactive plots (based on `plotly`) are presented either with
 #'   all individual components or with the overall simulated sum EPR spectrum, respectively.
 #'
 #'

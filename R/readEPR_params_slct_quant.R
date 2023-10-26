@@ -22,9 +22,15 @@
 #'   one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.
 #'
 #'
-#' @return List consisting of \code{"BmmT"} ("modulation amplitude" value  in `mT`),
-#'   \code{"PmW"} ("microwave source power" value in `mW`), \code{"TK"} ("temperature" value in `K`)
-#'   and \code{"mwGHz"} ("microwave frequency" value in `GHz`).
+#' @return List consisting of:
+#'
+#'   * \code{BmmT}, "modulation amplitude" value  in `mT`
+#'
+#'   * \code{PmW}, "microwave source power" value in `mW`
+#'
+#'   * \code{TK}, "temperature" value in `K`
+#'
+#'   * \code{mwGHz}, "microwave frequency" value in `GHz`.
 #'
 #'
 #' @examples
