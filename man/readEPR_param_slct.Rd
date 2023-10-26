@@ -83,6 +83,7 @@ Other Data Reading:
 \code{\link{readEPR_Exp_Specs}()},
 \code{\link{readEPR_Sim_Spec}()},
 \code{\link{readEPR_params_slct_kin}()},
+\code{\link{readEPR_params_slct_quant}()},
 \code{\link{readEPR_params_slct_sim}()},
 \code{\link{readEPR_params_tabs}()},
 \code{\link{readEPR_solvent_props}()},

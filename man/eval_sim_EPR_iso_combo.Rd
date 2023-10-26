@@ -6,7 +6,7 @@
 \usage{
 eval_sim_EPR_iso_combo(
   g.iso.vec,
-  instrum.params = c(cf = 3500, sw = 200, points = 2048, mwGHz = 9.8),
+  instrum.params = c(Bcf = 3500, Bsw = 200, Npoints = 2048, mwGHz = 9.8),
   B.unit = "G",
   path_to_DSC_or_par = NULL,
   origin = NULL,
@@ -17,19 +17,19 @@ eval_sim_EPR_iso_combo(
   lineG.content.vec,
   Intensity.sim = "dIeprSim_over_dB",
   Intensity.sim.coeffs.vec,
-  plot.sim.interact = FALSE
+  plot.sim.interact = NULL
 )
 }
 \arguments{
-\item{g.iso.vec}{Nemeric vector...tbc...}
+\item{g.iso.vec}{Numeric vector...tbc...}
 
 \item{instrum.params}{Named numeric vector containing instrumental parameters required
 for the simulation =>
 \tabular{ll}{
-\code{cf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
-\code{sw} \tab "sweep width" (magnetic flux density recording region,
+\code{Bcf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
+\code{Bsw} \tab "sweep width" (magnetic flux density recording region,
 \eqn{B_{\text{SW}}}) \cr
-\code{points} \tab number of spectral points (corresponding to resolution) within
+\code{Npoints} \tab number of spectral points (corresponding to resolution) within
 the "sweep width" \cr
 \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
 EPR spectrum \cr
@@ -71,12 +71,12 @@ of the analyzed EPR spectrum/data.}
 \item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related
 data frame, which is also available in the output list. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
-\item{Intensity.sim.coeffs.vec}{Numeriv vector ...tbc...}
+\item{Intensity.sim.coeffs.vec}{Numeric vector ...tbc...}
 
-\item{plot.sim.interact}{Logical ...tbc ...}
+\item{plot.sim.interact}{Character string "components" or "sum" or NULL (\code{default})}
 }
 \value{
-List of the following data frames and plots in case of \code{plot.sim.interact = FALSE} =>
+List of the following data frames and plots in case of \code{plot.sim.interact = NULL} =>
 
   * long-format data frame with simulation components A, B, C, ...(e.g. representing the individual
     radicals) as categorical variable + magnetic flux density and intensity denoted as \code{df}

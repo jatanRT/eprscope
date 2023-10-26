@@ -60,7 +60,7 @@
 #' @param tube.sample.id.mm Numeric, ...tbc...
 #' @param fill.sample.h.mm Numeric, ...tbc...
 #' @param Norm.constant Numeric, ...tbc...
-#' @param Temper.K Numeric ...description... tbc default NULL
+#' @param Temp.K Numeric ...description... tbc default NULL
 #' @param S Numeric, ...tbc...
 #' @param microW.cavity Character string, ...tbc... \strong{Default}:
 #'   \code{microW.cavity = "rectangular"}.
@@ -91,7 +91,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
                              tube.sample.id.mm,
                              fill.sample.h.mm,
                              Norm.constant = NULL,
-                             Temper.K = NULL,
+                             Temp.K = NULL,
                              S = 0.5,
                              microW.cavity = "rectangular") {
   #
@@ -115,7 +115,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
     } else {
       Bm.mT <- unname(instrum.params["BmmT"])
       P.mW <- unname(instrum.params["PmW"])
-      Temp.K <- unname(instrum.params["TK"])
+      Temper.K <- unname(instrum.params["TK"])
       nu.GHz <- unname(instrum.params["mwGHz"])
     }
   } else{
@@ -126,22 +126,22 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
         stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
       } else{
         ## reading the table and extracting values form table
-        instr.params.list <- readEPR_params_slct_sim(path_to_DSC_or_par,origin = origin)
+        instrum.params.list <- readEPR_params_slct_quant(path_to_DSC_or_par,origin = origin)
         Bm.mT <- instrum.params.list$BmmT
         P.mW <- instrum.params.list$PmW
-        Temp.K <- instrum.params.list$TK
+        Temper.K <- instrum.params.list$TK
         nu.GHz <- instrum.params.list$mwGHz
       }
     }
   }
   ## Two step condition definition for temperature !
   ## 1st check against `Temper.K`
-  Temp.K <- Temp.K %>% `if`(is.null(Temp.K), Temper.K, .)
+  Temper.K <- Temper.K %>% `if`(is.null(Temper.K), Temp.K, .)
   ## 2nd check if `Temper.K` was NULL
-  Temp.K <- Temp.K %>% `if`(is.null(Temp.K), 298, .)
+  Temper.K <- Temper.K %>% `if`(is.null(Temper.K), 298, .)
   #
   ## Boltzmann factor:
-  n.B <- (Planck.const * nu.GHz * 1e+9) / (2 * Boltzmann.const * Temp.K)
+  n.B <- (Planck.const * nu.GHz * 1e+9) / (2 * Boltzmann.const * Temper.K)
   ## `Third` quantification factor in definition:
   third.quant.factor <- sqrt(P.mW * 1e-3) * Bm.mT * 1e-3 * qValue * n.B * S * (S + 1)
   ## Tube volume:

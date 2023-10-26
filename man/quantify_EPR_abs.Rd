@@ -6,49 +6,73 @@
 \usage{
 quantify_EPR_abs(
   integ.sigmoid.max,
-  nu.GHz,
-  P.mW,
-  Bm.mT,
+  instrum.params = NULL,
+  path_to_DSC_or_par,
+  origin = "xenon",
   qValue = NULL,
   tube.sample.id.mm,
   fill.sample.h.mm,
   Norm.constant = NULL,
-  Temp.K = 298,
+  Temp.K = NULL,
   S = 0.5,
   microW.cavity = "rectangular"
 )
 }
 \arguments{
-\item{integ.sigmoid.max}{tbc}
+\item{integ.sigmoid.max}{Numeric...tbc...}
 
-\item{nu.GHz}{tbc}
+\item{instrum.params}{Named numeric vector containing instrumental parameters required
+for the quantification =>
+\tabular{ll}{
+\code{PmW} \tab power of the MW source in mW \cr
+\code{BmmT} \tab modulation amplitude (magnetic flux density modulation,
+\eqn{B_{\text{m}}}) in mT \cr
+\code{TK} \tab temperature in K \cr
+\code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+EPR spectrum \cr
+}
+\strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
+from the \code{path_to_DSC_or_par} based on the \code{origin}.}
 
-\item{P.mW}{tbc}
+\item{path_to_DSC_or_par}{Character string, path (can be also gathered by \code{\link[base]{file.path}})
+to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} argument)
+\code{text} files including all instrumental parameters from the EPR machine.
+\strong{Default}: \code{path_to_DSC_or_par = NULL} in case if the \code{instrum.params}
+is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_DSC_or_par}
+AS WELL AS \code{origin} MUST BE DEFINED !}
 
-\item{Bm.mT}{tbc}
+\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
+on BRUKER spectrometers, because the files are slightly different depending on whether they
+were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
+one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
+the parameters (i.e. exactly if \code{path_to_DSC_or_par = NULL}).}
 
-\item{qValue}{tbc}
+\item{qValue}{Numeric, ...tbc... default NULL}
 
-\item{tube.sample.id.mm}{tbc}
+\item{tube.sample.id.mm}{Numeric, ...tbc...}
 
-\item{fill.sample.h.mm}{tbc}
+\item{fill.sample.h.mm}{Numeric, ...tbc...}
 
-\item{Norm.constant}{tbc}
+\item{Norm.constant}{Numeric, ...tbc...}
 
-\item{Temp.K}{tbc}
+\item{Temp.K}{Numeric ...description... tbc default NULL}
 
-\item{S}{tbc}
+\item{S}{Numeric, ...tbc...}
 
-\item{microW.cavity}{tbc}
+\item{microW.cavity}{Character string, ...tbc... \strong{Default}:
+\code{microW.cavity = "rectangular"}.}
 }
 \value{
-Named vector with \code{"N_per_cm"} number of spins per effective centimeter (which is the cm
+List with \code{"Ncm"} number of spins per effective centimeter (which is the cm
   around, \eqn{\pm 5\,\text{mm}}, the maximum of the intensity distribution curve within the cavity
-  \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"N_per_cm^3"} corresponding
-  to number of spins per \eqn{\text{cm}^3} and finally the \code{"c_M"} denotes the concentration
+  \eqn{f(B_1,B_{\text{m}})} from the equation above); with \code{"Ncm3"} corresponding
+  to number of spins per \eqn{\text{cm}^3} and finally the \code{"cM"} denotes the concentration
   in \eqn{\text{mol}\,\text{dm}^{-3}}.
 }
 \description{
+A short description...TBC...
+}
+\details{
 There are two approaches how to quantify the number of paramagnetic species/radicals/spins.
   The \strong{relative} one needs a standard sample with a known number and can be evaluated
   by the sigmoid integral ratio of the sample under study and that of the standard.
@@ -80,6 +104,7 @@ tbc
 \references{
 {
   \insertRef{eatonQepr2010}{eprscope}
+
   \insertRef{hirschCapill2023}{eprscope}
 }
 }

@@ -6,7 +6,7 @@
 \usage{
 eval_sim_EPR_iso(
   g.iso = 2.00232,
-  instrum.params = c(cf = 3500, sw = 200, points = 2048, mwGHz = 9.8),
+  instrum.params = c(Bcf = 3500, Bsw = 200, Npoints = 2048, mwGHz = 9.8),
   path_to_DSC_or_par = NULL,
   origin = NULL,
   B.unit = "G",
@@ -27,10 +27,10 @@ value if the \eqn{g} corresponding to "central field" is equal to `g.iso`.
 \item{instrum.params}{Named numeric vector containing instrumental parameters required
 for the simulation =>
 \tabular{ll}{
-\code{cf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
-\code{sw} \tab "sweep width" (magnetic flux density recording region,
+\code{Bcf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
+\code{Bsw} \tab "sweep width" (magnetic flux density recording region,
 \eqn{B_{\text{SW}}}) \cr
-\code{points} \tab number of spectral points (corresponding to resolution) within
+\code{Npoints} \tab number of spectral points (corresponding to resolution) within
 the "sweep width" \cr
 \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
 EPR spectrum \cr
@@ -122,9 +122,9 @@ Additional details...
 ## and A(1 x 1H) = 4.1 MHz. One may check out the simulation
 ## at https://doi.org/10.1016/j.electacta.2013.06.136 (Fig. 6)
 sim.luteol <- eval_sim_EPR_iso(g.iso = 2.00495,
-                              instrum.params = c(cf = 339.367,
-                                                 sw = 5.9,
-                                                 points = 2048,
+                              instrum.params = c(Bcf = 339.367,
+                                                 Bsw = 5.9,
+                                                 Npoints = 2048,
                                                  mwGHz = 9.5294),
                               nuclear.system = list(list("1H",1,3.1),
                                                     list("1H",1,2.8),

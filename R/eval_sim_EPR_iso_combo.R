@@ -86,7 +86,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
                                    lineG.content.vec, ## e.g. c(1,1,1)
                                    Intensity.sim = "dIeprSim_over_dB", ## default
                                    Intensity.sim.coeffs.vec, ## e.g. c(2,10,0.2)
-                                   plot.sim.interact = FALSE){ ## default or "components" or "sum"
+                                   plot.sim.interact = NULL){ ## default or "components" or "sum"
   #
   ## 'Temporary' processing variables
   Sim_sigmoid_Integs <- NULL

@@ -48,6 +48,7 @@ Other Data Reading:
 \code{\link{readEPR_Sim_Spec}()},
 \code{\link{readEPR_param_slct}()},
 \code{\link{readEPR_params_slct_kin}()},
+\code{\link{readEPR_params_slct_quant}()},
 \code{\link{readEPR_params_slct_sim}()},
 \code{\link{readEPR_params_tabs}()},
 \code{\link{readMAT_params_file}()}
