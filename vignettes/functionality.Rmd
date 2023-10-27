@@ -201,7 +201,7 @@ Comparison of both spectra with different normalization ➨
 # Spectrum with the "advanced" normalization without y/Intensity label
 # because the EPR spectra will be displayed close to each other in two columns
 tmpd.plot.norm.02 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
-  ggplot2::labs(title = "Advanced Normalization",y = "")
+  ggplot2::labs(title = "Advanced Normalization",y = NULL)
 #
 # Both spectra together by `{patchwork}` package
 tmpd.plot.norm.0102 <- tmpd.plot.norm.01 + tmpd.plot.norm.02
