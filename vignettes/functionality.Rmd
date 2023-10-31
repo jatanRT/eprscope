@@ -35,6 +35,7 @@ library(eprscope)
 library(icons)
 library(knitr)
 library(patchwork)
+library(flextable)
 ```
 
 # Introduction
@@ -169,7 +170,28 @@ head(tmpd.data.norm.02)
 
 ```
 
-Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/) (example of interactive data frame by [{DT}](https://rstudio.github.io/DT/) is already shown above). Among them libraries like ...TBC(gt,flextable,kebleExtra)...
+Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/) (example of interactive data frame by [{DT}](https://rstudio.github.io/DT/) is already shown above). Among them libraries like [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) are often used for publication ready table visualization. Example of the last data frame previewed by `{flextable}` is shown below.
+
+```{r spectral-data-read-norm-flextable}
+
+# visualization of the first 10 rows by `{flextable}` 
+# and pipe oerator "%>%" which is an expression of a sequence 
+# of operations that transform an object
+  flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
+    flextable::theme_zebra()
+
+```
+
+In order to process data frames in other software tools different from `r icons::bioicons("R")` they may be exported into universal `.csv` table format like by `write.csv()` function ➨
+
+```{r spectral-data-read-norm-csv-save}
+
+write.csv(tmpd.data.norm.02,
+  file = "tabs/TMPD_EPR_Norm_data02.csv",
+  row.names = FALSE
+)
+
+```
 
 # Data Visualization
 
@@ -186,7 +208,8 @@ The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra 
 # Plotting the spectrum with basic normalization
 # the B abscissa can be presented either in "mT" (default) or "G" 
 # plot title is added by `labs()` function from `{ggplot2}` package
-tmpd.plot.norm.01 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.01) + 
+tmpd.plot.norm.01 <- 
+  plot_EPR_Specs(data.spectra = tmpd.data.norm.01) + 
   ggplot2::labs(title = "Basic Normalization")
 #
 # preview
@@ -200,7 +223,8 @@ Comparison of both spectra with different normalization ➨
 
 # Spectrum with the "advanced" normalization without y/Intensity label
 # because the EPR spectra will be displayed close to each other in two columns
-tmpd.plot.norm.02 <- plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
+tmpd.plot.norm.02 <- 
+  plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
   ggplot2::labs(title = "Advanced Normalization",y = NULL)
 #
 # Both spectra together by `{patchwork}` package
@@ -229,7 +253,7 @@ ggplot2::ggsave("imgs/TMPD_EPR_Norm_compar.png",
 
 ```
 
-## Interactive Plot by `{plotly}`
+## Interactive Plots by `{plotly}`
 
 In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied. Additionally, it can be also used for series of EPR spectra similarly like `plot_EPR_Specs()`. The last spectrum with the advanced normalization can be plotted like ➨
 
@@ -242,8 +266,86 @@ plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
 
 ```
 
--   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
+Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignettes and provided by the `plot_EPR_ Specs3D_interact()` function.
 
--   Last but not least, there are functions to find extremes (maxima, minima), linewidths (incl. 𝚫*B*~pp~) as well as *g*-values directly from the spectral data. Eexperimentally (or by spectral simulations) determined EPR spectral parameters like *g*-values and hyperfine coupling (*A*)/splitting (*a*) constants are quite often compared to theoretically predicted by quantum chemical calculations (e.g. by [Density Functional Theory](https://gaussian.com/dft/)). Therefore
+# Basic EPR Spectral Characteristics
+
+There are four basic parameters to characterize the EPR spectrum ➨
+
+1.  Spectrum position expressed by the $g$-value
+
+2.  Linewidth, for derivative line form expressed by $\Delta B_{\mathrm{pp}}$, that is the difference between $B_{\mathrm{max}}$ and $B_{\mathrm{min}}$ corresponding to position of maximum and minimum, respectively. For the integrated spectral form the linewidth is expressed by $FWHM$ ("full width at half-maximum" or "full width at half-height").
+
+3.  Hyperfine splitting, $a$ (in $\mathrm{mT}$ or $\mathrm{G}$) which is the distance between the individual lines corresponding to interaction of the unpaired electron with the group of surrounding equivalent nuclei.
+
+4.  Single or double integral depending on the original spectral line form ➨ either integrated or derivative, respectively. This is directly proportional to number of paramagnetic species/radicals.
+
+## Finding the $g_{\mathrm{iso}}$-Value
+
+The parameter is defined by the following Equation \@ref(eq:gfactor):
+
+```{=tex}
+\begin{equation}
+g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B}
+(\#eq:gfactor)
+\end{equation}
+```
+where the $h$ and $\mu_{\mathrm{B}}$ are Plank and Bohr magneton constants, respectively. Therefore, it is determined only by microwave frequency ($\nu$) and the magnetic flux density ($B$) of the spectrum mid-point (see function `eval_gFactor_Spec()`).
+
+```{r spectral-data-norm02-gvalue}
+
+# reading the frequency from the `.par` file
+tmpd.mw.freq <- 
+  readEPR_param_slct(tmpd.params.file,
+  string = "MF",
+  origin = "winepr"
+)
+# B region (349.677, 350.457) mT, incl. the B mid-point, to calculate 
+# the g-value is obtained from interactive plot above
+tmpd.g.iso <- 
+  eval_gFactor_Spec(tmpd.data.norm.02,
+  nu.GHz = tmpd.mw.freq,
+  B = "B_mT",
+  B.unit = "mT",
+  Blim = c(349.677, 350.457)
+)
+#
+tmpd.g.iso
+
+```
+
+## Linewidth, $\Delta B_{\mathrm{pp}}$ Determination
+
+The linewidth in $\mathrm{mT}$ can be determined from several spectral lines/regions from the interactive plot above and by the `eval_DeltaXpp_Spec()` function ➨
+
+```{r spectral-data-norm02-linewidth}
+
+# selected B regions as a list of three elements
+B.regions.mT <- list(
+  c(349.677, 349.977),
+  c(349.177, 349.492),
+  c(350.822, 351.072)
+)
+#
+# all Delta Bpp as vector created by the iteration 
+# through each element of `B.regions.mT`
+tmpd.delta.Bpp <- sapply(
+  B.regions.mT,
+  function(b) {
+    eval_DeltaXpp_Spec(tmpd.data.norm.02,
+      xlim = b
+    )
+  }
+)
+#
+# mean value
+tmpd.delta.Bpp.mean <- 
+  round(mean(tmpd.delta.Bpp),digits = 2)
+#
+tmpd.delta.Bpp.mean
+
+```
+
+-   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
 # References {.unnumbered}
