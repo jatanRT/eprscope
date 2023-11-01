@@ -7,7 +7,7 @@
 readEPR_Exp_Specs_multif(
   name_pattern,
   dir_ASC,
-  dir_DSC_or_par,
+  dir_dsc_par,
   col.names = c("index", "B_G", "dIepr_over_dB"),
   colClasses = NULL,
   x = 2,
@@ -23,14 +23,14 @@ readEPR_Exp_Specs_multif(
 )
 }
 \arguments{
-\item{name_pattern}{String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
+\item{name_pattern}{Character string ('specimen'), inherited from \code{\link[base]{list.files}}, which appears
 at the beginning of a file name.}
 
 \item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 the `ascii` files are stored}
 
-\item{dir_DSC_or_par}{path (defined by \code{\link[base]{file.path}} String/Character) to directory
-where the files (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+\item{dir_dsc_par}{path (defined by \code{\link[base]{file.path}} String/Character) to directory
+where the files (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 or normalize intensities) are stored}
 
 \item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
@@ -89,7 +89,7 @@ List of Data Frames (or `long table` format) corresponding to multiple spectral 
 }
 \description{
 Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
- parameters (`DSC` or `par`) at once and transforms it into a database list of data frames. Function is based
+ parameters (`DSC`/`dsc` or `par`) at once and transforms it into a database list of data frames. Function is based
  on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.
  According to  experiment quantity (e.g. temperature,microwave power,recording time...etc),
  `names` and `var2nd` (in case of `tidy = T`) parameters have to be provided. If intensity normalization

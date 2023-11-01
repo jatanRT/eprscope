@@ -5,9 +5,9 @@
 \title{Read and Process Spectral Data of Time Dependent CW EPR Experiments (e.g. like Kinetics)}
 \usage{
 readEPR_Exp_Specs_kin(
-  file.rootname,
+  name_root,
   dir_ASC,
-  dir_DSC_or_par,
+  dir_dsc_par,
   time.unit = "s",
   time.delta.slice.s = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
@@ -23,13 +23,13 @@ readEPR_Exp_Specs_kin(
 )
 }
 \arguments{
-\item{file.rootname}{String/Character corresponding to `file name` without `extension`}
+\item{name_root}{Character string corresponding to entire `file name` without `extension`.}
 
-\item{dir_ASC}{Charecter/String path (can be defined by \code{\link[base]{file.path}}, String/Character)
-to directory where the `ascii` file is stored.}
+\item{dir_ASC}{Character string, path (can be defined by \code{\link[base]{file.path}}, String/Character)
+to directory where the `ASCII` file is stored.}
 
-\item{dir_DSC_or_par}{Character/String path (can be defined by \code{\link[base]{file.path}} String/Character)
-to directory where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+\item{dir_dsc_par}{Character string, path (can be defined by \code{\link[base]{file.path}} character string)
+to directory where the file (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 or normalize intensities) is stored.}
 
 \item{time.unit}{Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
@@ -96,13 +96,13 @@ The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wav
 ## Reading by the "Xenon" software
 readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                       file.path(".","ASCII_data_dir"),
-                      file.path(".","DSC_data_dir")
+                      file.path(".","dsc_data_dir")
                       )
 
 ## Reading by the "WinEPR" software
 readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                       file.path(".","ASCII_data_dir"),
-                      file.path(".","DSC_data_dir"),
+                      file.path(".","dsc_data_dir"),
                       time.unit = "s",
                       time.delta.slice.s = 24.1,
                       col.names = c("index",

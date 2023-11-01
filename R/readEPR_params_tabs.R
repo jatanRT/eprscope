@@ -6,14 +6,14 @@
 #'
 #'
 #' @description
-#' Function takes the instrumental parameters (from \code{.DSC} or \code{.par} file) applied
+#' Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
 #' to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
 #' parameter values as well as character/string information about the measurement see also
 #' \code{\link{readEPR_param_slct}}
 #'
 #'
-#' @param path_to_DSC_or_par String, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+#' @param path_to_dsc_par String, path (also provided by \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
@@ -21,7 +21,7 @@
 #'   \strong{default}: \code{origin = "xenon"}
 #' @param interact Charater, whether or not display tables by \code{\link[DT]{datatable}}. \strong{Default}:
 #'   \code{interact = NULL}. To display interactive table with parameters: \code{interact = "params"} aa well as
-#'   to display that of the additional information: \code{interact = ""info}.
+#'   to display that of the additional information: \code{interact = "info"}.
 #'
 #'
 #' @return List of data frames/tables containing instrumental parameters (\code{params}) and information (\code{info}),
@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' readEPR_params_tabs(path_to_DSC_or_par)
+#' readEPR_params_tabs(path_to_dsc_par)
 #' readEPR_params_tabs(file.path(".",
 #'                               "dir_par",
 #'                               "EPR_spectrum.par"),
@@ -43,7 +43,7 @@
 #' @export
 #'
 #'
-readEPR_params_tabs <- function(path_to_DSC_or_par,
+readEPR_params_tabs <- function(path_to_dsc_par,
                                 origin = "xenon",
                                 interact = NULL) {
   ## 'Temporary' processing variables
@@ -53,7 +53,7 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
   ## "STMP"/"TE" (at the beginning of the line) is sometimes missing + basic quantities
   ## character vector
   if (origin == "xenon"){
-    temperature.check <- isTRUE(any(grepl("^STMP",readLines(path_to_DSC_or_par))))
+    temperature.check <- isTRUE(any(grepl("^STMP",readLines(path_to_dsc_par))))
     #
     str.epr.Instr.params.V <- c(
       "MWFQ", "QValue", "A1CT", "A1SW", "B0MA",
@@ -62,7 +62,7 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     )
   }
   if (origin == "winepr"){
-    temperature.check <- isTRUE(any(grepl("^TE",readLines(path_to_DSC_or_par))))
+    temperature.check <- isTRUE(any(grepl("^TE",readLines(path_to_dsc_par))))
     #
     str.epr.Instr.params.V <- c(
       "MF", "HCF", "HSW", "RMA", "JSD",
@@ -70,7 +70,7 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     )
   }
   #
-  ## required string patterns from 'DSC' or 'par' file:
+  ## required string patterns from 'DSC'/'dsc' or 'par' file:
   ## depending on `temperature.check` remove "STMP" or "TE" element
   if (origin == "xenon") {
     str.epr.Instr.params.V <- str.epr.Instr.params.V %>%
@@ -87,16 +87,16 @@ readEPR_params_tabs <- function(path_to_DSC_or_par,
     str.epr.Instr.params.Ch <- c("JON", "JDA", "JTM", "JCO") ## corresp. to character
   }
   #
-  ## select all corresponding lines (which contain string pattern) from 'DSC' or 'par' file:
+  ## select all corresponding lines (which contain string pattern) from 'DSC'/'dsc' or 'par' file:
   ## reading parameters and the correspond. values at the beginning of the line => +"^"
   str.dsc.sel.V <- sapply(
     str.epr.Instr.params.V,
-    function(x) grep(paste0("^",x), readLines(path_to_DSC_or_par), value = TRUE)
+    function(x) grep(paste0("^",x), readLines(path_to_dsc_par), value = TRUE)
   )
   #
   str.dsc.sel.Ch <- sapply(
     str.epr.Instr.params.Ch,
-    function(w) grep(paste0("^",w), readLines(path_to_DSC_or_par), value = TRUE)
+    function(w) grep(paste0("^",w), readLines(path_to_dsc_par), value = TRUE)
   )
   #
   ## split these strings into string couples (n=2) by space "  " ("\\s+")

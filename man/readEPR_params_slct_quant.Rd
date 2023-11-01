@@ -4,11 +4,11 @@
 \alias{readEPR_params_slct_quant}
 \title{Read the \strong{Selected} Instrumental Parameters Relevant to EPR Quantitative Analysis}
 \usage{
-readEPR_params_slct_quant(path_to_DSC_or_par, origin = "xenon")
+readEPR_params_slct_quant(path_to_dsc_par, origin = "xenon")
 }
 \arguments{
-\item{path_to_DSC_or_par}{Character string, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+\item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
+to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 \code{text} files including all instrumental parameters and provided by the EPR machine.}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
@@ -28,7 +28,7 @@ List consisting of:
   * \code{mwGHz}, "microwave frequency" value in `GHz`.
 }
 \description{
-Reading the \code{.DSC} or \code{.par} file to extract the important parameters like
+Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
   "modulation amplitude", "temperature", "microwave power" as well as "microwave frequency"
   which are are required for absolute quantitative analysis of the EPR spectra (\eqn{\equiv}
   radical or paramagnetic species number determination).

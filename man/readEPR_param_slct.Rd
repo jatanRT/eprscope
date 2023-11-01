@@ -4,13 +4,13 @@
 \alias{readEPR_param_slct}
 \title{Read the \strong{Selected} EPR Instrumental Parameters and Information}
 \usage{
-readEPR_param_slct(path_to_DSC_or_par, string, origin = "xenon")
+readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 }
 \arguments{
-\item{path_to_DSC_or_par}{String, path to \code{.DSC} or \code{.par} file including all instrumental
+\item{path_to_dsc_par}{String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}}
 
-\item{string}{String, within the \code{.DSC} or \code{.par} (at the line beginning) file
+\item{string}{String, within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
  corresponding to instrumental parameter,
 following \strong{strings are defined} (\strong{in parenthesis for "winepr" software}):
 \tabular{ll}{
@@ -46,18 +46,18 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 \strong{default}: \code{origin = "xenon"}}
 }
 \value{
-Numeric or String/Character (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
+Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
   parameter applied to record the EPR spectra.
 }
 \description{
 Function takes the \strong{selected} instrumental parameters or information
- from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}
+ from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}
  or \code{WinEpr} Software, respectively)
 }
 \examples{
 \dontrun{
 ## Reading modulation amplitude from 'Xenon' spectrometer file
-readEPR_param_slct(path_to_DSC_or_par,
+readEPR_param_slct(path_to_dsc_par,
                    string = "B0MA")
 
 ## Reading Q Value from 'Xenon' spectrometer file

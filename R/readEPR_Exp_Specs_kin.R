@@ -11,11 +11,11 @@
 #'  \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 #'
 #'
-#' @param file.rootname String/Character corresponding to `file name` without `extension`
-#' @param dir_ASC Charecter/String path (can be defined by \code{\link[base]{file.path}}, String/Character)
-#'   to directory where the `ascii` file is stored.
-#' @param dir_DSC_or_par Character/String path (can be defined by \code{\link[base]{file.path}} String/Character)
-#'   to directory where the file (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+#' @param name_root Character string corresponding to entire `file name` without `extension`.
+#' @param dir_ASC Character string, path (can be defined by \code{\link[base]{file.path}}, String/Character)
+#'   to directory where the `ASCII` file is stored.
+#' @param dir_dsc_par Character string, path (can be defined by \code{\link[base]{file.path}} character string)
+#'   to directory where the file (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 #'   or normalize intensities) is stored.
 #' @param time.unit Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 #'   \strong{Default}: \code{time.unit = "s"}
@@ -65,13 +65,13 @@
 #' ## Reading by the "Xenon" software
 #' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 #'                       file.path(".","ASCII_data_dir"),
-#'                       file.path(".","DSC_data_dir")
+#'                       file.path(".","dsc_data_dir")
 #'                       )
 #'
 #' ## Reading by the "WinEPR" software
 #' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 #'                       file.path(".","ASCII_data_dir"),
-#'                       file.path(".","DSC_data_dir"),
+#'                       file.path(".","dsc_data_dir"),
 #'                       time.unit = "s",
 #'                       time.delta.slice.s = 24.1,
 #'                       col.names = c("index",
@@ -92,9 +92,9 @@
 #' @export
 #'
 #'
-readEPR_Exp_Specs_kin <- function(file.rootname,
+readEPR_Exp_Specs_kin <- function(name_root,
                                   dir_ASC,
-                                  dir_DSC_or_par,
+                                  dir_dsc_par,
                                   time.unit = "s",
                                   time.delta.slice.s = NULL,
                                   col.names = c(
@@ -116,7 +116,7 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
   ## 'Temporary' processing variables
   . <- NULL
   #
-  ## file rootname which has to be the same for `ASC`+`DSC`
+  ## file name_root which has to be the same for `ASC`+`DSC`/`dsc`
   ## or `.spc` and `.par`and corresponds to file name without extension
   #
   ## ================= Reading Files & Parameters ==================
@@ -124,13 +124,13 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
     ## path to `asc` file
     path.to.asc <- file.path(
       dir_ASC,
-      paste0(file.rootname, ".txt")
+      paste0(name_root, ".txt")
     )
     #
     ## path to `DSC` or `par`
     path.to.dsc.par <- file.path(
-      dir_DSC_or_par,
-      paste0(file.rootname, ".DSC")
+      dir_dsc_par,
+      paste0(name_root, "\\.(DSC|dsc)")
     )
     #
     ## Qvalue
@@ -140,13 +140,13 @@ readEPR_Exp_Specs_kin <- function(file.rootname,
     ## path to asc
     path.to.asc <- file.path(
       dir_ASC,
-      paste0(file.rootname, ".asc")
+      paste0(name_root, ".asc")
     )
     #
     ## path to `par`
     path.to.dsc.par <- file.path(
-      dir_DSC_or_par,
-      paste0(file.rootname, ".par")
+      dir_dsc_par,
+      paste0(name_root, ".par")
     )
     #
     ## Qvalue definition

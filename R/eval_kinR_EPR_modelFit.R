@@ -18,7 +18,7 @@
 #' @param params.guess Named vector ... argument/parameter... tbc
 #' @param algorithm.fit.kin Character string ... argument/parameter... tbc
 #' @param time.series.correct Logical, ... argument/parameter... tbc
-#' @param path_to_DSC_or_par Character string ... argument/parameter... tbc
+#' @param path_to_dsc_par Character string ... argument/parameter... tbc
 #' @param origin Character string ... argument/parameter... tbc
 #'
 #'
@@ -48,7 +48,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
                                    ),
                                    algorithm.fit.kin = "diff-LM",
                                    time.series.correct = FALSE,
-                                   path_to_DSC_or_par = NULL,
+                                   path_to_dsc_par = NULL,
                                    origin = NULL) {
   #
   ## 'Temporary' processing variables
@@ -68,12 +68,12 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
   #
   ## corrected time for CW EPR experiment
   if (isTRUE(time.series.correct)) {
-    if (is.null(path_to_DSC_or_par) & is.null(origin)) {
+    if (is.null(path_to_dsc_par) & is.null(origin)) {
       stop(" Please define origin and the path for file incl. instrumental parameters ! ")
     } else {
       #
       ## instrumental parameters for time series EPR spectra
-      instrum.params.kin <- readEPR_params_slct_kin(path_to_DSC_or_par, origin = origin)
+      instrum.params.kin <- readEPR_params_slct_kin(path_to_dsc_par, origin = origin)
       #
       ## correct time
       data.spectra.integ[[time.series]] <- correct_time_Exp_Specs(
@@ -192,7 +192,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
   fit.summary <- list(
     df = new.predict.df,
     plot = plot.fit,
-    coeffs = summar.react.kin.fit.df,
+    df.coeffs = summar.react.kin.fit.df,
     niter = iters.react.kin.fit,
     resid.sum.sqr = residsq.react.kin.fit,
     converg = converg.react.kin.fit

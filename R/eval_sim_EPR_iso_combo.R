@@ -74,7 +74,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
                                                      Npoints = 2048,
                                                      mwGHz = 9.8),
                                    B.unit = "G", ## default
-                                   path_to_DSC_or_par = NULL, ## default
+                                   path_to_dsc_par = NULL, ## default
                                    origin = NULL, ## default
                                    nuclear.system, ## e.g. list(list("1H",2,24),
                                    ##           NULL,
@@ -99,7 +99,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
       {eval_sim_EPR_iso(g.iso = o,
                         instrum.params = instrum.params,
                         B.unit = B.unit,
-                        path_to_DSC_or_par = path_to_DSC_or_par,
+                        path_to_dsc_par = path_to_dsc_par,
                         origin = origin,
                         nuclear.system = p,
                         natur.abund = q,

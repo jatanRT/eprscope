@@ -6,7 +6,7 @@
 #'
 #'
 #' @description Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
-#'  parameters (`DSC` or `par`) at once and transforms it into a database list of data frames. Function is based
+#'  parameters (`DSC`/`dsc` or `par`) at once and transforms it into a database list of data frames. Function is based
 #'  on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.
 #'  According to  experiment quantity (e.g. temperature,microwave power,recording time...etc),
 #'  `names` and `var2nd` (in case of `tidy = T`) parameters have to be provided. If intensity normalization
@@ -14,12 +14,12 @@
 #'  (generally, except the Q values, it is not included in the transformation process).
 #'
 #'
-#' @param name_pattern String/Character ('specimen'), inherited from \code{\link[base]{list.files}}, which appear
+#' @param name_pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}, which appears
 #'  at the beginning of a file name.
 #' @param dir_ASC path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 #'  the `ascii` files are stored
-#' @param dir_DSC_or_par path (defined by \code{\link[base]{file.path}} String/Character) to directory
-#'  where the files (`.DSC` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+#' @param dir_dsc_par path (defined by \code{\link[base]{file.path}} String/Character) to directory
+#'  where the files (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 #'  or normalize intensities) are stored
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
@@ -106,7 +106,7 @@
 #' @importFrom rlang quo_name :=
 readEPR_Exp_Specs_multif <- function(name_pattern,
                                      dir_ASC,
-                                     dir_DSC_or_par,
+                                     dir_dsc_par,
                                      col.names = c(
                                        "index",
                                        "B_G",
@@ -131,10 +131,10 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
   #
   ## =========================== FILES AND PARAMETERS ==============================
   #
-  ## file name pattern which has to be the same for `txt`+`DSC`
+  ## file name pattern which has to be the same for `txt`+`DSC`/`.dsc`
   ## or `.asc` and `.par`
   file.name.pattern.asc <- paste0("^",name_pattern,".*\\.(txt|asc|csv)$")
-  file.name.pattern.params <- paste0("^",name_pattern,".*\\.(DSC|par)$")
+  file.name.pattern.params <- paste0("^",name_pattern,".*\\.(DSC|dsc|par)$")
   #
   ## path to all `asc` files
   files.asc <- list.files(
@@ -143,20 +143,20 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
     full.names = TRUE
   )
   #
-  ## path to `.DSC`  or  `.par`  files
+  ## path to `.DSC`/`.dsc`  or  `.par`  files
   files.params <- list.files(
-    path = dir_DSC_or_par,
+    path = dir_dsc_par,
     pattern = file.name.pattern.params,
     full.names = TRUE
   )
   #
   if (origin == "xenon") {
-    ## to obtain `QValues` (from all `.DSC` files) run the following
+    ## to obtain `QValues` (from all `.DSC`/`.dsc` files) run the following
     qValues.from.files <- sapply(
       files.params,
       function(x) readEPR_param_slct(x, string = "QValue")
     )
-    ## to obtain microwave frequencies `MWFQ` (from all `.DSC` files),
+    ## to obtain microwave frequencies `MWFQ` (from all `.DSC`/`.dsc` files),
     ## required for g value calculations
     mwfq.string <- "MWFQ"
   }

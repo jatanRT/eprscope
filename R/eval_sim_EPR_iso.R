@@ -28,19 +28,19 @@
 #'   EPR spectrum \cr
 #'   }
 #'   \strong{Default} values are chosen to cover the EPR spectra of common organic radicals.
-#'   If \code{instrum.params = NULL} then parameters are provided by \code{path_to_DSC_or_par}
+#'   If \code{instrum.params = NULL} then parameters are provided by \code{path_to_dsc_par}
 #'   as well as by \code{origin}.
-#' @param path_to_DSC_or_par Character string, path (can be also gathered by \code{\link[base]{file.path}})
-#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} argument)
+#' @param path_to_dsc_par Character string, path (can be also gathered by \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on the OS, see \code{origin} argument)
 #'   \code{text} files including all instrumental parameters from the EPR machine.
-#'   \strong{Default}: \code{path_to_DSC_or_par = NULL} in case if the \code{instrum.params}
-#'   is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_DSC_or_par}
+#'   \strong{Default}: \code{path_to_dsc_par = NULL} in case if the \code{instrum.params}
+#'   is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_dsc_par}
 #'   AS WELL AS \code{origin} MUST BE DEFINED !
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they
 #'   were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
 #'   one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
-#'   the parameters (i.e. exactly if \code{path_to_DSC_or_par = NULL}).
+#'   the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).
 #' @param B.unit Character string pointing to unit of magnetic flux density which is to be presented
 #'   on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
 #'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
@@ -128,7 +128,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                Npoints = 2048,
                                mwGHz = 9.8
                              ),
-                             path_to_DSC_or_par = NULL,
+                             path_to_dsc_par = NULL,
                              origin = NULL,
                              B.unit = "G",
                              nuclear.system = NULL,
@@ -164,7 +164,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   #
   ## Extracting instrumental parameter values from `.DSC` or `.par` files
   ## or from named numeric vector above
-  if (is.null(path_to_DSC_or_par)){
+  if (is.null(path_to_dsc_par)){
     if (is.null(instrum.params)){
       stop(" Please, define `instrum.params` like central field, MW freq.,... ! ")
     } else {
@@ -178,10 +178,10 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       stop(" Parameters are extracted from file, please define `instrum.params = NULL` ! ")
     } else{
       if (is.null(origin)){
-        stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
+        stop(" Please provide `origin` of the `.DSC`/`.dsc` or `.par` file ! ")
       } else{
         ## reading the table and extracting values form table
-        instr.params.list <- readEPR_params_slct_sim(path_to_DSC_or_par,origin = origin,B.unit = B.unit)
+        instr.params.list <- readEPR_params_slct_sim(path_to_dsc_par,origin = origin,B.unit = B.unit)
         B.CF <- instr.params.list$Bcf
         B.SW <- instr.params.list$Bsw
         Npoints <- instr.params.list$Npoints

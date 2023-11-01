@@ -83,7 +83,7 @@ Reading of the instrumental parameters from `.DSC` or `.par` files (correspondin
 tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
 # reading the parameter file coming from "winepr" acquisition softw.
-tmpd.params <- readEPR_params_tabs(path_to_DSC_or_par = tmpd.params.file,
+tmpd.params <- readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
                                    origin = "winepr")
 #
 # the output `tmpd.params` is list consisting

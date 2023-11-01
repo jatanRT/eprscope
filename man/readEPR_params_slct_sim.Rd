@@ -4,11 +4,11 @@
 \alias{readEPR_params_slct_sim}
 \title{Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Simulation} of EPR Spectra}
 \usage{
-readEPR_params_slct_sim(path_to_DSC_or_par, origin = "xenon", B.unit = "G")
+readEPR_params_slct_sim(path_to_dsc_par, origin = "xenon", B.unit = "G")
 }
 \arguments{
-\item{path_to_DSC_or_par}{Character string, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+\item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
+to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 \code{text} files including all instrumental parameters and provided by the EPR machine.}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
@@ -33,7 +33,7 @@ List consisting of:
   * \code{mwGHz}, "microwave frequency" value in `GHz`
 }
 \description{
-Reading the \code{.DSC} or \code{.par} file to extract the important parameters like
+Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
   "sweep width", "central field", "number of points" as well as "microwave frequency"
   which are are required for the simulations of EPR spectra (see \code{\link{eval_sim_EPR_iso}}).
 }

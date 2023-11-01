@@ -4,11 +4,11 @@
 \alias{readEPR_params_tabs}
 \title{Read the EPR Instrumental Parameters and Experiment Information}
 \usage{
-readEPR_params_tabs(path_to_DSC_or_par, origin = "xenon", interact = NULL)
+readEPR_params_tabs(path_to_dsc_par, origin = "xenon", interact = NULL)
 }
 \arguments{
-\item{path_to_DSC_or_par}{String, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+\item{path_to_dsc_par}{String, path (also provided by \code{\link[base]{file.path}})
+to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 \code{text} files including all instrumental parameters and provided by the EPR machine}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
@@ -18,7 +18,7 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 
 \item{interact}{Charater, whether or not display tables by \code{\link[DT]{datatable}}. \strong{Default}:
 \code{interact = NULL}. To display interactive table with parameters: \code{interact = "params"} aa well as
-to display that of the additional information: \code{interact = ""info}.}
+to display that of the additional information: \code{interact = "info"}.}
 }
 \value{
 List of data frames/tables containing instrumental parameters (\code{params}) and information (\code{info}),
@@ -26,14 +26,14 @@ List of data frames/tables containing instrumental parameters (\code{params}) an
  in the form of interactive tables by \code{interact} function argument.
 }
 \description{
-Function takes the instrumental parameters (from \code{.DSC} or \code{.par} file) applied
+Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
 to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
 parameter values as well as character/string information about the measurement see also
 \code{\link{readEPR_param_slct}}
 }
 \examples{
 \dontrun{
-readEPR_params_tabs(path_to_DSC_or_par)
+readEPR_params_tabs(path_to_dsc_par)
 readEPR_params_tabs(file.path(".",
                               "dir_par",
                               "EPR_spectrum.par"),

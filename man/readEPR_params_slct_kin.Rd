@@ -4,10 +4,10 @@
 \alias{readEPR_params_slct_kin}
 \title{Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Time Series} Experiment}
 \usage{
-readEPR_params_slct_kin(path_to_DSC_or_par, origin = "xenon")
+readEPR_params_slct_kin(path_to_dsc_par, origin = "xenon")
 }
 \arguments{
-\item{path_to_DSC_or_par}{String, path to \code{.DSC} or \code{.par} file including all instrumental
+\item{path_to_dsc_par}{String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 parameters provided by the EPR machine}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
@@ -27,13 +27,13 @@ List containing:
 }
 \description{
 Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
- experiment from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
+ experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
  or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
  spectra, see \code{\link{correct_time_Exp_Specs}}
 }
 \examples{
 \dontrun{
-readEPR_params_slct_kin(path_to_DSC_or_par)
+readEPR_params_slct_kin(path_to_dsc_par)
 readEPR_params_slct_kin(file.path(".",
                                   "dir_par",
                                   "EPR_spectrum.par"),

@@ -13,7 +13,7 @@ eval_kinR_EPR_modelFit(
   params.guess = c(qvar0R = 0.001, k1 = 0.001),
   algorithm.fit.kin = "diff-LM",
   time.series.correct = FALSE,
-  path_to_DSC_or_par = NULL,
+  path_to_dsc_par = NULL,
   origin = NULL
 )
 }
@@ -34,7 +34,7 @@ eval_kinR_EPR_modelFit(
 
 \item{time.series.correct}{Logical, ... argument/parameter... tbc}
 
-\item{path_to_DSC_or_par}{Character string ... argument/parameter... tbc}
+\item{path_to_dsc_par}{Character string ... argument/parameter... tbc}
 
 \item{origin}{Character string ... argument/parameter... tbc}
 }

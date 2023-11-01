@@ -55,7 +55,7 @@
 #'   EPR spectrum \cr
 #'   }
 #'   \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
-#'   from the \code{path_to_DSC_or_par} based on the \code{origin}.
+#'   from the \code{path_to_dsc_par} based on the \code{origin}.
 #' @param qValue Numeric value of the sensitivity `Q` factor. For the processed EPR spectra by
 #'   the `{eprscope}` package the \code{integ.sigmoid.max} is usually normalized by the `Q` value.
 #'   Therefore, \strong{default}: \code{qValue = NULL}.
@@ -76,7 +76,7 @@
 #'   * \code{Ncm}, number of spins per effective centimeter. It is defined
 #'     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
 #'     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
-#'     the equation above.
+#'     the equation above shown in details.
 #'
 #'   * \code{Ncm3}, corresponding to number of spins per \eqn{\text{cm}^3}
 #'
@@ -95,7 +95,7 @@
 #'
 quantify_EPR_abs <- function(integ.sigmoid.max,
                              instrum.params = NULL, ##  otherwise c(mwGHz,PmW,BmmT,TK = 298)
-                             path_to_DSC_or_par,
+                             path_to_dsc_par,
                              origin = "xenon",
                              qValue = NULL,
                              tube.sample.id.mm,
@@ -119,7 +119,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
   ## Additional instrumental parameters
   ## Extracting instrumental parameter values from `.DSC` or `.par` files
   ## or from named numeric vector above
-  if (is.null(path_to_DSC_or_par)){
+  if (is.null(path_to_dsc_par)){
     if (is.null(instrum.params)){
       stop(" Please, define `instrum.params` like modulation amplitude, MW freq.,... ! ")
     } else {
@@ -133,10 +133,10 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
       stop(" Parameters are extracted from file, please define `instrum.params = NULL` ! ")
     } else{
       if (is.null(origin)){
-        stop(" Please provide `origin` of the `.DSC` or `.par` file ! ")
+        stop(" Please provide `origin` of the `.DSC`/`.dsc` or `.par` file ! ")
       } else{
         ## reading the table and extracting values form table
-        instrum.params.list <- readEPR_params_slct_quant(path_to_DSC_or_par,origin = origin)
+        instrum.params.list <- readEPR_params_slct_quant(path_to_dsc_par,origin = origin)
         Bm.mT <- instrum.params.list$BmmT
         P.mW <- instrum.params.list$PmW
         Temper.K <- instrum.params.list$TK

@@ -6,13 +6,13 @@
 #'
 #' @description
 #'  Function takes the \strong{selected} instrumental parameters or information
-#'  from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}
+#'  from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}
 #'  or \code{WinEpr} Software, respectively)
 #'
 #'
-#' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
+#' @param path_to_dsc_par String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 #'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
-#' @param string String, within the \code{.DSC} or \code{.par} (at the line beginning) file
+#' @param string String, within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
 #'   corresponding to instrumental parameter,
 #'  following \strong{strings are defined} (\strong{in parenthesis for "winepr" software}):
 #'  \tabular{ll}{
@@ -46,14 +46,14 @@
 #'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
 #'   \strong{default}: \code{origin = "xenon"}
 #'
-#' @return Numeric or String/Character (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
+#' @return Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
 #'   parameter applied to record the EPR spectra.
 #'
 #'
 #' @examples
 #' \dontrun{
 #' ## Reading modulation amplitude from 'Xenon' spectrometer file
-#' readEPR_param_slct(path_to_DSC_or_par,
+#' readEPR_param_slct(path_to_dsc_par,
 #'                    string = "B0MA")
 #'
 #' ## Reading Q Value from 'Xenon' spectrometer file
@@ -73,13 +73,13 @@
 #'
 #' @export
 #'
-readEPR_param_slct <- function(path_to_DSC_or_par,
+readEPR_param_slct <- function(path_to_dsc_par,
                                string,
                                origin = "xenon") {
   #
   ## path corresponds to file (.DSC) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
-  sel.str.line <- grep(paste0("^",string), readLines(path_to_DSC_or_par), value = TRUE)
+  sel.str.line <- grep(paste0("^",string), readLines(path_to_dsc_par), value = TRUE)
   #
   ## such line is then separated (split) into two ('n = 2') string parts
   ## by 'str_split' comming from 'stringr' pckg.
@@ -119,12 +119,12 @@ readEPR_param_slct <- function(path_to_DSC_or_par,
 #'
 #' @description
 #'  Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
-#'  experiment from \code{.DSC} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
+#'  experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
 #'  or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
 #'  spectra, see \code{\link{correct_time_Exp_Specs}}
 #'
 #'
-#' @param path_to_DSC_or_par String, path to \code{.DSC} or \code{.par} file including all instrumental
+#' @param path_to_dsc_par String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 #'   parameters provided by the EPR machine
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
@@ -144,7 +144,7 @@ readEPR_param_slct <- function(path_to_DSC_or_par,
 #'
 #' @examples
 #' \dontrun{
-#' readEPR_params_slct_kin(path_to_DSC_or_par)
+#' readEPR_params_slct_kin(path_to_dsc_par)
 #' readEPR_params_slct_kin(file.path(".",
 #'                                   "dir_par",
 #'                                   "EPR_spectrum.par"),
@@ -154,33 +154,33 @@ readEPR_param_slct <- function(path_to_DSC_or_par,
 #' @export
 #'
 #'
-readEPR_params_slct_kin <- function(path_to_DSC_or_par, origin = "xenon") {
-  ## Load all required parameters from `.DSC` or `.par`
+readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
+  ## Load all required parameters from `.DSC`/`.dsc` or `.par`
   if (origin == "xenon") {
-    resol <- readEPR_param_slct(path_to_DSC_or_par,
+    resol <- readEPR_param_slct(path_to_dsc_par,
                                 string = "A1RS",
                                 origin = origin
     )
-    convTime <- readEPR_param_slct(path_to_DSC_or_par,
+    convTime <- readEPR_param_slct(path_to_dsc_par,
                                    string = "SPTP",
                                    origin = origin
     )
-    NScans <- readEPR_param_slct(path_to_DSC_or_par,
+    NScans <- readEPR_param_slct(path_to_dsc_par,
                                  string = "NbScansToDo",
                                  origin = origin
     )
     ## for kinetic measurements "AVGS" doesn't work, therefore select "NbScansToDo"
   }
   if (origin == "winepr") {
-    resol <- readEPR_param_slct(path_to_DSC_or_par,
+    resol <- readEPR_param_slct(path_to_dsc_par,
                                 string = "RES",
                                 origin = origin
     )
-    convTime <- readEPR_param_slct(path_to_DSC_or_par,
+    convTime <- readEPR_param_slct(path_to_dsc_par,
                                    string = "RCT",
                                    origin = origin
     )
-    NScans <- readEPR_param_slct(path_to_DSC_or_par,
+    NScans <- readEPR_param_slct(path_to_dsc_par,
                                  string = "JSD",
                                  origin = origin
     )
@@ -201,15 +201,15 @@ readEPR_params_slct_kin <- function(path_to_DSC_or_par, origin = "xenon") {
 #'
 #'
 #' @description
-#'   Reading the \code{.DSC} or \code{.par} file to extract the important parameters like
+#'   Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
 #'   "modulation amplitude", "temperature", "microwave power" as well as "microwave frequency"
 #'   which are are required for absolute quantitative analysis of the EPR spectra (\eqn{\equiv}
 #'   radical or paramagnetic species number determination).
 #'
 #'
 #'
-#' @param path_to_DSC_or_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they
@@ -238,13 +238,13 @@ readEPR_params_slct_kin <- function(path_to_DSC_or_par, origin = "xenon") {
 #' @export
 #'
 #'
-## function to read instrumental parameters from `.DSC` or `.par`
+## function to read instrumental parameters from `.DSC`/`.dsc` or `.par`
 ## required for quantification
-readEPR_params_slct_quant <- function(path_to_DSC_or_par,
+readEPR_params_slct_quant <- function(path_to_dsc_par,
                                       origin = "xenon"){
   #
   ## reading the table and extracting values form table
-  params.df <- readEPR_params_tabs(path_to_DSC_or_par,origin = origin)$params
+  params.df <- readEPR_params_tabs(path_to_dsc_par,origin = origin)$params
   #
   Bm.mT <- params.df %>%
     dplyr::filter(.data$Parameter == "Modulation Amplitude") %>%
@@ -282,14 +282,14 @@ readEPR_params_slct_quant <- function(path_to_DSC_or_par,
 #'
 #'
 #' @description
-#'   Reading the \code{.DSC} or \code{.par} file to extract the important parameters like
+#'   Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
 #'   "sweep width", "central field", "number of points" as well as "microwave frequency"
 #'   which are are required for the simulations of EPR spectra (see \code{\link{eval_sim_EPR_iso}}).
 #'
 #'
 #'
-#' @param path_to_DSC_or_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC} or \code{.par} (depending on OS, see \code{origin} parameter)
+#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they
@@ -322,14 +322,14 @@ readEPR_params_slct_quant <- function(path_to_DSC_or_par,
 #' @export
 #'
 #'
-## function to read instrumental parameters from `.DSC` or `.par`
+## function to read instrumental parameters from `.DSC`/`.dsc` or `.par`
 ## required for simulation
-readEPR_params_slct_sim <- function(path_to_DSC_or_par,
+readEPR_params_slct_sim <- function(path_to_dsc_par,
                                     origin = "xenon",
                                     B.unit = "G"){
   #
   ## reading the table and extracting values form table
-  params.df <- readEPR_params_tabs(path_to_DSC_or_par,origin = origin)$params
+  params.df <- readEPR_params_tabs(path_to_dsc_par,origin = origin)$params
   #
   B.CF <- params.df %>%
     dplyr::filter(.data$Parameter == "Central Field") %>%
