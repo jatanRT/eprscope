@@ -279,7 +279,7 @@ There are four basic parameters to characterize the EPR spectrum ➨
 
 1.  Spectrum position expressed by the $g$-value
 
-2.  Linewidth, for derivative line form expressed by $\Delta B_{\mathrm{pp}}$, that is the difference between $B_{\mathrm{max}}$ and $B_{\mathrm{min}}$ corresponding to position of maximum and minimum, respectively. For the integrated spectral form the linewidth is expressed by $FWHM$ ("full width at half-maximum" or "full width at half-height").
+2.  Linewidth, for derivative line form expressed by $\Delta B_{\mathrm{pp}}$, that is the difference between $B_{\mathrm{max}}$ and $B_{\mathrm{min}}$ corresponding to position of maximal and minimal intensity, respectively. For the integrated spectral form the linewidth is expressed by $FWHM$ ("full width at half-maximum" or "full width at half-height").
 
 3.  Hyperfine splitting, $a$ (in $\mathrm{mT}$ or $\mathrm{G}$) which is the distance between the individual lines corresponding to interaction of the unpaired electron with the group of surrounding equivalent nuclei.
 
@@ -295,7 +295,7 @@ g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B_0}
 (\#eq:gfactor)
 \end{equation}
 ```
-where the $h$ and $\mu_{\mathrm{B}}$ are Plank and Bohr magneton constants, respectively. Therefore, it is determined only by microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point (see function `eval_gFactor_Spec()`).
+where the $h$ and $\mu_{\mathrm{B}}$ are Plank and Bohr magneton constants, respectively. Therefore, it is determined only by microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point where $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0$ (see function `eval_gFactor_Spec()`).
 
 ```{r spectral-data-norm02-gvalue}
 
@@ -338,7 +338,7 @@ all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
 
 ```
 
-The `TRUE` value represents a perfect agreement between the theoretically (`2.003168`) and experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirmed the position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g\approx 2.00232$ is a consequence of a [spin-orbit coupling](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure.
+The `TRUE` value represents a perfect agreement between the theoretically (`2.003168`) and experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirmed the position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Simply speaking, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the "unpaired" electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
 
 ## Linewidth, $\Delta B_{\mathrm{pp}}$ Determination
 
@@ -346,7 +346,8 @@ The linewidth in $\mathrm{mT}$ can be determined from several spectral lines/reg
 
 ```{r spectral-data-norm02-linewidth}
 
-# selected B regions as a list of three elements
+# selected B regions to calculate Delta Bpp
+# as a list of three elements
 B.regions.mT <- list(
   c(349.677, 349.977),
   c(349.177, 349.492),
