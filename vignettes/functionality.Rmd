@@ -106,6 +106,11 @@ Finally conversion of the second data frame (`tmpd.params$params`) into interact
 
 # by function `datatable` from the `DT` package
 DT::datatable(data = tmpd.params$params)
+#
+# the same by
+# readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
+#                     origin = "winepr",
+#                     interact = "params")
 
 ```
 
@@ -174,9 +179,9 @@ Visualization and/or conversion of data frames (tables) into several formats lik
 
 ```{r spectral-data-read-norm-flextable}
 
-# visualization of the first 10 rows by `{flextable}` 
-# and pipe oerator "%>%" which is an expression of a sequence 
-# of operations that transform an object
+# visualization of the first 10 rows by `{flextable}` with stripes
+# (`theme_zebra()`) and pipe oerator "%>%" which is an expression 
+# of a sequence of operations that transform an object
   flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
     flextable::theme_zebra()
 
@@ -286,11 +291,11 @@ The parameter is defined by the following Equation \@ref(eq:gfactor):
 
 ```{=tex}
 \begin{equation}
-g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B}
+g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B_0}
 (\#eq:gfactor)
 \end{equation}
 ```
-where the $h$ and $\mu_{\mathrm{B}}$ are Plank and Bohr magneton constants, respectively. Therefore, it is determined only by microwave frequency ($\nu$) and the magnetic flux density ($B$) of the spectrum mid-point (see function `eval_gFactor_Spec()`).
+where the $h$ and $\mu_{\mathrm{B}}$ are Plank and Bohr magneton constants, respectively. Therefore, it is determined only by microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point (see function `eval_gFactor_Spec()`).
 
 ```{r spectral-data-norm02-gvalue}
 
@@ -302,7 +307,7 @@ tmpd.mw.freq <-
 )
 # B region (349.677, 350.457) mT, incl. the B mid-point, to calculate 
 # the g-value is obtained from interactive plot above
-tmpd.g.iso <- 
+tmpd.g.iso.spec <- 
   eval_gFactor_Spec(tmpd.data.norm.02,
   nu.GHz = tmpd.mw.freq,
   B = "B_mT",
@@ -310,9 +315,30 @@ tmpd.g.iso <-
   Blim = c(349.677, 350.457)
 )
 #
-tmpd.g.iso
+tmpd.g.iso.spec
 
 ```
+
+The above (from spectrum) obtained $g_{\mathrm{iso}}$-value may be compared with that computed by Density Functional Theory (DFT) quantum chemical calculations of $\ce{TMPD^{.+}}$, namely by PBE0/EPR-II/CPCM-DMSO//B3LYP/6-31+G(d,p) (see also [Gaussian DFT Methods](https://gaussian.com/dft/) and [Basis Sets](https://gaussian.com/basissets/)). The extraction of $g_{\mathrm{iso}}$-value from the *Gaussian* (or from the [ORCA quantum chemical package](https://www.orcasoftware.de/tutorials_orca/index.html)) output file is provided by the `eval_gFactor_QCHcomp()` function ➨
+
+```{r dft-data-norm02-gvalue}
+
+# built-in package file => "TMPDAradCatEPRa.inp.log.zip"
+gauss.tmpd.load <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+gauss.tmpd.output <- unzip(gauss.tmpd.load)
+#
+# giso-Value
+tmpd.g.iso.dft <- eval_gFactor_QCHcomp(gauss.tmpd.output)
+# preview
+tmpd.g.iso.dft
+#
+# comparison of both theoretical and experimental g-values 
+# with the tolerance of 1e-3
+all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
+
+```
+
+The `TRUE` value represents a perfect agreement between the theoretically (`2.003168`) and experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirmed the position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g\approx 2.00232$ is a consequence of a [spin-orbit coupling](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure.
 
 ## Linewidth, $\Delta B_{\mathrm{pp}}$ Determination
 
