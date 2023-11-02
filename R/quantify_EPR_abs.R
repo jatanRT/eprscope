@@ -117,7 +117,7 @@ quantify_EPR_abs <- function(integ.sigmoid.max,
   Norm.const <- Norm.const %>% `if`(is.null(Norm.const), 1, .)
   #
   ## Additional instrumental parameters
-  ## Extracting instrumental parameter values from `.DSC` or `.par` files
+  ## Extracting instrumental parameter values from `.DSC`/`.dsc` or `.par` files
   ## or from named numeric vector above
   if (is.null(path_to_dsc_par)){
     if (is.null(instrum.params)){

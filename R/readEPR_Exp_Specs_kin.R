@@ -12,12 +12,12 @@
 #'
 #'
 #' @param name_root Character string corresponding to entire `file name` without `extension`.
-#' @param dir_ASC Character string, path (can be defined by \code{\link[base]{file.path}}, String/Character)
-#'   to directory where the `ASCII` file is stored.
+#' @param dir_ASC Character string, path (can be defined by \code{\link[base]{file.path}})
+#'   to directory where the `ASCII` spectral data is stored.
 #' @param dir_dsc_par Character string, path (can be defined by \code{\link[base]{file.path}} character string)
 #'   to directory where the file (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 #'   or normalize intensities) is stored.
-#' @param time.unit Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+#' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 #'   \strong{Default}: \code{time.unit = "s"}
 #' @param time.delta.slice.s Numeric, time span/interval in seconds between `slices`...TBC,
 #'   e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.
@@ -31,7 +31,7 @@
 #'   \strong{Default}: \code{colClasses = NULL}.
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
-#' @param x.unit Character/String ...TBC only "mT" and "G" are available
+#' @param x.unit Character string ...TBC only "mT" and "G" are available
 #' @param Intensity Numeric index related to \code{col.names} pointing to `general` intensity,
 #'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 #'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
@@ -50,7 +50,7 @@
 #'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 #'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}.
-#' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
+#' @param origin Character string corresponding to \strong{software} used to acquire the EPR spectra
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 #'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
@@ -127,11 +127,10 @@ readEPR_Exp_Specs_kin <- function(name_root,
       paste0(name_root, ".txt")
     )
     #
-    ## path to `DSC` or `par`
-    path.to.dsc.par <- file.path(
-      dir_dsc_par,
-      paste0(name_root, "\\.(DSC|dsc)")
-    )
+    ## path to `DSC` or `dsc`
+    path.to.dsc.par <- list.files(path = dir_dsc_par,
+                                  pattern = paste0("^",name_root, "\\.(DSC|dsc)$"),
+                                  full.names = TRUE)
     #
     ## Qvalue
     qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue")

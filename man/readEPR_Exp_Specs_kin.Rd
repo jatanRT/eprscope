@@ -25,14 +25,14 @@ readEPR_Exp_Specs_kin(
 \arguments{
 \item{name_root}{Character string corresponding to entire `file name` without `extension`.}
 
-\item{dir_ASC}{Character string, path (can be defined by \code{\link[base]{file.path}}, String/Character)
-to directory where the `ASCII` file is stored.}
+\item{dir_ASC}{Character string, path (can be defined by \code{\link[base]{file.path}})
+to directory where the `ASCII` spectral data is stored.}
 
 \item{dir_dsc_par}{Character string, path (can be defined by \code{\link[base]{file.path}} character string)
 to directory where the file (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
 or normalize intensities) is stored.}
 
-\item{time.unit}{Character/String \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+\item{time.unit}{Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 \strong{Default}: \code{time.unit = "s"}}
 
 \item{time.delta.slice.s}{Numeric, time span/interval in seconds between `slices`...TBC,
@@ -51,7 +51,7 @@ or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
 
-\item{x.unit}{Character/String ...TBC only "mT" and "G" are available}
+\item{x.unit}{Character string ...TBC only "mT" and "G" are available}
 
 \item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
 like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
@@ -76,7 +76,7 @@ all additional (in addition to \code{qValue}) normalization(s) like e.g. concent
 weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL}.}
 
-\item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
+\item{origin}{Character string corresponding to \strong{software} used to acquire the EPR spectra
 on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 Only the two above-mentioned  characters/strings are available due to reading parameter files.}
