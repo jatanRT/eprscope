@@ -20,8 +20,10 @@
 #' @param B.unit Character string, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
 #'   \code{B.unit = "mT"}
 #'
+#'
 #' @return g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>
 #'   see description above
+#'
 #'
 #' @examples
 #' eval_gFactor(9.8020458,
@@ -36,7 +38,10 @@
 #' #
 #' eval_gFactor(9.5421,"GHz",0.333251,"T")
 #'
+#'
 #' @export
+#'
+#'
 eval_gFactor <- function(nu,
                          nu.unit = "GHz",
                          B,
@@ -102,33 +107,25 @@ eval_gFactor <- function(nu,
 #'   (this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
 #'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})
 #'
+#'
 #' @return Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}
 #'
 #'
 #' @examples
-#' \dontrun{
-#' eval_gFactor_Spec(data.spectrum,
-#'                   9.82451,
+#' ## load built-in EPR spectral data
+#' data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
+#'                                 col.names = c("B_G", "dIepr_over_dB"),
+#'                                 x = 1,
+#'                                 Intensity = 2,
+#'                                 qValue = 3500,
+#'                                 origin = "winepr")
+#' ## g_iso calculation from EPR spectrum/data =>
+#' eval_gFactor_Spec(data.spectrum = data.epr,
+#'                   nu.GHz = 9.814155,
 #'                   B.unit = "mT",
-#'                   "Field_mT",
-#'                   Intensity = "dIepr_over_dB_Sim",
-#'                   c(349.8841,351.112))
-#' #
-#' eval_gFactor_Spec(data.spectrum,
-#'                   nu.GHz = 9.82451,
-#'                   B.unit = "G",
-#'                   B = "B_G",
-#'                   Blim = c(3498.841,3511.12),
-#'                   iso = FALSE)
-#' #
-#' eval_gFactor_Spec(data.spectrum,
-#'                   9.91024,
-#'                   B.unit = "G",
-#'                   B = "B_G_Sim",
-#'                   Intensity = "Integral_Intensity",
-#'                   lineSpecs.form = "integrated",
-#'                   c(3499,3501))
-#' }
+#'                   B = "B_mT",
+#'                   Blim = c(349.677, 350.457))
 #'
 #'
 #' @export
@@ -231,12 +228,11 @@ eval_gFactor_Spec <- function(data.spectrum,
 #'
 #'
 #' @examples
-#' \dontrun{
-#' eval_gFactor_QCHcomp("./InputData/DFTcomputs/RadicalDFToutput.inp.log")
-#' eval_gFactor_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
-#'                     mean = FALSE,
-#'                     origin = "orca")
-#' }
+#' ## built-in file and path
+#' gauss.file.path <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+#' gauss.file <- unzip(gauss.file.path)
+#' ## g_iso-value calculation from Gaussian output file
+#' eval_gFactor_QCHcomp(gauss.file)
 #'
 #'
 #' @export
@@ -316,6 +312,6 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
     gValue <- g_vec
   }
   #
-  return(gValue)
+  return(round(gValue,digits = 5))
   #
 }

@@ -28,12 +28,11 @@ Therefore the function takes these values and calculates the entire \eqn{g}-valu
 the corresponding mean value from `Gaussian` or `ORCA` output.
 }
 \examples{
-\dontrun{
-eval_gFactor_QCHcomp("./InputData/DFTcomputs/RadicalDFToutput.inp.log")
-eval_gFactor_QCHcomp(file.path(".","DFT_calculations","EPRorcaRadical.out"),
-                    mean = FALSE,
-                    origin = "orca")
-}
+## built-in file and path
+gauss.file.path <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+gauss.file <- unzip(gauss.file.path)
+## g_iso-value calculation from Gaussian output file
+eval_gFactor_QCHcomp(gauss.file)
 
 
 }

@@ -42,6 +42,7 @@ eval_gFactor(nu = 9.8020458e+9,
 #
 eval_gFactor(9.5421,"GHz",0.333251,"T")
 
+
 }
 \seealso{
 Other Evaluations: 
