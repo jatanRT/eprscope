@@ -212,10 +212,10 @@ The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra 
 
 # Plotting the spectrum with basic normalization
 # the B abscissa can be presented either in "mT" (default) or "G" 
-# plot title is added by `labs()` function from `{ggplot2}` package
+# plot title is added by `ggtitle()` function from `{ggplot2}` package
 tmpd.plot.norm.01 <- 
   plot_EPR_Specs(data.spectra = tmpd.data.norm.01) + 
-  ggplot2::labs(title = "Basic Normalization")
+  ggplot2::ggtitle("Basic Normalization")
 #
 # preview
 tmpd.plot.norm.01
@@ -226,14 +226,18 @@ Comparison of both spectra with different normalization ➨
 
 ```{r spectral-data-norm0102-visual,fig.cap="Comparison of $\\ce{TMPD^{.+}}$ EPR spectra with different intensity normalization."}
 
-# Spectrum with the "advanced" normalization without y/Intensity label
-# because the EPR spectra will be displayed close to each other in two columns
+# Spectrum with the "advanced" normalization 
 tmpd.plot.norm.02 <- 
   plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
-  ggplot2::labs(title = "Advanced Normalization",y = NULL)
+  ggplot2::ggtitle("Advanced Normalization")
 #
 # Both spectra together by `{patchwork}` package
-tmpd.plot.norm.0102 <- tmpd.plot.norm.01 + tmpd.plot.norm.02
+# without y/Intensity label (`ggplot2::labs(y = NULL)`) because 
+# the EPR spectra will be displayed close to each other in two columns
+tmpd.plot.norm.0102 <- 
+  tmpd.plot.norm.01 + 
+  tmpd.plot.norm.02 +
+  ggplot2::labs(y = NULL)
 #
 # preview of EPR spectra with different intensities
 tmpd.plot.norm.0102
@@ -283,7 +287,7 @@ There are four basic parameters to characterize the EPR spectrum ➨
 
 3.  Hyperfine splitting, $a$ (in $\mathrm{mT}$ or $\mathrm{G}$) which is the distance between the individual lines corresponding to interaction of the unpaired electron with the group of surrounding equivalent nuclei.
 
-4.  Single or double integral depending on the original spectral line form ➨ either integrated or derivative, respectively. This is directly proportional to number of paramagnetic species/radicals.
+4.  Single or double integral depending on the original spectral line form ➨ either integrated or derivative, respectively. This is directly proportional to the number of paramagnetic species/radicals.
 
 ## Finding the $g_{\mathrm{iso}}$-Value
 
@@ -295,7 +299,7 @@ g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B_0}
 (\#eq:gfactor)
 \end{equation}
 ```
-where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, respectively. Therefore, it is determined only by microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point where $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0$ (see function `eval_gFactor_Spec()`).
+where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, respectively. Therefore, it is determined only by the microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point where $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0$ (see function `eval_gFactor_Spec()`).
 
 ```{r spectral-data-norm02-gvalue}
 
@@ -338,7 +342,7 @@ all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
 
 ```
 
-The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirmes the position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Simply speaking, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the "unpaired" electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
+The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and the experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirms position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Namely, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the "unpaired" electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
 
 ## Linewidth, $\Delta B_{\mathrm{pp}}$ Determination
 
@@ -355,13 +359,12 @@ B.regions.mT <- list(
 )
 #
 # all Delta Bpp as vector created by the iteration 
-# through each element of `B.regions.mT`
+# through each element of `B.regions.mT` (by function `sapply()`)
 tmpd.delta.Bpp <- sapply(
   B.regions.mT,
   function(b) {
     eval_DeltaXpp_Spec(tmpd.data.norm.02,
-      xlim = b
-    )
+      xlim = b)
   }
 )
 #
