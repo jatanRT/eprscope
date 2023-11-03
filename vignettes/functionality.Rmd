@@ -71,9 +71,9 @@ draw_molecule_by_rcdk(
 
 This function belongs to the package family/section `Visualization and Graphics` and enables to create image of molecular structures either by [SMILES and SMART codes](https://chem.libretexts.org/Courses/Fordham_University/Chem1102%3A_Drug_Discovery_-_From_the_Laboratory_to_the_Clinic/05%3A_Organic_Molecules/5.08%3A_Line_Notation_(SMILES_and_InChI)) or by loading a **S**tructure **D**ata **F**ile (`.sdf`) [@Sakari2022].
 
-# Reading Text Files and Writing Data Frames
+# Reading Files and Writing Data Frames
 
-To process the EPR spectral data it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` or `.par` format). The information incl. in these files is required to e.g. normalize the Intensity (like $\mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
+To process the EPR spectral data it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format). The information incl. in these files is required to e.g. normalize the Intensity (like $\mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
 
 Reading of the instrumental parameters from `.DSC` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes like e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
 
@@ -121,9 +121,9 @@ The `origin` argument from reading functions reflects the differences in the ASC
 # built-in package file => "TMPD_specelchem_accu_b.asc"
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
-# The intensity will be normalized by Q value (sensitivity factor)
-# and the number of scans (`Nscans`). From the previous parameter/info reading 
-# we know: Q = 3500, Nscans = 20. Therefore, reading of the experimental spectra =>
+# The intensity is normalized by Q value (sensitivity factor)
+# and the number of scans (`Nscans`). From the previous parameter/info 
+# reading we know: Q = 3500, Nscans = 20.
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
@@ -358,8 +358,8 @@ B.regions.mT <- list(
   c(350.822, 351.072)
 )
 #
-# all Delta Bpp as vector created by the iteration 
-# through each element of `B.regions.mT` (by function `sapply()`)
+# all Delta Bpp as vector created by the iteration through 
+# all elements of `B.regions.mT` (by the `sapply()` function)
 tmpd.delta.Bpp <- sapply(
   B.regions.mT,
   function(b) {
@@ -368,13 +368,17 @@ tmpd.delta.Bpp <- sapply(
   }
 )
 #
-# mean value
+# mean value of all three linewidths
 tmpd.delta.Bpp.mean <- 
   round(mean(tmpd.delta.Bpp),digits = 2)
 #
 tmpd.delta.Bpp.mean
 
 ```
+
+## Hyperfine Structure
+
+Blah
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
