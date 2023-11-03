@@ -60,13 +60,13 @@ column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Ele
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
 \item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the plot,
-like e.g. display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
+e.g. like display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
 fourth (\code{var2nd.series.slct.by = 4})...etc. spectrum. The argument is used in case
 \code{var2nd.series} is \strong{NOT NULL} (e.g. \code{var2nd.series = "time_s"}) and one wants to present
-separated labels/levels for spectra (not the continuous one). Recommended max. number of spectra/lines
-is 12.}
+discrete labels/levels for spectra (NOT THE CONTINUOUS ONE). THE \code{var2nd.series.slct.by = 1} DISPLAYS
+ALL DISCRETE SPECTRA WITHIN SERIES. Recommended max. number of spectra/lines is 12.}
 
-\item{Intensity}{Character/String pointing to \code{intensity column} in the original \code{data.spectra}
+\item{Intensity}{Character string pointing to \code{intensity column} in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
@@ -98,9 +98,10 @@ line form of the analyzed EPR spectrum/data.}
   \itemize{
   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
   \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
-  These involve \code{"magma"} (or \code{"A"}), \code{"inferno"} (or \code{"B"}), \code{"plasma"} (or \code{"C"}),
-  \code{"viridis"} (or \code{"D"}), \code{"cividis"} (or \code{"E"}), \code{"rocket"} (or \code{"F"}),
-  \code{"mako"} (or \code{"G"}) and \code{"turbo"} (or \code{"H"})
+  These involve \code{line.colors = "magma"} (or ...\code{"A"}), \code{line.colors = "inferno"} (or ...\code{"B"}),
+  \code{line.colors = "plasma"} (or ...\code{"C"}), \code{line.colors = "viridis"} (or ...\code{"D"}),
+  \code{line.colors = "cividis"} (or ...\code{"E"}), \code{line.colors = "rocket"} (or ...\code{"F"}),
+  \code{line.colors = "mako"} (or ...\code{"G"}) and \code{line.colors = "turbo"} (or ...\code{"H"})
   }
   }}
 

@@ -43,12 +43,12 @@
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
 #' @param var2nd.series.slct.by Numeric, number corresponding to each \eqn{n-th} presented spectrum in the plot,
-#'   like e.g. display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
+#'   e.g. like display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
 #'   fourth (\code{var2nd.series.slct.by = 4})...etc. spectrum. The argument is used in case
 #'   \code{var2nd.series} is \strong{NOT NULL} (e.g. \code{var2nd.series = "time_s"}) and one wants to present
-#'   separated labels/levels for spectra (not the continuous one). Recommended max. number of spectra/lines
-#'   is 12.
-#' @param Intensity Character/String pointing to \code{intensity column} in the original \code{data.spectra}
+#'   discrete labels/levels for spectra (NOT THE CONTINUOUS ONE). THE \code{var2nd.series.slct.by = 1} DISPLAYS
+#'   ALL DISCRETE SPECTRA WITHIN SERIES. Recommended max. number of spectra/lines is 12.
+#' @param Intensity Character string pointing to \code{intensity column} in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
@@ -78,9 +78,10 @@
 #'   \itemize{
 #'   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
 #'   \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
-#'   These involve \code{"magma"} (or \code{"A"}), \code{"inferno"} (or \code{"B"}), \code{"plasma"} (or \code{"C"}),
-#'   \code{"viridis"} (or \code{"D"}), \code{"cividis"} (or \code{"E"}), \code{"rocket"} (or \code{"F"}),
-#'   \code{"mako"} (or \code{"G"}) and \code{"turbo"} (or \code{"H"})
+#'   These involve \code{line.colors = "magma"} (or ...\code{"A"}), \code{line.colors = "inferno"} (or ...\code{"B"}),
+#'   \code{line.colors = "plasma"} (or ...\code{"C"}), \code{line.colors = "viridis"} (or ...\code{"D"}),
+#'   \code{line.colors = "cividis"} (or ...\code{"E"}), \code{line.colors = "rocket"} (or ...\code{"F"}),
+#'   \code{line.colors = "mako"} (or ...\code{"G"}) and \code{line.colors = "turbo"} (or ...\code{"H"})
 #'   }
 #'   }
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
@@ -259,7 +260,7 @@ plot_EPR_Specs <- function(data.spectra,
   axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL))
   #
   ## Basic simple plot:
-  if (is.null(legend.title)){
+  if (is.null(legend.title) & is.null(var2nd.series.slct.by)){
     simplePlot <- ggplot(data.spectra) +
       geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
                 linewidth = line.width, color = line.colors, show.legend = FALSE
@@ -309,17 +310,6 @@ plot_EPR_Specs <- function(data.spectra,
         legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
         legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
         #
-        simplePlot <- ggplot(data.spectra) +
-          geom_line(aes(x = .data[[x]],
-                        y = .data[[Intensity]],
-                        color = .data[[var2nd.series]]),
-                    linewidth = line.width) +
-          coord_cartesian(xlim = x.plot.limits) +
-          scale_color_gradientn(colors = line.colors) +
-          labs(color = legend.title, x = x.label, y = y.label) +
-          theme(legend.title = element_text(size = legend.title.size),
-                legend.text = element_text(size = legend.text.size))
-        #
         if (!is.null(var2nd.series.slct.by)){
           ## OVERLAY SELECT PLOT
           ## `var2nd.series` definition
@@ -364,8 +354,18 @@ plot_EPR_Specs <- function(data.spectra,
                     legend.text = element_text(size = legend.text.size))
           }
          #
+        } else {
+          simplePlot <- ggplot(data.spectra) +
+            geom_line(aes(x = .data[[x]],
+                          y = .data[[Intensity]],
+                          color = .data[[var2nd.series]]),
+                      linewidth = line.width) +
+            coord_cartesian(xlim = x.plot.limits) +
+            scale_color_gradientn(colors = line.colors) +
+            labs(color = legend.title, x = x.label, y = y.label) +
+            theme(legend.title = element_text(size = legend.title.size),
+                  legend.text = element_text(size = legend.text.size))
         }
-        #
       }
       #
     }
