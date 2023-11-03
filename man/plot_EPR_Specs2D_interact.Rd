@@ -11,7 +11,7 @@ plot_EPR_Specs2D_interact(
   Intensity = "dIepr_over_dB",
   var2nd.series = NULL,
   lineSpecs.form = "derivative",
-  line.color = "darkviolet",
+  line.colors = "darkviolet",
   line.width = 0.75,
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
@@ -58,14 +58,16 @@ column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Ele
 or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
 line form of the analyzed EPR spectrum/data.}
 
-\item{line.color}{Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-(not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}.}
+\item{line.colors}{Character string or its vector. In case of \strong{of SIMPLE SPECTRUM}
+(NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARCTER STRING IS REQUIRED => therefore,
+\strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
+WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. like \code{line.colors = c("darkorange","darkblue")}).}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
 
-\item{bg.color}{Character/String corresponding to \strong{background color}}
+\item{bg.color}{Character string corresponding to \strong{background color}}
 
-\item{grid.color}{Character/String corresponding to \strong{grid color}}
+\item{grid.color}{Character string corresponding to \strong{grid color}}
 
 \item{border.line.width}{tbc}
 

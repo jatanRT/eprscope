@@ -37,11 +37,13 @@
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
 #'   line form of the analyzed EPR spectrum/data.
-#' @param line.color Character/String corresponding to \strong{line color} in case \strong{of simple spectrum}
-#'   (not for \code{var2nd.series}), therefore \strong{default:} \code{line.color = "darkviolet"}.
+#' @param line.colors Character string or its vector. In case of \strong{of SIMPLE SPECTRUM}
+#'   (NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARCTER STRING IS REQUIRED => therefore,
+#'   \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
+#'   WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. like \code{line.colors = c("darkorange","darkblue")}).
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
-#' @param bg.color Character/String corresponding to \strong{background color}
-#' @param grid.color Character/String corresponding to \strong{grid color}
+#' @param bg.color Character string corresponding to \strong{background color}
+#' @param grid.color Character string corresponding to \strong{grid color}
 #' @param border.line.width tbc
 #' @param border.line.color tbc
 #' @param legend.title tbc
@@ -71,7 +73,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                       Intensity = "dIepr_over_dB",
                                       var2nd.series = NULL,
                                       lineSpecs.form = "derivative",
-                                      line.color = "darkviolet",
+                                      line.colors = "darkviolet",
                                       line.width = 0.75,
                                       bg.color = "#e5ecf6",
                                       grid.color = "#ffff",
@@ -112,17 +114,28 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   #
   ## plot precursor
   if (!is.null(var2nd.series)) {
+      ## length of `var2nd.series`
+      var2nd.series.df <- data.spectra %>%
+        dplyr::group_by(.data[[var2nd.series]]) %>%
+        dplyr::group_keys()
+      var2nd.series.len <- length(var2nd.series.df[[var2nd.series]])
+      #
+      ## vector colors def.
+      plot.vector.colors <-
+        grDevices::colorRampPalette(colors = line.colors)(var2nd.series.len)
+      #
       ## basis defined by `ggplot`
       simplePlot <- ggplot(data.spectra, aes(
         x = .data[[x]],
         y = .data[[Intensity]],
         color = as.factor(.data[[var2nd.series]])
       )) +
-        geom_line(linewidth = line.width)
+        geom_line(linewidth = line.width) +
+        scale_color_manual(values = plot.vector.colors)
       #
   } else {
     simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
-      geom_line(linewidth = line.width, color = line.color)
+      geom_line(linewidth = line.width, color = line.colors)
   }
   ## final plot with layout
   if (!is.null(var2nd.series)) {

@@ -295,21 +295,22 @@ plot_EPR_Specs <- function(data.spectra,
       }
     }
     #
-    if (is.null(var2nd.series)){
+    ## Legend title and text definition
+    legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
+    legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
+    #
+    if (is.null(var2nd.series) & !is.null(legend.title)){
       simplePlot <- ggplot(data.spectra) +
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
                   linewidth = line.width) +
         coord_cartesian(xlim = x.plot.limits) +
         scale_color_manual(values = line.colors) +
-        labs(color = legend.title, x = x.label, y = y.label)
+        labs(color = legend.title, x = x.label, y = y.label) +
+        theme(legend.title = element_text(size = legend.title.size))
     } else{
       if (is.null(legend.title)){
         stop(" The `legend.title` is not specified. Please, define ! ")
       } else{
-        ## Legend title and text definition
-        legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
-        legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
-        #
         if (!is.null(var2nd.series.slct.by)){
           ## OVERLAY SELECT PLOT
           ## `var2nd.series` definition
@@ -348,7 +349,8 @@ plot_EPR_Specs <- function(data.spectra,
             plot.vector.colors <- line.colors
             #
             simplePlot <- simplePlot.nocolor +
-              scale_color_viridis_d(option = plot.vector.colors) +
+              scale_color_viridis_d(option = plot.vector.colors,
+                                    direction = -1) +
               labs(color = legend.title, x = x.label, y = y.label) +
               theme(legend.title = element_text(size = legend.title.size),
                     legend.text = element_text(size = legend.text.size))
@@ -369,7 +371,6 @@ plot_EPR_Specs <- function(data.spectra,
       }
       #
     }
-    #
   }
   #
   ## Conditions for plotting
