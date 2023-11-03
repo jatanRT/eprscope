@@ -124,11 +124,16 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
       plot.vector.colors <-
         grDevices::colorRampPalette(colors = line.colors)(var2nd.series.len)
       #
+      ## `var2nd.series` factorization
+      data.spectra <- data.spectra %>%
+        dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                        as.factor(.data[[var2nd.series]]))
+      #
       ## basis defined by `ggplot`
       simplePlot <- ggplot(data.spectra, aes(
         x = .data[[x]],
         y = .data[[Intensity]],
-        color = as.factor(.data[[var2nd.series]])
+        color = .data[[var2nd.series]]
       )) +
         geom_line(linewidth = line.width) +
         scale_color_manual(values = plot.vector.colors)
