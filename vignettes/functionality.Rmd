@@ -58,6 +58,8 @@ Structure of the investigated compound can be depicted by the following function
 
 # radical cation of previosly described Wuster's Reagent equivalent
 # to N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical cation
+# from 'SMILES' origin on "cob" ("color on black") canvas, without
+# suppressing the hydrogen atoms
 draw_molecule_by_rcdk(
   molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
   type = "smiles",
@@ -77,7 +79,7 @@ To process the EPR spectral data it is important not only to read the files with
 
 Reading of the instrumental parameters from `.DSC` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes like e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
 
-```{r instrum-params-reaad-df-info}
+```{r instrum-params-read-df-info}
 
 # built-in package file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
@@ -107,7 +109,7 @@ Finally conversion of the second data frame (`tmpd.params$params`) into interact
 # by function `datatable` from the `DT` package
 DT::datatable(data = tmpd.params$params)
 #
-# the same by
+# the same output we may obtain by:
 # readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
 #                     origin = "winepr",
 #                     interact = "params")
@@ -187,7 +189,7 @@ Visualization and/or conversion of data frames (tables) into several formats lik
 
 ```
 
-In order to process data frames in other software tools different from `r icons::bioicons("R")` they may be exported into universal `.csv` table format like by `write.csv()` function ➨
+In order to process data frames in other software tools different from `r icons::bioicons("R")` they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
 
 ```{r spectral-data-read-norm-csv-save}
 
@@ -198,7 +200,7 @@ write.csv(tmpd.data.norm.02,
 
 ```
 
-# Data Visualization
+# Spectral Data Visualization
 
 All the data related to EPR spectroscopy can be visualized by the famous [{ggplot2}](https://ggplot2.tidyverse.org/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, the latter includes tools like zooming, panning, data/values hovering and [much more](https://plotly.com/r/configuration-options/). Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
 
@@ -244,7 +246,7 @@ tmpd.plot.norm.0102
 
 ```
 
-If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual) the function `ggsave()` from `{ggplot2}` package can be used ➨
+If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual) the function `ggplot2::ggsave()` can be used ➨
 
 ```{r spectral-data-norm0102-visua-save}
 
@@ -303,7 +305,7 @@ where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, re
 
 ```{r spectral-data-norm02-gvalue}
 
-# reading the frequency from the `.par` file
+# reading the microwave frequency ("MF") from the `.par` file
 tmpd.mw.freq <- 
   readEPR_param_slct(tmpd.params.file,
   string = "MF",
@@ -342,7 +344,7 @@ all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
 
 ```
 
-The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and the experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirms position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Namely, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the "unpaired" electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
+The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and the experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirms position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Namely, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the unpaired electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
 
 ## Linewidth, $\Delta B_{\mathrm{pp}}$ Determination
 
@@ -376,9 +378,43 @@ tmpd.delta.Bpp.mean
 
 ```
 
-## Hyperfine Structure
+## Hyperfine (HF) Structure
 
-Blah
+The **HF** structure represents one of the most important characteristic because it reflects the distribution of unpaired electron within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants ($a$, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by `convert_a_mT_2A()` into hyperfine coupling constants in $\mathrm{MHz}$ ($A$, HFCCs) by the following relation (Equation \@ref(eq:hfatoA)) ➨
+
+```{=tex}
+\begin{equation}
+ A = \frac{a\,g\,\mu_{\mathrm{B}}}{h}
+ (\#eq:hfatoA)
+ \end{equation}
+```
+```{r a-to-A-from-spectrum}
+
+# two distances or HFSCs (a in mT) 
+# from the interactive EPR spectrum above
+a1.guess.mT <- abs(350.042 - 349.342)
+a2.guess.mT <- abs(349.147 - 349.342)
+# both values into vector
+a.guess.mT <- c(a1.guess.mT,a2.guess.mT)
+#
+# converssion into A incl. g.iso value 
+# (`tmpd.g.iso.spec`) from the calculation above
+A.guess.MHz <-
+  sapply(
+    a.guess.mT,
+    function(x) {
+      convert_a_mT_2A(
+        a.mT = x,
+        g = tmpd.g.iso.spec)
+    }
+  )
+#
+# `A.guess.MHz` preview
+A.guess.MHz
+
+```
+
+According to literature [@GramppGpda2005] and the $\ce{TMPD^{.+}}$ structure depicted above the interacting nuclei may be divided into three groups of equivalent nuclei: $2\,\times\,\ce{^{14}N}$, $4\,\times\,\ce{^1H}$ (aromatic protons) and $12\,\times\,\ce{^1H}$ (methyl protons).
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
