@@ -50,7 +50,6 @@
 #'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange matches across
-#' @importFrom nloptr slsqp neldermead mma ccsaq
 quantify_EPR_sim <- function(data.spectra.series,
                              dir_ASC_sim,
                              name_pattern_sim,
