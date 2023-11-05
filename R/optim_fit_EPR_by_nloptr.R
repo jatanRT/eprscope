@@ -43,37 +43,42 @@ optim_fit_EPR_by_nloptr <- function(method = "slsqp",
                                     lower,
                                     upper,
                                     data,
-                                    col.name.pattern) {
+                                    col.name.pattern,
+                                    ...) {
   if (method == "slsqp") {
     return(nloptr::slsqp(
-      x0 = x0, fn = fn,
+      x0 = x.0, fn = fn,
       lower = lower, upper = upper,
       nl.info = FALSE, data = data,
-      col.name.pattern = col.name.pattern
+      col.name.pattern = col.name.pattern,
+      ...
     ))
   }
   if (method == "neldermead") {
     return(nloptr::neldermead(
-      x0 = x0, fn = fn,
+      x0 = x.0, fn = fn,
       lower = lower, upper = upper,
       nl.info = FALSE, data = data,
-      col.name.pattern = col.name.pattern
+      col.name.pattern = col.name.pattern,
+      ...
     ))
   }
   if (method == "mma") {
     return(nloptr::mma(
-      x0 = x0, fn = fn,
+      x0 = x.0, fn = fn,
       lower = lower, upper = upper,
       nl.info = FALSE, data = data,
-      col.name.pattern = col.name.pattern
+      col.name.pattern = col.name.pattern,
+      ...
     ))
   }
   if (method == "ccsaq") {
     return(nloptr::ccsaq(
-      x0 = x0, fn = fn,
+      x0 = x.0, fn = fn,
       lower = lower, upper = upper,
       nl.info = FALSE, data = data,
-      col.name.pattern = col.name.pattern
+      col.name.pattern = col.name.pattern,
+      ...
     ))
   }
 }

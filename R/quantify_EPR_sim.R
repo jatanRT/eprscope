@@ -175,33 +175,6 @@ quantify_EPR_sim <- function(data.spectra.series,
     var2nd_seq,
     function(t) subset(data.specs.sim, data.specs.sim[[var2nd.series]] == t)
   )
-  ## optimization function
-  optim.func <- function(method = "slsqp",x0,fn,lower,upper,data,col.name.pattern){
-    if (method == "slsqp"){
-      return(nloptr::slsqp(x0 = x0,fn = fn,
-                           lower = lower,upper = upper,
-                           nl.info = FALSE,data = data,
-                           col.name.pattern = col.name.pattern))
-    }
-    if (method == "neldermead"){
-      return(nloptr::neldermead(x0 = x0,fn = fn,
-                                lower = lower,upper = upper,
-                                nl.info = FALSE,data = data,
-                                col.name.pattern = col.name.pattern))
-    }
-    if (method == "mma"){
-      return(nloptr::mma(x0 = x0,fn = fn,
-                         lower = lower,upper = upper,
-                         nl.info = FALSE,data = data,
-                         col.name.pattern = col.name.pattern))
-    }
-    if (method == "ccsaq"){
-      return(nloptr::ccsaq(x0 = x0,fn = fn,
-                           lower = lower,upper = upper,
-                           nl.info = FALSE,data = data,
-                           col.name.pattern = col.name.pattern))
-    }
-  }
   #
   ## Definition of `lower` and `upper` optim. limits of initial params.
   ## e.g following
@@ -213,14 +186,15 @@ quantify_EPR_sim <- function(data.spectra.series,
     `if`(is.null(optim.params.upper), upper.limits, .)
   #
   ## optimization list by `data.list`
-  optimization.list <- lapply(seq(data.list),
-                              function(o) optim.func(method = optim.method,
-                                                     x0 = optim.params.init,
-                                                     fn = min_residuals,
-                                                     lower = optim.params.lower,
-                                                     upper = optim.params.upper,
-                                                     data = data.list[[o]],
-                                                     col.name.pattern = "Sim.*_[[:upper:]]$"))
+  optimization.list <-
+    lapply(seq(data.list),
+           function(o) optim_fit_EPR_by_nloptr(method = optim.method,
+                                               x.0 = optim.params.init,
+                                               fn = min_residuals,
+                                               lower = optim.params.lower,
+                                               upper = optim.params.upper,
+                                               data = data.list[[o]],
+                                               col.name.pattern = "Sim.*_[[:upper:]]$"))
   #
   ## data.list is not needed anymore
   rm(data.list)
