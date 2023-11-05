@@ -91,17 +91,21 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## Single integration with default arguments
+#' ## Single integration of derivative spectrum with default arguments
+#' ## returns data frame with additional `single_Integ` column
 #' eval_integ_EPR_Spec(data.spectrum)
 #' #
 #' ## Integration gathering the double/sigmoid integral
-#' ## without baseline correction
+#' ## without baseline correction returns data frame with
+#' ## two additional columns `single_Integ` + `sigmoid_Integ`
 #' eval_integ_EPR_Spec(data.spectrum,
 #'                     sigmoid.integ = T)
 #' #
-#' ## baseline correction (by the polynomial of the 3rd level) for
+#' ## Baseline correction (by the polynomial of the 3rd level) for
 #' ## the single integrated spec. as well as evaluating the sigmoid integral,
-#' ## single integral peak is located in the region of c(3430,3560) G
+#' ## single integral peak is located in the region of c(3430,3560) G,
+#' ## the result is data frame with the following additional columns:
+#' ## `single_Integ`, `baseline_Integ_fit`, `single_Integ_correct`, `sigmoid_Integ`
 #' eval_integ_EPR_Spec(data.spectrum,
 #'                     lineSpec.form = "absorption",
 #'                     correct.integ = T,
@@ -109,15 +113,14 @@
 #'                     poly.degree = 3,
 #'                     sigmoid.integ = T)
 #' #
-#' ## vectorized output of the uncorrected `sigmoid integral`
+#' ## Vectorized output of the uncorrected `sigmoid integral`
 #' eval_integ_EPR_Spec(data.spectrum,sigmoid.integ = T,output.vecs = T)[["sigmoid"]]
 #' #
-#' ## incorporation of vectorized integration into data "pipe" ("%>%")
+#' ## Incorporation of vectorized integration into data "pipe" ("%>%")
 #' ## `dplyr` processing of EPR spectral time series, creating column
-#' ## with `sigmoid` integral
-#' ## where its corresponding single integral (intensity) has undergone
-#' ## a baseline correction, finally the max. value of the all sigmoid
-#' ## integrals along the time is summarized in data frame
+#' ## with `sigmoid` integral where its corresponding single integral (intensity)
+#' ## has undergone a baseline correction, finally the max. value
+#' ## of the all sigmoid integrals along the time is summarized in data frame
 #' ## for quantitative or kinetic analysis
 #' data.integrals <- data.spectra %>%
 #'   dplyr::group_by(time_s) %>%
@@ -131,6 +134,20 @@
 #'  dplyr::summarize(Area = max(sigmoid_Integ))
 #' ## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,
 #' ## it must be `Blim = NULL`, however by `dplyr::between()` !!!
+#' #
+#' ## Similar to previous data processing, creating both: corrected
+#' ## single integral + sigmoid integral for each time within the spectral
+#' ## series. Sigmoid integral was evalutated from the single one by
+#' ## `cumtrapz()` function from `pracma` package and finally rescaled.
+#' data.integrals <- data.spectra %>%
+#'   dplyr::group_by(time_s) %>%
+#'   eval_integ_EPR_Spec(correct.integ = T,
+#'                       Blim = c(3380,3610),
+#'                       BpeaKlim = c(3430,3560),
+#'                       poly.degree = 3) %>%
+#'  dplyr::group_by(time_s) %>%
+#'  dplyr::mutate(sigmoid_Integ = pracma::cumtrapz(B_G,single_Integ_correct)[,1]) %>%
+#'  dplyr::mutate(sigmoid_Integ_correct = abs(min(sigmoid_Integ) - sigmoid_Integ))
 #' }
 #'
 #'
