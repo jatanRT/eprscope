@@ -1,5 +1,5 @@
 #'
-#' Basic Calculation of \eqn{g}-Factor
+#' Basic Calculation of \eqn{g}-factor
 #'
 #'
 #' @family Evaluations

@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_gFactors.R
 \name{eval_gFactor}
 \alias{eval_gFactor}
-\title{Basic Calculation of \eqn{g}-Factor}
+\title{Basic Calculation of \eqn{g}-factor}
 \usage{
 eval_gFactor(nu, nu.unit = "GHz", B, B.unit = "mT")
 }
