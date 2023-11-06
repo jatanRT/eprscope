@@ -195,7 +195,7 @@ minpack.lm::nls.lm(par = c(k1 = 0.005,
 Other Evaluations and Quantification: 
 \code{\link{eval_integ_EPR_Spec}()},
 \code{\link{eval_kinR_EPR_modelFit}()},
-\code{\link{quantify_EPR_Norm_const}()},
-\code{\link{quantify_EPR_abs}()}
+\code{\link{quantify_EPR_Abs}()},
+\code{\link{quantify_EPR_Norm_const}()}
 }
 \concept{Evaluations and Quantification}

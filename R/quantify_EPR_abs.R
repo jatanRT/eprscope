@@ -93,7 +93,7 @@
 #' @export
 #'
 #'
-quantify_EPR_abs <- function(integ.sigmoid.max,
+quantify_EPR_Abs <- function(integ.sigmoid.max,
                              instrum.params = NULL, ##  otherwise c(mwGHz,PmW,BmmT,TK = 298)
                              path_to_dsc_par,
                              origin = "xenon",

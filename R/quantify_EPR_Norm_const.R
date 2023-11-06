@@ -5,7 +5,7 @@
 #' @family Evaluations and Quantification
 #'
 #'
-#' @description Normalization constant used by \code{\link{quantify_EPR_abs}} or to normalize
+#' @description Normalization constant used by \code{\link{quantify_EPR_Abs}} or to normalize
 #'   the EPR spectrum intensity. The calculation depends on expression of the receiver gain.
 #'
 #'
@@ -26,7 +26,7 @@
 #'   the corresponding `.DSC`/`.dsc` or `.par` file. \strong{If during the recording of EPR spectra
 #'   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
 #'   \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL
-#'   NORMALIZATION !}. See also \code{\link{quantify_EPR_abs}}.
+#'   NORMALIZATION !}. See also \code{\link{quantify_EPR_Abs}}.
 #'
 #'
 #'

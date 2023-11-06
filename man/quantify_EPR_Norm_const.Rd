@@ -24,7 +24,7 @@ or \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}).}
 Numeric value of the normalization constant for quantitative EPR and intensity normalization.
 }
 \description{
-Normalization constant used by \code{\link{quantify_EPR_abs}} or to normalize
+Normalization constant used by \code{\link{quantify_EPR_Abs}} or to normalize
   the EPR spectrum intensity. The calculation depends on expression of the receiver gain.
 }
 \details{
@@ -44,7 +44,7 @@ For the receiver gain expressed in \eqn{\text{dB}} units the normalization const
   the corresponding `.DSC`/`.dsc` or `.par` file. \strong{If during the recording of EPR spectra
   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
   \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL
-  NORMALIZATION !}. See also \code{\link{quantify_EPR_abs}}.
+  NORMALIZATION !}. See also \code{\link{quantify_EPR_Abs}}.
 }
 \examples{
 quantify_EPR_Norm_const(conv.time.ms = 8.2,
@@ -64,6 +64,6 @@ Other Evaluations and Quantification:
 \code{\link{eval_integ_EPR_Spec}()},
 \code{\link{eval_kinR_EPR_modelFit}()},
 \code{\link{eval_kinR_ODE_model}()},
-\code{\link{quantify_EPR_abs}()}
+\code{\link{quantify_EPR_Abs}()}
 }
 \concept{Evaluations and Quantification}

@@ -58,6 +58,6 @@ Other Visualizations and Graphics:
 \code{\link{plot_layout2D_interact}()},
 \code{\link{plot_theme_In_ticks}()},
 \code{\link{plot_theme_NoY_ticks}()},
-\code{\link{presentEPR_Sim_Spec}()}
+\code{\link{present_EPR_Sim_Spec}()}
 }
 \concept{Visualizations and Graphics}

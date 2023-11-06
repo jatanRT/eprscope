@@ -70,18 +70,18 @@
 #'
 #'
 #'
-presentEPR_Sim_Spec <- function(data.spectrum.expr,
-                                data.spectrum.sim,
-                                B.unit = "G",
-                                Intensity.expr = "dIepr_over_dB",
-                                Intensity.sim = "dIeprSim_over_dB",
-                                Intensity.shift.ratio = 1.2, ## ca be also NULL
-                                B.shift = 0,
-                                lineSpecs.form = "derivative",
-                                line.color.expr = "red",
-                                line.color.sim = "blue",
-                                line.width = 0.75,
-                                output.df = FALSE) {
+present_EPR_Sim_Spec <- function(data.spectrum.expr,
+                                 data.spectrum.sim,
+                                 B.unit = "G",
+                                 Intensity.expr = "dIepr_over_dB",
+                                 Intensity.sim = "dIeprSim_over_dB",
+                                 Intensity.shift.ratio = 1.2, ## ca be also NULL
+                                 B.shift = 0,
+                                 lineSpecs.form = "derivative",
+                                 line.color.expr = "red",
+                                 line.color.sim = "blue",
+                                 line.width = 0.75,
+                                 output.df = FALSE) {
   #
   ## 'Temporary' processing variables
   B <- NULL
