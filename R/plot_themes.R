@@ -2,7 +2,7 @@
 #' Custom \code{ggplot2} Theme with Axis Ticks Oriented Inside the Panel
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description
@@ -85,7 +85,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #' Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description
@@ -168,7 +168,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside of the Panel
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description TODO

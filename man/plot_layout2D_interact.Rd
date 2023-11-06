@@ -95,7 +95,7 @@ tbc
 
 }
 \seealso{
-Other Visualization and Graphics: 
+Other Visualizations and Graphics: 
 \code{\link{draw_molecule_by_rcdk}()},
 \code{\link{plot_EPR_Specs2D_interact}()},
 \code{\link{plot_EPR_Specs3D_interact}()},
@@ -108,4 +108,4 @@ Other Visualization and Graphics:
 \code{\link{plot_theme_Out_ticks}()},
 \code{\link{presentEPR_Sim_Spec}()}
 }
-\concept{Visualization and Graphics}
+\concept{Visualizations and Graphics}

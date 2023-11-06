@@ -2,7 +2,7 @@
 #' Comparison Between the Experimental and Simulated EPR Spectrum
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description TODO by Tabular and/or Graphic Representation

@@ -2,7 +2,7 @@
 #' Essential Plotting of EPR/ENDOR Spectrum/Spectra
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description Graph/Plot of an EPR/ENDOR spectrum/spectra ('overlay' plot) based on \pkg{ggplot2}-functionality.

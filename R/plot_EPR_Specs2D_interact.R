@@ -2,7 +2,7 @@
 #' Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description

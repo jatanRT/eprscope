@@ -2,7 +2,7 @@
 #' Quantify (Components) Area of Simulated EPR Spectral Series Instead of Experimental One
 #'
 #'
-#' @family Simulation and Optimization
+#' @family Simulations and Optimization
 #'
 #'
 #' @description tbc
@@ -50,7 +50,7 @@
 #'
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange matches across
-quantify_EPR_sim <- function(data.spectra.series,
+quantify_EPR_Sim_series <- function(data.spectra.series,
                              dir_ASC_sim,
                              name_pattern_sim,
                              sim.origin = "easyspin",
@@ -80,11 +80,12 @@ quantify_EPR_sim <- function(data.spectra.series,
                                     pattern = pattern.sim.files,
                                     full.names = TRUE)
   ## load all simulation spectral parts at once
-  data.specs.orig.sim <- lapply(sim.file.orig.paths,
-                                function(f) readEPR_Sim_Spec(f,
-                                                             B.unit = B.unit,
-                                                             Intensity.sim = Intensity.sim,
-                                                             sim.origin = sim.origin))
+  data.specs.orig.sim <-
+    lapply(sim.file.orig.paths,
+           function(f) readEPR_Sim_Spec(f,
+                                        B.unit = B.unit,
+                                        Intensity.sim = Intensity.sim,
+                                        sim.origin = sim.origin))
   #
   ## checking number of points for experimental and simulated spectra
   ## experimental
@@ -98,8 +99,9 @@ quantify_EPR_sim <- function(data.spectra.series,
   #
   ## condition to check resolution of all simulations
   if (length(data.specs.orig.sim) > 1){
-    resolution.check <- sapply(seq(resolution.sim),
-                               function(c) if (resolution.sim[c] == resolution.exp) TRUE else FALSE)
+    resolution.check <-
+      sapply(seq(resolution.sim),
+             function(c) if (resolution.sim[c] == resolution.exp) TRUE else FALSE)
   } else{
     resolution.check <- if (resolution.sim == resolution.exp) TRUE else FALSE
   }
@@ -191,43 +193,60 @@ quantify_EPR_sim <- function(data.spectra.series,
   ## optimization list by `data.list`
   optimization.list <-
     lapply(seq(data.list),
-           function(o) optim_fit_EPR_by_nloptr(method = optim.method,
-                                               x.0 = optim.params.init,
-                                               fn = min_residuals,
-                                               lower = optim.params.lower,
-                                               upper = optim.params.upper,
-                                               data = data.list[[o]],
-                                               col.name.pattern = "Sim.*_[[:upper:]]$"))
+           function(o)
+             optim_EPR_by_nloptr(method = optim.method,
+                                 x.0 = optim.params.init,
+                                 fn = min_residuals,
+                                 lower = optim.params.lower,
+                                 upper = optim.params.upper,
+                                 data = data.list[[o]],
+                                 col.name.pattern = "Sim.*_[[:upper:]]$")
+           )
   #
   ## data.list is not needed anymore
   rm(data.list)
   #
   ## 1st constants/parameters (shared intercept for all sim. spectra) into vectors
-  optim.vec.x01 <- sapply(seq_along(optimization.list),
-                          function(l) optimization.list[[l]]$par[1])
+  optim.vec.x01 <-
+    sapply(seq_along(optimization.list),
+           function(l) optimization.list[[l]]$par[1]
+           )
   #
   ## all additional constants
-  optim.list.x0n <- lapply(seq_along(optimization.list),
-                           function(l) optimization.list[[l]]$par[2:(length(data.specs.orig.sim) + 1)])
+  optim.list.x0n <-
+    lapply(seq_along(optimization.list),
+           function(l)
+             optimization.list[[l]]$par[2:(length(data.specs.orig.sim) + 1)]
+           )
   ## list to data frame
-  optim.list.x0n.df <- data.frame(matrix(unlist(optim.list.x0n),
-                                         nrow = length(optim.list.x0n),
-                                         byrow = TRUE))
+  optim.list.x0n.df <-
+    data.frame(matrix(unlist(optim.list.x0n),
+                      nrow = length(optim.list.x0n),
+                      byrow = TRUE)
+               )
   ## column names ("intensity coefficients")
-  colnames(optim.list.x0n.df) <- sapply(seq(ncol(optim.list.x0n.df)),
-                                        function(n) paste0("coeffInt_Sim_",LETTERS[n]))
+  colnames(optim.list.x0n.df) <-
+    sapply(seq(ncol(optim.list.x0n.df)),
+           function(n) paste0("coeffInt_Sim_",LETTERS[n])
+           )
   #
   ## minimal value for the least-square optimization method
-  optim.vec.min.val <- sapply(seq_along(optimization.list),
-                              function(l) optimization.list[[l]]$value)
+  optim.vec.min.val <-
+    sapply(seq_along(optimization.list),
+           function(l) optimization.list[[l]]$value
+           )
   #
   ## number of iterations/function evaluations
-  optim.vec.no.iter <- sapply(seq_along(optimization.list),
-                              function(l) optimization.list[[l]]$iter)
+  optim.vec.no.iter <-
+    sapply(seq_along(optimization.list),
+           function(l) optimization.list[[l]]$iter
+           )
   #
   ## convergence => integer code indicating successful completion (> 0)
-  optim.vec.no.converg <- sapply(seq_along(optimization.list),
-                                 function(l) optimization.list[[l]]$convergence)
+  optim.vec.no.converg <-
+    sapply(seq_along(optimization.list),
+                     function(l) optimization.list[[l]]$convergence
+           )
   #
   ## creating matrix (`mapply` is creating vectors) with modified ONLY 1st SIMULATION
   ## taking into account the coefficients obtained from optimization

@@ -126,9 +126,9 @@ sim.tempo.13c$df.areas
 
 }
 \seealso{
-Other Simulation and Optimization: 
+Other Simulations and Optimization: 
 \code{\link{eval_sim_EPR_iso}()},
-\code{\link{optim_fit_EPR_by_nloptr}()},
-\code{\link{quantify_EPR_sim}()}
+\code{\link{optim_EPR_by_nloptr}()},
+\code{\link{quantify_EPR_Sim_series}()}
 }
-\concept{Simulation and Optimization}
+\concept{Simulations and Optimization}

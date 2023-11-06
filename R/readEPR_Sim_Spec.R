@@ -19,7 +19,7 @@
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}.
 #' @param Intensity.sim Character string pointing to \strong{intensity column} of the data frame
 #'   corresponding to EPR simulated spectrum. If used together with quantification of radicals,
-#'   this argument must be equal to that of the \code{\link{quantify_EPR_sim}}.
+#'   this argument must be equal to that of the \code{\link{quantify_EPR_Sim_series}}.
 #' @param sim.origin Character string referring to "origin" of the simulated ASCII data.
 #'   There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
 #'   \code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.

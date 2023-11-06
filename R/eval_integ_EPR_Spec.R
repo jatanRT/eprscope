@@ -297,7 +297,8 @@ eval_integ_EPR_Spec <- function(data.spectrum,
             ##  keep `baselin_integ_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
           data.spectrum <- data.spectrum %>%
-            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
+            dplyr::mutate(single_Integ_correct =
+                            abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G") {
@@ -317,7 +318,8 @@ eval_integ_EPR_Spec <- function(data.spectrum,
               #
               ## rescale the `sigmoid_Integ` => from 0 to max
               data.spectrum <- data.spectrum %>%
-                dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
+                dplyr::mutate(sigmoid_Integ =
+                                abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
             }
           }
           if (B.unit == "mT") {

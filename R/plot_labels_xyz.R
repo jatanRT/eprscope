@@ -2,7 +2,7 @@
 #' Labels for Various Plots (Spectroscopy incl. EPR, Voltammetry,...etc)
 #'
 #'
-#' @family Visualization and Graphics
+#' @family Visualizations and Graphics
 #'
 #'
 #' @description TODO To write greek symbols, subscript and superscript, see

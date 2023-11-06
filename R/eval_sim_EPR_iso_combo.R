@@ -2,7 +2,7 @@
 #' Simulation of Isotropic EPR Spectra Consisting of Several Components
 #'
 #'
-#' @family Simulation and Optimization
+#' @family Simulations and Optimization
 #'
 #'
 #' @description
