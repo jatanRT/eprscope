@@ -121,12 +121,15 @@ quantify_EPR_sim <- function(data.spectra.series,
     ## delete the original data (not needed anymore)
     rm(data.spectra.series)
   }
+  #
+  # ================== up to this point => everything OK ===================
+  #
   ## parameterize and sum of all simulated spectral components (max = 6 !)
   ## `x0 \equiv par`
   fit_params_specs <- function(data,col.name.pattern,x0){
     #
     ## select only simulation component columns (don't do it by `dplyr`!)
-    data <- data[grep(col.name.pattern,colnames(data),value = TRUE)]
+    data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
     #
     ## create a sum for all columns/simulated spectra
     ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
@@ -210,9 +213,9 @@ quantify_EPR_sim <- function(data.spectra.series,
   optim.list.x0n.df <- data.frame(matrix(unlist(optim.list.x0n),
                                          nrow = length(optim.list.x0n),
                                          byrow = TRUE))
-  ## column names ("intensity spectral weights")
+  ## column names ("intensity coefficients")
   colnames(optim.list.x0n.df) <- sapply(seq(ncol(optim.list.x0n.df)),
-                                        function(n) paste0("weight_Sim_",LETTERS[n]))
+                                        function(n) paste0("coeffInt_Sim_",LETTERS[n]))
   #
   ## minimal value for the least-square optimization method
   optim.vec.min.val <- sapply(seq_along(optimization.list),
@@ -233,7 +236,7 @@ quantify_EPR_sim <- function(data.spectra.series,
   data.specs.sim.modif[[1]] <-
     mapply(function(s,t) s + t*data.specs.orig.sim[[1]][[Intensity.sim]],
            optim.vec.x01,
-           optim.list.x0n.df$weight_Sim_A)
+           optim.list.x0n.df$coeffInt_Sim_A)
   #
   ## matrix transformed into data frame
   data.specs.sim.modif[[1]] <- as.data.frame(data.specs.sim.modif[[1]])
@@ -409,7 +412,7 @@ quantify_EPR_sim <- function(data.spectra.series,
         result_df[[d]] <- result_df_base %>%
           dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                              max(.data[[paste0(single.integ,"_",LETTERS[d])]])) %>%
-          dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
+          dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim",LETTERS[d])) :=
                           optim.list.x0n.df[[d]])
       }
       ## the resulting data frame (without additional var2nd columns)
@@ -432,7 +435,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                                              .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]) %>%
             dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
+            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
         }
         ## the resulting data frame (without additional var2nd columns)
@@ -457,7 +460,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                                              .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]*10) %>%
             dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0("Optim_weight_Sim",LETTERS[d])) :=
+            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
         }
         ## the resulting data frame (without additional var2nd columns)
