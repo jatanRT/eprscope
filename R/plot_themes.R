@@ -82,7 +82,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #
 #
 #
-#' Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)
+#' Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks
 #'
 #'
 #' @family Visualizations and Graphics

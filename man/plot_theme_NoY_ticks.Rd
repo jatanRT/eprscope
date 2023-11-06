@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_themes.R
 \name{plot_theme_NoY_ticks}
 \alias{plot_theme_NoY_ticks}
-\title{Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks (as Common for EPR Spectra Presentation)}
+\title{Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks}
 \usage{
 plot_theme_NoY_ticks(
   axis.text.size = 14,
