@@ -71,7 +71,7 @@ draw_molecule_by_rcdk(
 
 ```
 
-This function belongs to the package family/section `Visualization and Graphics` and enables to create image of molecular structures either by [SMILES and SMART codes](https://chem.libretexts.org/Courses/Fordham_University/Chem1102%3A_Drug_Discovery_-_From_the_Laboratory_to_the_Clinic/05%3A_Organic_Molecules/5.08%3A_Line_Notation_(SMILES_and_InChI)) or by loading a **S**tructure **D**ata **F**ile (`.sdf`) [@Sakari2022].
+This function belongs to the package family/section `Visualizations and Graphics` and enables to create image of molecular structures either by [SMILES and SMART codes](https://chem.libretexts.org/Courses/Fordham_University/Chem1102%3A_Drug_Discovery_-_From_the_Laboratory_to_the_Clinic/05%3A_Organic_Molecules/5.08%3A_Line_Notation_(SMILES_and_InChI)) or by loading a **S**tructure **D**ata **F**ile (`.sdf`) [@Sakari2022].
 
 # Reading Files and Writing Data Frames
 
@@ -200,7 +200,7 @@ write.csv(tmpd.data.norm.02,
 
 ```
 
-# Spectral Data Visualization
+# Visualizations of Spectral Data
 
 All the data related to EPR spectroscopy can be visualized by the famous [{ggplot2}](https://ggplot2.tidyverse.org/) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, the latter includes tools like zooming, panning, data/values hovering and [much more](https://plotly.com/r/configuration-options/). Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
 
@@ -277,7 +277,7 @@ plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
 
 ```
 
-Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignettes and provided by the `plot_EPR_ Specs3D_interact()` function.
+Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignettes and provided by the `plot_EPR_Specs3D_interact()` function.
 
 # Basic EPR Spectral Characteristics
 
