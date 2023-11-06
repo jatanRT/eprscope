@@ -8,7 +8,7 @@ quantify_EPR_sim(
   data.spectra.series,
   dir_ASC_sim,
   name_pattern_sim,
-  origin_sim = "easyspin",
+  sim.origin = "easyspin",
   var2nd.series = "time_s",
   B.unit = "G",
   Intensity.expr = "dIepr_over_dB",
@@ -29,7 +29,7 @@ quantify_EPR_sim(
 
 \item{name_pattern_sim}{description}
 
-\item{origin_sim}{description from}
+\item{sim.origin}{description from}
 
 \item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,

@@ -11,7 +11,7 @@
 #' @param data.spectra.series tbc
 #' @param dir_ASC_sim tbc
 #' @param name_pattern_sim description
-#' @param origin_sim description from
+#' @param sim.origin description from
 #' @param var2nd.series String/Character referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
@@ -53,7 +53,7 @@
 quantify_EPR_sim <- function(data.spectra.series,
                              dir_ASC_sim,
                              name_pattern_sim,
-                             origin_sim = "easyspin",
+                             sim.origin = "easyspin",
                              var2nd.series = "time_s",
                              B.unit = "G",
                              Intensity.expr = "dIepr_over_dB",
@@ -84,7 +84,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                                 function(f) readEPR_Sim_Spec(f,
                                                              B.unit = B.unit,
                                                              Intensity.sim = Intensity.sim,
-                                                             sim.origin = origin_sim))
+                                                             sim.origin = sim.origin))
   #
   ## checking number of points for experimental and simulated spectra
   ## experimental
@@ -412,7 +412,7 @@ quantify_EPR_sim <- function(data.spectra.series,
         result_df[[d]] <- result_df_base %>%
           dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                              max(.data[[paste0(single.integ,"_",LETTERS[d])]])) %>%
-          dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim",LETTERS[d])) :=
+          dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
                           optim.list.x0n.df[[d]])
       }
       ## the resulting data frame (without additional var2nd columns)
@@ -435,7 +435,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                                              .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]) %>%
             dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim",LETTERS[d])) :=
+            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
         }
         ## the resulting data frame (without additional var2nd columns)
@@ -460,7 +460,7 @@ quantify_EPR_sim <- function(data.spectra.series,
                                              .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]*10) %>%
             dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                                max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim",LETTERS[d])) :=
+            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
                             optim.list.x0n.df[[d]])
         }
         ## the resulting data frame (without additional var2nd columns)
