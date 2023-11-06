@@ -2,8 +2,7 @@
 % Please edit documentation in R/eval_kinR_ODE_model.R
 \name{eval_kinR_ODE_model}
 \alias{eval_kinR_ODE_model}
-\title{Quantitative Kinetic Model Profiles by Numeric Solution of ODE for Visualization
-and Fitting of the Radical Reactions.}
+\title{Quantitative Kinetic Model Profiles by Numeric Solution of ODE}
 \usage{
 eval_kinR_ODE_model(
   model.react = "(x=1)R --> [k1] B",

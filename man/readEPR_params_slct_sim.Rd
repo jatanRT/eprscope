@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_sim}
 \alias{readEPR_params_slct_sim}
-\title{Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Simulation} of EPR Spectra}
+\title{Read the \strong{Selected} Instrumental Parameters Relevant to EPR \strong{Simulations}}
 \usage{
 readEPR_params_slct_sim(path_to_dsc_par, origin = "xenon", B.unit = "G")
 }

@@ -1,6 +1,5 @@
 #
-#' Quantitative Kinetic Model Profiles by Numeric Solution of ODE for Visualization
-#' and Fitting of the Radical Reactions.
+#' Quantitative Kinetic Model Profiles by Numeric Solution of ODE
 #'
 #'
 #' @family Evaluations and Quantification

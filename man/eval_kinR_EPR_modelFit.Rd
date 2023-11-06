@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_kinR_EPR_modelFit.R
 \name{eval_kinR_EPR_modelFit}
 \alias{eval_kinR_EPR_modelFit}
-\title{Radical Kinetic Models Fitted to Experimental Data (Integrals/Areas \emph{vs.} Time)}
+\title{Radical Kinetic Models Fitted to Experimental Data}
 \usage{
 eval_kinR_EPR_modelFit(
   data.spectra.integ,
@@ -42,7 +42,7 @@ eval_kinR_EPR_modelFit(
 List ... tbc ...
 }
 \description{
-A short description...
+A short description...(Integrals/Areas \emph{vs.} Time)...
 }
 \examples{
 \dontrun{

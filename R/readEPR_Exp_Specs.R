@@ -1,5 +1,5 @@
 #
-#' Read the Experimental ASCII or other Text-Based Data Related to EPR/ENDOR Spectra
+#' Read the EPR Experimental ASCII or other Text-Based Data
 #'
 #'
 #' @family Data Reading

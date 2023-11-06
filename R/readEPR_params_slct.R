@@ -275,7 +275,7 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #
 #
 #
-#' Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Simulation} of EPR Spectra
+#' Read the \strong{Selected} Instrumental Parameters Relevant to EPR \strong{Simulations}
 #'
 #'
 #' @family Data Reading

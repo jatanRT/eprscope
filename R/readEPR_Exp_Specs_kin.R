@@ -1,5 +1,5 @@
 #
-#' Read and Process Spectral Data of Time Dependent CW EPR Experiments (e.g. like Kinetics)
+#' Read and Process Spectral Data of Time Dependent CW EPR Experiments
 #'
 #'
 #' @family Data Reading

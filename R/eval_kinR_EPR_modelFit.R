@@ -1,12 +1,12 @@
 #'
-#' Radical Kinetic Models Fitted to Experimental Data (Integrals/Areas \emph{vs.} Time)
+#' Radical Kinetic Models Fitted to Experimental Data
 #'
 #'
 #' @family Evaluations and Quantification
 #'
 #'
 #' @description
-#' A short description...
+#' A short description...(Integrals/Areas \emph{vs.} Time)...
 #'
 #'
 #'

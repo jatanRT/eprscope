@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_Exp_Specs.R
 \name{readEPR_Exp_Specs}
 \alias{readEPR_Exp_Specs}
-\title{Read the Experimental ASCII or other Text-Based Data Related to EPR/ENDOR Spectra}
+\title{Read the EPR Experimental ASCII or other Text-Based Data}
 \usage{
 readEPR_Exp_Specs(
   path_to_ASC,

@@ -1,5 +1,5 @@
 #'
-#' ENDOR/Larmor Freqency \eqn{\nu_{\text{ENDOR}}} for a Specific Nucleus and Magnetic Flux Density \eqn{B}
+#'  Calculation of ENDOR/Larmor Frequency for a Specific Nucleus
 #'
 #'
 #' @family Evaluations

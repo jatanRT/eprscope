@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_Exp_Specs_kin.R
 \name{readEPR_Exp_Specs_kin}
 \alias{readEPR_Exp_Specs_kin}
-\title{Read and Process Spectral Data of Time Dependent CW EPR Experiments (e.g. like Kinetics)}
+\title{Read and Process Spectral Data of Time Dependent CW EPR Experiments}
 \usage{
 readEPR_Exp_Specs_kin(
   name_root,
