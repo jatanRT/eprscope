@@ -112,18 +112,19 @@ optim_EPR_by_nloptr <- function(method = "neldermead",
     ))
   }
   #
-  ## global optimization algorithm that works by systematically
-  ## dividing the search space into smaller hyper-rectangles
-  if (method == "stogo") {
-    return(nloptr::stogo(
+  ## The Controlled Random Search (CRS) algorithm (and in particular,
+  ## the CRS2 variant) with the `local mutation' modification.
+  if (method == "crs2lm") {
+    return(nloptr::crs2lm(
       x0 = x.0,
       fn = fn,
       lower = lower,
       upper = upper,
+      maxeval = Nmax.evals,
+      pop.size = 10 * (length(x.0) + 1),
+      xtol_rel = tol.step,
       nl.info = FALSE,
       data = data,
-      maxeval = Nmax.evals,
-      xtol_rel = tol.step,
       ...
     ))
   }
@@ -172,6 +173,7 @@ optim_EPR_by_nloptr <- function(method = "neldermead",
       nl.info = FALSE,
       data = data,
       maxeval = Nmax.evals,
+      pop.size = 20 * (length(x.0) + 1),
       xtol_rel = tol.step,
       ...
     ))
