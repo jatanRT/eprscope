@@ -30,6 +30,9 @@
 #'   of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.
 #' @param optim.params.upper Numeric vector...description tbc...inherited from \code{upper} parameter/argument
 #'   of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.
+#' @param Nmax.evals Numeric, maximum naumber of function evalutions or iterations.
+#' @param tol.step Numeric, the smallest optimization step (relative change) to stop
+#'   the optimization or fitting procedure.
 #' @param single.integ tbc
 #' @param double.integ tbc can be also \code{NULL} in case of single integral spectral series input
 #' @param output.area.stat tbc
@@ -51,20 +54,22 @@
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange matches across
 quantify_EPR_Sim_series <- function(data.spectra.series,
-                             dir_ASC_sim,
-                             name_pattern_sim,
-                             sim.origin = "easyspin",
-                             var2nd.series = "time_s",
-                             B.unit = "G",
-                             Intensity.expr = "dIepr_over_dB",
-                             Intensity.sim = "dIeprSim_over_dB",
-                             optim.method = "slsqp",
-                             optim.params.init,
-                             optim.params.lower = NULL,
-                             optim.params.upper = NULL,
-                             single.integ = "single_IntegSim",
-                             double.integ = "double_IntegSim",
-                             output.area.stat = TRUE) {
+                                    dir_ASC_sim,
+                                    name_pattern_sim,
+                                    sim.origin = "easyspin",
+                                    var2nd.series = "time_s",
+                                    B.unit = "G",
+                                    Intensity.expr = "dIepr_over_dB",
+                                    Intensity.sim = "dIeprSim_over_dB",
+                                    optim.method = "slsqp",
+                                    optim.params.init,
+                                    optim.params.lower = NULL,
+                                    optim.params.upper = NULL,
+                                    Nmax.evals = 2000,
+                                    tol.step = 1e-6,
+                                    single.integ = "single_IntegSim",
+                                    double.integ = "double_IntegSim",
+                                    output.area.stat = TRUE) {
   ## 'Temporary' processing variables
   . <- NULL
   Area_Sim_aLL <- NULL
@@ -199,6 +204,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
                                  fn = min_residuals,
                                  lower = optim.params.lower,
                                  upper = optim.params.upper,
+                                 Nmax.evals = Nmax.evals,
+                                 tol.step = tol.step,
                                  data = data.list[[o]],
                                  col.name.pattern = "Sim.*_[[:upper:]]$")
            )

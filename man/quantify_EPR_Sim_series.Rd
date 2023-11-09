@@ -17,6 +17,8 @@ quantify_EPR_Sim_series(
   optim.params.init,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
+  Nmax.evals = 2000,
+  tol.step = 1e-06,
   single.integ = "single_IntegSim",
   double.integ = "double_IntegSim",
   output.area.stat = TRUE
@@ -56,6 +58,11 @@ of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
 
 \item{optim.params.upper}{Numeric vector...description tbc...inherited from \code{upper} parameter/argument
 of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
+
+\item{Nmax.evals}{Numeric, maximum naumber of function evalutions or iterations.}
+
+\item{tol.step}{Numeric, the smallest optimization step (relative change) to stop
+the optimization or fitting procedure.}
 
 \item{single.integ}{tbc}
 

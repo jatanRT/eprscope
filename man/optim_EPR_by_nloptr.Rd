@@ -4,7 +4,17 @@
 \alias{optim_EPR_by_nloptr}
 \title{General Function to Non-Linear Optimization of the EPR Spectral Data}
 \usage{
-optim_EPR_by_nloptr(method = "slsqp", x.0, fn, lower, upper, data, ...)
+optim_EPR_by_nloptr(
+  method = "neldermead",
+  x.0,
+  fn,
+  lower,
+  upper,
+  data,
+  Nmax.evals = 2000,
+  tol.step = 1e-06,
+  ...
+)
 }
 \arguments{
 \item{method}{Character string, method...}
@@ -16,6 +26,11 @@ optim_EPR_by_nloptr(method = "slsqp", x.0, fn, lower, upper, data, ...)
 \item{lower, upper}{lower and upper bound constraints.}
 
 \item{data}{Data object ...}
+
+\item{Nmax.evals}{Numeric, maximum naumber of function evalutions or iterations.}
+
+\item{tol.step}{Numeric, the smallest optimization step (relative change) to stop
+the optimization or fitting procedure.}
 
 \item{...}{additional arguments passed to the function.}
 }
