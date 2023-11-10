@@ -313,7 +313,10 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   plot.sim.expr <- ggplot(data = data.sim.expr.long) +
     geom_line(aes(x = .data[[paste0("B_",B.unit)]],
                   y = .data[[Intensity.expr]],
-                  color = .data$Spectrum)) +
+                  color = .data$Spectrum),
+              linewidth = 0.75) +
+    labs(x = bquote(italic(B)~~.(B.unit)),
+         y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
