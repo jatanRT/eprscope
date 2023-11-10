@@ -509,7 +509,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     result_df <- result_df %>%
       dplyr::mutate(Optim_intercept = optim.vec.x01) %>%
       dplyr::mutate(Optim_minLSQ_sum = optim.vec.min.val) %>%
-      dplyr::mutate(Optim_No_iters = optim.vec.no.iter) %>%
+      dplyr::mutate(Optim_N_evals = optim.vec.no.iter) %>%
       dplyr::mutate(Optim_N_converg = optim.vec.no.converg)
   }
   #
