@@ -181,8 +181,8 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
     A.lower.limits <- c()
     A.upper.limits <- c()
     for (a in 6:(5+length(nuclear.system.noA))){
-      A.lower.limits[a-5] <- optim.params.init[a] - 4
-      A.upper.limits[a-5] <- optim.params.init[a] + 4
+      A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.05)
+      A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.05)
     }
     ## actuall `limits`
     lower.limits <- c(lower.limits,A.lower.limits)
@@ -300,9 +300,9 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
     ## for plotting both spectra as publication ready => spectra will be offset
     ## => recalculate the intensity => shift the simulated intensity
     ## down below by factor of difference between `max()` and `min()`
-    Int.diff <- max(data.sim.expr[[Intensity.expr]]) - min(data.sim.expr[[Intensity.expr]])
+    Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
-      dplyr::mutate(!!rlang::quo_name(Intensity.sim) := .data[[Intensity.sim]] - Int.diff) %>%
+      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - Int.diff) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -315,7 +315,9 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                   y = .data[[Intensity.expr]],
                   color = .data$Spectrum),
               linewidth = 0.75) +
-    labs(x = bquote(italic(B)~~.(B.unit)),
+    scale_color_manual(values = c("red","blue")) +
+    labs(color = NULL,
+         x = bquote(italic(B)~~"("~.(B.unit)~")"),
          y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
