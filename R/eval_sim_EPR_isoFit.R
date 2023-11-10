@@ -318,7 +318,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     theme(legend.title = element_text(size = 13),
-          legen.text = element_text(size = 11))
+          legend.text = element_text(size = 11))
   #
   ## switching between final list components
   result.list <- switch(2-sim.check,
