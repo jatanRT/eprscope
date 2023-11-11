@@ -65,6 +65,10 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   #
   ## 'Temporary' processing variables
   . <- NULL
+  ## delete index column if present
+  if (any(grepl("index", colnames(data.spectrum.expr)))) {
+    data.spectrum.expr$index <- NULL
+  }
   #
   ## Define the length of `nuclear.system.noA` similarly as in simple simulation
   ## check if the list is nested (several groups) or simple (only one group)
@@ -167,12 +171,12 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                     optim.params.init[2] - 0.2,
                     optim.params.init[3] - 0.2,
                     optim.params.init[4] - 0.0001,
-                    1e-6)
+                    1e-8)
   upper.limits <- c(optim.params.init[1] + 0.0004,
                     optim.params.init[2] + 0.2,
                     optim.params.init[3] + 0.2,
                     optim.params.init[4] + 0.0001,
-                    1)
+                    100)
   if (is.null(nuclear.system.noA)){
     lower.limits <- lower.limits
     upper.limits <- upper.limits
