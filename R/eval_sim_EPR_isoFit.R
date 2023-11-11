@@ -310,7 +310,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   }
   #
   ## plotting both spectra together
-  plot.sim.expr <- ggplot(data = data.sim.expr.long) +
+  plot.sim.expr.base <- ggplot(data = data.sim.expr.long) +
     geom_line(aes(x = .data[[paste0("B_",B.unit)]],
                   y = .data[[Intensity.expr]],
                   color = .data$Spectrum),
@@ -318,12 +318,21 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
     scale_color_manual(values = c("red","blue")) +
     labs(color = NULL,
          x = bquote(italic(B)~~"("~.(B.unit)~")"),
-         y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
-    plot_theme_In_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-    scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-    theme(legend.title = element_text(size = 13),
-          legend.text = element_text(size = 11))
+         y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")"))
+  if (isTRUE(sim.check)){
+    plot.sim.expr <- plot.sim.expr.base +
+      plot_theme_In_ticks() +
+      scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+      scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+      theme(legend.title = element_text(size = 13),
+            legend.text = element_text(size = 11))
+  } else {
+    plot.sim.expr <- plot.sim.expr.base +
+      plot_theme_NoY_ticks() +
+      scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+      theme(legend.title = element_text(size = 13),
+            legend.text = element_text(size = 11))
+  }
   #
   ## switching between final list components
   result.list <- switch(2-sim.check,
