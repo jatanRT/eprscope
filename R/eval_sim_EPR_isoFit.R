@@ -82,7 +82,8 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   }
   #
   ## function to parameterize simulation
-  fit_sim_params <- function(nucs.system,
+  fit_sim_params <- function(data,
+                             nucs.system,
                              Intensity.sim,
                              x0){
     #
@@ -154,16 +155,16 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
 
       #
     }
-    intens.sim.fit <- x0[4] + x0[5] * sim.fit.df[[Intensity.sim]]
+    data[[Intensity.sim]] <- x0[4] + x0[5] * sim.fit.df[[Intensity.sim]]
     #
-    return(intens.sim.fit)
+    return(data[[Intensity.sim]])
     #
   }
   #
   ## min. function for optimization incl. `fit_sim_params()`
   min_residuals <- function(data,nucs.system,Intensity.sim,x0){
     with(data,sum((data[[Intensity.expr]] -
-                     fit_sim_params(nucs.system,Intensity.sim,x0))^2))
+                     fit_sim_params(data,nucs.system,Intensity.sim,x0))^2))
   }
   #
   ## initial parameter guesses for the optimization and definition
@@ -274,12 +275,11 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                                   lineG.content = lineG.content,
                                   Intensity.sim = Intensity.sim)$df
   #
-  ## best simulated Intensity
-  best.fit.df[[Intensity.sim]] <-
+  ## best simulated Intensity and add the `Intensity.sim` to experimental
+  # spectrum data
+  data.spectrum.expr[[Intensity.sim]] <-
     best.fit.params[4] + best.fit.params[5] * best.fit.df[[Intensity.sim]]
   #
-  ## add the `Intensity.sim` to experimental spectrum data
-  data.spectrum.expr[[Intensity.sim]] <- best.fit.df[[Intensity.sim]]
   ## final data frame and rename columns
   data.sim.expr <- data.spectrum.expr %>%
     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
