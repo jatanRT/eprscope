@@ -14,13 +14,13 @@
 #'
 #'
 #'
-#' @inheritParams eval_sim_EPR_iso
+#' @inheritParams eval_gFactor_Spec
 #' @param data.spectrum.expr Data frame object ... TBC ...
 #' @param Intensity.expr Character string ... TBC ...
 #' @param Intensity.sim Character string ... TBC ...
-#' @param instrum.params Named numeric vector ... TBC ...
 #' @param nuclear.system.noA List or nested list ... TBC ... without estimated hyperfine coupling constant values
 #' @param lineG.content Numeric value ...
+#' @param lineSpecs.form Character string ...
 #' @param optim.method Character string ... TBC ...
 #' @param optim.params.init Numeric vector with estimated ... TBC ...1. element = g-value, 2. element = Gaussian
 #'   linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant,5... elements hyperfine coupling
@@ -45,12 +45,11 @@
 #' @export
 #'
 #'
+#' @importFrom stats median
 eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                                 Intensity.expr = "dIepr_over_dB",
                                 Intensity.sim = "dIeprSim_over_dB",
-                                instrum.params = NULL,
-                                path_to_dsc_par,
-                                origin = "xenon",
+                                nu.GHz,
                                 B.unit = "G",
                                 nuclear.system.noA,
                                 lineG.content = 0.5,
@@ -69,6 +68,23 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   if (any(grepl("index", colnames(data.spectrum.expr)))) {
     data.spectrum.expr$index <- NULL
   }
+  ## instrumental parameters except the microwave frequency must be read from
+  ## experimental data. It cannot be done by the same way like in simulation
+  ## because the relevant instrum. params. like Bsw (B.SW) and Bcf (B.CF) differs
+  ## from those in `.DSC` and `.par`. The reason is the Teslameter. If it'is
+  ## in ON state the measured B values (can be slightly approx. 1-3 G) diferent
+  ## from those measured by Hall probe or the spectrum parameter settings.
+  ## If the Teslameter is in ON state the measured values are automatically
+  ## written into the text ASCII file. Therefore to exactly compare the simulated
+  ## and experimental spectrum these parameters must be extracted form
+  ## the experimental ASCII (`.txt` or `.asc`) ASCII data file
+  B.cf <- stats::median(data.spectrum.expr[[paste0("B_",B.unit)]])
+  B.sw <- max(data.spectrum.expr[[paste0("B_",B.unit)]]) -
+    min(data.spectrum.expr[[paste0("B_",B.unit)]])
+  N.points <- nrow(data.spectrum.expr)
+  mw.GHz <- nu.GHz
+  ## therefore => the named vector
+  instrum.params <- c(Bcf = B.cf,Bsw = B.sw,Npoints = N.points,mwGHz = mw.GHz)
   #
   ## Define the length of `nuclear.system.noA` similarly as in simple simulation
   ## check if the list is nested (several groups) or simple (only one group)
@@ -102,8 +118,6 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
         eval_sim_EPR_iso(g.iso = g.var,
                          B.unit = B.unit,
                          instrum.params = instrum.params,
-                         path_to_dsc_par = path_to_dsc_par,
-                         origin = origin,
                          natur.abund = FALSE,
                          nuclear.system = NULL,
                          lineSpecs.form = lineSpecs.form,
@@ -143,8 +157,6 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
         eval_sim_EPR_iso(g.iso = g.var,
                          B.unit = B.unit,
                          instrum.params = instrum.params,
-                         path_to_dsc_par = path_to_dsc_par,
-                         origin = origin,
                          natur.abund = TRUE,
                          nuclear.system = nucs.system.new,
                          lineSpecs.form = lineSpecs.form,
@@ -265,8 +277,6 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   best.fit.df <- eval_sim_EPR_iso(g.iso = best.fit.params[1],
                                   B.unit = B.unit,
                                   instrum.params = instrum.params,
-                                  path_to_dsc_par = path_to_dsc_par,
-                                  origin = origin,
                                   natur.abund = TRUE,
                                   nuclear.system = nucs.system.best,
                                   lineSpecs.form = lineSpecs.form,

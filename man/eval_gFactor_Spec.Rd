@@ -20,9 +20,11 @@ eval_gFactor_Spec(
 can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
 or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.}
 
-\item{nu.GHz}{Numeric, microwave frequency in \code{GHz}}
+\item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
 
-\item{B.unit}{description tbc}
+\item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
+(gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
+for EPR spectra.}
 
 \item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
