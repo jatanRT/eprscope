@@ -37,8 +37,58 @@
 #'
 #' @examples
 #' \dontrun{
-#' TODO
-#' TODO
+#' ## fitting of the simulated TMPD radical cation spectrum
+#' ## on the experimental one (see also `Introduction` vignette)
+#' ## 1. loading the built-in data
+#' tempo.data.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' tempo.data <- readEPR_Exp_Specs(tempo.data.path,
+#'                                col.names = c("B_G","dIepr_over_dB"),
+#'                                x = 1,
+#'                                Intensity = 2,
+#'                                qValue = 3500,
+#'                                origin = "winepr")
+#' ## 2. TMPD EPR spectrum may be simulated with the following hyperfine
+#' ## coupling constants coming from
+#' ## (see also https://doi.org/10.1007/s00706-004-0224-4) =>
+#' ## A (2 x 14N) = `19.75` MHz, A (4 x 1H) = `5.58` MHz
+#' ## and A (12 x 1H) = `18.97` MHz with the additional Gaussian
+#' ## and Lorentzian linewidth `0.6` G and `0.6` G, respectively.
+#' ## Baseline was estimated by the constant with the initial `0` value
+#' ## and the initial multiplication factor for the intensity was `3`.
+#' ## The initial g-value was estimated from the spectrum, g = `2.0031`.
+#' tmpd.test.sim.fit <-
+#' eval_sim_EPR_isoFit(data.spectrum.expr = tmpd.data,
+#'                     nu.GHz = 9.814155,
+#'                     nuclear.system.noA = list(list("14N",2),
+#'                                               list("1H",4),
+#'                                               list("1H",12)),
+#'                     optim.params.init = c(2.0031,0.6,0.6,0,3,19.75,5.58,18.97))
+#' ## Such evaluation by "Nelder-Mead" optimization method returns list consisting
+#' ## of plot with both experimental and simulated spectra (+ displaying residuals)
+#' ## and/or the best fitting paramaters (if `sim.check = TRUE` which is by default)
+#' tmpd.test.sim.fit$plot
+#' ## and
+#' tmpd.test.sim$best.fit.params
+#' ## respectively. In such case the following best parameters
+#' ## for the spectrum fit were found =>
+#' ## c(2.00305,0.543,0.489,-1.065e-5,0.992,19.538,5.461,19.544)
+#' ## If additional optimization/fitting parameters are required
+#' ## (`sim.check = FALSE`) =>
+#' tmpd.test.sim.fit <-
+#' eval_sim_EPR_isoFit(data.spectrum.expr = tmpd.data,
+#'                     nu.GHz = 9.814155,
+#'                     nuclear.system.noA = list(list("14N",2),
+#'                                               list("1H",4),
+#'                                               list("1H",12)),
+#'                     optim.params.init = c(2.0031,0.6,0.6,0,3,19.75,5.58,18.97),
+#'                     sim.check = FALSE)
+#' ## returns the following list =>
+#' tmpd.test.sim.fit$plot ## publication ready plot (both spectra are not overlayed)
+#' tmpd.test.sim.fit$best.fit.params ## the same like before
+#' tmpd.test.sim.fit$df ## data frame in wide-format with sim., expr. + resids. spectra
+#' tmpd.test.sim.fit$min.LSQ.sum ## min. sum of residual squares
+#' tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
+#' tmpd.test.sim.fit$N.converg ## successful (> 0) "convergence" integer
 #' }
 #'
 #'
@@ -46,6 +96,7 @@
 #'
 #'
 #' @importFrom stats median
+#' @importFrom dplyr rowwise
 eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                                 Intensity.expr = "dIepr_over_dB",
                                 Intensity.sim = "dIeprSim_over_dB",
@@ -64,6 +115,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   #
   ## 'Temporary' processing variables
   . <- NULL
+  Residuals <- NULL
   ## delete index column if present
   if (any(grepl("index", colnames(data.spectrum.expr)))) {
     data.spectrum.expr$index <- NULL
@@ -72,12 +124,12 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   ## experimental data. It cannot be done by the same way like in simulation
   ## because the relevant instrum. params. like Bsw (B.SW) and Bcf (B.CF) differs
   ## from those in `.DSC` and `.par`. The reason is the Teslameter. If it'is
-  ## in ON state the measured B values (can be slightly approx. 1-3 G) diferent
-  ## from those measured by Hall probe or the spectrum parameter settings.
+  ## in ON state the measured B values (can be slightly, i.e. approx. 1-3 G) different
+  ## from those measured by Hall probe or from the spectrum parameter settings.
   ## If the Teslameter is in ON state the measured values are automatically
-  ## written into the text ASCII file. Therefore to exactly compare the simulated
+  ## written into the text ASCII file. Therefore, to properly compare the simulated
   ## and experimental spectrum these parameters must be extracted form
-  ## the experimental ASCII (`.txt` or `.asc`) ASCII data file
+  ## the experimental ASCII (`.txt` or `.asc`) ASCII data file.
   B.cf <- stats::median(data.spectrum.expr[[paste0("B_",B.unit)]])
   B.sw <- max(data.spectrum.expr[[paste0("B_",B.unit)]]) -
     min(data.spectrum.expr[[paste0("B_",B.unit)]])
@@ -298,6 +350,17 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                        dplyr::all_of(c(Intensity.expr,Intensity.sim)))
   rm(data.spectrum.expr) ## not required anymore
   #
+  ## calculating `rowwise` difference between expr. and sim. spectra
+  data.sim.expr.resid <- data.sim.expr %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(Residuals = .data$Experiment - .data$Simulation)
+  ## select only `B` and `Residuals`
+  data.sim.expr.resid <- data.sim.expr.resid %>%
+    dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),"Residuals")))
+  #
+  ## Adding residuals to the overall data frame
+  data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
+  #
   ## results (incl. comparison of experimental and simulated spectra)
   ## depending on `sim.check` which shows only the overlay spectra and best
   ## fitting parameters. Otherwise the entire list (see below) will be returned.
@@ -329,19 +392,45 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                   y = .data[[Intensity.expr]],
                   color = .data$Spectrum),
               linewidth = 0.75) +
-    scale_color_manual(values = c("red","blue")) +
-    labs(color = NULL,
-         x = bquote(italic(B)~~"("~.(B.unit)~")"),
-         y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")"))
+    scale_color_manual(values = c("red","blue"))
+  #
   if (isTRUE(sim.check)){
-    plot.sim.expr <- plot.sim.expr.base +
+    ## display both overlay spectra (upper part) and residuals
+    ## (lower part) in 1 col. by `{patchwork}`
+    plot.sim.expr.upper <- plot.sim.expr.base +
+      labs(title = "Best EPR Simulation Fit",
+           color = NULL,
+           x = NULL,
+           y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")"))
       plot_theme_In_ticks() +
       scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
       scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
       theme(legend.title = element_text(size = 13),
             legend.text = element_text(size = 11))
+      #
+      plot.sim.expr.lower <- ggplot(data = data.sim.expr.resid) +
+        geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+                      y = Residuals),
+                  color = "black",
+                  linewidth = 0.75) +
+        labs(title = "Residuals",
+             x = bquote(italic(B)~~"("~.(B.unit)~")"),
+             y = bquote(Diff.~d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
+        plot_theme_In_ticks() +
+        scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
+        scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+      #
+      ## entire plot
+      plot.sim.expr <-
+        plot.sim.expr.upper +
+          plot.sim.expr.lower +
+          patchwork::plot_layout(ncol = 1)
+      #
   } else {
     plot.sim.expr <- plot.sim.expr.base +
+      labs(color = NULL,
+           x = bquote(italic(B)~~"("~.(B.unit)~")"),
+           y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")"))
       plot_theme_NoY_ticks() +
       scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
       theme(legend.title = element_text(size = 13),
