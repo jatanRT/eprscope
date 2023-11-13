@@ -432,8 +432,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
       plot_theme_NoY_ticks() +
       scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-      theme(legend.title = element_text(size = 13),
-            legend.text = element_text(size = 11))
+      theme(legend.text = element_text(size = 13))
   }
   #
   ## switching between final list components
