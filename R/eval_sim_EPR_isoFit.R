@@ -405,8 +405,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
       plot_theme_In_ticks() +
       scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
       scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-      theme(legend.title = element_text(size = 13),
-            legend.text = element_text(size = 11))
+      theme(legend.text = element_text(size = 13))
       #
       plot.sim.expr.lower <- ggplot(data = data.sim.expr.resid) +
         geom_line(aes(x = .data[[paste0("B_",B.unit)]],
