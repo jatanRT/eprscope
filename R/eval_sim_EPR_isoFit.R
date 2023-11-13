@@ -358,9 +358,6 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   data.sim.expr.resid <- data.sim.expr.resid %>%
     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),"Residuals")))
   #
-  ## Adding residuals to the overall data frame
-  data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
-  #
   ## results (incl. comparison of experimental and simulated spectra)
   ## depending on `sim.check` which shows only the overlay spectra and best
   ## fitting parameters. Otherwise the entire list (see below) will be returned.
@@ -372,7 +369,6 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                           values_to = Intensity.expr) %>%
       dplyr::arrange(.data$Spectrum)
     #
-    # result.list <- list(plot = plot.sim.expr,best.fit.params = best.fit.params)
   } else {
     ## for plotting both spectra as publication ready => spectra will be offset
     ## => recalculate the intensity => shift the simulated intensity
@@ -385,6 +381,9 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                           values_to = Intensity.expr) %>%
       dplyr::arrange(.data$Spectrum)
   }
+  #
+  ## Adding residuals to the overall data frame
+  data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
   #
   ## plotting both spectra together
   plot.sim.expr.base <-
