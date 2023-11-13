@@ -423,9 +423,9 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
       #
       ## entire plot
       plot.sim.expr <-
-        plot.sim.expr.upper +
-          plot.sim.expr.lower +
-          patchwork::plot_layout(ncol = 1)
+        patchwork::wrap_plots(plot.sim.expr.upper,
+                              plot.sim.expr.lower,
+                              ncol = 1)
       #
   } else {
     plot.sim.expr <- plot.sim.expr.base +
