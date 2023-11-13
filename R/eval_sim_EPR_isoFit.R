@@ -387,17 +387,15 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   }
   #
   ## plotting both spectra together
-  plot.sim.expr.base <- ggplot(data = data.sim.expr.long) +
-    geom_line(aes(x = .data[[paste0("B_",B.unit)]],
-                  y = .data[[Intensity.expr]],
-                  color = .data$Spectrum),
-              linewidth = 0.75) +
-    scale_color_manual(values = c("red","blue"))
-  #
   if (isTRUE(sim.check)){
     ## display both overlay spectra (upper part) and residuals
     ## (lower part) in 1 col. by `{patchwork}`
-    plot.sim.expr.upper <- plot.sim.expr.base +
+    plot.sim.expr.upper <- ggplot(data = data.sim.expr.long) +
+      geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+                    y = .data[[Intensity.expr]],
+                    color = .data$Spectrum),
+                linewidth = 0.75) +
+      scale_color_manual(values = c("red","blue")) +
       labs(title = "Best EPR Simulation Fit",
            color = NULL,
            x = NULL,
@@ -427,7 +425,12 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
           patchwork::plot_layout(ncol = 1)
       #
   } else {
-    plot.sim.expr <- plot.sim.expr.base +
+    plot.sim.expr <- ggplot(data = data.sim.expr.long) +
+      geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+                    y = .data[[Intensity.expr]],
+                    color = .data$Spectrum),
+                linewidth = 0.75) +
+      scale_color_manual(values = c("red","blue")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")"))
