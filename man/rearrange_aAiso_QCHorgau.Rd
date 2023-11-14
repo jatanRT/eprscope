@@ -6,7 +6,7 @@
 \usage{
 rearrange_aAiso_QCHorgau(
   path_to_QCHoutput,
-  No_nuclei,
+  Nnuclei,
   nuclei.list.slct,
   origin = "gaussian",
   output.text.origin = FALSE,
@@ -16,7 +16,7 @@ rearrange_aAiso_QCHorgau(
 \arguments{
 \item{path_to_QCHoutput}{Character string corresponding to path of `Gaussian` or `ORCA` output text files.}
 
-\item{No_nuclei}{Numeric value equal to number of atoms/nuclei within the calculated structure.}
+\item{Nnuclei}{Numeric value equal to number of atoms/nuclei within the calculated structure.}
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 e.g. like: \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers

@@ -160,7 +160,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
 #' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files.
-#' @param No_nuclei Numeric value equal to number of atoms/nuclei within the calculated structure.
+#' @param Nnuclei Numeric value equal to number of atoms/nuclei within the calculated structure.
 #' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 #'   or \code{"orca"}.
@@ -187,7 +187,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
-                                     No_nuclei,
+                                     Nnuclei,
                                      nuclei.list.slct,
                                      origin = "gaussian",
                                      output.text.origin = FALSE,
@@ -199,7 +199,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## read output files from Gaussian or ORCA + define number (how many) of atoms/nuclei
   ## either of all (the entire molecule) or relevant (in case of ORCA)
   qchfile <- readLines(path_to_QCHoutput)
-  No_nuclei_atoms <- No_nuclei
+  No_nuclei_atoms <- Nnuclei
   #
   ## ============================ READING `qchfiles` ==============================
   #
