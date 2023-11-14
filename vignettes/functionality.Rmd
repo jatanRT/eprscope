@@ -177,7 +177,7 @@ head(tmpd.data.norm.02)
 
 ```
 
-Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/) (example of interactive data frame by [{DT}](https://rstudio.github.io/DT/) is already shown above). Among them libraries like [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) are often used for publication ready table visualization. Example of the last data frame previewed by `{flextable}` is shown below.
+Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/) (example of interactive data frame by [{DT}](https://rstudio.github.io/DT/) is already shown above). Among them libraries like [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. Example of the last data frame previewed by `{flextable}` is shown below.
 
 ```{r spectral-data-read-norm-flextable}
 
@@ -352,8 +352,8 @@ The linewidth in $\mathrm{mT}$ can be determined from several spectral lines/reg
 
 ```{r spectral-data-norm02-linewidth}
 
-# selected B regions to calculate Delta Bpp
-# as a list of three elements
+# calculate Delta Bpp from several regions
+# => list of three elements
 B.regions.mT <- list(
   c(349.677, 349.977),
   c(349.177, 349.492),
@@ -378,7 +378,7 @@ tmpd.delta.Bpp.mean
 
 ```
 
-## Hyperfine (HF) Structure
+## Hyperfine (HF) Structure {#hf-structure}
 
 The **HF** structure represents one of the most important characteristic because it reflects the distribution of unpaired electron within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants ($a$, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by `convert_a_mT_2A()` into hyperfine coupling constants in $\mathrm{MHz}$ ($A$, HFCCs) by the following relation (Equation \@ref(eq:hfatoA)) ➨
 
@@ -390,7 +390,7 @@ The **HF** structure represents one of the most important characteristic because
 ```
 ```{r a-to-A-from-spectrum}
 
-# two distances or HFSCs (a in mT) 
+# two visible distances or HFSCs (a in mT) 
 # from the interactive EPR spectrum above
 a1.guess.mT <- abs(350.042 - 349.342)
 a2.guess.mT <- abs(349.147 - 349.342)
@@ -414,7 +414,45 @@ A.guess.MHz
 
 ```
 
-According to literature [@GramppGpda2005] and the $\ce{TMPD^{.+}}$ structure depicted above the interacting nuclei may be divided into three groups of equivalent nuclei: $2\,\times\,\ce{^{14}N}$, $4\,\times\,\ce{^1H}$ (aromatic protons) and $12\,\times\,\ce{^1H}$ (methyl protons).
+According to literature [@GramppGpda2005] and the $\ce{TMPD^{.+}}$ structure depicted above the interacting nuclei may be divided into three groups of equivalent nuclei: $2\,\times\,\ce{^{14}N}$, $4\,\times\,\ce{^1H}$ (aromatic protons) and $12\,\times\,\ce{^1H}$ (methyl protons). One can consider the DFT calculations (already mentioned above) to obtain all $A$ (HFCCs). The optimized geometry/structure of $\ce{TMPD^{.+}}$ is depicted in Figure \@ref(fig:dft-tmpd-structure).
+
+```{r dft-tmpd-structure,echo=FALSE,fig.cap="DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file."}
+
+knitr::include_graphics("imgs/TMPD_EPR_DFT_radCat_ab.png",dpi = 200)
+
+```
+
+The function `rearrange_aAiso_QCHorgau()` extracts the $A$ values from the Gaussian or [ORCA](https://www.orcasoftware.de/tutorials_orca/index.html) output files and calculates the mean values corresponding to selected groups of equivalent nuclei which are defined by the `nuclei.list.slct` argument. Therefore, according to numbering shown in Figure \@ref(fig:dft-tmpd-structure) ➨
+
+```{r As-DFT-from-gaussian}
+
+# The same built-in file (`TMPDAradCatEPRa.inp.log.zip`)
+# as for extraction of g-value is used (see above).
+symmetry.As.df <-
+  rearrange_aAiso_QCHorgau(gauss.tmpd.output,
+    Nnuclei = 28,
+    nuclei.list.slct =
+      list(
+        c(7, 8), # 2 x 14N
+        c(13, 14, 15, 16), # 4 x 1H (aromatic)
+        c(
+          17, 18, 19, 20,
+          21, 22, 23, 24,
+          25, 26, 27, 28
+        ) # 12 x 1H (methyls)
+      )
+  )
+#
+# data frame presentation by `{kableExtra}` package
+# (see also https://haozhu233.github.io/kableExtra/awesome_table_in_html.html)
+kableExtra::kbl(symmetry.As.df) %>%
+  kableExtra::kable_styling(bootstrap_options = c(
+    "striped",
+    "hover",
+    "condensed"
+  ))
+
+```
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
