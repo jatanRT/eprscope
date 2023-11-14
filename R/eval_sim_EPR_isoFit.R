@@ -88,7 +88,8 @@
 #' tmpd.test.sim.fit$df ## data frame in wide-format with sim., expr. + resids. spectra
 #' tmpd.test.sim.fit$min.LSQ.sum ## min. sum of residual squares
 #' tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
-#' tmpd.test.sim.fit$N.converg ## successful (> 0) "convergence" integer
+#' tmpd.test.sim.fit$N.converg ## "convergence" integer indicating successful (> 0)
+#' ## completion
 #' }
 #'
 #'
@@ -233,13 +234,13 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   #
   ## initial parameter guesses for the optimization and definition
   lower.limits <- c(optim.params.init[1] - 0.0004,
-                    optim.params.init[2] - 0.2,
-                    optim.params.init[3] - 0.2,
+                    optim.params.init[2] - (optim.params.init[2] * 0.1),
+                    optim.params.init[3] - (optim.params.init[2] * 0.1),
                     optim.params.init[4] - 0.0001,
                     1e-8)
   upper.limits <- c(optim.params.init[1] + 0.0004,
-                    optim.params.init[2] + 0.2,
-                    optim.params.init[3] + 0.2,
+                    optim.params.init[2] + (optim.params.init[2] * 0.1),
+                    optim.params.init[3] + (optim.params.init[2] * 0.1),
                     optim.params.init[4] + 0.0001,
                     100)
   if (is.null(nuclear.system.noA)){
@@ -250,10 +251,10 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
     A.lower.limits <- c()
     A.upper.limits <- c()
     for (a in 6:(5+length(nuclear.system.noA))){
-      A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.05)
-      A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.05)
+      A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.055)
+      A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.055)
     }
-    ## actuall `limits`
+    ## actual `limits`
     lower.limits <- c(lower.limits,A.lower.limits)
     upper.limits <- c(upper.limits,A.upper.limits)
   }

@@ -119,7 +119,8 @@ tmpd.test.sim.fit$best.fit.params ## the same like before
 tmpd.test.sim.fit$df ## data frame in wide-format with sim., expr. + resids. spectra
 tmpd.test.sim.fit$min.LSQ.sum ## min. sum of residual squares
 tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
-tmpd.test.sim.fit$N.converg ## successful (> 0) "convergence" integer
+tmpd.test.sim.fit$N.converg ## "convergence" integer indicating successful (> 0)
+## completion
 }
 
 
