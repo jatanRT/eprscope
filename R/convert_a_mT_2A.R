@@ -19,7 +19,7 @@
 #'
 #' @param a.mT Numeric value/vector of HFSCs in `mT` ('line distances' from EPR spectrum)
 #' @param g.val Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
-#' \strong{Default:} \code{g = 2.00231930} (corresponding to free electron).
+#' \strong{Default:} \code{g.val = 2.00231930} (corresponding to free electron).
 #'
 #'
 #' @returns Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz}).

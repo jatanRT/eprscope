@@ -7,17 +7,17 @@
 eval_gFactor(nu.val, nu.unit = "GHz", B.val, B.unit = "mT")
 }
 \arguments{
-\item{nu.val}{Numeric, microwave Frequency}
+\item{nu.val}{Numeric, microwave Frequency.}
 
-\item{nu.unit}{Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}}
+\item{nu.unit}{Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}.}
 
-\item{B.val}{Numeric, magnetic flux density}
+\item{B.val}{Numeric, magnetic flux density.}
 
 \item{B.unit}{Character string, magnetic flux density unit in `G` or `mT` or `T`, \strong{default}:
-\code{B.unit = "mT"}}
+\code{B.unit = "mT"}.}
 }
 \value{
-\emph{g}-Value from \eqn{(\nu h)/(\mu_{B} B)}. For variables see description above. Constants
+\emph{g}-Value from \eqn{(\nu h)/(\mu_{B} B)}. For variables see description above. Physical constants
   are taken from \pkg{constants} package.
 }
 \description{

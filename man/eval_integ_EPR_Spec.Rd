@@ -19,8 +19,8 @@ eval_integ_EPR_Spec(
 )
 }
 \arguments{
-\item{data.spectr}{Spectrum data frame/table with magnetic flux density (in \code{mT}
-or \code{G})) and that of the derivative or already single integrated intensity.
+\item{data.spectr}{Spectrum data frame/table with magnetic flux density (in `mT`
+or `G`) and that of the derivative or already single integrated intensity.
 \code{Index} column may be already present as well.}
 
 \item{B}{Character/String pointing to magnetic flux density \code{column} (in the original
@@ -39,14 +39,14 @@ spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data fr
 (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL}
-(corresponding to entire `B` range).}
+of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+(corresponding to entire \emph{B} range).}
 
 \item{correct.integ}{Logical, whether to correct the integral by baseline model fit.
 \strong{Default}: \code{correct.integ = FALSE}.}
 
 \item{BpeaKlim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-of the selected \eqn{B} region, e.g. like `BpeaKlim = c(3535.4,3555.4)`.}
+of the selected \eqn{B} region, e.g. like \code{BpeaKlim = c(3535.4,3555.4)}.}
 
 \item{poly.degree}{Numeric, degree of polynomial function used to fit the baseline under the single integrated
 curve of the original EPR spectrum.}
