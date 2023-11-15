@@ -2,10 +2,10 @@
 % Please edit documentation in R/eval_gFactors.R
 \name{eval_gFactor_Spec}
 \alias{eval_gFactor_Spec}
-\title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data}
+\title{Calculation of \emph{g}-factor ("Position") from the EPR Spectrum/Data}
 \usage{
 eval_gFactor_Spec(
-  data.spectrum,
+  data.spectr,
   nu.GHz,
   B.unit = "G",
   B = "B_G",
@@ -16,19 +16,19 @@ eval_gFactor_Spec(
 )
 }
 \arguments{
-\item{data.spectrum}{Spectrum data frame/table where the magnetic flux density (in \code{mT} or \code{G}) column
+\item{data.spectr}{Spectrum data frame object where the magnetic flux density (in `mT` or `G`) column
 can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
 or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.}
 
-\item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
+\item{nu.GHz}{Numeric value, microwave frequency in `GHz`.}
 
 \item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
 for EPR spectra.}
 
 \item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well}
+\code{data.spectr} either in `millitesla` or in `gauss`, that is \code{B = "B_mT"} (\strong{default})
+or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well.}
 
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
@@ -36,37 +36,37 @@ name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesit
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
 
-\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
-to entire `B` range).}
+\item{Blim}{Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
+of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+(corresponding to the entire \emph{B} range).}
 
-\item{iso}{Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
+\item{iso}{Logical, whether to calculate the \emph{g}-factor from the \emph{B} value corresponding to
 that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 (this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
-to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})}
+to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).}
 }
 \value{
-Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}
+Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}.
 }
 \description{
 Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
-  \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
+  \emph{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
   otherwise the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
-  the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
+  the \eqn{B_{max}} is used for the \emph{g}-value evaluation.
 }
 \examples{
 ## load built-in EPR spectral data
 data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
-                                col.names = c("B_G", "dIepr_over_dB"),
-                                x = 1,
-                                Intensity = 2,
-                                qValue = 3500,
-                                origin = "winepr")
+                              col.names = c("B_G", "dIepr_over_dB"),
+                              x = 1,
+                              Intensity = 2,
+                              qValue = 3500,
+                              origin = "winepr")
 ## g_iso calculation from EPR spectrum/data =>
-eval_gFactor_Spec(data.spectrum = data.epr,
+eval_gFactor_Spec(data.spectr = data.epr,
                   nu.GHz = 9.814155,
                   B.unit = "mT",
                   B = "B_mT",

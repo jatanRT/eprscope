@@ -5,24 +5,24 @@
 \title{Radical Kinetic Models Fitted to Experimental Data}
 \usage{
 eval_kinR_EPR_modelFit(
-  data.spectra.integ,
+  data.integs,
   time.unit = "s",
-  time.series = "time_s",
+  time = "time_s",
   qvarR = "Area",
   model.react = "(x=1)R --> [k1] B",
   params.guess = c(qvar0R = 0.001, k1 = 0.001),
   algorithm.fit.kin = "diff-LM",
-  time.series.correct = FALSE,
+  time.correct = FALSE,
   path_to_dsc_par = NULL,
   origin = NULL
 )
 }
 \arguments{
-\item{data.spectra.integ}{tbc}
+\item{data.integs}{Data frame object Integrals/Areas \emph{vs.} Time}
 
 \item{time.unit}{Character string ... argument/parameter... tbc}
 
-\item{time.series}{Character string ... argument/parameter... tbc}
+\item{time}{Character string ... argument/parameter... tbc}
 
 \item{qvarR}{Character string ... argument/parameter... tbc}
 
@@ -32,7 +32,7 @@ eval_kinR_EPR_modelFit(
 
 \item{algorithm.fit.kin}{Character string ... argument/parameter... tbc}
 
-\item{time.series.correct}{Logical, ... argument/parameter... tbc}
+\item{time.correct}{Logical, ... argument/parameter... tbc}
 
 \item{path_to_dsc_par}{Character string ... argument/parameter... tbc}
 

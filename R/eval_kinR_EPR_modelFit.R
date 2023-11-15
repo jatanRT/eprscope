@@ -10,14 +10,14 @@
 #'
 #'
 #'
-#' @param data.spectra.integ tbc
+#' @param data.integs Data frame object Integrals/Areas \emph{vs.} Time
 #' @param time.unit Character string ... argument/parameter... tbc
-#' @param time.series Character string ... argument/parameter... tbc
+#' @param time Character string ... argument/parameter... tbc
 #' @param qvarR Character string ... argument/parameter... tbc
 #' @param model.react Character string ... argument/parameter... tbc, the same like in \code{\link{eval_kinR_ODE_model}}
 #' @param params.guess Named vector ... argument/parameter... tbc
 #' @param algorithm.fit.kin Character string ... argument/parameter... tbc
-#' @param time.series.correct Logical, ... argument/parameter... tbc
+#' @param time.correct Logical, ... argument/parameter... tbc
 #' @param path_to_dsc_par Character string ... argument/parameter... tbc
 #' @param origin Character string ... argument/parameter... tbc
 #'
@@ -37,9 +37,9 @@
 #'
 #' @importFrom minpack.lm nls.lm
 #' @importFrom ggplot2 guide_legend
-eval_kinR_EPR_modelFit <- function(data.spectra.integ,
+eval_kinR_EPR_modelFit <- function(data.integs,
                                    time.unit = "s",
-                                   time.series = "time_s",
+                                   time = "time_s",
                                    qvarR = "Area",
                                    model.react = "(x=1)R --> [k1] B",
                                    params.guess = c(
@@ -47,7 +47,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
                                      k1 = 1e-3
                                    ),
                                    algorithm.fit.kin = "diff-LM",
-                                   time.series.correct = FALSE,
+                                   time.correct = FALSE,
                                    path_to_dsc_par = NULL,
                                    origin = NULL) {
   #
@@ -56,18 +56,18 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
   fitted <- NULL
   ## convert time if other than `s` appears
   if (time.unit == "min") {
-    data.spectra.integ[[time.series]] <- data.spectra.integ[[time.series]] * 60
-    ## rename `time.series`
-    names(data.spectra.integ[[time.series]]) <- "time_s"
+    data.integs[[time]] <- data.integs[[time]] * 60
+    ## rename `time`
+    names(data.integs[[time]]) <- "time_s"
   }
   if (time.unit == "h") {
-    data.spectra.integ[[time.series]] <- data.spectra.integ[[time.series]] * 3600
-    ## rename `time.series`
-    names(data.spectra.integ[[time.series]]) <- "time_s"
+    data.integs[[time]] <- data.integs[[time]] * 3600
+    ## rename `time`
+    names(data.integs[[time]]) <- "time_s"
   }
   #
   ## corrected time for CW EPR experiment
-  if (isTRUE(time.series.correct)) {
+  if (isTRUE(time.correct)) {
     if (is.null(path_to_dsc_par) & is.null(origin)) {
       stop(" Please define origin and the path for file incl. instrumental parameters ! ")
     } else {
@@ -76,15 +76,15 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
       instrum.params.kin <- readEPR_params_slct_kin(path_to_dsc_par, origin = origin)
       #
       ## correct time
-      data.spectra.integ[[time.series]] <- correct_time_Exp_Specs(
-        time.s = data.spectra.integ[[time.series]],
+      data.integs[[time]] <- correct_time_Exp_Specs(
+        time.s = data.integs[[time]],
         Nscans = instrum.params.kin$Nscans,
         sweep.time.s = instrum.params.kin$swTime
       )
       #
     }
   } else {
-    data.spectra.integ[[time.series]] <- data.spectra.integ[[time.series]]
+    data.integs[[time]] <- data.integs[[time]]
   }
   #
   ## ---------------------------- DERIVATIVE FORM Fit -----------------------------
@@ -92,19 +92,19 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
   ## Fit by solution of Ordinary Differential equations
   #
   if (algorithm.fit.kin == "diff-LM") {
-    model.react.kin.fit <- minpack.lm::nls.lm(
+      model.react.kin.fit <- minpack.lm::nls.lm(
       par = params.guess,
       fn = eval_kinR_ODE_model,
       model.react = model.react,
       model.expr.diff = TRUE,
-      data.expr = data.spectra.integ,
-      time.expr.series = time.series,
+      data.expr = data.integs,
+      time.expr = time,
       qvar.expr = qvarR
     )
     #
     ## Summary as table
     summar.react.kin.fit.df <- as.data.frame(summary(model.react.kin.fit)$coefficients)
-    ## number of iterations
+    ## number of iterations/evaluations
     iters.react.kin.fit <- model.react.kin.fit$niter
     ## total sum of residual squares
     residsq.react.kin.fit <- model.react.kin.fit$deviance
@@ -121,15 +121,15 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
       model.react = model.react,
       model.expr.diff = FALSE,
       kin.params = predict.model.params,
-      data.expr = data.spectra.integ,
-      time.expr.series = time.series,
+      data.expr = data.integs,
+      time.expr = time,
       qvar.expr = qvarR
     )
     #
     ## starting new data frame only with `time` and `qvar` &
     ## merge both data frames (add `fitted` columns)
-    new.predict.df <- data.spectra.integ %>%
-      dplyr::select(.data[[time.series]], .data[[qvarR]]) %>%
+    new.predict.df <- data.integs %>%
+      dplyr::select(.data[[time]], .data[[qvarR]]) %>%
       dplyr::mutate(fitted = model.expr.time$df[["R"]])
     #
     ## the `model.expr.time` and `model.react.kin.fit` is not required anymore
@@ -140,7 +140,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
   plot.fit.base <- ggplot(new.predict.df) +
     geom_point(
       aes(
-        x = .data[[time.series]],
+        x = .data[[time]],
         y = .data[[qvarR]],
         color = "Experimental\nData"
       ),
@@ -148,7 +148,7 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
     ) +
     geom_line(
       aes(
-        x = .data[[time.series]],
+        x = .data[[time]],
         y = .data$fitted,
         color = "\nKinetic\nModel Fit"
       ),
@@ -193,9 +193,9 @@ eval_kinR_EPR_modelFit <- function(data.spectra.integ,
     df = new.predict.df,
     plot = plot.fit,
     df.coeffs = summar.react.kin.fit.df,
-    niter = iters.react.kin.fit,
-    resid.sum.sqr = residsq.react.kin.fit,
-    converg = converg.react.kin.fit
+    N.evals = iters.react.kin.fit,
+    min.LSQ.sum = residsq.react.kin.fit,
+    eval.LSQ.sum = converg.react.kin.fit
   )
   #
   return(fit.summary)

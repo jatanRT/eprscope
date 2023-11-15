@@ -8,11 +8,11 @@
 #' @description TODO by Tabular and/or Graphic Representation
 #'
 #'
-#' @param data.spectrum.expr \strong{Experimental} spectrum data frame incl. magnetic flux
+#' @param data.spectr.expr \strong{Experimental} spectrum data frame incl. magnetic flux
 #'   density (in \code{mT} or \code{G}) column which are labeled as \code{B_mT}
 #'   in mT (or \code{B_G} in gauss) + it contains intensity column as \code{dIepr_over_dB},
 #'   \code{index} column can be included as well.
-#' @param data.spectrum.sim Data frame corresponding to \strong{simulated} spectrum incl. \strong{magnetic
+#' @param data.spectr.sim Data frame corresponding to \strong{simulated} spectrum incl. \strong{magnetic
 #'   flux density} (in \code{mT} or \code{G}) like \code{Bsim_mT} in mT (or \code{Bsim_G} in gauss) +
 #'   it contains intensity as well, column names are taken automatically
 #'   if the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII.
@@ -32,7 +32,7 @@
 #'   values : \code{0.6},\code{0.8}, \code{1.2},\code{1.1}. IF the \code{Intensity.shift.ration = NULL}
 #'   BOTH SPECTRA ARE PRESENTED IN OVERAY MODE !
 #' @param B.shift Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
-#'   that can be caused by \emph{MATLAB}-output, it refers to simulated spectrum, \strong{default}:
+#'   that can be caused by switching ON the Teslameter, it refers to simulated spectrum, \strong{default}:
 #'   \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
 #'   \code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G}).
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
@@ -70,8 +70,8 @@
 #'
 #'
 #'
-present_EPR_Sim_Spec <- function(data.spectrum.expr,
-                                 data.spectrum.sim,
+present_EPR_Sim_Spec <- function(data.spectr.expr,
+                                 data.spectr.sim,
                                  B.unit = "G",
                                  Intensity.expr = "dIepr_over_dB",
                                  Intensity.sim = "dIeprSim_over_dB",
@@ -87,7 +87,7 @@ present_EPR_Sim_Spec <- function(data.spectrum.expr,
   B <- NULL
   #
   ## Join both tables/data frames
-  both.spectr.data <- dplyr::bind_cols(data.spectrum.expr, data.spectrum.sim)
+  both.spectr.data <- dplyr::bind_cols(data.spectr.expr, data.spectr.sim)
   #
   ## Differences in intensity extremes:
   diff_Intens_expr <- max(both.spectr.data[[Intensity.expr]]) - min(both.spectr.data[[Intensity.expr]])

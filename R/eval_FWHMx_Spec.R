@@ -13,22 +13,22 @@
 #'
 #'
 #'
-#' @param data.spec.integ Data frame containing \eqn{x} column/variable like magnetic flux density, \eqn{B}
-#'   (in in \code{mT} or \code{G}) or \eqn{g}-factor/value (unitless) and integrated intensity
+#' @param data.spectr.integ Data frame object containing \emph{x} column/variable like magnetic flux density, \emph{B}
+#'   (in in `mT` or `G`) or \emph{g}-factor/value (unitless) and integrated intensity
 #'   (common absorption-like spectrum) column/variable.
 #' @param x Character string pointing to name of the \code{x}-axis/column/variable (in the original
-#'   \code{data.spec.integ}) like magnetic flux density \eqn{B} (in \code{mT} or \code{G}) or \eqn{g}-Value
+#'   \code{data.spectr.integ}) like magnetic flux density \emph{B} (in `mT` or `G`) or \emph{g}-Value
 #'   (unitless), \strong{default}: \code{x = "B_G"}.
 #' @param Intensity Character string pointing to name of the \code{intensity column/variable}
-#'   (in the original \code{data.spec.integ}) if other than \code{single_Integ} (\strong{default}) name/label
+#'   (in the original \code{data.spectr.integ}) if other than \code{single_Integ} (\strong{default}) name/label
 #'   is used (e.g. "Integral_Intensity" or "integral").
 #' @param xlim Numeric vector corresponding to border limits of the selected \eqn{x} region,
-#'   e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless).
-#'   \strong{Default}: \code{xlim = NULL} (corresponding to entire `x` range).
+#'   e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in `G`) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
+#'   \strong{Default}: \code{xlim = NULL} (corresponding to entire \emph{x} range).
 #'
 #'
 #' @return Numeric value of the FWHM directly from EPR spectrum, depending on \code{x} variable =>
-#'   either in \code{mT}/\code{G} or unitless in case if \eqn{g}-factor is presented on abscissa.
+#'   either in `mT`/`G` or unitless in case if \emph{g}-factor is presented on abscissa.
 #'
 #'
 #' @examples
@@ -40,7 +40,7 @@
 #' @export
 #'
 #'
-eval_FWHMx_Spec <- function(data.spec.integ,
+eval_FWHMx_Spec <- function(data.spectr.integ,
                             x = "B_G",
                             Intensity = "single_Integ",
                             xlim = NULL) {
@@ -50,7 +50,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
   #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
-  data.x.region <- c(min(data.spec.integ[[x]]), max(data.spec.integ[[x]]))
+  data.x.region <- c(min(data.spectr.integ[[x]]), max(data.spectr.integ[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim), data.x.region, .)
   #
   # ===== This is not required, however it's better to select a narrow region at the beginning =====
@@ -59,7 +59,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
   ## Selecting `x region`
   ## variable set as `xs.init` (data frame) +
   ## Condition to find x values for near(max(`Intensity`)/2)
-  xs.init <- data.spec.integ %>%
+  xs.init <- data.spectr.integ %>%
     dplyr::filter(dplyr::between(
       .data[[x]],
       xlim[1], xlim[2]
@@ -72,7 +72,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
   # ==================================================================================
   #
   ## calculate `x.max` corresponding to max(Intensity)
-  x.max <- data.spec.integ %>%
+  x.max <- data.spectr.integ %>%
     dplyr::filter(dplyr::between(.data[[x]], xlim[1], xlim[2])) %>%
     dplyr::filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     dplyr::pull(.data[[x]])
@@ -88,7 +88,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
         dplyr::filter(.data[[x]] < x.max)
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
-      Intens.cond.left <- which.min(abs(x.init.low[[Intensity]] - max(data.spec.integ[[Intensity]]) / 2))
+      Intens.cond.left <- which.min(abs(x.init.low[[Intensity]] - max(data.spectr.integ[[Intensity]]) / 2))
       Intens.cond.left <- x.init.low[Intens.cond.left] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.low <- x.init.low %>%
@@ -101,7 +101,7 @@ eval_FWHMx_Spec <- function(data.spec.integ,
         dplyr::filter(.data[[x]] > x.max)
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
-      Intens.cond.right <- which.min(abs(x.init.high[[Intensity]] - max(data.spec.integ[[Intensity]]) / 2))
+      Intens.cond.right <- which.min(abs(x.init.high[[Intensity]] - max(data.spectr.integ[[Intensity]]) / 2))
       Intens.cond.right <- x.init.high[Intens.cond.right] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.high <- x.init.high %>%

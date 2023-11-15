@@ -9,7 +9,7 @@ eval_kinR_ODE_model(
   model.expr.diff = FALSE,
   kin.params = c(k1 = 0.001, qvar0R = 0.02),
   data.expr = NULL,
-  time.expr.series = NULL,
+  time.expr = NULL,
   qvar.expr = NULL
 )
 }
@@ -88,8 +88,8 @@ The \code{data.expr} MUST BE USED ONLY IN CASE IF THE EXPERIMENTAL TIME HAS TO B
 IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPR. DATA BY THE KINETIC MODEL).
 \strong{Default}: \code{data.expr = NULL}.}
 
-\item{time.expr.series}{Character string pointing to `time` \strong{column name} in the original
-\code{data.expr} data frame. \strong{Default}: \code{time.expr.series = NULL} (in case of experimental
+\item{time.expr}{Character string pointing to `time` \strong{column name} in the original
+\code{data.expr} data frame. \strong{Default}: \code{time.expr = NULL} (in case of experimental
 data aren't taken into account).}
 
 \item{qvar.expr}{Character string pointing to `qvar` \strong{column name} in the original
@@ -167,16 +167,16 @@ kin.test.02 <-
 kin.test.02$plot
 #
 \dontrun{
-## taking onto account the experimental time series
+## taking into account the experimental time for the spectral series
 eval_kinR_ODE_model(model.react = "(x=2)A --> [k1] R",
                     model.expr.diff = FALSE,
                     kin.params = c(k1 = 0.005,
                                    qvar0A = 0.05,
                                    qvar0R = 0),
-                    data.expr = data.spectra.integ,
-                    time.expr.series = "time_s")
+                    data.expr = data.integs,
+                    time.expr = "time_s")
 #
-## using `eval_kinR_ODE_model` function for fitting
+## using `eval_kinR_ODE_model()` function for fitting
 ## of the experimental data in the previous case
 minpack.lm::nls.lm(par = c(k1 = 0.005,
                            qvar0A = 0.05,
@@ -184,8 +184,8 @@ minpack.lm::nls.lm(par = c(k1 = 0.005,
                    fn = eval_kinR_ODE_model,
                    model.react = "(x=2)A --> [k1] R",
                    model.expr.diff = TRUE,
-                   data.expr = data.spectra.integ,
-                   time.expr.series = "time_s",
+                   data.expr = data.integs,
+                   time.expr = "time_s",
                    qvar.expr = "Area")
 }
 

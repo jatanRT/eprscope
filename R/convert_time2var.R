@@ -1,28 +1,32 @@
 #'
-#' Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}
+#' Convert Time (\emph{t}) into Variable Linearly Depending on \emph{t}
 #'
 #'
 #' @family Conversions and Corrections
 #'
 #'
 #' @description
-#'   Conversion of time (\eqn{t}) into variable \code{var} (\eqn{var}) which is linearly changed upon time like
-#'   \deqn{var = var0 + rate~ t}
-#'   This is especially suitable for time conversion of EPR time series experiments
-#'   (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
-#'   electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
-#'   is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
-#'   like =>
-#'   \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
-#'   \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
-#'   where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
-#'   at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
+#'   Conversion of time (\emph{t}) into variable \code{var} (\emph{var}) which is linearly changed upon time.
+#'
+#'
+#' @details
+#'  The linear time change of \eqn{var} can be expressed like
+#'  \deqn{var = var0 + rate~ t}
+#'  This is especially suitable for time conversion of EPR time series experiments
+#'  (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
+#'  electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
+#'  is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
+#'  like =>
+#'  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
+#'  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
+#'  where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
+#'  at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
 #'
 #'
 #'
-#' @param time Numeric, value or vector corresponding to time (points) where the variable \code{var}
+#' @param time.val Numeric value or vector corresponding to time (points) where the variable \code{var}
 #'   is changed.
-#' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+#' @param time.unit Character string \strong{time unit} defined by `s`,`min` or `h`.
 #'   \strong{Default}: \code{time.unit = "s"}.
 #' @param var0 Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
 #'   negative electrochemical potential) of the variable (\code{var}).
@@ -60,7 +64,7 @@
 #' ## (e.g. cyclic voltammetry from -0.1V to 0.45V and back
 #' ## to -0.1V). Time series vector is labeled as "time_s".
 #' time_s <- seq(0,360,by = 18)
-#' E_V <- convert_time2var(time = time_s,
+#' E_V <- convert_time2var(time.val = time_s,
 #'                         var0 = -0.1,
 #'                         var.switch = 0.45,
 #'                         var.rate = 0.003)
@@ -71,7 +75,7 @@
 #' @export
 #'
 #'
-convert_time2var <- function(time,
+convert_time2var <- function(time.val,
                              time.unit = "s",
                              var0,
                              var.switch = NULL,
@@ -80,10 +84,10 @@ convert_time2var <- function(time,
   #
   # convert time to `s` depending on `time.unit`
   if (time.unit == "min") {
-    time <- time * 60
+    time.val <- time.val * 60
   }
   if (time.unit == "h") {
-    time <- time * 3600
+    time.val <- time.val * 3600
   }
   #
   ## convert rate if other than s^{-1}
@@ -98,34 +102,34 @@ convert_time2var <- function(time,
   ## or there is cyclic change like cyclic voltammetry
   ## or cyclic change of temperature...etc
   if (is.null(var.switch)) {
-    var <- var0 + var.rate * time
+    var <- var0 + var.rate * time.val
   } else {
     #
     ## first calculate the switching time
     t.switch <- (var.switch - var0) / var.rate
-    ## `var` calcul. depends whether the `time` < `t.switch`
-    ## or `time` > `t.switch`(for the entire vector/column) =>
+    ## `var` calcul. depends whether the `time.val` < `t.switch`
+    ## or `time.val` > `t.switch`(for the entire vector/column) =>
     #
     ## only one value
-    if (length(time) == 1){
-      if (time <= t.switch) {
-        var <- var0 + var.rate * time
+    if (length(time.val) == 1){
+      if (time.val <= t.switch) {
+        var <- var0 + var.rate * time.val
       }
-      if (time > t.switch) {
-        var <- var.switch - var.rate * (time-t.switch)
+      if (time.val > t.switch) {
+        var <- var.switch - var.rate * (time.val - t.switch)
       }
     }
     # time is a vector
-    if (length(time) > 1){
+    if (length(time.val) > 1){
       ## start to create a vector
       var <- c()
       ## checking all the elements in a loop
-      for (t in seq(time)){
-        if (time[t] <= t.switch) {
-          var[t] <- var0 + var.rate * time[t]
+      for (t in seq(time.val)){
+        if (time.val[t] <= t.switch) {
+          var[t] <- var0 + var.rate * time.val[t]
         }
-        if (time[t] > t.switch) {
-          var[t] <- var.switch - var.rate * (time[t]-t.switch)
+        if (time.val[t] > t.switch) {
+          var[t] <- var.switch - var.rate * (time.val[t]-t.switch)
         }
       }
     }

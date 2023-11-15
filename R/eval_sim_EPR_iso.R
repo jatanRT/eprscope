@@ -194,9 +194,9 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   B.g.sim.df <- data.frame(B = seq(B.CF - B.SW / 2,B.CF + B.SW / 2,length.out = Npoints))
   colnames(B.g.sim.df) <- paste0("B_",B.unit)
   B.g.sim.df <- B.g.sim.df %>%
-    dplyr::mutate(g = eval_gFactor(nu = nu.GHz,
+    dplyr::mutate(g = eval_gFactor(nu.val = nu.GHz,
                                    nu.unit = "GHz",
-                                   B = .data[[paste0("B_",B.unit)]],
+                                   B.val = .data[[paste0("B_",B.unit)]],
                                    B.unit = B.unit))
   #
   ## Conversions (adding columns) for `B.g.sim.df`

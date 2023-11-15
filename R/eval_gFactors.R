@@ -5,24 +5,21 @@
 #' @family Evaluations
 #'
 #'
-#' @description Calculation of {g}-factor according to fundamental formula.
-#'   The magnetic flux density (\code{B}) and microwave frequency (\code{nu},\eqn{\nu})
-#'   can be entered with common units like \code{G} (Gauss) \code{mT}
-#'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
-#'   The Planck constant (\eqn{h}) and Bohr magneton (\eqn{\mu_{B}}) are included
-#'   in \code{\link[constants]{syms}} function and their values are taken by \code{syms$h}
-#'   and \code{syms$mub} commands, respectively.
+#' @description Calculation of \emph{g}-factor according to fundamental formula.
+#'   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
+#'   can be entered with common units like `G` (Gauss) `mT`
+#'   (millitesla) or `T` (tesla) as well as `GHz` or `Hz`, respectively.
 #'
 #'
-#' @param nu Numeric, microwave Frequency
-#' @param nu.unit Character string, frequency unit defined by \code{"GHz"} or \code{"Hz"}, \strong{default}: \code{nu.unit = "GHz"}
-#' @param B Numeric, magnetic flux density
-#' @param B.unit Character string, magnetic flux density unit in \code{"G"} or \code{"mT"} or \code{"T"}, \strong{default}:
+#' @param nu.val Numeric, microwave Frequency
+#' @param nu.unit Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}
+#' @param B.val Numeric, magnetic flux density
+#' @param B.unit Character string, magnetic flux density unit in `G` or `mT` or `T`, \strong{default}:
 #'   \code{B.unit = "mT"}
 #'
 #'
-#' @return g-value from \eqn{(\nu h)/(\mu_{B} B)}. For variables and constants =>
-#'   see description above
+#' @return \emph{g}-Value from \eqn{(\nu h)/(\mu_{B} B)}. For variables see description above. Constants
+#'   are taken from \pkg{constants} package.
 #'
 #'
 #' @examples
@@ -31,9 +28,9 @@
 #'              350.214,
 #'              B.unit = "mT")
 #' #
-#' eval_gFactor(nu = 9.8020458e+9,
+#' eval_gFactor(nu.val = 9.8020458e+9,
 #'              nu.unit = "Hz",
-#'              B = 3502.14,
+#'              B.val = 3502.14,
 #'              B.unit = "G")
 #' #
 #' eval_gFactor(9.5421,"GHz",0.333251,"T")
@@ -42,9 +39,9 @@
 #' @export
 #'
 #'
-eval_gFactor <- function(nu,
+eval_gFactor <- function(nu.val,
                          nu.unit = "GHz",
-                         B,
+                         B.val,
                          B.unit = "mT") {
   #
   ## Fundamental Physical Constants
@@ -53,17 +50,17 @@ eval_gFactor <- function(nu,
   #
   ## Conditions to calculate `g`
   if (nu.unit == "GHz" & B.unit == "mT") {
-    g <- (Planck.const * nu * 1e+9) / (Bohr.magnet * B * 0.001)
+    g <- (Planck.const * nu.val * 1e+9) / (Bohr.magnet * B.val * 0.001)
   } else if (nu.unit == "Hz" & B.unit == "mT") {
-    g <- (Planck.const * nu) / (Bohr.magnet * B * 0.001)
+    g <- (Planck.const * nu.val) / (Bohr.magnet * B.val * 0.001)
   } else if (nu.unit == "Hz" & B.unit == "G") {
-    g <- (Planck.const * nu) / (Bohr.magnet * B * 0.0001)
+    g <- (Planck.const * nu.val) / (Bohr.magnet * B.val * 0.0001)
   } else if (nu.unit == "GHz" & B.unit == "G") {
-    g <- (Planck.const * nu * 1e+9) / (Bohr.magnet * B * 0.0001)
+    g <- (Planck.const * nu.val * 1e+9) / (Bohr.magnet * B.val * 0.0001)
   } else if (nu.unit == "GHz" & B.unit == "T") {
-    g <- (Planck.const * nu * 1e+9) / (Bohr.magnet * B)
+    g <- (Planck.const * nu.val * 1e+9) / (Bohr.magnet * B.val)
   } else if (nu.unit == "Hz" & B.unit == "T") {
-    g <- (Planck.const * nu) / (Bohr.magnet * B)
+    g <- (Planck.const * nu.val) / (Bohr.magnet * B.val)
   }
   #
   return(round(g, digits = 5))
@@ -73,57 +70,57 @@ eval_gFactor <- function(nu,
 #
 #
 #
-#' Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
+#' Calculation of \emph{g}-factor ("Position") from the EPR Spectrum/Data
 #'
 #'
 #' @family Evaluations
 #'
 #'
 #' @description Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
-#'   \eqn{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
+#'   \emph{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
 #'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
 #'   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
 #'   otherwise the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
-#'   the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
+#'   the \eqn{B_{max}} is used for the \emph{g}-value evaluation.
 #'
 #'
-#' @param data.spectrum Spectrum data frame/table where the magnetic flux density (in \code{mT} or \code{G}) column
+#' @param data.spectr Spectrum data frame object where the magnetic flux density (in `mT` or `G`) column
 #'   can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
 #'   or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.
-#' @param nu.GHz Numeric value, microwave frequency in \code{GHz}.
+#' @param nu.GHz Numeric value, microwave frequency in `GHz`.
 #' @param B.unit Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 #'   (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
 #'   for EPR spectra.
 #' @param B Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{data.spectrum} either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"} (\strong{default})
-#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well
+#'   \code{data.spectr} either in `millitesla` or in `gauss`, that is \code{B = "B_mT"} (\strong{default})
+#'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well.
 #' @param Intensity Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 #'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
-#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-#'   of the selected \eqn{B} region, e.g. like `Blim = c(3495.4,3595.4)`. \strong{Default}: \code{Blim = NULL} (corresponding
-#'   to entire `B` range).
-#' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
+#' @param Blim Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
+#'   of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+#'   (corresponding to the entire \emph{B} range).
+#' @param iso Logical, whether to calculate the \emph{g}-factor from the \emph{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 #'   (this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
-#'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE})
+#'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).
 #'
 #'
-#' @return Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}
+#' @return Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}.
 #'
 #'
 #' @examples
 #' ## load built-in EPR spectral data
 #' data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
-#'                                 col.names = c("B_G", "dIepr_over_dB"),
-#'                                 x = 1,
-#'                                 Intensity = 2,
-#'                                 qValue = 3500,
-#'                                 origin = "winepr")
+#'                               col.names = c("B_G", "dIepr_over_dB"),
+#'                               x = 1,
+#'                               Intensity = 2,
+#'                               qValue = 3500,
+#'                               origin = "winepr")
 #' ## g_iso calculation from EPR spectrum/data =>
-#' eval_gFactor_Spec(data.spectrum = data.epr,
+#' eval_gFactor_Spec(data.spectr = data.epr,
 #'                   nu.GHz = 9.814155,
 #'                   B.unit = "mT",
 #'                   B = "B_mT",
@@ -134,7 +131,7 @@ eval_gFactor <- function(nu,
 #'
 #'
 #' @importFrom dplyr filter select mutate pull between near
-eval_gFactor_Spec <- function(data.spectrum,
+eval_gFactor_Spec <- function(data.spectr,
                               nu.GHz,
                               B.unit = "G",
                               B = "B_G",
@@ -146,18 +143,23 @@ eval_gFactor_Spec <- function(data.spectrum,
   AbsIntens <- NULL
   . <- NULL
   #
+  ## Field definition also for other functions
+  # if (grepl("_|-",B,ignore.case = TRUE)){
+  #   B.split <- unlist(stringr::str_split(B,pattern = "_|-"))
+  # }
+  #
   ## Define limits if `Blim = NULL` take the entire data region
   ## otherwise use predefined vector
-  data.B.region <- c(min(data.spectrum[[B]]), max(data.spectrum[[B]]))
+  data.B.region <- c(min(data.spectr[[B]]), max(data.spectr[[B]]))
   Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
   #
   ## B minimum & maximum
-  B.min <- data.spectrum %>%
+  B.min <- data.spectr %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2])) %>%
     dplyr::filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
     dplyr::pull(.data[[B]])
   #
-  B.max <- data.spectrum %>%
+  B.max <- data.spectr %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2])) %>%
     dplyr::filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     dplyr::pull(.data[[B]])
@@ -173,7 +175,7 @@ eval_gFactor_Spec <- function(data.spectrum,
   } else {
     if (lineSpecs.form == "derivative") {
       ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
-      B.center <- data.spectrum %>%
+      B.center <- data.spectr %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
         dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%
         dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 2)) %>%
@@ -204,19 +206,19 @@ eval_gFactor_Spec <- function(data.spectrum,
 #
 #
 #
-#' Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
+#' Calculation of \emph{g}-factor from Quantum Chemical Computational Output
 #'
 #'
 #' @family Evaluations and Quantum Chemistry
 #'
 #'
-#' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.
-#' Therefore the function takes these values and calculates the entire \eqn{g}-values or parses
+#' @description \emph{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.
+#' Therefore the function takes these values and calculates the entire \emph{g}-values or parses
 #' the corresponding mean value from `Gaussian` or `ORCA` output.
 #'
 #'
 #' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files
-#'   incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
+#'   incl. all \emph{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
 #' @param mean Logical, whether to calculate the \code{mean value/iso} from principal components,
 #'   \strong{default}: \code{mean = TRUE}, or save the entire vector with all the components.
 #' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
@@ -224,8 +226,8 @@ eval_gFactor_Spec <- function(data.spectrum,
 #'   or \code{"orca"}.
 #'
 #'
-#' @return Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components
-#'   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \eqn{g}-components
+#' @return Numeric mean \emph{g}-factor value from principal difference (from \eqn{g_e}) components
+#'   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \emph{g}-components
 #'   if \code{mean = FALSE}
 #'
 #'

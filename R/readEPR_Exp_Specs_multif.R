@@ -215,9 +215,9 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
                             origin = origin
           ) %>%
             dplyr::mutate(g_Value = eval_gFactor(
-              nu = u,
+              nu.val = u,
               nu.unit = "Hz",
-              B = .data[[xString]],
+              B.val = .data[[xString]],
               B.unit = x.unit
             ))
         },

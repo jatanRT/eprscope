@@ -117,8 +117,8 @@
 #'   The \code{data.expr} MUST BE USED ONLY IN CASE IF THE EXPERIMENTAL TIME HAS TO BE INCLUDED
 #'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPR. DATA BY THE KINETIC MODEL).
 #'   \strong{Default}: \code{data.expr = NULL}.
-#' @param time.expr.series Character string pointing to `time` \strong{column name} in the original
-#'   \code{data.expr} data frame. \strong{Default}: \code{time.expr.series = NULL} (in case of experimental
+#' @param time.expr Character string pointing to `time` \strong{column name} in the original
+#'   \code{data.expr} data frame. \strong{Default}: \code{time.expr = NULL} (in case of experimental
 #'   data aren't taken into account).
 #' @param qvar.expr Character string pointing to `qvar` \strong{column name} in the original
 #'   \code{data.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (in case of experimental
@@ -155,16 +155,16 @@
 #' kin.test.02$plot
 #' #
 #' \dontrun{
-#' ## taking onto account the experimental time series
+#' ## taking into account the experimental time for the spectral series
 #' eval_kinR_ODE_model(model.react = "(x=2)A --> [k1] R",
 #'                     model.expr.diff = FALSE,
 #'                     kin.params = c(k1 = 0.005,
 #'                                    qvar0A = 0.05,
 #'                                    qvar0R = 0),
-#'                     data.expr = data.spectra.integ,
-#'                     time.expr.series = "time_s")
+#'                     data.expr = data.integs,
+#'                     time.expr = "time_s")
 #' #
-#' ## using `eval_kinR_ODE_model` function for fitting
+#' ## using `eval_kinR_ODE_model()` function for fitting
 #' ## of the experimental data in the previous case
 #' minpack.lm::nls.lm(par = c(k1 = 0.005,
 #'                            qvar0A = 0.05,
@@ -172,8 +172,8 @@
 #'                    fn = eval_kinR_ODE_model,
 #'                    model.react = "(x=2)A --> [k1] R",
 #'                    model.expr.diff = TRUE,
-#'                    data.expr = data.spectra.integ,
-#'                    time.expr.series = "time_s",
+#'                    data.expr = data.integs,
+#'                    time.expr = "time_s",
 #'                    qvar.expr = "Area")
 #' }
 #'
@@ -190,7 +190,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
                                   qvar0R = 0.02
                                 ),
                                 data.expr = NULL,
-                                time.expr.series = NULL,
+                                time.expr = NULL,
                                 qvar.expr = NULL) {
   #
   ## 'Temporary' processing variables
@@ -199,17 +199,17 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
   #
   ## Data definition
   if (!is.null(data.expr)) {
-    if (is.null(time.expr.series) || is.null(qvar.expr)) {
-      stop(" The time series of the experimental data (`time.expr.series`)\n
+    if (is.null(time.expr) || is.null(qvar.expr)) {
+      stop(" Time of the experimental data series (`time.expr`)\n
            or the corresponding quantitative variable (`qvar.expr`)\n
            is not specified. Please, define ! ")
     } else {
-      time.expr <- data.expr[[time.expr.series]]
-      final.time <- max(data.expr[[time.expr.series]])
+      time.expr <- data.expr[[time.expr]]
+      final.time <- max(data.expr[[time.expr]])
     }
   }
   #
-  ## Time.series definition
+  ## time definition for the spectral series
   if (is.null(data.expr)) {
     final.time <- 1600 ## theoretical final time in seconds
     t <- seq(0, final.time, 2)
@@ -295,7 +295,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     ## the first col. is `time` and 2nd has to be renamed
     names(result.df)[2] <- "R"
@@ -364,7 +364,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
@@ -437,7 +437,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
@@ -508,7 +508,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
@@ -579,7 +579,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
@@ -644,7 +644,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     ## the first col. is `time` and 2nd has to be renamed
     names(result.df)[2] <- "R"
@@ -766,7 +766,7 @@ eval_kinR_ODE_model <- function(model.react = "(x=1)R --> [k1] B", ## for x = 1,
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr.series]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {

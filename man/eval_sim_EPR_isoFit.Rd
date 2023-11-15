@@ -5,7 +5,7 @@
 \title{Least-Squares Fitting of Isotropic EPR spectra by Simulations}
 \usage{
 eval_sim_EPR_isoFit(
-  data.spectrum.expr,
+  data.spectr.expr,
   Intensity.expr = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
   nu.GHz,
@@ -23,13 +23,13 @@ eval_sim_EPR_isoFit(
 )
 }
 \arguments{
-\item{data.spectrum.expr}{Data frame object ... TBC ...}
+\item{data.spectr.expr}{Data frame object ... TBC ...}
 
 \item{Intensity.expr}{Character string ... TBC ...}
 
 \item{Intensity.sim}{Character string ... TBC ...}
 
-\item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
+\item{nu.GHz}{Numeric value, microwave frequency in `GHz`.}
 
 \item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
@@ -88,7 +88,7 @@ tempo.data <- readEPR_Exp_Specs(tempo.data.path,
 ## and the initial multiplication factor for the intensity was `3`.
 ## The initial g-value was estimated from the spectrum, g = `2.0031`.
 tmpd.test.sim.fit <-
-eval_sim_EPR_isoFit(data.spectrum.expr = tmpd.data,
+eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
                     nu.GHz = 9.814155,
                     nuclear.system.noA = list(list("14N",2),
                                               list("1H",4),
@@ -106,7 +106,7 @@ tmpd.test.sim$best.fit.params
 ## If additional optimization/fitting parameters are required
 ## (`sim.check = FALSE`) =>
 tmpd.test.sim.fit <-
-eval_sim_EPR_isoFit(data.spectrum.expr = tmpd.data,
+eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
                     nu.GHz = 9.814155,
                     nuclear.system.noA = list(list("14N",2),
                                               list("1H",4),

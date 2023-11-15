@@ -4,32 +4,32 @@
 \alias{convert_B}
 \title{Conversion of Magnetic Flux Density According to Input-Output Units}
 \usage{
-convert_B(B, B.unit, B.2unit)
+convert_B(B.val, B.unit, B.2unit)
 }
 \arguments{
-\item{B}{Numeric value/vector corresponding to input value(s) of magnetic flux density.}
+\item{B.val}{Numeric value/vector corresponding to input value(s) of magnetic flux density.}
 
 \item{B.unit}{Character string referring to input magnetic flux density units.
-Usually \code{"T"}, \code{"mT"} or \code{"G"} are used.}
+Usually `T`, `mT` or `G` are used.}
 
 \item{B.2unit}{Character string referring to input magnetic flux density units.
-Usually \code{"T"}, \code{"mT"} or \code{"G"} are used.}
+Usually `T`, `mT` or `G` are used.}
 }
 \value{
 Numeric value or vector as a result of the B conversion.
 }
 \description{
-Conversion of magnetic flux density/field (\eqn{B}) values depending on the input and the required
-output units.
+Conversion of magnetic flux density/field (\emph{B}) values depending on the input and the required
+  output units.
 }
 \examples{
 ## simple conversion
-convert_B(3500,B.unit = "G",B.2unit = "T")
+convert_B(B.val = 3500,B.unit = "G",B.2unit = "T")
 #
-## conversion of B vector with Sweep Width = 100 G
+## conversion of B.seq vector with Sweep Width = 100 G
 ## and central filed 3496 G
-B <- seq(3496-100/2,3496+100/2,length.out = 1024)
-Bnew <- convert_B(B,B.unit = "G",B.2unit = "mT")
+B.seq <- seq(3496-100/2,3496+100/2,length.out = 1024)
+Bnew <- convert_B(B.seq,B.unit = "G",B.2unit = "mT")
 head(as.matrix(Bnew),n = 20)
 
 

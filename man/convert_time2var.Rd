@@ -2,10 +2,10 @@
 % Please edit documentation in R/convert_time2var.R
 \name{convert_time2var}
 \alias{convert_time2var}
-\title{Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}}
+\title{Convert Time (\emph{t}) into Variable Linearly Depending on \emph{t}}
 \usage{
 convert_time2var(
-  time,
+  time.val,
   time.unit = "s",
   var0,
   var.switch = NULL,
@@ -14,10 +14,10 @@ convert_time2var(
 )
 }
 \arguments{
-\item{time}{Numeric, value or vector corresponding to time (points) where the variable \code{var}
+\item{time.val}{Numeric value or vector corresponding to time (points) where the variable \code{var}
 is changed.}
 
-\item{time.unit}{Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+\item{time.unit}{Character string \strong{time unit} defined by `s`,`min` or `h`.
 \strong{Default}: \code{time.unit = "s"}.}
 
 \item{var0}{Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
@@ -40,17 +40,20 @@ Numeric value or vector of variable (e.g. like electrochem. potential or tempera
   linearly changing upon time.
 }
 \description{
-Conversion of time (\eqn{t}) into variable \code{var} (\eqn{var}) which is linearly changed upon time like
-  \deqn{var = var0 + rate~ t}
-  This is especially suitable for time conversion of EPR time series experiments
-  (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
-  electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
-  is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
-  like =>
-  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
-  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
-  where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
-  at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
+Conversion of time (\emph{t}) into variable \code{var} (\emph{var}) which is linearly changed upon time.
+}
+\details{
+The linear time change of \eqn{var} can be expressed like
+ \deqn{var = var0 + rate~ t}
+ This is especially suitable for time conversion of EPR time series experiments
+ (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
+ electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
+ is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
+ like =>
+ \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
+ \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
+ where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
+ at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
 }
 \examples{
 ## Calculate Potential after 30 s, starting from 200 mV
@@ -71,7 +74,7 @@ convert_time2var(5,
 ## (e.g. cyclic voltammetry from -0.1V to 0.45V and back
 ## to -0.1V). Time series vector is labeled as "time_s".
 time_s <- seq(0,360,by = 18)
-E_V <- convert_time2var(time = time_s,
+E_V <- convert_time2var(time.val = time_s,
                         var0 = -0.1,
                         var.switch = 0.45,
                         var.rate = 0.003)

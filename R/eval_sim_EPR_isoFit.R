@@ -15,7 +15,7 @@
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
-#' @param data.spectrum.expr Data frame object ... TBC ...
+#' @param data.spectr.expr Data frame object ... TBC ...
 #' @param Intensity.expr Character string ... TBC ...
 #' @param Intensity.sim Character string ... TBC ...
 #' @param nuclear.system.noA List or nested list ... TBC ... without estimated hyperfine coupling constant values
@@ -57,7 +57,7 @@
 #' ## and the initial multiplication factor for the intensity was `3`.
 #' ## The initial g-value was estimated from the spectrum, g = `2.0031`.
 #' tmpd.test.sim.fit <-
-#' eval_sim_EPR_isoFit(data.spectrum.expr = tmpd.data,
+#' eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
 #'                     nu.GHz = 9.814155,
 #'                     nuclear.system.noA = list(list("14N",2),
 #'                                               list("1H",4),
@@ -75,7 +75,7 @@
 #' ## If additional optimization/fitting parameters are required
 #' ## (`sim.check = FALSE`) =>
 #' tmpd.test.sim.fit <-
-#' eval_sim_EPR_isoFit(data.spectrum.expr = tmpd.data,
+#' eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
 #'                     nu.GHz = 9.814155,
 #'                     nuclear.system.noA = list(list("14N",2),
 #'                                               list("1H",4),
@@ -98,7 +98,7 @@
 #'
 #' @importFrom stats median
 #' @importFrom dplyr rowwise
-eval_sim_EPR_isoFit <- function(data.spectrum.expr,
+eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 Intensity.expr = "dIepr_over_dB",
                                 Intensity.sim = "dIeprSim_over_dB",
                                 nu.GHz,
@@ -118,8 +118,8 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   . <- NULL
   Residuals <- NULL
   ## delete index column if present
-  if (any(grepl("index", colnames(data.spectrum.expr)))) {
-    data.spectrum.expr$index <- NULL
+  if (any(grepl("index", colnames(data.spectr.expr)))) {
+    data.spectr.expr$index <- NULL
   }
   ## instrumental parameters except the microwave frequency must be read from
   ## experimental data. It cannot be done by the same way like in simulation
@@ -131,10 +131,10 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   ## written into the text ASCII file. Therefore, to properly compare the simulated
   ## and experimental spectrum these parameters must be extracted form
   ## the experimental ASCII (`.txt` or `.asc`) ASCII data file.
-  B.cf <- stats::median(data.spectrum.expr[[paste0("B_",B.unit)]])
-  B.sw <- max(data.spectrum.expr[[paste0("B_",B.unit)]]) -
-    min(data.spectrum.expr[[paste0("B_",B.unit)]])
-  N.points <- nrow(data.spectrum.expr)
+  B.cf <- stats::median(data.spectr.expr[[paste0("B_",B.unit)]])
+  B.sw <- max(data.spectr.expr[[paste0("B_",B.unit)]]) -
+    min(data.spectr.expr[[paste0("B_",B.unit)]])
+  N.points <- nrow(data.spectr.expr)
   mw.GHz <- nu.GHz
   ## therefore => the named vector
   instrum.params <- c(Bcf = B.cf,Bsw = B.sw,Npoints = N.points,mwGHz = mw.GHz)
@@ -271,7 +271,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                                              fn = min_residuals,
                                              lower = optim.params.lower,
                                              upper = optim.params.upper,
-                                             data = data.spectrum.expr,
+                                             data = data.spectr.expr,
                                              nucs.system = nuclear.system.noA,
                                              Intensity.sim = Intensity.sim,
                                              Nmax.evals = Nmax.evals,
@@ -302,7 +302,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                           fn = min_residuals,
                           lower = optim.params.lower,
                           upper = optim.params.upper,
-                          data = data.spectrum.expr,
+                          data = data.spectr.expr,
                           nucs.system = nuclear.system.noA,
                           Intensity.sim = Intensity.sim,
                           Nmax.evals = Nmax.evals,
@@ -340,16 +340,16 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
   #
   ## best simulated Intensity and add the `Intensity.sim` to experimental
   # spectrum data
-  data.spectrum.expr[[Intensity.sim]] <-
+  data.spectr.expr[[Intensity.sim]] <-
     best.fit.params[4] + best.fit.params[5] * best.fit.df[[Intensity.sim]]
   #
   ## final data frame and rename columns
-  data.sim.expr <- data.spectrum.expr %>%
+  data.sim.expr <- data.spectr.expr %>%
     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
                                   Intensity.expr,Intensity.sim))) %>%
     dplyr::rename_with(~ c("Experiment","Simulation"),
                        dplyr::all_of(c(Intensity.expr,Intensity.sim)))
-  rm(data.spectrum.expr) ## not required anymore
+  rm(data.spectr.expr) ## not required anymore
   #
   ## calculating `rowwise` difference between expr. and sim. spectra
   data.sim.expr.resid <- data.sim.expr %>%
@@ -393,7 +393,7 @@ eval_sim_EPR_isoFit <- function(data.spectrum.expr,
                   y = .data[[Intensity.expr]],
                   color = .data$Spectrum),
               linewidth = 0.75) +
-    scale_color_manual(values = c("red","blue"))
+    scale_color_manual(values = c("darkcyan","magenta"))
   #
   if (isTRUE(sim.check)){
     ## display both overlay spectra (upper part) and residuals

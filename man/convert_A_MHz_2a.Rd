@@ -4,21 +4,23 @@
 \alias{convert_A_MHz_2a}
 \title{Convert Coupling Constants (\eqn{A} in MHz) into Splitting ones (\eqn{a} in mT).}
 \usage{
-convert_A_MHz_2a(A.MHz, g = 2.0023193)
+convert_A_MHz_2a(A.MHz, g.val = 2.0023193)
 }
 \arguments{
-\item{A.MHz}{Numeric value/vector corresponding to HFCCs in \code{MHz}.}
+\item{A.MHz}{Numeric value/vector corresponding to HFCCs in `MHz`.}
 
-\item{g}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
+\item{g.val}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
 \strong{Default:} \code{g = 2.00231930} (corresponding to free electron).}
 }
 \value{
-Numeric value/vector corresponding to HFSCs (\eqn{a}) in \code{mT}).
+Numeric value/vector corresponding to HFSCs (\eqn{a}) in `mT`).
 }
 \description{
-Converting hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz})
-  into hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT}) according to following
-  relation:
+Converting hyperfine coupling constants (HFCCs, \eqn{A} values in `MHz`)
+  into hyperfine splitting constants (HFSCs, \eqn{a} values in `mT`).
+}
+\details{
+Conversion proceeds according to followign relation:
   \deqn{a = A\,h / (g\,\mu_{\text{B}})}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
   Both latter were obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively
@@ -27,7 +29,7 @@ Converting hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz})
 \examples{
 convert_A_MHz_2a(A.MHz = 16)
 convert_A_MHz_2a(20,2.0059)
-convert_A_MHz_2a(4,g = 2.00036)
+convert_A_MHz_2a(4,g.val = 2.00036)
 
 
 }
