@@ -405,7 +405,7 @@ A.guess.MHz <-
     function(x) {
       convert_a_mT_2A(
         a.mT = x,
-        g = tmpd.g.iso.spec)
+        g.val = tmpd.g.iso.spec)
     }
   )
 #
