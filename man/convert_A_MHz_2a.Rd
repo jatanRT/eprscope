@@ -10,7 +10,7 @@ convert_A_MHz_2a(A.MHz, g.val = 2.0023193)
 \item{A.MHz}{Numeric value/vector corresponding to HFCCs in `MHz`.}
 
 \item{g.val}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
-\strong{Default:} \code{g = 2.00231930} (corresponding to free electron).}
+\strong{Default:} \code{g.val = 2.00231930} (corresponding to free electron).}
 }
 \value{
 Numeric value/vector corresponding to HFSCs (\eqn{a}) in `mT`).

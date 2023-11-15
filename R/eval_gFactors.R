@@ -11,14 +11,14 @@
 #'   (millitesla) or `T` (tesla) as well as `GHz` or `Hz`, respectively.
 #'
 #'
-#' @param nu.val Numeric, microwave Frequency
-#' @param nu.unit Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}
-#' @param B.val Numeric, magnetic flux density
+#' @param nu.val Numeric, microwave Frequency.
+#' @param nu.unit Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}.
+#' @param B.val Numeric, magnetic flux density.
 #' @param B.unit Character string, magnetic flux density unit in `G` or `mT` or `T`, \strong{default}:
-#'   \code{B.unit = "mT"}
+#'   \code{B.unit = "mT"}.
 #'
 #'
-#' @return \emph{g}-Value from \eqn{(\nu h)/(\mu_{B} B)}. For variables see description above. Constants
+#' @return \emph{g}-Value from \eqn{(\nu h)/(\mu_{B} B)}. For variables see description above. Physical constants
 #'   are taken from \pkg{constants} package.
 #'
 #'
