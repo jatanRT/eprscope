@@ -75,6 +75,7 @@ Imports:
     Rdpack
 Suggests: 
     DT,
+    pso,
     grid,
     osfr,
     R.utils,

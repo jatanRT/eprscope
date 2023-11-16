@@ -33,6 +33,8 @@
 #' @param Nmax.evals Numeric, maximum naumber of function evalutions or iterations.
 #' @param tol.step Numeric, the smallest optimization step (relative change) to stop
 #'   the optimization or fitting procedure.
+#' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles).
+#' @param pswarm.diameter Numeric value corresponding to diameter of search space.
 #' @param single.integ tbc
 #' @param double.integ tbc can be also \code{NULL} in case of single integral spectral series input
 #' @param output.area.stat tbc
@@ -67,6 +69,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
                                     optim.params.upper = NULL,
                                     Nmax.evals = 2000,
                                     tol.step = 1e-6,
+                                    pswarm.size = NULL,
+                                    pswarm.diameter = NULL,
                                     single.integ = "single_IntegSim",
                                     double.integ = "double_IntegSim",
                                     output.area.stat = TRUE) {
@@ -132,44 +136,94 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   # ================== up to this point => everything OK ===================
   #
   ## parameterize and sum of all simulated spectral components (max = 6 !)
-  ## `x0 \equiv par`
-  fit_params_specs <- function(data,col.name.pattern,x0){
+  ## `x0 \equiv par` depending on optimization method =>
+  if (optim.method == "levenmarq" || optim.method == "pswarm"){
     #
-    ## select only simulation component columns (don't do it by `dplyr`!)
-    data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
+    fit_params_specs <- function(data,col.name.pattern,par){
+      #
+      ## select only simulation component columns (don't do it by `dplyr`!)
+      data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
+      #
+      ## create a sum for all columns/simulated spectra
+      ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
+      if (ncol(data) == 1){
+        summa <- par[1] + (par[2] * data[[1]])
+      }
+      if (ncol(data) == 2){
+        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]])
+      }
+      if (ncol(data) == 3){
+        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+          (par[4] * data[[3]])
+      }
+      if (ncol(data) == 4){
+        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+          (par[4] * data[[3]]) + (par[5] * data[[4]])
+      }
+      if (ncol(data) == 5){
+        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+          (par[4] * data[[3]]) + (par[5] * data[[4]]) + (par[6] * data[[5]])
+      }
+      if (ncol(data) == 6){
+        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+          (par[4] * data[[3]]) + (par[5] * data[[4]]) +
+          (par[6] * data[[5]]) + (par[7] * data[[6]])
+      }
+      #
+      return(summa)
+    }
     #
-    ## create a sum for all columns/simulated spectra
-    ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
-    if (ncol(data) == 1){
-      summa <- x0[1] + (x0[2] * data[[1]])
-    }
-    if (ncol(data) == 2){
-      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]])
-    }
-    if (ncol(data) == 3){
-      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-        (x0[4] * data[[3]])
-    }
-    if (ncol(data) == 4){
-      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-        (x0[4] * data[[3]]) + (x0[5] * data[[4]])
-    }
-    if (ncol(data) == 5){
-      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-        (x0[4] * data[[3]]) + (x0[5] * data[[4]]) + (x0[6] * data[[5]])
-    }
-    if (ncol(data) == 6){
-      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-        (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
-        (x0[6] * data[[5]]) + (x0[7] * data[[6]])
-    }
+  } else{
     #
-    return(summa)
+    fit_params_specs <- function(data,col.name.pattern,x0){
+      #
+      ## select only simulation component columns (don't do it by `dplyr`!)
+      data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
+      #
+      ## create a sum for all columns/simulated spectra
+      ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
+      if (ncol(data) == 1){
+        summa <- x0[1] + (x0[2] * data[[1]])
+      }
+      if (ncol(data) == 2){
+        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]])
+      }
+      if (ncol(data) == 3){
+        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+          (x0[4] * data[[3]])
+      }
+      if (ncol(data) == 4){
+        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+          (x0[4] * data[[3]]) + (x0[5] * data[[4]])
+      }
+      if (ncol(data) == 5){
+        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+          (x0[4] * data[[3]]) + (x0[5] * data[[4]]) + (x0[6] * data[[5]])
+      }
+      if (ncol(data) == 6){
+        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+          (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
+          (x0[6] * data[[5]]) + (x0[7] * data[[6]])
+      }
+      #
+      return(summa)
+    }
   }
   #
-  ## min. function for optimization incl. `fit_params_specs()`
-  min_residuals <- function(data,col.name.pattern,x0){
-    with(data,sum((data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,x0))^2))
+  ## min. function for optimization incl. `fit_params_specs()` based on `optim.method`
+  if (optim.method == "levenmarq"){
+    min_residuals <- function(data,col.name.pattern,par){
+      return(data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,par))
+    }
+  }
+  if (optim.method == "pswarm"){
+    min_residuals <- function(data,col.name.pattern,par){
+      with(data,sum((data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,par))^2))
+    }
+  } else{
+    min_residuals <- function(data,col.name.pattern,x0){
+      with(data,sum((data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,x0))^2))
+    }
   }
   #
   ## `var2nd.series` sequence (e.g. like time sequence)
@@ -199,15 +253,17 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   optimization.list <-
     lapply(seq(data.list),
            function(o)
-             optim_EPR_by_nloptr(method = optim.method,
-                                 x.0 = optim.params.init,
-                                 fn = min_residuals,
-                                 lower = optim.params.lower,
-                                 upper = optim.params.upper,
-                                 Nmax.evals = Nmax.evals,
-                                 tol.step = tol.step,
-                                 data = data.list[[o]],
-                                 col.name.pattern = "Sim.*_[[:upper:]]$")
+             optim_for_EPR_fitness(method = optim.method,
+                                   x.0 = optim.params.init,
+                                   fn = min_residuals,
+                                   lower = optim.params.lower,
+                                   upper = optim.params.upper,
+                                   Nmax.evals = Nmax.evals,
+                                   tol.step = tol.step,
+                                   pswarm.size = pswarm.size,
+                                   pswarm.diameter = pswarm.diameter,
+                                   data = data.list[[o]],
+                                   col.name.pattern = "Sim.*_[[:upper:]]$")
            )
   #
   ## data.list is not needed anymore
