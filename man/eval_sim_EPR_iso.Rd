@@ -145,7 +145,7 @@ utils::head(sim.luteol$df)
 Other Simulations and Optimization: 
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
-\code{\link{optim_EPR_by_nloptr}()},
+\code{\link{optim_for_EPR_fitness}()},
 \code{\link{quantify_EPR_Sim_series}()}
 }
 \concept{Simulations and Optimization}

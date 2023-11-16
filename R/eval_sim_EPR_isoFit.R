@@ -155,7 +155,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## function to parameterize simulation by arguments/parameters
-  ## based on `optim.method`
+  ## based on `optim.method` IT HAS TO BE EXPLICITELY EXPRESSED !! THEREFORE REPEATED
   if (optim.method == "levenmarq" || optim.method == "pswarm"){
     fit_sim_params <- function(data,
                                nucs.system,
@@ -310,6 +310,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## min. function for optimization incl. `fit_sim_params()` based on method
   if (optim.method == "levenmarq"){
+    ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
     min_residuals <- function(data,nucs.system,Intensity.sim,par){
       return(data[[Intensity.expr]] - fit_sim_params(data,nucs.system,Intensity.sim,par))
     }
@@ -527,8 +528,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     min.LSQ.sum <- optimization.list$deviance ## The min sum of the squared residual vector.
     # fn.min <- optimization.list$fvec ## The result of the last `fn` evaluation; that is, the residuals.
     N.evals <- optimization.list$niter ## The number of iterations/evaluations completed before termination.
-    N.converg <- optimization.list$rsstrace ## The residual sum of squares at each iteration.
-                                            ## Can be used to check the progress each iteration
+    N.converg <- sum(optimization.list$rsstrace) ## Total sum of square sums at each iteration.
   }
   if (optim.method == "pswarm"){
     min.LSQ.sum <- optimization.list$value ## The value of `fn` corresponding to best `par`.

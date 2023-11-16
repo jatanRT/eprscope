@@ -17,8 +17,10 @@ eval_sim_EPR_isoFit(
   optim.params.init,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
-  Nmax.evals = 2000,
+  Nmax.evals = 1000,
   tol.step = 1e-06,
+  pswarm.size = NULL,
+  pswarm.diameter = NULL,
   sim.check = TRUE
 )
 }
@@ -44,8 +46,8 @@ for EPR spectra.}
 \item{optim.method}{Character string ... TBC ...}
 
 \item{optim.params.init}{Numeric vector with estimated ... TBC ...1. element = g-value, 2. element = Gaussian
-linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant,5... elements hyperfine coupling
-constants in `MHz`}
+linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant, 5. element Intensity
+multiplication constant and 6, 7... elements hyperfine coupling constants in `MHz`}
 
 \item{optim.params.lower}{Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.}
 
@@ -54,6 +56,10 @@ constants in `MHz`}
 \item{Nmax.evals}{Numeric value corresp. to maximum number of iterations/evaluations.}
 
 \item{tol.step}{Numeric value describing the smallest optimization step (tolerance) to stop the optimization.}
+
+\item{pswarm.size}{Numeric value equal to particle swarm size (i. e. number of particles).}
+
+\item{pswarm.diameter}{Numeric value corresponding to diameter of search space.}
 
 \item{sim.check}{Logical, whether to return simple list with overlay plot and the best fitting parameters in a vector.}
 }
@@ -129,7 +135,7 @@ tmpd.test.sim.fit$N.converg ## "convergence" integer indicating successful (> 0)
 Other Simulations and Optimization: 
 \code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{eval_sim_EPR_iso}()},
-\code{\link{optim_EPR_by_nloptr}()},
+\code{\link{optim_for_EPR_fitness}()},
 \code{\link{quantify_EPR_Sim_series}()}
 }
 \concept{Simulations and Optimization}

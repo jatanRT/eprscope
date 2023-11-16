@@ -19,6 +19,8 @@ quantify_EPR_Sim_series(
   optim.params.upper = NULL,
   Nmax.evals = 2000,
   tol.step = 1e-06,
+  pswarm.size = NULL,
+  pswarm.diameter = NULL,
   single.integ = "single_IntegSim",
   double.integ = "double_IntegSim",
   output.area.stat = TRUE
@@ -64,6 +66,10 @@ of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
 \item{tol.step}{Numeric, the smallest optimization step (relative change) to stop
 the optimization or fitting procedure.}
 
+\item{pswarm.size}{Numeric value equal to particle swarm size (i. e. number of particles).}
+
+\item{pswarm.diameter}{Numeric value corresponding to diameter of search space.}
+
 \item{single.integ}{tbc}
 
 \item{double.integ}{tbc can be also \code{NULL} in case of single integral spectral series input}
@@ -89,6 +95,6 @@ Other Simulations and Optimization:
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{eval_sim_EPR_iso}()},
-\code{\link{optim_EPR_by_nloptr}()}
+\code{\link{optim_for_EPR_fitness}()}
 }
 \concept{Simulations and Optimization}

@@ -46,17 +46,17 @@
 #'
 #' @importFrom nloptr slsqp neldermead mma ccsaq sbplx isres crs2lm
 #' @importFrom minpack.lm nls.lm.control
-optim_EPR_by_nloptr <- function(method = "neldermead",
-                                x.0,
-                                fn,
-                                lower,
-                                upper,
-                                data,
-                                Nmax.evals = 1000,
-                                tol.step = 1e-6,
-                                pswarm.size = NULL,
-                                pswarm.diameter = NULL,
-                                ...) {
+optim_for_EPR_fitness <- function(method = "neldermead",
+                                  x.0,
+                                  fn,
+                                  lower,
+                                  upper,
+                                  data,
+                                  Nmax.evals = 1000,
+                                  tol.step = 1e-6,
+                                  pswarm.size = NULL,
+                                  pswarm.diameter = NULL,
+                                  ...) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -154,7 +154,7 @@ optim_EPR_by_nloptr <- function(method = "neldermead",
       upper = upper,
       nl.info = FALSE,
       data = data,
-      control = contrl.list.nlopt,
+      control = contrl.list.nloptr,
       ...
     ))
   }

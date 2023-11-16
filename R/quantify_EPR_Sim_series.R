@@ -212,6 +212,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   ## min. function for optimization incl. `fit_params_specs()` based on `optim.method`
   if (optim.method == "levenmarq"){
+    ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
     min_residuals <- function(data,col.name.pattern,par){
       return(data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,par))
     }
@@ -294,21 +295,38 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
            )
   #
   ## minimal value for the least-square optimization method
+  method.cond <- ifelse(optim.method == "levenmarq",TRUE,FALSE)
   optim.vec.min.val <-
-    sapply(seq_along(optimization.list),
-           function(l) optimization.list[[l]]$value
+    switch(2-method.cond,
+           sapply(seq_along(optimization.list),
+                  function(l) optimization.list[[l]]$deviance),
+           sapply(seq_along(optimization.list),
+                  function(l) optimization.list[[l]]$value)
            )
   #
   ## number of iterations/function evaluations
-  optim.vec.no.iter <-
-    sapply(seq_along(optimization.list),
-           function(l) optimization.list[[l]]$iter
-           )
+  if (optim.method == "levenmarq"){
+    optim.vec.no.iter <-
+      sapply(seq_along(optimization.list),
+             function(l) optimization.list[[l]]$niter)
+  }
+  if (optim.method == "pswarm"){
+    optim.vec.no.iter <-
+      sapply(seq_along(optimization.list),
+             function(l) optimization.list[[l]]$counts[1])
+  } else{
+    optim.vec.no.iter <-
+      sapply(seq_along(optimization.list),
+             function(l) optimization.list[[l]]$iter)
+  }
   #
-  ## convergence => integer code indicating successful completion (> 0)
+  ## convergence information
   optim.vec.no.converg <-
-    sapply(seq_along(optimization.list),
-                     function(l) optimization.list[[l]]$convergence
+    switch(2-method.cond,
+           sapply(seq_along(optimization.list),
+                  function(l) sum(optimization.list[[l]]$rsstrace)),
+           sapply(seq_along(optimization.list),
+                  function(l) optimization.list[[l]]$convergence)
            )
   #
   ## creating matrix (`mapply` is creating vectors) with modified ONLY 1st SIMULATION
