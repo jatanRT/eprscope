@@ -155,176 +155,81 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## function to parameterize simulation by arguments/parameters
-  ## based on `optim.method` IT HAS TO BE EXPLICITELY EXPRESSED !! THEREFORE REPEATED
-  if (optim.method == "levenmarq" || optim.method == "pswarm"){
-    fit_sim_params <- function(data,
-                               nucs.system,
-                               Intensity.sim,
-                               par){
+  ## based on `optim.method` and the corresponding argument
+  ## therefore => use `...` ellipsis one.
+  fit_sim_params <- function(data,
+                             nucs.system,
+                             Intensity.sim,
+                             ...){
+    #
+    ## definition of the 1st param. => g-value
+    g.var <- quote(...)[1]
+    ## definition of the additional params. like line-width
+    ## and GL-line content/contribution
+    gB.width.var <- quote(...)[2]
+    lB.width.var <- quote(...)[3]
+    #
+    ## A.vars based on `nucs.system`, such system (definition at the beginning)
+    ## must contain only nucleus character string and the corresponding number
+    ## of nuclei within the group because As will be varied
+    if (is.null(nucs.system)){
+      sim.fit.df <-
+        eval_sim_EPR_iso(g.iso = g.var,
+                         B.unit = B.unit,
+                         instrum.params = instrum.params,
+                         natur.abund = FALSE,
+                         nuclear.system = NULL,
+                         lineSpecs.form = lineSpecs.form,
+                         lineGL.DeltaB = list(gB.width.var,
+                                              lB.width.var),
+                         lineG.content = lineG.content,
+                         Intensity.sim = Intensity.sim)$df
       #
-      ## definition of the 1st param. => g-value
-      g.var <- par[1]
-      ## definition of the additional params. like line-width
-      ## and GL-line content/contribution
-      gB.width.var <- par[2]
-      lB.width.var <- par[3]
+    } else {
       #
-      ## A.vars based on `nucs.system`, such system (definition at the beginning)
-      ## must contain only nucleus character string and the corresponding number
-      ## of nuclei within the group because As will be varied
-      if (is.null(nucs.system)){
-        sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = FALSE,
-                           nuclear.system = NULL,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
-        #
-      } else {
-        #
-        ## Define the length of `nucs.system` similarly as in simple simulation
-        ## check if the list is nested (several groups) or simple (only one group)
-        nested_list <- any(sapply(nucs.system, is.list))
-        if (isFALSE(nested_list)){
-          ## redefinition of `nucs.system` list to calculate the spectra without
-          ## any additional conditions just by simple =>
-          nucs.system <- list(nucs.system)
-        } else{
-          nucs.system <- nucs.system
-        }
-        ## what is the length of the list (how many nuclear groups)
-        nucle_us_i <- sapply(1:length(nucs.system), function(e) nucs.system[[e]][[1]])
-        #
-        ## adding parameters As (corresp. to par[6,7...]) to nested list
-        ## the first par[1,2,3,4,5] is reserved for g,linewidths and intensity
-        ## `A.var` should be explicitly expressed by corresp. x0 elements
-        A.var <- par[6:(5+length(nucle_us_i))]
-        #
-        nucs.system.new <- c()
-        for (j in seq(nucs.system)) {
-          nucs.system.new[[j]] <- c(nucs.system[[j]],A.var[j])
-          nucs.system.new[[j]] <- as.list(nucs.system.new[[j]])
-        }
-        #
-        ## evaluating simulated intensity like before (`nucs.system = NULL`)
-        sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
-
-        #
+      ## Define the length of `nucs.system` similarly as in simple simulation
+      ## check if the list is nested (several groups) or simple (only one group)
+      nested_list <- any(sapply(nucs.system, is.list))
+      if (isFALSE(nested_list)){
+        ## redefinition of `nucs.system` list to calculate the spectra without
+        ## any additional conditions just by simple =>
+        nucs.system <- list(nucs.system)
+      } else{
+        nucs.system <- nucs.system
       }
-      data[[Intensity.sim]] <- par[4] + par[5] * sim.fit.df[[Intensity.sim]]
+      ## what is the length of the list (how many nuclear groups)
+      nucle_us_i <- sapply(1:length(nucs.system), function(e) nucs.system[[e]][[1]])
       #
-      return(data[[Intensity.sim]])
+      ## adding parameters As (corresp. to par[6,7...]) to nested list
+      ## the first par[1,2,3,4,5] is reserved for g,linewidths and intensity
+      ## `A.var` should be explicitly expressed by corresp. x0 elements
+      A.var <- quote(...)[6:(5+length(nucle_us_i))]
       #
-    }
-  } else {
-    fit_sim_params <- function(data,
-                               nucs.system,
-                               Intensity.sim,
-                               x0){
-      #
-      ## definition of the 1st param. => g-value
-      g.var <- x0[1]
-      ## definition of the additional params. like line-width
-      ## and GL-line content/contribution
-      gB.width.var <- x0[2]
-      lB.width.var <- x0[3]
-      #
-      ## A.vars based on `nucs.system`, such system (definition at the beginning)
-      ## must contain only nucleus character string and the corresponding number
-      ## of nuclei within the group because As will be varied
-      if (is.null(nucs.system)){
-        sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = FALSE,
-                           nuclear.system = NULL,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
-        #
-      } else {
-        #
-        ## Define the length of `nucs.system` similarly as in simple simulation
-        ## check if the list is nested (several groups) or simple (only one group)
-        nested_list <- any(sapply(nucs.system, is.list))
-        if (isFALSE(nested_list)){
-          ## redefinition of `nucs.system` list to calculate the spectra without
-          ## any additional conditions just by simple =>
-          nucs.system <- list(nucs.system)
-        } else{
-          nucs.system <- nucs.system
-        }
-        ## what is the length of the list (how many nuclear groups)
-        nucle_us_i <- sapply(1:length(nucs.system), function(e) nucs.system[[e]][[1]])
-        #
-        ## adding parameters As (corresp. to x0[6,7...]) to nested list
-        ## the first x0[1,2,3,4,5] is reserved for g,linewidths and intensity
-        ## `A.var` should be explicitly expressed by corresp. x0 elements
-        A.var <- x0[6:(5+length(nucle_us_i))]
-        #
-        nucs.system.new <- c()
-        for (j in seq(nucs.system)) {
-          nucs.system.new[[j]] <- c(nucs.system[[j]],A.var[j])
-          nucs.system.new[[j]] <- as.list(nucs.system.new[[j]])
-        }
-        #
-        ## evaluating simulated intensity like before (`nucs.system = NULL`)
-        sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
-
-        #
+      nucs.system.new <- c()
+      for (j in seq(nucs.system)) {
+        nucs.system.new[[j]] <- c(nucs.system[[j]],A.var[j])
+        nucs.system.new[[j]] <- as.list(nucs.system.new[[j]])
       }
-      data[[Intensity.sim]] <- x0[4] + x0[5] * sim.fit.df[[Intensity.sim]]
       #
-      return(data[[Intensity.sim]])
+      ## evaluating simulated intensity like before (`nucs.system = NULL`)
+      sim.fit.df <-
+        eval_sim_EPR_iso(g.iso = g.var,
+                         B.unit = B.unit,
+                         instrum.params = instrum.params,
+                         natur.abund = TRUE,
+                         nuclear.system = nucs.system.new,
+                         lineSpecs.form = lineSpecs.form,
+                         lineGL.DeltaB = list(gB.width.var,
+                                              lB.width.var),
+                         lineG.content = lineG.content,
+                         Intensity.sim = Intensity.sim)$df
+
       #
     }
-  }
-  #
-  ## min. function for optimization incl. `fit_sim_params()` based on method
-  if (optim.method == "levenmarq"){
-    ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
-    min_residuals <- function(data,nucs.system,Intensity.sim,par){
-      return(data[[Intensity.expr]] - fit_sim_params(data,nucs.system,Intensity.sim,par))
-    }
-  }
-  if (optim.method == "pswarm"){
-    min_residuals <- function(data,nucs.system,Intensity.sim,par){
-      with(data,sum((data[[Intensity.expr]] -
-                       fit_sim_params(data,nucs.system,Intensity.sim,par))^2))
-    }
-  } else{
-    min_residuals <- function(data,nucs.system,Intensity.sim,x0){
-      with(data,sum((data[[Intensity.expr]] -
-                       fit_sim_params(data,nucs.system,Intensity.sim,x0))^2))
-    }
+    data[[Intensity.sim]] <- quote(...)[4] + quote(...)[5] * sim.fit.df[[Intensity.sim]]
+    #
+    return(data[[Intensity.sim]])
+    #
   }
   #
   ## initial parameter guesses for the optimization and definition
@@ -358,40 +263,99 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   optim.params.upper <- optim.params.upper %>%
     `if`(is.null(optim.params.upper), upper.limits, .)
   #
+  ## "general" function for optimization because it depends
+  ## on method (`method`) and function (`fun`) and initial params (`x.0`)
+  optim_fn <- function(fun,method,x.0){
+    optim.list <- optim_for_EPR_fitness(method = method,
+                                        x.0 = x.0,
+                                        fn = fun,
+                                        lower = optim.params.lower,
+                                        upper = optim.params.upper,
+                                        data = data.spectr.expr,
+                                        nucs.system = nuclear.system.noA,
+                                        Intensity.sim = Intensity.sim,
+                                        Nmax.evals = Nmax.evals,
+                                        tol.step = tol.step,
+                                        pswarm.size = pswarm.size,
+                                        pswarm.diameter = pswarm.diameter)
+    #
+    return(optim.list)
+  }
+  #
   ## own optimization which can be performed also with two consecutive
   ## methods depending on the `optim.method` vector length
   if (length(optim.method) >= 1){
-    optimization.list <- optim_for_EPR_fitness(method = optim.method[1],
-                                               x.0 = optim.params.init,
-                                               fn = min_residuals,
-                                               lower = optim.params.lower,
-                                               upper = optim.params.upper,
-                                               data = data.spectr.expr,
-                                               nucs.system = nuclear.system.noA,
-                                               Intensity.sim = Intensity.sim,
-                                               Nmax.evals = Nmax.evals,
-                                               tol.step = tol.step,
-                                               pswarm.size = pswarm.size,
-                                               pswarm.diameter = pswarm.diameter)
+    ## min. function for optimization incl. `fit_sim_params()` based on method
+    ## + optimization
+    if (optim.method == "levenmarq"){
+      ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
+      min_residuals_lm <- function(data,nucs.system,Intensity.sim,par){
+        return(data[[Intensity.expr]] - fit_sim_params(data,nucs.system,Intensity.sim,par))
+      }
+      #
+      optimization.list <- optim_fn(fun = min_residuals_lm,
+                                    method = optim.method[1],
+                                    x.0 = optim.params.init)
+    }
+    if (optim.method == "pswarm"){
+      min_residuals_ps <- function(data,nucs.system,Intensity.sim,par){
+        with(data,sum((data[[Intensity.expr]] -
+                         fit_sim_params(data,nucs.system,Intensity.sim,par))^2))
+      }
+      #
+      optimization.list <- optim_fn(fun = min_residuals_ps,
+                                    method = optim.method[1],
+                                    x.0 = optim.params.init)
+    } else {
+      min_residuals_nl <- function(data,nucs.system,Intensity.sim,x0){
+        with(data,sum((data[[Intensity.expr]] -
+                         fit_sim_params(data,nucs.system,Intensity.sim,x0))^2))
+      }
+      #
+      optimization.list <- optim_fn(fun = min_residuals_nl,
+                                    method = optim.method[1],
+                                    x.0 = optim.params.init)
+    }
     #
     ## best parameters
     best.fit.params <- optimization.list$par
     #
+    ## Take these params. into 2nd optimization cycle
+    ## or finish =>
+    #
   }
   if (length(optim.method) == 2){
-    optimization.list <-
-      optim_for_EPR_fitness(method = optim.method[2],
-                            x.0 = best.fit.params, ## the best values from the first optim.
-                            fn = min_residuals,
-                            lower = optim.params.lower,
-                            upper = optim.params.upper,
-                            data = data.spectr.expr,
-                            nucs.system = nuclear.system.noA,
-                            Intensity.sim = Intensity.sim,
-                            Nmax.evals = Nmax.evals,
-                            tol.step = tol.step,
-                            pswarm.size = pswarm.size,
-                            pswarm.diameter = pswarm.diameter)
+    ## min. function for optimization incl. `fit_sim_params()` based on method
+    ## + optimization
+    if (optim.method == "levenmarq"){
+      ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
+      min_residuals_lm <- function(data,nucs.system,Intensity.sim,par){
+        return(data[[Intensity.expr]] - fit_sim_params(data,nucs.system,Intensity.sim,par))
+      }
+      #
+      optimization.list <- optim_fn(fun = min_residuals_lm,
+                                    method = optim.method[2],
+                                    x.0 = best.fit.params)
+    }
+    if (optim.method == "pswarm"){
+      min_residuals_ps <- function(data,nucs.system,Intensity.sim,par){
+        with(data,sum((data[[Intensity.expr]] -
+                         fit_sim_params(data,nucs.system,Intensity.sim,par))^2))
+      }
+      #
+      optimization.list <- optim_fn(fun = min_residuals_ps,
+                                    method = optim.method[2],
+                                    x.0 = best.fit.params)
+    } else {
+      min_residuals_nl <- function(data,nucs.system,Intensity.sim,x0){
+        with(data,sum((data[[Intensity.expr]] -
+                         fit_sim_params(data,nucs.system,Intensity.sim,x0))^2))
+      }
+      #
+      optimization.list <- optim_fn(fun = min_residuals_nl,
+                                    method = optim.method[2],
+                                    x.0 = best.fit.params)
+    }
     #
     ## best parameters
     best.fit.params <- optimization.list$par
@@ -427,6 +391,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   # spectrum data
   data.spectr.expr[[Intensity.sim]] <-
     best.fit.params[4] + best.fit.params[5] * best.fit.df[[Intensity.sim]]
+  #
+  ## ======================== DATA & PLOTTING =============================
   #
   ## final data frame and rename columns
   data.sim.expr <- data.spectr.expr %>%
@@ -521,33 +487,42 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       theme(legend.text = element_text(size = 13))
   }
   #
-  ## ============== BASIC OPTIMIZATION INFORMATION/STATISTICS =================================
+  ## ==================== BASIC OPTIMIZATION INFORMATION/STATISTICS ======================
   #
   ## final list components depending on method
   if (optim.method == "levenmarq"){
-    min.LSQ.sum <- optimization.list$deviance ## The min sum of the squared residual vector.
-    # fn.min <- optimization.list$fvec ## The result of the last `fn` evaluation; that is, the residuals.
-    N.evals <- optimization.list$niter ## The number of iterations/evaluations completed before termination.
-    N.converg <- sum(optimization.list$rsstrace) ## Total sum of square sums at each iteration.
+    min.LSQ.sum <-
+      optimization.list$deviance ## The min sum of the squared residual vector.
+    # fn.min <- optimization.list$fvec ## The result of the last `fn` evaluation; i.e. the residuals.
+    N.evals <-
+      optimization.list$niter ## The number of iterations/evaluations completed before termination.
+    N.converg <-
+      sum(optimization.list$rsstrace) ## Total sum of square sums at each iteration.
   }
   if (optim.method == "pswarm"){
-    min.LSQ.sum <- optimization.list$value ## The value of `fn` corresponding to best `par`.
-                                           ## because `fn` is sum of squares
-    N.evals <- optimization.list$counts ## A three-element vector containing the number of function
-                                        ## evaluations, the number of iterations, and the number of restarts.
-    N.converg <- optimization.list$convergence ## An integer code. `0` indicates that the algorithm
-                                               ## terminated by reaching the absolute tolerance; otherwise:
-                                               ## `1` Maximal number of function evaluations reached.
-                                               ## `2` Maximal number of iterations reached.
-                                               ## `3` Maximal number of restarts reached.
-                                               ## `4` Maximal number of iterations without improvement reached.
+    min.LSQ.sum <-
+      optimization.list$value ## The value of `fn` corresponding to best `par`.
+                              ## because `fn` is sum of squares
+    N.evals <-
+      optimization.list$counts ## A three-element vector containing the number of function
+                               ## evaluations, the number of iterations, and the number of restarts.
+    N.converg <-
+      optimization.list$convergence ## An integer code. `0` indicates that the algorithm
+                                    ## terminated by reaching the absolute tolerance; otherwise:
+                                    ## `1` Maximal number of function evaluations reached.
+                                    ## `2` Maximal number of iterations reached.
+                                    ## `3` Maximal number of restarts reached.
+                                    ## `4` Maximal number of iterations without improvement reached.
 
   } else{
-    min.LSQ.sum <- optimization.list$value ## the function value corresponding to `par`.
-                                           ## because function is sum of squares
-    N.evals <- optimization.list$iter ## number of (outer) iterations, see `Nmax.evals`.
-    N.converg <- optimization.list$convergence ## integer code indicating successful completion (> 0)
-                                               ## or a possible error number (< 0).
+    min.LSQ.sum <-
+      optimization.list$value ## the function value corresponding to `par`.
+                              ## because function is sum of squares
+    N.evals <-
+      optimization.list$iter ## number of (outer) iterations, see `Nmax.evals`.
+    N.converg <-
+      optimization.list$convergence ## integer code indicating successful completion (> 0)
+                                    ## or a possible error number (< 0).
   }
   #
   ## ================================= RESULTS =============================

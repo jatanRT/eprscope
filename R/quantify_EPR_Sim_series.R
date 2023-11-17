@@ -137,77 +137,39 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   ## parameterize and sum of all simulated spectral components (max = 6 !)
   ## `x0 \equiv par` depending on optimization method =>
-  if (optim.method == "levenmarq" || optim.method == "pswarm"){
+  fit_params_specs <- function(data,col.name.pattern,...){
     #
-    fit_params_specs <- function(data,col.name.pattern,par){
-      #
-      ## select only simulation component columns (don't do it by `dplyr`!)
-      data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
-      #
-      ## create a sum for all columns/simulated spectra
-      ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
-      if (ncol(data) == 1){
-        summa <- par[1] + (par[2] * data[[1]])
-      }
-      if (ncol(data) == 2){
-        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]])
-      }
-      if (ncol(data) == 3){
-        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
-          (par[4] * data[[3]])
-      }
-      if (ncol(data) == 4){
-        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
-          (par[4] * data[[3]]) + (par[5] * data[[4]])
-      }
-      if (ncol(data) == 5){
-        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
-          (par[4] * data[[3]]) + (par[5] * data[[4]]) + (par[6] * data[[5]])
-      }
-      if (ncol(data) == 6){
-        summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
-          (par[4] * data[[3]]) + (par[5] * data[[4]]) +
-          (par[6] * data[[5]]) + (par[7] * data[[6]])
-      }
-      #
-      return(summa)
+    ## select only simulation component columns (don't do it by `dplyr`!)
+    data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
+    #
+    ## create a sum for all columns/simulated spectra
+    ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
+    if (ncol(data) == 1){
+      summa <- quote(...)[1] + (quote(...)[2] * data[[1]])
+    }
+    if (ncol(data) == 2){
+      summa <- quote(...)[1] + (quote(...)[2] * data[[1]]) + (quote(...)[3] * data[[2]])
+    }
+    if (ncol(data) == 3){
+      summa <- quote(...)[1] + (quote(...)[2] * data[[1]]) + (quote(...)[3] * data[[2]]) +
+        (quote(...)[4] * data[[3]])
+    }
+    if (ncol(data) == 4){
+      summa <- quote(...)[1] + (quote(...)[2] * data[[1]]) + (quote(...)[3] * data[[2]]) +
+        (quote(...)[4] * data[[3]]) + (quote(...)[5] * data[[4]])
+    }
+    if (ncol(data) == 5){
+      summa <- quote(...)[1] + (quote(...)[2] * data[[1]]) + (quote(...)[3] * data[[2]]) +
+        (quote(...)[4] * data[[3]]) + (quote(...)[5] * data[[4]]) +
+        (quote(...)[6] * data[[5]])
+    }
+    if (ncol(data) == 6){
+      summa <- quote(...)[1] + (quote(...)[2] * data[[1]]) + (quote(...)[3] * data[[2]]) +
+        (quote(...)[4] * data[[3]]) + (quote(...)[5] * data[[4]]) +
+        (quote(...)[6] * data[[5]]) + (quote(...)[7] * data[[6]])
     }
     #
-  } else{
-    #
-    fit_params_specs <- function(data,col.name.pattern,x0){
-      #
-      ## select only simulation component columns (don't do it by `dplyr`!)
-      data <- data[,grep(col.name.pattern,colnames(data),value = TRUE)]
-      #
-      ## create a sum for all columns/simulated spectra
-      ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
-      if (ncol(data) == 1){
-        summa <- x0[1] + (x0[2] * data[[1]])
-      }
-      if (ncol(data) == 2){
-        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]])
-      }
-      if (ncol(data) == 3){
-        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-          (x0[4] * data[[3]])
-      }
-      if (ncol(data) == 4){
-        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-          (x0[4] * data[[3]]) + (x0[5] * data[[4]])
-      }
-      if (ncol(data) == 5){
-        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-          (x0[4] * data[[3]]) + (x0[5] * data[[4]]) + (x0[6] * data[[5]])
-      }
-      if (ncol(data) == 6){
-        summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
-          (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
-          (x0[6] * data[[5]]) + (x0[7] * data[[6]])
-      }
-      #
-      return(summa)
-    }
+    return(summa)
   }
   #
   ## min. function for optimization incl. `fit_params_specs()` based on `optim.method`
