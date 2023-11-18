@@ -52,8 +52,8 @@ optim_for_EPR_fitness <- function(method = "neldermead",
                                   lower,
                                   upper,
                                   data,
-                                  Nmax.evals = 1000,
-                                  tol.step = 1e-6,
+                                  Nmax.evals = 1024,
+                                  tol.step = 5e-7,
                                   pswarm.size = NULL,
                                   pswarm.diameter = NULL,
                                   ...) {
@@ -84,38 +84,6 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ## "Nelder-Mead" simplex method
   if (method == "neldermead") {
     return(nloptr::neldermead(
-      x0 = x.0,
-      fn = fn,
-      lower = lower,
-      upper = upper,
-      nl.info = FALSE,
-      data = data,
-      control = contrl.list.nloptr,
-      ...
-    ))
-  }
-  #
-  ## Globally-convergent method-of-moving-asymptotes
-  ## (MMA) algorithm
-  if (method == "mma") {
-    return(nloptr::mma(
-      x0 = x.0,
-      fn = fn,
-      lower = lower,
-      upper = upper,
-      nl.info = FALSE,
-      data = data,
-      control = contrl.list.nloptr,
-      ...
-    ))
-  }
-  #
-  ## This is a variant of CCSA ("conservative convex separable approximation")
-  ## which, instead of constructing local MMA approximations, constructs simple
-  ## quadratic approximations (or rather, affine approximations plus
-  ## a quadratic penalty term to stay conservative)
-  if (method == "ccsaq") {
-    return(nloptr::ccsaq(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -159,25 +127,6 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     ))
   }
   #
-  ## The Improved Stochastic Ranking Evolution Strategy (ISRES)
-  ## algorithm for nonlinearly constrained global optimization
-  ## (or at least semi-global: although it has heuristics
-  ## to escape local optima.
-  if (method == "isres") {
-    return(nloptr::isres(
-      x0 = x.0,
-      fn = fn,
-      lower = lower,
-      upper = upper,
-      nl.info = FALSE,
-      data = data,
-      maxeval = Nmax.evals,
-      pop.size = 20 * (length(x.0) + 1),
-      xtol_rel = tol.step,
-      ...
-    ))
-  }
-  #
   ## Levenberg-Marquardt algorithm
   if (method == "levenmarq"){
     return(minpack.lm::nls.lm(
@@ -210,8 +159,8 @@ optim_for_EPR_fitness <- function(method = "neldermead",
       list(maxit = Nmax.evals, ## The maximum number of iterations.
            maxf = Nmax.evals, ## The maximum number of function evaluations.
            reltol = tol.step, ## The tolerance for restarting (see arguments above).
-           max.restart = 500, ## The maximum number of restarts.
-           maxit.stagnate = 500, ## The maximum number of iterations without improvement.
+           max.restart = 512, ## The maximum number of restarts.
+           maxit.stagnate = 512, ## The maximum number of iterations without improvement.
            s = pswarm.size, ## The swarm size.
            d = pswarm.diameter) ## The diameter of the search space.
     ## + maybe in the future add average percentage of informants for each particle (`p`)

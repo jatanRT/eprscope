@@ -17,8 +17,8 @@ eval_sim_EPR_isoFit(
   optim.params.init,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
-  Nmax.evals = 1000,
-  tol.step = 1e-06,
+  Nmax.evals = 1024,
+  tol.step = 5e-07,
   pswarm.size = NULL,
   pswarm.diameter = NULL,
   sim.check = TRUE
