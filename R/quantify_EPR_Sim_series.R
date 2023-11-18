@@ -172,23 +172,6 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     return(summa)
   }
   #
-  ## min. function for optimization incl. `fit_params_specs()` based on `optim.method`
-  if (optim.method == "levenmarq"){
-    ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
-    min_residuals <- function(data,col.name.pattern,par){
-      return(data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,par))
-    }
-  }
-  if (optim.method == "pswarm"){
-    min_residuals <- function(data,col.name.pattern,par){
-      with(data,sum((data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,par))^2))
-    }
-  } else{
-    min_residuals <- function(data,col.name.pattern,x0){
-      with(data,sum((data[[Intensity.expr]] - fit_params_specs(data,col.name.pattern,x0))^2))
-    }
-  }
-  #
   ## `var2nd.series` sequence (e.g. like time sequence)
   var2nd_df <- data.specs.sim %>%
     dplyr::group_by(.data[[var2nd.series]]) %>%
@@ -212,22 +195,63 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   optim.params.upper <- optim.params.upper %>%
     `if`(is.null(optim.params.upper), upper.limits, .)
   #
-  ## optimization list by `data.list`
-  optimization.list <-
-    lapply(seq(data.list),
-           function(o)
-             optim_for_EPR_fitness(method = optim.method,
-                                   x.0 = optim.params.init,
-                                   fn = min_residuals,
-                                   lower = optim.params.lower,
-                                   upper = optim.params.upper,
-                                   Nmax.evals = Nmax.evals,
-                                   tol.step = tol.step,
-                                   pswarm.size = pswarm.size,
-                                   pswarm.diameter = pswarm.diameter,
-                                   data = data.list[[o]],
-                                   col.name.pattern = "Sim.*_[[:upper:]]$")
-           )
+  ## "general" function for optimization because it depends
+  ## on method (`method`) and function (`fun`) and initial params (`x.0`)
+  optim_fn <- function(fun,method,data){
+    optim.list <- optim_for_EPR_fitness(method = method,
+                                        x.0 = optim.params.init,
+                                        fn = fun,
+                                        lower = optim.params.lower,
+                                        upper = optim.params.upper,
+                                        Nmax.evals = Nmax.evals,
+                                        tol.step = tol.step,
+                                        pswarm.size = pswarm.size,
+                                        pswarm.diameter = pswarm.diameter,
+                                        data = data,
+                                        col.name.pattern = "Sim.*_[[:upper:]]$")
+    #
+    return(optim.list)
+  }
+  #
+  ## optimization list by `data.list` methods depending on the `optim.method`
+  # min. function for optimization incl. `fit_params_specs()` based on method
+  ## + optimization
+  if (optim.method == "levenmarq"){
+    ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
+    min_residuals_lm <- function(data,col.name.pattern,par){
+      return(data[[Intensity.expr]] -
+               fit_params_specs(data,col.name.pattern,par))
+    }
+    #
+    optimization.list <-
+      lapply(seq(data.list),
+             function(o) optim_fn(method = optim.method,
+                                  data = data.list[[o]],
+                                  fun = min_residuals_lm))
+  }
+  if (optim.method == "pswarm"){
+    min_residuals_ps <- function(data,col.name.pattern,par){
+      with(data,sum((data[[Intensity.expr]] -
+                       fit_params_specs(data,col.name.pattern,par))^2))
+    }
+    #
+    optimization.list <-
+      lapply(seq(data.list),
+             function(o) optim_fn(method = optim.method,
+                                  data = data.list[[o]],
+                                  fun = min_residuals_ps))
+  } else {
+    min_residuals_nl <- function(data,col.name.pattern,x0){
+      with(data,sum((data[[Intensity.expr]] -
+                       fit_params_specs(data,col.name.pattern,x0))^2))
+    }
+    #
+    optimization.list <-
+      lapply(seq(data.list),
+             function(o) optim_fn(method = optim.method,
+                                  data = data.list[[o]],
+                                  fun = min_residuals_nl))
+  }
   #
   ## data.list is not needed anymore
   rm(data.list)
