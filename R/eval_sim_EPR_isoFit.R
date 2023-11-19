@@ -383,30 +383,32 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## own optimization which can be performed also with two consecutive
   ## methods depending on the `optim.method` vector length
+  optimization.list <- c()
+  best.fit.params <- c()
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       #
-      optimization.list <- optim_fn(fun = min_residuals_lm,
+      optimization.list[[m]] <- optim_fn(fun = min_residuals_lm,
                                     method = "levenmarq",
                                     x.0 = optim.params.init)
     }
     if (optim.method[m] == "pswarm"){
       #
-      optimization.list <- optim_fn(fun = min_residuals_ps,
+      optimization.list[[m]] <- optim_fn(fun = min_residuals_ps,
                                     method = "pswarm",
                                     x.0 = optim.params.init)
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") {
       #
-      optimization.list <- optim_fn(fun = min_residuals_nl,
+      optimization.list[[m]] <- optim_fn(fun = min_residuals_nl,
                                     method = optim.method[m],
                                     x.0 = optim.params.init)
     }
     #
     ## best parameters
-    best.fit.params <- optimization.list$par
-    optim.params.init <- best.fit.params
+    best.fit.params[[m]] <- optimization.list[[m]]$par
+    optim.params.init <- best.fit.params[[m]]
     #
   }
   # if (length(optim.method) >= 1){
@@ -468,11 +470,15 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #   #
   # }
   #
+  #
+  ## The best system is the last one from the `best.fit.params` =>
+  ## therefore it correspond to `best.fit.params[[length(optim.method)]]`
+  #
   ## "best" (i.e. including best As) nuclear system
   if (is.null(nuclear.system.noA)){
     nucs.system.best <- NULL
   } else{
-    A.best <- best.fit.params[6:(5+length(nuclear.system.noA))]
+    A.best <- best.fit.params[[length(optim.method)]][6:(5+length(nuclear.system.noA))]
     A.best <- round(A.best,digits = 3)
     nucs.system.best <- c()
     for (j in seq(nuclear.system.noA)) {
@@ -482,21 +488,22 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## best simulated spectrum data frame
-  best.fit.df <- eval_sim_EPR_iso(g.iso = best.fit.params[1],
+  best.fit.df <- eval_sim_EPR_iso(g.iso = best.fit.params[[length(optim.method)]][1],
                                   B.unit = B.unit,
                                   instrum.params = instrum.params,
                                   natur.abund = TRUE,
                                   nuclear.system = nucs.system.best,
                                   lineSpecs.form = lineSpecs.form,
-                                  lineGL.DeltaB = list(best.fit.params[2],
-                                                       best.fit.params[3]),
+                                  lineGL.DeltaB = list(best.fit.params[[length(optim.method)]][2],
+                                                       best.fit.params[[length(optim.method)]][3]),
                                   lineG.content = lineG.content,
                                   Intensity.sim = Intensity.sim)$df
   #
   ## best simulated Intensity and add the `Intensity.sim` to experimental
   # spectrum data
   data.spectr.expr[[Intensity.sim]] <-
-    best.fit.params[4] + best.fit.params[5] * best.fit.df[[Intensity.sim]]
+    best.fit.params[[length(optim.method)]][4] +
+    best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]
   #
   ## ======================== DATA & PLOTTING =============================
   #
@@ -596,39 +603,44 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## ==================== BASIC OPTIMIZATION INFORMATION/STATISTICS ======================
   #
   ## final list components depending on method
-  if (optim.method == "levenmarq"){
-    min.LSQ.sum <-
-      optimization.list$deviance ## The min sum of the squared residual vector.
-    # fn.min <- optimization.list$fvec ## The result of the last `fn` evaluation; i.e. the residuals.
-    N.evals <-
-      optimization.list$niter ## The number of iterations/evaluations completed before termination.
-    N.converg <-
-      sum(optimization.list$rsstrace) ## Total sum of square sums at each iteration.
-  }
-  if (optim.method == "pswarm"){
-    min.LSQ.sum <-
-      optimization.list$value ## The value of `fn` corresponding to best `par`.
-                              ## because `fn` is sum of squares
-    N.evals <-
-      optimization.list$counts ## A three-element vector containing the number of function
-                               ## evaluations, the number of iterations, and the number of restarts.
-    N.converg <-
-      optimization.list$convergence ## An integer code. `0` indicates that the algorithm
-                                    ## terminated by reaching the absolute tolerance; otherwise:
-                                    ## `1` Maximal number of function evaluations reached.
-                                    ## `2` Maximal number of iterations reached.
-                                    ## `3` Maximal number of restarts reached.
-                                    ## `4` Maximal number of iterations without improvement reached.
+  min.LSQ.sum <- c()
+  N.evals <- c()
+  N.converg <- c()
+  for(m in seq(optim.method)){
+    if (optim.method[m] == "levenmarq"){
+      min.LSQ.sum[[m]] <-
+        optimization.list[[m]]$deviance ## The min sum of the squared residual vector.
+      # fn.min <- optimization.list$fvec ## The result of the last `fn` evaluation; i.e. the residuals.
+      N.evals[[m]] <-
+        optimization.list[[m]]$niter ## The number of iterations/evaluations completed before termination.
+      N.converg[[m]] <-
+        sum(optimization.list[[m]]$rsstrace) ## Total sum of square sums at each iteration.
+    }
+    if (optim.method[m] == "pswarm"){
+      min.LSQ.sum[[m]] <-
+        optimization.list[[m]]$value ## The value of `fn` corresponding to best `par`.
+                                     ## because `fn` is sum of squares
+      N.evals[[m]] <-
+        optimization.list[[m]]$counts ## A three-element vector containing the number of function
+                                      ## evals., the number of iterations, and the number of restarts.
+      N.converg[[m]] <-
+        optimization.list[[m]]$convergence ## An integer code. `0` indicates that the algorithm
+                                           ## terminated by reaching the absolute tolerance; otherwise:
+                                           ## `1` Maximal number of function evaluations reached.
+                                           ## `2` Maximal number of iterations reached.
+                                           ## `3` Maximal number of restarts reached.
+                                           ## `4` Maximal number of iterations without improvement reached.
 
-  } else{
-    min.LSQ.sum <-
-      optimization.list$value ## the function value corresponding to `par`.
-                              ## because function is sum of squares
-    N.evals <-
-      optimization.list$iter ## number of (outer) iterations, see `Nmax.evals`.
-    N.converg <-
-      optimization.list$convergence ## integer code indicating successful completion (> 0)
-                                    ## or a possible error number (< 0).
+    } else{
+      min.LSQ.sum[[m]] <-
+        optimization.list[[m]]$value ## the function value corresponding to `par`.
+                                     ## because function is sum of squares
+      N.evals[[m]] <-
+        optimization.list[[m]]$iter ## number of (outer) iterations, see `Nmax.evals`.
+      N.converg[[m]] <-
+        optimization.list[[m]]$convergence ## integer code indicating successful completion (> 0)
+                                           ## or a possible error number (< 0).
+    }
   }
   #
   ## ================================= RESULTS =============================
@@ -636,9 +648,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## switching between final list components
   result.list <- switch(2-sim.check,
                         list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params),
+                             best.fit.params = best.fit.params[[length(optim.method)]]),
                         list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params,
+                             best.fit.params = best.fit.params[[length(optim.method)]],
                              df = data.sim.expr,
                              sum.LSQ.min = min.LSQ.sum,
                              N.evals = N.evals,
