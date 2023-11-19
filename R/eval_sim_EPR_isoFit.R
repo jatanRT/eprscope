@@ -307,29 +307,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     return(data[[Intensity.sim]])
     #
   }
-  ## LSQ or DIFF. FUNCTIONS
-  if (optim.method == "levenmarq"){
-    #
-    ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
-    min_residuals_lm <- function(data,nucs.system,Intensity.sim,par){
-      return(data[[Intensity.expr]] -
-               fit_sim_params_par(data,nucs.system,Intensity.sim,par))
-    }
-  }
-  if (optim.method == "pswarm"){
-    #
-    min_residuals_ps <- function(data,nucs.system,Intensity.sim,par){
-      with(data,sum((data[[Intensity.expr]] -
-                       fit_sim_params_par(data,nucs.system,Intensity.sim,par))^2))
-    }
-  } else {
-    #
-    min_residuals_nl <- function(data,nucs.system,Intensity.sim,x0){
-      with(data,sum((data[[Intensity.expr]] -
-                       fit_sim_params_x0(data,nucs.system,Intensity.sim,x0))^2))
-    }
-  }
-  #
   #
   ## initial parameter guesses for the optimization and definition
   lower.limits <- c(optim.params.init[1] - 0.0005,
@@ -387,12 +364,23 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   best.fit.params <- c()
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
+      ## LSQ or DIFF. FUNCTIONS
+      ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
+      min_residuals_lm <- function(data,nucs.system,Intensity.sim,par){
+        return(data[[Intensity.expr]] -
+                 fit_sim_params_par(data,nucs.system,Intensity.sim,par))
+      }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_lm,
                                     method = "levenmarq",
                                     x.0 = optim.params.init)
     }
     if (optim.method[m] == "pswarm"){
+      ## LSQ FUNCTION
+      min_residuals_ps <- function(data,nucs.system,Intensity.sim,par){
+        with(data,sum((data[[Intensity.expr]] -
+                         fit_sim_params_par(data,nucs.system,Intensity.sim,par))^2))
+      }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_ps,
                                     method = "pswarm",
@@ -400,6 +388,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") {
+      ## LSQ FUNCTION
+      min_residuals_nl <- function(data,nucs.system,Intensity.sim,x0){
+        with(data,sum((data[[Intensity.expr]] -
+                         fit_sim_params_x0(data,nucs.system,Intensity.sim,x0))^2))
+      }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_nl,
                                     method = optim.method[m],
