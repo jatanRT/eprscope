@@ -90,8 +90,11 @@
 #' tmpd.test.sim.fit$df ## data frame in wide-format with sim., expr. + resids. spectra
 #' tmpd.test.sim.fit$sum.LSQ.min ## min. sum of residual squares
 #' tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
-#' tmpd.test.sim.fit$N.converg ## "convergence" integer indicating successful (> 0)
-#' ## completion
+#' tmpd.test.sim.fit$N.converg ## "convergence" value indicating successful completion
+#' #
+#' ## If two subsequent `optim.method`s are used the resulting list is complex/nested
+#' ## showing all all info for each plot except the plot corresponding to that from
+#' ## last `optim.method`.
 #' }
 #'
 #'
@@ -466,6 +469,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## The best system is the last one from the `best.fit.params` =>
   ## therefore it correspond to `best.fit.params[[length(optim.method)]]`
+  ## to simulate and display the spectrum
   #
   ## "best" (i.e. including best As) nuclear system
   if (is.null(nuclear.system.noA)){
@@ -533,7 +537,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## down below by factor of difference between `max()` and `min()`
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
-      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - Int.diff) %>%
+      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -641,9 +645,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## switching between final list components
   result.list <- switch(2-sim.check,
                         list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params[[length(optim.method)]]),
+                             best.fit.params = best.fit.params), ## all params., for all methods
                         list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params[[length(optim.method)]],
+                             best.fit.params = best.fit.params, ## all params., for all methods
                              df = data.sim.expr,
                              sum.LSQ.min = min.LSQ.sum,
                              N.evals = N.evals,
