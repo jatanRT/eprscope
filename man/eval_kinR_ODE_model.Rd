@@ -21,23 +21,23 @@ brackets after the arrows. Such notation inherited from
 \href{https://www.ctan.org/pkg/mhchem?lang=en}{\eqn{\LaTeX} `mhchem` package}.
 Following reaction schemes are the most common used to describe the integral intensity and/or radical
 concentration/amount changes during the EPR time series experiment.
-\tabular{lcl}{
------------------------- \tab | \tab -------------------- \cr
-\strong{Reaction Scheme} \tab | \tab \strong{`model.react`} \cr
------------------------- \tab | \tab -------------------- \cr
-\eqn{(x=1)\text{R} \xrightarrow{k_1} \text{B}} \tab | \tab \code{"(x=1)R --> [k1] B"} \cr
- \eqn{(x=1)\text{A} \xrightarrow{k_1} \text{R}} \tab | \tab \code{"(x=1)A --> [k1] R"} \cr
- \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{C}} \tab | \tab
- \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \cr
- \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab | \tab
+\tabular{ll}{
+------------------------------ \tab ------------------------------------------------------ \cr
+\strong{Reaction Scheme} \tab \strong{`model.react`} \cr
+------------------------------ \tab ------------------------------------------------------ \cr
+\eqn{(x=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(x=1)R --> [k1] B"} \cr
+ \eqn{(x=1)\text{A} \xrightarrow{k_1} \text{R}} \tab \code{"(x=1)A --> [k1] R"} \cr
+ \eqn{(x=1)\text{A} \xrightarrow{k_1} (x=1)\text{R} \xrightleftharpoons[k_3]{k_2} \text{C}} \tab
+ \code{"(x=1)A --> [k1] (x=1)R <==> [k2] [k3] C"} \cr
+ \eqn{(x=1)\text{R} \xrightleftharpoons[k_2]{k_1} \text{B}} \tab
  \code{"(x=1)R <==> [k1] [k2] B"} \cr
- \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} (x=1)\text{R}} \tab | \tab
+ \eqn{(x=1)\text{A} \xrightleftharpoons[k_2]{k_1} (x=1)\text{R}} \tab
  \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \cr
- \eqn{\text{A} \xleftarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{B}} \tab | \tab
+ \eqn{\text{A} \xleftarrow{k_1} (x=1)\text{R} \xrightarrow{k_2} \text{B}} \tab
  \code{"A [k1] <-- (x=1)R --> [k2] B"} \cr
- \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab | \tab
+ \eqn{(x=1)\text{A} + (y=1)\text{B} \xrightarrow{k_1} \text{R}} \tab
  \code{"(x=1)A + (y=1)B --> [k1] R"} \cr
- ------------------------ \tab | \tab -------------------- \cr
+ ----------------------------- \tab ------------------------------------------------------ \cr
 }
 Couple of examples are also given in the description. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
@@ -63,22 +63,22 @@ all the mentioned quantities. \strong{Default}: \code{kin.params = c(k1 = 0.001,
 The initial values are denoted as \code{qvar0X} (e.g. qvar0R for radical or qvar0A for reactant).
 The components of \code{kin.params} numeric vector depend on \code{model.react} like summarized in the
 following table =>
-\tabular{ccl}{
--------------------- \tab | \tab ------------------- \cr
-\strong{`model.react`} \tab | \tab \strong{Essential `kin.params` components} \cr
--------------------- \tab | \tab ------------------- \cr
-\code{"(x=1)R --> [k1] B"} \tab | \tab \code{k1}, \code{qvar0R}, (\code{n}) \cr
-\code{"(x=1)A --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
-\code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A},
+\tabular{ll}{
+----------------------------- \tab ----------------------------------- \cr
+\strong{`model.react`} \tab \strong{Essential `kin.params` components} \cr
+----------------------------- \tab ----------------------------------- \cr
+\code{"(x=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0R}, (\code{n}) \cr
+\code{"(x=1)A --> [k1] R"} \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{n}) \cr
+\code{"(x=1)A --> [k1] (x=1)R <==> [k2] [k3] C"} \tab \code{k1}, \code{k2}, \code{k3} \code{qvar0A},
 \code{qvar0R}, \code{qvar0C}, (\code{n}) \cr
-\code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R},
+\code{"(x=1)R <==> [k1] [k2] B"} \tab \code{k1}, \code{k2}, \code{qvar0R},
 \code{qvar0B}, (\code{n}) \cr
-\code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0A},
+\code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab \code{k1}, \code{k2}, \code{qvar0A},
 \code{qvar0R}, (\code{n}) \cr
-\code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab \code{k1}, \code{k2}, \code{qvar0R}, (\code{n}) \cr
-\code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab \code{k1}, \code{qvar0A}, \code{qvar0B},
+\code{"A [k1] <-- (x=1)R --> [k2] B"} \tab \code{k1}, \code{k2}, \code{qvar0R}, (\code{n}) \cr
+\code{"(x=1)A + (y=1)B --> [k1] R"} \tab \code{k1}, \code{qvar0A}, \code{qvar0B},
 \code{qvar0R}, (\code{n}) \cr
--------------------- \tab | \tab ------------------- \cr
+----------------------------- \tab ----------------------------------- \cr
 }}
 
 \item{data.expr}{R data frame containing the integral intensities/areas under the curves calculated
@@ -107,10 +107,12 @@ If the function is not used for fitting of the experimental and processed data, 
   and those generated by the model.
 }
 \description{
-The primary aim of the function is to get an idea of theoretical quantitative (e.g. like
-  concentration/amount/integral intensity) kinetic profile for various model reactions where
+Theoretical quantitative kinetic profiles (e.g. like concentration/amount/integral intensity)
+  as well as fitting of the experimental data for various model reactions where
   the radical(s) ("R") are involved in the processes.
-  Secondary purpose is to fit the experimental EPR spectral time series outputs, e.g. like integral
+}
+\details{
+Secondary purpose is to fit the experimental EPR spectral time series outputs, e.g. like integral
   intensity (area under the spectral curve) \emph{vs} time in order to gather the rate constants
   (\eqn{k}) of radical ("R") formation and/or decomposition. Quantitative kinetic profiles
   are not evaluated by integration of the kinetic equations, however by numeric solution of the Ordinary
@@ -122,29 +124,29 @@ The primary aim of the function is to get an idea of theoretical quantitative (e
   article}.
   The most applied kinetic models for radical reactions in EPR spectroscopy are summarized below
   (see also \code{model.react} function argument).
-  \tabular{ccl}{
-  -------------------- \tab | \tab -------------------- \cr
-  \strong{`model.react`} \tab | \tab \strong{Description} \cr
-  -------------------- \tab | \tab -------------------- \cr
-  \code{"(x=1)R --> [k1] B"} \tab | \tab Basic irreversible forward reaction,
+  \tabular{ll}{
+  ------------------------------- \tab ----------------------------------------------------- \cr
+  \strong{`model.react`} \tab \strong{Description} \cr
+  ------------------------------- \tab ----------------------------------------------------- \cr
+  \code{"(x=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
   e.g. like irrev. dimerization (if \code{"(x=2)"}). \cr
-  \code{"(x=1)A --> [k1] R"} \tab | \tab Basic irreversible radical formation,
+  \code{"(x=1)A --> [k1] R"} \tab Basic irreversible radical formation,
   e.g. like irrev. \eqn{\text{e}^-} transfer. \cr
-  \code{"(x=1)A --> [k1] (x=1)R --> [k2] C"} \tab | \tab Consecutive reactions,
+  \code{"(x=1)A --> [k1] (x=1)R <==> [k2] [k3] C"} \tab Consecutive reactions,
   e.g. like comproportionation (or homogeneous
-  \eqn{\text{e}^-} transfer, for \code{"(x=2)"}) + follow up irrev. dimerization. \cr
-  \code{"(x=1)R <==> [k1] [k2] B"} \tab | \tab Basic reversible radical quenching,
+  \eqn{\text{e}^-} transfer, for \code{"(x=2)"}) + follow up reversible dimerization. \cr
+  \code{"(x=1)R <==> [k1] [k2] B"} \tab Basic reversible radical quenching,
   e.g. like rev. (\eqn{\pi-\pi} dimerization). \cr
-  \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab | \tab Basic reversible radical formation,
+  \code{"(x=1)A <==> [k1] [k2] (x=1)R"} \tab Basic reversible radical formation,
   e.g. from rev.
   comproportionation/disproportionation (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}},
   for \code{"(x=2)"}). \cr
-  \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab | \tab Basic parallel reactions,
+  \code{"A [k1] <-- (x=1)R --> [k2] B"} \tab Basic parallel reactions,
   e.g. like radical decomposition and isomerization or two radical diffusion forming different product
   than without diffusion like recombination (\code{"(x=2)"}). \cr
-  \code{"(x=1)A + (y=1)B --> [k1] R"} \tab | \tab Radical formation by chemical reaction like oxidation,
+  \code{"(x=1)A + (y=1)B --> [k1] R"} \tab Radical formation by chemical reaction like oxidation,
   reduction or spin trapping (transient radical is not visible within the common EPR time scale). \cr
-  -------------------- \tab | \tab -------------------- \cr
+  ------------------------------- \tab ----------------------------------------------------- \cr
   }
 }
 \examples{
@@ -158,9 +160,10 @@ head(kin.test.01$df,n = 10)
 #
 ## consecutive reactions and preesenting plot
 kin.test.02 <-
- eval_kinR_ODE_model(model.react = "(x=1)A --> [k1] (x=1)R --> [k2] C",
+ eval_kinR_ODE_model(model.react = "(x=1)A --> [k1] (x=1)R <==> [k2] [k3] C",
                      kin.params = c(k1 = 0.01,
                                     k2 = 0.015,
+                                    k3 = 0.0075,
                                     qvar0A = 0.02,
                                     qvar0R = 0.002,
                                     qvar0C = 0))
