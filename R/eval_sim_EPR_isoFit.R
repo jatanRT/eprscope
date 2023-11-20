@@ -345,9 +345,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## "general" function for optimization because it depends
   ## on method (`method`) and function (`fun`) and initial params (`x.0`)
   optim_fn <- function(fun,method,x.0){
-    optim.list <- optim_for_EPR_fitness(method = method,
-                                        x.0 = x.0,
+    optim.list <- optim_for_EPR_fitness(x.0 = x.0,
                                         fn = fun,
+                                        method = method,
                                         lower = optim.params.lower,
                                         upper = optim.params.upper,
                                         data = data.spectr.expr,
@@ -390,7 +390,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                     x.0 = optim.params.init)
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
-        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") {
+        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") { ## with `else` it doesn't work
       ## LSQ FUNCTION
       min_residuals_nl <- function(data,nucs.system,Intensity.sim,x0){
         with(data,sum((data[[Intensity.expr]] -
@@ -628,7 +628,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                            ## `3` Maximal number of restarts reached.
                                            ## `4` Maximal number of iterations without improvement reached.
 
-    } else{
+    }
+    if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
+        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx"){ ## with `else` it doesn't work
       min.LSQ.sum[[m]] <-
         optimization.list[[m]]$value ## the function value corresponding to `par`.
                                      ## because function is sum of squares
