@@ -16,7 +16,7 @@
 #' @param qvarR Character string ... argument/parameter... tbc
 #' @param model.react Character string ... argument/parameter... tbc, the same like in \code{\link{eval_kinR_ODE_model}}
 #' @param params.guess Named vector ... argument/parameter... tbc
-#' @param algorithm.fit.kin Character string ... argument/parameter... tbc
+#' @param fit.kin.method Character string ... argument/parameter... tbc
 #' @param time.correct Logical, ... argument/parameter... tbc
 #' @param path_to_dsc_par Character string ... argument/parameter... tbc
 #' @param origin Character string ... argument/parameter... tbc
@@ -46,7 +46,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
                                      qvar0R = 1e-3,
                                      k1 = 1e-3
                                    ),
-                                   algorithm.fit.kin = "diff-LM",
+                                   fit.kin.method = "diff-levenmarq",
                                    time.correct = FALSE,
                                    path_to_dsc_par = NULL,
                                    origin = NULL) {
@@ -91,7 +91,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   #
   ## Fit by solution of Ordinary Differential equations
   #
-  if (algorithm.fit.kin == "diff-LM") {
+  if (fit.kin.method == "diff-levenmarq") {
       model.react.kin.fit <- minpack.lm::nls.lm(
       par = params.guess,
       fn = eval_kinR_ODE_model,
@@ -194,8 +194,8 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     plot = plot.fit,
     df.coeffs = summar.react.kin.fit.df,
     N.evals = iters.react.kin.fit,
-    min.LSQ.sum = residsq.react.kin.fit,
-    eval.LSQ.sum = converg.react.kin.fit
+    sum.LSQ.min = residsq.react.kin.fit,
+    sum.LSQ.evals = converg.react.kin.fit
   )
   #
   return(fit.summary)

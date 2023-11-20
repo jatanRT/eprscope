@@ -11,7 +11,7 @@ eval_kinR_EPR_modelFit(
   qvarR = "Area",
   model.react = "(x=1)R --> [k1] B",
   params.guess = c(qvar0R = 0.001, k1 = 0.001),
-  algorithm.fit.kin = "diff-LM",
+  fit.kin.method = "diff-levenmarq",
   time.correct = FALSE,
   path_to_dsc_par = NULL,
   origin = NULL
@@ -30,7 +30,7 @@ eval_kinR_EPR_modelFit(
 
 \item{params.guess}{Named vector ... argument/parameter... tbc}
 
-\item{algorithm.fit.kin}{Character string ... argument/parameter... tbc}
+\item{fit.kin.method}{Character string ... argument/parameter... tbc}
 
 \item{time.correct}{Logical, ... argument/parameter... tbc}
 
