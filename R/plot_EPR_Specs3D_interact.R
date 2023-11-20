@@ -101,6 +101,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   }
   if (var2nd_select_len >= 160) {
     var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 4), ]
+  } else{
+    var2nd_select_df <- var2nd_select_df
   }
   #
   ## Filtering, accordingly (only those `var2nd.series` values defined above in `data.spectra.series`)
@@ -114,9 +116,9 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #
   ## convert data from 'long' to 'wide' table format & finally to matrix
   Intensity_matrix <- data.spectra.series %>%
-    dplyr::select(.data[[var2nd.series]], .data[[x]], .data[[Intensity]]) %>%
-    tidyr::pivot_wider(names_from = .data[[var2nd.series]], values_from = .data[[Intensity]]) %>%
-    dplyr::select(-.data[[x]]) %>%
+    dplyr::select(dplyr::all_of(c(var2nd.series,x,Intensity))) %>%
+    tidyr::pivot_wider(names_from = var2nd.series, values_from = Intensity) %>%
+    dplyr::select(-dplyr::all_of(x)) %>%
     as.matrix()
   ## transpose matrix in order to present 3D spectra properly
   Intensity_matrix <- t(Intensity_matrix)
