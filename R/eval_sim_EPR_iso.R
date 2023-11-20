@@ -1010,7 +1010,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ggplot(data = B.g.sim.df,
            aes(x = .data[[paste0("B_",B.unit)]],
                y = .data[[Intensity.sim]])) +
-    geom_line(color = "blue",linewidth = 0.75) +
+    geom_line(color = "darkviolet",linewidth = 0.75) +
     labs(title = char.title.title,
          caption = char.caption,
          x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),

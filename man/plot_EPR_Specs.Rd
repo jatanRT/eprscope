@@ -13,7 +13,7 @@ plot_EPR_Specs(
   var2nd.series.slct.by = NULL,
   Intensity = "dIepr_over_dB",
   lineSpecs.form = "derivative",
-  line.colors = "steelblue",
+  line.colors = "darkviolet",
   line.width = 0.75,
   border.line.width = 0.5,
   border.line.color = "black",
