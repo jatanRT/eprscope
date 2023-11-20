@@ -402,9 +402,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                     x.0 = optim.params.init)
     }
     #
-    ## best parameters
+    ## best parameters as input (`optim.params.init`) for the next cycle
+    ## if several subsequent `optim.method` applied
     best.fit.params[[m]] <- optimization.list[[m]]$par
-    optim.params.init <- best.fit.params[[m]]
+    if (length(optim.method) > 1){
+      optim.params.init <- best.fit.params[[m]]
+    }
     #
   }
   # if (length(optim.method) >= 1){
@@ -611,7 +614,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       N.evals[[m]] <-
         optimization.list[[m]]$niter ## The number of iterations/evaluations completed before termination.
       N.converg[[m]] <-
-        sum(optimization.list[[m]]$rsstrace) ## Total sum of square sums at each iteration.
+        optimization.list[[m]]$rsstrace ## Sum of squares at each iteration.
     }
     if (optim.method[m] == "pswarm"){
       min.LSQ.sum[[m]] <-
