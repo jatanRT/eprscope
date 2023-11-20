@@ -158,8 +158,8 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   ## WIDE-TABLE FORMAT FOR THE SIM. EPR SPECTRAL SUM rowwise by `rowSums`
   #
   df.systems.weighted.wide <- df.systems.weighted.long %>%
-    tidyr::pivot_wider(names_from = "Sim_Components",
-                       values_from = Intensity.sim) %>%
+    tidyr::pivot_wider(names_from = dplyr::all_of(c("Sim_Components")),
+                       values_from = dplyr::all_of(c(Intensity.sim))) %>%
     dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_Sum")) :=
                     rowSums(dplyr::across(dplyr::matches("^[[:upper:]]$"))))
   #

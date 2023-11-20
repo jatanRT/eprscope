@@ -129,7 +129,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     ## starting new data frame only with `time` and `qvar` &
     ## merge both data frames (add `fitted` columns)
     new.predict.df <- data.integs %>%
-      dplyr::select(.data[[time]], .data[[qvarR]]) %>%
+      dplyr::select(dplyr::all_of(c(time,qvarR))) %>%
       dplyr::mutate(fitted = model.expr.time$df[["R"]])
     #
     ## the `model.expr.time` and `model.react.kin.fit` is not required anymore

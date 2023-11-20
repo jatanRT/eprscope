@@ -93,8 +93,8 @@
 #' tmpd.test.sim.fit$N.converg ## "convergence" value indicating successful completion
 #' #
 #' ## If two subsequent `optim.method`s are used the resulting list is complex/nested
-#' ## showing all all info for each plot except the plot corresponding to that from
-#' ## last `optim.method`.
+#' ## showing all the info for each method except the plot corresponding to that from
+#' ## the last `optim.method`.
 #' }
 #'
 #'

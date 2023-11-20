@@ -94,7 +94,9 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
     ## select only `B` and `integrals`
     dplyr::select(c(.data[[B]], dplyr::matches("integ"))) %>%
     ## long table format
-    tidyr::pivot_longer(!.data[[B]], names_to = "Integrals", values_to = "Intensity") %>%
+    tidyr::pivot_longer(!dplyr::all_of(c(B)),
+                        names_to = "Integrals",
+                        values_to = "Intensity") %>%
     ## variables to factors in order to arrange in the right order
     dplyr::mutate(Integrals = factor(Integrals,
       levels = grep("integ",

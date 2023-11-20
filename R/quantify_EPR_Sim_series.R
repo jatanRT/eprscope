@@ -234,8 +234,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## "general" function for optimization because it depends
   ## on method (`method`) and function (`fun`) and initial params (`x.0`)
   optim_fn <- function(fun,method,data){
-    optim.list <- optim_for_EPR_fitness(method = method,
-                                        x.0 = optim.params.init,
+    optim.list <- optim_for_EPR_fitness(x.0 = optim.params.init,
+                                        method = method,
                                         fn = fun,
                                         lower = optim.params.lower,
                                         upper = optim.params.upper,
@@ -372,7 +372,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   ## transformation from wide table to long table with properly arranged var2nd.series
   data.specs.sim.modif[[1]] <- data.specs.sim.modif[[1]] %>%
-    tidyr::pivot_longer(!.data[[paste0("Bsim_",B.unit)]],
+    tidyr::pivot_longer(!dplyr::all_of(c(paste0("Bsim_",B.unit))),
                         names_to = var2nd.series,
                         values_to = paste0(Intensity.sim,"_",LETTERS[1])) %>%
     dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
@@ -411,7 +411,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       #
       ## transformation from wide table to long table with properly arranged time
       data.specs.sim.modif[[d]] <- data.specs.sim.modif[[d]] %>%
-        tidyr::pivot_longer(!.data[[paste0("Bsim_",B.unit)]],
+        tidyr::pivot_longer(!dplyr::all_of(c(paste0("Bsim_",B.unit))),
                             names_to = var2nd.series,
                             values_to = paste0(Intensity.sim,"_",LETTERS[d])) %>%
         dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
@@ -570,7 +570,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_aLL")]])[,1]) %>%
             dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
-            dplyr::select(-.data[[var2nd.series]])
+            dplyr::select(!dplyr::all_of(c(var2nd.series)))
           result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
         }
       }
@@ -595,7 +595,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
                             pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
                                              .data[[paste0(single.integ,"_aLL")]])[,1]*10) %>%
             dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
-            dplyr::select(-.data[[var2nd.series]])
+            dplyr::select(!dplyr::all_of(c(var2nd.series)))
           result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
         }
       }
