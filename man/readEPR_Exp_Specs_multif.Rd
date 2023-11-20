@@ -19,6 +19,7 @@ readEPR_Exp_Specs_multif(
   names,
   tidy = FALSE,
   var2nd.series = NULL,
+  var2nd.series.factor = FALSE,
   origin = "xenon"
 )
 }
@@ -79,6 +80,9 @@ weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{D
 of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
 altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.}
 
+\item{var2nd.series.factor}{Logical, description ...TBC ... factorize \code{var2nd.series}, usefull for plotting
+the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}.}
+
 \item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
 on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
@@ -99,7 +103,8 @@ Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl
 \examples{
 \dontrun{
 ## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
-## reading and transforming into `longtable`
+## reading and transforming into `longtable`. Prepared for plotting the overlay
+## EPR spectra => `var2nd.series.factor = FALSE` (default).
 readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),

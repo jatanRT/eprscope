@@ -56,6 +56,8 @@
 #' @param var2nd.series String/Character, if \code{tidy = T} (see `tidy` parameter/argument) it is referred to name
 #'  of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
 #'  altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.
+#' @param var2nd.series.factor Logical, description ...TBC ... factorize \code{var2nd.series}, usefull for plotting
+#'   the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}.
 #' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
@@ -68,7 +70,8 @@
 #' @examples
 #' \dontrun{
 #' ## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
-#' ## reading and transforming into `longtable`
+#' ## reading and transforming into `longtable`. Prepared for plotting the overlay
+#' ## EPR spectra => `var2nd.series.factor = FALSE` (default).
 #' readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
@@ -122,6 +125,7 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
                                      names,
                                      tidy = FALSE,
                                      var2nd.series = NULL,
+                                     var2nd.series.factor = FALSE,
                                      origin = "xenon") {
   #
   ## 'Temporary' processing variables
@@ -269,8 +273,19 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
         spectra.datab.from.files$index <- NULL
       }
       ## recalculate `var2nd.series` column
-      spectra.datab.from.files <- spectra.datab.from.files %>%
-        dplyr::mutate(!!rlang::quo_name(var2nd.series) := as.factor(as.numeric(.data[[var2nd.series]])))
+      ## condition to factorize the `var2nd.series`
+      cond.var2nd.factor <- ifelse(var2nd.series.factor,TRUE,FALSE)
+      #
+      spectra.datab.from.files <-
+        switch(2-cond.var2nd.factor,
+               spectra.datab.from.files %>%
+                 dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                                 as.factor(as.numeric(.data[[var2nd.series]]))),
+               spectra.datab.from.files %>%
+                 dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                                 as.numeric(.data[[var2nd.series]])) %>%
+                 dplyr::arrange(.data[[var2nd.series]])
+               )
       #
       return(spectra.datab.from.files)
       #
