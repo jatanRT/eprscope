@@ -350,7 +350,7 @@ plot_EPR_Specs <- function(data.spectra,
             #
             simplePlot <- simplePlot.nocolor +
               scale_color_viridis_d(option = plot.vector.colors,
-                                    direction = -1) +
+                                    direction = 1) +
               labs(color = legend.title, x = x.label, y = y.label) +
               theme(legend.title = element_text(size = legend.title.size),
                     legend.text = element_text(size = legend.text.size))
