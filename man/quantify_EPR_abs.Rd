@@ -19,7 +19,7 @@ quantify_EPR_Abs(
 )
 }
 \arguments{
-\item{integ.sigmoid.max}{Numeric value of entire EPR spectrum sigmoid integral.}
+\item{integ.sigmoid.max}{Numeric value or vectoe of entire EPR spectrum sigmoid integral.}
 
 \item{instrum.params}{Named numeric vector containing instrumental parameters required
 for the quantification =>
@@ -60,24 +60,27 @@ for the quantitative EPR experiment.}
 \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
 when the EPR spectrum was normalized by that constant either upon measurement or during processing.}
 
-\item{Temp.K}{Numeric}
+\item{Temp.K}{Numeric temperature value in `K`. Because the \code{instrum.params} also contains temperature
+input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for calculation.
+Either \code{Temp.K} or \code{TK} CAN BE ALSO `NULL` but NOT BOTH !! In the latter case default value `298 K`
+is considered.}
 
 \item{S}{Numeric, ...tbc...}
 
-\item{microW.cavity}{Character string, ...tbc... \strong{Default}:
+\item{microW.cavity}{Character string, ...tbc..."highsensitive" or "rectangular" \strong{Default}:
 \code{microW.cavity = "rectangular"}.}
 }
 \value{
 List of the following quantities:
 
-  * \code{Ncm}, number of spins per effective centimeter. It is defined
+  * \code{N.cm}, number of spins per effective centimeter. It is defined
     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
     the equation above shown in details.
 
-  * \code{Ncm3}, corresponding to number of spins per \eqn{\text{cm}^3}
+  * \code{N.cm3}, corresponding to number of spins per \eqn{\text{cm}^3}
 
-  * \code{cM}, denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
+  * \code{c.M}, denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
 }
 \description{
 A short description...TBC...in the Most Common EPR Cavities
