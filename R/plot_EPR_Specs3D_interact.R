@@ -84,6 +84,13 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ## `var2nd.series` (e.g. time) as factor to properly present
   data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
   #
+  ## ADD `index` if NOT PRESENT OTHERWISE `pivot_wider` DOES'T WORK
+  if (any(grepl("index", colnames(data.spectra.series)))) {
+    data.spectra.series <- data.spectra.series
+  } else{
+    data.spectra.series$index <- seq(nrow(data.spectra.series))
+  }
+  #
   ## Length of the `var2nd.series`
   var2nd_select_df <- data.spectra.series %>%
     dplyr::group_by(.data[[var2nd.series]]) %>%
