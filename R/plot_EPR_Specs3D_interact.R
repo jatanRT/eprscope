@@ -81,13 +81,21 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       grid.z.color = "rgb(255, 255, 255)",
                                       output.matrix.df = FALSE) {
   #
-  ## ADD `index` if NOT PRESENT OTHERWISE TABLE/MATRIX CONVERSION DOESN'T WORK
+  ## 'Temporary' processing variables
+  index <- NULL
+  #
+  ## ADD `index` if NOT PRESENT
   if (any(grepl("index", colnames(data.spectra.series)))) {
     data.spectra.series <- data.spectra.series
   } else{
-    data.spectra.series$index <- seq(nrow(data.spectra.series))
+    data.spectra.series[["index"]] <- seq(nrow(data.spectra.series))
+    ## reordering columns
+    data.spectra.series <- data.spectra.series %>%
+      dplyr::select(index,dplyr::everything())
   }
   #
+  data.spectra.series <- data.spectra.series %>%
+    dplyr::select(dplyr::all_of(c("index",x,var2nd.series,Intensity)))
   ## `var2nd.series` (e.g. time) as factor to properly present the spectral series
   data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
   #
@@ -122,14 +130,20 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #   dplyr::group_keys()
   #
   ## convert data from 'long' to 'wide' table format & finally to matrix
-  Intensity_matrix <- data.spectra.series %>%
-    dplyr::select(dplyr::all_of(c(var2nd.series,x,Intensity))) %>%
-    tidyr::pivot_wider(names_from = dplyr::all_of(c(var2nd.series)),
-                       values_from = dplyr::all_of(c(Intensity))) %>%
-    dplyr::select(!dplyr::all_of(c(x))) %>%
-    as.matrix()
+  ## it will be converted  step-by-step because `pivot_wider` doesn't work
+  ## 1. group by `var2nd.series` into list
+  data.spectra.list <-
+    lapply(var2nd_select_df[[var2nd.series]],
+           function(i) subset(data.spectra.series,data.spectra.series[[var2nd.series]] == i))
+  ## 2. select only Intensities columns
+  intensity.list <- lapply(seq(data.spectra.list), function(j) data.spectra.list[[j]][[Intensity]])
+  ## 3. join all columns into matrix
+  Intensity_matrix <- as.matrix(dplyr::bind_cols(intensity.list))
   ## transpose matrix in order to present 3D spectra properly
   Intensity_matrix <- t(Intensity_matrix)
+  #
+  ## `data.spectra.list` & `intensity.list` are not required anymore
+  rm(data.spectra.list,intensity.list)
   #
   ## select x data frame column for `xaxis` within 3D plot
   X_select_df <- data.spectra.series %>%
