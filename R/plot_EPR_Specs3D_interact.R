@@ -81,15 +81,15 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       grid.z.color = "rgb(255, 255, 255)",
                                       output.matrix.df = FALSE) {
   #
-  ## `var2nd.series` (e.g. time) as factor to properly present
-  data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
-  #
-  ## ADD `index` if NOT PRESENT OTHERWISE `pivot_wider` DOES'T WORK
+  ## ADD `index` if NOT PRESENT OTHERWISE TABLE/MATRIX CONVERSION DOESN'T WORK
   if (any(grepl("index", colnames(data.spectra.series)))) {
     data.spectra.series <- data.spectra.series
   } else{
     data.spectra.series$index <- seq(nrow(data.spectra.series))
   }
+  #
+  ## `var2nd.series` (e.g. time) as factor to properly present the spectral series
+  data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
   #
   ## Length of the `var2nd.series`
   var2nd_select_df <- data.spectra.series %>%
