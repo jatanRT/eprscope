@@ -168,10 +168,12 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     #
     ## Polynomial function to characterize intensity distribution within the cavity:
     ## `y` corresponds to distance from cavity center in mm:
+    ## Because it shows the intensity dependence only in one (y) direction it must be multiplied
+    ## by (1/3)
     intensity.poly.function <- function(y) {
-      1.00179 - (0.00307086 * y) - (0.0265409 * y^2) +
+      (1.00179 - (0.00307086 * y) - (0.0265409 * y^2) +
         (0.000297603 * y^3) + (0.000223277 * y^4) - (4.53833e-06 * y^5) - (4.1451e-07 * y^6) +
-        (1.89417e-08 * y^7) - (1.48241e-09 * y^8)
+        (1.89417e-08 * y^7) - (1.48241e-09 * y^8)) * (1/3)
     }
     #
     ## CALCULATIONS depending on the sample height =>
@@ -237,10 +239,12 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     #
     ## Polynomial function to characterize intensity distribution within the cavity:
     ## `y` corresponds to distance from cavity center in mm:
+    ## Because it shows the intensity dependence only in one (y) direction it must be multiplied
+    ## by (1/3)
     intensity.poly.function <- function(y) {
-      0.99652 + (0.00737177 * y) - (0.00559614 * y^2) -
+      (0.99652 + (0.00737177 * y) - (0.00559614 * y^2) -
         (2.88221e-05 * y^3) + (1.00404e-05 * y^4) + (3.43695e-08 * y^5) - (5.0404e-09 * y^6) -
-        (1.4783e-11 * y^7) - (1.29132e-12 * y^8)
+        (1.4783e-11 * y^7) - (1.29132e-12 * y^8)) * (1/3)
     }
     #
     ## CALCULATIONS depending on the sample height =>
