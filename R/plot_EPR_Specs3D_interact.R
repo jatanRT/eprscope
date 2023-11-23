@@ -82,20 +82,20 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       output.matrix.df = FALSE) {
   #
   ## 'Temporary' processing variables
-  index <- NULL
-  #
-  ## ADD `index` if NOT PRESENT
-  if (any(grepl("index", colnames(data.spectra.series)))) {
-    data.spectra.series <- data.spectra.series
-  } else{
-    data.spectra.series[["index"]] <- seq(nrow(data.spectra.series))
-    ## reordering columns
-    data.spectra.series <- data.spectra.series %>%
-      dplyr::select(index,dplyr::everything())
-  }
+  # index <- NULL
+  # #
+  # ## ADD `index` if NOT PRESENT
+  # if (any(grepl("index", colnames(data.spectra.series)))) {
+  #   data.spectra.series <- data.spectra.series
+  # } else{
+  #   data.spectra.series[["index"]] <- seq(nrow(data.spectra.series))
+  #   ## reordering columns
+  #   data.spectra.series <- data.spectra.series %>%
+  #     dplyr::select(index,dplyr::everything())
+  # }
   #
   data.spectra.series <- data.spectra.series %>%
-    dplyr::select(dplyr::all_of(c("index",x,var2nd.series,Intensity)))
+    dplyr::select(dplyr::all_of(c(x,var2nd.series,Intensity)))
   ## `var2nd.series` (e.g. time) as factor to properly present the spectral series
   data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
   #
@@ -138,7 +138,9 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ## 2. select only Intensities columns
   intensity.list <- lapply(seq(data.spectra.list), function(j) data.spectra.list[[j]][[Intensity]])
   ## 3. join all columns into matrix
-  Intensity_matrix <- as.matrix(dplyr::bind_cols(intensity.list))
+  Intensity_matrix <-
+    as.matrix(dplyr::bind_cols(intensity.list,
+                               .name_repair = ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE)))
   ## transpose matrix in order to present 3D spectra properly
   Intensity_matrix <- t(Intensity_matrix)
   #
