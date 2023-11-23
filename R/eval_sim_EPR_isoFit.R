@@ -19,12 +19,14 @@
 #' @param Intensity.expr Character string ... TBC ...
 #' @param Intensity.sim Character string ... TBC ...
 #' @param nuclear.system.noA List or nested list ... TBC ... without estimated hyperfine coupling constant values
+#' @param baseline.correct Character string ...
 #' @param lineG.content Numeric value ...
 #' @param lineSpecs.form Character string ...
 #' @param optim.method Character string ... TBC ...
 #' @param optim.params.init Numeric vector with estimated ... TBC ...1. element = g-value, 2. element = Gaussian
 #'   linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant, 5. element Intensity
-#'   multiplication constant and 6, 7... elements hyperfine coupling constants in `MHz`
+#'   multiplication constant and 6, 7... elements baseline linear or quadratic multiplication
+#'   and finally hyperfine coupling constants in `MHz`
 #' @param optim.params.lower Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.
 #' @param optim.params.upper Numeric vector (with the length of \code{optim.params.init}) with the upper bound constraints.
 #' @param Nmax.evals Numeric value corresp. to maximum number of iterations/evaluations.
@@ -109,6 +111,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 nu.GHz,
                                 B.unit = "G",
                                 nuclear.system.noA,
+                                baseline.correct = "constant", ## "linear" or "quadratic"
                                 lineG.content = 0.5,
                                 lineSpecs.form = "derivative",
                                 optim.method = "neldermead", ## also two consecutive methods as vector
@@ -163,6 +166,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   fit_sim_params_par <- function(data,
                                  nucs.system,
                                  Intensity.sim,
+                                 baseline,
+                                 B.unit,
                                  par){
     #
     ## definition of the 1st param. => g-value
@@ -203,10 +208,18 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## what is the length of the list (how many nuclear groups)
       nucle_us_i <- sapply(1:length(nucs.system), function(e) nucs.system[[e]][[1]])
       #
-      ## adding parameters As (corresp. to par[6,7...]) to nested list
-      ## the first par[1,2,3,4,5] is reserved for g,linewidths and intensity
+      ## adding parameters As to nested list
+      ## the first par[1,2,3,4,5,...] is reserved for g,linewidths, baseline and intensity
       ## `A.var` should be explicitly expressed by corresp. x0 elements
-      A.var <- par[6:(5+length(nucle_us_i))]
+      if (baseline == "constant"){
+        A.var <- par[6:(5+length(nucle_us_i))]
+      }
+      if (baseline == "linear"){
+        A.var <- par[7:(6+length(nucle_us_i))]
+      }
+      if (baseline == "quadratic"){
+        A.var <- par[8:(7+length(nucle_us_i))]
+      }
       #
       nucs.system.new <- c()
       for (j in seq(nucs.system)) {
@@ -229,7 +242,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
 
       #
     }
-    data[[Intensity.sim]] <- par[4] + par[5] * sim.fit.df[[Intensity.sim]]
+    if (baseline == "constant"){
+      ## Intensity = a + b*Intensity
+      data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]])
+    }
+    if (baseline == "linear"){
+      ## Intensity = a + b*Intensity + c*B (B = "magnetic flux density")
+      data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]]) +
+        (par[6] * sim.fit.df[[paste0("Bsim_",B.unit)]])
+    }
+    if (baseline == "quadratic"){
+      ## Intensity = a + b*Intensity + c*B + d*B^2
+      data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]]) +
+        (par[6] * sim.fit.df[[paste0("Bsim_",B.unit)]]) +
+        (par[7] * (sim.fit.df[[paste0("Bsim_",B.unit)]])^2)
+    }
     #
     return(data[[Intensity.sim]])
     #
@@ -239,6 +266,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   fit_sim_params_x0 <- function(data,
                                 nucs.system,
                                 Intensity.sim,
+                                baseline,
+                                B.unit,
                                 x0){
     #
     ## definition of the 1st param. => g-value
@@ -279,10 +308,18 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## what is the length of the list (how many nuclear groups)
       nucle_us_i <- sapply(1:length(nucs.system), function(e) nucs.system[[e]][[1]])
       #
-      ## adding parameters As (corresp. to par[6,7...]) to nested list
-      ## the first par[1,2,3,4,5] is reserved for g,linewidths and intensity
+      ## adding parameters As to nested list
+      ## the first par[1,2,3,4,5,...] is reserved for g,linewidths, baseline and intensity
       ## `A.var` should be explicitly expressed by corresp. x0 elements
-      A.var <- x0[6:(5+length(nucle_us_i))]
+      if (baseline == "constant"){
+        A.var <- x0[6:(5+length(nucle_us_i))]
+      }
+      if (baseline == "linear"){
+        A.var <- x0[7:(6+length(nucle_us_i))]
+      }
+      if (baseline == "quadratic"){
+        A.var <- x0[8:(7+length(nucle_us_i))]
+      }
       #
       nucs.system.new <- c()
       for (j in seq(nucs.system)) {
@@ -305,7 +342,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
 
       #
     }
-    data[[Intensity.sim]] <- x0[4] + x0[5] * sim.fit.df[[Intensity.sim]]
+    if (baseline == "constant"){
+      ## Intensity = a + b*Intensity
+      data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]])
+    }
+    if (baseline == "linear"){
+      ## Intensity = a + b*Intensity + c*B (B = "magnetic flux density")
+      data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]]) +
+        (x0[6] * sim.fit.df[[paste0("Bsim_",B.unit)]])
+    }
+    if (baseline == "quadratic"){
+      ## Intensity = a + b*Intensity + c*B + d*B^2
+      data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]]) +
+        (x0[6] * sim.fit.df[[paste0("Bsim_",B.unit)]]) +
+        (x0[7] * (sim.fit.df[[paste0("Bsim_",B.unit)]])^2)
+    }
     #
     return(data[[Intensity.sim]])
     #
@@ -317,11 +368,29 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     optim.params.init[3] - (optim.params.init[2] * 0.1),
                     optim.params.init[4] - 0.0005,
                     1e-8)
+  if (baseline.correct == "constant"){
+    lower.limits <- lower.limits
+  }
+  if (baseline.correct == "linear"){
+    lower.limits <- c(lower.limits,-5)
+  }
+  if (baseline.correct == "quadratic"){
+    lower.limits <- c(lower.limits,-5,-5)
+  }
   upper.limits <- c(optim.params.init[1] + 0.0005,
                     optim.params.init[2] + (optim.params.init[2] * 0.1),
                     optim.params.init[3] + (optim.params.init[2] * 0.1),
                     optim.params.init[4] + 0.0005,
                     100)
+  if (baseline.correct == "constant"){
+    upper.limits <- upper.limits
+  }
+  if (baseline.correct == "linear"){
+    upper.limits <- c(upper.limits,5)
+  }
+  if (baseline.correct == "quadratic"){
+    upper.limits <- c(upper.limits,5,5)
+  }
   if (is.null(nuclear.system.noA)){
     lower.limits <- lower.limits
     upper.limits <- upper.limits
@@ -329,10 +398,25 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## individual optimization limits for As
     A.lower.limits <- c()
     A.upper.limits <- c()
-    for (a in 6:(5+length(nuclear.system.noA))){
-      A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.055)
-      A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.055)
+    if (baseline.correct == "constant"){
+      for (a in 6:(5+length(nuclear.system.noA))){
+        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.055)
+        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.055)
+      }
     }
+    if (baseline.correct == "linear"){
+      for (a in 7:(6+length(nuclear.system.noA))){
+        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.055)
+        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.055)
+      }
+    }
+    if (baseline.correct == "quadratic"){
+      for (a in 8:(7+length(nuclear.system.noA))){
+        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.055)
+        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.055)
+      }
+    }
+    #
     ## actual `limits`
     lower.limits <- c(lower.limits,A.lower.limits)
     upper.limits <- c(upper.limits,A.upper.limits)
@@ -353,6 +437,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                         data = data.spectr.expr,
                                         nucs.system = nuclear.system.noA,
                                         Intensity.sim = Intensity.sim,
+                                        baseline = baseline.correct,
+                                        B.unit = B.unit,
                                         Nmax.evals = Nmax.evals,
                                         tol.step = tol.step,
                                         pswarm.size = pswarm.size,
@@ -369,9 +455,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
       ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
-      min_residuals_lm <- function(data,nucs.system,Intensity.sim,par){
+      min_residuals_lm <- function(data,nucs.system,Intensity.sim,baseline,B.unit,par){
         return(data[[Intensity.expr]] -
-                 fit_sim_params_par(data,nucs.system,Intensity.sim,par))
+                 fit_sim_params_par(data,nucs.system,Intensity.sim,baseline,B.unit,par))
       }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_lm,
@@ -380,9 +466,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
     if (optim.method[m] == "pswarm"){
       ## LSQ FUNCTION
-      min_residuals_ps <- function(data,nucs.system,Intensity.sim,par){
+      min_residuals_ps <- function(data,nucs.system,Intensity.sim,baseline,B.unit,par){
         with(data,sum((data[[Intensity.expr]] -
-                         fit_sim_params_par(data,nucs.system,Intensity.sim,par))^2))
+                         fit_sim_params_par(data,nucs.system,Intensity.sim,baseline,B.unit,par))^2))
       }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_ps,
@@ -392,9 +478,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") { ## with `else` it doesn't work
       ## LSQ FUNCTION
-      min_residuals_nl <- function(data,nucs.system,Intensity.sim,x0){
+      min_residuals_nl <- function(data,nucs.system,Intensity.sim,baseline,B.unit,x0){
         with(data,sum((data[[Intensity.expr]] -
-                         fit_sim_params_x0(data,nucs.system,Intensity.sim,x0))^2))
+                         fit_sim_params_x0(data,nucs.system,Intensity.sim,baseline,B.unit,x0))^2))
       }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_nl,
@@ -478,7 +564,15 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   if (is.null(nuclear.system.noA)){
     nucs.system.best <- NULL
   } else{
-    A.best <- best.fit.params[[length(optim.method)]][6:(5+length(nuclear.system.noA))]
+    if (baseline.correct == "constant"){
+      A.best <- best.fit.params[[length(optim.method)]][6:(5+length(nuclear.system.noA))]
+    }
+    if (baseline.correct == "linear"){
+      A.best <- best.fit.params[[length(optim.method)]][7:(6+length(nuclear.system.noA))]
+    }
+    if (baseline.correct == "quadratic"){
+      A.best <- best.fit.params[[length(optim.method)]][8:(7+length(nuclear.system.noA))]
+    }
     A.best <- round(A.best,digits = 3)
     nucs.system.best <- c()
     for (j in seq(nuclear.system.noA)) {
@@ -503,7 +597,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   # spectrum data
   data.spectr.expr[[Intensity.sim]] <-
     best.fit.params[[length(optim.method)]][4] +
-    best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]
+    (best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]) +
+
   #
   ## ======================== DATA & PLOTTING =============================
   #
