@@ -64,33 +64,36 @@
 #'   \enumerate{
 #'   \item Data frame/table including the EPR spectral data (general \emph{Intensity}
 #'   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
-#'   (\strong{column} \code{single_Integ}) integral. This is the case if only a single uncorrected integral
-#'   is required.
+#'   (\strong{column} \code{single_Integ}) integral. This is the case if only a single
+#'   uncorrected integral is required.
 #'
 #'   \item Data frame/table with single integral/intensity already corrected by a certain degree
-#'   of polynomial baseline (fitted to experimental baseline without peak). Single integrals are referred either
-#'   to derivative or already integrated EPR spectra where corrected integral \code{column}
-#'   id denoted as \code{single_Integ_correct}. This is the case for \code{correct.integ = TRUE}
-#'   and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
+#'   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
+#'   are referred either to derivative or already integrated EPR spectra where corrected
+#'   integral \code{column} id denoted as \code{single_Integ_correct}. This is the case
+#'   for \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
 #'
 #'   \item Data frame with \code{single} and \code{double/sigmoid} integral \strong{column}
-#'   (\code{sigmoid_Integ}) essential for quantitative analysis. This is the case for \code{output.vecs = FALSE}
-#'   and \code{correct.integ = FALSE}.
+#'   (\code{sigmoid_Integ}) essential for quantitative analysis. This is the case
+#'   for \code{output.vecs = FALSE} and \code{correct.integ = FALSE}.
 #'
 #'   \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
 #'   and \code{output.vecs = FALSE}. It contains the original data + corrected
-#'   single integral (\code{single_Integ_correct}) and double/sigmoid integral (\code{sigmoid_Integ}) which
-#'   is evaluated from the baseline corrected single one. Therefore such double/sigmoid integral
-#'   is suitable for the accurate determination of radical (paramagnetic centers) amount.
+#'   single integral (\code{single_Integ_correct}) and double/sigmoid integral
+#'   (\code{sigmoid_Integ}) which is evaluated from the baseline corrected single one.
+#'   Therefore, such double/sigmoid integral is suitable for the accurate determination
+#'   of radical (paramagnetic centers) amount.
 #'
 #'   \item Numeric vector corresponding to baseline uncorrected/corrected single integral
 #'   in case of \code{sigmoid.integ = FALSE} + \code{output.vecs = TRUE}.
 #'
-#'   \item List of numeric vectors corresponding to  \strong{`single`} (corrected or uncorrected depending
-#'   on \code{correct.integ} parameter/argument) and \strong{`sigmoid`} integrals (\code{sigmoid.integ = TRUE}).
-#'   In such case integrals are called by \code{list} names like \code{...[["single"]]}
-#'   (\code{...$single}) or by \code{...[["sigmoid"]]} (\code{...$sigmoid}) corresponding to double integrated
-#'   (or single integrated EPR spectra originally presented already in single integrals) EPR spectral data.
+#'   \item List of numeric vectors corresponding to:
+#'     \describe{
+#'     \item{single}{Corrected or uncorrected single integral (in case of derivative form)
+#'     depending on \code{correct.integ} parameter/argument.}
+#'     \item{sigmoid}{Double integral (in case of derivative form) or single integral
+#'     (in case of integrated spectral form) for quantitative analysis.}
+#'     }
 #'   }
 #'
 #'
@@ -366,7 +369,8 @@ eval_integ_EPR_Spec <- function(data.spectr,
             ##  keep `baseline_Intens_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
           data.spectr <- data.spectr %>%
-            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
+            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) -
+                                                       .data$single_Integ_correct))
           #
           ## integration depending on `B` unit
           if (B.unit == "G") {

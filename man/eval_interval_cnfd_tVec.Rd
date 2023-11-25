@@ -12,20 +12,23 @@ eval_interval_cnfd_tVec(
 )
 }
 \arguments{
-\item{data.vec.col}{Numeric (vector) pointing to column of interest (within a data frame) to calculate the confidence
-interval or uncertainty}
+\item{data.vec.col}{Numeric (vector) pointing to column of interest (within a data frame)
+to calculate the confidence interval or uncertainty.}
 
-\item{level.cnfd}{Numeric (float) corresponding to confidence level \strong{default}: \code{level.cnfd = 0.95}}
+\item{level.cnfd}{Numeric (float) corresponding to confidence level \strong{default}:
+\code{level.cnfd = 0.95}.}
 
-\item{lw.tail}{Logical, indicating the way how to calculate \code{qt} quantile function for the \eqn{t}-distribuion,
-it is inherited from \code{\link[stats:TDist]{stats::qt}}, if \code{TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]},
-otherwise, \eqn{P[X>x]}}
+\item{lw.tail}{Logical, indicating the way how to calculate \code{qt} quantile function
+for the \eqn{t}-distribuion, it is inherited from \code{\link[stats:TDist]{stats::qt}},
+if \code{TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]}, otherwise, \eqn{P[X>x]}.}
 
-\item{separate}{Logical, whether to separate the mean value and the uncertainty, if \code{TRUE}, the result is
-shown as a named vvector with (mean) `value` & `uncertaity`, otherwise, the result is in the format \eqn{value\pm uncertainty}}
+\item{separate}{Logical, whether to separate the mean value and the uncertainty,
+if \code{TRUE}, the result is shown as a named vvector with (mean) `value` & `uncertaity`,
+otherwise, the result is in the format \eqn{value\pm uncertainty}.}
 }
 \value{
-Named vector of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty} format depending \code{separate} parameter
+Named vector of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty}
+  format depending \code{separate} parameter.
 }
 \description{
 Mean value and uncertainty (according to Sudent's t-Distribution) corresponding to column

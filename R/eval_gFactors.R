@@ -228,7 +228,7 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #' @return Numeric mean \emph{g}-factor value from principal difference (from \eqn{g_e}) components
 #'   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \emph{g}-components
-#'   if \code{mean = FALSE}
+#'   if \code{mean = FALSE}.
 #'
 #'
 #' @examples

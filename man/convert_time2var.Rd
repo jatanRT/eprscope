@@ -36,7 +36,7 @@ by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
 \strong{Default}: \code{var.rate.unit = "s^{-1}"}.}
 }
 \value{
-Numeric value or vector of variable (e.g. like electrochem. potential or temperature...etc)
+Numeric value or vector of the variable like e.g. electrochem. potential or temperature,
   linearly changing upon time.
 }
 \description{

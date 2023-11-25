@@ -20,7 +20,7 @@ or \code{"orca"}.}
 \value{
 Numeric mean \emph{g}-factor value from principal difference (from \eqn{g_e}) components
   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \emph{g}-components
-  if \code{mean = FALSE}
+  if \code{mean = FALSE}.
 }
 \description{
 \emph{g}-Values (3 principal ones) are presented in a form of differences from the \eqn{g_e}.
