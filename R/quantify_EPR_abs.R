@@ -36,6 +36,12 @@
 #'   \insertRef{eatonQepr2010}{eprscope}
 #'
 #'   \insertRef{hirschCapill2023}{eprscope}
+#'
+#'   \insertRef{mazurAnalysis1997}{eprscope}
+#'
+#'   \insertRef{portisElectro1953}{eprscope}
+#'
+#'   \insertRef{mailerQuant1977}{eprscope}
 #' }
 #'
 #'
@@ -59,31 +65,34 @@
 #' @param qValue Numeric value of the sensitivity `Q` factor. For the processed EPR spectra by
 #'   the `{eprscope}` package the \code{integ.sigmoid.max} is usually normalized by the `Q` value.
 #'   Therefore, \strong{default}: \code{qValue = NULL}.
+#' @param point.sample.factor Numeric value ... tbc ...
 #' @param tube.sample.id.mm Numeric value equal to internal diameter (in `mm`) of the tube/cell used
 #'   for the quantitative EPR experiment.
 #' @param fill.sample.h.mm Numeric value equal to sample height (in `mm`) within the tube/cell.
+#' @param eff.cavity.h.mm Numeric value equal to effective cavity/probehead height/length,
+#'   usually provided by the probehead manufacturer.
+#' @param fn.B1.Bm.fit Numeric vector (coefficients) or character string ("theoretical")
 #' @param Norm.const Numeric value corresponding to normalization constant (see
 #'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
-#'   when the EPR spectrum was normalized by that constant either upon measurement or during processing.
+#'   if the EPR spectrum was normalized by such constant either upon measurement or during processing.
+#'   Otherwise it must be provided by \code{\link{quantify_EPR_Norm_const}}.
 #' @param Temp.K Numeric temperature value in `K`. Because the \code{instrum.params} also contains temperature
 #'   input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for calculation.
 #'   Either \code{Temp.K} or \code{TK} CAN BE ALSO `NULL` but NOT BOTH !! In the latter case default value `298 K`
 #'   is considered.
-#' @param S Numeric, ...tbc...
-#' @param microW.cavity Character string, ...tbc..."highsensitive" or "rectangular" \strong{Default}:
-#'   \code{microW.cavity = "rectangular"}.
+#' @param S Numeric value, total spin sample quantum number. For radicals \code{S = 0.5}
+#'   (\strong{default}).
 #'
 #'
 #' @return List of the following quantities:
-#'
-#'   * \code{N.cm}, number of spins per effective centimeter. It is defined
+#'   \describe{
+#'   \item{N.cm}{Number of spins per effective centimeter. It is defined
 #'     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
 #'     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
-#'     the equation above shown in details.
-#'
-#'   * \code{N.cm3}, corresponding to number of spins per \eqn{\text{cm}^3}
-#'
-#'   * \code{c.M}, denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
+#'     the equation above shown in details.}
+#'    \item{N.cm3}{Number of spins per \eqn{\text{cm}^3}.}
+#'    \item{c.M}{Concentration of spins/radicals in \eqn{\text{mol}\,\text{dm}^{-3}}.}
+#'   }
 #'
 #'
 #' @examples
@@ -102,11 +111,15 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                              origin = "xenon",
                              qValue = NULL,
                              tube.sample.id.mm,
+                             point.sample.factor = 8.51e-09,
                              fill.sample.h.mm,
+                             eff.cavity.h.mm = 23,
+                             fn.B1.Bm.fit = c(1.00179,-3.07086e-3,-2.65409e-2,
+                                              2.97603e-4,2.23277e-4,-4.53833e-06,
+                                              -4.1451e-07,1.89417e-08,-1.48241e-09),
                              Norm.const = NULL,
                              Temp.K = NULL,
-                             S = 0.5,
-                             microW.cavity = "rectangular") {
+                             S = 0.5) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -158,149 +171,109 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
   ## `Third` quantification factor in definition:
   third.quant.factor <- sqrt(P.mW * 1e-3) * Bm.mT * 1e-3 * qValue * n.B * S * (S + 1)
   #
-  if (microW.cavity == "rectangular") {
+  if (fill.sample.h.mm <= eff.cavity.h.mm){
     #
-    ## Cavity constants/characteristics:
-    point.sample.c.factor <- 8.51e-09 # unitless
-    ## difference between the cavity center and the sample center position:
-    # centr.sample.h.mm <- 61 ## in mm
-    h.cavity.length.mm <- 23 # in mm
+    ## tube volume in m^3
+    tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
     #
-    ## Polynomial function to characterize intensity distribution within the cavity:
-    ## `y` corresponds to distance from cavity center in mm:
-    ## Because it shows the intensity dependence only in one (y) direction it must be multiplied
-    ## by (1/3)
-    intensity.poly.function <- function(y) {
-      (1.00179 - (0.00307086 * y) - (0.0265409 * y^2) +
-        (0.000297603 * y^3) + (0.000223277 * y^4) - (4.53833e-06 * y^5) - (4.1451e-07 * y^6) +
-        (1.89417e-08 * y^7) - (1.48241e-09 * y^8)) * (1/3)
-    }
-    #
-    ## CALCULATIONS depending on the sample height =>
-    if (fill.sample.h.mm >= h.cavity.length.mm) {
+    if (fn.B1.Bm.fit == "theoretical"){
+      ## function to characterize the relative intensity distribution within
+      ## the cavity: see also https://doi.org/10.1016/0022-2364(77)90133-0
+      ## and https://doi.org/10.1006/jmre.1997.1248
+      ## `y` corresponds to distance from cavity center in mm:
+      ## It must be normalized per half of the standing wave cycle
+      ## (sample is positioned in the cavity-center) => therefore
+      ## multiplied by `(1/pi)`,
+      ## see also https://doi.org/10.1016/0022-2364(77)90133-0 +
+      ## https://doi.org/10.1103/PhysRev.91.1071
+      fn.fit.theo <- function(y,q){
+        (1/pi) * ((q * (cospi(y/eff.cavity.h.mm))^3) / sqrt(1 + (q^2 * (cospi(y/eff.cavity.h.mm))^2)))
+      }
+      ## coeff. `q` depends on `fill.sample.h.mm`, see below
       #
-      ## Tube volume: the max effective tube height is 22 mm due to integration
-      ## of the polynomial function (see below)
-      tube.volume.m3 <- (22 * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
+      if (fill.sample.h.mm > (0.1 * eff.cavity.h.mm)){
+        ## function
+        fn.fit.theo.q1 <- function(y){fn.fit.theo(y,q = sqrt(4.3))}
+        #
+        ## Integration of the polynomial function,
+        ## resolution for the integration
+        integral.poly.resolv = fill.sample.h.mm * 5 ## resolution 0.2 mm can be easily measured
+        integral.poly.list <- stats::integrate(fn.fit.theo.q1,
+                                               lower = -(fill.sample.h.mm / 2),
+                                               upper = (fill.sample.h.mm / 2),
+                                               subdivisions = integral.poly.resolv)
+      }
+      if (fill.sample.h.mm == (0.1 * eff.cavity.h.mm)){
+        ## function
+        fn.fit.theo.q2 <- function(y){fn.fit.theo(y,q = sqrt(3.1))}
+        #
+        ## Integration of the polynomial function,
+        ## resolution for the integration
+        integral.poly.resolv = fill.sample.h.mm * 5 ## resolution of 0.2 mm selected
+        integral.poly.list <- stats::integrate(fn.fit.theo.q2,
+                                               lower = -(fill.sample.h.mm / 2),
+                                               upper = (fill.sample.h.mm / 2),
+                                               subdivisions = integral.poly.resolv)
+      }
+    }
+    if (is.vector(fn.B1.Bm.fit)){
+      fn.fit.poly <- function(y){
+        (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+      }
       #
       ## Integration of the polynomial function,
       ## resolution for the integration
-      integral.poly.resolv = 22 * 10 ## resolution 0.1 mm
-      ## according to function visualization => it makes sense only from -11 mm to 11 mm !!
-      integral.poly.list <- stats::integrate(intensity.poly.function,
-                                             lower =  - 11,
-                                             upper = 11,
-                                             subdivisions = integral.poly.resolv
-      )
-      ## because the integration result is list & the integral corresponds to `[[1]]` value
-      integral.poly <- integral.poly.list[[1]] ## corresponds to `point.sample.c.factor` units
-      #
-      ## Own quantification:
-      ## Number of species:
-      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
-                                               Norm.const * third.quant.factor)
-      ## Number of species per effective cm
-      No.paramag.cm.spc <- (No.paramag.spc / h.cavity.length.mm) * 10
-      #
-    }
-    #
-    if (fill.sample.h.mm < h.cavity.length.mm) {
-      #
-      ## Tube volume:
-      tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
-      #
-      ## Integration of the polynomial function
-      ## resolution for the integration
-      integral.poly.resolv = fill.sample.h.mm * 10 ## resolution 0.1 mm
-      integral.poly.list <- stats::integrate(intensity.poly.function,
+      integral.poly.resolv = fill.sample.h.mm * 5 ## resolution 0.2 mm
+      integral.poly.list <- stats::integrate(fn.fit.poly,
                                              lower =  - (fill.sample.h.mm / 2),
                                              upper = (fill.sample.h.mm / 2),
-                                             subdivisions = integral.poly.resolv
-      )
-      ## because the integration result is list & the integral corresponds to `[[1]]` value
-      integral.poly <- integral.poly.list[[1]] ## corresponds to `point.sample.c.factor` units
-      #
-      ## Own quantification:
-      ## Number of species:
-      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
-                                               Norm.const * third.quant.factor)
-      ## Number of species per effective cm
-      No.paramag.cm.spc <- (No.paramag.spc / fill.sample.h.mm) * 10
-      #
+                                             subdivisions = integral.poly.resolv)
     }
+    #
   }
-  if (microW.cavity == "highsensitive") {
+  if (fill.sample.h.mm > eff.cavity.h.mm){
     #
-    ## Cavity constants/characteristics:
-    point.sample.c.factor <- 9.271e-09 # unitless
-    ## difference between the cavity center and the sample center position:
-    # centr.sample.h.mm <- 62.5 ## in mm
-    h.cavity.length.mm <- 40 # in mm
+    ## tube volume in m^3
+    tube.volume.m3 <- (eff.cavity.h.mm * 1e-3) * pi * ((eff.cavity.h.mm / 2) * 1e-3)^2
     #
-    ## Polynomial function to characterize intensity distribution within the cavity:
-    ## `y` corresponds to distance from cavity center in mm:
-    ## Because it shows the intensity dependence only in one (y) direction it must be multiplied
-    ## by (1/3)
-    intensity.poly.function <- function(y) {
-      (0.99652 + (0.00737177 * y) - (0.00559614 * y^2) -
-        (2.88221e-05 * y^3) + (1.00404e-05 * y^4) + (3.43695e-08 * y^5) - (5.0404e-09 * y^6) -
-        (1.4783e-11 * y^7) - (1.29132e-12 * y^8)) * (1/3)
+    if (fn.B1.Bm.fit == "theoretical"){
+      stop(" Theoretical description/fit of `f(B1,Bm)` function for condition\n
+           `fill.sample.h.mm` > `eff.cavity.h.mm` is not available. Please,\n
+           use polynomial fit instead ! ")
     }
-    #
-    ## CALCULATIONS depending on the sample height =>
-    if (fill.sample.h.mm >= h.cavity.length.mm) {
-      #
-      ## Tube volume: in contrast to rectangular cavity this is OK !!
-      tube.volume.m3 <- (h.cavity.length.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
+    if (is.vector(fn.B1.Bm.fit)){
+      fn.fit.poly <- function(y){
+        (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+      }
       #
       ## Integration of the polynomial function,
       ## resolution for the integration
-      integral.poly.resolv = (h.cavity.length.mm) * 10 ## resolution 0.1 mm
-      ## in contrast to rectangular cavity this is OK !!
-      integral.poly.list <- stats::integrate(intensity.poly.function,
-                                             lower =  - (h.cavity.length.mm / 2),
-                                             upper = (h.cavity.length.mm /2 ),
-                                             subdivisions = integral.poly.resolv
-      )
-      ## because the integration result is list & the integral corresponds to `[[1]]` value
-      integral.poly <- integral.poly.list[[1]] ## corresponds to `point.sample.c.factor` units
-      #
-      ## Own quantification:
-      ## Number of species:
-      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
-                                               Norm.const * third.quant.factor)
-      ## Number of species per effective cm
-      No.paramag.cm.spc <- (No.paramag.spc / h.cavity.length.mm) * 10
-      #
+      integral.poly.resolv = eff.cavity.h.mm * 5 ## resolution 0.2 mm
+      integral.poly.list <- stats::integrate(fn.fit.poly,
+                                             lower =  - (eff.cavity.h.mm / 2),
+                                             upper = (eff.cavity.h.mm / 2),
+                                             subdivisions = integral.poly.resolv)
     }
-    if (fill.sample.h.mm < h.cavity.length.mm) {
-      #
-      ## Tube volume:
-      tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
-      #
-      ## Integration of the polynomial function
-      ## resolution for the integration
-      integral.poly.resolv = fill.sample.h.mm * 10 ## resolution 0.1 mm
-      integral.poly.list <- stats::integrate(intensity.poly.function,
-                                             lower =  - (fill.sample.h.mm / 2),
-                                             upper = (fill.sample.h.mm / 2),
-                                             subdivisions = integral.poly.resolv
-      )
-      ## because the integration result is list & the integral corresponds to `[[1]]` value
-      integral.poly <- integral.poly.list[[1]] ## corresponds to `point.sample.c.factor` units
-      #
-      ## Own quantification:
-      ## Number of species:
-      No.paramag.spc <- integ.sigmoid.max / ((point.sample.c.factor / integral.poly) *
-                                               Norm.const * third.quant.factor)
-      ## Number of species per effective cm
-      No.paramag.cm.spc <- (No.paramag.spc / fill.sample.h.mm) * 10
-      #
-    }
-    #
   }
   #
-  ## Additional Quantification
+  ## because the integration result is list & the integral corresponds to `[[1]]` value
+  integral.poly <- integral.poly.list[[1]] ## corresponds to `point.sample.c.factor` units
+  #
+  ## Own quantification:
+  ## Number of species:
+  No.paramag.spc <- integ.sigmoid.max / ((point.sample.factor / integral.poly) *
+                                           Norm.const * third.quant.factor)
+  #
+  ## `point.sample.factor` and `integral.poly` must possess the same units
+  #
+  ## Number of species per effective cm (around the `f(B1,Bm)` maximum)
+  No.paramag.cm.spc <- (No.paramag.spc / eff.cavity.h.mm) * 10
   #
   ## Number of species in cm^3:
   No.paramag.V.spc <- No.paramag.spc / (tube.volume.m3 * 1e+6)

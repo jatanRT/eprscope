@@ -11,11 +11,14 @@ quantify_EPR_Abs(
   origin = "xenon",
   qValue = NULL,
   tube.sample.id.mm,
+  point.sample.factor = 8.51e-09,
   fill.sample.h.mm,
+  eff.cavity.h.mm = 23,
+  fn.B1.Bm.fit = c(1.00179, -0.00307086, -0.0265409, 0.000297603, 0.000223277,
+    -4.53833e-06, -4.1451e-07, 1.89417e-08, -1.48241e-09),
   Norm.const = NULL,
   Temp.K = NULL,
-  S = 0.5,
-  microW.cavity = "rectangular"
+  S = 0.5
 )
 }
 \arguments{
@@ -54,33 +57,38 @@ Therefore, \strong{default}: \code{qValue = NULL}.}
 \item{tube.sample.id.mm}{Numeric value equal to internal diameter (in `mm`) of the tube/cell used
 for the quantitative EPR experiment.}
 
+\item{point.sample.factor}{Numeric value ... tbc ...}
+
 \item{fill.sample.h.mm}{Numeric value equal to sample height (in `mm`) within the tube/cell.}
+
+\item{eff.cavity.h.mm}{Numeric value equal to effective cavity/probehead height/length,
+usually provided by the probehead manufacturer.}
+
+\item{fn.B1.Bm.fit}{Numeric vector (coefficients) or character string ("theoretical")}
 
 \item{Norm.const}{Numeric value corresponding to normalization constant (see
 \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
-when the EPR spectrum was normalized by that constant either upon measurement or during processing.}
+if the EPR spectrum was normalized by such constant either upon measurement or during processing.
+Otherwise it must be provided by \code{\link{quantify_EPR_Norm_const}}.}
 
 \item{Temp.K}{Numeric temperature value in `K`. Because the \code{instrum.params} also contains temperature
 input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for calculation.
 Either \code{Temp.K} or \code{TK} CAN BE ALSO `NULL` but NOT BOTH !! In the latter case default value `298 K`
 is considered.}
 
-\item{S}{Numeric, ...tbc...}
-
-\item{microW.cavity}{Character string, ...tbc..."highsensitive" or "rectangular" \strong{Default}:
-\code{microW.cavity = "rectangular"}.}
+\item{S}{Numeric value, total spin sample quantum number. For radicals \code{S = 0.5}
+(\strong{default}).}
 }
 \value{
 List of the following quantities:
-
-  * \code{N.cm}, number of spins per effective centimeter. It is defined
+  \describe{
+  \item{N.cm}{Number of spins per effective centimeter. It is defined
     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
-    the equation above shown in details.
-
-  * \code{N.cm3}, corresponding to number of spins per \eqn{\text{cm}^3}
-
-  * \code{c.M}, denotes the concentration in \eqn{\text{mol}\,\text{dm}^{-3}}
+    the equation above shown in details.}
+   \item{N.cm3}{Number of spins per \eqn{\text{cm}^3}.}
+   \item{c.M}{Concentration of spins/radicals in \eqn{\text{mol}\,\text{dm}^{-3}}.}
+  }
 }
 \description{
 A short description...TBC...in the Most Common EPR Cavities
@@ -119,6 +127,12 @@ tbc
   \insertRef{eatonQepr2010}{eprscope}
 
   \insertRef{hirschCapill2023}{eprscope}
+
+  \insertRef{mazurAnalysis1997}{eprscope}
+
+  \insertRef{portisElectro1953}{eprscope}
+
+  \insertRef{mailerQuant1977}{eprscope}
 }
 }
 \seealso{
