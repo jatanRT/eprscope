@@ -176,7 +176,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     ## tube volume in m^3
     tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
     #
-    if (fn.B1.Bm.fit == "theoretical"){
+    if (length(fn.B1.Bm.fit) == 1){
       ## function to characterize the relative intensity distribution within
       ## the cavity: see also https://doi.org/10.1016/0022-2364(77)90133-0
       ## and https://doi.org/10.1006/jmre.1997.1248
@@ -216,7 +216,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                                                subdivisions = integral.poly.resolv)
       }
     }
-    if (is.vector(fn.B1.Bm.fit)){
+    if (length(fn.B1.Bm.fit) > 1){
       fn.fit.poly <- function(y){
         (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
                     (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
@@ -239,12 +239,12 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     ## tube volume in m^3
     tube.volume.m3 <- (eff.cavity.h.mm * 1e-3) * pi * ((eff.cavity.h.mm / 2) * 1e-3)^2
     #
-    if (fn.B1.Bm.fit == "theoretical"){
+    if (length(fn.B1.Bm.fit) == 1){
       stop(" Theoretical description/fit of `f(B1,Bm)` function for condition\n
            `fill.sample.h.mm` > `eff.cavity.h.mm` is not available. Please,\n
            use polynomial fit instead ! ")
     }
-    if (is.vector(fn.B1.Bm.fit)){
+    if (length(fn.B1.Bm.fit) > 1){
       fn.fit.poly <- function(y){
         (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
                     (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
