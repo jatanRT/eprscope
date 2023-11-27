@@ -132,15 +132,15 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     data.spectr.expr$index <- NULL
   }
   ## instrumental parameters except the microwave frequency must be read from
-  ## experimental data. It cannot be done by the same way like in simulation
+  ## the experimental data. It cannot be done by the same way like in simulation
   ## because the relevant instrum. params. like Bsw (B.SW) and Bcf (B.CF) differs
-  ## from those in `.DSC` and `.par`. The reason is the Teslameter. If it'is
+  ## from those presented in `.DSC` and `.par`. The reason is the Teslameter. If it'is
   ## in ON state the measured B values (can be slightly, i.e. approx. 1-3 G) different
-  ## from those measured by Hall probe or from the spectrum parameter settings.
+  ## from those measured by the Hall probe or from the spectrum parameter settings.
   ## If the Teslameter is in ON state the measured values are automatically
   ## written into the text ASCII file. Therefore, to properly compare the simulated
   ## and experimental spectrum these parameters must be extracted form
-  ## the experimental ASCII (`.txt` or `.asc`) ASCII data file.
+  ## the experimental ASCII (`.txt` or `.asc`) ASCII data file =>
   B.cf <- stats::median(data.spectr.expr[[paste0("B_",B.unit)]])
   B.sw <- max(data.spectr.expr[[paste0("B_",B.unit)]]) -
     min(data.spectr.expr[[paste0("B_",B.unit)]])
@@ -158,6 +158,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     nuclear.system.noA <- list(nuclear.system.noA)
   } else {
     nuclear.system.noA <- nuclear.system.noA
+  }
+  #
+  ## condition to switch among three values
+  baseline.cond.fn <- function(baseline.correct){
+    if (baseline.correct == "constant"){
+      return(0)
+    } else if (baseline.correct == "linear"){
+        return(1)
+    } else if(baseline.correct == "quadratic"){
+        return(2)
+    }
   }
   #
   ## functions to parameterize simulation by arguments/parameters
@@ -211,15 +222,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## adding parameters As to nested list
       ## the first par[1,2,3,4,5,...] is reserved for g,linewidths, baseline and intensity
       ## `A.var` should be explicitly expressed by corresp. x0 elements
-      if (baseline == "constant"){
-        A.var <- par[6:(5+length(nucle_us_i))]
-      }
-      if (baseline == "linear"){
-        A.var <- par[7:(6+length(nucle_us_i))]
-      }
-      if (baseline == "quadratic"){
-        A.var <- par[8:(7+length(nucle_us_i))]
-      }
+      A.var <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                      par[8:(7+length(nucle_us_i))],
+                      par[7:(6+length(nucle_us_i))],
+                      par[6:(5+length(nucle_us_i))]
+                      )
       #
       nucs.system.new <- c()
       for (j in seq(nucs.system)) {
@@ -311,15 +318,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## adding parameters As to nested list
       ## the first par[1,2,3,4,5,...] is reserved for g,linewidths, baseline and intensity
       ## `A.var` should be explicitly expressed by corresp. x0 elements
-      if (baseline == "constant"){
-        A.var <- x0[6:(5+length(nucle_us_i))]
-      }
-      if (baseline == "linear"){
-        A.var <- x0[7:(6+length(nucle_us_i))]
-      }
-      if (baseline == "quadratic"){
-        A.var <- x0[8:(7+length(nucle_us_i))]
-      }
+      A.var <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                      x0[8:(7+length(nucle_us_i))],
+                      x0[7:(6+length(nucle_us_i))],
+                      x0[6:(5+length(nucle_us_i))]
+      )
       #
       nucs.system.new <- c()
       for (j in seq(nucs.system)) {
@@ -368,29 +371,22 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     optim.params.init[3] - (optim.params.init[2] * 0.1),
                     optim.params.init[4] - 0.0005,
                     1e-8)
-  if (baseline.correct == "constant"){
-    lower.limits <- lower.limits
-  }
-  if (baseline.correct == "linear"){
-    lower.limits <- c(lower.limits,-5)
-  }
-  if (baseline.correct == "quadratic"){
-    lower.limits <- c(lower.limits,-5,-5)
-  }
+  lower.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                         c(lower.limits,-5,-5),
+                         c(lower.limits,-5),
+                         lower.limits
+                         )
   upper.limits <- c(optim.params.init[1] + 0.0005,
                     optim.params.init[2] + (optim.params.init[2] * 0.1),
                     optim.params.init[3] + (optim.params.init[2] * 0.1),
                     optim.params.init[4] + 0.0005,
                     100)
-  if (baseline.correct == "constant"){
-    upper.limits <- upper.limits
-  }
-  if (baseline.correct == "linear"){
-    upper.limits <- c(upper.limits,5)
-  }
-  if (baseline.correct == "quadratic"){
-    upper.limits <- c(upper.limits,5,5)
-  }
+  upper.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                         c(upper.limits,5,5),
+                         c(upper.limits,5),
+                         upper.limits
+  )
+  #
   if (is.null(nuclear.system.noA)){
     lower.limits <- lower.limits
     upper.limits <- upper.limits
@@ -461,8 +457,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_lm,
-                                    method = "levenmarq",
-                                    x.0 = optim.params.init)
+                                         method = "levenmarq",
+                                         x.0 = optim.params.init)
     }
     if (optim.method[m] == "pswarm"){
       ## LSQ FUNCTION
@@ -472,8 +468,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_ps,
-                                    method = "pswarm",
-                                    x.0 = optim.params.init)
+                                         method = "pswarm",
+                                         x.0 = optim.params.init)
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") { ## with `else` it doesn't work
@@ -484,8 +480,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_nl,
-                                    method = optim.method[m],
-                                    x.0 = optim.params.init)
+                                         method = optim.method[m],
+                                         x.0 = optim.params.init)
     }
     #
     ## best parameters as input (`optim.params.init`) for the next cycle
@@ -496,65 +492,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
     #
   }
-  # if (length(optim.method) >= 1){
-  #   ## min. function for optimization incl. `fit_sim_params_par(x0)()` based on method
-  #   ## + optimization
-  #   if (optim.method[1] == "levenmarq"){
-  #     #
-  #     optimization.list <- optim_fn(fun = min_residuals_lm,
-  #                                   method = "levenmarq",
-  #                                   x.0 = optim.params.init)
-  #   }
-  #   if (optim.method[1] == "pswarm"){
-  #     #
-  #     optimization.list <- optim_fn(fun = min_residuals_ps,
-  #                                   method = "pswarm",
-  #                                   x.0 = optim.params.init)
-  #   }
-  #   if (optim.method[1] == "slsqp" || optim.method[1] == "neldermead" ||
-  #       optim.method[1] == "crs2lm" || optim.method[1] == "sbplx") {
-  #     #
-  #     optimization.list <- optim_fn(fun = min_residuals_nl,
-  #                                   method = optim.method[1],
-  #                                   x.0 = optim.params.init)
-  #   }
-  #   #
-  #   ## best parameters
-  #   best.fit.params <- optimization.list$par
-  #   #
-  #   ## Take these params. into 2nd optimization cycle
-  #   ## or finish =>
-  #   #
-  # }
-  # if (length(optim.method) == 2){
-  #   ## min. function for optimization incl. `fit_sim_params_par(x0)()` based on method
-  #   ## + optimization
-  #   #
-  #   if (optim.method[2] == "levenmarq"){
-  #     #
-  #     optimization.list <- optim_fn(fun = min_residuals_lm,
-  #                                   method = "levenmarq",
-  #                                   x.0 = best.fit.params)
-  #   }
-  #   if (optim.method[2] == "pswarm"){
-  #     #
-  #     optimization.list <- optim_fn(fun = min_residuals_ps,
-  #                                   method = "pswarm",
-  #                                   x.0 = best.fit.params)
-  #   }
-  #   if (optim.method[2] == "slsqp" || optim.method[2] == "neldermead" ||
-  #       optim.method[2] == "crs2lm" || optim.method[2] == "sbplx") {
-  #     #
-  #     optimization.list <- optim_fn(fun = min_residuals_nl,
-  #                                   method = optim.method[2],
-  #                                   x.0 = best.fit.params)
-  #   }
-  #   #
-  #   ## best parameters
-  #   best.fit.params <- optimization.list$par
-  #   #
-  # }
-  #
   #
   ## The best system is the last one from the `best.fit.params` =>
   ## therefore it correspond to `best.fit.params[[length(optim.method)]]`
@@ -564,15 +501,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   if (is.null(nuclear.system.noA)){
     nucs.system.best <- NULL
   } else{
-    if (baseline.correct == "constant"){
-      A.best <- best.fit.params[[length(optim.method)]][6:(5+length(nuclear.system.noA))]
-    }
-    if (baseline.correct == "linear"){
-      A.best <- best.fit.params[[length(optim.method)]][7:(6+length(nuclear.system.noA))]
-    }
-    if (baseline.correct == "quadratic"){
-      A.best <- best.fit.params[[length(optim.method)]][8:(7+length(nuclear.system.noA))]
-    }
+    A.best <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                     best.fit.params[[length(optim.method)]][8:(7+length(nuclear.system.noA))],
+                     best.fit.params[[length(optim.method)]][7:(6+length(nuclear.system.noA))],
+                     best.fit.params[[length(optim.method)]][6:(5+length(nuclear.system.noA))]
+                     )
     A.best <- round(A.best,digits = 3)
     nucs.system.best <- c()
     for (j in seq(nuclear.system.noA)) {
@@ -594,11 +527,18 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                   Intensity.sim = Intensity.sim)$df
   #
   ## best simulated Intensity and add the `Intensity.sim` to experimental
-  # spectrum data
+  # spectrum data based on the baseline.correct condition
+  Intens.baseline.switch <-
+    switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+           ((best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]) +
+              (best.fit.params[[length(optim.method)]][7] * (best.fit.df[[paste0("Bsim_",B.unit)]])^2)),
+           (best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]),
+           0
+    )
   data.spectr.expr[[Intensity.sim]] <-
     best.fit.params[[length(optim.method)]][4] +
     (best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]) +
-
+    Intens.baseline.switch
   #
   ## ======================== DATA & PLOTTING =============================
   #
