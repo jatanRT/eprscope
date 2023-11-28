@@ -579,17 +579,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## down below by factor of difference between `max()` and `min()`
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
-      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation) %>%
+      # dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
       ## simulation without baseline
-      dplyr::mutate(Simulation_NoBasLin = best.fit.df[[Intensity.sim]]) %>%
+      dplyr::mutate(Simulation_NoBasLin = best.fit.params[[length(optim.method)]][5] *
+                      best.fit.df[[Intensity.sim]]) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
       dplyr::arrange(.data$Spectrum)
   }
   #
-  ## Adding residuals to the overall data frame
+  ## Adding residuals and `pure` simulation (without baseline)
+  ## to the overall data frame
   data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
+  data.sim.expr$Simulation_NoBasLin <- best.fit.params[[length(optim.method)]][5] *
+    best.fit.df[[Intensity.sim]]
   #
   ## plotting all spectra
   #
@@ -636,9 +640,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     color = .data$Spectrum),
                 linewidth = 0.75) +
       scale_color_manual(values = c("darkcyan","magenta","blue"),
-                         breaks = c("Experiment",
+                         labels = c("Experiment",
                                     "Simulation",
-                                    "Simulation\nNo Baseline")) +
+                                    "\nSimulation\nNo Baseline")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
