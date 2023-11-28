@@ -89,7 +89,7 @@
 #' ## returns the following list =>
 #' tmpd.test.sim.fit$plot ## publication ready plot (both spectra are not overlayed)
 #' tmpd.test.sim.fit$best.fit.params ## the same like before
-#' tmpd.test.sim.fit$df ## data frame in wide-format with sim., expr. + resids. spectra
+#' tmpd.test.sim.fit$df ## data frame with sim., sim. without baseline, expr. and residuals
 #' tmpd.test.sim.fit$sum.LSQ.min ## min. sum of residual squares
 #' tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
 #' tmpd.test.sim.fit$N.converg ## "convergence" value indicating successful completion
@@ -579,9 +579,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## down below by factor of difference between `max()` and `min()`
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
-      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
+      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation) %>%
       ## simulation without baseline
-      dplyr::mutate(Simulation_NoBasLin = best.fit.df[[Intensity.sim]] - (2 * Int.diff)) %>%
+      dplyr::mutate(Simulation_NoBasLin = best.fit.df[[Intensity.sim]]) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -636,7 +636,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     color = .data$Spectrum),
                 linewidth = 0.75) +
       scale_color_manual(values = c("darkcyan","magenta","blue"),
-                         breaks = c("Experiment","Simulation","Simulation\nNo Baseline")) +
+                         breaks = c("Experiment",
+                                    "Simulation",
+                                    "Simulation\nNo Baseline")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
