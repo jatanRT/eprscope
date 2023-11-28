@@ -23,14 +23,12 @@ and \code{"central field"} (see \code{\link{eval_sim_EPR_iso}}).
 }
 \value{
 List consisting of:
-
-  * \code{Bcf}, "central field" value in `B.unit`
-
-  * \code{Bsw}, "sweep width" value in `B.unit`)
-
-  * \code{Npoints}, "number of points" value
-
-  * \code{mwGHz}, "microwave frequency" value in `GHz`
+  \describe{
+  \item{Bcf}{Central field (magnetic fux density, \emph{B}) value in \code{B.unit}.}
+  \item{Bsw}{Sweep width (magnetic fux density, \emph{B}, experimental range) value in \code{B.unit}.}
+  \item{Npoints}{Number of points (spectral resolution).}
+  \item{mwGHz}{Microwave frequency value in `GHz`.}
+  }
 }
 \description{
 Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like

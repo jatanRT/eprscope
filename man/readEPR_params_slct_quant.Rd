@@ -18,14 +18,12 @@ one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.}
 }
 \value{
 List consisting of:
-
-  * \code{BmmT}, "modulation amplitude" value  in `mT`
-
-  * \code{PmW}, "microwave source power" value in `mW`
-
-  * \code{TK}, "temperature" value in `K`
-
-  * \code{mwGHz}, "microwave frequency" value in `GHz`.
+  \describe{
+  \item{BmmT}{Modulation amplitude value in `mT`.}
+  \item{PmW}{Microwave source power in `mW`.}
+  \item{TK}{Experimental temperature in `K`.}
+  \item{mwGHz}{Microwave frequency value in `GHz`.}
+  }
 }
 \description{
 Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like

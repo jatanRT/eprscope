@@ -12,18 +12,23 @@ to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter
 \code{text} files including all instrumental parameters and provided by the EPR machine}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
-\strong{default}: \code{origin = "xenon"}}
+on BRUKER spectrometers, because the files are slightly different depending on whether they
+were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
+one ("Xenon"), \strong{default}: \code{origin = "xenon"}}
 
-\item{interact}{Charater, whether or not display tables by \code{\link[DT]{datatable}}. \strong{Default}:
-\code{interact = NULL}. To display interactive table with parameters: \code{interact = "params"} aa well as
-to display that of the additional information: \code{interact = "info"}.}
+\item{interact}{Character string, whether or not display tables by \code{\link[DT]{datatable}}.
+\strong{Default}: \code{interact = NULL}. To display interactive table with parameters:
+\code{interact = "params"} as well as to display that of the additional information:
+\code{interact = "info"}.}
 }
 \value{
-List of data frames/tables containing instrumental parameters (\code{params}) and information (\code{info}),
- i.e. numeric values & character strings related to an EPR experiment. Both data frames tables may be depicted
- in the form of interactive tables by \code{interact} function argument.
+List of data frames/tables containing:
+ \describe{
+ \item{params}{Instrumental parameters with their numeric values and units.}
+ \item{info}{Information character string, e.g. like date, operator, comment...etc.}
+ }
+ Both data frames tables may be depicted in the form of interactive tables
+ by \code{interact} function argument.
 }
 \description{
 Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
@@ -32,14 +37,19 @@ parameter values as well as character/string information about the measurement s
 \code{\link{readEPR_param_slct}}
 }
 \examples{
-\dontrun{
-readEPR_params_tabs(path_to_dsc_par)
-readEPR_params_tabs(file.path(".",
-                              "dir_par",
-                              "EPR_spectrum.par"),
+## built-in package file => "TMPD_specelchem_accu_b.par"
+tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
+## reading and displaying parameters as data frame
+tmpd.params.tab <- readEPR_params_tabs(tmpd.params.file,
+                                       origin = "winepr")
+##
+## preview
+utils::head(tmpd.params.tab)
+##
+## the same like interactive table form
+readEPR_params_tabs(tmpd.params.file,
                     origin = "winepr",
-                    interact = params)
-}
+                    interact = "params")
 
 
 }

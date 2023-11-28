@@ -17,13 +17,12 @@ by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux 
 }
 \value{
 List containing:
-
-  * number of scans (\code{Nscans})
-
-  * sweep time (\code{swTime}) required for time correction during the \code{2D_Field_Delay}
-    experiment ("kinetic" time series)
-
-  * number of points (\code{Npoints})
+  \describe{
+  \item{Nscans}{Number of scans.}
+  \item{swTime}{Sweep time in `s` required for time correction during the `2D_Field_Delay`
+  (time series EPR experiment).}
+  \item{Npoints}{Number of points (spectral resolution).}
+  }
 }
 \description{
 Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}

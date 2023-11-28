@@ -133,13 +133,12 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #'
 #' @return List containing:
-#'
-#'   * number of scans (\code{Nscans})
-#'
-#'   * sweep time (\code{swTime}) required for time correction during the \code{2D_Field_Delay}
-#'     experiment ("kinetic" time series)
-#'
-#'   * number of points (\code{Npoints})
+#'   \describe{
+#'   \item{Nscans}{Number of scans.}
+#'   \item{swTime}{Sweep time in `s` required for time correction during the `2D_Field_Delay`
+#'   (time series EPR experiment).}
+#'   \item{Npoints}{Number of points (spectral resolution).}
+#'   }
 #'
 #'
 #' @examples
@@ -218,14 +217,12 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
 #'
 #'
 #' @return List consisting of:
-#'
-#'   * \code{BmmT}, "modulation amplitude" value  in `mT`
-#'
-#'   * \code{PmW}, "microwave source power" value in `mW`
-#'
-#'   * \code{TK}, "temperature" value in `K`
-#'
-#'   * \code{mwGHz}, "microwave frequency" value in `GHz`.
+#'   \describe{
+#'   \item{BmmT}{Modulation amplitude value in `mT`.}
+#'   \item{PmW}{Microwave source power in `mW`.}
+#'   \item{TK}{Experimental temperature in `K`.}
+#'   \item{mwGHz}{Microwave frequency value in `GHz`.}
+#'   }
 #'
 #'
 #' @examples
@@ -302,14 +299,12 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #'
 #'
 #' @return List consisting of:
-#'
-#'   * \code{Bcf}, "central field" value in `B.unit`
-#'
-#'   * \code{Bsw}, "sweep width" value in `B.unit`)
-#'
-#'   * \code{Npoints}, "number of points" value
-#'
-#'   * \code{mwGHz}, "microwave frequency" value in `GHz`
+#'   \describe{
+#'   \item{Bcf}{Central field (magnetic fux density, \emph{B}) value in \code{B.unit}.}
+#'   \item{Bsw}{Sweep width (magnetic fux density, \emph{B}, experimental range) value in \code{B.unit}.}
+#'   \item{Npoints}{Number of points (spectral resolution).}
+#'   \item{mwGHz}{Microwave frequency value in `GHz`.}
+#'   }
 #'
 #'
 #' @examples
