@@ -37,12 +37,12 @@
 #' @examples
 #' ## built-in package file => "TMPD_specelchem_accu_b.par"
 #' tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
-#' ## reading and displaying parameters as data frame
+#' ## reading and displaying parameters as data frames
 #' tmpd.params.tab <- readEPR_params_tabs(tmpd.params.file,
 #'                                        origin = "winepr")
 #' ##
 #' ## preview
-#' utils::head(tmpd.params.tab)
+#' tmpd.params.tab$params
 #' ##
 #' ## the same like interactive table form
 #' readEPR_params_tabs(tmpd.params.file,
