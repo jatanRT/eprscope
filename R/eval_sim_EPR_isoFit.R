@@ -639,15 +639,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     y = .data[[Intensity.expr]],
                     color = .data$Spectrum),
                 linewidth = 0.75) +
-<<<<<<< HEAD
       scale_color_manual(values = c("darkcyan","magenta","darkblue"),
                          labels = c("Experiment",
                                     "\nSimulation",
-=======
-      scale_color_manual(values = c("darkcyan","magenta","blue"),
-                         labels = c("Experiment",
-                                    "Simulation",
->>>>>>> master
                                     "\nSimulation\nNo Baseline")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
