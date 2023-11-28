@@ -11,6 +11,7 @@ eval_sim_EPR_isoFit(
   nu.GHz,
   B.unit = "G",
   nuclear.system.noA,
+  baseline.correct = "constant",
   lineG.content = 0.5,
   lineSpecs.form = "derivative",
   optim.method = "neldermead",
@@ -39,6 +40,8 @@ for EPR spectra.}
 
 \item{nuclear.system.noA}{List or nested list ... TBC ... without estimated hyperfine coupling constant values}
 
+\item{baseline.correct}{Character string ...}
+
 \item{lineG.content}{Numeric value ...}
 
 \item{lineSpecs.form}{Character string ...}
@@ -47,7 +50,8 @@ for EPR spectra.}
 
 \item{optim.params.init}{Numeric vector with estimated ... TBC ...1. element = g-value, 2. element = Gaussian
 linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant, 5. element Intensity
-multiplication constant and 6, 7... elements hyperfine coupling constants in `MHz`}
+multiplication constant and 6, 7... elements baseline linear or quadratic multiplication
+and finally hyperfine coupling constants in `MHz`}
 
 \item{optim.params.lower}{Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.}
 
@@ -122,7 +126,7 @@ eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
 ## returns the following list =>
 tmpd.test.sim.fit$plot ## publication ready plot (both spectra are not overlayed)
 tmpd.test.sim.fit$best.fit.params ## the same like before
-tmpd.test.sim.fit$df ## data frame in wide-format with sim., expr. + resids. spectra
+tmpd.test.sim.fit$df ## data frame with sim., sim. without baseline, expr. and residuals
 tmpd.test.sim.fit$sum.LSQ.min ## min. sum of residual squares
 tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
 tmpd.test.sim.fit$N.converg ## "convergence" value indicating successful completion
