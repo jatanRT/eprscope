@@ -127,6 +127,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## 'Temporary' processing variables
   . <- NULL
   Residuals <- NULL
+  Simulation_NoBasLin <- NULL
   ## delete index column if present
   if (any(grepl("index", colnames(data.spectr.expr)))) {
     data.spectr.expr$index <- NULL
@@ -174,6 +175,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## functions to parameterize simulation by arguments/parameters
   ## based on `optim.method` and the corresponding argument
   ## therefore => AS a FITNESS FUNCTIONS THEY MUST BE DEFINED SEPARATELY !!
+  ## OTHERWISE THE OPTIMIZATION WON'T WORK
   fit_sim_params_par <- function(data,
                                  nucs.system,
                                  Intensity.sim,
@@ -528,6 +530,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## best simulated Intensity and add the `Intensity.sim` to experimental
   # spectrum data based on the baseline.correct condition
+  ## first of all the intensity part which depends on `baseline.correct`
   Intens.baseline.switch <-
     switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
            ((best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]) +
@@ -535,6 +538,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
            (best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]),
            0
     )
+  ## the overall intensity incl. that defined above
   data.spectr.expr[[Intensity.sim]] <-
     best.fit.params[[length(optim.method)]][4] +
     (best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]) +
@@ -576,6 +580,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
       dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
+      ## simulation without baseline
+      dplyr::mutate(Simulation_NoBasLin = best.fit.df[[Intensity.sim]] - (2 * Int.diff)) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -585,19 +591,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## Adding residuals to the overall data frame
   data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
   #
-  ## plotting both spectra together
-  plot.sim.expr.base <-
-    ggplot(data = data.sim.expr.long) +
-    geom_line(aes(x = .data[[paste0("B_",B.unit)]],
-                  y = .data[[Intensity.expr]],
-                  color = .data$Spectrum),
-              linewidth = 0.75) +
-    scale_color_manual(values = c("darkcyan","magenta"))
+  ## plotting all spectra
   #
   if (isTRUE(sim.check)){
     ## display both overlay spectra (upper part) and residuals
     ## (lower part) in 1 col. by `{patchwork}`
-    plot.sim.expr.upper <- plot.sim.expr.base +
+    plot.sim.expr.upper <- ggplot(data = data.sim.expr.long) +
+      geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+                    y = .data[[Intensity.expr]],
+                    color = .data$Spectrum),
+                linewidth = 0.75) +
+      scale_color_manual(values = c("darkcyan","magenta")) +
       labs(title = "EPR Simulation Fit",
            color = NULL,
            x = NULL,
@@ -626,7 +630,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                               ncol = 1)
       #
   } else {
-    plot.sim.expr <- plot.sim.expr.base +
+    plot.sim.expr <- ggplot(data = data.sim.expr.long) +
+      geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+                    y = .data[[Intensity.expr]],
+                    color = .data$Spectrum),
+                linewidth = 0.75) +
+      scale_color_manual(values = c("darkcyan","magenta","blue"),
+                         breaks = c("Experiment","Simulation","Simulation\nNo Baseline")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
