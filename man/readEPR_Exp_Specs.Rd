@@ -9,14 +9,7 @@ readEPR_Exp_Specs(
   sep = "auto",
   skip = 1,
   header = FALSE,
-  na.strings = NULL,
-  select = NULL,
-  drop = NULL,
-  encoding = "unknown",
-  fill = FALSE,
-  blank.lines.skip = FALSE,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  colClasses = NULL,
   x = 2,
   x.unit = "G",
   Intensity = 3,
@@ -24,7 +17,8 @@ readEPR_Exp_Specs(
   convertB.unit = TRUE,
   qValue = NULL,
   norm.vec.add = NULL,
-  origin = "xenon"
+  origin = "xenon",
+  ...
 )
 }
 \arguments{
@@ -32,26 +26,11 @@ readEPR_Exp_Specs(
 with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables).
 The path can be also defined by \code{\link[base]{file.path}}.}
 
-\item{sep}{Character/String inherited from \code{\link[data.table]{fread}}, separator between columns,
-like \code{","},\code{"\t"}...etc \strong{default}: \code{sep = "auto"}.}
+\item{sep}{ The separator between columns. Defaults to the character in the set \code{[,\\t |;:]} that separates the sample of rows into the most number of lines with the same number of fields. Use \code{NULL} or \code{""} to specify no separator; i.e. each line a single character column like \code{base::readLines} does.}
 
-\item{skip}{Number, inherited from \code{\link[data.table]{fread}}, representing the number of ASCII data rows
-which do not contain data/rows or columns names. It automatically avoids irregular header information
-before the column names row/line, \strong{default}: \code{skip = 1}.}
+\item{skip}{ If 0 (default) start on the first line and from there finds the first row with a consistent number of columns. This automatically avoids irregular header information before the column names row. \code{skip>0} means ignore the first \code{skip} rows manually. \code{skip="string"} searches for \code{"string"} in the file (e.g. a substring of the column names row) and starts on that line (inspired by read.xls in package gdata). }
 
-\item{header}{Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC}
-
-\item{na.strings}{Character vector, inherited from \code{\link[data.table]{fread}}...TBC}
-
-\item{select}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.}
-
-\item{drop}{Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.}
-
-\item{encoding}{Character/String, inherited from \code{\link[data.table]{fread}}...TBC}
-
-\item{fill}{Logical, inherited from \code{\link[data.table]{fread}}...TBC}
-
-\item{blank.lines.skip}{Logical, inherited from \code{\link[data.table]{fread}}...TBC}
+\item{header}{ Does the first data line contain column names? Defaults according to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column names are given a default name. }
 
 \item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
@@ -59,11 +38,6 @@ with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 The default (for original \code{\link[data.table]{fread}}) is to use the header column if present or detected,
 or if not `"V"` followed by the column number.}
-
-\item{colClasses}{List, inherited from \code{\link[data.table]{fread}}... TBC
-e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
-or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
-\strong{Default}: \code{colClasses = NULL}.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
@@ -103,6 +77,8 @@ Options are summarized in the following table (Any other specific `origin` may b
 data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
 \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
 }}
+
+\item{...}{Additional arguments specified (see also \code{\link[data.table]{fread}}).}
 }
 \value{
 Data frame/table consisting of the unitless \code{g-factor} or the magnetic flux density

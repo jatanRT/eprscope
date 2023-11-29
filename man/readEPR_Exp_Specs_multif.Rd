@@ -9,7 +9,6 @@ readEPR_Exp_Specs_multif(
   dir_ASC,
   dir_dsc_par,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  colClasses = NULL,
   x = 2,
   x.unit = "G",
   Intensity = 3,
@@ -20,7 +19,8 @@ readEPR_Exp_Specs_multif(
   tidy = FALSE,
   var2nd.series = NULL,
   var2nd.series.factor = FALSE,
-  origin = "xenon"
+  origin = "xenon",
+  ...
 )
 }
 \arguments{
@@ -39,11 +39,6 @@ column/variable names \strong{for individual file} (see also \code{\link{readEPR
 A safe rule of thumb is to use column names incl. physical quantity notation with its units,
 \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
-
-\item{colClasses}{List, inherited from \code{\link[data.table]{fread}}... TBC
-e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
-or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
-\strong{Default}: \code{colClasses = NULL}.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
@@ -87,6 +82,9 @@ the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}.}
 on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 Only the two above-mentioned  characters/strings are available due to reading parameter files.}
+
+\item{...}{Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+and \code{\link[data.table]{fread}}.}
 }
 \value{
 List of Data Frames (or `long table` tidy format) corresponding to multiple spectral data files/data sets.

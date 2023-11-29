@@ -300,8 +300,6 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   if (grepl("Fiel|fiel",xString)){
     xString.init <- "Field_"
-  } else{
-    xString.init <- xString
   }
   #
   if (x.unit == "G" || x.unit == "mT") {

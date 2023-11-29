@@ -11,7 +11,6 @@ readEPR_Exp_Specs_kin(
   time.unit = "s",
   time.delta.slice.s = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
-  colClasses = NULL,
   x = 2,
   x.unit = "G",
   Intensity = 4,
@@ -19,7 +18,8 @@ readEPR_Exp_Specs_kin(
   convertB.unit = TRUE,
   qValue = NULL,
   norm.vec.add = NULL,
-  origin = "xenon"
+  origin = "xenon",
+  ...
 )
 }
 \arguments{
@@ -42,11 +42,6 @@ e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.sli
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
-
-\item{colClasses}{List, inherited from \code{\link[data.table]{fread}}... TBC
-e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
-or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
-\strong{Default}: \code{colClasses = NULL}.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
@@ -80,6 +75,9 @@ weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{D
 on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 Only the two above-mentioned  characters/strings are available due to reading parameter files.}
+
+\item{...}{Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+and \code{\link[data.table]{fread}}.}
 }
 \value{
 List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
@@ -109,7 +107,6 @@ readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                                     "B_G",
                                     "Slice",
                                     "Intensity"),
-                      colClasses = NULL,
                       x = 2,
                       x.unit = "G",
                       Intensity = 4,
