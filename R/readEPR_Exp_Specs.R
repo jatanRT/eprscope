@@ -14,31 +14,16 @@
 #'   parameter. Time series (time evolution of EPR spectra) can be read by the \code{time.series} parameter.
 #'
 #'
+#' @inheritParams data.table::fread
 #' @param path_to_ASC String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
 #'   with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables).
 #'   The path can be also defined by \code{\link[base]{file.path}}.
-#' @param sep Character/String inherited from \code{\link[data.table]{fread}}, separator between columns,
-#'   like \code{","},\code{"\t"}...etc \strong{default}: \code{sep = "auto"}.
-#' @param skip Number, inherited from \code{\link[data.table]{fread}}, representing the number of ASCII data rows
-#'   which do not contain data/rows or columns names. It automatically avoids irregular header information
-#'   before the column names row/line, \strong{default}: \code{skip = 1}.
-#' @param header Character/String or Logical, inherited from \code{\link[data.table]{fread}}...TBC
-#' @param na.strings Character vector, inherited from \code{\link[data.table]{fread}}...TBC
-#' @param select Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.
-#' @param drop Character or numeric vector, inherited from \code{\link[data.table]{fread}}...TBC if \code{header = TRUE}.
-#' @param encoding Character/String, inherited from \code{\link[data.table]{fread}}...TBC
-#' @param fill Logical, inherited from \code{\link[data.table]{fread}}...TBC
-#' @param blank.lines.skip Logical, inherited from \code{\link[data.table]{fread}}...TBC
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #'   The default (for original \code{\link[data.table]{fread}}) is to use the header column if present or detected,
 #'   or if not `"V"` followed by the column number.
-#' @param colClasses List, inherited from \code{\link[data.table]{fread}}... TBC
-#'   e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
-#'   or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
-#'   \strong{Default}: \code{colClasses = NULL}.
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character/String ...TBC
@@ -70,6 +55,7 @@
 #'   data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
 #'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
 #'   }
+#' @param ... Additional arguments specified (see also \code{\link[data.table]{fread}}).
 #'
 #' @return Data frame/table consisting of the unitless \code{g-factor} or the magnetic flux density
 #'   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz}
@@ -182,18 +168,11 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               sep = "auto",
                               skip = 1,
                               header = FALSE,
-                              na.strings = NULL,
-                              select = NULL,
-                              drop = NULL,
-                              encoding = "unknown",
-                              fill = FALSE,
-                              blank.lines.skip = FALSE,
                               col.names = c(
                                 "index",
                                 "B_G",
                                 "dIepr_over_dB"
                               ),
-                              colClasses = NULL,
                               x = 2,
                               x.unit = "G",
                               Intensity = 3,
@@ -201,11 +180,13 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               convertB.unit = TRUE,
                               qValue = NULL,
                               norm.vec.add = NULL,
-                              origin = "xenon") {
+                              origin = "xenon",
+                              ...) {
   ## 'Temporary' processing variables
   B_G <- NULL
   B_mT <- NULL
   . <- NULL
+
   #
   ## general normalization
   qValue <- qValue %>% `if`(is.null(qValue), 1, .)
@@ -214,19 +195,20 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   norm.multiply.qValue <- 1 / qValue
   #
   ## basic `fread` parameters to read the spectral data
+  ## additional arguments see `?data.table::fread`
   if (origin == "winepr") {
     if (is.null(time.series)) {
       ## parameter definition
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
       skip <- skip %>% `if`(skip != 3, 3, .)
-      na.strings <- na.strings %>% `if`(!is.null(na.strings), NULL, .)
-      select <- select %>% `if`(!is.null(select), NULL, .)
-      drop <- drop %>% `if`(!is.null(drop), NULL, .)
-      encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
-      fill <- fill %>% `if`(isTRUE(fill), FALSE, .)
-      blank.lines.skip <- blank.lines.skip %>% `if`(isTRUE(blank.lines.skip), FALSE, .)
-      colClasses <- colClasses
+      na.strings <- NULL
+      select <- NULL
+      drop <- NULL
+      encoding <- "unknown"
+      fill <- FALSE
+      blank.lines.skip <- FALSE
+      colClasses <- NULL
 
       #
     } else {
@@ -234,16 +216,13 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
       skip <- skip %>% `if`(skip != 4, 4, .)
-      fill <- fill %>% `if`(isFALSE(fill), TRUE, .)
-      blank.lines.skip <- blank.lines.skip %>% `if`(isFALSE(blank.lines.skip), TRUE, .)
-      na.strings <- na.strings %>% `if`(
-        is.null(na.strings),
-        c("Intensity", "X [G]", "Y []"), .
-      )
-      select <- select %>% `if`(!is.null(select), NULL, .)
-      drop <- drop %>% `if`(!is.null(drop), NULL, .)
-      encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
-      colClasses <- colClasses
+      fill <- TRUE
+      blank.lines.skip <- TRUE
+      na.strings <- c("Intensity", "X [G]", "Y []")
+      select <- NULL
+      drop <- NULL
+      encoding <- "unknown"
+      colClasses <- NULL
       #
     }
   }
@@ -252,27 +231,19 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     sep <- sep %>% `if`(sep != "auto", "auto", .)
     header <- header
     skip <- skip
-    na.strings <- na.strings %>% `if`(!is.null(na.strings), NULL, .)
-    select <- select
-    drop <- drop
-    encoding <- encoding %>% `if`(encoding != "unknown", "unknown", .)
-    fill <- fill
-    blank.lines.skip <- blank.lines.skip
-    colClasses <- colClasses
+    na.strings <- NULL
+    select <- NULL
+    drop <- NULL
+    encoding <- "unknown"
+    fill <- FALSE
+    blank.lines.skip <- FALSE
+    colClasses <- NULL
   }
   ## change any other `origin` accordingly
   if (origin != "winepr" & origin != "xenon") {
     sep <- sep
     header <- header
     skip <- skip
-    na.strings <- na.strings
-    select <- select
-    drop <- drop
-    col.names <- col.names
-    encoding <- encoding
-    fill <- fill
-    blank.lines.skip <- blank.lines.skip
-    colClasses <- colClasses
   }
   #
   ## basic data frame by `fread` incl. the above defined parameters
@@ -287,7 +258,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     col.names = col.names,
     encoding = encoding,
     fill = fill,
-    blank.lines.skip = blank.lines.skip
+    blank.lines.skip = blank.lines.skip,
+    ...
   )
   ## condition for `winepr`
   if (origin == "winepr" & !is.null(time.series)) {
@@ -328,12 +300,15 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   if (grepl("Fiel|fiel",xString)){
     xString.init <- "Field_"
+  } else{
+    xString.init <- xString
   }
   #
   if (x.unit == "G" || x.unit == "mT") {
     if (isTRUE(convertB.unit)){
       spectra.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(xString.init, switch(2-isTRUE(G.unit.cond),"mT","G"))) := .data[[xString]] *
+        dplyr::mutate(!!rlang::quo_name(paste0(xString.init,
+                                               switch(2-isTRUE(G.unit.cond),"mT","G"))) := .data[[xString]] *
                         switch(2 - isTRUE(G.unit.cond),
                                1 / 10,
                                10
