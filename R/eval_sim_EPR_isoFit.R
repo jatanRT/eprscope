@@ -579,10 +579,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## down below by factor of difference between `max()` and `min()`
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
-      # dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
+      ## offset due to clarity
+      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
       ## simulation without baseline
-      dplyr::mutate(Simulation_NoBasLin = best.fit.params[[length(optim.method)]][5] *
-                      best.fit.df[[Intensity.sim]]) %>%
+      dplyr::mutate(Simulation_NoBasLin = (best.fit.params[[length(optim.method)]][5] *
+                      best.fit.df[[Intensity.sim]]) - (1.9 * Int.diff)) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -619,7 +620,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         geom_line(aes(x = .data[[paste0("B_",B.unit)]],
                       y = Residuals),
                   color = "black",
-                  linewidth = 0.75) +
+                  linewidth = 0.75,
+                  alpha = 0.75) +
         labs(title = "Residuals",
              x = bquote(italic(B)~~"("~.(B.unit)~")"),
              y = bquote(Diff.~d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")")) +
@@ -640,9 +642,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     color = .data$Spectrum),
                 linewidth = 0.75) +
       scale_color_manual(values = c("darkcyan","magenta","darkblue"),
-                         labels = c("Experiment",
-                                    "\nSimulation",
-                                    "\nSimulation\nNo Baseline")) +
+                         labels = c("Experiment\n",
+                                    "Simulation\n",
+                                    "Simulation\nNo Baseline")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
