@@ -970,12 +970,12 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   if (!is.null(nuclear.system)){
     ## separate description into two lines
     if (length(char.title) <= 3){
-        char.title <- paste(unname(char.title), collapse = " ")
+        char.title <- paste(unname(char.title), collapse = ", ")
         char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
     }
     if (length(char.title) > 3){
-      char.title1L <- paste(unname(char.title[1:3]), collapse = " ") ## 1st Line
-      char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = " ") ## 2nd Line
+      char.title1L <- paste(unname(char.title[1:3]), collapse = ", ") ## 1st Line
+      char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = ", ") ## 2nd Line
       char.title.title <- paste("EPR Spectrum Simulation of ",char.title1L,char.title2L,sep = "\n")
     }
   } else {
