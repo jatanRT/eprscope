@@ -26,10 +26,6 @@
 #'   A safe rule of thumb is to use column names incl. physical quantity notation with its units,
 #'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#' @param colClasses List, inherited from \code{\link[data.table]{fread}}... TBC
-#'   e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
-#'   or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
-#'   \strong{Default}: \code{colClasses = NULL}.
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
@@ -62,6 +58,8 @@
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 #'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
+#' @param ... Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+#'   and \code{\link[data.table]{fread}}.
 #'
 #'
 #' @return List of Data Frames (or `long table` tidy format) corresponding to multiple spectral data files/data sets.
@@ -115,7 +113,6 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
                                        "B_G",
                                        "dIepr_over_dB"
                                      ),
-                                     colClasses = NULL,
                                      x = 2,
                                      x.unit = "G",
                                      Intensity = 3,
@@ -126,7 +123,8 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
                                      tidy = FALSE,
                                      var2nd.series = NULL,
                                      var2nd.series.factor = FALSE,
-                                     origin = "xenon") {
+                                     origin = "xenon",
+                                     ...) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -209,14 +207,14 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
         function(r, s, t, u) {
           readEPR_Exp_Specs(r,
                             col.names = col.names,
-                            colClasses = colClasses,
                             x = x,
                             x.unit = x.unit,
                             Intensity = Intensity,
                             convertB.unit = convertB.unit,
                             qValue = s,
                             norm.vec.add = t,
-                            origin = origin
+                            origin = origin,
+                            ...
           ) %>%
             dplyr::mutate(g_Value = eval_gFactor(
               nu.val = u,
@@ -236,14 +234,14 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
         function(r, s, t) {
           readEPR_Exp_Specs(r,
                             col.names = col.names,
-                            colClasses = colClasses,
                             x = x,
                             x.unit = x.unit,
                             Intensity = Intensity,
                             convertB.unit = convertB.unit,
                             qValue = s,
                             norm.vec.add = t,
-                            origin = origin
+                            origin = origin,
+                            ...
           )
         },
         files.asc,

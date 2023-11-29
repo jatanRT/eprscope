@@ -25,10 +25,6 @@
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#' @param colClasses List, inherited from \code{\link[data.table]{fread}}... TBC
-#'   e.g. like \code{colClasses = list(numeric = 1)} or by character string like \code{colClasses = c(V1 = "numeric")}
-#'   or \code{colClasses = list(numeric = "V1")} where in all cases `1` corresponds, to column index.
-#'   \strong{Default}: \code{colClasses = NULL}.
 #' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character string ...TBC only "mT" and "G" are available
@@ -54,7 +50,8 @@
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 #'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
-#'
+#' @param ... Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+#'   and \code{\link[data.table]{fread}}.
 #'
 #' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
 #'    time vector (\code{time}).
@@ -78,7 +75,6 @@
 #'                                     "B_G",
 #'                                     "Slice",
 #'                                     "Intensity"),
-#'                       colClasses = NULL,
 #'                       x = 2,
 #'                       x.unit = "G",
 #'                       Intensity = 4,
@@ -103,7 +99,6 @@ readEPR_Exp_Specs_kin <- function(name_root,
                                     "time_s",
                                     "dIepr_over_dB"
                                   ),
-                                  colClasses = NULL,
                                   x = 2,
                                   x.unit = "G",
                                   Intensity = 4,
@@ -111,7 +106,8 @@ readEPR_Exp_Specs_kin <- function(name_root,
                                   convertB.unit = TRUE,
                                   qValue = NULL,
                                   norm.vec.add = NULL,
-                                  origin = "xenon") {
+                                  origin = "xenon",
+                                  ...) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -166,14 +162,14 @@ readEPR_Exp_Specs_kin <- function(name_root,
   ## Load spectral data
   data.spectra.time <- readEPR_Exp_Specs(path.to.asc,
     col.names = col.names,
-    colClasses = colClasses,
     x = x,
     Intensity = Intensity,
     time.series = time.series,
     convertB.unit = convertB.unit,
     qValue = qValue.obtain,
     norm.vec.add = norm.vec.add,
-    origin = origin
+    origin = origin,
+    ...
   ) %>%
     dplyr::filter(.data[[IntensityString]] != 0) ## only non-zero intensities selected
   #
