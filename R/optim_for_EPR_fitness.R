@@ -7,11 +7,53 @@
 #'
 #'
 #' @description
-#' A short description...
+#'   General-purpose optimization of the objective \code{fn} function (also called "fitness") which is to be minimized
+#'   in order to fit EPR simulations onto the experimental spectra. Several methods/algorithms implemented
+#'   in \pkg{nloptr} (\code{\link[nloptr]{slsqp}}, \code{\link[nloptr]{neldermead}}, \code{\link[nloptr]{crs2lm}},
+#'   \code{\link[nloptr]{sbplx}}, \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}),
+#'   \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}}) are used.
+#'   All algorithms are based on the least-square minimization however, the \code{fn} definition in case
+#'   of \code{nls.lm} must be provided as a difference/residual vector not as sum of difference/residual squares.
 #'
 #'
 #' @details
-#' Additional details...
+#'   The algorithms applied for the optimization/fitting are summarized in the following table =>
+#'   \tabular{lcl}{
+#'   ------------------- \tab ------------ \tab ------------------------------------------------------ \cr
+#'   \strong{Method/Algorithm} \tab \strong{Package} \tab \strong{Short Description} \cr
+#'   ------------------- \tab ------------ \tab ------------------------------------------------------ \cr
+#'   \code{slsqp} \tab \pkg{nloptr} \tab Sequential quadratic programming method for non-linearly
+#'   constrained, gradient-based optimization. \cr
+#'   \code{cobyla} \tab \pkg{nloptr} \tab Constrained optimization by linear approximations,
+#'   algorithm for derivative-free optimization with nonlinear inequality and equality constraints. \cr
+#'   \code{lbfgs} \tab \pkg{nloptr} \tab Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.
+#'   This is a quasi-Newton method well suited for the optimization problems with a large number of variables. \cr
+#'   \code{neldermead} \tab \pkg{nloptr} \tab Nelder-Mead ("N-M") simplex algorithm. \cr
+#'   \code{crs2lm} \tab \pkg{nloptr} \tab Controlled Random Search (CRS) algorithm (and in particular,
+#'   the CRS2 variant) with the `local mutation' modification. \cr
+#'   \code{sbplx} \tab \pkg{nloptr} \tab Subplex algorithm, which is a variant of the latter "N-M" method
+#'   on a sequence of subspaces. \cr
+#'   \code{nls.lm} (\code{levenmarq}) \tab \pkg{minpack.lm} \tab Modified Levenberg-Marquardt algorithm.
+#'   It is a combination of gradient descent and Guass-Newton method. \cr
+#'   \code{psoptim} (\code{pswarm}) \tab \pkg{pso} \tab Particle swarm optimization, which is a population-based
+#'   stochastic optimization algorithm motivated by the intelligent collective behavior of some animals such
+#'   as flocks of birds or schools of fish. \cr
+#'   ------------------- \tab ------------ \tab ------------------------------------------------------ \cr
+#'   }
+#'
+#'
+#' @references
+#'  \insertRef{nlopt2023}{eprscope}
+#'
+#'  \insertRef{nloptr2023}{eprscope}
+#'
+#'  \insertRef{levenmarq2023}{eprscope}
+#'
+#'  \insertRef{gavin2019levenberg}{eprscope}
+#'
+#'  \insertRef{AdyatamaPSO2019}{eprscope}
+#'
+#'  \insertRef{TamPSO2021}{eprscope}
 #'
 #'
 #'
@@ -78,6 +120,39 @@ optim_for_EPR_fitness <- function(method = "neldermead",
       data = data,
       control = contrl.list.nloptr,
       ...
+    ))
+  }
+  #
+  ## Constrained Optimization by Linear Approximations
+  ## algorithm for derivative-free optimization with nonlinear
+  ## inequality and equality constraints
+  if (method == "cobyla"){
+    return(nloptr::cobyla(
+      x0 = x.0,
+      fn = fn,
+      lower = lower,
+      upper = upper,
+      nl.info = FALSE,
+      data = data,
+      control = contrl.list.nloptr,
+      ...
+    ))
+  }
+  #
+  ## Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.
+  ## quasi-Newton optimization methods. It is well suited for optimization problems
+  ## with a large number of variables.
+  if (method == "lbfgs"){
+    return(nloptr::lbfgs(
+      x0 = x.0,
+      fn = fn,
+      lower = lower,
+      upper = upper,
+      nl.info = FALSE,
+      data = data,
+      control = contrl.list.nloptr,
+      ...
+
     ))
   }
   #

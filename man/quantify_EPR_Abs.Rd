@@ -123,8 +123,7 @@ tbc
 
 }
 \references{
-{
-  \insertRef{eatonQepr2010}{eprscope}
+\insertRef{eatonQepr2010}{eprscope}
 
   \insertRef{hirschCapill2023}{eprscope}
 
@@ -133,7 +132,6 @@ tbc
   \insertRef{portisElectro1953}{eprscope}
 
   \insertRef{mailerQuant1977}{eprscope}
-}
 }
 \seealso{
 Other Evaluations and Quantification: 

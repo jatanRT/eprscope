@@ -240,6 +240,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## magnetic spin quantum numbers of all nuclear groups in one list
     ## this required to calculate Breit-Rabi energies/frequencies/Bs (see below)
+    ## (2*N*I + 1) values going from  - N*I ...to...+ N*I
     m_spin_values <- Map(function(z,w)
     {sapply(1:(2 * z * w + 1), function(q) - (z * w) + q - 1)},
     N_nuclei,

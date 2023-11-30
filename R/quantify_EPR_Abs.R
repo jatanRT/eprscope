@@ -32,7 +32,7 @@
 #'   gain is expressed in \eqn{\text{dB}}...tbc.
 #'
 #'
-#' @references{
+#' @references
 #'   \insertRef{eatonQepr2010}{eprscope}
 #'
 #'   \insertRef{hirschCapill2023}{eprscope}
@@ -42,7 +42,7 @@
 #'   \insertRef{portisElectro1953}{eprscope}
 #'
 #'   \insertRef{mailerQuant1977}{eprscope}
-#' }
+#'
 #'
 #'
 #' @importFrom Rdpack reprompt

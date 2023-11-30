@@ -276,7 +276,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
              function(o) optim_fn(method = optim.method,
                                   data = data.list[[o]],
                                   fun = min_residuals_ps))
-  } else {
+  }
+  if (optim.method == "slsqp" || optim.method == "neldermead" ||
+      optim.method == "crs2lm" || optim.method == "sbplx" ||
+      optim.method == "cobyla" || optim.method == "lbfgs"){
     min_residuals_nl <- function(data,col.name.pattern,x0){
       with(data,sum((data[[Intensity.expr]] -
                        fit_params_specs_x0(data,col.name.pattern,x0))^2))

@@ -162,6 +162,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## condition to switch among three values
+  ## <==> baseline approximation
   baseline.cond.fn <- function(baseline.correct){
     if (baseline.correct == "constant"){
       return(0)
@@ -474,7 +475,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                          x.0 = optim.params.init)
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
-        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx") { ## with `else` it doesn't work
+        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
+        optim.method[m] == "cobyla" || optim.method[m] == "lbfgs") { ## with `else` it doesn't work
       ## LSQ FUNCTION
       min_residuals_nl <- function(data,nucs.system,Intensity.sim,baseline,B.unit,x0){
         with(data,sum((data[[Intensity.expr]] -
@@ -686,7 +688,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
 
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
-        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx"){ ## with `else` it doesn't work
+        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
+        optim.method[m] == "cobyla" || optim.method[m] == "lbfgs"){ ## with `else` it doesn't work
       min.LSQ.sum[[m]] <-
         optimization.list[[m]]$value ## the function value corresponding to `par`.
                                      ## because function is sum of squares
