@@ -130,9 +130,9 @@ Secondary purpose is to fit the experimental EPR spectral time series outputs, e
   The most applied kinetic models for radical reactions in EPR spectroscopy are summarized below
   (see also \code{model.react} function argument).
   \tabular{ll}{
-  ------------------------------- \tab ----------------------------------------------------- \cr
-  \strong{`model.react`} \tab \strong{Description} \cr
-  ------------------------------- \tab ----------------------------------------------------- \cr
+  ------------------------------- \tab --------------------------------------------------------- \cr
+  \strong{`model.react`} \tab \strong{Short Description} \cr
+  ------------------------------- \tab --------------------------------------------------------- \cr
   \code{"(x=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
   e.g. like irrev. dimerization (if \code{"(x=2)"}). \cr
   \code{"(x=1)A --> [k1] R"} \tab Basic irreversible radical formation,
@@ -151,7 +151,7 @@ Secondary purpose is to fit the experimental EPR spectral time series outputs, e
   than without diffusion like recombination (\code{"(x=2)"}). \cr
   \code{"(x=1)A + (y=1)B --> [k1] R"} \tab Radical formation by chemical reaction like oxidation,
   reduction or spin trapping (transient radical is not visible within the common EPR time scale). \cr
-  ------------------------------- \tab ----------------------------------------------------- \cr
+  ------------------------------- \tab --------------------------------------------------------- \cr
   }
 }
 \examples{
