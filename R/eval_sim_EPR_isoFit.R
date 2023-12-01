@@ -369,20 +369,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## initial parameter guesses for the optimization and definition
-  lower.limits <- c(optim.params.init[1] - 0.0005,
-                    optim.params.init[2] - (optim.params.init[2] * 0.1),
-                    optim.params.init[3] - (optim.params.init[2] * 0.1),
-                    optim.params.init[4] - 0.0005,
+  lower.limits <- c(optim.params.init[1] - 0.001,
+                    optim.params.init[2] - (optim.params.init[2] * 0.2),
+                    optim.params.init[3] - (optim.params.init[2] * 0.2),
+                    optim.params.init[4] - 0.001,
                     1e-8)
   lower.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                          c(lower.limits,-5,-5),
                          c(lower.limits,-5),
                          lower.limits
                          )
-  upper.limits <- c(optim.params.init[1] + 0.0005,
-                    optim.params.init[2] + (optim.params.init[2] * 0.1),
-                    optim.params.init[3] + (optim.params.init[2] * 0.1),
-                    optim.params.init[4] + 0.0005,
+  upper.limits <- c(optim.params.init[1] + 0.001,
+                    optim.params.init[2] + (optim.params.init[2] * 0.2),
+                    optim.params.init[3] + (optim.params.init[2] * 0.2),
+                    optim.params.init[4] + 0.001,
                     100)
   upper.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                          c(upper.limits,5,5),
