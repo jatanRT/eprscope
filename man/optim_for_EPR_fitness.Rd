@@ -54,14 +54,15 @@ General-purpose optimization of the objective \code{fn} function (also called "f
   \code{\link[nloptr]{sbplx}}, \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}),
   \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}}) are used.
   All algorithms are based on the least-square minimization however, the \code{fn} definition in case
-  of \code{nls.lm} must be provided as a difference/residual vector not as sum of difference/residual squares.
+  of \code{nls.lm} must be provided as a difference/residual vector (see also \code{\link{eval_kinR_EPR_modelFit}})
+  not as sum of difference/residual squares.
 }
 \details{
 The algorithms applied for the optimization/fitting are summarized in the following table =>
   \tabular{lcl}{
-  ------------------- \tab ------------ \tab ------------------------------------------------------ \cr
+  ----------------------- \tab ------------ \tab ---------------------------------------------------- \cr
   \strong{Method/Algorithm} \tab \strong{Package} \tab \strong{Short Description} \cr
-  ------------------- \tab ------------ \tab ------------------------------------------------------ \cr
+  ----------------------- \tab ------------ \tab ---------------------------------------------------- \cr
   \code{slsqp} \tab \pkg{nloptr} \tab Sequential quadratic programming method for non-linearly
   constrained, gradient-based optimization. \cr
   \code{cobyla} \tab \pkg{nloptr} \tab Constrained optimization by linear approximations,
@@ -71,15 +72,20 @@ The algorithms applied for the optimization/fitting are summarized in the follow
   \code{neldermead} \tab \pkg{nloptr} \tab Nelder-Mead ("N-M") simplex algorithm. \cr
   \code{crs2lm} \tab \pkg{nloptr} \tab Controlled Random Search (CRS) algorithm (and in particular,
   the CRS2 variant) with the `local mutation' modification. \cr
-  \code{sbplx} \tab \pkg{nloptr} \tab Subplex algorithm, which is a variant of the latter "N-M" method
+  \code{sbplx} \tab \pkg{nloptr} \tab Subplex algorithm, which is a variant of the "N-M" method
   on a sequence of subspaces. \cr
   \code{nls.lm} (\code{levenmarq}) \tab \pkg{minpack.lm} \tab Modified Levenberg-Marquardt algorithm.
   It is a combination of gradient descent and Guass-Newton method. \cr
   \code{psoptim} (\code{pswarm}) \tab \pkg{pso} \tab Particle swarm optimization, which is a population-based
   stochastic optimization algorithm motivated by the intelligent collective behavior of some animals such
   as flocks of birds or schools of fish. \cr
-  ------------------- \tab ------------ \tab ------------------------------------------------------ \cr
+  ----------------------- \tab ------------ \tab ---------------------------------------------------- \cr
   }
+  Not all \pkg{nloptr}-methods are implemented into the \code{optim_for_EPR_fitness}. Those summarized above
+  were tested by the EPR simulation fit (see \code{\link{eval_sim_EPR_isoFit}}) on the experimental spectra
+  of TEMPOL and Wuster's blue radicals. They provide the best results (without extensive "playing"
+  with \code{\link[nloptr]{nl.opts}}, i.e. with options to control the optimization procedure) and proceeds
+  relatively fast.
 }
 \examples{
 \dontrun{
