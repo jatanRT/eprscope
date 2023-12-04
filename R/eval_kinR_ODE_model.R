@@ -365,24 +365,6 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
     }
     #
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
-      ## following operation required for the difference
-      ## the same number of points for the model as well as for the expr.
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
-    }
-    ## the first col. is `time` and 2nd has to be renamed
-    names(result.df)[2] <- "R"
-    #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df
   }
   #
   ## -------------- "(n=1)A --> [k1] (m=1)R" (n,m = 1,2,non-integer) -----------------
@@ -443,22 +425,6 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
     }
     #
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
-    }
-    #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df %>%
-      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
-      dplyr::arrange(time)
   }
   #
   ## ------- "(n=1)A --> [k1] (m=1)R <==> [k2] [k3] (l=1)C" (n,m,l = 1,2,non-integer) ------
@@ -541,22 +507,6 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
     }
     #
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
-    }
-    #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df %>%
-      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
-      dplyr::arrange(time)
   }
   #
   ## ------------- "(n=1)R <==> [k1] [k2] (m=1)B" (n,m = 1,2,non-integer) -------------
@@ -625,22 +575,6 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
     }
     #
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
-    }
-    #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df %>%
-      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
-      dplyr::arrange(time)
   }
   #
   ## ---------- "(n=1)A <==> [k1] [k2] (m=1)R" (n,m = 1,2,non-integer) ------------
@@ -709,27 +643,11 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
     }
     #
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
-    }
-    #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df %>%
-      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
-      dplyr::arrange(time)
   }
   #
-  ## ---------------- "A [k1] <-- (n=1)R --> [k2] B" -------------------------
+  ## ------------ "(n=1)A + (m=1)B --> [k1] (l=1)R", (n,m,l = 1,2,non-integer) -------------
   #
-  if (grepl("^A \\[k1\\] <-- \\(n=.*R --> \\[k2\\] B$", model.react)) {
+  if (grepl("^\\(n=.*A \\+ \\(m=.*B --> \\[k1\\] \\(l=.*R$", model.react)) {
     ## functions for derivative solution of kinetic equation
     react_rates_diff_06 <- function(t,
                                     qvar,
@@ -737,104 +655,24 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
                                     stoichio.coeff,
                                     pro = elementar.react) {
       k1 <- kin.params$k1
-      k2 <- kin.params$k2
       if (isFALSE(pro)) {
         alpha <- kin.params$alpha
-      }
-      ## initial conditions
-      rate <- rep(0, times = 1)
-      c_n <- stoichio.coeff[1]
-      ## differential equations
-      if (isTRUE(pro)) {
-        rate[1] <- -k1 * (qvar)^(c_n) - k2 * (qvar)^(c_n)
-      }
-      if (c_x == "n") {
-        rate[1] <- -k1 * (qvar)^n - k2 * (qvar)^n
-      }
-      ## derivative as a list
-      return(list(rate))
-    }
-    # initial (`0`) qvar (e.g. like concentration)
-    qvar0 <- c(R = unname(kin.params["qvar0R"]))
-    #
-    ## rate constant and other params. definition
-    k1 <- kin.params["k1"]
-    k2 <- kin.params["k2"]
-    if (stoichiom_coeff(model.react) == "n") {
-      n <- kin.params["n"]
-    }
-    #
-    ## solving `ordinary diff. equation(s)`
-    if (stoichiom_coeff(model.react) == "n") {
-      result <- deSolve::ode(
-        y = qvar0, times = t,
-        c_x = stoichiom_coeff(model.react),
-        func = react_rates_diff_06,
-        parms = list(k1 = k1, k2 = k2, n = n)
-      )
-    }
-    if (inherits(stoichiom_coeff(model.react), "numeric")) {
-      result <- deSolve::ode(
-        y = qvar0, times = t,
-        c_x = stoichiom_coeff(model.react),
-        func = react_rates_diff_06,
-        parms = list(k1 = k1, k2 = k2)
-      )
-    }
-    #
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
-    }
-    ## the first col. is `time` and 2nd has to be renamed
-    names(result.df)[2] <- "R"
-    #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df
-  }
-  if (grepl("^\\(x=.*A \\+ \\(y=.*B --> \\[k1\\] R$", model.react)) {
-    ## functions for derivative solution of kinetic equation
-    react_rates_diff_07 <- function(t, qvar, kin.params, c_x, c_y) {
-      k1 <- kin.params$k1
-      if (c_x == "n" & inherits(c_y, "numeric")) {
-        n <- kin.params$n
-      }
-      if (inherits(c_x, "numeric") & c_y == "m") {
-        m <- kin.params$m
-      }
-      if (c_x == "n" & c_y == "m") {
-        n <- kin.params$n
-        m <- kin.params$m
+        beta <- kin.params$beta
       }
       ## initial conditions
       rate <- rep(0, times = 3)
       ## differential equations
-      if (inherits(c_x, "numeric") & inherits(c_y, "numeric")) {
-        rate[1] <- -k1 * ((qvar["A"])^(c_x)) * ((qvar["B"])^(c_y))
-        rate[2] <- -k1 * ((qvar["B"])^(c_y)) * ((qvar["A"])^(c_x))
-        rate[3] <- k1 * ((qvar["A"])^(c_x)) * ((qvar["B"])^(c_y))
-      }
-      if (c_x == "n" & c_y == "m") {
-        rate[1] <- -k1 * ((qvar["A"])^n) * ((qvar["B"])^m)
-        rate[2] <- -k1 * ((qvar["B"])^m) * ((qvar["A"])^n)
-        rate[3] <- k1 * ((qvar["A"])^n) * ((qvar["B"])^m)
-      }
-      if (c_x == "n" & inherits(c_y, "numeric")) {
-        rate[1] <- -k1 * ((qvar["A"])^n) * ((qvar["B"])^(c_y))
-        rate[2] <- -k1 * ((qvar["B"])^(c_y)) * ((qvar["A"])^n)
-        rate[3] <- k1 * ((qvar["A"])^n) * ((qvar["B"])^(c_y))
-      }
-      if (inherits(c_x, "numeric") & c_y == "m") {
-        rate[1] <- -k1 * ((qvar["A"])^(c_x)) * ((qvar["B"])^m)
-        rate[2] <- -k1 * ((qvar["B"])^m) * ((qvar["A"])^(c_x))
-        rate[3] <- k1 * ((qvar["A"])^(c_x)) * ((qvar["B"])^m)
+      c_n <- stoichio.coeff[1]
+      c_m <- stoichio.coeff[2]
+      c_l <- stoichio.coeff[3]
+      if (isTRUE(pro)) {
+        rate[1] <- -k1 * c_n * ((qvar["A"])^(c_n)) * ((qvar["B"])^(c_m))
+        rate[2] <- -k1 * c_m * ((qvar["B"])^(c_m)) * ((qvar["A"])^(c_n))
+        rate[3] <- k1 * c_l * ((qvar["A"])^(c_n)) * ((qvar["B"])^(c_m))
+      } else {
+        rate[1] <- -k1 * c_n * ((qvar["A"])^alpha) * ((qvar["B"])^beta)
+        rate[2] <- -k1 * c_m * ((qvar["B"])^beta) * ((qvar["A"])^alpha)
+        rate[3] <- k1 * c_l * ((qvar["A"])^alpha) * ((qvar["B"])^beta)
       }
       ## derivative as a list
       return(list(rate))
@@ -849,67 +687,49 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
     #
     ## rate constant and other params. definition
     k1 <- kin.params["k1"]
-    if (stoichiom_coeff(model.react) == "n" &
-      inherits(stoichiom_coeff(model.react, coeff = "y"), "numeric")) {
-      n <- kin.params["n"]
-    }
-    if (inherits(stoichiom_coeff(model.react), "numeric") &
-      stoichiom_coeff(model.react, coeff = "y") == "m") {
-      m <- kin.params["m"]
-    }
-    if (stoichiom_coeff(model.react) == "n" &
-      stoichiom_coeff(model.react, coeff = "y") == "m") {
-      n <- kin.params["n"]
-      m <- kin.params["m"]
-    }
-    ## solving `ordinary diff. equation(s)`
-    if (stoichiom_coeff(model.react) == "n" &
-      inherits(stoichiom_coeff(model.react, coeff = "y"), "numeric")) {
+    if (isFALSE(elementar.react)) {
+      alpha <- kin.params["alpha"]
+      beta <- kin.params["beta"]
+      #
+      ## solving `ordinary diff. equation(s)`
       result <- deSolve::ode(
         y = qvar0, times = t,
-        c_x = stoichiom_coeff(model.react),
-        c_y = stoichiom_coeff(model.react, coeff = "y"),
-        func = react_rates_diff_07,
-        parms = list(k1 = k1, n = n)
+        stoichio.coeff = c(stoichiom_coeff(model.react),
+                           stoichiom_coeff(model.react,coeff = "m"),
+                           stoichiom_coeff(model.react,coeff = "l")),
+        func = react_rates_diff_06,
+        parms = list(k1 = k1,
+                     alpha = alpha,
+                     beta = beta)
       )
-    }
-    if (inherits(stoichiom_coeff(model.react), "numeric") &
-      stoichiom_coeff(model.react, coeff = "y") == "m") {
+    } else {
       result <- deSolve::ode(
         y = qvar0, times = t,
-        c_x = stoichiom_coeff(model.react),
-        c_y = stoichiom_coeff(model.react, coeff = "y"),
-        func = react_rates_diff_07,
-        parms = list(k1 = k1, m = m)
-      )
-    }
-    if (stoichiom_coeff(model.react) == "n" &
-      stoichiom_coeff(model.react, coeff = "y") == "m") {
-      result <- deSolve::ode(
-        y = qvar0, times = t,
-        c_x = stoichiom_coeff(model.react),
-        c_y = stoichiom_coeff(model.react, coeff = "y"),
-        func = react_rates_diff_07,
-        parms = list(k1 = k1, n = n, m = m)
-      )
-    }
-    if (inherits(stoichiom_coeff(model.react), "numeric") &
-      inherits(stoichiom_coeff(model.react, coeff = "y"), "numeric")) {
-      result <- deSolve::ode(
-        y = qvar0, times = t,
-        c_x = stoichiom_coeff(model.react),
-        c_y = stoichiom_coeff(model.react, coeff = "y"),
-        func = react_rates_diff_07,
+        stoichio.coeff = c(stoichiom_coeff(model.react),
+                           stoichiom_coeff(model.react,coeff = "m"),
+                           stoichiom_coeff(model.react,coeff = "l")),
+        func = react_rates_diff_06,
         parms = list(k1 = k1)
       )
     }
     #
+  }
+  #
+  ## ======================== DATA AND KINETIC PLOTS ============================
+  #
+  if (grepl("^\\(n=.*R --> \\[k1\\] B$", model.react)) {
+    #
+    ## DATA processing
     ## conversion into data frame
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
+      ## following operation required for the difference
+      ## the same number of points for the model as well as for the expr.
       result.df <- result.df %>%
         dplyr::filter(.data$time %in% data.expr[[time.expr]])
     }
+    ## the first col. is `time` and 2nd has to be renamed
+    names(result.df)[2] <- "R"
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
       ## difference
@@ -917,18 +737,7 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
     }
     #
     ## data frame for plotting
-    result.df.plot <- result.df %>%
-      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
-      dplyr::arrange(time)
-  }
-  #
-  ## ======================== DATA AND KINETIC PLOTS ============================
-  #
-  if (grepl("^\\(n=.*R --> \\[k1\\] B$", model.react) ||
-    grepl("^A \\[k1\\] <-- \\(n=.*R --> \\[k2\\] B$", model.react)) {
-    #
-    ## DATA processing
-    # ...TBC ...TODO
+    result.df.plot <- result.df
     #
     ## BASE PLOT
     plot.base <- ggplot(result.df.plot) +
@@ -944,7 +753,22 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
   } else {
     #
     ## DATA processing
-    # ...TBC ...TODO
+    ## conversion into data frame
+    result.df <- data.frame(result)
+    if (!is.null(data.expr)) {
+      result.df <- result.df %>%
+        dplyr::filter(.data$time %in% data.expr[[time.expr]])
+    }
+    #
+    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
+      ## difference
+      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
+    }
+    #
+    ## data frame for plotting
+    result.df.plot <- result.df %>%
+      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
+      dplyr::arrange(time)
     #
     ## BASE PLOT
     plot.base <- ggplot(result.df.plot) +
@@ -963,7 +787,7 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
   }
   #
-  ## ================= ENTIRE PLOT & RESULTS ========================
+  ## ============================= ENTIRE PLOT & RESULTS ==============================
   #
   ## Caption character vector
   caption.char.vec <- mapply(function(i, j) paste0(i, " = ", j), names(kin.params), kin.params)
