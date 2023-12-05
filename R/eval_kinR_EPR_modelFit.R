@@ -9,15 +9,17 @@
 #' A short description...(Integrals/Areas \emph{vs.} Time)...
 #'
 #'
-#'
+#' @inheritParams eval_kinR_ODE_model
 #' @param data.integs Data frame object Integrals/Areas \emph{vs.} Time
 #' @param time.unit Character string ... argument/parameter... tbc
 #' @param time Character string ... argument/parameter... tbc
 #' @param qvarR Character string ... argument/parameter... tbc
-#' @param model.react Character string ... argument/parameter... tbc, the same like in \code{\link{eval_kinR_ODE_model}}
-#' @param params.guess Named vector ... argument/parameter... tbc
-#' @param fit.kin.method Character string ... argument/parameter... tbc
-#' @param time.correct Logical, ... argument/parameter... tbc
+#' @param params.guess Named vector ... argument/parameter... tbc see also \code{kin.params}
+#'   in \code{\link{eval_kinR_ODE_model}}.
+#' @param fit.kin.method Character string pointing to optimization/fitting method. Only one method is available =>
+#'   \strong{default}: \code{fit.kin.method = "diff-levenmarq"}.
+#' @param time.correct Logical, if the time of the recorded series of EPR spectra needs to be corrected
+#'   (see also \code{\link{correct_time_Exp_Specs}}).
 #' @param path_to_dsc_par Character string ... argument/parameter... tbc
 #' @param origin Character string ... argument/parameter... tbc
 #'
@@ -41,7 +43,8 @@ eval_kinR_EPR_modelFit <- function(data.integs,
                                    time.unit = "s",
                                    time = "time_s",
                                    qvarR = "Area",
-                                   model.react = "(x=1)R --> [k1] B",
+                                   model.react = "(n=1)R --> [k1] B",
+                                   elementary.react = TRUE,
                                    params.guess = c(
                                      qvar0R = 1e-3,
                                      k1 = 1e-3
@@ -49,7 +52,8 @@ eval_kinR_EPR_modelFit <- function(data.integs,
                                    fit.kin.method = "diff-levenmarq",
                                    time.correct = FALSE,
                                    path_to_dsc_par = NULL,
-                                   origin = NULL) {
+                                   origin = NULL,
+                                   ...) {
   #
   ## 'Temporary' processing variables
   # . <- NULL
@@ -69,7 +73,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   ## corrected time for CW EPR experiment
   if (isTRUE(time.correct)) {
     if (is.null(path_to_dsc_par) & is.null(origin)) {
-      stop(" Please define origin and the path for file incl. instrumental parameters ! ")
+      stop(" Please define the origin and the path for file incl. instrumental parameters ! ")
     } else {
       #
       ## instrumental parameters for time series EPR spectra
@@ -87,6 +91,9 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     data.integs[[time]] <- data.integs[[time]]
   }
   #
+  ## `timeLim.model` definition
+  timeLim.model <- c(0,max(data.integs[[time]]))
+  #
   ## ---------------------------- DERIVATIVE FORM Fit -----------------------------
   #
   ## Fit by solution of Ordinary Differential equations
@@ -97,9 +104,12 @@ eval_kinR_EPR_modelFit <- function(data.integs,
       fn = eval_kinR_ODE_model,
       model.react = model.react,
       model.expr.diff = TRUE,
+      elementary.react = elementary.react,
+      timeLim.model = timeLim.model,
       data.expr = data.integs,
       time.expr = time,
-      qvar.expr = qvarR
+      qvar.expr = qvarR,
+      ...
     )
     #
     ## Summary as table
@@ -121,9 +131,12 @@ eval_kinR_EPR_modelFit <- function(data.integs,
       model.react = model.react,
       model.expr.diff = FALSE,
       kin.params = predict.model.params,
+      elementary.react = elementary.react,
+      timeLim.model = timeLim.model,
       data.expr = data.integs,
       time.expr = time,
-      qvar.expr = qvarR
+      qvar.expr = qvarR,
+      ...
     )
     #
     ## starting new data frame only with `time` and `qvar` &
