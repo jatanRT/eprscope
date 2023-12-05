@@ -9,12 +9,14 @@ eval_kinR_EPR_modelFit(
   time.unit = "s",
   time = "time_s",
   qvarR = "Area",
-  model.react = "(x=1)R --> [k1] B",
+  model.react = "(n=1)R --> [k1] B",
+  elementary.react = TRUE,
   params.guess = c(qvar0R = 0.001, k1 = 0.001),
   fit.kin.method = "diff-levenmarq",
   time.correct = FALSE,
   path_to_dsc_par = NULL,
-  origin = NULL
+  origin = NULL,
+  ...
 )
 }
 \arguments{
@@ -26,17 +28,61 @@ eval_kinR_EPR_modelFit(
 
 \item{qvarR}{Character string ... argument/parameter... tbc}
 
-\item{model.react}{Character string ... argument/parameter... tbc, the same like in \code{\link{eval_kinR_ODE_model}}}
+\item{model.react}{Character string denoting a specific radical (\code{"R"}) reaction related to
+changes in integral intensities in EPR spectral time series. Arrow shows direction of the reaction
+(\code{"-->"}, irreversible or \code{"<==>", reversible}). Rate constants are indicated by square
+brackets after the arrows. Following examples of the reaction schemes are commonly used to describe
+the integral intensity and/or radical concentration/amount changes during the EPR time series
+experiment (the \code{m,n,l} stoichiometric coefficients may be varied, see below).
+\tabular{ll}{
+------------------------------ \tab ------------------------------------------------------ \cr
+\strong{Reaction Scheme} \tab \strong{`model.react`} \cr
+------------------------------ \tab ------------------------------------------------------ \cr
+\eqn{(n=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(n=1)R --> [k1] B"} \cr
+ \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R}} \tab \code{"(n=2)A --> [k1] (m=2)R"} \cr
+ \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R} \xrightleftharpoons[k_3]{k_2} (l=1)\text{C}} \tab
+ \code{"(n=2)A --> [k1] (m=2)R <==> [k2] [k3] (l=1)C"} \cr
+ \eqn{(n=1)\text{R} \xrightleftharpoons[k_2]{k_1} (m=1)\text{B}} \tab
+ \code{"(n=1)R <==> [k1] [k2] (m=1)B"} \cr
+ \eqn{(n=2)\text{A} \xrightleftharpoons[k_2]{k_1} (m=2)\text{R}} \tab
+ \code{"(n=2)A <==> [k1] [k2] (m=2)R"} \cr
+ \eqn{(n=1)\text{A} + (m=1)\text{B} \xrightarrow{k_1} (l=1)\text{R}} \tab
+ \code{"(n=1)A + (m=1)B --> [k1] (l=1)R"} \cr
+ \eqn{(n=1)\text{R} + (m=1)\text{B} \xrightarrow{k_1} (l=1)\text{C}} \tab
+ \code{"(n=1)R + (m=1)B --> [k1] (l=1)C"} \cr
+ ----------------------------- \tab ------------------------------------------------------ \cr
+}
+Couple of examples are also given in details. The function is relatively flexible and enables
+later addition of any other reaction schemes describing the EPR time series experiments
+(YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (e.g. like \code{"(n=1)"}
+or \code{"(m=1)"}) can be varied within the \code{model.react} character string.
+Defined/Allowed values are e.g. 1,2,... or non-integer values like 1.5 or 2.1.
+If \code{elementary.react = FALSE} (the model reaction is not considered as the elemental one) therefore,
+a possible non-integer partial stoichiometric coefficients (like e.g. `alpha`,`beta` or `gamma`)
+must be incl. in \code{kin.params} (see also \code{kin.params} below).}
 
-\item{params.guess}{Named vector ... argument/parameter... tbc}
+\item{elementary.react}{Logical, if model reaction should be considered as an elementary one,
+i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
+identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
+If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
+one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} into
+the \code{kin.params}, e.g like \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
 
-\item{fit.kin.method}{Character string ... argument/parameter... tbc}
+\item{params.guess}{Named vector ... argument/parameter... tbc see also \code{kin.params}
+in \code{\link{eval_kinR_ODE_model}}.}
 
-\item{time.correct}{Logical, ... argument/parameter... tbc}
+\item{fit.kin.method}{Character string pointing to optimization/fitting method. Only one method is available =>
+\strong{default}: \code{fit.kin.method = "diff-levenmarq"}.}
+
+\item{time.correct}{Logical, if the time of the recorded series of EPR spectra needs to be corrected
+(see also \code{\link{correct_time_Exp_Specs}}).}
 
 \item{path_to_dsc_par}{Character string ... argument/parameter... tbc}
 
 \item{origin}{Character string ... argument/parameter... tbc}
+
+\item{...}{additional arguments passed to the integrator or to the methods of the ODE
+(see also \code{\link[deSolve]{ode}}).}
 }
 \value{
 List ... tbc ...
