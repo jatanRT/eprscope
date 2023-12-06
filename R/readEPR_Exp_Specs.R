@@ -194,6 +194,9 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   norm.multiply.const <- prod(sapply(norm.vec.add, function(n) 1 / n))
   norm.multiply.qValue <- 1 / qValue
   #
+  ## Ellipsis argument list definition
+  # args <- list(...)
+  #
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`
   if (origin == "winepr") {
@@ -202,13 +205,16 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
       skip <- skip %>% `if`(skip != 3, 3, .)
-      na.strings <- NULL
-      select <- NULL
-      drop <- NULL
-      encoding <- "unknown"
-      fill <- FALSE
-      blank.lines.skip <- FALSE
-      colClasses <- NULL
+      #
+      ## following defined by `...`
+      #
+      # na.strings <- NULL
+      # select <- NULL
+      # drop <- NULL
+      # encoding <- "unknown"
+      # fill <- FALSE
+      # blank.lines.skip <- FALSE
+      # colClasses <- NULL
 
       #
     } else {
@@ -216,13 +222,16 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
       skip <- skip %>% `if`(skip != 4, 4, .)
-      fill <- TRUE
-      blank.lines.skip <- TRUE
-      na.strings <- c("Intensity", "X [G]", "Y []")
-      select <- NULL
-      drop <- NULL
-      encoding <- "unknown"
-      colClasses <- NULL
+      #
+      ## following defined by `...`
+      #
+      # fill <- TRUE
+      # blank.lines.skip <- TRUE
+      # na.strings <- c("Intensity", "X [G]", "Y []")
+      # select <- NULL
+      # drop <- NULL
+      # encoding <- "unknown"
+      # colClasses <- NULL
       #
     }
   }
@@ -231,35 +240,34 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     sep <- sep %>% `if`(sep != "auto", "auto", .)
     header <- header
     skip <- skip
-    na.strings <- NULL
-    select <- NULL
-    drop <- NULL
-    encoding <- "unknown"
-    fill <- FALSE
-    blank.lines.skip <- FALSE
-    colClasses <- NULL
+    #
+    ## following defined by `...`
+    #
+    # na.strings <- NULL
+    # select <- NULL
+    # drop <- NULL
+    # encoding <- "unknown"
+    # fill <- FALSE
+    # blank.lines.skip <- FALSE
+    # colClasses <- NULL
   }
   ## change any other `origin` accordingly
   if (origin != "winepr" & origin != "xenon") {
     sep <- sep
     header <- header
     skip <- skip
+
   }
   #
   ## basic data frame by `fread` incl. the above defined parameters
-  spectrum.data.origin <- data.table::fread(file = path_to_ASC,
-    sep = sep,
-    header = header,
-    skip = skip,
-    na.strings = na.strings,
-    select = select,
-    drop = drop,
-    colClasses = colClasses,
-    col.names = col.names,
-    encoding = encoding,
-    fill = fill,
-    blank.lines.skip = blank.lines.skip,
-    ...
+  #
+  spectrum.data.origin <-
+    data.table::fread(file = path_to_ASC,
+                      sep = sep,
+                      header = header,
+                      skip = skip,
+                      col.names = col.names,
+                      ...
   )
   ## condition for `winepr`
   if (origin == "winepr" & !is.null(time.series)) {
@@ -306,8 +314,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     if (isTRUE(convertB.unit)){
       spectra.data <- spectrum.data.origin %>%
         dplyr::mutate(!!rlang::quo_name(paste0(xString.init,
-                                               switch(2-isTRUE(G.unit.cond),"mT","G"))) := .data[[xString]] *
-                        switch(2 - isTRUE(G.unit.cond),
+                                               switch(2-isTRUE(G.unit.cond),"mT","G"))) :=
+                        .data[[xString]] * switch(2 - isTRUE(G.unit.cond),
                                1 / 10,
                                10
                         )) %>%
@@ -318,7 +326,6 @@ readEPR_Exp_Specs <- function(path_to_ASC,
         dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
                         norm.multiply.qValue * norm.multiply.const)
     }
-
   }
   ## Any other Spectra like ENDOR or with g-Value or Intensity/Area vs time
   ## or Intensity vs power relationship
