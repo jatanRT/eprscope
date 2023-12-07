@@ -6,11 +6,11 @@
 #'
 #'
 #' @description
-#' A short description...(Integrals/Areas \emph{vs.} Time)...
+#'  A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
-#' @param data.integs Data frame object Integrals/Areas \emph{vs.} Time
+#' @param data.integs Data frame object Integrals/Areas/Concentration \emph{vs.} Time
 #' @param time.unit Character string ... argument/parameter... tbc
 #' @param time Character string ... argument/parameter... tbc
 #' @param qvarR Character string ... argument/parameter... tbc
@@ -24,7 +24,21 @@
 #' @param origin Character string ... argument/parameter... tbc
 #'
 #'
-#' @return List ... tbc ...
+#' @return As a result of "kinetic" fit list with the following components is available:
+#'   \describe{
+#'   \item{df}{Data frame object with the variables/columns such as \code{time},
+#'   experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area}
+#'   as well as concentration \code{c_M} of the relevant radical EPR spectrum and the corresponding
+#'   quantitative variable \code{fitted} vector values .}
+#'   \item{plot}{Plot/Graph object \emph{Quantitative variable} \emph{vs.} \emph{Time} with the experimental
+#'   data and the corresponding fit.}
+#'   \item{df.coeffs}{Data frame object containing the optimized parameter values (\code{Estimates}),
+#'   their corresponding \code{standard errors}, \code{t-} and finally \code{p-values}.}
+#'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
+#'   \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
+#'   \item{sum.LSQ.evals}{Residual sum of squares at each iteration/evaluation. The length of \code{sum.LSQ.evals}
+#'   is equal to the length of \code{N.evals}. It actually shows the progress of the convergence.}
+#'   }
 #'
 #'
 #' @examples
@@ -58,6 +72,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   ## 'Temporary' processing variables
   # . <- NULL
   fitted <- NULL
+  M <- NULL
   ## convert time if other than `s` appears
   if (time.unit == "min") {
     data.integs[[time]] <- data.integs[[time]] * 60
@@ -114,10 +129,13 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     #
     ## Summary as table
     summar.react.kin.fit.df <- as.data.frame(summary(model.react.kin.fit)$coefficients)
+    #
     ## number of iterations/evaluations
     iters.react.kin.fit <- model.react.kin.fit$niter
+    #
     ## total sum of residual squares
     residsq.react.kin.fit <- model.react.kin.fit$deviance
+    #
     ## vector of particular residual squares at each iteration
     converg.react.kin.fit <- model.react.kin.fit$rsstrace
     #
@@ -149,6 +167,8 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     rm(model.expr.time, model.react.kin.fit)
   }
   #
+  ## ---------------------------- EXPERIMENT-FIT PLOT -----------------------------
+  #
   ## create plot
   plot.fit.base <- ggplot(new.predict.df) +
     geom_point(
@@ -176,6 +196,9 @@ eval_kinR_EPR_modelFit <- function(data.integs,
       ))
     )
   #
+  ## condition to plot concentration
+  concM.condition <- ifelse(grepl("c_M|c.M|conc|Conc|molar|Molar",qvarR),TRUE,FALSE)
+  #
   ## Caption
   # plot.params.names <- lapply(names(predict.model.params),
   #                                    function(i) bquote(bolditalic(string2lang(.(i)))))
@@ -185,10 +208,12 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     labs(
       title = model.react,
       color = "",
-      caption = "Least-Square Fit by Levenberg-Marquardt Algorithm and
+      caption = "Least-Square Fit by the Levenberg-Marquardt Algorithm\nand
                     Numerical Solution of Ordinary Differential Equations System.",
       x = bquote(italic(Time) ~ ~"(" ~ s ~ ")"),
-      y = bquote(italic(Integral ~ ~Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+      y = switch(2-concM.condition,
+                 plot_labels_xyz(c,M),
+                 bquote(italic(Integral ~ ~Intensity) ~ ~"(" ~ p.d.u. ~ ")"))
     ) +
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
@@ -197,9 +222,12 @@ eval_kinR_EPR_modelFit <- function(data.integs,
       plot.title = element_text(hjust = 0.5),
       legend.title = element_text(size = 14),
       legend.text = element_text(size = 13),
+      legend.text.align = 0.5,
       legend.key.size = unit(1.4, "lines"),
       legend.box.margin = margin(l = -0.24, unit = "in")
     )
+  #
+  ## ---------------------------- RESULT LIST -----------------------------
   #
   ## Summary
   fit.summary <- list(

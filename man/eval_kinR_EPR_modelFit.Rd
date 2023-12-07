@@ -20,7 +20,7 @@ eval_kinR_EPR_modelFit(
 )
 }
 \arguments{
-\item{data.integs}{Data frame object Integrals/Areas \emph{vs.} Time}
+\item{data.integs}{Data frame object Integrals/Areas/Concentration \emph{vs.} Time}
 
 \item{time.unit}{Character string ... argument/parameter... tbc}
 
@@ -85,10 +85,24 @@ in \code{\link{eval_kinR_ODE_model}}.}
 (see also \code{\link[deSolve]{ode}}).}
 }
 \value{
-List ... tbc ...
+As a result of "kinetic" fit list with the following components is available:
+  \describe{
+  \item{df}{Data frame object with the variables/columns such as \code{time},
+  experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area}
+  as well as concentration \code{c_M} of the relevant radical EPR spectrum and the corresponding
+  quantitative variable \code{fitted} vector values .}
+  \item{plot}{Plot/Graph object \emph{Quantitative variable} \emph{vs.} \emph{Time} with the experimental
+  data and the corresponding fit.}
+  \item{df.coeffs}{Data frame object containing the optimized parameter values (\code{Estimates}),
+  their corresponding \code{standard errors}, \code{t-} and finally \code{p-values}.}
+  \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
+  \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
+  \item{sum.LSQ.evals}{Residual sum of squares at each iteration/evaluation. The length of \code{sum.LSQ.evals}
+  is equal to the length of \code{N.evals}. It actually shows the progress of the convergence.}
+  }
 }
 \description{
-A short description...(Integrals/Areas \emph{vs.} Time)...
+A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
 }
 \examples{
 \dontrun{
