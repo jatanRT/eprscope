@@ -106,8 +106,9 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     data.integs[[time]] <- data.integs[[time]]
   }
   #
-  ## `timeLim.model` definition
-  timeLim.model <- c(min(data.integs[[time]]),max(data.integs[[time]]))
+  ## `timeLim.model` definition guess fro 0 to 20% over
+  ## (an arbitrary value to increase the number of points) the time max
+  timeLim.model <- c(0,1.2 * max(data.integs[[time]]))
   #
   ## ---------------------------- DERIVATIVE FORM Fit -----------------------------
   #
