@@ -107,7 +107,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   }
   #
   ## `timeLim.model` definition
-  timeLim.model <- c(0,max(data.integs[[time]]))
+  timeLim.model <- c(min(data.integs[[time]]),max(data.integs[[time]]))
   #
   ## ---------------------------- DERIVATIVE FORM Fit -----------------------------
   #
@@ -196,7 +196,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
       ))
     )
   #
-  ## condition to plot concentration
+  ## condition to concentration plot label
   concM.condition <- ifelse(grepl("c_M|c.M|conc|Conc|molar|Molar",qvarR),TRUE,FALSE)
   #
   ## Caption
@@ -208,8 +208,8 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     labs(
       title = model.react,
       color = "",
-      caption = "Least-Square Fit by the Levenberg-Marquardt Algorithm\nand
-                    Numerical Solution of Ordinary Differential Equations System.",
+      caption = "Least-Square Fit by the Levenberg-Marquardt Algorithm and
+                Numerical Solution of Ordinary Differential Equations System.",
       x = bquote(italic(Time) ~ ~"(" ~ s ~ ")"),
       y = switch(2-concM.condition,
                  plot_labels_xyz(c,M),
