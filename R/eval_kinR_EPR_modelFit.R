@@ -167,6 +167,23 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     ## the `model.expr.time` and `model.react.kin.fit` is not required anymore
     rm(model.expr.time, model.react.kin.fit)
   }
+  ## additional methods
+  # if (fit.kin.method == "diff-neldermead"){
+  #   #
+  #   ## function to parametrize kinetic model
+  #   fit.kin.params.x0 <- function(model.react,
+  #                                 elementary.react,
+  #                                 timeLim.model,
+  #                                 data,
+  #                                 time,
+  #                                 qvar,
+  #                                 x0){
+  #
+  #   }
+  #   ## minim function =>
+  #
+  #   #
+  # }
   #
   ## ---------------------------- EXPERIMENT-FIT PLOT -----------------------------
   #
