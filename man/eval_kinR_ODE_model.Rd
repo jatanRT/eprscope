@@ -120,9 +120,11 @@ If the function is not used for fitting of the experimental and processed data, 
   \describe{
   \item{df}{Data frame containing \code{time} column and \code{qvar}, quantitative variable,
   columns corresponding to quantities of different relevant species
-  denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc.}
+  denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. + if \code{data.expr} is NOT NULL
+  additional experimental quantitative variable is present.}
   \item{plot}{Plot object containing \code{time} as abscissa and \code{qvar}
-  (see \code{df} above) as \eqn{y}-axis.}
+  (see \code{df} above) as \eqn{y}-axis. + if \code{data.expr} is NOT NULL the experimental
+  quantitative variable is presented as well.}
   }
   Applying function for the fitting procedure
   requires \code{model.expr.diff = TRUE} and therefore the result is difference between
@@ -207,9 +209,8 @@ eval_kinR_ODE_model(model.react = "(n=2)A --> [k1] (m=2)R",
 ## + parameterized partial order for `A` (alpha)
 minpack.lm::nls.lm(par = c(k1 = 0.005,
                            qvar0A = 0.05,
-                           qvar0R = 0,
-                           alpha = 1.5),
-                   elementary.react = FALSE,
+                           qvar0R = 0),
+                   elementary.react = TRUE,
                    fn = eval_kinR_ODE_model,
                    model.react = "(n=2)A --> [k1] (m=2)R",
                    model.expr.diff = TRUE,

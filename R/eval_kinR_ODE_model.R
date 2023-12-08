@@ -153,9 +153,11 @@
 #'   \describe{
 #'   \item{df}{Data frame containing \code{time} column and \code{qvar}, quantitative variable,
 #'   columns corresponding to quantities of different relevant species
-#'   denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc.}
+#'   denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. + if \code{data.expr} is NOT NULL
+#'   additional experimental quantitative variable is present.}
 #'   \item{plot}{Plot object containing \code{time} as abscissa and \code{qvar}
-#'   (see \code{df} above) as \eqn{y}-axis.}
+#'   (see \code{df} above) as \eqn{y}-axis. + if \code{data.expr} is NOT NULL the experimental
+#'   quantitative variable is presented as well.}
 #'   }
 #'   Applying function for the fitting procedure
 #'   requires \code{model.expr.diff = TRUE} and therefore the result is difference between
@@ -198,9 +200,8 @@
 #' ## + parameterized partial order for `A` (alpha)
 #' minpack.lm::nls.lm(par = c(k1 = 0.005,
 #'                            qvar0A = 0.05,
-#'                            qvar0R = 0,
-#'                            alpha = 1.5),
-#'                    elementary.react = FALSE,
+#'                            qvar0R = 0),
+#'                    elementary.react = TRUE,
 #'                    fn = eval_kinR_ODE_model,
 #'                    model.react = "(n=2)A --> [k1] (m=2)R",
 #'                    model.expr.diff = TRUE,
@@ -866,7 +867,9 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       ## following operation required for the difference
       ## the same number of points for the model as well as for the expr.
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]]) %>%
+        ## add `qvar.expr`
+        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.expr[[qvar.expr]])
     }
     ## the first col. is `time` and 2nd has to be renamed
     names(result.df)[2] <- "R"
@@ -897,7 +900,9 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
     result.df <- data.frame(result)
     if (!is.null(data.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]])
+        dplyr::filter(.data$time %in% data.expr[[time.expr]]) %>%
+        ## add `qvar.expr`
+        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.expr[[qvar.expr]])
     }
     #
     if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
@@ -927,7 +932,7 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
       )
   }
   #
-  ## ============================= ENTIRE PLOT & RESULTS ==============================
+  ## ============================= ENTIRE PLOTS & RESULTS ==============================
   #
   ## Caption character vector
   caption.char.vec <- mapply(function(i, j) paste0(i, " = ", j), names(kin.params), kin.params)
@@ -947,9 +952,42 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
   #
   ## RESULTS
   if (isFALSE(model.expr.diff)) {
-    return(list(df = result.df, plot = plotR))
+    if (!is.null(data.expr)){
+      ## plot with experimental data + model
+      plot.compar <- ggplot(result.df) +
+        geom_point(aes(x = .data[["time"]],
+                       y = .data[[paste0(qvar.expr,"_expr")]],
+                       color = "Experiment"),
+                   size = 2.6) +
+        geom_point(aes(x = .data[["time"]],
+                       y = .data[["R"]],
+                       color = "\nKinetic\nModel"),
+                   size = 1.6) +
+        scale_color_manual(values = c("darkcyan","magenta"),
+                           breaks = c("Experiment","\nKinetic\nModel")) +
+        labs(title = paste0(model.react,"    Model + Experiment"),
+             color = NULL,
+             caption = caption.char.vec,
+             x = bquote(italic(Time) ~ ~"(" ~ .(time.unit) ~ ")"),
+             y = bquote(italic(Quantitative ~ ~Variable) ~ ~ ~ ~ bolditalic(qvar))) +
+        plot_theme_In_ticks() +
+        scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
+        scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
+        theme(plot.title = element_text(hjust = 0.5),
+              legend.text = element_text(size = 13),
+              legend.text.align = 0.5)
+      #
+      return(list(df = result.df, plot = plot.compar))
+      #
+    } else{
+      #
+      return(list(df = result.df, plot = plotR))
+      #
+    }
   } else {
+    #
     return(diff.model.expr)
+    #
   }
   #
 }
