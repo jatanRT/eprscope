@@ -12,6 +12,8 @@ eval_kinR_EPR_modelFit(
   model.react = "(n=1)R --> [k1] B",
   elementary.react = TRUE,
   params.guess = c(qvar0R = 0.001, k1 = 0.001),
+  params.guess.lower = NULL,
+  params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
   time.correct = FALSE,
   path_to_dsc_par = NULL,
@@ -71,8 +73,15 @@ the \code{kin.params}, e.g like \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, a
 \item{params.guess}{Named vector ... argument/parameter... tbc see also \code{kin.params}
 in \code{\link{eval_kinR_ODE_model}}.}
 
-\item{fit.kin.method}{Character string pointing to optimization/fitting method. Only one method is available =>
-\strong{default}: \code{fit.kin.method = "diff-levenmarq"}.}
+\item{params.guess.lower}{description   NULL, NO DEFAULTS ARE TO BE DEFINED...only in case
+if other than \code{fit.kin.method = "diff-levenmarq"} applied}
+
+\item{params.guess.upper}{description   NULL, NO DEFAULTS ARE TO BE DEFINED ..only in case
+if other than \code{fit.kin.method = "diff-levenmarq"} applied}
+
+\item{fit.kin.method}{Character string pointing to optimization/fitting method. If the \strong{default}:
+\code{fit.kin.method = "diff-levenmarq"} doesn't work one may try additional \pkg{nloptr} algorithms
+as introduced in \code{\link{optim_for_EPR_fitness}}.}
 
 \item{time.correct}{Logical, if the time of the recorded series of EPR spectra needs to be corrected
 (see also \code{\link{correct_time_Exp_Specs}}).}
@@ -93,12 +102,16 @@ As a result of "kinetic" fit list with the following components is available:
   quantitative variable \code{fitted} vector values .}
   \item{plot}{Plot/Graph object \emph{Quantitative variable} \emph{vs.} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{df.coeffs}{Data frame object containing the optimized parameter values (\code{Estimates}),
-  their corresponding \code{standard errors}, \code{t-} and finally \code{p-values}.}
+  \item{df.coeffs}{Data frame object. In case of \code{fit.kin.method = "diff-levenmarq"} it contains
+  the optimized parameter values (\code{Estimates}), their corresponding \code{standard errors},
+  \code{t-} and finally \code{p-values}. If the \code{fit.kin.method} is other than \code{"diff-levenmarq"}
+  it summarizes the best parameter estimates.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
-  \item{sum.LSQ.evals}{Residual sum of squares at each iteration/evaluation. The length of \code{sum.LSQ.evals}
-  is equal to the length of \code{N.evals}. It actually shows the progress of the convergence.}
+  \item{convergence}{In case of \code{fit.kin.method = "diff-levenmarq"} it corresponds to residual sum
+  of squares at each iteration/evaluation. The length of \code{convergence}
+  is equal to the length of \code{N.evals}. If the \code{fit.kin.method} is other than \code{"diff-levenmarq"}
+  the integer code indicates successful completion (> 0) or a possible error number (< 0).}
   }
 }
 \description{
