@@ -2,7 +2,7 @@
 % Please edit documentation in R/optim_for_EPR_fitness.R
 \name{optim_for_EPR_fitness}
 \alias{optim_for_EPR_fitness}
-\title{General Function to Non-Linear Optimization of the EPR Spectral Data}
+\title{General Function to Non-Linear Optimization of the EPR Data}
 \usage{
 optim_for_EPR_fitness(
   method = "neldermead",
@@ -48,14 +48,15 @@ See also \code{\link[pso]{psoptim}}.}
 description
 }
 \description{
-General-purpose optimization of the objective \code{fn} function (also called "fitness") which is to be minimized
-  in order to fit EPR simulations onto the experimental spectra. Several methods/algorithms implemented
+General-purpose optimization of the objective \code{fn} function (also called "fitness")
+  which is to be minimized in order to fit theoretical models (radical kinetic ones
+  as well as EPR simulations) onto the experimental data. Several methods/algorithms implemented
   in \pkg{nloptr} (\code{\link[nloptr]{slsqp}}, \code{\link[nloptr]{neldermead}}, \code{\link[nloptr]{crs2lm}},
   \code{\link[nloptr]{sbplx}}, \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}),
-  \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}}) are used.
-  All algorithms are based on the least-square minimization however, the \code{fn} definition in case
-  of \code{nls.lm} must be provided as a difference/residual vector (see also \code{\link{eval_kinR_EPR_modelFit}})
-  not as sum of difference/residual squares.
+  \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}})
+  are used. All algorithms are based on the least-square minimization however,
+  the \code{fn} definition in case of \code{nls.lm} must be provided as a difference/residual
+  vector (see also \code{\link{eval_kinR_EPR_modelFit}}) and not as sum of difference/residual squares.
 }
 \details{
 The algorithms applied for the optimization/fitting are summarized in the following table =>

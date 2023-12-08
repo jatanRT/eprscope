@@ -1,20 +1,21 @@
 #'
 #'
-#' General Function to Non-Linear Optimization of the EPR Spectral Data
+#' General Function to Non-Linear Optimization of the EPR Data
 #'
 #'
 #' @family Simulations and Optimization
 #'
 #'
 #' @description
-#'   General-purpose optimization of the objective \code{fn} function (also called "fitness") which is to be minimized
-#'   in order to fit EPR simulations onto the experimental spectra. Several methods/algorithms implemented
+#'   General-purpose optimization of the objective \code{fn} function (also called "fitness")
+#'   which is to be minimized in order to fit theoretical models (radical kinetic ones
+#'   as well as EPR simulations) onto the experimental data. Several methods/algorithms implemented
 #'   in \pkg{nloptr} (\code{\link[nloptr]{slsqp}}, \code{\link[nloptr]{neldermead}}, \code{\link[nloptr]{crs2lm}},
 #'   \code{\link[nloptr]{sbplx}}, \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}),
-#'   \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}}) are used.
-#'   All algorithms are based on the least-square minimization however, the \code{fn} definition in case
-#'   of \code{nls.lm} must be provided as a difference/residual vector (see also \code{\link{eval_kinR_EPR_modelFit}})
-#'   not as sum of difference/residual squares.
+#'   \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}})
+#'   are used. All algorithms are based on the least-square minimization however,
+#'   the \code{fn} definition in case of \code{nls.lm} must be provided as a difference/residual
+#'   vector (see also \code{\link{eval_kinR_EPR_modelFit}}) and not as sum of difference/residual squares.
 #'
 #'
 #' @details
@@ -91,7 +92,7 @@
 #' @export
 #'
 #'
-#' @importFrom nloptr slsqp neldermead mma ccsaq sbplx isres crs2lm
+#' @importFrom nloptr slsqp neldermead cobyla sbplx lbfgs crs2lm
 #' @importFrom minpack.lm nls.lm.control
 optim_for_EPR_fitness <- function(method = "neldermead",
                                   x.0,
