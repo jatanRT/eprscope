@@ -73,15 +73,17 @@ the \code{kin.params}, e.g like \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, a
 \item{params.guess}{Named vector ... argument/parameter... tbc see also \code{kin.params}
 in \code{\link{eval_kinR_ODE_model}}.}
 
-\item{params.guess.lower}{description   NULL, NO DEFAULTS ARE TO BE DEFINED...only in case
+\item{params.guess.lower}{Numeric vector, ... NULL, NO DEFAULTS ARE TO BE DEFINED...only in case
 if other than \code{fit.kin.method = "diff-levenmarq"} applied}
 
-\item{params.guess.upper}{description   NULL, NO DEFAULTS ARE TO BE DEFINED ..only in case
+\item{params.guess.upper}{Numeric vector, ... NULL, NO DEFAULTS ARE TO BE DEFINED ..only in case
 if other than \code{fit.kin.method = "diff-levenmarq"} applied}
 
 \item{fit.kin.method}{Character string pointing to optimization/fitting method. If the \strong{default}:
-\code{fit.kin.method = "diff-levenmarq"} doesn't work one may try additional \pkg{nloptr} algorithms
-as introduced in \code{\link{optim_for_EPR_fitness}}.}
+\code{fit.kin.method = "diff-levenmarq"} If one wants to estimate partial reaction orders
+(\eqn{\alpha}, \eqn{\beta} or \eqn{\gamma}), i.e. in the case of \code{elementary.react = FALSE},
+additional algorithms (except the \code{"levenmarq"}) introduced in \code{\link{optim_for_EPR_fitness}}
+have to be applied.}
 
 \item{time.correct}{Logical, if the time of the recorded series of EPR spectra needs to be corrected
 (see also \code{\link{correct_time_Exp_Specs}}).}
@@ -90,8 +92,8 @@ as introduced in \code{\link{optim_for_EPR_fitness}}.}
 
 \item{origin}{Character string ... argument/parameter... tbc}
 
-\item{...}{additional arguments passed to the integrator or to the methods of the ODE
-(see also \code{\link[deSolve]{ode}}).}
+\item{...}{ddditional parameters for \code{\link[minpack.lm]{nls.lm}}
+or \code{\link{optim_for_EPR_fitness}}.}
 }
 \value{
 As a result of "kinetic" fit list with the following components is available:
@@ -106,7 +108,10 @@ As a result of "kinetic" fit list with the following components is available:
   the optimized parameter values (\code{Estimates}), their corresponding \code{standard errors},
   \code{t-} and finally \code{p-values}. If the \code{fit.kin.method} is other than \code{"diff-levenmarq"}
   it summarizes the best parameter estimates.}
-  \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
+  \item{N.evals}{Total number of evaluations/iterations before the best fit is found. In case
+  of particle swarm algorithm, \code{fit.kin.method = "pswarm"}, a three element vector containing
+  the number of function evaluations, number of iterations and the number of restarts
+  are displayed.}
   \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
   \item{convergence}{In case of \code{fit.kin.method = "diff-levenmarq"} it corresponds to residual sum
   of squares at each iteration/evaluation. The length of \code{convergence}

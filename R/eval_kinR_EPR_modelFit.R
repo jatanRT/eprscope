@@ -16,17 +16,21 @@
 #' @param qvarR Character string ... argument/parameter... tbc
 #' @param params.guess Named vector ... argument/parameter... tbc see also \code{kin.params}
 #'   in \code{\link{eval_kinR_ODE_model}}.
-#' @param params.guess.lower description   NULL, NO DEFAULTS ARE TO BE DEFINED...only in case
+#' @param params.guess.lower Numeric vector, ... NULL, NO DEFAULTS ARE TO BE DEFINED...only in case
 #'   if other than \code{fit.kin.method = "diff-levenmarq"} applied
-#' @param params.guess.upper description   NULL, NO DEFAULTS ARE TO BE DEFINED ..only in case
+#' @param params.guess.upper Numeric vector, ... NULL, NO DEFAULTS ARE TO BE DEFINED ..only in case
 #'   if other than \code{fit.kin.method = "diff-levenmarq"} applied
 #' @param fit.kin.method Character string pointing to optimization/fitting method. If the \strong{default}:
-#'   \code{fit.kin.method = "diff-levenmarq"} doesn't work one may try additional \pkg{nloptr} algorithms
-#'   as introduced in \code{\link{optim_for_EPR_fitness}}.
+#'   \code{fit.kin.method = "diff-levenmarq"} If one wants to estimate partial reaction orders
+#'   (\eqn{\alpha}, \eqn{\beta} or \eqn{\gamma}), i.e. in the case of \code{elementary.react = FALSE},
+#'   additional algorithms (except the \code{"levenmarq"}) introduced in \code{\link{optim_for_EPR_fitness}}
+#'   have to be applied.
 #' @param time.correct Logical, if the time of the recorded series of EPR spectra needs to be corrected
 #'   (see also \code{\link{correct_time_Exp_Specs}}).
 #' @param path_to_dsc_par Character string ... argument/parameter... tbc
 #' @param origin Character string ... argument/parameter... tbc
+#' @param ... ddditional parameters for \code{\link[minpack.lm]{nls.lm}}
+#'   or \code{\link{optim_for_EPR_fitness}}.
 #'
 #'
 #' @return As a result of "kinetic" fit list with the following components is available:
@@ -41,7 +45,10 @@
 #'   the optimized parameter values (\code{Estimates}), their corresponding \code{standard errors},
 #'   \code{t-} and finally \code{p-values}. If the \code{fit.kin.method} is other than \code{"diff-levenmarq"}
 #'   it summarizes the best parameter estimates.}
-#'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
+#'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found. In case
+#'   of particle swarm algorithm, \code{fit.kin.method = "pswarm"}, a three element vector containing
+#'   the number of function evaluations, number of iterations and the number of restarts
+#'   are displayed.}
 #'   \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
 #'   \item{convergence}{In case of \code{fit.kin.method = "diff-levenmarq"} it corresponds to residual sum
 #'   of squares at each iteration/evaluation. The length of \code{convergence}
@@ -161,7 +168,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   #
   ## ---------------------- ADDITIONAL METHODS -------------------------
   #
-  ## ADDITIONAL FUNCTIONS/METHODS
+  ## ADDITIONAL FUNCTIONS/METHODS (from `NLOPTR` pkg)
   if (fit.kin.method == "neldermead" || fit.kin.method == "slsqp" ||
       fit.kin.method == "cobyla" || fit.kin.method == "lbfgs" ||
       fit.kin.method == "crs2lm" || fit.kin.method == "sbplx"){
@@ -410,6 +417,253 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     names(predict.model.params) <- names(params.guess)
   }
   #
+  ## ADDITIONAL METHOD => PARTICLE SWARM
+  if (fit.kin.method == "pswarm"){
+    #
+    ## function to parameterize kinetic model by `par` params for `pso`
+    fit_kin_params_par <- function(model.react,
+                                   elementary.react,
+                                   data,
+                                   time,
+                                   qvar,
+                                   par){
+      #
+      if (grepl("^\\(n=.*R --> \\[k1\\] B$",
+                model.react)) {
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          qvar0R.guess <- par[2]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0R = qvar0R.guess)
+        } else{
+          k1.guess <- par[1]
+          qvar0R.guess <- par[2]
+          alpha.guess <- par[3]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0R = qvar0R.guess,
+                            alpha = alpha.guess)
+        }
+      }
+      if (grepl("^\\(n=.*A --> \\[k1\\] \\(m=.*R$",
+                model.react)){
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          qvar0A.guess <- par[2]
+          qvar0R.guess <- par[3]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0R = qvar0R.guess)
+        } else{
+          k1.guess <- par[1]
+          qvar0A.guess <- par[2]
+          qvar0R.guess <- par[3]
+          alpha.guess <- par[4]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0R = qvar0R.guess,
+                            alpha = alpha.guess)
+        }
+      }
+      if (grepl("^\\(n=.*A --> \\[k1\\] \\(m=.*R <==> \\[k2\\] \\[k3\\] \\(l=.*C$",
+                model.react)){
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          k2.guess <- par[2]
+          k3.guess <- par[3]
+          qvar0A.guess <- par[4]
+          qvar0R.guess <- par[5]
+          qvar0C.guess <- par[6]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            k2 = k2.guess,
+                            k3 = k3.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0R = qvar0R.guess,
+                            qvar0C = qvar0C.guess)
+        } else{
+          k1.guess <- par[1]
+          k2.guess <- par[2]
+          k3.guess <- par[3]
+          qvar0A.guess <- par[4]
+          qvar0R.guess <- par[5]
+          qvar0C.guess <- par[6]
+          alpha.guess <- par[7]
+          beta.guess <- par[8]
+          gamma.guess <- par[9]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            k2 = k2.guess,
+                            k3 = k3.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0R = qvar0R.guess,
+                            qvar0C = qvar0C.guess,
+                            alpha = alpha.guess,
+                            beta = beta.guess,
+                            gamma = gamma.guess)
+        }
+      }
+      if (grepl("^\\(n=.*R <==> \\[k1\\] \\[k2\\] \\(m=.*B$",
+                model.react)){
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          k2.guess <- par[2]
+          qvar0R.guess <- par[3]
+          qvar0B.guess <- par[4]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            k2 = k2.guess,
+                            qvar0R = qvar0R.guess,
+                            qvar0B = qvar0B.guess)
+        } else {
+          k1.guess <- par[1]
+          k2.guess <- par[2]
+          qvar0R.guess <- par[3]
+          qvar0B.guess <- par[4]
+          alpha.guess <- par[5]
+          beta.guess <- par[6]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            k2 = k2.guess,
+                            qvar0R = qvar0R.guess,
+                            qvar0B = qvar0B.guess,
+                            alpha = alpha.guess,
+                            beta = beta.guess)
+        }
+      }
+      if (grepl("^\\(n=.*A <==> \\[k1\\] \\[k2\\] \\(m=.*R$",
+                model.react)){
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          k2.guess <- par[2]
+          qvar0A.guess <- par[3]
+          qvar0R.guess <- par[4]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            k2 = k2.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0R = qvar0R.guess)
+        } else {
+          k1.guess <- par[1]
+          k2.guess <- par[2]
+          qvar0A.guess <- par[3]
+          qvar0R.guess <- par[4]
+          alpha.guess <- par[5]
+          beta.guess <- par[6]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            k2 = k2.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0R = qvar0R.guess,
+                            alpha = alpha.guess,
+                            beta = beta.guess)
+        }
+      }
+      if (grepl("^\\(n=.*A \\+ \\(m=.*B --> \\[k1\\] \\(l=.*R$",
+                model.react)){
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          qvar0A.guess <- par[2]
+          qvar0B.guess <- par[3]
+          qvar0R.guess <- par[4]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0B = qvar0B.guess,
+                            qvar0R = qvar0R.guess)
+        } else{
+          k1.guess <- par[1]
+          qvar0A.guess <- par[2]
+          qvar0B.guess <- par[3]
+          qvar0R.guess <- par[4]
+          alpha.guess <- par[5]
+          beta.guess <- par[6]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0A = qvar0A.guess,
+                            qvar0B = qvar0B.guess,
+                            qvar0R = qvar0R.guess,
+                            alpha = alpha.guess,
+                            beta = beta.guess)
+        }
+      }
+      if (grepl("^\\(n=.*R \\+ \\(m=.*B --> \\[k1\\] \\(l=.*C$",
+                model.react)){
+        #
+        if (isTRUE(elementary.react)){
+          k1.guess <- par[1]
+          qvar0R.guess <- par[2]
+          qvar0B.guess <- par[3]
+          qvar0C.guess <- par[4]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0R = qvar0R.guess,
+                            qvar0B = qvar0B.guess,
+                            qvar0C = qvar0C.guess)
+        } else {
+          k1.guess <- par[1]
+          qvar0R.guess <- par[2]
+          qvar0B.guess <- par[3]
+          qvar0C.guess <- par[4]
+          alpha.guess <- par[5]
+          beta.guess <- par[6]
+          #
+          guess.params <- c(k1 = k1.guess,
+                            qvar0R = qvar0R.guess,
+                            qvar0B = qvar0B.guess,
+                            qvar0C = qvar0C.guess,
+                            alpha = alpha.guess,
+                            beta = beta.guess)
+        }
+      }
+      #
+      difference <-
+        eval_kinR_ODE_model(model.react = model.react,
+                            model.expr.diff = TRUE,
+                            elementary.react = elementary.react,
+                            kin.params = guess.params,
+                            timeLim.model = timeLim.model,
+                            data.expr = data,
+                            time.expr = time,
+                            qvar.expr = qvar)
+      #
+      return(difference)
+      #
+    }
+    #
+    ## minim function =>
+    min_residuals_ps <- function(model.react,elementary.react,data,time,qvar,par){
+      with(data,sum(fit_kin_params_par(model.react,elementary.react,data,time,qvar,par)^2))
+    }
+    #
+    ## optimization
+    optimize.kin.list <-
+      optim_for_EPR_fitness(method = fit.kin.method,
+                            x.0 = unname(params.guess),
+                            fn = min_residuals_ps,
+                            lower = params.guess.lower,
+                            upper = params.guess.upper,
+                            data = data.integs,
+                            model.react = model.react,
+                            elementary.react = elementary.react,
+                            time = time,
+                            qvar = qvarR,
+                            ...)
+    #
+    ## best params obtained from the fit
+    predict.model.params <- optimize.kin.list$par
+    names(predict.model.params) <- names(params.guess)
+  }
+  #
   ## ------------------------------ PREDICT BEST FIT ----------------------------
   #
   ## parameters from the fit applied to generate `R` (`qvarR`)
@@ -503,6 +757,9 @@ eval_kinR_EPR_modelFit <- function(data.integs,
         method == "crs2lm" || method == "sbplx"){
       return(0)
     }
+    if (method == "pswarm"){
+      return(2)
+    }
   }
   #
   ## Parameters/Estimates Data frame
@@ -510,7 +767,8 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   summar.best.df <- data.frame(Estimate = unname(predict.model.params))
   rownames(summar.best.df) <- names(predict.model.params)
   #
-  df.result <- switch(2-method.fit.cond.fn(method = fit.kin.method),
+  df.result <- switch(3-method.fit.cond.fn(method = fit.kin.method),
+                      summar.best.df,
                       summar.react.kin.fit.df,
                       summar.best.df)
   ## Summary
@@ -518,13 +776,16 @@ eval_kinR_EPR_modelFit <- function(data.integs,
     df = new.predict.df,
     plot = plot.fit,
     df.coeffs = df.result,
-    N.evals = switch(2-method.fit.cond.fn(method = fit.kin.method),
+    N.evals = switch(3-method.fit.cond.fn(method = fit.kin.method),
+                     optimize.kin.list$counts,
                      iters.react.kin.fit,
                      optimize.kin.list$iter),
-    sum.LSQ.min = switch(2-method.fit.cond.fn(method = fit.kin.method),
+    sum.LSQ.min = switch(3-method.fit.cond.fn(method = fit.kin.method),
+                         optimize.kin.list$value,
                          residsq.react.kin.fit,
                          optimize.kin.list$value),
-    convergence = switch(2-method.fit.cond.fn(method = fit.kin.method),
+    convergence = switch(3-method.fit.cond.fn(method = fit.kin.method),
+                         optimize.kin.list$convergence,
                          converg.react.kin.fit,
                          optimize.kin.list$convergence)
   )
