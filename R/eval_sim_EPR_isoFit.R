@@ -455,7 +455,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## LSQ or DIFF. FUNCTIONS
       ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
       min_residuals_lm <- function(data,nucs.system,Intensity.sim,baseline,B.unit,par){
-        return(data[[Intensity.expr]] -
+        with(data,data[[Intensity.expr]] -
                  fit_sim_params_par(data,nucs.system,Intensity.sim,baseline,B.unit,par))
       }
       #
