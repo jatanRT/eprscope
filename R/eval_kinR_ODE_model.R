@@ -32,10 +32,9 @@
 #'   \code{"(n=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
 #'   e.g. like irrev. dimerization (if \code{"(n=2)"}). \cr
 #'   \code{"(n=1)A --> [k1] (m=1)R"} \tab Basic irreversible radical formation,
-#'   e.g. like irrev. homogeneous \eqn{\text{e}^-} transfer (if \code{"(n=2)"} and \code{"(m=2)"}). \cr
+#'   e.g. like irrev. \eqn{\text{e}^-} transfer. \cr
 #'   \code{"(n=1)A --> [k1] (m=1)R <==> [k2] [k3] (l=1)C"} \tab Consecutive reactions,
-#'   e.g. like comproportionation (or homogeneous
-#'   \eqn{\text{e}^-} transfer, for \code{"(n=2)"} and \code{"(m=2)"}) + follow-up reversible
+#'   e.g. like comproportionation (for \code{"(n=2)"} and \code{"(m=2)"}) + follow-up reversible
 #'   dimerization (\code{"(l=1)"}). \cr
 #'   \code{"(n=1)R <==> [k1] [k2] (m=1)B"} \tab Basic reversible radical quenching,
 #'   e.g. like rev. \eqn{\pi-\pi} dimerization for \code{"(n=2)"} and \code{"(m=1)"}. \cr
