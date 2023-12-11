@@ -11,7 +11,7 @@ Description: Primary aim of the package is to process, analyze
              and plot EPR spectra in Electron Paramagnetic 
              Resonance (EPR) spectroscopy in chemistry. Package 
              functions/scripts can be applied not only 
-             for continuous wave (CW) EPR/ENDOR, however most 
+             for continuous wave (CW) EPR/ENDOR, however some 
              of them may be also used for the integrated forms in 1D 
              pulsed EPR. Package contains functions to find the most 
              important spectral characteristics like g-factor, 
@@ -36,11 +36,11 @@ Description: Primary aim of the package is to process, analyze
              principles. Upon 'reading' (also providing automatic 
              procedures for the most common EPR spectrometers)
              the spectral data are transformed into universal
-             'data frame' R format. Subsequently, the EPR spectra 
+             R 'data frame' format. Subsequently, the EPR spectra 
              can be plotted and are fully consistent either with 
              the 'ggplot2' package or with interactive 
              formats based on the 'plotly'. Additionally, 
-             simulations of the EPR spectra in simple form 
+             simulations and fitting of the isotropic EPR spectra
              are included in the package. Advanced simulation 
              parameters provided by the MATLAB-EasySpin toolbox 
              and the results from quantum chemical calculations 
