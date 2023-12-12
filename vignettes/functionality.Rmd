@@ -312,7 +312,7 @@ tmpd.mw.freq <-
   origin = "winepr"
 )
 # B region (349.677, 350.457) mT, incl. the B mid-point, to calculate 
-# the g-value is obtained from interactive plot above
+# the g-value is obtained from the interactive plot above
 tmpd.g.iso.spec <- 
   eval_gFactor_Spec(tmpd.data.norm.02,
   nu.GHz = tmpd.mw.freq,
@@ -329,7 +329,8 @@ The above (from spectrum) obtained $g_{\mathrm{iso}}$-value may be compared with
 
 ```{r dft-data-norm02-gvalue}
 
-# built-in package file => "TMPDAradCatEPRa.inp.log.zip"
+# built-in package file => "TMPDAradCatEPRa.inp.log.zip" 
+# which is a `.zip` of the Gaussian output file
 gauss.tmpd.load <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 gauss.tmpd.output <- unzip(gauss.tmpd.load)
 #
@@ -353,7 +354,7 @@ The linewidth in $\mathrm{mT}$ can be determined from several spectral lines/reg
 ```{r spectral-data-norm02-linewidth}
 
 # calculate Delta Bpp from several regions
-# => list of three elements
+# => list of three elements/regions
 B.regions.mT <- list(
   c(349.677, 349.977),
   c(349.177, 349.492),
@@ -453,6 +454,8 @@ kableExtra::kbl(symmetry.As.df) %>%
   ))
 
 ```
+
+From the previous analysis it turns out that highest HF-coupling/splitting constants are related to the interaction of unpaired electron with the nitrogen and methyl-proton nuclei. Therefore the highest spin density is located on the periphery of the $\ce{TMPD^{.+}}$ molecule. This may be also supported by the simulation (theoretical calculation) of the EPR spectrum by taking into account the following paramaters, accordingly ➨
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
