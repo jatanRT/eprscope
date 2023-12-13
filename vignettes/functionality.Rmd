@@ -371,7 +371,7 @@ tmpd.delta.Bpp <- sapply(
   }
 )
 #
-# mean value of all three linewidths
+# mean value of all three linewidths in mT
 tmpd.delta.Bpp.mean <- 
   round(mean(tmpd.delta.Bpp),digits = 2)
 #
@@ -379,7 +379,7 @@ tmpd.delta.Bpp.mean
 
 ```
 
-## Hyperfine (HF) Structure {#hf-structure}
+## Hyperfine (HF) Structure and Simulation {#hf-structure}
 
 The **HF** structure represents one of the most important characteristic because it reflects the distribution of unpaired electron within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants ($a$, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by `convert_a_mT_2A()` into hyperfine coupling constants in $\mathrm{MHz}$ ($A$, HFCCs) by the following relation (Equation \@ref(eq:hfatoA)) ➨
 
@@ -455,7 +455,58 @@ kableExtra::kbl(symmetry.As.df) %>%
 
 ```
 
-From the previous analysis it turns out that highest HF-coupling/splitting constants are related to the interaction of unpaired electron with the nitrogen and methyl-proton nuclei. Therefore the highest spin density is located on the periphery of the $\ce{TMPD^{.+}}$ molecule. This may be also supported by the simulation (theoretical calculation) of the EPR spectrum by taking into account the following paramaters, accordingly ➨
+From the previous analysis it turns out that the highest HF-coupling/splitting constants are related to the interaction of unpaired electron with the nitrogen and methyl-proton nuclei. Therefore the highest spin density is located on the periphery of the $\ce{TMPD^{.+}}$ molecule. This may be also supported by the simulation (theoretical calculation) of the EPR spectrum (which is calculated by the `eval_sim_EPR_iso()` function) by taking into account the following parameters, accordingly ➨
+
+-   position of the EPR spectrum ($g_{\mathrm{iso}}$-value) ➨ `g.iso`
+
+-   spectral linewidth corresponding to Gaussian and/or Lorentzian lineshape ➨ `lineGL.DeltaB`
+
+-   content of the Gaussian lineshape in the overall linear combination of both Gaussian and Lorenztian theoretical spectral forms (so called pseudo-Voigtian lineshape) ➨ `lineG.content`
+
+-   additional instrumental parameters like central field ➨ `Bcf`, sweep width ➨ `Bsw`, microwave frequency ➨ `mwGHz` and number of points (spectral resolution) ➨ `Npoints`.
+
+where after the arrow arguments of the `eval_sim_EPR_iso()` function are shown. By considering all the above-listed parameters and the estimated linewidth `tmpd.delta.Bpp.mean` ($0.5\,\mathrm{G}$) as well as the hyperfine coupling constants, either directly estimated from the spectrum (`A.guess.MHz`) or from the quantum chemical calculations (`symmetry.As.df`) and/or taken from the literature [@GramppGpda2005], the EPR spectrum of $\ce{TMPD^{.+}}$ can be simulated as follows ➨
+
+```{r tmpd-radcat-simulation}
+
+# isotropic simulation of the TMPD radical cation where the instrumental
+# parameters are taken from the corresponding `.par` file:
+# `tmpd.params.file`,
+sim.tmpd.iso <- 
+  eval_sim_EPR_iso(g.iso = tmpd.g.iso.spec,
+                   instrum.params = NULL,
+                   path_to_dsc_par = tmpd.params.file,
+                   origin = "winepr",
+                   B.unit = "mT",
+                   nuclear.system = list(list("14N",2,18.6), # A(2 x 14N) = 18.6 MHz
+                                         list("1H",4,5.5), # A(4 x 1H) = 5.5 MHz
+                                         list("1H",12,19.6)), # A(12 x 1H) = 19.6 MHz
+                   natur.abund = TRUE,
+                   lineGL.DeltaB = list(0.05,0.05), # Gaussian (G) and Lorentzian (L) linewidth in mT
+                   lineG.content = 0.5) # pseudo-Voigt line shape with 0.5 G + 0.5 L
+#
+# The output is either interactive spectrum plot or list of plot
+# with the simulated spectrum data frame.
+#
+# preview of data frame
+head(sim.tmpd.iso$df)
+
+```
+
+Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the `presentEPR_Sim_Spec()` function, which is essentially based on `{ggplot2}` package and therefore can be combined with the [additional {ggplot2} functions](https://ggplot2.tidyverse.org/reference/index.html) as shown below ➨
+
+```{r tmpd-radcat-sim-expr-compar, fig.cap=""}
+
+# The intesinty of the simulated spectrum
+# is automatically scalled onto the experimental one.
+present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
+                     data.spectr.sim = sim.tmpd.iso$df,
+                     B.unit = "mT") +
+  plot_theme_NoY_ticks() + # `plot_theme_NoY_ticks` theme from `{eprscope}` pckg.
+  ggplot2::scale_x_continuous(sec.axis = ggplot2::dup_axis(name = "",labels = NULL)) +
+  ggplot2::theme(legend.text = ggplot2::element_text(size = 13))
+
+```
 
 -   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
 
