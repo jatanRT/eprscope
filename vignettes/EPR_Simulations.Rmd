@@ -1,0 +1,41 @@
+---
+title: "Simulation of EPR Spectra"
+output: 
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    toc: TRUE
+number_sections: TRUE
+link-citations: TRUE
+bibliography: simulations.bib
+csl: iso690-numeric-en.csl
+vignette: >
+  %\VignetteIndexEntry{Simulation of EPR Spectra}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r knitr-setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7.2,
+  fig.height = 4.8
+)
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+```
+
+```{r setup, include = FALSE}
+library(eprscope)
+library(icons)
+library(knitr)
+library(patchwork)
+```
+
+# Introduction
+
+Blah Blah[@Easyspin2023]. Blah
+
+# References {.unnumbered}
