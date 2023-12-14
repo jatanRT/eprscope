@@ -141,7 +141,7 @@ head(tmpd.data.norm.01)
 
 ```
 
-An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units is quite often used to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine splitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
+An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The name for the intensity column is `dIepr_over_dB` (without units) because it reflects the derivative mode $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B$ in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function `readEPR_Exp_specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units is quite often used to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine splitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
 
 [^1]: For such reason there are arguments `x` and `Intensity` , pointing to original column indices, in order to properly pick up the corresponding variables.
 
@@ -481,7 +481,7 @@ sim.tmpd.iso <-
                    nuclear.system = list(list("14N",2,18.6), # A(2 x 14N) = 18.6 MHz
                                          list("1H",4,5.5), # A(4 x 1H) = 5.5 MHz
                                          list("1H",12,19.6)), # A(12 x 1H) = 19.6 MHz
-                   natur.abund = TRUE,
+                   natur.abund = TRUE, # take into account the natural abundance of the nuclei above
                    lineGL.DeltaB = list(0.05,0.05), # Gaussian (G) and Lorentzian (L) linewidth in mT
                    lineG.content = 0.5) # pseudo-Voigt line shape with 0.5 G + 0.5 L
 #
@@ -508,6 +508,12 @@ present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
 
 ```
 
--   Quantifying the number of paramagnetic species (e.g. radicals) based on integrated forms of derivative EPR spectra and instrumental parameters. In this respect also baseline polynomial corrections are included to precisely evaluate the double integrals by numeric [trapezoidal method](https://mathworld.wolfram.com/TrapezoidalRule.html). In case of lower signal-to-noise ratios i.e. in noisy EPR spectra, they can be optimized by least-square fitting of simulated ones (e.g. from EasySpin) and single or double integrals can be evaluated using the optimized intensity of the simulated EPR spectrum. This is particularly advantageous in (time) series of many noisy EPR spectra. Such operations have been available only on EPR instruments/spectrometers, up to now.
+Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, in order to better fit the simulated spectrum onto the experimental one a fitting/optimization function `eval_sim_EPR_isoFit()` may be used. More information can be found in `vignette("EPR_Simulations")`.
+
+## Integrating the EPR Spectrum
+
+Integration process in the analysis of EPR spectra is undoubtedly important operation because it mirrors the amount of paramagnetic centers/radicals within the sample. However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Therefore, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation available from the [{pracma}](https://github.com/cran/pracma) `r icons::icon_style(fontawesome("box-open"), fill = "brown")` `pracma::cumtrapz()` (see also [@Rpracma2023; @LibreMath2023; @Math24net2023]).
+
+The disadvantage of the cumulative trapezoidal method lies in poorly resolved EPR spectra leading to a higher integration errors. However, if the spectral resolution (number of points) is relatively high (e.g. $\geq 1024\,\mathrm{points/sweep}$) the relative error is minimal falling into the range of $\langle 1-5\rangle\,\%$. Additionaly, if the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape (see below). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate integral from that spectrum (performed by the `quantify_EPR_Sim_series()` function). Thus, the big advantage of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled by the same manner like within the EPR spectrometer acquisitions/processing software (see also `plot_EPR_Specs_integ()` function below). The integration of the EPR spectral data is essentially provided by the `eval_integ_EPR_Spec()` and its application to the experimental $\ce{TMPD^{.+}}$ spectrum is documented by the following scripts ➨
 
 # References {.unnumbered}
