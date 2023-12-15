@@ -7,13 +7,13 @@ output:
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
-The key objective of this fully open source package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. The package doesn't want to replace the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several tools, e.g. like by the acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as by several other proprietary software platforms like *MS Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination would be adopted.
+The key objective of this fully open source package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. The package doesn't want to replace the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several tools, e.g. like by the acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as by several other proprietary software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination is adopted.
 
 ## Installation
 
 ```{r}
 
-## So far, the package can be installed by =>
+# So far, the package can be installed by =>
 
 # install.packages("devtools")
 # devtools::install_github("jatanRT/eprscope.git")
@@ -35,6 +35,27 @@ Additionally, **an open-source scientific and technical publishing system** [Qua
 ## Usage
 
 In this section couple of examples are shown in order to briefly demonstrate functionality of the package. More detailed description can be found within the package articles/vignettes or documentation examples.
+
+### Reading Files with Instrumental Parameters
+
+```{r warning=FALSE,message=FALSE}
+
+library(eprscope)
+#
+# built-in package file => "TMPD_specelchem_accu_b.par"
+tmpd.params.file <- 
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
+#
+# parameters into interactive table (data frame)
+tmpd.params.dt <- 
+  readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
+                      origin = "winepr",
+                      interact = "params")
+#
+# preview
+tmpd.params.dt
+
+```
 
 ## Help, Questions and Contribution
 

@@ -16,15 +16,15 @@ functions which have to be otherwise performed by several tools,
 e.g. like by the acquisition/processing software, supplied by the EPR
 spectrometer manufacturers (see
 e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html))
-as well as by several other proprietary software platforms like *MS
+as well as by several other proprietary software platforms like the *MS
 Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also
 tries to reduce such many steps if the above-mentioned software
-combination would be adopted.
+combination is adopted.
 
 ## Installation
 
 ``` r
-## So far, the package can be installed by =>
+# So far, the package can be installed by =>
 
 # install.packages("devtools")
 # devtools::install_github("jatanRT/eprscope.git")
@@ -62,6 +62,27 @@ In this section couple of examples are shown in order to briefly
 demonstrate functionality of the package. More detailed description can
 be found within the package articles/vignettes or documentation
 examples.
+
+### Reading Files with Instrumental Parameters
+
+``` r
+library(eprscope)
+#
+# built-in package file => "TMPD_specelchem_accu_b.par"
+tmpd.params.file <- 
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
+#
+# parameters into interactive table (data frame)
+tmpd.params.dt <- 
+  readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
+                      origin = "winepr",
+                      interact = "params")
+#
+# preview
+tmpd.params.dt
+```
+
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ## Help, Questions and Contribution
 
