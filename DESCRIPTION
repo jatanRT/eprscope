@@ -85,7 +85,7 @@ Suggests:
     icons,
     cowplot,
     gridExtra,
-    collapse,
+    npreg,
     patchwork,
     openxlsx,
     webshot2,
