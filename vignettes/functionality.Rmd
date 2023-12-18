@@ -153,9 +153,11 @@ An arbitrary character string may be chosen for the column names (`col.names`)[^
 conv.time.ms <- 8 # conversion time in milliseconds
 receiver.gain <- 39905.25 # unitless
 sweep.width <- 120 # in G
+Number.of.points <- 2401
 adv.norm.constant <- quantify_EPR_Norm_const(
   conv.time.ms = conv.time.ms,
   Nscans = 20,
+  Npoints = Number.of.points,
   rg = receiver.gain,
   rg.unit = "Unitless",
   Bsw = sweep.width
