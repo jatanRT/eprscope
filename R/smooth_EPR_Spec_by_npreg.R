@@ -15,7 +15,7 @@
 #' @param lineSpecs.form Character string ...TBC...
 #' @param Intensity Character string ...TBC...
 #' @param method Character string ...TBC...
-#' @param output.vecs Logical, description ...TBC...
+#' @param output.vec Logical, description ...TBC...
 #' @param ... additional arguments passed to the function (see also \code{\link[npreg]{ss}}).
 #'
 #'
@@ -38,7 +38,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
                                      lineSpecs.form = "derivative",
                                      Intensity = "dIepr_over_dB",
                                      method = "BIC",
-                                     output.vecs = FALSE,
+                                     output.vec = FALSE,
                                      ...){
   #
   ## 'Temporary' processing variables
@@ -96,7 +96,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
     theme(legend.text = element_text(size = 13))
   #
   ## RESULTS
-  if (isFALSE(output.vecs)){
+  if (isFALSE(output.vec)){
     results <- list(
       df = data.spectr,
       plot = plot.expr.smoothed,
