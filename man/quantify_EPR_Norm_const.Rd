@@ -4,15 +4,26 @@
 \alias{quantify_EPR_Norm_const}
 \title{Normalization Constant Calculation for Quantitative EPR Analysis}
 \usage{
-quantify_EPR_Norm_const(conv.time.ms, Nscans, Bsw = NULL, rg, rg.unit = "dB")
+quantify_EPR_Norm_const(
+  conv.time.ms,
+  Nscans,
+  Npoints = NULL,
+  Bsw = NULL,
+  rg,
+  rg.unit = "dB"
+)
 }
 \arguments{
 \item{conv.time.ms}{Numeric, conversion time in milliseconds.}
 
 \item{Nscans}{Numeric, number of scans.}
 
+\item{Npoints}{Numeric, number of points (resolution) corresponding to individual sweep,
+if \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}). \strong{Default}: \code{Npoints = NULL}.}
+
 \item{Bsw}{Numeric, experimental sweep width (magnetic flux density recording region,
-\eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{Bsw = NULL}.}
+\eqn{B_{\text{SW}}}) in "G" if \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}).
+\strong{Default}: \code{Bsw = NULL}.}
 
 \item{rg}{Numeric, receiver gain value.}
 
@@ -37,9 +48,10 @@ For the receiver gain expressed in \eqn{\text{dB}} units the normalization const
   is the receiver gain in \eqn{\text{dB}}. In case the receiver gain is unitless, the normalization
   constant is defined by =>
   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,G_{\text{R}}\,
-  (N_{\text{Scans}} - 1)\,/\,B_{\text{SW}}(\text{G})}
+  (N_{\text{points}} - 1)\,N_{\text{scans}}\,/\,B_{\text{SW}}(\text{G})}
   where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text{G})} correspond to unitless receiver gain
-  and sweep width in Gauss, respectively. One can gather all parameters
+  and sweep width in Gauss, respectively. \eqn{N_{\text{points}}} equals to number of points (resolution of
+  an individual sweep). One can gather all parameters
   by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
   the corresponding `.DSC`/`.dsc` or `.par` file. \strong{If during the recording of EPR spectra
   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
@@ -54,10 +66,16 @@ quantify_EPR_Norm_const(conv.time.ms = 8.2,
 quantify_EPR_Norm_const(conv.time.ms = 13.1,
                         Bsw = 180,
                         Nscans = 10,
+                        Npoints  = 1024,
                         rg = 3.2e+4,
                         rg.unit = "Unitless")
 
 
+}
+\references{
+\insertRef{RWeberXenon2011}{eprscope}
+
+ \insertRef{WinEPR2007}{eprscope}
 }
 \seealso{
 Other Evaluations and Quantification: 

@@ -19,15 +19,21 @@
 #'   is the receiver gain in \eqn{\text{dB}}. In case the receiver gain is unitless, the normalization
 #'   constant is defined by =>
 #'   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,G_{\text{R}}\,
-#'   (N_{\text{Scans}} - 1)\,/\,B_{\text{SW}}(\text{G})}
+#'   (N_{\text{points}} - 1)\,N_{\text{scans}}\,/\,B_{\text{SW}}(\text{G})}
 #'   where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text{G})} correspond to unitless receiver gain
-#'   and sweep width in Gauss, respectively. One can gather all parameters
+#'   and sweep width in Gauss, respectively. \eqn{N_{\text{points}}} equals to number of points (resolution of
+#'   an individual sweep). One can gather all parameters
 #'   by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
 #'   the corresponding `.DSC`/`.dsc` or `.par` file. \strong{If during the recording of EPR spectra
 #'   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
 #'   \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL
 #'   NORMALIZATION !}. See also \code{\link{quantify_EPR_Abs}}.
 #'
+#'
+#' @references
+#'  \insertRef{RWeberXenon2011}{eprscope}
+#'
+#'  \insertRef{WinEPR2007}{eprscope}
 #'
 #'
 #' @param conv.time.ms Numeric, conversion time in milliseconds.
@@ -36,8 +42,11 @@
 #' @param rg.unit Character string corresponding to unit of the receiver gain.
 #'   Either \code{rg.unit = "db"} (\code{rg.unit = "dB"}, \strong{default})
 #'   or \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}).
+#' @param Npoints Numeric, number of points (resolution) corresponding to individual sweep,
+#'   if \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}). \strong{Default}: \code{Npoints = NULL}.
 #' @param Bsw Numeric, experimental sweep width (magnetic flux density recording region,
-#'   \eqn{B_{\text{SW}}}) in "G". \strong{Default}: \code{Bsw = NULL}.
+#'   \eqn{B_{\text{SW}}}) in "G" if \code{rg.unit = "unitless"} (\code{rg.unit = "Unitless"}).
+#'   \strong{Default}: \code{Bsw = NULL}.
 #'
 #'
 #' @return Numeric value of the normalization constant for quantitative EPR and intensity normalization.
@@ -51,6 +60,7 @@
 #' quantify_EPR_Norm_const(conv.time.ms = 13.1,
 #'                         Bsw = 180,
 #'                         Nscans = 10,
+#'                         Npoints  = 1024,
 #'                         rg = 3.2e+4,
 #'                         rg.unit = "Unitless")
 #'
@@ -60,6 +70,7 @@
 #'
 quantify_EPR_Norm_const <- function(conv.time.ms,
                                     Nscans,
+                                    Npoints = NULL,
                                     Bsw = NULL,
                                     rg,
                                     rg.unit = "dB") {
@@ -79,7 +90,7 @@ quantify_EPR_Norm_const <- function(conv.time.ms,
     Const <- conv.time.ms * Nscans * 20 * 10^rg.dB.20
   }
   if (rg.unit == "unitless" || rg.unit == "Unitless"){
-    Const <- (conv.time.ms * rg * (Nscans - 1)) / Bsw
+    Const <- (conv.time.ms * rg * (Npoints - 1) * Nscans) / Bsw
   }
   #
   return(round(Const))
