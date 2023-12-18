@@ -41,7 +41,7 @@ library(ggplot2)
 
 # Introduction
 
-The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of the Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]:
+The *Wuster's* reagent got his name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]:
 
 ```{=tex}
 \begin{equation}
@@ -49,7 +49,7 @@ The *Wuster's* reagent got his name according to *C. Wuster* who discovered the 
 (\#eq:tmpdoxid)
 \end{equation}
 ```
-where $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuster's reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation \@ref(eq:tmpdoxid)) appears far behind ($\approx (0.5-0.6)\,\mathrm{V}$) from the first one [@Dadpou2018]. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum, as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**. Such an example will demonstrate the main workflow to process and analyse the EPR spectra by the `{eprscope}` `r icons::icon_style(fontawesome("box-open"), fill = "brown")` . The $\ce{TMPD^{.+}}$ was generated electrochemically by potentiostatic electrolysis at 0.308 V (*vs* Ag-*quasiref.* electrode) of the corresponding $1\,\mathrm{mM}$ $\ce{TMPD}$ solution in 0.3 M TBAPF~6~/DMSO.
+where the $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuster's reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation \@ref(eq:tmpdoxid)) appears far behind ($\approx (0.5-0.6)\,\mathrm{V}$) from the first one [@Dadpou2018]. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by characteristic EPR spectrum, as shown below. Moreover, such change is not only visible by "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation. Additionally, it is also associated with the exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**. Such an example will demonstrate the main workflow to process and analyse the EPR spectra by the `{eprscope}` `r icons::icon_style(fontawesome("box-open"), fill = "brown")` . The $\ce{TMPD^{.+}}$ was generated electrochemically by potentiostatic electrolysis at 0.308 V (*vs* Ag-*quasiref.* electrode) of the corresponding $1\,\mathrm{mM}$ $\ce{TMPD}$ solution in 0.3 M TBAPF~6~/DMSO.
 
 # Drawing of Molecular Structures
 
