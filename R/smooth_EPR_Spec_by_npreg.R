@@ -93,7 +93,8 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
     plot_theme_In_ticks() +
     scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-    theme(legend.text = element_text(size = 13))
+    theme(legend.text = element_text(size = 13),
+          legend.text.align = 0.5)
   #
   ## RESULTS
   if (isFALSE(output.vec)){
@@ -103,7 +104,6 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
       rss = smooth.epr.spec.list$pen.crit, ## (weighted) residual sum of squares
       degs.freedom = smooth.epr.spec.list$df, ## corresponding degrees of freedom
       fit = smooth.epr.spec.list$fit, ## list with fit characteristics
-      bernoulli = smooth.epr.spec.list$bernoulli, ## were Bernoulli polynomials used in fitting?
       sigma = smooth.epr.spec.list$sigma, ## estimated error standard deviation.
       aic = smooth.epr.spec.list$aic, ## Akaike's Information Criterion (if method is AIC)
       bic = smooth.epr.spec.list$bic ## Bayesian Information Criterion (if method is BIC)
