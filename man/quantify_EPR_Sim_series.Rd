@@ -27,7 +27,7 @@ quantify_EPR_Sim_series(
 )
 }
 \arguments{
-\item{data.spectra.series}{tbc}
+\item{data.spectra.series}{Data frame object with...corresponding to...TBC...}
 
 \item{dir_ASC_sim}{tbc}
 
@@ -35,33 +35,30 @@ quantify_EPR_Sim_series(
 
 \item{sim.origin}{description from}
 
-\item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
+\item{var2nd.series}{Character string referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
 `Microwave Power`...etc) altered upon individual experiments as a second variable
 (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
-\item{B.unit}{tbc}
+\item{B.unit}{Character string ...tbc...}
 
-\item{Intensity.expr}{tbc}
+\item{Intensity.expr}{Character string ...tbc ...}
 
-\item{Intensity.sim}{tbc}
+\item{Intensity.sim}{Character string ...tbc ...}
 
-\item{optim.method}{Character string description tbc...following methods from \pkg{nloptr} are available:
-\code{optim.method = "slsqp"} (\strong{default}), \code{optim.method = "neldermead"},
-\code{optim.method = "mma"} and \code{optim.method = "ccsaq"}...tbc}
+\item{optim.method}{Character string description tbc...following methods from \code{\link{optim_for_EPR_fitness}}
+are available ...TBC...}
 
-\item{optim.params.init}{Numeric vector...description tbc...inherited from \code{x0} parameter/argument
-of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc}
+\item{optim.params.init}{Numeric vector...description tbc...1. element = basiline constant, 2.,3...etc (following)
+elements multiplication intensity constants of all spectral components}
 
-\item{optim.params.lower}{Numeric vector...description tbc...inherited from \code{lower} parameter/argument
-of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
+\item{optim.params.lower}{Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.}
 
-\item{optim.params.upper}{Numeric vector...description tbc...inherited from \code{upper} parameter/argument
-of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.}
+\item{optim.params.upper}{Numeric vector (with the length of \code{optim.params.init}) with the upper bound constraints.}
 
-\item{Nmax.evals}{Numeric, maximum naumber of function evalutions or iterations.}
+\item{Nmax.evals}{Numeric, maximum number of function evaluations or iterations.}
 
 \item{tol.step}{Numeric, the smallest optimization step (relative change) to stop
 the optimization or fitting procedure.}

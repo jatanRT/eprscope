@@ -8,29 +8,26 @@
 #' @description tbc
 #'
 #'
-#' @param data.spectra.series tbc
+#' @param data.spectra.series Data frame object with...corresponding to...TBC...
 #' @param dir_ASC_sim tbc
 #' @param name_pattern_sim description
 #' @param sim.origin description from
-#' @param var2nd.series String/Character referred to name of the second independent variable/quantity
+#' @param var2nd.series Character string referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
 #'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
-#' @param B.unit tbc
-#' @param Intensity.expr tbc
-#' @param Intensity.sim tbc
-#' @param optim.method Character string description tbc...following methods from \pkg{nloptr} are available:
-#'   \code{optim.method = "slsqp"} (\strong{default}), \code{optim.method = "neldermead"},
-#'   \code{optim.method = "mma"} and \code{optim.method = "ccsaq"}...tbc
-#' @param optim.params.init Numeric vector...description tbc...inherited from \code{x0} parameter/argument
-#'   of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc
-#' @param optim.params.lower Numeric vector...description tbc...inherited from \code{lower} parameter/argument
-#'   of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.
-#' @param optim.params.upper Numeric vector...description tbc...inherited from \code{upper} parameter/argument
-#'   of a \pkg{nloptr} function (see e.g. \code{\link[nloptr]{mma}})...tbc.
-#' @param Nmax.evals Numeric, maximum naumber of function evalutions or iterations.
+#' @param B.unit Character string ...tbc...
+#' @param Intensity.expr Character string ...tbc ...
+#' @param Intensity.sim Character string ...tbc ...
+#' @param optim.method Character string description tbc...following methods from \code{\link{optim_for_EPR_fitness}}
+#'   are available ...TBC...
+#' @param optim.params.init Numeric vector...description tbc...1. element = basiline constant, 2.,3...etc (following)
+#'   elements multiplication intensity constants of all spectral components
+#' @param optim.params.lower Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.
+#' @param optim.params.upper Numeric vector (with the length of \code{optim.params.init}) with the upper bound constraints.
+#' @param Nmax.evals Numeric, maximum number of function evaluations or iterations.
 #' @param tol.step Numeric, the smallest optimization step (relative change) to stop
 #'   the optimization or fitting procedure.
 #' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles).
@@ -82,7 +79,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   Optim_No_iters <- NULL
   Optim_N_converg <- NULL
   #
-  ## Reading simulated EPR spectra from MATLAB
+  ## Reading simulated EPR spectra from MATLAB or other simulation sources
   ## sim file paths
   pattern.sim.files <- paste0("^",name_pattern_sim,".*\\.(txt|asc|csv)$")
   sim.file.orig.paths <- list.files(path = dir_ASC_sim,
@@ -339,7 +336,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     optim.vec.no.iter <-
       sapply(seq_along(optimization.list),
              function(l) optimization.list[[l]]$counts[1])
-  } else{
+  }
+  if (optim.method == "slsqp" || optim.method == "neldermead" ||
+      optim.method == "crs2lm" || optim.method == "sbplx" ||
+      optim.method == "cobyla" || optim.method == "lbfgs"){
     optim.vec.no.iter <-
       sapply(seq_along(optimization.list),
              function(l) optimization.list[[l]]$iter)
