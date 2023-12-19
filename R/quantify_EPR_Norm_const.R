@@ -90,7 +90,12 @@ quantify_EPR_Norm_const <- function(conv.time.ms,
     Const <- conv.time.ms * Nscans * 20 * 10^rg.dB.20
   }
   if (rg.unit == "unitless" || rg.unit == "Unitless"){
-    Const <- (conv.time.ms * rg * (Npoints - 1) * Nscans) / Bsw
+    if (is.null(Npoints) || is.null(Bsw)){
+      stop(" Please provide number of points `Npoints`\n
+           and magnetic flux density sweep width `Bsw` in Gauss ! ")
+    } else{
+      Const <- (conv.time.ms * rg * (Npoints - 1) * Nscans) / Bsw
+    }
   }
   #
   return(round(Const))

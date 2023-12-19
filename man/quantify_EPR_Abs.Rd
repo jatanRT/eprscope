@@ -125,6 +125,8 @@ tbc
 \references{
 \insertRef{eatonQepr2010}{eprscope}
 
+  \insertRef{RWeberXenon2011}{eprscope}
+
   \insertRef{hirschCapill2023}{eprscope}
 
   \insertRef{mazurAnalysis1997}{eprscope}

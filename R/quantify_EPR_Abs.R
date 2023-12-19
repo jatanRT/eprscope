@@ -35,6 +35,8 @@
 #' @references
 #'   \insertRef{eatonQepr2010}{eprscope}
 #'
+#'   \insertRef{RWeberXenon2011}{eprscope}
+#'
 #'   \insertRef{hirschCapill2023}{eprscope}
 #'
 #'   \insertRef{mazurAnalysis1997}{eprscope}
@@ -42,7 +44,6 @@
 #'   \insertRef{portisElectro1953}{eprscope}
 #'
 #'   \insertRef{mailerQuant1977}{eprscope}
-#'
 #'
 #'
 #' @importFrom Rdpack reprompt
