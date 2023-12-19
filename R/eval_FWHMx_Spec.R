@@ -66,7 +66,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
     )) %>%
     dplyr::filter(dplyr::near(.data[[Intensity]],
       max(.data[[Intensity]]) / 2,
-      tol = max(.data[[Intensity]]) / 64
+      tol = max(.data[[Intensity]]) / 10
     ))
   #
   # ==================================================================================
@@ -88,7 +88,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
         dplyr::filter(.data[[x]] < x.max)
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
-      Intens.cond.left <- which.min(abs(x.init.low[[Intensity]] - max(data.spectr.integ[[Intensity]]) / 2))
+      Intens.cond.left <- which.min(abs(x.init.low[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
       Intens.cond.left <- x.init.low[Intens.cond.left] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.low <- x.init.low %>%
@@ -101,7 +101,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
         dplyr::filter(.data[[x]] > x.max)
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
-      Intens.cond.right <- which.min(abs(x.init.high[[Intensity]] - max(data.spectr.integ[[Intensity]]) / 2))
+      Intens.cond.right <- which.min(abs(x.init.high[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
       Intens.cond.right <- x.init.high[Intens.cond.right] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.high <- x.init.high %>%
