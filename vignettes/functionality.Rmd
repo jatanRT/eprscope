@@ -582,6 +582,6 @@ plot_EPR_Specs_integ(tmpd.data.norm.02.integCorr,
 
 ```
 
-Maximal value of the double/sigmoid integral `r round(max(tmpd.data.norm.02.integCorr$sigmoid_Integ),digits = 3)` can be used for the estimation of $\ce{TMPD^{.+}}$ amount within the sample.
+Maximal value of the double/sigmoid integral `r round(max(tmpd.data.norm.02.integCorr$sigmoid_Integ),digits = 4)` can be used for the estimation of $\ce{TMPD^{.+}}$ amount within the sample.
 
 # References {.unnumbered}
