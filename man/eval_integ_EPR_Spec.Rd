@@ -64,7 +64,7 @@ additional processing of spectral data series by \pkg{dplyr}.}
 The integration results may be divided into following types depending on the above-described
   parameters/arguments. Generally, they are either data frames incl. the original data and the integrals
   (\code{output.vecs = FALSE}) or vectors corresponding to individual baseline corrected/uncorrected
-  integrals (\code{output.vecs = TRUE}). This is especially useful for spectral (time) series EPR data,
+  integrals (\code{output.vecs = TRUE}). This is especially useful for the spectral (time) series EPR data,
   which can be handily processed by \code{\link[dplyr]{group_by}} using the
   `pipe` operators (\code{\link[magrittr]{\%>\%}}).
   \enumerate{
