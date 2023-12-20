@@ -40,9 +40,9 @@
 #' @inheritParams eval_gFactor_Spec
 #' @param method Character string corresponding to method to fit a smoothing spline provided by \pkg{npreg}
 #'   package (see the \code{method} argument in \code{\link[npreg]{ss}}). The following methods are available
-#'   (shortly described also
+#'   (they are shortly described
 #'   in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}
-#'   or can be found in References) =>
+#'   or additional information may be found in \code{References}) =>
 #'   \tabular{ll}{
 #'   ---------------- \tab ------------------------------------- \cr
 #'   \strong{Method} \tab \strong{Short Description} \cr
@@ -75,11 +75,15 @@
 #'   data and its corresponding smoothed relationship performed by splines.}
 #'   \item{rss}{Weighted (if the optional parameter \code{w} is defined) residual sum of squares.}
 #'   \item{degs.freedom}{Equivalent degrees of freedom used.}
-#'   \item{fit}{List with components to characterize the spline fit.}
+#'   \item{fit}{List with components to characterize the spline fit (Details see \code{fit} value
+#'   in \code{\link[npreg]{ss}} function documentation).}
 #'   \item{sigma}{Estimated error standard deviation.}
-#'   \item{aic}{Akaike’s Information Criterion (if \code{method = "AIC"}).}
-#'   \item{bic}{Bayesian Information Criterion (if \code{method = "BIC"}).}
-#'   \item{log.likehood}{Likelihood logarithm if \code{method = "REML"/"ML"}.}
+#'   \item{aic}{Akaike’s Information Criterion (if \code{method = "AIC"}). A negative number that has
+#'   the largest modulus (deepest down in the negative territory) indicates the preferred model.}
+#'   \item{bic}{Bayesian Information Criterion (if \code{method = "BIC"}). A negative number that has
+#'   the largest modulus (deepest down in the negative territory) indicates the preferred model.}
+#'   \item{log.likehood}{Likelihood logarithm if \code{method = "REML"/"ML"}. Log likelihood value
+#'   is a measure of goodness of fit for any model. The higher the value, the better the model.}
 #'   }
 #'
 #'
