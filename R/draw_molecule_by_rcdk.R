@@ -6,15 +6,16 @@
 #'
 #'
 #' @description
-#'   A short description...
+#'   Drawing a molecular structure based on \pkg{rcdk} package and using `SMILES` or `SDF` input data.
 #'
 #'
 #'
 #' @param molecule Character string => either SMILES strings (in case
 #'   of \code{type = "smiles"}/\code{type = "SMILES"}) or file path strings
 #'   pointing to \code{".sdf"} files.
-#' @param type Character string ...tbc... either \code{type = "smiles"}/\code{type = "SMILES"}
-#'   or \code{type = "sdf"}/\code{type = "SDF"}. \strong{Default}: \code{type = "smiles"}.
+#' @param type Character string referred to original input molecular type =>
+#'   either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
+#'   \strong{Default}: \code{type = "smiles"}.
 #' @param mol.label Character string pointing to name label of the molecule/compound, e.g. like
 #'   \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 #'   (\strong{default}) a character string "mol. structure viewer" with gray color
@@ -26,8 +27,8 @@
 #'   see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
 #'   => the label is positioned in the bottom right corner.
 #' @param sma Character string allowing to highlight sub-structures using `SMARTS`
-#'   (\strong{SM}ILES \strong{A}rbitrary \strong{T}arget \strong{S}pecification) to highlight
-#'   common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.
+#'   (\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
+#'   the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.
 #' @param annotate Character string, whether to display (\code{annotate = "number"}) or not display
 #'   (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.
 #' @param style Character string denoting the plotting style like =>
@@ -51,11 +52,11 @@
 #' @param suppressh Logical, denoting whether to suppress displaying the hydrogen atoms.
 #'   The `smiles` or `sdf` STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 #'   \strong{Default}: \code{supressh = TRUE}.
-#' @param ... Additional options/arguments for \code{\link[rcdk]{get.depictor}}.
+#' @param ... additional options/arguments for \code{\link[rcdk]{get.depictor}}.
 #'
 #'
 #' @return
-#' tbc
+#'   Graphics/Figure object with molecular structure.
 #'
 #'
 #' @examples

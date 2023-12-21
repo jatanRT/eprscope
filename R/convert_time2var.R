@@ -1,12 +1,12 @@
 #'
-#' Convert Time (\emph{t}) into Variable Linearly Depending on \emph{t}
+#' Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}
 #'
 #'
 #' @family Conversions and Corrections
 #'
 #'
 #' @description
-#'   Conversion of time (\emph{t}) into variable \code{var} (\emph{var}) which is linearly changed upon time.
+#'   Conversion of time (\eqn{t}) into variable \code{var} (\eqn{var}) which is linearly changed upon time.
 #'
 #'
 #' @details
@@ -24,7 +24,7 @@
 #'
 #'
 #'
-#' @param time.val Numeric value or vector corresponding to time (points) where the variable \code{var}
+#' @param time.vals Numeric value or vector corresponding to time (points) where the variable \code{var}
 #'   is changed.
 #' @param time.unit Character string \strong{time unit} defined by `s`,`min` or `h`.
 #'   \strong{Default}: \code{time.unit = "s"}.
@@ -64,7 +64,7 @@
 #' ## (e.g. cyclic voltammetry from -0.1V to 0.45V and back
 #' ## to -0.1V). Time series vector is labeled as "time_s".
 #' time_s <- seq(0,360,by = 18)
-#' E_V <- convert_time2var(time.val = time_s,
+#' E_V <- convert_time2var(time.vals = time_s,
 #'                         var0 = -0.1,
 #'                         var.switch = 0.45,
 #'                         var.rate = 0.003)
@@ -75,7 +75,7 @@
 #' @export
 #'
 #'
-convert_time2var <- function(time.val,
+convert_time2var <- function(time.vals,
                              time.unit = "s",
                              var0,
                              var.switch = NULL,
@@ -84,10 +84,10 @@ convert_time2var <- function(time.val,
   #
   # convert time to `s` depending on `time.unit`
   if (time.unit == "min") {
-    time.val <- time.val * 60
+    time.vals <- time.vals * 60
   }
   if (time.unit == "h") {
-    time.val <- time.val * 3600
+    time.vals <- time.vals * 3600
   }
   #
   ## convert rate if other than s^{-1}
@@ -98,38 +98,38 @@ convert_time2var <- function(time.val,
     var.rate <- var.rate / 3600
   }
   #
-  ## If there is no cyclic change of `var` (variable)
-  ## or there is cyclic change like cyclic voltammetry
-  ## or cyclic change of temperature...etc
+  ## Is there a cyclic change like potential in cyclic voltammetry
+  ## or cyclic change of temperature...etc ?
   if (is.null(var.switch)) {
-    var <- var0 + var.rate * time.val
+    ## If there is no cyclic change of `var` (variable)
+    var <- var0 + var.rate * time.vals
   } else {
     #
     ## first calculate the switching time
     t.switch <- (var.switch - var0) / var.rate
-    ## `var` calcul. depends whether the `time.val` < `t.switch`
-    ## or `time.val` > `t.switch`(for the entire vector/column) =>
+    ## `var` calcul. depends whether the `time.vals` < `t.switch`
+    ## or `time.vals` > `t.switch`(for the entire vector/column) =>
     #
     ## only one value
-    if (length(time.val) == 1){
-      if (time.val <= t.switch) {
-        var <- var0 + var.rate * time.val
+    if (length(time.vals) == 1){
+      if (time.vals <= t.switch) {
+        var <- var0 + var.rate * time.vals
       }
-      if (time.val > t.switch) {
-        var <- var.switch - var.rate * (time.val - t.switch)
+      if (time.vals > t.switch) {
+        var <- var.switch - var.rate * (time.vals - t.switch)
       }
     }
     # time is a vector
-    if (length(time.val) > 1){
+    if (length(time.vals) > 1){
       ## start to create a vector
       var <- c()
       ## checking all the elements in a loop
-      for (t in seq(time.val)){
-        if (time.val[t] <= t.switch) {
-          var[t] <- var0 + var.rate * time.val[t]
+      for (t in seq(time.vals)){
+        if (time.vals[t] <= t.switch) {
+          var[t] <- var0 + var.rate * time.vals[t]
         }
-        if (time.val[t] > t.switch) {
-          var[t] <- var.switch - var.rate * (time.val[t]-t.switch)
+        if (time.vals[t] > t.switch) {
+          var[t] <- var.switch - var.rate * (time.vals[t]-t.switch)
         }
       }
     }

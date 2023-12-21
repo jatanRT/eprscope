@@ -23,8 +23,9 @@ draw_molecule_by_rcdk(
 of \code{type = "smiles"}/\code{type = "SMILES"}) or file path strings
 pointing to \code{".sdf"} files.}
 
-\item{type}{Character string ...tbc... either \code{type = "smiles"}/\code{type = "SMILES"}
-or \code{type = "sdf"}/\code{type = "SDF"}. \strong{Default}: \code{type = "smiles"}.}
+\item{type}{Character string referred to original input molecular type =>
+either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
+\strong{Default}: \code{type = "smiles"}.}
 
 \item{mol.label}{Character string pointing to name label of the molecule/compound, e.g. like
 \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
@@ -40,8 +41,8 @@ see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.po
 => the label is positioned in the bottom right corner.}
 
 \item{sma}{Character string allowing to highlight sub-structures using `SMARTS`
-(\strong{SM}ILES \strong{A}rbitrary \strong{T}arget \strong{S}pecification) to highlight
-common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
+(\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
+the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
 
 \item{annotate}{Character string, whether to display (\code{annotate = "number"}) or not display
 (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.}
@@ -70,13 +71,13 @@ The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "of"}!}
 The `smiles` or `sdf` STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 \strong{Default}: \code{supressh = TRUE}.}
 
-\item{...}{Additional options/arguments for \code{\link[rcdk]{get.depictor}}.}
+\item{...}{additional options/arguments for \code{\link[rcdk]{get.depictor}}.}
 }
 \value{
-tbc
+Graphics/Figure object with molecular structure.
 }
 \description{
-A short description...
+Drawing a molecular structure based on \pkg{rcdk} package and using `SMILES` or `SDF` input data.
 }
 \examples{
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based
