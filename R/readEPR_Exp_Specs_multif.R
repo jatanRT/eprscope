@@ -14,8 +14,8 @@
 #'  (generally, except the Q values, it is not included in the transformation process).
 #'
 #'
-#' @param name_pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}, which appears
-#'  at the beginning of a file name.
+#' @param name_pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
+#'  from name which might not necessarily appear at the beginning of the file name.
 #' @param dir_ASC path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 #'  the `ascii` files are stored
 #' @param dir_dsc_par path (defined by \code{\link[base]{file.path}} String/Character) to directory
@@ -135,8 +135,8 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
   #
   ## file name pattern which has to be the same for `txt`+`DSC`/`.dsc`
   ## or `.asc` and `.par`
-  file.name.pattern.asc <- paste0("^",name_pattern,".*\\.(txt|asc|csv)$")
-  file.name.pattern.params <- paste0("^",name_pattern,".*\\.(DSC|dsc|par)$")
+  file.name.pattern.asc <- paste0(name_pattern,".*\\.(txt|asc|csv)$")
+  file.name.pattern.params <- paste0(name_pattern,".*\\.(DSC|dsc|par)$")
   #
   ## path to all `asc` files
   files.asc <- list.files(

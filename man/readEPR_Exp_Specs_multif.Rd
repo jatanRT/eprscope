@@ -24,8 +24,8 @@ readEPR_Exp_Specs_multif(
 )
 }
 \arguments{
-\item{name_pattern}{Character string ('specimen'), inherited from \code{\link[base]{list.files}}, which appears
-at the beginning of a file name.}
+\item{name_pattern}{Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
+from name which might not necessarily appear at the beginning of the file name.}
 
 \item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 the `ascii` files are stored}
