@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_B.R
 \name{convert_B}
 \alias{convert_B}
-\title{Conversion of Magnetic Flux Density According to Input-Output Units}
+\title{Conversion of Magnetic Flux Density}
 \usage{
 convert_B(B.val, B.unit, B.2unit)
 }
@@ -12,7 +12,7 @@ convert_B(B.val, B.unit, B.2unit)
 \item{B.unit}{Character string referring to input magnetic flux density units.
 Usually `T`, `mT` or `G` are used.}
 
-\item{B.2unit}{Character string referring to input magnetic flux density units.
+\item{B.2unit}{Character string referring to output magnetic flux density units.
 Usually `T`, `mT` or `G` are used.}
 }
 \value{

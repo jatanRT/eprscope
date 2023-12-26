@@ -16,11 +16,22 @@
 #'  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
 #'  Therefore, depending on \emph{B} unit (either `G` or `mT`) each resulting integral data/column
 #'  have to be optionally (in case of `mT`) multiplied by factor of \code{10} because
-#'  \eqn{1 \text{mT}\equiv 10 \text{G}}. Such correction is already included in the function/script.
+#'  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
 #'  Instead of `double integral/integ.` the term `sigmoid integral/integ.` is used. `Double integral`
 #'  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr} and \code{Intensity})
 #'  \strong{is confusing. In such case the EPR spectrum is integrated only once.}
 #'
+#'
+#' @references
+#'  \insertRef{RWeberXenon2011}{eprscope}
+#'
+#'  \insertRef{Rpracma2023}{eprscope}
+#'
+#'  \insertRef{LibreMath2023}{eprscope}
+#'
+#'  \insertRef{Math24net2023}{eprscope}
+#'
+#'  \insertRef{epperson2013intro}{eprscope}
 #'
 #'
 #' @param data.spectr Spectrum data frame/table with magnetic flux density (in `mT`
@@ -28,7 +39,7 @@
 #'   \code{Index} column may be already present as well.
 #' @param B Character/String pointing to magnetic flux density \code{column} (in the original
 #'   \code{data.spectr}) either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
-#'   or \code{B = "Field"}...etc or \code{B = "B_G"} (\strong{default}).
+#'   or \code{B = "B_G"} (\strong{default}) or \code{B = "Field"}...etc.
 #' @param Intensity Character/String pointing to \code{column} of either derivative
 #'   (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 #'   spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectr}.
@@ -39,20 +50,21 @@
 #'   like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}.
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
-#'   (corresponding to entire \emph{B} range).
+#'   (corresponding to entire \emph{B} range of the spectrum).
 #' @param correct.integ Logical, whether to correct the integral by baseline model fit.
 #'   \strong{Default}: \code{correct.integ = FALSE}.
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
-#'   of the selected \eqn{B} region, e.g. like \code{BpeaKlim = c(3535.4,3555.4)}.
-#' @param poly.degree Numeric, degree of polynomial function used to fit the baseline under the single integrated
-#'   curve of the original EPR spectrum.
+#'   of the SELECTED \eqn{B} PEAK REGION, e.g. like \code{BpeaKlim = c(3535.4,3555.4)}. This is the region
+#'   which is not considered for the baseline fit.
+#' @param poly.degree Numeric, degree of the polynomial function used to fit the baseline under the single integrated
+#'   curve of the original EPR spectrum (see also \code{BpeaKlim}).
 #' @param sigmoid.integ Logical, whether to present (column in data frame) the double integral or single
 #'   integral (if the \code{data.spectr} and \code{Intesity} are already in single integrated form),
 #'   in sigmoidal shape, which is required for quantitative analysis,
 #'   \strong{default}: \code{sigmoid.integ = FALSE}.
 #' @param output.vecs Logical, whether the `integral` \code{columns} are presented within the entire
 #'   data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
-#'   additional processing of spectral data series by \pkg{dplyr}.
+#'   additional processing of spectral data series by \pkg{dplyr} (see \code{Values} and \code{Examples}).
 #'
 #'
 #' @return The integration results may be divided into following types depending on the above-described

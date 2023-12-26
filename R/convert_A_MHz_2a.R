@@ -10,11 +10,11 @@
 #'
 #'
 #' @details
-#'   Conversion proceeds according to followign relation:
+#'   Conversion done according to following relation:
 #'   \deqn{a = A\,h / (g\,\mu_{\text{B}})}
 #'   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
 #'   Both latter were obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively
-#'   from the \pkg{constants} package (see \code{\link[constants]{syms}}). Conversion is suitable
+#'   using the \pkg{constants} package (see \code{\link[constants]{syms}}). Conversion is suitable
 #'   for EPR simulations and/or ENDOR.
 #'
 #'

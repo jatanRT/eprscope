@@ -1,4 +1,4 @@
-#' Conversion of Magnetic Flux Density According to Input-Output Units
+#' Conversion of Magnetic Flux Density
 #'
 #'
 #' @family Conversions and Corrections
@@ -13,7 +13,7 @@
 #' @param B.val Numeric value/vector corresponding to input value(s) of magnetic flux density.
 #' @param B.unit Character string referring to input magnetic flux density units.
 #'   Usually `T`, `mT` or `G` are used.
-#' @param B.2unit Character string referring to input magnetic flux density units.
+#' @param B.2unit Character string referring to output magnetic flux density units.
 #'   Usually `T`, `mT` or `G` are used.
 #'
 #'

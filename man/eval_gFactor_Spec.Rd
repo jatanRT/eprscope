@@ -38,7 +38,7 @@ name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesit
 
 \item{Blim}{Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
 of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
-(corresponding to the entire \emph{B} range).}
+(corresponding to the entire \emph{B} range of the EPR spectrum).}
 
 \item{iso}{Logical, whether to calculate the \emph{g}-factor from the \emph{B} value corresponding to
 that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
@@ -46,14 +46,15 @@ that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr
 to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).}
 }
 \value{
-Numeric \eqn{g_{iso}}-value ('iso' = 'isotropic') according to \eqn{(\nu h)/(\mu_{B} B)}.
+Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
+  from the EPR spectrum, according to \eqn{(\nu h)/(\mu_{B} B)}.
 }
 \description{
 Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
   \emph{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
-  and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be be considered,
-  otherwise the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
+  and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be considered.
+  Otherwise, the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
   the \eqn{B_{max}} is used for the \emph{g}-value evaluation.
 }
 \examples{

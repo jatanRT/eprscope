@@ -6,15 +6,15 @@
 #'
 #'
 #' @description
-#'  Providing the accurate time for EPR spectral line/spectrum appearance. Usually the middle of the EPR spectrum is
-#'  is set up as the CF (`central field`) for the spectrum sweep.
+#'  Providing the accurate time for EPR spectral line/spectrum appearance, i.e usually the middle
+#'  \eqn{B} of the EPR spectrum which is is set up as the CF (`central field`) for the spectrum sweep.
 #'
 #'
 #' @details
 #'  The actual time at the middle/crossing point
 #'  is different from that recorder by the EPR acquisition software, see below. This is especially important
 #'  in determining the kinetics of radical generation or decay.
-#'  The time is recorded according to the following scheme. "^v" in the scheme denotes the derivative form
+#'  The time is recorded according to the following scheme where "^v" in the scheme denotes the derivative form
 #'  of an EPR spectrum:
 #'
 #'  \tabular{cccccc}{
@@ -35,7 +35,8 @@
 #'   at which the individual EPR spectra were recorded (supplied by the EPR acquisition software).
 #' @param Nscans Numeric, number of accumulations (number of scans usually denoted as \code{AVGS})
 #'   for each spectrum in EPR time series.
-#' @param sweep.time.s Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{=} one accumulation.
+#' @param sweep.time.s Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{=}
+#'   one "accumulation".
 #'
 #'
 #' @return Numeric value/vector corresponding to accurate time at which the middle (on \eqn{B} abscissa) EPR spectra

@@ -12,18 +12,18 @@ eval_interval_cnfd_tVec(
 )
 }
 \arguments{
-\item{data.vec.col}{Numeric (vector) pointing to column of interest (within a data frame)
+\item{data.vec.col}{Numeric vector pointing to column of interest (within a data frame)
 to calculate the confidence interval or uncertainty.}
 
 \item{level.cnfd}{Numeric (float) corresponding to confidence level \strong{default}:
 \code{level.cnfd = 0.95}.}
 
 \item{lw.tail}{Logical, indicating the way how to calculate \code{qt} quantile function
-for the \eqn{t}-distribuion, it is inherited from \code{\link[stats:TDist]{stats::qt}},
+for the \eqn{t}-distribution, it is inherited from \code{\link[stats:TDist]{stats::qt}},
 if \code{TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]}, otherwise, \eqn{P[X>x]}.}
 
 \item{separate}{Logical, whether to separate the mean value and the uncertainty,
-if \code{TRUE}, the result is shown as a named vvector with (mean) `value` & `uncertaity`,
+if \code{TRUE}, the result is shown as a named vector with (mean) `value` & `uncertaity`,
 otherwise, the result is in the format \eqn{value\pm uncertainty}.}
 }
 \value{
@@ -31,15 +31,15 @@ Named vector of (mean) `value` and `uncertaity` or \eqn{value\pm uncertainty}
   format depending \code{separate} parameter.
 }
 \description{
-Mean value and uncertainty (according to Sudent's t-Distribution) corresponding to column
- (within data frame) or vector which characterize dispersion of individual values elements
- (e.g. double integrals in quantitative EPR analysis)
+Mean value and uncertainty (according to Student's t-Distribution) corresponding to column
+ (within data frame) or vector which characterize dispersion of individual value elements
+ (e.g. like double integrals in quantitative EPR analysis)
 }
 \examples{
 eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035))
 eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
                          level.cnfd = 0.99,
-                         separate = FALSE)
+                         separate = TRUE)
 
 }
 \seealso{

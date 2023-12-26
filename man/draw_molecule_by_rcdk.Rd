@@ -19,7 +19,7 @@ draw_molecule_by_rcdk(
 )
 }
 \arguments{
-\item{molecule}{Character string => either SMILES strings (in case
+\item{molecule}{Character input string => either SMILES strings (in case
 of \code{type = "smiles"}/\code{type = "SMILES"}) or file path strings
 pointing to \code{".sdf"} files.}
 
@@ -35,7 +35,7 @@ is shown.}
 \item{mol.label.color}{Character string pointing to displayed font color of the chemical structure
 label. \strong{Default}: \code{mol.label.color = "black"}.}
 
-\item{mol.label.xy.posit}{Numeric vector matching the x,y-position of the \code{mol.label}
+\item{mol.label.xy.posit}{Numeric vector of two values matching the x,y-position of the \code{mol.label}
 label within the image having the size of "(1,1,10,10)" =>
 see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
 => the label is positioned in the bottom right corner.}
@@ -64,7 +64,7 @@ the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
 \item{abbr}{Character string which controls how the structure is displayed. Following options
 can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
 \code{abbr = "groups"} creating an abbreviation for `groups`; \code{abbr = "reagents"} creating
-an abbreviation for `reagents` or \code{abbr = "on"} to abbreviate the both latter.
+an abbreviation for `reagents` or \code{abbr = "on"} to abbreviate the both.
 The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "of"}!}
 
 \item{suppressh}{Logical, denoting whether to suppress displaying the hydrogen atoms.

@@ -23,12 +23,12 @@ is changed.}
 \item{var0}{Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
 negative electrochemical potential) of the variable (\code{var}).}
 
-\item{var.switch}{Numeric, the switching point \code{var} value, when a linear \strong{cyclic change}
+\item{var.switch}{Numeric, the switching point \code{var} value, in case when a linear \strong{cyclic change}
 (or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
 \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).}
 
 \item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (\strong{INCL. ALSO NEGATIVE SIGN,
-if required}, e.g. like in case of electrochemical reduction or sample cooling).}
+if required}, e.g. like in the case of electrochemical reduction or sample cooling).}
 
 \item{var.rate.unit}{Character string corresponding to \code{var.rate} unit defined
 by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
@@ -48,12 +48,12 @@ The linear time change of \eqn{var} can be expressed like
  This is especially suitable for time conversion of EPR time series experiments
  (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
  electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
- is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on switching one,
+ is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on the switching one,
  like =>
  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
  where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
- at the turning point and denoted by \code{t.switch} and \code{var.switch}, respectively.
+ at the turning point( see also \code{var.switch}).
 }
 \examples{
 ## Calculate Potential after 30 s, starting from 200 mV
