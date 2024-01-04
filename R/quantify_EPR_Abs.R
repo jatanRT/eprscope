@@ -219,10 +219,12 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     }
     if (length(fn.B1.Bm.fit) > 1){
       fn.fit.poly <- function(y){
-        (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+        # (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+        #             (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+        #             (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+        #             (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+        ## more general if the polynomial may possess different lengths
+        (1/pi) * sum(sapply(seq(fn.B1.Bm.fit), function(j) fn.B1.Bm.fit[j] * y^(j-1L)))
       }
       #
       ## Integration of the polynomial function,
@@ -247,10 +249,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     }
     if (length(fn.B1.Bm.fit) > 1){
       fn.fit.poly <- function(y){
-        (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+        (1/pi) * sum(sapply(seq(fn.B1.Bm.fit), function(j) fn.B1.Bm.fit[j] * y^(j-1L)))
       }
       #
       ## Integration of the polynomial function,
