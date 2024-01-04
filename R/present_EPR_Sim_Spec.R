@@ -97,11 +97,10 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   Intens_ratio <- diff_Intens_sim / diff_Intens_expr
   #
   ## scaling the Sim. EPR spectrum intensity to match the Exp. one (new column `Norm_...`):
-  ## in order to better scale the intensity for noisy spectra multiply the `sim` Intensity by 0.95
   if (Intens_ratio != 1) {
     both.spectr.data[[paste0("Norm_", Intensity.sim)]] <- both.spectr.data[[Intensity.sim]] / Intens_ratio
     both.spectr.data[[paste0("Norm_", Intensity.sim)]] <-
-      both.spectr.data[[paste0("Norm_", Intensity.sim)]] * 0.95
+      both.spectr.data[[paste0("Norm_", Intensity.sim)]]
   } else {
     both.spectr.data[[paste0("Norm_", Intensity.sim)]] <- both.spectr.data[[Intensity.sim]]
   }
