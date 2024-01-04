@@ -64,7 +64,8 @@ for the quantitative EPR experiment.}
 \item{eff.cavity.h.mm}{Numeric value equal to effective cavity/probehead height/length,
 usually provided by the probehead manufacturer.}
 
-\item{fn.B1.Bm.fit}{Numeric vector (coefficients) or character string ("theoretical")}
+\item{fn.B1.Bm.fit}{Numeric vector (coefficients) of the polynomial degree from 6 to 11
+or character string ("theoretical").}
 
 \item{Norm.const}{Numeric value corresponding to normalization constant (see
 \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case

@@ -72,7 +72,8 @@
 #' @param fill.sample.h.mm Numeric value equal to sample height (in `mm`) within the tube/cell.
 #' @param eff.cavity.h.mm Numeric value equal to effective cavity/probehead height/length,
 #'   usually provided by the probehead manufacturer.
-#' @param fn.B1.Bm.fit Numeric vector (coefficients) or character string ("theoretical")
+#' @param fn.B1.Bm.fit Numeric vector (coefficients) of the polynomial degree from 6 to 11
+#'   or character string ("theoretical").
 #' @param Norm.const Numeric value corresponding to normalization constant (see
 #'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
 #'   if the EPR spectrum was normalized by such constant either upon measurement or during processing.
@@ -172,6 +173,66 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
   ## `Third` quantification factor in definition:
   third.quant.factor <- sqrt(P.mW * 1e-3) * Bm.mT * 1e-3 * qValue * n.B * S * (S + 1)
   #
+  ## polynomial fitting function to integrate (in case if no theoretical description
+  ## is considered) <==> `fn.B1.Bm.fit` != "theoretical"
+  if (length(fn.B1.Bm.fit) > 1){
+    fn.fit.poly <- function(y,length){
+      if (length == 6){
+        return(
+          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5))
+          )
+        ## the following simplification do not work, IT MUST BE EXPRESSED EXPLICITELY !!
+        # (1/pi) * sum(sapply(seq(fn.B1.Bm.fit), function(j) fn.B1.Bm.fit[j] * y^(j-1L)))
+      }
+      if (length == 7){
+        return(
+          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6))
+          )
+      }
+      if (length == 8){
+        return(
+          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+                    (fn.B1.Bm.fit[8] * y^7))
+          )
+      }
+      if (length == 9){
+        return(
+          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+               )
+      }
+      if (length == 10){
+        return(
+          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8) +
+                    (fn.B1.Bm.fit[10] * y^9))
+               )
+      }
+      if (length == 11){
+        return(
+          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
+                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
+                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
+                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8) +
+                    (fn.B1.Bm.fit[10] * y^9) + (fn.B1.Bm.fit[11] * y^10))
+               )
+      }
+    }
+    #
+    ## and the final function
+    fn.fit.poly.q <- function(y){fn.fit.poly(y,length = length(fn.B1.Bm.fit))}
+  }
+  #
   if (fill.sample.h.mm <= eff.cavity.h.mm){
     #
     ## tube volume in m^3
@@ -218,20 +279,12 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
       }
     }
     if (length(fn.B1.Bm.fit) > 1){
-      fn.fit.poly <- function(y){
-        # (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-        #             (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-        #             (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-        #             (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
-        ## more general if the polynomial may possess different lengths
-        (1/pi) * sum(sapply(seq(fn.B1.Bm.fit), function(j) fn.B1.Bm.fit[j] * y^(j-1L)))
-      }
       #
       ## Integration of the polynomial function,
       ## resolution for the integration
       integral.poly.resolv = fill.sample.h.mm * 5 ## resolution 0.2 mm
-      integral.poly.list <- stats::integrate(fn.fit.poly,
-                                             lower =  - (fill.sample.h.mm / 2),
+      integral.poly.list <- stats::integrate(fn.fit.poly.q,
+                                             lower =  -(fill.sample.h.mm / 2),
                                              upper = (fill.sample.h.mm / 2),
                                              subdivisions = integral.poly.resolv)
     }
@@ -248,21 +301,18 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
            use polynomial fit instead ! ")
     }
     if (length(fn.B1.Bm.fit) > 1){
-      fn.fit.poly <- function(y){
-        (1/pi) * sum(sapply(seq(fn.B1.Bm.fit), function(j) fn.B1.Bm.fit[j] * y^(j-1L)))
-      }
       #
       ## Integration of the polynomial function,
       ## resolution for the integration
       integral.poly.resolv = eff.cavity.h.mm * 5 ## resolution 0.2 mm
-      integral.poly.list <- stats::integrate(fn.fit.poly,
+      integral.poly.list <- stats::integrate(fn.fit.poly.q,
                                              lower =  - (eff.cavity.h.mm / 2),
                                              upper = (eff.cavity.h.mm / 2),
                                              subdivisions = integral.poly.resolv)
     }
   }
   #
-  ## because the integration result is list & the integral corresponds to `[[1]]` value
+  ## because the integration result is list & the integral corresponds to `[[1]]` `value`
   integral.poly <- integral.poly.list[[1]] ## corresponds to `point.sample.c.factor` units
   #
   ## Own quantification:
