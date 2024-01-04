@@ -485,8 +485,8 @@ sim.tmpd.iso <-
                    nuclear.system = list(list("14N",2,18.6), # A(2 x 14N) = 18.6 MHz
                                          list("1H",4,5.5), # A(4 x 1H) = 5.5 MHz
                                          list("1H",12,19.6)), # A(12 x 1H) = 19.6 MHz
-                   natur.abund = TRUE, # take into account the natural abundance of the nuclei above
-                   lineGL.DeltaB = list(0.05,0.05), # Gaussian (G) and Lorentzian (L) linewidth in mT
+                   natur.abund = TRUE, # consider natural abundance of the nuclei above
+                   lineGL.DeltaB = list(0.05,0.05), # Gaussian (G) & Lorentzian (L) linewidth (mT)
                    lineG.content = 0.5) # pseudo-Voigt line shape with 0.5 G + 0.5 L
 #
 # The output is either interactive spectrum plot or list of plot
