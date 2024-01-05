@@ -6,11 +6,11 @@
 #'
 #'
 #' @description
-#' A short description...tbc...of the EPR simulation
+#'   A short description...tbc...of the EPR simulation
 #'
 #'
 #' @details
-#' Additional details...
+#'   Theoretical prediction of isotropic EPR spectra proceeds from
 #'
 #'
 #' @param g.iso Numeric value, guess of the isotropic \eqn{g}-factor. It may also possess a `NULL`
