@@ -113,7 +113,7 @@ within a list.}
 A short description...tbc...of the EPR simulation
 }
 \details{
-Additional details...
+Theoretical prediction of isotropic EPR spectra proceeds from
 }
 \examples{
 ## Simulation of luteolin radical anion with the following
