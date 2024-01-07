@@ -16,7 +16,13 @@ Usually `T`, `mT` or `G` are used.}
 Usually `T`, `mT` or `G` are used.}
 }
 \value{
-Numeric value or vector as a result of the B conversion.
+Numeric value or vector as a result of the B conversion. Depending on the output
+  unit (\code{B.2unit}) the values are rounded to:
+  \describe{
+  \item{B.2unit = "T"}{7 decimal places}
+  \item{B.2unit = "mT"}{4 decimal places}
+  \item{B.2unit = "G"}{3 decimal places}
+  }
 }
 \description{
 Conversion of magnetic flux density/field (\emph{B}) values depending on the input and the required

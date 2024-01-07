@@ -17,7 +17,13 @@
 #'   Usually `T`, `mT` or `G` are used.
 #'
 #'
-#' @return Numeric value or vector as a result of the B conversion.
+#' @return Numeric value or vector as a result of the B conversion. Depending on the output
+#'   unit (\code{B.2unit}) the values are rounded to:
+#'   \describe{
+#'   \item{B.2unit = "T"}{7 decimal places}
+#'   \item{B.2unit = "mT"}{4 decimal places}
+#'   \item{B.2unit = "G"}{3 decimal places}
+#'   }
 #'
 #'
 #' @examples
@@ -38,27 +44,31 @@ convert_B <- function(B.val,
                       B.unit,
                       B.2unit){
   if (B.unit == "G" & B.2unit == "T"){
-    B.val <- B.val * 1e-4
+    B.val <- round(B.val * 1e-4,digits = 7)
   }
   if (B.unit == "mT" & B.2unit == "T"){
-    B.val <- B.val * 1e-3
+    B.val <- round(B.val * 1e-3,digits = 7)
   }
   if (B.unit == "G" & B.2unit == "mT"){
-    B.val <- B.val * 0.1
+    B.val <- round(B.val * 0.1,digits = 4)
   }
   if (B.unit == "mT" & B.2unit == "G"){
-    B.val <- B.val * 10
+    B.val <- round(B.val * 10,digits = 3)
   }
   if (B.unit == "T" & B.2unit == "mT"){
-    B.val <- B.val * 1e+3
+    B.val <- round(B.val * 1e+3,digits = 4)
   }
   if (B.unit == "T" & B.2unit == "G"){
-    B.val <- B.val * 1e+4
+    B.val <- round(B.val * 1e+4,digits = 3)
   }
-  if ((B.unit == "G" & B.2unit == "G") ||
-      (B.unit == "mT" & B.2unit == "mT") ||
-      (B.unit == "T" & B.2unit == "T")){
-    B.val <- B.val
+  if ((B.unit == "G" & B.2unit == "G")){
+    B.val <- round(B.val,digits = 3)
+  }
+  if ((B.unit == "mT" & B.2unit == "mT")){
+    B.val <- round(B.val,digits = 4)
+  }
+  if ((B.unit == "T" & B.2unit == "T")){
+    B.val <- round(B.val,digits = 7)
   }
   #
   return(B.val)
