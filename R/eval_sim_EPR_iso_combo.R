@@ -22,9 +22,10 @@
 #' @return List of the following data frames and plots in case of
 #'   \code{plot.sim.interact = NULL} =>
 #'    \describe{
-#'    \item{df}{Long-format data frame with simulation components A, B, C, ...
-#'     (e.g. representing the individual radicals) as categorical variable
-#'     + magnetic flux density and intensity.}
+#'    \item{df}{Long-format data frame with the simulation components A, B, C, ...
+#'     (e.g. representing the individual radicals) as a categorical variable
+#'     + magnetic flux density, intensity as well as with the sigmoid integral
+#'     column/variable.}
 #'     \item{df.areas}{Data frame with simulation components A, B, C ...and their
 #'     corresponding double/single integrals (`areas`) and with their related ratios
 #'     to overall integral sum (`weighted_areas`).}
@@ -41,11 +42,11 @@
 #'
 #' @examples
 #' ## Simulation of EPR spectrum of TEMPO (nitroxyl) radical with 13C satellites
-#' ## and hyperfine coupling constants A(1 x 14N) = 45 MHz and A(1 x 13C) = 18 MHz.
+#' ## and hyperfine coupling constants A(1 x 14N) = 41 MHz and A(1 x 13C) = 14 MHz.
 #' sim.tempo.13c <- eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
 #'                                         nuclear.system = list(list("14N",1,45),
-#'                                                               list(list("14N",1,45),
-#'                                                                    list("13C",1,18))),
+#'                                                               list(list("14N",1,41),
+#'                                                                    list("13C",1,14))),
 #'                                         natur.abund.vec = c(TRUE,TRUE),
 #'                                         lineGL.DeltaB = list(list(1.2,NULL),
 #'                                                              list(1.2,NULL)),
