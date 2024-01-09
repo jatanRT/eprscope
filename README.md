@@ -3,6 +3,12 @@ eprscope
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
+<!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
 The key objective of this fully open source package is to bring handy
 functions corresponding to “everyday” data processing/analysis in the
 EPR ([Electron Paramagnetic
