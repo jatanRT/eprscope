@@ -96,9 +96,11 @@ Suggests:
     modelsummary,
     posterdown,
     rmarkdown,
-    bookdown
+    bookdown,
+    testthat (>= 3.0.0)
 RoxygenNote: 7.2.3
 RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
+Config/testthat/edition: 3
