@@ -7,7 +7,11 @@ output:
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
-<!-- badges: start --> [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) <!-- badges: end -->
+<!-- badges: start -->
+
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+<!-- badges: end -->
 
 The key objective of this fully open source package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. The package doesn't want to replace the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several tools, e.g. like by the acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as by several other proprietary software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination is adopted.
 
@@ -54,8 +58,46 @@ tmpd.params.dt <-
                       origin = "winepr",
                       interact = "params")
 #
-# preview
+# table preview
 tmpd.params.dt
+
+```
+
+### Depict Molecular Structures
+
+```{r warning=FALSE, message=FALSE}
+
+# Phenylalenyl (Perinaphthenyl or PNT) radical from `SMILES`
+# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" code
+draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
+                      mol.label = "Phenylalenyl",
+                      mol.label.color = "black",
+                      mol.label.xy.posit = c(8.8,1.2))
+
+```
+
+### Simulation of Isotropic EPR Spectra
+
+As an example "PNT" radical (see the structure above)
+
+```{r warning=FALSE, message=FALSE}
+
+# Simulation of phenylalenyl (perinaphthenyl or PNT) radical,
+# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
+# additional experimental/instrumental parameters are not shown,
+# and posses their default values => see the corresponding documentation 
+# of `eval_sim_EPR_iso()` function.
+#
+simulation.iso <- 
+  eval_sim_EPR_iso(g.iso = 2.0027,
+                   B.unit = "G",
+                   nuclear.system = list(list("1H",3,5.09),
+                                         list("1H",6,17.67)),
+                   natur.abund = T,
+                   lineGL.DeltaB = list(0.42,NULL))
+#
+# spectrum preview
+simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 
 ```
 

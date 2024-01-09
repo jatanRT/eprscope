@@ -7,6 +7,7 @@ eprscope
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
 <!-- badges: end -->
 
 The key objective of this fully open source package is to bring handy
@@ -84,11 +85,49 @@ tmpd.params.dt <-
                       origin = "winepr",
                       interact = "params")
 #
-# preview
+# table preview
 tmpd.params.dt
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+### Depict Molecular Structures
+
+``` r
+# Phenylalenyl (Perinaphthenyl or PNT) radical from `SMILES`
+# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" code
+draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
+                      mol.label = "Phenylalenyl",
+                      mol.label.color = "black",
+                      mol.label.xy.posit = c(8.8,1.2))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+### Simulation of Isotropic EPR Spectra
+
+As an example “PNT” radical (see the structure above)
+
+``` r
+# Simulation of phenylalenyl (perinaphthenyl or PNT) radical,
+# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
+# additional experimental/instrumental parameters are not shown,
+# and posses their default values => see the corresponding documentation 
+# of `eval_sim_EPR_iso()` function.
+#
+simulation.iso <- 
+  eval_sim_EPR_iso(g.iso = 2.0027,
+                   B.unit = "G",
+                   nuclear.system = list(list("1H",3,5.09),
+                                         list("1H",6,17.67)),
+                   natur.abund = T,
+                   lineGL.DeltaB = list(0.42,NULL))
+#
+# spectrum preview
+simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
+```
+
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ## Help, Questions and Contribution
 
