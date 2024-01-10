@@ -33,9 +33,9 @@
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.
 #' @param xlim Numeric vector corresponding to border limits of the selected \eqn{x} region,
-#'   e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
+#'   e.g. like \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 #'   or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-#'   to entire `x` range)
+#'   to entire `x` range).
 #' @param var2nd.series String/Character referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
@@ -51,6 +51,9 @@
 #' @param Intensity Character string pointing to \code{intensity column} in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
+#' @param Ilim Numeric vector corresponding to border limits of the selected \eqn{y}/\eqn{Intensity}
+#'   region, e.g. like \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (corresponding
+#'   to entire `Intensity` range).
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
 #'   line form of the analyzed EPR spectrum/data.
@@ -140,6 +143,7 @@
 #' plot_EPR_Specs(data.spectra,
 #'                var2nd.series = "time_s",
 #'                xlim = c(340,357.5),
+#'                Ilim = c(-5e-5,5e-5),
 #'                line.colors = grDevices::hcl.colors(8,palette = "Roma"),
 #'                legend.title = "Time (s)",
 #'                yTicks = F)
@@ -179,6 +183,7 @@ plot_EPR_Specs <- function(data.spectra,
                            var2nd.series = NULL,
                            var2nd.series.slct.by = NULL,
                            Intensity = "dIepr_over_dB",
+                           Ilim = NULL,
                            lineSpecs.form = "derivative",
                            line.colors = "darkviolet",
                            line.width = 0.75,
@@ -200,6 +205,11 @@ plot_EPR_Specs <- function(data.spectra,
   ## otherwise use predefined vector
   data.x.region <- c(min(data.spectra[[x]]),max(data.spectra[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim),data.x.region, .)
+  ## Define limits for `y` (similarly like in case of `x` above)
+  ## 10% of the `max` below the `min` and 10% above the `max`
+  data.y.region <- c(min(data.spectra[[Intensity]]),max(data.spectra[[Intensity]]))
+  data.y.region.2 <- c(data.y.region[1]  - (data.y.region[2] * 0.1),data.y.region[2] * 1.1)
+  Ilim <- Ilim %>% `if`(is.null(xlim),data.y.region.2, .)
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   x.start <- xlim[1]
@@ -266,7 +276,7 @@ plot_EPR_Specs <- function(data.spectra,
                 linewidth = line.width, color = line.colors, show.legend = FALSE
       ) +
       labs(x = x.label, y = y.label) +
-      coord_cartesian(xlim = x.plot.limits)
+      coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
   } else{
     #
     ## legend definition
@@ -303,7 +313,7 @@ plot_EPR_Specs <- function(data.spectra,
       simplePlot <- ggplot(data.spectra) +
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
                   linewidth = line.width) +
-        coord_cartesian(xlim = x.plot.limits) +
+        coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         scale_color_manual(values = line.colors) +
         labs(color = legend.title, x = x.label, y = y.label) +
         theme(legend.title = element_text(size = legend.title.size))
@@ -332,7 +342,7 @@ plot_EPR_Specs <- function(data.spectra,
                           y = .data[[Intensity]],
                           color = .data[[var2nd.series]]),
                       linewidth = line.width) +
-            coord_cartesian(xlim = x.plot.limits)
+            coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
           #
           ## colors definition for the plot
           if (length(line.colors) > 1){
@@ -362,7 +372,7 @@ plot_EPR_Specs <- function(data.spectra,
                           y = .data[[Intensity]],
                           color = .data[[var2nd.series]]),
                       linewidth = line.width) +
-            coord_cartesian(xlim = x.plot.limits) +
+            coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
             scale_color_gradientn(colors = line.colors) +
             labs(color = legend.title, x = x.label, y = y.label) +
             theme(legend.title = element_text(size = legend.title.size),

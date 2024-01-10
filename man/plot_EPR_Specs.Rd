@@ -12,6 +12,7 @@ plot_EPR_Specs(
   var2nd.series = NULL,
   var2nd.series.slct.by = NULL,
   Intensity = "dIepr_over_dB",
+  Ilim = NULL,
   lineSpecs.form = "derivative",
   line.colors = "darkviolet",
   line.width = 0.75,
@@ -48,9 +49,9 @@ like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz`
 or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
-e.g. like `xlim = c(3495.4,3595.4)` (\eqn{B} in \code{G}) or `xlim = c(12.5,21.2)` (\eqn{RF} in \code{MHz})
+e.g. like \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-to entire `x` range)}
+to entire `x` range).}
 
 \item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
@@ -69,6 +70,10 @@ ALL DISCRETE SPECTRA WITHIN SERIES. Recommended max. number of spectra/lines is 
 \item{Intensity}{Character string pointing to \code{intensity column} in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
+
+\item{Ilim}{Numeric vector corresponding to border limits of the selected \eqn{y}/\eqn{Intensity}
+region, e.g. like \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (corresponding
+to entire `Intensity` range).}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
@@ -181,6 +186,7 @@ plot_EPR_Specs(data.spectrum.integ,
 plot_EPR_Specs(data.spectra,
                var2nd.series = "time_s",
                xlim = c(340,357.5),
+               Ilim = c(-5e-5,5e-5),
                line.colors = grDevices::hcl.colors(8,palette = "Roma"),
                legend.title = "Time (s)",
                yTicks = F)
