@@ -5,13 +5,13 @@ output:
     keep_html: true
 ---
 
-## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
-
 <!-- badges: start -->
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 <!-- badges: end -->
+
+## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
 The key objective of this fully open source package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. The package doesn't want to replace the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several tools, e.g. like by the acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as by several other proprietary software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination is adopted.
 
@@ -96,7 +96,7 @@ simulation.iso <-
                    natur.abund = T,
                    lineGL.DeltaB = list(0.42,NULL))
 #
-# spectrum preview
+# simulation spectrum preview in the region from 3462 G to 3528 G
 simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 
 ```

@@ -1,14 +1,14 @@
 eprscope
 ================
 
-## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
-
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 <!-- badges: end -->
+
+## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
 
 The key objective of this fully open source package is to bring handy
 functions corresponding to “everyday” data processing/analysis in the
@@ -123,7 +123,7 @@ simulation.iso <-
                    natur.abund = T,
                    lineGL.DeltaB = list(0.42,NULL))
 #
-# spectrum preview
+# simulation spectrum preview in the region from 3462 G to 3528 G
 simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 ```
 
