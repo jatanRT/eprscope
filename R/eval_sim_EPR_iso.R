@@ -289,6 +289,10 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       #
       Freq_corresp <- round((DeltaE / Planck.const) * 1e-6,digits = 3) ## in MHz
       #
+      ## The corresponding `B` (to `DeltaE`) cannot be evaluated analytically,
+      ## because we do not know the corresponding g-value => therefore the `B`
+      ## will be evaluated iterative manner
+      #
       ## in the first approximation the corresponding `B` may be expressed as =>
       B_corresp <- round(DeltaE / (g_e_iso * Bohr.mu),digits = 7) ## in T
       #
