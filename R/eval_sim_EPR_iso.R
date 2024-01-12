@@ -284,17 +284,18 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         (spin_nuclear + 0.5) * (A_iso / 2) *
         sqrt(1 + ((2 * (m_spin_nuclear + 0.5))/(spin_nuclear + 0.5)) * alpha + alpha^2)
       #
-      ## Delta E
+      ## Delta E for individual line
       DeltaE <- E2 - E1 ## in J
       #
       Freq_corresp <- round((DeltaE / Planck.const) * 1e-6,digits = 3) ## in MHz
       #
-      ## The corresponding `B` (to `DeltaE`) cannot be evaluated analytically,
-      ## because we do not know the corresponding g-value => therefore the `B`
-      ## will be evaluated iterative manner
-      #
-      ## in the first approximation the corresponding `B` may be expressed as =>
+      ## In the first approximation, the corresponding `B` (to `DeltaE`) can be
+      ## evaluated as =>
       B_corresp <- round(DeltaE / (g_e_iso * Bohr.mu),digits = 7) ## in T
+      ## for isotropic spectra => DeltaB = Aiso(in energy units) / (g_e_iso * Bohr.mu).
+      ## Afterwards, such `B_corresp` is searched from the above generated `B.g.sim.df`,
+      ## see also calculations =>
+      ## "Simulated derivative EPR spectrum if `nuclear.system != NULL`" below
       #
       ## all three quantities into one list
       return(list(D_E = DeltaE,nu = Freq_corresp,B = B_corresp))
