@@ -20,8 +20,8 @@ test_that("Magnetic flux density (B) conversion works.", {
   B.init.T.ndecim <- nchar(strsplit(as.character(B.init.T),"\\.")[[1]][2])
   #
   ## check the number of decimal places
-  expect_equal(B.init.G.ndecim,3)
-  expect_equal(B.init.T.ndecim,7)
+  expect_identical(B.init.G.ndecim,3L)
+  expect_identical(B.init.T.ndecim,7L)
   #
   ## B vector in order to check the dimension/length
   Bcf <- 349.78235 ## central field in mT
@@ -36,6 +36,6 @@ test_that("Magnetic flux density (B) conversion works.", {
                             B.unit = "mT",
                             B.2unit = "G")
   # Check the length
-  expect_equal(length(B.init.vec.G),Npoints)
+  expect_length(B.init.vec.G,Npoints)
   #
 })
