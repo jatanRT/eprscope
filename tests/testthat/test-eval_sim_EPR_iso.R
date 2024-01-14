@@ -359,11 +359,151 @@ test_that("The isotropic hyperfine coupling constants determined
     expect_equal(mean.DeltaB.expr,0.540,tolerance = 1e-2) ## `B` in mT
     expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 1e-1) ## `A.iso` in MHz
     #
-    ## the more accurate `DeltaB` will be obtained from the simulation fit
+    ## the more accurate `DeltaB` will be obtained from the simulation fit,
+    ## see `test-eval_sim_EPR_isoFit`
 })
 #
 # ===================================================================================
 #
-## Simulation fit to obtain more accurate `A.iso` and `DeltaB`
+## Simulation of phenylalenyl (or PNT) radical in order to check the simulation
+## intensity pattern, the EPR spectrum can be also compared with that published
+## elsewhere https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b
 #
-
+## Schematically, the "first half" of the EPR spectrum intensities theoretically
+## should look like the following one =>
+#
+# ----- 1:3:3:1 -- 6:18:18:6 -- 15:45:45:15 -- 20:60:60:20 -- ...second spectrum "half"
+#
+## the remainng pattern corresponds to =>
+# 15:45:45:15 -- 6:18:18:6 -- 1:3:3:1 ------
+## ...because there is an interaction of the unpaired electron with =>
+## 3 x 1H (5.09 MHz / 1.8 G) and 6 x 1H (17.67 MHz / 6.3 G) =>
+## total number of lines ((2 * 3 * 0.5) + 1) * ((2 * 6 * 0.5) + 1) = 28
+#
+test_that("The isotropic intensity pattern for the simulated EPR spectrum
+          of phenylalenyl radical matches the theoretical one.",{
+    #
+    ## obtain the simulation corresponding data frame
+    phenylalenyl.rad.data.sim.a <-
+      eval_sim_EPR_iso(g.iso = 2.0027,
+                       B.unit = "G",
+                       nuclear.system = list(list("1H",3,5.09),
+                                             list("1H",6,17.67)),
+                       lineGL.DeltaB = list(0.42,NULL)
+     )$df
+    #
+    ## Similarly like in the case of nitroxide => the following `B` regions
+    ## for individual lines are selected (from the interactive spectrum plot),
+    ## corresponding to first three patterns from the intensity scheme above =>
+    B.regions.pnt.G <-
+      list(
+        c(3473.669,3475.232),c(3475.232,3477.284),c(3477.284,3478.945),c(3478.945,3480.410),
+        c(3480.410,3481.681),c(3481.681,3483.537),c(3483.537,3485.296),c(3485.296,3486.761),
+        c(3486.761,3487.934),c(3487.934,3489.790),c(3489.790,3491.646),c(3491.646,3493.112)
+      )
+    #
+    ## Obtaining of all the maxima =>
+    pnt.rad.data.maxima.sim.a <- c()
+    for (n in seq(B.regions.pnt.G)){
+      pnt.rad.data.maxima.sim.a[n] <-
+        phenylalenyl.rad.data.sim.a %>%
+        dplyr::filter(dplyr::between(Bsim_G,
+                                     B.regions.pnt.G[[n]][1],
+                                     B.regions.pnt.G[[n]][2])) %>%
+        dplyr::filter(dIeprSim_over_dB == max(dIeprSim_over_dB)) %>%
+        dplyr::pull(dIeprSim_over_dB)
+    }
+    #
+    ## Obtaining of all the minima =>
+    pnt.rad.data.minima.sim.a <- c()
+    for (n in seq(B.regions.pnt.G)){
+      pnt.rad.data.minima.sim.a[n] <-
+        phenylalenyl.rad.data.sim.a %>%
+        dplyr::filter(dplyr::between(Bsim_G,
+                                     B.regions.pnt.G[[n]][1],
+                                     B.regions.pnt.G[[n]][2])) %>%
+        dplyr::filter(dIeprSim_over_dB == min(dIeprSim_over_dB)) %>%
+        dplyr::pull(dIeprSim_over_dB)
+    }
+    #
+    ## Because the linewidth and the form are the same for all lines
+    ## => in the first approach the entire individual intensities
+    ## can be calculated as =>
+    pnt.rad.data.diffMaxMin.sim.a <-
+      pnt.rad.data.maxima.sim.a - pnt.rad.data.minima.sim.a
+    #
+    ## Now we can divide all the intensities by the first value to obtain
+    ## the pattern
+    pnt.rad.data.intPattern.sim.a <-
+      pnt.rad.data.diffMaxMin.sim.a / pnt.rad.data.diffMaxMin.sim.a[1]
+    #
+    ## ...and in ideal case such pattern should correspond to the theoretical one
+    pnt.rad.data.intPattern.theo.a <-
+      c(1,3,3,1,6,18,18,6,15,45,45,15)
+    #
+    ## However, the partial overlay of the lines at the margin of each 1:3:3:1 pattern
+    ## causes that the maximum residual is 0.7053877 and 0.2840122 between
+    ## the 2nd and 3rd pattern and 0.2679887 at the end of the 3rd 1:3:3:1 pattern.
+    ## In all other cases the residuals fall into the range of (0,8.05e-2).
+    #
+    pnt.rad.data.intCheck.sim.a <-
+      abs(pnt.rad.data.intPattern.theo.a - pnt.rad.data.intPattern.sim.a)
+    ##
+    # ===== THE DERIV. SIM. INTESITY PATTERN ALMOST MATCHES THE THEORETICAL ONE =======
+    #
+    ## Therefore, checking the max. residual value and the relative errors in '%' =>
+    expect_true(all(pnt.rad.data.intCheck.sim.a < 0.706)) # residuals
+    expect_equal((0.706/pnt.rad.data.intPattern.theo.a[8]) * 100,
+                 11.77, # rel.error in %
+                 tolerance = 1e-2
+    )
+    expect_equal((0.29/pnt.rad.data.intPattern.theo.a[9]) * 100,
+                 1.93, # rel.error in %
+                 tolerance = 1e-2
+    )
+    expect_equal((0.27/pnt.rad.data.intPattern.theo.a[12]) * 100,
+                 1.8, # rel.error in %
+                 tolerance = 1e-2
+    )
+    #
+    ## Adding similar test for the INTEGRATED INTENSITIES
+    phenylalenyl.rad.data.sim.b <-
+      eval_sim_EPR_iso(g.iso = 2.0027,
+                       B.unit = "G",
+                       nuclear.system = list(list("1H",3,5.09),
+                                             list("1H",6,17.67)),
+                       lineSpecs.form = "integrated",
+                       Intensity.sim = "IeprSim",
+                       lineGL.DeltaB = list(0.42,NULL)
+      )$df
+    #
+    ## Obtaining of all the maxima =>
+    pnt.rad.data.maxima.sim.b <- c()
+    for (n in seq(B.regions.pnt.G)){
+      pnt.rad.data.maxima.sim.b[n] <-
+        phenylalenyl.rad.data.sim.b %>%
+        dplyr::filter(dplyr::between(Bsim_G,
+                                     B.regions.pnt.G[[n]][1],
+                                     B.regions.pnt.G[[n]][2])) %>%
+        dplyr::filter(IeprSim == max(IeprSim)) %>%
+        dplyr::pull(IeprSim)
+    }
+    #
+    ## Now we can divide all the intensities by the first value to obtain
+    ## the pattern
+    pnt.rad.data.intPattern.sim.b <-
+      pnt.rad.data.maxima.sim.b / pnt.rad.data.maxima.sim.b[1]
+    #
+    ## Residuals
+    pnt.rad.data.intCheck.sim.b <-
+      abs(pnt.rad.data.intPattern.theo.a - pnt.rad.data.intPattern.sim.b)
+    #
+    # ===== THE INTEGRATED SIM. INTESITY PATTERN MATCHES THE THEORETICAL ONE =======
+    #
+    ## all residuals are lower that 1.005e-3 and th highest relative error in '%' =>
+    expect_true(all(pnt.rad.data.intCheck.sim.b < 1.005e-3)) # residuals
+    expect_equal((1.005e-3/pnt.rad.data.intPattern.theo.a[8]) * 100,
+                 0.01675 # rel. error in %
+    )
+    #
+})
