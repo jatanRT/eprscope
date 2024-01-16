@@ -7,7 +7,7 @@ output:
     toc: TRUE
 number_sections: TRUE
 link-citations: TRUE
-bibliography: simulations.bib
+bibliography: EPR_Simulations.bib
 csl: iso690-numeric-en.csl
 vignette: >
   %\VignetteIndexEntry{Simulation of EPR Spectra}
@@ -37,6 +37,6 @@ library(ggplot2)
 
 # Introduction
 
-Blah Blah[@Easyspin2023]. Blah
+Quite often to figure out the HF structure from EPR spectra (see also `vignette("functionality")`) may be not so easy task even for a simple unpaired electron - interacting nuclei ($\ce{e^{-}-N}$) system as reported elsewhere [@Ramesova2013]. Therefore, the theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent an important step in the analysis of EPR spectra. However, such step requires an iterative process with modelling the above-described $\ce{e^{-}-N}$ system followed by a numerical simulations of the spectra to match the experimental ones. Commonly, quantum chemical calculations (usually DFT, see also `vignette("functionality")`) are heavily involved in this process. As already mentioned in `README` and `vignette("introduction")` EPR simulations can be relatively easily performed by the are Blah Blah [@Easyspin2023]. Blah
 
 # References {.unnumbered}
