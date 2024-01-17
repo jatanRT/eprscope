@@ -162,7 +162,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
     N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
     A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
-    ## take only absolute values of `A_iso_MHz`
+    ## take only absolute values of `A_iso_MHz` (common EPR experiments
+    ## cannot determine the `A_iso_MHz` sign)
     A_iso_MHz <- abs(A_iso_MHz)
     #
     ## condition for the `A_iso` < nu.GHz(mwGHz)
@@ -263,42 +264,62 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## ========================= DELTA_E,FREQ,B CALCULATION (BREIT-RABI) ============================
     #
     ## QM function to calculate the delta spin delta energies / frequencies (in MHz) / B (in T)
-    ## according to Breit-Rabi (see J. Magnet. Reson. https://doi.org/10.1016/0022-2364(71)90049-7)
+    ## according to Breit-Rabi => see J. Magn. Reson. https://doi.org/10.1016/0022-2364(71)90049-7,
+    ## WEIL, J. A. and J. Magn. Reson. https://doi.org/10.1016/j.jmr.2005.08.013, STOLL, S.
     ## formula corresponding to hyperfine interaction with one unpaired electron
+    ## According to above-referenced theory the following condition must be fulfilled
+    if (all((spin_nuclear + 0.5) * A_iso_MHz >= 200 * nu.GHz)){
+      stop(" The Breit-Rabi Energy/Frequency/B calculations\n
+         cannot be used to predict the EPR spectra")
+    }
     fun_breit_rabi <- function(A_iso, ## in energy units NOT in MHz <-> convert into energy (A * h)
                                B.0, ## in Tesla
                                g_nuclear,
                                g_e_iso,
                                spin_nuclear,
-                               m_spin_nuclear){
+                               m_spin_nuclear) {
       #
       ## definition of variable alpha
       alpha <- ((g_e_iso * Bohr.mu * B.0) + (g_nuclear * nuclear.mu * B.0)) /
         (A_iso * (spin_nuclear + 0.5))
       ## Energies depending on lower (1) or higher state (2)
-      E1 <- A_iso/4 - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear - 0.5) -
+      E1 <- A_iso / 4 - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear - 0.5) -
         (spin_nuclear + 0.5) * (A_iso / 2) *
-        sqrt(1 + ((2 * (m_spin_nuclear - 0.5))/(spin_nuclear + 0.5)) * alpha + alpha^2)
+        sqrt(1 + ((2 * (m_spin_nuclear - 0.5)) / (spin_nuclear + 0.5)) * alpha + alpha^2)
       #
-      E2 <- A_iso/4 - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear + 0.5) +
+      E2 <- A_iso / 4 - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear + 0.5) +
         (spin_nuclear + 0.5) * (A_iso / 2) *
-        sqrt(1 + ((2 * (m_spin_nuclear + 0.5))/(spin_nuclear + 0.5)) * alpha + alpha^2)
+        sqrt(1 + ((2 * (m_spin_nuclear + 0.5)) / (spin_nuclear + 0.5)) * alpha + alpha^2)
       #
       ## Delta E for individual line
       DeltaE <- E2 - E1 ## in J
       #
-      Freq_corresp <- round((DeltaE / Planck.const) * 1e-6,digits = 3) ## in MHz
+      Freq_corresp <- round((DeltaE / Planck.const) * 1e-6, digits = 3) ## in MHz
       #
-      ## In the first approximation, the corresponding `B` (to `DeltaE`) can be
-      ## evaluated as =>
-      B_corresp <- round(DeltaE / (g_e_iso * Bohr.mu),digits = 7) ## in T
-      ## for isotropic spectra => DeltaB = Aiso(in energy units) / (g_e_iso * Bohr.mu).
-      ## Afterwards, such `B_corresp` is searched from the above generated `B.g.sim.df`,
-      ## see also calculations =>
-      ## "Simulated derivative EPR spectrum if `nuclear.system != NULL`" below
+      ## The corresponding `B` (to `DeltaE`) cannot be evaluated analytically,
+      ## because we do not know the corresponding line g-value => therefore the `B`
+      ## will be evaluated by an iterative manner as already shown in
+      ## https://doi.org/10.1016/0022-2364(71)90049-7 (WEIL, J. A.) as well as
+      ## https://doi.org/10.1016/j.jmr.2005.08.013 (STOLL, S) where after 2-4 iterations
+      ## value should nicely converge to the resonant field
       #
-      ## all three quantities into one list
-      return(list(D_E = DeltaE,nu = Freq_corresp,B = B_corresp))
+      ## We start from the new `B.mI` vector and in the first approximation,
+      ## the corresponding `B` (to `DeltaE`) can be evaluated as =>
+      B.mI <- c()
+      B.mI[1] <- round(DeltaE / (g_e_iso * Bohr.mu), digits = 7) ## in T
+      ## cycle through 4 iterations =>
+      xaj <- c()
+      gamma <- (Bohr.mu * g_e_iso) + (nuclear.mu * g_nuclear)
+      for (i in 1:4){
+        xaj[i] <- (A_iso / (2 * Planck.const)) / ((nu.GHz * 1e+9) +
+                  (nuclear.mu * g_nuclear * (B.mI[i] / Planck.const)))
+        B.mI[i+1] <- (A_iso / (gamma * (1 - xaj[i]^2))) *
+                     (- m_spin_nuclear + sqrt(m_spin_nuclear^2 + (1 - xaj[i]^2) *
+                     ((1 / (4 * xaj[i]^2)) - (spin_nuclear + 0.5)^2)))
+      }
+      #
+      ## all three quantities into one list (B as a last value from the iterations)
+      return(list(D_E = DeltaE, nu = Freq_corresp, B = B.mI[length(B.mI)]))
     }
     #
     ## ============================ LINE INTENSITIES ==================================
