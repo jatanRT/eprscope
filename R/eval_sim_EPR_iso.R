@@ -270,7 +270,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## According to above-referenced theory the following condition must be fulfilled
     if (all((spin_nuclear + 0.5) * A_iso_MHz >= 200 * nu.GHz)){
       stop(" The Breit-Rabi Energy/Frequency/B calculations\n
-         cannot be used to predict the EPR spectra")
+         cannot be used to predict the EPR spectra ! ")
     }
     fun_breit_rabi <- function(A_iso, ## in energy units NOT in MHz <-> convert into energy (A * h)
                                B.0, ## in Tesla
@@ -1028,7 +1028,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   if (!is.null(lineGL.DeltaB[[1]]) & !is.null(lineGL.DeltaB[[2]])){
     char.caption <- bquote(
       italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == .(lineGL.DeltaB[[1]])~~.(B.unit)~~
-        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[1]])~~.(B.unit)
+        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[2]])~~.(B.unit)
     )
   }
   #
