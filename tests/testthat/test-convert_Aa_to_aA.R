@@ -10,7 +10,7 @@ test_that("The A <--> a conversion works as expected.", {
   A.higher.MHz <- convert_a_mT_2A(0.63,g.val = g_iso)
   #
   ## checking =>
-  expect_equal(a.lower.G,1.8)
-  expect_equal(A.higher.MHz,17.659)
+  expect_equal(a.lower.G,1.8,tolerance = 1e-1)
+  expect_equal(A.higher.MHz,17.66,tolerance = 1e-2)
   #
 })

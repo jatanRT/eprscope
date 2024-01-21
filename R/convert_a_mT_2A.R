@@ -41,6 +41,6 @@ convert_a_mT_2A <- function(a.mT,g.val = 2.00231930){
   Bohr.magnet <- syms$mub
   A <- (g.val*Bohr.magnet*1e-3*a.mT)/(Planck.const*1e+6)
   #
-  return(round(A,digits = 3))
+  return(round(A,digits = 2))
   #
 }

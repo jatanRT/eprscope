@@ -136,7 +136,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
     dplyr::select(-dplyr::all_of(c("No","Nucleus","Gauss"))) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
     dplyr::summarize(
-      Aiso_MHz_QCH = abs(round(mean(.data$MegaHertz), digits = 3)),
+      Aiso_MHz_QCH = abs(round(mean(.data$MegaHertz), digits = 2)),
       aiso_mT_QCH = abs(round(mean(.data$mT), digits = 2))
     )
   #
@@ -395,7 +395,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     dplyr::select(-dplyr::all_of(c("No","Nucleus","Gauss"))) %>%
     dplyr::group_by(.data$NuclearGroup) %>%
     dplyr::summarize(
-      Aiso_MHz_QCH = abs(round(mean(.data$Megahertz), digits = 3)),
+      Aiso_MHz_QCH = abs(round(mean(.data$Megahertz), digits = 2)),
       aiso_mT_QCH = abs(round(mean(.data$mT), digits = 2))
     )
   #
