@@ -545,7 +545,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   deriv_line_form <- function(B,
                               B.0,
                               g.x = lineG.content,
-                              l.y = 1 - lineG.content,
+                              l.y = (1 - lineG.content),
                               gDeltaBpp = lineGL.DeltaB[[1]],
                               lDeltaBpp = lineGL.DeltaB[[2]]){
     #
@@ -553,17 +553,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## DeltaBpp linewidth
     #
     ## condition for the coefficients & line-width
-    if (is.null(lDeltaBpp) & l.y == 0){
+    if ((is.null(lDeltaBpp) & l.y == 0) || (is.null(lDeltaBpp) & g.x == 1)){
       ## Gaussian
       intens_deriv <- g.x * (- 4 * sqrt(2/pi) * ((B - B.0)/(gDeltaBpp^3)) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2))
     }
-    if (is.null(gDeltaBpp) & g.x == 0){
+    if ((is.null(gDeltaBpp) & g.x == 0) || (is.null(gDeltaBpp) & l.y == 1)){
       ## Lorentzian
       intens_deriv <- l.y * (- 16 * (1/(pi * 3 * sqrt(3))) * ((B - B.0)/lDeltaBpp^3) *
                                (1 + 4/3 * ((B - B.0)/lDeltaBpp)^2)^(-2))
     }
-    if (g.x != 0 & l.y != 0 & !is.null(gDeltaBpp) & !is.null(lDeltaBpp)){
+    if (g.x != 0 & l.y != 0 & g.x != 1 & l.y != 1 & !is.null(gDeltaBpp) & !is.null(lDeltaBpp)){
       ## x*Gaussian(derivative) + y*Lorentzian(derivative) <=> pseudo-Voightian
       intens_deriv <- g.x * (- 4 * sqrt(2/pi) * ((B - B.0)/(gDeltaBpp^3)) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2)) +
@@ -577,7 +577,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   integ_line_form <- function(B,
                               B.0,
                               g.x = lineG.content,
-                              l.y = 1 - lineG.content,
+                              l.y = (1 - lineG.content),
                               gDeltaB = lineGL.DeltaB[[1]],
                               lDeltaB = lineGL.DeltaB[[2]]){
     #
@@ -587,17 +587,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     gGamma.deltaB <- gDeltaB / sqrt(2 * log(2)) ## `gDeltaB` = Gauss FWHM
     lGamma.deltaB <- lDeltaB / sqrt(3) ## `lDeltaB` = Lorentz FWHM
     ## condition for the coefficients & line-width
-    if (is.null(lDeltaB) & l.y == 0){
+    if ((is.null(lDeltaB) & l.y == 0) || (is.null(lDeltaB) & g.x == 1)){
       ## Gaussian
       intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
         exp(-2 * ((B - B.0) / gGamma.deltaB)^2))
     }
-    if (is.null(gDeltaB) & g.x == 0){
+    if ((is.null(gDeltaB) & g.x == 0) || (is.null(gDeltaB) & l.y == 1)){
       ## Lorentzian
       intens_integ <- l.y * ((2 / (pi * sqrt(3))) * (1 / lGamma.deltaB) *
         (1 + (4/3) * ((B - B.0) / lGamma.deltaB)^2)^(-1))
     }
-    if (g.x != 0 & l.y != 0 & !is.null(gDeltaB) & !is.null(lDeltaB)){
+    if (g.x != 0 & l.y != 0 & g.x != 1 & l.y != 1 & !is.null(gDeltaB) & !is.null(lDeltaB)){
       ## x*Gaussian(integrated) + y*Lorentzian(integrated) <=> pseudo-Voightian
       intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
                                exp(-2 * ((B - B.0) / gGamma.deltaB)^2)) +

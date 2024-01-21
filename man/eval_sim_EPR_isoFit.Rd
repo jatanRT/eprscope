@@ -51,7 +51,9 @@ for EPR spectra.}
 \item{optim.params.init}{Numeric vector with estimated ... TBC ...1. element = g-value, 2. element = Gaussian
 linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant, 5. element Intensity
 multiplication constant and 6, 7... elements baseline linear or quadratic multiplication
-and finally hyperfine coupling constants in `MHz`}
+and finally hyperfine coupling constants in `MHz`. DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}.
+If the lineshape is expected to be pure Lorentzian or pure Gaussian then put the corresponding
+vector element to \code{0}.}
 
 \item{optim.params.lower}{Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.}
 
