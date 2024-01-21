@@ -65,9 +65,9 @@ is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in s
 it refers to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
 is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
 A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
-\code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. Actually,
-the number of groups is limited to 6 which covers the vast majority of organic radicals
-and can be extended in the future. \strong{Default}: \code{nuclear.system = NULL} in case
+\code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. The number of \code{lists}
+is not limited and therefore, any number of equivalent nuclei groups can be used to simulate
+the EPR spectra. \strong{Default}: \code{nuclear.system = NULL} in case
 if no interaction with electron surrounding nuclei is considered and only single
 line EPR spectrum is expected.}
 

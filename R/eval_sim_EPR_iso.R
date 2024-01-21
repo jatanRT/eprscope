@@ -53,9 +53,9 @@
 #'   it refers to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
 #'   is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
 #'   A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
-#'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. Actually,
-#'   the number of groups is limited to 6 which covers the vast majority of organic radicals
-#'   and can be extended in the future. \strong{Default}: \code{nuclear.system = NULL} in case
+#'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. The number of \code{lists}
+#'   is not limited and therefore, any number of equivalent nuclei groups can be used to simulate
+#'   the EPR spectra. \strong{Default}: \code{nuclear.system = NULL} in case
 #'   if no interaction with electron surrounding nuclei is considered and only single
 #'   line EPR spectrum is expected.
 #' @param natur.abund Logical, whether the natural abundance of the interacting nuclei
@@ -266,7 +266,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## QM function to calculate the delta spin delta energies / frequencies (in MHz) / B (in T)
     ## according to Breit-Rabi => see J. Magn. Reson. https://doi.org/10.1016/0022-2364(71)90049-7,
     ## WEIL, J. A. and J. Magn. Reson. https://doi.org/10.1016/j.jmr.2005.08.013, STOLL, S.
-    ## formula corresponding to hyperfine interaction with one unpaired electron
+    ## formula corresponding to hyperfine interaction with one unpaired electron,
+    ## where the nucleus-nucleus interaction cross-terms are neglected.
     ## According to above-referenced theory the following condition must be fulfilled
     if (all((spin_nuclear + 0.5) * A_iso_MHz >= 200 * nu.GHz)){
       stop(" The Breit-Rabi Energy/Frequency/B calculations\n
@@ -301,7 +302,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## will be evaluated by an iterative manner as already shown in
       ## https://doi.org/10.1016/0022-2364(71)90049-7 (WEIL, J. A.) as well as
       ## https://doi.org/10.1016/j.jmr.2005.08.013 (STOLL, S) where after 2-4 iterations
-      ## value should nicely converge to the resonant field
+      ## value converges to the resonant field
       #
       ## We start from the new `B.mI` vector and in the first approximation,
       ## the corresponding `B` (to `DeltaE`) can be evaluated as =>
@@ -554,7 +555,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## condition for the coefficients & line-width
     if (is.null(lDeltaBpp) & l.y == 0){
       ## Gaussian
-      intens_deriv <- g.x * (- 4 * sqrt(2/pi) * (1/gDeltaBpp^2) * ((B - B.0)/gDeltaBpp) *
+      intens_deriv <- g.x * (- 4 * sqrt(2/pi) * ((B - B.0)/(gDeltaBpp^3)) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2))
     }
     if (is.null(gDeltaBpp) & g.x == 0){
@@ -564,7 +565,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     }
     if (g.x != 0 & l.y != 0 & !is.null(gDeltaBpp) & !is.null(lDeltaBpp)){
       ## x*Gaussian(derivative) + y*Lorentzian(derivative) <=> pseudo-Voightian
-      intens_deriv <- g.x * (- 4 * sqrt(2/pi) * (1/gDeltaBpp^2) * ((B - B.0)/gDeltaBpp) *
+      intens_deriv <- g.x * (- 4 * sqrt(2/pi) * ((B - B.0)/(gDeltaBpp^3)) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2)) +
         l.y * (- 16 * (1/(pi * 3 * sqrt(3))) * ((B - B.0)/lDeltaBpp^3) *
                  (1 + 4/3 * ((B - B.0)/lDeltaBpp)^2)^(-2))
@@ -583,8 +584,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## B.0 line center maximum because of integral form
     ## FWHM linewidth corresponding to `lineGL.DeltaB`
     #
-    gGamma.deltaB <- gDeltaB / sqrt(2 * log(2))
-    lGamma.deltaB <- lDeltaB / sqrt(3)
+    gGamma.deltaB <- gDeltaB / sqrt(2 * log(2)) ## `gDeltaB` = Gauss FWHM
+    lGamma.deltaB <- lDeltaB / sqrt(3) ## `lDeltaB` = Lorentz FWHM
     ## condition for the coefficients & line-width
     if (is.null(lDeltaB) & l.y == 0){
       ## Gaussian
@@ -721,261 +722,82 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         intensity_pattern_nuclei[[1]],
         near_B_for_m_spin_values1[[paste0("B_",B.unit)]]
         )
-      ## Sum of the spectral lines
+      ## Sum of the spectral lines from `Sim_Intensity[[1]]` list into final sim. spectrum
       B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[1]])
     }
     #
     ## --------------------------- (2) NUMBER of NUCLEAR GROUPS >= 2 ---------------------------
     #
-    if (length(nuclear.system) >= 2){
-      ## for all Bs from the previous 1 corresponding Bs of the multiplet =>
-      B_for_m_spin_values2 <- c()
-      for (e in seq(near_B_for_m_spin_values1$B_T)){
-        B_for_m_spin_values2[[e]] <-
-          sapply(1:length(m_spin_values[[2]]), function(f)
-            fun_breit_rabi(A_iso = A_iso_MHz[2] * 1e+6 * Planck.const,
-                           B.0 = near_B_for_m_spin_values1$B_T[e],
-                           g_nuclear = g_nuclear[2],
-                           g_e_iso = near_B_for_m_spin_values1$g[e],
-                           spin_nuclear = spin_nuclear[2],
-                           m_spin_nuclear = m_spin_values[[2]][f])$B
-          )
+    if (length(nuclear.system) >= 2) {
+      #
+      ## converting all relevant vars. to find `B` and indices into lists
+      B_for_m_spin_values <- list()
+      near_B_for_m_spin_values <- list()
+      near_row_for_m_spin_values <- list()
+      B_for_m_spin_values[[1]] <- B_for_m_spin_values1
+      near_B_for_m_spin_values[[1]] <- near_B_for_m_spin_values1
+      near_row_for_m_spin_values[[1]] <- near_row_for_m_spin_values1
+      #
+      for (n in 2:length(nuclear.system)) {
+        #
+        B_for_m_spin_values[[n]] <- list()
+        for (e in seq(near_B_for_m_spin_values[[n - 1]]$B_T)) {
+          #
+          B_for_m_spin_values[[n]][[e]] <-
+            sapply(1:length(m_spin_values[[n]]), function(f) {
+              fun_breit_rabi(
+                A_iso = A_iso_MHz[n] * 1e+6 * Planck.const,
+                B.0 = near_B_for_m_spin_values[[n - 1]]$B_T[e],
+                g_nuclear = g_nuclear[n],
+                g_e_iso = near_B_for_m_spin_values[[n - 1]]$g[e],
+                spin_nuclear = spin_nuclear[n],
+                m_spin_nuclear = m_spin_values[[n]][f]
+              )$B
+            })
+        }
+        ## finding the indices in simulation df => `B.g.sim.df` corresponding to B values
+        near_row_for_m_spin_values[[n]] <- list()
+        for (l in seq(B_for_m_spin_values[[n]])) {
+          near_row_for_m_spin_values[[n]][[l]] <-
+            sapply(
+              1:length(B_for_m_spin_values[[n]][[l]]),
+              function(x) {
+                which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values[[n]][[l]][x]))
+              }
+            )
+        }
+        #
+        ## summarizing the list into vector of indices
+        near_row_for_m_spin_values[[n]] <-
+          unlist(near_row_for_m_spin_values[[n]], use.names = FALSE)
+        ## selecting the rows based on previous indices
+        near_B_for_m_spin_values[[n]] <-
+          B.g.sim.df %>%
+          dplyr::slice(near_row_for_m_spin_values[[n]])
+        #
       }
-      ## finding the indices in simulation df => `B.g.sim.df` corresponding to B values
-      near_row_for_m_spin_values2 <- c()
-      for (l in seq(B_for_m_spin_values2)){
-        near_row_for_m_spin_values2[[l]] <-
-          sapply(1:length(B_for_m_spin_values2[[l]]),
-                 function(x)
-                   which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values2[[l]][x]))
-          )
-      }
-      ## summarizing in the actual 2 vector list
-      near_row_for_m_spin_values2 <- unlist(near_row_for_m_spin_values2,use.names = FALSE)
-      ## selecting the rows based on previous indices
-      near_B_for_m_spin_values2 <-
-        B.g.sim.df %>%
-        dplyr::slice(near_row_for_m_spin_values2)
       #
       ## entire line intensities including the natural abundance
       intensity_pattern_nuclei_total <-
         intensity_level_pattern_multiply(
           intensity.nuclei.pattern = intensity_pattern_nuclei,
           natur.abund = natur.abund,
-          nuclear.abund = abund_nuclear)
-      ## Spectral line intensities
-      ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## see above at `length(nuclear.system) >= 1` as well as the `intensities()` function above
+          nuclear.abund = abund_nuclear
+        )
+      #
+      ## Spectral line intensities for the last (corresp. to `length(nuclear.system)`)
+      ## `near_B_for_m_spin_values` data frame
+      ## see the `intensities()` function above
       Sim_Intensity[[2]] <-
-        intensities(data.frame.sim = B.g.sim.df,
-                    B.values.breit.rabi = near_B_for_m_spin_values2[[paste0("B_",B.unit)]],
-                    intensity.pattern = intensity_pattern_nuclei_total,
-                    line.form = lineSpecs.form)
+        intensities(
+          data.frame.sim = B.g.sim.df,
+          B.values.breit.rabi = near_B_for_m_spin_values[[length(nuclear.system)]][[paste0("B_", B.unit)]],
+          intensity.pattern = intensity_pattern_nuclei_total,
+          line.form = lineSpecs.form
+        )
       #
-    }
-    #
-    ## --------------------------- (3) NUMBER of NUCLEAR GROUPS >= 3 ---------------------------
-    #
-    if (length(nuclear.system) >= 3){
-      ## for all Bs from the previous 2 corresponding Bs of the multiplet =>
-      B_for_m_spin_values3 <- c()
-      for (e in seq(near_B_for_m_spin_values2$B_T)){
-        B_for_m_spin_values3[[e]] <-
-          sapply(1:length(m_spin_values[[3]]), function(f)
-            fun_breit_rabi(A_iso = A_iso_MHz[3] * 1e+6 * Planck.const,
-                           B.0 = near_B_for_m_spin_values2$B_T[e],
-                           g_nuclear = g_nuclear[3],
-                           g_e_iso = near_B_for_m_spin_values2$g[e],
-                           spin_nuclear = spin_nuclear[3],
-                           m_spin_nuclear = m_spin_values[[3]][f])$B
-          )
-      }
-      ## finding the indices in simulation df => `B.g.sim.df` corresponding to B values
-      near_row_for_m_spin_values3 <- c()
-      for (l in seq(B_for_m_spin_values3)){
-        near_row_for_m_spin_values3[[l]] <-
-          sapply(1:length(B_for_m_spin_values3[[l]]),
-                 function(x)
-                   which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values3[[l]][x]))
-          )
-      }
-      ## summarizing in the actual 3 vector list
-      near_row_for_m_spin_values3 <- unlist(near_row_for_m_spin_values3,use.names = FALSE)
-      ## selecting the rows based on previous indices
-      near_B_for_m_spin_values3 <-
-        B.g.sim.df %>%
-        dplyr::slice(near_row_for_m_spin_values3)
-      #
-      ## entire line intensities including the natural abundance
-      intensity_pattern_nuclei_total <-
-        intensity_level_pattern_multiply(
-          intensity.nuclei.pattern = intensity_pattern_nuclei,
-          natur.abund = natur.abund,
-          nuclear.abund = abund_nuclear)
-      ## Spectral line intensities
-      ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## see above at `length(nuclear.system) >= 1`
-      Sim_Intensity[[3]] <-
-        intensities(data.frame.sim = B.g.sim.df,
-                    B.values.breit.rabi = near_B_for_m_spin_values3[[paste0("B_",B.unit)]],
-                    intensity.pattern = intensity_pattern_nuclei_total,
-                    line.form = lineSpecs.form)
-      #
-    }
-    #
-    ## --------------------------- (4) NUMBER of NUCLEAR GROUPS >= 4 ---------------------------
-    #
-    if (length(nuclear.system) >= 4){
-      ## for all Bs from the previous 3 corresponding Bs of the multiplet =>
-      B_for_m_spin_values4 <- c()
-      for (e in seq(near_B_for_m_spin_values3$B_T)){
-        B_for_m_spin_values4[[e]] <-
-          sapply(1:length(m_spin_values[[4]]), function(f)
-            fun_breit_rabi(A_iso = A_iso_MHz[4] * 1e+6 * Planck.const,
-                           B.0 = near_B_for_m_spin_values3$B_T[e],
-                           g_nuclear = g_nuclear[4],
-                           g_e_iso = near_B_for_m_spin_values3$g[e],
-                           spin_nuclear = spin_nuclear[4],
-                           m_spin_nuclear = m_spin_values[[4]][f])$B
-          )
-      }
-      ## finding the indices in simulation df => `B.g.sim.df` corresponding to B values
-      near_row_for_m_spin_values4 <- c()
-      for (l in seq(B_for_m_spin_values4)){
-        near_row_for_m_spin_values4[[l]] <-
-          sapply(1:length(B_for_m_spin_values4[[l]]),
-                 function(x)
-                   which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values4[[l]][x]))
-          )
-      }
-      ## summarizing in the actual 4 vector list
-      near_row_for_m_spin_values4 <- unlist(near_row_for_m_spin_values4,use.names = FALSE)
-      ## selecting the rows based on previous indices
-      near_B_for_m_spin_values4 <-
-        B.g.sim.df %>%
-        dplyr::slice(near_row_for_m_spin_values4)
-      #
-      ## entire line intensities including the natural abundance
-      intensity_pattern_nuclei_total <-
-        intensity_level_pattern_multiply(
-          intensity.nuclei.pattern = intensity_pattern_nuclei,
-          natur.abund = natur.abund,
-          nuclear.abund = abund_nuclear)
-      ## Spectral line intensities
-      ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## see above at `length(nuclear.system) >= 1`
-      Sim_Intensity[[4]] <-
-        intensities(data.frame.sim = B.g.sim.df,
-                    B.values.breit.rabi = near_B_for_m_spin_values4[[paste0("B_",B.unit)]],
-                    intensity.pattern = intensity_pattern_nuclei_total,
-                    line.form = lineSpecs.form)
-      #
-    }
-    #
-    ## --------------------------- (5) NUMBER of NUCLEAR GROUPS >= 5 ---------------------------
-    #
-    if (length(nuclear.system) >= 5){
-      ## for all Bs from the previous 4 corresponding Bs of the multiplet =>
-      B_for_m_spin_values5 <- c()
-      for (e in seq(near_B_for_m_spin_values4$B_T)){
-        B_for_m_spin_values5[[e]] <-
-          sapply(1:length(m_spin_values[[5]]), function(f)
-            fun_breit_rabi(A_iso = A_iso_MHz[5] * 1e+6 * Planck.const,
-                           B.0 = near_B_for_m_spin_values4$B_T[e],
-                           g_nuclear = g_nuclear[5],
-                           g_e_iso = near_B_for_m_spin_values4$g[e],
-                           spin_nuclear = spin_nuclear[5],
-                           m_spin_nuclear = m_spin_values[[5]][f])$B
-          )
-      }
-      ## finding the indices in simulation df => `B.g.sim.df` corresponding to B values
-      near_row_for_m_spin_values5 <- c()
-      for (l in seq(B_for_m_spin_values5)){
-        near_row_for_m_spin_values5[[l]] <-
-          sapply(1:length(B_for_m_spin_values5[[l]]),
-                 function(x)
-                   which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values5[[l]][x]))
-          )
-      }
-      ## summarizing in the actual 5 vector list
-      near_row_for_m_spin_values5 <- unlist(near_row_for_m_spin_values5,use.names = FALSE)
-      ## selecting the rows based on previous indices
-      near_B_for_m_spin_values5 <-
-        B.g.sim.df %>%
-        dplyr::slice(near_row_for_m_spin_values5)
-      ## entire line intensities including the natural abundance
-      intensity_pattern_nuclei_total <-
-        intensity_level_pattern_multiply(
-          intensity.nuclei.pattern = intensity_pattern_nuclei,
-          natur.abund = natur.abund,
-          nuclear.abund = abund_nuclear)
-      ## Spectral line intensities
-      ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## see above at `length(nuclear.system) >= 1`
-      Sim_Intensity[[5]] <-
-        intensities(data.frame.sim = B.g.sim.df,
-                    B.values.breit.rabi = near_B_for_m_spin_values5[[paste0("B_",B.unit)]],
-                    intensity.pattern = intensity_pattern_nuclei_total,
-                    line.form = lineSpecs.form)
-      #
-    }
-    #
-    ## --------------------------- (6) NUMBER of NUCLEAR GROUPS = 6 ---------------------------
-    ## ------------------- (number of groups can be extended in the future) -------------------
-    #
-    if (length(nuclear.system) == 6){
-      ## for all Bs from the previous 5 corresponding Bs of the multiplet =>
-      B_for_m_spin_values6 <- c()
-      for (e in seq(near_B_for_m_spin_values5$B_T)){
-        B_for_m_spin_values6[[e]] <-
-          sapply(1:length(m_spin_values[[6]]), function(f)
-            fun_breit_rabi(A_iso = A_iso_MHz[6] * 1e+6 * Planck.const,
-                           B.0 = near_B_for_m_spin_values5$B_T[e],
-                           g_nuclear = g_nuclear[6],
-                           g_e_iso = near_B_for_m_spin_values5$g[e],
-                           spin_nuclear = spin_nuclear[6],
-                           m_spin_nuclear = m_spin_values[[6]][f])$B
-          )
-      }
-      ## finding the indices in simulation df => `B.g.sim.df` corresponding to B values
-      near_row_for_m_spin_values6 <- c()
-      for (l in seq(B_for_m_spin_values6)){
-        near_row_for_m_spin_values6[[l]] <-
-          sapply(1:length(B_for_m_spin_values6[[l]]),
-                 function(x)
-                   which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values6[[l]][x]))
-          )
-      }
-      ## summarizing in the actual 6 vector list
-      near_row_for_m_spin_values6 <- unlist(near_row_for_m_spin_values6,use.names = FALSE)
-      ## selecting the rows based on previous indices
-      near_B_for_m_spin_values6 <-
-        B.g.sim.df %>%
-        dplyr::slice(near_row_for_m_spin_values6)
-      ## entire line intensities including the natural abundance
-      intensity_pattern_nuclei_total <-
-        intensity_level_pattern_multiply(
-          intensity.nuclei.pattern = intensity_pattern_nuclei,
-          natur.abund = natur.abund,
-          nuclear.abund = abund_nuclear)
-      ## Spectral line intensities
-      ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## see above at `length(nuclear.system) >= 1`
-      Sim_Intensity[[6]] <-
-        intensities(data.frame.sim = B.g.sim.df,
-                    B.values.breit.rabi = near_B_for_m_spin_values6[[paste0("B_",B.unit)]],
-                    intensity.pattern = intensity_pattern_nuclei_total,
-                    line.form = lineSpecs.form)
-    }
-    #
-    ##  ============================= COMPLETE SUM OF EPR LINES =============================
-    #
-    ## Intensity sum corresponding to natural abundance of the corresponding
-    ## isotopes (satellite lines)
-    if (length(nuclear.system) >= 2){
-      for (j in 2:length(Sim_Intensity)){
-        B.g.sim.df[[Intensity.sim]] <- Reduce("+",Sim_Intensity[[j]])
-      }
+      ## Sum of the spectral lines from `Sim_Intensity[[2]]` list into final sim. spectrum
+      B.g.sim.df[[Intensity.sim]] <- Reduce("+", Sim_Intensity[[2]])
     }
   }
   #
