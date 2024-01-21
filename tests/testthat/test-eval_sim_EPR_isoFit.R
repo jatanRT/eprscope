@@ -147,6 +147,6 @@ test_that("The parameters determined from the expr. EPR spectrum
   ## Linewidths => expr. + sim. fit. comparison (difference lower than 0.03)  =>
   expect_lte(abs(weight.DeltaB.sim.fit - mean.DeltaB.expr), 0.03) # in mT
   ## g-Values => expr. + sim. fit. comparison
-  expect_lte(abs(g.iso.sim.fit - g[2]),2.1e-4) # 2e-4 is the usual uncertainty for experiment
+  expect_lte(abs(g.iso.sim.fit - g[2]),2.1e-4) # 2e-4 is the usual experimental uncertainty
   #
 })

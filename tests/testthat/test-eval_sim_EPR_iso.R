@@ -211,7 +211,8 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   ## QM function to calculate the delta spin delta energies / frequencies (in MHz) / B (in T)
   ## according to Breit-Rabi => see J. Magn. Reson. https://doi.org/10.1016/0022-2364(71)90049-7,
   ## WEIL, J. A. and J. Magn. Reson. https://doi.org/10.1016/j.jmr.2005.08.013, STOLL, S.
-  ## formula corresponding to hyperfine interaction with one unpaired electron
+  ## formula corresponding to hyperfine interaction with one unpaired electron,
+  ## where the nucleus-nucleus interaction cross-terms are neglected.
   ## According to above-referenced theory the following condition must be fulfilled
   if (all((spin_nuclear + 0.5) * A_iso_MHz >= 200 * nu.GHz)){
     stop(" The Breit-Rabi Energy/Frequency/B calculations\n
@@ -246,7 +247,7 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
     ## will be evaluated by an iterative manner as already shown in
     ## https://doi.org/10.1016/0022-2364(71)90049-7 (WEIL, J. A.) as well as
     ## https://doi.org/10.1016/j.jmr.2005.08.013 (STOLL, S) where after 2-4 iterations
-    ## value should nicely converge to the resonant field
+    ## value converges to the resonant field
     #
     ## We start from the new `B.mI` vector and in the first approximation,
     ## the corresponding `B` (to `DeltaE`) can be evaluated as =>
@@ -311,7 +312,7 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   #
   # ========= COMPARISON BETWEEN BREIT-RABI and EXPERIMENTAL `B`,`g` =============
   #
-  expect_equal(B, near_B_for_m_spin_values1$B_mT, tolerance = 1e-2) ## `B` in mT
+  expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 1e-2) ## `B` in mT
   expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 1e-4) ## `g`
 })
 #
@@ -409,9 +410,8 @@ test_that("The isotropic hyperfine coupling constants determined
   #
   # ====== COMPARISON BETWEEN SIMULATED and EXPERIMENTAL `DeltaB`,`A.iso` ======
   #
-  ## the same tol. as before
-  expect_equal(abs((mean.DeltaB.sim - mean.DeltaB.expr)), 0.02, tolerance = 1e-2) # `B` diff. in mT
-  expect_equal(mean.A.iso.sim, mean.A.iso.expr, tolerance = 1e-1) ## `A.iso` in MHz
+  expect_equal(abs(mean.DeltaB.sim - mean.DeltaB.expr), 0.02, tolerance = 1e-2) # `B` diff. in mT
+  expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 1e-1) ## `A.iso` in MHz
   #
   ## the more accurate `DeltaB` will be obtained from the simulation fit,
   ## see `test-eval_sim_EPR_isoFit`
@@ -428,7 +428,7 @@ test_that("The isotropic hyperfine coupling constants determined
 #
 # ----- 1:3:3:1 -- 6:18:18:6 -- 15:45:45:15 -- 20:60:60:20 -- ...second spectrum "half"
 #
-## the remainng pattern corresponds to =>
+## the remaining pattern corresponds to =>
 # 15:45:45:15 -- 6:18:18:6 -- 1:3:3:1 ------
 ## ...because there is an interaction of the unpaired electron with =>
 ## 3 x 1H (5.09 MHz / 1.8 G) and 6 x 1H (17.67 MHz / 6.3 G) =>
