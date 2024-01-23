@@ -218,44 +218,41 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## of nuclei within the group because As will be varied
     if (is.null(nucs.system)){
       #
-      if (lineG.content == 0 & gB.width.var == 0){
-        sim.fit.df <-
+      ## function to simulate EPR spectra WITHOUT NUCLEI INTERACTION
+      sim_epr_iso_df_noNucs <- function(GL.linewidth,G.line.content){
+        #
+        ## `GL.linewidth` is list
+        sim.df <-
           eval_sim_EPR_iso(g.iso = g.var,
                            B.unit = B.unit,
                            instrum.params = instrum.params,
                            natur.abund = FALSE,
                            nuclear.system = NULL,
                            lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(NULL,
-                                                lB.width.var),
-                           lineG.content = 0,
+                           lineGL.DeltaB = GL.linewidth,
+                           lineG.content = G.line.content,
                            Intensity.sim = Intensity.sim)$df
+        #
+        return(sim.df)
+      }
+      #
+      if (lineG.content == 0 & gB.width.var == 0){
+        sim.fit.df <-
+          sim_epr_iso_df_noNucs(GL.linewidth = list(NULL,lB.width.var),
+                                G.line.content = 0
+          )
        #
       } else if(lineG.content == 1 & lB.width.var == 0){
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = FALSE,
-                           nuclear.system = NULL,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                NULL),
-                           lineG.content = 1,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,NULL),
+                                G.line.content = 1
+          )
         #
       } else{
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = FALSE,
-                           nuclear.system = NULL,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,lB.width.var),
+                                G.line.content = lineG.content
+         )
       }
       #
     } else {
@@ -288,46 +285,43 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         nucs.system.new[[j]] <- as.list(nucs.system.new[[j]])
       }
       #
+      ## function to simulate EPR spectra WITH MUCLEI INTERACTION
+      sim_epr_iso_df_Nucs <- function(GL.linewidth,G.line.content){
+        #
+        ## `GL.linewidth` is list
+        sim.df <-
+          eval_sim_EPR_iso(g.iso = g.var,
+                           B.unit = B.unit,
+                           instrum.params = instrum.params,
+                           natur.abund = TRUE,
+                           nuclear.system = nucs.system.new,
+                           lineSpecs.form = lineSpecs.form,
+                           lineGL.DeltaB = GL.linewidth,
+                           lineG.content = G.line.content,
+                           Intensity.sim = Intensity.sim)$df
+        #
+        return(sim.df)
+      }
+      #
       ## evaluating simulated intensity like before (in the case of `nucs.system = NULL`)
       if (lineG.content == 0 & gB.width.var == 0){
         #
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(NULL,
-                                                lB.width.var),
-                           lineG.content = 0,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_Nucs(GL.linewidth = list(NULL,lB.width.var),
+                              G.line.content = 0
+          )
         #
       } else if (lineG.content == 1 & lB.width.var == 0){
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                NULL),
-                           lineG.content = 1,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,NULL),
+                              G.line.content = 1
+          )
         #
       } else{
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,lB.width.var),
+                              G.line.content = lineG.content
+         )
       }
       #
     }
@@ -372,45 +366,41 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## of nuclei within the group because As will be varied
     if (is.null(nucs.system)){
       #
-      if (lineG.content == 0 & gB.width.var == 0){
-        sim.fit.df <-
+      ## function to simulate EPR spectra WITHOUT NUCLEI INTERACTION
+      sim_epr_iso_df_noNucs <- function(GL.linewidth,G.line.content){
+        #
+        ## `GL.linewidth` is list
+        sim.df <-
           eval_sim_EPR_iso(g.iso = g.var,
                            B.unit = B.unit,
                            instrum.params = instrum.params,
                            natur.abund = FALSE,
                            nuclear.system = NULL,
                            lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(NULL,
-                                                lB.width.var),
-                           lineG.content = 0,
+                           lineGL.DeltaB = GL.linewidth,
+                           lineG.content = G.line.content,
                            Intensity.sim = Intensity.sim)$df
         #
-      } else if (lineG.content == 1 & lB.width.var == 0){
+        return(sim.df)
+      }
+      #
+      if (lineG.content == 0 & gB.width.var == 0){
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = FALSE,
-                           nuclear.system = NULL,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                NULL),
-                           lineG.content = 1,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_noNucs(GL.linewidth = list(NULL,lB.width.var),
+                                G.line.content = 0
+          )
+        #
+      } else if(lineG.content == 1 & lB.width.var == 0){
+        sim.fit.df <-
+          sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,NULL),
+                                G.line.content = 1
+          )
         #
       } else{
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = FALSE,
-                           nuclear.system = NULL,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
-        #
+          sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,lB.width.var),
+                                G.line.content = lineG.content
+          )
       }
       #
     } else {
@@ -443,46 +433,43 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         nucs.system.new[[j]] <- as.list(nucs.system.new[[j]])
       }
       #
+      ## function to simulate EPR spectra WITH MUCLEI INTERACTION
+      sim_epr_iso_df_Nucs <- function(GL.linewidth,G.line.content){
+        #
+        ## `GL.linewidth` is list
+        sim.df <-
+          eval_sim_EPR_iso(g.iso = g.var,
+                           B.unit = B.unit,
+                           instrum.params = instrum.params,
+                           natur.abund = TRUE,
+                           nuclear.system = nucs.system.new,
+                           lineSpecs.form = lineSpecs.form,
+                           lineGL.DeltaB = GL.linewidth,
+                           lineG.content = G.line.content,
+                           Intensity.sim = Intensity.sim)$df
+        #
+        return(sim.df)
+      }
+      #
       ## evaluating simulated intensity like before (in the case of `nucs.system = NULL`)
       if (lineG.content == 0 & gB.width.var == 0){
         #
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(NULL,
-                                                lB.width.var),
-                           lineG.content = 0,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_Nucs(GL.linewidth = list(NULL,lB.width.var),
+                              G.line.content = 0
+          )
         #
       } else if (lineG.content == 1 & lB.width.var == 0){
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                NULL),
-                           lineG.content = 1,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,NULL),
+                              G.line.content = 1
+          )
         #
-      } else {
+      } else{
         sim.fit.df <-
-          eval_sim_EPR_iso(g.iso = g.var,
-                           B.unit = B.unit,
-                           instrum.params = instrum.params,
-                           natur.abund = TRUE,
-                           nuclear.system = nucs.system.new,
-                           lineSpecs.form = lineSpecs.form,
-                           lineGL.DeltaB = list(gB.width.var,
-                                                lB.width.var),
-                           lineG.content = lineG.content,
-                           Intensity.sim = Intensity.sim)$df
+          sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,lB.width.var),
+                              G.line.content = lineG.content
+          )
       }
       #
     }
@@ -694,47 +681,47 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## Conditions for linewidths from obtained from `best.fit.params`
-  if (best.fit.params[[length(optim.method)]][2] == 0){
-    ## best simulated spectrum data frame
-    best.fit.df <-
+  #
+  ## function to simulate spectra with final params. =>
+  sim_epr_iso_df_final <- function(GL.linewidth){
+    #
+    ## `GL.linewidth` is list
+    sim.df <-
       eval_sim_EPR_iso(g.iso = best.fit.params[[length(optim.method)]][1],
                        B.unit = B.unit,
                        instrum.params = instrum.params,
                        natur.abund = TRUE,
                        nuclear.system = nucs.system.best,
                        lineSpecs.form = lineSpecs.form,
-                       lineGL.DeltaB = list(NULL,
-                                            best.fit.params[[length(optim.method)]][3]),
+                       lineGL.DeltaB = GL.linewidth,
                        lineG.content = lineG.content,
                        Intensity.sim = Intensity.sim)$df
+
+  }
+  #
+  if (best.fit.params[[length(optim.method)]][2] == 0){
+    ## best simulated spectrum data frame
+    best.fit.df <-
+      sim_epr_iso_df_final(
+        GL.linewidth = list(NULL,
+                            best.fit.params[[length(optim.method)]][3])
+      )
     #
   } else if (best.fit.params[[length(optim.method)]][3] == 0){
     ## best simulated spectrum data frame
     best.fit.df <-
-      eval_sim_EPR_iso(g.iso = best.fit.params[[length(optim.method)]][1],
-                       B.unit = B.unit,
-                       instrum.params = instrum.params,
-                       natur.abund = TRUE,
-                       nuclear.system = nucs.system.best,
-                       lineSpecs.form = lineSpecs.form,
-                       lineGL.DeltaB = list(best.fit.params[[length(optim.method)]][2],
-                                            NULL),
-                       lineG.content = lineG.content,
-                       Intensity.sim = Intensity.sim)$df
+      sim_epr_iso_df_final(
+        GL.linewidth = list(best.fit.params[[length(optim.method)]][2],
+                            NULL)
+      )
     #
   } else{
     ## best simulated spectrum data frame
     best.fit.df <-
-      eval_sim_EPR_iso(g.iso = best.fit.params[[length(optim.method)]][1],
-                       B.unit = B.unit,
-                       instrum.params = instrum.params,
-                       natur.abund = TRUE,
-                       nuclear.system = nucs.system.best,
-                       lineSpecs.form = lineSpecs.form,
-                       lineGL.DeltaB = list(best.fit.params[[length(optim.method)]][2],
-                                            best.fit.params[[length(optim.method)]][3]),
-                       lineG.content = lineG.content,
-                       Intensity.sim = Intensity.sim)$df
+      sim_epr_iso_df_final(
+        GL.linewidth = list(best.fit.params[[length(optim.method)]][2],
+                            best.fit.params[[length(optim.method)]][3])
+      )
   }
   #
   ## best simulated Intensity and add the `Intensity.sim` to experimental
