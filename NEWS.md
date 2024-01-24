@@ -1,3 +1,92 @@
+# eprscope 0.1.10
+
+## 2024-01-24
+
+### Bug Fixes/Critical Updates
+
+* calculation of normalization constant `quantify_EPR_Norm_const` ⇒
+  number of points added to calculated norm. constant by unitless receiver gain
+  
+* kinetic models by ODE ⇒ `eval_kinR_ODE_model` + `eval_kinR_EPR_modelFit`
+  now consider partial reaction orders and correct formulas for rates
+  ⇒ derivations divided by stoichiometric coefficients according
+  to IUPAC recommendations (see also https://doi.org/10.1021/ed083p510) +
+  additionally, now the kinetic parameters can be optimized
+  not only by the Levenberg-Marquardt algorithm but also by those including within 
+  the `optim_for_EPR_fitness` (in case if the partial reaction orders
+  are considered)
+  
+* `eval_kinR_ODE_model` can now compare/plot experimental data and model
+  in order to 'play' with (manually optimize) partial reaction orders
+  and/or stoichiometric coefficients to fit the experimental data e.g. like
+  integrals or concentrations *vs.* time. Additionally, the A <-- R --> B kinetic model
+  was removed (also from `eval_kinR_EPR_modelFit`) simply, because it "doubles"
+  the R --> B model. The model can be added later on.
+  
+* several bugs in `quantify_EPR_Abs` (e.g. like concentration calculation + default temperature
+  definition) were fixed. The function was completely rewritten. Moreover, now the quantification possesses
+  user's/instrument's defined polynomial (orders from 6 to 11) fitting of the spatial distribution
+  of *B*<sub>1</sub> and *B*<sub>m</sub> as well as point sample calibration factor as arguments
+  in order to be more flexible. Finally, the theoretical *B*<sub>1</sub> and *B*<sub>m</sub> distribution
+  (see e.g. https://www.sciencedirect.com/science/article/pii/S1090780797912489) 
+  can be considered as well in order to estimate the radical concentration. 
+  
+* remedy for the Breit-Rabi calculations of energies/frequencies/Bs in simulation => 
+  now the g-value for each level is corrected and *B* are calculated by the fixed-point iterations
+  (see e.g https://doi.org/10.1016/j.jmr.2005.08.013). Simulations are not limited by
+  the number of equivalent nuclei groups anymore (6 could be used up to now). 
+  Right now any number of groups maybe used in the actual simulation functions. All simulations 
+  are also continuously checked by the package tests/examples.
+  
+* `eval_sim_EPR_isoFit` now contains the option not only to fit the *pseudo*-Voight lines but also pure 
+  Lorentzian or pure Gaussian onto the experimental EPR spectra
+  
+### Updates
+
+* `README` ⇒ pkg. badges initiated + usage examples added + `DESCRIPTION` + vignette demonstrating
+  the basic functionality of the package
+  
+* several documentations and examples
+
+* `draw_molecule_by_rcdk` ⇒ renamed and focused just on one molecule +
+  added option to place label of the molecule onto an arbitrary position of output image +
+  documentation + examples
+  
+* increased accuracy of ENDOR frequencies in nuclei `isotopes_ds` dataset
+
+* couple of variables/arguments (e.g. like `B` <-> `B.val`) renamed in order to be consistent 
+  throughout the package
+  
+* to select/remove the columns from `data frame` objects by `{dplyr}` the `dplyr::all_of()` function 
+  is now mostly applied in the package code
+  
+* extended tolerance to find half of the max. intensity in order to evaluate FWHM
+
+* functions to read the EPR spectra like `readEPR_Exp_Specs`, `readEPR_Exp_Specs_kin` 
+  as well as `readEPR_Exp_Specs_multif` were simplified and now contain the option to take additional 
+  arguments from the essential `data.table::fread()` which are not predefined in those functions 
+  in order to be more flexible upon reading
+  
+### New Functions/Files/Vignettes  
+
+* added files required to run examples as well as those incl. in vignette(s) ⇒ they are related 
+  to EPR spectra of electrochemically generated tetramethyl-phenylenediamine (TMPD) radical cation
+
+* smoothing of EPR spectra by `{npreg}` package ⇒ `smooth_EPR_Spec_by_npreg` which is based 
+  on the evaluation of polynomial splines
+  
+* fitting of the experimental EPR spectra by simulations ⇒ `eval_sim_EPR_isoFit` where several 
+  optimization methods can be applied ⇒ all incl. in `optim_for_EPR_fitness` + baseline correction 
+  (either "constant" or "linear" or "quadratic") is now included in the fitting procedure
+  
+* new tutorial vignette for simulations `EPR_Simulations` was initiated/set up
+
+* testing environment by the `{testthat}` pkg. set up and initiated + added tests for simulations 
+  and conversions
+  
+* added files/spectral data corresponding to an EPR spectrum of aminoxyl radical 
+  for examples and testing  
+
 # eprscope 0.1.9
 
 ## 2023-10-18
@@ -9,7 +98,7 @@
   
 * conversion of `time` to `var` within a cyclic change in `convert_time2var`
 
-* changed tolerance to find intensity values arround `0` in *g*-factor evaluation 
+* changed tolerance to find intensity values around `0` in *g*-factor evaluation 
   (`eval_gFactor_Spec`) in order to take into account different spectral data resolutions
   
 * general integration function (`eval_integ_EPR_Spec`) now includes the proper scaling
