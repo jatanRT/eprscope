@@ -108,10 +108,10 @@ draw_molecule_by_rcdk(molecule = load_data_example("TMPD.sdf"),
 }
 \seealso{
 Other Visualizations and Graphics: 
+\code{\link{plot_EPR_Specs}()},
 \code{\link{plot_EPR_Specs2D_interact}()},
 \code{\link{plot_EPR_Specs3D_interact}()},
 \code{\link{plot_EPR_Specs_integ}()},
-\code{\link{plot_EPR_Specs}()},
 \code{\link{plot_EPR_present_interact}()},
 \code{\link{plot_labels_xyz}()},
 \code{\link{plot_layout2D_interact}()},

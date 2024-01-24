@@ -72,9 +72,9 @@ tbc
 \seealso{
 Other Visualizations and Graphics: 
 \code{\link{draw_molecule_by_rcdk}()},
+\code{\link{plot_EPR_Specs}()},
 \code{\link{plot_EPR_Specs2D_interact}()},
 \code{\link{plot_EPR_Specs3D_interact}()},
-\code{\link{plot_EPR_Specs}()},
 \code{\link{plot_EPR_present_interact}()},
 \code{\link{plot_labels_xyz}()},
 \code{\link{plot_layout2D_interact}()},

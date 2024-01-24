@@ -89,9 +89,9 @@ tbc
 }
 \seealso{
 Other Simulations and Optimization: 
+\code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
-\code{\link{eval_sim_EPR_iso}()},
 \code{\link{optim_for_EPR_fitness}()},
 \code{\link{smooth_EPR_Spec_by_npreg}()}
 }

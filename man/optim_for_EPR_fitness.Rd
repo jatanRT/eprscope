@@ -111,9 +111,9 @@ TODO
 }
 \seealso{
 Other Simulations and Optimization: 
+\code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
-\code{\link{eval_sim_EPR_iso}()},
 \code{\link{quantify_EPR_Sim_series}()},
 \code{\link{smooth_EPR_Spec_by_npreg}()}
 }
