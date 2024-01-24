@@ -70,7 +70,7 @@ eval_gFactor <- function(nu.val,
 #
 #
 #
-#' Calculation of \emph{g}-factor ("Position") from the EPR Spectrum/Data
+#' Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
 #'
 #'
 #' @family Evaluations
@@ -81,7 +81,7 @@ eval_gFactor <- function(nu.val,
 #'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
 #'   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be considered.
 #'   Otherwise, the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
-#'   the \eqn{B_{max}} is used for the \emph{g}-value evaluation.
+#'   the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
 #'
 #'
 #' @param data.spectr Spectrum data frame object where the magnetic flux density (in `mT` or `G`) column
@@ -99,9 +99,9 @@ eval_gFactor <- function(nu.val,
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 #'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
 #' @param Blim Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
-#'   of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
-#'   (corresponding to the entire \emph{B} range of the EPR spectrum).
-#' @param iso Logical, whether to calculate the \emph{g}-factor from the \emph{B} value corresponding to
+#'   of the selected \eqn{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+#'   (corresponding to the entire \eqn{B} range of the EPR spectrum).
+#' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 #'   (this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
 #'   to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).
@@ -207,20 +207,20 @@ eval_gFactor_Spec <- function(data.spectr,
 #
 #
 #
-#' Calculation of \emph{g}-factor from Quantum Chemical Computational Output
+#' Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
 #'
 #'
 #' @family Evaluations and Quantum Chemistry
 #'
 #'
-#' @description \emph{g}-Values (3 principal ones) are presented in a form of differences from
+#' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from
 #'   the \eqn{g_e} (\eqn{g} of the free electron). Therefore the function takes these values
-#'   and calculates the entire \emph{g}-values or parses the corresponding mean value
+#'   and calculates the entire \eqn{g}-values or parses the corresponding mean value
 #'   from `Gaussian` or `ORCA` output.
 #'
 #'
 #' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files
-#'   incl. all \emph{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
+#'   incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
 #' @param mean Logical, whether to calculate the \code{mean value/iso} from principal components,
 #'   \strong{default}: \code{mean = TRUE}, or save the entire vector with the all components.
 #' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
@@ -228,8 +228,8 @@ eval_gFactor_Spec <- function(data.spectr,
 #'   or \code{"orca"}.
 #'
 #'
-#' @return Numeric mean \emph{g}-factor value from principal difference (from \eqn{g_e}) components
-#'   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \emph{g}-components
+#' @return Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components
+#'   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \eqn{g}-components
 #'   if \code{mean = FALSE}.
 #'
 #'

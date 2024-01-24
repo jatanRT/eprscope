@@ -110,7 +110,7 @@ readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                       x = 2,
                       x.unit = "G",
                       Intensity = 4,
-                      time.series = 2,
+                      time.series = 3,
                       qValue = 2900,
                       origin = "winepr")
 

@@ -78,7 +78,7 @@
 #'                       x = 2,
 #'                       x.unit = "G",
 #'                       Intensity = 4,
-#'                       time.series = 2,
+#'                       time.series = 3,
 #'                       qValue = 2900,
 #'                       origin = "winepr")
 #'

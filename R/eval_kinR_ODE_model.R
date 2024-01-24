@@ -9,7 +9,7 @@
 #'   Theoretical quantitative kinetic profiles (e.g. like concentration/amount/integral intensity)
 #'   as well as fitting of the experimental data for various model reactions where
 #'   the radical(s) ("R") are involved in the processes. Profiles are provided by the numeric solution
-#'   of the \strong{O}rdinary \strong{D}ifferential \strong{E}quations.
+#'   of the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE).
 #'
 #'
 #' @details
@@ -143,8 +143,7 @@
 #' @param qvar.expr Character string pointing to `qvar` \strong{column name} in the original
 #'   \code{data.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (in case of experimental
 #'   data aren't taken into account).
-#' @param ... additional arguments passed to the integrator or to the methods of the ODE
-#'   (see also \code{\link[deSolve]{ode}}).
+#' @param ... additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).
 #'
 #'
 #' @return If the function is not used for fitting of the experimental and processed data, the result

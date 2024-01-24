@@ -6,12 +6,16 @@
 #'
 #'
 #' @description The function is based on \code{\link[data.table]{fread}} with the purpose to read
-#'   experimental EPR/ENDOR spectra or other original related (preprocessed) data from EPR spectrometers
-#'   in ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}) and transforms it into \code{data frame},
-#'   which can be easily processed by other R packages (e.g. by \pkg{tidyverse} system), afterwards.
-#'   Spectral data (intensities) are normalized by the common experimental parameters like Q-factor, concentration...etc.
-#'   ASCII files/tables depend on the origin/software used to acquire the EPR spectra. This is mirrored by \code{origin}
-#'   parameter. Time series (time evolution of EPR spectra) can be read by the \code{time.series} parameter.
+#'   experimental EPR/ENDOR spectra or other original related (pre-processed) data from EPR spectrometers
+#'   in ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}).
+#'
+#'
+#' @details
+#'   Data are transformed into \code{data frames}, which can be easily processed by other R packages
+#'   (e.g. by \pkg{tidyverse} system), afterwards. Spectral data (intensities) are normalized by the common
+#'   experimental parameters like Q-factor, concentration...etc. ASCII files/tables depend on the origin/software
+#'   used to acquire the EPR spectra. This is mirrored by \code{origin} parameter. Time series (time evolution
+#'   of EPR spectra) can be read by the \code{time.series} parameter.
 #'
 #'
 #' @inheritParams data.table::fread
@@ -55,7 +59,7 @@
 #'   data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
 #'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
 #'   }
-#' @param ... Additional arguments specified (see also \code{\link[data.table]{fread}}).
+#' @param ... additional arguments specified (see also \code{\link[data.table]{fread}}).
 #'
 #' @return Data frame/table consisting of the unitless \code{g-factor} or the magnetic flux density
 #'   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz}

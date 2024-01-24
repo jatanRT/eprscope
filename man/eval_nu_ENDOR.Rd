@@ -33,12 +33,14 @@ The frequency in MHz is calculated according to relation
   available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\text{n}}^{}}
   is the nuclear \eqn{g}-factor of the specific nucleus (reported in the package \code{isotopes_ds} data frame
   as \code{g_Nuclear}) and finally, the \eqn{B} denotes the magnetic flux density at which the ENDOR spectra
-  are recorded (see also \code{B.val} in arguments below). The \eqn{10^{-6}} coeff.is referred to resulting
-  frequency in MHz.
+  are recorded (see also \code{B.val} in arguments). The \eqn{10^{-6}} coeff.is referred to the resulting
+  frequency in MHz. The negative sign "\eqn{-}" mirrors the convention to describe the direction
+  of magnetic spin moments precession either counter-clockwise (\eqn{+}, if \eqn{\gamma_{\text{n}}^{} < 0})
+  or clockwise (\eqn{-}, if \eqn{\gamma_{\text{n}}^{} > 0}) \insertCite{levitt2013spin}{eprscope}.
 }
 \examples{
-## Larmor/ENDOR frequency for only selected nucleus
-## e.g. "14N" at 3486 G
+## Larmor/ENDOR frequency for one selected nucleus
+## only, e.g. "14N" at 3486 G
 eval_nu_ENDOR(nucle_us_i = "14N",
               B.val = 3486)
 #
@@ -50,6 +52,9 @@ eval_nu_ENDOR(nucle_us_i = c("1H","31P"),
               B.val = 349.9)
 
 
+}
+\references{
+\insertRef{levitt2013spin}{eprscope}
 }
 \seealso{
 Other Evaluations: 

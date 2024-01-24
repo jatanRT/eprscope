@@ -3,16 +3,20 @@
 #'
 #' Data frame summarizing the most important solvent properties for EPR/ENDOR which are required
 #' for variable temperature (VT) experiments and EPR spectroelectrochemistry.
-#' The main properties were collected from \href{https://organicchemistrydata.org/solvents/}{Division of Organic Chemeistry
-#' of the ACS}
-#' and \href{https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf}{Sigma-Aldrich}.
-#' Additional resources (e.g. for viscosities) are \href{https://pubchem.ncbi.nlm.nih.gov/}{PubChem NCBI}
-#' and \href{https://www.accudynetest.com/visc_table.html}{ACCU DYNE TEST}. Besides that, the polarity of solvents
-#' (expressed by the relative permitivity \code{Dielectric_Const}) is important parameter to decide which tube/cell
-#' has to be used for an experiment at specific temperature (unless the measurements performed directly in liquid \eqn{\text{N}_2})
-#' => for polar solvents use capillaries or special "flat" cells (e.g. like for EPR spectroelectrochemistry),
-#' while for less polar solvents common quartz tubes
-#' (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied.
+#'
+#'
+#' @details
+#'  The main properties were collected from \href{https://organicchemistrydata.org/solvents/}{Division of Organic Chemistry
+#'  of the ACS}
+#'  and \href{https://www.sigmaaldrich.com/deepweb/assets/sigmaaldrich/marketing/global/documents/614/456/labbasics_pg144.pdf}{Sigma-Aldrich}.
+#'  Additional resources (e.g. for viscosities) are \href{https://pubchem.ncbi.nlm.nih.gov/}{PubChem NCBI}
+#'  and \href{https://www.accudynetest.com/visc_table.html}{ACCU DYNE TEST}. Besides that, the polarity of solvents
+#'  (expressed by the relative permitivity \code{Dielectric_Const}) is important parameter to decide which tube/cell
+#'  has to be used for an experiment at specific temperature (unless the measurements performed directly in liquid \eqn{\text{N}_2})
+#'  => for polar solvents use capillaries or special "flat" cells (e.g. like for EPR spectroelectrochemistry),
+#'  while for less polar solvents common quartz tubes
+#'  (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied.
+#'
 #'
 #'
 #' @family Built-In Datasets

@@ -2,13 +2,13 @@
 % Please edit documentation in R/eval_gFactors.R
 \name{eval_gFactor_QCHcomp}
 \alias{eval_gFactor_QCHcomp}
-\title{Calculation of \emph{g}-factor from Quantum Chemical Computational Output}
+\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output}
 \usage{
 eval_gFactor_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 }
 \arguments{
 \item{path_to_QCHoutput}{Character string corresponding to path of `Gaussian` or `ORCA` output text files
-incl. all \emph{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.}
+incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.}
 
 \item{mean}{Logical, whether to calculate the \code{mean value/iso} from principal components,
 \strong{default}: \code{mean = TRUE}, or save the entire vector with the all components.}
@@ -18,14 +18,14 @@ software package was used. Only two values are available => \code{"gaussian"} (\
 or \code{"orca"}.}
 }
 \value{
-Numeric mean \emph{g}-factor value from principal difference (from \eqn{g_e}) components
-  calculated by QCH methods (e.g. by DFT) or numeric vector with principal \emph{g}-components
+Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components
+  calculated by QCH methods (e.g. by DFT) or numeric vector with principal \eqn{g}-components
   if \code{mean = FALSE}.
 }
 \description{
-\emph{g}-Values (3 principal ones) are presented in a form of differences from
+\eqn{g}-Values (3 principal ones) are presented in a form of differences from
   the \eqn{g_e} (\eqn{g} of the free electron). Therefore the function takes these values
-  and calculates the entire \emph{g}-values or parses the corresponding mean value
+  and calculates the entire \eqn{g}-values or parses the corresponding mean value
   from `Gaussian` or `ORCA` output.
 }
 \examples{

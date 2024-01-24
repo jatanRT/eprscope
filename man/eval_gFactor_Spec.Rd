@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_gFactors.R
 \name{eval_gFactor_Spec}
 \alias{eval_gFactor_Spec}
-\title{Calculation of \emph{g}-factor ("Position") from the EPR Spectrum/Data}
+\title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data}
 \usage{
 eval_gFactor_Spec(
   data.spectr,
@@ -37,10 +37,10 @@ name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesit
 (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
 
 \item{Blim}{Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
-of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
-(corresponding to the entire \emph{B} range of the EPR spectrum).}
+of the selected \eqn{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+(corresponding to the entire \eqn{B} range of the EPR spectrum).}
 
-\item{iso}{Logical, whether to calculate the \emph{g}-factor from the \emph{B} value corresponding to
+\item{iso}{Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
 (this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
 to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).}
@@ -55,7 +55,7 @@ Calculation of g-value according to fundamental formula (\code{\link{eval_gFacto
   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be considered.
   Otherwise, the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
-  the \eqn{B_{max}} is used for the \emph{g}-value evaluation.
+  the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
 }
 \examples{
 ## load built-in EPR spectral data
