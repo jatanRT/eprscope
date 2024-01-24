@@ -43,7 +43,15 @@ Quite often to figure out the HF structure from EPR spectra (see also `vignette(
 
 # Simplified Theoretical Description
 
-The proper analytic expression for energies of magnetic dipole moments of one unpaired electron interacting with surrounding nuclei in the magnetic field (magnetic flux density, $B$) requires quantum mechanical operator formalism because the energies correspond to eigenvalues of the energy (so called Hamiltonian) operator [@WertzBoltonA; @WertzBoltonB; @WertzBoltonC]. However, for the sake of simplicity and illustration just consider the energy ($E$) relations. The total energy $E_{\mathrm{Tot}}$ for an isotropic system of one unpaired $\ce{e-}$ and the nuclei in its vicinity can be expressed by the following Equation \@ref(eq:eNenergy):
+The proper analytic expression for energies of magnetic dipole moments of one unpaired electron interacting with surrounding nuclei in the magnetic field (magnetic flux density, $B$) requires quantum mechanical operator formalism because the energies correspond to eigenvalues of the energy (so called Hamiltonian) operator [@WertzBoltonA; @WertzBoltonB; @WertzBoltonC]. However, for the sake of simplicity and illustration just consider the energy ($E$) relations. The essential formula how to calculate the energy of a magnetic dipole moment in magnetic field characterized by the magnetic flux density within the framework of "classic" magnetism corresponds to dot product like in Equation \@ref(eq:magnEnergy):
+
+```{=tex}
+\begin{equation}
+E = - \vec{\mu}_{\mathrm{B}}^{}\,\vec{B}
+(\#eq:magnEnergy)
+\end{equation}
+```
+where the constant ... The total energy $E_{\mathrm{Tot}}$ for an isotropic system of one unpaired $\ce{e-}$ and the nuclei in its vicinity can be expressed by the following Equation \@ref(eq:eNenergy):
 
 ```{=tex}
 \begin{equation}
