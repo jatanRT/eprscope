@@ -6,7 +6,9 @@
 #'
 #'
 #' @description
-#'   A short description...TBC...in the Most Common EPR Cavities
+#'   Estimate the number or concentration of "spins"/radicals/paramagnetic species using the absolute
+#'   quantitative method by sigmoid integral as well as by instrumental parameters without the need
+#'   for a standard sample with known concentration/amount of radicals/"spins".
 #'
 #'
 #'
@@ -39,7 +41,7 @@
 #'
 #'   \insertRef{hirschCapill2023}{eprscope}
 #'
-#'   \insertRef{mazurAnalysis1997}{eprscope}
+#'   \insertRef{mazurAnalysis2000}{eprscope}
 #'
 #'   \insertRef{portisElectro1953}{eprscope}
 #'
