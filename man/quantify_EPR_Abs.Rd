@@ -98,24 +98,41 @@ Estimate the number or concentration of "spins"/radicals/paramagnetic species us
 }
 \details{
 There are two approaches how to quantify the number of paramagnetic species/radicals/spins.
-  The \strong{relative} one needs a standard sample with a known number and can be evaluated
+  The \strong{relative} one needs a standard sample with a known spin number and can be evaluated
   by the sigmoid integral ratio of the sample under study and that of the standard.
-  Whereas the \strong{absolute} method do not need the reference sample however, it requires
+  While the \strong{absolute} method do not need the reference sample however, it requires
   a precise cavity signal calibration as well as standardized cell geometry. Both are provided
-  by the EPR instrument and lab-glass manufacturers (see e.g.
-  \href{https://hirschmann-laborgeraete.de/en/artikelgruppe/96001}{Hirschmann Capillaries}).
+  by the EPR instrument and lab-glass manufacturers (see e.g. \insertCite{hirschCapill2023}{eprscope}).
   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
-  \eqn{I_{\text{sigmoid}}},can be expressed as follows =>
-  \deqn{I_{\text{sigmoid}} = (c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}\,N_{\text{Scans}})\,
-  [\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)]\,N_{\text{Spins}}}
-  where  \eqn{c} is the point sample calibration factor (supplied by the spectrometer manufacturer);
-  \eqn{f(B_1,B_{\text{m}})} is the function depicting the spatial distribution of \eqn{B_1}
-  and \eqn{B_{\text{m}}} and actually it corresponds to integrated intensity distribution within
+  \eqn{I_{\text{sigmoid}}},can be used to calculate the number of "spins"/radicals/paramagnetic species,
+  \eqn{N_{\text{Spins}}} \insertCite{eatonQepr2010,RWeberXenon2011}{eprscope} =>
+  \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}/((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
+  \,N_{\text{Scans}})\,[\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)])}
+  where  the quantity notations possess the following meaning:
+  \tabular{ll}{
+  ------------------ \tab --------------------------------------- \cr
+  \strong{Quantity Symbol} \tab \strong{Meaning/Short Desription} \cr
+  ------------------ \tab --------------------------------------- \cr
+  \eqn{c}\tab Point sample calibration factor (instrumental). \cr
+  \eqn{f(B_1,B_\text{m})} \tab Spatial distribution of the microwave \eqn{B_1} and modulation
+  amplitude within the cavity/probehead/resonator (instrumental/theoretical). \cr
+  \eqn{G_{\text{R}}} \tab Receiver gain (commonly in \eqn{\text{dB}} units (instrumental)). \cr
+  \eqn{t_{\text{C}}} \tab Conversion time (commonly in \eqn{\text{ms}}) which is an analogy
+  to integration time in other spectroscopies (instrumental). \cr
+  \eqn{N_{\text{Scans}}} \tab Number of scans/accumulations during the experiment (instrumental). \cr
+  \eqn{P_{\text{MW}}} \tab Microwave power (instrumental). \cr
+  \eqn{B_{\text{m}}} \tab Modulation amplitude. \cr
+  \eqn{Q} \tab \emph{Q}-Value or \emph{Q}-Factor that characterizing the resonator/cavity/probehead
+  sensitivity (unitless and instrumental). \cr
+  \eqn{n_{\text{B}}} \tab Boltzmann factor for temperature dependence (instrumental-sample). \cr
+  \eqn{S} \tab Total electronic spin quantum number (sample). Commonly for radicals \eqn{S = 1/2}. \cr
+  ------------------ \tab --------------------------------------- \cr
+  }
+  Almost all the summarized quantities are instrument-dependent. Most of them correspond to the essential
+  parameters for the experiment to set up and can be easily figured out from the `.DSC`/`.dsc`/`.par` file(s).
+  However, the there are...and actually it corresponds to integrated intensity distribution within
   the cavity/probehead for different sample length and positions. Such intensity distribution
-  is expressed by polynomial and is supplied by the manufacturer as well. Additional quantities
-  are the following => \eqn{G_{\text{R}}} is receiver gain; \eqn{t_{\text{C}}} corresponds to
-  conversion time; \eqn{N_{\text{Scans}}} is the number of scans/accumulations. Because the receiver
-  gain is expressed in \eqn{\text{dB}}...tbc.
+  is expressed by polynomial and is supplied by the manufacturer as well.
 }
 \examples{
 \dontrun{

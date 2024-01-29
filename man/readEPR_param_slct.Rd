@@ -14,9 +14,9 @@ parameters provided by the EPR machine, path can be provided by \code{\link[base
  corresponding to instrumental parameter,
 following \strong{strings are defined} (\strong{in parenthesis for "winepr" software}):
 \tabular{ll}{
- ---------------- \tab ----------------------------- \cr
+ ---------------- \tab ----------------------- \cr
  \strong{String} \tab \strong{Instrumental Parameter} \cr
- ---------------- \tab ----------------------------- \cr
+ ---------------- \tab ----------------------- \cr
   "OPER" ("JON") \tab  operator (of the EPR instrument) \cr
   "CMNT" ("JCO") \tab  comment (in order to describe the measurement) \cr
   "DATE" ("JDA") \tab  date (when the EPR spectrum was recorded) \cr
@@ -37,7 +37,7 @@ following \strong{strings are defined} (\strong{in parenthesis for "winepr" soft
   "RCAG" ("RRG") \tab signal receiver gain in \code{dB} (unitless) \cr
   "ConvFact" \tab conversion factor/instr. calibration constant for quantitative
   analysis \code{unitless} \cr
-  ---------------- \tab ----------------------------- \cr
+  ---------------- \tab ----------------------- \cr
 }}
 
 \item{origin}{String, corresponding to software which was used to acquire the EPR spectra
