@@ -22,7 +22,7 @@ quantify_EPR_Abs(
 )
 }
 \arguments{
-\item{integ.sigmoid.max}{Numeric value or vectoe of entire EPR spectrum sigmoid integral.}
+\item{integ.sigmoid.max}{Numeric value or vector of the entire EPR spectrum sigmoid integral.}
 
 \item{instrum.params}{Named numeric vector containing instrumental parameters required
 for the quantification =>
@@ -64,7 +64,7 @@ for the quantitative EPR experiment.}
 \item{eff.cavity.h.mm}{Numeric value equal to effective cavity/probehead height/length,
 usually provided by the probehead manufacturer.}
 
-\item{fn.B1.Bm.fit}{Numeric vector (coefficients) of the polynomial degree from 6 to 11
+\item{fn.B1.Bm.fit}{Numeric vector (coefficients) of the polynomial degree from 5 to 12
 or character string ("theoretical").}
 
 \item{Norm.const}{Numeric value corresponding to normalization constant (see
@@ -106,9 +106,10 @@ There are two approaches how to quantify the number of paramagnetic species/radi
   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
   \eqn{I_{\text{sigmoid}}},can be used to calculate the number of "spins"/radicals/paramagnetic species,
   \eqn{N_{\text{Spins}}} \insertCite{eatonQepr2010,RWeberXenon2011}{eprscope} =>
-  \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}/((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
+  \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
   \,N_{\text{Scans}})\,[\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)])}
-  where  the quantity notations possess the following meaning:
+  where the quantity notations possess the following meaning (whether it is instrumental or sample
+  dependent it is presented in parentheses):
   \tabular{ll}{
   ------------------ \tab --------------------------------------- \cr
   \strong{Quantity Symbol} \tab \strong{Meaning/Short Desription} \cr
@@ -122,15 +123,27 @@ There are two approaches how to quantify the number of paramagnetic species/radi
   \eqn{N_{\text{Scans}}} \tab Number of scans/accumulations during the experiment (instrumental). \cr
   \eqn{P_{\text{MW}}} \tab Microwave power (instrumental). \cr
   \eqn{B_{\text{m}}} \tab Modulation amplitude. \cr
-  \eqn{Q} \tab \emph{Q}-Value or \emph{Q}-Factor that characterizing the resonator/cavity/probehead
+  \eqn{Q} \tab \emph{Q}-Value or \emph{Q}-Factor characterizing the resonator/cavity/probehead
   sensitivity (unitless and instrumental). \cr
   \eqn{n_{\text{B}}} \tab Boltzmann factor for temperature dependence (instrumental-sample). \cr
   \eqn{S} \tab Total electronic spin quantum number (sample). Commonly for radicals \eqn{S = 1/2}. \cr
   ------------------ \tab --------------------------------------- \cr
   }
-  Almost all the summarized quantities are instrument-dependent. Most of them correspond to the essential
+  Almost all summarized quantities are instrument-dependent. Most of them correspond to the essential
   parameters for the experiment to set up and can be easily figured out from the `.DSC`/`.dsc`/`.par` file(s).
-  However, the there are...and actually it corresponds to integrated intensity distribution within
+  The Boltzmann factor describes the population of spin states
+  by \eqn{\exp{(\Delta \varepsilon)\,/\,(k_{\text{B}}\,T)}}, where \eqn{\Delta \varepsilon} denotes
+  the energy difference between the basic spin states, \eqn{k_{\text{B}}} is the Boltzmann constant
+  (available from \code{\link[constants]{syms}}) and the \eqn{T} represents the temperature in \eqn{\text{K}}.
+  For temperatures \eqn{\geq 4\,\text{K}} and continuous wave experiments where
+  the \eqn{\Delta \varepsilon = h\,\nu_{\text{MW}}^{}} is constant, this factor may be very well estimated
+  by the following formula
+  \deqn{n_{\text{B}} = h\,\nu_{\text{MW}}^{}\,/\,(2\,k_{\text{B}}\,T)}
+  The term \eqn{(G_{\text{R}}\,t_{\text{C}}\,N_{\text{Scans}})} actually corresponds to normalization constant
+  which is available from \code{\link{quantify_EPR_Norm_const}}.
+  Besides the above-described parameters which can be easily estimated there are however characteristics
+  that requires precise calibration and usually are provided by the spectrometer manufactures.
+  ...corresponds to integrated intensity distribution within
   the cavity/probehead for different sample length and positions. Such intensity distribution
   is expressed by polynomial and is supplied by the manufacturer as well.
 }
