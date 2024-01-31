@@ -33,15 +33,12 @@
 #'   (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.
 #' @param style Character string denoting the plotting style like =>
 #'   \tabular{rcl}{
-#'   ----------------  \tab ----------------------------- \cr
 #'   \strong{Plotting Style} \tab \strong{Style Text String} \cr
-#'   ----------------  \tab ----------------------------- \cr
 #'   `color on black`  \tab \code{style = "cob"} \cr
 #'   `color on white`  \tab \code{style = "cow"} \cr
 #'   `black on white`  \tab \code{style = "bow"} \cr
 #'   `white on black` \tab \code{style = "wob"} \cr
 #'   `neon on black`  \tab \code{style = "nob"} \cr
-#'   ---------------- \tab ----------------------------- \cr
 #'   }
 #'   \strong{Default}: \code{style = "cow"}.
 #' @param abbr Character string which controls how the structure is displayed. Following options

@@ -61,9 +61,7 @@ General-purpose optimization of the objective \code{fn} function (also called "f
 \details{
 The algorithms applied for the optimization/fitting are summarized in the following table =>
   \tabular{lcl}{
-  ----------------------- \tab ------------ \tab ---------------------------------------------------- \cr
   \strong{Method/Algorithm} \tab \strong{Package} \tab \strong{Short Description} \cr
-  ----------------------- \tab ------------ \tab ---------------------------------------------------- \cr
   \code{slsqp} \tab \pkg{nloptr} \tab Sequential quadratic programming method for non-linearly
   constrained, gradient-based optimization. \cr
   \code{cobyla} \tab \pkg{nloptr} \tab Constrained optimization by linear approximations,
@@ -80,7 +78,6 @@ The algorithms applied for the optimization/fitting are summarized in the follow
   \code{psoptim} (\code{pswarm}) \tab \pkg{pso} \tab Particle swarm optimization, which is a population-based
   stochastic optimization algorithm motivated by the intelligent collective behavior of some animals such
   as flocks of birds or schools of fish. \cr
-  ----------------------- \tab ------------ \tab ---------------------------------------------------- \cr
   }
   Not all \pkg{nloptr}-methods are implemented into the \code{optim_for_EPR_fitness}. Those summarized above
   were tested by the EPR simulation fit (see \code{\link{eval_sim_EPR_isoFit}}) on the experimental spectra

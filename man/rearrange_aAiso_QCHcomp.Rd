@@ -34,13 +34,10 @@ The \eqn{A_{iso}}/\eqn{a_{iso}} values are computed for each atom/nucleus
   (after \code{'Isotropic Fermi Contact Couplings'} line) or can be constructed from \strong{ORCA} output,
   example for such a file structure (from \strong{Gaussian}):
   \tabular{rcccc}{
-  --------- \tab ----------- \tab ----------- \tab ---------- \tab --------- \cr
    \strong{No_atom} \tab \strong{Atom_Nucleus} \tab \strong{MegaHertz} \tab \strong{Gauss} \tab \strong{1e-4_cm-1} \cr
-   --------- \tab ----------- \tab ----------- \tab ---------- \tab --------- \cr
    1 \tab N(14) \tab 0.00643 \tab 0.00229 \tab 0.00214 \cr
    17 \tab N(14) \tab 13.99707 \tab 4.9945 \tab 4.66892 \cr
    28 \tab H(1) \tab 16.34971 \tab 5.83398 \tab 5.45368 \cr
-   --------- \tab ----------- \tab ----------- \tab ---------- \tab --------- \cr
   }
 }
 \examples{

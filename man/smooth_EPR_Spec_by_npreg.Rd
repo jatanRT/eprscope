@@ -40,9 +40,7 @@ package (see the \code{method} argument in \code{\link[npreg]{ss}}). The followi
 in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}
 or additional information may be found in \code{References}) =>
 \tabular{ll}{
----------------- \tab ------------------------------------- \cr
 \strong{Method} \tab \strong{Short Description} \cr
----------------- \tab ------------------------------------- \cr
 "GCV" \tab Generalized Cross-Validation \cr
 "OCV" \tab Ordinary Cross-Validation \cr
 "GACV" \tab Generalized Approximate Cross-Validation \cr
@@ -51,7 +49,6 @@ or additional information may be found in \code{References}) =>
 "ML" \tab Maximum Likelihood \cr
 "AIC" \tab Akaike’s Information Criterion \cr
 "BIC" \tab Bayesian Information Criterion \cr
----------------- \tab ------------------------------------- \cr
 }}
 
 \item{output.vec}{Logical, whether the function output have to be vectorized, i.e. only the vector

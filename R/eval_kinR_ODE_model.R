@@ -26,9 +26,7 @@
 #'   Several kinetic models for radical reactions in EPR spectroscopy are summarized below
 #'   (see also \code{model.react} function argument).
 #'   \tabular{ll}{
-#'   ------------------------------- \tab --------------------------------------------------------- \cr
 #'   \strong{`model.react`} \tab \strong{Short Description} \cr
-#'   ------------------------------- \tab --------------------------------------------------------- \cr
 #'   \code{"(n=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
 #'   e.g. like irrev. dimerization (if \code{"(n=2)"}). \cr
 #'   \code{"(n=1)A --> [k1] (m=1)R"} \tab Basic irreversible radical formation,
@@ -45,7 +43,6 @@
 #'   \code{"(n=1)A + (m=1)B --> [k1] (l=1)R"} \tab Radical formation by chemical reaction like oxidation,
 #'   reduction or spin trapping (transient radical is not visible within the common EPR time scale). \cr
 #'   \code{"(n=1)R + (m=1)B --> [k1] (l=1)C"} \tab General radical quenching by chemical reaction. \cr
-#'   ------------------------------- \tab --------------------------------------------------------- \cr
 #'   }
 #'
 #'
@@ -66,9 +63,7 @@
 #'   the integral intensity and/or radical concentration/amount changes during the EPR time series
 #'   experiment (the \code{m,n,l} stoichiometric coefficients may be varied, see below).
 #'   \tabular{ll}{
-#'   ------------------------------ \tab ------------------------------------------------------ \cr
 #'   \strong{Reaction Scheme} \tab \strong{`model.react`} \cr
-#'   ------------------------------ \tab ------------------------------------------------------ \cr
 #'   \eqn{(n=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(n=1)R --> [k1] B"} \cr
 #'    \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R}} \tab \code{"(n=2)A --> [k1] (m=2)R"} \cr
 #'    \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R} \xrightleftharpoons[k_3]{k_2} (l=1)\text{C}} \tab
@@ -81,7 +76,6 @@
 #'    \code{"(n=1)A + (m=1)B --> [k1] (l=1)R"} \cr
 #'    \eqn{(n=1)\text{R} + (m=1)\text{B} \xrightarrow{k_1} (l=1)\text{C}} \tab
 #'    \code{"(n=1)R + (m=1)B --> [k1] (l=1)C"} \cr
-#'    ----------------------------- \tab ------------------------------------------------------ \cr
 #'   }
 #'   Couple of examples are also given in details. The function is relatively flexible and enables
 #'   later addition of any other reaction schemes describing the EPR time series experiments
@@ -111,9 +105,7 @@
 #'   reaction orders (`alpha` and/or `beta` and/or `gamma`) must be defined within \code{kin.params}
 #'   like summarized in the following table =>
 #'   \tabular{ll}{
-#'   ----------------------------- \tab ----------------------------------- \cr
 #'   \strong{`model.react`} \tab \strong{Essential `kin.params` components} \cr
-#'   ----------------------------- \tab ----------------------------------- \cr
 #'   \code{"(n=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0R}, (\code{alpha}) \cr
 #'   \code{"(n=1)A --> [k1] (m=1)R"} \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{alpha}) \cr
 #'   \code{"(n=1)A --> [k1] (m=1)R <==> [k2] [k3] (l=1)C"} \tab \code{k1}, \code{k2}, \code{k3} \code{qvar0A},
@@ -126,7 +118,6 @@
 #'   \code{qvar0R}, (\code{alpha},\code{beta}) \cr
 #'   \code{"(n=1)R + (m=1)B --> [k1] (l=1)C"} \tab \code{k1}, \code{qvar0R}, \code{qvar0B},
 #'   \code{qvar0C}, (\code{alpha},\code{beta}) \cr
-#'   ----------------------------- \tab ----------------------------------- \cr
 #'   }
 #' @param time.unit Character string ...description...TBC.
 #' @param timeLim.model Numeric vector incl. two values corresponding to starting and final time

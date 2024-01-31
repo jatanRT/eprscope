@@ -37,9 +37,7 @@ brackets after the arrows. Following examples of the reaction schemes are common
 the integral intensity and/or radical concentration/amount changes during the EPR time series
 experiment (the \code{m,n,l} stoichiometric coefficients may be varied, see below).
 \tabular{ll}{
------------------------------- \tab ------------------------------------------------------ \cr
 \strong{Reaction Scheme} \tab \strong{`model.react`} \cr
------------------------------- \tab ------------------------------------------------------ \cr
 \eqn{(n=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(n=1)R --> [k1] B"} \cr
  \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R}} \tab \code{"(n=2)A --> [k1] (m=2)R"} \cr
  \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R} \xrightleftharpoons[k_3]{k_2} (l=1)\text{C}} \tab
@@ -52,7 +50,6 @@ experiment (the \code{m,n,l} stoichiometric coefficients may be varied, see belo
  \code{"(n=1)A + (m=1)B --> [k1] (l=1)R"} \cr
  \eqn{(n=1)\text{R} + (m=1)\text{B} \xrightarrow{k_1} (l=1)\text{C}} \tab
  \code{"(n=1)R + (m=1)B --> [k1] (l=1)C"} \cr
- ----------------------------- \tab ------------------------------------------------------ \cr
 }
 Couple of examples are also given in details. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments

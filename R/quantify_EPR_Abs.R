@@ -26,9 +26,7 @@
 #'   where the quantity notations possess the following meaning (whether it is instrumental or sample
 #'   dependent it is presented in parentheses):
 #'   \tabular{ll}{
-#'   ------------------ \tab --------------------------------------- \cr
 #'   \strong{Quantity Symbol} \tab \strong{Meaning/Short Desription} \cr
-#'   ------------------ \tab --------------------------------------- \cr
 #'   \eqn{c}\tab Point sample calibration factor (instrumental). \cr
 #'   \eqn{f(B_1,B_\text{m})} \tab Spatial distribution of the microwave \eqn{B_1} and modulation
 #'   amplitude within the cavity/probehead/resonator (instrumental/theoretical). \cr
@@ -42,7 +40,6 @@
 #'   sensitivity (unitless and instrumental). \cr
 #'   \eqn{n_{\text{B}}} \tab Boltzmann factor for temperature dependence (instrumental-sample). \cr
 #'   \eqn{S} \tab Total electronic spin quantum number (sample). Commonly for radicals \eqn{S = 1/2}. \cr
-#'   ------------------ \tab --------------------------------------- \cr
 #'   }
 #'   Almost all summarized quantities are instrument-dependent. Most of them correspond to the essential
 #'   parameters for the experiment to set up and can be easily figured out from the `.DSC`/`.dsc`/`.par` file(s).

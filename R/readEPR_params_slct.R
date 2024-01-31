@@ -16,9 +16,7 @@
 #'   corresponding to instrumental parameter,
 #'  following \strong{strings are defined} (\strong{in parenthesis for "winepr" software}):
 #'  \tabular{ll}{
-#'   ---------------- \tab ----------------------- \cr
 #'   \strong{String} \tab \strong{Instrumental Parameter} \cr
-#'   ---------------- \tab ----------------------- \cr
 #'    "OPER" ("JON") \tab  operator (of the EPR instrument) \cr
 #'    "CMNT" ("JCO") \tab  comment (in order to describe the measurement) \cr
 #'    "DATE" ("JDA") \tab  date (when the EPR spectrum was recorded) \cr
@@ -39,7 +37,6 @@
 #'    "RCAG" ("RRG") \tab signal receiver gain in \code{dB} (unitless) \cr
 #'    "ConvFact" \tab conversion factor/instr. calibration constant for quantitative
 #'    analysis \code{unitless} \cr
-#'    ---------------- \tab ----------------------- \cr
 #'  }
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
