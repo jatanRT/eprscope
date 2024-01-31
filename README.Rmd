@@ -1,9 +1,19 @@
 ---
 title: "eprscope"
-output: 
-  github_document:
-    keep_html: true
+output: github_document
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  fig.width = 7.2,
+  fig.height = 4.8
+)
+```
 
 <!-- badges: start -->
 
@@ -11,7 +21,7 @@ output:
 
 <!-- badges: end -->
 
-## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
+## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
 The key objective of this fully open source package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. The package doesn't want to replace the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several tools, e.g. like by the acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as by several other proprietary software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination is adopted.
 

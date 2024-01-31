@@ -5,6 +5,7 @@ output:
     base_format: rmarkdown::html_vignette
     mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
 number_sections: FALSE
+fig_caption: TRUE
 link-citations: TRUE
 bibliography: introduction.bib
 csl: iso690-numeric-en.csl
@@ -12,6 +13,8 @@ vignette: >
   %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+pkgdown:
+  as_is: TRUE  
 ---
 
 ```{r knitr-setup, include = FALSE}

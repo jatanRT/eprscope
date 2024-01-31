@@ -5,8 +5,8 @@ output:
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
     mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-    toc: TRUE
 number_sections: TRUE
+fig_caption: TRUE
 link-citations: TRUE
 bibliography: functionality.bib
 csl: iso690-numeric-en.csl
@@ -14,8 +14,17 @@ vignette: >
   %\VignetteIndexEntry{Basic Functionality}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+pkgdown:
+  as_is: TRUE  
 ---
 
+```{=html}
+<style type="text/css">
+table, table th, table td {
+  border: none;
+}
+</style>
+```
 ```{r knitr-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -37,6 +46,8 @@ library(knitr)
 library(patchwork)
 library(flextable)
 library(ggplot2)
+library(plotly)
+library(DT)
 ```
 
 # Introduction
@@ -107,13 +118,14 @@ Finally conversion of the second data frame (`tmpd.params$params`) into interact
 
 ```{r instrum-params-reaad-DT-interact}
 
-# by function `datatable` from the `DT` package
-DT::datatable(data = tmpd.params$params)
+# the output is obtained by:
+readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
+                    origin = "winepr",
+                    interact = "params")
 #
-# the same output we may obtain by:
-# readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
-#                     origin = "winepr",
-#                     interact = "params")
+# or by function `datatable` from the `DT` package
+# DT::datatable(data = tmpd.params$params)
+
 
 ```
 
@@ -277,7 +289,6 @@ In order to explore the EPR spectrum in details (to read values, zoom or save th
 # right corner + `B`, `dIepr_over_dB` values can be read directly from the spectrum
 plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
 
-
 ```
 
 Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignettes and provided by the `plot_EPR_Specs3D_interact()` function.
@@ -294,7 +305,7 @@ There are four basic parameters to characterize the EPR spectrum ➨
 
 4.  Single or double integral depending on the original spectral line form ➨ either integrated or derivative, respectively. This is directly proportional to number of paramagnetic species/radicals.
 
-## Finding the $g_{\mathrm{iso}}$-Value
+## Finding the *g*~iso~-Value
 
 The parameter is defined by the following Equation \@ref(eq:gfactor):
 
@@ -351,7 +362,7 @@ all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
 
 The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and the experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirms position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Namely, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the unpaired electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
 
-## Linewidth, $\Delta B_{\mathrm{pp}}$ Determination
+## Linewidth, 𝚫*B*~pp~ Determination
 
 The linewidth in $\mathrm{mT}$ can be determined from several spectral lines/regions from the interactive plot above and by the `eval_DeltaXpp_Spec()` function ➨
 

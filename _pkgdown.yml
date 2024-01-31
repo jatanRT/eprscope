@@ -1,0 +1,41 @@
+url: ~
+template:
+  bootstrap: 5
+  bootswatch: cerulean
+
+reference:
+- title: Built-In Datasets
+  contents:
+  - has_concept("Built-In Datasets")
+
+- title: Conversions and Corrections
+  contents:
+  - has_concept("Conversions and Corrections")
+
+- title: Data Reading
+  contents:
+  - has_concept("Data Reading")
+
+- title: Evaluations
+  contents:
+  - has_concept("Evaluations")
+
+- title: Evaluations and Quantum Chemistry
+  contents:
+  - has_concept("Evaluations and Quantum Chemistry")
+
+- title: Evaluations and Quantification
+  contents:
+  - has_concept("Evaluations and Quantification")
+
+- title: Simulations and Optimization
+  contents:
+  - has_concept("Simulations and Optimization")
+
+- title: Visualizations and Graphics
+  contents:
+  - has_concept("Visualizations and Graphics")
+
+- title: Non-Categorized
+  contents:
+  - lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data Reading","Evaluations","Evaluations and Quantum Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations and Graphics"))
