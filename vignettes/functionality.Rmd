@@ -16,7 +16,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 pkgdown:
-  as_is: TRUE  
+  as_is: TRUE
 ---
 
 ```{r knitr-setup, include = FALSE}
@@ -38,8 +38,9 @@ library(eprscope)
 library(icons)
 library(knitr)
 library(patchwork)
+library(htmlwidgets)
 library(ggplot2)
-# library(widgetframe)
+library(plotly)
 ```
 
 # Introduction
@@ -106,20 +107,7 @@ tmpd.params$params # or `tmpd.params[["params"]]`
 
 ```
 
-Finally conversion of the second data frame (`tmpd.params$params`) into interactive table ➨
-
-```{r instrum-params-reaad-DT-interact}
-
-# the output is obtained by:
-readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
-                    origin = "winepr",
-                    interact = "params")
-#
-# or by function `datatable` from the `DT` package
-# DT::datatable(data = tmpd.params$params)
-
-
-```
+Finally conversion of the second data frame (`tmpd.params$params`) can be also converted into **interactive table** ➨ **see function** `readEPR_params_tabs()` and its corresponding examples.
 
 The `origin` argument from reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within "xenon"/"magnetech" software, the "winepr" intensity has to be normalized after the measurement if one wants to compare the intensities of two or more EPR spectra. Thus, the reading of the $\ce{TMPD^{.+}}$ spectral data by `readEPR_Exp_Specs()` proceeds as follows with the output in form of the universal `data frame` format ➨
 
@@ -184,15 +172,15 @@ head(tmpd.data.norm.02)
 
 ```
 
-Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/) (example of interactive data frame by [{DT}](https://rstudio.github.io/DT/) is already shown above). Among them, libraries like [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. Example of the last data frame previewed by `{flextable}` is shown below.
+Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/). Among them, libraries like [{DT}](https://rstudio.github.io/DT/), [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. Example of the last data frame previewed by `{flextable}` is shown below.
 
 ```{r spectral-data-read-norm-flextable}
 
-# visualization of the first 10 rows by `{flextable}` with stripes
-# (`theme_zebra()`) and pipe oerator "%>%" which is an expression 
-# of a sequence of operations that transform an object
+# visualization of the first 10 rows by `{flextable}` in `booktabs` (LaTeX-like) theme
+# (`theme_booktabs()`) and pipe oerator "%>%" which is an expression 
+# of a sequence of operations transforming an object
   flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
-    flextable::theme_zebra()
+    flextable::theme_booktabs()
 
 ```
 
@@ -273,20 +261,7 @@ ggplot2::ggsave("imgs/TMPD_EPR_Norm_compar.png",
 
 ## Interactive Plots by `{plotly}`
 
-In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied. Additionally, it can be also used for the series of EPR spectra similarly like `plot_EPR_Specs()`. The last spectrum with the advanced normalization can be plotted like ➨
-
-```{r spectral-data-norm02-visual}
-
-# preview + by hovering over the spectrum a toolbar appears in the upper 
-# right corner + `B`, `dIepr_over_dB` values can be read directly from the spectrum
-tmpd.interact.epr.spec <- plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
-#
-# preview
-tmpd.interact.epr.spec
-
-```
-
-Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignettes and provided by the `plot_EPR_Specs3D_interact()` function.
+In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied (consult the corresponding function example). Additionally, it can be also used for the series of overayed EPR spectra similarly like `plot_EPR_Specs()`. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignette and provided by the `plot_EPR_Specs3D_interact()` function.
 
 # Basic EPR Spectral Characteristics
 
@@ -548,7 +523,7 @@ Both integrals, within the entire $B$-range, can be visualized by `plot_EPR_Spec
 ```{r tmpd-basic-epr-integ-visual,fig.cap = "Single (`single_Integ`) and double (`sigmoid_Integ`) integrated EPR spectrum of $\\ce{TMPD^{.+}}$."}
 
 # Both integrals are presented separately
-# with their corresponding intensities automaticaly
+# with their corresponding intensities automatically
 # scaled onto the `y`-axis (defined by "free_y")
 plot_EPR_Specs_integ(tmpd.data.norm.02.integ,
                      slct.integs = c("single_Integ",

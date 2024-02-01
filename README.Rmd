@@ -23,11 +23,11 @@ knitr::opts_chunk$set(
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
-The key objective of this fully open source package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. The package doesn't want to replace the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several tools, e.g. like by the acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as by several other proprietary software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination is adopted.
+The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been devoloped, so far. The `{eprscope}` 📦 doesn't want to replace the latter as well as the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several proprietary tools. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* are often applied in the EPR processing workflow. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination would be adopted. In order to achieve the goal the package uses superior power or the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} environment that combines data processing, analysis and great graphing visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/) systems at one place without the need to employ additional software.
 
 ## Installation
 
-```{r}
+```{r istallation}
 
 # So far, the package can be installed by =>
 
@@ -54,7 +54,7 @@ In this section couple of examples are shown in order to briefly demonstrate fun
 
 ### Reading Files with Instrumental Parameters
 
-```{r warning=FALSE,message=FALSE}
+```{r parameter-reading,warning=FALSE,message=FALSE}
 
 library(eprscope)
 #
@@ -75,7 +75,7 @@ tmpd.params.dt
 
 ### Depict Molecular Structures
 
-```{r warning=FALSE, message=FALSE}
+```{r molecule-drawing,warning=FALSE, message=FALSE}
 
 # Phenylalenyl (Perinaphthenyl or PNT) radical from `SMILES`
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" code
@@ -90,7 +90,7 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
 
 As an example "PNT" radical (see the structure above)
 
-```{r warning=FALSE, message=FALSE}
+```{r spectra-simulation,warning=FALSE, message=FALSE}
 
 # Simulation of phenylalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
@@ -123,13 +123,13 @@ There are several ways how to get help. If the users are already familiar with t
 
 -   [POSIT Homepage](https://posit.co/)
 
--   [R Crash Course](https://colauttilab.github.io/RCrashCourse/1_fundamentals.html)
+-   [R Crash Course](https://colauttilab.github.io/RCrashCourse/)
 
 -   [Statology R Guides](https://www.statology.org/r-guides/)
 
 -   [An Introduction to R](https://intro2r.com/)
 
--   [Introverse](https://sjspielman.github.io/introverse/)
+-   [R CODER](https://r-coder.com/)
 
 -   [Why should I use R ? (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
 
