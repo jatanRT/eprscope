@@ -5,6 +5,7 @@ output:
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
     mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    self_contained: TRUE
 number_sections: TRUE
 fig_caption: TRUE
 link-citations: TRUE
@@ -18,13 +19,6 @@ pkgdown:
   as_is: TRUE  
 ---
 
-```{=html}
-<style type="text/css">
-table, table th, table td {
-  border: none;
-}
-</style>
-```
 ```{r knitr-setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -44,10 +38,8 @@ library(eprscope)
 library(icons)
 library(knitr)
 library(patchwork)
-library(flextable)
 library(ggplot2)
-library(plotly)
-library(DT)
+# library(widgetframe)
 ```
 
 # Introduction
@@ -287,7 +279,10 @@ In order to explore the EPR spectrum in details (to read values, zoom or save th
 
 # preview + by hovering over the spectrum a toolbar appears in the upper 
 # right corner + `B`, `dIepr_over_dB` values can be read directly from the spectrum
-plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
+tmpd.interact.epr.spec <- plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
+#
+# preview
+tmpd.interact.epr.spec
 
 ```
 
