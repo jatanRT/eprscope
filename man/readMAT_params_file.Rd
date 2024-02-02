@@ -28,35 +28,49 @@ simulation file from MATLAB incl. structures/variables and fields. It can be als
 simulated EPR spectrum in the form of `data frame`.
 }
 \examples{
-\dontrun{
-## reading the entire `mat` file as a list
-readMAT_params_file("Sim_file.mat")
+## loading the package built-in
+## `Aminoxyl_radical_a.mat` file as an example
+aminoxyl.mat.file <- load_data_example(file = "Aminoxyl_radical_a.mat")
+#
+## reading the entire `mat` file as list and assign variable
+aminoxyl.mat.list <- readMAT_params_file(aminoxyl.mat.file)
 #
 ## read the `Sim1` structure/variable content
-readMAT_params_file("Sim_file.mat",
-                    str.var = "Sim1")
+aminoxyl.mat.sim1 <- readMAT_params_file(aminoxyl.mat.file,
+                                         str.var = "Sim1")
+## preview
+aminoxyl.mat.sim1
 #
 ## read the `Sim1` structure/variable and the field `Nucs`
 ## corresponding the nuclei considered in the EPR simulation
-readMAT_params_file("Sim_file.mat",
-                    str.var = "Sim1",
-                    field.var = "Nucs")
+aminoxyl.mat.sim1.nucs <-
+  readMAT_params_file(aminoxyl.mat.file,
+                      str.var = "Sim1",
+                      field.var = "Nucs")
+## preview
+aminoxyl.mat.sim1.nucs
 #
 ## reading the magnetic flux density `B.G` column/vector
 ## corresponding to simulated and experimental EPR spectrum
-B.G <- readMAT_params_file("Sim_file.mat",
-                    str.var = "B.G")
+aminoxyl.B.G <- readMAT_params_file(aminoxyl.mat.file,
+                                    str.var = "B")
+## preview of the first 6 values
+aminoxyl.B.G[1:6]
 #
 ## reading the intensity related to simulated EPR spectrum
-fitSpec <- readMAT_params_file("Sim_file.mat",
-                    str.var = "fit1",
-                    field.var = "fitSpec")
+aminoxyl.sim.fitSpec <-
+  readMAT_params_file(aminoxyl.mat.file,
+                      str.var = "fit1",
+                      field.var = "fitSpec")
+## preview of the first 6 values
+aminoxyl.sim.fitSpec[1:16]
 #
 ## The last two examples can be used to load the simulated
 ## EPR spectrum by the `EasySpin` from `mat` file =>
-simulation.spectrum.df <- data.frame(B.G,fitSpec)
-#
-}
+simulation.aminoxyl.spectr.df <-
+  data.frame(aminoxyl.B.G,aminoxyl.sim.fitSpec)
+## preview
+head(simulation.aminoxyl.spectr.df)
 
 
 }
