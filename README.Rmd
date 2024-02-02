@@ -9,6 +9,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
+  webshot = "webshot",
   fig.path = "man/figures/README-",
   fig.width = 7.2,
   fig.height = 4.8
@@ -23,11 +24,13 @@ knitr::opts_chunk$set(
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
-The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been devoloped, so far. The `{eprscope}` 📦 doesn't want to replace the latter as well as the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several proprietary tools. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* are often applied in the EPR processing workflow. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination would be adopted. In order to achieve the goal the package uses superior power or the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} environment that combines data processing, analysis and great graphing visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/) systems at one place without the need to employ additional software.
+The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been devoloped, so far. The `{eprscope}` 📦 doesn't want to replace the latter as well as the excellent EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, it may be considered like a complimentary package/toolbox with practical functions which have to be otherwise performed by several proprietary tools. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* are often applied in the EPR processing workflow. Therefore, the `{eprscope}` also tries to reduce such many steps if the above-mentioned software combination would be adopted. In order to achieve the goal the package uses superior power or the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} environment that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/) systems at one place without the need to switch between or employ any additional software.
 
 ## Installation
 
-```{r istallation}
+Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of optimization/fitting functions of the `{eprscope}` .
+
+```{r installation}
 
 # So far, the package can be installed by =>
 
@@ -35,8 +38,6 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
 # devtools::install_github("jatanRT/eprscope.git")
 
 ```
-
-Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of optimization/fitting functions of the `{eprscope}` .
 
 Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/> users or people who haven't already installed the *R* environment, please consult ➨
 
@@ -171,4 +172,4 @@ Any questions, comments remarks...social contacts (github issues,X, discord, ema
 
 ## Acknowledgements
 
-I would like to express a deep gratitude to my colleagues from the [NMR Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of Organic Chemistry and Biochemistry](https://www.uochb.cz/en), namely [Radek Pohl](https://orcid.org/0000-0001-7898-946X) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>, [Ondřej Socha](https://www.uochb.cz/en/directory/510/ondrej-socha) and [Martin Dračínský](https://orcid.org/0000-0002-4495-0070) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>... TBC ... Without the fruitful environment within the NMR Spectroscopy Team it wouldn't be possible to develop such a project like this.
+I would like to express a deep gratitude to my colleagues from the [NMR Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of Organic Chemistry and Biochemistry](https://www.uochb.cz/en), namely [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>, [Dr. Ondřej Socha](https://www.uochb.cz/en/directory/510/ondrej-socha) and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>... TBC ... Without the fruitful environment within the NMR Spectroscopy Team it wouldn't be possible to develop such a project like this.

@@ -9,27 +9,49 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 <!-- badges: end -->
 
-## Overview <img src="man/figures/logo_new.png" align="right" height="139"/>
+## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
-The key objective of this fully open source package is to bring handy
-functions corresponding to “everyday” data processing/analysis in the
-EPR ([Electron Paramagnetic
+The key objective of this open source
+<img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+package is to bring handy functions corresponding to “everyday” data
+processing/analysis in the EPR ([Electron Paramagnetic
 Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)))
-spectroscopy mainly in chemistry. The package doesn’t want to replace
-the excellent EPR simulation/processing [EasySpin
+spectroscopy mainly in chemistry. Similar <img
+src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png"
+width="16" height="16" /> tools like [cwepr](https://www.cwepr.de/index)
+and the [related projetcs](https://docs.cwepr.de/v0.5/) have been
+devoloped, so far. The `{eprscope}` 📦 doesn’t want to replace the
+latter as well as the excellent EPR simulation/processing [EasySpin
 Toolbox](https://www.easyspin.org/) for
-[MATLAB](https://www.mathworks.com/products/matlab.html) . Rather, it
-may be considered like a complimentary package/toolbox with practical
-functions which have to be otherwise performed by several tools,
-e.g. like by the acquisition/processing software, supplied by the EPR
-spectrometer manufacturers (see
+[MATLAB](https://www.mathworks.com/products/matlab.html) and its
+additional frameworks like
+[SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR
+Scripts by Emilien
+Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/).
+Rather, it may be considered like a complimentary package/toolbox with
+practical functions which have to be otherwise performed by several
+proprietary tools. For instance, like acquisition/processing software,
+supplied by the EPR spectrometer manufacturers (see
 e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html))
-as well as by several other proprietary software platforms like the *MS
-Office* and/or *Orgin/SigmaPlot/Igor*. Therefore, the `{eprscope}` also
-tries to reduce such many steps if the above-mentioned software
-combination is adopted.
+as well as several other software platforms like the *MS Office* and/or
+*Orgin/SigmaPlot/Igor* are often applied in the EPR processing workflow.
+Therefore, the `{eprscope}` also tries to reduce such many steps if the
+above-mentioned software combination would be adopted. In order to
+achieve the goal the package uses superior power or the open source
+<img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+environment that combines data processing, analysis and great scientific
+visualizations together with the extensive publishing capabilities by
+[Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
+[Quarto](https://quarto.org/) systems at one place without the need to
+switch between or employ any additional software.
 
 ## Installation
+
+Before the installation, please make sure that you have already followed
+instructions for the [{nloptr} package
+installation](https://astamm.github.io/nloptr/) depending on your
+operating system. This package is required for the proper running of
+optimization/fitting functions of the `{eprscope}` .
 
 ``` r
 
@@ -38,12 +60,6 @@ combination is adopted.
 # install.packages("devtools")
 # devtools::install_github("jatanRT/eprscope.git")
 ```
-
-Before the installation, please make sure that you have already followed
-instructions for the [{nloptr} package
-installation](https://astamm.github.io/nloptr/) depending on your
-operating system. This package is required for the proper running of
-optimization/fitting functions of the `{eprscope}` .
 
 Completely new
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>
@@ -92,7 +108,7 @@ tmpd.params.dt <-
 tmpd.params.dt
 ```
 
-![](man/figures/README-unnamed-chunk-3-1.png)<!-- -->
+![](man/figures/README-parameter-reading-1.png)<!-- -->
 
 ### Depict Molecular Structures
 
@@ -106,7 +122,7 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
                       mol.label.xy.posit = c(8.8,1.2))
 ```
 
-![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
+![](man/figures/README-molecule-drawing-1.png)<!-- -->
 
 ### Simulation of Isotropic EPR Spectra
 
@@ -132,7 +148,7 @@ simulation.iso <-
 simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 ```
 
-![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
+![](man/figures/README-spectra-simulation-1.png)<!-- -->
 
 ## Help, Questions and Contribution
 
@@ -155,14 +171,13 @@ tutorials enabling a quite straightforward diving into
 
 - [POSIT Homepage](https://posit.co/)
 
-- [R Crash
-  Course](https://colauttilab.github.io/RCrashCourse/1_fundamentals.html)
+- [R Crash Course](https://colauttilab.github.io/RCrashCourse/)
 
 - [Statology R Guides](https://www.statology.org/r-guides/)
 
 - [An Introduction to R](https://intro2r.com/)
 
-- [Introverse](https://sjspielman.github.io/introverse/)
+- [R CODER](https://r-coder.com/)
 
 - [Why should I use R ?
   (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
@@ -225,10 +240,10 @@ package development … tbc …
 I would like to express a deep gratitude to my colleagues from the [NMR
 Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of
 Organic Chemistry and Biochemistry](https://www.uochb.cz/en), namely
-[Radek Pohl](https://orcid.org/0000-0001-7898-946X)
+[Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>,
-[Ondřej Socha](https://www.uochb.cz/en/directory/510/ondrej-socha) and
-[Martin Dračínský](https://orcid.org/0000-0002-4495-0070)
+[Dr. Ondřej Socha](https://www.uochb.cz/en/directory/510/ondrej-socha)
+and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>…
 TBC … Without the fruitful environment within the NMR Spectroscopy Team
 it wouldn’t be possible to develop such a project like this.

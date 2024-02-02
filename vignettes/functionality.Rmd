@@ -23,6 +23,7 @@ pkgdown:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
+  webshot = "webshot",
   fig.width = 7.2,
   fig.height = 4.8
 )
@@ -243,7 +244,7 @@ tmpd.plot.norm.0102
 
 If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual) the function `ggplot2::ggsave()` can be used ➨
 
-```{r spectral-data-norm0102-visua-save}
+```{r spectral-data-norm0102-visual-save}
 
 # to save the plot `tmpd.plot.norm.0102` with the size
 # of (7 x 5) inches and the resolution of dpi = 200
@@ -262,6 +263,13 @@ ggplot2::ggsave("imgs/TMPD_EPR_Norm_compar.png",
 ## Interactive Plots by `{plotly}`
 
 In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied (consult the corresponding function example). Additionally, it can be also used for the series of overayed EPR spectra similarly like `plot_EPR_Specs()`. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments is described in other vignette and provided by the `plot_EPR_Specs3D_interact()` function.
+
+```{r interact-spectral-data-visual}
+
+# inteactive plot preview based on `{plotly}`
+# plot_EPR_Specs2D_interact(data.spectra = tmpd.data.norm.02)
+
+```
 
 # Basic EPR Spectral Characteristics
 
