@@ -1,0 +1,61 @@
+---
+title: "Package Datasets"
+output: rmarkdown::html_vignette
+number_sections: TRUE
+link-citations: TRUE
+bibliography: datasets.bib
+csl: iso690-numeric-en.csl
+vignette: >
+  %\VignetteIndexEntry{Package Datasets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  webshot = "webshot",
+  fig.width = 7.2,
+  fig.height = 4.8
+)
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+
+```
+
+```{r setup, include=FALSE}
+
+library(eprscope)
+library(icons)
+library(knitr)
+library(htmlwidgets)
+library(DT)
+
+```
+
+# Built-In Datasets
+
+There are two important datasets which are built into the `{eprscope}` 📦. The first one is the nuclear isotope table summarizing the essential nuclei in order to analyze the EPR spectra with HF (hyperfine) structure. Whereas, the second one shows solvent properties important for EPR experiments.
+
+## Nuclear Isotope Data Frame
+
+This dataset is taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column with Larmor-frequencies ... see the details in `?isotopes_ds` .
+
+```{r nuclear-dataset}
+
+# interactive data frame by `{DT}` package with option to select columns
+# and to save table as `.csv`, `.pdf` or `.xlsx` format
+DT::datatable(isotopes_ds,
+  extensions = "Buttons",
+  options = list(
+    dom = "Bfrtip",
+    buttons = c("colvis","csv","pdf","excel")
+  )
+)
+
+```
+
+## 
