@@ -19,8 +19,8 @@ the \strong{default} 'value' is \code{NULL} and the \code{string} \strong{is app
 }
 \value{
 Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} with all original
-  parameters/structures from MATLAB file. Otherwise, the function returns either numeric or character \code{vector/value},
-  depending on `class` of the original parameter/field variable.
+  parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character \code{vector/value}
+  or list depending on `class` of the original parameter/field variable.
 }
 \description{
 Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a `.mat`
@@ -35,14 +35,19 @@ aminoxyl.mat.file <- load_data_example(file = "Aminoxyl_radical_a.mat")
 ## reading the entire `mat` file as list and assign variable
 aminoxyl.mat.list <- readMAT_params_file(aminoxyl.mat.file)
 #
-## read the `Sim1` structure/variable content
+## read the `Sim1` structure/variable content into list
 aminoxyl.mat.sim1 <- readMAT_params_file(aminoxyl.mat.file,
                                          str.var = "Sim1")
-## preview
+## list preview
 aminoxyl.mat.sim1
 #
+## alternatively the `Sim1` (its dimension > 2) can be also read
+## by the following command however, the returned output
+## has a combined array-list structure
+aminoxyl.mat.list$Sim1[, , 1]
+#
 ## read the `Sim1` structure/variable and the field `Nucs`
-## corresponding the nuclei considered in the EPR simulation
+## corresponding to nuclei considered in the EPR simulation
 aminoxyl.mat.sim1.nucs <-
   readMAT_params_file(aminoxyl.mat.file,
                       str.var = "Sim1",
@@ -50,7 +55,7 @@ aminoxyl.mat.sim1.nucs <-
 ## preview
 aminoxyl.mat.sim1.nucs
 #
-## reading the magnetic flux density `B.G` column/vector
+## reading the magnetic flux density `B` column/vector
 ## corresponding to simulated and experimental EPR spectrum
 aminoxyl.B.G <- readMAT_params_file(aminoxyl.mat.file,
                                     str.var = "B")
@@ -63,12 +68,13 @@ aminoxyl.sim.fitSpec <-
                       str.var = "fit1",
                       field.var = "fitSpec")
 ## preview of the first 6 values
-aminoxyl.sim.fitSpec[1:16]
+aminoxyl.sim.fitSpec[1:6]
 #
 ## The last two examples can be used to load the simulated
 ## EPR spectrum by the `EasySpin` from `mat` file =>
 simulation.aminoxyl.spectr.df <-
-  data.frame(aminoxyl.B.G,aminoxyl.sim.fitSpec)
+  data.frame(Bsim_G = aminoxyl.B.G,
+             dIeprSim_over_dB = aminoxyl.sim.fitSpec)
 ## preview
 head(simulation.aminoxyl.spectr.df)
 

@@ -21,8 +21,8 @@
 #'
 #'
 #' @return Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} with all original
-#'   parameters/structures from MATLAB file. Otherwise, the function returns either numeric or character \code{vector/value},
-#'   depending on `class` of the original parameter/field variable.
+#'   parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character \code{vector/value}
+#'   or list depending on `class` of the original parameter/field variable.
 #'
 #'
 #' @examples
@@ -33,14 +33,19 @@
 #' ## reading the entire `mat` file as list and assign variable
 #' aminoxyl.mat.list <- readMAT_params_file(aminoxyl.mat.file)
 #' #
-#' ## read the `Sim1` structure/variable content
+#' ## read the `Sim1` structure/variable content into list
 #' aminoxyl.mat.sim1 <- readMAT_params_file(aminoxyl.mat.file,
 #'                                          str.var = "Sim1")
-#' ## preview
+#' ## list preview
 #' aminoxyl.mat.sim1
 #' #
+#' ## alternatively the `Sim1` (its dimension > 2) can be also read
+#' ## by the following command however, the returned output
+#' ## has a combined array-list structure
+#' aminoxyl.mat.list$Sim1[, , 1]
+#' #
 #' ## read the `Sim1` structure/variable and the field `Nucs`
-#' ## corresponding the nuclei considered in the EPR simulation
+#' ## corresponding to nuclei considered in the EPR simulation
 #' aminoxyl.mat.sim1.nucs <-
 #'   readMAT_params_file(aminoxyl.mat.file,
 #'                       str.var = "Sim1",
@@ -48,7 +53,7 @@
 #' ## preview
 #' aminoxyl.mat.sim1.nucs
 #' #
-#' ## reading the magnetic flux density `B.G` column/vector
+#' ## reading the magnetic flux density `B` column/vector
 #' ## corresponding to simulated and experimental EPR spectrum
 #' aminoxyl.B.G <- readMAT_params_file(aminoxyl.mat.file,
 #'                                     str.var = "B")
@@ -66,7 +71,8 @@
 #' ## The last two examples can be used to load the simulated
 #' ## EPR spectrum by the `EasySpin` from `mat` file =>
 #' simulation.aminoxyl.spectr.df <-
-#'   data.frame(aminoxyl.B.G,aminoxyl.sim.fitSpec)
+#'   data.frame(Bsim_G = aminoxyl.B.G,
+#'              dIeprSim_over_dB = aminoxyl.sim.fitSpec)
 #' ## preview
 #' head(simulation.aminoxyl.spectr.df)
 #'
@@ -86,36 +92,41 @@ readMAT_params_file <- function(path_to_MAT,
     data.params <- R.matlab::readMat(path_to_MAT)
     if (is.null(field.var)) {
       params <- data.params[[str.var]]
+      ## dimension (required fro additional processing) of `params`
+      params.dim <- dim(params)
       #
       if (inherits(params,"list") || inherits(params,"array") ||
           inherits(params,"matrix")){
-        ## this is a list and take it's names
-        names(params) <- rownames(params)
-        ## and finally the `rownames` are not required anymore
-        rownames(params) <- NULL
-        ## convert params into list
-        params <- list(params)
-        ## in only one value is available convert it into vector
-        ## otherwise into vector
-        if (length(params) == 1){
-          params <- params[[1]]
-        } else{
-          params <- params
+        #
+        if (length(params.dim) > 2){
+          params <- params[, , 1]
+          ## this is a list and convert all its components into vectors
+          params <- lapply(params, function(x) c(x))
         }
+        if (length(params.dim) <= 2){
+          ## convert it into vector
+          params <- c(params)
+        }
+        #
+      } else{
+        params <- params
       }
       #
     } else {
       params <- data.params[[str.var]][, , 1][[field.var]]
-      ## if the field is character converted it into vector
-      ## of strings
-      params <- as.vector(params)
-      if (inherits(params[1],"character")){
-        params <- params[1] %>%
-          stringr::str_split(pattern = ",|\\s+") %>%
-          unlist()
+      #
+      ## dimension and the condition
+      params.dim <- dim(params)
+      if (length(params.dim) > 2){
+        ## convert it into list
+        params <- params[, ,1]
+        ## convert all its components into vectors
+        params <- lapply(params, function(x) c(x))
       }
-      ## params is a matrix and convert it into vector
-      params <- as.vector(params)
+      if (length(params.dim) <= 2)
+      ## convert it into vector
+      params <- c(params)
+      #
     }
     #
     return(params)
