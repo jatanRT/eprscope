@@ -12,9 +12,9 @@
 #'
 #' @param B.val Numeric value/vector corresponding to input value(s) of magnetic flux density.
 #' @param B.unit Character string referring to input magnetic flux density units.
-#'   Usually `T`, `mT` or `G` are used.
+#'   Usually \code{T}, \code{mT} or \code{G} are used.
 #' @param B.2unit Character string referring to output magnetic flux density units.
-#'   Usually `T`, `mT` or `G` are used.
+#'   Usually \code{T}, \code{mT} or \code{G} are used.
 #'
 #'
 #' @return Numeric value or vector as a result of the B conversion. Depending on the output

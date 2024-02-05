@@ -29,7 +29,9 @@ Conversion done according to following relation:
 }
 \examples{
 convert_A_MHz_2a(A.MHz = 16)
+#
 convert_A_MHz_2a(20,2.0059)
+#
 convert_A_MHz_2a(4,g.val = 2.00036)
 
 

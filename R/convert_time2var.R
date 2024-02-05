@@ -26,15 +26,15 @@
 #'
 #' @param time.vals Numeric value or vector corresponding to time (points) where the variable \code{var}
 #'   is changed.
-#' @param time.unit Character string \strong{time unit} defined by `s`,`min` or `h`.
+#' @param time.unit Character string time unit defined by `s`,`min` or `h`.
 #'   \strong{Default}: \code{time.unit = "s"}.
-#' @param var0 Numeric, the initial/starting value (\strong{INCL. ALSO NEGATIVE SIGN, if required}, e.g. like
+#' @param var0 Numeric, the initial/starting value (INCL. ALSO NEGATIVE SIGN, if required, e.g. like
 #'   negative electrochemical potential) of the variable (\code{var}).
-#' @param var.switch Numeric, the switching point \code{var} value, in case when a linear \strong{cyclic change}
+#' @param var.switch Numeric, the switching point \code{var} value, in case when a linear CYCLIC CHANGE
 #'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
 #'   \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).
-#' @param var.rate Numeric, corresponding to rate of linear \code{var} change (\strong{INCL. ALSO NEGATIVE SIGN,
-#'   if required}, e.g. like in the case of electrochemical reduction or sample cooling).
+#' @param var.rate Numeric, corresponding to rate of linear \code{var} change (INCL. ALSO NEGATIVE SIGN,
+#'   if required, e.g. like in the case of electrochemical reduction or sample cooling).
 #' @param var.rate.unit Character string corresponding to \code{var.rate} unit defined
 #'   by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
 #'   \code{"min^{-1}"} \eqn{\equiv \text{min}^{-1}} or \code{"h^{-1}"} \eqn{\equiv \text{h}^{-1}}.

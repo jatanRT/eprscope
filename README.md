@@ -21,7 +21,7 @@ src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/comm
 width="16" height="16" /> tools like [cwepr](https://www.cwepr.de/index)
 and the [related projetcs](https://docs.cwepr.de/v0.5/) have been
 devoloped, so far. The `{eprscope}` 📦 doesn’t want to replace the
-latter as well as the excellent EPR simulation/processing [EasySpin
+latter nor the excellent EPR simulation/processing [EasySpin
 Toolbox](https://www.easyspin.org/) for
 [MATLAB](https://www.mathworks.com/products/matlab.html) and its
 additional frameworks like
@@ -34,16 +34,17 @@ proprietary tools. For instance, like acquisition/processing software,
 supplied by the EPR spectrometer manufacturers (see
 e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html))
 as well as several other software platforms like the *MS Office* and/or
-*Orgin/SigmaPlot/Igor* are often applied in the EPR processing workflow.
-Therefore, the `{eprscope}` also tries to reduce such many steps if the
-above-mentioned software combination would be adopted. In order to
-achieve the goal the package uses superior power or the open source
+*Orgin/SigmaPlot/Igor* which are often applied in the EPR processing
+workflow. Therefore, the `{eprscope}` also tries to reduce such many
+steps if the above-mentioned software combination would be adopted. In
+order to achieve the goal the package uses superior power or the open
+source
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-environment that combines data processing, analysis and great scientific
+ecosystem that combines data processing, analysis and great scientific
 visualizations together with the extensive publishing capabilities by
 [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
-[Quarto](https://quarto.org/) systems at one place without the need to
-switch between or employ any additional software.
+[Quarto](https://quarto.org/) tools. Everything at one place without the
+need to switch between or employ any additional software.
 
 ## Installation
 
@@ -91,10 +92,11 @@ examples.
 ### Reading Files with Instrumental Parameters
 
 ``` r
-
+#
+# loading the package/library
 library(eprscope)
 #
-# built-in package file => "TMPD_specelchem_accu_b.par"
+# loading the built-in package file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- 
   load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
@@ -114,7 +116,7 @@ tmpd.params.dt
 
 ``` r
 
-# Phenylalenyl (Perinaphthenyl or PNT) radical from `SMILES`
+# Phenylalenyl (Perinaphthenyl or PNT) radical from `SMILES` code
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" code
 draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
                       mol.label = "Phenylalenyl",
@@ -126,21 +128,21 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
 
 ### Simulation of Isotropic EPR Spectra
 
-As an example “PNT” radical (see the structure above)
-
 ``` r
 
-# Simulation of phenylalenyl (perinaphthenyl or PNT) radical,
+# Simulation of the phenylalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
-# additional experimental/instrumental parameters are not shown,
+# The additional experimental/instrumental parameters are not shown,
 # and posses their default values => see the corresponding documentation 
 # of `eval_sim_EPR_iso()` function.
 #
 simulation.iso <- 
   eval_sim_EPR_iso(g.iso = 2.0027,
                    B.unit = "G",
-                   nuclear.system = list(list("1H",3,5.09),
-                                         list("1H",6,17.67)),
+                   nuclear.system = list(
+                     list("1H",3,5.09),
+                     list("1H",6,17.67)
+                     ),
                    natur.abund = T,
                    lineGL.DeltaB = list(0.42,NULL))
 #
@@ -156,9 +158,9 @@ There are several ways how to get help. If the users are already
 familiar with the [R statistical language](https://www.r-project.org/)
 please, follow either the individual package function documentation or
 the corresponding articles/vignettes. These might be also considered as
-a suitable source for those having not so deep knowledge about the EPR
-spectroscopy. **In case you are new to *R***, there are couple of great
-tutorials enabling a quite straightforward diving into
+a kind of EPR spectroscopy knowledge source. **In case you are new to
+*R***, there are couple of great tutorials enabling a quite
+straightforward diving into
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>.
 **Please, refer to e.g.**
 
@@ -231,9 +233,15 @@ structural evidence of unpaired electronic centers within the molecules
 - [Basic Concepts of
   EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 
-Any questions, comments remarks…social contacts (github issues,X,
-discord, email) in case someone is interested in the `{eprscope}`
-package development … tbc …
+Any additional questions, comments/remarks or issues can be addressed
+through several discussion channels like 📧 e-mail
+(<jantar40@protonmail.com> or <jan.tarabek@uochb.cas.cz>) or github <img
+src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+width="16" /> issues on github source page. There will be also a
+specialized [Discord](https://discord.com/) community channel to discuss
+the application of the `{eprscope}` 📦. If there is somebody with the
+interest and ability to contribute to package development please, ask
+through the github issue 📦 page.
 
 ## Acknowledgements
 
@@ -242,8 +250,14 @@ Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of
 Organic Chemistry and Biochemistry](https://www.uochb.cz/en), namely
 [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>,
-[Dr. Ondřej Socha](https://www.uochb.cz/en/directory/510/ondrej-socha)
-and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070)
-<img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>…
-TBC … Without the fruitful environment within the NMR Spectroscopy Team
-it wouldn’t be possible to develop such a project like this.
+[Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119)
+<img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
+width="16" /> and [Dr. Martin
+Dračínský](https://orcid.org/0000-0002-4495-0070)
+<img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>.
+Without the fruitful environment within the NMR Spectroscopy team it
+wouldn’t be possible to develop such a project like this. I’d like to
+also give a special thanks to my brother [Dr. Peter
+Tarábek](https://orcid.org/0000-0002-7181-7136)
+<img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
+width="16" /> for his valuable comments and remarks.

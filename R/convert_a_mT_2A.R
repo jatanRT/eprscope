@@ -28,7 +28,9 @@
 #'
 #' @examples
 #' convert_a_mT_2A(a.mT = 0.5)
+#' #
 #' convert_a_mT_2A(0.6,2.0059)
+#' #
 #' convert_a_mT_2A(0.15,g.val = 2.00036)
 #'
 #'

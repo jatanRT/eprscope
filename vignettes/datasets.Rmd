@@ -42,7 +42,7 @@ There are two important datasets which are built into the `{eprscope}` 📦. The
 
 ## Nuclear Isotope Data Frame
 
-This dataset is taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column with Larmor-frequencies ... see the details in `?isotopes_ds` .
+This dataset was taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column of Larmor-frequencies in $\mathrm{MHz}$ at $0.35\,\mathrm{mT}$ were added for better orientation in double-resonance ENDOR spectra, see the details in `?isotopes_ds` . The data frame is not only used to analyze the ENDOR spectra however, it is essential for the simulations of EPR spectra and their fitting onto the experimental ones (see the documentation of `eval_sim_EPR_iso()` and `eval_sim_EPR_isoFit()`).
 
 ```{r nuclear-dataset}
 
@@ -58,4 +58,19 @@ DT::datatable(isotopes_ds,
 
 ```
 
-## 
+## Properties of Solvents
+
+Description ...TBC
+
+```{r solvent-properties}
+
+# similar interactive table like before
+DT::datatable(solvents_ds,
+  extensions = "Buttons",
+  options = list(
+    dom = "Bfrtip",
+    buttons = c("colvis","csv","pdf","excel")
+  )
+)
+
+```

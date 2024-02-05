@@ -10,10 +10,10 @@ convert_B(B.val, B.unit, B.2unit)
 \item{B.val}{Numeric value/vector corresponding to input value(s) of magnetic flux density.}
 
 \item{B.unit}{Character string referring to input magnetic flux density units.
-Usually `T`, `mT` or `G` are used.}
+Usually \code{T}, \code{mT} or \code{G} are used.}
 
 \item{B.2unit}{Character string referring to output magnetic flux density units.
-Usually `T`, `mT` or `G` are used.}
+Usually \code{T}, \code{mT} or \code{G} are used.}
 }
 \value{
 Numeric value or vector as a result of the B conversion. Depending on the output
