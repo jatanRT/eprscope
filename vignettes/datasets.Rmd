@@ -38,11 +38,11 @@ library(DT)
 
 # Built-In Datasets
 
-There are two important datasets which are built into the `{eprscope}` 📦. The first one is the nuclear isotope table summarizing the essential nuclei in order to analyze the EPR spectra with HF (hyperfine) structure. Whereas, the second one shows solvent properties important for EPR experiments.
+There are two important datasets which are built into the `{eprscope}` 📦. The first one is the nuclear isotope table summarizing the essential nuclei properties in order to analyze the EPR spectra with HF (hyperfine) structure. Whereas, the second one shows the solvent properties important for the variable temperature (VT) or double-resonance (ENDOR) EPR experiments.
 
 ## Nuclear Isotope Data Frame
 
-This dataset was taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column of Larmor-frequencies in $\mathrm{MHz}$ at $0.35\,\mathrm{mT}$ were added for better orientation in double-resonance ENDOR spectra, see the details in `?isotopes_ds` . The data frame is not only used to analyze the ENDOR spectra however, it is essential for the simulations of EPR spectra and their fitting onto the experimental ones (see the documentation of `eval_sim_EPR_iso()` and `eval_sim_EPR_isoFit()`).
+This dataset was taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column of Larmor-frequencies in $\mathrm{MHz}$ at $0.35\,\mathrm{mT}$ were added for better orientation in double-resonance ENDOR spectra, see the details in `?isotopes_ds` . The data frame is not only used to analyze the ENDOR spectra however, it is essential for the simulations of EPR spectra and their fitting onto the experimental ones. See the documentation of the `eval_sim_EPR_iso()`, `eval_sim_EPR_isoFit()` as well as `eval_nu_ENDOR()`.
 
 ```{r nuclear-dataset}
 
@@ -58,9 +58,9 @@ DT::datatable(isotopes_ds,
 
 ```
 
-## Properties of Solvents
+## Solvent Properties
 
-Description ...TBC
+This is the key-feature when performing the EPR experiments.
 
 ```{r solvent-properties}
 
