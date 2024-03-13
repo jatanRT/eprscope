@@ -175,10 +175,24 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @examples
-#' \dontrun{
-#' tbc
-#' tbc
-#' }
+#' ## built-in file and path
+#' gauss.file.path <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+#' gauss.file <- unzip(gauss.file.path)
+#' symmetry.As.df <-
+#' rearrange_aAiso_QCHorgau(gauss.tmpd.output,
+#'                          Nnuclei = 28,
+#'                          nuclei.list.slct =
+#'                           list(c(7, 8), ## 2 x 14N
+#'                                c(13, 14, 15, 16), ## 4 x 1H (aromatic)
+#'                                c(17, 18, 19, 20,
+#'                                  21, 22, 23, 24,
+#'                                  25, 26, 27, 28) ## 12 x 1H (methyls)
+#'                              )
+#'                         )
+#' #
+#' ## preview
+#' symmetry.As.df
+#'
 #'
 #' @export
 #'

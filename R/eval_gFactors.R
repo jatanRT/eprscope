@@ -120,6 +120,7 @@ eval_gFactor <- function(nu.val,
 #'                               Intensity = 2,
 #'                               qValue = 3500,
 #'                               origin = "winepr")
+#' #
 #' ## g_iso calculation from EPR spectrum/data =>
 #' eval_gFactor_Spec(data.spectr = data.epr,
 #'                   nu.GHz = 9.814155,

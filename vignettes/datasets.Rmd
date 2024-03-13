@@ -26,6 +26,8 @@ options(
 
 ```
 
+$\require{mhchem}$
+
 ```{r setup, include=FALSE}
 
 library(eprscope)
@@ -42,7 +44,7 @@ There are two important datasets which are built into the `{eprscope}` 📦. The
 
 ## Nuclear Isotope Data Frame
 
-This dataset was taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column of Larmor-frequencies in $\mathrm{MHz}$ at $0.35\,\mathrm{mT}$ were added for better orientation in double-resonance ENDOR spectra, see the details in `?isotopes_ds` . The data frame is not only used to analyze the ENDOR spectra however, it is essential for the simulations of EPR spectra and their fitting onto the experimental ones. See the documentation of the `eval_sim_EPR_iso()`, `eval_sim_EPR_isoFit()` as well as `eval_nu_ENDOR()`.
+This dataset was taken from the open source [EasySpin](https://easyspin.org/easyspin/documentation/isotopetable.html) package, reformatted and column of Larmor-frequencies in $\mathrm{MHz}$ at $0.35\,\mathrm{mT}$ were added for better orientation in double-resonance ENDOR spectra, see the details in `?isotopes_ds` documentation. The data frame is not only used to analyze the ENDOR spectra however, it is also essential for the simulations of EPR spectra and their fitting onto the experimental ones. See the documentation of the `eval_sim_EPR_iso()`, `eval_sim_EPR_isoFit()` as well as `eval_nu_ENDOR()`.
 
 ```{r nuclear-dataset}
 
@@ -53,14 +55,18 @@ DT::datatable(isotopes_ds,
   options = list(
     dom = "Bfrtip",
     buttons = c("colvis","csv","pdf","excel")
-  )
+  ),
+  caption = "Dataset with the following variables/columns: Proton number, isotope, stability (either stable, 
+  STB or radio-active, RA), isotope name, nuclear spin quantum number, nuclear g-value, natural abundance 
+  in %, nuclear quadrupolar moment in Barns and the ENDOR/Larmor frequency in MHz at 0.35 T. The negative 
+  sign of Larmor frequency values points to clockwise precession direction according to convention."
 )
 
 ```
 
 ## Solvent Properties
 
-This is the key-feature when performing the EPR experiments.
+This is the key-feature when performing the EPR experiments, especially for **X-band continuous wave (CW) spectroscopy in solution**. Namely, prior to measurement one has to decide which type of cell will be applied depending on solvent polarity. For polar solvents, e.g. like acetonitrile or dimethyl sulfoxide, either capillary (with $i.d. \leq 1\,\mathrm{mm}$ ) or special [quartz flat cell](https://sp-wilmadlabglass.com/product/standard-te102-aqueous-cells/) ( with a flat-part thickness $\approx (0.3-0.6)\,\mathrm{mm}$) must be used. While for non-polar or solvents with lower polarity, e.g. like toluene, chloroform or tetrahydrofuran, a sample can be analyzed within any kind of cell incl. [common EPR quartz-tubes](https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/) with $i.d. \approx (2-4)\,\mathrm{mm}$. Additionally, the solvent properties like melting/boiling point as well as viscosity are essential for the variable temperature experiments and particularly for the CW ENDOR ones. Table details can be found in `?solvents_ds` documentation.
 
 ```{r solvent-properties}
 
@@ -70,7 +76,33 @@ DT::datatable(solvents_ds,
   options = list(
     dom = "Bfrtip",
     buttons = c("colvis","csv","pdf","excel")
-  )
+  ),
+  caption = "Dataset with the following variables/columns: solvent name, molecular formula, 
+  relative molecular weight, boiling point in °C, melting point in °C, density in g/mL, 
+  solubility in g/(100 g of water), relative electric permittivity, flash point in °C and dynamic 
+  viscosity in cp."
 )
 
 ```
+
+# Datasets for Examples and Tests
+
+These are the [ASCII text](https://www.computerhope.com/jargon/a/ascii.htm) data, coming from the EPR spectrometer and correspond either to EPR spectrum table[^1] or the accompanying text files including the (instrumental) parameters of the recorded spectrum (with `.par` or `.DSC` / `.dsc` extensions). Additionally, the `{eprscope}` package contains `.mat` (*Matlab*) files from *EasySpin* simulations as well as outputs from DFT quantum chemical computations or related structural data with `.inp.log.zip` and `.sdf` extensions. All files used in this package are summarized within the following table:
+
+[^1]: Usually the following variables/columns are included in the ASCII tables: "**index**", "**Field [G]**"/"**X [G]**" and "**Intensity []**"/"**Intensity**"
+
++-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| File                          | Short Description                                                                                                                                                                                                                                           | Purpose                                                                                                           |
++===============================+=============================================================================================================================================================================================================================================================+===================================================================================================================+
+| `Aminoxyl_radical_a.txt`      | ASCII **text table file** corresponding to EPR spectrum of an aminoxyl/nitroxyl radical derivative measured in deionized $\ce{H2O}$ and recorded by/within *Xenon* acquisition software.                                                                    | -   used for testing of `eval_sim_EPR_iso()` and `eval_sim_EPR_isoFit()`                                          |
++-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| `Aminoxyl_radical_a.DSC`      | ASCII **text file incl. parameters** to record the EPR spectrum of an aminoxyl/nitroxyl radical derivative corresponding to the above-listed `Aminoxyl_radical_a.txt`                                                                                       | -   used for testing of `eval_sim_EPR_iso()` and `eval_sim_EPR_isoFit()`                                          |
++-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| `Aminoxyl_radical_a.mat`      | **Matlab/EasySpin output file** containing all experimental parameters, EPR spectrum table form (*B* vs *Intensity*) as well as simulation and fitting parameters to reproduce the experimental spectrum saved in the above-listed `Aminoxyl_radical_a.txt` | -   used as an example to demonstrate the `readMAT_params_file()` functionality                                   |
++-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| `TMPD.sdf`                    | **Structured data file** (based MOL-file format) containing structure of the N,N,N',N'-Tetramethyl-p-phenylenediamine (TMPD) radical cation. Structure (optimized geometry) was calculated by the B3LYP/6-31+G(d,p) DFT level.                              | -   used as an example to demonstrate the `draw_molecule_by_rcdk()` functionality                                 |
++-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+| `TMPDAradCatEPRa.inp.log.zip` | **Zipped output file from *Gaussian* quantum chemical package** software. Standard *Gaussian* output from DFT calculations (by PBE0/EPR-II/CPCM-DMSO) of EPR parameters (*g* and *a/A*) corresponding to $\ce{TMPD^{.+}}$.                                  | -   used as an example to demonstrate the `eval_gFactor_QCHcomp()` and `rearrange_aAiso_QCHorgau()` functionality |
++-------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------+
+
+: Package files used for examples or testing the functions.
