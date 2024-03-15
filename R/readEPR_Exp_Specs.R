@@ -70,28 +70,57 @@
 #'   (in the case of time series experiment) columns are displayed as well.
 #'
 #' @examples
-#' \dontrun{
 #' ## simple EPR spectrum acquired by "xenon"
 #' ## and with `B` conversion "G" <=> mT
-#' readEPR_Exp_Specs(path_to_ASC,
-#'                   qValue = 3500)
-#'
-#' ## simple EPR spectrum acquired by "xenon"
+#' ## Loading the data
+#' aminoxyl.data.path <-
+#' load_data_example(file = "Aminoxyl_radical_a.txt")
+#' aminoxyl.data.01 <- readEPR_Exp_Specs(aminoxyl.data.path,
+#'                                       qValue = 2100)
+#' ## preview
+#' head(aminoxyl.data.01)
+#' #
+#' # simple EPR spectrum acquired by "xenon"
 #' ## and without `B` conversion "G" <=> mT
-#' readEPR_Exp_Specs(path_to_ASC,
-#'                   convertB.unit = FALSE,
-#'                   qValue = 3500)
-#'
-#' ## for the simple spectrum acquired by "winepr"
-#' ## (and 20 scans) on a 10 mg powder sample:
-#' readEPR_Exp_Specs(path_to_ASC,
-#'                   col.names = c("B_G","dIepr_over_dB"),
-#'                   x = 1,
-#'                   Intensity = 2,
-#'                   qValue = 2000,
-#'                   norm.vec.add = c(20,10),
-#'                   origin = "winepr")
-#'
+#' aminoxyl.data.02 <- readEPR_Exp_Specs(aminoxyl.data.path,
+#'                                       convertB.unit = FALSE,
+#'                                       qValue = 2100)
+#' ## preview
+#' head(aminoxyl.data.02)
+#' #
+#' ## the simple spectrum acquired by "winepr"
+#' ## (and 20 scans) on a 1 mM sample concentration:
+#' ## Loading the data
+#' TMPD.data.path <-
+#' load_data_example(file = "TMPDA_specelchem_accu_b.asc")
+#' TMPD.data <- readEPR_Exp_Specs(TMPD.data.path,
+#'                                col.names = c("B_G","dIepr_over_dB"),
+#'                                x = 1,
+#'                                Intensity = 2,
+#'                                qValue = 3500,
+#'                                norm.vec.add = c(20,0.001),
+#'                                origin = "winepr")
+#' ## preview
+#' head(TMPDA.data)
+#' #
+#' ## the ENDOR spectrum recorded by "xenon"
+#' ## and 8 accumulation sweeps
+#' ## loading the data
+#' PNT.ENDOR.data.path <-
+#' load_data_example(file = "PNT_ENDOR_a.txt")
+#' PNT.ENDOR.data <-
+#' readEPR_Exp_Specs(PNT.ENDOR.data.path,
+#'                   col.names = c("index",
+#'                                 "RF_MHz",
+#'                                 "dIepr_over_dB"),
+#'                   x = 2,
+#'                   x.unit = "MHz",
+#'                   Intensity = 3,
+#'                   norm.vec.add = 8)
+#' ## preview
+#' head(PNT.ENDOR.data)
+#' #
+#' \dontrun{
 #' ## EPR time series acquired by "winepr"
 #' readEPR_Exp_Specs(path_to_ASC,
 #'                   col.names = c("B_G",
@@ -101,25 +130,14 @@
 #'                   Intensity = 3,
 #'                   time.series = 2,
 #'                   origin = "winepr")
-#'
+#' #
 #' ## if no parameter intensity normalization
 #' ## is required and a simple spectrum
 #' ## was recorded by "xenon" software:
 #' readEPR_Exp_Specs(path_to_ASC = file.path(".",
 #'                                           "ASCII_Folder",
 #'                                           "EPR_spectrum.txt"))
-#'
-#' ## for the ENDOR spectrum recorded by "xenon"
-#' ## by 40 accumulation sweeps
-#' readEPR_Exp_Specs("./Data/ENDOR_spectrum.txt",
-#'                   col.names = c("index",
-#'                                 "RF_MHz",
-#'                                 "dIepr_over_dB"),
-#'                   x = 2,
-#'                   x.unit = "MHz",
-#'                   Intensity = 3,
-#'                   norm.vec.add = 40)
-#'
+#' #
 #' ## example for "xenon" time series experiment
 #' ## (evolution of EPR spectra in time, e.g. in case of
 #' ## EPR spectroelectrochemistry or photochemistry):
@@ -134,7 +152,7 @@
 #'                   Intensity = 4,
 #'                   qValue = 2800,
 #'                   time.series = 3)
-#'
+#' #
 #' ## reading simple spectrum from the new "magnettech"
 #' ## acquisition software
 #' readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
@@ -144,7 +162,7 @@
 #'                   x.unit = "mT",
 #'                   Intensity = 2,
 #'                   origin = "magnettech")
-#'
+#' #
 #' ## reading file data from (and pre-processed) by "xenon" software
 #' ## corresponding to kinetics where `Area` and `time` are
 #' ## data columns, however there are many columns and one should

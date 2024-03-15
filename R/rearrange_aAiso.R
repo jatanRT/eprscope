@@ -179,7 +179,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #' gauss.file.path <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 #' gauss.file <- unzip(gauss.file.path)
 #' symmetry.As.df <-
-#' rearrange_aAiso_QCHorgau(gauss.tmpd.output,
+#' rearrange_aAiso_QCHorgau(gauss.file,
 #'                          Nnuclei = 28,
 #'                          nuclei.list.slct =
 #'                           list(c(7, 8), ## 2 x 14N
