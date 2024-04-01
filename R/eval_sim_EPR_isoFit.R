@@ -155,7 +155,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## Conditions for G-L content and the corresponding linewidth
   if (lineG.content == 1 & optim.params.init[3] != 0){
     stop(" Spectral lineshape is defined as pure Gaussian. Please, put the Lorentzian\n
-         linewidth, corresponding to 3rd `optim.params.int`, element to `0` ! ")
+         linewidth element, corresponding to 3rd `optim.params.int`, to `0` ! ")
   }
   if (lineG.content == 1 & optim.params.init[2] == 0){
     stop(" Spectral lineshape is defined as pure Gaussian. Therefore,the corresponding\n
@@ -164,7 +164,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## ...the same for Lorentz =>
   if (lineG.content == 0 & optim.params.init[2] != 0){
     stop(" Spectral lineshape is defined as pure Lorentzian. Please, put the Gaussian\n
-         linewidth, corresponding to 2nd `optim.params.int`, element to `0` ! ")
+         linewidth element, corresponding to 2nd `optim.params.int`, to `0` ! ")
   }
   if (lineG.content == 0 & optim.params.init[3] == 0){
     stop(" Spectral lineshape is defined as pure Lorentzian. Therefore,the corresponding\n
@@ -494,20 +494,27 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## initial parameter guesses for the optimization and definition
-  lower.limits <- c(optim.params.init[1] - 0.001,
-                    optim.params.init[2] - (optim.params.init[2] * 0.2),
-                    optim.params.init[3] - (optim.params.init[3] * 0.2),
-                    optim.params.init[4] - 0.001,
+  limits.params1a <- optim.params.init[1] - 0.001
+  limits.params1b <- optim.params.init[1] + 0.001
+  limits.params2 <- optim.params.init[2] * 0.2
+  limits.params3 <- optim.params.init[3] * 0.2
+  limits.params4a <- optim.params.init[4] - 0.001
+  limits.params4b <- optim.params.init[4] + 0.001
+  #
+  lower.limits <- c(limits.params1a,
+                    optim.params.init[2] - limits.params2,
+                    optim.params.init[3] - limits.params3,
+                    limits.params4a,
                     1e-8)
   lower.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                          c(lower.limits,-5,-5),
                          c(lower.limits,-5),
                          lower.limits
                          )
-  upper.limits <- c(optim.params.init[1] + 0.001,
-                    optim.params.init[2] + (optim.params.init[2] * 0.2),
-                    optim.params.init[3] + (optim.params.init[3] * 0.2),
-                    optim.params.init[4] + 0.001,
+  upper.limits <- c(limits.params1b,
+                    optim.params.init[2] + limits.params2,
+                    optim.params.init[3] + limits.params3,
+                    limits.params4b,
                     100)
   upper.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                          c(upper.limits,5,5),

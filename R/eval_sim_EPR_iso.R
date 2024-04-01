@@ -158,7 +158,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## reordering the `nuclear.system` from the highest A_iso to the lowest one
     nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
     #
-    ## extract list components and put them into vectors
+    ## extract list components and transfer them into vectors
     nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
     N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
     A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
@@ -186,12 +186,12 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     }
   } else{
     if (!is.null(instrum.params)){
-      stop(" Parameters are extracted from file, please define `instrum.params = NULL` ! ")
+      stop(" Parameters are extracted from file, please write `instrum.params = NULL` ! ")
     } else{
       if (is.null(origin)){
-        stop(" Please provide `origin` of the `.DSC`/`.dsc` or `.par` file ! ")
+        stop(" Please provide an `origin` of the `.DSC`/`.dsc` or `.par` file ! ")
       } else{
-        ## reading the table and extracting values form table
+        ## reading the table and extracting values from it
         instr.params.list <- readEPR_params_slct_sim(path_to_dsc_par,origin = origin,B.unit = B.unit)
         B.CF <- instr.params.list$Bcf
         B.SW <- instr.params.list$Bsw
@@ -201,7 +201,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     }
   }
   #
-  ## Data frame (`B` + `g`) for the simulated B region
+  ## Create a data frame (`B` + `g`) for the simulated B region
   B.g.sim.df <- data.frame(B = seq(B.CF - (B.SW / 2),
                                    B.CF + (B.SW / 2),
                                    length.out = Npoints)
@@ -213,7 +213,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                    B.val = .data[[paste0("B_",B.unit)]],
                                    B.unit = B.unit))
   #
-  ## Conversions (adding columns) for `B.g.sim.df`
+  ## Conversions (adding columns) for `B.g.sim.df`, B in T/mT/G
   B.CF <- convert_B(B.CF,B.unit = B.unit,B.2unit = T)
   B.SW <- convert_B(B.SW,B.unit = B.unit,B.2unit = T)
   B.g.sim.df[["B_T"]] <- convert_B(B.g.sim.df[[paste0("B_",B.unit)]],
@@ -273,7 +273,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       stop(" The Breit-Rabi Energy/Frequency/B calculations\n
          cannot be used to predict the EPR spectra ! ")
     }
-    fun_breit_rabi <- function(A_iso, ## in energy units NOT in MHz <-> convert into energy (A * h)
+    fun_breit_rabi <- function(A_iso, ## in energy units NOT in MHz !! <-> convert into energy (A * h)
                                B.0, ## in Tesla
                                g_nuclear,
                                g_e_iso,
@@ -284,11 +284,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       alpha <- ((g_e_iso * Bohr.mu * B.0) + (g_nuclear * nuclear.mu * B.0)) /
         (A_iso * (spin_nuclear + 0.5))
       ## Energies depending on lower (1) or higher state (2)
-      E1 <- A_iso / 4 - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear - 0.5) -
+      E1 <- (A_iso / 4) - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear - 0.5) -
         (spin_nuclear + 0.5) * (A_iso / 2) *
         sqrt(1 + ((2 * (m_spin_nuclear - 0.5)) / (spin_nuclear + 0.5)) * alpha + alpha^2)
       #
-      E2 <- A_iso / 4 - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear + 0.5) +
+      E2 <- (A_iso / 4) - (g_nuclear * nuclear.mu * B.0) * (m_spin_nuclear + 0.5) +
         (spin_nuclear + 0.5) * (A_iso / 2) *
         sqrt(1 + ((2 * (m_spin_nuclear + 0.5)) / (spin_nuclear + 0.5)) * alpha + alpha^2)
       #
@@ -298,7 +298,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       Freq_corresp <- round((DeltaE / Planck.const) * 1e-6, digits = 3) ## in MHz
       #
       ## The corresponding `B` (to `DeltaE`) cannot be evaluated analytically,
-      ## because we do not know the corresponding line g-value => therefore the `B`
+      ## because we do not know the corresponding line g-value !! => therefore the `B`
       ## will be evaluated by an iterative manner as already shown in
       ## https://doi.org/10.1016/0022-2364(71)90049-7 (WEIL, J. A.) as well as
       ## https://doi.org/10.1016/j.jmr.2005.08.013 (STOLL, S) where after 2-4 iterations
@@ -310,7 +310,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       B.mI[1] <- round(DeltaE / (g_e_iso * Bohr.mu), digits = 7) ## in T
       ## cycle through 4 iterations =>
       xaj <- c()
-      gamma <- (Bohr.mu * g_e_iso) + (nuclear.mu * g_nuclear)
+      gamma <- (Bohr.mu * g_e_iso) + (nuclear.mu * g_nuclear) ## constant variable
       for (i in 1:4){
         xaj[i] <- (A_iso / (2 * Planck.const)) / ((nu.GHz * 1e+9) +
                   (nuclear.mu * g_nuclear * (B.mI[i] / Planck.const)))
@@ -319,7 +319,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                      ((1 / (4 * xaj[i]^2)) - (spin_nuclear + 0.5)^2)))
       }
       #
-      ## all three quantities into one list (B as a last value from the iterations)
+      ## all three quantities into one list (B as a last value from those iterations)
       return(list(D_E = DeltaE, nu = Freq_corresp, B = B.mI[length(B.mI)]))
     }
     #
@@ -386,7 +386,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                  546,456,336,216,120,56,20,6,1))
       }
       ## There are no stable isotopes with I = 2 =>
-      ## Intensity pattern for I = 5/2 (e.g. 47Ti, 55Mn, 127I ,27Al, 99Ru, 17O,101Ru...)
+      ## Intensity pattern for I = 5/2 (e.g. 47Ti, 55Mn, 127I, 27Al, 99Ru, 101Ru...)
       if (I == 2.5 & h == 0){
         return(1)
       }
@@ -434,7 +434,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## | Function to calculate the entire intensity pattern by the multiplication       |
     ## | of the adjacent levels e.g. like:                                              |
     ## |          1           1           1 |   level_01 (e.g. 1 x 14N), highest Aiso   |
-    ## |      1   2   1 |  ...                  level_02 (e.g. 2 x 1H), mid. Aiso       |
+    ## |      1   2   1 |  ...                  level_02 (e.g. 2 x 1H), mid Aiso        |
     ## |     1 1 | ...                          level_03 (e.g. 1 x 1H), lowest Aiso     |
     ## | therefore => 1 1 x 1, 1 1 x 2, 1 1 x 1.....etc <=> level_03 times each         |
     ## | component of the level_02.                                                     |
@@ -615,7 +615,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## as well as line form => either derivative or integrated one (see `length(nuclear.system) >= 1`
   ## below). This function is applied for `length(nuclear.system) >= 2`
   ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-  ## otherwise the derivative intensity will be twice so high (abs of "-" part + abs of "+" one),
+  ## otherwise the derivative intensity will be twice so high (i.e. abs of "-" part + abs of "+" one),
   ## although it is not necessary because the relative intensities within the pattern are important,
   ## for the integrated form it is OK
   intensities <- function(data.frame.sim,
@@ -654,7 +654,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
       )
     } else{
-      stop(" There are no interacting nuclei. Please define `natur.abund = FALSE` ! ")
+      stop(" There are no interacting nuclei. Please write `natur.abund = FALSE` ! ")
     }
     #
   } else{
@@ -668,8 +668,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## | The B-R delta Energies/Corresponding Bs are calculated level-by-level from            |
     ## | the highest Aiso to the lowest one (depending on number of equivalent nuclei groups). |
     ## | Each level corresponds to one group. Each line from the upper level represents        |
-    ## | the (B,g) center for the "spectrum"/lines from the lower one...etc. Right now         |
-    ## | the maximum number of equivalent groups equals to 6 => will be extended in the future.|
+    ## | the (B,g) center for the "spectrum"/lines from the lower one...etc.                   |
+    ## | The maximum number of equivalent groups is not limited => any number of equiv. groups |
     ## |                                                                                       |
     # -----------------------------------------------------------------------------------------
     #
@@ -705,7 +705,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## Simulated Spectra as a variable into nested lists
       Sim_Intensity <- c()
       ## The `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## otherwise the derivative intensity will be twice so high (abs of '-' part + abs of '+' part),
+      ## otherwise the derivative intensity will be twice so high (i.e. abs of '-' part + abs of '+' part),
       ## although it is not necessary because the relative intensities within the pattern
       ## are important and they remain the same.
       #
@@ -797,6 +797,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         )
       #
       ## Sum of the spectral lines from `Sim_Intensity[[2]]` list into final sim. spectrum
+      ## done by function `Reduce()` with argument "+"
       B.g.sim.df[[Intensity.sim]] <- Reduce("+", Sim_Intensity[[2]])
     }
   }
@@ -821,17 +822,50 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
            nucle_us_i,
            A_iso_MHz))
   if (!is.null(nuclear.system)){
-    ## separate description into two lines
+    ## separate description into several lines
     if (length(char.title) <= 3){
         char.title <- paste(unname(char.title), collapse = ", ")
         char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
     }
     if (length(char.title) > 3){
+      ## first line variable =>
       char.title1L <- paste(unname(char.title[1:3]), collapse = ", ") ## 1st Line
-      char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = ", ") ## 2nd Line
-      char.title.title <- paste("EPR Spectrum Simulation of ",char.title1L,char.title2L,sep = "\n")
     }
-  } else {
+    if (length(char.title) > 3 & length(char.title) <= 6){
+      char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = ", ") ## 2nd Line
+      char.title.title <- paste("EPR Spectrum Simulation of ",
+                                char.title1L,
+                                char.title2L,
+                                sep = "\n")
+    }
+    if (length(char.title) > 6){
+      ## second line variable =>
+      char.title2L <- paste(unname(char.title[4:6]), collapse = ", ") ## 2nd Line
+    }
+    if (length(char.title) > 6 & length(char.title) <= 9){
+      char.title3L <- paste(unname(char.title[7:length(char.title)]), collapse = ", ") ## 3rd Line
+      char.title.title <- paste("EPR Spectrum Simulation of ",
+                                char.title1L,
+                                char.title2L,
+                                char.title3L,
+                                sep = "\n")
+    }
+    if (length(char.title) > 9 & length(char.title) <= 12){
+      char.title3L <- paste(unname(char.title[7:9]), collapse = ", ") ## 3rd Line
+      char.title4L <- paste(unname(char.title[10:length(char.title)]), collapse = ", ") ## 4th Line
+      char.title.title <- paste("EPR Spectrum Simulation of ",
+                                char.title1L,
+                                char.title2L,
+                                char.title3L,
+                                char.title4L,
+                                sep = "\n")
+    }
+    if (length(char.title) > 12){
+      char.title.title <- paste("EPR Spectrum Simulation with ",
+                                "> 12 Groups of Equivalent Nuclei.",
+                                sep = "\n")
+    }
+   } else {
     char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
   }
   ## caption

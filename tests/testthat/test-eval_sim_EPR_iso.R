@@ -216,7 +216,7 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   ## According to above-referenced theory the following condition must be fulfilled
   if (all((spin_nuclear + 0.5) * A_iso_MHz >= 200 * nu.GHz)){
     stop(" The Breit-Rabi Energy/Frequency/B calculations\n
-         cannot be used to predict the EPR spectra")
+         cannot be used to predict the EPR spectra ! ")
   }
   fun_breit_rabi <- function(A_iso, ## in energy units NOT in MHz <-> convert into energy (A * h)
                              B.0, ## in Tesla
@@ -413,7 +413,7 @@ test_that("The isotropic hyperfine coupling constants determined
   expect_equal(abs(mean.DeltaB.sim - mean.DeltaB.expr), 0.02, tolerance = 1e-2) # `B` diff. in mT
   expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 1e-1) ## `A.iso` in MHz
   #
-  ## the more accurate `DeltaB` will be obtained from the simulation fit,
+  ## the DeltaB` can be also obtained from the simulation fit,
   ## see `test-eval_sim_EPR_isoFit`
 })
 #
@@ -566,7 +566,7 @@ test_that("The isotropic intensity pattern for the simulated EPR spectrum
   #
   # ===== THE INTEGRATED SIM. INTESITY PATTERN MATCHES THE THEORETICAL ONE =======
   #
-  ## all residuals are lower that 1.005e-3 and th highest relative error in '%' =>
+  ## all residuals are lower that 1.005e-3 and the highest relative error in '%' =>
   expect_true(all(pnt.rad.data.intCheck.sim.b < 1.005e-3)) # residuals
   expect_equal(
     (1.005e-3 / pnt.rad.data.intPattern.theo.a[8]) * 100,
