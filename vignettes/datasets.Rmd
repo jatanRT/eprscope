@@ -56,10 +56,7 @@ DT::datatable(isotopes_ds,
     dom = "Bfrtip",
     buttons = c("colvis","csv","pdf","excel")
   ),
-  caption = "Dataset with the following variables/columns: Proton number, isotope, stability (either stable, 
-  STB or radio-active, RA), isotope name, nuclear spin quantum number, nuclear g-value, natural abundance 
-  in %, nuclear quadrupolar moment in Barns and the ENDOR/Larmor frequency in MHz at 0.35 T. The negative 
-  sign of Larmor frequency values points to clockwise precession direction according to convention."
+  caption = "Dataset with the following variables/columns: Proton number, isotope, stability (either stable, STB or radio-active, RA), isotope name, nuclear spin quantum number, nuclear g-value, natural abundance in %, nuclear quadrupolar moment in Barns and the ENDOR/Larmor frequency in MHz at 0.35 T. The negative sign of Larmor frequency values points to clockwise precession direction according to convention."
 ) %>%
   DT::formatRound("nu_ENDOR_MHz_035T",digits = 3) # rounding must be also performed by the `DT` pkg.
 
@@ -81,7 +78,7 @@ DT::datatable(solvents_ds,
   ),
   caption = "Dataset with the following variables/columns: solvent name, molecular formula, 
   relative molecular weight, boiling point in °C, melting point in °C, density in g/mL, 
-  solubility in g/(100 g of water), relative electric permittivity, flash point in °C and dynamic 
+  solubility in g/(100 g of water)-not shown, visibility can be switched by the 'column visibility', relative electric permittivity, flash point in °C and dynamic 
   viscosity in cp."
 )
 

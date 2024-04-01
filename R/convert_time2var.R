@@ -1,5 +1,5 @@
 #'
-#' Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}
+#' Convert Time \eqn{t} into Variable Linearly Depending on \eqn{t}.
 #'
 #'
 #' @family Conversions and Corrections
@@ -68,6 +68,7 @@
 #'                         var0 = -0.1,
 #'                         var.switch = 0.45,
 #'                         var.rate = 0.003)
+#' ## preview
 #' as.matrix(E_V)
 #'
 #'

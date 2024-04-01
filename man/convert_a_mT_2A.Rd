@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_a_mT_2A.R
 \name{convert_a_mT_2A}
 \alias{convert_a_mT_2A}
-\title{Convert Splitting Constants (\eqn{a} in mT) to Coupling ones (\eqn{A} in MHz).}
+\title{Convert Splitting Constants into Coupling ones.}
 \usage{
 convert_a_mT_2A(a.mT, g.val = 2.0023193)
 }

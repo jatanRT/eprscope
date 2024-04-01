@@ -2,7 +2,7 @@
 % Please edit documentation in R/correct_time_Exp_Specs.R
 \name{correct_time_Exp_Specs}
 \alias{correct_time_Exp_Specs}
-\title{Time Correction for Experimental CW EPR Spectral Time Series}
+\title{Time Correction for the Experimental CW EPR Spectral Time Series.}
 \usage{
 correct_time_Exp_Specs(time.s, Nscans, sweep.time.s)
 }

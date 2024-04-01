@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_Exp_Specs.R
 \name{readEPR_Exp_Specs}
 \alias{readEPR_Exp_Specs}
-\title{Read the EPR Experimental ASCII or other Text-Based Data}
+\title{Read the EPR Experimental ASCII or other Text-Based Data.}
 \usage{
 readEPR_Exp_Specs(
   path_to_ASC,
@@ -22,9 +22,9 @@ readEPR_Exp_Specs(
 )
 }
 \arguments{
-\item{path_to_ASC}{String, path to ASCII file/table (e.g. \code{.txt}, \code{.csv} or \code{.asc})
-with spectral data (\eqn{Intensity vs B}(Field) with additional 'index' and/or 'time' variables).
-The path can be also defined by \code{\link[base]{file.path}}.}
+\item{path_to_ASC}{Character string, path to ASCII file/table (e.g. in \code{.txt}, \code{.csv}
+or \code{.asc} format) with spectral data (\eqn{Intensity vs B}(Field) with additional
+'index' and/or 'time' variables). The path can be also defined by \code{\link[base]{file.path}}.}
 
 \item{sep}{ The separator between columns. Defaults to the character in the set \code{[,\\t |;:]} that separates the sample of rows into the most number of lines with the same number of fields. Use \code{NULL} or \code{""} to specify no separator; i.e. each line a single character column like \code{base::readLines} does.}
 
@@ -32,39 +32,42 @@ The path can be also defined by \code{\link[base]{file.path}}.}
 
 \item{header}{ Does the first data line contain column names? Defaults according to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column names are given a default name. }
 
-\item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+\item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-The default (for original \code{\link[data.table]{fread}}) is to use the header column if present or detected,
-or if not `"V"` followed by the column number.}
+The default (for the original \code{\link[data.table]{fread}}) is to use the header column
+if present or detected, or if not `"V"` followed by the column number.}
 
 \item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
 
-\item{x.unit}{Character/String ...TBC}
+\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
+\code{"mT"} or \code{"MHz"}}
 
 \item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
 like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 \eqn{y}-axis in spectra or other plots.}
 
-\item{time.series}{Numeric index related to \code{col.names} pointing to `time` column for time series
-EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
+\item{time.series}{Numeric index related to \code{col.names} and pointing to `time` column for time series
+EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
 to kinetic-like experiments. \strong{Default}: \code{time.series = NULL}.}
 
-\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
-convert \eqn{B} in Gauss <=> millitesla...}
+\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
+conversion from `G` into `mT` should be performed. If default is chosen, a new column/variable
+\eqn{B} in `mT` is created.}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
-in case of ` "Xenon" ` software the parameter is included in \code{.DSC} file, \strong{default}:
-\code{qValue = NULL}}
+in case of \emph{Xenon} software the parameter is included in \code{.DSC} file, \strong{default}:
+\code{qValue = NULL}.}
 
 \item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector involving
-all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
-weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
-\code{norm.vec.add = NULL}.}
+all additional (in addition to \code{qValue}) normalization(s) like concentration, powder sample
+weight, number of scans, ...etc. (e.g. like \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+\code{norm.vec.add = NULL}. If \code{qValue = NULL}, the Q-factor/value might be also included
+in the \code{norm.vec.add}.}
 
 \item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
 most common spectrometers (from which are data loaded automatically using the default parameters).
@@ -81,49 +84,80 @@ data from other instrumental/spectrometer software. \strong{In such case all the
 \item{...}{additional arguments specified (see also \code{\link[data.table]{fread}}).}
 }
 \value{
-Data frame/table consisting of the unitless \code{g-factor} or the magnetic flux density
+Data frame/table consisting of the magnetic flux density
   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz}
-  (in case of ENDOR spectrum) and the derivative intensity column (\code{dIepr_over_dB})
-  or any other intensities (like in integrated spectral form) in \code{procedure defined unit}
+  (in case of ENDOR spectrum) or unitless \code{g-factor} and of the derivative intensity
+  column (\code{dIepr_over_dB}) or any other intensities (like in integrated spectral form)
+  in \code{procedure defined unit}
   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-  which is normalized by the above-described parameters and finally the \code{index} and/or a \code{time}
-  (in the case of time series experiment) columns are displayed as well.
+  which is normalized by the above-described parameters and finally the \code{index}
+  and/or a \code{time} (in the case of time series experiment) columns are displayed as well.
 }
 \description{
-The function is based on \code{\link[data.table]{fread}} with the purpose to read
+The function is based on the \code{\link[data.table]{fread}} with the purpose to read
   experimental EPR/ENDOR spectra or other original related (pre-processed) data from EPR spectrometers
-  in ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}).
+  in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}). Default arguments are set
+  to read the data from \emph{Xenon} acquisition/processing software (see argument \code{origin}).
 }
 \details{
-Data are transformed into \code{data frames}, which can be easily processed by other R packages
-  (e.g. by \pkg{tidyverse} system), afterwards. Spectral data (intensities) are normalized by the common
-  experimental parameters like Q-factor, concentration...etc. ASCII files/tables depend on the origin/software
-  used to acquire the EPR spectra. This is mirrored by \code{origin} parameter. Time series (time evolution
-  of EPR spectra) can be read by the \code{time.series} parameter.
+ASCII data are transformed into \emph{R} \code{data frames}, which can be easily processed by other R packages
+  (e.g. by \pkg{tidyverse} system), afterwards. Spectral intensities are automatically normalized by the common
+  experimental parameters like Q-factor, concentration, weight...etc. The structure of ASCII files/tables
+  depend on the origin/software used to acquire the EPR spectra. This is mirrored by \code{origin} parameter.
+  Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series} parameter.
 }
 \examples{
+## simple EPR spectrum acquired by "xenon"
+## and with `B` conversion "G" <=> "mT"
+## Loading the data
+aminoxyl.data.path <-
+load_data_example(file = "Aminoxyl_radical_a.txt")
+aminoxyl.data.01 <- readEPR_Exp_Specs(aminoxyl.data.path,
+                                      qValue = 2100)
+## preview
+head(aminoxyl.data.01)
+#
+# simple EPR spectrum acquired by "xenon"
+## and without `B` conversion "G" <=> "mT"
+aminoxyl.data.02 <- readEPR_Exp_Specs(aminoxyl.data.path,
+                                      convertB.unit = FALSE,
+                                      qValue = 2100)
+## preview
+head(aminoxyl.data.02)
+#
+## the simple spectrum acquired by "winepr"
+## (and 20 scans) on a 1 mM sample concentration:
+## Loading the data
+TMPD.data.path <-
+load_data_example(file = "TMPD_specelchem_accu_b.asc")
+TMPD.data <- readEPR_Exp_Specs(TMPD.data.path,
+                               col.names = c("B_G","dIepr_over_dB"),
+                               x = 1,
+                               Intensity = 2,
+                               qValue = 3500,
+                               norm.vec.add = c(20,0.001),
+                               origin = "winepr")
+## preview
+head(TMPD.data)
+#
+## the ENDOR spectrum recorded by "xenon"
+## and 8 accumulation sweeps
+## loading the data
+PNT.ENDOR.data.path <-
+load_data_example(file = "PNT_ENDOR_a.txt")
+PNT.ENDOR.data <-
+readEPR_Exp_Specs(PNT.ENDOR.data.path,
+                  col.names = c("index",
+                                "RF_MHz",
+                                "dIepr_over_dB"),
+                  x = 2,
+                  x.unit = "MHz",
+                  Intensity = 3,
+                  norm.vec.add = 8)
+## preview
+head(PNT.ENDOR.data)
+#
 \dontrun{
-## simple EPR spectrum acquired by "xenon"
-## and with `B` conversion "G" <=> mT
-readEPR_Exp_Specs(path_to_ASC,
-                  qValue = 3500)
-
-## simple EPR spectrum acquired by "xenon"
-## and without `B` conversion "G" <=> mT
-readEPR_Exp_Specs(path_to_ASC,
-                  convertB.unit = FALSE,
-                  qValue = 3500)
-
-## for the simple spectrum acquired by "winepr"
-## (and 20 scans) on a 10 mg powder sample:
-readEPR_Exp_Specs(path_to_ASC,
-                  col.names = c("B_G","dIepr_over_dB"),
-                  x = 1,
-                  Intensity = 2,
-                  qValue = 2000,
-                  norm.vec.add = c(20,10),
-                  origin = "winepr")
-
 ## EPR time series acquired by "winepr"
 readEPR_Exp_Specs(path_to_ASC,
                   col.names = c("B_G",
@@ -133,25 +167,14 @@ readEPR_Exp_Specs(path_to_ASC,
                   Intensity = 3,
                   time.series = 2,
                   origin = "winepr")
-
+#
 ## if no parameter intensity normalization
 ## is required and a simple spectrum
 ## was recorded by "xenon" software:
 readEPR_Exp_Specs(path_to_ASC = file.path(".",
                                           "ASCII_Folder",
                                           "EPR_spectrum.txt"))
-
-## for the ENDOR spectrum recorded by "xenon"
-## by 40 accumulation sweeps
-readEPR_Exp_Specs("./Data/ENDOR_spectrum.txt",
-                  col.names = c("index",
-                                "RF_MHz",
-                                "dIepr_over_dB"),
-                  x = 2,
-                  x.unit = "MHz",
-                  Intensity = 3,
-                  norm.vec.add = 40)
-
+#
 ## example for "xenon" time series experiment
 ## (evolution of EPR spectra in time, e.g. in case of
 ## EPR spectroelectrochemistry or photochemistry):
@@ -166,7 +189,7 @@ readEPR_Exp_Specs(path_to_ASC,
                   Intensity = 4,
                   qValue = 2800,
                   time.series = 3)
-
+#
 ## reading simple spectrum from the new "magnettech"
 ## acquisition software
 readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
@@ -176,7 +199,7 @@ readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
                   x.unit = "mT",
                   Intensity = 2,
                   origin = "magnettech")
-
+#
 ## reading file data from (and pre-processed) by "xenon" software
 ## corresponding to kinetics where `Area` and `time` are
 ## data columns, however there are many columns and one should

@@ -1,5 +1,5 @@
 #
-#' Convert Coupling Constants (\eqn{A} in MHz) into Splitting ones (\eqn{a} in mT).
+#' Convert Coupling Constants into Splitting ones.
 #'
 #'
 #' @family Conversions and Corrections

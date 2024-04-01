@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_time2var.R
 \name{convert_time2var}
 \alias{convert_time2var}
-\title{Convert Time (\eqn{t}) into Variable Linearly Depending on \eqn{t}}
+\title{Convert Time \eqn{t} into Variable Linearly Depending on \eqn{t}.}
 \usage{
 convert_time2var(
   time.vals,
@@ -78,6 +78,7 @@ E_V <- convert_time2var(time.vals = time_s,
                         var0 = -0.1,
                         var.switch = 0.45,
                         var.rate = 0.003)
+## preview
 as.matrix(E_V)
 
 

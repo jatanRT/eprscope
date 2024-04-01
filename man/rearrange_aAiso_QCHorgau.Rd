@@ -43,10 +43,24 @@ Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuc
 A short description...the same like \code{\link{rearrange_aAiso_QCHcomp}} something...
 }
 \examples{
-\dontrun{
-tbc
-tbc
-}
+## built-in file and path
+gauss.file.path <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+gauss.file <- unzip(gauss.file.path)
+symmetry.As.df <-
+rearrange_aAiso_QCHorgau(gauss.file,
+                         Nnuclei = 28,
+                         nuclei.list.slct =
+                          list(c(7, 8), ## 2 x 14N
+                               c(13, 14, 15, 16), ## 4 x 1H (aromatic)
+                               c(17, 18, 19, 20,
+                                 21, 22, 23, 24,
+                                 25, 26, 27, 28) ## 12 x 1H (methyls)
+                             )
+                        )
+#
+## preview
+symmetry.As.df
+
 
 }
 \seealso{

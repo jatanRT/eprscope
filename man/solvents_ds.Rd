@@ -13,9 +13,9 @@ A data frame with 46 rows and 10 variables/columns:
   \item{Boiling_Point_oC}{Numeric corresponding to \strong{boling} point in \strong{°C}.}
   \item{Melting_Point_oC}{Numeric, corresponding \strong{melting} point in \strong{°C}.}
   \item{Density_gmL}{Numeric, corresponding to density in \eqn{\text{g}\,\text{mL}^{-1}}.}
-  \item{Solubility_g100gW}{Character, pointing solubilities in water expressed
+  \item{Solubility_g100gW}{Character, pointing solubility in water expressed
         in \eqn{\text{g}\,(100\,\text{g}~\text{of}~\text{H}_2\text{O})^{-1}}. 2. Solubility of THF in water is rather complex.}
-  \item{Dielectric_Const}{Character, corresponding to relative permitivity.}
+  \item{Dielectric_Const}{Character, corresponding to relative permittivity.}
   \item{Flash_Point_oC}{Numeric, pointing to flash point in \strong{°C}.}
   \item{Viscosity_cp}{Character which corresponds to solvent dynamic viscosity
         in \eqn{\text{cp}\equiv 1\,\text{mPa}\,\text{s}}. The values were collected from
