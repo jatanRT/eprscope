@@ -39,20 +39,20 @@ to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c
 The default (for the original \code{\link[data.table]{fread}}) is to use the header column
 if present or detected, or if not `"V"` followed by the column number.}
 
-\item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
-to abscissa (\eqn{x}-axis) in spectra or other plots.}
+\item{x}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
+to abscissa (\eqn{x}-axis) in the spectra or other plots.}
 
 \item{x.unit}{Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
-\code{"mT"} or \code{"MHz"}}
+\code{"mT"} or \code{"MHz"}.}
 
-\item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
+\item{Intensity}{Numeric index related to \code{col.names} vector pointing to `general` intensity,
 like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
-\eqn{y}-axis in spectra or other plots.}
+\eqn{y}-axis in the EPR spectra or other plots.}
 
-\item{time.series}{Numeric index related to \code{col.names} and pointing to `time` column for time series
+\item{time.series}{Numeric index related to \code{col.names} vector and pointing to `time` column for time series
 EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
-use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
+use \code{x} and \code{x.unit} parameters/arguments instead (see also examples). This parameter/argument is dedicated
 to kinetic-like experiments. \strong{Default}: \code{time.series = NULL}.}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
@@ -60,14 +60,14 @@ conversion from `G` into `mT` should be performed. If default is chosen, a new c
 \eqn{B} in `mT` is created.}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
-in case of \emph{Xenon} software the parameter is included in \code{.DSC} file, \strong{default}:
-\code{qValue = NULL}.}
+in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
+\strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.}
 
-\item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector involving
+\item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector including
 all additional (in addition to \code{qValue}) normalization(s) like concentration, powder sample
 weight, number of scans, ...etc. (e.g. like \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
-\code{norm.vec.add = NULL}. If \code{qValue = NULL}, the Q-factor/value might be also included
-in the \code{norm.vec.add}.}
+\code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
+the Q-factor/value might be also included in the \code{norm.vec.add}.}
 
 \item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
 most common spectrometers (from which are data loaded automatically using the default parameters).
@@ -167,13 +167,6 @@ readEPR_Exp_Specs(path_to_ASC,
                   Intensity = 3,
                   time.series = 2,
                   origin = "winepr")
-#
-## if no parameter intensity normalization
-## is required and a simple spectrum
-## was recorded by "xenon" software:
-readEPR_Exp_Specs(path_to_ASC = file.path(".",
-                                          "ASCII_Folder",
-                                          "EPR_spectrum.txt"))
 #
 ## example for "xenon" time series experiment
 ## (evolution of EPR spectra in time, e.g. in case of
