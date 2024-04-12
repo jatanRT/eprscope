@@ -25,17 +25,17 @@
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+#' @param x.id Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character string ...TBC only "mT" and "G" are available
-#' @param Intensity Numeric index related to \code{col.names} pointing to `general` intensity,
+#' @param Intensity.id Numeric index related to \code{col.names} pointing to `general` intensity,
 #'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 #'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 #'   \eqn{y}-axis in spectra or other plots.
-#' @param time.series Numeric index related to \code{col.names} pointing to `time` column for time series
+#' @param time.series.id Numeric index related to \code{col.names} pointing to `time` column for time series
 #'   EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 #'   use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
-#'   to kinetic-like experiments. \strong{Default}: \code{time.series = 3}.
+#'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
 #'   convert \eqn{B} in Gauss <=> millitesla...
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
@@ -75,10 +75,10 @@
 #'                                     "B_G",
 #'                                     "Slice",
 #'                                     "Intensity"),
-#'                       x = 2,
+#'                       x.id = 2,
 #'                       x.unit = "G",
-#'                       Intensity = 4,
-#'                       time.series = 3,
+#'                       Intensity.id = 4,
+#'                       time.series.id = 3,
 #'                       qValue = 2900,
 #'                       origin = "winepr")
 #'
@@ -99,10 +99,10 @@ readEPR_Exp_Specs_kin <- function(name_root,
                                     "time_s",
                                     "dIepr_over_dB"
                                   ),
-                                  x = 2,
+                                  x.id = 2,
                                   x.unit = "G",
-                                  Intensity = 4,
-                                  time.series = 3,
+                                  Intensity.id = 4,
+                                  time.series.id = 3,
                                   convertB.unit = TRUE,
                                   qValue = NULL,
                                   norm.vec.add = NULL,
@@ -154,17 +154,17 @@ readEPR_Exp_Specs_kin <- function(name_root,
   ## ================= Reading Data & Processing ==================
   #
   ## `Intensity` variable string
-  IntensityString <- col.names[Intensity]
+  IntensityString <- col.names[Intensity.id]
   #
   ## `time` variable string
-  timeString <- col.names[time.series]
+  timeString <- col.names[time.series.id]
   #
   ## Load spectral data
   data.spectra.time <- readEPR_Exp_Specs(path.to.asc,
     col.names = col.names,
-    x = x,
-    Intensity = Intensity,
-    time.series = time.series,
+    x.id = x.id,
+    Intensity.id = Intensity.id,
+    time.series.id = time.series.id,
     convertB.unit = convertB.unit,
     qValue = qValue.obtain,
     norm.vec.add = norm.vec.add,

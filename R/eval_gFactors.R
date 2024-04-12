@@ -116,8 +116,8 @@ eval_gFactor <- function(nu.val,
 #' data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
 #'                               col.names = c("B_G", "dIepr_over_dB"),
-#'                               x = 1,
-#'                               Intensity = 2,
+#'                               x.id = 1,
+#'                               Intensity.id = 2,
 #'                               qValue = 3500,
 #'                               origin = "winepr")
 #' #
@@ -304,7 +304,8 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
   rm(qchfile)
   #
   ## g-factor for free electron (g.e) from `constants` package
-  ## round the g.e to 6 decimal places
+  ## round the g.e to 6 decimal places, the negative sign must
+  ## cancel that coming from `constants::syms$gem`, which is negative
   g.e <- round(-constants::syms$gem, digits = 6)
   #
   ## g-vector from shifts (`deltas` or `d`) and g.e

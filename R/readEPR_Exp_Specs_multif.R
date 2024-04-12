@@ -26,13 +26,13 @@
 #'   A safe rule of thumb is to use column names incl. physical quantity notation with its units,
 #'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#' @param x Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+#' @param x.id Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
 #'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.
-#' @param Intensity Numeric index related to \code{col.names} pointing to `general` intensity,
+#' @param Intensity.id Numeric index related to \code{col.names} pointing to `general` intensity,
 #'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 #'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 #'   \eqn{y}-axis in spectra or other plots.
@@ -53,7 +53,8 @@
 #'  of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
 #'  altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.
 #' @param var2nd.series.factor Logical, description ...TBC ... factorize \code{var2nd.series}, usefull for plotting
-#'   the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}.
+#'   the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, the case to visualize
+#'   the EPR spectra by \code{plot}-functions.
 #' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
@@ -76,9 +77,9 @@
 #'                          col.names = c("index",
 #'                                        "RF_MHz",
 #'                                        "Intensity"),
-#'                          x = 2,
+#'                          x.id = 2,
 #'                          x.unit = "MHz",
-#'                          Intensity = 3,
+#'                          Intensity.id = 3,
 #'                          names = c("210","220","230","240"),
 #'                          tidy = TRUE,
 #'                          var2nd.series = "Temperature_K")
@@ -91,9 +92,9 @@
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
 #'                          col.names = c("B_G","dIepr_over_dB"),
-#'                          x = 1,
+#'                          x.id = 1,
 #'                          x.unit = "G",
-#'                          Intensity = 2,
+#'                          Intensity.id = 2,
 #'                          names = c("210","220","230","240"),
 #'                          qValues = c(3400,3501,3600,2800),
 #'                          norm.list.add = list(rep(c(10,7),times = 4)),
@@ -113,9 +114,9 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
                                        "B_G",
                                        "dIepr_over_dB"
                                      ),
-                                     x = 2,
+                                     x.id = 2,
                                      x.unit = "G",
-                                     Intensity = 3,
+                                     Intensity.id = 3,
                                      convertB.unit = TRUE,
                                      qValues = NULL,
                                      norm.list.add = NULL,
@@ -199,7 +200,7 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
   ## shift/drift
   #
   ## However prior to the operation above `x`/`B` has to be defined
-  xString <- col.names[x]
+  xString <- col.names[x.id]
   #
   if (x.unit == "G" || x.unit == "mT"){
     spectra.datab.from.files <-
@@ -207,9 +208,9 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
         function(r, s, t, u) {
           readEPR_Exp_Specs(r,
                             col.names = col.names,
-                            x = x,
+                            x.id = x.id,
                             x.unit = x.unit,
-                            Intensity = Intensity,
+                            Intensity.id = Intensity.id,
                             convertB.unit = convertB.unit,
                             qValue = s,
                             norm.vec.add = t,
@@ -234,9 +235,9 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
         function(r, s, t) {
           readEPR_Exp_Specs(r,
                             col.names = col.names,
-                            x = x,
+                            x.id = x.id,
                             x.unit = x.unit,
-                            Intensity = Intensity,
+                            Intensity.id = Intensity.id,
                             convertB.unit = convertB.unit,
                             qValue = s,
                             norm.vec.add = t,

@@ -29,18 +29,18 @@
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #'   The default (for the original \code{\link[data.table]{fread}}) is to use the header column
 #'   if present or detected, or if not `"V"` followed by the column number.
-#' @param x Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
+#' @param x.id Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in the spectra or other plots.
 #' @param x.unit Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
 #'   \code{"mT"} or \code{"MHz"}.
-#' @param Intensity Numeric index related to \code{col.names} vector pointing to `general` intensity,
+#' @param Intensity.id Numeric index related to \code{col.names} vector pointing to `general` intensity,
 #'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 #'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 #'   \eqn{y}-axis in the EPR spectra or other plots.
-#' @param time.series Numeric index related to \code{col.names} vector and pointing to `time` column for time series
+#' @param time.series.id Numeric index related to \code{col.names} vector and pointing to `time` column for time series
 #'   EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 #'   use \code{x} and \code{x.unit} parameters/arguments instead (see also examples). This parameter/argument is dedicated
-#'   to kinetic-like experiments. \strong{Default}: \code{time.series = NULL}.
+#'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL}.
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
 #'   conversion from `G` into `mT` should be performed. If default is chosen, a new column/variable
 #'   \eqn{B} in `mT` is created.
@@ -100,8 +100,8 @@
 #' load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' TMPD.data <- readEPR_Exp_Specs(TMPD.data.path,
 #'                                col.names = c("B_G","dIepr_over_dB"),
-#'                                x = 1,
-#'                                Intensity = 2,
+#'                                x.id = 1,
+#'                                Intensity.id = 2,
 #'                                qValue = 3500,
 #'                                norm.vec.add = c(20,0.001),
 #'                                origin = "winepr")
@@ -118,9 +118,9 @@
 #'                   col.names = c("index",
 #'                                 "RF_MHz",
 #'                                 "dIepr_over_dB"),
-#'                   x = 2,
+#'                   x.id = 2,
 #'                   x.unit = "MHz",
-#'                   Intensity = 3,
+#'                   Intensity.id = 3,
 #'                   norm.vec.add = 8)
 #' ## preview
 #' head(PNT.ENDOR.data)
@@ -131,9 +131,9 @@
 #'                   col.names = c("B_G",
 #'                                 "Slice",
 #'                                 "dIepr_over_dB"),
-#'                   x = 1,
-#'                   Intensity = 3,
-#'                   time.series = 2,
+#'                   x.id = 1,
+#'                   Intensity.id = 3,
+#'                   time.series.id = 2,
 #'                   origin = "winepr")
 #' #
 #' ## example for "xenon" time series experiment
@@ -146,19 +146,19 @@
 #'                                 "B_G",
 #'                                 "time_s",
 #'                                 "dIepr_over_dB"),
-#'                   x = 2,
-#'                   Intensity = 4,
+#'                   x.id = 2,
+#'                   Intensity.id = 4,
 #'                   qValue = 2800,
-#'                   time.series = 3)
+#'                   time.series.id = 3)
 #' #
 #' ## reading simple spectrum from the new "magnettech"
 #' ## acquisition software
 #' readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
 #'                   skip = 88,
 #'                   col.names = c("B_mT","dIepr_over_dB"),
-#'                   x = 1,
+#'                   x.id = 1,
 #'                   x.unit = "mT",
-#'                   Intensity = 2,
+#'                   Intensity.id = 2,
 #'                   origin = "magnettech")
 #' #
 #' ## reading file data from (and pre-processed) by "xenon" software
@@ -172,8 +172,8 @@
 #'                   select = c(3,7),
 #'                   col.names = c("time_s","Area"),
 #'                   x.unit = "s",
-#'                   x = 1,
-#'                   Intensity = 2,
+#'                   x.id = 1,
+#'                   Intensity.id = 2,
 #'                   qValue = 1700)
 #' }
 #'
@@ -193,10 +193,10 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                                 "B_G",
                                 "dIepr_over_dB"
                               ),
-                              x = 2,
+                              x.id = 2,
                               x.unit = "G",
-                              Intensity = 3,
-                              time.series = NULL,
+                              Intensity.id = 3,
+                              time.series.id = NULL,
                               convertB.unit = TRUE,
                               qValue = NULL,
                               norm.vec.add = NULL,
@@ -220,7 +220,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`
   if (origin == "winepr") {
-    if (is.null(time.series)) {
+    if (is.null(time.series.id)) {
       ## parameter definition
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
@@ -280,7 +280,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   #
   ## condition for special case `winepr` and `time.series`
-  if (origin == "winepr" & !is.null(time.series)) {
+  if (origin == "winepr" & !is.null(time.series.id)) {
     spectrum.data.origin <-
       data.table::fread(file = path_to_ASC,
                         sep = sep,
@@ -324,16 +324,16 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   # if (isTRUE(header)) {
   #   col.names <- colnames(spectrum.data.origin)
   # }
-  IntensityString <- col.names[Intensity] ## `Intensity` string
-  xString <- col.names[x] ## `x` string
-  # timeAxis <- col.names[time.series]
+  IntensityString <- col.names[Intensity.id] ## `Intensity` string
+  xString <- col.names[x.id] ## `x` string
+  # timeAxis <- col.names[time.series.id]
   ## new `spectra.data`
   #
   ## Common EPR Spectra
   ## Unit condition
   G.unit.cond <- if (x.unit == "G") TRUE else FALSE
   ## intial `B`/`Field` Character string condition
-  if (grepl("B|BF",xString)){
+  if (grepl("B|BF|BG|B_G|B-G",xString)){
     xString.init <- "B_"
   }
   if (grepl("Fiel|fiel",xString)){

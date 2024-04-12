@@ -123,8 +123,8 @@ tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
-  x = 1,
-  Intensity = 2,
+  x.id = 1,
+  Intensity.id = 2,
   qValue = 3500,
   norm.vec.add = 20,
   origin = "winepr"
@@ -161,8 +161,8 @@ adv.norm.constant <- quantify_EPR_Norm_const(
 tmpd.data.norm.02 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
-  x = 1,
-  Intensity = 2,
+  x.id = 1,
+  Intensity.id = 2,
   qValue = 3500,
   norm.vec.add = adv.norm.constant,
   origin = "winepr"
