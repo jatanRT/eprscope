@@ -63,8 +63,8 @@
 #' ## spectrum recorded as accumulation of 20 scans
 #' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
 #'                               col.names = c("B_G", "dIepr_over_dB"),
-#'                               x = 1,
-#'                               Intensity = 2,
+#'                               x.id = 1,
+#'                               Intensity.id = 2,
 #'                               qValue = 3500,
 #'                               norm.vec.add = 20,
 #'                               origin = "winepr")

@@ -11,10 +11,10 @@ readEPR_Exp_Specs_kin(
   time.unit = "s",
   time.delta.slice.s = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
-  x = 2,
+  x.id = 2,
   x.unit = "G",
-  Intensity = 4,
-  time.series = 3,
+  Intensity.id = 4,
+  time.series.id = 3,
   convertB.unit = TRUE,
   qValue = NULL,
   norm.vec.add = NULL,
@@ -43,20 +43,20 @@ column/variable names. A safe rule of thumb is to use column names incl. physica
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
 
-\item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+\item{x.id}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
 
 \item{x.unit}{Character string ...TBC only "mT" and "G" are available}
 
-\item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
+\item{Intensity.id}{Numeric index related to \code{col.names} pointing to `general` intensity,
 like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 \eqn{y}-axis in spectra or other plots.}
 
-\item{time.series}{Numeric index related to \code{col.names} pointing to `time` column for time series
+\item{time.series.id}{Numeric index related to \code{col.names} pointing to `time` column for time series
 EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
-to kinetic-like experiments. \strong{Default}: \code{time.series = 3}.}
+to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
 convert \eqn{B} in Gauss <=> millitesla...}
@@ -107,10 +107,10 @@ readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                                     "B_G",
                                     "Slice",
                                     "Intensity"),
-                      x = 2,
+                      x.id = 2,
                       x.unit = "G",
-                      Intensity = 4,
-                      time.series = 3,
+                      Intensity.id = 4,
+                      time.series.id = 3,
                       qValue = 2900,
                       origin = "winepr")
 

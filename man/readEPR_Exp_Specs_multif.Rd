@@ -9,9 +9,9 @@ readEPR_Exp_Specs_multif(
   dir_ASC,
   dir_dsc_par,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  x = 2,
+  x.id = 2,
   x.unit = "G",
-  Intensity = 3,
+  Intensity.id = 3,
   convertB.unit = TRUE,
   qValues = NULL,
   norm.list.add = NULL,
@@ -40,7 +40,7 @@ A safe rule of thumb is to use column names incl. physical quantity notation wit
 \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
 
-\item{x}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
+\item{x.id}{Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in spectra or other plots.}
 
 \item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
@@ -48,7 +48,7 @@ to abscissa (\eqn{x}-axis) in spectra or other plots.}
 like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.}
 
-\item{Intensity}{Numeric index related to \code{col.names} pointing to `general` intensity,
+\item{Intensity.id}{Numeric index related to \code{col.names} pointing to `general` intensity,
 like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
 integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
 \eqn{y}-axis in spectra or other plots.}
@@ -76,7 +76,8 @@ of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potent
 altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.}
 
 \item{var2nd.series.factor}{Logical, description ...TBC ... factorize \code{var2nd.series}, usefull for plotting
-the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}.}
+the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, the case to visualize
+the EPR spectra by \code{plot}-functions.}
 
 \item{origin}{String/Character corresponding to \strong{software} used to acquire the EPR spectra
 on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
@@ -109,9 +110,9 @@ readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
                          col.names = c("index",
                                        "RF_MHz",
                                        "Intensity"),
-                         x = 2,
+                         x.id = 2,
                          x.unit = "MHz",
-                         Intensity = 3,
+                         Intensity.id = 3,
                          names = c("210","220","230","240"),
                          tidy = TRUE,
                          var2nd.series = "Temperature_K")
@@ -124,9 +125,9 @@ readEPR_Exp_Specs_multif("Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
                          col.names = c("B_G","dIepr_over_dB"),
-                         x = 1,
+                         x.id = 1,
                          x.unit = "G",
-                         Intensity = 2,
+                         Intensity.id = 2,
                          names = c("210","220","230","240"),
                          qValues = c(3400,3501,3600,2800),
                          norm.list.add = list(rep(c(10,7),times = 4)),
