@@ -6,17 +6,29 @@
 #'
 #'
 #' @description The function is based on the \code{\link[data.table]{fread}} with the purpose to read
-#'   experimental EPR/ENDOR spectra or other original related (pre-processed) data from EPR spectrometers
-#'   in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}). Default arguments are set
-#'   to read the data from \emph{Xenon} acquisition/processing software (see argument \code{origin}).
+#'   the experimental EPR/ENDOR spectra or other original related (pre-processed) data from the EPR spectrometers
+#'   in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}).
 #'
 #'
 #' @details
-#'   ASCII data are transformed into \emph{R} \code{data frames}, which can be easily processed by other R packages
-#'   (e.g. by \pkg{tidyverse} system), afterwards. Spectral intensities are automatically normalized by the common
-#'   experimental parameters like Q-factor, concentration, weight...etc. The structure of ASCII files/tables
-#'   depend on the origin/software used to acquire the EPR spectra. This is mirrored by \code{origin} parameter.
-#'   Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series} parameter.
+#'   ASCII data are transformed into \emph{R} data frames, which can be then easily processed by this package
+#'   or other R packages (e.g. by \pkg{tidyverse} system), afterwards. Spectral intensities are automatically
+#'    normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
+#'    These are defined by the two arguments:
+#'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
+#'   quantities represented by the vector. If \code{qValue = NULL}, the Q-value ca be also defined a component
+#'   of the \code{norm.vec.add}. Finally, the normalized intensity is calculated by the following
+#'   expression:
+#'   \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
+#'   where \eqn{k} is iterating through all components of the \code{norm.vec.add} (\eqn{norm.vec.add[k]}).
+#'   The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
+#'   This is mirrored mainly by the \code{origin} parameter/argument. Default arguments are set to read the data from
+#'   \emph{Xenon} acquisition/processing software. However, additional \code{origins} can be set like
+#'   \code{origin = "winepr"} or \code{origin = "magnettech"} or even any arbitrary string
+#'   e.g. like \code{origin = "csv"} (see also \code{origin argument}). Time series (time evolution
+#'   of EPR spectra/kinetics) is defined by the \code{time.series.id} parameter. In such case the ASCII data table
+#'   also contains additional column either with recorded time (see also \code{\link{correct_time_Exp_Specs}})
+#'   or with slice number for each spectrum.
 #'
 #'
 #' @inheritParams data.table::fread
@@ -57,11 +69,13 @@
 #'   Options are summarized in the following table (Any other specific `origin` may be added later) =>
 #'   \tabular{rl}{
 #'   \strong{String} \tab \strong{Description} \cr
-#'   "xenon" \tab \strong{default} automatically loads data from `Xenon` software with dafault params. \cr
-#'   "winepr" \tab automatically loads data from `WinEpr` software \cr
-#'   "other" (arbitrary string) \tab general, loads any other `origin` data ( like `csv`, `txt`, `asc`) incl.
-#'   data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
-#'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
+#'   "xenon" \tab \strong{default} automatically loads data from the `Xenon` software with dafault params. \cr
+#'   "winepr" \tab automatically loads data from the `WinEpr` software. \cr
+#'   "magnettech" \tab automatically loads data from the new `Magnettech` software. \cr
+#'   "other" (arbitrary string, e.g. like "csv") \tab general, loads any other `origin`
+#'   data ( like `csv`, `txt`, `asc`) incl. data from other instrumental/spectrometer software.
+#'   \strong{In such case all the parameters/arguments for}
+#'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 #'   }
 #' @param ... additional arguments specified (see also \code{\link[data.table]{fread}}).
 #'
@@ -126,7 +140,7 @@
 #' head(PNT.ENDOR.data)
 #' #
 #' \dontrun{
-#' ## EPR time series acquired by "winepr"
+#' ## EPR time series acquired by "Winepr"/"WinEpr"
 #' readEPR_Exp_Specs(path_to_ASC,
 #'                   col.names = c("B_G",
 #'                                 "Slice",
@@ -134,7 +148,7 @@
 #'                   x.id = 1,
 #'                   Intensity.id = 3,
 #'                   time.series.id = 2,
-#'                   origin = "winepr")
+#'                   origin = "Winepr")
 #' #
 #' ## example for "xenon" time series experiment
 #' ## (evolution of EPR spectra in time, e.g. in case of
@@ -151,10 +165,9 @@
 #'                   qValue = 2800,
 #'                   time.series.id = 3)
 #' #
-#' ## reading simple spectrum from the new "magnettech"
+#' ## reading simple spectrum from the new "magnettech"/"Magnettech"
 #' ## acquisition software
 #' readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
-#'                   skip = 88,
 #'                   col.names = c("B_mT","dIepr_over_dB"),
 #'                   x.id = 1,
 #'                   x.unit = "mT",
@@ -217,9 +230,15 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## Ellipsis argument list definition
   # args <- list(...)
   #
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`
-  if (origin == "winepr") {
+  ## WINEPR
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     if (is.null(time.series.id)) {
       ## parameter definition
       sep <- sep %>% `if`(sep != "auto", "auto", .)
@@ -255,7 +274,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       #
     }
   }
-  if (origin == "xenon") {
+  ## XENON
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin))) {
     ## parameter definition
     sep <- sep %>% `if`(sep != "auto", "auto", .)
     header <- header
@@ -271,8 +291,20 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     # blank.lines.skip <- FALSE
     # colClasses <- NULL
   }
+  #
+  ## MAGNETTECH
+  if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    sep <- sep %>% `if`(sep != "auto", "auto", .)
+    header <- header %>% `if`(isTRUE(header), FALSE, .)
+    skip <- skip %>% `if`(skip != 88, 88, .)
+    #
+  }
+  #
+  ## OTHERS
   ## change any other `origin` accordingly
-  if (origin != "winepr" & origin != "xenon") {
+  if (!any(grepl(paste(winepr.string,collapse = "|"),origin)) &
+      !any(grepl(paste(xenon.string,collapse = "|"),origin)) &
+      !any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
     sep <- sep
     header <- header
     skip <- skip
@@ -280,7 +312,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   #
   ## condition for special case `winepr` and `time.series`
-  if (origin == "winepr" & !is.null(time.series.id)) {
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin)) &
+      !is.null(time.series.id)) {
     spectrum.data.origin <-
       data.table::fread(file = path_to_ASC,
                         sep = sep,

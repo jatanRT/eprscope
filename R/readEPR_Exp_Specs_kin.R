@@ -24,7 +24,7 @@
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.
 #' @param x.id Numeric index related to \code{col.names} pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character string ...TBC only "mT" and "G" are available
@@ -43,14 +43,14 @@
 #'   \code{qValue = NULL}. If EPR spectra were acquired by the "Winepr" software Q value must be defined
 #'   like \code{qValue = 3400}
 #' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
-#'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
-#'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+#'   all additional (in addition to \code{qValue}) normalization(s) e.g. like concentration, powder sample
+#'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}.
 #' @param origin Character string corresponding to \strong{software} used to acquire the EPR spectra
 #'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
 #'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
 #'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
-#' @param ... Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+#' @param ... Additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
 #' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
@@ -116,11 +116,34 @@ readEPR_Exp_Specs_kin <- function(name_root,
   ## or `.spc` and `.par`and corresponds to file name without extension
   #
   ## ================= Reading Files & Parameters ==================
-  if (origin == "xenon") {
+  #
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    #
+    ## condition for switching between xenon and magnettech
+    xen.magnet.cond <- function(origin){
+      if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+        return(0)
+      }
+      if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+        return(1)
+      }
+    }
+    #
     ## path to `asc` file
     path.to.asc <- file.path(
       dir_ASC,
-      paste0(name_root, ".txt")
+      paste0(name_root,
+             switch(2-xen.magnet.cond(origin = origin),
+                    ".csv",
+                    ".txt"
+                    )
+             ) ## `txt` for xenon & `csv` for magnettech
     )
     #
     ## path to `DSC` or `dsc`
@@ -131,7 +154,7 @@ readEPR_Exp_Specs_kin <- function(name_root,
     ## Qvalue
     qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue")
   }
-  if (origin == "winepr") {
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     ## path to asc
     path.to.asc <- file.path(
       dir_ASC,

@@ -6,7 +6,7 @@
 #'
 #' @description
 #'  Function takes the \strong{selected} instrumental parameters or information
-#'  from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}
+#'  from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}/\code{Magnettech}
 #'  or \code{WinEpr} Software, respectively)
 #'
 #'
@@ -14,14 +14,16 @@
 #'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
 #' @param string String, within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
 #'   corresponding to instrumental parameter,
-#'  following \strong{strings are defined} (\strong{in parenthesis for "winepr" software}):
+#'  following \strong{strings are defined for all three main acquisition software described-above}
+#'   (\strong{in parenthesis for "winepr" software}):
 #'  \tabular{ll}{
 #'   \strong{String} \tab \strong{Instrumental Parameter} \cr
 #'    "OPER" ("JON") \tab  operator (of the EPR instrument) \cr
 #'    "CMNT" ("JCO") \tab  comment (in order to describe the measurement) \cr
 #'    "DATE" ("JDA") \tab  date (when the EPR spectrum was recorded) \cr
 #'    "TIME" ("JTM") \tab  time (when the EPR spectrum was recorded) \cr
-#'    "SAMP" \tab   name/decsript. of the sample \cr
+#'    "SAMP" \tab   name/decsript. of the sample,
+#'    not available in "magnettech" \code{.dsc} \cr
 #'    "B0MF" \tab  modulation frequency in \code{Hz} \cr
 #'    "MWFQ"  ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
 #'    "QValue" \tab  recorded quality-Factor (required for intensity norm.) \code{unitless} \cr
@@ -33,18 +35,20 @@
 #'    "A1RS" ("RES") \tab  number of points/resolution \cr
 #'    "MWPW" ("MP") \tab microwave power in \code{W} (\code{mW}) \cr
 #'    "SPTP" ("RCT") \tab  conversion time in \code{s} (\code{ms}) \cr
-#'    "RCTC" ("RTC") \tab  time constant in \code{s} (ms) \cr
-#'    "RCAG" ("RRG") \tab signal receiver gain in \code{dB} (unitless) \cr
+#'    "RCTC" ("RTC") \tab  time constant in \code{s} (ms),
+#'    not available in "magnettech" \code{.dsc} \cr
+#'    "RCAG" ("RRG") \tab signal receiver gain in \code{dB} (unitless),
+#'    not available in "magnetech" \code{.dsc} \cr
 #'    "ConvFact" \tab conversion factor/instr. calibration constant for quantitative
-#'    analysis \code{unitless} \cr
+#'    analysis \code{unitless}, not available in "magnettech" \code{.dsc} \cr
 #'  }
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-#'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
-#'   \strong{default}: \code{origin = "xenon"}
+#'   on BRUKER spectrometers, because the files are slightly different depending on whether
+#'   they were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
+#'   ("Magnettech", \code{origin = "magnettech"}) one. \strong{Default}: \code{origin = "xenon"}.
 #'
-#' @return Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct}) instrumental
-#'   parameter applied to record the EPR spectra.
+#' @return Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct})
+#'   instrumental parameter applied to record the EPR spectra.
 #'
 #'
 #' @examples
@@ -74,7 +78,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
                                string,
                                origin = "xenon") {
   #
-  ## path corresponds to file (.DSC) from which the params. are read
+  ## path corresponds to file (`.DSC` or `.dsc`) from which the params. are read
   ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
   sel.str.line <- grep(paste0("^",string), readLines(path_to_dsc_par), value = TRUE)
   #
@@ -86,15 +90,30 @@ readEPR_param_slct <- function(path_to_dsc_par,
   ## therefore unlist the `sel.str.split`
   sel.str.split <- unlist(sel.str.split)
   #
-  if (origin == "xenon") {
-    if (string == "OPER" || string == "CMNT" || string == "DATE" || string == "TIME" || string == "SAMP") {
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    if (string == "OPER" || string == "CMNT" ||
+        string == "DATE" || string == "TIME") {
       param.slct <- as.character(sel.str.split[2])
     } else {
       param.slct <- as.double(sel.str.split[2])
     }
   }
-  if (origin == "winepr") {
-    if (string == "JON" || string == "JCO" || string == "JDA" || string == "JTM") {
+  #
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+    if (string == "SAMP"){
+      param.slct <- as.character(sel.str.split[2])
+    }
+  }
+  #
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+    if (string == "JON" || string == "JCO" || string == "JDA" ||
+        string == "JTM") {
       param.slct <- as.character(sel.str.split[2])
     } else {
       param.slct <- as.double(sel.str.split[2])
