@@ -132,6 +132,11 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
   g_Value <- NULL
   index <- NULL
   #
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
   ## =========================== FILES AND PARAMETERS ==============================
   #
   ## file name pattern which has to be the same for `txt`+`DSC`/`.dsc`
@@ -153,7 +158,8 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
     full.names = TRUE
   )
   #
-  if (origin == "xenon") {
+  ## xenon or magnettech
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin))) {
     ## to obtain `QValues` (from all `.DSC`/`.dsc` files) run the following
     qValues.from.files <- sapply(
       files.params,
@@ -163,7 +169,8 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
     ## required for g value calculations
     mwfq.string <- "MWFQ"
   }
-  if (origin == "winepr") {
+  ## winepr
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     ## to define `QValues` run the following
     qValues.from.files <- qValues %>% `if`(is.null(qValues),
                                            rep(1,times = length(names)), .)
@@ -182,7 +189,8 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
       )
     }
   )
-  if (origin == "winepr") {
+  ## winepr
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     ## conversion from "GHz" to "Hz"
     mwfreq.from.files <- mwfreq.from.files * 1e9
   }

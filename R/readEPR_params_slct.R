@@ -170,8 +170,27 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #'
 readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
+  #
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
+  ## condition for switching between xenon and magnettech
+  xen.magnet.cond <- function(origin){
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      return(0)
+    }
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      return(1)
+    }
+  }
+  #
   ## Load all required parameters from `.DSC`/`.dsc` or `.par`
-  if (origin == "xenon") {
+  ## xenon or magnettech
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    #
     resol <- readEPR_param_slct(path_to_dsc_par,
                                 string = "A1RS",
                                 origin = origin
@@ -181,12 +200,16 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
                                    origin = origin
     )
     NScans <- readEPR_param_slct(path_to_dsc_par,
-                                 string = "NbScansToDo",
+                                 string = switch(2-xen.magnet.cond(origin = origin),
+                                                 "AVGS",
+                                                 "NbScansToDo"),
                                  origin = origin
     )
-    ## for kinetic measurements "AVGS" doesn't work, therefore select "NbScansToDo"
+    ## for kinetic measurements "AVGS" doesn't work, therefore select "NbScansToDo" for Xenon
   }
-  if (origin == "winepr") {
+  ## winepr
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+    #
     resol <- readEPR_param_slct(path_to_dsc_par,
                                 string = "RES",
                                 origin = origin
