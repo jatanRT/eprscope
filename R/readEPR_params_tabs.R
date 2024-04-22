@@ -13,13 +13,13 @@
 #'
 #'
 #' @param path_to_dsc_par String, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
-#'   \code{text} files including all instrumental parameters and provided by the EPR machine
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
+#'   \code{text} files including all instrumental parameters and provided by the EPR machine.
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether they
-#'   were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-#'   one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-#' @param interact Character string, whether or not display tables by \code{\link[DT]{datatable}}.
+#'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
+#'   were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
+#'   ("Magnettech", \code{origin = "magnetech}) one. \strong{Default}: \code{origin = "xenon"}.
+#' @param interact Character string, whether or not to display tables by \code{\link[DT]{datatable}}.
 #'   \strong{Default}: \code{interact = NULL}. To display interactive table with parameters:
 #'   \code{interact = "params"} as well as to display that of the additional information:
 #'   \code{interact = "info"}.
@@ -59,19 +59,45 @@ readEPR_params_tabs <- function(path_to_dsc_par,
   ## 'Temporary' processing variables
   . <- NULL
   #
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
+  ## condition for switching between xenon and magnettech
+  xen.magnet.cond <- function(origin){
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      return(0)
+    }
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      return(1)
+    }
+  }
+  #
   ## condition for checking the temperature because
   ## "STMP"/"TE" (at the beginning of the line) is sometimes missing + basic quantities
   ## character vector
-  if (origin == "xenon"){
+  ## XENON AND MAGNETTECH
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))){
     temperature.check <- isTRUE(any(grepl("^STMP",readLines(path_to_dsc_par))))
     #
-    str.epr.Instr.params.V <- c(
+    ## xenon
+    str.epr.Instr.params.V.x <- c(
       "MWFQ", "QValue", "A1CT", "A1SW", "B0MA",
       "AVGS", "NbScansDone", "NbScansToDo", "A1RS",
       "MWPW", "SPTP", "RCTC", "RCAG", "STMP", "B0MF", "ConvFact"
     )
+    ## magnetech
+    str.epr.Instr.params.V.m <- str.epr.Instr.params.V.x[-c(7,8,12,13,16)]
+    ## switch between
+    str.epr.Instr.params.V <- switch(2-xen.magnet.cond(origin = origin),
+                                     str.epr.Instr.params.V.m,
+                                     str.epr.Instr.params.V.x)
+
   }
-  if (origin == "winepr"){
+  ## WINEPR
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))){
     temperature.check <- isTRUE(any(grepl("^TE",readLines(path_to_dsc_par))))
     #
     str.epr.Instr.params.V <- c(
@@ -82,14 +108,25 @@ readEPR_params_tabs <- function(path_to_dsc_par,
   #
   ## required string patterns from 'DSC'/'dsc' or 'par' file:
   ## depending on `temperature.check` remove "STMP" or "TE" element
-  if (origin == "xenon") {
+  ## XENON AND MAGNETTECH
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    #
     str.epr.Instr.params.V <- str.epr.Instr.params.V %>%
       `if`(isTRUE(temperature.check),.,
            str.epr.Instr.params.V[!(str.epr.Instr.params.V == "STMP")]) ## corresp. to value
     #
-    str.epr.Instr.params.Ch <- c("OPER", "DATE", "TIME", "CMNT", "SAMP") ## corresp. to character
+    ## xenon
+    str.epr.Instr.params.Ch.x <- c("OPER", "DATE", "TIME", "CMNT", "SAMP") ## corresp. to character
+    ## magnetech
+    str.epr.Instr.params.Ch.m <- str.epr.Instr.params.Ch.x[-5]
+    ## switch between
+    str.epr.Instr.params.Ch <- switch(2-xen.magnet.cond(origin = origin),
+                                      str.epr.Instr.params.Ch.m,
+                                      str.epr.Instr.params.Ch.x)
   }
-  if (origin == "winepr") {
+  ## WINEPR
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     str.epr.Instr.params.V <- str.epr.Instr.params.V %>%
       `if`(isTRUE(temperature.check),.,
            str.epr.Instr.params.V[!(str.epr.Instr.params.V == "TE")]) ## corresp. to value
@@ -116,133 +153,177 @@ readEPR_params_tabs <- function(path_to_dsc_par,
   #
   ## Parameters, Values and Units Definitions:
   ## based upon `temperature.check` (TRUE or FALSE) condition =>
-  if (origin == "xenon"){
+  ## XENON AND MAGNETTECH
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    #
+    ## general parameter string for xenon + magnetech => next step select
     ParameterV <- c(
       "Frequency", "QValue", "Central Field", "Sweep Width", "Modulation Amplitude",
       "Num. of Scans", "Num. of Scans Done", "Num. of Scans ToDo", "Number of Points",
       "Power", "Conversion Time", "Sweep Time", "Time Constant", "Receiver Gain",
       "Temperature","Modulation Frequency", "Conversion Factor"
     )
-    ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-15])
-    if (isTRUE(temperature.check)){
-      Value <- c(
-        as.numeric(str.dsc.sel.split.V$MWFQ[2]) * 1e-9,
-        as.numeric(str.dsc.sel.split.V$QValue[2]),
-        as.numeric(str.dsc.sel.split.V$A1CT[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$A1SW[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$B0MA[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$AVGS[2]),
-        as.numeric(str.dsc.sel.split.V$NbScansDone[2]),
-        as.numeric(str.dsc.sel.split.V$NbScansToDo[2]),
-        as.numeric(str.dsc.sel.split.V$A1RS[2]),
-        as.numeric(str.dsc.sel.split.V$MWPW[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$SPTP[2]),
-        as.numeric(str.dsc.sel.split.V$SPTP[2]) *
-          as.numeric(str.dsc.sel.split.V$A1RS[2]),
-        as.numeric(str.dsc.sel.split.V$RCTC[2]),
-        as.numeric(str.dsc.sel.split.V$RCAG[2]),
-        as.numeric(str.dsc.sel.split.V$STMP[2]),
-        as.numeric(str.dsc.sel.split.V$B0MF[2]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$ConvFact[2])
-      )
-    } else{
-      Value <- c(
-        as.numeric(str.dsc.sel.split.V$MWFQ[2]) * 1e-9,
-        as.numeric(str.dsc.sel.split.V$QValue[2]),
-        as.numeric(str.dsc.sel.split.V$A1CT[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$A1SW[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$B0MA[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$AVGS[2]),
-        as.numeric(str.dsc.sel.split.V$NbScansDone[2]),
-        as.numeric(str.dsc.sel.split.V$NbScansToDo[2]),
-        as.numeric(str.dsc.sel.split.V$A1RS[2]),
-        as.numeric(str.dsc.sel.split.V$MWPW[2]) * 1e+3,
-        as.numeric(str.dsc.sel.split.V$SPTP[2]),
-        as.numeric(str.dsc.sel.split.V$SPTP[2]) *
-          as.numeric(str.dsc.sel.split.V$A1RS[2]),
-        as.numeric(str.dsc.sel.split.V$RCTC[2]),
-        as.numeric(str.dsc.sel.split.V$RCAG[2]),
-        as.numeric(str.dsc.sel.split.V$B0MF[2]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$ConvFact[2])
-      )
+    #
+    ## xenon excl. temperature
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-15])
     }
+    ## magnettech excl. temperature
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),
+                                        ParameterV[-c(7,8,13,14,17)],
+                                        ParameterV[-c(7,8,13,14,15,17)])
+    }
+    #
+    ## general parameter values xenon => next step select +- temperature
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      #
+      Value.x <- c(
+        as.numeric(str.dsc.sel.split.V$MWFQ[2]) * 1e-9,
+        as.numeric(str.dsc.sel.split.V$QValue[2]),
+        as.numeric(str.dsc.sel.split.V$A1CT[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$A1SW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$B0MA[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$AVGS[2]),
+        as.numeric(str.dsc.sel.split.V$NbScansDone[2]),
+        as.numeric(str.dsc.sel.split.V$NbScansToDo[2]),
+        as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$MWPW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$SPTP[2]),
+        as.numeric(str.dsc.sel.split.V$SPTP[2]) *
+          as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$RCTC[2]),
+        as.numeric(str.dsc.sel.split.V$RCAG[2]),
+        as.numeric(str.dsc.sel.split.V$B0MF[2]) * 1e-3,
+        as.numeric(str.dsc.sel.split.V$ConvFact[2])
+      )
+      #
+      Value <- Value.x %>% `if`(isTRUE(temperature.check),
+                                append(Value.x,
+                                       as.numeric(str.dsc.sel.split.V$STMP[2]),
+                                       after = 14),
+                                .)
+    }
+    ## general parameter values magnettech => next step select +- temperature
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      #
+      Value.m <- c(
+        as.numeric(str.dsc.sel.split.V$MWFQ[2]) * 1e-9,
+        as.numeric(str.dsc.sel.split.V$QValue[2]),
+        as.numeric(str.dsc.sel.split.V$A1CT[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$A1SW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$B0MA[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$AVGS[2]),
+        as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$MWPW[2]) * 1e+3,
+        as.numeric(str.dsc.sel.split.V$SPTP[2]),
+        as.numeric(str.dsc.sel.split.V$SPTP[2]) *
+          as.numeric(str.dsc.sel.split.V$A1RS[2]),
+        as.numeric(str.dsc.sel.split.V$B0MF[2]) * 1e-3
+      )
+      #
+      Value <- Value.m %>% `if`(isTRUE(temperature.check),
+                                append(Value.m,
+                                       as.numeric(str.dsc.sel.split.V$STMP[2]),
+                                       after = 10),
+                                .)
+    }
+    #
+    ## Units depending on xenon or magnettech (similarly as `ParameterV` see above)
     Unit <- c(
       "GHz", "Unitless", "mT", "mT", "mT", "Unitless", "Unitless", "Unitless",
       "Unitless", "mW", "s", "s", "s", "dB","K", "KHz", "Unitless"
     )
-    Unit <- Unit %>% `if`(isTRUE(temperature.check),.,Unit[-15])
+    ## xenon excl. temperature
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      Unit <- Unit %>% `if`(isTRUE(temperature.check),.,Unit[-15])
+    }
+    ## magnettech excl. temperature
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      Unit <- Unit %>% `if`(isTRUE(temperature.check),
+                                        Unit[-c(7,8,13,14,17)],
+                                        Unit[-c(7,8,13,14,15,17)])
+    }
+    #
   }
-  if (origin == "winepr"){
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))){
     ParameterV <- c(
       "Frequency", "Central Field", "Sweep Width", "Modulation Amplitude",
       "Number of Scans", "Number of Points", "Power", "Conversion Time",
       "Sweep Time", "Acquire Time", "Time Constant", "Temperature", "Receiver Gain"
     )
     ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),.,ParameterV[-12])
-    if (isTRUE(temperature.check)){
-      Value <- c(
-        as.numeric(str.dsc.sel.split.V$MF[2]),
-        as.numeric(str.dsc.sel.split.V$HCF[2]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$HSW[2]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$RMA[2]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$JSD[2]),
+    #
+    ## general definition of value vector => next step select +- temperature
+    Value <- c(
+      as.numeric(str.dsc.sel.split.V$MF[2]),
+      as.numeric(str.dsc.sel.split.V$HCF[2]) * 0.1,
+      as.numeric(str.dsc.sel.split.V$HSW[2]) * 0.1,
+      as.numeric(str.dsc.sel.split.V$RMA[2]) * 0.1,
+      as.numeric(str.dsc.sel.split.V$JSD[2]),
+      as.numeric(str.dsc.sel.split.V$RES[2]),
+      as.numeric(str.dsc.sel.split.V$MP[2]),
+      as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3,
+      as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
         as.numeric(str.dsc.sel.split.V$RES[2]),
-        as.numeric(str.dsc.sel.split.V$MP[2]),
-        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
-          as.numeric(str.dsc.sel.split.V$RES[2]),
-        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
-          as.numeric(str.dsc.sel.split.V$RES[2]) *
-          as.numeric(str.dsc.sel.split.V$JSD[2]),
-        as.numeric(str.dsc.sel.split.V$RTC[2]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$TE[2]),
-        as.numeric(str.dsc.sel.split.V$RRG[2])
-      )
-    } else {
-      Value <- c(
-        as.numeric(str.dsc.sel.split.V$MF[2]),
-        as.numeric(str.dsc.sel.split.V$HCF[2]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$HSW[2]) * 0.1,
-        as.numeric(str.dsc.sel.split.V$RMA[2]) * 0.1,
+      as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
+        as.numeric(str.dsc.sel.split.V$RES[2]) *
         as.numeric(str.dsc.sel.split.V$JSD[2]),
-        as.numeric(str.dsc.sel.split.V$RES[2]),
-        as.numeric(str.dsc.sel.split.V$MP[2]),
-        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
-          as.numeric(str.dsc.sel.split.V$RES[2]),
-        as.numeric(str.dsc.sel.split.V$RCT[2]) * 1e-3 *
-          as.numeric(str.dsc.sel.split.V$RES[2]) *
-          as.numeric(str.dsc.sel.split.V$JSD[2]),
-        as.numeric(str.dsc.sel.split.V$RTC[2]) * 1e-3,
-        as.numeric(str.dsc.sel.split.V$RRG[2])
-      )
-    }
+      as.numeric(str.dsc.sel.split.V$RTC[2]) * 1e-3,
+      as.numeric(str.dsc.sel.split.V$RRG[2])
+    )
+    #
+    Value <- Value %>% `if`(isTRUE(temperature.check),
+                            append(Value,
+                                   as.numeric(str.dsc.sel.split.V$TE[2]),
+                                   after = 11),
+                            .)
+    #
     Unit <- c("GHz", "mT", "mT", "mT", "Unitless",
               "Unitless", "mW", "s", "s", "s", "s",
               "K", "Unitless")
     Unit <- Unit %>% `if`(isTRUE(temperature.check),.,Unit[-12])
   }
   #
-  ## Create a "parameter" data frame ('[2]' means second string in line / couple):
+  ## Create a "parameter" data frame:
   ## data frame from values
   data.instrument.V <- data.frame(
     ParameterV,Value,Unit
   )
   #
-  ## data frame from characters
-  if (origin == "xenon") {
-    data.instrument.Ch <- data.frame(
-      ParameterCh <- c("Operator", "Date", "Recording Time", "Comment", "Sample"),
-      Information <- c(
-        as.character(str.dsc.sel.split.Ch$OPER[2]),
-        as.character(str.dsc.sel.split.Ch$DATE[2]),
-        as.character(str.dsc.sel.split.Ch$TIME[2]),
-        as.character(str.dsc.sel.split.Ch$CMNT[2]),
-        as.character(str.dsc.sel.split.Ch$SAMP[2])
-      )
+  ## data frame from characters Xenon + Magnettech
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    #
+    ## general character params. vectors => next step +-  `sample` depending on origin
+    ## xenon
+    ParameterCh.x <- c("Operator", "Date", "Recording Time", "Comment", "Sample")
+    ## magnettech
+    ParameterCh.m <- ParameterCh.x[-5]
+    ## switch between
+    ParameterCh <- switch(2-xen.magnet.cond(origin = origin),
+                          ParameterCh.m,
+                          ParameterCh.x)
+    #
+    ## similarly
+    Information.m <- c(
+      as.character(str.dsc.sel.split.Ch$OPER[2]),
+      as.character(str.dsc.sel.split.Ch$DATE[2]),
+      as.character(str.dsc.sel.split.Ch$TIME[2]),
+      as.character(str.dsc.sel.split.Ch$CMNT[2])
+      # as.character(str.dsc.sel.split.Ch$SAMP[2])
     )
+    Information <- switch(2-xen.magnet.cond(origin = origin),
+                          Information.m,
+                          append(Information.m,as.character(str.dsc.sel.split.Ch$SAMP[2]))
+                          )
+    #
+    ## the entire data frame =>
+    data.instrument.Ch <- data.frame(ParameterCh,Information)
   }
-  if (origin == "winepr") {
+  ## data frame from characters WinEpr
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     data.instrument.Ch <- data.frame(
       ParameterCh <- c("Operator", "Date", "Recording Time", "Comment"),
       Information <- c(
