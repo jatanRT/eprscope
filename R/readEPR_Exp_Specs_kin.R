@@ -11,6 +11,7 @@
 #'  \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 #'
 #'
+#' @inheritParams readEPR_Exp_Specs
 #' @param name_root Character string corresponding to entire `file name` without `extension`.
 #' @param dir_ASC Character string, path (can be defined by \code{\link[base]{file.path}})
 #'   to directory where the `ASCII` spectral data is stored.
@@ -46,11 +47,7 @@
 #'   all additional (in addition to \code{qValue}) normalization(s) e.g. like concentration, powder sample
 #'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}.
-#' @param origin Character string corresponding to \strong{software} used to acquire the EPR spectra
-#'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-#'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-#'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
-#' @param ... Additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
+#' @param ... additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
 #' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
@@ -152,7 +149,7 @@ readEPR_Exp_Specs_kin <- function(name_root,
                                   full.names = TRUE)
     #
     ## Qvalue
-    qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue")
+    qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue",origin = origin)
   }
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     ## path to asc

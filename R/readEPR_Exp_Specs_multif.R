@@ -5,21 +5,26 @@
 #' @family Data Reading
 #'
 #'
-#' @description Loads EPR spectra from several/multiple `ASCII`/`text` files and from those incl. instrumental
-#'  parameters (`DSC`/`dsc` or `par`) at once and transforms it into a database list of data frames. Function is based
-#'  on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into one list/database.
-#'  According to  experiment quantity (e.g. temperature,microwave power,recording time...etc),
-#'  `names` and `var2nd` (in case of `tidy = T`) parameters have to be provided. If intensity normalization
-#'  by e.g. like concentration, sample weight...etc is required, it can be performed afterwards
-#'  (generally, except the Q values, it is not included in the transformation process).
+#' @description Loads the EPR spectra from several/multiple \code{ASCII}/\code{text} files and from those incl. instrumental
+#'  parameters (\code{.DSC}/\code{.dsc} or \code{.par}) at once and transforms it into a database list of data frames.
 #'
 #'
+#' @details
+#'   Function is based on the \code{\link[base]{list.files}} and \code{\link{readEPR_Exp_Specs}} into
+#'   one list/database. According to  experiment quantity (e.g. temperature,microwave power,recording time...etc),
+#'  \code{names} and \code{var2nd} (in case of \code{tidy = TRUE}) parameters have to be provided.
+#'  If intensity normalization by e.g. like concentration, sample weight...etc is required,
+#'  it can be performed afterwards (generally, except the Q values, it is not included
+#'  in the transformation process).
+#'
+#'
+#' @inheritParams readEPR_Exp_Specs
 #' @param name_pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
 #'  from name which might not necessarily appear at the beginning of the file name.
 #' @param dir_ASC path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
 #'  the `ascii` files are stored
 #' @param dir_dsc_par path (defined by \code{\link[base]{file.path}} String/Character) to directory
-#'  where the files (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
+#'  where the files (\code{.DSC}/\code{.dsc} or \code{.par}) with instrumental parameters (to calculate \eqn{g}-value
 #'  or normalize intensities) are stored
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
@@ -30,40 +35,37 @@
 #'   to abscissa (\eqn{x}-axis) in spectra or other plots.
 #' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
 #'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-#'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+#'   like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.
-#' @param Intensity.id Numeric index related to \code{col.names} pointing to `general` intensity,
-#'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
-#'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+#' @param Intensity.id Numeric index related to \code{col.names} pointing to "general" intensity,
+#'   like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
+#'   integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
 #'   \eqn{y}-axis in spectra or other plots.
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
 #'   convert \eqn{B} in Gauss <=> millitesla...
-#' @param qValues Numeric Vector, `Q Value` (sensitivity factors to normalize EPR intensity) either loaded from
-#'  files incl. parameters (`.DSC` or `.par`) by this function/R.script (therefore \code{qValues = NULL},
+#' @param qValues Numeric Vector, Q-value (sensitivity factors to normalize EPR intensity) either loaded from
+#'  files incl. parameters (\code{.DSC} or \code{.par}) by this function/R.script (therefore \code{qValues = NULL},
 #'  \strong{default}) or in case of \code{origin = "winepr"} they have to be provided by the spectrometer operator.
 #' @param norm.list.add Numeric list of vectors. Additional normalization constants in form of vectors involving
 #'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
-#'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+#'   weight, number of scans, ...etc (\code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
 #'   \code{norm.list.add = NULL}.
 #' @param names String/Character Vector corresponding to values of \strong{additional quantity}
 #'  (e.g. temperature,microwave power...etc) being varied by the individual experiments
-#' @param tidy Logical, whether to transform the list of data frames into long table (`tidy`) format,
-#'  \strong{default}: \code{tidy = F}
-#' @param var2nd.series String/Character, if \code{tidy = T} (see `tidy` parameter/argument) it is referred to name
-#'  of the variable/quantity (e.g. like `time`,`Temperature`,`Electrochemical Potential`,`Microwave Power`...etc)
-#'  altered upon individual experiments as a second variable (\code{var2nd}) and related to spectra/data.
-#' @param var2nd.series.factor Logical, description ...TBC ... factorize \code{var2nd.series}, usefull for plotting
+#' @param tidy Logical, whether to transform the list of data frames into long table (\code{tidy}) format,
+#'  \strong{default}: \code{tidy = FALSE}.
+#' @param var2nd.series String/Character, if \code{tidy = TRUE} (see \code{tidy} parameter/argument)
+#'  it is referred to name of the variable/quantity (e.g. like "time","Temperature","Electrochemical Potential",
+#'  "Microwave Power"...etc) altered upon individual experiments as a second variable (\code{var2nd})
+#'  and related to spectra/data.
+#' @param var2nd.series.factor Logical, description ...TBC ... factorize \code{var2nd.series}, useful for plotting
 #'   the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, the case to visualize
 #'   the EPR spectra by \code{plot}-functions.
-#' @param origin String/Character corresponding to \strong{software} used to acquire the EPR spectra
-#'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-#'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-#'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
-#' @param ... Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+#' @param ... additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
 #'
-#' @return List of Data Frames (or `long table` tidy format) corresponding to multiple spectral data files/data sets.
+#' @return List of Data Frames (or long table \code{tidy} format) corresponding to multiple spectral data files/data sets.
 #'
 #'
 #' @examples
@@ -159,11 +161,12 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
   )
   #
   ## xenon or magnettech
-  if (any(grepl(paste(xenon.string,collapse = "|"),origin))) {
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
     ## to obtain `QValues` (from all `.DSC`/`.dsc` files) run the following
     qValues.from.files <- sapply(
       files.params,
-      function(x) readEPR_param_slct(x, string = "QValue")
+      function(x) readEPR_param_slct(x, string = "QValue",origin = origin)
     )
     ## to obtain microwave frequencies `MWFQ` (from all `.DSC`/`.dsc` files),
     ## required for g value calculations

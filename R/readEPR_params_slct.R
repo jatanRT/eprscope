@@ -6,46 +6,46 @@
 #'
 #' @description
 #'  Function takes the \strong{selected} instrumental parameters or information
-#'  from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the \code{Xenon}/\code{Magnettech}
+#'  from \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
 #'  or \code{WinEpr} Software, respectively)
 #'
 #'
 #' @param path_to_dsc_par String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 #'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
-#' @param string String, within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
+#' @param string Character string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
 #'   corresponding to instrumental parameter,
 #'  following \strong{strings are defined for all three main acquisition software described-above}
 #'   (\strong{in parenthesis for "winepr" software}):
 #'  \tabular{ll}{
 #'   \strong{String} \tab \strong{Instrumental Parameter} \cr
-#'    "OPER" ("JON") \tab  operator (of the EPR instrument) \cr
-#'    "CMNT" ("JCO") \tab  comment (in order to describe the measurement) \cr
-#'    "DATE" ("JDA") \tab  date (when the EPR spectrum was recorded) \cr
-#'    "TIME" ("JTM") \tab  time (when the EPR spectrum was recorded) \cr
-#'    "SAMP" \tab   name/decsript. of the sample,
-#'    not available in "magnettech" \code{.dsc} \cr
-#'    "B0MF" \tab  modulation frequency in \code{Hz} \cr
-#'    "MWFQ"  ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
-#'    "QValue" \tab  recorded quality-Factor (required for intensity norm.) \code{unitless} \cr
+#'    "OPER" ("JON") \tab operator (of the EPR instrument) \cr
+#'    "CMNT" ("JCO") \tab comment (in order to describe the measurement) \cr
+#'    "DATE" ("JDA") \tab date (when the EPR spectrum was recorded) \cr
+#'    "TIME" ("JTM") \tab time (when the EPR spectrum was recorded) \cr
+#'    "SAMP" \tab name/decsript. of the sample, not available in "magnettech" \code{.dsc} \cr
+#'    "B0MF" \tab modulation frequency in \code{Hz} \cr
+#'    "MWFQ" ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
+#'    "QValue" \tab recorded quality-Factor (required for intensity norm.) \code{unitless} \cr
 #'    "A1CT" ("HCF") \tab central field (B) in \code{T} (\code{G}) \cr
-#'    "A1SW" ("HSW") \tab  sweep width in \code{T} (\code{G}) \cr
-#'    "STMP" ("TE")  \tab  temperature in \code{K} \cr
-#'    "B0MA" ("RMA") \tab  modulation amplitude in \code{T} (\code{G}) \cr
-#'    "AVGS" ("JSD") \tab  number of accumulations for each spectrum \cr
-#'    "A1RS" ("RES") \tab  number of points/resolution \cr
+#'    "A1SW" ("HSW") \tab sweep width in \code{T} (\code{G}) \cr
+#'    "STMP" ("TE")  \tab temperature in \code{K} \cr
+#'    "B0MA" ("RMA") \tab modulation amplitude in \code{T} (\code{G}) \cr
+#'    "AVGS" ("JSD") \tab number of accumulations for each spectrum \cr
+#'    "A1RS" ("RES") \tab number of points/resolution \cr
 #'    "MWPW" ("MP") \tab microwave power in \code{W} (\code{mW}) \cr
-#'    "SPTP" ("RCT") \tab  conversion time in \code{s} (\code{ms}) \cr
-#'    "RCTC" ("RTC") \tab  time constant in \code{s} (ms),
+#'    "SPTP" ("RCT") \tab conversion time in \code{s} (\code{ms}) \cr
+#'    "RCTC" ("RTC") \tab time constant in \code{s} (ms),
 #'    not available in "magnettech" \code{.dsc} \cr
 #'    "RCAG" ("RRG") \tab signal receiver gain in \code{dB} (unitless),
 #'    not available in "magnetech" \code{.dsc} \cr
 #'    "ConvFact" \tab conversion factor/instr. calibration constant for quantitative
 #'    analysis \code{unitless}, not available in "magnettech" \code{.dsc} \cr
 #'  }
-#' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether
-#'   they were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
-#'   ("Magnettech", \code{origin = "magnettech"}) one. \strong{Default}: \code{origin = "xenon"}.
+#' @param origin Character string corresponding to software used to acquire the EPR spectra
+#'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
+#'   they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+#'   (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).
+#'
 #'
 #' @return Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct})
 #'   instrumental parameter applied to record the EPR spectra.
@@ -95,22 +95,24 @@ readEPR_param_slct <- function(path_to_dsc_par,
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
   #
+  ## XENON + MAGNETTECH
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
     if (string == "OPER" || string == "CMNT" ||
         string == "DATE" || string == "TIME") {
+      param.slct <- as.character(sel.str.split[2])
+    }
+    if (string == "SAMP" & any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      stop(" The required string is not available in `.dsc` file ! ")
+    }
+    if (string == "SAMP" & any(grepl(paste(xenon.string,collapse = "|"),origin))){
       param.slct <- as.character(sel.str.split[2])
     } else {
       param.slct <- as.double(sel.str.split[2])
     }
   }
   #
-  if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
-    if (string == "SAMP"){
-      param.slct <- as.character(sel.str.split[2])
-    }
-  }
-  #
+  ## WINEPR
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     if (string == "JON" || string == "JCO" || string == "JDA" ||
         string == "JTM") {
@@ -135,23 +137,20 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #' @description
 #'  Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
-#'  experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
-#'  or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
-#'  spectra, see \code{\link{correct_time_Exp_Specs}}
+#'  experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
+#'  "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
+#'  spectra, see \code{\link{correct_time_Exp_Specs}}.
 #'
 #'
+#' @inheritParams readEPR_param_slct
 #' @param path_to_dsc_par String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 #'   parameters provided by the EPR machine
-#' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-#'   by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
-#'   \strong{default}: \code{origin = "xenon"}
 #'
 #'
 #' @return List containing:
 #'   \describe{
 #'   \item{Nscans}{Number of scans.}
-#'   \item{swTime}{Sweep time in `s` required for time correction during the `2D_Field_Delay`
+#'   \item{swTime}{Sweep time in \code{s} required for time correction during the \code{2D_Field_Delay}
 #'   (time series EPR experiment).}
 #'   \item{Npoints}{Number of points (spectral resolution).}
 #'   }
@@ -245,22 +244,18 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
 #'   radical or paramagnetic species number determination).
 #'
 #'
-#'
+#' @inheritParams readEPR_param_slct
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
-#' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether they
-#'   were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-#'   one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.
 #'
 #'
 #' @return List consisting of:
 #'   \describe{
-#'   \item{BmmT}{Modulation amplitude value in `mT`.}
-#'   \item{PmW}{Microwave source power in `mW`.}
-#'   \item{TK}{Experimental temperature in `K`.}
-#'   \item{mwGHz}{Microwave frequency value in `GHz`.}
+#'   \item{BmmT}{Modulation amplitude value in \code{mT}.}
+#'   \item{PmW}{Microwave source power in \code{mW}.}
+#'   \item{TK}{Experimental temperature in \code{K}.}
+#'   \item{mwGHz}{Microwave frequency value in \code{GHz}.}
 #'   }
 #'
 #'
@@ -323,16 +318,12 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #'   which are are required for the simulations of EPR spectra (see \code{\link{eval_sim_EPR_iso}}).
 #'
 #'
-#'
+#' @inheritParams readEPR_param_slct
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
-#' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether they
-#'   were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-#'   one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.
 #' @param B.unit Character string pointing to unit of magnetic flux density which is the output
-#'   `unit`, \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), for \code{"sweep width"}
+#'   "unit", \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), for \code{"sweep width"}
 #'   and \code{"central field"} (see \code{\link{eval_sim_EPR_iso}}).
 #'   \strong{Default}: \code{B.unit = "G"}.
 #'

@@ -18,10 +18,10 @@
 #' @param origin String, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
 #'   were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
-#'   ("Magnettech", \code{origin = "magnetech}) one. \strong{Default}: \code{origin = "xenon"}.
-#' @param interact Character string, whether or not to display tables by \code{\link[DT]{datatable}}.
-#'   \strong{Default}: \code{interact = NULL}. To display interactive table with parameters:
-#'   \code{interact = "params"} as well as to display that of the additional information:
+#'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnetech}).
+#' @param interact Character string, whether or not to display interactive tables by \code{\link[DT]{datatable}}.
+#'   \strong{Default}: \code{interact = NULL}. Interactive table with parameters can be displayed by
+#'   \code{interact = "params"} or to display the additional information table:
 #'   \code{interact = "info"}.
 #'
 #'
@@ -176,7 +176,7 @@ readEPR_params_tabs <- function(path_to_dsc_par,
                                         ParameterV[-c(7,8,13,14,15,17)])
     }
     #
-    ## general parameter values xenon => next step select +- temperature
+    ## general parameter values xenon => next step select + temperature
     if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
       #
       Value.x <- c(
@@ -205,7 +205,7 @@ readEPR_params_tabs <- function(path_to_dsc_par,
                                        after = 14),
                                 .)
     }
-    ## general parameter values magnettech => next step select +- temperature
+    ## general parameter values magnettech => next step select + temperature
     if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
       #
       Value.m <- c(

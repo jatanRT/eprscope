@@ -40,22 +40,22 @@
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #'   The default (for the original \code{\link[data.table]{fread}}) is to use the header column
-#'   if present or detected, or if not `"V"` followed by the column number.
+#'   if present or detected, or if not \code{"V"} followed by the column number.
 #' @param x.id Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 #'   to abscissa (\eqn{x}-axis) in the spectra or other plots.
 #' @param x.unit Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
 #'   \code{"mT"} or \code{"MHz"}.
-#' @param Intensity.id Numeric index related to \code{col.names} vector pointing to `general` intensity,
-#'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
-#'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+#' @param Intensity.id Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
+#'   like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
+#'   integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
 #'   \eqn{y}-axis in the EPR spectra or other plots.
-#' @param time.series.id Numeric index related to \code{col.names} vector and pointing to `time` column for time series
+#' @param time.series.id Numeric index related to \code{col.names} vector and pointing to \code{time} column for time series
 #'   EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 #'   use \code{x} and \code{x.unit} parameters/arguments instead (see also examples). This parameter/argument is dedicated
 #'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL}.
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
-#'   conversion from `G` into `mT` should be performed. If default is chosen, a new column/variable
-#'   \eqn{B} in `mT` is created.
+#'   conversion from \code{G} into \code{mT} should be performed. If default is chosen, a new column/variable
+#'   \eqn{B} in \code{mT} is created.
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
 #'   in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
 #'   \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.
@@ -66,14 +66,14 @@
 #'   the Q-factor/value might be also included in the \code{norm.vec.add}.
 #' @param origin String/Character corresponding to \strong{origin} of the ASCII data, like from
 #'   most common spectrometers (from which are data loaded automatically using the default parameters).
-#'   Options are summarized in the following table (Any other specific `origin` may be added later) =>
+#'   Options are summarized in the following table (Any other specific \code{origin} may be added later) =>
 #'   \tabular{rl}{
 #'   \strong{String} \tab \strong{Description} \cr
-#'   "xenon" \tab \strong{default} automatically loads data from the `Xenon` software with dafault params. \cr
-#'   "winepr" \tab automatically loads data from the `WinEpr` software. \cr
-#'   "magnettech" \tab automatically loads data from the new `Magnettech` software. \cr
-#'   "other" (arbitrary string, e.g. like "csv") \tab general, loads any other `origin`
-#'   data ( like `csv`, `txt`, `asc`) incl. data from other instrumental/spectrometer software.
+#'   "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with dafault params. \cr
+#'   "winepr" \tab automatically loads data from the "WinEpr" software. \cr
+#'   "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
+#'   "other" (arbitrary string, e.g. like "csv") \tab general, loads any other original
+#'   data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
 #'   \strong{In such case all the parameters/arguments for}
 #'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 #'   }
