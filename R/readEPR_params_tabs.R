@@ -6,16 +6,16 @@
 #'
 #'
 #' @description
-#' Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
-#' to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
-#' parameter values as well as character/string information about the measurement see also
-#' \code{\link{readEPR_param_slct}}
+#'   Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
+#'   to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
+#'   parameter values as well as character/string information about the measurement see also
+#'   \code{\link{readEPR_param_slct}}.
 #'
 #'
-#' @param path_to_dsc_par String, path (also provided by \code{\link[base]{file.path}})
+#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
-#' @param origin String, corresponding to software which was used to acquire the EPR spectra
+#' @param origin Character string, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
 #'   were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
 #'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnetech}).

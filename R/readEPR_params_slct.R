@@ -10,7 +10,7 @@
 #'  or \code{WinEpr} Software, respectively)
 #'
 #'
-#' @param path_to_dsc_par String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
+#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 #'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
 #' @param string Character string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
 #'   corresponding to instrumental parameter,
