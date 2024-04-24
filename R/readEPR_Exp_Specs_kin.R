@@ -6,55 +6,44 @@
 #'
 #'
 #' @description The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wave (CW)
-#'  EPR time series spectral data (recorded by e.g. `2D_Field_Delay Experiment` in "Xenon"
+#'  EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay} experiment in "Xenon"
 #'  acquisition/processing software). Function includes automatic time correction for CW EPR
 #'  \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 #'
 #'
-#' @param name_root Character string corresponding to entire `file name` without `extension`.
+#' @inheritParams readEPR_Exp_Specs
+#' @param name_root Character string corresponding to entire file name without extension.
 #' @param dir_ASC Character string, path (can be defined by \code{\link[base]{file.path}})
-#'   to directory where the `ASCII` spectral data is stored.
+#'   to directory where the \code{ASCII} spectral data is stored.
 #' @param dir_dsc_par Character string, path (can be defined by \code{\link[base]{file.path}} character string)
-#'   to directory where the file (`.DSC`/`.dsc` or `.par`) with instrumental parameters (to calculate \eqn{g}-value
-#'   or normalize intensities) is stored.
+#'   to directory where the file (\code{.DSC}/\code{.dsc} or \code{.par}) with instrumental parameters
+#'   (to calculate \eqn{g}-value or normalize intensities) is stored.
 #' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 #'   \strong{Default}: \code{time.unit = "s"}
-#' @param time.delta.slice.s Numeric, time span/interval in seconds between `slices`...TBC,
-#'   e.g. in case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.
+#' @param time.delta.slice.s Numeric, time span/interval in seconds between \code{slices},
+#'   in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.
 #' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#' @param x.id Numeric index related to \code{col.names} pointing to independent variable, which corresponds
-#'   to abscissa (\eqn{x}-axis) in spectra or other plots.
-#' @param x.unit Character string ...TBC only "mT" and "G" are available
-#' @param Intensity.id Numeric index related to \code{col.names} pointing to `general` intensity,
-#'   like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
-#'   integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
-#'   \eqn{y}-axis in spectra or other plots.
-#' @param time.series.id Numeric index related to \code{col.names} pointing to `time` column for time series
+#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.
+#' @param time.series.id Numeric index related to \code{col.names} pointing to \code{time} column for time series
 #'   EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 #'   use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
 #'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.
-#' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) description...
-#'   convert \eqn{B} in Gauss <=> millitesla...
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 #'   \code{qValue = NULL}. If EPR spectra were acquired by the "Winepr" software Q value must be defined
 #'   like \code{qValue = 3400}
 #' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
-#'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
-#'   weight, number of scans, ...etc (\code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+#'   all additional (in addition to \code{qValue}) normalization(s) e.g. like concentration, powder sample
+#'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}.
-#' @param origin Character string corresponding to \strong{software} used to acquire the EPR spectra
-#'   on BRUKER spectrometers, i.e. whether they were recorded by the windows based softw. ("WinEpr",
-#'   \code{origin = "winepr"}) or by the Linux one ("Xenon"), \strong{default}: \code{origin = "xenon"}
-#'   Only the two above-mentioned  characters/strings are available due to reading parameter files.
-#' @param ... Additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
+#' @param ... additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
 #' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
-#'    time vector (\code{time}).
+#'    time vector (\code{time}). For \code{origon = "winepr"} "time" slices/indices must be already converted
+#'    into time domain by \code{time.delta.slice.s} (see arguments).
 #'
 #'
 #' @examples
@@ -116,11 +105,34 @@ readEPR_Exp_Specs_kin <- function(name_root,
   ## or `.spc` and `.par`and corresponds to file name without extension
   #
   ## ================= Reading Files & Parameters ==================
-  if (origin == "xenon") {
+  #
+  ## origin strings vectors to define "origin" conditions =>
+  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  xenon.string <- c("xenon","Xenon","XENON")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  #
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    #
+    ## condition for switching between xenon and magnettech
+    xen.magnet.cond <- function(origin){
+      if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+        return(0)
+      }
+      if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+        return(1)
+      }
+    }
+    #
     ## path to `asc` file
     path.to.asc <- file.path(
       dir_ASC,
-      paste0(name_root, ".txt")
+      paste0(name_root,
+             switch(2-xen.magnet.cond(origin = origin),
+                    ".csv",
+                    ".txt"
+                    )
+             ) ## `txt` for xenon & `csv` for magnettech
     )
     #
     ## path to `DSC` or `dsc`
@@ -129,9 +141,9 @@ readEPR_Exp_Specs_kin <- function(name_root,
                                   full.names = TRUE)
     #
     ## Qvalue
-    qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue")
+    qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue",origin = origin)
   }
-  if (origin == "winepr") {
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     ## path to asc
     path.to.asc <- file.path(
       dir_ASC,
