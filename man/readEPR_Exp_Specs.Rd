@@ -37,7 +37,7 @@ column/variable names. A safe rule of thumb is to use column names incl. physica
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 The default (for the original \code{\link[data.table]{fread}}) is to use the header column
-if present or detected, or if not `"V"` followed by the column number.}
+if present or detected, or if not \code{"V"} followed by the column number.}
 
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in the spectra or other plots.}
@@ -45,19 +45,19 @@ to abscissa (\eqn{x}-axis) in the spectra or other plots.}
 \item{x.unit}{Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
-\item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to `general` intensity,
-like derivative intensity (`dIepr_over_dB`), integral one (e.g. `single_Integ`), double or sigmoid
-integral (e.g. `Area`)...etc. This corresponds to column/vector which should be presented like
+\item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
+like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
+integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
 \eqn{y}-axis in the EPR spectra or other plots.}
 
-\item{time.series.id}{Numeric index related to \code{col.names} vector and pointing to `time` column for time series
+\item{time.series.id}{Numeric index related to \code{col.names} vector and pointing to \code{time} column for time series
 EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 use \code{x} and \code{x.unit} parameters/arguments instead (see also examples). This parameter/argument is dedicated
 to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL}.}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
-conversion from `G` into `mT` should be performed. If default is chosen, a new column/variable
-\eqn{B} in `mT` is created.}
+conversion from \code{G} into \code{mT} should be performed. If default is chosen, a new column/variable
+\eqn{B} in \code{mT} is created.}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer,
 in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
@@ -71,14 +71,16 @@ the Q-factor/value might be also included in the \code{norm.vec.add}.}
 
 \item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
 most common spectrometers (from which are data loaded automatically using the default parameters).
-Options are summarized in the following table (Any other specific `origin` may be added later) =>
+Options are summarized in the following table (Any other specific \code{origin} may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
-"xenon" \tab \strong{default} automatically loads data from `Xenon` software with dafault params. \cr
-"winepr" \tab automatically loads data from `WinEpr` software \cr
-"other" (arbitrary string) \tab general, loads any other `origin` data ( like `csv`, `txt`, `asc`) incl.
-data from other instrumental/spectrometer software. \strong{In such case all the parameters/arguments for}
-\code{readEPR_Exp_Specs} \strong{have to be set up accordingly}.
+"xenon" \tab \strong{default} automatically loads data from the "Xenon" software with dafault params. \cr
+"winepr" \tab automatically loads data from the "WinEpr" software. \cr
+"magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
+"other" (arbitrary string, e.g. like "csv") \tab general, loads any other original
+data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
+\strong{In such case all the parameters/arguments for}
+\code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}
 
 \item{...}{additional arguments specified (see also \code{\link[data.table]{fread}}).}
@@ -95,16 +97,28 @@ Data frame/table consisting of the magnetic flux density
 }
 \description{
 The function is based on the \code{\link[data.table]{fread}} with the purpose to read
-  experimental EPR/ENDOR spectra or other original related (pre-processed) data from EPR spectrometers
-  in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}). Default arguments are set
-  to read the data from \emph{Xenon} acquisition/processing software (see argument \code{origin}).
+  the experimental EPR/ENDOR spectra or other original related (pre-processed) data from the EPR spectrometers
+  in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}).
 }
 \details{
-ASCII data are transformed into \emph{R} \code{data frames}, which can be easily processed by other R packages
-  (e.g. by \pkg{tidyverse} system), afterwards. Spectral intensities are automatically normalized by the common
-  experimental parameters like Q-factor, concentration, weight...etc. The structure of ASCII files/tables
-  depend on the origin/software used to acquire the EPR spectra. This is mirrored by \code{origin} parameter.
-  Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series} parameter.
+ASCII data are transformed into \emph{R} data frames, which can be then easily processed by this package
+  or other R packages (e.g. by \pkg{tidyverse} system), afterwards. Spectral intensities are automatically
+   normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
+   These are defined by the two arguments:
+  \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
+  quantities represented by the vector. If \code{qValue = NULL}, the Q-value ca be also defined a component
+  of the \code{norm.vec.add}. Finally, the normalized intensity is calculated by the following
+  expression:
+  \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
+  where \eqn{k} is iterating through all components of the \code{norm.vec.add} (\eqn{norm.vec.add[k]}).
+  The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
+  This is mirrored mainly by the \code{origin} parameter/argument. Default arguments are set to read the data from
+  \emph{Xenon} acquisition/processing software. However, additional \code{origins} can be set like
+  \code{origin = "winepr"} or \code{origin = "magnettech"} or even any arbitrary string
+  e.g. like \code{origin = "csv"} (see also \code{origin argument}). Time series (time evolution
+  of EPR spectra/kinetics) is defined by the \code{time.series.id} parameter. In such case the ASCII data table
+  also contains additional column either with recorded time (see also \code{\link{correct_time_Exp_Specs}})
+  or with slice number for each spectrum.
 }
 \examples{
 ## simple EPR spectrum acquired by "xenon"
@@ -158,7 +172,7 @@ readEPR_Exp_Specs(PNT.ENDOR.data.path,
 head(PNT.ENDOR.data)
 #
 \dontrun{
-## EPR time series acquired by "winepr"
+## EPR time series acquired by "Winepr"/"WinEpr"
 readEPR_Exp_Specs(path_to_ASC,
                   col.names = c("B_G",
                                 "Slice",
@@ -166,7 +180,7 @@ readEPR_Exp_Specs(path_to_ASC,
                   x.id = 1,
                   Intensity.id = 3,
                   time.series.id = 2,
-                  origin = "winepr")
+                  origin = "Winepr")
 #
 ## example for "xenon" time series experiment
 ## (evolution of EPR spectra in time, e.g. in case of
@@ -183,10 +197,9 @@ readEPR_Exp_Specs(path_to_ASC,
                   qValue = 2800,
                   time.series.id = 3)
 #
-## reading simple spectrum from the new "magnettech"
+## reading simple spectrum from the new "magnettech"/"Magnettech"
 ## acquisition software
 readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
-                  skip = 88,
                   col.names = c("B_mT","dIepr_over_dB"),
                   x.id = 1,
                   x.unit = "mT",

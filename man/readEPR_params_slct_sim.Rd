@@ -11,13 +11,13 @@ readEPR_params_slct_sim(path_to_dsc_par, origin = "xenon", B.unit = "G")
 to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 \code{text} files including all instrumental parameters and provided by the EPR machine.}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they
-were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.}
+\item{origin}{Character string corresponding to software used to acquire the EPR spectra
+on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
+they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density which is the output
-`unit`, \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), for \code{"sweep width"}
+"unit", \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), for \code{"sweep width"}
 and \code{"central field"} (see \code{\link{eval_sim_EPR_iso}}).
 \strong{Default}: \code{B.unit = "G"}.}
 }

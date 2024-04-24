@@ -10,25 +10,25 @@ readEPR_params_slct_kin(path_to_dsc_par, origin = "xenon")
 \item{path_to_dsc_par}{String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 parameters provided by the EPR machine}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they were recorded
-by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux one ("Xenon"),
-\strong{default}: \code{origin = "xenon"}}
+\item{origin}{Character string corresponding to software used to acquire the EPR spectra
+on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
+they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).}
 }
 \value{
 List containing:
   \describe{
   \item{Nscans}{Number of scans.}
-  \item{swTime}{Sweep time in `s` required for time correction during the `2D_Field_Delay`
+  \item{swTime}{Sweep time in \code{s} required for time correction during the \code{2D_Field_Delay}
   (time series EPR experiment).}
   \item{Npoints}{Number of points (spectral resolution).}
   }
 }
 \description{
 Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
- experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum (written by the `Xenon`
- or `WinEpr` software, respectively). These parameters are required for the time correction of EPR
- spectra, see \code{\link{correct_time_Exp_Specs}}
+ experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
+ "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
+ spectra, see \code{\link{correct_time_Exp_Specs}}.
 }
 \examples{
 \dontrun{

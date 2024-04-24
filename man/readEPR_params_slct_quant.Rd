@@ -11,18 +11,18 @@ readEPR_params_slct_quant(path_to_dsc_par, origin = "xenon")
 to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
 \code{text} files including all instrumental parameters and provided by the EPR machine.}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they
-were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-one ("Xenon"). \strong{Default}: \code{origin = "xenon"}.}
+\item{origin}{Character string corresponding to software used to acquire the EPR spectra
+on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
+they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).}
 }
 \value{
 List consisting of:
   \describe{
-  \item{BmmT}{Modulation amplitude value in `mT`.}
-  \item{PmW}{Microwave source power in `mW`.}
-  \item{TK}{Experimental temperature in `K`.}
-  \item{mwGHz}{Microwave frequency value in `GHz`.}
+  \item{BmmT}{Modulation amplitude value in \code{mT}.}
+  \item{PmW}{Microwave source power in \code{mW}.}
+  \item{TK}{Experimental temperature in \code{K}.}
+  \item{mwGHz}{Microwave frequency value in \code{GHz}.}
   }
 }
 \description{

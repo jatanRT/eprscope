@@ -7,18 +7,18 @@
 readEPR_params_tabs(path_to_dsc_par, origin = "xenon", interact = NULL)
 }
 \arguments{
-\item{path_to_dsc_par}{String, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
-\code{text} files including all instrumental parameters and provided by the EPR machine}
+\item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
+to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
+\code{text} files including all instrumental parameters and provided by the EPR machine.}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they
-were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-one ("Xenon"), \strong{default}: \code{origin = "xenon"}}
+\item{origin}{Character string, corresponding to software which was used to acquire the EPR spectra
+on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
+were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
+(\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnetech"}).}
 
-\item{interact}{Character string, whether or not display tables by \code{\link[DT]{datatable}}.
-\strong{Default}: \code{interact = NULL}. To display interactive table with parameters:
-\code{interact = "params"} as well as to display that of the additional information:
+\item{interact}{Character string, whether or not to display interactive tables by \code{\link[DT]{datatable}}.
+\strong{Default}: \code{interact = NULL}. Interactive table with parameters can be displayed by
+\code{interact = "params"} or to display the additional information table:
 \code{interact = "info"}.}
 }
 \value{
@@ -32,9 +32,9 @@ List of data frames/tables containing:
 }
 \description{
 Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
-to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
-parameter values as well as character/string information about the measurement see also
-\code{\link{readEPR_param_slct}}
+  to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
+  parameter values as well as character/string information about the measurement see also
+  \code{\link{readEPR_param_slct}}.
 }
 \examples{
 ## built-in package file => "TMPD_specelchem_accu_b.par"
