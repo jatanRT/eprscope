@@ -32,7 +32,7 @@ eval_sim_EPR_isoFit(
 
 \item{Intensity.sim}{Character string ... TBC ...}
 
-\item{nu.GHz}{Numeric value, microwave frequency in `GHz`.}
+\item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
 
 \item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used

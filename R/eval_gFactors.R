@@ -7,14 +7,14 @@
 #'
 #' @description Calculation of \emph{g}-factor according to fundamental formula (see \code{Value}).
 #'   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
-#'   can be entered with common units like `G` (Gauss) `mT`
-#'   (millitesla) or `T` (tesla) as well as `GHz` or `Hz`, respectively.
+#'   can be entered with common units like \code{G} (Gauss) \code{mT}
+#'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
 #'
 #'
 #' @param nu.val Numeric, microwave Frequency.
-#' @param nu.unit Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}.
+#' @param nu.unit Character string, frequency unit defined by \code{GHz} or \code{Hz}, \strong{default}: \code{nu.unit = "GHz"}.
 #' @param B.val Numeric, magnetic flux density.
-#' @param B.unit Character string, magnetic flux density unit in `G` or `mT` or `T`, \strong{default}:
+#' @param B.unit Character string, magnetic flux density unit in \code{G} or \code{mT} or \code{T}, \strong{default}:
 #'   \code{B.unit = "mT"}.
 #'
 #'
@@ -84,21 +84,21 @@ eval_gFactor <- function(nu.val,
 #'   the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
 #'
 #'
-#' @param data.spectr Spectrum data frame object where the magnetic flux density (in `mT` or `G`) column
+#' @param data.spectr Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}) column
 #'   can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
 #'   or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.
-#' @param nu.GHz Numeric value, microwave frequency in `GHz`.
+#' @param nu.GHz Numeric value, microwave frequency in \code{GHz}.
 #' @param B.unit Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 #'   (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
 #'   for EPR spectra.
 #' @param B Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
-#'   \code{data.spectr} either in `millitesla` or in `gauss`, that is \code{B = "B_mT"} (\strong{default})
+#'   \code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well.
 #' @param Intensity Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 #'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
-#' @param Blim Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 #'   of the selected \eqn{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
 #'   (corresponding to the entire \eqn{B} range of the EPR spectrum).
 #' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
@@ -217,10 +217,10 @@ eval_gFactor_Spec <- function(data.spectr,
 #' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from
 #'   the \eqn{g_e} (\eqn{g} of the free electron). Therefore the function takes these values
 #'   and calculates the entire \eqn{g}-values or parses the corresponding mean value
-#'   from `Gaussian` or `ORCA` output.
+#'   from "Gaussian" or "ORCA" output.
 #'
 #'
-#' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files
+#' @param path_to_QCHoutput Character string corresponding to path of "Gaussian" or "ORCA" output text files
 #'   incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
 #' @param mean Logical, whether to calculate the \code{mean value/iso} from principal components,
 #'   \strong{default}: \code{mean = TRUE}, or save the entire vector with the all components.

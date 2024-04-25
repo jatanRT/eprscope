@@ -7,7 +7,7 @@
 eval_gFactor_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 }
 \arguments{
-\item{path_to_QCHoutput}{Character string corresponding to path of `Gaussian` or `ORCA` output text files
+\item{path_to_QCHoutput}{Character string corresponding to path of "Gaussian" or "ORCA" output text files
 incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.}
 
 \item{mean}{Logical, whether to calculate the \code{mean value/iso} from principal components,
@@ -26,7 +26,7 @@ Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) com
 \eqn{g}-Values (3 principal ones) are presented in a form of differences from
   the \eqn{g_e} (\eqn{g} of the free electron). Therefore the function takes these values
   and calculates the entire \eqn{g}-values or parses the corresponding mean value
-  from `Gaussian` or `ORCA` output.
+  from "Gaussian" or "ORCA" output.
 }
 \examples{
 ## built-in file and path

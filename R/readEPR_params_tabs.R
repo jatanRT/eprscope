@@ -147,9 +147,11 @@ readEPR_params_tabs <- function(path_to_dsc_par,
   )
   #
   ## split these strings into string couples (n=2) by space "  " ("\\s+")
-  str.dsc.sel.split.V <- lapply(str.dsc.sel.V, function(y) unlist(stringr::str_split(y, "\\s+", n = 2)))
+  str.dsc.sel.split.V <-
+    lapply(str.dsc.sel.V, function(y) unlist(stringr::str_split(y, "\\s+", n = 2)))
   #
-  str.dsc.sel.split.Ch <- lapply(str.dsc.sel.Ch, function(z) unlist(stringr::str_split(z, "\\s+", n = 2)))
+  str.dsc.sel.split.Ch <-
+    lapply(str.dsc.sel.Ch, function(z) unlist(stringr::str_split(z, "\\s+", n = 2)))
   #
   ## Parameters, Values and Units Definitions:
   ## based upon `temperature.check` (TRUE or FALSE) condition =>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_param_slct}
 \alias{readEPR_param_slct}
-\title{Read the \strong{Selected} EPR Instrumental Parameters and Information}
+\title{Read the Selected EPR Instrumental Parameters and Information}
 \usage{
 readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 }
@@ -50,9 +50,9 @@ Numeric or character string (e.g. date or comment) corresponding to selected (\c
   instrumental parameter applied to record the EPR spectra.
 }
 \description{
-Function takes the \strong{selected} instrumental parameters or information
+Function takes the selected instrumental parameters or information
  from \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
- or \code{WinEpr} Software, respectively)
+ or \code{WinEpr} Software, respectively).
 }
 \examples{
 \dontrun{

@@ -16,18 +16,18 @@ eval_gFactor_Spec(
 )
 }
 \arguments{
-\item{data.spectr}{Spectrum data frame object where the magnetic flux density (in `mT` or `G`) column
+\item{data.spectr}{Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}) column
 can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
 or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.}
 
-\item{nu.GHz}{Numeric value, microwave frequency in `GHz`.}
+\item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
 
 \item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
 for EPR spectra.}
 
 \item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
-\code{data.spectr} either in `millitesla` or in `gauss`, that is \code{B = "B_mT"} (\strong{default})
+\code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
 or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well.}
 
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
@@ -36,7 +36,7 @@ name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesit
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
 
-\item{Blim}{Numeric vector, magnetic flux density in `mT`/`G` corresponding to border limits
+\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the selected \eqn{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
 (corresponding to the entire \eqn{B} range of the EPR spectrum).}
 

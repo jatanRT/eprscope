@@ -20,15 +20,16 @@ spectroscopy mainly in chemistry. Similar <img
 src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png"
 width="16" height="16" /> tools like [cwepr](https://www.cwepr.de/index)
 and the [related projetcs](https://docs.cwepr.de/v0.5/) have been
-devoloped, so far. The `{eprscope}` 📦 doesn’t want to replace the
-latter nor the excellent EPR simulation/processing [EasySpin
-Toolbox](https://www.easyspin.org/) for
-[MATLAB](https://www.mathworks.com/products/matlab.html) and its
+developed, so far. The `{eprscope}`, as the first
+<img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+package for EPR, doesn’t want to replace the latter nor the excellent
+EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/)
+for [MATLAB](https://www.mathworks.com/products/matlab.html) and its
 additional frameworks like
 [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR
 Scripts by Emilien
 Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/).
-Rather, it may be considered like a complimentary package/toolbox with
+Rather, it may be considered like a complimentary 📦 or toolbox with
 practical functions which have to be otherwise performed by several
 proprietary tools. For instance, like acquisition/processing software,
 supplied by the EPR spectrometer manufacturers (see
@@ -36,15 +37,16 @@ e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-i
 as well as several other software platforms like the *MS Office* and/or
 *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing
 workflow. Therefore, the `{eprscope}` also tries to reduce such many
-steps if the above-mentioned software combination would be adopted. In
-order to achieve the goal the package uses superior power or the open
+steps/programs if the above-mentioned software combination would be
+adopted. In order to achieve the goal it uses superior power or the open
 source
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
 ecosystem that combines data processing, analysis and great scientific
 visualizations together with the extensive publishing capabilities by
 [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
-[Quarto](https://quarto.org/) tools. Everything at one place without the
-need to switch between or employ any additional software.
+[Quarto](https://quarto.org/) tools. Everything at one place (see the
+RStudio IDE below) without the need to switch between or employ any
+other additional software.
 
 ## Installation
 
@@ -85,9 +87,8 @@ formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
 ## Usage
 
 In this section couple of examples are shown in order to briefly
-demonstrate functionality of the package. More detailed description can
-be found within the package articles/vignettes or documentation
-examples.
+demonstrate 📦 functionality. More detailed description can be found
+within the package articles/vignettes or documentation examples.
 
 ### Reading Files with Instrumental Parameters
 
@@ -116,8 +117,8 @@ tmpd.params.dt
 
 ``` r
 
-# Phenylalenyl (Perinaphthenyl or PNT) radical from `SMILES` code
-# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" code
+# Phenylalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
+# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" 
 draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
                       mol.label = "Phenylalenyl",
                       mol.label.color = "black",
@@ -132,8 +133,8 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
 
 # Simulation of the phenylalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
-# The additional experimental/instrumental parameters are not shown,
-# and posses their default values => see the corresponding documentation 
+# The additional experimental/instrumental parameters are not shown.
+# They posses their default values => see the corresponding documentation 
 # of `eval_sim_EPR_iso()` function.
 #
 simulation.iso <- 
@@ -154,11 +155,11 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 
 ## Help, Questions and Contribution
 
-There are several ways how to get help. If the users are already
-familiar with the [R statistical language](https://www.r-project.org/)
-please, follow either the individual package function documentation or
-the corresponding articles/vignettes. These might be also considered as
-a kind of EPR spectroscopy knowledge source. **In case you are new to
+There are several ways how to get help. If users are already familiar
+with the [R statistical language](https://www.r-project.org/) please,
+follow either the individual package function documentation or the
+corresponding articles/vignettes. These might be also considered as a
+kind of EPR spectroscopy knowledge resource. **In case you are new to
 *R***, there are couple of great tutorials enabling a quite
 straightforward diving into
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>.
@@ -192,7 +193,7 @@ straightforward diving into
 
 - [Thi Big Book of R](https://www.bigbookofr.com/)
 
-- Video Tutorial (Series) ➨
+- Video Tutorial Series ➨
 
   - [Introduction to R Programming for Excel
     Users](https://www.youtube.com/watch?v=Ekp2mfxQSzw)
@@ -209,6 +210,11 @@ straightforward diving into
 
   - [Plotting Anything with
     ggplot2](https://www.youtube.com/watch?v=h29g21z0a68)
+
+  - [Riffomonas Project](https://www.youtube.com/@Riffomonas)
+
+  - [Introduction to R for
+    Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
 
 Even though the **EPR spectroscopy** is a quite complex field there are
 some introductory on-line materials which may help to start with this
@@ -241,13 +247,13 @@ width="16" /> issues on github source page. There will be also a
 specialized [Discord](https://discord.com/) community channel to discuss
 the application of the `{eprscope}` 📦. If there is somebody with the
 interest and ability to contribute to package development please, ask
-through the github issue 📦 page.
+through the github issue page.
 
 ## Acknowledgements
 
 I would like to express a deep gratitude to my colleagues from the [NMR
 Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of
-Organic Chemistry and Biochemistry](https://www.uochb.cz/en), namely
+Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially,
 [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>,
 [Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119)
@@ -256,8 +262,8 @@ width="16" /> and [Dr. Martin
 Dračínský](https://orcid.org/0000-0002-4495-0070)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>.
 Without the fruitful environment within the NMR Spectroscopy team it
-wouldn’t be possible to develop such a project like this. I’d like to
-also give a special thanks to my brother [Dr. Peter
+wouldn’t be possible to develop such a project like this. Also, I’d like
+to give a special thanks to my brother [Dr. Peter
 Tarábek](https://orcid.org/0000-0002-7181-7136)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
 width="16" /> for his valuable comments and remarks.

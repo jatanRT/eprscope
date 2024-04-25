@@ -13,7 +13,7 @@ eval_extremeX_Spec(
 )
 }
 \arguments{
-\item{data.spectr}{EPR/ENDOR spectrum data frame object with magnetic flux density \eqn{B} (in `mT` or `G`)
+\item{data.spectr}{EPR/ENDOR spectrum data frame object with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
 or \eqn{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
 or integrated \code{Intensity}. \code{Index} column/variable may be included as well.}
 
@@ -25,9 +25,9 @@ like magnetic flux density \emph{B}, \emph{g}-Value or \emph{RF} (radio frequenc
 is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \emph{x} region,
-e.g. like `xlim = c(3495.4,3595.4)` (\emph{B} in `G`) or \code{xlim = c(12.5,21.2)} (\emph{RF} in `MHz`)
+e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-to entire `x` range).}
+to entire \code{x} range).}
 
 \item{extreme}{Character string with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default}).}
 }
@@ -36,8 +36,8 @@ Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF} corresp
  to \code{minimal} or \code{maximal} \code{intensity} within the EPR/ENDOR spectrum or its integrated form.
 }
 \description{
-Finding the \code{x} positions like \emph{B} (in `mT` or `G`)) or \emph{g} (unitless)
-  or \emph{RF} (in `MHz`) of intensity minimum or maximum within the selected region
+Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})) or \emph{g} (unitless)
+  or \emph{RF} (in \code{MHz}) of intensity minimum or maximum within the selected region
   of an EPR/ENDOR spectrum.
 }
 \examples{

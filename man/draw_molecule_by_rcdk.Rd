@@ -2,7 +2,7 @@
 % Please edit documentation in R/draw_molecule_by_rcdk.R
 \name{draw_molecule_by_rcdk}
 \alias{draw_molecule_by_rcdk}
-\title{Draw Molecule by `rcdk` Defined by SMILES or SDF}
+\title{Draw Molecule by \pkg{rcdk} Defined by SMILES or SDF}
 \usage{
 draw_molecule_by_rcdk(
   molecule,
@@ -36,11 +36,11 @@ is shown.}
 label. \strong{Default}: \code{mol.label.color = "black"}.}
 
 \item{mol.label.xy.posit}{Numeric vector of two values matching the x,y-position of the \code{mol.label}
-label within the image having the size of "(1,1,10,10)" =>
+within the image having the total size of \code{(1,1,10,10)} =>
 see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
 => the label is positioned in the bottom right corner.}
 
-\item{sma}{Character string allowing to highlight sub-structures using `SMARTS`
+\item{sma}{Character string allowing to highlight sub-structures using \code{SMARTS}
 (\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
 the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
 
@@ -48,24 +48,24 @@ the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
 (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.}
 
 \item{style}{Character string denoting the plotting style like =>
-\tabular{rcl}{
-\strong{Plotting Style} \tab \strong{Style Text String} \cr
-`color on black`  \tab \code{style = "cob"} \cr
-`color on white`  \tab \code{style = "cow"} \cr
-`black on white`  \tab \code{style = "bow"} \cr
-`white on black` \tab \code{style = "wob"} \cr
-`neon on black`  \tab \code{style = "nob"} \cr
+\tabular{ll}{
+ \strong{Plotting Style} \tab \strong{Style Text String} \cr
+ "color on black" \tab \code{style = "cob"} \cr
+ "color on white" \tab \code{style = "cow"} \cr
+ "black on white" \tab \code{style = "bow"} \cr
+ "white on black" \tab \code{style = "wob"} \cr
+ "neon on black" \tab \code{style = "nob"} \cr
 }
 \strong{Default}: \code{style = "cow"}.}
 
 \item{abbr}{Character string which controls how the structure is displayed. Following options
 can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
-\code{abbr = "groups"} creating an abbreviation for `groups`; \code{abbr = "reagents"} creating
-an abbreviation for `reagents` or \code{abbr = "on"} to abbreviate the both.
+\code{abbr = "groups"} creating an abbreviation for \code{groups}; \code{abbr = "reagents"} creating
+an abbreviation for \code{reagents} or \code{abbr = "on"} to abbreviate the both.
 The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "of"}!}
 
 \item{suppressh}{Logical, denoting whether to suppress displaying the hydrogen atoms.
-The `smiles` or `sdf` STRUCTURE MUST CONTAIN \strong{H} ATOMS!
+The \code{SMILES} or \code{SDF} STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 \strong{Default}: \code{supressh = TRUE}.}
 
 \item{...}{additional options/arguments for \code{\link[rcdk]{get.depictor}}.}
@@ -74,7 +74,7 @@ The `smiles` or `sdf` STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 Graphics/Figure object with molecular structure.
 }
 \description{
-Drawing a molecular structure based on \pkg{rcdk} package and using `SMILES` or `SDF` input data.
+Drawing a molecular structure based on \pkg{rcdk} package and using SMILES or SDF input data.
 }
 \examples{
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based

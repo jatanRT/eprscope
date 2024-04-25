@@ -23,7 +23,7 @@ Numeric value/vector corresponding to accurate time at which the middle (on \eqn
 }
 \description{
 Providing the accurate time for EPR spectral line/spectrum appearance, i.e usually the middle
- \eqn{B} of the EPR spectrum which is is set up as the CF (`central field`) for the spectrum sweep.
+ \eqn{B} of the EPR spectrum which is is set up as the CF (\code{central field}) for the spectrum sweep.
 }
 \details{
 The actual time at the middle/crossing point

@@ -1,12 +1,12 @@
 #'
-#' Reading Solvent Properties from `solvents_ds` Data Frame (Database)
+#' Reading Solvent Properties from \code{solvents_ds} Data Frame (Database)
 #'
 #'
 #' @family Data Reading
 #'
 #'
 #' @description
-#'   Gathering the solvent properties from `solvents_ds` see \code{\link{solvents_ds}} in order to pick-up only
+#'   Gathering the solvent properties from \code{solvents_ds} see \code{\link{solvents_ds}} in order to pick-up only
 #'   a specific solvent (\code{solvent} argument) and its corresponding properties (\code{prop} argument).
 #'
 #'

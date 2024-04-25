@@ -23,8 +23,8 @@ readEPR_Exp_Specs(
 }
 \arguments{
 \item{path_to_ASC}{Character string, path to ASCII file/table (e.g. in \code{.txt}, \code{.csv}
-or \code{.asc} format) with spectral data (\eqn{Intensity vs B}(Field) with additional
-'index' and/or 'time' variables). The path can be also defined by \code{\link[base]{file.path}}.}
+or \code{.asc} format) with spectral data (\eqn{Intensity} vs \eqn{B}, Field) with additional
+\code{index} and/or \code{time} variables). The path can be also defined by the \code{\link[base]{file.path}} function.}
 
 \item{sep}{ The separator between columns. Defaults to the character in the set \code{[,\\t |;:]} that separates the sample of rows into the most number of lines with the same number of fields. Use \code{NULL} or \code{""} to specify no separator; i.e. each line a single character column like \code{base::readLines} does.}
 
@@ -34,10 +34,10 @@ or \code{.asc} format) with spectral data (\eqn{Intensity vs B}(Field) with addi
 
 \item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
-with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 The default (for the original \code{\link[data.table]{fread}}) is to use the header column
-if present or detected, or if not \code{"V"} followed by the column number.}
+if present or detected, or if not the name is denoted as \code{"V"} followed by the column number.}
 
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in the spectra or other plots.}
@@ -87,24 +87,22 @@ data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrume
 }
 \value{
 Data frame/table consisting of the magnetic flux density
-  column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz}
-  (in case of ENDOR spectrum) or unitless \code{g-factor} and of the derivative intensity
-  column (\code{dIepr_over_dB}) or any other intensities (like in integrated spectral form)
-  in \code{procedure defined unit}
-  (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-  which is normalized by the above-described parameters and finally the \code{index}
-  and/or a \code{time} (in the case of time series experiment) columns are displayed as well.
+  column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz} (in case of ENDOR spectrum)
+  or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
+  intensities (like in integrated spectral form) in \code{procedure defined unit} (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}), which is normalized by the above-described parameters
+  and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
+  are displayed as well.
 }
 \description{
 The function is based on the \code{\link[data.table]{fread}} with the purpose to read
-  the experimental EPR/ENDOR spectra or other original related (pre-processed) data from the EPR spectrometers
+  the experimental EPR/ENDOR spectra or other original (pre-processed) data from the EPR spectrometers
   in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}).
 }
 \details{
-ASCII data are transformed into \emph{R} data frames, which can be then easily processed by this package
-  or other R packages (e.g. by \pkg{tidyverse} system), afterwards. Spectral intensities are automatically
-   normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
-   These are defined by the two arguments:
+ASCII data are transformed into \emph{R} data frames, which can be then easily processed by this or other
+  R packages, e.g. like \pkg{dplyr}), afterwards. Spectral intensities are automatically
+  normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
+  These are defined by the two arguments:
   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
   quantities represented by the vector. If \code{qValue = NULL}, the Q-value ca be also defined a component
   of the \code{norm.vec.add}. Finally, the normalized intensity is calculated by the following

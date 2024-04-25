@@ -5,8 +5,8 @@
 #' @family Conversions and Corrections
 #'
 #'
-#' @description Converting hyperfine splitting constants (HFSCs, \eqn{a} values in `mT`)
-#'   into hyperfine coupling constants (HFCCs, \eqn{A} values in `MHz`).
+#' @description Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
+#'   into hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz}).
 #'
 #'
 #' @details
@@ -18,12 +18,12 @@
 #'   for EPR simulations and/or ENDOR.
 #'
 #'
-#' @param a.mT Numeric value/vector of HFSCs in `mT` ('line distances' from EPR spectrum)
+#' @param a.mT Numeric value/vector of HFSCs in \code{mT} ('line distances' from EPR spectrum)
 #' @param g.val Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
 #' \strong{Default:} \code{g.val = 2.00231930} (corresponding to free electron).
 #'
 #'
-#' @returns Numeric value/vector corresponding to HFCCs (\eqn{A}) in `MHz`.
+#' @returns Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz}.
 #'
 #'
 #' @examples

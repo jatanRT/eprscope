@@ -13,11 +13,11 @@ eval_FWHMx_Spec(
 }
 \arguments{
 \item{data.spectr.integ}{Data frame object containing \emph{x} column/variable like magnetic flux density, \emph{B}
-(in in `mT` or `G`) or \emph{g}-factor/value (unitless) and integrated intensity
+(in in \code{mT} or \code{G}) or \emph{g}-factor/value (unitless) and integrated intensity
 (common absorption-like spectrum) column/variable.}
 
 \item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original
-\code{data.spectr.integ}) like magnetic flux density \emph{B} (in `mT` or `G`) or \emph{g}-Value
+\code{data.spectr.integ}) like magnetic flux density \emph{B} (in \code{mT} or \code{G}) or \emph{g}-Value
 (unitless), \strong{default}: \code{x = "B_G"}.}
 
 \item{Intensity}{Character string pointing to name of the \code{intensity column/variable}
@@ -25,12 +25,12 @@ eval_FWHMx_Spec(
 is used (e.g. "Integral_Intensity" or "integral").}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
-e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in `G`) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
+e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
 \strong{Default}: \code{xlim = NULL} (corresponding to entire \emph{x} range).}
 }
 \value{
 Numeric value of the FWHM directly from EPR spectrum, depending on \code{x} variable =>
-  either in `mT`/`G` or unitless in case if \emph{g}-factor is presented on abscissa.
+  either in \code{mT}/\code{G} or unitless in case if \emph{g}-factor is presented on abscissa.
 }
 \description{
 Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity. For such purpose

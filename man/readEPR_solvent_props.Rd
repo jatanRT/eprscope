@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_solvent_props.R
 \name{readEPR_solvent_props}
 \alias{readEPR_solvent_props}
-\title{Reading Solvent Properties from `solvents_ds` Data Frame (Database)}
+\title{Reading Solvent Properties from \code{solvents_ds} Data Frame (Database)}
 \usage{
 readEPR_solvent_props(solvent, prop = NULL)
 }
@@ -21,7 +21,7 @@ Data frame (row/rows) of selected solvent(s) an the corresponding properties. If
   \code{value/character}.
 }
 \description{
-Gathering the solvent properties from `solvents_ds` see \code{\link{solvents_ds}} in order to pick-up only
+Gathering the solvent properties from \code{solvents_ds} see \code{\link{solvents_ds}} in order to pick-up only
   a specific solvent (\code{solvent} argument) and its corresponding properties (\code{prop} argument).
 }
 \examples{

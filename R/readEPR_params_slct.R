@@ -1,13 +1,13 @@
-#' Read the \strong{Selected} EPR Instrumental Parameters and Information
+#' Read the Selected EPR Instrumental Parameters and Information
 #'
 #'
 #' @family Data Reading
 #'
 #'
 #' @description
-#'  Function takes the \strong{selected} instrumental parameters or information
+#'  Function takes the selected instrumental parameters or information
 #'  from \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
-#'  or \code{WinEpr} Software, respectively)
+#'  or \code{WinEpr} Software, respectively).
 #'
 #'
 #' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
@@ -129,14 +129,14 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #
 #
 #
-#' Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Time Series} Experiment
+#' Read the Selected Instrumental Parameters Relevant to Time Series Experiment
 #'
 #'
 #' @family Data Reading
 #'
 #'
 #' @description
-#'  Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
+#'  Function takes the selected instrumental parameters relevant to \strong{time series ("kinetic")}
 #'  experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
 #'  "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
 #'  spectra, see \code{\link{correct_time_Exp_Specs}}.
@@ -231,7 +231,7 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
 #
 #
 #
-#' Read the \strong{Selected} Instrumental Parameters Relevant to EPR Quantitative Analysis
+#' Read the Selected Instrumental Parameters Relevant to EPR Quantitative Analysis
 #'
 #'
 #' @family Data Reading
@@ -306,7 +306,7 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #
 #
 #
-#' Read the \strong{Selected} Instrumental Parameters Relevant to EPR \strong{Simulations}
+#' Read the Selected Instrumental Parameters Relevant to EPR Simulations
 #'
 #'
 #' @family Data Reading
@@ -333,7 +333,7 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #'   \item{Bcf}{Central field (magnetic fux density, \emph{B}) value in \code{B.unit}.}
 #'   \item{Bsw}{Sweep width (magnetic fux density, \emph{B}, experimental range) value in \code{B.unit}.}
 #'   \item{Npoints}{Number of points (spectral resolution).}
-#'   \item{mwGHz}{Microwave frequency value in `GHz`.}
+#'   \item{mwGHz}{Microwave frequency value in \code{GHz}.}
 #'   }
 #'
 #'

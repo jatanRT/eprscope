@@ -7,12 +7,12 @@
 #'
 #'
 #' @description
-#'   Calculating the `peak-to-peak` (distance between of the \emph{x}-axis
+#'   Calculating the \code{peak-to-peak} (distance between of the \emph{x}-axis
 #'   projection of "min" and "max" derivative intensities) linewidth of an EPR/ENDOR spectrum.
 #'
 #'
-#' @param data.spectr EPR/ENDOR spectrum data frame object with magnetic flux density \emph{B} (in `mT` or `G`)
-#'   or \emph{g}-Value or \emph{RF} (in `MHz`) column/variable and that of the derivative \code{dIepr_over_dB}
+#' @param data.spectr EPR/ENDOR spectrum data frame object with magnetic flux density \emph{B} (in \code{mT} or \code{G})
+#'   or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
 #'   \code{Intensity}. \code{Index} column may be included as well.
 #' @param x Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.
@@ -20,9 +20,9 @@
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
 #'   \strong{Default}: \code{Intesity = "dIepr_over_dB"}.
 #' @param xlim Numeric vector corresponding to border limits of the selected \emph{x} region,
-#'   e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in `G`) or \code{xlim = c(12.5,21.2)} (\emph{RF} in `MHz`)
+#'   e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 #'   or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-#'   to entire `x` range).
+#'   to entire \code{x} range).
 #'
 #'
 #' @return Numeric value of difference of \code{x}-axis quantity like \emph{B},\emph{g},\emph{RF} (the absolute value)

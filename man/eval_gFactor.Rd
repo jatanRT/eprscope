@@ -9,11 +9,11 @@ eval_gFactor(nu.val, nu.unit = "GHz", B.val, B.unit = "mT")
 \arguments{
 \item{nu.val}{Numeric, microwave Frequency.}
 
-\item{nu.unit}{Character string, frequency unit defined by `GHz` or `Hz`, \strong{default}: \code{nu.unit = "GHz"}.}
+\item{nu.unit}{Character string, frequency unit defined by \code{GHz} or \code{Hz}, \strong{default}: \code{nu.unit = "GHz"}.}
 
 \item{B.val}{Numeric, magnetic flux density.}
 
-\item{B.unit}{Character string, magnetic flux density unit in `G` or `mT` or `T`, \strong{default}:
+\item{B.unit}{Character string, magnetic flux density unit in \code{G} or \code{mT} or \code{T}, \strong{default}:
 \code{B.unit = "mT"}.}
 }
 \value{
@@ -23,8 +23,8 @@ eval_gFactor(nu.val, nu.unit = "GHz", B.val, B.unit = "mT")
 \description{
 Calculation of \emph{g}-factor according to fundamental formula (see \code{Value}).
   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
-  can be entered with common units like `G` (Gauss) `mT`
-  (millitesla) or `T` (tesla) as well as `GHz` or `Hz`, respectively.
+  can be entered with common units like \code{G} (Gauss) \code{mT}
+  (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
 }
 \examples{
 eval_gFactor(9.8020458,

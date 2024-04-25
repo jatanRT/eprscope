@@ -135,7 +135,7 @@ eval_kinR_EPR_modelFit <- function(data.integs,
   if (fit.kin.method == "diff-levenmarq") {
       model.react.kin.fit <- minpack.lm::nls.lm(
       par = params.guess,
-      fn = eval_kinR_ODE_model,
+      fn = eval_kinR_ODE_model, # function from this package (see documentation)
       model.react = model.react,
       model.expr.diff = TRUE,
       elementary.react = elementary.react,

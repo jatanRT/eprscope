@@ -17,7 +17,7 @@ convert_time2var(
 \item{time.vals}{Numeric value or vector corresponding to time (points) where the variable \code{var}
 is changed.}
 
-\item{time.unit}{Character string time unit defined by `s`,`min` or `h`.
+\item{time.unit}{Character string time unit defined by \code{s},\code{min} or \code{h}.
 \strong{Default}: \code{time.unit = "s"}.}
 
 \item{var0}{Numeric, the initial/starting value (INCL. ALSO NEGATIVE SIGN, if required, e.g. like

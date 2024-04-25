@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_kin}
 \alias{readEPR_params_slct_kin}
-\title{Read the \strong{Selected} Instrumental Parameters Relevant to \strong{Time Series} Experiment}
+\title{Read the Selected Instrumental Parameters Relevant to Time Series Experiment}
 \usage{
 readEPR_params_slct_kin(path_to_dsc_par, origin = "xenon")
 }
@@ -25,7 +25,7 @@ List containing:
   }
 }
 \description{
-Function takes the \strong{selected} instrumental parameters relevant to \strong{time series ("kinetic")}
+Function takes the selected instrumental parameters relevant to \strong{time series ("kinetic")}
  experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
  "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
  spectra, see \code{\link{correct_time_Exp_Specs}}.

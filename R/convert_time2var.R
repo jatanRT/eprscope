@@ -26,7 +26,7 @@
 #'
 #' @param time.vals Numeric value or vector corresponding to time (points) where the variable \code{var}
 #'   is changed.
-#' @param time.unit Character string time unit defined by `s`,`min` or `h`.
+#' @param time.unit Character string time unit defined by \code{s},\code{min} or \code{h}.
 #'   \strong{Default}: \code{time.unit = "s"}.
 #' @param var0 Numeric, the initial/starting value (INCL. ALSO NEGATIVE SIGN, if required, e.g. like
 #'   negative electrochemical potential) of the variable (\code{var}).

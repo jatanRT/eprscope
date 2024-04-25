@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_quant}
 \alias{readEPR_params_slct_quant}
-\title{Read the \strong{Selected} Instrumental Parameters Relevant to EPR Quantitative Analysis}
+\title{Read the Selected Instrumental Parameters Relevant to EPR Quantitative Analysis}
 \usage{
 readEPR_params_slct_quant(path_to_dsc_par, origin = "xenon")
 }

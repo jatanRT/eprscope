@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_sim}
 \alias{readEPR_params_slct_sim}
-\title{Read the \strong{Selected} Instrumental Parameters Relevant to EPR \strong{Simulations}}
+\title{Read the Selected Instrumental Parameters Relevant to EPR Simulations}
 \usage{
 readEPR_params_slct_sim(path_to_dsc_par, origin = "xenon", B.unit = "G")
 }
@@ -27,7 +27,7 @@ List consisting of:
   \item{Bcf}{Central field (magnetic fux density, \emph{B}) value in \code{B.unit}.}
   \item{Bsw}{Sweep width (magnetic fux density, \emph{B}, experimental range) value in \code{B.unit}.}
   \item{Npoints}{Number of points (spectral resolution).}
-  \item{mwGHz}{Microwave frequency value in `GHz`.}
+  \item{mwGHz}{Microwave frequency value in \code{GHz}.}
   }
 }
 \description{

@@ -19,19 +19,19 @@ eval_integ_EPR_Spec(
 )
 }
 \arguments{
-\item{data.spectr}{Spectrum data frame/table with magnetic flux density (in `mT`
-or `G`) and that of the derivative or already single integrated intensity.
+\item{data.spectr}{Spectrum data frame/table with magnetic flux density (in \code{mT}
+or \code{G}) and that of the derivative or already single integrated intensity.
 \code{Index} column may be already present as well.}
 
-\item{B}{Character/String pointing to magnetic flux density \code{column} (in the original
+\item{B}{Character string pointing to magnetic flux density \code{column} (in the original
 \code{data.spectr}) either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default}) or \code{B = "Field"}...etc.}
 
-\item{B.unit}{Character/String pointing to unit of magnetic flux density (coming from original data) which
+\item{B.unit}{Character string pointing to unit of magnetic flux density (coming from original data) which
 is to be presented on \eqn{B} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`), \strong{default}: \code{B.unit = "mT"}.}
+like \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), \strong{default}: \code{B.unit = "mT"}.}
 
-\item{Intensity}{Character/String pointing to \code{column} of either derivative
+\item{Intensity}{Character string pointing to \code{column} of either derivative
 (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectr}.}
 
@@ -47,7 +47,7 @@ of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \stro
 
 \item{BpeaKlim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to border limits
 of the SELECTED \eqn{B} PEAK REGION, e.g. like \code{BpeaKlim = c(3535.4,3555.4)}. This is the region
-which is not considered for the baseline fit.}
+which is actually not considered for the baseline fit.}
 
 \item{poly.degree}{Numeric, degree of the polynomial function used to fit the baseline under the single integrated
 curve of the original EPR spectrum (see also \code{BpeaKlim}).}
@@ -57,7 +57,7 @@ integral (if the \code{data.spectr} and \code{Intesity} are already in single in
 in sigmoidal shape, which is required for quantitative analysis,
 \strong{default}: \code{sigmoid.integ = FALSE}.}
 
-\item{output.vecs}{Logical, whether the `integral` \code{columns} are presented within the entire
+\item{output.vecs}{Logical, whether the "integral" \code{columns} are presented within the entire
 data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
 additional processing of spectral data series by \pkg{dplyr} (see \code{Values} and \code{Examples}).}
 }
@@ -67,7 +67,7 @@ The integration results may be divided into following types depending on the abo
   (\code{output.vecs = FALSE}) or vectors corresponding to individual baseline corrected/uncorrected
   integrals (\code{output.vecs = TRUE}). This is especially useful for the spectral (time) series EPR data,
   which can be handily processed by \code{\link[dplyr]{group_by}} using the
-  `pipe` operators (\code{\link[magrittr]{\%>\%}}).
+  \code{pipe} operators (\code{\link[magrittr]{\%>\%}}).
   \enumerate{
   \item Data frame/table including the EPR spectral data (general \emph{Intensity}
   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
@@ -111,10 +111,10 @@ Evaluates integrals of EPR spectra depending on input data => corresponding eith
 \details{
 Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. For the purpose
  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
- Therefore, depending on \emph{B} unit (either `G` or `mT`) each resulting integral data/column
- have to be optionally (in case of `mT`) multiplied by factor of \code{10} because
+ Therefore, depending on \emph{B} unit (either \code{G} or \code{mT}) each resulting integral data/column
+ have to be optionally (in case of \code{mT}) multiplied by factor of \code{10} because
  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
- Instead of `double integral/integ.` the term `sigmoid integral/integ.` is used. `Double integral`
+ Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr} and \code{Intensity})
  \strong{is confusing. In such case the EPR spectrum is integrated only once.}
 }

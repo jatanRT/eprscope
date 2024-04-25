@@ -6,9 +6,9 @@
 #'
 #'
 #' @description
-#'   Loading the raw `.txt`,`.asc` or `.csv` data of a simulated EPR spectrum from different sources like
-#'   `EasySpin` (Matlab), `Xenon` (EPR spectrometer), `SimFonia` (WinEPR system) or `csv` (universal format
-#'   or MS Excel). The `ASCII` data is automatically converted into data frame.
+#'   Loading the raw \code{.txt},\code{.asc} or \code{.csv} data of a simulated EPR spectrum from different sources like
+#'   "EasySpin" (\emph{Matlab}), "Xenon" (EPR spectrometer), "SimFonia" (WinEPR system) or "csv" (comma separated values,
+#'   universal format or MS Excel). The \code{ASCII} data is automatically converted into data frame.
 #'
 #'
 #' @param path_to_ASC Character string, path to ASCII file/table
@@ -16,7 +16,7 @@
 #'   The path can be also defined by \code{\link[base]{file.path}}.
 #' @param B.unit Character string pointing to unit of magnetic flux density \strong{coming from the original data}
 #'   which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
-#'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`). \strong{Default}: \code{B.unit = "mT"}.
+#'   like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"). \strong{Default}: \code{B.unit = "mT"}.
 #' @param Intensity.sim Character string pointing to \strong{intensity column} of the data frame
 #'   corresponding to EPR simulated spectrum. If used together with quantification of radicals,
 #'   this argument must be equal to that of the \code{\link{quantify_EPR_Sim_series}}.
