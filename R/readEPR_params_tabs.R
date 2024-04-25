@@ -171,9 +171,9 @@ readEPR_params_tabs <- function(path_to_dsc_par,
     }
     ## magnettech excl. temperature
     if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
-      ParameterV <- ParameterV %>% `if`(isTRUE(temperature.check),
-                                        ParameterV[-c(7,8,13,14,17)],
-                                        ParameterV[-c(7,8,13,14,15,17)])
+      ParameterV <- switch(2-isTRUE(temperature.check),
+                           ParameterV[-c(7,8,13,14,17)],
+                           ParameterV[-c(7,8,13,14,15,17)])
     }
     #
     ## general parameter values xenon => next step select + temperature
@@ -241,9 +241,9 @@ readEPR_params_tabs <- function(path_to_dsc_par,
     }
     ## magnettech excl. temperature
     if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
-      Unit <- Unit %>% `if`(isTRUE(temperature.check),
-                                        Unit[-c(7,8,13,14,17)],
-                                        Unit[-c(7,8,13,14,15,17)])
+      Unit <- switch(2-isTRUE(temperature.check),
+                     Unit[-c(7,8,13,14,17)],
+                     Unit[-c(7,8,13,14,15,17)])
     }
     #
   }
