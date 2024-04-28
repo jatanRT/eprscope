@@ -26,7 +26,7 @@
 #'   Several kinetic models for radical reactions in EPR spectroscopy are summarized below
 #'   (see also \code{model.react} function argument).
 #'   \tabular{ll}{
-#'   \strong{`model.react`} \tab \strong{Short Description} \cr
+#'   \strong{`model.react` string} \tab \strong{Short Description} \cr
 #'   \code{"(n=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
 #'   e.g. like irrev. dimerization (if \code{"(n=2)"}). \cr
 #'   \code{"(n=1)A --> [k1] (m=1)R"} \tab Basic irreversible radical formation,
@@ -123,17 +123,17 @@
 #'   \code{"min"} or \code{"h"}.
 #' @param timeLim.model Numeric vector incl. two values corresponding to starting and final time/termination
 #'   of the model reaction.
-#' @param data.expr A data frame object containing the concentrations/integral intensities/areas under
+#' @param data.qt.expr A data frame object containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
-#'   columns are described by character strings like below (see the last two arguments).
-#'   The \code{data.expr} MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
-#'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPR. DATA BY THE KINETIC MODEL).
-#'   \strong{Default}: \code{data.expr = NULL}.
+#'   columns are described by character strings like below.
+#'   The \code{data.qt.expr} MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
+#'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPERIMENTAL DATA BY THE KINETIC MODEL).
+#'   \strong{Default}: \code{data.qt.expr = NULL}.
 #' @param time.expr Character string pointing to \code{time} \strong{column name} in the original
-#'   \code{data.expr} data frame. \strong{Default}: \code{time.expr = NULL} (when the experimental
+#'   \code{data.qt.expr} data frame. \strong{Default}: \code{time.expr = NULL} (when the experimental
 #'   data aren't taken into account).
 #' @param qvar.expr Character string pointing to \code{qvar} \strong{column name} in the original
-#'   \code{data.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
+#'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 #'   data aren't taken into account).
 #' @param ... additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).
 #'
@@ -143,10 +143,10 @@
 #'   \describe{
 #'   \item{df}{Data frame containing \code{time} column and \code{qvar}, quantitative variable,
 #'   columns corresponding to quantities of different relevant species
-#'   denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. + if \code{data.expr} is NOT NULL
+#'   denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. + if \code{data.qt.expr} is NOT NULL
 #'   additional experimental quantitative variable is present.}
 #'   \item{plot}{Plot object containing \code{time} as abscissa and \code{qvar}
-#'   (see \code{df} above) as \eqn{y}-axis. + if \code{data.expr} is NOT NULL the experimental
+#'   (see \code{df} above) as \eqn{y}-axis. + if \code{data.qt.expr} is NOT NULL the experimental
 #'   quantitative variable is presented as well.}
 #'   }
 #'   Applying function \strong{for the fitting} procedure
@@ -182,22 +182,9 @@
 #'                     kin.params = c(k1 = 0.005,
 #'                                    qvar0A = 0.05,
 #'                                    qvar0R = 0),
-#'                     data.expr = data.integs,
-#'                     time.expr = "time_s")
-#' #
-#' ## using `eval_kinR_ODE_model()` function for fitting
-#' ## of the experimental data in the previous case +
-#' ## + parameterized partial order for `A` (alpha)
-#' minpack.lm::nls.lm(par = c(k1 = 0.005,
-#'                            qvar0A = 0.05,
-#'                            qvar0R = 0),
-#'                    elementary.react = TRUE,
-#'                    fn = eval_kinR_ODE_model,
-#'                    model.react = "(n=2)A --> [k1] (m=2)R",
-#'                    model.expr.diff = TRUE,
-#'                    data.expr = data.integs,
-#'                    time.expr = "time_s",
-#'                    qvar.expr = "Area")
+#'                     data.qt.expr = data.integs,
+#'                     time.expr = "time_s",
+#'                     qvar.expr = "Area")
 #' }
 #'
 #'
@@ -212,10 +199,10 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
                                 kin.params = c(
                                   k1 = 0.001,
                                   qvar0R = 0.02
-                                ),  ## "alpha", "beta", "gamma" for general partial react. orders
+                                ),  ## add. "alpha", "beta", "gamma" for general partial react. orders
                                 time.unit = "s", ## also "min" and "h" can be defined
                                 timeLim.model = c(0,1800), ## also provided for expr.
-                                data.expr = NULL,
+                                data.qt.expr = NULL,
                                 time.expr = NULL,
                                 qvar.expr = NULL,
                                 ...) {
@@ -228,26 +215,26 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
   if (isTRUE(elementary.react)){
     ## looking for parameterized partial reaction orders
     if (any(grepl("alpha|beta|gamma",names(kin.params)))){
-      stop(" The model reaction is considered as elementary.\n
-           No parameterized partial reaction orders\n
-           ('alpha','beta',...) must be incl. in `kin.params` ! ")
+      stop(" The model reaction is considered as an elementary one.\n
+           Parameterized partial reaction orders ('alpha','beta',...)\n
+           have not to be incl. in `kin.params` ! ")
     }
   } else {
     if (!any(grepl("alpha|beta|gamma",names(kin.params)))){
       stop(" The model reaction is not elementary !\n
            Please, define parametrized partial reaction\n
-           order values (e.g. like 'alpha = 1.5') in `kin.params` ! ")
+           order (e.g. like 'alpha = 1.5') in `kin.params` ! ")
     }
   }
   #
   ## Data definition
-  if (!is.null(data.expr)) {
+  if (!is.null(data.qt.expr)) {
     if (is.null(time.expr) || is.null(qvar.expr)) {
       stop(" Time of the experimental data series (`time.expr`)\n
-           or the corresponding quantitative variable (`qvar.expr`)\n
+           or the corresponding quant. variable (`qvar.expr`)\n
            is not specified. Please, define ! ")
     } else {
-      time.expr.vec <- data.expr[[time.expr]]
+      time.expr.vec <- data.qt.expr[[time.expr]]
       start.time <- min(time.expr.vec)
       final.time <- max(time.expr.vec)
     }
@@ -255,10 +242,10 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
   #
   ## time definition for the spectral series
   if (is.null(timeLim.model)){
-    stop(" Please define hypothetical time\n
+    stop(" Please define the hypothetical time\n
            span for the model reaction ! ")
   } else{
-    if (!is.null(data.expr)){
+    if (!is.null(data.qt.expr)){
       start.time <- min(time.expr.vec)
       final.time <- max(time.expr.vec)
     } else{
@@ -297,11 +284,11 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
     if (final.time > 259200){
       if (time.unit == "s"){
         stop(" Hypothetical time span for the model reaction > 3 days.\n
-               Please, define time `time.unit` in minutes or in hours ! ")
+               Please, define the `time.unit` in minutes or in hours ! ")
       }
     }
   }
-  if (is.null(data.expr)) {
+  if (is.null(data.qt.expr)) {
     t <- t
   } else {
     if (is.null(time.expr)){
@@ -853,20 +840,20 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
     ## DATA processing
     ## conversion into data frame
     result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
+    if (!is.null(data.qt.expr)) {
       ## following operation required for the difference
       ## the same number of points for the model as well as for the expr.
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]]) %>%
+        dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
         ## add `qvar.expr`
-        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.expr[[qvar.expr]])
+        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
     }
     ## the first col. is `time` and 2nd has to be renamed
     names(result.df)[2] <- "R"
     #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
+    if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
       ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
+      diff.model.expr <- data.qt.expr[[qvar.expr]] - result.df[["R"]]
     }
     #
     ## data frame for plotting
@@ -888,16 +875,16 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
     ## DATA processing
     ## conversion into data frame
     result.df <- data.frame(result)
-    if (!is.null(data.expr)) {
+    if (!is.null(data.qt.expr)) {
       result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.expr[[time.expr]]) %>%
+        dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
         ## add `qvar.expr`
-        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.expr[[qvar.expr]])
+        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
     }
     #
-    if (!is.null(data.expr) & isTRUE(model.expr.diff)) {
+    if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
       ## difference
-      diff.model.expr <- data.expr[[qvar.expr]] - result.df[["R"]]
+      diff.model.expr <- data.qt.expr[[qvar.expr]] - result.df[["R"]]
     }
     #
     ## data frame for plotting
@@ -942,7 +929,7 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
   #
   ## RESULTS
   if (isFALSE(model.expr.diff)) {
-    if (!is.null(data.expr)){
+    if (!is.null(data.qt.expr)){
       ## plot with experimental data + model
       plot.compar <- ggplot(result.df) +
         geom_point(aes(x = .data[["time"]],
@@ -952,7 +939,7 @@ eval_kinR_ODE_model <- function(model.react = "(n=1)R --> [k1] B", ## e.g. n = 1
         geom_point(aes(x = .data[["time"]],
                        y = .data[["R"]],
                        color = "\nKinetic\nModel"),
-                   size = 1.6) +
+                   size = 1.5) +
         scale_color_manual(values = c("darkcyan","magenta"),
                            breaks = c("Experiment","\nKinetic\nModel")) +
         labs(title = paste0(model.react,"    Model + Experiment"),
