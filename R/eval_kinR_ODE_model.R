@@ -129,10 +129,10 @@
 #'   The \code{data.qt.expr} MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
 #'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPERIMENTAL DATA BY THE KINETIC MODEL).
 #'   \strong{Default}: \code{data.qt.expr = NULL}.
-#' @param time.expr Character string pointing to \code{time} \strong{column name} in the original
+#' @param time.expr Character string pointing to \code{time} \strong{column/variable name} in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time.expr = NULL} (when the experimental
 #'   data aren't taken into account).
-#' @param qvar.expr Character string pointing to \code{qvar} \strong{column name} in the original
+#' @param qvar.expr Character string pointing to \code{qvar} \strong{column/variable name} in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 #'   data aren't taken into account).
 #' @param ... additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).
@@ -162,6 +162,7 @@
 #'  eval_kinR_ODE_model(model.react = "(n=2)R --> [k1] B",
 #'                      kin.params = c(k1 = 0.012,
 #'                                     qvar0R = 0.08))
+#' ## preview
 #' head(kin.test.01$df,n = 10)
 #' #
 #' ## consecutive reactions and preesenting plot
@@ -173,19 +174,62 @@
 #'                                     qvar0A = 0.02,
 #'                                     qvar0R = 0.002,
 #'                                     qvar0C = 0))
+#' ## plot preview
 #' kin.test.02$plot
 #' #
-#' \dontrun{
-#' ## taking into account the experimental time for the spectral series
-#' eval_kinR_ODE_model(model.react = "(n=2)A --> [k1] (m=2)R",
-#'                     model.expr.diff = FALSE,
-#'                     kin.params = c(k1 = 0.005,
-#'                                    qvar0A = 0.05,
-#'                                    qvar0R = 0),
-#'                     data.qt.expr = data.integs,
-#'                     time.expr = "time_s",
-#'                     qvar.expr = "Area")
-#' }
+#' ## data frame/table preview
+#' head(kin.test.02$df)
+#' #
+#' ## loading example data (incl. `Area` and `time` variables)
+#' ## from Xenon: quenching of a triarylamine radical cation after its generation
+#' ## by electrochemical oxidation
+#' triaryl_radCat_path <-
+#'   load_data_example(file = "Triarylamine_radCat_quench_a.txt")
+#' ## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
+#' triaryl_radCat_data <-
+#'   readEPR_Exp_Specs(triaryl_radCat_path,
+#'                     header = TRUE,
+#'                     fill = TRUE,
+#'                     select = c(3,7),
+#'                     col.names = c("time_s","Area"),
+#'                     x.unit = "s",
+#'                     x.id = 1,
+#'                     Intensity.id = 2,
+#'                     qValue = 1700) %>%
+#'   na.omit()
+#' ## data preview
+#' head(triaryl_radCat_data)
+#' #
+#' ## Comparison of kinetic model with the experimental data `triaryl_radCat_data`.
+#' ## Kinetic parameters were estimated to be as close as possible to the latter.
+#' compar_model_expr_data_01 <-
+#'   eval_kinR_ODE_model(model.react = "(n=2)R --> [k1] B",
+#'                       kin.params = c(qvar0R = 0.019,
+#'                                      k1 = 0.04
+#'                                     ),
+#'                       timeLim.model = c(0,1500),
+#'                       data.qt.expr = triaryl_radCat_data,
+#'                       qvar.expr = "Area",
+#'                       time.expr = "time_s")
+#' ## plot preview
+#' compar_model_expr_data_01$plot
+#' #
+#' ## Previous kinetic model with partial reaction order ("alpha")
+#' ## corresponding to "R" (radical species). In such case
+#' ## THE REACTION is NOT CONSIDERED as an ELEMENTARY one !
+#' compar_model_expr_data_02 <-
+#'   eval_kinR_ODE_model(model.react = "(n=2)R --> [k1] B",
+#'                       elementary.react = FALSE,
+#'                       kin.params = c(qvar0R = 0.019,
+#'                                      k1 = 0.04,
+#'                                      alpha = 1.9
+#'                                     ),
+#'                       timeLim.model = c(0,1500),
+#'                       data.qt.expr = triaryl_radCat_data,
+#'                       qvar.expr = "Area",
+#'                       time.expr = "time_s")
+#' ## plot preview
+#' compar_model_expr_data_02$plot
 #'
 #'
 #' @export

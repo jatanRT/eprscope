@@ -10,10 +10,12 @@
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
-#' @param time Character string ... argument/parameter... tbc
-#' @param qvarR Character string ... argument/parameter... tbc
-#' @param params.guess Named vector ... argument/parameter... tbc see also \code{kin.params}
-#'   in \code{\link{eval_kinR_ODE_model}}.
+#' @param time Character string pointing to \code{time} \strong{column/variable name} in the original
+#'   \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.
+#' @param qvarR Character string pointing to \code{qvarR} \strong{column/variable name} in the original
+#'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.
+#' @param params.guess Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
+#'   ready for optimization/fitting.
 #' @param params.guess.lower Numeric vector of lower bounds on each parameter.
 #'   If not given, the \strong{default} (\code{params.guess.lower = NULL}) lower bound
 #'   corresponds to - 20 % of each \code{params.guess} component.
@@ -23,13 +25,13 @@
 #' @param fit.kin.method Character string pointing to optimization/fitting method. So far,
 #'   the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used.
 #'   It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
-#'   because it is based on the numeric solution of ordinary differential equations and not on integration
-#'   of the rate equations.
+#'   because it is based on the numeric solution of the ordinary differential equations and not on the integration
+#'   of rate equations.
 #' @param time.correct Logical, if the time of the recorded series of EPR spectra needs to be corrected
 #'   (see also \code{\link{correct_time_Exp_Specs}}).
 #' @param path_to_dsc_par Character string ... argument/parameter... tbc
 #' @param origin Character string ... argument/parameter... tbc
-#' @param ... dditional parameters for \code{\link[minpack.lm]{nls.lm}}.
+#' @param ... additional parameters for \code{\link[minpack.lm]{nls.lm}}.
 #'
 #'
 #' @return List with the following components is available:
@@ -50,10 +52,49 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' tbc
-#' tbc
-#' }
+#' ## loading example data (incl. `Area` and `time` variables)
+#' ## from Xenon: quenching of a triarylamine radical cation after its generation
+#' ## by electrochemical oxidation
+#' triaryl_radCat_path <-
+#'   load_data_example(file = "Triarylamine_radCat_quench_a.txt")
+#' ## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
+#' triaryl_radCat_data <-
+#'   readEPR_Exp_Specs(triaryl_radCat_path,
+#'                     header = TRUE,
+#'                     fill = TRUE,
+#'                     select = c(3,7),
+#'                     col.names = c("time_s","Area"),
+#'                     x.unit = "s",
+#'                     x.id = 1,
+#'                     Intensity.id = 2,
+#'                     qValue = 1700) %>%
+#'   na.omit()
+#' ## data preview
+#' head(triaryl_radCat_data)
+#' #
+#' ## loding the `.DSC` file
+#' triaryl_radCat_dsc_path <-
+#'   load_data_example(file = "Triarylamine_radCat_quench_a.DSC")
+#' #
+#' ## fit previous data by second order kinetics, where the `model.react`
+#' ## is considered as an elementary step (`time.correct` of the CW-sweeps
+#' ## is included (`TRUE`))
+#' triaryl_model_kin_fit_01 <-
+#'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
+#'                          model.react = "(n=2)R --> [k1] B",
+#'                          elementary.react = TRUE,
+#'                          params.guess = c(qvar0R = 0.019,
+#'                                           k1 = 0.04
+#'                                          ),
+#'                          time.correct = TRUE,
+#'                          path_to_dsc_par = triaryl_radCat_dsc_path,
+#'                          origin = "xenon")
+#' ## preview data frame
+#' head(triaryl_model_kin_fit_01$df)
+#' #
+#' ## preview plot
+#' triaryl_model_kin_fit_01$plot
+#'
 #'
 #'
 #' @export
