@@ -72,7 +72,7 @@
 #' ## data preview
 #' head(triaryl_radCat_data)
 #' #
-#' ## loding the `.DSC` file
+#' ## loading the `.DSC` file
 #' triaryl_radCat_dsc_path <-
 #'   load_data_example(file = "Triarylamine_radCat_quench_a.DSC")
 #' #
@@ -89,12 +89,36 @@
 #'                          time.correct = TRUE,
 #'                          path_to_dsc_par = triaryl_radCat_dsc_path,
 #'                          origin = "xenon")
-#' ## preview data frame
+#' ## data frame preview
 #' head(triaryl_model_kin_fit_01$df)
 #' #
-#' ## preview plot
+#' ## plot preview
 #' triaryl_model_kin_fit_01$plot
-#'
+#' #
+#' ## coefficients/parameters table preview
+#' triaryl_model_kin_fit_01$df.coeffs
+#' #
+#' ## convergence preview
+#' triaryl_model_kin_fit_01$convergence
+#' #
+#' ## take the same experimental data and perform fit by first order
+#' ## kinetics where the `model.react` is considered as an elementary step
+#' ## (`time.correct` of the CW-sweeps is included (`TRUE`))
+#' triaryl_model_kin_fit_02 <-
+#'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
+#'                          model.react = "(n=1)R --> [k1] B",
+#'                          elementary.react = TRUE,
+#'                          params.guess = c(qvar0R = 0.019,
+#'                                           k1 = 0.0002
+#'                                          ),
+#'                          time.correct = TRUE,
+#'                          path_to_dsc_par = triaryl_radCat_dsc_path,
+#'                          origin = "xenon")
+#' ## plot preview
+#' triaryl_model_kin_fit_02$plot
+#' #
+#' ## coefficients/parameters table preview
+#' triaryl_model_kin_fit_01$df.coeffs
 #'
 #'
 #' @export
@@ -296,7 +320,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       title = model.react,
       color = "",
       caption = paste("Least-Square Fit by the Levenberg-Marquardt Algorithm",
-                      "and Numerical Solution of the Ordinary Differential Eqs. System.",
+                      "and Numerical Solution of the Ordinary Differential Eqs. System:",
                       caption.params.vec,
                       sep = "\n"),
       x = bquote(italic(Time) ~ ~"(" ~ s ~ ")"),
