@@ -58,7 +58,7 @@ use `cmin` and `cmax`. Alternatively, `colorscale` may be a palette name string 
 
 \item{contour.labels}{tbc}
 
-\item{xlim}{tbc}
+\item{xlim}{Numeric vector...if NULL => entire range}
 
 \item{xlab}{tbc}
 

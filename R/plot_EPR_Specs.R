@@ -174,8 +174,8 @@
 #'
 #'
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
-#'   scale_color_manual element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray
-#'   theme_minimal theme_classic theme_linedraw scale_color_gradientn theme scale_color_viridis_d
+#'   scale_color_manual scale_x_reverse element_blank element_text element_rect dup_axis unit margin theme_bw
+#'   theme_light theme_gray theme_minimal theme_classic theme_linedraw scale_color_gradientn theme scale_color_viridis_d
 plot_EPR_Specs <- function(data.spectra,
                            x = "B_mT",
                            x.unit = "mT",
@@ -219,7 +219,7 @@ plot_EPR_Specs <- function(data.spectra,
   ## Select labels by defining the corresponding vectors
   slct.vec.x.g <- c(
     "g_value", "g_Value", "gval", "gVal",
-    "g_factor", "g_Factor", "gfac", "gFac"
+    "g_factor", "g_Factor", "gfac", "gFac","g"
   )
   #
   ## label <=> selection
@@ -237,6 +237,9 @@ plot_EPR_Specs <- function(data.spectra,
     x.label <- bquote(italic(g))
     x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
   }
+  ## g-factor condition =>
+  g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
+  #
   if (lineSpecs.form == "derivative") {
     y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
@@ -275,8 +278,9 @@ plot_EPR_Specs <- function(data.spectra,
       geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
                 linewidth = line.width, color = line.colors, show.legend = FALSE
       ) +
-      labs(x = x.label, y = y.label) +
-      coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
+      coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
+      {if(g.factor.cond)scale_x_reverse()} +
+      labs(x = x.label, y = y.label)
   } else{
     #
     ## legend definition
@@ -316,6 +320,7 @@ plot_EPR_Specs <- function(data.spectra,
         coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         scale_color_manual(values = line.colors) +
         labs(color = legend.title, x = x.label, y = y.label) +
+        {if(g.factor.cond)scale_x_reverse()} +
         theme(legend.title = element_text(size = legend.title.size))
     } else{
       if (is.null(legend.title)){
@@ -350,6 +355,7 @@ plot_EPR_Specs <- function(data.spectra,
               grDevices::colorRampPalette(colors = line.colors)(var2nd.series.len/var2nd.series.slct.by)
             #
             simplePlot <- simplePlot.nocolor +
+              {if(g.factor.cond)scale_x_reverse()} +
               scale_color_manual(values = plot.vector.colors) +
               labs(color = legend.title, x = x.label, y = y.label) +
               theme(legend.title = element_text(size = legend.title.size),
@@ -359,6 +365,7 @@ plot_EPR_Specs <- function(data.spectra,
             plot.vector.colors <- line.colors
             #
             simplePlot <- simplePlot.nocolor +
+              {if(g.factor.cond)scale_x_reverse()} +
               scale_color_viridis_d(option = plot.vector.colors,
                                     direction = 1) +
               labs(color = legend.title, x = x.label, y = y.label) +
@@ -375,6 +382,7 @@ plot_EPR_Specs <- function(data.spectra,
             coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
             scale_color_gradientn(colors = line.colors) +
             labs(color = legend.title, x = x.label, y = y.label) +
+            {if(g.factor.cond)scale_x_reverse()} +
             theme(legend.title = element_text(size = legend.title.size),
                   legend.text = element_text(size = legend.text.size))
         }

@@ -32,7 +32,7 @@
 #'   \code{"Greys"},\code{"Hot"},\code{"Jet"},\code{"Picnic"},\code{"Portland"},\code{"Rainbow"},\code{"RdBu"},\code{"Reds"},
 #'   \code{"Viridis"},\code{"YlGnBu"},\code{"YlOrRd"}. \strong{Default}: \code{scheme.color = "Viridis"}
 #' @param contour.labels tbc
-#' @param xlim tbc
+#' @param xlim Numeric vector...if NULL => entire range
 #' @param xlab tbc
 #' @param ylab tbc
 #' @param zlab tbc
@@ -93,6 +93,13 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #   data.spectra.series <- data.spectra.series %>%
   #     dplyr::select(index,dplyr::everything())
   # }
+  #
+  ## g-factor condition =>
+  slct.vec.x.g <- c(
+    "g_value", "g_Value", "gval", "gVal",
+    "g_factor", "g_Factor", "gfac", "gFac","g"
+  )
+  g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
   #
   data.spectra.series <- data.spectra.series %>%
     dplyr::select(dplyr::all_of(c(x,var2nd.series,Intensity)))
@@ -178,98 +185,57 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
         colorscale = scheme.color
       )
     }
-    if (is.null(xlim)) {
-      final_plot <- base_plot %>%
-        plotly::layout(
-          scene = list(
-            xaxis = list(
-              title = list(
-                text = xlab,
-                font = list(size = axis.title.size)
-              ),
-              tickfont = list(size = axis.text.size),
-              gridcolor = grid.x.color,
-              showbackground = TRUE,
-              backgroundcolor = bg.x.color
+    final_plot <- base_plot %>%
+      plotly::layout(
+        scene = list(
+          xaxis = list(
+            title = list(
+              text = xlab,
+              font = list(size = axis.title.size)
             ),
-            yaxis = list(
-              title = list(
-                text = ylab,
-                font = list(size = axis.title.size)
-              ),
-              tickfont = list(size = axis.text.size),
-              gridcolor = grid.y.color,
-              showbackground = TRUE,
-              backgroundcolor = bg.y.color
-            ),
-            zaxis = list(
-              title = list(
-                text = zlab,
-                font = list(size = axis.title.size)
-              ),
-              tickfont = list(size = axis.text.size),
-              gridcolor = grid.z.color,
-              showbackground = TRUE,
-              backgroundcolor = bg.z.color,
-              tickformat = ".1e"
-            )
-          )
-        ) %>%
-        plotly::colorbar(
-          title = list(
-            text = zlab,
-            font = list(size = axis.title.size)
+            tickfont = list(size = axis.text.size),
+            gridcolor = grid.x.color,
+            showbackground = TRUE,
+            backgroundcolor = bg.x.color,
+            range = switch(2-is.null(xlim),
+                           c(min(data.spectra.series[[x]]),
+                             max(data.spectra.series[[x]])),
+                           xlim),
+            autorange = switch(2-g.factor.cond,
+                               "reversed",
+                               TRUE)
           ),
-          tickfont = list(size = axis.text.size),
-          tickformat = ".1e"
-        )
-    } else {
-      final_plot <- base_plot %>%
-        plotly::layout(
-          scene = list(
-            xaxis = list(
-              title = list(
-                text = xlab,
-                font = list(size = axis.title.size)
-              ),
-              tickfont = list(size = axis.text.size),
-              gridcolor = grid.x.color,
-              showbackground = TRUE,
-              backgroundcolor = bg.x.color,
-              range = xlim
+          yaxis = list(
+            title = list(
+              text = ylab,
+              font = list(size = axis.title.size)
             ),
-            yaxis = list(
-              title = list(
-                text = ylab,
-                font = list(size = axis.title.size)
-              ),
-              tickfont = list(size = axis.text.size),
-              gridcolor = grid.y.color,
-              showbackground = TRUE,
-              backgroundcolor = bg.y.color
-            ),
-            zaxis = list(
-              title = list(
-                text = zlab,
-                font = list(size = axis.title.size)
-              ),
-              tickfont = list(size = axis.text.size),
-              gridcolor = grid.z.color,
-              showbackground = TRUE,
-              backgroundcolor = bg.z.color,
-              tickformat = ".1e"
-            )
-          )
-        ) %>%
-        plotly::colorbar(
-          title = list(
-            text = zlab,
-            font = list(size = axis.title.size)
+            tickfont = list(size = axis.text.size),
+            gridcolor = grid.y.color,
+            showbackground = TRUE,
+            backgroundcolor = bg.y.color
           ),
-          tickfont = list(size = axis.text.size),
-          tickformat = ".1e"
+          zaxis = list(
+            title = list(
+              text = zlab,
+              font = list(size = axis.title.size)
+            ),
+            tickfont = list(size = axis.text.size),
+            gridcolor = grid.z.color,
+            showbackground = TRUE,
+            backgroundcolor = bg.z.color,
+            tickformat = ".1e"
+          )
         )
-    }
+      ) %>%
+      plotly::colorbar(
+        title = list(
+          text = zlab,
+          font = list(size = axis.title.size)
+        ),
+        tickfont = list(size = axis.text.size),
+        tickformat = ".1e"
+      )
   }
   #
   if (plot.type == "contour") {
@@ -284,60 +250,38 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
         showlabels = contour.labels
       )
     )
-    if (is.null(xlim)) {
-      final_plot <- base_plot %>%
-        plotly::layout(
-          xaxis = list(
-            title = list(
-              text = xlab,
-              font = list(size = axis.title.size)
-            ),
-            tickfont = list(size = axis.text.size)
-          ),
-          yaxis = list(
-            title = list(
-              text = ylab,
-              font = list(size = axis.title.size)
-            ),
-            tickfont = list(size = axis.text.size)
-          )
-        ) %>%
-        plotly::colorbar(
+    final_plot <- base_plot %>%
+      plotly::layout(
+        xaxis = list(
           title = list(
-            text = zlab,
+            text = xlab,
             font = list(size = axis.title.size)
           ),
           tickfont = list(size = axis.text.size),
-          tickformat = ".1e"
-        )
-    } else {
-      final_plot <- base_plot %>%
-        plotly::layout(
-          xaxis = list(
-            title = list(
-              text = xlab,
-              font = list(size = axis.title.size)
-            ),
-            tickfont = list(size = axis.text.size),
-            range = xlim
-          ),
-          yaxis = list(
-            title = list(
-              text = ylab,
-              font = list(size = axis.title.size)
-            ),
-            tickfont = list(size = axis.text.size)
-          )
-        ) %>%
-        plotly::colorbar(
+          range = switch(2-is.null(xlim),
+                         c(min(data.spectra.series[[x]]),
+                           max(data.spectra.series[[x]])),
+                         xlim),
+          autorange = switch(2-g.factor.cond,
+                             "reversed",
+                             TRUE)
+        ),
+        yaxis = list(
           title = list(
-            text = zlab,
+            text = ylab,
             font = list(size = axis.title.size)
           ),
-          tickfont = list(size = axis.text.size),
-          tickformat = ".1e"
+          tickfont = list(size = axis.text.size)
         )
-    }
+      ) %>%
+      plotly::colorbar(
+        title = list(
+          text = zlab,
+          font = list(size = axis.title.size)
+        ),
+        tickfont = list(size = axis.text.size),
+        tickformat = ".1e"
+      )
   }
   #
   ## matrix table output

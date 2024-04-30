@@ -100,7 +100,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   ## Select labels by defining the corresponding vectors
   slct.vec.x.g <- c(
     "g_value", "g_Value", "gval", "gVal",
-    "g_factor", "g_Factor", "gfac", "gFac"
+    "g_factor", "g_Factor", "gfac", "gFac","g"
   )
   #
   ## label <=> selection
@@ -114,6 +114,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x))) {
     xlabel <- "<i>g</i>"
   }
+  ## g-factor condition =>
+  g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
+  #
   if (lineSpecs.form == "derivative") {
     ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
@@ -145,11 +148,19 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
         color = .data[[var2nd.series]]
       )) +
         geom_line(linewidth = line.width) +
+        {if(g.factor.cond)scale_x_reverse()} +
         scale_color_manual(values = plot.vector.colors)
       #
   } else {
-    simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
-      geom_line(linewidth = line.width, color = line.colors)
+    ## g factor condition
+    if (isTRUE(g.factor.cond)){
+      simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
+        geom_line(linewidth = line.width, color = line.colors) + scale_x_reverse()
+    } else {
+      simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
+        geom_line(linewidth = line.width, color = line.colors)
+    }
+    #
   }
   ## final plot with layout
   if (!is.null(var2nd.series)) {
