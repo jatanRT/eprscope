@@ -186,7 +186,7 @@ triaryl_model_kin_fit_02 <-
 triaryl_model_kin_fit_02$plot
 #
 ## coefficients/parameters table preview
-triaryl_model_kin_fit_01$df.coeffs
+triaryl_model_kin_fit_02$df.coeffs
 
 
 }
