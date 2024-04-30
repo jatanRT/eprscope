@@ -57,11 +57,12 @@
 #'
 #'
 #' @param model.react Character string denoting a specific radical (\code{"R"}) reaction related to
-#'   changes in integral intensities in EPR spectral time series. Arrow shows direction of the reaction
-#'   (\code{"-->", irreversible} or \code{"<==>", reversible}). Rate constants are indicated by square
-#'   brackets after the arrows. Following examples of the reaction schemes are are predefined and commonly
-#'   used to describe the integral intensity and/or radical concentration/amount changes during the EPR time series
-#'   experiment (the \code{m,n,l} stoichiometric coefficients may be varied, see below).
+#'   changes in integral intensities (or any other \strong{q}uantitative \strong{var}iable) in EPR spectral
+#'   time series. Arrow shows direction of the reaction (\code{"-->", irreversible} or \code{"<==>", reversible}).
+#'   Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
+#'   are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
+#'   changes during the EPR time series experiment (the \code{m,n,l} stoichiometric coefficients
+#'   may be varied, see below).
 #'   \tabular{ll}{
 #'   \strong{Reaction Scheme} \tab \strong{`model.react` string} \cr
 #'   \eqn{(n=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(n=1)R --> [k1] B"} \cr
@@ -125,13 +126,14 @@
 #'   of the model reaction.
 #' @param data.qt.expr A data frame object containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
-#'   columns are described by character strings like below.
+#'   columns are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
 #'   The \code{data.qt.expr} MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
 #'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPERIMENTAL DATA BY THE KINETIC MODEL).
 #'   \strong{Default}: \code{data.qt.expr = NULL}.
 #' @param time.expr Character string pointing to \code{time} \strong{column/variable name} in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time.expr = NULL} (when the experimental
-#'   data aren't taken into account).
+#'   data aren't taken into account). If the time has to be corrected (e.g. in the case of double integrals),
+#'   please use \code{\link{correct_time_Exp_Specs}} function prior to kinetic evaluation.
 #' @param qvar.expr Character string pointing to \code{qvar} \strong{column/variable name} in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 #'   data aren't taken into account).

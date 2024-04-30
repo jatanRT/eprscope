@@ -5,7 +5,7 @@
 \title{Radical Kinetic Models Fitted to Experimental Data}
 \usage{
 eval_kinR_EPR_modelFit(
-  data.integs,
+  data.qt.expr,
   time.unit = "s",
   time = "time_s",
   qvarR = "Area",
@@ -22,22 +22,28 @@ eval_kinR_EPR_modelFit(
 )
 }
 \arguments{
-\item{data.integs}{Data frame object Integrals/Areas/Concentration \emph{vs.} Time}
+\item{data.qt.expr}{A data frame object containing the concentrations/integral intensities/areas under
+the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
+columns are described by the character strings like those below \code{time} and \code{qvarR}.}
 
-\item{time.unit}{Character string ... argument/parameter... tbc}
+\item{time.unit}{Character string corresponding to time unit like \code{"s"} (\strong{default}),
+\code{"min"} or \code{"h"}.}
 
-\item{time}{Character string ... argument/parameter... tbc}
+\item{time}{Character string pointing to \code{time} \strong{column/variable name} in the original
+\code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.}
 
-\item{qvarR}{Character string ... argument/parameter... tbc}
+\item{qvarR}{Character string pointing to \code{qvarR} \strong{column/variable name} in the original
+\code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.}
 
 \item{model.react}{Character string denoting a specific radical (\code{"R"}) reaction related to
-changes in integral intensities in EPR spectral time series. Arrow shows direction of the reaction
-(\code{"-->"}, irreversible or \code{"<==>", reversible}). Rate constants are indicated by square
-brackets after the arrows. Following examples of the reaction schemes are commonly used to describe
-the integral intensity and/or radical concentration/amount changes during the EPR time series
-experiment (the \code{m,n,l} stoichiometric coefficients may be varied, see below).
+changes in integral intensities (or any other \strong{q}uantitative \strong{var}iable) in EPR spectral
+time series. Arrow shows direction of the reaction (\code{"-->", irreversible} or \code{"<==>", reversible}).
+Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
+are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
+changes during the EPR time series experiment (the \code{m,n,l} stoichiometric coefficients
+may be varied, see below).
 \tabular{ll}{
-\strong{Reaction Scheme} \tab \strong{`model.react`} \cr
+\strong{Reaction Scheme} \tab \strong{`model.react` string} \cr
 \eqn{(n=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(n=1)R --> [k1] B"} \cr
  \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R}} \tab \code{"(n=2)A --> [k1] (m=2)R"} \cr
  \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R} \xrightleftharpoons[k_3]{k_2} (l=1)\text{C}} \tab
@@ -55,32 +61,34 @@ Couple of examples are also given in details. The function is relatively flexibl
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (e.g. like \code{"(n=1)"}
 or \code{"(m=1)"}) can be varied within the \code{model.react} character string.
-Defined/Allowed values are e.g. 1,2,... or non-integer values like 1.5 or 2.1.
-If \code{elementary.react = FALSE} (the model reaction is not considered as the elemental one) therefore,
-a possible non-integer partial stoichiometric coefficients (like e.g. `alpha`,`beta` or `gamma`)
-must be incl. in \code{kin.params} (see also \code{kin.params} below).}
+Defined/Allowed values are integers e.g. 1,2,3...etc.
+If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
+a possible non-integer partial stoichiometric coefficients (like e.g. \code{alpha},\code{beta} or \code{gamma})
+must be incl. in \code{kin.params} (see also \code{kin.params} description).}
 
-\item{elementary.react}{Logical, if model reaction should be considered as an elementary one,
+\item{elementary.react}{Logical, if the model reaction should be considered as elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
 one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} into
 the \code{kin.params}, e.g like \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
 
-\item{params.guess}{Named vector ... argument/parameter... tbc see also \code{kin.params}
-in \code{\link{eval_kinR_ODE_model}}.}
+\item{params.guess}{Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
+ready for optimization/fitting.}
 
-\item{params.guess.lower}{Numeric vector, ... NULL, NO DEFAULTS ARE TO BE DEFINED...only in case
-if other than \code{fit.kin.method = "diff-levenmarq"} applied}
+\item{params.guess.lower}{Numeric vector of lower bounds on each parameter.
+If not given, the \strong{default} (\code{params.guess.lower = NULL}) lower bound
+corresponds to \code{-Inf} of each \code{params.guess} component.}
 
-\item{params.guess.upper}{Numeric vector, ... NULL, NO DEFAULTS ARE TO BE DEFINED ..only in case
-if other than \code{fit.kin.method = "diff-levenmarq"} applied}
+\item{params.guess.upper}{Numeric vector of upper bounds on each parameter.
+If not given, the \strong{default} (\code{params.guess.upper = NULL}) upper bound
+corresponds to \code{+Inf} of each \code{params.guess} component.}
 
-\item{fit.kin.method}{Character string pointing to optimization/fitting method. If the \strong{default}:
-\code{fit.kin.method = "diff-levenmarq"} If one wants to estimate partial reaction orders
-(\eqn{\alpha}, \eqn{\beta} or \eqn{\gamma}), i.e. in the case of \code{elementary.react = FALSE},
-additional algorithms (except the \code{"levenmarq"}) introduced in \code{\link{optim_for_EPR_fitness}}
-have to be applied.}
+\item{fit.kin.method}{Character string pointing to optimization/fitting method. So far,
+the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used.
+It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
+because it is based on the numeric solution of the ordinary differential equations and not on the integration
+of rate equations.}
 
 \item{time.correct}{Logical, if the time of the recorded series of EPR spectra needs to be corrected
 (see also \code{\link{correct_time_Exp_Specs}}).}
@@ -89,41 +97,96 @@ have to be applied.}
 
 \item{origin}{Character string ... argument/parameter... tbc}
 
-\item{...}{ddditional parameters for \code{\link[minpack.lm]{nls.lm}}
-or \code{\link{optim_for_EPR_fitness}}.}
+\item{...}{additional parameters for \code{\link[minpack.lm]{nls.lm}}.}
 }
 \value{
-As a result of "kinetic" fit list with the following components is available:
+List with the following components is available:
   \describe{
   \item{df}{Data frame object with the variables/columns such as \code{time},
-  experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area}
-  as well as concentration \code{c_M} of the relevant radical EPR spectrum and the corresponding
-  quantitative variable \code{fitted} vector values .}
+  experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area},
+  concentration \code{c_M} or number of radicals of the relevant EPR spectrum and the corresponding
+  quantitative variable \code{fitted} vector values.}
   \item{plot}{Plot/Graph object \emph{Quantitative variable} \emph{vs.} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{df.coeffs}{Data frame object. In case of \code{fit.kin.method = "diff-levenmarq"} it contains
-  the optimized parameter values (\code{Estimates}), their corresponding \code{standard errors},
-  \code{t-} and finally \code{p-values}. If the \code{fit.kin.method} is other than \code{"diff-levenmarq"}
-  it summarizes the best parameter estimates.}
-  \item{N.evals}{Total number of evaluations/iterations before the best fit is found. In case
-  of particle swarm algorithm, \code{fit.kin.method = "pswarm"}, a three element vector containing
-  the number of function evaluations, number of iterations and the number of restarts
-  are displayed.}
+  \item{df.coeffs}{Data frame object containing the optimized parameter values (\code{Estimates}),
+  their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
+  \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
-  \item{convergence}{In case of \code{fit.kin.method = "diff-levenmarq"} it corresponds to residual sum
-  of squares at each iteration/evaluation. The length of \code{convergence}
-  is equal to the length of \code{N.evals}. If the \code{fit.kin.method} is other than \code{"diff-levenmarq"}
-  the integer code indicates successful completion (> 0) or a possible error number (< 0).}
+  \item{convergence}{Vector corresponding to residual sum of squares at each iteration/evaluation.
+  The length of \code{convergence} is equal to the length of \code{N.evals}.}
   }
 }
 \description{
 A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
 }
 \examples{
-\dontrun{
-tbc
-tbc
-}
+## loading example data (incl. `Area` and `time` variables)
+## from Xenon: quenching of a triarylamine radical cation after its generation
+## by electrochemical oxidation
+triaryl_radCat_path <-
+  load_data_example(file = "Triarylamine_radCat_quench_a.txt")
+## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
+triaryl_radCat_data <-
+  readEPR_Exp_Specs(triaryl_radCat_path,
+                    header = TRUE,
+                    fill = TRUE,
+                    select = c(3,7),
+                    col.names = c("time_s","Area"),
+                    x.unit = "s",
+                    x.id = 1,
+                    Intensity.id = 2,
+                    qValue = 1700) \%>\%
+  na.omit()
+## data preview
+head(triaryl_radCat_data)
+#
+## loading the `.DSC` file
+triaryl_radCat_dsc_path <-
+  load_data_example(file = "Triarylamine_radCat_quench_a.DSC")
+#
+## fit previous data by second order kinetics, where the `model.react`
+## is considered as an elementary step (`time.correct` of the CW-sweeps
+## is included (`TRUE`))
+triaryl_model_kin_fit_01 <-
+  eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
+                         model.react = "(n=2)R --> [k1] B",
+                         elementary.react = TRUE,
+                         params.guess = c(qvar0R = 0.019,
+                                          k1 = 0.04
+                                         ),
+                         time.correct = TRUE,
+                         path_to_dsc_par = triaryl_radCat_dsc_path,
+                         origin = "xenon")
+## data frame preview
+head(triaryl_model_kin_fit_01$df)
+#
+## plot preview
+triaryl_model_kin_fit_01$plot
+#
+## coefficients/parameters table preview
+triaryl_model_kin_fit_01$df.coeffs
+#
+## convergence preview
+triaryl_model_kin_fit_01$convergence
+#
+## take the same experimental data and perform fit by first order
+## kinetics where the `model.react` is considered as an elementary step
+## (`time.correct` of the CW-sweeps is included (`TRUE`))
+triaryl_model_kin_fit_02 <-
+  eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
+                         model.react = "(n=1)R --> [k1] B",
+                         elementary.react = TRUE,
+                         params.guess = c(qvar0R = 0.019,
+                                          k1 = 0.0002
+                                         ),
+                         time.correct = TRUE,
+                         path_to_dsc_par = triaryl_radCat_dsc_path,
+                         origin = "xenon")
+## plot preview
+triaryl_model_kin_fit_02$plot
+#
+## coefficients/parameters table preview
+triaryl_model_kin_fit_01$df.coeffs
 
 
 }

@@ -10,6 +10,9 @@
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
+#' @param data.qt.expr A data frame object containing the concentrations/integral intensities/areas under
+#'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
+#'   columns are described by the character strings like those below \code{time} and \code{qvarR}.
 #' @param time Character string pointing to \code{time} \strong{column/variable name} in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.
 #' @param qvarR Character string pointing to \code{qvarR} \strong{column/variable name} in the original
@@ -18,10 +21,10 @@
 #'   ready for optimization/fitting.
 #' @param params.guess.lower Numeric vector of lower bounds on each parameter.
 #'   If not given, the \strong{default} (\code{params.guess.lower = NULL}) lower bound
-#'   corresponds to - 20 % of each \code{params.guess} component.
+#'   corresponds to \code{-Inf} of each \code{params.guess} component.
 #' @param params.guess.upper Numeric vector of upper bounds on each parameter.
 #'   If not given, the \strong{default} (\code{params.guess.upper = NULL}) upper bound
-#'   corresponds to + 20 % of each \code{params.guess} component.
+#'   corresponds to \code{+Inf} of each \code{params.guess} component.
 #' @param fit.kin.method Character string pointing to optimization/fitting method. So far,
 #'   the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used.
 #'   It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
@@ -145,9 +148,11 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    ...) {
   #
   ## 'Temporary' processing variables
-  # . <- NULL
+  . <- NULL
   fitted <- NULL
   M <- NULL
+  p.d.u. <- NULL
+  Concentration <- NULL
   ## convert time if other than `s` appears
   if (time.unit == "min") {
     data.qt.expr[[time]] <- data.qt.expr[[time]] * 60
@@ -189,13 +194,13 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   ## -------------------- DERIVATIVE FORM Fit by LEVENBERG-MARQUARDT ---------------------
   #
   ## conditions/definitions/bounds for `lower` and `upper` +- 20 %
-  params.guess.values <- unname(params.guess)
-  params.guess.lower.def <- sapply(params.guess.values, function(p) p - (p * 0.2))
-  params.guess.upper.def <- sapply(params.guess.values, function(p) p + (p * 0.2))
-  params.guess.lower <- params.guess.lower %>%
-    `if`(is.null(params.guess.lower),params.guess.lower.def,.)
-  params.guess.upper <- params.guess.upper %>%
-    `if`(is.null(params.guess.upper),params.guess.upper.def,.)
+  # params.guess.values <- unname(params.guess)
+  # params.guess.lower.def <- sapply(params.guess.values, function(p) p - (p * 0.2))
+  # params.guess.upper.def <- sapply(params.guess.values, function(p) p + (p * 0.2))
+  # params.guess.lower <- params.guess.lower %>%
+  #   `if`(is.null(params.guess.lower),params.guess.lower.def,.)
+  # params.guess.upper <- params.guess.upper %>%
+  #   `if`(is.null(params.guess.upper),params.guess.upper.def,.)
   #
   ## Fit by solution of Ordinary Differential equations
   #
@@ -310,7 +315,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   caption.params.vec <- mapply(
     function(k,l) paste0(k," = ",l),
     names(predict.model.params),
-    predic.model.params
+    formatC(predict.model.params,digits = 3,format = "e") ## scientific notation
     )
   caption.params.vec <- paste(unname(caption.params.vec), collapse = ", ")
   #
@@ -324,7 +329,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                       caption.params.vec,
                       sep = "\n"),
       x = bquote(italic(Time) ~ ~"(" ~ s ~ ")"),
-      y = switch(3-quant.cond.string.fn,
+      y = switch(3-quant.cond.string.fn(var = qvarR),
                  plot_labels_xyz(Integral~~Intensity,p.d.u.),
                  bquote(italic(Number~~of~~Species)),
                  plot_labels_xyz(Concentration,M)
