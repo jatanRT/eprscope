@@ -121,10 +121,10 @@ A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
 }
 \examples{
 ## loading example data (incl. `Area` and `time` variables)
-## from Xenon: quenching of a triarylamine radical cation after its generation
+## from Xenon: decay of a triarylamine radical cation after its generation
 ## by electrochemical oxidation
 triaryl_radCat_path <-
-  load_data_example(file = "Triarylamine_radCat_quench_a.txt")
+  load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 ## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
 triaryl_radCat_data <-
   readEPR_Exp_Specs(triaryl_radCat_path,
@@ -142,7 +142,7 @@ head(triaryl_radCat_data)
 #
 ## loading the `.DSC` file
 triaryl_radCat_dsc_path <-
-  load_data_example(file = "Triarylamine_radCat_quench_a.DSC")
+  load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
 ## fit previous data by second order kinetics, where the `model.react`
 ## is considered as an elementary step (`time.correct` of the CW-sweeps

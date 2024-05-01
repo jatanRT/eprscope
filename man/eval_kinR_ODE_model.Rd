@@ -192,10 +192,10 @@ kin.test.02$plot
 head(kin.test.02$df)
 #
 ## loading example data (incl. `Area` and `time` variables)
-## from Xenon: quenching of a triarylamine radical cation after its generation
+## from Xenon: decay of a triarylamine radical cation after its generation
 ## by electrochemical oxidation
 triaryl_radCat_path <-
-  load_data_example(file = "Triarylamine_radCat_quench_a.txt")
+  load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 ## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
 triaryl_radCat_data <-
   readEPR_Exp_Specs(triaryl_radCat_path,
@@ -227,7 +227,7 @@ compar_model_expr_data_01$plot
 #
 ## Previous kinetic model with partial reaction order ("alpha")
 ## corresponding to "R" (radical species). In such case
-## THE REACTION is NOT CONSIDERED as an ELEMENTARY one !
+## REACTION is NOT CONSIDERED as an ELEMENTARY one !
 compar_model_expr_data_02 <-
   eval_kinR_ODE_model(model.react = "(n=2)R --> [k1] B",
                       elementary.react = FALSE,

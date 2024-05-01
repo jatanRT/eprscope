@@ -29,7 +29,7 @@ additional frameworks like
 [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR
 Scripts by Emilien
 Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/).
-Rather, it may be considered like a complimentary 📦 or toolbox with
+Rather, it may be considered like a complementary 📦 or toolbox with
 practical functions which have to be otherwise performed by several
 proprietary tools. For instance, like acquisition/processing software,
 supplied by the EPR spectrometer manufacturers (see
@@ -136,7 +136,6 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
 # The additional experimental/instrumental parameters are not shown.
 # They posses their default values => see the corresponding documentation 
 # of `eval_sim_EPR_iso()` function.
-#
 simulation.iso <- 
   eval_sim_EPR_iso(g.iso = 2.0027,
                    B.unit = "G",
@@ -152,6 +151,67 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 ```
 
 ![](man/figures/README-spectra-simulation-1.png)<!-- -->
+
+### Radical Kinetic Model Fitted onto the Experimental Data
+
+``` r
+
+# Decay of a triarylamine radical cation right after its generation
+# by electrochemical potentiostatic oxidation in acetonitrile. Double integrals
+# (Areas) vs time were obtained from the continuos wave (CW) EPR spectrometer 
+# acquisition/processing software.
+#
+# loading the file with instrumental parameters
+triarylamine_rc_decay_dsc <- 
+  load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
+#
+# loading file with "Area" vs "time" data frame
+triarylamine_rc_decay_txt <- 
+  load_data_example(file = "Triarylamine_radCat_decay_a.txt")
+triarylamine_rc_decay_data <-
+  readEPR_Exp_Specs(path_to_ASC = triarylamine_rc_decay_txt,
+                    header = TRUE,
+                    fill = TRUE,
+                    select = c(3,7),
+                    col.names = c("time_s","Area"),
+                    x.unit = "s",
+                    x.id = 1,
+                    Intensity.id = 2,
+                    qValue = 1700) %>% na.omit()
+#
+# Fitting the experimental decay by 2R --> B kinetic model
+# with "k1" rate constant and the the corresponding partial
+# rection order "alpha". "qvar0R" refers to initial 
+# "quantitative variable" (e.g. like concentration, double integral,
+# number of radicals) of the triarylamine radical cation "R".
+triarylamine_rc_decay_model <- 
+  eval_kinR_EPR_modelFit(data.qt.expr = triarylamine_rc_decay_data,
+                         model.react = "(n=2)R --> [k1] B",
+                         elementary.react = FALSE,
+                         params.guess = c(qvar0R = 0.019,
+                                          k1 = 0.04,
+                                          alpha = 1.9),
+                         time.correct = TRUE,
+                         path_to_dsc_par = triarylamine_rc_decay_dsc,
+                         origin = "xenon")
+#
+# graph preview
+triarylamine_rc_decay_model$plot
+```
+
+![](man/figures/README-kinetic-model-fit-1.png)<!-- -->
+
+``` r
+#
+# data frame/table of obtained kinetic parameters
+# by the non-linear fit and numeric solution
+# Ordinary Differential Equations
+triarylamine_rc_decay_model$df.coeffs
+#>          Estimate   Std. Error   t value      Pr(>|t|)
+#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
+#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
+#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
+```
 
 ## Help, Questions and Contribution
 
