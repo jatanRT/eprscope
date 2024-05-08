@@ -94,12 +94,28 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #     dplyr::select(index,dplyr::everything())
   # }
   #
-  ## g-factor condition =>
+  ## g-factor conditions for x axis =>
   slct.vec.x.g <- c(
     "g_value", "g_Value", "gval", "gVal",
     "g_factor", "g_Factor", "gfac", "gFac","g"
   )
-  g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
+  ## function g-value condition for `x autorange`
+  g.factor.cond <-
+    function(range,x_axis){
+      if (is.null(range)){
+        if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x_axis))){
+          return("reversed")
+        } else {
+          return(TRUE)
+        }
+      } else {
+        if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x_axis))){
+          return("reversed")
+        } else {
+          return(FALSE)
+        }
+      }
+    }
   #
   data.spectra.series <- data.spectra.series %>%
     dplyr::select(dplyr::all_of(c(x,var2nd.series,Intensity)))
@@ -197,13 +213,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
             gridcolor = grid.x.color,
             showbackground = TRUE,
             backgroundcolor = bg.x.color,
-            range = switch(2-is.null(xlim),
-                           c(min(data.spectra.series[[x]]),
-                             max(data.spectra.series[[x]])),
-                           xlim),
-            autorange = switch(2-g.factor.cond,
-                               "reversed",
-                               TRUE)
+            range = xlim,
+            autorange = g.factor.cond(range = xlim,x_axis = x)
           ),
           yaxis = list(
             title = list(
@@ -258,13 +269,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
             font = list(size = axis.title.size)
           ),
           tickfont = list(size = axis.text.size),
-          range = switch(2-is.null(xlim),
-                         c(min(data.spectra.series[[x]]),
-                           max(data.spectra.series[[x]])),
-                         xlim),
-          autorange = switch(2-g.factor.cond,
-                             "reversed",
-                             TRUE)
+          range = xlim,
+          autorange = g.factor.cond(range = xlim,x_axis = x)
         ),
         yaxis = list(
           title = list(
