@@ -105,8 +105,8 @@
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}
 #' @param legend.title Character string tbc
-#' @param legend.title.size tbc
-#' @param legend.text.size description
+#' @param legend.title.size tbc, ...\strong{default}: \code{legend.title.size = NULL} corresponding to 13
+#' @param legend.text.size description, ...\strong{default}: \code{legend.text.size = NULL} corresponding to 11
 #' @param grid Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
 #' @param yTicks Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
 #'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
@@ -209,7 +209,7 @@ plot_EPR_Specs <- function(data.spectra,
   ## 10% of the `max` below the `min` and 10% above the `max`
   data.y.region <- c(min(data.spectra[[Intensity]]),max(data.spectra[[Intensity]]))
   data.y.region.2 <- c(data.y.region[1]  - (data.y.region[2] * 0.1),data.y.region[2] * 1.1)
-  Ilim <- Ilim %>% `if`(is.null(xlim),data.y.region.2, .)
+  Ilim <- Ilim %>% `if`(is.null(Ilim),data.y.region.2, .)
   #
   ## EPR spectrum borders for the visualization (see 'coord_cartesian')
   x.start <- xlim[1]
@@ -274,14 +274,20 @@ plot_EPR_Specs <- function(data.spectra,
   #
   ## Basic simple plot:
   if (is.null(legend.title) & is.null(var2nd.series.slct.by)){
-    simplePlot <- ggplot(data.spectra) +
-      geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
-                linewidth = line.width, color = line.colors, show.legend = FALSE
-      ) +
-      coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
-      {if(g.factor.cond)scale_x_reverse()} +
-      labs(x = x.label, y = y.label)
-  } else{
+    if (!is.null(var2nd.series)){
+      stop(" Either the `var2nd.series` must be `NULL` \n
+           or define `legend.title` (+ `var2nd.series.slct.by`) ! ")
+    } else{
+      simplePlot <- ggplot(data.spectra) +
+        geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
+                  linewidth = line.width, color = line.colors, show.legend = FALSE
+        ) +
+        coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
+        {if(g.factor.cond)scale_x_reverse()} +
+        labs(x = x.label, y = y.label)
+    }
+  }
+  if (!is.null(legend.title)){
     #
     ## legend definition
     legend.strings <- stringr::str_split(legend.title,pattern = "[[:space:]]+")
@@ -309,20 +315,15 @@ plot_EPR_Specs <- function(data.spectra,
       }
     }
     #
-    ## Legend title and text definition
-    legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
-    legend.text.size <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
-    #
-    if (is.null(var2nd.series) & !is.null(legend.title)){
+    if (is.null(var2nd.series)){
       simplePlot <- ggplot(data.spectra) +
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
                   linewidth = line.width) +
         coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         scale_color_manual(values = line.colors) +
-        labs(color = legend.title, x = x.label, y = y.label) +
         {if(g.factor.cond)scale_x_reverse()} +
-        theme(legend.title = element_text(size = legend.title.size))
-    } else{
+        labs(color = legend.title, x = x.label, y = y.label)
+    } else {
       if (is.null(legend.title)){
         stop(" The `legend.title` is not specified. Please, define ! ")
       } else{
@@ -357,9 +358,7 @@ plot_EPR_Specs <- function(data.spectra,
             simplePlot <- simplePlot.nocolor +
               {if(g.factor.cond)scale_x_reverse()} +
               scale_color_manual(values = plot.vector.colors) +
-              labs(color = legend.title, x = x.label, y = y.label) +
-              theme(legend.title = element_text(size = legend.title.size),
-                    legend.text = element_text(size = legend.text.size))
+              labs(color = legend.title, x = x.label, y = y.label)
           }
           if (length(line.colors) == 1){
             plot.vector.colors <- line.colors
@@ -368,9 +367,7 @@ plot_EPR_Specs <- function(data.spectra,
               {if(g.factor.cond)scale_x_reverse()} +
               scale_color_viridis_d(option = plot.vector.colors,
                                     direction = 1) +
-              labs(color = legend.title, x = x.label, y = y.label) +
-              theme(legend.title = element_text(size = legend.title.size),
-                    legend.text = element_text(size = legend.text.size))
+              labs(color = legend.title, x = x.label, y = y.label)
           }
          #
         } else {
@@ -380,11 +377,9 @@ plot_EPR_Specs <- function(data.spectra,
                           color = .data[[var2nd.series]]),
                       linewidth = line.width) +
             coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
-            scale_color_gradientn(colors = line.colors) +
-            labs(color = legend.title, x = x.label, y = y.label) +
             {if(g.factor.cond)scale_x_reverse()} +
-            theme(legend.title = element_text(size = legend.title.size),
-                  legend.text = element_text(size = legend.text.size))
+            scale_color_gradientn(colors = line.colors) +
+            labs(color = legend.title, x = x.label, y = y.label)
         }
       }
       #
@@ -534,6 +529,19 @@ plot_EPR_Specs <- function(data.spectra,
     }
   }
   #
-  return(p)
+  ## conditions for legend
+  ## Legend title and text definition
+  legend.title.size.def <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
+  legend.text.size.def <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
+  if (!is.null(legend.title)){
+    return(
+      p +
+        theme(legend.title = element_text(size = legend.title.size.def),
+              legend.text = element_text(size = legend.text.size.def)
+              )
+    )
+  } else {
+    return(p)
+  }
   #
 }

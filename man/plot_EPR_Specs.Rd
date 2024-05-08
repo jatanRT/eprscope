@@ -135,9 +135,9 @@ line form of the analyzed EPR spectrum/data.}
 
 \item{legend.title}{Character string tbc}
 
-\item{legend.title.size}{tbc}
+\item{legend.title.size}{tbc, ...\strong{default}: \code{legend.title.size = NULL} corresponding to 13}
 
-\item{legend.text.size}{description}
+\item{legend.text.size}{description, ...\strong{default}: \code{legend.text.size = NULL} corresponding to 11}
 
 \item{grid}{Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 
