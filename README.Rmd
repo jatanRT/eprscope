@@ -39,7 +39,7 @@ Before the installation, please make sure that you have already followed instruc
 
 ```
 
-Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/> users or people who haven't already installed the *R* environment, please consult ➨
+Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/> users or people who haven't already installed the *R* environment, please consult the following steps prior to own `{eprscope}` installation ➨
 
 1.  [the R installation procedure](https://cran.rstudio.com/)
 
@@ -51,7 +51,7 @@ Additionally, **an open-source scientific and technical publishing system** [Qua
 
 ## Usage
 
-In this section couple of examples are shown in order to briefly demonstrate 📦 functionality. More detailed description can be found within the package articles/vignettes or documentation examples.
+In this section couple of examples are shown in order to briefly demonstrate 📦 functionality. More detailed description can be found within the 📦 articles/vignettes or documentation examples.
 
 ### Reading Files with Instrumental Parameters
 
@@ -101,14 +101,14 @@ simulation.iso <-
   eval_sim_EPR_iso(g.iso = 2.0027,
                    B.unit = "G",
                    nuclear.system = list(
-                     list("1H",3,5.09),
+                     list("1H",3,5.09), 
                      list("1H",6,17.67)
                      ),
                    natur.abund = T,
-                   lineGL.DeltaB = list(0.42,NULL))
+                   lineGL.DeltaB = list(0.24,NULL))
 #
 # simulation spectrum preview in the region from 3462 G to 3528 G
-simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
+simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 
 ```
 
@@ -117,15 +117,15 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 ```{r kinetic-model-fit,warning=FALSE,message=FALSE}
 
 # Decay of a triarylamine radical cation right after its generation
-# by electrochemical potentiostatic oxidation in acetonitrile. Double integrals
+# by electrochemical potentiostatic oxidation in TBAPF6/CH3CN. Double integrals
 # (Areas) vs time were obtained from the continuos wave (CW) EPR spectrometer 
 # acquisition/processing software.
 #
-# loading the file with instrumental parameters
+# loading the package built-in file with instrumental parameters
 triarylamine_rc_decay_dsc <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
-# loading file with "Area" vs "time" data frame
+# loading the package built-in file with "Area" vs "time" data frame
 triarylamine_rc_decay_txt <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
@@ -140,7 +140,7 @@ triarylamine_rc_decay_data <-
                     qValue = 1700) %>% na.omit()
 #
 # Fitting the experimental decay by 2R --> B kinetic model
-# with "k1" rate constant and the the corresponding partial
+# with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial 
 # "quantitative variable" (e.g. like concentration, double integral,
 # number of radicals) of the triarylamine radical cation "R".
@@ -158,16 +158,16 @@ triarylamine_rc_decay_model <-
 # graph preview
 triarylamine_rc_decay_model$plot
 #
-# data frame/table of obtained kinetic parameters
+# data frame/table of the obtained kinetic parameters
 # by the non-linear fit and numeric solution
-# Ordinary Differential Equations
+# of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 
 ```
 
 ## Help, Questions and Contribution
 
-There are several ways how to get help. If users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy knowledge resource. **In case you are new to *R***, there are couple of great tutorials enabling a quite straightforward diving into <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>. **Please, refer to e.g.**
+There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy knowledge resource. **In case you are new to *R***, there are couple of great tutorials enabling a quite straightforward diving into <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>. **Please, refer to e.g.**
 
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/)
 
@@ -211,7 +211,7 @@ There are several ways how to get help. If users are already familiar with the [
 
     -   [Introduction to R for Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
 
-Even though the **EPR spectroscopy** is a quite complex field there are some introductory on-line materials which may help to start with this special magnetic resonance method and how to gather the direct structural evidence of unpaired electronic centers within the molecules ➨
+Even though the **EPR spectroscopy** is a quite complex field there are some introductory on-line materials which may help to start with this special magnetic resonance method ➨
 
 -   [EasySpin Documentation](https://easyspin.org/easyspin/documentation/)
 
@@ -225,8 +225,8 @@ Even though the **EPR spectroscopy** is a quite complex field there are some int
 
 -   [Basic Concepts of EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 
-Any additional questions, comments/remarks or issues can be addressed through several discussion channels like 📧 e-mail ([jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or [jan.tarabek\@uochb.cas.cz](mailto:jan.tarabek@uochb.cas.cz){.email}) or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on github source page. There will be also a specialized [Discord](https://discord.com/) community channel to discuss the application of the `{eprscope}` 📦. If there is somebody with the interest and ability to contribute to package development please, ask through the github issue page.
+Any additional questions, comments, remarks or issues can be addressed through several discussion channels like 📧 e-mail ([jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or [jan.tarabek\@uochb.cas.cz](mailto:jan.tarabek@uochb.cas.cz){.email}) or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on github source page. There will be also a specialized [Discord](https://discord.com/) community channel to discuss the issues as well as application of the `{eprscope}` . If there is somebody with the interest and ability to contribute to package development please, ask through the github issue page.
 
 ## Acknowledgements
 
-I would like to express a deep gratitude to my colleagues from the [NMR Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially, [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>, [Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>. Without the fruitful environment within the NMR Spectroscopy team it wouldn't be possible to develop such a project like this. Also, I'd like to give a special thanks to my brother [Dr. Peter Tarábek](https://orcid.org/0000-0002-7181-7136) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} for his valuable comments and remarks.
+I would like to express a deep gratitude to my colleagues from the [NMR Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially, [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>, [Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>. Without the fruitful environment within the NMR Spectroscopy team it wouldn't be possible to develop such a project like this. Also, I'd like to give a special thanks to my brother [Dr. Peter Tarábek](https://orcid.org/0000-0002-7181-7136) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} for his valuable comments and remarks as well as to [Prof. Milan Mazúr](https://www.scopus.com/authid/detail.uri?authorId=7102655401) for discussion about the quantitative EPR theory and applications.

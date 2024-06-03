@@ -67,7 +67,8 @@ optimization/fitting functions of the `{eprscope}` .
 Completely new
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>
 users or people who haven’t already installed the *R* environment,
-please consult ➨
+please consult the following steps prior to own `{eprscope}`
+installation ➨
 
 1.  [the R installation procedure](https://cran.rstudio.com/)
 
@@ -88,7 +89,7 @@ formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
 
 In this section couple of examples are shown in order to briefly
 demonstrate 📦 functionality. More detailed description can be found
-within the package articles/vignettes or documentation examples.
+within the 📦 articles/vignettes or documentation examples.
 
 ### Reading Files with Instrumental Parameters
 
@@ -140,14 +141,14 @@ simulation.iso <-
   eval_sim_EPR_iso(g.iso = 2.0027,
                    B.unit = "G",
                    nuclear.system = list(
-                     list("1H",3,5.09),
+                     list("1H",3,5.09), 
                      list("1H",6,17.67)
                      ),
                    natur.abund = T,
-                   lineGL.DeltaB = list(0.42,NULL))
+                   lineGL.DeltaB = list(0.24,NULL))
 #
 # simulation spectrum preview in the region from 3462 G to 3528 G
-simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
+simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 ```
 
 ![](man/figures/README-spectra-simulation-1.png)<!-- -->
@@ -157,15 +158,15 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3462,3528))
 ``` r
 
 # Decay of a triarylamine radical cation right after its generation
-# by electrochemical potentiostatic oxidation in acetonitrile. Double integrals
+# by electrochemical potentiostatic oxidation in TBAPF6/CH3CN. Double integrals
 # (Areas) vs time were obtained from the continuos wave (CW) EPR spectrometer 
 # acquisition/processing software.
 #
-# loading the file with instrumental parameters
+# loading the package built-in file with instrumental parameters
 triarylamine_rc_decay_dsc <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
-# loading file with "Area" vs "time" data frame
+# loading the package built-in file with "Area" vs "time" data frame
 triarylamine_rc_decay_txt <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
@@ -180,7 +181,7 @@ triarylamine_rc_decay_data <-
                     qValue = 1700) %>% na.omit()
 #
 # Fitting the experimental decay by 2R --> B kinetic model
-# with "k1" rate constant and the the corresponding partial
+# with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial 
 # "quantitative variable" (e.g. like concentration, double integral,
 # number of radicals) of the triarylamine radical cation "R".
@@ -203,23 +204,23 @@ triarylamine_rc_decay_model$plot
 
 ``` r
 #
-# data frame/table of obtained kinetic parameters
+# data frame/table of the obtained kinetic parameters
 # by the non-linear fit and numeric solution
-# Ordinary Differential Equations
+# of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>          Estimate   Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
-#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
-#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
+#> qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149
+#> k1     0.06043805 5.451458e-03  11.08658  6.161497e-19
+#> alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101
 ```
 
 ## Help, Questions and Contribution
 
-There are several ways how to get help. If users are already familiar
-with the [R statistical language](https://www.r-project.org/) please,
-follow either the individual package function documentation or the
-corresponding articles/vignettes. These might be also considered as a
-kind of EPR spectroscopy knowledge resource. **In case you are new to
+There are several ways how to get help. If the users are already
+familiar with the [R statistical language](https://www.r-project.org/)
+please, follow either the individual package function documentation or
+the corresponding articles/vignettes. These might be also considered as
+a kind of EPR spectroscopy knowledge resource. **In case you are new to
 *R***, there are couple of great tutorials enabling a quite
 straightforward diving into
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>.
@@ -278,9 +279,7 @@ straightforward diving into
 
 Even though the **EPR spectroscopy** is a quite complex field there are
 some introductory on-line materials which may help to start with this
-special magnetic resonance method and how to gather the direct
-structural evidence of unpaired electronic centers within the molecules
-➨
+special magnetic resonance method ➨
 
 - [EasySpin Documentation](https://easyspin.org/easyspin/documentation/)
 
@@ -299,15 +298,15 @@ structural evidence of unpaired electronic centers within the molecules
 - [Basic Concepts of
   EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 
-Any additional questions, comments/remarks or issues can be addressed
+Any additional questions, comments, remarks or issues can be addressed
 through several discussion channels like 📧 e-mail
 (<jantar40@protonmail.com> or <jan.tarabek@uochb.cas.cz>) or github <img
 src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
 width="16" /> issues on github source page. There will be also a
 specialized [Discord](https://discord.com/) community channel to discuss
-the application of the `{eprscope}` 📦. If there is somebody with the
-interest and ability to contribute to package development please, ask
-through the github issue page.
+the issues as well as application of the `{eprscope}` . If there is
+somebody with the interest and ability to contribute to package
+development please, ask through the github issue page.
 
 ## Acknowledgements
 
@@ -326,4 +325,7 @@ wouldn’t be possible to develop such a project like this. Also, I’d like
 to give a special thanks to my brother [Dr. Peter
 Tarábek](https://orcid.org/0000-0002-7181-7136)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
-width="16" /> for his valuable comments and remarks.
+width="16" /> for his valuable comments and remarks as well as to
+[Prof. Milan
+Mazúr](https://www.scopus.com/authid/detail.uri?authorId=7102655401) for
+discussion about the quantitative EPR theory and applications.
