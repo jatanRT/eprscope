@@ -16,6 +16,10 @@ reference:
   contents:
   - has_concept("Data Reading")
 
+- title: EPR Spectroelectrochemistry
+  contents:
+  - has_concept("EPR Spectroelectrochemistry")
+
 - title: Evaluations
   contents:
   - has_concept("Evaluations")
@@ -38,4 +42,4 @@ reference:
 
 - title: Non-Categorized
   contents:
-  - lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data Reading","Evaluations","Evaluations and Quantum Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations and Graphics"))
+  - lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data Reading","EPR Spectroelectrochemistry","Evaluations","Evaluations and Quantum Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations and Graphics"))

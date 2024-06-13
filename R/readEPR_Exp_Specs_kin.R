@@ -191,9 +191,13 @@ readEPR_Exp_Specs_kin <- function(name_root,
   #
   if (time.unit == "min") {
     times <- times * 60
+    ## rename column
+    colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
   }
   if (time.unit == "h") {
     times <- times * 3600
+    ## rename column
+    colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
   }
   ## Definition for `time.delta.slice.s`
   time.delta.slice.s <- time.delta.slice.s %>% `if`(is.null(time.delta.slice.s),1, .)

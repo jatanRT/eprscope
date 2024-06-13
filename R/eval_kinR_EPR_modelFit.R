@@ -157,12 +157,12 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   if (time.unit == "min") {
     data.qt.expr[[time]] <- data.qt.expr[[time]] * 60
     ## rename `time`
-    names(data.qt.expr[[time]]) <- "time_s"
+    colnames(data.qt.expr)[colnames(data.qt.expr) == time] <- "time_s"
   }
   if (time.unit == "h") {
     data.qt.expr[[time]] <- data.qt.expr[[time]] * 3600
     ## rename `time`
-    names(data.qt.expr[[time]]) <- "time_s"
+    colnames(data.qt.expr)[colnames(data.qt.expr) == time] <- "time_s"
   }
   #
   ## corrected time for CW EPR experiment
