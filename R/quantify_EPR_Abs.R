@@ -86,18 +86,18 @@
 #'   \code{BmmT} \tab modulation amplitude (magnetic flux density modulation,
 #'   \eqn{B_{\text{m}}}) in mT \cr
 #'   \code{TK} \tab temperature in K \cr
-#'   \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+#'   \code{mwGHz} \tab applied microwave frequency in \code{GHz} to record the continuous wave (CW)
 #'   EPR spectrum \cr
 #'   }
 #'   \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
 #'   from the \code{path_to_dsc_par} based on the \code{origin}.
-#' @param qValue Numeric value of the sensitivity `Q` factor. For the processed EPR spectra by
-#'   the `{eprscope}` package the \code{integ.sigmoid.max} is usually normalized by the `Q` value.
+#' @param qValue Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
+#'   the \pkg{eprscope} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
 #'   Therefore, \strong{default}: \code{qValue = NULL}.
 #' @param point.sample.factor Numeric value ... tbc ...
-#' @param tube.sample.id.mm Numeric value equal to internal diameter (in `mm`) of the tube/cell used
+#' @param tube.sample.id.mm Numeric value equal to internal diameter (in \code{mm}) of the tube/cell used
 #'   for the quantitative EPR experiment.
-#' @param fill.sample.h.mm Numeric value equal to sample height (in `mm`) within the tube/cell.
+#' @param fill.sample.h.mm Numeric value equal to sample height (in \code{mm}) within the tube/cell.
 #' @param eff.cavity.h.mm Numeric value equal to effective cavity/probehead height/length,
 #'   usually provided by the probehead manufacturer.
 #' @param fn.B1.Bm.fit Numeric vector (coefficients) of the polynomial degree from 5 to 12
@@ -106,10 +106,10 @@
 #'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
 #'   if the EPR spectrum was normalized by such constant either upon measurement or during processing.
 #'   Otherwise it must be provided by \code{\link{quantify_EPR_Norm_const}}.
-#' @param Temp.K Numeric temperature value in `K`. Because the \code{instrum.params} also contains temperature
+#' @param Temp.K Numeric temperature value in \code{K}. Because the \code{instrum.params} also contains temperature
 #'   input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for calculation.
-#'   Either \code{Temp.K} or \code{TK} CAN BE ALSO `NULL` but NOT BOTH !! In the latter case default value `298 K`
-#'   is considered.
+#'   Either \code{Temp.K} or \code{TK} CAN BE ALSO \code{NULL} but NOT BOTH !! In the latter case default value
+#'   \code{298 K} is considered.
 #' @param S Numeric value, total spin sample quantum number. For radicals \code{S = 0.5}
 #'   (\strong{default}).
 #'

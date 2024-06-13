@@ -26,26 +26,29 @@ plot_ECh_VoC_amperogram(
 )
 }
 \arguments{
-\item{data.voltamm}{Data frame (table) object including required columns like \code{Potential} (\eqn{E}) and/or \code{Time}
-(\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary column label can be used, the best option
-is to use labels e.g. like \code{E_V}, \code{E_mV}, \code{time_s}, \code{I_uA} or \code{I_mA}.}
+\item{data.voltamm}{Data frame (table) object including required columns like \code{Potential}
+(\eqn{E}) and/or \code{Time} (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary
+column label can be used, the best option is to use labels e.g. like \code{E_V}, \code{E_mV}, \code{time_s},
+\code{I_uA} or \code{I_mA}.}
 
-\item{x}{Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm}, like \strong{potential}
-(e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"}, \code{x = "time_min"}
-or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).}
+\item{x}{Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm},
+like \strong{potential} (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"},
+\code{x = "time_min"} or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).}
 
-\item{x.unit}{Character string pointing to \code{x}-quantity unit. There are following units available: \code{x.unit = "V"},
-\code{x.unit = "mV"} (in case of voltammetry, \code{x} corresponds to potential) as well as \code{x.unit = "s"}, \code{x.unit = "ms"}
-or \code{x.unit = "min"} (in case of chronoamperometry, \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.}
+\item{x.unit}{Character string pointing to \code{x}-quantity unit. There are following units available:
+\code{x.unit = "V"}, \code{x.unit = "mV"} (in case of voltammetry, \code{x} corresponds to potential)
+as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (in case of chronoamperometry,
+\code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.}
 
-\item{Current}{Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original \code{data.voltamm} object.
-\strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{\mu A}}).}
+\item{Current}{Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
+\code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{\mu A}}).}
 
 \item{Current.unit}{Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.}
 
-\item{xlim}{Numeric vector of the \code{x}-quantity border limits, e.g. like \code{xlim = c(-100,400)} (potential in "mV",
-in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds, in case of chronoamperometry).}
+\item{xlim}{Numeric vector of the \code{x}-quantity border limits, e.g. like \code{xlim = c(-100,400)}
+(potential in "mV", in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds,
+in case of chronoamperometry).}
 
 \item{Ilim}{Numeric vector characterizing the border limits of the current...TBC...}
 
@@ -83,8 +86,9 @@ in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds, in case of 
 \item{grid}{Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
 }
 \value{
-Graphical representation (list object) of voltammogram or chronoamperogram either in static form by \pkg{ggplot2}
-  (\code{plot.interact = FALSE}) or in interactive form by \pkg{plotly} (\code{plot.interact = TRUE}).
+Graphical representation (list object) of voltammogram or chronoamperogram either in static
+  form by \pkg{ggplot2} (\code{plot.interact = FALSE}) or in interactive form by \pkg{plotly}
+  (\code{plot.interact = TRUE}).
 }
 \description{
 A short description...

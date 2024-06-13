@@ -58,11 +58,11 @@ where the $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (W
 
 # Drawing of Molecular Structures
 
-Structure of the investigated compound can be depicted by the following function (`draw_molecule_by_rcdk()`) based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) 📦 (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/) an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
+Structure of the investigated compound can be depicted by the `draw_molecule_by_rcdk()` function based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) 📦 (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/), an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
 
 ```{r draw-molecule}
 
-# radical cation of previosly described Wuster's Reagent equivalent
+# radical cation Wuster's Reagent equivalent
 # to N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical cation
 # from 'SMILES' origin on "cob" ("color on black") canvas, without
 # suppressing the hydrogen atoms
@@ -72,7 +72,7 @@ draw_molecule_by_rcdk(
   style = "cob",
   mol.label = expression(TMPD^+.~"("~Wuster*"'"*s~Blue~")"),
   mol.label.color = "yellow",
-  suppressh = F
+  suppressh = FALSE
 )
 
 ```
@@ -81,9 +81,9 @@ This function belongs to the package family/section `Visualizations and Graphics
 
 # Reading Files and Writing Data Frames
 
-To process the EPR spectral data it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format). The information incl. in these files is required to e.g. normalize the Intensity (like $\mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
+The `{eprscope}` reads and converts pure (except the `.mat` format) text files. Therefore, to read the instrumental data files the recorded EPR spectra must be first of all converted into ASCII at the spectrometer. If the conversion option is either not available or the operation was forgotten to perform, one can also try a free online converter by *Leland B. Gee* [@xepr2gfac2023]. To process the EPR spectral data it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format). The information incl. in these files is required to e.g. normalize the Intensity (like $\mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
 
-Reading of the instrumental parameters from `.DSC` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes like e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
+Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes like e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in the list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
 
 ```{r instrum-params-read-df-info}
 
@@ -108,16 +108,16 @@ tmpd.params$params # or `tmpd.params[["params"]]`
 
 ```
 
-Finally conversion of the second data frame (`tmpd.params$params`) can be also converted into **interactive table** ➨ **see function** `readEPR_params_tabs()` and its corresponding examples.
+Finally, conversion of the second data frame (`tmpd.params$params`) can be performed by the `readEPR_params_tabs()` function with the argument `interact = "params"` .
 
-The `origin` argument from reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within "xenon"/"magnetech" software, the "winepr" intensity has to be normalized after the measurement if one wants to compare the intensities of two or more EPR spectra. Thus, the reading of the $\ce{TMPD^{.+}}$ spectral data by `readEPR_Exp_Specs()` proceeds as follows with the output in form of the universal `data frame` format ➨
+The `origin` argument in reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within "xenon"/"magnetech" software, the "winepr" intensity has to be normalized after the measurement if one wants to compare the intensities of two or several EPR spectra. The reading of the $\ce{TMPD^{.+}}$ spectral data by `readEPR_Exp_Specs()` proceeds as follows with the output having the form of the universal `data frame` format ➨
 
 ```{r spectral-data-read-norm-basic}
 
-# built-in package file => "TMPD_specelchem_accu_b.asc"
+# loading built-in package file => "TMPD_specelchem_accu_b.asc"
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
-# The intensity is normalized by Q value (sensitivity factor)
+# The intensity is normalized by the Q value (sensitivity factor)
 # and the number of scans (`Nscans`). From the previous parameter/info 
 # reading we know: Q = 3500, Nscans = 20.
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
@@ -130,14 +130,14 @@ tmpd.data.norm.01 <- readEPR_Exp_Specs(
   origin = "winepr"
 )
 #
-# data frame preview 
+# preview of the first six rows 
 head(tmpd.data.norm.01)
 
 ```
 
-An arbitrary character string may be chosen for the column names (`col.names`)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above for the magnetic flux density $B$. The name for the intensity column reads `dIepr_over_dB` (without units) because it reflects the derivative mode $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B$ in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function `readEPR_Exp_Specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is because the magnetic flux density in both units is quite often used to display the EPR spectra as well as to calculate additional related quantities like $\Delta B$, $g$ or hyperfine splitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
+An arbitrary character string may be chosen for the column names (see `col.names` argument)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit" as already shown above in the case of magnetic flux density $B$. The name for the intensity column reads `dIepr_over_dB` (without units) because it reflects the derivative mode $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B$ in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function `readEPR_Exp_Specs()` can automatically convert the $B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like $\Delta B$, $g$ or hyperfine splitting constants $a$. If the `Intensity` has to be normalized also by additional instrumental parameters like *conversion time* and *receiver gain* (automatically performed within "Xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
 
-[^1]: For such reason there are arguments `x` and `Intensity` , pointing to original column indices, in order to properly pick up the corresponding variables.
+[^1]: For such reason there are arguments `x.id` and `Intensity.id` , pointing to original column indices, in order to properly pick up the corresponding variables.
 
 ```{r spectral-data-read-norm}
 
@@ -173,19 +173,20 @@ head(tmpd.data.norm.02)
 
 ```
 
-Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the mostly used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/). Among them, libraries like [{DT}](https://rstudio.github.io/DT/), [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. Example of the last data frame previewed by `{flextable}` is shown below.
+Moreover, the `norm.vec.add` argument can involve additional normalization quantities like sample weight, concentration, number of scans (if not normalized by the spectrometer)...etc. If needed, all such quantities can be defined at once within the `norm.vec.add` .
+
+Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the most used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/). Among them, libraries like [{DT}](https://rstudio.github.io/DT/), [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. The last data frame previewed by the `{flextable}` is shown in the following example.
 
 ```{r spectral-data-read-norm-flextable}
 
 # visualization of the first 10 rows by `{flextable}` in `booktabs` (LaTeX-like) theme
-# (`theme_booktabs()`) and pipe oerator "%>%" which is an expression 
-# of a sequence of operations transforming an object
+# (`theme_booktabs()`) 
   flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
     flextable::theme_booktabs()
 
 ```
 
-In order to process data frames in other software tools different from `r icons::bioicons("R")` they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
+In order to process data frames by other software tools, different from `r icons::bioicons("R")` (e.g. in excel-like sheet format), they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
 
 ```{r spectral-data-read-norm-csv-save}
 
@@ -198,7 +199,7 @@ write.csv(tmpd.data.norm.02,
 
 # Visualizations of Spectral Data
 
-All the data related to EPR spectroscopy can be visualized by the famous [{ggplot2}](https://ggplot2.tidyverse.org/) 📦 and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, the latter includes tools like zooming, panning, data/values hovering and [much more](https://plotly.com/r/configuration-options/). Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
+All the data related to EPR spectroscopy can be visualized by the [{ggplot2}](https://ggplot2.tidyverse.org/) 📦 and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, it includes tools like zooming, panning, data/values hovering and [much more](https://plotly.com/r/configuration-options/). Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
 
 [^2]: *The Grammar of Graphics* is a concept how the graphs/plots are built. It is based on fact that graphs may consist of several component/layers (e.g. like data layer, geometry layer, aesthetic layer...etc) similarly to processing of a bitmap-image in the photo-editor. The term "*grammar*" corresponds to structure of a sentence in language and thus it may represent a structure of the graph/plot in R programming language.
 
@@ -206,9 +207,9 @@ All the data related to EPR spectroscopy can be visualized by the famous [{ggplo
 
 The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra as well as those within the series (e.g. like time series $\equiv$ kinetic measurements). Now, by means of this function and by the [{patchwork}](https://patchwork.data-imaginist.com/) 📦 , we can compare the EPR spectra with basic and "advanced" normalization ➨
 
-```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\ce{TMPD^{.+}}$ in $0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensityvity Q-factor, 'qValue'."}
+```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\ce{TMPD^{.+}}$ in $0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensitivity Q-factor, 'qValue'."}
 
-# Plotting the spectrum with basic normalization
+# Plotting the spectrum with basic normalization,
 # the B abscissa can be presented either in "mT" (default) or "G" 
 # plot title is added by `ggtitle()` function from `{ggplot2}` package
 tmpd.plot.norm.01 <- 
@@ -242,7 +243,7 @@ tmpd.plot.norm.0102
 
 ```
 
-If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual) the function `ggplot2::ggsave()` can be used ➨
+If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual) the function `ggplot2::ggsave()` can be applied ➨
 
 ```{r spectral-data-norm0102-visual-save}
 
@@ -262,7 +263,7 @@ ggplot2::ggsave("images/TMPD_EPR_Norm_compar.png",
 
 ## Interactive Plots by `{plotly}`
 
-In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied (consult the corresponding function example). Additionally, it can be also used for the series of overayed EPR spectra similarly like `plot_EPR_Specs()`. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments will be described in other vignette and provided by the `plot_EPR_Specs3D_interact()` function.
+In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied (consult the corresponding function example). Additionally, it can be also used for the series of overlayed EPR spectra similarly like `plot_EPR_Specs()`. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during the kinetic or variable temperature experiments are provided by the `plot_EPR_Specs3D_interact()` function.
 
 ![](images/epr_spectr_interactive.gif){width="654"}
 
@@ -276,7 +277,7 @@ There are four basic parameters to characterize the EPR spectrum ➨
 
 3.  Hyperfine splitting, $a$ (in $\mathrm{mT}$ or $\mathrm{G}$) which is the distance between the individual lines corresponding to interaction of the unpaired electron with the group of surrounding equivalent nuclei.
 
-4.  Single or double integral depending on the original spectral line form ➨ either integrated or derivative, respectively. This is directly proportional to number of paramagnetic species/radicals.
+4.  Single or double integral depending on the original spectral line form ➨ either integrated or derivative, respectively. This is directly proportional to the number of paramagnetic species/radicals.
 
 ## Finding the *g*~iso~-Value
 
@@ -288,7 +289,7 @@ g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B_0}
 (\#eq:gfactor)
 \end{equation}
 ```
-where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, respectively. Therefore, it is determined only by the microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point where $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0$ (see function `eval_gFactor_Spec()`).
+where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, respectively. Therefore, it is determined only by the microwave frequency ($\nu$) and the magnetic flux density ($B_0$) of the spectrum mid-point where $\mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0$ (in the case of CW EPR spectra, see the function `eval_gFactor_Spec()`).
 
 ```{r spectral-data-norm02-gvalue}
 
@@ -298,8 +299,8 @@ tmpd.mw.freq <-
   string = "MF",
   origin = "winepr"
 )
-# B region (349.677, 350.457) mT, incl. the B mid-point, to calculate 
-# the g-value is obtained from the interactive plot above
+# B region (349.677, 350.457) mT, incl. the B mid-point, 
+# to calculate the g-value is obtained from the interactive plot above
 tmpd.g.iso.spec <- 
   eval_gFactor_Spec(tmpd.data.norm.02,
   nu.GHz = tmpd.mw.freq,
@@ -308,6 +309,7 @@ tmpd.g.iso.spec <-
   Blim = c(349.677, 350.457)
 )
 #
+# value preview
 tmpd.g.iso.spec
 
 ```
@@ -324,16 +326,17 @@ gauss.tmpd.output <- unzip(gauss.tmpd.load)
 # giso-value is automatically calculated as the mean
 # of its principal components (g1,g2,g3) summarized in output files
 tmpd.g.iso.dft <- eval_gFactor_QCHcomp(gauss.tmpd.output)
+#
 # preview
 tmpd.g.iso.dft
 #
 # comparison of both theoretical and experimental g-values 
-# with the tolerance of 1e-3
+# within the tolerance of 1e-3
 all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
 
 ```
 
-The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and the experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus confirms position of the $\ce{TMPD^{.+}}$ EPR spectrum. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of a [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the described radical cation structure. Namely, it tells how the individual atomic orbitals contributes to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the unpaired electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
+The `TRUE` value represents a perfect agreement between the theoretically (`2.00317`) and the experimentally (`2.00304`) determined $g_{\mathrm{iso}}$-values and thus supporting the structure of $\ce{TMPD^{.+}}$. Its difference from the free electron $g_{\mathrm{e}}\approx 2.00232$ is a consequence of [spin-orbit coupling (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift) of the unpaired electron within the radical cation. Namely, it tells how the individual atomic orbitals contribute to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the unpaired electronic state. Therefore, for $\ce{TMPD^{.+}}$ the SOC is not so pronounced because of the small difference from $g_{\mathrm{e}}$. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above [@Weilepr2007].
 
 ## Linewidth, 𝚫*B*~pp~ Determination
 
@@ -342,7 +345,7 @@ The linewidth in $\mathrm{mT}$ can be determined from several spectral lines/reg
 ```{r spectral-data-norm02-linewidth}
 
 # calculate Delta Bpp from several regions
-# => list of three elements/regions
+# => list of three selected elements/regions
 B.regions.mT <- list(
   c(349.677, 349.977),
   c(349.177, 349.492),
@@ -350,7 +353,7 @@ B.regions.mT <- list(
 )
 #
 # all Delta Bpp as vector created by the iteration through 
-# all elements of `B.regions.mT` (by the `sapply()` function)
+# all elements (with the help of `sapply()` function) of `B.regions.mT`
 tmpd.delta.Bpp <- sapply(
   B.regions.mT,
   function(b) {
@@ -363,11 +366,12 @@ tmpd.delta.Bpp <- sapply(
 tmpd.delta.Bpp.mean <- 
   round(mean(tmpd.delta.Bpp),digits = 2)
 #
+# value preview
 tmpd.delta.Bpp.mean
 
 ```
 
-## Hyperfine (HF) Structure and Simulation {#hf-structure}
+## Hyperfine (HF) Structure and Simulations {#hf-structure}
 
 The **HF** structure represents one of the most important characteristic because it reflects the distribution of unpaired electron within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants ($a$, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by `convert_a_mT_2A()` into hyperfine coupling constants in $\mathrm{MHz}$ ($A$, HFCCs) by the following relation (Equation \@ref(eq:hfatoA)) ➨
 
@@ -403,19 +407,20 @@ A.guess.MHz
 
 ```
 
-According to literature [@GramppGpda2005] and the $\ce{TMPD^{.+}}$ structure depicted above the interacting nuclei may be divided into three groups of equivalent nuclei: $2\,\times\,\ce{^{14}N}$, $4\,\times\,\ce{^1H}$ (aromatic protons) and $12\,\times\,\ce{^1H}$ (methyl protons). One can consider the DFT calculations (already mentioned above) to obtain all $A$ (HFCCs). The optimized geometry/structure of $\ce{TMPD^{.+}}$ is depicted in Figure \@ref(fig:dft-tmpd-structure).
+According to literature [@GramppGpda2005] and the $\ce{TMPD^{.+}}$ structure (see also Figure \@ref(fig:dft-tmpd-structure) with the DFT-optimized geometry) one can recognize three interacting groups of equivalent nuclei : $2\,\times\,\ce{^{14}N}$, $4\,\times\,\ce{^1H}$ (aromatic protons) and $12\,\times\,\ce{^1H}$ (methyl protons). DFT calculations may provide all $A$ (HFCCs) as shown below.
 
-```{r dft-tmpd-structure,echo=FALSE,fig.cap="DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file."}
+```{r dft-tmpd-structure,fig.cap="DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file."}
 
+# loading built-in image
 knitr::include_graphics("images/TMPD_EPR_DFT_radCat_ab.png",dpi = 200)
 
 ```
 
-The function `rearrange_aAiso_QCHorgau()` extracts the $A$ values from the Gaussian or [ORCA](https://www.orcasoftware.de/tutorials_orca/index.html) output files and calculates the mean values corresponding to selected groups of equivalent nuclei which are defined by the `nuclei.list.slct` argument. Therefore, according to numbering shown in Figure \@ref(fig:dft-tmpd-structure) ➨
+In order to compare the theoretical as well as experimental HFCCs the function `rearrange_aAiso_QCHorgau()` extracts the $A$ values from the Gaussian or [ORCA](https://www.orcasoftware.de/tutorials_orca/index.html) output files and calculates the mean values corresponding to selected groups of equivalent nuclei which are defined by the `nuclei.list.slct` argument. Therefore, according to numbering shown in Figure \@ref(fig:dft-tmpd-structure) ➨
 
 ```{r As-DFT-from-gaussian}
 
-# The same built-in file (`TMPDAradCatEPRa.inp.log.zip`)
+# The same built-in package file (`TMPDAradCatEPRa.inp.log.zip`)
 # as for extraction of g-value is used (see above).
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.tmpd.output,
@@ -433,7 +438,6 @@ symmetry.As.df <-
   )
 #
 # data frame presentation by `{kableExtra}` package
-# (see also https://haozhu233.github.io/kableExtra/awesome_table_in_html.html)
 kableExtra::kbl(symmetry.As.df) %>%
   kableExtra::kable_styling(bootstrap_options = c(
     "striped",
@@ -443,45 +447,49 @@ kableExtra::kbl(symmetry.As.df) %>%
 
 ```
 
-From the previous analysis it turns out that the highest HF-coupling/splitting constants are related to the interaction of unpaired electron with the nitrogen and methyl-proton nuclei. Therefore the highest spin density is located on the periphery of the $\ce{TMPD^{.+}}$ molecule. This may be also supported by the simulation (theoretical calculation) of the EPR spectrum (which is calculated by the `eval_sim_EPR_iso()` function) by taking into account the following parameters, accordingly ➨
+The previous analysis reveals that the highest HF-coupling/splitting constants are related to the interaction of unpaired electron with the nitrogen and methyl-proton nuclei. Therefore the highest spin density is located on the "periphery" of the $\ce{TMPD^{.+}}$ molecule. This may be also supported by the simulation (theoretical calculation) of the EPR spectrum (which is computed by the `eval_sim_EPR_iso()` function) by taking into account the following parameters ➨
 
 -   position of the EPR spectrum ($g_{\mathrm{iso}}$-value) ➨ `g.iso`
 
 -   spectral linewidth corresponding to Gaussian and/or Lorentzian lineshape ➨ `lineGL.DeltaB`
 
--   content of the Gaussian lineshape in the overall linear combination of both Gaussian and Lorenztian theoretical spectral forms (so called pseudo-Voigtian lineshape) ➨ `lineG.content`
+-   content of the Gaussian lineshape in the overall linear combination of both Gaussian and Lorenztian theoretical spectral forms (so called pseudo-Voigt lineshape) ➨ `lineG.content`
 
 -   additional instrumental parameters like central field ➨ `Bcf`, sweep width ➨ `Bsw`, microwave frequency ➨ `mwGHz` and number of points (spectral resolution) ➨ `Npoints`.
 
-where after the arrow arguments of the `eval_sim_EPR_iso()` function are shown. By considering all the above-listed parameters and the estimated linewidth `tmpd.delta.Bpp.mean` ($0.5\,\mathrm{G}$) as well as the hyperfine coupling constants, either directly estimated from the spectrum (`A.guess.MHz`) or from the quantum chemical calculations (`symmetry.As.df`) and/or taken from the literature [@GramppGpda2005], the EPR spectrum of $\ce{TMPD^{.+}}$ can be simulated as follows ➨
+Required arguments of the `eval_sim_EPR_iso()` function are presented after the arrows. By considering all the above-listed parameters and the estimated linewidth `tmpd.delta.Bpp.mean` ($0.5\,\mathrm{G}$) as well as the HFCCs, either directly estimated from the spectrum (`A.guess.MHz`) or from the quantum chemical calculations (`symmetry.As.df`) or taken from the literature [@GramppGpda2005], the EPR spectrum of $\ce{TMPD^{.+}}$ can be simulated as follows ➨
 
 ```{r tmpd-radcat-simulation}
 
-# isotropic simulation of the TMPD radical cation where the instrumental
-# parameters are taken from the corresponding `.par` file:
-# `tmpd.params.file`,
+# isotropic simulation of the TMPD radical cation where 
+# the instrumental parameters are taken from the corresponding 
+# `.par` file: `tmpd.params.file` :
 sim.tmpd.iso <- 
   eval_sim_EPR_iso(g.iso = tmpd.g.iso.spec,
                    instrum.params = NULL,
                    path_to_dsc_par = tmpd.params.file,
                    origin = "winepr",
                    B.unit = "mT",
-                   nuclear.system = list(list("14N",2,18.6), # A(2 x 14N) = 18.6 MHz
-                                         list("1H",4,5.5), # A(4 x 1H) = 5.5 MHz
-                                         list("1H",12,19.6)), # A(12 x 1H) = 19.6 MHz
-                   natur.abund = TRUE, # consider natural abundance of the nuclei above
-                   lineGL.DeltaB = list(0.05,0.05), # Gauss (G) & Lorent (L) linewidth (mT)
-                   lineG.content = 0.5) # pseudo-Voigt line shape with 0.5 G + 0.5 L
+                   nuclear.system = 
+                     list(list("14N",2,18.6), # A(2 x 14N) = 18.6 MHz
+                          list("1H",4,5.5), # A(4 x 1H) = 5.5 MHz
+                          list("1H",12,19.6)), # A(12 x 1H) = 19.6 MHz
+                   # consider natural abundance of the nuclei:
+                   natur.abund = TRUE,
+                   # Gauss (G) & Lorentz (L) linewidth (mT):
+                   lineGL.DeltaB = list(0.05,0.05),
+                   # pseudo-Voigt line shape with 0.5 G + 0.5 L:
+                   lineG.content = 0.5) 
 #
-# The output is either interactive spectrum plot or list of plot
-# with the simulated spectrum data frame.
+# The output is either interactive spectrum plot 
+# or list of plot with the simulated spectrum data frame.
 #
 # preview of the data frame
 head(sim.tmpd.iso$df)
 
 ```
 
-Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the `presentEPR_Sim_Spec()` function, which is essentially based on `{ggplot2}` package and therefore can be combined with the [additional {ggplot2} functions](https://ggplot2.tidyverse.org/reference/index.html) as shown below ➨
+Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the `presentEPR_Sim_Spec()` function, which is essentially based on `{ggplot2}` package and therefore can be combined with the [additional {ggplot2} functions](https://ggplot2.tidyverse.org/reference/index.html) as shown below (Figure \@ref(fig:tmpd-radcat-sim-expr-compar)) ➨
 
 ```{r tmpd-radcat-sim-expr-compar, fig.cap="Comparison of simulated and experiental EPR spectrum of $\\ce{TMPD^{.+}}$."}
 
@@ -490,23 +498,23 @@ Afterwards, the simulated EPR spectrum can be presented/compared with the experi
 present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
                      data.spectr.sim = sim.tmpd.iso$df,
                      B.unit = "mT") +
-  plot_theme_NoY_ticks() + # `plot_theme_NoY_ticks` theme from `{eprscope}` pckg.
+  plot_theme_NoY_ticks() + # `plot_theme_NoY_ticks` theme from `{eprscope}`
   scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
   theme(legend.text = element_text(size = 13)) # `{ggplot2}` functions
 
 ```
 
-Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, in order to better fit the simulated spectrum onto the experimental one a fitting/optimization function `eval_sim_EPR_isoFit()` may be used. More information can be found in `vignette("EPR_Simulations")`.
+Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to gather a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` may be needed. More information can be found in `vignette("EPR_Simulations")`.
 
 ## Integrating the EPR Spectrum
 
-Integration process in the analysis of EPR spectra is undoubtedly important operation because it mirrors the amount of paramagnetic centers/radicals within the sample. However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Therefore, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation available from the [{pracma}](https://github.com/cran/pracma) 📦 `pracma::cumtrapz()` (see also [@Rpracma2023; @LibreMath2023; @Math24net2023; @epperson2013intro]).
+Integration process in the analysis of EPR spectra is undoubtedly important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also `quantify_EPR_Abs()`). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Therefore, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation available from the [{pracma}](https://github.com/cran/pracma) 📦 `pracma::cumtrapz()` [@Rpracma2023; @LibreMath2023; @Math24net2023; @epperson2013intro].
 
-The disadvantage of the cumulative trapezoidal method lies in poorly resolved EPR spectra leading to a higher integration errors. However, if the spectral resolution (number of points) is relatively high (e.g. $\geq 1024\,\mathrm{points/sweep}$) the relative error is minimal usually falling into the range of $\langle 1-5\rangle\,\%$ or even lower [@LibreMath2023; @epperson2013intro]. Additionaly, if the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape (see below). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. `quantify_EPR_Sim_series()` function). Thus, the big advantage of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled by the same manner like within the EPR spectrometer acquisitions/processing software (see also `plot_EPR_Specs_integ()` function below). The integration of the EPR spectral data is essentially provided by the `eval_integ_EPR_Spec()` and its application to the experimental $\ce{TMPD^{.+}}$ spectrum is documented by the following scripts ➨
+The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of $\langle 1-5\rangle\,\%$ or even lower depending on the spectrum resolution [@LibreMath2023; @epperson2013intro]. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape (example of such shape see below). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. `quantify_EPR_Sim_series()` function). The upside of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled by the same manner like within the EPR spectrometer acquisitions/processing software (see also `plot_EPR_Specs_integ()` function below). The integration of the EPR spectral data is essentially provided by the `eval_integ_EPR_Spec()` and its application to the experimental $\ce{TMPD^{.+}}$ spectrum is documented by the following scripts ➨
 
 ```{r tmpd-basic-epr-integ}
 
-# Basic integration without basiline correction
+# Basic integration without baseline correction
 # during the first integration.
 tmpd.data.norm.02.integ <- 
   eval_integ_EPR_Spec(data.spectr = tmpd.data.norm.02,
@@ -516,6 +524,7 @@ tmpd.data.norm.02.integ <-
 #
 # The integration returns the original data frame
 # with the additional integrals `single_Integ` + `sigmoid_Integ` 
+#
 # preview
 head(tmpd.data.norm.02.integ)
 
@@ -549,8 +558,10 @@ tmpd.data.norm.02.integCorr <-
                       B = "B_mT",
                       B.unit = "mT",
                       correct.integ = TRUE,
-                      BpeaKlim = c(344.5,355.5), # peak region to correct the baseline
-                      poly.degree = 3, # polynomial degree to fit baseline under the peak region
+                      # peak region to correct the baseline:
+                      BpeaKlim = c(344.5,355.5),
+                      # polynomial degree to fit baseline under the peak region:
+                      poly.degree = 3,
                       sigmoid.integ = TRUE)
 #
 # Integrals preview

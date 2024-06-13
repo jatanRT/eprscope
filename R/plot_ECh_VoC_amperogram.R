@@ -12,21 +12,24 @@
 #'
 #'
 #' @inheritParams plot_EPR_Specs
-#' @param data.voltamm Data frame (table) object including required columns like \code{Potential} (\eqn{E}) and/or \code{Time}
-#'   (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary column label can be used, the best option
-#'   is to use labels e.g. like \code{E_V}, \code{E_mV}, \code{time_s}, \code{I_uA} or \code{I_mA}.
-#' @param x Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm}, like \strong{potential}
-#'   (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"}, \code{x = "time_min"}
-#'   or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).
-#' @param x.unit Character string pointing to \code{x}-quantity unit. There are following units available: \code{x.unit = "V"},
-#'   \code{x.unit = "mV"} (in case of voltammetry, \code{x} corresponds to potential) as well as \code{x.unit = "s"}, \code{x.unit = "ms"}
-#'   or \code{x.unit = "min"} (in case of chronoamperometry, \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.
-#' @param Current Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original \code{data.voltamm} object.
-#'   \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{\mu A}}).
+#' @param data.voltamm Data frame (table) object including required columns like \code{Potential}
+#'   (\eqn{E}) and/or \code{Time} (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary
+#'   column label can be used, the best option is to use labels e.g. like \code{E_V}, \code{E_mV}, \code{time_s},
+#'   \code{I_uA} or \code{I_mA}.
+#' @param x Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm},
+#'   like \strong{potential} (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"},
+#'   \code{x = "time_min"} or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).
+#' @param x.unit Character string pointing to \code{x}-quantity unit. There are following units available:
+#'   \code{x.unit = "V"}, \code{x.unit = "mV"} (in case of voltammetry, \code{x} corresponds to potential)
+#'   as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (in case of chronoamperometry,
+#'   \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.
+#' @param Current Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
+#'   \code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{\mu A}}).
 #' @param Current.unit Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 #'   (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.
-#' @param xlim Numeric vector of the \code{x}-quantity border limits, e.g. like \code{xlim = c(-100,400)} (potential in "mV",
-#'   in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds, in case of chronoamperometry).
+#' @param xlim Numeric vector of the \code{x}-quantity border limits, e.g. like \code{xlim = c(-100,400)}
+#'   (potential in "mV", in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds,
+#'   in case of chronoamperometry).
 #' @param Ilim Numeric vector characterizing the border limits of the current...TBC...
 #' @param line.color Character string...TBC...
 #' @param ref.electrode Character string ...TBC...
@@ -34,8 +37,9 @@
 #' @param ticks Character string ...the axis ticks pointing either
 #'
 #'
-#' @return Graphical representation (list object) of voltammogram or chronoamperogram either in static form by \pkg{ggplot2}
-#'   (\code{plot.interact = FALSE}) or in interactive form by \pkg{plotly} (\code{plot.interact = TRUE}).
+#' @return Graphical representation (list object) of voltammogram or chronoamperogram either in static
+#'   form by \pkg{ggplot2} (\code{plot.interact = FALSE}) or in interactive form by \pkg{plotly}
+#'   (\code{plot.interact = TRUE}).
 #'
 #'
 #' @examples
@@ -70,12 +74,6 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   #
   ## 'Temporary' processing variables
   . <- NULL
-  A <- NULL
-  E <- NULL
-  Times <- NULL
-  V <- NULL
-  mV <- NULL
-  s <- NULL
   #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
@@ -129,16 +127,14 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   ref.electrode.condition <- ifelse(!is.null(ref.electrode),TRUE,FALSE)
   ## Definitions
   if (!is.null(ref.electrode)) {
-  x.label.ref <- plot_labels_xyz(E, "(" ~ .(x.unit) ~ ")" ~ ~ ~ italic(vs) ~ ~ ~ .(ref.electrode),
-    user.defined = TRUE
-    )
-  x.label.ref.html <- paste0(
-    "<i>E</i> (",
-    x.unit,
-    ")",
-    "  <i>vs</i>  ",
-    ref.electrode
-    )
+    x.label.ref <- bquote(italic(E)~~"("~.(x.unit)~")"~~~italic(vs)~~~.(ref.electrode))
+    x.label.ref.html <- paste0(
+      "<i>E</i> (",
+      x.unit,
+      ")",
+      "  <i>vs</i>  ",
+      ref.electrode
+      )
   }
   ## Conditions (V)
   if (x.unit == "V") {
@@ -154,7 +150,7 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
     ## reference electrode
     x.label <- switch(2 - ref.electrode.condition,
       x.label.ref,
-      plot_labels_xyz(E, V)
+      bquote(italic(E)~~"("~V~")")
       )
     }
   }
@@ -171,7 +167,7 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
       ## reference electrode
       x.label <- switch(2-ref.electrode.condition,
                         x.label.ref,
-                        plot_labels_xyz(E,mV))
+                        bquote(italic(E)~~"("~m~V~")"))
     }
   }
   ## Conditions (s)
@@ -185,7 +181,7 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
       if (isTRUE(plot.interact)){
         x.label.html <- paste0("<i>Time</i> (",x.unit,")")
       } else {
-        x.label <- plot_labels_xyz(Times,s)
+        x.label <- bquote(italic(Time)~~"("~s~")")
       }
     }
   }
@@ -193,28 +189,28 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   yLabel <- function(unit,interact = FALSE){
     if (unit == "A"){
       if (isFALSE(interact)){
-        return(plot_labels_xyz(Current,A))
+        return(bquote(italic(Current)~~"("~A~")"))
       } else {
         return("<i>Current</i>  (A)")
       }
     }
     if (unit == "uA"){
       if (isFALSE(interact)){
-        return(plot_labels_xyz(Current,mu~A))
+        return(bquote(italic(Current)~~"("~mu~A~")"))
       } else {
         return("<i>Current</i>  (&#181; A)")
       }
     }
     if (unit == "mA"){
       if (isFALSE(interact)){
-        return(plot_labels_xyz(Current,m~A))
+        return(bquote(italic(Current)~~"("~m~A~")"))
       } else {
         return("<i>Current</i>  (m A)")
       }
     }
     if (unit == "nA"){
       if (isFALSE(interact)){
-        return(plot_labels_xyz(Current,n~A))
+        return(bquote(italic(Current)~~"("~n~A~")"))
       } else {
         return("<i>Current</i>  (n A)")
       }

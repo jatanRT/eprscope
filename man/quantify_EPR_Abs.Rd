@@ -31,7 +31,7 @@ for the quantification =>
 \code{BmmT} \tab modulation amplitude (magnetic flux density modulation,
 \eqn{B_{\text{m}}}) in mT \cr
 \code{TK} \tab temperature in K \cr
-\code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+\code{mwGHz} \tab applied microwave frequency in \code{GHz} to record the continuous wave (CW)
 EPR spectrum \cr
 }
 \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
@@ -50,16 +50,16 @@ were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or
 one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
 the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
-\item{qValue}{Numeric value of the sensitivity `Q` factor. For the processed EPR spectra by
-the `{eprscope}` package the \code{integ.sigmoid.max} is usually normalized by the `Q` value.
+\item{qValue}{Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
+the \pkg{eprscope} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
 Therefore, \strong{default}: \code{qValue = NULL}.}
 
-\item{tube.sample.id.mm}{Numeric value equal to internal diameter (in `mm`) of the tube/cell used
+\item{tube.sample.id.mm}{Numeric value equal to internal diameter (in \code{mm}) of the tube/cell used
 for the quantitative EPR experiment.}
 
 \item{point.sample.factor}{Numeric value ... tbc ...}
 
-\item{fill.sample.h.mm}{Numeric value equal to sample height (in `mm`) within the tube/cell.}
+\item{fill.sample.h.mm}{Numeric value equal to sample height (in \code{mm}) within the tube/cell.}
 
 \item{eff.cavity.h.mm}{Numeric value equal to effective cavity/probehead height/length,
 usually provided by the probehead manufacturer.}
@@ -72,10 +72,10 @@ or character string ("theoretical").}
 if the EPR spectrum was normalized by such constant either upon measurement or during processing.
 Otherwise it must be provided by \code{\link{quantify_EPR_Norm_const}}.}
 
-\item{Temp.K}{Numeric temperature value in `K`. Because the \code{instrum.params} also contains temperature
+\item{Temp.K}{Numeric temperature value in \code{K}. Because the \code{instrum.params} also contains temperature
 input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for calculation.
-Either \code{Temp.K} or \code{TK} CAN BE ALSO `NULL` but NOT BOTH !! In the latter case default value `298 K`
-is considered.}
+Either \code{Temp.K} or \code{TK} CAN BE ALSO \code{NULL} but NOT BOTH !! In the latter case default value
+\code{298 K} is considered.}
 
 \item{S}{Numeric value, total spin sample quantum number. For radicals \code{S = 0.5}
 (\strong{default}).}
