@@ -181,7 +181,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             tickfont = list(size = axis.text.size),
             gridcolor = grid.color,
             linecolor = plotly::toRGB(border.line.color),
-            linewidth = border.line.width, showline = T, mirror = T
+            linewidth = border.line.width, showline = TRUE, mirror = TRUE
           ),
           yaxis = list(
             title = list(
@@ -191,7 +191,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             tickfont = list(size = axis.text.size),
             gridcolor = grid.color,
             linecolor = plotly::toRGB(border.line.color),
-            linewidth = border.line.width, showline = T, mirror = T
+            linewidth = border.line.width, showline = TRUE, mirror = TRUE
           ),
           legend = list(title = list(
             text = legend.title,
@@ -211,7 +211,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           tickfont = list(size = axis.text.size),
           gridcolor = grid.color,
           linecolor = plotly::toRGB(border.line.color),
-          linewidth = border.line.width, showline = T, mirror = T
+          linewidth = border.line.width, showline = TRUE, mirror = TRUE
         ),
         yaxis = list(
           title = list(
@@ -221,7 +221,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           tickfont = list(size = axis.text.size),
           gridcolor = grid.color,
           linecolor = plotly::toRGB(border.line.color),
-          linewidth = border.line.width, showline = T, mirror = T
+          linewidth = border.line.width, showline = TRUE, mirror = TRUE
         )
       )
   }
