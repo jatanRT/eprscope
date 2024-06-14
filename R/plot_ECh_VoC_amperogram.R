@@ -216,53 +216,55 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
       }
     }
   }
-  ## General labels for `{ggplot2}`
-  Labs <- labs(x = x.label,y = yLabel(unit = Current.unit))
-  #
-  ## plot theme OUT-TICKS
-  theme_out_ticks <- theme(
-  axis.ticks.length = unit(6, "pt"),
-  axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-  axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
-  axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-  axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-  panel.border = element_rect(
-    color = border.line.color,
-    linewidth = border.line.width,
-    fill = NA
+  if (isFALSE(plot.interact)){
+    ## General labels for `{ggplot2}`
+    Labs <- labs(x = x.label,y = yLabel(unit = Current.unit))
+    #
+    ## plot theme OUT-TICKS
+    theme_out_ticks <- theme(
+      axis.ticks.length = unit(6, "pt"),
+      axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
+      axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
+      axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
+      axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+      panel.border = element_rect(
+        color = border.line.color,
+        linewidth = border.line.width,
+        fill = NA
+      )
     )
-  )
-  #
-  ## plot theme IN-TICKS
-  theme_in_ticks <- theme(
-  axis.ticks.length = unit(-6, "pt"),
-  axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-  axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
-  axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-  axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-  panel.border = element_rect(
-    color = border.line.color,
-    linewidth = border.line.width,
-    fill = NA
+    #
+    ## plot theme IN-TICKS
+    theme_in_ticks <- theme(
+      axis.ticks.length = unit(-6, "pt"),
+      axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
+      axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
+      axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
+      axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+      panel.border = element_rect(
+        color = border.line.color,
+        linewidth = border.line.width,
+        fill = NA
+      )
     )
-  )
-  #
-  ## plot theme without grid
-  theme.Nogrid <- theme(
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  )
-  ## grid condition
-  nogrid.cond <- ifelse(grid,FALSE,TRUE)
-  #
-  ## x,y ticks of the upper and right axis, respectively:
-  axis_x_duplicate <-
-    scale_x_continuous(sec.axis = dup_axis(name = "",
-                                           labels = NULL))
-  axis_y_duplicate <-
-    scale_y_continuous(sec.axis = dup_axis(name = "",
-                                           labels = NULL))
-  #
+    #
+    ## plot theme without grid
+    theme.Nogrid <- theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+    ## grid condition
+    nogrid.cond <- ifelse(grid,FALSE,TRUE)
+    #
+    ## x,y ticks of the upper and right axis, respectively:
+    axis_x_duplicate <-
+      scale_x_continuous(sec.axis = dup_axis(name = "",
+                                             labels = NULL))
+    axis_y_duplicate <-
+      scale_y_continuous(sec.axis = dup_axis(name = "",
+                                             labels = NULL))
+    #
+  }
   ## basic voltammogram plot
   basic.voltammogram <-
     ggplot(data = data.voltamm,
@@ -271,106 +273,108 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
     coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
   #
   ## ALL `GGPLOT2` THEMES TOGETHER
-  if (theme.basic == "theme_gray"){
-    if (ticks == "out"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_out_ticks
+  if (isFALSE(plot.interact)){
+    if (theme.basic == "theme_gray"){
+      if (ticks == "out"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_out_ticks
+      }
+      if (ticks == "in"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_in_ticks +
+          axis_x_duplicate +
+          axis_y_duplicate
+      }
     }
-    if (ticks == "in"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_in_ticks +
-        axis_x_duplicate +
-        axis_y_duplicate
+    if (theme.basic == "theme_bw"){
+      if (ticks == "out"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_bw() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_out_ticks
+      }
+      if (ticks == "in"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_bw() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_in_ticks +
+          axis_x_duplicate +
+          axis_y_duplicate
+      }
     }
-  }
-  if (theme.basic == "theme_bw"){
-    if (ticks == "out"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_bw() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_out_ticks
+    if (theme.basic == "theme_light"){
+      if (ticks == "out"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_light() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_out_ticks +
+          theme(panel.border = element_blank()) ## panel border re-definition
+      }
+      if (ticks == "in"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_light() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_in_ticks +
+          axis_x_duplicate +
+          axis_y_duplicate +
+          theme(panel.border = element_blank())
+      }
     }
-    if (ticks == "in"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_bw() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_in_ticks +
-        axis_x_duplicate +
-        axis_y_duplicate
+    if (theme.basic == "theme_linedraw"){
+      if (ticks == "out"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_linedraw() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_out_ticks
+      }
+      if (ticks == "in"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_linedraw() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_in_ticks +
+          axis_x_duplicate +
+          axis_y_duplicate
+      }
     }
-  }
-  if (theme.basic == "theme_light"){
-    if (ticks == "out"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_light() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_out_ticks +
-        theme(panel.border = element_blank()) ## panel border re-definition
-    }
-    if (ticks == "in"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_light() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_in_ticks +
-        axis_x_duplicate +
-        axis_y_duplicate +
-        theme(panel.border = element_blank())
-    }
-  }
-  if (theme.basic == "theme_linedraw"){
-    if (ticks == "out"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_linedraw() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_out_ticks
-    }
-    if (ticks == "in"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_linedraw() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_in_ticks +
-        axis_x_duplicate +
-        axis_y_duplicate
-    }
-  }
-  if (theme.basic == "theme_classic"){
-    if (ticks == "out"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_classic() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_out_ticks +
-        theme(panel.border = element_blank()) ## panel border re-definition
-    }
-    if (ticks == "in"){
-      plot.iv.it <-
-        basic.voltammogram +
-        Labs +
-        theme_classic() +
-        {if(nogrid.cond)theme.Nogrid} +
-        theme_in_ticks +
-        axis_x_duplicate +
-        axis_y_duplicate +
-        theme(panel.border = element_blank())
+    if (theme.basic == "theme_classic"){
+      if (ticks == "out"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_classic() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_out_ticks +
+          theme(panel.border = element_blank()) ## panel border re-definition
+      }
+      if (ticks == "in"){
+        plot.iv.it <-
+          basic.voltammogram +
+          Labs +
+          theme_classic() +
+          {if(nogrid.cond)theme.Nogrid} +
+          theme_in_ticks +
+          axis_x_duplicate +
+          axis_y_duplicate +
+          theme(panel.border = element_blank())
+      }
     }
   }
   #
@@ -379,12 +383,16 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
     plot.iv.it.interact <-
       plotly::ggplotly(basic.voltammogram) %>%
         plotly::layout(
+          plot_bgcolor = "#e5ecf6",
           xaxis = list(
             title = list(
               text = x.label.html,
               font = list(size = axis.title.size)
             ),
-            tickfont = list(size = axis.text.size)
+            tickfont = list(size = axis.text.size),
+            gridcolor = "#ffff",
+            linecolor = plotly::toRGB("black"),
+            linewidth = 1.2, showline = TRUE, mirror = TRUE
           ),
           yaxis = list(
             title = list(
@@ -394,7 +402,10 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
               ),
               font = list(size = axis.title.size)
             ),
-            tickfont = list(size = axis.text.size)
+            tickfont = list(size = axis.text.size),
+            gridcolor = "#ffff",
+            linecolor = plotly::toRGB("black"),
+            linewidth = 1.2, showline = TRUE, mirror = TRUE
           )
         )
     #
