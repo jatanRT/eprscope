@@ -6,14 +6,13 @@
 #'
 #'
 #' @description Graph/Plot of an EPR/ENDOR spectrum/spectra ('overlay' plot) based on \pkg{ggplot2}-functionality.
-#'   Spectral data are in the form of data frame (details see below).
+#'   Spectral data are in the form of data frame (see argument data spectra).
 #'   Theme of the graphic spectrum representation as well its line colors can be varied like
 #'   in \pkg{ggplot2}. Within a theme \code{y} ticks can be displayed
 #'   or skipped \code{y} (e.g. \code{dIepr_over_dB} in 'procedure defined unit',
 #'   see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-#'   this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
-#'   with other functions (e.g. with \code{\link{plot_theme_In_ticks}}) like in \pkg{ggplot2},
-#'   e.g. present or skip \code{grid} within the code.
+#'   this is common for presenting the EPR spectra. \code{plot_EPR_Specs} can be additionally combined by \code{+} sign
+#'   with other functions (e.g. with \code{\link{plot_theme_In_ticks}}) like in \pkg{ggplot2}.
 #'
 #'
 #' @param data.spectra Spectrum data frame/table containing magnetic flux density, \eqn{g}-value
@@ -23,7 +22,7 @@
 #'   integrated or simulated spectra intensities are present, they can be labeled accordingly.
 #'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
 #'   \code{var2nd.series} column (like e.g. \code{var2nd.series = "time_s"}) must be available. In such case
-#'   the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameter/argument
+#'   the entire \code{data.spectra} has to be in form of "tidy" table format (see also parameter/argument
 #'   \code{var2nd.series}).
 #' @param x Character/String pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
@@ -57,9 +56,9 @@
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
 #'   line form of the analyzed EPR spectrum/data.
-#' @param line.colors Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
-#'   colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
-#'   For series of EPR spectra two colorscales are used
+#' @param line.colors Character string, line color(s) to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
+#'   colors are allowed to plot the individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
+#'   For series of EPR spectra two color scales are used:
 #'   \enumerate{
 #'   \item \strong{Continuous.} This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
 #'   and \code{var2nd.series.slct.by = NULL}. The \code{line.colors} argument is identical with the continuous

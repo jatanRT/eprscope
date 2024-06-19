@@ -24,14 +24,18 @@
 #'   as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (in case of chronoamperometry,
 #'   \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.
 #' @param Current Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
-#'   \code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{\mu A}}).
+#'   \code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).
 #' @param Current.unit Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 #'   (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.
-#' @param xlim Numeric vector of the \code{x}-quantity border limits, e.g. like \code{xlim = c(-100,400)}
+#' @param xlim Numeric vector of the \code{x}-quantity visual border limits, e.g. like \code{xlim = c(-100,400)}
 #'   (potential in "mV", in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds,
-#'   in case of chronoamperometry).
-#' @param Ilim Numeric vector characterizing the border limits of the current...TBC...
-#' @param line.color Character string...TBC...
+#'   in case of chronoamperometry). \strong{Default}: \code{xlim = NULL} actually defining the entire \code{x}-range
+#'   from the original dataset.
+#' @param Ilim Numeric vector characterizing the visual border limits of the current, e.g. like \code{Ilim = c(-0.05,0.2)},
+#'   corresponding to current in milliamps. \strong{Default}: \code{Ilim = NULL} defining the entire current (\eqn{I}) range
+#'   from the original dataset.
+#' @param line.color Character string related to line color of the voltammogram / chronoamperoggram. All \pkg{ggplot2} compatible
+#'   colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{}
 #' @param ref.electrode Character string ...TBC...
 #' @param plot.interact Logical, ...TBC...
 #' @param ticks Character string ...the axis ticks pointing either
