@@ -15,19 +15,19 @@
 #'   with other functions (e.g. with \code{\link{plot_theme_In_ticks}}) like in \pkg{ggplot2}.
 #'
 #'
-#' @param data.spectra Spectrum data frame/table containing magnetic flux density, \eqn{g}-value
+#' @param data.spectra Data frame/table object containing magnetic flux density, \eqn{g}-value
 #'   or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
 #'   in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
 #'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 #'   integrated or simulated spectra intensities are present, they can be labeled accordingly.
 #'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
 #'   \code{var2nd.series} column (like e.g. \code{var2nd.series = "time_s"}) must be available. In such case
-#'   the entire \code{data.spectra} has to be in form of "tidy" table format (see also parameter/argument
+#'   the entire \code{data.spectra} has to be in form of "tidy" (long) table format (see also parameter/argument
 #'   \code{var2nd.series}).
-#' @param x Character/String pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
+#' @param x Character string pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 #'   \strong{default}: \code{x = "B_mT"}.
-#' @param x.unit Character/String pointing to unit of quantity (coming from original ASCII data, see also
+#' @param x.unit Character string pointing to unit of quantity (coming from original ASCII data, see also
 #'   \code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
 #'   like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.

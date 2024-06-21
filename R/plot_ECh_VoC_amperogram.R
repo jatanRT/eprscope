@@ -35,8 +35,8 @@
 #'   corresponding to current in milliamps. \strong{Default}: \code{Ilim = NULL} defining the entire current (\eqn{I}) range
 #'   from the original dataset.
 #' @param line.color Character string related to line color of the voltammogram / chronoamperoggram. All \pkg{ggplot2} compatible
-#'   colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{}
-#' @param ref.electrode Character string ...TBC...
+#'   colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.
+#' @param ref.electrode Character string corresponding to
 #' @param plot.interact Logical, ...TBC...
 #' @param ticks Character string ...the axis ticks pointing either
 #'
