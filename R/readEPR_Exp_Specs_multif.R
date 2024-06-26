@@ -263,6 +263,10 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
     if (is.null(var2nd.series)) {
       stop(" 'var2nd.series' string is not specified. Please, define! ")
     } else {
+      #
+      ## condition whether the `names` contains numeric values
+      names.num.cond <- ifelse(any(grepl("[[:digit:]]+",names)),TRUE,FALSE)
+      #
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-
         dplyr::bind_rows(spectra.datab.from.files, .id = var2nd.series)
@@ -270,20 +274,26 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
       if (any(grepl("index",colnames(spectra.datab.from.files)))){
         spectra.datab.from.files$index <- NULL
       }
-      ## recalculate `var2nd.series` column
-      ## condition to factorize the `var2nd.series`
-      cond.var2nd.factor <- ifelse(var2nd.series.factor,TRUE,FALSE)
       #
-      spectra.datab.from.files <-
-        switch(2-cond.var2nd.factor,
-               spectra.datab.from.files %>%
-                 dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
-                                 as.factor(as.numeric(.data[[var2nd.series]]))),
-               spectra.datab.from.files %>%
-                 dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
-                                 as.numeric(.data[[var2nd.series]])) %>%
-                 dplyr::arrange(.data[[var2nd.series]])
-               )
+      ## based on conditions for the numeric values (see `names.num.cond` above)
+      if (isFALSE(names.num.cond)){
+        spectra.datab.from.files <- spectra.datab.from.files
+      } else {
+        ## recalculate `var2nd.series` column
+        ## condition to factorize the `var2nd.series`
+        cond.var2nd.factor <- ifelse(var2nd.series.factor,TRUE,FALSE)
+        #
+        spectra.datab.from.files <-
+          switch(2-cond.var2nd.factor,
+                 spectra.datab.from.files %>%
+                   dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                                   as.factor(as.numeric(.data[[var2nd.series]]))),
+                 spectra.datab.from.files %>%
+                   dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                                   as.numeric(.data[[var2nd.series]])) %>%
+                   dplyr::arrange(.data[[var2nd.series]])
+          )
+      }
       #
       return(spectra.datab.from.files)
       #
