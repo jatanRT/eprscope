@@ -5,10 +5,11 @@
 #' @family Data Reading
 #'
 #'
-#' @description Loads the EPR spectra from several/multiple \code{ASCII}/\code{text} files and from those incl. instrumental
-#'   parameters (\code{.DSC}/\code{.dsc} or \code{.par}) at once and transforms it into a database list of data frames.
-#'   According to experiment quantity (e.g. temperature,microwave power, recording time...etc), \code{names}
-#'   and \code{var2nd} (in the case of \code{tidy = TRUE}) parameters have to be provided.
+#' @description Loads the EPR spectra from several/multiple \code{text} files (including the instrumental
+#'   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. The data are finally transformed
+#'   either into a list of data frames or into a tidy / long table format. According to experimental quantity
+#'   (e.g. temperature,microwave power, recording time...etc), \code{names} and \code{var2nd}
+#'   (in the case of \code{tidy = TRUE}) parameters have to be provided.
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
@@ -36,17 +37,18 @@
 #'   all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 #'   weight, number of scans, ...etc (\code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
 #'   \code{norm.list.add = NULL}.
-#' @param names Character string vector corresponding to values of \strong{additional quantity}
-#'  (e.g. temperature,microwave power...etc) being varied by the individual experiments.
+#' @param names Character string vector corresponding either to values of \strong{additional quantity}
+#'  (e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
+#'  by alpha character (e.g. like \code{c("a","b","c","d")}) being varied by the individual experiments.
 #' @param tidy Logical, whether to transform the list of data frames into long table (\code{tidy}) format,
 #'  \strong{default}: \code{tidy = FALSE}.
 #' @param var2nd.series Character string, if \code{tidy = TRUE} (see \code{tidy} parameter/argument)
 #'  it is referred to name of the variable/quantity (e.g. like "time","Temperature","Electrochemical Potential",
 #'  "Microwave Power"...etc) altered upon individual experiments as a second variable (\code{var2nd})
-#'  and related to spectra/data.
-#' @param var2nd.series.factor Logical, whether to factorize \code{var2nd.series}, useful for plotting
-#'   the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case to visualize
-#'   EPR spectra by \code{plot}-functions.
+#'  and related to spectral data.
+#' @param var2nd.series.factor Logical, whether to factorize \code{var2nd.series} column vector which is useful
+#'   for plotting the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case
+#'   to visualize EPR spectra by \code{plot}-functions.
 #' @param ... additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
@@ -73,11 +75,12 @@
 #'                          names = c("210","220","230","240"),
 #'                          tidy = TRUE,
 #'                          var2nd.series = "Temperature_K")
-#'
+#' #
 #' ## Multiple EPR spectra recorded at different temperatures
-#' ## by "WinEPR" software. Experiment performed with powder
+#' ## by "WinEPR" software. Experiments performed with powder
 #' ## sample (m = 10 mg) and each spectrum acquired
-#' ## as 7 accumulations. The resulting database as list of data frames
+#' ## as 7 accumulations. The resulting database
+#' ## corresponds to list of data frames
 #' readEPR_Exp_Specs_multif("Sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
@@ -89,6 +92,19 @@
 #'                          qValues = c(3400,3501,3600,2800),
 #'                          norm.list.add = list(rep(c(10,7),times = 4)),
 #'                          origin = "winepr")
+#' #
+#' ## Multiple 'Xenon' EPR spectra related to one powder sample (m = 8 mg)
+#' ## where several instrumental parameters are changed
+#' ## at once. The file names (files are stored in the actual directory)
+#' ## start with "R5228_AV_powder_". Function returns all spectral data
+#' ## in `tidy` (long) table format
+#' readEPR_Exp_Specs_multif(name.pattern = "R5228_AV_powder_",
+#'                          dir_ASC = ".",
+#'                          dir_dsc_par = ".",
+#'                          names = c("a","b","c","d"),
+#'                          tidy = TRUE,
+#'                          var2nd.series = "sample",
+#'                          norm.list.add = rep(list(8),4))
 #' }
 #'
 #'
