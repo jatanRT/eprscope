@@ -83,7 +83,9 @@
 #' @return Data frame/table consisting of the magnetic flux density
 #'   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz} (in case of ENDOR spectrum)
 #'   or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
-#'   intensities (like in integrated spectral form) in \code{procedure defined unit} (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}), which is normalized by the above-described parameters
+#'   intensities (like in integrated spectral form) in \code{procedure defined unit}
+#'   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
+#'   which is normalized by the above-described parameters
 #'   and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
 #'   are displayed as well.
 #'
@@ -187,7 +189,7 @@
 #'                   x.unit = "s",
 #'                   x.id = 1,
 #'                   Intensity.id = 2,
-#'                   qValue = 1700)
+#'                   qValue = 1700) %>% na.omit()
 #' }
 #'
 #'

@@ -94,7 +94,7 @@
 #' @param theme.basic Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 #'   \describe{
 #'     \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-#'     \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, theme is proposed \strong{for publications}}
+#'     \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, the theme is suggested \strong{for publications}}
 #'     \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
 #'     \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
 #'     \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
@@ -130,24 +130,44 @@
 #' ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity)
 #' plot_EPR_Specs(aminoxyl.data)
 #' #
+#' ## the same spectrum with B in `G` and `theme_bw` ggplot2 graph theme
+#' plot_EPR_Specs(data.spectra = aminoxyl.data,
+#'                x = "B_G",
+#'                x.unit = "G",
+#'                theme.basic = "theme_bw")
+#' #
+#' ## single integration (without baseline correction) of the previous
+#' ## spectrum by the `eval_integ_EPR_Spec` function
+#' aminoxyl.data.sinteg <- eval_integ_EPR_Spec(aminoxyl.data)
+#' ## plot the single integrated spectrum
+#' plot_EPR_Specs(aminoxyl.data.sinteg,
+#'                x = "B_G",
+#'                x.unit = "G",
+#'                Intensity = "single_Integ",
+#'                lineSpecs.form = "integrated")
+#' #
+#' ## loading the built-in CW ENDOR spectrum of perinaphthenyl (PNT)
+#' pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
+#' ## read the PNT CW ENDOR data without intensity normalization
+#' pnt.endor.data <-
+#' readEPR_Exp_Specs(pnt.file.path,
+#'                   col.names = c("index",
+#'                                 "RF_MHz",
+#'                                 "dIepr_over_dB"),
+#'                   x.id = 2,
+#'                   x.unit = "MHz",
+#'                   Intensity.id = 3)
+#' ## plotting the previous ENDOR data spectrum in derivative
+#' ## form with `darkred` linecolor and 1.2pt linewidth
+#' plot_EPR_Specs(pnt.endor.data,
+#'                x = "RF_MHz",
+#'                x.unit = "MHz",
+#'                line.colors = "darkred",
+#'                line.width = 1.2)
+#' #
 #' \dontrun{
-#' ## simple plot of an EPR spectrum with `B` in `G`
-#' ## and `dIepr_over_dB_Sim` in `p.d.u.` (derivative intensity)
-#' plot_EPR_Specs(data.spectrum,
-#'               x = "B_G",
-#'               x.unit = "G",
-#'               Intensity = "dIepr_over_dB")
-#' #
-#' ## single integrated EPR spectrum with `B` in `G`
-#' ## and `single_Integ` in `p.d.u.` (single integrated intensity)
-#' plot_EPR_Specs(data.spectrum.integ,
-#'               x = "B_G",
-#'               x.unit = "G"
-#'               Intensity = "single_Integ",
-#'               lineSpecs.form = "absorption")
-#' #
-#' ## Continuous display of time series EPR spectra selecting
-#' ## continuous colorscale (see argument `line.colors`
+#' ## display of time series EPR spectra selecting
+#' ## the CONTINUOUS COLORSCALE (see argument `line.colors`
 #' ## and color definitions `1.`)
 #' plot_EPR_Specs(data.spectra,
 #'                var2nd.series = "time_s",
@@ -157,25 +177,32 @@
 #'                legend.title = "Time (s)",
 #'                yTicks = F)
 #' #
-#' ## Separated display of time series EPR spectra selecting
-#' ## discrete colorscale (see argument `line.colors`
+#' ## display of time series EPR spectra selecting
+#' ## the DISCRETE COLORSCALE (see argument `line.colors`
 #' ## and color definitions `2.`). Each 8-th spectrum from
 #' ## original plot is presented
 #' plot_EPR_Specs(data.spectra,
 #'                var2nd.series = "time_s",
 #'                var2nd.series.slct.by = 8,
 #'                xlim = c(340,357.5),
-#'                line.colors = c("darkblue","darkorange","darkviolet"),
+#'                line.colors = c("darkblue",
+#'                                "darkorange",
+#'                                "darkviolet"),
 #'                legend.title = "Time (s)")
 #' #
-#' ## Plotting simple CW ENDOR spectrum displayed
-#' ## as a "darkred" `line.colors`
-#' plot_EPR_Specs(data.spectrum,
-#'                x = "RF_MHz",
-#'                x.unit = "MHz",
-#'                line.colors = "darkred",
-#'                line.width = 1.2,
-#'                lineSpecs.form = "derivative")
+#' ## display the variable temperature experiment selecting
+#' ## the DISCRETE COLORSCALE where all ten EPR spectra from
+#' ## the series are presented
+#' plot_EPR_Specs(data.spectra,
+#'                xlim = c(334,345),
+#'                Ilim = c(-4e-3,4e-3),
+#'                var2nd.series = "Temperature_K",
+#'                var2nd.series.slct.by = 1,
+#'                line.colors = c("darkblue",
+#'                                "darkorange",
+#'                                "magenta",
+#'                                "steelblue"),
+#'                legend.title = "Temperature (K)")
 #' }
 #'
 #'

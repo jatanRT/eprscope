@@ -23,83 +23,117 @@
 #' @param lineG.content Numeric value ...
 #' @param lineSpecs.form Character string ...
 #' @param optim.method Character string ... TBC ...
-#' @param optim.params.init Numeric vector with estimated ... TBC ...1. element = g-value, 2. element = Gaussian
-#'   linewidth, 3. element = Lorentzian linewidth, 4. element = baseline constant, 5. element Intensity
-#'   multiplication constant and 6, 7... elements baseline linear or quadratic multiplication
-#'   and finally hyperfine coupling constants in `MHz`. DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}.
-#'   If the lineshape is expected to be pure Lorentzian or pure Gaussian then put the corresponding
-#'   vector element to \code{0}.
-#' @param optim.params.lower Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.
-#' @param optim.params.upper Numeric vector (with the length of \code{optim.params.init}) with the upper bound constraints.
-#' @param Nmax.evals Numeric value corresp. to maximum number of iterations/evaluations.
+#' @param optim.params.init Numeric vector with the initial parameter guess (elements) where the \strong{first five
+#'   elements are immutable}
+#'   \enumerate{
+#'   \item g-value (g-factor)
+#'
+#'   \item \strong{G}aussian linewidth
+#'
+#'   \item \strong{L}orentzian linewidth
+#'
+#'   \item baseline constant (intercept)
+#'
+#'   \item intensity multiplication constant
+#'
+#'   \item baseline slope (only if \code{baseline.correct = "linear"} or \code{baseline.correct = "quadratic"}),
+#'   if \code{baseline.correct = "constant"} it corresponds to the \strong{first HFCC} (\eqn{A_1})
+#'
+#'   \item baseline quadratic multiplication constant (only if \code{baseline.correct = "quadratic"}),
+#'   if \code{baseline.correct = "constant"} it corresponds to the \strong{second HFCC} (\eqn{A_2}),
+#'   if \code{baseline.correct = "linear"} it corresponds to the \strong{first HFCC} (\eqn{A_1})
+#'
+#'   \item additional HFCC (\eqn{A_3}) if \code{baseline.correct = "constant"} or if
+#'   \code{baseline.correct = "linear"} (\eqn{A_2}), if \code{baseline.correct = "quadratic"} it corresponds
+#'   to the \strong{first HFCC} (\eqn{A_1})
+#'
+#'   \item ...additional HFCCs (\eqn{A_k...}, each vector element is reserved only for one \eqn{A})
+#'   }
+#'   DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}. If the lineshape is expected to be pure
+#'   \strong{L}orentzian or pure \strong{G}aussian then put the corresponding vector element to \code{0}.
+#' @param optim.params.lower Numeric vector (with the length of \code{optim.params.init}) with the lower
+#'   bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually equals
+#'   to ...
+#' @param optim.params.upper Numeric vector (with the length of \code{optim.params.init}) with the upper
+#'   bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually equals
+#'   to ...
+#' @param Nmax.evals Numeric value pointing to maximum number of iterations/evaluations. \strong{Default}:
+#'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximal value).
 #' @param tol.step Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
-#' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles).
-#' @param pswarm.diameter Numeric value corresponding to diameter of search space.
-#' @param sim.check Logical, whether to return simple list with overlay plot and the best fitting parameters in a vector.
+#'   \strong{Default}: \code{tol.step = 5e-7}.
+#' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles), only
+#'   if \code{optim.method = "pswarm"}. Otherwise, \code{pswarm.size = NULL} (\strong{default}).
+#' @param pswarm.diameter Numeric value corresponding to diameter of particle swarm search space
+#'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
+#'   refers to the Euclidian distance, defined as:
+#'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}_k - \text{optim.params.lower}_k)^2}}
+#' @param sim.check Logical, whether to return simple list with the overlay (simulated + experimental
+#'   spectrum) as well as residual plot and the best fitting parameters in a vector
+#'   (\code{sim.check = TRUE}, \strong{default}). If \code{sim.check = FALSE} the list contains
+#'   EPR spectra, data frame, best fitting parameters as well as additional statistical measures
+#'   of the optimization/fitting procedure (see \code{Value}).
 #'
 #'
-#' @return List with following components depending on \code{sim.check} ... TBC ...
+#' @return List with following components depending on \code{sim.check}:
+#'   \enumerate{
+#'   \item if \code{sim.check = TRUE} it returns list with two components:
+#'   \describe{
+#'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectrum
+#'   in "overlay" mode. Additional graph, below to the latter, shows the residuals (difference between
+#'   the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
+#'   in order to quickly evaluate the quality of the fit.}
+#'   \item{best.fit.params}{Vector of the best (final) fitting parameters,
+#'   see the \code{optim.params.init}.}
+#'   }
+#'
+#'   \item if \code{sim.check = FALSE} it returns list with the following components:
+#'   \desribe{
+#'   \item{plot}{.}
+#'   \item{best.fit.params}{.}
+#'   \item{df}{.}
+#'   \item{sum.LSQ.min}{.}
+#'   \item{N.evals}{.}
+#'   \item{N.converg}{.}
+#'   }
+#'   }
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## fitting of the simulated TMPD radical cation spectrum
-#' ## on the experimental one (see also `Introduction` vignette)
-#' ## 1. loading the built-in data
-#' tempo.data.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
-#' tempo.data <- readEPR_Exp_Specs(tempo.data.path,
-#'                                col.names = c("B_G","dIepr_over_dB"),
-#'                                x = 1,
-#'                                Intensity = 2,
-#'                                qValue = 3500,
-#'                                origin = "winepr")
-#' ## 2. TMPD EPR spectrum may be simulated with the following hyperfine
-#' ## coupling constants coming from
-#' ## (see also https://doi.org/10.1007/s00706-004-0224-4) =>
-#' ## A (2 x 14N) = `19.75` MHz, A (4 x 1H) = `5.58` MHz
-#' ## and A (12 x 1H) = `18.97` MHz with the additional Gaussian
-#' ## and Lorentzian linewidth `0.6` G and `0.6` G, respectively.
-#' ## Baseline was estimated by the constant with the initial `0` value
-#' ## and the initial multiplication factor for the intensity was `3`.
-#' ## The initial g-value was estimated from the spectrum, g = `2.0031`.
-#' tmpd.test.sim.fit <-
-#' eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
-#'                     nu.GHz = 9.814155,
-#'                     nuclear.system.noA = list(list("14N",2),
-#'                                               list("1H",4),
-#'                                               list("1H",12)),
-#'                     optim.params.init = c(2.0031,0.6,0.6,0,3,19.75,5.58,18.97))
-#' ## Such evaluation by "Nelder-Mead" optimization method returns list consisting
-#' ## of plot with both experimental and simulated spectra (+ displaying residuals)
-#' ## and/or the best fitting paramaters (if `sim.check = TRUE` which is by default)
-#' tmpd.test.sim.fit$plot
-#' ## and
-#' tmpd.test.sim$best.fit.params
-#' ## respectively. In such case the following best parameters
-#' ## for the spectrum fit were found =>
-#' ## c(2.00305,0.543,0.489,-1.065e-5,0.992,19.538,5.461,19.544)
-#' ## If additional optimization/fitting parameters are required
-#' ## (`sim.check = FALSE`) =>
-#' tmpd.test.sim.fit <-
-#' eval_sim_EPR_isoFit(data.spectr.expr = tmpd.data,
-#'                     nu.GHz = 9.814155,
-#'                     nuclear.system.noA = list(list("14N",2),
-#'                                               list("1H",4),
-#'                                               list("1H",12)),
-#'                     optim.params.init = c(2.0031,0.6,0.6,0,3,19.75,5.58,18.97),
-#'                     sim.check = FALSE)
-#' ## returns the following list =>
-#' tmpd.test.sim.fit$plot ## publication ready plot (both spectra are not overlayed)
-#' tmpd.test.sim.fit$best.fit.params ## the same like before
-#' tmpd.test.sim.fit$df ## data frame with sim., sim. without baseline, expr. and residuals
-#' tmpd.test.sim.fit$sum.LSQ.min ## min. sum of residual squares
-#' tmpd.test.sim.fit$N.evals ## number of evaluations/iterations
-#' tmpd.test.sim.fit$N.converg ## "convergence" value indicating successful completion
+#' ## loading built-in package dataset which is simple
+#' ## EPR spectrum of aminoxyl radical
+#' aminoxyl.data.path <-
+#'  load_data_example(file = "Aminoxyl_radical_a.txt")
+#' aminoxyl.data <-
+#'  readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
 #' #
-#' ## If two subsequent `optim.method`s are used the resulting list is complex/nested
-#' ## showing all the info for each method except the plot corresponding to that from
-#' ## the last `optim.method`.
-#' }
+#' ## EPR spectrum simulation fit with "Nelder-Mead"
+#' ## optimization method with `sim.check = FALSE`:
+#' tempo.test.sim.fit.a <-
+#' eval_sim_EPR_isoFit(data.spectr.expr = tempo.data,
+#'                     nu.GHz = 9.806769,
+#'                     lineG.content = 0.5,
+#'                     optim.method = "neldermead",
+#'                     nuclear.system.noA = list("14N",1),
+#'                     baseline.correct = "linear",
+#'                     optim.params.init =
+#'                     c(2.0048, # g-value
+#'                       1.1, # G Delta Bpp
+#'                       1.1, # L Delta Bpp
+#'                       0, # intercept (constant) lin. baseline
+#'                       0.002, # Sim. intensity multiply
+#'                       1e-6, # slope lin. baseline
+#'                       47), # A in MHz
+#'                     sim.check = F)
+#' ## OUTPUTS-RETURN:
+#' ## best fit parameters:
+#' tempo.test.sim.fit.a$best.fit.params
+#' #
+#' ## spectrum plot with experimental spectrum,
+#' ## simulated one with the linear baseline
+#' ## and simulated one with the linear baseline
+#' ## subtracted:
+#'
+#'
 #'
 #'
 #' @export
@@ -138,12 +172,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## the experimental data. It cannot be done by the same way like in simulation
   ## because the relevant instrum. params. like Bsw (B.SW) and Bcf (B.CF) differs
   ## from those presented in `.DSC` and `.par`. The reason is the Teslameter. If it'is
-  ## in ON state the measured B values (can be slightly, i.e. approx. 1-3 G) different
-  ## from those measured by the Hall probe or from the spectrum parameter settings.
-  ## If the Teslameter is in ON state the measured values are automatically
+  ## in ON state the measured B values (can be slightly, i.e. usually approx. 1-3 G)
+  ## different from those measured by the Hall probe or from the spectrum parameter
+  ## settings. If the Teslameter is in ON state the measured values are automatically
   ## written into the text ASCII file. Therefore, to properly compare the simulated
   ## and experimental spectrum these parameters must be extracted form
-  ## the experimental ASCII (`.txt` or `.asc`) ASCII data file =>
+  ## the original experimental ASCII (`.txt` or `.asc`) ASCII data file =>
   B.cf <- stats::median(data.spectr.expr[[paste0("B_",B.unit)]])
   B.sw <- max(data.spectr.expr[[paste0("B_",B.unit)]]) -
     min(data.spectr.expr[[paste0("B_",B.unit)]])
