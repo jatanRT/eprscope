@@ -123,7 +123,7 @@
 #'                       0.002, # Sim. intensity multiply
 #'                       1e-6, # slope lin. baseline
 #'                       47), # A in MHz
-#'                     sim.check = F)
+#'                     sim.check = FALSE)
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.a$best.fit.params
@@ -132,6 +132,42 @@
 #' ## simulated one with the linear baseline
 #' ## and simulated one with the linear baseline
 #' ## subtracted:
+#' tempo.test.sim.fit.a$plot
+#' #
+#' ## minimal sum of squared residuals:
+#' tempo.test.sim.fit.a$sum.LSQ.min
+#' #
+#' ## number of evaluations / iterations:
+#' tempo.test.sim.fit.a$N.evals
+#' #
+#' ## convergence, in this case it is represented
+#' ## by the integer code indicating the successful
+#' ## completion (it must be > 0):
+#' tempo.test.sim.fit.a$N.converg
+#' #
+#' ## preview of data frame including all spectra:
+#' head(tempo.test.sim.fit.a$df)
+#' #
+#' ## similar EPR spectrum simulation fit with "particle swarm"
+#' ## optimization algorithm and `sim.check = TRUE` option
+#' ## and user defined bound constraints:
+#' tempo.test.sim.fit.b <-
+#' eval_sim_EPR_isoFit(data.spectr.expr = tempo.data,
+#'                     nu.GHz = 9.806769,
+#'                     lineG.content = 0.4,
+#'                     optim.method = "pswarm",
+#'                     nuclear.system.noA = list("14N",1),
+#'                     baseline.correct = "constant",
+#'                     optim.params.init = c(2.0050,1.1,1.1,0,3e-3,47),
+#'                     optim.params.lower = c(2.0045,0.8,0.8,-1e-4,2e-3,45),
+#'                     optim.params.upper = c(2.0055,1.4,1.4,1e-4,5e-3,49),
+#'                     sim.check = T)
+#' ## OUTPUTS-RETURN:
+#' ## best fit parameters:
+#' tempo.test.sim.fit.b$best.fit.params
+#' #
+#'
+#'
 #'
 #'
 #'
