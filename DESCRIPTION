@@ -82,7 +82,6 @@ Suggests:
     R.utils,
     report,
     tibble,
-    icons,
     cowplot,
     gridExtra,
     npreg,
@@ -97,10 +96,13 @@ Suggests:
     posterdown,
     rmarkdown,
     bookdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    icons (>= 0.2.0)
 RoxygenNote: 7.3.2
 RdMacros: Rdpack
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Remotes:  
+    mitchelloharawild/icons
