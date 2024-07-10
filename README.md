@@ -2,10 +2,12 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 
@@ -40,7 +42,7 @@ as well as several other software platforms like the *MS Office* and/or
 processing/analysis workflow. Therefore, the `{eprscope}` also tries to
 reduce such many steps/programs if the above-mentioned software
 combination would be adopted. In order to achieve the goal it uses
-superior power or the open source
+superior power of the open source
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
 ecosystem that combines data processing, analysis and great scientific
 visualizations together with the extensive publishing capabilities by
@@ -95,11 +97,11 @@ found within the articles/vignettes or documentation examples.
 ### Reading Files with Instrumental Parameters
 
 ``` r
-#
+
 # loading the package/library
 library(eprscope)
 #
-# loading the built-in package file => "TMPD_specelchem_accu_b.par"
+# loading the built-in example file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- 
   load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
@@ -142,13 +144,13 @@ simulation.iso <-
   eval_sim_EPR_iso(g.iso = 2.0027,
                    B.unit = "G",
                    nuclear.system = list(
-                     list("1H",3,5.09), 
-                     list("1H",6,17.67)
+                     list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+                     list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
                      ),
                    natur.abund = T,
-                   lineGL.DeltaB = list(0.24,NULL))
+                   lineGL.DeltaB = list(0.24,NULL)) # linewidth in G
 #
-# simulation spectrum preview in the region from 3462 G to 3528 G
+# simulation spectrum preview in the region from 3470 G to 3522 G
 simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 ```
 
@@ -163,11 +165,11 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 # (Areas) vs time were obtained from the continuos wave (CW) EPR spectrometer 
 # acquisition/processing software.
 #
-# loading the package built-in file with instrumental parameters
+# loading the built-in example file with instrumental parameters
 triarylamine_rc_decay_dsc <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
-# loading the package built-in file with "Area" vs "time" data frame
+# loading the built-in example file with "Area" vs "time" data frame
 triarylamine_rc_decay_txt <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
@@ -184,8 +186,8 @@ triarylamine_rc_decay_data <-
 # Fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial 
-# "quantitative variable" (e.g. like concentration, double integral,
-# number of radicals) of the triarylamine radical cation "R".
+# "quantitative variable" (e.g. like concentration, double integral 
+# or number of radicals) of the triarylamine radical cation "R".
 triarylamine_rc_decay_model <- 
   eval_kinR_EPR_modelFit(data.qt.expr = triarylamine_rc_decay_data,
                          model.react = "(n=2)R --> [k1] B",
@@ -210,9 +212,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>          Estimate   Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149
-#> k1     0.06043805 5.451458e-03  11.08658  6.161497e-19
-#> alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101
+#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
+#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
+#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
 ```
 
 ## Help, Questions and Contribution
@@ -301,7 +303,7 @@ special magnetic resonance method ➨
 
 Any additional questions, comments, remarks or issues can be addressed
 through several discussion channels like 📧 e-mail
-(<jantar40@protonmail.com> or <jan.tarabek@uochb.cas.cz>) or github <img
+<jantar40@protonmail.com> or github <img
 src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
 width="16" /> issues on github source page. There will be also a
 specialized [Discord](https://discord.com/) community channel to discuss

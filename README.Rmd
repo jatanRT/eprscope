@@ -18,13 +18,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
-The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The `{eprscope}`, as the first ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package 📦 for EPR, doesn't want to replace the latter nor the excellent and standard EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, it may be considered like a complementary 📦 or toolbox with practical functions which have to be otherwise performed by several proprietary tools. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing/analysis workflow. Therefore, the `{eprscope}` also tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power or the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/). Everything at one place (see the RStudio IDE below) without the need to switch between or employ any other additional software.
+The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The `{eprscope}`, as the first ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package 📦 for EPR, doesn't want to replace the latter nor the excellent and standard EPR simulation/processing [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, it may be considered like a complementary 📦 or toolbox with practical functions which have to be otherwise performed by several proprietary tools. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing/analysis workflow. Therefore, the `{eprscope}` also tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power of the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/). Everything at one place (see the RStudio IDE below) without the need to switch between or employ any other additional software.
 
 ## Installation
 
@@ -56,11 +56,11 @@ In this section couple of examples are shown in order to briefly demonstrate the
 ### Reading Files with Instrumental Parameters
 
 ```{r parameter-reading,warning=FALSE,message=FALSE}
-#
+
 # loading the package/library
 library(eprscope)
 #
-# loading the built-in package file => "TMPD_specelchem_accu_b.par"
+# loading the built-in example file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- 
   load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
@@ -101,13 +101,13 @@ simulation.iso <-
   eval_sim_EPR_iso(g.iso = 2.0027,
                    B.unit = "G",
                    nuclear.system = list(
-                     list("1H",3,5.09), 
-                     list("1H",6,17.67)
+                     list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+                     list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
                      ),
                    natur.abund = T,
-                   lineGL.DeltaB = list(0.24,NULL))
+                   lineGL.DeltaB = list(0.24,NULL)) # linewidth in G
 #
-# simulation spectrum preview in the region from 3462 G to 3528 G
+# simulation spectrum preview in the region from 3470 G to 3522 G
 simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 
 ```
@@ -121,11 +121,11 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 # (Areas) vs time were obtained from the continuos wave (CW) EPR spectrometer 
 # acquisition/processing software.
 #
-# loading the package built-in file with instrumental parameters
+# loading the built-in example file with instrumental parameters
 triarylamine_rc_decay_dsc <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
-# loading the package built-in file with "Area" vs "time" data frame
+# loading the built-in example file with "Area" vs "time" data frame
 triarylamine_rc_decay_txt <- 
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
@@ -142,8 +142,8 @@ triarylamine_rc_decay_data <-
 # Fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial 
-# "quantitative variable" (e.g. like concentration, double integral,
-# number of radicals) of the triarylamine radical cation "R".
+# "quantitative variable" (e.g. like concentration, double integral 
+# or number of radicals) of the triarylamine radical cation "R".
 triarylamine_rc_decay_model <- 
   eval_kinR_EPR_modelFit(data.qt.expr = triarylamine_rc_decay_data,
                          model.react = "(n=2)R --> [k1] B",
@@ -225,7 +225,7 @@ Even though the **EPR spectroscopy** is a quite complex field there are some int
 
 -   [Basic Concepts of EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 
-Any additional questions, comments, remarks or issues can be addressed through several discussion channels like 📧 e-mail ([jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or [jan.tarabek\@uochb.cas.cz](mailto:jan.tarabek@uochb.cas.cz){.email}) or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on github source page. There will be also a specialized [Discord](https://discord.com/) community channel to discuss the issues as well as application of the `{eprscope}` . If somebody is able and interested in package development, please ask via the github issue page.
+Any additional questions, comments, remarks or issues can be addressed through several discussion channels like 📧 e-mail [jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on github source page. There will be also a specialized [Discord](https://discord.com/) community channel to discuss the issues as well as application of the `{eprscope}` . If somebody is able and interested in package development, please ask via the github issue page.
 
 ## Acknowledgements
 
