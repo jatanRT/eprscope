@@ -1,5 +1,5 @@
 #
-#' Find Intensity Extremes within the EPR/ENDOR Spectrum (incl. Integrated Form).
+#' Find Intensity Extremes within the EPR/ENDOR Spectrum
 #'
 #'
 #' @family Evaluations
@@ -11,18 +11,7 @@
 #'   of an EPR/ENDOR spectrum.
 #'
 #'
-#' @param data.spectr EPR/ENDOR spectrum data frame object with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
-#'   or \eqn{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
-#'   or integrated \code{Intensity}. \code{Index} column/variable may be included as well.
-#' @param x Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
-#'   like magnetic flux density \emph{B}, \emph{g}-Value or \emph{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.
-#' @param Intensity Character string pointing to name of the \code{intensity column/variable}
-#'   (in the original \code{data.spectr}) if other than \code{dIepr_over_dB} name/label
-#'   is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}.
-#' @param xlim Numeric vector corresponding to border limits of the selected \emph{x} region,
-#'   e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
-#'   or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-#'   to entire \code{x} range).
+#' @inheritParams eval_DeltaXpp_Spec
 #' @param extreme Character string with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default}).
 #'
 #'

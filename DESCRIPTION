@@ -7,24 +7,24 @@ Authors@R: person("Jan", "Tarabek",
            "jantar40@protonmail.com"), 
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0116-3824"))
-Description: Processing, analysis and plottting of spectra 
-             in Electron Paramagnetic Resonance (EPR) in chemistry. 
+Description: Processing, analysis and plottting of 
+             Electron Paramagnetic Resonance (EPR) specctra in chemistry. 
              Even though the package is mainly focused
              on continuous wave (CW) EPR/ENDOR, several functions 
              may be also used for the integrated forms of 1D 
              pulsed EPR spectra. It is able to find the most 
              important spectral characteristics like g-factor, 
              linewidth, maximal derivative or integral intensities 
-             and single/double integrals, especially in spectral 
-             (time) series consisting of many EPR spectra like 
-             during variable temperature experiments, 
+             and single/double integrals. This is especially 
+             important in spectral (time) series consisting of many 
+             EPR spectra like during variable temperature experiments, 
              electrochemical or photochemical radical generation 
              and/or decay. Package also enables to process 
-             the data/spectra for analytical (quantitative) purposes. 
-             Namely, how many radicals, paramagnetic centers 
+             data/spectra for the analytical (quantitative) purposes. 
+             Namely, how many radicals or paramagnetic centers 
              can be found in the analyte/sample. 
              The goal is to evaluate rate constants, 
-             considering different kinetic models to describe 
+             considering different kinetic models, to describe 
              the radical reactions. The key feature of the package 
              resides in processing of the universal ASCII text 
              formats (e.g. like '.txt', '.csv' or '.asc') 
