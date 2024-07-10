@@ -13,10 +13,10 @@
 #' @param molecule Character input string => either SMILES strings (in case
 #'   of \code{type = "smiles"}/\code{type = "SMILES"}) or file path strings
 #'   pointing to \code{".sdf"} files.
-#' @param type Character string referred to original input molecular type =>
+#' @param type Character string referred to the original molecular type input =>
 #'   either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
 #'   \strong{Default}: \code{type = "smiles"}.
-#' @param mol.label Character string pointing to name label of the molecule/compound, e.g. like
+#' @param mol.label Character string pointing to name of the molecule/compound, e.g. like
 #'   \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 #'   (\strong{default}) a character string "mol. structure viewer" with gray color
 #'   is shown.
