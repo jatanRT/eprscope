@@ -141,6 +141,27 @@
 #' ## preview
 #' head(PNT.ENDOR.data)
 #' #
+#' ## reading data file from (and pre-processed) by the "Xenon"
+#' ## software corresponding to kinetics with `Area` and `time`
+#' ## columns/variables , these two have to be selected from
+#' ## several others + normalize `Area` against the `qValue`,
+#' ## first of all load the path of package example file
+#' triarylamine.rc.decay.path <-
+#' load_data_example(""Triarylamine_radCat_decay_a.DSC"")
+#' ## data
+#' triarylamine.rc.decay.data <-
+#' readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,
+#'                   header = TRUE,
+#'                   fill = TRUE,
+#'                   select = c(3,7),
+#'                   col.names = c("time_s","Area"),
+#'                   x.unit = "s",
+#'                   x.id = 1,
+#'                   Intensity.id = 2,
+#'                   qValue = 1700) %>% na.omit()
+#' ## preview
+#' head(triarylamine.rc.decay.data)
+#' #
 #' \dontrun{
 #' ## EPR time series acquired by "Winepr"/"WinEpr"
 #' readEPR_Exp_Specs(path_to_ASC,
@@ -176,20 +197,6 @@
 #'                   Intensity.id = 2,
 #'                   origin = "magnettech")
 #' #
-#' ## reading file data from (and pre-processed) by "xenon" software
-#' ## corresponding to kinetics where `Area` and `time` are
-#' ## data columns, however there are many columns and one should
-#' ## select only the two mentioned above + normalize `Area`
-#' ## against the `qValue`
-#' readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
-#'                   header = T,
-#'                   fill = T,
-#'                   select = c(3,7),
-#'                   col.names = c("time_s","Area"),
-#'                   x.unit = "s",
-#'                   x.id = 1,
-#'                   Intensity.id = 2,
-#'                   qValue = 1700) %>% na.omit()
 #' }
 #'
 #'

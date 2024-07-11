@@ -82,6 +82,7 @@ Suggests:
     tibble,
     cowplot,
     gridExtra,
+    esquisse,
     npreg,
     patchwork,
     openxlsx,
