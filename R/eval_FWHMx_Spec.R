@@ -7,8 +7,8 @@
 #'
 #' @description
 #'   Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity. For such purpose
-#'   the EPR spectrum has to be in single integrated form (common absorption-like spectrum) and not in the derivative,
-#'   e.g. like with \code{dIepr_over_dB} y-axis/variable. If this is not the case, the derivative EPR spectrum
+#'   the EPR spectrum has to be in single integrated form (common absorption-like spectrum) and not in derivative one
+#'   (characterized by \code{dIepr_over_dB} y-axis/variable). If this is not the case, the derivative EPR spectrum
 #'   can be integrated by \code{\link{eval_integ_EPR_Spec}}.
 #'
 #'
@@ -21,10 +21,10 @@
 #'   (unitless), \strong{default}: \code{x = "B_G"}.
 #' @param Intensity Character string pointing to name of the \code{intensity column/variable}
 #'   (in the original \code{data.spectr.integ}) if other than \code{single_Integ} (\strong{default}) name/label
-#'   is used (e.g. "Integral_Intensity" or "integral").
+#'   is used (e.g. like "Integral_Intensity" or "integral").
 #' @param xlim Numeric vector corresponding to border limits of the selected \eqn{x} region,
 #'   e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
-#'   \strong{Default}: \code{xlim = NULL} (corresponding to entire \emph{x} range).
+#'   \strong{Default}: \code{xlim = NULL} (corresponding to the entire \emph{x} range).
 #'
 #'
 #' @return Numeric value of the FWHM directly from EPR spectrum, depending on \code{x} variable =>
@@ -33,7 +33,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' tbc
+#' tbc simulate NO* spectrum in integrated form with FWHM and calculate and
+#' evaluate the same by `eval_FWHM_Spec` from that spectrum
 #' }
 #'
 #'
