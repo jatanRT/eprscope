@@ -9,7 +9,9 @@
 #'   Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity. For such purpose
 #'   the EPR spectrum has to be in single integrated form (common absorption-like spectrum) and not in derivative one
 #'   (characterized by \code{dIepr_over_dB} y-axis/variable). If this is not the case, the derivative EPR spectrum
-#'   can be integrated by \code{\link{eval_integ_EPR_Spec}}.
+#'   can be integrated by \code{\link{eval_integ_EPR_Spec}}. The FWHM is evaluated as a difference between the points
+#'   (\eqn{x > x_{\text{max}}} and \eqn{x < x_{\text{max}}}) having the intensity closest
+#'   to the maximal intensity / 2 corresponding to one individual EPR line/peak defined by the \code{xlim} argument.
 #'
 #'
 #'
@@ -32,10 +34,41 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' tbc simulate NO* spectrum in integrated form with FWHM and calculate and
-#' evaluate the same by `eval_FWHM_Spec` from that spectrum
-#' }
+#' ## simulation of phenalenyl/perinaphthenyl (PNT) radical
+#' ## in integrated form:
+#' pnt.sim.integ.iso <-
+#' eval_sim_EPR_iso(g = 2.0027,
+#'                  instrum.params = c(Bcf = 3500, # central field
+#'                                     Bsw = 100, # sweep width
+#'                                     Npoints = 4096,
+#'                                     mwGHz = 9.8), # MW Freq. in GHz
+#'                  B.unit = "G",
+#'                  nuclear.system = list(
+#'                      list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+#'                      list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+#'                  ),
+#'                  natur.abund = TRUE,
+#'                  lineSpecs.form = "integrated",
+#'                  lineGL.DeltaB = list(0.54,NULL), # FWHM in G
+#'                  Intensity.sim = "single_Integ"
+#'                  )
+#' #
+#' ## FWHM of one of the central lines/peaks (`xlim = c(3494,3496.5)`)
+#' ## from the simulated spectral data:
+#' eval_FWHM_Spec(pnt.sim.integ.iso$df,
+#'                x = "Bsim_G",
+#'                Intensity = "single_Integ",
+#'                xlim = c(3494,3496.5)
+#'                )
+#' #
+#' ## interactive plot of the above-simulated EPR spectrum
+#' ## in order to check the values:
+#' plot_EPR_Specs2D_interact(pnt.sim.integ.iso$df,
+#'                           x = "Bsim_G",
+#'                           x.unit = "G",
+#'                           Intensity = "single_Integ",
+#'                           lineSpecs.form = "integrated"
+#'                           )
 #'
 #'
 #' @export
@@ -67,7 +100,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
     )) %>%
     dplyr::filter(dplyr::near(.data[[Intensity]],
       max(.data[[Intensity]]) / 2,
-      tol = max(.data[[Intensity]]) / 10
+      tol = max(.data[[Intensity]]) / 4
     ))
   #
   # ==================================================================================
@@ -90,7 +123,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
       Intens.cond.left <- which.min(abs(x.init.low[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
-      Intens.cond.left <- x.init.low[Intens.cond.left] %>% dplyr::pull(.data[[Intensity]])
+      Intens.cond.left <- x.init.low[Intens.cond.left,] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.low <- x.init.low %>%
         dplyr::filter(.data[[Intensity]] == Intens.cond.left) %>%
@@ -103,7 +136,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
       Intens.cond.right <- which.min(abs(x.init.high[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
-      Intens.cond.right <- x.init.high[Intens.cond.right] %>% dplyr::pull(.data[[Intensity]])
+      Intens.cond.right <- x.init.high[Intens.cond.right,] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.high <- x.init.high %>%
         dplyr::filter(.data[[Intensity]] == Intens.cond.right) %>%
