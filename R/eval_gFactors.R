@@ -7,7 +7,7 @@
 #'
 #' @description Calculation of \emph{g}-factor according to fundamental formula (see \code{Value}).
 #'   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
-#'   can be entered with common units like \code{G} (Gauss) \code{mT}
+#'   can be entered having the common units like \code{G} (Gauss) \code{mT}
 #'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
 #'
 #'
@@ -44,7 +44,7 @@ eval_gFactor <- function(nu.val,
                          B.val,
                          B.unit = "mT") {
   #
-  ## Fundamental Physical Constants
+  ## Fundamental Physical Constants from `{constants}` pkg.
   Planck.const <- constants::syms$h
   Bohr.magnet <- constants::syms$mub
   #
@@ -76,7 +76,7 @@ eval_gFactor <- function(nu.val,
 #' @family Evaluations
 #'
 #'
-#' @description Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
+#' @description Calculation of the g-value according to fundamental formula (\code{\link{eval_gFactor}}).
 #'   \emph{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
 #'   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
 #'   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be considered.
@@ -86,11 +86,11 @@ eval_gFactor <- function(nu.val,
 #'
 #' @param data.spectr Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}) column
 #'   can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
-#'   or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.
+#'   or single integrated intensity like \code{Integrated_Intensity} (\code{index} column might be included as well).
 #' @param nu.GHz Numeric value, microwave frequency in \code{GHz}.
 #' @param B.unit Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 #'   (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
-#'   for EPR spectra.
+#'   for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.
 #' @param B Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
 #'   \code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
 #'   or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well.
@@ -112,8 +112,9 @@ eval_gFactor <- function(nu.val,
 #'
 #'
 #' @examples
-#' ## load built-in EPR spectral data
-#' data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' ## load package built-in EPR spectral data example
+#' data.file.path <-
+#' load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
 #'                               col.names = c("B_G", "dIepr_over_dB"),
 #'                               x.id = 1,
@@ -193,12 +194,15 @@ eval_gFactor_Spec <- function(data.spectr,
   Bohr.magnet <- constants::syms$mub
   g.precurs <- (Planck.const * nu.GHz * 1e+9) / (Bohr.magnet * B.center)
   #
-  ## Conditions for B column, the name should contain ("B", "mT" or "G"):
+  ## Conditions for B column, the name should contain ("B", "mT" or "G" or "T"):
   if (B.unit == "mT") {
     g <- g.precurs / 1e-3
   }
   if (B.unit == "G") {
     g <- g.precurs / 1e-4
+  }
+  if (B.unit == "T") {
+    g <- g.precurs
   }
   #
   return(round(g, digits = 5))
@@ -215,28 +219,30 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #'
 #' @description \eqn{g}-Values (3 principal ones) are presented in a form of differences from
-#'   the \eqn{g_e} (\eqn{g} of the free electron). Therefore the function takes these values
+#'   the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
 #'   and calculates the entire \eqn{g}-values or parses the corresponding mean value
 #'   from "Gaussian" or "ORCA" output.
 #'
 #'
 #' @param path_to_QCHoutput Character string corresponding to path of "Gaussian" or "ORCA" output text files
-#'   incl. all \eqn{g}-values. \code{\link[base]{file.path}} can be applied to get the full/relative path.
-#' @param mean Logical, whether to calculate the \code{mean value/iso} from principal components,
-#'   \strong{default}: \code{mean = TRUE}, or save the entire vector with the all components.
-#' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
-#'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
-#'   or \code{"orca"}.
+#'   including all \eqn{g}-values. Alternativekly, the \code{\link[base]{file.path}} can be applied to get
+#'   the full/relative path.
+#' @param mean Logical, whether to calculate the \code{mean value/iso} from the principal components,
+#'   \strong{default}: \code{mean = TRUE}, or return the entire vector with the all 3 components.
+#' @param origin Character string pointing to origin of the DFT EPR calculation parameters <=> which
+#'   software package was used. Only two values are available => \code{"gaussian"} (\code{"GAUSSIAN"},
+#'   \strong{default}) or \code{"orca"} (\code{"ORCA"}).
 #'
 #'
-#' @return Numeric mean \eqn{g}-factor value from principal difference (from \eqn{g_e}) components
-#'   calculated by QCH methods (e.g. by DFT) or numeric vector with principal \eqn{g}-components
+#' @return Numeric mean \eqn{g}-factor value from the principal difference (from \eqn{g_e}) components
+#'   calculated by QCH the method (e.g. by DFT) or numeric vector with the principal \eqn{g}-components
 #'   if \code{mean = FALSE}.
 #'
 #'
 #' @examples
-#' ## built-in file and path
-#' gauss.file.path <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+#' ## built-in package file example and path
+#' gauss.file.path <-
+#' load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 #' gauss.file <- unzip(gauss.file.path)
 #' ## g_iso-value calculation from Gaussian output file
 #' eval_gFactor_QCHcomp(gauss.file)
@@ -253,7 +259,7 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
   qchfile <- readLines(path_to_QCHoutput)
   #
   ## g-Value indicator based on `origin`
-  if (origin == "gaussian") {
+  if (origin == "gaussian" || origin == "GAUSSIAN") {
     gval.indicator <- "g shifts relative"
     start.read.line <- grep(gval.indicator, qchfile)
     qchfile.select.g <- qchfile[start.read.line + 1]
@@ -277,7 +283,7 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
     ## numeric values (in `Gaussian` they are already presented in ppm)
     vector.dg <- as.numeric(as.character(vector.string.dg))
   }
-  if (origin == "orca") {
+  if (origin == "orca"|| origin == "ORCA") {
     gval.indicator <- "Delta-g"
     start.read.line <- grep(gval.indicator, qchfile)
     qchfile.select.g <- qchfile[start.read.line]
@@ -303,7 +309,7 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
   ## Delete `qchfile` => it is not required anymore
   rm(qchfile)
   #
-  ## g-factor for free electron (g.e) from `constants` package
+  ## g-factor for free electron (g.e) from `{constants}` package
   ## round the g.e to 6 decimal places, the negative sign must
   ## cancel that coming from `constants::syms$gem`, which is negative
   g.e <- round(-constants::syms$gem, digits = 6)

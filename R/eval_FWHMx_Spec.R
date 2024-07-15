@@ -11,7 +11,7 @@
 #'   (characterized by \code{dIepr_over_dB} y-axis/variable). If this is not the case, the derivative EPR spectrum
 #'   can be integrated by \code{\link{eval_integ_EPR_Spec}}. The FWHM is evaluated as a difference between the points
 #'   (\eqn{x > x_{\text{max}}} and \eqn{x < x_{\text{max}}}) having the intensity closest
-#'   to the maximal intensity / 2 corresponding to one individual EPR line/peak defined by the \code{xlim} argument.
+#'   to the maximal intensity/2 corresponding to one individual EPR line/peak defined by the \code{xlim} argument.
 #'
 #'
 #'

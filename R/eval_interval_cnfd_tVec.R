@@ -5,24 +5,33 @@
 #' @family Evaluations
 #'
 #'
-#' @description Mean value and uncertainty (according to Student's t-Distribution) corresponding to column
-#'  (within data frame) or vector which characterize dispersion of individual value elements
-#'  (e.g. like double integrals in quantitative EPR analysis).
+#' @description Evaluation of the mean value and its confidence limits (according to Student's t-Distribution)
+#'  corresponding to column (within data frame) or vector characterizing dispersion of the individual
+#'  values, e.g. like double integrals in quantitative EPR analysis, g-value or linewidth series.
+#'
+#'
+#' @details
+#'   Additional details...
+#'
+#'
+#'
+#' @references
 #'
 #'
 #' @param data.vec.col Numeric vector pointing to column of interest (within a data frame)
 #'   to calculate the confidence interval or uncertainty.
-#' @param level.cnfd Numeric (float) corresponding to confidence level \strong{default}:
+#' @param level.cnfd Numeric (floating) value corresponding to confidence level \strong{default}:
 #'   \code{level.cnfd = 0.95}.
 #' @param lw.tail Logical, indicating the way how to calculate \code{qt} quantile function
-#'   for the \eqn{t}-distribution, it is inherited from \code{\link[stats:TDist]{stats::qt}},
-#'   if \code{TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]}, otherwise, \eqn{P[X>x]}.
-#' @param separate Logical, whether to separate the mean value and the uncertainty,
-#'   if \code{TRUE}, the result is shown as a named vector with (mean) \code{value} and \code{uncertaity},
-#'   otherwise, the result is in the format \eqn{value\pm uncertainty}.
+#'   for the \eqn{t}-distribution. It is inherited from \code{\link[stats:TDist]{stats::qt}}.
+#'   If \code{lw.tail = TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]}, otherwise, \eqn{P[X>x]}.
+#' @param separate Logical, whether to separate the mean value and the uncertainty, corresponding to limits of the mean.
+#'   If \code{separate = TRUE}, the result is shown as a named vector with the (mean) \code{value} and the \code{uncertaity}.
+#'   Otherwise, the result is returned in the format \eqn{value\pm uncertainty}.
 #'
 #' @return Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm uncertainty}
-#'   format depending \code{separate} parameter.
+#'   format depending \code{separate} parameter, where the uncertainty actually represents one side
+#'   of the limits for the mean.
 #'
 #' @examples
 #' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035))
@@ -61,7 +70,7 @@ eval_interval_cnfd_tVec <- function(data.vec.col,
     )
   }
   #
-  ## uncertainty
+  ## uncertainty (confidence limit for the mean)
   uncrt.data <- qt.data * (stats::sd(data.vec.col) / sqrt(n.data))
   #
   ## calculation
