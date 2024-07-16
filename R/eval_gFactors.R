@@ -177,7 +177,7 @@ eval_gFactor_Spec <- function(data.spectr,
     }
   } else {
     if (lineSpecs.form == "derivative") {
-      ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/100)
+      ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/2)
       B.center <- data.spectr %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
         dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%

@@ -7,15 +7,27 @@
 #'
 #' @description Evaluation of the mean value and its confidence limits (according to Student's t-Distribution)
 #'  corresponding to column (within data frame) or vector characterizing dispersion of the individual
-#'  values, e.g. like double integrals in quantitative EPR analysis, g-value or linewidth series.
+#'  value, e.g. like double integral in quantitative EPR analysis, g-value or linewidth.
 #'
 #'
 #' @details
-#'   Additional details...
+#'   The confidence interval evaluation suggests that values/observations obey two-tailed Student's t-distribution,
+#'   which for number of observations \eqn{> 30} approaches the normal \eqn{z}-distribution (see also listed References).
+#'
 #'
 #'
 #'
 #' @references
+#'   \insertRef{miller2018chmem}{eprscope}
+#'
+#'   \insertRef{finnstats2021}{eprscope}
+#'
+#'   \insertRef{nist2012confid}{eprscope}
+#'
+#'   \insertRef{kaleta2012carb}{eprscope}
+#'
+#'   \insertRef{psy2020confid}{eprscope}
+#'
 #'
 #'
 #' @param data.vec.col Numeric vector pointing to column of interest (within a data frame)
@@ -23,21 +35,30 @@
 #' @param level.cnfd Numeric (floating) value corresponding to confidence level \strong{default}:
 #'   \code{level.cnfd = 0.95}.
 #' @param lw.tail Logical, indicating the way how to calculate \code{qt} quantile function
-#'   for the \eqn{t}-distribution. It is inherited from \code{\link[stats:TDist]{stats::qt}}.
-#'   If \code{lw.tail = TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]}, otherwise, \eqn{P[X>x]}.
+#'   for the two-tailed \eqn{t}-distribution. It is inherited from \code{\link[stats:TDist]{stats::qt}}.
+#'   If \code{lw.tail = TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]} and the vector of probabilities (\code{p})
+#'   is equal to \code{level.cnfd} + \eqn{\alpha / 2}, where \eqn{\alpha} stands for the significance level = 1 - \code{level.cnfd}.
+#'   Otherwise, \eqn{P[X>x]} (\code{lw.tail = FALSE}) and the \code{p} is defined as \eqn{\alpha / 2} and equal to
+#'   (1 - \code{level.cnfd})/2.
 #' @param separate Logical, whether to separate the mean value and the uncertainty, corresponding to limits of the mean.
 #'   If \code{separate = TRUE}, the result is shown as a named vector with the (mean) \code{value} and the \code{uncertaity}.
-#'   Otherwise, the result is returned in the format \eqn{value\pm uncertainty}.
+#'   Otherwise, the result is returned in the format of \eqn{value\pm uncertainty}.
 #'
 #' @return Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm uncertainty}
-#'   format depending \code{separate} parameter, where the uncertainty actually represents one side
-#'   of the limits for the mean.
+#'   format depending on the \code{separate} argument, where the uncertainty actually represents non-negative
+#'   limit for the mean (one side of the confidence interval not including the mean value).
+#'
 #'
 #' @examples
 #' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035))
+#' #
+#' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
+#'                         lw.tail = FALSE)
+#' #
 #' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
 #'                          level.cnfd = 0.99,
 #'                          separate = TRUE)
+#'
 #'
 #' @export
 #'
@@ -50,7 +71,7 @@ eval_interval_cnfd_tVec <- function(data.vec.col,
                                     separate = FALSE) {
   #
   ## alpha (significance level)
-  level.sgnf <- 1 - level.cnfd
+  alpha <- 1 - level.cnfd
   #
   ## number of experiments
   n.data <- length(data.vec.col)
@@ -58,13 +79,13 @@ eval_interval_cnfd_tVec <- function(data.vec.col,
   ## `qt` value
   if (isTRUE(lw.tail)) {
     qt.data <- stats::qt(
-      p = 1 - level.sgnf / 2,
+      p = level.cnfd + (alpha / 2),
       df = n.data - 1,
       lower.tail = lw.tail
     )
   } else {
     qt.data <- stats::qt(
-      p = level.sgnf / 2,
+      p = alpha / 2,
       df = n.data - 1,
       lower.tail = lw.tail
     )
