@@ -40,8 +40,9 @@
 #'   is equal to \code{level.cnfd} + \eqn{\alpha / 2}, where \eqn{\alpha} stands for the significance level = 1 - \code{level.cnfd}.
 #'   Otherwise, \eqn{P[X>x]} (\code{lw.tail = FALSE}) and the \code{p} is defined as \eqn{\alpha / 2} and equal to
 #'   (1 - \code{level.cnfd})/2.
-#' @param separate Logical, whether to separate the mean value and the uncertainty, corresponding to limits of the mean.
-#'   If \code{separate = TRUE}, the result is shown as a named vector with the (mean) \code{value} and the \code{uncertaity}.
+#' @param separate Logical, whether to separate the mean value and the uncertainty, corresponding to non-negative right/left
+#'   confidence limit of the mean. If \code{separate = TRUE}, the result is shown as a named vector with the (mean)
+#'   \code{value} and the \code{uncertaity}.
 #'   Otherwise, the result is returned in the format of \eqn{value\pm uncertainty}.
 #'
 #' @return Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm uncertainty}
@@ -50,14 +51,19 @@
 #'
 #'
 #' @examples
-#' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035))
+#' ## double integral/intensity values
+#' ## coming from several experiments:
+#' di.vec <- c(0.025,0.020,0.031,0.022,0.035)
 #' #
-#' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
-#'                         lw.tail = FALSE)
+#' ## evaluation of the confidence interval
+#' ## in different formats:
+#' eval_interval_cnfd_tVec(di.vec)
 #' #
-#' eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
-#'                          level.cnfd = 0.99,
-#'                          separate = TRUE)
+#' eval_interval_cnfd_tVec(di.vec,lw.tail = FALSE)
+#' #
+#' eval_interval_cnfd_tVec(di.vec,
+#'                         level.cnfd = 0.99,
+#'                         separate = TRUE)
 #'
 #'
 #' @export
