@@ -5,22 +5,29 @@
 #' @family Evaluations
 #'
 #'
-#' @description Evaluation of the mean value and its confidence limits (according to Student's t-Distribution)
+#' @description Evaluation of the mean value and its confidence limits (according to Student's t-distribution)
 #'  corresponding to column (within data frame) or vector characterizing dispersion of the individual
 #'  value, e.g. like double integral in quantitative EPR analysis, g-value or linewidth.
 #'
 #'
 #' @details
 #'   The confidence interval evaluation suggests that values/observations obey two-tailed Student's t-distribution,
-#'   which for number of observations \eqn{> 30} approaches the normal \eqn{z}-distribution (see also listed References).
-#'
-#'
+#'   which for number of observations \eqn{N > 30} approaches the normal \eqn{z}-distribution.
+#'   Evaluation of the confidence interval and/or its limits can be well documented on \eqn{g}-factor series example:
+#'   \deqn{g = \overline{g}\pm (t_{(1-\alpha/2),df}\,s/\sqrt{N})}
+#'   where \eqn{\overline{g}} is the mean value and the \eqn{t_{(1-\alpha/2),df}} corresponds to quantile
+#'   of the t-distribution having the significance level of \eqn{\alpha} (\eqn{1-\alpha = condfidence\,\,level},
+#'   see the \code{level.cnfd} argument) and the degree of freedom \eqn{df = N -1}. Finally the \eqn{s} represents
+#'   the sample standard deviation, defined by the following relation (regarding the \eqn{g}-value series example):
+#'   \deqn{s = \sqrt{(1/(N-1))\,\sum_{i=1}^N (g_i - \overline{g})^2}}
+#'   which is computed by the \code{\link[stats]{sd}}. The above-mentioned \eqn{t}-quantile is actually calculated
+#'   by the \code{\link[stats:TDist]{stats::qt}} function (see also \code{lw.tail} argument).
 #'
 #'
 #' @references
 #'   \insertRef{miller2018chmem}{eprscope}
 #'
-#'   \insertRef{finnstats2021}{eprscope}
+#'   \insertRef{distro32022}{eprscope}
 #'
 #'   \insertRef{nist2012confid}{eprscope}
 #'
@@ -33,7 +40,8 @@
 #' @param data.vec.col Numeric vector pointing to column of interest (within a data frame)
 #'   to calculate the confidence interval or uncertainty.
 #' @param level.cnfd Numeric (floating) value corresponding to confidence level \strong{default}:
-#'   \code{level.cnfd = 0.95}.
+#'   \code{level.cnfd = 0.95}. This value is related to significance level \eqn{alpha} defined
+#'   by \eqn{1 - confidence\,\,level}.
 #' @param lw.tail Logical, indicating the way how to calculate \code{qt} quantile function
 #'   for the two-tailed \eqn{t}-distribution. It is inherited from \code{\link[stats:TDist]{stats::qt}}.
 #'   If \code{lw.tail = TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]} and the vector of probabilities (\code{p})
