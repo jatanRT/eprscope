@@ -22,19 +22,19 @@ spectroscopy mainly in chemistry. Similar <img
 src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png"
 width="16" height="16" /> tools like [cwepr](https://www.cwepr.de/index)
 and the [related projetcs](https://docs.cwepr.de/v0.5/) have been
-developed, so far. The `{eprscope}`, as the first
+developed, so far. The `{eprscope}`, as the first complex
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-package 📦 for EPR, doesn’t want to replace the latter nor the excellent
-and standard EPR simulation/processing [EasySpin
+**package** 📦 for EPR, **doesn’t want to replace the latter nor the
+excellent and standard EPR simulation/processing** [EasySpin
 Toolbox](https://www.easyspin.org/) for
 [MATLAB](https://www.mathworks.com/products/matlab.html) and its
 additional frameworks like
 [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR
 Scripts by Emilien
 Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/).
-Rather, it may be considered like a complementary 📦 or toolbox with
-practical functions which have to be otherwise performed by several
-proprietary tools. For instance, like acquisition/processing software,
+Rather, **it may be considered like a complementary** 📦 **or toolbox
+with practical functions which have to be otherwise performed by several
+proprietary tools**. For instance, like acquisition/processing software,
 supplied by the EPR spectrometer manufacturers (see
 e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html))
 as well as several other software platforms like the *MS Office* and/or
@@ -307,9 +307,9 @@ through several discussion channels like 📧 e-mail
 src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
 width="16" /> issues on github source page. There will be also a
 specialized [Discord](https://discord.com/) community channel to discuss
-the issues as well as application of the `{eprscope}` . If somebody is
-able and interested in package development, please ask via the github
-issue page.
+the `{eprscope}` related topics. If somebody is able and interested in
+package development, please refer to [contributing
+guide](./.github/CONTRIBUTING.md).
 
 ## Acknowledgements
 
