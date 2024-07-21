@@ -175,22 +175,22 @@ eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
                     nuclear.system.noA = list("14N",1),
                     baseline.correct = "linear",
                     optim.params.init =
-                    c(2.0048, # g-value
-                      1.1, # G Delta Bpp
-                      1.1, # L Delta Bpp
+                    c(2.006, # g-value
+                      4.8, # G Delta Bpp
+                      4.8, # L Delta Bpp
                       0, # intercept (constant) lin. baseline
-                      0.002, # Sim. intensity multiply
+                      0.008, # Sim. intensity multiply
                       1e-6, # slope lin. baseline
-                      47), # A in MHz
+                      49), # A in MHz
                     sim.check = FALSE)
 ## OUTPUTS-RETURN:
 ## best fit parameters:
 tempo.test.sim.fit.a$best.fit.params
 #
 ## spectrum plot with experimental spectrum,
-## simulated one with the linear baseline
+## simulated one with the linear baseline fit
 ## and simulated one with the linear baseline
-## subtracted:
+## fit subtracted:
 tempo.test.sim.fit.a$plot
 #
 ## minimal sum of squared residuals:
@@ -217,9 +217,9 @@ eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
                     optim.method = "pswarm",
                     nuclear.system.noA = list("14N",1),
                     baseline.correct = "constant",
-                    optim.params.init = c(2.0050,1.1,1.1,0,3e-3,47),
-                    optim.params.lower = c(2.0045,0.8,0.8,-1e-4,2e-3,45),
-                    optim.params.upper = c(2.0055,1.4,1.4,1e-4,5e-3,49),
+                    optim.params.init = c(2.006,4.8,4.8,0,7e-3,49),
+                    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,4e-3,45),
+                    optim.params.upper = c(2.0072,5.2,5.2,1e-4,1e-2,53),
                     sim.check = TRUE)
 ## OUTPUTS-RETURN:
 ## best fit parameters:
@@ -240,12 +240,12 @@ eval_sim_EPR_isoFit(aminoxyl.data,
                                      "neldermead"),
                     nuclear.system.noA = list("14N",1),
                     baseline.correct = "constant",
-                    optim.params.init = c(2.0050,
-                                          1.1,
-                                          1.1,
+                    optim.params.init = c(2.0060,
+                                          4.8,
+                                          4.8,
                                           0,
-                                          5e-3,
-                                          47),
+                                          7e-3,
+                                          49),
                     sim.check = FALSE
                     )
 ## OUTPUTS-RETURN:
