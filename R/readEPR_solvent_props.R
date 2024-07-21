@@ -25,15 +25,15 @@
 #'
 #'
 #' @examples
-#' ## Properties of `DMSO`
+#' ## Properties of `DMSO`:
 #' solvent_01 <- readEPR_solvent_props("DMSO")
-#' print(tibble::as_tibble(solvent_01),width = 80)
+#' head(solvent_01)
 #' #
-#' ## All `xylene` solvent specifications
+#' ## All `xylene` solvent specifications:
 #' solvent_02 <- readEPR_solvent_props(solvent = "xylene")
-#' print(tibble::as_tibble(solvent_02),width = 80,n = 3)
+#' head(solvent_02)
 #' #
-#' ## Boiling point of `o-xylene`
+#' ## Boiling point of `o-xylene`:
 #' readEPR_solvent_props(solvent = "o-xylene",
 #'                       prop = "boiling")
 #'

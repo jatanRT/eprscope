@@ -64,116 +64,120 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
                                  separate.integ.scales = NULL,
                                  output.df = FALSE) {
   #
-  ## 'Temporary' processing variables
-  . <- NULL
-  Integrals <- NULL
-  #
-  ## B and y range to present integrated spectrum and baseline correction
-  ## 1st entire y region
-  data.B.region <- data.B.region <- c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
-  #
-  ## condition to present intensity region (which has the max integral ?)
-  max.integs.vec <- sapply(slct.integs, function(m) max(data.spectra.integ[[m]]))
-  max.integs.df <- data.frame("slct_Integrals" = slct.integs,
-                              "max_Integral" = max.integs.vec)
-  max.integ <- max.integs.df %>%
-    dplyr::filter(.data[["max_Integral"]] == max(.data[["max_Integral"]])) %>%
-    dplyr::pull(.data[["slct_Integrals"]])
-  ## therefore
-  data.y.region <- c(
-    min(data.spectra.integ[[max.integ]]) - max(data.spectra.integ[[max.integ]]) / 10,
-    max(data.spectra.integ[[max.integ]]) + max(data.spectra.integ[[max.integ]]) / 10
-  )
-  ## B & y range condition
-  Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
-  #
-  ylim <- ylim %>% `if`(is.null(ylim), data.y.region, .)
-  #
-  ## converting the wide table into longer one
-  data.spectra.integ.new <- data.spectra.integ %>%
-    ## select only `B` and `integrals`
-    dplyr::select(c(.data[[B]], dplyr::matches("integ"))) %>%
-    ## long table format
-    tidyr::pivot_longer(!dplyr::all_of(c(B)),
-                        names_to = "Integrals",
-                        values_to = "Intensity") %>%
-    ## variables to factors in order to arrange in the right order
-    dplyr::mutate(Integrals = factor(Integrals,
-      levels = grep("integ",
-        colnames(data.spectra.integ),
-        ignore.case = TRUE,
-        value = TRUE
-      )
-    )) %>%
-    ## arrange `Integrals` (in order to group it) according to factors
-    dplyr::arrange(Integrals)
-
-  #
-  ## plot themes
-  plot_themes <- plot_theme_In_ticks(
-    axis.title.size = axis.title.size,
-    axis.text.size = axis.text.size
-  ) +
-    theme(
-      legend.title = element_text(size = legend.title.size),
-      legend.text = element_text(size = legend.text.size)
+## 'Temporary' processing variables
+. <- NULL
+Integrals <- NULL
+#
+## B and y range to present integrated spectrum and baseline correction
+## 1st entire y region
+data.B.region <- data.B.region <- c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
+#
+## condition to present intensity region (which has the max integral ?)
+max.integs.vec <- sapply(slct.integs, function(m) max(data.spectra.integ[[m]]))
+max.integs.df <- data.frame(
+  "slct_Integrals" = slct.integs,
+  "max_Integral" = max.integs.vec
+)
+max.integ <- max.integs.df %>%
+  dplyr::filter(.data[["max_Integral"]] == max(.data[["max_Integral"]])) %>%
+  dplyr::pull(.data[["slct_Integrals"]])
+## therefore
+data.y.region <- c(
+  min(data.spectra.integ[[max.integ]]) - max(data.spectra.integ[[max.integ]]) / 10,
+  max(data.spectra.integ[[max.integ]]) + max(data.spectra.integ[[max.integ]]) / 10
+)
+## B & y range condition
+Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
+#
+ylim <- ylim %>% `if`(is.null(ylim), data.y.region, .)
+#
+## converting the wide table into longer one
+data.spectra.integ.new <- data.spectra.integ %>%
+  ## select only `B` and `integrals`
+  dplyr::select(c(.data[[B]], dplyr::matches("integ"))) %>%
+  ## long table format
+  tidyr::pivot_longer(!dplyr::all_of(c(B)),
+    names_to = "Integrals",
+    values_to = "Intensity"
+  ) %>%
+  ## variables to factors in order to arrange in the right order
+  dplyr::mutate(Integrals = factor(Integrals,
+    levels = grep("integ",
+      colnames(data.spectra.integ),
+      ignore.case = TRUE,
+      value = TRUE
     )
-  #
-  ## Plot only specific integrals or corrections
-  if (isFALSE(separate.integs)) {
+  )) %>%
+  ## arrange `Integrals` (in order to group it) according to factors
+  dplyr::arrange(Integrals)
+
+#
+## plot themes
+plot_themes <- plot_theme_In_ticks(
+  axis.title.size = axis.title.size,
+  axis.text.size = axis.text.size
+) +
+  theme(
+    legend.title = element_text(size = legend.title.size),
+    legend.text = element_text(size = legend.text.size)
+  )
+#
+## Plot only specific integrals or corrections
+if (isFALSE(separate.integs)) {
+  plot.integs <- data.spectra.integ.new %>%
+    dplyr::filter(Integrals %in% slct.integs) %>%
+    ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
+    geom_line(linewidth = line.width) +
+    coord_cartesian(xlim = Blim, ylim = ylim) +
+    labs(
+      x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
+      y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")"),
+      color = bquote(atop(italic(Integrated), EPR ~ ~ italic(Spectra)))
+    ) +
+    plot_themes +
+    scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
+    scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL))
+} else {
+  if (is.null(separate.integ.scales)) {
+    stop(" Please specify the `separate.integ.scales` for the facets ! ")
+  } else {
     plot.integs <- data.spectra.integ.new %>%
       dplyr::filter(Integrals %in% slct.integs) %>%
       ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
-      geom_line(linewidth = line.width) +
-      coord_cartesian(xlim = Blim,ylim = ylim) +
+      geom_line(linewidth = line.width, show.legend = FALSE) +
+      coord_cartesian(xlim = Blim) +
+      facet_wrap(~ .data$Integrals,
+        scales = separate.integ.scales,
+        # labeller = label_parsed,
+        nrow = 1
+      ) +
       labs(
         x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
-        y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")"),
-        color = bquote(atop(italic(Integrated),EPR~~italic(Spectra)))
+        y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")")
       ) +
-      plot_themes +
-      scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
-      scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL))
-  } else {
-    if (is.null(separate.integ.scales)) {
-      stop(" Please specify the `separate.integ.scales` for the facets ! ")
-    } else {
-      plot.integs <- data.spectra.integ.new %>%
-        dplyr::filter(Integrals %in% slct.integs) %>%
-        ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
-        geom_line(linewidth = line.width, show.legend = FALSE) +
-        coord_cartesian(xlim = Blim) +
-        facet_wrap(~ .data$Integrals,
-                   scales = separate.integ.scales,
-                   #labeller = label_parsed,
-                   nrow = 1) +
-        labs(
-          x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
-          y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")")
-        ) +
-        plot_theme_In_ticks(
-          axis.title.size = axis.title.size,
-          axis.text.size = axis.text.size
-        ) +
-        scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
-        theme(
-          strip.background = element_rect(fill = "#363636"),
-          strip.text = element_text(size = 13, color = "white", face = "bold"),
-          panel.spacing = ggplot2::unit(10,"pt")
-        )
-    }
+      plot_theme_In_ticks(
+        axis.title.size = axis.title.size,
+        axis.text.size = axis.text.size
+      ) +
+      scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
+      theme(
+        strip.background = element_rect(fill = "#363636"),
+        strip.text = element_text(size = 13, color = "white", face = "bold"),
+        panel.spacing = ggplot2::unit(10, "pt")
+      )
   }
-  #
-  ## the old data frame is not required anymore
-  rm(data.spectra.integ, max.integs.df)
-  #
-  ## if the entire table/table should be included
-  if (isFALSE(output.df)){
-    results.integ <- plot.integs
-  } else{
-    results.integ <- list(plot = plot.integs,df = data.spectra.integ.new)
-  }
-  #
-  return(results.integ)
-  #
+}
+#
+## the old data frame is not required anymore
+rm(data.spectra.integ, max.integs.df)
+#
+## if the entire table/table should be included
+if (isFALSE(output.df)) {
+  results.integ <- plot.integs
+} else {
+  results.integ <- list(plot = plot.integs, df = data.spectra.integ.new)
+}
+#
+return(results.integ)
+#
 }

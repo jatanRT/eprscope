@@ -44,87 +44,108 @@ readEPR_Sim_Spec <- function(path_to_ASC,
                              sim.origin = "easyspin"
                              ) {
   #
-  ## 'Temporary' processing variables
-  Bsim_G <- NULL
-  Bsim_mT <- NULL
+## 'Temporary' processing variables
+Bsim_G <- NULL
+Bsim_mT <- NULL
+#
+## x-axis/column for B + y-axis/column for intensity
+x.col.string <- paste0("Bsim_", B.unit)
+y.col.string <- Intensity.sim
+#
+## Conditions depending on "origin"
+if (sim.origin == "easyspin") {
+  spectrum.data <- data.table::fread(
+    file = path_to_ASC,
+    sep = "auto",
+    col.names = c(
+      x.col.string,
+      y.col.string
+    )
+  )
+}
+if (sim.origin == "xenon") {
+  spectrum.data <- data.table::fread(
+    file = path_to_ASC,
+    sep = "auto",
+    header = FALSE,
+    select = c(2, 3),
+    col.names = c(
+      x.col.string,
+      y.col.string
+    )
+  )
+}
+if (sim.origin == "simfonia") {
+  ## There are two file types 'txt' and 'asc' therefore
+  ## they have to be differentiated by the corresponding pattern
+  simf.data.file <- readLines(path_to_ASC)
+  simf.data.pattern.read.01 <- unlist(stringr::str_split(simf.data.file[5],
+    pattern = "[[:space:]]+",
+    n = 5
+  ))
+  simf.data.pattern.read.02 <- unlist(stringr::str_split(simf.data.file[6],
+    pattern = "---"
+  ))
+  ## conditions
+  simf.data.condition.01 <- grepl("Data", simf.data.pattern.read.01[2])
+  simf.data.condition.02 <- grepl("--", simf.data.pattern.read.02[length(simf.data.pattern.read.02)])
   #
-  ## x-axis/column for B + y-axis/column for intensity
-  x.col.string <- paste0("Bsim_",B.unit)
-  y.col.string <- Intensity.sim
+  ## the `sim.data.file` is not required anymore
+  rm(simf.data.file)
   #
-  ## Conditions depending on "origin"
-  if (sim.origin == "easyspin"){
-    spectrum.data <- data.table::fread(file = path_to_ASC,
-                                       sep = "auto",
-                                       col.names = c(x.col.string,
-                                                     y.col.string)
+  if (isTRUE(simf.data.condition.01) & isTRUE(simf.data.condition.02)) {
+    ## reading simfonia '.txt'
+    spectrum.data <- data.table::fread(
+      file = path_to_ASC,
+      sep = "auto",
+      header = FALSE,
+      select = c(2, 3),
+      col.names = c(
+        x.col.string,
+        y.col.string
+      )
+    )
+  } else {
+    ## reading simfonia '.asc'
+    spectrum.data <- data.table::fread(
+      file = path_to_ASC,
+      sep = "auto",
+      header = TRUE,
+      col.names = c(
+        x.col.string,
+        y.col.string
+      )
     )
   }
-  if (sim.origin == "xenon"){
-    spectrum.data <- data.table::fread(file = path_to_ASC,
-                                       sep = "auto",
-                                       header = FALSE,
-                                       select = c(2,3),
-                                       col.names = c(x.col.string,
-                                                     y.col.string))
-  }
-  if (sim.origin == "simfonia"){
-    ## There are two file types 'txt' and 'asc' therefore
-    ## they have to be differentiated by the corresponding pattern
-    simf.data.file <- readLines(path_to_ASC)
-    simf.data.pattern.read.01 <- unlist(stringr::str_split(simf.data.file[5],
-                                                           pattern = "[[:space:]]+",
-                                                           n = 5))
-    simf.data.pattern.read.02 <- unlist(stringr::str_split(simf.data.file[6],
-                                                           pattern = "---"))
-    ## conditions
-    simf.data.condition.01 <- grepl("Data",simf.data.pattern.read.01[2])
-    simf.data.condition.02 <- grepl("--",simf.data.pattern.read.02[length(simf.data.pattern.read.02)])
-    #
-    ## the `sim.data.file` is not required anymore
-    rm(simf.data.file)
-    #
-    if (isTRUE(simf.data.condition.01) & isTRUE(simf.data.condition.02)){
-      ## reading simfonia '.txt'
-      spectrum.data <- data.table::fread(file = path_to_ASC,
-                                         sep = "auto",
-                                         header = FALSE,
-                                         select = c(2,3),
-                                         col.names = c(x.col.string,
-                                                       y.col.string))
-    } else{
-      ## reading simfonia '.asc'
-      spectrum.data <- data.table::fread(file = path_to_ASC,
-                                         sep = "auto",
-                                         header = TRUE,
-                                         col.names = c(x.col.string,
-                                                       y.col.string))
-    }
-   #
-  }
   #
-  if (sim.origin == "csv"){
-    spectrum.data <- data.table::fread(file = path_to_ASC,
-                                       sep = "auto",
-                                       header = TRUE,
-                                       col.names = c(x.col.string,
-                                                     y.col.string))
-  }
-  ## Adding additional `B` column with corresponding units depending
-  ## on `B.unit`
-  if (B.unit == "mT") {
-    spectrum.data <- spectrum.data %>%
-      dplyr::mutate(Bsim_G = .data[[x.col.string]] * 10) %>%
-      ## reordering columns
-      dplyr::select(Bsim_G, .data[[x.col.string]], .data[[y.col.string]])
-  }
-  if (B.unit == "G") {
-    spectrum.data <- spectrum.data %>%
-      dplyr::mutate(Bsim_mT = .data[[x.col.string]] / 10) %>%
-      ## reordering columns
-      dplyr::select(Bsim_mT, .data[[x.col.string]], .data[[y.col.string]])
-  }
-  #
-  return(spectrum.data)
-  #
+}
+#
+if (sim.origin == "csv") {
+  spectrum.data <- data.table::fread(
+    file = path_to_ASC,
+    sep = "auto",
+    header = TRUE,
+    col.names = c(
+      x.col.string,
+      y.col.string
+    )
+  )
+}
+## Adding additional `B` column with corresponding units depending
+## on `B.unit`
+if (B.unit == "mT") {
+  spectrum.data <- spectrum.data %>%
+    dplyr::mutate(Bsim_G = .data[[x.col.string]] * 10) %>%
+    ## reordering columns
+    dplyr::select(Bsim_G, .data[[x.col.string]], .data[[y.col.string]])
+}
+if (B.unit == "G") {
+  spectrum.data <- spectrum.data %>%
+    dplyr::mutate(Bsim_mT = .data[[x.col.string]] / 10) %>%
+    ## reordering columns
+    dplyr::select(Bsim_mT, .data[[x.col.string]], .data[[y.col.string]])
+}
+#
+return(spectrum.data)
+#
 }
