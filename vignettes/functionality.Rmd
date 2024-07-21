@@ -36,7 +36,6 @@ $\require{mhchem}$
 
 ```{r setup, include = FALSE}
 library(eprscope)
-library(icons)
 library(knitr)
 library(patchwork)
 library(htmlwidgets)
@@ -58,7 +57,7 @@ where the $\ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (W
 
 # Drawing of Molecular Structures
 
-Structure of the investigated compound can be depicted by the `draw_molecule_by_rcdk()` function based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) 📦 (see also [@GuhaRrcdk2007]) which is an `r icons::bioicons("R")` toolbox of the [Chemistry Development Kit](https://cdk.github.io/), an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
+Structure of the investigated compound can be depicted by the `draw_molecule_by_rcdk()` function based on those coming from [{rcdk}](https://cdk-r.github.io/cdkr/) 📦 (see also [@GuhaRrcdk2007]) which is an ![](images/RcoreLogo.png){width="16" height="12"} toolbox of the [Chemistry Development Kit](https://cdk.github.io/), an open source modular java libraries for the chemoinformatics [@WillighagenCDK2017].
 
 ```{r draw-molecule}
 
@@ -186,7 +185,7 @@ Visualization and/or conversion of data frames (tables) into several formats lik
 
 ```
 
-In order to process data frames by other software tools, different from `r icons::bioicons("R")` (e.g. in excel-like sheet format), they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
+In order to process data frames by other software tools, different from ![](images/RcoreLogo.png){width="16" height="12"} (e.g. in excel-like sheet format), they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
 
 ```{r spectral-data-read-norm-csv-save}
 
