@@ -39,7 +39,7 @@
 #'   \item baseline slope (only if \code{baseline.correct = "linear"} or \code{baseline.correct = "quadratic"}),
 #'   if \code{baseline.correct = "constant"} it corresponds to the \strong{first HFCC} (\eqn{A_1})
 #'
-#'   \item baseline quadratic multiplication constant (only if \code{baseline.correct = "quadratic"}),
+#'   \item baseline quadratic coefficient (only if \code{baseline.correct = "quadratic"}),
 #'   if \code{baseline.correct = "constant"} it corresponds to the \strong{second HFCC} (\eqn{A_2}),
 #'   if \code{baseline.correct = "linear"} it corresponds to the \strong{first HFCC} (\eqn{A_1})
 #'
@@ -51,19 +51,29 @@
 #'   }
 #'   DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}. If the lineshape is expected to be pure
 #'   \strong{L}orentzian or pure \strong{G}aussian then put the corresponding vector element to \code{0}.
-#' @param optim.params.lower Numeric vector (with the length of \code{optim.params.init}) with the lower
-#'   bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually equals
-#'   to ...
-#' @param optim.params.upper Numeric vector (with the length of \code{optim.params.init}) with the upper
-#'   bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually equals
-#'   to ...
+#' @param optim.params.lower Numeric vector (with the same element order like \code{optim.params.init})
+#'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
+#'   equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
+#'   \eqn{0.8\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{- 0.001},
+#'   intensity multiplication initial constant \eqn{= 1\cdot 10^{-8}}, baseline initial slope \eqn{- 5} (in case
+#'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
+#'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
+#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant are set to \eqn{0.8\,A_{\text{init}}}.
+#' @param optim.params.upper Numeric vector (with the same element order like \code{optim.params.init})
+#'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
+#'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
+#'   \eqn{1.2\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{+ 0.001},
+#'   intensity multiplication initial constant \eqn{= 100}, baseline initial slope \eqn{+ 5} (in case
+#'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
+#'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
+#'   \code{"quadratic"}). Upper limits of all hyperfine coupling constant are set to \eqn{1.2\,A_{\text{init}}}.
 #' @param Nmax.evals Numeric value pointing to maximum number of iterations/evaluations. \strong{Default}:
 #'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximal value).
 #' @param tol.step Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
 #'   \strong{Default}: \code{tol.step = 5e-7}.
 #' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles), only
 #'   if \code{optim.method = "pswarm"}. Otherwise, \code{pswarm.size = NULL} (\strong{default}).
-#' @param pswarm.diameter Numeric value corresponding to diameter of particle swarm search space
+#' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidian distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}_k - \text{optim.params.lower}_k)^2}}
@@ -79,28 +89,40 @@
 #'   \item if \code{sim.check = TRUE} it returns list with two components:
 #'   \describe{
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectrum
-#'   in "overlay" mode. Additional graph, below to the latter, shows the residuals (difference between
+#'   in "overlay" mode. Additional graph, below to the latter, showing the residuals (difference between
 #'   the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
 #'   in order to quickly evaluate the quality of the fit.}
-#'   \item{best.fit.params}{Vector of the best (final) fitting parameters,
-#'   see the \code{optim.params.init}.}
+#'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
+#'   see also description of the \code{optim.params.init}.}
 #'   }
 #'
 #'   \item if \code{sim.check = FALSE} it returns list with the following components:
 #'   \desribe{
-#'   \item{plot}{.}
-#'   \item{best.fit.params}{.}
-#'   \item{df}{.}
-#'   \item{sum.LSQ.min}{.}
-#'   \item{N.evals}{.}
-#'   \item{N.converg}{.}
+#'   \item{plot}{Visualization of three spectra which are offset for clarity. The first
+#'   (the upper one) is the original experimental spectrum. The second one (in the middle)
+#'   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
+#'   corresponds to the best fitted spectrum where the baseline counter part was subtracted.}
+#'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
+#'   see also description of the \code{optim.params.init}.}
+#'   \item{df}{Data frame (table) with the following variables / columns: magnetic flux density,
+#'   intensity of the experimental spectrum, intensity of the simulated spectrum (including
+#'   the baseline fit), residual intensity of the fit and finally, simulated spectrum intensity
+#'   without the baseline fit.}
+#'   \item{sum.LSQ.min}{The minimal sum of the residual square vector after the least-square
+#'   procedure.}
+#'   \item{N.evals}{Number of iterations/function evaluations completed before termination.
+#'   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
+#'   equals to vector with the following elements: number of function evaluations, number of iterations
+#'   and the number of restarts.}
+#'   \item{N.converg}{Vector or simple integer code indicating the successful completion
+#'   of the optimization/fit. If the ...TBC...}
 #'   }
 #'   }
 #'
 #'
 #' @examples
-#' ## loading built-in package dataset which is simple
-#' ## EPR spectrum of aminoxyl radical
+#' ## loading built-in example dataset which is simple
+#' ## EPR spectrum of the aminoxyl radical
 #' aminoxyl.data.path <-
 #'  load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data <-
@@ -150,7 +172,7 @@
 #' #
 #' ## similar EPR spectrum simulation fit with "particle swarm"
 #' ## optimization algorithm and `sim.check = TRUE` option
-#' ## and user defined bound constraints:
+#' ## as well as user defined bound constraints:
 #' tempo.test.sim.fit.b <-
 #' eval_sim_EPR_isoFit(data.spectr.expr = tempo.data,
 #'                     nu.GHz = 9.806769,
@@ -166,10 +188,40 @@
 #' ## best fit parameters:
 #' tempo.test.sim.fit.b$best.fit.params
 #' #
-#'
-#'
-#'
-#'
+#' ## quick simulation check by plotting the both
+#' ## simulated and the experimental EPR spectra together
+#' ## with the residuals (differences between the both latter):
+#' tempo.test.sim.fit.b$plot
+#' #
+#' ## fitting of the aminoxyl EPR spectrum by the combination
+#' ## of the 1. "Levenberg-Marquardt" and 2. "Nelder-Mead" algorithms
+#' tempo.test.sim.fit.c <-
+#' eval_sim_EPR_isoFit(tempo.data,
+#'                     nu.GHz = 9.86769,
+#'                     lineG.content = 0.5,
+#'                     optim.method = c("levenmarq",
+#'                                      "neldermead"),
+#'                     nuclear.system.noA = list("14N",1),
+#'                     baseline.correct = "constant",
+#'                     optim.params.init = c(2.0050,
+#'                                           1.1,
+#'                                           1.1,
+#'                                           0,
+#'                                           5e-3,
+#'                                           47),
+#'                     sim.check = FALSE
+#'                     )
+#' ## OUTPUTS-RETURN:
+#' ## best fit parameters for both procedures within a list:
+#' tempo.test.sim.fit.c$best.fit.params
+#' #
+#' ## `N.converg` also consists of two components
+#' ## each corresponding to result of the individual
+#' ## optimization method where the "levenmarq" returns
+#' ## sum of squares at each iteration, therefore the 1st
+#' ## component is vector and the 2nd one is integer code
+#' ## as already stated above:
+#' tempo.test.sim.fit.c$N.converg
 #'
 #'
 #' @export
@@ -601,20 +653,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     A.upper.limits <- c()
     if (baseline.correct == "constant"){
       for (a in 6:(5+length(nuclear.system.noA))){
-        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
-        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
+        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.2)
+        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.2)
       }
     }
     if (baseline.correct == "linear"){
       for (a in 7:(6+length(nuclear.system.noA))){
-        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
-        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
+        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.2)
+        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.2)
       }
     }
     if (baseline.correct == "quadratic"){
       for (a in 8:(7+length(nuclear.system.noA))){
-        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
-        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
+        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.2)
+        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.2)
       }
     }
     #

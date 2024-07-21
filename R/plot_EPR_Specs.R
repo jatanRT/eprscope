@@ -122,33 +122,40 @@
 #'
 #' @examples
 #' ## load the following built-in spectral data:
-#' aminoxyl.file.path <- load_data_example("Aminoxyl_radical_a.txt")
-#' ## read the aminoxyl radical spectrum without intensity normalization
+#' aminoxyl.file.path <-
+#' load_data_example("Aminoxyl_radical_a.txt")
+#' ## read the aminoxyl radical spectrum without intensity
+#' ## normalization:
 #' aminoxyl.data <- readEPR_Exp_Specs(aminoxyl.file.path)
 #' #
 #' ## simple plot of an EPR spectrum with B in `mT`
-#' ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity)
+#' ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity):
 #' plot_EPR_Specs(aminoxyl.data)
 #' #
-#' ## the same spectrum with B in `G` and `theme_bw` ggplot2 graph theme
+#' ## the same spectrum with B in `G` and `theme_bw`
+#' ## ggplot2 graph theme:
 #' plot_EPR_Specs(data.spectra = aminoxyl.data,
 #'                x = "B_G",
 #'                x.unit = "G",
 #'                theme.basic = "theme_bw")
 #' #
-#' ## single integration (without baseline correction) of the previous
-#' ## spectrum by the `eval_integ_EPR_Spec` function
-#' aminoxyl.data.sinteg <- eval_integ_EPR_Spec(aminoxyl.data)
-#' ## plot the single integrated spectrum
+#' ## single integration (without baseline correction)
+#' ## of the previous spectrum by the `eval_integ_EPR_Spec`
+#' ## function:
+#' aminoxyl.data.sinteg <-
+#' eval_integ_EPR_Spec(aminoxyl.data)
+#' ## plot the single integrated spectrum:
 #' plot_EPR_Specs(aminoxyl.data.sinteg,
 #'                x = "B_G",
 #'                x.unit = "G",
 #'                Intensity = "single_Integ",
 #'                lineSpecs.form = "integrated")
 #' #
-#' ## loading the built-in CW ENDOR spectrum of perinaphthenyl (PNT)
+#' ## loading the built-in CW ENDOR spectrum
+#' ## of perinaphthenyl (PNT):
 #' pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
-#' ## read the PNT CW ENDOR data without intensity normalization
+#' ## read the PNT CW ENDOR data without intensity
+#' ## normalization:
 #' pnt.endor.data <-
 #' readEPR_Exp_Specs(pnt.file.path,
 #'                   col.names = c("index",
@@ -157,26 +164,41 @@
 #'                   x.id = 2,
 #'                   x.unit = "MHz",
 #'                   Intensity.id = 3)
-#' ## plotting the previous ENDOR data spectrum in derivative
-#' ## form with `darkred` linecolor and 1.2pt linewidth
+#' ## plotting the previous ENDOR data spectrum
+#' ## in derivative form with `darkred` linecolor
+#' ## and 1.2pt linewidth:
 #' plot_EPR_Specs(pnt.endor.data,
 #'                x = "RF_MHz",
 #'                x.unit = "MHz",
 #'                line.colors = "darkred",
 #'                line.width = 1.2)
 #' #
-#' \dontrun{
 #' ## display of time series EPR spectra selecting
 #' ## the CONTINUOUS COLORSCALE (see argument `line.colors`
-#' ## and color definitions `1.`)
-#' plot_EPR_Specs(data.spectra,
+#' ## and color definitions `1.`),
+#' ## first of all, load the built-in package example
+#' triarylamine.decay.series.dsc.path <-
+#' load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+#' triarylamine.decay.series.asc.path <-
+#' load_data_example(file = "Triarylamine_radCat_decay_series.zip")
+#' triarylamine.decay.series.asc.file <-
+#' unzip(triarylamine.decay.series.asc.path)
+#' ## loading the kinetics:
+#' triarylamine.decay.series.data <-
+#' readEPR_Exp_Specs_kin(name_root = "Triarylamine_radCat_decay_series",
+#'                       dir_ASC = system.file(package = "eprscope"),
+#'                       dir_dsc_par = system.file(package = "eprscope")
+#'                       )
+#' ## spectral series plot:
+#' plot_EPR_Specs(triarylamine.decay.series.data,
 #'                var2nd.series = "time_s",
-#'                xlim = c(340,357.5),
-#'                Ilim = c(-5e-5,5e-5),
-#'                line.colors = grDevices::hcl.colors(8,palette = "Roma"),
+#'                line.colors =
+#'                grDevices::hcl.colors(8,palette = "Roma"),
 #'                legend.title = "Time (s)",
-#'                yTicks = F)
+#'                yTicks = FALSE)
+#'
 #' #
+#' \dontrun{
 #' ## display of time series EPR spectra selecting
 #' ## the DISCRETE COLORSCALE (see argument `line.colors`
 #' ## and color definitions `2.`). Each 8-th spectrum from

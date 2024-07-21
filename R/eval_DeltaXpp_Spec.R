@@ -37,13 +37,13 @@
 #' aminoxyl.data <-
 #' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
 #' #
-#' ## evaluation of the central linewidth (\Delta Bpp in `mT`):
+#' ## evaluation of the central linewidth (∆Bpp in `mT`):
 #' eval_DeltaXpp_Spec(aminoxyl.data,xlim = c(348.345,350.450))
 #' #
 #' ## plot interactive spectrum
 #' plot_EPR_Specs2D_interact(aminoxyl.data)
 #' #
-#' ## the linewidth \Delta Bpp (in `mT`) may be directly
+#' ## the linewidth ∆Bpp (in `mT`) may be directly
 #' ## checked from the interactive spectrum above
 #' ## as a difference between the minimum and maximum
 #' ## of the `dIepr_over_dB` central line intensity:
@@ -62,7 +62,7 @@
 #'                  Intensity.id = 3
 #'                  )
 #' #
-#' ## evaluation of the fourth linewidth (\Delta freq.(pp)
+#' ## evaluation of the fourth linewidth (∆freq.(pp)
 #' ## in `MHz`) in the ENDOR spectrum:
 #' eval_DeltaXpp_Spec(pnt.endor.data,
 #'                   x = "RF_MHz",
@@ -74,7 +74,7 @@
 #'                           x = "RF_MHz",
 #'                           x.unit = "MHz")
 #' #
-#' ## the linewidth (\Delta freq.(pp) in `MHz`) may be
+#' ## the linewidth (∆freq.(pp) in `MHz`) may be
 #' ## directly checked from the previous interactive
 #' ## CW ENDOR spectrum as a difference between
 #' ## the minimum and maximum of the `dIepr_over_dB`
