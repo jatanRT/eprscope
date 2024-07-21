@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_extremeX_Spec.R
 \name{eval_extremeX_Spec}
 \alias{eval_extremeX_Spec}
-\title{Find Intensity Extremes within the EPR/ENDOR Spectrum (incl. Integrated Form).}
+\title{Find Intensity Extremes within the EPR/ENDOR Spectrum}
 \usage{
 eval_extremeX_Spec(
   data.spectr,
@@ -13,21 +13,21 @@ eval_extremeX_Spec(
 )
 }
 \arguments{
-\item{data.spectr}{EPR/ENDOR spectrum data frame object with magnetic flux density \eqn{B} (in \code{mT} or \code{G})
-or \eqn{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
-or integrated \code{Intensity}. \code{Index} column/variable may be included as well.}
+\item{data.spectr}{EPR/ENDOR spectrum data frame object with magnetic flux density \emph{B} (in \code{mT} or \code{G})
+or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
+\code{Intensity}. \code{Index} column may be included as well.}
 
 \item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
-like magnetic flux density \emph{B}, \emph{g}-Value or \emph{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.}
+like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.}
 
-\item{Intensity}{Character string pointing to name of the \code{intensity column/variable}
-(in the original \code{data.spectr}) if other than \code{dIepr_over_dB} name/label
-is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
+\item{Intensity}{Character string pointing to name of the \code{intensity column/variable}, in the original \code{data.spectr},
+if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
+\strong{Default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \emph{x} region,
 e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-to entire \code{x} range).}
+to the entire \code{x} range).}
 
 \item{extreme}{Character string with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default}).}
 }
@@ -41,16 +41,29 @@ Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})) or \emp
   of an EPR/ENDOR spectrum.
 }
 \examples{
-\dontrun{
-eval_extremeX_Spec(data.spectr,
-                   xlim = c(349.54,359.54),
-                   extreme = 'min')
+## loading TMPD built-in example file:
+tmpd.data.file.path <-
+load_data_example(file = "TMPD_specelchem_accu_b.asc")
+## reading data:
+tmpd.data.file <-
+readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
+                  col.names = c("B_G","dIepr_over_dB"),
+                  x.id = 1,
+                  Intensity.id = 2,
+                  qValue = 3500,
+                  norm.vec.add = 20,
+                  origin = "winepr")
 #
-eval_extremeX_Spec(data.frame,
-                   "g_Value",
-                   Intensity = "single_Integ",
-                   c(2.007,2.000))
-}
+## finding maximum and minimum `B` within the entire
+## spectral (`B`) range:
+eval_extremeX_Spec(data.spectr = tmpd.data.file)
+#
+eval_extremeX_Spec(data.spectr = tmpd.data.file,
+                   extreme = "min")
+#
+## both values can be checked by the interactive
+## spectrum:
+plot_EPR_Specs2D_interact(tmpd.data.file)
 
 
 }

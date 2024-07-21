@@ -15,32 +15,72 @@ eval_interval_cnfd_tVec(
 \item{data.vec.col}{Numeric vector pointing to column of interest (within a data frame)
 to calculate the confidence interval or uncertainty.}
 
-\item{level.cnfd}{Numeric (float) corresponding to confidence level \strong{default}:
-\code{level.cnfd = 0.95}.}
+\item{level.cnfd}{Numeric (floating) value corresponding to confidence level \strong{default}:
+\code{level.cnfd = 0.95}. This value is related to significance level \eqn{alpha} defined
+by \eqn{1 - confidence\,\,level}.}
 
 \item{lw.tail}{Logical, indicating the way how to calculate \code{qt} quantile function
-for the \eqn{t}-distribution, it is inherited from \code{\link[stats:TDist]{stats::qt}},
-if \code{TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]}, otherwise, \eqn{P[X>x]}.}
+for the two-tailed \eqn{t}-distribution. It is inherited from \code{\link[stats:TDist]{stats::qt}}.
+If \code{lw.tail = TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]} and the vector of probabilities (\code{p})
+is equal to \code{level.cnfd} + \eqn{\alpha / 2}, where \eqn{\alpha} stands for the significance level = 1 - \code{level.cnfd}.
+Otherwise, \eqn{P[X>x]} (\code{lw.tail = FALSE}) and the \code{p} is defined as \eqn{\alpha / 2} and equal to
+(1 - \code{level.cnfd})/2.}
 
-\item{separate}{Logical, whether to separate the mean value and the uncertainty,
-if \code{TRUE}, the result is shown as a named vector with (mean) \code{value} and \code{uncertaity},
-otherwise, the result is in the format \eqn{value\pm uncertainty}.}
+\item{separate}{Logical, whether to separate the mean value and the uncertainty, corresponding to non-negative right/left
+confidence limit of the mean. If \code{separate = TRUE}, the result is shown as a named vector with the (mean)
+\code{value} and the \code{uncertaity}.
+Otherwise, the result is returned in the format of \eqn{value\pm uncertainty}.}
 }
 \value{
 Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm uncertainty}
-  format depending \code{separate} parameter.
+  format depending on the \code{separate} argument, where the uncertainty actually represents non-negative
+  limit for the mean (one side of the confidence interval not including the mean value).
 }
 \description{
-Mean value and uncertainty (according to Student's t-Distribution) corresponding to column
- (within data frame) or vector which characterize dispersion of individual value elements
- (e.g. like double integrals in quantitative EPR analysis).
+Evaluation of the mean value and its confidence limits (according to Student's t-distribution)
+ corresponding to column (within data frame) or vector characterizing dispersion of the individual
+ value, e.g. like double integral in quantitative EPR analysis, g-value or linewidth.
+}
+\details{
+The confidence interval evaluation suggests that values/observations obey two-tailed Student's t-distribution,
+  which for number of observations \eqn{N > 30} approaches the normal \eqn{z}-distribution.
+  Evaluation of the confidence interval and/or its limits can be well documented on \eqn{g}-factor series example:
+  \deqn{g = \overline{g}\pm (t_{(1-\alpha/2),df}\,s/\sqrt{N})}
+  where \eqn{\overline{g}} is the mean value and the \eqn{t_{(1-\alpha/2),df}} corresponds to quantile
+  of the t-distribution having the significance level of \eqn{\alpha} (\eqn{1-\alpha = condfidence\,\,level},
+  see the \code{level.cnfd} argument) and the degree of freedom \eqn{df = N -1}. Finally the \eqn{s} represents
+  the sample standard deviation, defined by the following relation (regarding the \eqn{g}-value series example):
+  \deqn{s = \sqrt{(1/(N-1))\,\sum_{i=1}^N (g_i - \overline{g})^2}}
+  which is computed by the \code{\link[stats]{sd}}. The above-mentioned \eqn{t}-quantile is actually calculated
+  by the \code{\link[stats:TDist]{stats::qt}} function (see also \code{lw.tail} argument).
 }
 \examples{
-eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035))
-eval_interval_cnfd_tVec(c(0.025,0.020,0.031,0.022,0.035),
-                         level.cnfd = 0.99,
-                         separate = TRUE)
+## double integral/intensity values
+## coming from several experiments:
+di.vec <- c(0.025,0.020,0.031,0.022,0.035)
+#
+## evaluation of the confidence interval
+## in different formats:
+eval_interval_cnfd_tVec(di.vec)
+#
+eval_interval_cnfd_tVec(di.vec,lw.tail = FALSE)
+#
+eval_interval_cnfd_tVec(di.vec,
+                        level.cnfd = 0.99,
+                        separate = TRUE)
 
+
+}
+\references{
+\insertRef{miller2018chmem}{eprscope}
+
+  \insertRef{distro32022}{eprscope}
+
+  \insertRef{nist2012confid}{eprscope}
+
+  \insertRef{kaleta2012carb}{eprscope}
+
+  \insertRef{psy2020confid}{eprscope}
 }
 \seealso{
 Other Evaluations: 

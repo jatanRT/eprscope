@@ -19,17 +19,17 @@ or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the d
 \item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
 like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.}
 
-\item{Intensity}{Character string pointing to name of the \code{intensity column/variable} ((in the original \code{data.spectr}))
+\item{Intensity}{Character string pointing to name of the \code{intensity column/variable}, in the original \code{data.spectr},
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
 \strong{Default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \emph{x} region,
 e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-to entire \code{x} range).}
+to the entire \code{x} range).}
 }
 \value{
-Numeric value of difference of \code{x}-axis quantity like \emph{B},\emph{g},\emph{RF} (the absolute value)
+Numeric value difference of the \code{x}-axis quantity like \emph{B},\emph{g},\emph{RF} (the absolute value)
   corresponding to \code{minimum} and \code{maximum} of the derivative intensity (\code{dIepr_over_dB})
   in EPR/ENDOR spectrum.
 }
@@ -38,23 +38,56 @@ Calculating the \code{peak-to-peak} (distance between of the \emph{x}-axis
   projection of "min" and "max" derivative intensities) linewidth of an EPR/ENDOR spectrum.
 }
 \examples{
-\dontrun{
-eval_DeltaXpp_Spec(data.spectr,
-                   c(320.221,328.331))
+## loading the aminoxyl radical CW EPR spectrum:
+aminoxyl.data.path <-
+load_data_example(file = "Aminoxyl_radical_a.txt")
+aminoxyl.data <-
+readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
 #
-eval_DeltaXpp_Spec(data.spectr,
-                   B = "B_G",
-                   Intensity = "dIepr_over_dB",
-                   c(3202.11,3283.31))
+## evaluation of the central linewidth (∆Bpp in `mT`):
+eval_DeltaXpp_Spec(aminoxyl.data,xlim = c(348.345,350.450))
 #
-eval_DeltaXpp_Spec(data.spectr,
-                   "RF_MHz",
-                   xlim = c(10,42))
+## plot interactive spectrum
+plot_EPR_Specs2D_interact(aminoxyl.data)
 #
-eval_DeltaXpp_Spec(data.spectr,
-                   "B_mT_Sim",
-                   c(320.221,328.331))
-}
+## the linewidth ∆Bpp (in `mT`) may be directly
+## checked from the interactive spectrum above
+## as a difference between the minimum and maximum
+## of the `dIepr_over_dB` central line intensity:
+349.648-349.107
+#
+## loading the perinaphthenyl (PNT) CW ENDOR spectrum:
+pnt.endor.data.path <-
+load_data_example(file = "PNT_ENDOR_a.txt")
+pnt.endor.data <-
+readEPR_Exp_Specs(pnt.endor.data.path,
+                  col.names = c("index",
+                                "RF_MHz",
+                                "dIepr_over_dB"),
+                 x.id = 2,
+                 x.unit = "MHz",
+                 Intensity.id = 3
+                 )
+#
+## evaluation of the fourth linewidth (∆freq.(pp)
+## in `MHz`) in the ENDOR spectrum:
+eval_DeltaXpp_Spec(pnt.endor.data,
+                  x = "RF_MHz",
+                  xlim = c(22.38,24.54)
+                  )
+#
+## plot interactive ENDOR spectrum:
+plot_EPR_Specs2D_interact(pnt.endor.data,
+                          x = "RF_MHz",
+                          x.unit = "MHz")
+#
+## the linewidth (∆freq.(pp) in `MHz`) may be
+## directly checked from the previous interactive
+## CW ENDOR spectrum as a difference between
+## the minimum and maximum of the `dIepr_over_dB`
+## 4th line intensity:
+23.42-23.30
+
 
 }
 \seealso{

@@ -29,63 +29,63 @@ plot_EPR_Specs(
 )
 }
 \arguments{
-\item{data.spectra}{Spectrum data frame/table containing magnetic flux density, \eqn{g}-value
-or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
-in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
+\item{data.spectra}{Data frame/table object containing magnetic flux density, \eqn{g}-value
+or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT},
+\code{B_G} or \code{RF_MHz} see also \code{x} argument. The \code{y / Intensity} variable
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 integrated or simulated spectra intensities are present, they can be labeled accordingly.
 See also \code{Intensity} parameter/argument. For spectral series the second independent variable
-\code{var2nd.series} column (like e.g. \code{var2nd.series = "time_s"}) must be available. In such case
-the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameter/argument
+\code{var2nd.series} column (e.g. like \code{var2nd.series = "time_s"}) must be available. In such case
+the entire \code{data.spectra} must inherit the form of "tidy" (long) table format (see also argument
 \code{var2nd.series}).}
 
-\item{x}{Character/String pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
+\item{x}{Character string pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
 like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
-\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
-or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
+\item{x.unit}{Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
+Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
+or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.}
 
-\item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
+\item{xlim}{Numeric vector referring to border limits of the selected \code{x}-region,
 e.g. like \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
-or `xlim = c(2.004,2.001)` (\eqn{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-to entire `x` range).}
+or \code{xlim = c(2.004,2.001)} (dimensionless \eqn{g}). \strong{Default}: \code{xlim = NULL} (actually corresponding
+to the entire \code{x}-range).}
 
-\item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
-column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
-`Microwave Power`...etc) altered upon individual experiments as a second variable
-(\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
-(or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
+\item{var2nd.series}{Character string referred to name of the second independent variable/quantity
+column in the original \code{data.spectra} (e.g. like time, Temperature, Electrochemical Potential,
+Microwave Power...etc) altered upon individual experiments as a second variable
+(\code{var2nd.series}). Data must be available in \strong{long table} / \strong{tidy}
+format (see also \code{\link{readEPR_Exp_Specs_multif}}).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
-\item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the plot,
-e.g. like display each second (\code{var2nd.series.slct.by = 2}), third (\code{var2nd.series.slct.by = 3}),
-fourth (\code{var2nd.series.slct.by = 4})...etc. spectrum. The argument is used in case
-\code{var2nd.series} is \strong{NOT NULL} (e.g. \code{var2nd.series = "time_s"}) and one wants to present
-discrete labels/levels for spectra (NOT THE CONTINUOUS ONE). THE \code{var2nd.series.slct.by = 1} DISPLAYS
-ALL DISCRETE SPECTRA WITHIN SERIES. Recommended max. number of spectra/lines is 12.}
+\item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the overlay plot,
+e.g. like display each second (\code{var2nd.series.slct.by = 2}) or third (\code{var2nd.series.slct.by = 3}),
+...etc. spectrum. The argument is only used if \code{var2nd.series} is \strong{NOT NULL}
+(e.g. \code{var2nd.series = "time_s"}) and one wants to present
+DISCRETE LABELS / LEVELS for the overlay spectra (see also \code{line.colors} argument).
+THE \code{var2nd.series.slct.by = 1} MAY DISPLAY ALL DISCRETE SPECTRA WITHIN THE SERIES.
+However, the RECOMENDED MAX. NUMBER of spectra/lines IS \code{12}.}
 
-\item{Intensity}{Character string pointing to \code{intensity column} in the original \code{data.spectra}
+\item{Intensity}{Character string pointing to \code{intensity column} name in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{Ilim}{Numeric vector corresponding to border limits of the selected \eqn{y}/\eqn{Intensity}
-region, e.g. like \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (corresponding
-to entire `Intensity` range).}
+\item{Ilim}{Numeric vector corresponding to border limits of the selected \code{y} / \code{Intensity}
+region, e.g. like \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
+to the entire Intensity range).}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
-or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+or \code{"integrated"} (in such case also \code{"absorption"} can be used)
 line form of the analyzed EPR spectrum/data.}
 
-\item{line.colors}{Character string, line color to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
-  colors are allowed for plotting individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
-  For series of EPR spectra two colorscales are used
+\item{line.colors}{Character string, line color(s) to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
+  colors are allowed to plot the individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
+  For series of EPR spectra two color scales are used:
   \enumerate{
   \item \strong{Continuous.} This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
   and \code{var2nd.series.slct.by = NULL}. The \code{line.colors} argument is identical with the continuous
-  \code{colorscales} one from \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions
+  \code{colorscales}, i.e. with the one from \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions
   are allowed =>
   \itemize{
     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
@@ -98,7 +98,7 @@ line form of the analyzed EPR spectrum/data.}
   }
 
   \item \strong{Discrete.} This is the case when both \code{var2nd.series}
-  as well as \code{var2nd.series.slct.by} are \strong{DISTINCT} from \code{NULL}. Following color definitions
+  as well as \code{var2nd.series.slct.by} are \strong{DISTINCT} FROM \code{NULL}. Following color definitions
   are allowed =>
   \itemize{
   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
@@ -110,106 +110,163 @@ line form of the analyzed EPR spectrum/data.}
   }
   }}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}.}
 
-\item{border.line.width}{tbc}
+\item{border.line.width}{Numeric, width of the graph / panel border line, \strong{default}:
+\code{border.line.width = 0.5}.}
 
-\item{border.line.color}{tbc}
+\item{border.line.color}{Character string referring to color of the graph / panel border line. \strong{Default}:
+\code{border.line.color = "black"}.}
 
-\item{theme.basic}{Character/String, which calls a ggplot theme base. The following ones are defined:
+\item{theme.basic}{Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 \describe{
   \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, theme is proposed \strong{for publications}}
+  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, the theme is suggested \strong{for publications}}
   \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
   \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
-  \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
-  as well as the grid-lines, theme is proposed \strong{for publications}
-  (if the \code{grid} is set to \code{FALSE})}
+  \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
+  theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 }}
 
-\item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 15}}
+\item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 14}}
+\item{axis.text.size}{Numeric, text size in \code{pt} for the axes units/descriptions,
+\strong{default}: \code{axis.text.size = 14}.}
 
-\item{legend.title}{Character string tbc}
+\item{legend.title}{Character string identical to legend title, e.g. like \code{legend.title = "Time (s)"},
+\code{legend.title = "Electrochem. Potential (V)"} or \code{legend.title = "Sample"}. \strong{Default}:
+\code{legend.title = NULL} in case of \code{var2nd.series = NULL}.}
 
-\item{legend.title.size}{tbc, ...\strong{default}: \code{legend.title.size = NULL} corresponding to 13}
+\item{legend.title.size}{Numeric, legend text title size in \code{pt},\strong{default}: \code{legend.title.size = NULL},
+actually corresponding to 13 / 13pt.}
 
-\item{legend.text.size}{description, ...\strong{default}: \code{legend.text.size = NULL} corresponding to 11}
+\item{legend.text.size}{Numeric, legend text size in \code{pt}, \strong{default}: \code{legend.text.size = NULL},
+actually corresponding to 11 / 11pt.}
 
-\item{grid}{Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+\item{grid}{Logical, whether to dislay the \code{grid} within the panel / graph, \strong{default}: \code{grid = TRUE}.}
 
 \item{yTicks}{Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
-(not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}}
+(not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
+(the axis ticks as well as the text are present).}
 }
 \value{
-EPR spectrum/spectra ('overlay' plot) by \pkg{ggplot2} with key parameter
-  (e.g. line-color and theme,grid...etc.) variation
+EPR spectrum/spectra ('overlay') plot using the \pkg{ggplot2} functionality, with the key parameter variations
+  like line color, theme, grid...etc.
 }
 \description{
-Graph/Plot of an EPR/ENDOR spectrum/spectra ('overlay' plot) based on \pkg{ggplot2}-functionality.
-  Spectral data are in the form of data frame (details see below).
-  Theme of the graphic spectrum representation as well its line colors can be varied like
-  in \pkg{ggplot2}. Within a theme \code{y} ticks can be displayed
-  or skipped \code{y} (e.g. \code{dIepr_over_dB} in 'procedure defined unit',
-  see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-  this is common for presenting the EPR spectra. Function can be additionally combined by \code{+} sign
-  with other functions (e.g. with \code{\link{plot_theme_In_ticks}}) like in \pkg{ggplot2},
-  e.g. present or skip \code{grid} within the code.
+Graph/Plot of an EPR/ENDOR spectrum/spectra (overlay plot) based on \pkg{ggplot2}-functionality.
+  Spectral data have to be available as a data frame object (see also argument \code{data.spectra}).
+  Theme of the graphic spectrum representation as well as other graph elements can be varied like
+  using the \pkg{ggplot2} package. Within a theme, the \code{y} ticks can be either displayed
+  or skipped and the intensity (e.g. \code{dIepr_over_dB}) is presented in "procedure defined unit"
+  (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
+  which is common for visualization of the EPR spectra. Additionally, the \code{plot_EPR_Specs} can be combined
+  by the \code{+} sign with other \pkg{ggplot2} or internal plotting functions
+  (e.g. with \code{\link{plot_theme_In_ticks}}).
 }
 \examples{
-\dontrun{
-## simple plot of an EPR spectrum with `B` in `mT`
-## and `dIepr_over_dB_Sim` in `p.d.u.` (derivative intensity)
-plot_EPR_Specs(data.spectrum)
+## load the following built-in spectral data:
+aminoxyl.file.path <-
+load_data_example("Aminoxyl_radical_a.txt")
+## read the aminoxyl radical spectrum without intensity
+## normalization:
+aminoxyl.data <- readEPR_Exp_Specs(aminoxyl.file.path)
 #
-## simple plot of an EPR spectrum with `B` in `G`
-## and `dIepr_over_dB_Sim` in `p.d.u.` (derivative intensity)
-plot_EPR_Specs(data.spectrum,
-              x = "B_G",
-              x.unit = "G",
-              Intensity = "dIepr_over_dB")
+## simple plot of an EPR spectrum with B in `mT`
+## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity):
+plot_EPR_Specs(aminoxyl.data)
 #
-## single integrated EPR spectrum with `B` in `G`
-## and `single_Integ` in `p.d.u.` (single integrated intensity)
-plot_EPR_Specs(data.spectrum.integ,
-              x = "B_G",
-              x.unit = "G"
-              Intensity = "single_Integ",
-              lineSpecs.form = "absorption")
+## the same spectrum with B in `G` and `theme_bw`
+## ggplot2 graph theme:
+plot_EPR_Specs(data.spectra = aminoxyl.data,
+               x = "B_G",
+               x.unit = "G",
+               theme.basic = "theme_bw")
 #
-## Continuous display of time series EPR spectra selecting
-## continuous colorscale (see argument `line.colors`
-## and color definitions `1.`)
-plot_EPR_Specs(data.spectra,
-               var2nd.series = "time_s",
-               xlim = c(340,357.5),
-               Ilim = c(-5e-5,5e-5),
-               line.colors = grDevices::hcl.colors(8,palette = "Roma"),
-               legend.title = "Time (s)",
-               yTicks = F)
+## single integration (without baseline correction)
+## of the previous spectrum by the `eval_integ_EPR_Spec`
+## function:
+aminoxyl.data.sinteg <-
+eval_integ_EPR_Spec(aminoxyl.data)
+## plot the single integrated spectrum:
+plot_EPR_Specs(aminoxyl.data.sinteg,
+               x = "B_G",
+               x.unit = "G",
+               Intensity = "single_Integ",
+               lineSpecs.form = "integrated")
 #
-## Separated display of time series EPR spectra selecting
-## discrete colorscale (see argument `line.colors`
-## and color definitions `2.`). Each 8-th spectrum from
-## original plot is presented
-plot_EPR_Specs(data.spectra,
-               var2nd.series = "time_s",
-               var2nd.series.slct.by = 8,
-               xlim = c(340,357.5),
-               line.colors = c("darkblue","darkorange","darkviolet"),
-               legend.title = "Time (s)")
-#
-## Plotting simple CW ENDOR spectrum displayed
-## as a "darkred" `line.colors`
-plot_EPR_Specs(data.spectrum,
+## loading the built-in CW ENDOR spectrum
+## of perinaphthenyl (PNT):
+pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
+## read the PNT CW ENDOR data without intensity
+## normalization:
+pnt.endor.data <-
+readEPR_Exp_Specs(pnt.file.path,
+                  col.names = c("index",
+                                "RF_MHz",
+                                "dIepr_over_dB"),
+                  x.id = 2,
+                  x.unit = "MHz",
+                  Intensity.id = 3)
+## plotting the previous ENDOR data spectrum
+## in derivative form with `darkred` linecolor
+## and 1.2pt linewidth:
+plot_EPR_Specs(pnt.endor.data,
                x = "RF_MHz",
                x.unit = "MHz",
                line.colors = "darkred",
-               line.width = 1.2,
-               lineSpecs.form = "derivative")
+               line.width = 1.2)
+#
+## loading the built-in package example to demonstrate
+## visualizatioin of time series EPR spectra:
+triarylamine.decay.series.dsc.path <-
+load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+triarylamine.decay.series.asc.path <-
+load_data_example(file = "Triarylamine_radCat_decay_series.zip")
+unzip(triarylamine.decay.series.asc.path,exdir = tempdir())
+## loading the kinetics:
+triarylamine.decay.series.data <-
+readEPR_Exp_Specs_kin(name_root = "Triarylamine_radCat_decay_series",
+                      dir_ASC = tempdir(),
+                      dir_dsc_par =
+                      system.file("extdata",
+                                  package = "eprscope")
+                      )
+#
+## plot with the CONTINUOUS COLORSCALE (see argument
+## `line.colors` and color definitions `1.`):
+plot_EPR_Specs(triarylamine.decay.series.data$df,
+               var2nd.series = "time_s",
+               line.colors =
+               grDevices::hcl.colors(8,palette = "Roma"),
+               legend.title = "Time (s)",
+               yTicks = FALSE)
+#
+## plot with the DISCRETE COLORSCALE (see argument
+## `line.colors` and color definitions `2.`),
+## each 10-th spectrum from the original plot is presented:
+plot_EPR_Specs(triarylamine.decay.series.data$df,
+               var2nd.series = "time_s",
+               var2nd.series.slct.by = 10,
+               line.colors = c("darkblue",
+                               "darkorange",
+                               "darkviolet"),
+               legend.title = "Time (s)")
+#
+\dontrun{
+## display the variable temperature experiment selecting
+## the DISCRETE COLORSCALE where all EPR spectra from
+## the series are presented:
+plot_EPR_Specs(data.spectra,
+               xlim = c(334,345),
+               Ilim = c(-4e-3,4e-3),
+               var2nd.series = "Temperature_K",
+               var2nd.series.slct.by = 1,
+               line.colors = c("darkblue",
+                               "darkorange",
+                               "magenta",
+                               "steelblue"),
+               legend.title = "Temperature (K)")
 }
 
 

@@ -18,7 +18,7 @@ smooth_EPR_Spec_by_npreg(
 \arguments{
 \item{data.spectr}{Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}) column
 can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
-or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.}
+or single integrated intensity like \code{Integrated_Intensity} (\code{index} column might be included as well).}
 
 \item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
@@ -26,7 +26,7 @@ or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as 
 
 \item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
-for EPR spectra.}
+for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}

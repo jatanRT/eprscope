@@ -23,9 +23,9 @@ Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
 Conversion done according to following relation:
   \deqn{A = (a\,g\,\mu_{\text{B}}) / h}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
-  Both latter were obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively
+  Both latter are obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
   using the \pkg{constants} package (see \code{\link[constants]{syms}}). Conversion is suitable
-  for EPR simulations and/or ENDOR.
+  for the EPR simulations and/or ENDOR.
 }
 \examples{
 convert_a_mT_2A(a.mT = 0.5)

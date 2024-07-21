@@ -41,12 +41,12 @@ The actual time at the middle/crossing point
         \tab  \code{N_scans}*\code{swt}  \tab          \tab \code{delay} \tab        \tab \code{N_scans}*\code{swt}
 }
 The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
-and \code{N_scans} corresponds to \code{number of scans} and \code{swt} to \code{sweep time} for individual scan.
-These parameters can be obtained by \code{\link{readEPR_params_slct_kin}} or other functions which can read
+and the \code{N_scans} corresponds to \code{number of scans}, \code{swt} to \code{sweep time} for the individual scan.
+These parameters can be obtained by the \code{\link{readEPR_params_slct_kin}} or other functions which can read
 the instrumental parameters.
 }
 \examples{
-## 12 s recorded by spectrometer, 6 accumulations by sweep time of 6 s
+## 12 s recorded by spectrometer, 6 accumulations by the sweep time of 6 s
 correct_time_Exp_Specs(12,Nscans = 6,6)
 
 

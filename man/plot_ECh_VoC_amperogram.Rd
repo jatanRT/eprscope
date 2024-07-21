@@ -41,49 +41,58 @@ as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (i
 \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.}
 
 \item{Current}{Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
-\code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{\mu A}}).}
+\code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).}
 
 \item{Current.unit}{Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.}
 
-\item{xlim}{Numeric vector of the \code{x}-quantity border limits, e.g. like \code{xlim = c(-100,400)}
+\item{xlim}{Numeric vector of the \code{x}-quantity visual border limits, e.g. like \code{xlim = c(-100,400)}
 (potential in "mV", in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds,
-in case of chronoamperometry).}
+in case of chronoamperometry). \strong{Default}: \code{xlim = NULL} actually defining the entire \code{x}-range
+from the original dataset.}
 
-\item{Ilim}{Numeric vector characterizing the border limits of the current...TBC...}
+\item{Ilim}{Numeric vector characterizing the visual border limits of the current, e.g. like \code{Ilim = c(-0.05,0.2)},
+corresponding to current in milliamps. \strong{Default}: \code{Ilim = NULL} related to the entire current (\eqn{I}) range
+from the original dataset.}
 
-\item{line.color}{Character string...TBC...}
+\item{line.color}{Character string pointing to line color of the voltammogram / chronoamperogram. All \pkg{ggplot2} compatible
+colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
+\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}.}
 
-\item{theme.basic}{Character/String, which calls a ggplot theme base. The following ones are defined:
+\item{theme.basic}{Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 \describe{
   \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, theme is proposed \strong{for publications}}
+  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, the theme is suggested \strong{for publications}}
   \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
   \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
-  \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for origin and opposite)
-  as well as the grid-lines, theme is proposed \strong{for publications}
-  (if the \code{grid} is set to \code{FALSE})}
+  \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
+  theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 }}
 
-\item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 15}}
+\item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 14}}
+\item{axis.text.size}{Numeric, text size in \code{pt} for the axes units/descriptions,
+\strong{default}: \code{axis.text.size = 14}.}
 
-\item{border.line.color}{tbc}
+\item{border.line.color}{Character string referring to color of the graph / panel border line. \strong{Default}:
+\code{border.line.color = "black"}.}
 
-\item{border.line.width}{tbc}
+\item{border.line.width}{Numeric, width of the graph / panel border line, \strong{default}:
+\code{border.line.width = 0.5}.}
 
-\item{ref.electrode}{Character string ...TBC...}
+\item{ref.electrode}{Character string corresponding to reference electrode label, e.g. like
+\code{ref.electrode = "Ag-quasiref"} or \code{ref.electrode = "Fc/Fc+"}. \strong{Default}: \code{ref.electrode = NULL}
+(displayed potential is not related to any \code{ref.electrode}).}
 
-\item{plot.interact}{Logical, ...TBC...}
+\item{plot.interact}{Logical, whether the voltammogram or chronoamperogram is visualized as an interactive plot
+by \pkg{plotly} (\code{plot.interact = TRUE}). \strong{Default}: \code{plot.interact = FALSE}
+(static plot by \pkg{ggplot2} is displayed).}
 
-\item{ticks}{Character string ...the axis ticks pointing either}
+\item{ticks}{Character string corresponding to pointing direction of the axis ticks, either pointing into
+the panel graph or outwards (\strong{default}). If \code{ticks = "in"} also the opposite axis ticks are displayed.}
 
-\item{grid}{Logical, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+\item{grid}{Logical, whether to dislay the \code{grid} within the panel / graph, \strong{default}: \code{grid = TRUE}.}
 }
 \value{
 Graphical representation (list object) of voltammogram or chronoamperogram either in static
@@ -91,13 +100,56 @@ Graphical representation (list object) of voltammogram or chronoamperogram eithe
   (\code{plot.interact = TRUE}).
 }
 \description{
-A short description...
+Visualization of voltammogram or chronoamperogram either by \pkg{ggplot2} (static plot) or \pkg{plotly}
+  (interactive one) package. The corresponding data frame for the plot can be created from the ASCII text file,
+  generated by the potentiostat, using the \code{\link[data.table]{fread}} (see also section Examples).
 }
 \examples{
-\dontrun{
-TBC
-TBC
-}
+## loading package built-in example file =>
+## `.txt` file generated by the IVIUM potentiostat software
+triarylamine.path.cv <-
+load_data_example(file = "Triarylamine_ECh_CV_ivium.txt")
+## the data frame contains following variables:
+## time, desired potential, current and actual/applied
+## potential
+triarylamine.data.cv <-
+data.table::fread(file = triarylamine.path.cv,
+                  skip = 2,
+                  col.names = c("time_s",
+                                "E_V_des",
+                                "I_A",
+                                "E_V_app")
+                 )
+## data frame preview
+head(triarylamine.data.cv)
+#
+## simple voltammogram plot with ref. electrode string:
+plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+                        x = "E_V_app",
+                        Current = "I_A",
+                        Current.unit = "A",
+                        ref.electrode = "Ag-quasiref."
+                 )
+#
+## simple chronoamperogram plot with "theme_bw" theme
+## and `ticks` pointing into the graph panel (ticks = "in")
+plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+                        x = "time_s",
+                        x.unit = "s",
+                        Current = "I_A",
+                        Current.unit = "A",
+                        theme.basic = "theme_bw",
+                        ticks = "in"
+                 )
+#
+## simple interactive "darkgreen" voltammogram
+plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+                        x = "E_V_app",
+                        Current = "I_A",
+                        Current.unit = "A",
+                        line.color = "darkgreen",
+                        plot.interact = TRUE
+                 )
 
 
 }

@@ -58,7 +58,7 @@
 #'   intensity multiplication initial constant \eqn{= 1\cdot 10^{-8}}, baseline initial slope \eqn{- 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant are set to \eqn{0.8\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant are set to \eqn{0.9\,A_{\text{init}}}.
 #' @param optim.params.upper Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
@@ -66,7 +66,7 @@
 #'   intensity multiplication initial constant \eqn{= 100}, baseline initial slope \eqn{+ 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Upper limits of all hyperfine coupling constant are set to \eqn{1.2\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Upper limits of all hyperfine coupling constant are set to \eqn{1.1\,A_{\text{init}}}.
 #' @param Nmax.evals Numeric value pointing to maximum number of iterations/evaluations. \strong{Default}:
 #'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximal value).
 #' @param tol.step Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
@@ -97,7 +97,7 @@
 #'   }
 #'
 #'   \item if \code{sim.check = FALSE} it returns list with the following components:
-#'   \desribe{
+#'   \describe{
 #'   \item{plot}{Visualization of three spectra which are offset for clarity. The first
 #'   (the upper one) is the original experimental spectrum. The second one (in the middle)
 #'   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
@@ -122,7 +122,7 @@
 #'
 #' @examples
 #' ## loading built-in example dataset which is simple
-#' ## EPR spectrum of the aminoxyl radical
+#' ## EPR spectrum of the aminoxyl radical:
 #' aminoxyl.data.path <-
 #'  load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data <-
@@ -131,7 +131,7 @@
 #' ## EPR spectrum simulation fit with "Nelder-Mead"
 #' ## optimization method with `sim.check = FALSE`:
 #' tempo.test.sim.fit.a <-
-#' eval_sim_EPR_isoFit(data.spectr.expr = tempo.data,
+#' eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
 #'                     nu.GHz = 9.806769,
 #'                     lineG.content = 0.5,
 #'                     optim.method = "neldermead",
@@ -174,7 +174,7 @@
 #' ## optimization algorithm and `sim.check = TRUE` option
 #' ## as well as user defined bound constraints:
 #' tempo.test.sim.fit.b <-
-#' eval_sim_EPR_isoFit(data.spectr.expr = tempo.data,
+#' eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
 #'                     nu.GHz = 9.806769,
 #'                     lineG.content = 0.4,
 #'                     optim.method = "pswarm",
@@ -183,7 +183,7 @@
 #'                     optim.params.init = c(2.0050,1.1,1.1,0,3e-3,47),
 #'                     optim.params.lower = c(2.0045,0.8,0.8,-1e-4,2e-3,45),
 #'                     optim.params.upper = c(2.0055,1.4,1.4,1e-4,5e-3,49),
-#'                     sim.check = T)
+#'                     sim.check = TRUE)
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.b$best.fit.params
@@ -196,7 +196,7 @@
 #' ## fitting of the aminoxyl EPR spectrum by the combination
 #' ## of the 1. "Levenberg-Marquardt" and 2. "Nelder-Mead" algorithms
 #' tempo.test.sim.fit.c <-
-#' eval_sim_EPR_isoFit(tempo.data,
+#' eval_sim_EPR_isoFit(aminoxyl.data,
 #'                     nu.GHz = 9.86769,
 #'                     lineG.content = 0.5,
 #'                     optim.method = c("levenmarq",
@@ -653,20 +653,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     A.upper.limits <- c()
     if (baseline.correct == "constant"){
       for (a in 6:(5+length(nuclear.system.noA))){
-        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.2)
-        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.2)
+        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
+        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
       }
     }
     if (baseline.correct == "linear"){
       for (a in 7:(6+length(nuclear.system.noA))){
-        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.2)
-        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.2)
+        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
+        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
       }
     }
     if (baseline.correct == "quadratic"){
       for (a in 8:(7+length(nuclear.system.noA))){
-        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.2)
-        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.2)
+        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
+        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
       }
     }
     #

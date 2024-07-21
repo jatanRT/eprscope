@@ -20,7 +20,7 @@
 #'
 #'
 #' @examples
-#' loading TMPD built-in example file:
+#' ## loading TMPD built-in example file:
 #' tmpd.data.file.path <-
 #' load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' ## reading data:
@@ -40,7 +40,8 @@
 #' eval_extremeX_Spec(data.spectr = tmpd.data.file,
 #'                    extreme = "min")
 #' #
-#' ## both values can be checked by the interactive spectrum
+#' ## both values can be checked by the interactive
+#' ## spectrum:
 #' plot_EPR_Specs2D_interact(tmpd.data.file)
 #'
 #'

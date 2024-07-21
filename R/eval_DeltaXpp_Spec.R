@@ -31,7 +31,7 @@
 #'
 #'
 #' @examples
-#' ## loading the aminoxyl radical CW EPR spectrum
+#' ## loading the aminoxyl radical CW EPR spectrum:
 #' aminoxyl.data.path <-
 #' load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data <-
@@ -49,7 +49,7 @@
 #' ## of the `dIepr_over_dB` central line intensity:
 #' 349.648-349.107
 #' #
-#' ## loading the perinaphthenyl (PNT) CW ENDOR spectrum
+#' ## loading the perinaphthenyl (PNT) CW ENDOR spectrum:
 #' pnt.endor.data.path <-
 #' load_data_example(file = "PNT_ENDOR_a.txt")
 #' pnt.endor.data <-
@@ -69,7 +69,7 @@
 #'                   xlim = c(22.38,24.54)
 #'                   )
 #' #
-#' ## plot interactive ENDOR spectrum
+#' ## plot interactive ENDOR spectrum:
 #' plot_EPR_Specs2D_interact(pnt.endor.data,
 #'                           x = "RF_MHz",
 #'                           x.unit = "MHz")
@@ -78,7 +78,7 @@
 #' ## directly checked from the previous interactive
 #' ## CW ENDOR spectrum as a difference between
 #' ## the minimum and maximum of the `dIepr_over_dB`
-#' ## fourth line intensity:
+#' ## 4th line intensity:
 #' 23.42-23.30
 #'
 #'

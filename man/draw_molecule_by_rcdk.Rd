@@ -23,11 +23,11 @@ draw_molecule_by_rcdk(
 of \code{type = "smiles"}/\code{type = "SMILES"}) or file path strings
 pointing to \code{".sdf"} files.}
 
-\item{type}{Character string referred to original input molecular type =>
+\item{type}{Character string referred to the original molecular type input =>
 either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
 \strong{Default}: \code{type = "smiles"}.}
 
-\item{mol.label}{Character string pointing to name label of the molecule/compound, e.g. like
+\item{mol.label}{Character string pointing to name of the molecule/compound, e.g. like
 \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 (\strong{default}) a character string "mol. structure viewer" with gray color
 is shown.}

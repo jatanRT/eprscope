@@ -147,7 +147,7 @@
 #' ## several others + normalize `Area` against the `qValue`,
 #' ## first of all load the path of package example file
 #' triarylamine.rc.decay.path <-
-#' load_data_example(""Triarylamine_radCat_decay_a.DSC"")
+#' load_data_example("Triarylamine_radCat_decay_a.txt")
 #' ## data
 #' triarylamine.rc.decay.data <-
 #' readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,

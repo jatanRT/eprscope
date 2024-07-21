@@ -112,7 +112,7 @@ eval_gFactor <- function(nu.val,
 #'
 #'
 #' @examples
-#' ## load package built-in EPR spectral data example
+#' ## load package built-in EPR spectral data example:
 #' data.file.path <-
 #' load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
@@ -123,7 +123,7 @@ eval_gFactor <- function(nu.val,
 #'                               qValue = 3500,
 #'                               origin = "winepr")
 #' #
-#' ## g_iso calculation from EPR spectrum/data =>
+#' ## g_iso calculation from EPR spectrum/data:
 #' eval_gFactor_Spec(data.spectr = data.epr,
 #'                   nu.GHz = 9.814155,
 #'                   B.unit = "mT",
@@ -241,11 +241,11 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #'
 #' @examples
-#' ## built-in package file example and path
+#' ## built-in package file example and path:
 #' gauss.file.path <-
 #' load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 #' gauss.file <- unzip(gauss.file.path)
-#' ## g_iso-value calculation from Gaussian output file
+#' ## g_iso-value calculation from Gaussian output file:
 #' eval_gFactor_QCHcomp(gauss.file)
 #'
 #'

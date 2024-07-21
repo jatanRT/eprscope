@@ -89,7 +89,9 @@ data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrume
 Data frame/table consisting of the magnetic flux density
   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz} (in case of ENDOR spectrum)
   or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
-  intensities (like in integrated spectral form) in \code{procedure defined unit} (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}), which is normalized by the above-described parameters
+  intensities (like in integrated spectral form) in \code{procedure defined unit}
+  (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
+  which is normalized by the above-described parameters
   and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
   are displayed as well.
 }
@@ -169,6 +171,27 @@ readEPR_Exp_Specs(PNT.ENDOR.data.path,
 ## preview
 head(PNT.ENDOR.data)
 #
+## reading data file from (and pre-processed) by the "Xenon"
+## software corresponding to kinetics with `Area` and `time`
+## columns/variables , these two have to be selected from
+## several others + normalize `Area` against the `qValue`,
+## first of all load the path of package example file
+triarylamine.rc.decay.path <-
+load_data_example("Triarylamine_radCat_decay_a.txt")
+## data
+triarylamine.rc.decay.data <-
+readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,
+                  header = TRUE,
+                  fill = TRUE,
+                  select = c(3,7),
+                  col.names = c("time_s","Area"),
+                  x.unit = "s",
+                  x.id = 1,
+                  Intensity.id = 2,
+                  qValue = 1700) \%>\% na.omit()
+## preview
+head(triarylamine.rc.decay.data)
+#
 \dontrun{
 ## EPR time series acquired by "Winepr"/"WinEpr"
 readEPR_Exp_Specs(path_to_ASC,
@@ -204,20 +227,6 @@ readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
                   Intensity.id = 2,
                   origin = "magnettech")
 #
-## reading file data from (and pre-processed) by "xenon" software
-## corresponding to kinetics where `Area` and `time` are
-## data columns, however there are many columns and one should
-## select only the two mentioned above + normalize `Area`
-## against the `qValue`
-readEPR_Exp_Specs("./EPR_ASCII/Quant_kinet_a.txt",
-                  header = T,
-                  fill = T,
-                  select = c(3,7),
-                  col.names = c("time_s","Area"),
-                  x.unit = "s",
-                  x.id = 1,
-                  Intensity.id = 2,
-                  qValue = 1700)
 }
 
 

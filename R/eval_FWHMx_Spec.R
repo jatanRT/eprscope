@@ -49,13 +49,13 @@
 #'                  ),
 #'                  natur.abund = TRUE,
 #'                  lineSpecs.form = "integrated",
-#'                  lineGL.DeltaB = list(0.54,NULL), # FWHM in G
+#'                  lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
 #'                  Intensity.sim = "single_Integ"
 #'                  )
 #' #
 #' ## FWHM of one of the central lines/peaks (`xlim = c(3494,3496.5)`)
 #' ## from the simulated spectral data:
-#' eval_FWHM_Spec(pnt.sim.integ.iso$df,
+#' eval_FWHMx_Spec(pnt.sim.integ.iso$df,
 #'                x = "Bsim_G",
 #'                Intensity = "single_Integ",
 #'                xlim = c(3494,3496.5)

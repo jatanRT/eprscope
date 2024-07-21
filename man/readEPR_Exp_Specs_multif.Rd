@@ -26,28 +26,28 @@ readEPR_Exp_Specs_multif(
 \arguments{
 \item{name_pattern}{Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
 from name which might not necessarily appear at the beginning of the file name. THE SAME NAME AND \code{name_pattern}
-MUST BE USED FOR ALL FILES WITHIN THE SERIES !}
+MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES !}
 
-\item{dir_ASC}{path (defined by \code{\link[base]{file.path}}, String/Character) to directory where
+\item{dir_ASC}{Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
 the \code{ASCII} files are stored.}
 
-\item{dir_dsc_par}{path (defined by \code{\link[base]{file.path}} String/Character) to directory
-where the files (\code{.DSC}/\code{.dsc} or \code{.par}) with instrumental parameters (to calculate \eqn{g}-value
-or normalize intensities) are stored.}
+\item{dir_dsc_par}{Path (defined by \code{\link[base]{file.path}} or by character string) to directory
+where the files (\code{.DSC}/\code{.dsc} or \code{.par}) with instrumental parameters are stored.}
 
 \item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
-A safe rule of thumb is to use column names incl. physical quantity notation with its units,
+A safe rule of thumb is to use column names including the physical quantity notation with its units,
 \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.}
+to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
+referring to column names coming from \emph{Xenon} software.}
 
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 to abscissa (\eqn{x}-axis) in the spectra or other plots.}
 
 \item{x.unit}{Character string pointing to unit of quantity (coming from original ASCII data, see also
-\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
-or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "G"}.}
+\code{col.names} argument) which is to be presented on \eqn{x} abscissa of the EPR spectrum.
+Units like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
+or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \code{x.unit = "G"}.}
 
 \item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
 like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
@@ -58,29 +58,30 @@ integral (e.g. \code{Area})...etc. This corresponds to column/vector which shoul
 conversion from \code{G} into \code{mT} should be performed. If default is chosen, a new column/variable
 \eqn{B} in \code{mT} is created.}
 
-\item{qValues}{Numeric vector, Q-value (sensitivity factors to normalize EPR intensity) either loaded from
-files incl. parameters (\code{.DSC} or \code{.par}) provided by this function (therefore \code{qValues = NULL},
-\strong{default}) or in case of \code{origin = "winepr"} they have to be provided by the spectrometer operator.}
+\item{qValues}{Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either loaded from
+instrumental parameters (\code{.DSC} or \code{.par}), therefore \code{qValues = NULL} (\strong{default}),
+or in case of \code{origin = "winepr"} they have to be provided by the spectrometer operator.}
 
 \item{norm.list.add}{Numeric list of vectors. Additional normalization constants in form of vectors involving
-all additional (in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
-weight, number of scans, ...etc (\code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
+all additional (i.e. in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+weight, number of scans, ...etc (e.g. \code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
 \code{norm.list.add = NULL}.}
 
-\item{names}{Character string vector corresponding to values of \strong{additional quantity}
-(e.g. temperature,microwave power...etc) being varied by the individual experiments.}
+\item{names}{Character string vector corresponding either to values of \strong{additional quantity}
+(e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
+by alpha character (e.g. like \code{c("a","b","c","d")}) being varied by the individual experiments.}
 
-\item{tidy}{Logical, whether to transform the list of data frames into long table (\code{tidy}) format,
+\item{tidy}{Logical, whether to transform the list of data frames into the long table (\code{tidy}) format,
 \strong{default}: \code{tidy = FALSE}.}
 
-\item{var2nd.series}{Character string, if \code{tidy = TRUE} (see \code{tidy} parameter/argument)
+\item{var2nd.series}{Character string, if \code{tidy = TRUE} (see \code{tidy} argument)
 it is referred to name of the variable/quantity (e.g. like "time","Temperature","Electrochemical Potential",
-"Microwave Power"...etc) altered upon individual experiments as a second variable (\code{var2nd})
-and related to spectra/data.}
+"Microwave Power"...etc) altered upon individual experiments as a second variable series (\code{var2nd.series})
+and related to the spectral data.}
 
-\item{var2nd.series.factor}{Logical, whether to factorize \code{var2nd.series}, useful for plotting
-the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case to visualize
-EPR spectra by \code{plot}-functions.}
+\item{var2nd.series.factor}{Logical, whether to factorize \code{var2nd.series} column vector which is useful
+for plotting the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case
+to visualize EPR spectra by \code{plot}-functions.}
 
 \item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
 most common spectrometers (from which are data loaded automatically using the default parameters).
@@ -102,18 +103,19 @@ and \code{\link[data.table]{fread}}.}
 \value{
 List of Data Frames (or long table \code{tidy} format) corresponding
   to multiple spectral data files/data sets. g-Value column (if \code{x.unit = "mT"} or \code{"G"})
-  is automatically calculated during the processing and is included within data frame list/database, as well.
+  is automatically calculated during the processing and it is included in the data frame list/database, as well.
 }
 \description{
-Loads the EPR spectra from several/multiple \code{ASCII}/\code{text} files and from those incl. instrumental
-  parameters (\code{.DSC}/\code{.dsc} or \code{.par}) at once and transforms it into a database list of data frames.
-  According to experiment quantity (e.g. temperature,microwave power, recording time...etc), \code{names}
-  and \code{var2nd} (in the case of \code{tidy = TRUE}) parameters have to be provided.
+Loads the EPR spectra from several/multiple \code{text} files (including the instrumental
+  parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. The data are finally transformed
+  either into a list of data frames or into a tidy / long table format. According to experimental quantity
+  (e.g. temperature, microwave power, recording time...etc), \code{names} and \code{var2nd.series}
+  (in the case of \code{tidy = TRUE}) parameters have to be provided.
 }
 \examples{
 \dontrun{
 ## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
-## reading and transforming into `longtable`. Prepared for plotting the overlay
+## read and transformed into `longtable`. Prepared to plot the overlay
 ## EPR spectra => `var2nd.series.factor = FALSE` (default).
 readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
                          file.path(".","ASCII_data_dir"),
@@ -127,11 +129,12 @@ readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
                          names = c("210","220","230","240"),
                          tidy = TRUE,
                          var2nd.series = "Temperature_K")
-
+#
 ## Multiple EPR spectra recorded at different temperatures
-## by "WinEPR" software. Experiment performed with powder
+## by "WinEPR" software. Experiments performed with a powder
 ## sample (m = 10 mg) and each spectrum acquired
-## as 7 accumulations. The resulting database as list of data frames
+## as 7 accumulations. The resulting database
+## corresponds to list of data frames
 readEPR_Exp_Specs_multif("Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
@@ -141,8 +144,21 @@ readEPR_Exp_Specs_multif("Sample_VT_",
                          Intensity.id = 2,
                          names = c("210","220","230","240"),
                          qValues = c(3400,3501,3600,2800),
-                         norm.list.add = list(rep(c(10,7),times = 4)),
+                         norm.list.add = rep(list(c(10,7)),times = 4),
                          origin = "winepr")
+#
+## Multiple 'Xenon' EPR spectra related to one powder sample (m = 8 mg)
+## where several instrumental parameters are changed
+## at once. The file names (files are stored in the actual directory)
+## start with "R5228_AV_powder_". Function returns all spectral data
+## in `tidy` (long) table format
+readEPR_Exp_Specs_multif(name.pattern = "R5228_AV_powder_",
+                         dir_ASC = ".",
+                         dir_dsc_par = ".",
+                         names = c("a","b","c","d"),
+                         tidy = TRUE,
+                         var2nd.series = "sample",
+                         norm.list.add = rep(list(8),4))
 }
 
 

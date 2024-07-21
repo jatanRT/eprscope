@@ -87,7 +87,7 @@
 #'   }
 #'   }
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}.
-#' @param border.line.width Numeric, width of the graph / panel border line, strong{default}:
+#' @param border.line.width Numeric, width of the graph / panel border line, \strong{default}:
 #'   \code{border.line.width = 0.5}.
 #' @param border.line.color Character string referring to color of the graph / panel border line. \strong{Default}:
 #'   \code{border.line.color = "black"}.
@@ -173,48 +173,46 @@
 #'                line.colors = "darkred",
 #'                line.width = 1.2)
 #' #
-#' ## display of time series EPR spectra selecting
-#' ## the CONTINUOUS COLORSCALE (see argument `line.colors`
-#' ## and color definitions `1.`),
-#' ## first of all, load the built-in package example
+#' ## loading the built-in package example to demonstrate
+#' ## visualizatioin of time series EPR spectra:
 #' triarylamine.decay.series.dsc.path <-
 #' load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
 #' triarylamine.decay.series.asc.path <-
 #' load_data_example(file = "Triarylamine_radCat_decay_series.zip")
-#' triarylamine.decay.series.asc.file <-
-#' unzip(triarylamine.decay.series.asc.path)
+#' unzip(triarylamine.decay.series.asc.path,exdir = tempdir())
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
 #' readEPR_Exp_Specs_kin(name_root = "Triarylamine_radCat_decay_series",
-#'                       dir_ASC = system.file(package = "eprscope"),
-#'                       dir_dsc_par = system.file(package = "eprscope")
+#'                       dir_ASC = tempdir(),
+#'                       dir_dsc_par =
+#'                       system.file("extdata",
+#'                                   package = "eprscope")
 #'                       )
-#' ## spectral series plot:
-#' plot_EPR_Specs(triarylamine.decay.series.data,
+#' #
+#' ## plot with the CONTINUOUS COLORSCALE (see argument
+#' ## `line.colors` and color definitions `1.`):
+#' plot_EPR_Specs(triarylamine.decay.series.data$df,
 #'                var2nd.series = "time_s",
 #'                line.colors =
 #'                grDevices::hcl.colors(8,palette = "Roma"),
 #'                legend.title = "Time (s)",
 #'                yTicks = FALSE)
-#'
 #' #
-#' \dontrun{
-#' ## display of time series EPR spectra selecting
-#' ## the DISCRETE COLORSCALE (see argument `line.colors`
-#' ## and color definitions `2.`). Each 8-th spectrum from
-#' ## original plot is presented
-#' plot_EPR_Specs(data.spectra,
+#' ## plot with the DISCRETE COLORSCALE (see argument
+#' ## `line.colors` and color definitions `2.`),
+#' ## each 10-th spectrum from the original plot is presented:
+#' plot_EPR_Specs(triarylamine.decay.series.data$df,
 #'                var2nd.series = "time_s",
-#'                var2nd.series.slct.by = 8,
-#'                xlim = c(340,357.5),
+#'                var2nd.series.slct.by = 10,
 #'                line.colors = c("darkblue",
 #'                                "darkorange",
 #'                                "darkviolet"),
 #'                legend.title = "Time (s)")
 #' #
+#' \dontrun{
 #' ## display the variable temperature experiment selecting
-#' ## the DISCRETE COLORSCALE where all ten EPR spectra from
-#' ## the series are presented
+#' ## the DISCRETE COLORSCALE where all EPR spectra from
+#' ## the series are presented:
 #' plot_EPR_Specs(data.spectra,
 #'                xlim = c(334,345),
 #'                Ilim = c(-4e-3,4e-3),

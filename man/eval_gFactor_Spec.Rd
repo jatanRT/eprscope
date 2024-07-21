@@ -18,13 +18,13 @@ eval_gFactor_Spec(
 \arguments{
 \item{data.spectr}{Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}) column
 can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
-or single integrated intensity like \code{Integrated_Intensity}, \code{index} column can be included as well.}
+or single integrated intensity like \code{Integrated_Intensity} (\code{index} column might be included as well).}
 
 \item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
 
 \item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
-for EPR spectra.}
+for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.}
 
 \item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
 \code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
@@ -50,7 +50,7 @@ Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center
   from the EPR spectrum, according to \eqn{(\nu h)/(\mu_{B} B)}.
 }
 \description{
-Calculation of g-value according to fundamental formula (\code{\link{eval_gFactor}}).
+Calculation of the g-value according to fundamental formula (\code{\link{eval_gFactor}}).
   \emph{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
   from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
   and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be considered.
@@ -58,16 +58,18 @@ Calculation of g-value according to fundamental formula (\code{\link{eval_gFacto
   the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
 }
 \examples{
-## load built-in EPR spectral data
-data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+## load package built-in EPR spectral data example:
+data.file.path <-
+load_data_example(file = "TMPD_specelchem_accu_b.asc")
 data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
-                              col.names = c("B_G", "dIepr_over_dB"),
+                              col.names = c("B_G",
+                                            "dIepr_over_dB"),
                               x.id = 1,
                               Intensity.id = 2,
                               qValue = 3500,
                               origin = "winepr")
 #
-## g_iso calculation from EPR spectrum/data =>
+## g_iso calculation from EPR spectrum/data:
 eval_gFactor_Spec(data.spectr = data.epr,
                   nu.GHz = 9.814155,
                   B.unit = "mT",
