@@ -7,8 +7,8 @@
 plot_layout2D_interact(
   p,
   data = NULL,
-  xlab = "<i>B</i> (mT)",
-  ylab = "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
+  xlab = NULL,
+  ylab = "d <i>I</i> <sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
   axis.title.x.family = "Arial",
   axis.title.x.color = "black",
   axis.title.x.size = 15,
@@ -27,7 +27,9 @@ plot_layout2D_interact(
   legend.title.size = 13,
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
-  border.line.width = 1.2,
+  grid.linewidth = 1,
+  grid.linetype = "solid",
+  border.line.width = 1.4,
   border.line.color = "black"
 )
 }
@@ -36,7 +38,7 @@ plot_layout2D_interact(
 
 \item{data}{tbc}
 
-\item{xlab}{tbc}
+\item{xlab}{tbc...could be also..."<i>B</i> (mT)"}
 
 \item{ylab}{tbc}
 
@@ -75,6 +77,11 @@ plot_layout2D_interact(
 \item{bg.color}{tbc}
 
 \item{grid.color}{tbc}
+
+\item{grid.linewidth}{description}
+
+\item{grid.linetype}{description...could be also "dot", "dash", "longdash", "dashdot", "longdashdot",
+or a dash length list in px (eg "5px,10px,2px,2px").}
 
 \item{border.line.width}{tbc}
 
