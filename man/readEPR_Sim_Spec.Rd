@@ -6,7 +6,7 @@
 \usage{
 readEPR_Sim_Spec(
   path_to_ASC,
-  B.unit = "mT",
+  B.unit = "G",
   Intensity.sim = "dIeprSim_over_dB",
   sim.origin = "easyspin"
 )
@@ -18,7 +18,7 @@ The path can be also defined by \code{\link[base]{file.path}}.}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density \strong{coming from the original data}
 which is to be presented on the \eqn{B} abscissa of an EPR spectrum,
-like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"). \strong{Default}: \code{B.unit = "mT"}.}
+like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"). \strong{Default}: \code{B.unit = "G"}.}
 
 \item{Intensity.sim}{Character string pointing to \strong{intensity column} of the data frame
 corresponding to EPR simulated spectrum. If used together with quantification of radicals,
@@ -39,9 +39,14 @@ Loading the raw \code{.txt},\code{.asc} or \code{.csv} data of a simulated EPR s
 }
 \examples{
 \dontrun{
-tbc
-tbc
+readEPR_Sim_Spec(path_to_ASC = "./Simulations/TEMPO_simulation.txt",
+                 sim.origin = "xenon")
+#
+readEPR_Sim_Spec("Cu_complex_simulation.txt",
+                 B.unit = "mT",
+                 sim.origin = "easyspin")
 }
+
 
 
 }

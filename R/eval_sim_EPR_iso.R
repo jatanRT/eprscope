@@ -93,28 +93,47 @@
 #'
 #'
 #' @examples
-#' ## Simulation of luteolin radical anion with the following
+#' ## simulation of simple EPR spectrum (without hyperfine structure)
+#' ## with g(iso) = 1.9804 and linewidth ∆Bpp = 3.2 G, only Gaussian
+#' ## lineform is considered:
+#' sim.simple.a <-
+#' eval_sim_EPR_iso(g.iso = 1.9804,
+#'                  instrum.params = c(Bcf = 3490,
+#'                                     Bsw = 200,
+#'                                     Npoints = 1600,
+#'                                     mwGHz = 9.8943),
+#'                  lineGL.DeltaB = list(3.2,NULL)
+#'                  )
+#' ## simulation preview:
+#' sim.simple.a$plot
+#' #
+#' ## simulation of luteolin radical anion with the following
 #' ## four hyperfine coupling constants A(1 x 1H) = 3.1 MHz,
 #' ## A(1 x 1H) = 2.8 MHz, A(1 x 1H) = 8.0 MHz
 #' ## and A(1 x 1H) = 4.1 MHz. One may check out the simulation
-#' ## at https://doi.org/10.1016/j.electacta.2013.06.136 (Fig. 6)
-#' sim.luteol <- eval_sim_EPR_iso(g.iso = 2.00495,
-#'                               instrum.params = c(Bcf = 339.367,
-#'                                                  Bsw = 5.9,
-#'                                                  Npoints = 2048,
-#'                                                  mwGHz = 9.5294),
-#'                               nuclear.system = list(list("1H",1,3.1),
-#'                                                     list("1H",1,2.8),
-#'                                                     list("1H",1,8.0),
-#'                                                     list("1H",1,4.1)),
-#'                               lineGL.DeltaB = list(0.034,0.034),
-#'                               lineG.content = 0.6,
-#'                               B.unit = "mT",
-#'                               natur.abund = TRUE)
+#' ## at https://doi.org/10.1016/j.electacta.2013.06.136 (Fig. 6):
+#' sim.luteol <-
+#' eval_sim_EPR_iso(g.iso = 2.00495,
+#'                  instrum.params = c(Bcf = 339.367,
+#'                                     Bsw = 5.9,
+#'                                     Npoints = 2048,
+#'                                     mwGHz = 9.5294),
+#'                  nuclear.system = list(list("1H",1,3.1),
+#'                                        list("1H",1,2.8),
+#'                                        list("1H",1,8.0),
+#'                                        list("1H",1,4.1)),
+#'                  lineGL.DeltaB = list(0.034,0.034),
+#'                  lineG.content = 0.6,
+#'                  B.unit = "mT",
+#'                  natur.abund = TRUE
+#'                  )
+#' #
+#' ## simulated spectrum preview within
+#' ## the B = (338-341) mT region:
 #' sim.luteol$plot + ggplot2::coord_cartesian(xlim = c(338,341))
 #' #
-#' ## ...and the corresponding data frame =>
-#' utils::head(sim.luteol$df)
+#' ## ...and the corresponding data frame:
+#' head(sim.luteol$df)
 #'
 #'
 #' @export
