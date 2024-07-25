@@ -9,7 +9,7 @@ plot_theme_In_ticks(
   axis.title.size = 15,
   grid = TRUE,
   border.line.color = "black",
-  border.line.type = "solid",
+  border.line.type = 1,
   border.line.width = 0.5,
   bg.transparent = FALSE
 )

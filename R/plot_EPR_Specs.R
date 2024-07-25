@@ -86,11 +86,17 @@
 #'   \code{line.colors = "mako"} (or ...\code{"G"}) and \code{line.colors = "turbo"} (or ...\code{"H"})
 #'   }
 #'   }
-#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}.
+#' @param line.width Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.
+#' @param line.type Character string or integer corresponding to width of the (spectral) line(s). Following types
+#'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+#'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param border.line.width Numeric, width of the graph / panel border line, \strong{default}:
 #'   \code{border.line.width = 0.5}.
 #' @param border.line.color Character string referring to color of the graph / panel border line. \strong{Default}:
 #'   \code{border.line.color = "black"}.
+#' @param border.line.type Character string or integer corresponding to width of the panel graph border line. Following types
+#'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+#'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param theme.basic Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 #'   \describe{
 #'     \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
@@ -149,6 +155,8 @@
 #'                x = "B_G",
 #'                x.unit = "G",
 #'                Intensity = "single_Integ",
+#'                line.colors = "darkorange",
+#'                line.type = "dashed",
 #'                lineSpecs.form = "integrated")
 #' #
 #' ## loading the built-in CW ENDOR spectrum
@@ -243,8 +251,10 @@ plot_EPR_Specs <- function(data.spectra,
                            lineSpecs.form = "derivative",
                            line.colors = "darkviolet",
                            line.width = 0.75,
+                           line.type = 1,
                            border.line.width = 0.5,
                            border.line.color = "black",
+                           border.line.type = 1,
                            theme.basic = "theme_gray",
                            axis.title.size = 15,
                            axis.text.size = 14,
@@ -310,7 +320,10 @@ plot_EPR_Specs <- function(data.spectra,
     axis.text.y = element_text(margin = margin(6, 6, 6, 0, unit = "pt"), size = axis.text.size),
     axis.title.y = element_text(margin = margin(2, 4, 2, 6, unit = "pt"), size = axis.title.size),
     axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-    panel.border = element_rect(color = border.line.color, fill = NA,linewidth = border.line.width)
+    panel.border = element_rect(color = border.line.color,
+                                fill = NA,
+                                linewidth = border.line.width,
+                                linetype = border.line.type)
   ) ## theme in order to have ticks outside the graph
   theme.Noticks <- theme(
     axis.ticks.length = unit(-6, "pt"),
@@ -318,7 +331,10 @@ plot_EPR_Specs <- function(data.spectra,
     axis.text.y = element_blank(), axis.ticks.y = element_blank(),
     axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
     axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
-    panel.border = element_rect(color = border.line.color, fill = NA,linewidth = border.line.width)
+    panel.border = element_rect(color = border.line.color,
+                                fill = NA,
+                                linewidth = border.line.width,
+                                linetype = border.line.type)
   ) ## theme in order to have ticks inside the graph
   #
   theme.Nogrid <- theme(
@@ -336,7 +352,10 @@ plot_EPR_Specs <- function(data.spectra,
     } else{
       simplePlot <- ggplot(data.spectra) +
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
-                  linewidth = line.width, color = line.colors, show.legend = FALSE
+                  linewidth = line.width,
+                  linetype = line.type,
+                  color = line.colors,
+                  show.legend = FALSE
         ) +
         coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         {if(g.factor.cond)scale_x_reverse()} +
@@ -374,7 +393,8 @@ plot_EPR_Specs <- function(data.spectra,
     if (is.null(var2nd.series)){
       simplePlot <- ggplot(data.spectra) +
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
-                  linewidth = line.width) +
+                  linewidth = line.width,
+                  linetype = line.type) +
         coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         scale_color_manual(values = line.colors) +
         {if(g.factor.cond)scale_x_reverse()} +
@@ -393,6 +413,7 @@ plot_EPR_Specs <- function(data.spectra,
           var2nd.series.keys <- var2nd.series.df[[var2nd.series]]
           var2nd.series.len <- length(var2nd.series.keys)
           #
+          ## filtering the `var2nd.series.slct.by` plots
           data.spectra <- data.spectra %>%
             dplyr::filter(.data[[var2nd.series]] %in% var2nd.series.keys[seq(1,var2nd.series.len,
                                                                              by = var2nd.series.slct.by)]) %>%
@@ -403,7 +424,8 @@ plot_EPR_Specs <- function(data.spectra,
             geom_line(aes(x = .data[[x]],
                           y = .data[[Intensity]],
                           color = .data[[var2nd.series]]),
-                      linewidth = line.width) +
+                      linewidth = line.width,
+                      linetype = line.type) +
             coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
           #
           ## colors definition for the plot
@@ -431,7 +453,8 @@ plot_EPR_Specs <- function(data.spectra,
             geom_line(aes(x = .data[[x]],
                           y = .data[[Intensity]],
                           color = .data[[var2nd.series]]),
-                      linewidth = line.width) +
+                      linewidth = line.width,
+                      linetype = line.type) +
             coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
             {if(g.factor.cond)scale_x_reverse()} +
             scale_color_gradientn(colors = line.colors) +

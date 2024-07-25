@@ -7,7 +7,7 @@
 plot_layout2D_interact(
   p,
   data = NULL,
-  xlab = NULL,
+  xlab = "<i>B</i> (mT)",
   ylab = "d <i>I</i> <sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
   axis.title.x.family = "Arial",
   axis.title.x.color = "black",
@@ -27,22 +27,26 @@ plot_layout2D_interact(
   legend.title.size = 13,
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
-  grid.linewidth = 1,
-  grid.linetype = "solid",
+  grid.line.width = 1,
+  grid.line.type = "solid",
   border.line.width = 1.4,
   border.line.color = "black"
 )
 }
 \arguments{
-\item{p}{tbc}
+\item{p}{A \code{plotly} object corresponding to previous/actual graph/plot.}
 
-\item{data}{tbc}
+\item{data}{A data frame object to associate with the layout (optional). If not provided, arguments are evaluated
+using the data frame in \code{link[plotly]{plot_ly}} function of the previous/actual plot. Therefore,
+\strong{default}: \code{data = NULL}.}
 
-\item{xlab}{tbc...could be also..."<i>B</i> (mT)"}
+\item{xlab}{tbc...}
 
 \item{ylab}{tbc}
 
-\item{axis.title.x.family}{tbc}
+\item{axis.title.x.family}{...tbc...These include "Arial", "Balto", "Courier New", "Droid Sans", "Droid Serif",
+"Droid Sans Mono", "Gravitas One", "Old Standard TT", "Open Sans", "Overpass", "PT Sans Narrow", "Raleway",
+"Times New Roman".}
 
 \item{axis.title.x.color}{tbc}
 
@@ -78,9 +82,9 @@ plot_layout2D_interact(
 
 \item{grid.color}{tbc}
 
-\item{grid.linewidth}{description}
+\item{grid.line.width}{description...width in pixels...}
 
-\item{grid.linetype}{description...could be also "dot", "dash", "longdash", "dashdot", "longdashdot",
+\item{grid.line.type}{description...could be also "dot", "dash", "longdash", "dashdot", "longdashdot",
 or a dash length list in px (eg "5px,10px,2px,2px").}
 
 \item{border.line.width}{tbc}

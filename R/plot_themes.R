@@ -39,7 +39,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
                                 axis.title.size = 15,
                                 grid = TRUE,
                                 border.line.color = "black",
-                                border.line.type = "solid",
+                                border.line.type = 1,
                                 border.line.width = 0.5,
                                 bg.transparent = FALSE) {
   ## theme parts:
@@ -122,7 +122,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
                                  axis.title.size = 15,
                                  grid = TRUE,
                                  border.line.color = "black",
-                                 border.line.type = "solid",
+                                 border.line.type = 1,
                                  border.line.width = 0.5,
                                  bg.transparent = FALSE) {
   ## theme parts:
@@ -203,7 +203,7 @@ plot_theme_Out_ticks <- function(axis.text.size = 14,
                                  axis.title.size = 15,
                                  grid = TRUE,
                                  border.line.color = "black",
-                                 border.line.type = "solid",
+                                 border.line.type = 1,
                                  border.line.width = 0.5,
                                  bg.transparent = FALSE) {
   ## theme parts:

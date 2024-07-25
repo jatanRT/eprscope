@@ -14,11 +14,13 @@ plot_ECh_VoC_amperogram(
   Ilim = NULL,
   line.color = "darkviolet",
   line.width = 0.75,
+  line.type = 1,
   theme.basic = "theme_gray",
   axis.title.size = 15,
   axis.text.size = 14,
   border.line.color = "black",
   border.line.width = 0.5,
+  border.line.type = 1,
   ref.electrode = NULL,
   plot.interact = FALSE,
   ticks = "out",
@@ -58,7 +60,11 @@ from the original dataset.}
 \item{line.color}{Character string pointing to line color of the voltammogram / chronoamperogram. All \pkg{ggplot2} compatible
 colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}.}
+\item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
+
+\item{line.type}{Character string or integer corresponding to width of the voltammogram/chronoamperogram line.
+Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"},
+\code{3 = "dotted"}, \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
 \item{theme.basic}{Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 \describe{
@@ -80,6 +86,10 @@ colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \cod
 
 \item{border.line.width}{Numeric, width of the graph / panel border line, \strong{default}:
 \code{border.line.width = 0.5}.}
+
+\item{border.line.type}{Character string or integer corresponding to width of the panel graph border line. Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
 \item{ref.electrode}{Character string corresponding to reference electrode label, e.g. like
 \code{ref.electrode = "Ag-quasiref"} or \code{ref.electrode = "Fc/Fc+"}. \strong{Default}: \code{ref.electrode = NULL}
@@ -137,6 +147,8 @@ plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
                         x = "time_s",
                         x.unit = "s",
                         Current = "I_A",
+                        line.color = "darkorange",
+                        line.type = 3,
                         Current.unit = "A",
                         theme.basic = "theme_bw",
                         ticks = "in"

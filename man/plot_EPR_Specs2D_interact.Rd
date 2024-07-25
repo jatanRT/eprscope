@@ -13,6 +13,7 @@ plot_EPR_Specs2D_interact(
   lineSpecs.form = "derivative",
   line.colors = "darkviolet",
   line.width = 0.75,
+  line.type = 1,
   bg.color = "#e5ecf6",
   grid.color = "#ffff",
   border.line.width = 1.2,
@@ -63,7 +64,11 @@ line form of the analyzed EPR spectrum/data.}
 \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
 WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. like \code{line.colors = c("darkorange","darkblue")}).}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}}
+\item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
+
+\item{line.type}{Character string or integer corresponding to width of the (spectral) line(s). Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
 \item{bg.color}{Character string corresponding to \strong{background color}}
 

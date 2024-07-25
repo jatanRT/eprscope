@@ -37,6 +37,9 @@
 #'   from the original dataset.
 #' @param line.color Character string pointing to line color of the voltammogram / chronoamperogram. All \pkg{ggplot2} compatible
 #'   colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.
+#' @param line.type Character string or integer corresponding to width of the voltammogram/chronoamperogram line.
+#'   Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"},
+#'   \code{3 = "dotted"}, \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param ref.electrode Character string corresponding to reference electrode label, e.g. like
 #'   \code{ref.electrode = "Ag-quasiref"} or \code{ref.electrode = "Fc/Fc+"}. \strong{Default}: \code{ref.electrode = NULL}
 #'   (displayed potential is not related to any \code{ref.electrode}).
@@ -85,6 +88,8 @@
 #'                         x = "time_s",
 #'                         x.unit = "s",
 #'                         Current = "I_A",
+#'                         line.color = "darkorange",
+#'                         line.type = 3,
 #'                         Current.unit = "A",
 #'                         theme.basic = "theme_bw",
 #'                         ticks = "in"
@@ -113,11 +118,13 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
                                     Ilim = NULL,
                                     line.color = "darkviolet",
                                     line.width = 0.75,
+                                    line.type = 1,
                                     theme.basic = "theme_gray",
                                     axis.title.size = 15,
                                     axis.text.size = 14,
                                     border.line.color = "black",
                                     border.line.width = 0.5,
+                                    border.line.type = 1,
                                     ref.electrode = NULL,
                                     plot.interact = FALSE,
                                     ticks = "out", ## or "in"
@@ -281,6 +288,7 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
       panel.border = element_rect(
         color = border.line.color,
         linewidth = border.line.width,
+        linetype = border.line.type,
         fill = NA
       )
     )
@@ -295,6 +303,7 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
       panel.border = element_rect(
         color = border.line.color,
         linewidth = border.line.width,
+        linetype = border.line.type,
         fill = NA
       )
     )
@@ -319,8 +328,11 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   ## basic voltammogram plot
   basic.voltammogram <-
     ggplot(data = data.voltamm,
-           aes(x = .data[[x]],y = .data[[Current]])) +
-    geom_path(linewidth = line.width,color = line.color) +
+           aes(x = .data[[x]],
+               y = .data[[Current]])) +
+    geom_path(linewidth = line.width,
+              linetype = line.type,
+              color = line.color) +
     coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
   #
   ## ALL `GGPLOT2` THEMES TOGETHER

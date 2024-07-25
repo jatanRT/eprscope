@@ -17,6 +17,7 @@
 #' @param ylim tbc...doesn't apply for separated integrals...it works only for overlay
 #' @param slct.integs tbc
 #' @param line.width tbc
+#' @param line.type description
 #' @param axis.title.size tbc
 #' @param axis.text.size tbc
 #' @param legend.title.size tbc
@@ -56,6 +57,7 @@ plot_EPR_Specs_integ <- function(data.spectra.integ,
                                    "single_Integ_correct"
                                  ),
                                  line.width = 0.75,
+                                 line.type = 1,
                                  axis.title.size = 15,
                                  axis.text.size = 14,
                                  legend.title.size = 13,
@@ -127,7 +129,8 @@ if (isFALSE(separate.integs)) {
   plot.integs <- data.spectra.integ.new %>%
     dplyr::filter(Integrals %in% slct.integs) %>%
     ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
-    geom_line(linewidth = line.width) +
+    geom_line(linewidth = line.width,
+              linetype = line.type) +
     coord_cartesian(xlim = Blim, ylim = ylim) +
     labs(
       x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
@@ -144,7 +147,9 @@ if (isFALSE(separate.integs)) {
     plot.integs <- data.spectra.integ.new %>%
       dplyr::filter(Integrals %in% slct.integs) %>%
       ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
-      geom_line(linewidth = line.width, show.legend = FALSE) +
+      geom_line(linewidth = line.width,
+                linetype = line.type,
+                show.legend = FALSE) +
       coord_cartesian(xlim = Blim) +
       facet_wrap(~ .data$Integrals,
         scales = separate.integ.scales,

@@ -12,6 +12,7 @@ plot_EPR_Specs_integ(
   ylim = NULL,
   slct.integs = c("single_Integ", "baseline_Integ_fit", "single_Integ_correct"),
   line.width = 0.75,
+  line.type = 1,
   axis.title.size = 15,
   axis.text.size = 14,
   legend.title.size = 13,
@@ -35,6 +36,8 @@ plot_EPR_Specs_integ(
 \item{slct.integs}{tbc}
 
 \item{line.width}{tbc}
+
+\item{line.type}{description}
 
 \item{axis.title.size}{tbc}
 

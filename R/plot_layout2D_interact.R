@@ -9,11 +9,15 @@
 #' tbc
 #'
 #'
-#' @param p tbc
-#' @param data tbc
-#' @param xlab tbc...could be also..."<i>B</i> (mT)"
+#' @param p A \code{plotly} object corresponding to previous/actual graph/plot.
+#' @param data A data frame object to associate with the layout (optional). If not provided, arguments are evaluated
+#'   using the data frame in \code{link[plotly]{plot_ly}} function of the previous/actual plot. Therefore,
+#'   \strong{default}: \code{data = NULL}.
+#' @param xlab tbc...
 #' @param ylab tbc
-#' @param axis.title.x.family tbc
+#' @param axis.title.x.family ...tbc...These include "Arial", "Balto", "Courier New", "Droid Sans", "Droid Serif",
+#'   "Droid Sans Mono", "Gravitas One", "Old Standard TT", "Open Sans", "Overpass", "PT Sans Narrow", "Raleway",
+#'   "Times New Roman".
 #' @param axis.title.x.color tbc
 #' @param axis.title.x.size tbc
 #' @param axis.text.x.family tbc
@@ -31,8 +35,8 @@
 #' @param legend.title.size tbc
 #' @param bg.color tbc
 #' @param grid.color tbc
-#' @param grid.linewidth description
-#' @param grid.linetype description...could be also "dot", "dash", "longdash", "dashdot", "longdashdot",
+#' @param grid.line.width description...width in pixels...
+#' @param grid.line.type description...could be also "dot", "dash", "longdash", "dashdot", "longdashdot",
 #'   or a dash length list in px (eg "5px,10px,2px,2px").
 #' @param border.line.width tbc
 #' @param border.line.color tbc
@@ -55,7 +59,7 @@
 #' @importFrom plotly layout toRGB
 plot_layout2D_interact <- function(p,
                                    data = NULL,
-                                   xlab = NULL,
+                                   xlab = "<i>B</i> (mT)",
                                    ylab = "d <i>I</i> <sub>EPR</sub> / d <i>B</i>  (p.d.u.)",
                                    axis.title.x.family = "Arial",
                                    axis.title.x.color = "black",
@@ -75,8 +79,8 @@ plot_layout2D_interact <- function(p,
                                    legend.title.size = 13,
                                    bg.color = "#e5ecf6",
                                    grid.color = "#ffff",
-                                   grid.linewidth = 1,
-                                   grid.linetype = "solid",
+                                   grid.line.width = 1,
+                                   grid.line.type = "solid",
                                    border.line.width = 1.4,
                                    border.line.color = "black") {
   #
@@ -99,8 +103,8 @@ plot_layout2D_interact <- function(p,
         size = axis.text.x.size
       ),
       gridcolor = grid.color,
-      gridwidth = grid.linewidth,
-      griddash = grid.linetype,
+      gridwidth = grid.line.width,
+      griddash = grid.line.type,
       linecolor = plotly::toRGB(border.line.color),
       linewidth = border.line.width, showline = T, mirror = T
     ),
@@ -119,8 +123,8 @@ plot_layout2D_interact <- function(p,
         size = axis.text.y.size
       ),
       gridcolor = grid.color,
-      gridwidth = grid.linewidth,
-      griddash = grid.linetype,
+      gridwidth = grid.line.width,
+      griddash = grid.line.type,
       linecolor = plotly::toRGB(border.line.color),
       linewidth = border.line.width, showline = T, mirror = T
     )

@@ -16,8 +16,10 @@ plot_EPR_Specs(
   lineSpecs.form = "derivative",
   line.colors = "darkviolet",
   line.width = 0.75,
+  line.type = 1,
   border.line.width = 0.5,
   border.line.color = "black",
+  border.line.type = 1,
   theme.basic = "theme_gray",
   axis.title.size = 15,
   axis.text.size = 14,
@@ -110,13 +112,21 @@ line form of the analyzed EPR spectrum/data.}
   }
   }}
 
-\item{line.width}{Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}.}
+\item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
+
+\item{line.type}{Character string or integer corresponding to width of the (spectral) line(s). Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
 \item{border.line.width}{Numeric, width of the graph / panel border line, \strong{default}:
 \code{border.line.width = 0.5}.}
 
 \item{border.line.color}{Character string referring to color of the graph / panel border line. \strong{Default}:
 \code{border.line.color = "black"}.}
+
+\item{border.line.type}{Character string or integer corresponding to width of the panel graph border line. Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
 \item{theme.basic}{Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 \describe{
@@ -193,6 +203,8 @@ plot_EPR_Specs(aminoxyl.data.sinteg,
                x = "B_G",
                x.unit = "G",
                Intensity = "single_Integ",
+               line.colors = "darkorange",
+               line.type = "dashed",
                lineSpecs.form = "integrated")
 #
 ## loading the built-in CW ENDOR spectrum

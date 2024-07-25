@@ -41,7 +41,10 @@
 #'   (NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARCTER STRING IS REQUIRED => therefore,
 #'   \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
 #'   WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. like \code{line.colors = c("darkorange","darkblue")}).
-#' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}: \code{line.width = 0.75}
+#' @param line.width Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.
+#' @param line.type Character string or integer corresponding to width of the (spectral) line(s). Following types
+#'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+#'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param bg.color Character string corresponding to \strong{background color}
 #' @param grid.color Character string corresponding to \strong{grid color}
 #' @param border.line.width tbc
@@ -84,6 +87,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                       lineSpecs.form = "derivative",
                                       line.colors = "darkviolet",
                                       line.width = 0.75,
+                                      line.type = 1,
                                       bg.color = "#e5ecf6",
                                       grid.color = "#ffff",
                                       border.line.width = 1.2,
@@ -154,11 +158,20 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   } else {
     ## g factor condition
     if (isTRUE(g.factor.cond)){
-      simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
-        geom_line(linewidth = line.width, color = line.colors) + scale_x_reverse()
+      simplePlot <- ggplot(data.spectra,
+                           aes(x = .data[[x]],
+                               y = .data[[Intensity]])) +
+        geom_line(linewidth = line.width,
+                  linetype = line.type,
+                  color = line.colors) +
+        scale_x_reverse()
     } else {
-      simplePlot <- ggplot(data.spectra, aes(x = .data[[x]], y = .data[[Intensity]])) +
-        geom_line(linewidth = line.width, color = line.colors)
+      simplePlot <- ggplot(data.spectra,
+                           aes(x = .data[[x]],
+                               y = .data[[Intensity]])) +
+        geom_line(linewidth = line.width,
+                  linetype = line.type,
+                  color = line.colors)
     }
     #
   }
