@@ -1,12 +1,12 @@
 #
-#' Confidence Interval of a Vector/Data Frame-Column
+#' Confidence Interval of a Vector or Data Frame Column
 #'
 #'
 #' @family Evaluations
 #'
 #'
 #' @description Evaluation of the mean value and its confidence limits (according to Student's t-distribution)
-#'  corresponding to column (within data frame) or vector characterizing dispersion of the individual
+#'  corresponding to data frame column or vector characterizing dispersion of the individual
 #'  value, e.g. like double integral in quantitative EPR analysis, g-value or linewidth.
 #'
 #'
@@ -15,13 +15,15 @@
 #'   which for number of observations \eqn{N > 30} approaches the normal \eqn{z}-distribution.
 #'   Evaluation of the confidence interval and/or its limits can be well documented on \eqn{g}-factor series example:
 #'   \deqn{g = \overline{g}\pm (t_{(1-\alpha/2),df}\,s/\sqrt{N})}
-#'   where \eqn{\overline{g}} is the mean value and the \eqn{t_{(1-\alpha/2),df}} corresponds to quantile
+#'   where \eqn{\overline{g}} is the mean value and the \eqn{t_{(1-\alpha/2),df}} corresponds to the quantile
 #'   of the t-distribution having the significance level of \eqn{\alpha} (\eqn{1-\alpha = condfidence\,\,level},
-#'   see the \code{level.cnfd} argument) and the degree of freedom \eqn{df = N -1}. Finally the \eqn{s} represents
+#'   see the \code{level.cnfd} argument) and the degrees of freedom \eqn{df = N -1}. Finally, the \eqn{s} represents
 #'   the sample standard deviation, defined by the following relation (regarding the \eqn{g}-value series example):
 #'   \deqn{s = \sqrt{(1/(N-1))\,\sum_{i=1}^N (g_i - \overline{g})^2}}
 #'   which is computed by the \code{\link[stats]{sd}}. The above-mentioned \eqn{t}-quantile is actually calculated
-#'   by the \code{\link[stats:TDist]{stats::qt}} function (see also \code{lw.tail} argument).
+#'   by the \code{\link[stats:TDist]{stats::qt}} function. Alternatively, one could also evaluate the confidence
+#'   interval by one sample \code{\link[stats]{t.test}} for a certain level of confidence, giving a descriptive output
+#'   with statistical characteristics.
 #'
 #'
 #' @references
@@ -35,25 +37,20 @@
 #'
 #'   \insertRef{psy2020confid}{eprscope}
 #'
+#'   \insertRef{goods2011mathM}{eprscope}
 #'
 #'
-#' @param data.vec.col Numeric vector pointing to column of interest (within a data frame)
-#'   to calculate the confidence interval or uncertainty.
+#' @param data.vec.col Numeric vector (pointing to column) of interest (within a data frame)
+#'   to calculate the confidence interval or uncertainty (margin of error).
 #' @param level.cnfd Numeric (floating) value corresponding to confidence level \strong{default}:
 #'   \code{level.cnfd = 0.95}. This value is related to significance level \eqn{alpha} defined
 #'   by \eqn{1 - confidence\,\,level}.
-#' @param lw.tail Logical, indicating the way how to calculate \code{qt} quantile function
-#'   for the two-tailed \eqn{t}-distribution. It is inherited from \code{\link[stats:TDist]{stats::qt}}.
-#'   If \code{lw.tail = TRUE} (\strong{default}), probabilities are \eqn{P[X\leq x]} and the vector of probabilities (\code{p})
-#'   is equal to \code{level.cnfd} + \eqn{\alpha / 2}, where \eqn{\alpha} stands for the significance level = 1 - \code{level.cnfd}.
-#'   Otherwise, \eqn{P[X>x]} (\code{lw.tail = FALSE}) and the \code{p} is defined as \eqn{\alpha / 2} and equal to
-#'   (1 - \code{level.cnfd})/2.
-#' @param separate Logical, whether to separate the mean value and the uncertainty, corresponding to non-negative right/left
-#'   confidence limit of the mean. If \code{separate = TRUE}, the result is shown as a named vector with the (mean)
-#'   \code{value} and the \code{uncertaity}.
-#'   Otherwise, the result is returned in the format of \eqn{value\pm uncertainty}.
+#' @param separate Logical, whether to separate the mean value and the uncertainty (margin of error),
+#'   corresponding to non-negative right/left confidence limit of the mean. If \code{separate = TRUE}
+#'   (\strong{default}), the result is shown as a named vector with the (mean) \code{value}
+#'   and the \code{uncertaity}. Otherwise, the result is returned in the format of \eqn{value\pm\,\,uncertainty}.
 #'
-#' @return Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm uncertainty}
+#' @return Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm\,\,uncertainty}
 #'   format depending on the \code{separate} argument, where the uncertainty actually represents non-negative
 #'   limit for the mean (one side of the confidence interval not including the mean value).
 #'
@@ -67,11 +64,9 @@
 #' ## in different formats:
 #' eval_interval_cnfd_tVec(di.vec)
 #' #
-#' eval_interval_cnfd_tVec(di.vec,lw.tail = FALSE)
-#' #
 #' eval_interval_cnfd_tVec(di.vec,
 #'                         level.cnfd = 0.99,
-#'                         separate = TRUE)
+#'                         separate = FALSE)
 #'
 #'
 #' @export
@@ -81,8 +76,7 @@
 #' @importFrom errors set_errors
 eval_interval_cnfd_tVec <- function(data.vec.col,
                                     level.cnfd = 0.95,
-                                    lw.tail = TRUE,
-                                    separate = FALSE) {
+                                    separate = TRUE) {
   #
   ## alpha (significance level)
   alpha <- 1 - level.cnfd
@@ -91,21 +85,14 @@ eval_interval_cnfd_tVec <- function(data.vec.col,
   n.data <- length(data.vec.col)
   #
   ## `qt` value
-  if (isTRUE(lw.tail)) {
-    qt.data <- stats::qt(
-      p = level.cnfd + (alpha / 2),
-      df = n.data - 1,
-      lower.tail = lw.tail
-    )
-  } else {
-    qt.data <- stats::qt(
-      p = alpha / 2,
-      df = n.data - 1,
-      lower.tail = lw.tail
-    )
-  }
+  qt.data <- stats::qt(
+    p = level.cnfd + (alpha / 2),
+    df = n.data - 1,
+    lower.tail = TRUE,
+    log.p = FALSE
+  )
   #
-  ## uncertainty (confidence limit for the mean)
+  ## uncertainty (confidence limit for the mean) / margin of error
   uncrt.data <- qt.data * (stats::sd(data.vec.col) / sqrt(n.data))
   #
   ## calculation
