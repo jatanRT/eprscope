@@ -6,16 +6,18 @@
 #'
 #'
 #' @description
-#'  Providing the accurate time for EPR spectral line/spectrum appearance, i.e usually the middle
-#'  \eqn{B} of the EPR spectrum which is is set up as the CF (\code{central field}) for the spectrum sweep.
+#'  Providing more accurate time for EPR spectral line/spectrum appearance. It assumes
+#'  that the middle \eqn{B} (or \eqn{g}, \eqn{\nu_{\text{MHz}}}...etc.) of the EPR spectrum
+#'  is set as the CF (\code{central field}) for the spectrum sweep.
+#'
 #'
 #'
 #' @details
 #'  The actual time at the middle/crossing point
-#'  is different from that recorder by the EPR acquisition software, see below. This is especially important
-#'  in determining the kinetics of radical generation or decay.
-#'  The time is recorded according to the following scheme where "^v" in the scheme denotes the derivative form
-#'  of an EPR spectrum:
+#'  is different from that recorder by the EPR acquisition software, see below. This is especially
+#'  important in determining the kinetics of radical generation or decay.
+#'  The time is recorded according to the following scheme where "^v" in the scheme denotes
+#'  the derivative form of an EPR spectrum:
 #'
 #'  \tabular{cccccc}{
 #'
@@ -26,9 +28,9 @@
 #'         \tab  \code{N_scans}*\code{swt}  \tab          \tab \code{delay} \tab        \tab \code{N_scans}*\code{swt}
 #' }
 #' The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
-#' and the \code{N_scans} corresponds to \code{number of scans}, \code{swt} to \code{sweep time} for the individual scan.
-#' These parameters can be obtained by the \code{\link{readEPR_params_slct_kin}} or other functions which can read
-#' the instrumental parameters.
+#' and the \code{N_scans} corresponds to \code{number of scans}, \code{swt} to \code{sweep time}
+#' for the individual scan. These parameters can be obtained by the \code{\link{readEPR_params_slct_kin}}
+#' or other functions which can read the instrumental parameters.
 #'
 #'
 #' @param time.s Numeric value/vector/column in \code{data frame} corresponding to \code{time} (in \code{s})
@@ -39,9 +41,9 @@
 #'   one "accumulation".
 #'
 #'
-#' @return Numeric value/vector corresponding to accurate time at which the middle (on \eqn{B} abscissa) EPR spectra
-#'   were recorded during the kinetic measurements (e.g. like radical formation, stability, electrochemical
-#'   and/or photochemical measurements).
+#' @return Numeric value/vector corresponding to time at which the middle (on abscissa) of EPR
+#'   spectrum/spectra were recorded during the kinetic measurements (e.g. like radical formation,
+#'   stability, electrochemical and/or photochemical measurements).
 #'
 #'
 #' @examples

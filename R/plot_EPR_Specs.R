@@ -6,13 +6,13 @@
 #'
 #'
 #' @description Graph/Plot of an EPR/ENDOR spectrum/spectra (overlay plot) based on \pkg{ggplot2}-functionality.
-#'   Spectral data have to be available as a data frame object (see also argument \code{data.spectra}).
+#'   Spectral data input must be available as a data frame object (see also argument \code{data.spectra}).
 #'   Theme of the graphic spectrum representation as well as other graph elements can be varied like
 #'   using the \pkg{ggplot2} package. Within a theme, the \code{y} ticks can be either displayed
 #'   or skipped and the intensity (e.g. \code{dIepr_over_dB}) is presented in "procedure defined unit"
 #'   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
-#'   which is common for visualization of the EPR spectra. Additionally, the \code{plot_EPR_Specs} can be combined
-#'   by the \code{+} sign with other \pkg{ggplot2} or internal plotting functions
+#'   which is common for visualization of the EPR spectra. Additionally, the \code{plot_EPR_Specs}
+#'   can be combined by the \code{+} sign with other \pkg{ggplot2} or internal plotting functions
 #'   (e.g. with \code{\link{plot_theme_In_ticks}}).
 #'
 #' @param data.spectra Data frame/table object containing magnetic flux density, \eqn{g}-value
@@ -21,16 +21,16 @@
 #'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 #'   integrated or simulated spectra intensities are present, they can be labeled accordingly.
 #'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
-#'   \code{var2nd.series} column (e.g. like \code{var2nd.series = "time_s"}) must be available. In such case
-#'   the entire \code{data.spectra} must inherit the form of "tidy" (long) table format (see also argument
-#'   \code{var2nd.series}).
+#'   \code{var2nd.series} column (e.g. like \code{var2nd.series = "time_s"} or \code{var2nd.series = "T_K"})
+#'   must be available. In such case the entire \code{data.spectra} must inherit the form
+#'   of "tidy" (long) table format (see also argument \code{var2nd.series}).
 #' @param x Character string pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 #'   \strong{default}: \code{x = "B_mT"}.
 #' @param x.unit Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
 #'   Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 #'   or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.
-#' @param xlim Numeric vector referring to border limits of the selected \code{x}-region,
+#' @param xlim Numeric vector referring to lower and upper limit of the selected \code{x}-region,
 #'   e.g. like \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 #'   or \code{xlim = c(2.004,2.001)} (dimensionless \eqn{g}). \strong{Default}: \code{xlim = NULL} (actually corresponding
 #'   to the entire \code{x}-range).
@@ -50,7 +50,7 @@
 #' @param Intensity Character string pointing to \code{intensity column} name in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
-#' @param Ilim Numeric vector corresponding to border limits of the selected \code{y} / \code{Intensity}
+#' @param Ilim Numeric vector corresponding to limits of the selected \code{y} / \code{Intensity}
 #'   region, e.g. like \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
 #'   to the entire Intensity range).
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
@@ -224,7 +224,7 @@
 #' plot_EPR_Specs(data.spectra,
 #'                xlim = c(334,345),
 #'                Ilim = c(-4e-3,4e-3),
-#'                var2nd.series = "Temperature_K",
+#'                var2nd.series = "T_K", # temperature in Kelvins
 #'                var2nd.series.slct.by = 1,
 #'                line.colors = c("darkblue",
 #'                                "darkorange",

@@ -24,7 +24,7 @@ like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
 \strong{Default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{xlim}{Numeric vector corresponding to border limits of the selected \emph{x} region,
+\item{xlim}{Numeric vector corresponding to lower and upper limit of the selected \emph{x} region,
 e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
 to the entire \code{x} range).}

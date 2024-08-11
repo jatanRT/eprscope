@@ -121,10 +121,10 @@ tmpd.params.dt
 
 ``` r
 
-# Phenylalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
+# Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" 
 draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
-                      mol.label = "Phenylalenyl",
+                      mol.label = "Phenalenyl",
                       mol.label.color = "black",
                       mol.label.xy.posit = c(8.8,1.2))
 ```
@@ -135,7 +135,7 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
 
 ``` r
 
-# Simulation of the phenylalenyl (perinaphthenyl or PNT) radical,
+# Simulation of the phenalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
 # The additional experimental/instrumental parameters are not shown.
 # They posses their default values => see the corresponding documentation 
@@ -147,7 +147,7 @@ simulation.iso <-
                      list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
                      list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
                      ),
-                   natur.abund = T,
+                   natur.abund = TRUE,
                    lineGL.DeltaB = list(0.24,NULL)) # linewidth in G
 #
 # simulation spectrum preview in the region from 3470 G to 3522 G
@@ -190,7 +190,7 @@ triarylamine_rc_decay_data <-
 # or number of radicals) of the triarylamine radical cation "R".
 triarylamine_rc_decay_model <- 
   eval_kinR_EPR_modelFit(data.qt.expr = triarylamine_rc_decay_data,
-                         model.react = "(n=2)R --> [k1] B",
+                         model.react = "(r=2)R --> [k1] B",
                          elementary.react = FALSE,
                          params.guess = c(qvar0R = 0.019,
                                           k1 = 0.04,
@@ -255,7 +255,7 @@ tutorials enabling a quite straightforward diving into
 - [Official Contributed Documentation of
   R](https://cran.r-project.org/other-docs.html)
 
-- [Thi Big Book of R](https://www.bigbookofr.com/)
+- [The Big Book of R](https://www.bigbookofr.com/)
 
 - Video Tutorial Series ➨
 
@@ -305,10 +305,11 @@ Any additional questions, comments, remarks or issues can be addressed
 through several discussion channels like 📧 e-mail
 <jantar40@protonmail.com> or github <img
 src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-width="16" /> issues on github source page. There will be also a
+width="16" /> issues on the github source page (see the [contributing
+guide](./.github/CONTRIBUTING.md)). In the future, there will be also a
 specialized [Discord](https://discord.com/) community channel to discuss
 the `{eprscope}` related topics. If somebody is able and interested in
-package development, please refer to [contributing
+the package development, please refer to [contributing
 guide](./.github/CONTRIBUTING.md).
 
 ## Acknowledgements

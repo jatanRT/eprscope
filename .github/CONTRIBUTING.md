@@ -61,9 +61,9 @@ There are two possibilities:
     manage it by yourself (as already shown in case 1), please write your issue
     (on the main github project page) properly entitled with all the details and
     provide relevant labels like "`bug` ", "`question` ", "`enhancement` ",
-    "`new-feature` ", "`help` ", "`documentation` " or "`typo` ". Yo may also use
+    "`new-feature` ", "`help` ", "`documentation` " or "`typo` ". You may also use
     a specialized issue template like "`Bug Report` ", "`Feature Request` " or
     "`Report a security vulnerability` ". If none of those templates suits you,
     just use "`Open a blank issue` ".
 -   Subsequently, the issue will be discussed and depending on the discussion
-    outcomes the developer(s)/maintener(s) will work on code updates, accordingly.
+    outcomes the developer(s)/maintainer(s) will work on code updates, accordingly.
