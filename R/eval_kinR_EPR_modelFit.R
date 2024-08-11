@@ -84,7 +84,7 @@
 #' ## is included (`TRUE`))
 #' triaryl_model_kin_fit_01 <-
 #'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
-#'                          model.react = "(n=2)R --> [k1] B",
+#'                          model.react = "(r=2)R --> [k1] B",
 #'                          elementary.react = TRUE,
 #'                          params.guess = c(qvar0R = 0.019,
 #'                                           k1 = 0.04
@@ -109,7 +109,7 @@
 #' ## (`time.correct` of the CW-sweeps is included (`TRUE`))
 #' triaryl_model_kin_fit_02 <-
 #'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
-#'                          model.react = "(n=1)R --> [k1] B",
+#'                          model.react = "(r=1)R --> [k1] B",
 #'                          elementary.react = TRUE,
 #'                          params.guess = c(qvar0R = 0.019,
 #'                                           k1 = 0.0002
@@ -133,7 +133,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    time.unit = "s",
                                    time = "time_s",
                                    qvarR = "Area",
-                                   model.react = "(n=1)R --> [k1] B",
+                                   model.react = "(r=1)R --> [k1] B",
                                    elementary.react = TRUE,
                                    params.guess = c(
                                      qvar0R = 1e-3,

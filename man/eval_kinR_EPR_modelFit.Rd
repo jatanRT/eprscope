@@ -9,7 +9,7 @@ eval_kinR_EPR_modelFit(
   time.unit = "s",
   time = "time_s",
   qvarR = "Area",
-  model.react = "(n=1)R --> [k1] B",
+  model.react = "(r=1)R --> [k1] B",
   elementary.react = TRUE,
   params.guess = c(qvar0R = 0.001, k1 = 0.001),
   params.guess.lower = NULL,
@@ -40,31 +40,32 @@ changes in integral intensities (or any other \strong{q}uantitative \strong{var}
 time series. Arrow shows direction of the reaction (\code{"-->", irreversible} or \code{"<==>", reversible}).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
-changes during the EPR time series experiment (the \code{m,n,l} stoichiometric coefficients
+changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
 may be varied, see below).
 \tabular{ll}{
-\strong{Reaction Scheme} \tab \strong{`model.react` string} \cr
-\eqn{(n=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(n=1)R --> [k1] B"} \cr
- \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R}} \tab \code{"(n=2)A --> [k1] (m=2)R"} \cr
- \eqn{(n=2)\text{A} \xrightarrow{k_1} (m=2)\text{R} \xrightleftharpoons[k_3]{k_2} (l=1)\text{C}} \tab
- \code{"(n=2)A --> [k1] (m=2)R <==> [k2] [k3] (l=1)C"} \cr
- \eqn{(n=1)\text{R} \xrightleftharpoons[k_2]{k_1} (m=1)\text{B}} \tab
- \code{"(n=1)R <==> [k1] [k2] (m=1)B"} \cr
- \eqn{(n=2)\text{A} \xrightleftharpoons[k_2]{k_1} (m=2)\text{R}} \tab
- \code{"(n=2)A <==> [k1] [k2] (m=2)R"} \cr
- \eqn{(n=1)\text{A} + (m=1)\text{B} \xrightarrow{k_1} (l=1)\text{R}} \tab
- \code{"(n=1)A + (m=1)B --> [k1] (l=1)R"} \cr
- \eqn{(n=1)\text{R} + (m=1)\text{B} \xrightarrow{k_1} (l=1)\text{C}} \tab
- \code{"(n=1)R + (m=1)B --> [k1] (l=1)C"} \cr
+\strong{Reaction Scheme} \tab \strong{model.react} \cr
+\eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr
+ \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}} \tab \code{"(a=2)A --> [k1] (r=2)R"} \cr
+ \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R} \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
+ \code{"(a=2)A --> [k1] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
+ \eqn{(r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}} \tab
+ \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \cr
+ \eqn{(a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}} \tab
+ \code{"(a=2)A <==> [k1] [k2] (r=2)R"} \cr
+ \eqn{(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}} \tab
+ \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \cr
+ \eqn{(r=1)\text{R} + (b=1)\text{B} \xrightarrow{k_1} (c=1)\text{C}} \tab
+ \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \cr
 }
 Couple of examples are also given in details. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
-(YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (e.g. like \code{"(n=1)"}
-or \code{"(m=1)"}) can be varied within the \code{model.react} character string.
-Defined/Allowed values are integers e.g. 1,2,3...etc.
+(YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (e.g. like \code{(r=1)}
+or \code{(a=1)}) can be varied within the \code{model.react} character string.
+Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
+string is not fixed and can be skipped for the sake of flexibility.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 a possible non-integer partial stoichiometric coefficients (like e.g. \code{alpha},\code{beta} or \code{gamma})
-must be incl. in \code{kin.params} (see also \code{kin.params} description).}
+must be included in \code{kin.params} (see also \code{kin.params} description).}
 
 \item{elementary.react}{Logical, if the model reaction should be considered as elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
@@ -149,7 +150,7 @@ triaryl_radCat_dsc_path <-
 ## is included (`TRUE`))
 triaryl_model_kin_fit_01 <-
   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
-                         model.react = "(n=2)R --> [k1] B",
+                         model.react = "(r=2)R --> [k1] B",
                          elementary.react = TRUE,
                          params.guess = c(qvar0R = 0.019,
                                           k1 = 0.04
@@ -174,7 +175,7 @@ triaryl_model_kin_fit_01$convergence
 ## (`time.correct` of the CW-sweeps is included (`TRUE`))
 triaryl_model_kin_fit_02 <-
   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
-                         model.react = "(n=1)R --> [k1] B",
+                         model.react = "(r=1)R --> [k1] B",
                          elementary.react = TRUE,
                          params.guess = c(qvar0R = 0.019,
                                           k1 = 0.0002
