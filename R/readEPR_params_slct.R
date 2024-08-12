@@ -12,7 +12,7 @@
 #'
 #' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 #'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
-#' @param string Character string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
+#' @param string Character (vector) string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
 #'   corresponding to instrumental parameter,
 #'  following \strong{strings are defined for all three main acquisition software described-above}
 #'   (\strong{in parenthesis for "winepr" software}):
@@ -47,78 +47,184 @@
 #'   (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).
 #'
 #'
-#' @return Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct})
-#'   instrumental parameter applied to record the EPR spectra.
+#' @return Numeric or character string (e.g. date or comment) corresponding to selected instrumental parameter
+#'   applied to record the EPR spectra. In case of \code{string} character vector, named list, containing
+#'   either character and/or numeric values, is returned with the names corresponding to \code{string}.
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## Reading modulation amplitude from 'Xenon' spectrometer file
-#' readEPR_param_slct(path_to_dsc_par,
-#'                    string = "B0MA")
-#'
-#' ## Reading Q Value from 'Xenon' spectrometer file
-#' read_param_slct(file.path(".",
-#'                           "dir_DSC",
-#'                           "EPR_spectrum.DSC"),
-#'                 string = "QValue")
-#'
+#' ## loading `.DSC` (Xenon) parameter file example
+#' triaryl_radCat_dsc_path <-
+#'   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
+#' #
+#' ## Reading modulation amplitude from the 'Xenon' spectrometer file
+#' readEPR_param_slct(triaryl_radCat_dsc_path,string = "B0MA")
+#' #
+#' ## Reading Q-Value from the 'Xenon' spectrometer file
+#' readEPR_param_slct(triaryl_radCat_dsc_path,string = "QValue")
+#' #
+#' ## loading `.par` (WinEPR) parameter file example
+#' TMPD_radCat_par_path <-
+#'   load_data_example(file = "TMPD_specelchem_accu_b.par")
+#' #
 #' ## Reading `date` from 'WinEPR' spectrometer file
-#' read_param_slct(file.path(".",
-#'                           "dir_par",
-#'                           "EPR_spectrum.par"),
-#'                 string = "JDA",
-#'                 origin = "winepr")
-#' }
+#' readEPR_param_slct(TMPD_radCat_par_path,
+#'                    string = "JDA",
+#'                    origin = "winepr")
 #'
 #'
 #' @export
+#'
 #'
 readEPR_param_slct <- function(path_to_dsc_par,
                                string,
                                origin = "xenon") {
   #
-  ## path corresponds to file (`.DSC` or `.dsc`) from which the params. are read
-  ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
-  sel.str.line <- grep(paste0("^",string), readLines(path_to_dsc_par), value = TRUE)
-  #
-  ## such line is then separated (split) into two ('n = 2') string parts
-  ## by 'str_split' comming from 'stringr' pckg.
-  sel.str.split <- stringr::str_split(sel.str.line, "[[:space:]]+", n = 2)
-  #
-  ## the result is list, therefore select the second list element ('[[1]][2]'),
-  ## therefore unlist the `sel.str.split`
-  sel.str.split <- unlist(sel.str.split)
   #
   ## origin strings vectors to define "origin" conditions =>
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
   #
+  ## conditions to couple `string` with origin
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
+      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    if (any(grepl("JON|JCO|JDA|JTM|MF|HCF|HSW|TE|RMA|JSD|RES|MP|RCT|RTC|RRG",string))) {
+      stop(" The `string` (components) is (are) restricted to WinEPR.\n
+           Please, provide `string(s)` for Xenon/Magnettech (refer to `string` argument) !! ")
+    }
+  }
+  if (any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    if (any(grepl("RCTC|RCAG|ConvFact",string))) {
+      stop(" The `string` (components) is (are) not available for Magnetech !!")
+    }
+  }
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+    if (any(grepl("OPER|CMNT|DATE|TIME|SAMP|B0MF|MWFQ|QValue|A1CT|A1SW|STMP|B0MA|AVGS|A1RS|MWPW|SPTP|RCTC|RCAG|ConvFact",
+                  string))) {
+      stop(" The WinEPR system does not provide defined string(s).\n
+           Please, refer to `string` argument for the available strings/parameters !! ")
+    }
+  }
+  #
+  ## path corresponds to file (`.DSC` or `.dsc`) from which the params. are read
+  ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
+  ## if `string` = vector => iterate/read over all components
+  if (length(string) > 1){
+    sel.str.line <- lapply(
+      string,
+      function(s) grep(paste0("^",s), readLines(path_to_dsc_par), value = TRUE)
+    )
+  } else {
+    sel.str.line <- grep(paste0("^",string), readLines(path_to_dsc_par), value = TRUE)
+  }
+  #
+  ## such line is then separated (split) into two ('n = 2') string parts
+  ## by 'str_split' comming from 'stringr' pckg.
+  if (length(string) > 1) {
+    sel.str.split <- lapply(
+      sel.str.line,
+      function(l) unlist(stringr::str_split(l, "[[:space:]]+", n = 2))
+    )
+  } else {
+    sel.str.split <- stringr::str_split(sel.str.line, "[[:space:]]+", n = 2)
+    ## the result is list, therefore select the second list element ('[[1]][2]'),
+    ## therefore unlist the `sel.str.split`
+    sel.str.split <- unlist(sel.str.split)
+  }
+  #
+  ## function to convert string vector into named list if the vector
+  ## contains combined numbers and characters
+  if (length(string) > 1){
+    str_vec_conversion <- function(string.vec,names.vec){
+      #
+      ## check if each of these components can be converted
+      ## into numeric value + suppress warnings
+      suppressWarnings( check.char <- sapply(string.vec, function(l) is.na(as.double(l))) )
+      #
+      ## if the component cannot be converted into numeric then convert
+      ## it into character
+      result <- Map(
+        function(i,j) {
+          ifelse(isTRUE(i),as.character(j),as.double(j))
+        },
+        check.char,
+        string.vec
+      )
+      #
+      ## rename the list
+      names(result) <- names.vec
+      #
+      return(result)
+    }
+  }
+  #
   ## XENON + MAGNETTECH
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
-    if (string == "OPER" || string == "CMNT" ||
-        string == "DATE" || string == "TIME") {
-      param.slct <- as.character(sel.str.split[2])
+    if (any(grepl("OPER|CMNT|DATE|TIME",string))) {
+      if (length(string) > 1) {
+        param.slct <- sapply(sel.str.split, function(v) as.character(v[2])) ## select 2nd value in list comp.
+        #
+        ## apply the above-defined function
+        param.slct <- str_vec_conversion(string.vec = param.slct,names.vec = string)
+        #
+      } else {
+        param.slct <- as.character(sel.str.split[2])
+      }
     }
-    if (string == "SAMP" & any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    if (any(grepl("SAMP",string)) & any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      #
+      ## the `magnettech` parameter file does not contain the "SAMP" character string =>
       stop(" The required string is not available in `.dsc` file ! ")
     }
-    if (string == "SAMP" & any(grepl(paste(xenon.string,collapse = "|"),origin))){
-      param.slct <- as.character(sel.str.split[2])
+    if (any(grepl("SAMP",string)) & any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      if (length(string) > 1) {
+        param.slct <- sapply(sel.str.split, function(v) as.character(v[2]))
+        #
+        ## apply the above-defined function
+        param.slct <- str_vec_conversion(string.vec = param.slct,names.vec = string)
+        #
+      } else {
+        param.slct <- as.character(sel.str.split[2])
+      }
+      #
     } else {
-      param.slct <- as.double(sel.str.split[2])
+      if (length(string) > 1) {
+        param.slct <- lapply(sel.str.split, function(v) as.double(v[2]))
+        #
+        ## rename
+        names(param.slct) <- string
+        #
+      } else {
+        param.slct <- as.double(sel.str.split[2])
+      }
+     #
     }
   }
   #
   ## WINEPR
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
-    if (string == "JON" || string == "JCO" || string == "JDA" ||
-        string == "JTM") {
-      param.slct <- as.character(sel.str.split[2])
+    if (any(grepl("JON|JCO|JDA|JTM",string))) {
+      if (length(string) > 1) {
+        param.slct <- sapply(sel.str.split, function(v) as.character(v[2]))
+        #
+        ## apply the above-defined function
+        param.slct <- str_vec_conversion(string.vec = param.slct,names.vec = string)
+      } else {
+        param.slct <- as.character(sel.str.split[2])
+      }
+      #
     } else {
-      param.slct <- as.double(sel.str.split[2])
+      if (length(string) > 1) {
+        param.slct <- lapply(sel.str.split, function(v) as.double(v[2]))
+        #
+        ## rename
+        names(param.slct) <- string
+      } else {
+        param.slct <- as.double(sel.str.split[2])
+      }
+     #
     }
   }
   #

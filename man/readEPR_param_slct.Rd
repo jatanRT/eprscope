@@ -10,7 +10,7 @@ readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 \item{path_to_dsc_par}{Character string, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
 parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}}
 
-\item{string}{Character string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
+\item{string}{Character (vector) string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
  corresponding to instrumental parameter,
 following \strong{strings are defined for all three main acquisition software described-above}
  (\strong{in parenthesis for "winepr" software}):
@@ -46,8 +46,9 @@ they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
 (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).}
 }
 \value{
-Numeric or character string (e.g. date or comment) corresponding to selected (\code{slct})
-  instrumental parameter applied to record the EPR spectra.
+Numeric or character string (e.g. date or comment) corresponding to selected instrumental parameter
+  applied to record the EPR spectra. In case of \code{string} character vector, named list, containing
+  either character and/or numeric values, is returned with the names corresponding to \code{string}.
 }
 \description{
 Function takes the selected instrumental parameters or information
@@ -55,24 +56,24 @@ Function takes the selected instrumental parameters or information
  or \code{WinEpr} Software, respectively).
 }
 \examples{
-\dontrun{
-## Reading modulation amplitude from 'Xenon' spectrometer file
-readEPR_param_slct(path_to_dsc_par,
-                   string = "B0MA")
-
-## Reading Q Value from 'Xenon' spectrometer file
-read_param_slct(file.path(".",
-                          "dir_DSC",
-                          "EPR_spectrum.DSC"),
-                string = "QValue")
-
+## loading `.DSC` (Xenon) parameter file example
+triaryl_radCat_dsc_path <-
+  load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
+#
+## Reading modulation amplitude from the 'Xenon' spectrometer file
+readEPR_param_slct(triaryl_radCat_dsc_path,string = "B0MA")
+#
+## Reading Q-Value from the 'Xenon' spectrometer file
+readEPR_param_slct(triaryl_radCat_dsc_path,string = "QValue")
+#
+## loading `.par` (WinEPR) parameter file example
+TMPD_radCat_par_path <-
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
+#
 ## Reading `date` from 'WinEPR' spectrometer file
-read_param_slct(file.path(".",
-                          "dir_par",
-                          "EPR_spectrum.par"),
-                string = "JDA",
-                origin = "winepr")
-}
+readEPR_param_slct(TMPD_radCat_par_path,
+                   string = "JDA",
+                   origin = "winepr")
 
 
 }
