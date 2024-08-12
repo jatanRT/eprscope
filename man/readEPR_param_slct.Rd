@@ -56,24 +56,35 @@ Function takes the selected instrumental parameters or information
  or \code{WinEpr} Software, respectively).
 }
 \examples{
-## loading `.DSC` (Xenon) parameter file example
+## loading `.DSC` (`Xenon`) parameter file example
 triaryl_radCat_dsc_path <-
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
-## Reading modulation amplitude from the 'Xenon' spectrometer file
+## reading modulation amplitude from the `Xenon` spectrometer file
 readEPR_param_slct(triaryl_radCat_dsc_path,string = "B0MA")
 #
-## Reading Q-Value from the 'Xenon' spectrometer file
+## reading Q-Value from the `Xenon` spectrometer file
 readEPR_param_slct(triaryl_radCat_dsc_path,string = "QValue")
 #
-## loading `.par` (WinEPR) parameter file example
+## reading `CMNT` (comment) and `MWFQ` (microwave frequency)
+## from the `Xenon` spectrometer file
+readEPR_param_slct(triaryl_radCat_dsc_path,
+                   string = c("CMNT","MWFQ"))
+#
+## loading `.par` (`WinEPR`) parameter file example
 TMPD_radCat_par_path <-
   load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
-## Reading `date` from 'WinEPR' spectrometer file
+## reading `JDA` (date) from `WinEPR` spectrometer file
 readEPR_param_slct(TMPD_radCat_par_path,
                    string = "JDA",
                    origin = "winepr")
+#
+## reading `RMA` (modulation amplitude) and `TE` (temperature)
+## as well as `JCO` (comment) from `WinEPR` spectrometer file
+readEPR_param_slct(TMPD_radCat_par_path,
+                   string = c("RMA","TE","JCO"),
+                   origin = "WinEPR")
 
 
 }

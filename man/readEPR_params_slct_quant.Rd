@@ -28,14 +28,15 @@ List consisting of:
 \description{
 Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
   "modulation amplitude", "temperature", "microwave power" as well as "microwave frequency"
-  which are are required for absolute quantitative analysis of the EPR spectra (\eqn{\equiv}
+  which are are required for the absolute EPR quantitative analysis (\eqn{\equiv}
   radical or paramagnetic species number determination).
 }
 \examples{
-\dontrun{
-TODO
-TODO
-}
+## loading `.DSC` (`Xenon`) parameter file example
+aminoxyl_dsc_path <-
+  load_data_example(file = "Aminoxyl_radical_a.DSC")
+#
+readEPR_params_slct_quant(aminoxyl_dsc_path)
 
 
 }

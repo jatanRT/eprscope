@@ -53,24 +53,35 @@
 #'
 #'
 #' @examples
-#' ## loading `.DSC` (Xenon) parameter file example
+#' ## loading `.DSC` (`Xenon`) parameter file example
 #' triaryl_radCat_dsc_path <-
 #'   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #' #
-#' ## Reading modulation amplitude from the 'Xenon' spectrometer file
+#' ## reading modulation amplitude from the `Xenon` spectrometer file
 #' readEPR_param_slct(triaryl_radCat_dsc_path,string = "B0MA")
 #' #
-#' ## Reading Q-Value from the 'Xenon' spectrometer file
+#' ## reading Q-Value from the `Xenon` spectrometer file
 #' readEPR_param_slct(triaryl_radCat_dsc_path,string = "QValue")
 #' #
-#' ## loading `.par` (WinEPR) parameter file example
+#' ## reading `CMNT` (comment) and `MWFQ` (microwave frequency)
+#' ## from the `Xenon` spectrometer file
+#' readEPR_param_slct(triaryl_radCat_dsc_path,
+#'                    string = c("CMNT","MWFQ"))
+#' #
+#' ## loading `.par` (`WinEPR`) parameter file example
 #' TMPD_radCat_par_path <-
 #'   load_data_example(file = "TMPD_specelchem_accu_b.par")
 #' #
-#' ## Reading `date` from 'WinEPR' spectrometer file
+#' ## reading `JDA` (date) from `WinEPR` spectrometer file
 #' readEPR_param_slct(TMPD_radCat_par_path,
 #'                    string = "JDA",
 #'                    origin = "winepr")
+#' #
+#' ## reading `RMA` (modulation amplitude) and `TE` (temperature)
+#' ## as well as `JCO` (comment) from `WinEPR` spectrometer file
+#' readEPR_param_slct(TMPD_radCat_par_path,
+#'                    string = c("RMA","TE","JCO"),
+#'                    origin = "WinEPR")
 #'
 #'
 #' @export
@@ -143,17 +154,21 @@ readEPR_param_slct <- function(path_to_dsc_par,
       suppressWarnings( check.char <- sapply(string.vec, function(l) is.na(as.double(l))) )
       #
       ## if the component cannot be converted into numeric then convert
-      ## it into character
-      result <- Map(
-        function(i,j) {
-          ifelse(isTRUE(i),as.character(j),as.double(j))
-        },
-        check.char,
-        string.vec
+      ## it into character, if one of the components <=> "NA" => suppress warnings
+      suppressWarnings(
+        result <- Map(
+          function(i,j) {
+            ifelse(isTRUE(i),as.character(j),as.double(j))
+          },
+          check.char,
+          string.vec
+        )
       )
       #
-      ## rename the list
-      names(result) <- names.vec
+      ## rename the list + suppress warnings
+      suppressWarnings(
+        names(result) <- names.vec
+        )
       #
       return(result)
     }
@@ -235,7 +250,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #
 #
 #
-#' Read the Selected Instrumental Parameters Relevant to Time Series Experiment
+#' Read the Selected Instrumental Parameters of Time Series Experiment
 #'
 #'
 #' @family Data Reading
@@ -263,13 +278,12 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #'
 #' @examples
-#' \dontrun{
-#' readEPR_params_slct_kin(path_to_dsc_par)
-#' readEPR_params_slct_kin(file.path(".",
-#'                                   "dir_par",
-#'                                   "EPR_spectrum.par"),
-#'                         origin = "winepr")
-#' }
+#' ## loading `.DSC` (`Xenon`) parameter file example
+#' aminoxyl_dsc_path <-
+#'   load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+#' #
+#' readEPR_params_slct_kin(aminoxyl_dsc_path)
+#'
 #'
 #' @export
 #'
@@ -346,7 +360,7 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
 #' @description
 #'   Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
 #'   "modulation amplitude", "temperature", "microwave power" as well as "microwave frequency"
-#'   which are are required for absolute quantitative analysis of the EPR spectra (\eqn{\equiv}
+#'   which are are required for the absolute EPR quantitative analysis (\eqn{\equiv}
 #'   radical or paramagnetic species number determination).
 #'
 #'
@@ -366,10 +380,11 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
 #'
 #'
 #' @examples
-#' \dontrun{
-#' TODO
-#' TODO
-#' }
+#' ## loading `.DSC` (`Xenon`) parameter file example
+#' aminoxyl_dsc_path <-
+#'   load_data_example(file = "Aminoxyl_radical_a.DSC")
+#' #
+#' readEPR_params_slct_quant(aminoxyl_dsc_path)
 #'
 #'
 #' @export
@@ -412,7 +427,7 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #
 #
 #
-#' Read the Selected Instrumental Parameters Relevant to EPR Simulations
+#' Read the Selected Instrumental Parameters Required for EPR Simulations
 #'
 #'
 #' @family Data Reading
@@ -444,10 +459,14 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #'
 #'
 #' @examples
-#' \dontrun{
-#' TODO
-#' TODO
-#' }
+#' ## loading `.par` (`WinEPR`) parameter file example
+#' TMPD_radCat_par_path <-
+#'   load_data_example(file = "TMPD_specelchem_accu_b.par")
+#' #
+#' ## `B` parameters in `mT`
+#' readEPR_params_slct_sim(TMPD_radCat_par_path,
+#'                         origin = "winepr",
+#'                         B.unit = "mT")
 #'
 #'
 #' @export
@@ -485,5 +504,7 @@ readEPR_params_slct_sim <- function(path_to_dsc_par,
   rm(params.df)
   #
   named.params.list <- list(Bcf = B.CF,Bsw = B.SW,Npoints = Npoints,mwGHz = nu.GHz)
+  ## `B` quantities are returned in `B.unit` values
+  #
   return(named.params.list)
 }

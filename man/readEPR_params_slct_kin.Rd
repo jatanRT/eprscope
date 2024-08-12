@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_kin}
 \alias{readEPR_params_slct_kin}
-\title{Read the Selected Instrumental Parameters Relevant to Time Series Experiment}
+\title{Read the Selected Instrumental Parameters of Time Series Experiment}
 \usage{
 readEPR_params_slct_kin(path_to_dsc_par, origin = "xenon")
 }
@@ -31,13 +31,12 @@ Function takes the selected instrumental parameters relevant to \strong{time ser
  spectra, see \code{\link{correct_time_Exp_Specs}}.
 }
 \examples{
-\dontrun{
-readEPR_params_slct_kin(path_to_dsc_par)
-readEPR_params_slct_kin(file.path(".",
-                                  "dir_par",
-                                  "EPR_spectrum.par"),
-                        origin = "winepr")
-}
+## loading `.DSC` (`Xenon`) parameter file example
+aminoxyl_dsc_path <-
+  load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+#
+readEPR_params_slct_kin(aminoxyl_dsc_path)
+
 
 }
 \seealso{

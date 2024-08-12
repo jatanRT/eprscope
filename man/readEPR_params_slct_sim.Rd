@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_sim}
 \alias{readEPR_params_slct_sim}
-\title{Read the Selected Instrumental Parameters Relevant to EPR Simulations}
+\title{Read the Selected Instrumental Parameters Required for EPR Simulations}
 \usage{
 readEPR_params_slct_sim(path_to_dsc_par, origin = "xenon", B.unit = "G")
 }
@@ -36,10 +36,14 @@ Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parame
   which are are required for the simulations of EPR spectra (see \code{\link{eval_sim_EPR_iso}}).
 }
 \examples{
-\dontrun{
-TODO
-TODO
-}
+## loading `.par` (`WinEPR`) parameter file example
+TMPD_radCat_par_path <-
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
+#
+## `B` parameters in `mT`
+readEPR_params_slct_sim(TMPD_radCat_par_path,
+                        origin = "winepr",
+                        B.unit = "mT")
 
 
 }
