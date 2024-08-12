@@ -13,7 +13,7 @@
 #'  where \eqn{h} is the Planck's constant, \eqn{\mu_{\text{N}}^{}} is the nuclear magneton
 #'  available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\text{n}}^{}}
 #'  is the nuclear \eqn{g}-factor of the specific nucleus (reported in the data frame as \code{g_Nuclear})
-#'  and finally, the \eqn{B = 0.35\,\text{T}} denotes the magnetic flux density.
+#'  and finally, the \eqn{B = 0.35\,\text{T}} denotes the magnetic flux density. See also `vignette("datasets")`.
 #'
 #'
 #' @family Built-In Datasets

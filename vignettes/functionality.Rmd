@@ -503,7 +503,7 @@ present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
 
 ```
 
-Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to gather a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` may be needed. More information can be found in `vignette("EPR_Simulations")`.
+Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to gather a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` may be needed.
 
 ## Integrating the EPR Spectrum
 

@@ -15,7 +15,7 @@
 #'  has to be used for an experiment at specific temperature (unless the measurements performed directly in liquid \eqn{\text{N}_2})
 #'  => for polar solvents use capillaries or special "flat" cells (e.g. like for EPR spectroelectrochemistry),
 #'  while for less polar solvents common quartz tubes
-#'  (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied.
+#'  (with the i.d. of \eqn{(2-4)\,\text{mm}}) can be applied. See also `vignette("datasets")`
 #'
 #'
 #'

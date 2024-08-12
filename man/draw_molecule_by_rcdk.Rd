@@ -21,7 +21,7 @@ draw_molecule_by_rcdk(
 \arguments{
 \item{molecule}{Character input string => either SMILES strings (in case
 of \code{type = "smiles"}/\code{type = "SMILES"}) or file path strings
-pointing to \code{".sdf"} files.}
+pointing to \code{".sdf"} file.}
 
 \item{type}{Character string referred to the original molecular type input =>
 either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
@@ -62,7 +62,7 @@ the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.}
 can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
 \code{abbr = "groups"} creating an abbreviation for \code{groups}; \code{abbr = "reagents"} creating
 an abbreviation for \code{reagents} or \code{abbr = "on"} to abbreviate the both.
-The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "of"}!}
+The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "off"}!}
 
 \item{suppressh}{Logical, denoting whether to suppress displaying the hydrogen atoms.
 The \code{SMILES} or \code{SDF} STRUCTURE MUST CONTAIN \strong{H} ATOMS!
