@@ -13,7 +13,7 @@ at which the individual EPR spectra were recorded (supplied by the EPR acquisiti
 \item{Nscans}{Numeric, number of accumulations (number of scans usually denoted as \code{AVGS})
 for each spectrum in EPR time series.}
 
-\item{sweep.time.s}{Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{=}
+\item{sweep.time.s}{Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{\equiv}
 one "accumulation".}
 }
 \value{
@@ -44,7 +44,7 @@ The actual time at the middle/crossing point
 The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 and the \code{N_scans} corresponds to \code{number of scans}, \code{swt} to \code{sweep time}
 for the individual scan. These parameters can be obtained by the \code{\link{readEPR_params_slct_kin}}
-or other functions which can read the instrumental parameters.
+or other functions which can read the instrumental parameter files.
 }
 \examples{
 ## 12 s recorded by spectrometer, 6 accumulations by the sweep time of 6 s

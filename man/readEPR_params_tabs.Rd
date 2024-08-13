@@ -9,7 +9,7 @@ readEPR_params_tabs(path_to_dsc_par, origin = "xenon", interact = NULL)
 \arguments{
 \item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
 to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
-\code{text} files including all instrumental parameters and provided by the EPR machine.}
+\code{text} files including instrumental parameters and provided by the EPR machine.}
 
 \item{origin}{Character string, corresponding to software which was used to acquire the EPR spectra
 on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
@@ -27,26 +27,26 @@ List of data frames/tables containing:
  \item{params}{Instrumental parameters with their numeric values and units.}
  \item{info}{Information character string, e.g. like date, operator, comment...etc.}
  }
- Both data frames tables may be depicted in the form of interactive tables
+ Both data frames may be depicted in the form of interactive tables
  by \code{interact} function argument.
 }
 \description{
-Function takes the instrumental parameters (from \code{.DSC/.dsc} or \code{.par} file) applied
-  to record the EPR Spectra and transfers them into list of \code{Tables/Data Frames} incl.
+Taking the instrumental parameters from \code{.DSC/.dsc} or \code{.par} files, applied
+  to record the EPR Spectra and transfering them into list of \code{Tables/Data Frames} incl.
   parameter values as well as character/string information about the measurement see also
   \code{\link{readEPR_param_slct}}.
 }
 \examples{
 ## built-in package file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
-## reading and displaying parameters as data frames
+## reading and displaying parameters as data frame
 tmpd.params.tab <- readEPR_params_tabs(tmpd.params.file,
                                        origin = "winepr")
 ##
 ## preview
 tmpd.params.tab$params
 ##
-## the same like interactive table form
+## the same data frame, now in interactive table form
 readEPR_params_tabs(tmpd.params.file,
                     origin = "winepr",
                     interact = "params")

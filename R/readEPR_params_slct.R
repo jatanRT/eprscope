@@ -5,16 +5,16 @@
 #'
 #'
 #' @description
-#'  Function takes the selected instrumental parameters or information
+#'  Taking selected instrumental parameters or information
 #'  from \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
 #'  or \code{WinEpr} Software, respectively).
 #'
 #'
-#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
-#'   parameters provided by the EPR machine, path can be provided by \code{\link[base]{file.path}}
+#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including the instrumental
+#'   parameters provided by the EPR machine. File path can be also defined by \code{\link[base]{file.path}}.
 #' @param string Character (vector) string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
-#'   corresponding to instrumental parameter,
-#'  following \strong{strings are defined for all three main acquisition software described-above}
+#'   corresponding to instrumental parameter.
+#'  Following \strong{strings are defined for all three main acquisition software described-above}
 #'   (\strong{in parenthesis for "winepr" software}):
 #'  \tabular{ll}{
 #'   \strong{String} \tab \strong{Instrumental Parameter} \cr
@@ -25,7 +25,7 @@
 #'    "SAMP" \tab name/decsript. of the sample, not available in "magnettech" \code{.dsc} \cr
 #'    "B0MF" \tab modulation frequency in \code{Hz} \cr
 #'    "MWFQ" ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
-#'    "QValue" \tab recorded quality-Factor (required for intensity norm.) \code{unitless} \cr
+#'    "QValue" \tab recorded quality-Factor (required for intensity normalization) \code{unitless} \cr
 #'    "A1CT" ("HCF") \tab central field (B) in \code{T} (\code{G}) \cr
 #'    "A1SW" ("HSW") \tab sweep width in \code{T} (\code{G}) \cr
 #'    "STMP" ("TE")  \tab temperature in \code{K} \cr
@@ -57,13 +57,13 @@
 #' triaryl_radCat_dsc_path <-
 #'   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #' #
-#' ## reading modulation amplitude from the `Xenon` spectrometer file
+#' ## reading modulation amplitude (in T) from the `Xenon` spectrometer file
 #' readEPR_param_slct(triaryl_radCat_dsc_path,string = "B0MA")
 #' #
 #' ## reading Q-Value from the `Xenon` spectrometer file
 #' readEPR_param_slct(triaryl_radCat_dsc_path,string = "QValue")
 #' #
-#' ## reading `CMNT` (comment) and `MWFQ` (microwave frequency)
+#' ## reading `CMNT` (comment) and `MWFQ` (microwave frequency in Hz)
 #' ## from the `Xenon` spectrometer file
 #' readEPR_param_slct(triaryl_radCat_dsc_path,
 #'                    string = c("CMNT","MWFQ"))
@@ -77,7 +77,7 @@
 #'                    string = "JDA",
 #'                    origin = "winepr")
 #' #
-#' ## reading `RMA` (modulation amplitude) and `TE` (temperature)
+#' ## reading `RMA` (modulation amplitude in G) and `TE` (temperature in K)
 #' ## as well as `JCO` (comment) from `WinEPR` spectrometer file
 #' readEPR_param_slct(TMPD_radCat_par_path,
 #'                    string = c("RMA","TE","JCO"),
@@ -106,7 +106,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
     }
   }
   if (any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
-    if (any(grepl("RCTC|RCAG|ConvFact",string))) {
+    if (any(grepl("RCTC|RCAG|ConvFact|SAMP",string))) {
       stop(" The `string` (components) is (are) not available for Magnetech !!")
     }
   }

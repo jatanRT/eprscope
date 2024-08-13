@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Conversion of time (\eqn{t}) into variable \code{var} (\eqn{var}) which is linearly changed upon time.
+#'   Conversion of time (\eqn{t}) into variable (\eqn{var}) which is linearly changed upon time.
 #'
 #'
 #' @details
@@ -20,7 +20,7 @@
 #'  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
 #'  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
 #'  where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
-#'  at the turning point( see also \code{var.switch}).
+#'  at the turning point( see also \code{var.switch} argument).
 #'
 #'
 #'
@@ -28,7 +28,7 @@
 #'   is changed.
 #' @param time.unit Character string time unit defined by \code{s},\code{min} or \code{h}.
 #'   \strong{Default}: \code{time.unit = "s"}.
-#' @param var0 Numeric, the initial/starting value (INCL. ALSO NEGATIVE SIGN, if required, e.g. like
+#' @param var0 Numeric, the initial value (INCL. ALSO NEGATIVE SIGN, if required, e.g. like
 #'   negative electrochemical potential) of the variable (\code{var}).
 #' @param var.switch Numeric, the switching point \code{var} value, in case when a linear CYCLIC CHANGE
 #'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
@@ -46,11 +46,11 @@
 #'
 #'
 #' @examples
-#' ## Calculate Potential after 30 s, starting from 200 mV
+#' ## calculate Potential after 30 s, starting from 200 mV
 #' ## into cathodic direction (reduction) by 5 mV s^{-1}
 #' convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
 #' #
-#' ## Heating sample after 5 min starting from 293 K
+#' ## heating sample after 5 min starting from 293 K
 #' ## by the temperature rate of 4 K min^{-1}
 #' convert_time2var(5,
 #'                  time.unit = "min",
@@ -58,7 +58,7 @@
 #'                  var.rate = 4,
 #'                  var.rate.unit = "min^{-1}")
 #' #
-#' ## Create/Evaluate vector containing the applied
+#' ## create/evaluate vector containing the applied
 #' ## cell potential (in V) from the simultaneously
 #' ## performed electrochemical oxidation experiment
 #' ## (e.g. cyclic voltammetry from -0.1V to 0.45V and back

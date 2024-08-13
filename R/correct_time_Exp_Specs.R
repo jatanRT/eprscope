@@ -30,14 +30,14 @@
 #' The recorded times are: \code{t[1]},\code{t[2]},\code{t[3]},...
 #' and the \code{N_scans} corresponds to \code{number of scans}, \code{swt} to \code{sweep time}
 #' for the individual scan. These parameters can be obtained by the \code{\link{readEPR_params_slct_kin}}
-#' or other functions which can read the instrumental parameters.
+#' or other functions which can read the instrumental parameter files.
 #'
 #'
 #' @param time.s Numeric value/vector/column in \code{data frame} corresponding to \code{time} (in \code{s})
 #'   at which the individual EPR spectra were recorded (supplied by the EPR acquisition software).
 #' @param Nscans Numeric, number of accumulations (number of scans usually denoted as \code{AVGS})
 #'   for each spectrum in EPR time series.
-#' @param sweep.time.s Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{=}
+#' @param sweep.time.s Numeric, time (in \code{s}) for recording individual EPR spectrum \eqn{\equiv}
 #'   one "accumulation".
 #'
 #'

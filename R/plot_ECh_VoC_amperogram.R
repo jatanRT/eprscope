@@ -170,13 +170,13 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
       data.voltamm[[x]] <- data.voltamm[[x]] * 60
       ## rename "x" column
       data.voltamm <- data.voltamm %>%
-        dplyr::rename(dplyr::all_of(c("time_s" = "time_min")))
+        dplyr::rename(dplyr::all_of(c("time_s" = x))) ## was replaced by general "x"
     }
     if (x.unit == "ms"){
       data.voltamm[[x]] <- data.voltamm[[x]] * 0.001
       ## rename "x" column
       data.voltamm <- data.voltamm %>%
-        dplyr::rename(dplyr::all_of(c("time_s" = "time_ms")))
+        dplyr::rename(dplyr::all_of(c("time_s" = x))) ## was replaced by general "x"
     }
   }
   #

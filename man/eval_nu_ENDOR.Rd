@@ -10,7 +10,7 @@ eval_nu_ENDOR(nucle_us_i, B.unit = "G", B.val)
 \item{nucle_us_i}{(Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
 pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \emph{g}-factors
 for those nuclei are taken from the package \code{isotopes_ds} data frame. Se also documentation
-\code{?eprscope::isotopes_ds}.}
+\code{\link{isotopes_ds}}.}
 
 \item{B.unit}{Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}: \code{B.unit = "G"}.}
 

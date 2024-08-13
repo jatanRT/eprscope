@@ -1,33 +1,34 @@
 #
-#' Load Several/Multiple EPR Spectral Data Files with Parameters
+#' Load Several/Multiple EPR Spectral Data Files Simultaneously
 #'
 #'
 #' @family Data Reading
 #'
 #'
 #' @description Loads the EPR spectra from several/multiple \code{text} files (including the instrumental
-#'   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. The data are finally transformed
-#'   either into a list of data frames or into a tidy / long table format. According to experimental quantity
-#'   (e.g. temperature, microwave power, recording time...etc), \code{names} and \code{var2nd.series}
-#'   (in the case of \code{tidy = TRUE}) parameters have to be provided.
+#'   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. Finally, the data are transformed
+#'   either into a list of data frames or into a \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}.
+#'   According to experimental quantity (e.g. temperature, microwave power, recording time...etc),
+#'   \code{names} and \code{var2nd.series} (in the case of \code{tidy = TRUE}) arguments have to be provided.
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
-#' @param name_pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
-#'   from name which might not necessarily appear at the beginning of the file name. THE SAME NAME AND \code{name_pattern}
-#'   MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES !
+#' @param name.pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
+#'   from file name which might not necessarily appear at the beginning of the file name. One may also consult
+#'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}. THE SAME NAME AND \code{name_pattern}
+#'   MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES.
 #' @param dir_ASC Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
 #'   the \code{ASCII} files are stored.
 #' @param dir_dsc_par Path (defined by \code{\link[base]{file.path}} or by character string) to directory
-#'   where the files (\code{.DSC}/\code{.dsc} or \code{.par}) with instrumental parameters are stored.
+#'   where the \code{.DSC}/\code{.dsc} or \code{.par} files,including instrumental parameters, are stored.
 #' @param col.names Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
 #'   A safe rule of thumb is to use column names including the physical quantity notation with its units,
 #'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
+#'   to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
 #'   referring to column names coming from \emph{Xenon} software.
-#' @param x.unit Character string pointing to unit of quantity (coming from original ASCII data, see also
-#'   \code{col.names} argument) which is to be presented on \eqn{x} abscissa of the EPR spectrum.
+#' @param x.unit Character string pointing to unit of quantity (coming from the original ASCII data, see also
+#'   \code{col.names} argument) which is to be presented on \eqn{x}-axis of the EPR spectrum.
 #'   Units like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \code{x.unit = "G"}.
 #' @param qValues Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either loaded from
@@ -60,10 +61,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## Multiple ENDOR spectra at different temperatures recorded by "Xenon" software
-#' ## read and transformed into `longtable`. Prepared to plot the overlay
+#' ## multiple ENDOR spectra at different temperatures recorded by `Xenon` software
+#' ## read and transformed into `longtable`, prepared to plot the overlay
 #' ## EPR spectra => `var2nd.series.factor = FALSE` (default).
-#' readEPR_Exp_Specs_multif(name_pattern = "Sample_VT_",
+#' readEPR_Exp_Specs_multif(name.pattern = "^.*_sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
 #'                          col.names = c("index",
@@ -76,12 +77,12 @@
 #'                          tidy = TRUE,
 #'                          var2nd.series = "Temperature_K")
 #' #
-#' ## Multiple EPR spectra recorded at different temperatures
-#' ## by "WinEPR" software. Experiments performed with a powder
+#' ## multiple EPR spectra recorded at different temperatures
+#' ## by `WinEPR` software, experiments performed with a powder
 #' ## sample (m = 10 mg) and each spectrum acquired
-#' ## as 7 accumulations. The resulting database
+#' ## as 7 accumulations, the resulting database
 #' ## corresponds to list of data frames
-#' readEPR_Exp_Specs_multif("Sample_VT_",
+#' readEPR_Exp_Specs_multif("^Sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
 #'                          col.names = c("B_G","dIepr_over_dB"),
@@ -93,10 +94,10 @@
 #'                          norm.list.add = rep(list(c(10,7)),times = 4),
 #'                          origin = "winepr")
 #' #
-#' ## Multiple 'Xenon' EPR spectra related to one powder sample (m = 8 mg)
+#' ## multiple `Xenon` EPR spectra related to one powder sample (m = 8 mg)
 #' ## where several instrumental parameters are changed
-#' ## at once. The file names (files are stored in the actual directory)
-#' ## start with "R5228_AV_powder_". Function returns all spectral data
+#' ## at once, the file names (files are stored in the actual directory)
+#' ## start with "R5228_AV_powder_", function returns all spectral data
 #' ## in `tidy` (long) table format
 #' readEPR_Exp_Specs_multif(name.pattern = "R5228_AV_powder_",
 #'                          dir_ASC = ".",
@@ -112,7 +113,7 @@
 #'
 #'
 #' @importFrom rlang quo_name :=
-readEPR_Exp_Specs_multif <- function(name_pattern,
+readEPR_Exp_Specs_multif <- function(name.pattern,
                                      dir_ASC,
                                      dir_dsc_par,
                                      col.names = c(
@@ -147,8 +148,8 @@ readEPR_Exp_Specs_multif <- function(name_pattern,
   #
   ## file name pattern which has to be the same for `txt`+`DSC`/`.dsc`
   ## or `.asc` and `.par`
-  file.name.pattern.asc <- paste0(name_pattern,".*\\.(txt|asc|csv)$")
-  file.name.pattern.params <- paste0(name_pattern,".*\\.(DSC|dsc|par)$")
+  file.name.pattern.asc <- paste0(name.pattern,".*\\.(txt|asc|csv)$")
+  file.name.pattern.params <- paste0(name.pattern,".*\\.(DSC|dsc|par)$")
   #
   ## path to all `asc` files
   files.asc <- list.files(

@@ -31,7 +31,7 @@
 #' @param nucle_us_i (Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
 #'   pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \emph{g}-factors
 #'   for those nuclei are taken from the package \code{isotopes_ds} data frame. Se also documentation
-#'   \code{?eprscope::isotopes_ds}.
+#'   \code{\link{isotopes_ds}}.
 #' @param B.unit Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}: \code{B.unit = "G"}.
 #' @param B.val Numeric, magnetic flux density \emph{B} \code{value}. This actually corresponds to \emph{B} at which
 #'   the EPR signal saturates to record the ENDOR spectrum/spectra.

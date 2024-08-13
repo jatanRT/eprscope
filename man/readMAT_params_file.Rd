@@ -15,17 +15,17 @@ and \code{g} => \strong{Sys}.g, respectively. \strong{Default}: \code{str.var = 
 
 \item{field.var}{Character string, \code{field variable after 'dot'}, which is available only for certain
 structures/variables, see e.g. example above (Sys.\strong{g}), therefore
-the \strong{default} 'value' is \code{NULL} and the \code{string} \strong{is applied only for structures with fields}.}
+the \strong{default} value is \code{NULL} and the \code{string} \strong{is applied only for structures with fields}.}
 }
 \value{
 Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} with all original
   parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character \code{vector/value}
-  or list depending on `class` of the original parameter/field variable.
+  or list depending on \code{class} of the original parameter/field variable.
 }
 \description{
-Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a `.mat`
-simulation file from MATLAB incl. structures/variables and fields. It can be also used to read and store
-simulated EPR spectrum in the form of `data frame`.
+Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a \code{.mat}
+simulation file from MATLAB including structures/variables and fields. It can be also used to read and store
+simulated EPR spectrum in the form of a R data frame.
 }
 \examples{
 ## loading the package built-in

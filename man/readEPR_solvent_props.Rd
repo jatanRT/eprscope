@@ -13,16 +13,16 @@ If more than one rows/observations are being returned (e.g. in case of \code{sol
 solvent specification must be provided e.g. like \code{solvent = "o-xylene"}.}
 
 \item{prop}{Character string related to a data frame variable/column/property e.g. like \code{"boiling"},
-\code{"formula"}, \code{"dens"}, \code{"dielectric"}...etc.}
+\code{"formula"}, \code{"dens"}, \code{"dielectric"}...etc (see also \code{\link{solvents_ds}}).}
 }
 \value{
-Data frame (row/rows) of selected solvent(s) an the corresponding properties. If a specific property
+Data frame with row/rows of selected solvent(s) and the corresponding properties. If a specific property
   is called like, e.g. \code{code = "melting"} (\eqn{\equiv} melting point in °C), the function returns
   \code{value/character}.
 }
 \description{
-Gathering the solvent properties from \code{solvents_ds} see \code{\link{solvents_ds}} in order to pick-up only
-  a specific solvent (\code{solvent} argument) and its corresponding properties (\code{prop} argument).
+Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up only
+  a specific \code{solvent} and its corresponding properties (\code{prop} argument).
 }
 \examples{
 ## Properties of `DMSO`:

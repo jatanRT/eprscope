@@ -5,19 +5,18 @@
 #' @family Data Reading
 #'
 #'
-#' @description The function reads (based on \code{\link{readEPR_Exp_Specs}}) the continuous wave (CW)
-#'  EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay} experiment in "Xenon"
-#'  acquisition/processing software). Function includes automatic time correction for CW EPR
-#'  \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
+#' @description Reaading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
+#'  experiment in "Xenon" acquisition/processing software). Function (based on \code{\link{readEPR_Exp_Specs}}) includes
+#'  automatic time correction for CW EPR \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
-#' @param name_root Character string corresponding to entire file name without extension.
-#' @param dir_ASC Character string, path (can be defined by \code{\link[base]{file.path}})
+#' @param name.root Character string corresponding to entire \strong{file name without extension}.
+#' @param dir_ASC Character string, path (can be also defined by \code{\link[base]{file.path}})
 #'   to directory where the \code{ASCII} spectral data is stored.
-#' @param dir_dsc_par Character string, path (can be defined by \code{\link[base]{file.path}} character string)
-#'   to directory where the file (\code{.DSC}/\code{.dsc} or \code{.par}) with instrumental parameters
-#'   (to calculate \eqn{g}-value or normalize intensities) is stored.
+#' @param dir_dsc_par Character string, path (can be also defined by \code{\link[base]{file.path}})
+#'   to directory where the \code{.DSC}/\code{.dsc} or \code{.par} parameter file is stored
+#'   (to calculate \eqn{g}-value and/or normalize intensities).
 #' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
 #'   \strong{Default}: \code{time.unit = "s"}
 #' @param time.delta.slice.s Numeric, time span/interval in seconds between \code{slices},
@@ -32,29 +31,47 @@
 #'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
-#'   \code{qValue = NULL}. If EPR spectra were acquired by the "Winepr" software Q value must be defined
-#'   like \code{qValue = 3400}
+#'   \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
+#'   by the "Winepr" software Q value must be defined like \code{qValue = 3400}.
 #' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
 #'   all additional (in addition to \code{qValue}) normalization(s) e.g. like concentration, powder sample
 #'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
-#'   \code{norm.vec.add = NULL}.
+#'   \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).
 #' @param ... additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
 #' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
 #'    time vector (\code{time}). For \code{origon = "winepr"} "time" slices/indices must be already converted
-#'    into time domain by \code{time.delta.slice.s} (see arguments).
+#'    into time domain by \code{time.delta.slice.s} (see arguments and examples).
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## Reading by the "Xenon" software
-#' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
-#'                       file.path(".","ASCII_data_dir"),
-#'                       file.path(".","dsc_data_dir")
+#' ## loading the built-in package example to demonstrate
+#' ## the reading of time series EPR spectra/kinetics:
+#' triarylamine.decay.series.dsc.path <-
+#' load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+#' triarylamine.decay.series.asc.path <-
+#' load_data_example(file = "Triarylamine_radCat_decay_series.zip")
+#' unzip(triarylamine.decay.series.asc.path,exdir = tempdir())
+#' #
+#' ## loading the kinetics:
+#' triarylamine.decay.series.data <-
+#' readEPR_Exp_Specs_kin(name.root = "Triarylamine_radCat_decay_series",
+#'                       dir_ASC = tempdir(),
+#'                       dir_dsc_par =
+#'                       system.file("extdata",
+#'                                   package = "eprscope")
 #'                       )
-#'
-#' ## Reading by the "WinEPR" software
+#' #
+#' ## data preview
+#' head(triarylamine.decay.series.data$df)
+#' #
+#' ## preview of corrected time vector
+#' ## (the uncorrected one actually starts from `0`)
+#' triarylamine.decay.series.data$time
+#' #
+#' \dontrun{
+#' ## reading by the "WinEPR" software
 #' readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
 #'                       file.path(".","ASCII_data_dir"),
 #'                       file.path(".","dsc_data_dir"),
@@ -77,7 +94,7 @@
 #' @export
 #'
 #'
-readEPR_Exp_Specs_kin <- function(name_root,
+readEPR_Exp_Specs_kin <- function(name.root,
                                   dir_ASC,
                                   dir_dsc_par,
                                   time.unit = "s",
@@ -101,7 +118,7 @@ readEPR_Exp_Specs_kin <- function(name_root,
   ## 'Temporary' processing variables
   . <- NULL
   #
-  ## file name_root which has to be the same for `ASC`+`DSC`/`dsc`
+  ## file name.root which has to be the same for `ASC`+`DSC`/`dsc`
   ## or `.spc` and `.par`and corresponds to file name without extension
   #
   ## ================= Reading Files & Parameters ==================
@@ -127,7 +144,7 @@ readEPR_Exp_Specs_kin <- function(name_root,
     ## path to `asc` file
     path.to.asc <- file.path(
       dir_ASC,
-      paste0(name_root,
+      paste0(name.root,
              switch(2-xen.magnet.cond(origin = origin),
                     ".csv",
                     ".txt"
@@ -137,7 +154,7 @@ readEPR_Exp_Specs_kin <- function(name_root,
     #
     ## path to `DSC` or `dsc`
     path.to.dsc.par <- list.files(path = dir_dsc_par,
-                                  pattern = paste0("^",name_root, "\\.(DSC|dsc)$"),
+                                  pattern = paste0("^",name.root, "\\.(DSC|dsc)$"),
                                   full.names = TRUE)
     #
     ## Qvalue
@@ -147,13 +164,13 @@ readEPR_Exp_Specs_kin <- function(name_root,
     ## path to asc
     path.to.asc <- file.path(
       dir_ASC,
-      paste0(name_root, ".asc")
+      paste0(name.root, ".asc")
     )
     #
     ## path to `par`
     path.to.dsc.par <- file.path(
       dir_dsc_par,
-      paste0(name_root, ".par")
+      paste0(name.root, ".par")
     )
     #
     ## Qvalue definition

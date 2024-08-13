@@ -190,7 +190,7 @@
 #' unzip(triarylamine.decay.series.asc.path,exdir = tempdir())
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
-#' readEPR_Exp_Specs_kin(name_root = "Triarylamine_radCat_decay_series",
+#' readEPR_Exp_Specs_kin(name.root = "Triarylamine_radCat_decay_series",
 #'                       dir_ASC = tempdir(),
 #'                       dir_dsc_par =
 #'                       system.file("extdata",

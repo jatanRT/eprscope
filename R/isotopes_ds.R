@@ -7,13 +7,15 @@
 #' @details
 #'  This dataset was taken form \href{https://easyspin.org/easyspin/documentation/isotopetable.html}{`EasySpin` toolbox}
 #'  and only it's format was slightly modified. Therefore, IT CONTAINS THE ENTIRE INFORMATION
-#'  LIKE THE ORIGINAL DATASET (see the SOURCE BELOW). For better orientation in ENDOR spectra,
+#'  LIKE THE ORIGINAL DATASET (see the Source). For better orientation in ENDOR spectra,
 #'  column with the Larmor/ENDOR frequencies (in MHz) at 0.35 T was added according to =>
 #'  \deqn{\nu_{\text{ENDOR}}^{} = - (1/h)\,\mu_{\text{N}}^{}\,g_{\text{n}}^{}\,B\,10^{-6}}
 #'  where \eqn{h} is the Planck's constant, \eqn{\mu_{\text{N}}^{}} is the nuclear magneton
-#'  available from \pkg{constants} package (\code{constants::syms$mun}), \eqn{g_{\text{n}}^{}}
+#'  available from \pkg{constants} package (\code{constants::syms$mun},\code{\link[constants]{syms}}), \eqn{g_{\text{n}}^{}}
 #'  is the nuclear \eqn{g}-factor of the specific nucleus (reported in the data frame as \code{g_Nuclear})
-#'  and finally, the \eqn{B = 0.35\,\text{T}} denotes the magnetic flux density.
+#'  and finally, the \eqn{B = 0.35\,\text{T}} denotes the magnetic flux density. The negative sign "\eqn{-}" mirrors
+#'  the convention to describe the direction of magnetic spin moments precession (see \code{\link{eval_nu_ENDOR}}) either
+#'  counter-clockwise (\eqn{+}, if \eqn{\gamma_{\text{n}}^{} < 0}) or clockwise (\eqn{-}, if \eqn{\gamma_{\text{n}}^{} > 0})
 #'  See also \code{vignette("datasets")}.
 #'
 #'
