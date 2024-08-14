@@ -336,8 +336,6 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                  )
     ) +
     plot_theme_In_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
-    scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
     theme(
       plot.title = element_text(hjust = 0.5),
       legend.title = element_text(size = 14),

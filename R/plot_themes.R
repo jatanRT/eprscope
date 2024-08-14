@@ -6,29 +6,39 @@
 #'
 #'
 #' @description
-#' tbc
+#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+#'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
+#'   \strong{inside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
+#'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+#'   (see also \code{\link[ggplot2]{theme}}) or to
+#'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 #'
 #'
 #' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
-#'   \strong{default}: \code{axis.text.size = 14}
+#'   \strong{default}: \code{axis.text.size = 14}.
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
-#'   \strong{default}: \code{axis.title.size = 15}
-#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
-#' @param border.line.color description...tbc...
-#' @param border.line.type description ...tbc...
+#'   \strong{default}: \code{axis.title.size = 15}.
+#' @param grid Logical, whether to display the \code{grid} within the plot/graph panel, \strong{default}: \code{grid = TRUE}.
+#' @param border.line.color Character string, setting up the color of the graph/plot panel border line, \strong{default}:
+#'   \code{border.line.color = "black"}.
+#' @param border.line.type Character string or integer corresponding to width of the graph/plot panel border line. Following types
+#'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+#'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..
 #' @param border.line.width description ...tbc...
-#' @param bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
+#' @param bg.transparent Logical, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
 #'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background
+#' @param ... additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
+#'   \code{axis.line},...etc).
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing inside} the graph panel,
-#'   to show opposite axis ticks use: \code{scale_..._continuous(sec.axis = dup_axis(name = "",labels = NULL))}
+#' @return Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing inside the graph/plot panel.
 #'
 #'
 #' @examples
 #' \dontrun{
-#' tbc
-#' tbc
+#' TBC
+#' TBC
 #' }
 #'
 #'
@@ -41,7 +51,8 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
                                 border.line.color = "black",
                                 border.line.type = 1,
                                 border.line.width = 0.5,
-                                bg.transparent = FALSE) {
+                                bg.transparent = FALSE,
+                                ...) {
   ## theme parts:
   theme_bas <- theme(
     axis.ticks.length = unit(-6, "pt"),
@@ -52,9 +63,18 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
     panel.border = element_rect(color = border.line.color,
                                 linetype = border.line.type,
                                 linewidth = border.line.width,
-                                fill = NA)
+                                fill = NA),
+    plot.title = element_text(margin = margin(b = -4)),
+    plot.subtitle = element_text(margin = margin(t = 8,b = -6)),
+    ...
   )
+  #
+  ## no-grid theme part
   theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  #
+  ## duplicate axis with in-ticks
+  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  axis_y_duplicate <- scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
   ## theme:
   if (isTRUE(bg.transparent)) {
@@ -75,7 +95,9 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
     }
   }
   #
-  return(thm)
+  ## with the theme + `scaling` function a list must be returned:
+  ## (see also https://stackoverflow.com/questions/35559303/r-how-to-add-scale-functio-to-a-theme-object-in-ggplot2)
+  return(list(thm,axis_x_duplicate,axis_y_duplicate))
   #
 }
 #
@@ -89,29 +111,27 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @description
-#' tbc
+#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+#'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
+#'   \strong{inside the graph/plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
+#'   For details of \code{ggplot2} theme elements please,
+#'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+#'   (see also \code{\link[ggplot2]{theme}}) or to
+#'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 #'
 #'
-#' @param axis.text.size  Numeric, text size (in \code{pt}) for the axes units/descriptions,
-#'   \strong{default}: \code{axis.text.size = 14}
-#' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
-#'   \strong{default}: \code{axis.title.size = 15}
-#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
-#' @param border.line.color description...tbc...
-#' @param border.line.type description ...tbc...
-#' @param border.line.width description ...tbc...
-#' @param bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-#'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background
+#' @inheritParams plot_theme_In_ticks
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} \code{without Y axis ticks}, to show opposite X axis ticks
-#'   use: \code{scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))}
+#' @return Custom \pkg{ggplot2} \code{theme} with \code{x-axis} ticks pointing inside the graph/plot panel,
+#'   and with \code{y-ticks} being not displayed.
 #'
 #'
 #' @examples
 #' \dontrun{
-#' tbc
-#' tbc
+#' TBC
+#' TBC
 #' }
 #'
 #'
@@ -124,7 +144,8 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
                                  border.line.color = "black",
                                  border.line.type = 1,
                                  border.line.width = 0.5,
-                                 bg.transparent = FALSE) {
+                                 bg.transparent = FALSE,
+                                 ...) {
   ## theme parts:
   theme_bas <- theme(
     axis.ticks.length = unit(-6, "pt"),
@@ -135,9 +156,17 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
     panel.border = element_rect(color = border.line.color,
                                 linetype = border.line.type,
                                 linewidth = border.line.width,
-                                fill = NA)
+                                fill = NA),
+    plot.title = element_text(margin = margin(b = -4)),
+    plot.subtitle = element_text(margin = margin(t = 8,b = -6)),
+    ...
   )
+  #
+  ## no-grid theme part
   theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  #
+  ## duplicate axis with in-ticks
+  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
   ## theme:
   if (isTRUE(bg.transparent)) {
@@ -158,7 +187,9 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
     }
   }
   #
-  return(thm)
+  ## with the theme + `scaling` function a list must be returned:
+  ## (see also https://stackoverflow.com/questions/35559303/r-how-to-add-scale-functio-to-a-theme-object-in-ggplot2)
+  return(list(thm,axis_x_duplicate))
   #
 }
 #
@@ -171,22 +202,20 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' @family Visualizations and Graphics
 #'
 #'
-#' @description TODO
+#' @description
+#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+#'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
+#'   \strong{outside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
+#'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+#'   (see also \code{\link[ggplot2]{theme}}) or to
+#'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 #'
 #'
-#' @param axis.text.size Numeric, text size (in \code{pt}) for the axes units/descriptions,
-#'   \strong{default}: \code{axis.text.size = 14}
-#' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
-#'   \strong{default}: \code{axis.title.size = 15}
-#' @param grid Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}
-#' @param border.line.color description...tbc...
-#' @param border.line.type description ...tbc...
-#' @param border.line.width description ...tbc...
-#' @param bg.transparent Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-#'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background
+#' @inheritParams plot_theme_In_ticks
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing outside} the graph panel
+#' @return Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing outside the graph/plot panel.
 #'
 #'
 #' @examples
@@ -205,7 +234,8 @@ plot_theme_Out_ticks <- function(axis.text.size = 14,
                                  border.line.color = "black",
                                  border.line.type = 1,
                                  border.line.width = 0.5,
-                                 bg.transparent = FALSE) {
+                                 bg.transparent = FALSE,
+                                 ...) {
   ## theme parts:
   theme_bas <- theme(
     axis.ticks.length = unit(6, "pt"),
@@ -216,8 +246,12 @@ plot_theme_Out_ticks <- function(axis.text.size = 14,
     panel.border = element_rect(color = border.line.color,
                                 linetype = border.line.type,
                                 linewidth = border.line.width,
-                                fill = NA)
+                                fill = NA),
+    plot.title = element_text(margin = margin(b = -4)),
+    plot.subtitle = element_text(margin = margin(t = 8,b = -6)),
+    ...
   )
+  #
   theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   #
   ## theme:
