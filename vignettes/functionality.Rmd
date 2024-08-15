@@ -497,8 +497,8 @@ Afterwards, the simulated EPR spectrum can be presented/compared with the experi
 present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
                      data.spectr.sim = sim.tmpd.iso$df,
                      B.unit = "mT") +
-  plot_theme_NoY_ticks() + # `plot_theme_NoY_ticks` theme from `{eprscope}`
-  theme(legend.text = element_text(size = 13)) # `{ggplot2}` functions
+  # `plot_theme_NoY_ticks` theme from `{eprscope}` + `{ggplot2}` function
+  plot_theme_NoY_ticks(legend.text = element_text(size = 13))
 
 ```
 

@@ -335,7 +335,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                  plot_labels_xyz(Concentration,M)
                  )
     ) +
-    plot_theme_In_ticks(
+    plot_theme_In_ticks() +
+    theme(
       plot.title = element_text(hjust = 0.5),
       legend.title = element_text(size = 14),
       legend.text = element_text(size = 13),

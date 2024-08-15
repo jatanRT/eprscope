@@ -11,39 +11,109 @@ plot_theme_NoY_ticks(
   border.line.color = "black",
   border.line.type = 1,
   border.line.width = 0.5,
-  bg.transparent = FALSE
+  bg.transparent = FALSE,
+  ...
 )
 }
 \arguments{
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 14}}
+\strong{default}: \code{axis.text.size = 14}.}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 15}}
+\strong{default}: \code{axis.title.size = 15}.}
 
-\item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+\item{grid}{Logical, whether to display the \code{grid} within the plot/graph panel, \strong{default}: \code{grid = TRUE}.}
 
-\item{border.line.color}{description...tbc...}
+\item{border.line.color}{Character string, setting up the color of the graph/plot panel border line, \strong{default}:
+\code{border.line.color = "black"}.}
 
-\item{border.line.type}{description ...tbc...}
+\item{border.line.type}{Character string or integer corresponding to width of the graph/plot panel border line. Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..}
 
-\item{border.line.width}{description ...tbc...}
+\item{border.line.width}{Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
+\code{border.line.width = 0.5}.}
 
-\item{bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background}
+\item{bg.transparent}{Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
+should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.}
+
+\item{...}{additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
+\code{axis.line},...etc) which are not specified by the function.}
 }
 \value{
-Custom \pkg{ggplot2} \code{theme} \code{without Y axis ticks}, to show opposite X axis ticks
-  use: \code{scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))}
+Custom \pkg{ggplot2} \code{theme} with \code{x-axis} ticks pointing inside the graph/plot panel,
+  and with \code{y-ticks} being not displayed.
 }
 \description{
-tbc
+Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+  \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
+  \strong{inside the graph/plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
+  For details of \code{ggplot2} theme elements please,
+  refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+  (see also \code{\link[ggplot2]{theme}}) or to
+  \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 }
 \examples{
-\dontrun{
-tbc
-tbc
-}
+#' ## loading the aminoxyl radical CW EPR spectrum:
+aminoxyl.data.path <-
+load_data_example(file = "Aminoxyl_radical_a.txt")
+aminoxyl.data <-
+readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#
+## simple `ggplot2` without any theme customization
+ggplot2::ggplot(data = aminoxyl.data) +
+  ggplot2::geom_line(
+    ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+    )
+#
+## simple `ggplot2` with `noY-ticks` theme and tile
+## (+subtitle)
+ggplot2::ggplot(data = aminoxyl.data) +
+  ggplot2::geom_line(
+    ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+    ) +
+  plot_theme_NoY_ticks() +
+  ggplot2::ggtitle(label = "Aminoxyl Radical",
+                   subtitle = "EPR Spectrum")
+#
+## comparison of EPR spectra generated
+## by `plot_EPR_Specs()` and by the simple
+## `ggplot2` with `noY-ticks` theme
+plot_EPR_Specs(data.spectra = aminoxyl.data,
+               yTicks = FALSE) +
+  ggplot2::ggtitle(label = "Aminoxyl Radical",
+                   subtitle = "EPR Spectrum")
+#
+## loading example data (incl. `Area` and `time`
+## variables) from Xenon: decay of a triarylamine radical
+## cation after its generation by electrochemical oxidation
+triaryl_radCat_path <-
+  load_data_example(file = "Triarylamine_radCat_decay_a.txt")
+## corresponding data (double integrated EPR
+## spectrum = `Area` vs `time`)
+triaryl_radCat_data <-
+  readEPR_Exp_Specs(triaryl_radCat_path,
+                    header = TRUE,
+                    fill = TRUE,
+                    select = c(3,7),
+                    col.names = c("time_s","Area"),
+                    x.unit = "s",
+                    x.id = 1,
+                    Intensity.id = 2,
+                    qValue = 1700) \%>\%
+  na.omit()
+#
+## simple plot of previous data using
+## the `noY-ticks` theme
+ggplot2::ggplot(data = triaryl_radCat_data) +
+  ggplot2::geom_point(
+    ggplot2::aes(x = time_s,y = Area)
+    ) +
+  ggplot2::labs(title = "Radical Kinetics",
+                x = plot_labels_xyz(Time,s),
+                y = plot_labels_xyz(Double~~Integral,p.d.u.)) +
+  plot_theme_NoY_ticks()
 
 
 }

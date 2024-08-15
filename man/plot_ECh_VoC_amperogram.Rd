@@ -78,16 +78,16 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 
 \item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in \code{pt} for the axes units/descriptions,
+\item{axis.text.size}{Numeric, text size in pt for the axes units/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
-\item{border.line.color}{Character string referring to color of the graph / panel border line. \strong{Default}:
+\item{border.line.color}{Character string referring to color of the graph/plot panel border line. \strong{Default}:
 \code{border.line.color = "black"}.}
 
-\item{border.line.width}{Numeric, width of the graph / panel border line, \strong{default}:
+\item{border.line.width}{Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
 \code{border.line.width = 0.5}.}
 
-\item{border.line.type}{Character string or integer corresponding to width of the panel graph border line. Following types
+\item{border.line.type}{Character string or integer corresponding to width of the graph/plot panel border line. Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 

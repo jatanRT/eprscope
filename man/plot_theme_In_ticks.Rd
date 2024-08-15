@@ -11,39 +11,79 @@ plot_theme_In_ticks(
   border.line.color = "black",
   border.line.type = 1,
   border.line.width = 0.5,
-  bg.transparent = FALSE
+  bg.transparent = FALSE,
+  ...
 )
 }
 \arguments{
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 14}}
+\strong{default}: \code{axis.text.size = 14}.}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 15}}
+\strong{default}: \code{axis.title.size = 15}.}
 
-\item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+\item{grid}{Logical, whether to display the \code{grid} within the plot/graph panel, \strong{default}: \code{grid = TRUE}.}
 
-\item{border.line.color}{description...tbc...}
+\item{border.line.color}{Character string, setting up the color of the graph/plot panel border line, \strong{default}:
+\code{border.line.color = "black"}.}
 
-\item{border.line.type}{description ...tbc...}
+\item{border.line.type}{Character string or integer corresponding to width of the graph/plot panel border line. Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..}
 
-\item{border.line.width}{description ...tbc...}
+\item{border.line.width}{Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
+\code{border.line.width = 0.5}.}
 
-\item{bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background}
+\item{bg.transparent}{Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
+should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.}
+
+\item{...}{additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
+\code{axis.line},...etc) which are not specified by the function.}
 }
 \value{
-Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing inside} the graph panel,
-  to show opposite axis ticks use: \code{scale_..._continuous(sec.axis = dup_axis(name = "",labels = NULL))}
+Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing inside the graph/plot panel.
 }
 \description{
-tbc
+Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+  \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
+  \strong{inside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
+  refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+  (see also \code{\link[ggplot2]{theme}}) or to
+  \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 }
 \examples{
-\dontrun{
-tbc
-tbc
-}
+## loading the aminoxyl radical CW EPR spectrum:
+aminoxyl.data.path <-
+load_data_example(file = "Aminoxyl_radical_a.txt")
+aminoxyl.data <-
+readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#
+## simple `ggplot2` without any theme customization
+ggplot2::ggplot(data = aminoxyl.data) +
+  ggplot2::geom_line(
+  ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+  )
+#
+## simple `ggplot2` with `in-ticks` theme and tile
+ggplot2::ggplot(data = aminoxyl.data) +
+  ggplot2::geom_line(
+    ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+    ) +
+  plot_theme_In_ticks() +
+  ggplot2::ggtitle(
+  label = "EPR Spectrum of Aminoxyl Radical"
+  )
+#
+## basic EPR spectrum plot by the `plot_EPR_Specs()`
+plot_EPR_Specs(data.spectra = aminoxyl.data)
+#
+## previous spectrum combined with `in-ticks` theme
+## without the panel background
+plot_EPR_Specs(data.spectra = aminoxyl.data) +
+  plot_theme_In_ticks(
+    panel.background = ggplot2::element_blank()
+    )
 
 
 }

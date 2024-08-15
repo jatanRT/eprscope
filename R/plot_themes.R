@@ -30,7 +30,7 @@
 #' @param bg.transparent Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
 #'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.
 #' @param ... additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
-#'   \code{axis.line},...etc).
+#'   \code{axis.line},...etc) which are not specified by the function.
 #'
 #'
 #' @return Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing inside the graph/plot panel.
@@ -44,22 +44,30 @@
 #' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
 #' #
 #' ## simple `ggplot2` without any theme customization
-#' ggplot(data = aminoxyl.data) +
-#'   geom_line(aes(x = B_mT,y = dIepr_over_dB))
+#' ggplot2::ggplot(data = aminoxyl.data) +
+#'   ggplot2::geom_line(
+#'   ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+#'   )
 #' #
 #' ## simple `ggplot2` with `in-ticks` theme and tile
-#' ggplot(data = aminoxyl.data) +
-#'   geom_line(aes(x = B_mT,y = dIepr_over_dB)) +
+#' ggplot2::ggplot(data = aminoxyl.data) +
+#'   ggplot2::geom_line(
+#'     ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+#'     ) +
 #'   plot_theme_In_ticks() +
-#'   ggplot2::ggtitle(label = "EPR Spectrum of Aminoxyl Radical")
+#'   ggplot2::ggtitle(
+#'   label = "EPR Spectrum of Aminoxyl Radical"
+#'   )
 #' #
 #' ## basic EPR spectrum plot by the `plot_EPR_Specs()`
-#' plot_EPR_Specs(data.spectra = test.data)
+#' plot_EPR_Specs(data.spectra = aminoxyl.data)
 #' #
 #' ## previous spectrum combined with `in-ticks` theme
 #' ## without the panel background
-#' plot_EPR_Specs(data.spectra = test.data) +
-#'   plot_theme_In_all_ticks(panel.background = element_blank())
+#' plot_EPR_Specs(data.spectra = aminoxyl.data) +
+#'   plot_theme_In_ticks(
+#'     panel.background = ggplot2::element_blank()
+#'     )
 #'
 #'
 #' @export
@@ -156,13 +164,17 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
 #' #
 #' ## simple `ggplot2` without any theme customization
-#' ggplot(data = aminoxyl.data) +
-#'   geom_line(aes(x = B_mT,y = dIepr_over_dB))
+#' ggplot2::ggplot(data = aminoxyl.data) +
+#'   ggplot2::geom_line(
+#'     ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+#'     )
 #' #
 #' ## simple `ggplot2` with `noY-ticks` theme and tile
 #' ## (+subtitle)
-#' ggplot(data = aminoxyl.data) +
-#'   geom_line(aes(x = B_mT,y = dIepr_over_dB)) +
+#' ggplot2::ggplot(data = aminoxyl.data) +
+#'   ggplot2::geom_line(
+#'     ggplot2::aes(x = B_mT,y = dIepr_over_dB)
+#'     ) +
 #'   plot_theme_NoY_ticks() +
 #'   ggplot2::ggtitle(label = "Aminoxyl Radical",
 #'                    subtitle = "EPR Spectrum")
@@ -196,8 +208,10 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #' #
 #' ## simple plot of previous data using
 #' ## the `noY-ticks` theme
-#' ggplot(data = riaryl_radCat_data) +
-#'   geom_point(aes(x = time_s,y = Area)) +
+#' ggplot2::ggplot(data = triaryl_radCat_data) +
+#'   ggplot2::geom_point(
+#'     ggplot2::aes(x = time_s,y = Area)
+#'     ) +
 #'   ggplot2::labs(title = "Radical Kinetics",
 #'                 x = plot_labels_xyz(Time,s),
 #'                 y = plot_labels_xyz(Double~~Integral,p.d.u.)) +
@@ -301,11 +315,12 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #'                   norm.vec.add = 20,
 #'                   origin = "winepr")
 #' #
-#' ggplot(data = tmpd.data.file,
-#'        aes(x = B_G,y = dIepr_over_dB)) +
-#'   geom_line(linewidth = 0.75,color = "darkgreen") +
+#' ggplot2::ggplot(data = tmpd.data.file,
+#'        ggplot2::aes(x = B_G,y = dIepr_over_dB)
+#'        ) +
+#'   ggplot2::geom_line(linewidth = 0.75,color = "darkgreen") +
 #'   ggplot2::xlab("B (G)") +
-#'   ggplot2::ylab("dIepr/dB  (p.d.u.)") +
+#'   ggplot2::ylab("dIepr / dB  (p.d.u.)") +
 #'   plot_theme_Out_ticks()
 #'
 #'

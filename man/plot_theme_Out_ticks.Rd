@@ -11,38 +11,68 @@ plot_theme_Out_ticks(
   border.line.color = "black",
   border.line.type = 1,
   border.line.width = 0.5,
-  bg.transparent = FALSE
+  bg.transparent = FALSE,
+  ...
 )
 }
 \arguments{
 \item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 14}}
+\strong{default}: \code{axis.text.size = 14}.}
 
 \item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 15}}
+\strong{default}: \code{axis.title.size = 15}.}
 
-\item{grid}{Boolean, whether to dislay the \code{grid} within the plot/graph, \strong{default}: \code{grid = TRUE}}
+\item{grid}{Logical, whether to display the \code{grid} within the plot/graph panel, \strong{default}: \code{grid = TRUE}.}
 
-\item{border.line.color}{description...tbc...}
+\item{border.line.color}{Character string, setting up the color of the graph/plot panel border line, \strong{default}:
+\code{border.line.color = "black"}.}
 
-\item{border.line.type}{description ...tbc...}
+\item{border.line.type}{Character string or integer corresponding to width of the graph/plot panel border line. Following types
+can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
+\code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..}
 
-\item{border.line.width}{description ...tbc...}
+\item{border.line.width}{Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
+\code{border.line.width = 0.5}.}
 
-\item{bg.transparent}{Boolean, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background}
+\item{bg.transparent}{Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
+should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.}
+
+\item{...}{additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
+\code{axis.line},...etc) which are not specified by the function.}
 }
 \value{
-Custom \pkg{ggplot2} \code{theme} with axis \code{ticks pointing outside} the graph panel
+Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing outside the graph/plot panel.
 }
 \description{
-TODO
+Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+  \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
+  \strong{outside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
+  refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+  (see also \code{\link[ggplot2]{theme}}) or to
+  \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 }
 \examples{
-\dontrun{
-TODO
-TODO
-}
+## loading TMPD built-in example file:
+tmpd.data.file.path <-
+load_data_example(file = "TMPD_specelchem_accu_b.asc")
+## reading data:
+tmpd.data.file <-
+readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
+                  col.names = c("B_G","dIepr_over_dB"),
+                  x.id = 1,
+                  Intensity.id = 2,
+                  qValue = 3500,
+                  norm.vec.add = 20,
+                  origin = "winepr")
+#
+ggplot2::ggplot(data = tmpd.data.file,
+       ggplot2::aes(x = B_G,y = dIepr_over_dB)
+       ) +
+  ggplot2::geom_line(linewidth = 0.75,color = "darkgreen") +
+  ggplot2::xlab("B (G)") +
+  ggplot2::ylab("dIepr / dB  (p.d.u.)") +
+  plot_theme_Out_ticks()
 
 
 }
