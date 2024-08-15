@@ -106,7 +106,7 @@ plot_layout2D_interact <- function(p,
       gridwidth = grid.line.width,
       griddash = grid.line.type,
       linecolor = plotly::toRGB(border.line.color),
-      linewidth = border.line.width, showline = T, mirror = T
+      linewidth = border.line.width, showline = TRUE, mirror = TRUE
     ),
     yaxis = list(
       title = list(
@@ -126,7 +126,7 @@ plot_layout2D_interact <- function(p,
       gridwidth = grid.line.width,
       griddash = grid.line.type,
       linecolor = plotly::toRGB(border.line.color),
-      linewidth = border.line.width, showline = T, mirror = T
+      linewidth = border.line.width, showline = TRUE, mirror = TRUE
     )
   )
   if (is.null(legend.title)) {

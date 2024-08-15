@@ -13,7 +13,10 @@
 #'   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
 #'   which is common for visualization of the EPR spectra. Additionally, the \code{plot_EPR_Specs}
 #'   can be combined by the \code{+} sign with other \pkg{ggplot2} or internal plotting functions
-#'   (e.g. with \code{\link{plot_theme_In_ticks}}).
+#'   (e.g. with \code{\link{plot_theme_In_ticks}}). For details of \code{ggplot2} theme elements please,
+#'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
+#'   (see also \code{\link[ggplot2]{theme}}) or to
+#'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 #'
 #' @param data.spectra Data frame/table object containing magnetic flux density, \eqn{g}-value
 #'   or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT},
@@ -90,11 +93,11 @@
 #' @param line.type Character string or integer corresponding to width of the (spectral) line(s). Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
-#' @param border.line.width Numeric, width of the graph / panel border line, \strong{default}:
+#' @param border.line.width Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
 #'   \code{border.line.width = 0.5}.
-#' @param border.line.color Character string referring to color of the graph / panel border line. \strong{Default}:
+#' @param border.line.color Character string referring to color of the graph/plot panel border line. \strong{Default}:
 #'   \code{border.line.color = "black"}.
-#' @param border.line.type Character string or integer corresponding to width of the panel graph border line. Following types
+#' @param border.line.type Character string or integer corresponding to width of the graph/plot panel border line. Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param theme.basic Character string calling a \pkg{ggplot} theme base. The following ones are defined:
@@ -106,16 +109,16 @@
 #'     \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
 #'     theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 #'   }
-#' @param axis.text.size Numeric, text size in \code{pt} for the axes units/descriptions,
+#' @param axis.text.size Numeric, text size in pt for the axes units/descriptions,
 #'   \strong{default}: \code{axis.text.size = 14}.
 #' @param axis.title.size Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.
 #' @param legend.title Character string identical to legend title, e.g. like \code{legend.title = "Time (s)"},
 #'   \code{legend.title = "Electrochem. Potential (V)"} or \code{legend.title = "Sample"}. \strong{Default}:
 #'   \code{legend.title = NULL} in case of \code{var2nd.series = NULL}.
 #' @param legend.title.size Numeric, legend text title size in \code{pt},\strong{default}: \code{legend.title.size = NULL},
-#'   actually corresponding to 13 / 13pt.
+#'   actually corresponding to 13/13pt.
 #' @param legend.text.size Numeric, legend text size in \code{pt}, \strong{default}: \code{legend.text.size = NULL},
-#'   actually corresponding to 11 / 11pt.
+#'   actually corresponding to 11/11pt.
 #' @param grid Logical, whether to dislay the \code{grid} within the panel / graph, \strong{default}: \code{grid = TRUE}.
 #' @param yTicks Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
 #'   (not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}

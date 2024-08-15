@@ -936,8 +936,6 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       y = bquote(italic(Quantitative ~ ~Variable) ~ ~ ~ ~ bolditalic(qvar))
     ) +
     plot_theme_In_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
-    scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
     theme(plot.title = element_text(hjust = 0.5))
   #
   ## RESULTS
@@ -961,8 +959,6 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
              x = bquote(italic(Time) ~ ~"(" ~ .(time.unit) ~ ")"),
              y = bquote(italic(Quantitative ~ ~Variable) ~ ~ ~ ~ bolditalic(qvar))) +
         plot_theme_In_ticks() +
-        scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
-        scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
         theme(plot.title = element_text(hjust = 0.5),
               legend.text = element_text(size = 13),
               legend.text.align = 0.5)

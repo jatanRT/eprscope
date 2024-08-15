@@ -219,7 +219,6 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
          x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
          y = ylab) +
     plot_theme_NoY_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     theme(legend.title = element_text(size = 14),
           legend.text = element_text(size = 13))
   #
@@ -238,8 +237,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
               color = "blue") +
     labs(x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
          y = ylab) +
-    plot_theme_NoY_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+    plot_theme_NoY_ticks()
   #
   ## list of the all results and/or plots
   if (is.null(plot.sim.interact)){
