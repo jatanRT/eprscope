@@ -93,7 +93,7 @@
 #' @param line.type Character string or integer corresponding to width of the (spectral) line(s). Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
-#' @param border.line.width Numeric, width (in mm) of the graph/plot panel border line, \strong{default}:
+#' @param border.line.width Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
 #'   \code{border.line.width = 0.5}.
 #' @param border.line.color Character string referring to color of the graph/plot panel border line. \strong{Default}:
 #'   \code{border.line.color = "black"}.

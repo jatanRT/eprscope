@@ -498,12 +498,11 @@ present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
                      data.spectr.sim = sim.tmpd.iso$df,
                      B.unit = "mT") +
   plot_theme_NoY_ticks() + # `plot_theme_NoY_ticks` theme from `{eprscope}`
-  scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
   theme(legend.text = element_text(size = 13)) # `{ggplot2}` functions
 
 ```
 
-Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to gather a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` may be needed.
+Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to gather a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` may be required.
 
 ## Integrating the EPR Spectrum
 

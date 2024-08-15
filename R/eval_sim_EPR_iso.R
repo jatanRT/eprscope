@@ -922,7 +922,6 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
          x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
          y = ylab) +
     plot_theme_NoY_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     theme(plot.title = element_text(hjust = 0.5,size = 15))
   #
   ## =============================== RESULTS ====================================

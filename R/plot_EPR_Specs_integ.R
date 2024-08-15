@@ -137,9 +137,8 @@ if (isFALSE(separate.integs)) {
       y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")"),
       color = bquote(atop(italic(Integrated), EPR ~ ~ italic(Spectra)))
     ) +
-    plot_themes +
-    scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
-    scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL))
+    plot_themes
+   #
 } else {
   if (is.null(separate.integ.scales)) {
     stop(" Please specify the `separate.integ.scales` for the facets ! ")
@@ -164,7 +163,6 @@ if (isFALSE(separate.integs)) {
         axis.title.size = axis.title.size,
         axis.text.size = axis.text.size
       ) +
-      scale_y_continuous(sec.axis = dup_axis(name = "", labels = NULL)) +
       theme(
         strip.background = element_rect(fill = "#363636"),
         strip.text = element_text(size = 13, color = "white", face = "bold"),

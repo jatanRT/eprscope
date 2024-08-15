@@ -25,9 +25,10 @@
 #' @param border.line.type Character string or integer corresponding to width of the graph/plot panel border line. Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..
-#' @param border.line.width description ...tbc...
-#' @param bg.transparent Logical, whether the \code{entire plot background} (NOT the \code{panel}=\code{own graph})
-#'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background
+#' @param border.line.width Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
+#'   \code{border.line.width = 0.5}.
+#' @param bg.transparent Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
+#'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.
 #' @param ... additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
 #'   \code{axis.line},...etc).
 #'
@@ -36,10 +37,29 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' TBC
-#' TBC
-#' }
+#' ## loading the aminoxyl radical CW EPR spectrum:
+#' aminoxyl.data.path <-
+#' load_data_example(file = "Aminoxyl_radical_a.txt")
+#' aminoxyl.data <-
+#' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#' #
+#' ## simple `ggplot2` without any theme customization
+#' ggplot(data = aminoxyl.data) +
+#'   geom_line(aes(x = B_mT,y = dIepr_over_dB))
+#' #
+#' ## simple `ggplot2` with `in-ticks` theme and tile
+#' ggplot(data = aminoxyl.data) +
+#'   geom_line(aes(x = B_mT,y = dIepr_over_dB)) +
+#'   plot_theme_In_ticks() +
+#'   ggplot2::ggtitle(label = "EPR Spectrum of Aminoxyl Radical")
+#' #
+#' ## basic EPR spectrum plot by the `plot_EPR_Specs()`
+#' plot_EPR_Specs(data.spectra = test.data)
+#' #
+#' ## previous spectrum combined with `in-ticks` theme
+#' ## without the panel background
+#' plot_EPR_Specs(data.spectra = test.data) +
+#'   plot_theme_In_all_ticks(panel.background = element_blank())
 #'
 #'
 #' @export
@@ -129,10 +149,59 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @examples
-#' \dontrun{
-#' TBC
-#' TBC
-#' }
+#' #' ## loading the aminoxyl radical CW EPR spectrum:
+#' aminoxyl.data.path <-
+#' load_data_example(file = "Aminoxyl_radical_a.txt")
+#' aminoxyl.data <-
+#' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#' #
+#' ## simple `ggplot2` without any theme customization
+#' ggplot(data = aminoxyl.data) +
+#'   geom_line(aes(x = B_mT,y = dIepr_over_dB))
+#' #
+#' ## simple `ggplot2` with `noY-ticks` theme and tile
+#' ## (+subtitle)
+#' ggplot(data = aminoxyl.data) +
+#'   geom_line(aes(x = B_mT,y = dIepr_over_dB)) +
+#'   plot_theme_NoY_ticks() +
+#'   ggplot2::ggtitle(label = "Aminoxyl Radical",
+#'                    subtitle = "EPR Spectrum")
+#' #
+#' ## comparison of EPR spectra generated
+#' ## by `plot_EPR_Specs()` and by the simple
+#' ## `ggplot2` with `noY-ticks` theme
+#' plot_EPR_Specs(data.spectra = aminoxyl.data,
+#'                yTicks = FALSE) +
+#'   ggplot2::ggtitle(label = "Aminoxyl Radical",
+#'                    subtitle = "EPR Spectrum")
+#' #
+#' ## loading example data (incl. `Area` and `time`
+#' ## variables) from Xenon: decay of a triarylamine radical
+#' ## cation after its generation by electrochemical oxidation
+#' triaryl_radCat_path <-
+#'   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
+#' ## corresponding data (double integrated EPR
+#' ## spectrum = `Area` vs `time`)
+#' triaryl_radCat_data <-
+#'   readEPR_Exp_Specs(triaryl_radCat_path,
+#'                     header = TRUE,
+#'                     fill = TRUE,
+#'                     select = c(3,7),
+#'                     col.names = c("time_s","Area"),
+#'                     x.unit = "s",
+#'                     x.id = 1,
+#'                     Intensity.id = 2,
+#'                     qValue = 1700) %>%
+#'   na.omit()
+#' #
+#' ## simple plot of previous data using
+#' ## the `noY-ticks` theme
+#' ggplot(data = riaryl_radCat_data) +
+#'   geom_point(aes(x = time_s,y = Area)) +
+#'   ggplot2::labs(title = "Radical Kinetics",
+#'                 x = plot_labels_xyz(Time,s),
+#'                 y = plot_labels_xyz(Double~~Integral,p.d.u.)) +
+#'   plot_theme_NoY_ticks()
 #'
 #'
 #' @export
@@ -219,10 +288,25 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @examples
-#' \dontrun{
-#' TODO
-#' TODO
-#' }
+#' ## loading TMPD built-in example file:
+#' tmpd.data.file.path <-
+#' load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' ## reading data:
+#' tmpd.data.file <-
+#' readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
+#'                   col.names = c("B_G","dIepr_over_dB"),
+#'                   x.id = 1,
+#'                   Intensity.id = 2,
+#'                   qValue = 3500,
+#'                   norm.vec.add = 20,
+#'                   origin = "winepr")
+#' #
+#' ggplot(data = tmpd.data.file,
+#'        aes(x = B_G,y = dIepr_over_dB)) +
+#'   geom_line(linewidth = 0.75,color = "darkgreen") +
+#'   ggplot2::xlab("B (G)") +
+#'   ggplot2::ylab("dIepr/dB  (p.d.u.)") +
+#'   plot_theme_Out_ticks()
 #'
 #'
 #' @export

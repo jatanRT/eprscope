@@ -153,8 +153,6 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
                     bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")"))
          ) +
     plot_theme_In_ticks() +
-    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-    scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
     theme(legend.text = element_text(size = 13),
           legend.text.align = 0.5)
   #

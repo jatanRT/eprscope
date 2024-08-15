@@ -937,8 +937,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
            x = NULL,
            y = bquote(d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")")) +
       plot_theme_In_ticks() +
-      scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-      scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
       theme(legend.text = element_text(size = 13))
       #
       plot.sim.expr.lower <- ggplot(data = data.sim.expr.resid) +
@@ -950,9 +948,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         labs(title = "Residuals",
              x = bquote(italic(B)~~"("~.(B.unit)~")"),
              y = bquote(Diff.~d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")")) +
-        plot_theme_In_ticks() +
-        scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
-        scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+        plot_theme_In_ticks()
       #
       ## entire plot
       plot.sim.expr <-
@@ -974,7 +970,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
       plot_theme_NoY_ticks() +
-      scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL)) +
       theme(legend.text = element_text(size = 13))
   }
   #
