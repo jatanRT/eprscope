@@ -22,13 +22,13 @@
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
 #'   where \eqn{k} is iterating through all components of the \code{norm.vec.add}.
 #'   The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
-#'   This is mirrored mainly by the \code{origin} argument. Default arguments are set to read the data from
-#'   \emph{Xenon} acquisition/processing software. However, additional \code{origins} can be set like
-#'   \code{origin = "winepr"} or \code{origin = "magnettech"} or even any arbitrary string
-#'   e.g. like \code{origin = "csv"} (see also \code{origin argument}). Time series (time evolution
-#'   of EPR spectra/kinetics) is defined by the \code{time.series.id} argument. In such case the ASCII data table
-#'   also contains additional column either with recorded time (see also \code{\link{correct_time_Exp_Specs}})
-#'   or with slice number for each spectrum.
+#'   This is mirrored mainly by the \code{origin} and \code{data.structure} arguments. Default arguments
+#'   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
+#'   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
+#'   any arbitrary string e.g. like \code{origin = "csv"} (see also \code{origin argument}).
+#'   Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series.id} argument.
+#'   In such case the ASCII data table also contains additional column either with recorded
+#'   time (see also \code{\link{correct_time_Exp_Specs}}) or with slice number for each spectrum.
 #'
 #'
 #' @inheritParams data.table::fread
@@ -52,7 +52,8 @@
 #' @param time.series.id Numeric index related to \code{col.names} vector and pointing to \code{time} column for time series
 #'   EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 #'   use \code{x} and \code{x.unit} parameters/arguments instead (see also examples). This argument is dedicated
-#'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL}.
+#'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL} (see also \code{data.structure}
+#'   argument).
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
 #'   conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
 #'   \eqn{B} in \code{mT}/\code{G} is created.
@@ -64,7 +65,7 @@
 #'   weight, number of scans, ...etc. (e.g. like \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
 #'   the Q-factor/value might be also included in the \code{norm.vec.add}.
-#' @param origin String/Character corresponding to \strong{origin} of the ASCII data, like from
+#' @param origin Character string corresponding to \strong{origin} of the ASCII data, like from
 #'   most common spectrometers (from which data are loaded automatically using the default parameters).
 #'   Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 #'   \tabular{rl}{
@@ -76,6 +77,14 @@
 #'   data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
 #'   \strong{In such case all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 #'   }
+#' @param data.structure Character string referring to structure of the ASCII data. Common spectral data files
+#'   with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
+#'   time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
+#'   ASCII data structure (e.g. like spectral series processed by the acquisition spectrometer software,
+#'   see example, or any other data) put \code{data.structure = "others"}. \strong{In such case all the arguments for}
+#'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
+#'   (assuming \code{time.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
+#'   \code{origin} argument.
 #' @param ... additional arguments specified (see also \code{\link[data.table]{fread}}).
 #'
 #'
@@ -94,17 +103,19 @@
 #' ## and with `B` conversion "G" <=> "mT"
 #' ## Loading the data
 #' aminoxyl.data.path <-
-#' load_data_example(file = "Aminoxyl_radical_a.txt")
-#' aminoxyl.data.01 <- readEPR_Exp_Specs(aminoxyl.data.path,
-#'                                       qValue = 2100)
+#'   load_data_example(file = "Aminoxyl_radical_a.txt")
+#' aminoxyl.data.01 <-
+#'   readEPR_Exp_Specs(aminoxyl.data.path,
+#'                     qValue = 2100)
 #' ## preview
 #' head(aminoxyl.data.01)
 #' #
 #' # simple EPR spectrum acquired by "xenon"
 #' ## and without `B` conversion "G" <=> "mT"
-#' aminoxyl.data.02 <- readEPR_Exp_Specs(aminoxyl.data.path,
-#'                                       convertB.unit = FALSE,
-#'                                       qValue = 2100)
+#' aminoxyl.data.02 <-
+#'   readEPR_Exp_Specs(aminoxyl.data.path,
+#'                     convertB.unit = FALSE,
+#'                     qValue = 2100)
 #' ## preview
 #' head(aminoxyl.data.02)
 #' #
@@ -112,14 +123,13 @@
 #' ## (and 20 scans) on a 1 mM sample concentration:
 #' ## Loading the data
 #' TMPD.data.path <-
-#' load_data_example(file = "TMPD_specelchem_accu_b.asc")
-#' TMPD.data <- readEPR_Exp_Specs(TMPD.data.path,
-#'                                col.names = c("B_G","dIepr_over_dB"),
-#'                                x.id = 1,
-#'                                Intensity.id = 2,
-#'                                qValue = 3500,
-#'                                norm.vec.add = c(20,0.001),
-#'                                origin = "winepr")
+#'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' TMPD.data <-
+#'   readEPR_Exp_Specs(TMPD.data.path,
+#'                     col.names = c("B_G","dIepr_over_dB"),
+#'                     qValue = 3500,
+#'                     norm.vec.add = c(20,0.001),
+#'                     origin = "winepr")
 #' ## preview
 #' head(TMPD.data)
 #' #
@@ -127,39 +137,59 @@
 #' ## and 8 accumulation sweeps
 #' ## loading the data
 #' PNT.ENDOR.data.path <-
-#' load_data_example(file = "PNT_ENDOR_a.txt")
+#'   load_data_example(file = "PNT_ENDOR_a.txt")
 #' PNT.ENDOR.data <-
-#' readEPR_Exp_Specs(PNT.ENDOR.data.path,
-#'                   col.names = c("index",
-#'                                 "RF_MHz",
-#'                                 "dIepr_over_dB"),
-#'                   x.id = 2,
-#'                   x.unit = "MHz",
-#'                   Intensity.id = 3,
-#'                   norm.vec.add = 8)
+#'   readEPR_Exp_Specs(PNT.ENDOR.data.path,
+#'                     col.names = c("index",
+#'                                   "RF_MHz",
+#'                                   "dIepr_over_dB"),
+#'                     x.unit = "MHz",
+#'                     norm.vec.add = 8)
 #' ## preview
 #' head(PNT.ENDOR.data)
 #' #
-#' ## reading data file from (and pre-processed) by the "Xenon"
-#' ## software corresponding to kinetics with `Area` and `time`
-#' ## columns/variables , these two have to be selected from
-#' ## several others + normalize `Area` against the `qValue`,
-#' ## first of all load the path of package example file
+#' ## reading the (pre-processed) data file
+#' ## (data.structure = "mixed") from (by) the "Xenon" software
+#' ## corresponding to kinetics with `Area` and `time`
+#' ## columns/variables , these two have to be selected
+#' ## from several others + normalize `Area`
+#' ## against the `qValue` (first of all load the path
+#' ## of package example file)
 #' triarylamine.rc.decay.path <-
-#' load_data_example("Triarylamine_radCat_decay_a.txt")
+#'   load_data_example("Triarylamine_radCat_decay_a.txt")
 #' ## data
 #' triarylamine.rc.decay.data <-
-#' readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,
-#'                   header = TRUE,
-#'                   fill = TRUE,
-#'                   select = c(3,7),
-#'                   col.names = c("time_s","Area"),
-#'                   x.unit = "s",
-#'                   x.id = 1,
-#'                   Intensity.id = 2,
-#'                   qValue = 1700) %>% na.omit()
+#'   readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,
+#'                     header = TRUE,
+#'                     fill = TRUE,
+#'                     select = c(3,7),
+#'                     col.names = c("time_s","Area"),
+#'                     x.unit = "s",
+#'                     x.id = 1,
+#'                     Intensity.id = 2,
+#'                     qValue = 1700,
+#'                     data.structure = "others") %>%
+#'     na.omit()
 #' ## preview
 #' head(triarylamine.rc.decay.data)
+#' #
+#' ## reading the "magnettech" file example,
+#' ## first of all load the path of package example file
+#' acridineRad.data.path <-
+#'   load_data_example("AcridineDeriv_Irrad_365nm.csv.zip")
+#' ## unzip
+#' acridineRad.data <-
+#'   unzip(acridineRad.data.path,
+#'         files = c("AcridineDeriv_Irrad_365nm.csv"),
+#'         exdir = tempdir())
+#' ## reading
+#' acridineRad.data <-
+#'   readEPR_Exp_Specs(acridineRad.data,
+#'                     col.names = c("B_mT","dIepr_over_dB"),
+#'                     x.unit = "mT",
+#'                     origin = "magnettech")
+#' ## preview
+#' head(acridineRad.data)
 #' #
 #' \dontrun{
 #' ## EPR time series acquired by "Winepr"/"WinEpr"
@@ -167,9 +197,6 @@
 #'                   col.names = c("B_G",
 #'                                 "Slice",
 #'                                 "dIepr_over_dB"),
-#'                   x.id = 1,
-#'                   Intensity.id = 3,
-#'                   time.series.id = 2,
 #'                   origin = "Winepr")
 #' #
 #' ## example for "xenon" time series experiment
@@ -182,19 +209,7 @@
 #'                                 "B_G",
 #'                                 "time_s",
 #'                                 "dIepr_over_dB"),
-#'                   x.id = 2,
-#'                   Intensity.id = 4,
-#'                   qValue = 2800,
-#'                   time.series.id = 3)
-#' #
-#' ## reading simple spectrum from the new "magnettech"/"Magnettech"
-#' ## acquisition software
-#' readEPR_Exp_Specs("./Data/EPR_spectrum.csv",
-#'                   col.names = c("B_mT","dIepr_over_dB"),
-#'                   x.id = 1,
-#'                   x.unit = "mT",
-#'                   Intensity.id = 2,
-#'                   origin = "magnettech")
+#'                   qValue = 2800)
 #' #
 #' }
 #'
@@ -222,6 +237,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                               qValue = NULL,
                               norm.vec.add = NULL,
                               origin = "xenon",
+                              data.structure = "spectra",
                               ...) {
   ## 'Temporary' processing variables
   B_G <- NULL
@@ -235,7 +251,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   norm.multiply.const <- prod(sapply(norm.vec.add, function(n) 1 / n))
   norm.multiply.qValue <- 1 / qValue
   #
-  ## Ellipsis argument list definition
+  ## Ellipsis argument list definition => JUST A NOTE
   # args <- list(...)
   #
   ## origin strings vectors to define "origin" conditions =>
@@ -245,13 +261,93 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   #
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`
-  ## WINEPR
+  #
+  ## string to stop the reading if `data structure == "mixed"`
+  ## and `time.series.id != NULL` =>
+  stop.reading.structure.time <-
+    " For `data.structure = others` the `time.series.id` is not defined !\n
+      Please put `time.series.id = NULL` with the `x.id` \n
+      and `x.unit` corresponding to `time` column (if present) ! \n
+      Additional arguments must be set up, accordingly ! "
+  #
+  # DEFAULT ARGUMENTS FOR INDIVIDUAL ORIGINS
+  ## --------------------- WINEPR -----------------------------
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
-    if (is.null(time.series.id)) {
-      ## parameter definition
+    if (data.structure == "spectra") {
+      ## parameter definition (automatize value assignments)
+      ## ASSUMING USER CAN MAKE MISTAKES
+      if (is.null(time.series.id)) {
+        sep <- sep %>% `if`(sep != "auto", "auto", .)
+        header <- header %>% `if`(isTRUE(header), FALSE, .)
+        skip <- skip %>% `if`(skip != 3, 3, .)
+        x.id <- x.id %>% `if`(x.id != 1, 1, .)
+        Intensity.id <- Intensity.id %>% `if`(Intensity.id != 2, 2, .)
+        #
+        ## following defined by `...`
+        #
+        # na.strings <- NULL
+        # select <- NULL
+        # drop <- NULL
+        # encoding <- "unknown"
+        # fill <- FALSE
+        # blank.lines.skip <- FALSE
+        # colClasses <- NULL
+
+        #
+      } else {
+        sep <- sep %>% `if`(sep != "auto", "auto", .)
+        header <- header %>% `if`(isTRUE(header), FALSE, .)
+        skip <- skip %>% `if`(skip != 4, 4, .)
+        x.id <- x.id %>% `if`(x.id != 1, 1, .)
+        Intensity.id <- Intensity.id %>%
+          `if`(Intensity.id != 3, 3, .)
+        time.series.id <- time.series.id %>%
+          `if`(time.series.id != 2, 2, .)
+        #
+        ## following defined by `...`
+        #
+        # fill <- TRUE
+        # blank.lines.skip <- TRUE
+        # na.strings <- c("Intensity", "X [G]", "Y []")
+        # select <- NULL
+        # drop <- NULL
+        # encoding <- "unknown"
+        # colClasses <- NULL
+        #
+      }
+    } else {
+      if (!is.null(time.series.id)) {
+        stop(stop.reading.structure.time)
+      } else {
+        sep <- sep
+        header <- header
+        skip <- skip
+        x.id <- x.id
+        Intensity.id <- Intensity.id
+      }
+    }
+    #
+  }
+  #
+  ## ---------------------- XENON -------------------------------
+  if (any(grepl(paste(xenon.string,collapse = "|"),origin))) {
+    if (data.structure == "spectra") {
+      ## parameter definition (automatize value assignments)
+      ## ASSUMING USER CAN MAKE MISTAKES
       sep <- sep %>% `if`(sep != "auto", "auto", .)
-      header <- header %>% `if`(isTRUE(header), FALSE, .)
-      skip <- skip %>% `if`(skip != 3, 3, .)
+      header <- header
+      skip <- skip
+      if (is.null(time.series.id)) {
+        x.id <- x.id %>% `if`(x.id != 2, 2, .)
+        Intensity.id <- Intensity.id %>%
+          `if`(Intensity.id != 3, 3, .)
+      } else {
+        x.id <- x.id %>% `if`(x.id != 2, 2, .)
+        Intensity.id <- Intensity.id %>%
+          `if`(Intensity.id != 4, 4, .)
+        time.series.id <- time.series.id %>%
+          `if`(time.series.id != 3, 3, .)
+      }
       #
       ## following defined by `...`
       #
@@ -262,62 +358,79 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       # fill <- FALSE
       # blank.lines.skip <- FALSE
       # colClasses <- NULL
-
-      #
     } else {
-      ## parameter definition
+      if (!is.null(time.series.id)) {
+        stop(stop.reading.structure.time)
+      } else {
+        sep <- sep
+        header <- header
+        skip <- skip
+        x.id <- x.id
+        Intensity.id <- Intensity.id
+      }
+    }
+   #
+  }
+  #
+  ## -------------------- MAGNETTECH ---------------------------
+  if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    if (data.structure == "spectra") {
+      ## parameter definition (automatize value assignments)
+      ## ASSUMING USER CAN MAKE MISTAKES
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
-      skip <- skip %>% `if`(skip != 4, 4, .)
+      skip <- skip %>% `if`(skip != 88, 88, .)
       #
-      ## following defined by `...`
-      #
-      # fill <- TRUE
-      # blank.lines.skip <- TRUE
-      # na.strings <- c("Intensity", "X [G]", "Y []")
-      # select <- NULL
-      # drop <- NULL
-      # encoding <- "unknown"
-      # colClasses <- NULL
-      #
+      if (is.null(time.series.id)) {
+        x.id <- x.id %>% `if`(x.id != 1, 1, .)
+        Intensity.id <- Intensity.id %>%
+          `if`(Intensity.id != 2, 2, .)
+      } else {
+        if (!any(grepl("time|Time|slice|Slice",col.names))) {
+          stop("Time series column is not defined ! \n
+             Please, specify the `id` of the column/variable,\n
+             or create it to proceed !! ")
+        } else {
+          x.id <- x.id
+          Intensity.id <- Intensity.id
+          time.series.id <- time.series.id
+        }
+      }
+    } else {
+      if (!is.null(time.series.id)) {
+        stop(stop.reading.structure.time)
+      } else {
+        sep <- sep
+        header <- header
+        skip <- skip
+        x.id <- x.id
+        Intensity.id <- Intensity.id
+      }
     }
-  }
-  ## XENON
-  if (any(grepl(paste(xenon.string,collapse = "|"),origin))) {
-    ## parameter definition
-    sep <- sep %>% `if`(sep != "auto", "auto", .)
-    header <- header
-    skip <- skip
-    #
-    ## following defined by `...`
-    #
-    # na.strings <- NULL
-    # select <- NULL
-    # drop <- NULL
-    # encoding <- "unknown"
-    # fill <- FALSE
-    # blank.lines.skip <- FALSE
-    # colClasses <- NULL
+   #
   }
   #
-  ## MAGNETTECH
-  if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
-    sep <- sep %>% `if`(sep != "auto", "auto", .)
-    header <- header %>% `if`(isTRUE(header), FALSE, .)
-    skip <- skip %>% `if`(skip != 88, 88, .)
-    #
-  }
-  #
-  ## OTHERS
+  ## ------------------------ OTHERS ---------------------------
   ## change any other `origin` accordingly
   if (!any(grepl(paste(winepr.string,collapse = "|"),origin)) &
       !any(grepl(paste(xenon.string,collapse = "|"),origin)) &
       !any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+    #
+    ## condition for data structure
+    data.structure.cond <- ifelse(data.structure == "spectra",TRUE,FALSE)
+    #
     sep <- sep
     header <- header
     skip <- skip
+    x.id <- x.id
+    Intensity.id <- Intensity.id
+    time.series.id <- switch(2-data.structure.cond,
+                             time.series.id,
+                             NULL)
 
   }
+  #
+  ## ============ SPECTRA/DATA READING AND NORMALIZING THE INTENSITY ===============
   #
   ## condition for special case `winepr` and `time.series`
   if (any(grepl(paste(winepr.string,collapse = "|"),origin)) &
@@ -332,7 +445,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                         blank.lines.skip = T,
                         na.strings = c("Intensity","X [G]","Y []")) %>%
       ## filter out all rows containing "Slice" in "B|Field" column
-      dplyr::filter(!grepl("Slice", .data[[grep(pattern = "BG|B_G|B-G|Field",col.names,value = TRUE)]])) %>%
+      dplyr::filter(!grepl("Slice", .data[[grep(pattern = "BG|B_G|B-G|Field",
+                                                col.names,value = TRUE)]])) %>%
       stats::na.omit()
     ## in order to be sure that this column will appear as numeric
     spectrum.data.origin[[grep(pattern = "BG|B_G|B-G|Field",col.names,value = TRUE)]] <-
@@ -350,21 +464,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   }
   #
   ## Condition to convert any character column to numeric format
-  ## to check character => `inherits(x,"character")`
-  ## THIS IS REPLACED BY `fread` `colClasses`
-  # if (isTRUE(col.char2num)) {
-  #   for (i in seq(ncol(spectrum.data.origin))) {
-  #     if (inherits(spectrum.data.origin[[i]],"character")) {
-  #       spectrum.data.origin[[i]] <- as.double(spectrum.data.origin[[i]])
-  #     }
-  #   }
-  # }
+  ## to check character => `inherits(x,"character")` => JUST A NOTE
   #
-  ## `Intensity` and `x` as well as `time` column
-  ## character string definitions
-  # if (isTRUE(header)) {
-  #   col.names <- colnames(spectrum.data.origin)
-  # }
   IntensityString <- col.names[Intensity.id] ## `Intensity` string
   xString <- col.names[x.id] ## `x` string
   # timeAxis <- col.names[time.series.id]
