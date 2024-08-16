@@ -39,9 +39,10 @@
 #' @examples
 #' ## loading the aminoxyl radical CW EPR spectrum:
 #' aminoxyl.data.path <-
-#' load_data_example(file = "Aminoxyl_radical_a.txt")
+#'   load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data <-
-#' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#'   readEPR_Exp_Specs(aminoxyl.data.path,
+#'                     qValue = 2100)
 #' #
 #' ## simple `ggplot2` without any theme customization
 #' ggplot2::ggplot(data = aminoxyl.data) +
@@ -159,9 +160,10 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #' @examples
 #' #' ## loading the aminoxyl radical CW EPR spectrum:
 #' aminoxyl.data.path <-
-#' load_data_example(file = "Aminoxyl_radical_a.txt")
+#'   load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data <-
-#' readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#'   readEPR_Exp_Specs(aminoxyl.data.path,
+#'                     qValue = 2100)
 #' #
 #' ## simple `ggplot2` without any theme customization
 #' ggplot2::ggplot(data = aminoxyl.data) +
@@ -188,10 +190,12 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'                    subtitle = "EPR Spectrum")
 #' #
 #' ## loading example data (incl. `Area` and `time`
-#' ## variables) from Xenon: decay of a triarylamine radical
-#' ## cation after its generation by electrochemical oxidation
+#' ## variables) from Xenon: decay of a triarylamine
+#' ## radical cation after its generation
+#' ## by electrochemical oxidation
 #' triaryl_radCat_path <-
-#'   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
+#'   load_data_example(file =
+#'                      "Triarylamine_radCat_decay_a.txt")
 #' ## corresponding data (double integrated EPR
 #' ## spectrum = `Area` vs `time`)
 #' triaryl_radCat_data <-
@@ -203,7 +207,8 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'                     x.unit = "s",
 #'                     x.id = 1,
 #'                     Intensity.id = 2,
-#'                     qValue = 1700) %>%
+#'                     qValue = 1700,
+#'                     data.structure = "others") %>%
 #'   na.omit()
 #' #
 #' ## simple plot of previous data using
@@ -304,16 +309,14 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' @examples
 #' ## loading TMPD built-in example file:
 #' tmpd.data.file.path <-
-#' load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' ## reading data:
 #' tmpd.data.file <-
-#' readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
-#'                   col.names = c("B_G","dIepr_over_dB"),
-#'                   x.id = 1,
-#'                   Intensity.id = 2,
-#'                   qValue = 3500,
-#'                   norm.vec.add = 20,
-#'                   origin = "winepr")
+#'   readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
+#'                     col.names = c("B_G","dIepr_over_dB"),
+#'                     qValue = 3500,
+#'                     norm.vec.add = 20,
+#'                     origin = "winepr")
 #' #
 #' ggplot2::ggplot(data = tmpd.data.file,
 #'        ggplot2::aes(x = B_G,y = dIepr_over_dB)

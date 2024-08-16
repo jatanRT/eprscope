@@ -55,9 +55,10 @@ Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. l
 \examples{
 ## loading the aminoxyl radical CW EPR spectrum:
 aminoxyl.data.path <-
-load_data_example(file = "Aminoxyl_radical_a.txt")
+  load_data_example(file = "Aminoxyl_radical_a.txt")
 aminoxyl.data <-
-readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+  readEPR_Exp_Specs(aminoxyl.data.path,
+                    qValue = 2100)
 #
 ## simple `ggplot2` without any theme customization
 ggplot2::ggplot(data = aminoxyl.data) +

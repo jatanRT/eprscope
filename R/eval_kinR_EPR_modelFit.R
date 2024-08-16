@@ -56,11 +56,12 @@
 #'
 #' @examples
 #' ## loading example data (incl. `Area` and `time` variables)
-#' ## from Xenon: decay of a triarylamine radical cation after its generation
-#' ## by electrochemical oxidation
+#' ## from Xenon: decay of a triarylamine radical cation
+#' ## after its generation by electrochemical oxidation
 #' triaryl_radCat_path <-
 #'   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
-#' ## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
+#' ## corresponding data (double integrated
+#' ## EPR spectrum = `Area` vs `time`)
 #' triaryl_radCat_data <-
 #'   readEPR_Exp_Specs(triaryl_radCat_path,
 #'                     header = TRUE,
@@ -70,7 +71,8 @@
 #'                     x.unit = "s",
 #'                     x.id = 1,
 #'                     Intensity.id = 2,
-#'                     qValue = 1700) %>%
+#'                     qValue = 1700,
+#'                     data.structure = "others") %>%
 #'   na.omit()
 #' ## data preview
 #' head(triaryl_radCat_data)
@@ -79,9 +81,9 @@
 #' triaryl_radCat_dsc_path <-
 #'   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #' #
-#' ## fit previous data by second order kinetics, where the `model.react`
-#' ## is considered as an elementary step (`time.correct` of the CW-sweeps
-#' ## is included (`TRUE`))
+#' ## fit previous data by second order kinetics,
+#' ## where the `model.react` is considered as an elementary
+#' ## step (`time.correct` of the CW-sweeps is included (`TRUE`))
 #' triaryl_model_kin_fit_01 <-
 #'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
 #'                          model.react = "(r=2)R --> [k1] B",
@@ -104,8 +106,9 @@
 #' ## convergence preview
 #' triaryl_model_kin_fit_01$convergence
 #' #
-#' ## take the same experimental data and perform fit by first order
-#' ## kinetics where the `model.react` is considered as an elementary step
+#' ## take the same experimental data and perform fit
+#' ## by first order kinetics where the `model.react`
+#' ## is considered as an elementary step
 #' ## (`time.correct` of the CW-sweeps is included (`TRUE`))
 #' triaryl_model_kin_fit_02 <-
 #'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,

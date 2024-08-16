@@ -84,7 +84,7 @@ and related to the spectral data.}
 for plotting the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case
 to visualize EPR spectra by \code{plot}-functions.}
 
-\item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
+\item{origin}{Character string corresponding to \strong{origin} of the ASCII data, like from
 most common spectrometers (from which data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{

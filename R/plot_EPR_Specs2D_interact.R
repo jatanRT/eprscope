@@ -62,15 +62,15 @@
 #'
 #' @examples
 #' ## load built-in EPR spectral data
-#' data.file.path <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' data.file.path <-
+#'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' ## spectrum recorded as accumulation of 20 scans
-#' data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
-#'                               col.names = c("B_G", "dIepr_over_dB"),
-#'                               x.id = 1,
-#'                               Intensity.id = 2,
-#'                               qValue = 3500,
-#'                               norm.vec.add = 20,
-#'                               origin = "winepr")
+#' data.epr <-
+#'   readEPR_Exp_Specs(path_to_ASC = data.file.path,
+#'                     col.names = c("B_G", "dIepr_over_dB"),
+#'                     qValue = 3500,
+#'                     norm.vec.add = 20,
+#'                     origin = "winepr")
 #' ## interactive plot or screenshot
 #' plot_EPR_Specs2D_interact(data.spectra = data.epr)
 #'

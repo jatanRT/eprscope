@@ -65,7 +65,7 @@
 #' eval_interval_cnfd_tVec(di.vec)
 #' #
 #' eval_interval_cnfd_tVec(di.vec,
-#'                         level.cnfd = 0.99,
+#'                         level.cnfd = 0.95,
 #'                         separate = FALSE)
 #'
 #'

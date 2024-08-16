@@ -54,7 +54,7 @@ di.vec <- c(0.025,0.020,0.031,0.022,0.035)
 eval_interval_cnfd_tVec(di.vec)
 #
 eval_interval_cnfd_tVec(di.vec,
-                        level.cnfd = 0.99,
+                        level.cnfd = 0.95,
                         separate = FALSE)
 
 

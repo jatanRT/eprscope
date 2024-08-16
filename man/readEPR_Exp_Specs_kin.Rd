@@ -73,7 +73,7 @@ all additional (in addition to \code{qValue}) normalization(s) e.g. like concent
 weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).}
 
-\item{origin}{String/Character corresponding to \strong{origin} of the ASCII data, like from
+\item{origin}{Character string corresponding to \strong{origin} of the ASCII data, like from
 most common spectrometers (from which data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{
@@ -102,27 +102,27 @@ Reaading the continuous wave (CW) EPR time series spectral data (recorded by e.g
 \examples{
 ## loading the built-in package example to demonstrate
 ## the reading of time series EPR spectra/kinetics:
-triarylamine.decay.series.dsc.path <-
-load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
-triarylamine.decay.series.asc.path <-
-load_data_example(file = "Triarylamine_radCat_decay_series.zip")
-unzip(triarylamine.decay.series.asc.path,exdir = tempdir())
+triarylam.decay.series.dsc.path <-
+  load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+triarylam.decay.series.asc.path <-
+  load_data_example(file = "Triarylamine_radCat_decay_series.zip")
+unzip(triarylam.decay.series.asc.path,exdir = tempdir())
 #
 ## loading the kinetics:
-triarylamine.decay.series.data <-
-readEPR_Exp_Specs_kin(name.root = "Triarylamine_radCat_decay_series",
-                      dir_ASC = tempdir(),
-                      dir_dsc_par =
-                      system.file("extdata",
-                                  package = "eprscope")
-                      )
+triarylam.decay.series.data <-
+  readEPR_Exp_Specs_kin(name.root = "Triarylamine_radCat_decay_series",
+                        dir_ASC = tempdir(),
+                        dir_dsc_par =
+                          system.file("extdata",
+                                      package = "eprscope")
+                       )
 #
 ## data preview
-head(triarylamine.decay.series.data$df)
+head(triarylam.decay.series.data$df)
 #
 ## preview of corrected time vector
 ## (the uncorrected one actually starts from `0`)
-triarylamine.decay.series.data$time
+triarylam.decay.series.data$time
 #
 \dontrun{
 ## reading by the "WinEPR" software
@@ -131,14 +131,10 @@ readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
                       file.path(".","dsc_data_dir"),
                       time.unit = "s",
                       time.delta.slice.s = 24.1,
-                      col.names = c("index",
-                                    "B_G",
+                      col.names = c("B_G",
                                     "Slice",
                                     "Intensity"),
-                      x.id = 2,
                       x.unit = "G",
-                      Intensity.id = 4,
-                      time.series.id = 3,
                       qValue = 2900,
                       origin = "winepr")
 

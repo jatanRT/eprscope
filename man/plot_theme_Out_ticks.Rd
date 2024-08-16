@@ -55,16 +55,14 @@ Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. l
 \examples{
 ## loading TMPD built-in example file:
 tmpd.data.file.path <-
-load_data_example(file = "TMPD_specelchem_accu_b.asc")
+  load_data_example(file = "TMPD_specelchem_accu_b.asc")
 ## reading data:
 tmpd.data.file <-
-readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
-                  col.names = c("B_G","dIepr_over_dB"),
-                  x.id = 1,
-                  Intensity.id = 2,
-                  qValue = 3500,
-                  norm.vec.add = 20,
-                  origin = "winepr")
+  readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
+                    col.names = c("B_G","dIepr_over_dB"),
+                    qValue = 3500,
+                    norm.vec.add = 20,
+                    origin = "winepr")
 #
 ggplot2::ggplot(data = tmpd.data.file,
        ggplot2::aes(x = B_G,y = dIepr_over_dB)

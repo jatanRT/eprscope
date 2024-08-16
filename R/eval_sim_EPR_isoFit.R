@@ -124,28 +124,30 @@
 #' ## loading built-in example dataset which is simple
 #' ## EPR spectrum of the aminoxyl radical:
 #' aminoxyl.data.path <-
-#'  load_data_example(file = "Aminoxyl_radical_a.txt")
+#'   load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data <-
-#'  readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+#'   readEPR_Exp_Specs(aminoxyl.data.path,
+#'                     qValue = 2100)
 #' #
 #' ## EPR spectrum simulation fit with "Nelder-Mead"
 #' ## optimization method with `sim.check = FALSE`:
 #' tempo.test.sim.fit.a <-
-#' eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
-#'                     nu.GHz = 9.806769,
-#'                     lineG.content = 0.5,
-#'                     optim.method = "neldermead",
-#'                     nuclear.system.noA = list("14N",1),
-#'                     baseline.correct = "linear",
-#'                     optim.params.init =
-#'                     c(2.006, # g-value
-#'                       4.8, # G Delta Bpp
-#'                       4.8, # L Delta Bpp
-#'                       0, # intercept (constant) lin. baseline
-#'                       0.008, # Sim. intensity multiply
-#'                       1e-6, # slope lin. baseline
-#'                       49), # A in MHz
-#'                     sim.check = FALSE)
+#'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
+#'     nu.GHz = 9.806769,
+#'     lineG.content = 0.5,
+#'     optim.method = "neldermead",
+#'     nuclear.system.noA = list("14N",1),
+#'     baseline.correct = "linear",
+#'     optim.params.init =
+#'       c(2.006, # g-value
+#'         4.8, # G Delta Bpp
+#'         4.8, # L Delta Bpp
+#'         0, # intercept (constant) lin. baseline
+#'         0.008, # Sim. intensity multiply
+#'         1e-6, # slope lin. baseline
+#'         49), # A in MHz
+#'     sim.check = FALSE
+#'   )
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.a$best.fit.params
@@ -174,42 +176,45 @@
 #' ## optimization algorithm and `sim.check = TRUE` option
 #' ## as well as user defined bound constraints:
 #' tempo.test.sim.fit.b <-
-#' eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
-#'                     nu.GHz = 9.806769,
-#'                     lineG.content = 0.4,
-#'                     optim.method = "pswarm",
-#'                     nuclear.system.noA = list("14N",1),
-#'                     baseline.correct = "constant",
-#'                     optim.params.init = c(2.006,4.8,4.8,0,7e-3,49),
-#'                     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,4e-3,45),
-#'                     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1e-2,53),
-#'                     sim.check = TRUE)
+#'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
+#'     nu.GHz = 9.806769,
+#'     lineG.content = 0.4,
+#'     optim.method = "pswarm",
+#'     nuclear.system.noA = list("14N",1),
+#'     baseline.correct = "constant",
+#'     optim.params.init = c(2.006,4.8,4.8,0,7e-3,49),
+#'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,4e-3,45),
+#'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1e-2,53),
+#'     sim.check = TRUE
+#'   )
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.b$best.fit.params
 #' #
 #' ## quick simulation check by plotting the both
-#' ## simulated and the experimental EPR spectra together
-#' ## with the residuals (differences between the both latter):
+#' ## simulated and the experimental EPR spectra
+#' ## together with the residuals (differences between the
+#' ## both latter)
 #' tempo.test.sim.fit.b$plot
 #' #
-#' ## fitting of the aminoxyl EPR spectrum by the combination
-#' ## of the 1. "Levenberg-Marquardt" and 2. "Nelder-Mead" algorithms
+#' ## fitting of the aminoxyl EPR spectrum
+#' ## by the combination of the 1. "Levenberg-Marquardt"
+#' ## and 2. "Nelder-Mead" algorithms
 #' tempo.test.sim.fit.c <-
-#' eval_sim_EPR_isoFit(aminoxyl.data,
-#'                     nu.GHz = 9.86769,
-#'                     lineG.content = 0.5,
-#'                     optim.method = c("levenmarq",
-#'                                      "neldermead"),
-#'                     nuclear.system.noA = list("14N",1),
-#'                     baseline.correct = "constant",
-#'                     optim.params.init = c(2.0060,
-#'                                           4.8,
-#'                                           4.8,
-#'                                           0,
-#'                                           7e-3,
-#'                                           49),
-#'                     sim.check = FALSE
+#'   eval_sim_EPR_isoFit(aminoxyl.data,
+#'                       nu.GHz = 9.86769,
+#'                       lineG.content = 0.5,
+#'                       optim.method = c("levenmarq",
+#'                                        "neldermead"),
+#'                       nuclear.system.noA = list("14N",1),
+#'                       baseline.correct = "constant",
+#'                       optim.params.init = c(2.0060,
+#'                                             4.8,
+#'                                             4.8,
+#'                                             0,
+#'                                             7e-3,
+#'                                             49),
+#'                       sim.check = FALSE
 #'                     )
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters for both procedures within a list:

@@ -40,12 +40,14 @@ Calculating the \code{peak-to-peak} (distance between of the \emph{x}-axis
 \examples{
 ## loading the aminoxyl radical CW EPR spectrum:
 aminoxyl.data.path <-
-load_data_example(file = "Aminoxyl_radical_a.txt")
+  load_data_example(file = "Aminoxyl_radical_a.txt")
 aminoxyl.data <-
-readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+  readEPR_Exp_Specs(aminoxyl.data.path,
+                    qValue = 2100)
 #
 ## evaluation of the central linewidth (∆Bpp in `mT`):
-eval_DeltaXpp_Spec(aminoxyl.data,xlim = c(348.345,350.450))
+eval_DeltaXpp_Spec(aminoxyl.data,
+                   xlim = c(348.345,350.450))
 #
 ## plot interactive spectrum
 plot_EPR_Specs2D_interact(aminoxyl.data)
@@ -58,16 +60,13 @@ plot_EPR_Specs2D_interact(aminoxyl.data)
 #
 ## loading the perinaphthenyl (PNT) CW ENDOR spectrum:
 pnt.endor.data.path <-
-load_data_example(file = "PNT_ENDOR_a.txt")
+  load_data_example(file = "PNT_ENDOR_a.txt")
 pnt.endor.data <-
-readEPR_Exp_Specs(pnt.endor.data.path,
-                  col.names = c("index",
-                                "RF_MHz",
-                                "dIepr_over_dB"),
-                 x.id = 2,
-                 x.unit = "MHz",
-                 Intensity.id = 3
-                 )
+  readEPR_Exp_Specs(pnt.endor.data.path,
+                    col.names = c("index",
+                                  "RF_MHz",
+                                  "dIepr_over_dB"),
+                   x.unit = "MHz")
 #
 ## evaluation of the fourth linewidth (∆freq.(pp)
 ## in `MHz`) in the ENDOR spectrum:

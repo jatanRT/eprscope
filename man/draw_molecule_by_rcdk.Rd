@@ -75,6 +75,8 @@ Graphics/Figure object with molecular structure.
 }
 \description{
 Drawing a molecular structure based on \pkg{rcdk} package and using SMILES or SDF input data.
+  This function is inspired by
+  \href{https://riveradelgado.com/post/2021/04/18/chemistry-in-r/}{Edgardo Rivera-Delgado article}.
 }
 \examples{
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based

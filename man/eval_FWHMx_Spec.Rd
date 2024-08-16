@@ -44,29 +44,29 @@ Finding the full width at half-maximum (FWHM) height of the EPR integrated spect
 ## simulation of phenalenyl/perinaphthenyl (PNT) radical
 ## in integrated form:
 pnt.sim.integ.iso <-
-eval_sim_EPR_iso(g = 2.0027,
-                 instrum.params = c(Bcf = 3500, # central field
-                                    Bsw = 100, # sweep width
-                                    Npoints = 4096,
-                                    mwGHz = 9.8), # MW Freq. in GHz
-                 B.unit = "G",
-                 nuclear.system = list(
-                     list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
-                     list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
-                 ),
-                 natur.abund = TRUE,
-                 lineSpecs.form = "integrated",
-                 lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
-                 Intensity.sim = "single_Integ"
-                 )
+  eval_sim_EPR_iso(g = 2.0027,
+                   instrum.params = c(Bcf = 3500, # central field
+                                      Bsw = 100, # sweep width
+                                      Npoints = 4096,
+                                      mwGHz = 9.8), # MW Freq. in GHz
+                   B.unit = "G",
+                   nuclear.system = list(
+                       list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+                       list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+                   ),
+                   natur.abund = TRUE,
+                   lineSpecs.form = "integrated",
+                   lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
+                   Intensity.sim = "single_Integ"
+                   )
 #
 ## FWHM of one of the central lines/peaks (`xlim = c(3494,3496.5)`)
 ## from the simulated spectral data:
 eval_FWHMx_Spec(pnt.sim.integ.iso$df,
-               x = "Bsim_G",
-               Intensity = "single_Integ",
-               xlim = c(3494,3496.5)
-               )
+                x = "Bsim_G",
+                Intensity = "single_Integ",
+                xlim = c(3494,3496.5)
+                )
 #
 ## interactive plot of the above-simulated EPR spectrum
 ## in order to check the values:

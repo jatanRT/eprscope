@@ -24,6 +24,7 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' plot_labels_xyz(B,mT)
 #' #
 #' plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),
@@ -50,6 +51,7 @@
 #' #
 #' plot_labels_xyz(italic(nu)[RF],"("~MHz~")",
 #'                 user.defined = TRUE)
+#' }
 #'
 #'
 #' @export

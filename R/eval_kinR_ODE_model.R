@@ -175,22 +175,24 @@
 #' ## irreversible dimerization quantitative kinetic profile
 #' ## table (df) with first 10 observations/rows
 #' kin.test.01 <-
-#'  eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-#'                      kin.params = c(k1 = 0.012,
-#'                                     qvar0R = 0.08))
+#'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
+#'                       kin.params = c(k1 = 0.012,
+#'                                      qvar0R = 0.08))
 #' ## preview
 #' head(kin.test.01$df,n = 10)
 #' #
-#' ## consecutive reactions and its corresponding plot
+#' ## consecutive reactions and the corresponding plot
 #' ## (`model.react` character string without spaces)
 #' kin.test.02 <-
-#'  eval_kinR_ODE_model(model.react = "(a=2)A-->[k1](r=2)R<==>[k2][k3](c=1)C",
-#'                      kin.params = c(k1 = 0.1,
-#'                                     k2 = 0.1,
-#'                                     k3 = 0.0002,
-#'                                     qvar0A = 0.02,
-#'                                     qvar0R = 0.002,
-#'                                     qvar0C = 0))
+#'  eval_kinR_ODE_model(
+#'    model.react = "(a=2)A-->[k1](r=2)R<==>[k2][k3](c=1)C",
+#'    kin.params = c(k1 = 0.1,
+#'                   k2 = 0.1,
+#'                   k3 = 0.0002,
+#'                   qvar0A = 0.02,
+#'                   qvar0R = 0.002,
+#'                   qvar0C = 0)
+#'  )
 #' ## plot preview
 #' kin.test.02$plot
 #' #
@@ -198,11 +200,12 @@
 #' head(kin.test.02$df)
 #' #
 #' ## loading example data (incl. `Area` and `time` variables)
-#' ## from Xenon: decay of a triarylamine radical cation after its generation
-#' ## by electrochemical oxidation
+#' ## from Xenon: decay of a triarylamine radical cation
+#' ## after its generation by electrochemical oxidation
 #' triaryl_radCat_path <-
 #'   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
-#' ## corresponding data (double integrated EPR spectrum = `Area` vs `time`)
+#' ## corresponding data (double integrated
+#' ## EPR spectrum = `Area` vs `time`)
 #' triaryl_radCat_data <-
 #'   readEPR_Exp_Specs(triaryl_radCat_path,
 #'                     header = TRUE,
@@ -212,18 +215,19 @@
 #'                     x.unit = "s",
 #'                     x.id = 1,
 #'                     Intensity.id = 2,
-#'                     qValue = 1700) %>%
+#'                     qValue = 1700,
+#'                     data.structure = "others") %>%
 #'   na.omit()
 #' ## data preview
 #' head(triaryl_radCat_data)
 #' #
-#' ## comparison of the kinetic model with experimental data `triaryl_radCat_data`.
-#' ## kinetic parameters were estimated to be as close as possible to the latter.
+#' ## comparison of the kinetic model with the experimental
+#' ## data `triaryl_radCat_data`, kinetic parameters were estimated
+#' ## to be as close as possible to the latter.
 #' compar_model_expr_data_01 <-
 #'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
 #'                       kin.params = c(qvar0R = 0.019,
-#'                                      k1 = 0.04
-#'                                     ),
+#'                                      k1 = 0.04),
 #'                       timeLim.model = c(0,1500),
 #'                       data.qt.expr = triaryl_radCat_data,
 #'                       qvar.expr = "Area",
@@ -231,9 +235,10 @@
 #' ## plot preview
 #' compar_model_expr_data_01$plot
 #' #
-#' ## previous kinetic model with partial reaction order ("alpha")
-#' ## corresponding to "R" (radical species). In such case
-#' ## REACTION is NOT CONSIDERED as an ELEMENTARY one !
+#' ## previous kinetic model with partial reaction
+#' ## order ("alpha") corresponding to "R" (radical species).
+#' ## In such case REACTION is NOT CONSIDERED
+#' ## as an ELEMENTARY one !
 #' compar_model_expr_data_02 <-
 #'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
 #'                       elementary.react = FALSE,

@@ -32,7 +32,7 @@ Numeric mean \eqn{g}-factor value from the principal difference (from \eqn{g_e})
 \examples{
 ## built-in package file example and path:
 gauss.file.path <-
-load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+  load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 gauss.file <- unzip(gauss.file.path)
 ## g_iso-value calculation from Gaussian output file:
 eval_gFactor_QCHcomp(gauss.file)

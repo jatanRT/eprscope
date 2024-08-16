@@ -64,23 +64,24 @@
 #' ## time, desired potential, current and actual/applied
 #' ## potential
 #' triarylamine.data.cv <-
-#' data.table::fread(file = triarylamine.path.cv,
-#'                   skip = 2,
-#'                   col.names = c("time_s",
-#'                                 "E_V_des",
-#'                                 "I_A",
-#'                                 "E_V_app")
-#'                  )
+#'   data.table::fread(file = triarylamine.path.cv,
+#'                     skip = 2,
+#'                     col.names = c("time_s",
+#'                                   "E_V_des",
+#'                                   "I_A",
+#'                                   "E_V_app")
+#'                    )
 #' ## data frame preview
 #' head(triarylamine.data.cv)
 #' #
 #' ## simple voltammogram plot with ref. electrode string:
-#' plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+#' plot_ECh_VoC_amperogram(data.voltamm =
+#'                           triarylamine.data.cv,
 #'                         x = "E_V_app",
 #'                         Current = "I_A",
 #'                         Current.unit = "A",
 #'                         ref.electrode = "Ag-quasiref."
-#'                  )
+#'                        )
 #' #
 #' ## simple chronoamperogram plot with "theme_bw" theme
 #' ## and `ticks` pointing into the graph panel (ticks = "in")
@@ -93,7 +94,7 @@
 #'                         Current.unit = "A",
 #'                         theme.basic = "theme_bw",
 #'                         ticks = "in"
-#'                  )
+#'                        )
 #' #
 #' ## simple interactive "darkgreen" voltammogram
 #' plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
@@ -102,7 +103,7 @@
 #'                         Current.unit = "A",
 #'                         line.color = "darkgreen",
 #'                         plot.interact = TRUE
-#'                  )
+#'                        )
 #'
 #'
 #' @export

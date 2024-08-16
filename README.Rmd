@@ -61,14 +61,16 @@ In this section couple of examples are shown in order to briefly demonstrate the
 library(eprscope)
 #
 # loading the built-in example file => "TMPD_specelchem_accu_b.par"
-tmpd.params.file <- 
+tmpd.params.file <-
   load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
 # parameters into interactive table (data frame)
-tmpd.params.dt <- 
-  readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
-                      origin = "winepr",
-                      interact = "params")
+tmpd.params.dt <-
+  readEPR_params_tabs(
+    path_to_dsc_par = tmpd.params.file,
+    origin = "winepr",
+    interact = "params"
+  )
 #
 # table preview
 tmpd.params.dt
@@ -80,11 +82,13 @@ tmpd.params.dt
 ```{r molecule-drawing,warning=FALSE, message=FALSE}
 
 # Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
-# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1" 
-draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
-                      mol.label = "Phenalenyl",
-                      mol.label.color = "black",
-                      mol.label.xy.posit = c(8.8,1.2))
+# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"
+draw_molecule_by_rcdk(
+  molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
+  mol.label = "Phenalenyl",
+  mol.label.color = "black",
+  mol.label.xy.posit = c(8.8, 1.2)
+)
 
 ```
 
@@ -95,20 +99,23 @@ draw_molecule_by_rcdk(molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
 # Simulation of the phenalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
 # The additional experimental/instrumental parameters are not shown.
-# They posses their default values => see the corresponding documentation 
+# They posses their default values => see the corresponding documentation
 # of `eval_sim_EPR_iso()` function.
-simulation.iso <- 
-  eval_sim_EPR_iso(g.iso = 2.0027,
-                   B.unit = "G",
-                   nuclear.system = list(
-                     list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
-                     list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
-                     ),
-                   natur.abund = TRUE,
-                   lineGL.DeltaB = list(0.24,NULL)) # linewidth in G
+simulation.iso <-
+  eval_sim_EPR_iso(
+    g.iso = 2.0027,
+    B.unit = "G",
+    nuclear.system = list(
+      list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
+      list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
+    ),
+    natur.abund = TRUE,
+    lineGL.DeltaB = list(0.24, NULL)
+  ) # linewidth in G
 #
 # simulation spectrum preview in the region from 3470 G to 3522 G
-simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
+simulation.iso$plot + 
+  ggplot2::coord_cartesian(xlim = c(3470, 3522))
 
 ```
 
@@ -116,44 +123,52 @@ simulation.iso$plot + ggplot2::coord_cartesian(xlim = c(3470,3522))
 
 ```{r kinetic-model-fit,warning=FALSE,message=FALSE}
 
-# Decay of a triarylamine radical cation right after its generation
-# by electrochemical potentiostatic oxidation in TBAPF6/CH3CN. Double integrals
-# (Areas) vs time were obtained from the continuos wave (CW) EPR spectrometer 
+# Decay of a triarylamine radical cation right after 
+# its generation by electrochemical potentiostatic oxidation 
+# in TBAPF6/CH3CN. Double integrals (Areas) vs time were obtained 
+# from the continuos wave (CW) EPR spectrometer
 # acquisition/processing software.
 #
 # loading the built-in example file with instrumental parameters
-triarylamine_rc_decay_dsc <- 
+triarylamine_rc_decay_dsc <-
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
 # loading the built-in example file with "Area" vs "time" data frame
-triarylamine_rc_decay_txt <- 
+triarylamine_rc_decay_txt <-
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
-  readEPR_Exp_Specs(path_to_ASC = triarylamine_rc_decay_txt,
-                    header = TRUE,
-                    fill = TRUE,
-                    select = c(3,7),
-                    col.names = c("time_s","Area"),
-                    x.unit = "s",
-                    x.id = 1,
-                    Intensity.id = 2,
-                    qValue = 1700) %>% na.omit()
+  readEPR_Exp_Specs(
+    path_to_ASC = triarylamine_rc_decay_txt,
+    header = TRUE,
+    fill = TRUE,
+    select = c(3, 7),
+    col.names = c("time_s", "Area"),
+    x.unit = "s",
+    x.id = 1,
+    Intensity.id = 2,
+    qValue = 1700,
+    data.structure = "others"
+  ) %>% na.omit()
 #
 # Fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
-# rection order "alpha". "qvar0R" refers to initial 
-# "quantitative variable" (e.g. like concentration, double integral 
+# rection order "alpha". "qvar0R" refers to initial
+# "quantitative variable" (e.g. like concentration, double integral
 # or number of radicals) of the triarylamine radical cation "R".
-triarylamine_rc_decay_model <- 
-  eval_kinR_EPR_modelFit(data.qt.expr = triarylamine_rc_decay_data,
-                         model.react = "(r=2)R --> [k1] B",
-                         elementary.react = FALSE,
-                         params.guess = c(qvar0R = 0.019,
-                                          k1 = 0.04,
-                                          alpha = 1.9),
-                         time.correct = TRUE,
-                         path_to_dsc_par = triarylamine_rc_decay_dsc,
-                         origin = "xenon")
+triarylamine_rc_decay_model <-
+  eval_kinR_EPR_modelFit(
+    data.qt.expr = triarylamine_rc_decay_data,
+    model.react = "(r=2)R --> [k1] B",
+    elementary.react = FALSE,
+    params.guess = c(
+      qvar0R = 0.019,
+      k1 = 0.04,
+      alpha = 1.9
+    ),
+    time.correct = TRUE,
+    path_to_dsc_par = triarylamine_rc_decay_dsc,
+    origin = "xenon"
+  )
 #
 # graph preview
 triarylamine_rc_decay_model$plot
@@ -193,7 +208,9 @@ There are several ways how to get help. If the users are already familiar with t
 
 -   [The Big Book of R](https://www.bigbookofr.com/)
 
--   Video Tutorial Series ➨
+-   [Reproducible Research in R and Guides for the R-Cubed Courses](https://guides.rostools.org/)
+
+-   YouTube Video Tutorials ➨
 
     -   [Introduction to R Programming for Excel Users](https://www.youtube.com/watch?v=Ekp2mfxQSzw)
 
@@ -211,9 +228,11 @@ There are several ways how to get help. If the users are already familiar with t
 
     -   [Introduction to R for Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
 
+    -   [Reproducible Research with R](https://www.youtube.com/watch?v=mg95lLyCpQA)
+
 Even though the **EPR spectroscopy** is a quite complex field there are some introductory on-line materials which may help to start with this special magnetic resonance method ➨
 
--   [EasySpin Documentation](https://easyspin.org/easyspin/documentation/)
+-   [EasySpin Documentation](https://easyspin.org/easyspin/documentation/) + [EasySpin Academy - YouTube (Video Series)](https://www.youtube.com/playlist?list=PLHgZIxCMfgeIPWRCGMBs5T3Mb0TwLpAy2)
 
 -   [EPR LibreTexts in Chemistry](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))
 

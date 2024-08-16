@@ -57,9 +57,10 @@ Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. l
 \examples{
 #' ## loading the aminoxyl radical CW EPR spectrum:
 aminoxyl.data.path <-
-load_data_example(file = "Aminoxyl_radical_a.txt")
+  load_data_example(file = "Aminoxyl_radical_a.txt")
 aminoxyl.data <-
-readEPR_Exp_Specs(aminoxyl.data.path,qValue = 2100)
+  readEPR_Exp_Specs(aminoxyl.data.path,
+                    qValue = 2100)
 #
 ## simple `ggplot2` without any theme customization
 ggplot2::ggplot(data = aminoxyl.data) +
@@ -86,10 +87,12 @@ plot_EPR_Specs(data.spectra = aminoxyl.data,
                    subtitle = "EPR Spectrum")
 #
 ## loading example data (incl. `Area` and `time`
-## variables) from Xenon: decay of a triarylamine radical
-## cation after its generation by electrochemical oxidation
+## variables) from Xenon: decay of a triarylamine
+## radical cation after its generation
+## by electrochemical oxidation
 triaryl_radCat_path <-
-  load_data_example(file = "Triarylamine_radCat_decay_a.txt")
+  load_data_example(file =
+                     "Triarylamine_radCat_decay_a.txt")
 ## corresponding data (double integrated EPR
 ## spectrum = `Area` vs `time`)
 triaryl_radCat_data <-
@@ -101,7 +104,8 @@ triaryl_radCat_data <-
                     x.unit = "s",
                     x.id = 1,
                     Intensity.id = 2,
-                    qValue = 1700) \%>\%
+                    qValue = 1700,
+                    data.structure = "others") \%>\%
   na.omit()
 #
 ## simple plot of previous data using

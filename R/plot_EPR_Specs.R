@@ -134,15 +134,15 @@
 #' aminoxyl.file.path <-
 #' load_data_example("Aminoxyl_radical_a.txt")
 #' ## read the aminoxyl radical spectrum without intensity
-#' ## normalization:
+#' ## normalization
 #' aminoxyl.data <- readEPR_Exp_Specs(aminoxyl.file.path)
 #' #
 #' ## simple plot of an EPR spectrum with B in `mT`
-#' ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity):
+#' ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity)
 #' plot_EPR_Specs(aminoxyl.data)
 #' #
 #' ## the same spectrum with B in `G` and `theme_bw`
-#' ## ggplot2 graph theme:
+#' ## ggplot2 graph theme
 #' plot_EPR_Specs(data.spectra = aminoxyl.data,
 #'                x = "B_G",
 #'                x.unit = "G",
@@ -150,10 +150,10 @@
 #' #
 #' ## single integration (without baseline correction)
 #' ## of the previous spectrum by the `eval_integ_EPR_Spec`
-#' ## function:
+#' ## function
 #' aminoxyl.data.sinteg <-
-#' eval_integ_EPR_Spec(aminoxyl.data)
-#' ## plot the single integrated spectrum:
+#'   eval_integ_EPR_Spec(aminoxyl.data)
+#' ## plot the single integrated spectrum
 #' plot_EPR_Specs(aminoxyl.data.sinteg,
 #'                x = "B_G",
 #'                x.unit = "G",
@@ -163,18 +163,16 @@
 #'                lineSpecs.form = "integrated")
 #' #
 #' ## loading the built-in CW ENDOR spectrum
-#' ## of perinaphthenyl (PNT):
+#' ## of perinaphthenyl (PNT)
 #' pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
 #' ## read the PNT CW ENDOR data without intensity
-#' ## normalization:
+#' ## normalization
 #' pnt.endor.data <-
-#' readEPR_Exp_Specs(pnt.file.path,
-#'                   col.names = c("index",
-#'                                 "RF_MHz",
-#'                                 "dIepr_over_dB"),
-#'                   x.id = 2,
-#'                   x.unit = "MHz",
-#'                   Intensity.id = 3)
+#'   readEPR_Exp_Specs(pnt.file.path,
+#'                     col.names = c("index",
+#'                                   "RF_MHz",
+#'                                   "dIepr_over_dB"),
+#'                     x.unit = "MHz")
 #' ## plotting the previous ENDOR data spectrum
 #' ## in derivative form with `darkred` linecolor
 #' ## and 1.2pt linewidth:
@@ -187,18 +185,23 @@
 #' ## loading the built-in package example to demonstrate
 #' ## visualizatioin of time series EPR spectra:
 #' triarylamine.decay.series.dsc.path <-
-#' load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.DSC")
 #' triarylamine.decay.series.asc.path <-
-#' load_data_example(file = "Triarylamine_radCat_decay_series.zip")
-#' unzip(triarylamine.decay.series.asc.path,exdir = tempdir())
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.zip")
+#' unzip(triarylamine.decay.series.asc.path,
+#'       exdir = tempdir()
+#'       )
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
-#' readEPR_Exp_Specs_kin(name.root = "Triarylamine_radCat_decay_series",
-#'                       dir_ASC = tempdir(),
-#'                       dir_dsc_par =
-#'                       system.file("extdata",
-#'                                   package = "eprscope")
-#'                       )
+#'   readEPR_Exp_Specs_kin(name.root =
+#'                           "Triarylamine_radCat_decay_series",
+#'                         dir_ASC = tempdir(),
+#'                         dir_dsc_par =
+#'                           system.file("extdata",
+#'                                       package = "eprscope")
+#'                         )
 #' #
 #' ## plot with the CONTINUOUS COLORSCALE (see argument
 #' ## `line.colors` and color definitions `1.`):

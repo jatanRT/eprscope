@@ -55,7 +55,7 @@ For the receiver gain expressed in \eqn{\text{dB}} units the normalization const
   by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
   the corresponding `.DSC`/`.dsc` or `.par` file. \strong{If during the recording of EPR spectra
   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
-  \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRED ANY ADDITIONAL
+  \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRE ANY ADDITIONAL
   NORMALIZATION !}. See also \code{\link{quantify_EPR_Abs}}.
 }
 \examples{

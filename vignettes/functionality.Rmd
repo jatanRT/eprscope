@@ -69,7 +69,7 @@ draw_molecule_by_rcdk(
   molecule = "CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
   type = "smiles",
   style = "cob",
-  mol.label = expression(TMPD^+.~"("~Wuster*"'"*s~Blue~")"),
+  mol.label = expression(TMPD^+. ~ "(" ~ Wuster * "'" * s ~ Blue ~ ")"),
   mol.label.color = "yellow",
   suppressh = FALSE
 )
@@ -87,11 +87,14 @@ Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par` files (cor
 ```{r instrum-params-read-df-info}
 
 # built-in package file => "TMPD_specelchem_accu_b.par"
-tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
+tmpd.params.file <- 
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
 #
 # reading the parameter file coming from "winepr" acquisition softw.
-tmpd.params <- readEPR_params_tabs(path_to_dsc_par = tmpd.params.file,
-                                   origin = "winepr")
+tmpd.params <- readEPR_params_tabs(
+  path_to_dsc_par = tmpd.params.file,
+  origin = "winepr"
+)
 #
 # the output `tmpd.params` is list consisting
 # of the "info" data frame (contaning characters)
@@ -117,19 +120,17 @@ The `origin` argument in reading functions reflects the differences in the ASCII
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
 # The intensity is normalized by the Q value (sensitivity factor)
-# and the number of scans (`Nscans`). From the previous parameter/info 
+# and the number of scans (`Nscans`). From the previous parameter/info
 # reading we know: Q = 3500, Nscans = 20.
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
-  x.id = 1,
-  Intensity.id = 2,
   qValue = 3500,
   norm.vec.add = 20,
   origin = "winepr"
 )
 #
-# preview of the first six rows 
+# preview of the first six rows
 head(tmpd.data.norm.01)
 
 ```
@@ -140,28 +141,47 @@ An arbitrary character string may be chosen for the column names (see `col.names
 
 ```{r spectral-data-read-norm}
 
-# calculation of the advanced normalization constant
-# by selected parameters from the table above
-conv.time.ms <- 8 # conversion time in milliseconds
-receiver.gain <- 39905.25 # unitless
-sweep.width <- 120 # in G
-Number.of.points <- 2401
+# Calculation of the advanced normalization constant
+# by selected parameters from the parameter list above.
+# Parameter codes (WinEPR acq. spectrometer software)
+# can be also obtained by `readEPR_param_slct()`
+# function with the codes described in the corresponding
+# documentation.
+#
+# Following parameters are required (`req.params`) =>
+# conversion time (RCT) in milliseconds, receiver gain (RRG) unitless,
+# sweep with (HSW) in Gauss, number of points (RES) and number
+# of scans/accumulations (JSD).
+#
+# creating a vector of codes
+params.code <- c("RCT", "RRG", "HSW", "RES", "JSD")
+#
+# iterating over its components by the `sapply()` function
+req.params <-
+  sapply(
+    params.code,
+    function(c) {
+      readEPR_param_slct(tmpd.params.file,
+        c,
+        origin = "WinEPR"
+      )
+    }
+  )
+#
 adv.norm.constant <- quantify_EPR_Norm_const(
-  conv.time.ms = conv.time.ms,
-  Nscans = 20,
-  Npoints = Number.of.points,
-  rg = receiver.gain,
+  conv.time.ms = req.params[1],
+  Nscans = req.params[5],
+  Npoints = req.params[4],
+  rg = req.params[2],
   rg.unit = "Unitless",
-  Bsw = sweep.width
+  Bsw = req.params[3]
 )
 #
-# Therefore, the reading of the experimental 
+# Therefore, the reading of the experimental
 # data file =>
 tmpd.data.norm.02 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
-  x.id = 1,
-  Intensity.id = 2,
   qValue = 3500,
   norm.vec.add = adv.norm.constant,
   origin = "winepr"
@@ -179,9 +199,9 @@ Visualization and/or conversion of data frames (tables) into several formats lik
 ```{r spectral-data-read-norm-flextable}
 
 # visualization of the first 10 rows by `{flextable}` in `booktabs` (LaTeX-like) theme
-# (`theme_booktabs()`) 
-  flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
-    flextable::theme_booktabs()
+# (`theme_booktabs()`)
+flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
+  flextable::theme_booktabs()
 
 ```
 
@@ -209,10 +229,10 @@ The `plot_EPR_Specs()` is the essential function to plot individual EPR spectra 
 ```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\small \\ce{TMPD^{.+}}$ in $\\small 0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $\\small 0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensitivity Q-factor, 'qValue'."}
 
 # Plotting the spectrum with basic normalization,
-# the B abscissa can be presented either in "mT" (default) or "G" 
+# the B abscissa can be presented either in "mT" (default) or "G"
 # plot title is added by `ggtitle()` function from `{ggplot2}` package
-tmpd.plot.norm.01 <- 
-  plot_EPR_Specs(data.spectra = tmpd.data.norm.01) + 
+tmpd.plot.norm.01 <-
+  plot_EPR_Specs(data.spectra = tmpd.data.norm.01) +
   ggplot2::ggtitle("Basic Normalization")
 #
 # preview
@@ -224,16 +244,16 @@ Comparison of both spectra with different normalization ➨
 
 ```{r spectral-data-norm0102-visual,fig.cap="Comparison of $\\small \\ce{TMPD^{.+}}$ EPR spectra with different intensity normalization."}
 
-# Spectrum with the "advanced" normalization 
-tmpd.plot.norm.02 <- 
-  plot_EPR_Specs(data.spectra = tmpd.data.norm.02) + 
+# Spectrum with the "advanced" normalization
+tmpd.plot.norm.02 <-
+  plot_EPR_Specs(data.spectra = tmpd.data.norm.02) +
   ggplot2::ggtitle("Advanced Normalization")
 #
 # Both spectra together by `{patchwork}` package
-# without y/Intensity label (`ggplot2::labs(y = NULL)`) because 
+# without y/Intensity label (`ggplot2::labs(y = NULL)`) because
 # the EPR spectra will be displayed close to each other in two columns
-tmpd.plot.norm.0102 <- 
-  tmpd.plot.norm.01 + 
+tmpd.plot.norm.0102 <-
+  tmpd.plot.norm.01 +
   tmpd.plot.norm.02 +
   ggplot2::labs(y = NULL)
 #
@@ -249,11 +269,12 @@ If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual
 # to save the plot `tmpd.plot.norm.0102` with the size
 # of (7 x 5) inches and the resolution of dpi = 200
 ggplot2::ggsave("images/TMPD_EPR_Norm_compar.png",
-                plot = tmpd.plot.norm.0102,
-                width = 7,
-                height = 5,
-                units = "in",
-                dpi = 200)
+  plot = tmpd.plot.norm.0102,
+  width = 7,
+  height = 5,
+  units = "in",
+  dpi = 200
+)
 
 # other image formats like `.pdf`, `.tex`,`.jpeg`, `.eps`,
 # `.bmp`, `.svg` or `.tiff` can be used as well
@@ -293,20 +314,20 @@ where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, re
 ```{r spectral-data-norm02-gvalue}
 
 # reading the microwave frequency ("MF") from the `.par` file
-tmpd.mw.freq <- 
+tmpd.mw.freq <-
   readEPR_param_slct(tmpd.params.file,
-  string = "MF",
-  origin = "winepr"
-)
-# B region (349.677, 350.457) mT, incl. the B mid-point, 
+    string = "MF",
+    origin = "winepr"
+  )
+# B region (349.677, 350.457) mT, incl. the B mid-point,
 # to calculate the g-value is obtained from the interactive plot above
-tmpd.g.iso.spec <- 
+tmpd.g.iso.spec <-
   eval_gFactor_Spec(tmpd.data.norm.02,
-  nu.GHz = tmpd.mw.freq,
-  B = "B_mT",
-  B.unit = "mT",
-  Blim = c(349.677, 350.457)
-)
+    nu.GHz = tmpd.mw.freq,
+    B = "B_mT",
+    B.unit = "mT",
+    Blim = c(349.677, 350.457)
+  )
 #
 # value preview
 tmpd.g.iso.spec
@@ -317,21 +338,23 @@ The above (from spectrum) obtained $g_{\mathrm{iso}}$-value may be compared with
 
 ```{r dft-data-norm02-gvalue}
 
-# built-in package file => "TMPDAradCatEPRa.inp.log.zip" 
+# built-in package file => "TMPDAradCatEPRa.inp.log.zip"
 # which is a `.zip` of the Gaussian output file
-gauss.tmpd.load <- load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
+gauss.tmpd.load <- 
+  load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 gauss.tmpd.output <- unzip(gauss.tmpd.load)
 #
 # giso-value is automatically calculated as the mean
 # of its principal components (g1,g2,g3) summarized in output files
-tmpd.g.iso.dft <- eval_gFactor_QCHcomp(gauss.tmpd.output)
+tmpd.g.iso.dft <- 
+  eval_gFactor_QCHcomp(gauss.tmpd.output)
 #
 # preview
 tmpd.g.iso.dft
 #
-# comparison of both theoretical and experimental g-values 
+# comparison of both theoretical and experimental g-values
 # within the tolerance of 1e-3
-all.equal(tmpd.g.iso.spec,tmpd.g.iso.dft,tolerance = 1e-3)
+all.equal(tmpd.g.iso.spec, tmpd.g.iso.dft, tolerance = 1e-3)
 
 ```
 
@@ -351,19 +374,20 @@ B.regions.mT <- list(
   c(350.822, 351.072)
 )
 #
-# all Delta Bpp as vector created by the iteration through 
+# all Delta Bpp as vector created by the iteration through
 # all elements (with the help of `sapply()` function) of `B.regions.mT`
 tmpd.delta.Bpp <- sapply(
   B.regions.mT,
   function(b) {
     eval_DeltaXpp_Spec(tmpd.data.norm.02,
-      xlim = b)
+      xlim = b
+    )
   }
 )
 #
 # mean value of all three linewidths in mT
-tmpd.delta.Bpp.mean <- 
-  round(mean(tmpd.delta.Bpp),digits = 2)
+tmpd.delta.Bpp.mean <-
+  round(mean(tmpd.delta.Bpp), digits = 2)
 #
 # value preview
 tmpd.delta.Bpp.mean
@@ -382,14 +406,14 @@ The **HF** structure represents one of the most important characteristic because
 ```
 ```{r a-to-A-from-spectrum}
 
-# two visible distances or HFSCs (a in mT) 
+# two visible distances or HFSCs (a in mT)
 # from the interactive EPR spectrum above
 a1.guess.mT <- abs(350.042 - 349.342)
 a2.guess.mT <- abs(349.147 - 349.342)
 # both values into vector
-a.guess.mT <- c(a1.guess.mT,a2.guess.mT)
+a.guess.mT <- c(a1.guess.mT, a2.guess.mT)
 #
-# converssion into A (in MHz) incl. g.iso value 
+# converssion into A (in MHz) incl. g.iso value
 # (`tmpd.g.iso.spec`) from the calculation above
 A.guess.MHz <-
   sapply(
@@ -397,7 +421,8 @@ A.guess.MHz <-
     function(x) {
       convert_a_mT_2A(
         a.mT = x,
-        g.val = tmpd.g.iso.spec)
+        g.val = tmpd.g.iso.spec
+      )
     }
   )
 #
@@ -442,7 +467,8 @@ kableExtra::kbl(symmetry.As.df) %>%
     "striped",
     "hover",
     "condensed"
-  ))
+  )
+)
 
 ```
 
@@ -460,27 +486,31 @@ Required arguments of the `eval_sim_EPR_iso()` function are presented after the 
 
 ```{r tmpd-radcat-simulation}
 
-# isotropic simulation of the TMPD radical cation where 
-# the instrumental parameters are taken from the corresponding 
+# isotropic simulation of the TMPD radical cation where
+# the instrumental parameters are taken from the corresponding
 # `.par` file: `tmpd.params.file` :
-sim.tmpd.iso <- 
-  eval_sim_EPR_iso(g.iso = tmpd.g.iso.spec,
-                   instrum.params = NULL,
-                   path_to_dsc_par = tmpd.params.file,
-                   origin = "winepr",
-                   B.unit = "mT",
-                   nuclear.system = 
-                     list(list("14N",2,18.6), # A(2 x 14N) = 18.6 MHz
-                          list("1H",4,5.5), # A(4 x 1H) = 5.5 MHz
-                          list("1H",12,19.6)), # A(12 x 1H) = 19.6 MHz
-                   # consider natural abundance of the nuclei:
-                   natur.abund = TRUE,
-                   # Gauss (G) & Lorentz (L) linewidth (mT):
-                   lineGL.DeltaB = list(0.05,0.05),
-                   # pseudo-Voigt line shape with 0.5 G + 0.5 L:
-                   lineG.content = 0.5) 
+sim.tmpd.iso <-
+  eval_sim_EPR_iso(
+    g.iso = tmpd.g.iso.spec,
+    instrum.params = NULL,
+    path_to_dsc_par = tmpd.params.file,
+    origin = "winepr",
+    B.unit = "mT",
+    nuclear.system =
+      list(
+        list("14N", 2, 18.6), # A(2 x 14N) = 18.6 MHz
+        list("1H", 4, 5.5), # A(4 x 1H) = 5.5 MHz
+        list("1H", 12, 19.6)
+      ), # A(12 x 1H) = 19.6 MHz
+    # natural abundance of the nuclei:
+    natur.abund = TRUE,
+    # Gauss (G) & Lorentz (L) linewidth (mT):
+    lineGL.DeltaB = list(0.05, 0.05),
+    # pseudo-Voigt line shape with 0.5 G + 0.5 L:
+    lineG.content = 0.5
+  )
 #
-# The output is either interactive spectrum plot 
+# The output is either interactive spectrum plot
 # or list of plot with the simulated spectrum data frame.
 #
 # preview of the data frame
@@ -494,9 +524,11 @@ Afterwards, the simulated EPR spectrum can be presented/compared with the experi
 
 # The intesinty of the simulated spectrum
 # is automatically scalled onto the experimental one.
-present_EPR_Sim_Spec(data.spectr.expr = tmpd.data.norm.02,
-                     data.spectr.sim = sim.tmpd.iso$df,
-                     B.unit = "mT") +
+present_EPR_Sim_Spec(
+  data.spectr.expr = tmpd.data.norm.02,
+  data.spectr.sim = sim.tmpd.iso$df,
+  B.unit = "mT"
+) +
   # `plot_theme_NoY_ticks` theme from `{eprscope}` + `{ggplot2}` function
   plot_theme_NoY_ticks(legend.text = element_text(size = 13))
 
@@ -514,14 +546,16 @@ The relative error of the cumulative trapezoidal integration is minimal, usually
 
 # Basic integration without baseline correction
 # during the first integration.
-tmpd.data.norm.02.integ <- 
-  eval_integ_EPR_Spec(data.spectr = tmpd.data.norm.02,
-                      B = "B_mT",
-                      B.unit = "mT",
-                      sigmoid.integ = TRUE)
+tmpd.data.norm.02.integ <-
+  eval_integ_EPR_Spec(
+    data.spectr = tmpd.data.norm.02,
+    B = "B_mT",
+    B.unit = "mT",
+    sigmoid.integ = TRUE
+  )
 #
 # The integration returns the original data frame
-# with the additional integrals `single_Integ` + `sigmoid_Integ` 
+# with the additional integrals `single_Integ` + `sigmoid_Integ`
 #
 # preview
 head(tmpd.data.norm.02.integ)
@@ -536,12 +570,15 @@ Both integrals, within the entire $\small B$-range, can be visualized by `plot_E
 # with their corresponding intensities automatically
 # scaled onto the `y`-axis (defined by "free_y")
 plot_EPR_Specs_integ(tmpd.data.norm.02.integ,
-                     slct.integs = c("single_Integ",
-                                     "sigmoid_Integ"),
-                     B = "B_mT",
-                     B.unit = "mT",
-                     separate.integs = TRUE,
-                     separate.integ.scales = "free_y")
+  slct.integs = c(
+    "single_Integ",
+    "sigmoid_Integ"
+  ),
+  B = "B_mT",
+  B.unit = "mT",
+  separate.integs = TRUE,
+  separate.integ.scales = "free_y"
+)
 
 ```
 
@@ -551,27 +588,32 @@ Obviously, the baseline of the single and double integrated $\small \ce{TMPD^{.+
 
 # correction of the TMPD^{.+} EPR spectrum single
 # integral by the 3rd degree polynomial
-tmpd.data.norm.02.integCorr <- 
-  eval_integ_EPR_Spec(data.spectr = tmpd.data.norm.02,
-                      B = "B_mT",
-                      B.unit = "mT",
-                      correct.integ = TRUE,
-                      # peak region to correct the baseline:
-                      BpeaKlim = c(344.5,355.5),
-                      # polynomial degree to fit baseline under the peak region:
-                      poly.degree = 3,
-                      sigmoid.integ = TRUE)
+tmpd.data.norm.02.integCorr <-
+  eval_integ_EPR_Spec(
+    data.spectr = tmpd.data.norm.02,
+    B = "B_mT",
+    B.unit = "mT",
+    correct.integ = TRUE,
+    # peak region to correct the baseline:
+    BpeaKlim = c(344.5, 355.5),
+    # polynomial degree to fit baseline under the peak region:
+    poly.degree = 3,
+    sigmoid.integ = TRUE
+  )
 #
 # Integrals preview
 # data frame column of corrected integral
 # is denoted as `single_Integ_correct`
 plot_EPR_Specs_integ(tmpd.data.norm.02.integCorr,
-                     slct.integs = c("single_Integ_correct",
-                                     "sigmoid_Integ"),
-                     B = "B_mT",
-                     B.unit = "mT",
-                     separate.integs = TRUE,
-                     separate.integ.scales = "free_y")
+  slct.integs = c(
+    "single_Integ_correct",
+    "sigmoid_Integ"
+  ),
+  B = "B_mT",
+  B.unit = "mT",
+  separate.integs = TRUE,
+  separate.integ.scales = "free_y"
+)
 
 ```
 

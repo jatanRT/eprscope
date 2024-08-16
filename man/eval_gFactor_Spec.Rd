@@ -60,14 +60,13 @@ Calculation of the g-value according to fundamental formula (\code{\link{eval_gF
 \examples{
 ## load package built-in EPR spectral data example:
 data.file.path <-
-load_data_example(file = "TMPD_specelchem_accu_b.asc")
-data.epr <- readEPR_Exp_Specs(path_to_ASC = data.file.path,
-                              col.names = c("B_G",
-                                            "dIepr_over_dB"),
-                              x.id = 1,
-                              Intensity.id = 2,
-                              qValue = 3500,
-                              origin = "winepr")
+  load_data_example(file = "TMPD_specelchem_accu_b.asc")
+data.epr <-
+  readEPR_Exp_Specs(path_to_ASC = data.file.path,
+                    col.names = c("B_G",
+                                  "dIepr_over_dB"),
+                    qValue = 3500,
+                    origin = "winepr")
 #
 ## g_iso calculation from EPR spectrum/data:
 eval_gFactor_Spec(data.spectr = data.epr,
