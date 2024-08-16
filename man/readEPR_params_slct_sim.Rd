@@ -44,6 +44,13 @@ TMPD_radCat_par_path <-
 readEPR_params_slct_sim(TMPD_radCat_par_path,
                         origin = "winepr",
                         B.unit = "mT")
+#
+## loading `.dsc` (`Magnettech`) parameter
+## file example
+AcridineRad.params.path <-
+  load_data_example("AcridineDeriv_Irrad_365nm.dsc")
+readEPR_params_slct_sim(AcridineRad.params.path,
+                        origin = "magnettech")
 
 
 }

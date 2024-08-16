@@ -37,12 +37,31 @@ Taking the instrumental parameters from \code{.DSC/.dsc} or \code{.par} files, a
   \code{\link{readEPR_param_slct}}.
 }
 \examples{
-## built-in package file => "TMPD_specelchem_accu_b.par"
-tmpd.params.file <- load_data_example(file = "TMPD_specelchem_accu_b.par")
+## loading built-in example file =>
+## "AcridineDeriv_Irrad_365nm.dsc" by `Magnettech`
+## spectrometer software
+AcridinRad.data.file <-
+  load_data_example("AcridineDeriv_Irrad_365nm.dsc")
+## reading nd displaying parameters as data frame
+AcridinRad.params.data <-
+  readEPR_params_tabs(AcridinRad.data.file,
+                      origin = "magnettech")
+#
+## parameters preview
+AcridinRad.params.data$params
+#
+## info preview
+AcridinRad.params.data$info
+#
+## built-in example file => "TMPD_specelchem_accu_b.par"
+## by the `WinEPR` spectrometer software
+tmpd.params.file <-
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
 ## reading and displaying parameters as data frame
-tmpd.params.tab <- readEPR_params_tabs(tmpd.params.file,
-                                       origin = "winepr")
-##
+tmpd.params.tab <-
+  readEPR_params_tabs(tmpd.params.file,
+                      origin = "winepr")
+#
 ## preview
 tmpd.params.tab$params
 ##
