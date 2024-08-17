@@ -121,7 +121,8 @@ tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
 # The intensity is normalized by the Q value (sensitivity factor)
 # and the number of scans (`Nscans`). From the previous parameter/info
-# reading we know: Q = 3500, Nscans = 20.
+# reading we know: Q = 3500 (in the `info` ddata frame), 
+# Nscans = 20 (from `tmpd.params$params` in the 5th row and the 2nd column).
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),

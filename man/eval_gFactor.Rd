@@ -7,24 +7,25 @@
 eval_gFactor(nu.val, nu.unit = "GHz", B.val, B.unit = "mT")
 }
 \arguments{
-\item{nu.val}{Numeric, microwave Frequency.}
+\item{nu.val}{Numeric, microwave Frequency value.}
 
-\item{nu.unit}{Character string, frequency unit defined by \code{GHz} or \code{Hz}, \strong{default}: \code{nu.unit = "GHz"}.}
+\item{nu.unit}{Character string, frequency unit defined by \code{GHz} or \code{Hz},
+\strong{default}: \code{nu.unit = "GHz"}.}
 
-\item{B.val}{Numeric, magnetic flux density.}
+\item{B.val}{Numeric, magnetic flux density value.}
 
-\item{B.unit}{Character string, magnetic flux density unit in \code{G} or \code{mT} or \code{T}, \strong{default}:
-\code{B.unit = "mT"}.}
+\item{B.unit}{Character string, magnetic flux density unit in \code{G} or \code{mT} or \code{T},
+\strong{default}: \code{B.unit = "mT"}.}
 }
 \value{
-\emph{g}-Value from \eqn{(\nu h)/(\mu_{B} B)}. For variables see description above. Physical constants
-  are taken from \pkg{constants} package.
+\eqn{g}-Value from \eqn{(\nu h)/(\mu_{\text{B}} B)}. Physical constants (\eqn{mu_{\text{B}}}
+  and \eqn{h}) are taken from \pkg{constants} package by the \code{link[constants]{syms}}.
 }
 \description{
-Calculation of \emph{g}-factor according to fundamental formula (see \code{Value}).
+Calculation of \eqn{g}-factor according to fundamental formula (see \code{Value}).
   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
-  can be entered having the common units like \code{G} (Gauss) \code{mT}
-  (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}, respectively.
+  can be defined having the common units like \code{G} (Gauss) \code{mT}
+  (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}.
 }
 \examples{
 eval_gFactor(9.8020458,

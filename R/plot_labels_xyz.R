@@ -1,26 +1,30 @@
 #
-#' Labels for Various Plots (Spectroscopy incl. EPR, Voltammetry,...etc)
+#' Labels for Various Plots (Spectroscopy, EPR, Voltammetry,...etc)
 #'
 #'
 #' @family Visualizations and Graphics
 #'
 #'
-#' @description TODO To write greek symbols, subscript and superscript, see
+#' @description
+#'   Using physico-chemical notation of quantities or formulas (labels and titles with greek symbols,
+#'   subscript and superscript...etc) in static plots. The function is inspired by
 #'   \href{https://www.r-bloggers.com/math-notation-for-r-plot-titles-expression-and-bquote/}{R-Bloggers:Math Notation}
-#'   and \href{https://www.r-bloggers.com/r-plotmath-functions-combined-with-variable-values/}{R-Bloggers:Plotmath}
-#'   or \code{\link[grDevices]{plotmath}} (in console write \code{?plotmath})
+#'   and \href{https://www.r-bloggers.com/r-plotmath-functions-combined-with-variable-values/}{R-Bloggers:Plotmath},
+#'   in order to simplify the writing. See also \code{\link[grDevices]{plotmath}} documentation or in console
+#'   write \code{?plotmath}.
 #'
 #'
-#' @param quantity Variable String (without quotation however, sometimes part of it can be quoted, see examples below),
-#'   physical quantity, which should be displayed as the axis title like \eqn{B},
-#'   d\eqn{I_{EPR}}/d\eqn{B}, \eqn{time}, \eqn{\Delta B_{pp}}, \emph{Double Integral} etc.
-#' @param unit Variable String (without quotation, sometimes part of it can be quoted, see examples below),
-#'   physical quanity corresponding unit, which should be displayed like \code{mT}, \code{s}, \code{p.d.u.}, etc.
-#' @param user.defined Boolean, in order to bring more flexibility to display more complicated quantities and units
-#'   based on users requirements (see examples bellow)
+#' @param quantity Variable string \strong{without quotation} (some parts of the expression can be however quoted,
+#'   see examples below), corresponding to physical quantity, which should be displayed as the (axis) title
+#'   like \eqn{B}, d\eqn{I_{EPR}}/d\eqn{B}, \eqn{time}, \eqn{\Delta B_{pp}}, \emph{Double Integral}...etc.
+#' @param unit Variable String \strong{without quotation} (some parts of the expression can be however quoted,
+#'   see examples below) referring to displayed physical quantity unit, like \code{mT}, \code{s},
+#'   \code{p.d.u.}, ...etc.
+#' @param user.defined Logical, in order to bring more flexibility to customize quantities and units
+#'   to meet the users needs.
 #'
 #'
-#' @return Axis labels for different plots
+#' @return Axis labels/expressions for different plots.
 #'
 #'
 #' @examples
@@ -52,6 +56,39 @@
 #' plot_labels_xyz(italic(nu)[RF],"("~MHz~")",
 #'                 user.defined = TRUE)
 #' }
+#' #
+#' ## loading example data (incl. `Area` and `time`
+#' ## variables) from Xenon: decay of a triarylamine
+#' ## radical cation after its generation
+#' ## by electrochemical oxidation
+#' triaryl_radCat_path <-
+#'   load_data_example(file =
+#'                      "Triarylamine_radCat_decay_a.txt")
+#' ## corresponding data (double integrated EPR
+#' ## spectrum = `Area` vs `time`)
+#' triaryl_radCat_data <-
+#'   readEPR_Exp_Specs(triaryl_radCat_path,
+#'                     header = TRUE,
+#'                     fill = TRUE,
+#'                     select = c(3,7),
+#'                     col.names = c("time_s","Area"),
+#'                     x.unit = "s",
+#'                     x.id = 1,
+#'                     Intensity.id = 2,
+#'                     qValue = 1700,
+#'                     data.structure = "others") %>%
+#'   na.omit()
+#' #
+#' ## simple plot of previous data using
+#' ## `plot_labels_xyz()`
+#' ggplot2::ggplot(data = triaryl_radCat_data) +
+#'   ggplot2::geom_point(
+#'     ggplot2::aes(x = time_s,y = Area)
+#'     ) +
+#'   ggplot2::labs(title = "Radical Kinetics",
+#'                 x = plot_labels_xyz(Time,s),
+#'                 y = plot_labels_xyz(Double~~Integral,p.d.u.)) +
+#'   plot_theme_NoY_ticks()
 #'
 #'
 #' @export

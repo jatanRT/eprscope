@@ -419,7 +419,7 @@ test_that("The isotropic hyperfine coupling constants determined
 #
 # ===================================================================================
 #
-## Simulation of phenylalenyl (or PNT) radical in order to check the simulation
+## Simulation of phenalenyl (or PNT) radical in order to check the simulation
 ## intensity pattern, the EPR spectrum can be also compared with that published
 ## elsewhere https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b
 #

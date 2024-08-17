@@ -12,8 +12,8 @@ eval_FWHMx_Spec(
 )
 }
 \arguments{
-\item{data.spectr.integ}{Data frame object containing \emph{x} column/variable like magnetic flux density, \emph{B}
-(in in \code{mT} or \code{G}) or \emph{g}-factor/value (unitless) and integrated intensity
+\item{data.spectr.integ}{Data frame object containing \code{x}-column/variable like magnetic flux density,
+\emph{B} (in in \code{mT} or \code{G}) or \emph{g}-factor/value (unitless) and integrated intensity
 (common absorption-like spectrum) column/variable.}
 
 \item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original
@@ -24,43 +24,45 @@ eval_FWHMx_Spec(
 (in the original \code{data.spectr.integ}) if other than \code{single_Integ} (\strong{default}) name/label
 is used (such as "Integral_Intensity" or "integral").}
 
-\item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
-e.g. \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
-\strong{Default}: \code{xlim = NULL} (corresponding to the entire \emph{x} range).}
+\item{xlim}{Numeric vector corresponding to lower and upper limit of the selected \emph{x}-region,
+e.g. \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.004,2.001)}
+(\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding to the entire \emph{x}-range).}
 }
 \value{
-Numeric value of the FWHM directly from EPR spectrum, depending on \code{x} variable =>
+Numeric value of the FWHM directly from EPR spectrum, depending on the \code{x} variable =>
   either in \code{mT}/\code{G} or unitless in case if \emph{g}-factor is presented on abscissa.
 }
 \description{
-Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity. For such purpose
-  the EPR spectrum has to be in single integrated form (common absorption-like spectrum) and not in derivative one
-  (characterized by \code{dIepr_over_dB} y-axis/variable). If this is not the case, the derivative EPR spectrum
-  can be integrated by \code{\link{eval_integ_EPR_Spec}}. The FWHM is evaluated as a difference between the points
-  (\eqn{x > x_{\text{max}}} and \eqn{x < x_{\text{max}}}) having the intensity closest
-  to the maximal intensity/2 corresponding to one individual EPR line/peak defined by the \code{xlim} argument.
+Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity.
+  For such purpose the EPR spectrum has to be in single integrated form (common absorption-like spectrum).
+  If this is not the case, the derivative EPR spectrum (with the intensity \code{dIepr_over_dB})
+  can be integrated by \code{\link{eval_integ_EPR_Spec}}. The FWHM is evaluated as a difference
+  between the points (\eqn{x > x_{\text{max}}} and \eqn{x < x_{\text{max}}}) having the intensity
+  closest to the maximal intensity/2 corresponding to one individual EPR line/peak defined
+  by the \code{xlim} argument.
 }
 \examples{
 ## simulation of phenalenyl/perinaphthenyl (PNT) radical
 ## in integrated form:
 pnt.sim.integ.iso <-
   eval_sim_EPR_iso(g = 2.0027,
-                   instrum.params = c(Bcf = 3500, # central field
-                                      Bsw = 100, # sweep width
-                                      Npoints = 4096,
-                                      mwGHz = 9.8), # MW Freq. in GHz
-                   B.unit = "G",
-                   nuclear.system = list(
-                       list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
-                       list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
-                   ),
-                   natur.abund = TRUE,
-                   lineSpecs.form = "integrated",
-                   lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
-                   Intensity.sim = "single_Integ"
-                   )
+    instrum.params = c(Bcf = 3500, # central field
+                       Bsw = 100, # sweep width
+                       Npoints = 4096,
+                       mwGHz = 9.8), # MW Freq. in GHz
+    B.unit = "G",
+    nuclear.system = list(
+      list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+      list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+     ),
+    natur.abund = TRUE,
+    lineSpecs.form = "integrated",
+    lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
+    Intensity.sim = "single_Integ"
+  )
 #
-## FWHM of one of the central lines/peaks (`xlim = c(3494,3496.5)`)
+## FWHM of one of the central
+## lines/peaks (`xlim = c(3494,3496.5)`)
 ## from the simulated spectral data:
 eval_FWHMx_Spec(pnt.sim.integ.iso$df,
                 x = "Bsim_G",
@@ -68,14 +70,14 @@ eval_FWHMx_Spec(pnt.sim.integ.iso$df,
                 xlim = c(3494,3496.5)
                 )
 #
-## interactive plot of the above-simulated EPR spectrum
-## in order to check the values:
+## interactive plot of the above-simulated
+## EPR spectrum in order to check the values:
 plot_EPR_Specs2D_interact(pnt.sim.integ.iso$df,
-                          x = "Bsim_G",
-                          x.unit = "G",
-                          Intensity = "single_Integ",
-                          lineSpecs.form = "integrated"
-                          )
+  x = "Bsim_G",
+  x.unit = "G",
+  Intensity = "single_Integ",
+  lineSpecs.form = "integrated"
+ )
 
 
 }

@@ -6,9 +6,9 @@
 #'
 #'
 #' @description
-#'   Larmor/ENDOR frequency calculations for the analysis in EPR/Electron Nuclear Double Resonance. This a function
-#'   similar to e.g. available online => \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
-#'   Calclator}.
+#'   Larmor/ENDOR frequency calculations for the analysis in EPR/Electron Nuclear Double Resonance (ENDOR).
+#'   Function inspired by the similar \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
+#'   Calculator} available online.
 #'
 #'
 #' @details
@@ -30,15 +30,15 @@
 #'
 #' @param nucle_us_i (Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
 #'   pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \emph{g}-factors
-#'   for those nuclei are taken from the package \code{isotopes_ds} data frame. Se also documentation
-#'   \code{\link{isotopes_ds}}.
-#' @param B.unit Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}: \code{B.unit = "G"}.
-#' @param B.val Numeric, magnetic flux density \emph{B} \code{value}. This actually corresponds to \emph{B} at which
-#'   the EPR signal saturates to record the ENDOR spectrum/spectra.
+#'   for those nuclei are taken from the \code{\link{isotopes_ds}}.
+#' @param B.unit Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}:
+#'   \code{B.unit = "G"}.
+#' @param B.val Numeric, magnetic flux density \eqn{B}-\code{value}. This actually corresponds
+#'   to \eqn{B} at which the EPR signal saturates to record the ENDOR spectrum/spectra.
 #'
 #'
 #' @return Numeric value or vector of nuclear Larmor/ENDOR frequencies in MHz for selected
-#'   nuclei at \emph{B} = \code{B.val}.
+#'   nuclei at \eqn{B} = \code{B.val}.
 #'
 #'
 #' @examples
@@ -60,7 +60,7 @@
 #'
 eval_nu_ENDOR <- function(nucle_us_i,
                           B.unit = "G",
-                          B.val){
+                          B.val) {
   #
   ## 'Temporary' processing variables
   Isotope <- NULL
@@ -71,22 +71,26 @@ eval_nu_ENDOR <- function(nucle_us_i,
   nuclear.mu <- constants::syms$mun ## Nuclear magneton
   #
   ## converting `B.val`
-  if (B.unit == "T"){
+  if (B.unit == "T") {
     B.val <- B.val
-  } else if (B.unit == "mT"){
+  } else if (B.unit == "mT") {
     B.val <- B.val * 0.001
-  } else if (B.unit == "G"){
+  } else if (B.unit == "G") {
     B.val <- B.val * 0.0001
   }
   #
   ## load the specific nucleus and its properties
   ## from the `isotopes_ds` and select its g-value: `g_Nuclear`
   ## for "vectorized" nuclei
-  if (length(nucle_us_i) > 1){
-    g_Nuclear.nucle.us.i <- sapply(seq(nucle_us_i),
-                                   function(i) eprscope::isotopes_ds %>%
-                                     dplyr::filter(Isotope == nucle_us_i[i]) %>%
-                                     dplyr::pull(g_Nuclear))
+  if (length(nucle_us_i) > 1) {
+    g_Nuclear.nucle.us.i <- sapply(
+      seq(nucle_us_i),
+      function(i) {
+        eprscope::isotopes_ds %>%
+          dplyr::filter(Isotope == nucle_us_i[i]) %>%
+          dplyr::pull(g_Nuclear)
+      }
+    )
   } else {
     #
     ## just for one nucleus
@@ -96,7 +100,7 @@ eval_nu_ENDOR <- function(nucle_us_i,
   }
   #
   ## ENDOR frequency (in MHz) calculation:
-  nu_ENDOR <- - (1/Planck.const) *
+  nu_ENDOR <- -(1 / Planck.const) *
     g_Nuclear.nucle.us.i * nuclear.mu * B.val * 1e-6
   #
   return(nu_ENDOR)

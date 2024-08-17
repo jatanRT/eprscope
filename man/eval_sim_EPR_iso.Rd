@@ -116,47 +116,70 @@ A short description...tbc...of the EPR simulation
 Theoretical prediction of isotropic EPR spectra proceeds from
 }
 \examples{
-## simulation of simple EPR spectrum (without hyperfine structure)
-## with g(iso) = 1.9804 and linewidth ∆Bpp = 3.2 G, only Gaussian
-## lineform is considered:
+## simulation of simple EPR spectrum (without hyperfine
+## structure) with g(iso) = 1.9804 and the linewidth
+## ∆Bpp = 3.2 G, only Gaussian lineform is considered:
 sim.simple.a <-
-eval_sim_EPR_iso(g.iso = 1.9804,
-                 instrum.params = c(Bcf = 3490,
-                                    Bsw = 200,
-                                    Npoints = 1600,
-                                    mwGHz = 9.8943),
-                 lineGL.DeltaB = list(3.2,NULL)
-                 )
+  eval_sim_EPR_iso(g.iso = 1.9804,
+    instrum.params = c(Bcf = 3490,
+                       Bsw = 200,
+                       Npoints = 1600,
+                       mwGHz = 9.8943),
+    lineGL.DeltaB = list(3.2,NULL)
+  )
 ## simulation preview:
 sim.simple.a$plot
 #
-## simulation of luteolin radical anion with the following
-## four hyperfine coupling constants A(1 x 1H) = 3.1 MHz,
-## A(1 x 1H) = 2.8 MHz, A(1 x 1H) = 8.0 MHz
-## and A(1 x 1H) = 4.1 MHz. One may check out the simulation
-## at https://doi.org/10.1016/j.electacta.2013.06.136 (Fig. 6):
+## simulation of luteolin radical anion with
+## the following four hyperfine coupling constants
+## A(1 x 1H) = 3.1 MHz, A(1 x 1H) = 2.8 MHz,
+## A(1 x 1H) = 8.0 MHz and A(1 x 1H) = 4.1 MHz, o
+## ne may check out the simulation
+## at https://doi.org/10.1016/j.electacta.2013.06.136
+## (see Fig. 6 in that article):
 sim.luteol <-
-eval_sim_EPR_iso(g.iso = 2.00495,
-                 instrum.params = c(Bcf = 339.367,
-                                    Bsw = 5.9,
-                                    Npoints = 2048,
-                                    mwGHz = 9.5294),
-                 nuclear.system = list(list("1H",1,3.1),
-                                       list("1H",1,2.8),
-                                       list("1H",1,8.0),
-                                       list("1H",1,4.1)),
-                 lineGL.DeltaB = list(0.034,0.034),
-                 lineG.content = 0.6,
-                 B.unit = "mT",
-                 natur.abund = TRUE
-                 )
+  eval_sim_EPR_iso(g.iso = 2.00495,
+    instrum.params = c(Bcf = 339.367,
+                       Bsw = 5.9,
+                       Npoints = 2048,
+                       mwGHz = 9.5294),
+    nuclear.system = list(list("1H",1,3.1),
+                          list("1H",1,2.8),
+                          list("1H",1,8.0),
+                          list("1H",1,4.1)),
+    lineGL.DeltaB = list(0.034,0.034),
+    lineG.content = 0.6,
+    B.unit = "mT",
+    natur.abund = TRUE
+ )
 #
 ## simulated spectrum preview within
 ## the B = (338-341) mT region:
-sim.luteol$plot + ggplot2::coord_cartesian(xlim = c(338,341))
+sim.luteol$plot +
+  ggplot2::coord_cartesian(xlim = c(338,341))
 #
 ## ...and the corresponding data frame:
 head(sim.luteol$df)
+#
+## simulation of phenalenyl/perinaphthenyl
+## (PNT) radical in the integrated form:
+eval_sim_EPR_iso(g = 2.0027,
+  instrum.params = c(Bcf = 3500, # central field
+                     Bsw = 100, # sweep width
+                     Npoints = 4096,
+                     mwGHz = 9.8), # MW Freq. in GHz
+  B.unit = "G",
+  nuclear.system = list(
+      list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+      list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+   ),
+  natur.abund = TRUE,
+  lineSpecs.form = "integrated",
+  lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
+  Intensity.sim = "single_Integ",
+  plot.sim.interact = TRUE
+ )
+
 
 
 }

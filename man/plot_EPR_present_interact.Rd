@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_present_interact.R
 \name{plot_EPR_present_interact}
 \alias{plot_EPR_present_interact}
-\title{Present/Save Interactive Plotly-Plot/-Graph for Publication (HTML,PDF,Word)}
+\title{Present/Save Interactive Plotly-Plot/-Graph for Publication (HTML,PDF,DOCX)}
 \usage{
 plot_EPR_present_interact(
   p,

@@ -26,36 +26,38 @@ or single integrated intensity like \code{Integrated_Intensity} (\code{index} co
 (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
 for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.}
 
-\item{B}{Character string pointing to magnetic flux density \code{column} of EPR spectrum data frame
+\item{B}{Character string pointing to magnetic flux density \code{column} of the EPR spectrum data frame
 \code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
-or \code{B = "B_G"} or \code{B = "B_G_Sim"} to include simulated EPR spectra as well.}
+or \code{B = "B_G"} or \code{B = "Bsim_G"} to include simulated EPR spectra as well.}
 
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
-(i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.}
+\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default}) or
+\code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form of the analyzed
+EPR spectrum/data.}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper limit
-of the selected \eqn{B} region, such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
-(corresponding to the entire \eqn{B} range of the EPR spectrum).}
+of the selected \eqn{B}-region, such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+(corresponding to the entire \eqn{B}-range of the EPR spectrum).}
 
-\item{iso}{Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
-that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}
-(this is the \strong{default}: \code{iso = TRUE}), or by finding the the \eqn{B} value corresponding
-to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).}
+\item{iso}{Logical, whether to calculate the \eqn{g}-factor from the \eqn{B}-value corresponding to
+that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB},
+that is \eqn{g_{\text{iso}}} (this is the \strong{default}: \code{iso = TRUE}), or by finding
+the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).}
 }
 \value{
 Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
   from the EPR spectrum, according to \eqn{(\nu h)/(\mu_{B} B)}.
 }
 \description{
-Calculation of the g-value according to fundamental formula (\code{\link{eval_gFactor}}).
-  \emph{g}-related magnetic flux density (like \eqn{B_{iso}} or \eqn{B_{center}}) is directly taken
-  from the EPR spectrum. If positive and negative derivative intensities of the spectral line are similar
-  and their distance from the middle of the spectrum equals, the \eqn{B_{iso}} should be considered.
-  Otherwise, the \eqn{B_{center}} must be taken into account. In case of integrated EPR spectrum/data
-  the \eqn{B_{max}} is used for the \eqn{g}-value evaluation.
+Calculation of g-value according to the fundamental formula, see \code{\link{eval_gFactor}}.
+  \eqn{g}-related magnetic flux density (like \eqn{B_{\text{iso}}} or \eqn{B_{\text{center}}})
+  is directly taken from EPR spectrum. If positive and negative derivative intensities of the spectral
+  line are similar and their distance from the middle of the spectrum equals,
+  the \eqn{B_{\text{iso}}} should be considered. Otherwise, the \eqn{B_{\text{center}}} must be taken
+  into account. In case of integrated EPR spectrum/data the \eqn{B_{\text{max}}} is used for
+  the \eqn{g}-value calculation.
 }
 \examples{
 ## load package built-in EPR spectral data example:

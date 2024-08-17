@@ -9,22 +9,22 @@ eval_nu_ENDOR(nucle_us_i, B.unit = "G", B.val)
 \arguments{
 \item{nucle_us_i}{(Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
 pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \emph{g}-factors
-for those nuclei are taken from the package \code{isotopes_ds} data frame. Se also documentation
-\code{\link{isotopes_ds}}.}
+for those nuclei are taken from the \code{\link{isotopes_ds}}.}
 
-\item{B.unit}{Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}: \code{B.unit = "G"}.}
+\item{B.unit}{Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}:
+\code{B.unit = "G"}.}
 
-\item{B.val}{Numeric, magnetic flux density \emph{B} \code{value}. This actually corresponds to \emph{B} at which
-the EPR signal saturates to record the ENDOR spectrum/spectra.}
+\item{B.val}{Numeric, magnetic flux density \eqn{B}-\code{value}. This actually corresponds
+to \eqn{B} at which the EPR signal saturates to record the ENDOR spectrum/spectra.}
 }
 \value{
 Numeric value or vector of nuclear Larmor/ENDOR frequencies in MHz for selected
-  nuclei at \emph{B} = \code{B.val}.
+  nuclei at \eqn{B} = \code{B.val}.
 }
 \description{
-Larmor/ENDOR frequency calculations for the analysis in EPR/Electron Nuclear Double Resonance. This a function
-  similar to e.g. available online => \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
-  Calclator}.
+Larmor/ENDOR frequency calculations for the analysis in EPR/Electron Nuclear Double Resonance (ENDOR).
+  Function inspired by the similar \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
+  Calculator} available online.
 }
 \details{
 The frequency in MHz is calculated according to relation
