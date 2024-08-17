@@ -15,7 +15,7 @@
 #' @inheritParams plot_EPR_Specs
 #' @param data.voltamm Data frame (table) object including required columns like \code{Potential}
 #'   (\eqn{E}) and/or \code{Time} (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary
-#'   column label can be used, the best option is to use labels e.g. like \code{E_V}, \code{E_mV}, \code{time_s},
+#'   column label can be used, the best option is to use labels e.g. \code{E_V}, \code{E_mV}, \code{time_s},
 #'   \code{I_uA} or \code{I_mA}.
 #' @param x Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm},
 #'   like \strong{potential} (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"},
@@ -28,19 +28,19 @@
 #'   \code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).
 #' @param Current.unit Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 #'   (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.
-#' @param xlim Numeric vector of the \code{x}-quantity visual border limits, e.g. like \code{xlim = c(-100,400)}
+#' @param xlim Numeric vector of the \code{x}-quantity visual border limits, e.g. \code{xlim = c(-100,400)}
 #'   (potential in "mV", in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds,
 #'   in case of chronoamperometry). \strong{Default}: \code{xlim = NULL} actually defining the entire \code{x}-range
 #'   from the original dataset.
-#' @param Ilim Numeric vector characterizing the visual border limits of the current, e.g. like \code{Ilim = c(-0.05,0.2)},
+#' @param Ilim Numeric vector characterizing the visual border limits of the current, e.g. \code{Ilim = c(-0.05,0.2)},
 #'   corresponding to current in milliamps. \strong{Default}: \code{Ilim = NULL} related to the entire current (\eqn{I}) range
 #'   from the original dataset.
 #' @param line.color Character string pointing to line color of the voltammogram / chronoamperogram. All \pkg{ggplot2} compatible
-#'   colors are allowed, e.g. like \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.
+#'   colors are allowed, e.g. \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.
 #' @param line.type Character string or integer corresponding to width of the voltammogram/chronoamperogram line.
 #'   Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"},
 #'   \code{3 = "dotted"}, \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
-#' @param ref.electrode Character string corresponding to reference electrode label, e.g. like
+#' @param ref.electrode Character string corresponding to reference electrode label, e.g.
 #'   \code{ref.electrode = "Ag-quasiref"} or \code{ref.electrode = "Fc/Fc+"}. \strong{Default}: \code{ref.electrode = NULL}
 #'   (displayed potential is not related to any \code{ref.electrode}).
 #' @param plot.interact Logical, whether the voltammogram or chronoamperogram is visualized as an interactive plot

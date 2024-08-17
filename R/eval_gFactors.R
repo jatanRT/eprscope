@@ -99,7 +99,7 @@ eval_gFactor <- function(nu.val,
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or \code{"integrated"}
 #'   (i.e. \code{"absorption"} which can be used as well) line form of the analyzed EPR spectrum/data.
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper limit
-#'   of the selected \eqn{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+#'   of the selected \eqn{B} region, such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
 #'   (corresponding to the entire \eqn{B} range of the EPR spectrum).
 #' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B} value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB}, that is \eqn{g_{iso}}

@@ -8,11 +8,11 @@ readEPR_solvent_props(solvent, prop = NULL)
 }
 \arguments{
 \item{solvent}{Character string pointing to solvent name (or any string from the solvent name/abbreviation),
-e.g. like \code{solvent = "DMSO"},\code{solvent = "acetone"}, \code{solvent = "xylene"}.
+such as \code{solvent = "DMSO"},\code{solvent = "acetone"}, \code{solvent = "xylene"}.
 If more than one rows/observations are being returned (e.g. in case of \code{solvent = "xylene"}) => additional
-solvent specification must be provided e.g. like \code{solvent = "o-xylene"}.}
+solvent specification must be provided e.g. \code{solvent = "o-xylene"}.}
 
-\item{prop}{Character string related to a data frame variable/column/property e.g. like \code{"boiling"},
+\item{prop}{Character string related to a data frame variable/column/property e.g. \code{"boiling"},
 \code{"formula"}, \code{"dens"}, \code{"dielectric"}...etc (see also \code{\link{solvents_ds}}).}
 }
 \value{

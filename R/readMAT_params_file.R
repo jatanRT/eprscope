@@ -13,7 +13,7 @@
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.
 #'   The file path can be also defined by \code{\link[base]{file.path}}.
-#' @param str.var Character string, \code{structure/variable}, which may contain \code{fields}, e.g. like \code{Sys}
+#' @param str.var Character string, \code{structure/variable}, which may contain \code{fields}, such as \code{Sys}
 #'   and \code{g} => \strong{Sys}.g, respectively. \strong{Default}: \code{str.var = NULL}.
 #' @param field.var Character string, \code{field variable after 'dot'}, which is available only for certain
 #'   structures/variables, see e.g. example above (Sys.\strong{g}), therefore

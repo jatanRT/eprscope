@@ -19,7 +19,7 @@ rearrange_aAiso_QCHorgau(
 \item{Nnuclei}{Numeric value equal to number of atoms/nuclei within the calculated structure.}
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
-e.g. like: \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
+e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
 correspond to indices of atoms/nuclei in the ASCII text file.}
 
 \item{origin}{Character string pointing to origin of DFT EPR calculation parameters <=> which

@@ -29,7 +29,7 @@
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}
 #' @param var2nd.series String/Character referred to name of the second independent variable/quantity
-#'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+#'   column in the original \code{data.spectra} (e.g. `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
 #'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
@@ -40,7 +40,7 @@
 #' @param line.colors Character string or its vector. In case of \strong{of SIMPLE SPECTRUM}
 #'   (NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARCTER STRING IS REQUIRED => therefore,
 #'   \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
-#'   WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. like \code{line.colors = c("darkorange","darkblue")}).
+#'   WITH LENGTH \eqn{\geq 2} must be DEFINED (such as \code{line.colors = c("darkorange","darkblue")}).
 #' @param line.width Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.
 #' @param line.type Character string or integer corresponding to width of the (spectral) line(s). Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},

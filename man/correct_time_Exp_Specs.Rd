@@ -18,7 +18,7 @@ one "accumulation".}
 }
 \value{
 Numeric value/vector corresponding to time at which the middle (on abscissa) of EPR
-  spectrum/spectra were recorded during the kinetic measurements (e.g. like radical formation,
+  spectrum/spectra were recorded during the kinetic measurements (e.g. radical formation,
   stability, electrochemical and/or photochemical measurements).
 }
 \description{

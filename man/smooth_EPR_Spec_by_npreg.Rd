@@ -87,7 +87,7 @@ Smoothing of the EPR spectra by non-parametric fitting a smoothing spline \code{
 }
 \details{
 The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomial,
-  like e.g.
+  like
   \deqn{I_{\text{EPR}}(B) = B^3 - (3/2)\,B^2 + (1/2)\,B}
   where \eqn{I_{\text{EPR}}} equals to general EPR intensity and \eqn{B} is the magnetic flux density.
   This may be applied to both derivative or single integrated EPR spectral forms. Also a higher/lower polynomial
@@ -98,7 +98,7 @@ The EPR spectrum is fitted by splines which, by default, correspond to cubic Ber
   \deqn{I_{\text{EPR}}(B) = B^5 - (5/2)\,B^4 + (5/3)\,B^3 - (1/6)\,B}
   If the optional argument \code{bernoulli} is set to \code{FALSE} then "classic" definition
   of a smoothing spline, where the function estimate is a piece-wise polynomial function with pieces
-  of degree 2m−1, is produced. Additional optional arguments from \code{\link[npreg]{ss}} like e.g. knots
+  of degree 2m−1, is produced. Additional optional arguments from \code{\link[npreg]{ss}} like knots
   definition, equivalent degrees of freedom, vector of weights...etc. can be applied as well.
 }
 \examples{

@@ -25,7 +25,7 @@ were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
 List of data frames/tables containing:
  \describe{
  \item{params}{Instrumental parameters with their numeric values and units.}
- \item{info}{Information character string, e.g. like date, operator, comment...etc.}
+ \item{info}{Information character string, such as date, operator, comment...etc.}
  }
  Both data frames may be depicted in the form of interactive tables
  by \code{interact} function argument.

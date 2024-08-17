@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
 #'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
 #'   \strong{inside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
@@ -29,7 +29,7 @@
 #'   \code{border.line.width = 0.5}.
 #' @param bg.transparent Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
 #'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.
-#' @param ... additional arguments specified by \code{\link[ggplot2]{theme}} (e.g. like \code{panel.backgroud},
+#' @param ... additional arguments specified by \code{\link[ggplot2]{theme}} (such as \code{panel.backgroud},
 #'   \code{axis.line},...etc) which are not specified by the function.
 #'
 #'
@@ -140,7 +140,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @description
-#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
 #'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
 #'   \strong{inside the graph/plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
@@ -291,7 +291,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @description
-#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (e.g. like EPR spectrum, kinetic profiles...etc)
+#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
 #'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
 #'   \strong{outside the graph/plot panel}. For details of \code{ggplot2} theme elements please,

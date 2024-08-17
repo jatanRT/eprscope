@@ -34,7 +34,7 @@
 #'   \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
 #'   by the "Winepr" software Q value must be defined like \code{qValue = 3400}.
 #' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
-#'   all additional (in addition to \code{qValue}) normalization(s) e.g. like concentration, powder sample
+#'   all additional (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 #'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).
 #' @param ... additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}

@@ -13,7 +13,7 @@
 #' @param name_pattern_sim description
 #' @param sim.origin description from
 #' @param var2nd.series Character string referred to name of the second independent variable/quantity
-#'   column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+#'   column in the original \code{data.spectra} (such as `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
 #'   (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
@@ -205,7 +205,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     return(summa)
   }
   #
-  ## `var2nd.series` sequence (e.g. like time sequence)
+  ## `var2nd.series` sequence (e.g. time sequence)
   var2nd_df <- data.specs.sim %>%
     dplyr::group_by(.data[[var2nd.series]]) %>%
     dplyr::group_keys()

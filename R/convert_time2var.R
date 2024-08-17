@@ -15,7 +15,7 @@
 #'  This is especially suitable for time conversion of EPR time series experiments
 #'  (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
 #'  electrochemical/voltammetric or variable temperature experiment. When cyclic series experiment
-#'  is performed (e.g. like cyclic voltammetry), that \eqn{var} value depends on the switching one,
+#'  is performed (e.g. cyclic voltammetry), that \eqn{var} value depends on the switching one,
 #'  like =>
 #'  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
 #'  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
@@ -28,20 +28,20 @@
 #'   is changed.
 #' @param time.unit Character string time unit defined by \code{s},\code{min} or \code{h}.
 #'   \strong{Default}: \code{time.unit = "s"}.
-#' @param var0 Numeric, the initial value (INCL. ALSO NEGATIVE SIGN, if required, e.g. like
+#' @param var0 Numeric, the initial value (INCL. ALSO NEGATIVE SIGN, if required, e.g.
 #'   negative electrochemical potential) of the variable (\code{var}).
 #' @param var.switch Numeric, the switching point \code{var} value, in case when a linear CYCLIC CHANGE
-#'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. like cyclic voltammetry).
+#'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. in cyclic voltammetry).
 #'   \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).
 #' @param var.rate Numeric, corresponding to rate of linear \code{var} change (INCL. ALSO NEGATIVE SIGN,
-#'   if required, e.g. like in the case of electrochemical reduction or sample cooling).
+#'   if required, e.g. in the case of electrochemical reduction or sample cooling).
 #' @param var.rate.unit Character string corresponding to \code{var.rate} unit defined
 #'   by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
 #'   \code{"min^{-1}"} \eqn{\equiv \text{min}^{-1}} or \code{"h^{-1}"} \eqn{\equiv \text{h}^{-1}}.
 #'   \strong{Default}: \code{var.rate.unit = "s^{-1}"}.
 #'
 #'
-#' @return Numeric value or vector of the variable like e.g. electrochem. potential or temperature,
+#' @return Numeric value or vector of the variable such as electrochem. potential or temperature,
 #'   linearly changing upon time.
 #'
 #'

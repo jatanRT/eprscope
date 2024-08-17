@@ -24,7 +24,7 @@
 #'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 #'   integrated or simulated spectra intensities are present, they can be labeled accordingly.
 #'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
-#'   \code{var2nd.series} column (e.g. like \code{var2nd.series = "time_s"} or \code{var2nd.series = "T_K"})
+#'   \code{var2nd.series} column (e.g. \code{var2nd.series = "time_s"} or \code{var2nd.series = "T_K"})
 #'   must be available. In such case the entire \code{data.spectra} must inherit the form
 #'   of "tidy" (long) table format (see also argument \code{var2nd.series}).
 #' @param x Character string pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
@@ -34,17 +34,17 @@
 #'   Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 #'   or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.
 #' @param xlim Numeric vector referring to lower and upper limit of the selected \code{x}-region,
-#'   e.g. like \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
+#'   e.g. \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 #'   or \code{xlim = c(2.004,2.001)} (dimensionless \eqn{g}). \strong{Default}: \code{xlim = NULL} (actually corresponding
 #'   to the entire \code{x}-range).
 #' @param var2nd.series Character string referred to name of the second independent variable/quantity
-#'   column in the original \code{data.spectra} (e.g. like time, Temperature, Electrochemical Potential,
+#'   column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
 #'   Microwave Power...etc) altered upon individual experiments as a second variable
 #'   (\code{var2nd.series}). Data must be available in \strong{long table} / \strong{tidy}
 #'   format (see also \code{\link{readEPR_Exp_Specs_multif}}).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.
 #' @param var2nd.series.slct.by Numeric, number corresponding to each \eqn{n-th} presented spectrum in the overlay plot,
-#'   e.g. like display each second (\code{var2nd.series.slct.by = 2}) or third (\code{var2nd.series.slct.by = 3}),
+#'   e.g. display each second (\code{var2nd.series.slct.by = 2}) or third (\code{var2nd.series.slct.by = 3}),
 #'   ...etc. spectrum. The argument is only used if \code{var2nd.series} is \strong{NOT NULL}
 #'   (e.g. \code{var2nd.series = "time_s"}) and one wants to present
 #'   DISCRETE LABELS / LEVELS for the overlay spectra (see also \code{line.colors} argument).
@@ -54,7 +54,7 @@
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
 #' @param Ilim Numeric vector corresponding to limits of the selected \code{y} / \code{Intensity}
-#'   region, e.g. like \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
+#'   region, e.g. \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
 #'   to the entire Intensity range).
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (in such case also \code{"absorption"} can be used)
@@ -112,7 +112,7 @@
 #' @param axis.text.size Numeric, text size in pt for the axes units/descriptions,
 #'   \strong{default}: \code{axis.text.size = 14}.
 #' @param axis.title.size Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.
-#' @param legend.title Character string identical to legend title, e.g. like \code{legend.title = "Time (s)"},
+#' @param legend.title Character string identical to legend title, e.g. \code{legend.title = "Time (s)"},
 #'   \code{legend.title = "Electrochem. Potential (V)"} or \code{legend.title = "Sample"}. \strong{Default}:
 #'   \code{legend.title = NULL} in case of \code{var2nd.series = NULL}.
 #' @param legend.title.size Numeric, legend text title size in \code{pt},\strong{default}: \code{legend.title.size = NULL},

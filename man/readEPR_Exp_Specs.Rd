@@ -45,7 +45,7 @@ if present or detected, or if not the name is denoted as \code{"V"} followed by 
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 to \eqn{x}-axis in the spectra or other plots.}
 
-\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
+\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
 \item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
@@ -69,7 +69,7 @@ in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is inclu
 
 \item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector including
 all additional (in addition to \code{qValue}) normalization(s) like concentration, powder sample
-weight, number of scans, ...etc. (e.g. like \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
+weight, number of scans, ...etc. (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
 the Q-factor/value might be also included in the \code{norm.vec.add}.}
 
@@ -81,7 +81,7 @@ Options are summarized in the following table (any other specific \code{origin} 
 "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with dafault params. \cr
 "winepr" \tab automatically loads data from the "WinEpr" software. \cr
 "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
-"other" (arbitrary string, e.g. like "csv") \tab general, loads any other original
+"other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
 \strong{In such case all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}
@@ -89,7 +89,7 @@ data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrume
 \item{data.structure}{Character string referring to structure of the ASCII data. Common spectral data files
 with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
 time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
-ASCII data structure (e.g. like spectral series processed by the acquisition spectrometer software,
+ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
 see example, or any other data) put \code{data.structure = "others"}. \strong{In such case all the arguments for}
 \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
 (assuming \code{time.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
@@ -110,11 +110,11 @@ Data frame/table consisting of the magnetic flux density
 \description{
 The function is based on the \code{\link[data.table]{fread}} with the purpose to read
   the experimental EPR/ENDOR spectra or other original (pre-processed) data from the EPR spectrometers
-  in tabular ASCII format (e.g. like \code{.txt}, \code{.csv} or \code{.asc}).
+  in tabular ASCII format (such as \code{.txt}, \code{.csv} or \code{.asc}).
 }
 \details{
 ASCII data are transformed into \emph{R} data frames, which can be then easily processed by the actual or other
-  R packages, e.g. like \pkg{dplyr}), afterwards. Spectral intensities are automatically
+  R packages, e.g. \pkg{dplyr}), afterwards. Spectral intensities are automatically
   normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
   These are defined by the two arguments:
   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
@@ -127,7 +127,7 @@ ASCII data are transformed into \emph{R} data frames, which can be then easily p
   This is mirrored mainly by the \code{origin} and \code{data.structure} arguments. Default arguments
   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
-  any arbitrary string e.g. like \code{origin = "csv"} (see also \code{origin argument}).
+  any arbitrary string e.g. \code{origin = "csv"} (see also \code{origin argument}).
   Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series.id} argument.
   In such case the ASCII data table also contains additional column either with recorded
   time (see also \code{\link{correct_time_Exp_Specs}}) or with slice number for each spectrum.

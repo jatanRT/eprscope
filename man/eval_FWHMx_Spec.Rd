@@ -22,10 +22,10 @@ eval_FWHMx_Spec(
 
 \item{Intensity}{Character string pointing to name of the \code{intensity column/variable}
 (in the original \code{data.spectr.integ}) if other than \code{single_Integ} (\strong{default}) name/label
-is used (e.g. like "Integral_Intensity" or "integral").}
+is used (such as "Integral_Intensity" or "integral").}
 
 \item{xlim}{Numeric vector corresponding to border limits of the selected \eqn{x} region,
-e.g. like \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
+e.g. \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless).
 \strong{Default}: \code{xlim = NULL} (corresponding to the entire \emph{x} range).}
 }
 \value{

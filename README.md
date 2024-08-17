@@ -197,7 +197,7 @@ triarylamine_rc_decay_data <-
 # Fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial
-# "quantitative variable" (e.g. like concentration, double integral
+# "quantitative variable" (such as concentration, double integral
 # or number of radicals) of the triarylamine radical cation "R".
 triarylamine_rc_decay_model <-
   eval_kinR_EPR_modelFit(

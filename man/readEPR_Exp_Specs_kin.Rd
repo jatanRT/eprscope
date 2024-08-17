@@ -46,7 +46,7 @@ to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 to \eqn{x}-axis in the spectra or other plots.}
 
-\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, e.g. like \code{"G"},
+\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
 \item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
@@ -69,7 +69,7 @@ In case of "Xenon" software the parameter is included in \code{.DSC} file, there
 by the "Winepr" software Q value must be defined like \code{qValue = 3400}.}
 
 \item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector involving
-all additional (in addition to \code{qValue}) normalization(s) e.g. like concentration, powder sample
+all additional (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).}
 
@@ -81,7 +81,7 @@ Options are summarized in the following table (any other specific \code{origin} 
 "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with dafault params. \cr
 "winepr" \tab automatically loads data from the "WinEpr" software. \cr
 "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
-"other" (arbitrary string, e.g. like "csv") \tab general, loads any other original
+"other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
 \strong{In such case all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}

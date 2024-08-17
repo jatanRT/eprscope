@@ -46,12 +46,12 @@
 #'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
 #'   like `cf` and `sw` within the \code{instrum.params} AS WELL AS THOSE IN \code{lineGL.DeltaB} !
 #' @param nuclear.system List containing the information about groups of equivalent nuclei
-#'   interacting with the unpaired electron, e.g. like \code{nuclear.system = list("14N",1,45)}.
+#'   interacting with the unpaired electron, e.g. \code{nuclear.system = list("14N",1,45)}.
 #'   This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
 #'   denotes \strong{the number of nuclei} within the group and \strong{the third number}
 #'   is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in summary
 #'   it refers to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
-#'   is considered, e.g. like \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
+#'   is considered, e.g. \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
 #'   A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
 #'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. The number of \code{lists}
 #'   is not limited and therefore, any number of equivalent nuclei groups can be used to simulate
@@ -67,11 +67,11 @@
 #'   of the analyzed EPR spectrum/data.
 #' @param lineGL.DeltaB List of two values referred to \emph{Gaussian} (G) and \emph{Lorentzian} (L)
 #'   spectral line-forms, respectively. For the "pure" \emph{Gaussian} only the first value is numeric
-#'   and the second one is \code{NULL} => e.g. like \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
-#'   For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g. like
+#'   and the second one is \code{NULL} => e.g. \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
+#'   For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g.
 #'   \code{lineGL.DeltaB = list(NULL,0.5)}. If the linear combination of both
 #'   line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voightian},
-#'   then both values are numeric (e.g. like \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
+#'   then both values are numeric (e.g. \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
 #'   to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The `DeltaB` corresponds to either
 #'   \eqn{\Delta B_{\text{pp}}} (if \code{lineSpecs.form = "derivative"}) or to \eqn{FWHM}
 #'   (if \code{lineSpecs.form = "integrated"} or if \code{lineSpecs.form = "absorption"}).
@@ -79,7 +79,7 @@
 #' @param lineG.content Numeric value between `0` and `1` referring to content of \emph{Gaussian} line form.
 #'   If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 #'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
-#'   (e.g. like \code{lineG.content = 0.5}) represents the linear combination (for the example above
+#'   (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
 #'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voightian}.
 #' @param Intensity.sim Character string pointing to column of simulated EPR intensity within the related
 #'   data frame, which is also available in the output list. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
@@ -451,7 +451,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## ---------------------------------- COMMENT !! -----------------------------------
     ## |                                                                                |
     ## | Function to calculate the entire intensity pattern by the multiplication       |
-    ## | of the adjacent levels e.g. like:                                              |
+    ## | of the adjacent levels such as:                                              |
     ## |          1           1           1 |   level_01 (e.g. 1 x 14N), highest Aiso   |
     ## |      1   2   1 |  ...                  level_02 (e.g. 2 x 1H), mid Aiso        |
     ## |     1 1 | ...                          level_03 (e.g. 1 x 1H), lowest Aiso     |

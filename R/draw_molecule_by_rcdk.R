@@ -18,7 +18,7 @@
 #' @param type Character string referred to the original molecular type input =>
 #'   either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
 #'   \strong{Default}: \code{type = "smiles"}.
-#' @param mol.label Character string pointing to name of the molecule/compound, e.g. like
+#' @param mol.label Character string pointing to name of the molecule/compound, e.g.
 #'   \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 #'   (\strong{default}) a character string "mol. structure viewer" with gray color
 #'   is shown.
@@ -30,7 +30,7 @@
 #'   => the label is positioned in the bottom right corner.
 #' @param sma Character string allowing to highlight sub-structures using \code{SMARTS}
 #'   (\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
-#'   the common substructures in a set of molecules, e.g. like \code{sma = "C=O"}.
+#'   the common substructures in a set of molecules, such as \code{sma = "C=O"}.
 #' @param annotate Character string, whether to display (\code{annotate = "number"}) or not display
 #'   (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.
 #' @param style Character string denoting the plotting style like =>

@@ -40,11 +40,11 @@
 #'   \code{norm.list.add = NULL}.
 #' @param names Character string vector corresponding either to values of \strong{additional quantity}
 #'   (e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
-#'   by alpha character (e.g. like \code{c("a","b","c","d")}) being varied by the individual experiments.
+#'   by alpha character (e.g. \code{c("a","b","c","d")}) being varied by the individual experiments.
 #' @param tidy Logical, whether to transform the list of data frames into the long table (\code{tidy}) format,
 #'   \strong{default}: \code{tidy = FALSE}.
 #' @param var2nd.series Character string, if \code{tidy = TRUE} (see \code{tidy} argument)
-#'   it is referred to name of the variable/quantity (e.g. like "time","Temperature","Electrochemical Potential",
+#'   it is referred to name of the variable/quantity (such as "time","Temperature","Electrochemical Potential",
 #'   "Microwave Power"...etc) altered upon individual experiments as a second variable series (\code{var2nd.series})
 #'   and related to the spectral data.
 #' @param var2nd.series.factor Logical, whether to factorize \code{var2nd.series} column vector which is useful

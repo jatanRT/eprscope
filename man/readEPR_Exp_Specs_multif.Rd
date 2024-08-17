@@ -70,13 +70,13 @@ weight, number of scans, ...etc (e.g. \code{norm.list.add = list(c(2000,0.5,2),c
 
 \item{names}{Character string vector corresponding either to values of \strong{additional quantity}
 (e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
-by alpha character (e.g. like \code{c("a","b","c","d")}) being varied by the individual experiments.}
+by alpha character (e.g. \code{c("a","b","c","d")}) being varied by the individual experiments.}
 
 \item{tidy}{Logical, whether to transform the list of data frames into the long table (\code{tidy}) format,
 \strong{default}: \code{tidy = FALSE}.}
 
 \item{var2nd.series}{Character string, if \code{tidy = TRUE} (see \code{tidy} argument)
-it is referred to name of the variable/quantity (e.g. like "time","Temperature","Electrochemical Potential",
+it is referred to name of the variable/quantity (such as "time","Temperature","Electrochemical Potential",
 "Microwave Power"...etc) altered upon individual experiments as a second variable series (\code{var2nd.series})
 and related to the spectral data.}
 
@@ -92,7 +92,7 @@ Options are summarized in the following table (any other specific \code{origin} 
 "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with dafault params. \cr
 "winepr" \tab automatically loads data from the "WinEpr" software. \cr
 "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
-"other" (arbitrary string, e.g. like "csv") \tab general, loads any other original
+"other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
 \strong{In such case all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}

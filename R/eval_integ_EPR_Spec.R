@@ -53,12 +53,12 @@
 #'   is to be presented on \eqn{B} abscissa of the EPR spectrum,
 #'   like \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), \strong{default}: \code{B.unit = "mT"}.
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper
-#'   limit of the selected \emph{B} region, e.g. like \code{Blim = c(3495.4,3595.4)}.
+#'   limit of the selected \emph{B} region, e.g. \code{Blim = c(3495.4,3595.4)}.
 #'   \strong{Default}: \code{Blim = NULL} (corresponding to entire \emph{B} range of the spectrum).
 #' @param correct.integ Logical, whether to correct the integral by baseline model fit.
 #'   \strong{Default}: \code{correct.integ = FALSE}.
 #' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower
-#'   and upper limit of the SELECTED \eqn{B} PEAK REGION, e.g. like \code{BpeaKlim = c(3535.4,3555.4)}.
+#'   and upper limit of the SELECTED \eqn{B} PEAK REGION, e.g. \code{BpeaKlim = c(3535.4,3555.4)}.
 #'   This is the region which is actually not considered for the baseline fit.
 #' @param poly.degree Numeric, degree of the polynomial function used to fit the baseline under the single
 #'   integrated curve of the original EPR spectrum (see also \code{BpeaKlim}).

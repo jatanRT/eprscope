@@ -119,7 +119,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
   }
   #
   ## path corresponds to file (`.DSC` or `.dsc`) from which the params. are read
-  ## string is the selected 'string' pattern e.g. like "QValue" or "MWFQ"
+  ## string is the selected 'string' pattern such as "QValue" or "MWFQ"
   ## if `string` = vector => iterate/read over all components
   if (length(string) > 1){
     sel.str.line <- lapply(

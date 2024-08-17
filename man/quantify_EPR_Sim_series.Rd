@@ -36,7 +36,7 @@ quantify_EPR_Sim_series(
 \item{sim.origin}{description from}
 
 \item{var2nd.series}{Character string referred to name of the second independent variable/quantity
-column in the original \code{data.spectra} (e.g. like `time`,`Temperature`, `Electrochemical Potential`,
+column in the original \code{data.spectra} (such as `time`,`Temperature`, `Electrochemical Potential`,
 `Microwave Power`...etc) altered upon individual experiments as a second variable
 (\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
 (or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).

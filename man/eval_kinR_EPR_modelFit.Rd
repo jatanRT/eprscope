@@ -59,12 +59,12 @@ may be varied, see below).
 }
 Couple of examples are also given in details. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
-(YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (e.g. like \code{(r=1)}
+(YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 or \code{(a=1)}) can be varied within the \code{model.react} character string.
 Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
 string is not fixed and can be skipped for the sake of flexibility.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
-a possible non-integer partial stoichiometric coefficients (like e.g. \code{alpha},\code{beta} or \code{gamma})
+a possible non-integer partial stoichiometric coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
 must be included in \code{kin.params} (see also \code{kin.params} description).}
 
 \item{elementary.react}{Logical, if the model reaction should be considered as elementary one,
