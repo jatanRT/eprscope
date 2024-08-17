@@ -37,6 +37,8 @@ or \code{.asc} format) with the spectral data (\eqn{Intensity} vs \eqn{B}, Field
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+For spectral time series \code{col.names} must include \code{"T(t)ime"} or \code{"S(s)lice"} character
+string in order to identify the corresponding time column/variable in the original ASCII file.
 The default (for the original \code{\link[data.table]{fread}}) is to use the header column
 if present or detected, or if not the name is denoted as \code{"V"} followed by the column number.}
 

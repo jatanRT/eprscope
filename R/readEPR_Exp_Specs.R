@@ -39,6 +39,8 @@
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+#'   For spectral time series \code{col.names} must include \code{"T(t)ime"} or \code{"S(s)lice"} character
+#'   string in order to identify the corresponding time column/variable in the original ASCII file.
 #'   The default (for the original \code{\link[data.table]{fread}}) is to use the header column
 #'   if present or detected, or if not the name is denoted as \code{"V"} followed by the column number.
 #' @param x.id Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
@@ -262,6 +264,9 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`
   #
+  ## condition for time series spectra
+  time.series.cond <- any(grepl("Time|time|Slice|slice",col.names))
+  #
   ## string to stop the reading if `data structure == "mixed"`
   ## and `time.series.id != NULL` =>
   stop.reading.structure.time <-
@@ -276,12 +281,14 @@ readEPR_Exp_Specs <- function(path_to_ASC,
     if (data.structure == "spectra") {
       ## parameter definition (automatize value assignments)
       ## ASSUMING USER CAN MAKE MISTAKES
-      if (is.null(time.series.id)) {
+      if (isFALSE(time.series.cond)) {
         sep <- sep %>% `if`(sep != "auto", "auto", .)
         header <- header %>% `if`(isTRUE(header), FALSE, .)
         skip <- skip %>% `if`(skip != 3, 3, .)
         x.id <- x.id %>% `if`(x.id != 1, 1, .)
         Intensity.id <- Intensity.id %>% `if`(Intensity.id != 2, 2, .)
+        time.series.id <- time.series.id %>%
+          `if`(!is.null(time.series.id), NULL, .)
         #
         ## following defined by `...`
         #
@@ -302,7 +309,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 3, 3, .)
         time.series.id <- time.series.id %>%
-          `if`(time.series.id != 2, 2, .)
+          `if`(time.series.id != 2 || is.null(time.series.id), 2, .)
         #
         ## following defined by `...`
         #
@@ -337,16 +344,18 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header
       skip <- skip
-      if (is.null(time.series.id)) {
+      if (isFALSE(time.series.cond)) {
         x.id <- x.id %>% `if`(x.id != 2, 2, .)
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 3, 3, .)
+        time.series.id <- time.series.id %>%
+          `if`(!is.null(time.series.id), NULL, .)
       } else {
         x.id <- x.id %>% `if`(x.id != 2, 2, .)
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 4, 4, .)
         time.series.id <- time.series.id %>%
-          `if`(time.series.id != 3, 3, .)
+          `if`(time.series.id != 3 || is.null(time.series.id), 3, .)
       }
       #
       ## following defined by `...`
@@ -381,12 +390,14 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       header <- header %>% `if`(isTRUE(header), FALSE, .)
       skip <- skip %>% `if`(skip != 88, 88, .)
       #
-      if (is.null(time.series.id)) {
+      if (isFALSE(time.series.cond)) {
         x.id <- x.id %>% `if`(x.id != 1, 1, .)
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 2, 2, .)
+        time.series.id <- time.series.id %>%
+          `if`(!is.null(time.series.id), NULL, .)
       } else {
-        if (!any(grepl("time|Time|slice|Slice",col.names))) {
+        if (is.null(time.series.id)) {
           stop("Time series column is not defined ! \n
              Please, specify the `id` of the column/variable,\n
              or create it to proceed !! ")
@@ -444,8 +455,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
                         fill = T,
                         blank.lines.skip = T,
                         na.strings = c("Intensity","X [G]","Y []")) %>%
-      ## filter out all rows containing "Slice" in "B|Field" column
-      dplyr::filter(!grepl("Slice", .data[[grep(pattern = "BG|B_G|B-G|Field",
+      ## filter out all rows containing "Slice|slice" in "B|Field" column
+      dplyr::filter(!grepl("Slice|slice", .data[[grep(pattern = "BG|B_G|B-G|Field",
                                                 col.names,value = TRUE)]])) %>%
       stats::na.omit()
     ## in order to be sure that this column will appear as numeric
