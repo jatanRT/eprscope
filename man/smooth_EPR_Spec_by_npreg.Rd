@@ -87,7 +87,7 @@ Smoothing of the EPR spectra by non-parametric fitting a smoothing spline \code{
   from \pkg{npreg} package.
 }
 \details{
-The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomial,
+The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials,
   like
   \deqn{I_{\text{EPR}}(B) = B^3 - (3/2)\,B^2 + (1/2)\,B}
   where \eqn{I_{\text{EPR}}} equals to general EPR intensity and \eqn{B} is the magnetic flux density.

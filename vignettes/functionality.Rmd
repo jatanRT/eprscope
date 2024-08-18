@@ -221,7 +221,7 @@ write.csv(tmpd.data.norm.02,
 
 All the data related to EPR spectroscopy can be visualized by the [{ggplot2}](https://ggplot2.tidyverse.org/) 📦 and its [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by the interactive [{plotly}](https://plotly.com/r/) graphing library. While the first library/package (based on the "Grammar of Graphics"[^2] , see also [@WilkinsonGG2005]) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, it includes tools like zooming, panning, data/values hovering and [much more](https://plotly.com/r/configuration-options/). Combination of both approaches possesses literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.
 
-[^2]: *The Grammar of Graphics* is a concept how the graphs/plots are built. It is based on the fact that graphs may consist of several component/layers (e.g. like data layer, geometry layer, aesthetic layer...etc) similarly to processing of a bitmap-image in a photo-editor. The term "*grammar*" corresponds to the structure of a sentence in language and thus it may represent a structure of the graph/plot in R programming language.
+[^2]: *The Grammar of Graphics* is a concept how the graphs/plots are built. It is based on the fact that graphs may consist of several components/layers (e.g. like data layer, geometry layer, aesthetic layer...etc) similarly to processing of a bitmap-image in a photo-editor. The term "*grammar*" corresponds to the structure of a sentence in language and thus it may represent a structure of the graph/plot in R programming language.
 
 ## Static Plots by `{ggplot2}` and `{patchwork}`
 

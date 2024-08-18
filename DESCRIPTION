@@ -27,7 +27,7 @@ Description: Processing, analysis and plottting of
              considering different kinetic models, to describe 
              the radical reactions. The key feature of the package 
              resides in processing of the universal ASCII text 
-             formats (e.g. like '.txt', '.csv' or '.asc') 
+             formats (such as '.txt', '.csv' or '.asc') 
              from scratch. No proprietary formats are used 
              (except the MATLAB EasySpin outputs) and in such respect 
              the package is in accordance with the FAIR data 

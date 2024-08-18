@@ -6,9 +6,9 @@
 #'
 #'
 #' @description
-#' Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a \code{.mat}
-#' simulation file from MATLAB including structures/variables and fields. It can be also used to read and store
-#' simulated EPR spectrum in the form of a R data frame.
+#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a \code{.mat}
+#'   simulation file from MATLAB including structures/variables and fields. It can be also used to read and store
+#'   simulated EPR spectrum in the form of a R data frame.
 #'
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.
@@ -28,51 +28,66 @@
 #' @examples
 #' ## loading the package built-in
 #' ## `Aminoxyl_radical_a.mat` file as an example
-#' aminoxyl.mat.file <- load_data_example(file = "Aminoxyl_radical_a.mat")
+#' aminoxyl.mat.file <-
+#'   load_data_example(file = "Aminoxyl_radical_a.mat")
 #' #
-#' ## reading the entire `mat` file as list and assign variable
-#' aminoxyl.mat.list <- readMAT_params_file(aminoxyl.mat.file)
+#' ## reading the entire `mat` file as list
+#' ## and assign variable
+#' aminoxyl.mat.list <-
+#'   readMAT_params_file(aminoxyl.mat.file)
 #' #
 #' ## read the `Sim1` structure/variable content into list
-#' aminoxyl.mat.sim1 <- readMAT_params_file(aminoxyl.mat.file,
-#'                                          str.var = "Sim1")
+#' aminoxyl.mat.sim1 <-
+#'   readMAT_params_file(aminoxyl.mat.file,
+#'                       str.var = "Sim1")
+#' #
 #' ## list preview
 #' aminoxyl.mat.sim1
 #' #
-#' ## alternatively the `Sim1` (its dimension > 2) can be also read
-#' ## by the following command however, the returned output
-#' ## has a combined array-list structure
+#' ## alternatively the `Sim1` (its dimension > 2)
+#' ## can be also read by the following command
+#' ## however, the returned output has a complex
+#' ## array-list structure
 #' aminoxyl.mat.list$Sim1[, , 1]
 #' #
-#' ## read the `Sim1` structure/variable and the field `Nucs`
-#' ## corresponding to nuclei considered in the EPR simulation
+#' ## read the `Sim1` structure/variable
+#' ## and the field `Nucs` corresponding to nuclei
+#' ## considered in the EPR simulation
 #' aminoxyl.mat.sim1.nucs <-
 #'   readMAT_params_file(aminoxyl.mat.file,
 #'                       str.var = "Sim1",
 #'                       field.var = "Nucs")
+#' #
 #' ## preview
 #' aminoxyl.mat.sim1.nucs
 #' #
-#' ## reading the magnetic flux density `B` column/vector
-#' ## corresponding to simulated and experimental EPR spectrum
-#' aminoxyl.B.G <- readMAT_params_file(aminoxyl.mat.file,
-#'                                     str.var = "B")
+#' ## reading the magnetic flux density
+#' ## `B` column/vector corresponding to simulated
+#' ## and experimental EPR spectrum
+#' aminoxyl.B.G <-
+#'   readMAT_params_file(aminoxyl.mat.file,
+#'                       str.var = "B")
+#' #
 #' ## preview of the first 6 values
 #' aminoxyl.B.G[1:6]
 #' #
-#' ## reading the intensity related to simulated EPR spectrum
+#' ## reading the intensity related to simulated
+#' ## EPR spectrum
 #' aminoxyl.sim.fitSpec <-
 #'   readMAT_params_file(aminoxyl.mat.file,
 #'                       str.var = "fit1",
 #'                       field.var = "fitSpec")
+#' #
 #' ## preview of the first 6 values
 #' aminoxyl.sim.fitSpec[1:6]
 #' #
-#' ## The last two examples can be used to load the simulated
-#' ## EPR spectrum by the `EasySpin` from `mat` file =>
+#' ## The last two examples can be used
+#' ## to load the simulated EPR spectrum
+#' ## by the `EasySpin` from `mat` file =>
 #' simulation.aminoxyl.spectr.df <-
 #'   data.frame(Bsim_G = aminoxyl.B.G,
 #'              dIeprSim_over_dB = aminoxyl.sim.fitSpec)
+#' #
 #' ## preview
 #' head(simulation.aminoxyl.spectr.df)
 #'

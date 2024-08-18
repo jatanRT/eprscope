@@ -35,6 +35,9 @@
 #'                 "("~p.d.u.~")",
 #'                 user.defined = TRUE)
 #' #
+#' plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),p.d.u.)
+#'
+#' #
 #' plot_labels_xyz(quantity = Delta*B[pp],
 #'                 unit = "("~mT~")",
 #'                 user.defined = TRUE)
