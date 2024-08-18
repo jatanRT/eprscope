@@ -77,11 +77,24 @@
 #'                    string = "JDA",
 #'                    origin = "winepr")
 #' #
-#' ## reading `RMA` (modulation amplitude in G) and `TE` (temperature in K)
-#' ## as well as `JCO` (comment) from `WinEPR` spectrometer file
+#' ## reading `RMA` (modulation amplitude in G) and `TE`
+#' ## (temperature in K) as well as `JCO` (comment)
+#' ## from `WinEPR` spectrometer file
 #' readEPR_param_slct(TMPD_radCat_par_path,
 #'                    string = c("RMA","TE","JCO"),
 #'                    origin = "WinEPR")
+#' #
+#' ## loading and reading the `.DSC` file from `Xenon`
+#' ## corresponding to phenalenyl (PNT) CW ENDOR spectrum,
+#' ## read expr. date (`TIME`), microwave frequency (`MWFQ`)
+#' ## in Hz and the corresponding field for saturation (`B0VL`)
+#' ## in Tesla:
+#' pnt_endor_dsc_path <-
+#'   load_data_example(file = "PNT_ENDOR_a.DSC")
+#' readEPR_param_slct(pnt_endor_dsc_path,
+#'                 string = c("TIME","MWFQ","B0VL")
+#'                )
+#'
 #'
 #'
 #' @export
@@ -100,19 +113,66 @@ readEPR_param_slct <- function(path_to_dsc_par,
   ## conditions to couple `string` with origin
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
-    if (any(grepl("JON|JCO|JDA|JTM|MF|HCF|HSW|TE|RMA|JSD|RES|MP|RCT|RTC|RRG",string))) {
+    ## `winepr` vector check for `xenon`
+    we.vector.check <- c("JON","JCO","JDA","JTM","MF",
+                         "HCF","HSW","TE","RMA","JSD",
+                         "RES","MP","RCT","RTC","RRG")
+    ## following condition cannot be done by collapse
+    if (any(we.vector.check[1] == string) ||
+        any(we.vector.check[2] == string) ||
+        any(we.vector.check[3] == string) ||
+        any(we.vector.check[4] == string) ||
+        any(we.vector.check[5] == string) ||
+        any(we.vector.check[6] == string) ||
+        any(we.vector.check[7] == string) ||
+        any(we.vector.check[8] == string) ||
+        any(we.vector.check[10] == string) ||
+        any(we.vector.check[11] == string) ||
+        any(we.vector.check[12] == string) ||
+        any(we.vector.check[13] == string) ||
+        any(we.vector.check[14] == string) ||
+        any(we.vector.check[15] == string)) {
+    # if (any(grepl("JON|JCO|JDA|JTM|MF|HCF|HSW|TE|RMA|JSD|RES|MP|RCT|RTC|RRG",
+    #               useBytes = TRUE,
+    #               string))) {
       stop(" The `string` (components) is (are) restricted to WinEPR.\n
            Please, provide `string(s)` for Xenon/Magnettech (refer to `string` argument) !! ")
     }
   }
   if (any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
-    if (any(grepl("RCTC|RCAG|ConvFact|SAMP",string))) {
+    if (any(string == "RCTC") ||
+        any(string == "RCAG") ||
+        any(string == "ConvFact") ||
+        any(string == "SAMP")) {
       stop(" The `string` (components) is (are) not available for Magnetech !!")
     }
   }
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
-    if (any(grepl("OPER|CMNT|DATE|TIME|SAMP|B0MF|MWFQ|QValue|A1CT|A1SW|STMP|B0MA|AVGS|A1RS|MWPW|SPTP|RCTC|RCAG|ConvFact",
-                  string))) {
+    #
+    ## `xenon` vector check for `winepr`
+    xen.vector.check <- c("OPER","CMNT","DATE","TIME","SAMP",
+                             "B0MF","MWFQ","QValue","A1CT","A1SW",
+                             "STMP","B0MA","AVGS","A1RS","MWPW",
+                             "SPTP","RCTC","RCAG","ConvFact")
+    #
+    if (any(xen.vector.check[1] == string) ||
+        any(xen.vector.check[2] == string) ||
+        any(xen.vector.check[3] == string) ||
+        any(xen.vector.check[4] == string) ||
+        any(xen.vector.check[5] == string) ||
+        any(xen.vector.check[6] == string) ||
+        any(xen.vector.check[7] == string) ||
+        any(xen.vector.check[8] == string) ||
+        any(xen.vector.check[10] == string) ||
+        any(xen.vector.check[11] == string) ||
+        any(xen.vector.check[12] == string) ||
+        any(xen.vector.check[13] == string) ||
+        any(xen.vector.check[14] == string) ||
+        any(xen.vector.check[15] == string) ||
+        any(xen.vector.check[16] == string) ||
+        any(xen.vector.check[17] == string) ||
+        any(xen.vector.check[18] == string) ||
+        any(xen.vector.check[19] == string)) {
       stop(" The WinEPR system does not provide defined string(s).\n
            Please, refer to `string` argument for the available strings/parameters !! ")
     }
@@ -187,13 +247,12 @@ readEPR_param_slct <- function(path_to_dsc_par,
       } else {
         param.slct <- as.character(sel.str.split[2])
       }
-    }
-    if (any(grepl("SAMP",string)) & any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    } else if (any(grepl("SAMP",string)) &
+        any(grepl(paste(magnettech.string,collapse = "|"),origin))){
       #
       ## the `magnettech` parameter file does not contain the "SAMP" character string =>
       stop(" The required string is not available in `.dsc` file ! ")
-    }
-    if (any(grepl("SAMP",string)) & any(grepl(paste(xenon.string,collapse = "|"),origin))){
+    } else if (any(grepl("SAMP",string)) & any(grepl(paste(xenon.string,collapse = "|"),origin))){
       if (length(string) > 1) {
         param.slct <- sapply(sel.str.split, function(v) as.character(v[2]))
         #

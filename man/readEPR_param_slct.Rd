@@ -80,11 +80,24 @@ readEPR_param_slct(TMPD_radCat_par_path,
                    string = "JDA",
                    origin = "winepr")
 #
-## reading `RMA` (modulation amplitude in G) and `TE` (temperature in K)
-## as well as `JCO` (comment) from `WinEPR` spectrometer file
+## reading `RMA` (modulation amplitude in G) and `TE`
+## (temperature in K) as well as `JCO` (comment)
+## from `WinEPR` spectrometer file
 readEPR_param_slct(TMPD_radCat_par_path,
                    string = c("RMA","TE","JCO"),
                    origin = "WinEPR")
+#
+## loading and reading the `.DSC` file from `Xenon`
+## corresponding to phenalenyl (PNT) CW ENDOR spectrum,
+## read expr. date (`TIME`), microwave frequency (`MWFQ`)
+## in Hz and the corresponding field for saturation (`B0VL`)
+## in Tesla:
+pnt_endor_dsc_path <-
+  load_data_example(file = "PNT_ENDOR_a.DSC")
+readEPR_param_slct(pnt_endor_dsc_path,
+                string = c("TIME","MWFQ","B0VL")
+               )
+
 
 
 }
