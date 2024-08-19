@@ -2,34 +2,50 @@
 % Please edit documentation in R/plot_EPR_present_interact.R
 \name{plot_EPR_present_interact}
 \alias{plot_EPR_present_interact}
-\title{Present/Save Interactive Plotly-Plot/-Graph for Publication (HTML,PDF,DOCX)}
+\title{Present/Save Interactive Plot for Publication in \code{.html},\code{.pdf} or \code{.docx}}
 \usage{
-plot_EPR_present_interact(
-  p,
-  size.width = 700,
-  size.height = 500,
-  size.resolv.f = 2
-)
+plot_EPR_present_interact(p, size.width = 7, size.height = 5, res.ppi = 200)
 }
 \arguments{
-\item{p}{tbc}
+\item{p}{Plot object/variable.}
 
-\item{size.width}{tbc}
+\item{size.width}{Numeric, \code{width} of the image/object window in \code{in},
+\strong{default}: \code{size.width = 7}.}
 
-\item{size.height}{tbc}
+\item{size.height}{Numeric, \code{height} of the image/object window in \code{in},
+\strong{default}: \code{size.height = 5}.}
 
-\item{size.resolv.f}{tbc}
+\item{res.ppi}{Numeric, \code{resolution} in \code{ppi}, \strong{default}: \code{res.ppi = 200}.}
 }
 \value{
-Plot format depending on the output document one
+Interactive plot format corresponding to that of the output document. If the document format \eqn{\equiv} \code{.html},
+  interactive plotly graph is saved in working/actual directory in the same format. Otherwise, for \code{.pdf} and \code{.docx}
+  it is saved as \code{.png} bitmap with the resolution of \code{size.with}\eqn{\cdot}\code{res.ppi} x
+  \code{size.height}\eqn{\cdot}\code{res.ppi}.
 }
 \description{
-Depending on Output Document Format
+Add the interactive plots (see \code{\link{plot_EPR_Specs2D_interact}} or \code{\link{plot_EPR_Specs3D_interact}})
+  to various document formats like \code{.html}, \code{.pdf} or \code{.docx}. Function is based on the
+  \code{\link[htmlwidgets]{saveWidget}} as well as on the \code{\link[webshot2]{webshot}} with the help of \pkg{knitr}
+  package functions. Depending on the format, plot is saved in working/actual directory either as \code{.html} or as \code{.png}.
+  The file name inherits the name of the object/variable (see argument \code{p} and example). Afterwards, during
+  the \href{https://rmarkdown.rstudio.com/docs/}{R markdown} or \href{https://quarto.org/docs/guide/}{Quarto}
+  processing, the image is automatically attached to document in the above-described format. This function is therefore quite
+  handy in interactive notebooks (such as \code{.Rmd} or \code{.qmd}).
 }
 \examples{
 \dontrun{
-TODO
-TODO
+## plotting EPR spectrum of verdazyl radical (`verdazyl.rad.data`),
+## where the actual plot is stored under
+## the `verdazyl.epr.plot.interact` variable name
+verdazyl.epr.plot.interact <-
+  plot_EPR_Specs2D_interact(data.spectra = verdazyl.rad.data)
+#
+## afterwards, it is automatically transformed and attached
+## to document with the desired format by `knitr`
+plot_EPR_present_interact(verdazyl.epr.plot.interact)
+#
+## remaining image files are stored in the working directory
 }
 
 

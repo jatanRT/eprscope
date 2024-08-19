@@ -6,40 +6,82 @@
 #'
 #'
 #' @description
-#' tbc
+#'   tbc...description
 #'
 #'
-#'
-#' @param data.spectra.integ tbc
-#' @param B tbc
-#' @param B.unit tbc
-#' @param Blim tbc
-#' @param ylim tbc...doesn't apply for separated integrals...it works only for overlay
-#' @param slct.integs tbc
-#' @param line.width tbc
-#' @param line.type description
-#' @param axis.title.size tbc
-#' @param axis.text.size tbc
-#' @param legend.title.size tbc
-#' @param legend.text.size tbc
-#' @param separate.integs tbc
-#' @param separate.integ.scales Character/String corresponding to how the axis scales should or shouldn't be fixed,
-#'   unless the \code{separate.integs = FALSE}. Inherited from \code{\link[ggplot2]{facet_wrap}}.
-#'   Following expressions are available => \code{"fixed"}, \code{"free"} or in one dimension \code{"free_x"}
-#'   or \code{"free_y"}. \strong{Default}: \code{separate.integ.scales = NULL}
+#' @inheritParams plot_EPR_Specs
+#' @param data.spectra.integ Data frame object, inherited output from the \code{\link{eval_integ_EPR_Spec}},
+#'   if \code{output.vecs = FALSE} (argument from the latter) corresponding to data frame including the original
+#'   EPR spectral data and the integral(s).
+#' @param B Character string pointing to magnetic flux density \code{column} of the original (\code{data.spectra.integ})
+#'   data frame, either in "millitesla" or in "gauss", that is \code{B = "B_G"} (\strong{default})
+#'   or \code{B = "B_mT"} or \code{B = "Bsim_G"} to include simulated EPR spectra as well.
+#' @param B.unit Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
+#'   (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla).
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper limit
+#'   of the selected \eqn{B}-region, such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
+#'   (corresponding to the entire \eqn{B}-range of the integrated EPR spectrum).
+#' @param ylim Numeric vector corresponding to lower and upper limit of the \eqn{y}-axis scale
+#'   (e.g. \code{ylim = c(-1e-4,1e-3)}). This doesn't apply for separated integrals (if \code{separate.integs = TRUE})
+#'   and works only in overlay mode (in one graph/panel). \strong{Default}: \code{ylim = NULL} corresponding to the entire
+#'   \eqn{y}-range of presented integrals.
+#' @param slct.integs Character string vector corresponding to selected integrals/columns/variables (of the original
+#'   \code{data.spectra.integ} data frame) to be presented in the actual plot. \strong{Default}:
+#'   \code{slct.integs = c("single_Integ","baseline_Integ_fit","single_Integ_correct")}.
+#' @param separate.integs Logical, should be the integrals presented in overlay mode (in one graph/panel)
+#'   or on separated panels (by \code{\link[ggplot2]{facet_wrap}}, see also the next argument) ?
+#'   \strong{Default}: \code{separate.integs = FALSE} (integrals are presented in overlay mode).
+#' @param separate.integ.scales Character string related to \eqn{y}-axes scales, unless the \code{separate.integs = FALSE},
+#'   inherited from \code{\link[ggplot2]{facet_wrap}}. Following expressions are available => \code{"fixed"}, \code{"free"}
+#'   or in one dimension \code{"free_x"} or \code{"free_y"}. \strong{Default}: \code{separate.integ.scales = NULL}
 #'   in case of \code{separate.integs = FALSE}.
-#' @param output.df Logical, description tbc...data frame/table in `tidy` (long) format...for additional
-#'   plotting by `plotly` (see \code{\link{plot_EPR_Specs2D_interact}})
+#' @param output.df Logical, whether a transformed \code{data.spectra.integ} data frame into
+#'   \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format} is required for additional processing
+#'   or plotting. \strong{Default}: \code{output.df = FALSE}.
 #'
 #'
-#' @return tbc
+#' @return Depending on \code{output.df} argument, function returns plot object including all selected
+#'   integrated EPR spectra (\code{output.df = FALSE},\strong{default}) or list (\code{output.df = FALSE})
+#'   consisting of
+#'   \describe{
+#'   \item{df}{Data frame object with intensities of all selected integrals and magnetic flux density \eqn{B}
+#'   variables/columns in tidy/long table format.}
+#'   \item{plot}{Plot object showing all integrated EPR spectra corresponding to \code{df}.}
+#'   }
 #'
 #'
 #' @examples
-#' \dontrun{
-#' tbc
-#' tbc
-#' }
+#' ## loading the package built-in example
+#' TMPD.data.path <-
+#'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
+#' TMPD.data <-
+#'   readEPR_Exp_Specs(TMPD.data.path,
+#'                     col.names = c("B_G","dIepr_over_dB"),
+#'                     qValue = 3500,
+#'                     norm.vec.add = c(20,0.001),
+#'                     origin = "winepr")
+#' ## integration of the `TMPD` EPR spectrum
+#' TMPD.data.integs <-
+#'   eval_integ_EPR_Spec(TMPD.data,sigmoid.integ = TRUE)
+#' #
+#' ## plotting integrals in overlay mode
+#' plot_EPR_Specs_integ(TMPD.data.integs,
+#'   slct.integs = c("single_Integ",
+#'                   "sigmoid_Integ"),
+#'   B = "B_mT",
+#'   B.unit = "mT"
+#'   )
+#' #
+#' ## separate integrals within the plot
+#' plot_EPR_Specs_integ(TMPD.data.integs,
+#'   slct.integs = c("single_Integ",
+#'                   "sigmoid_Integ"),
+#'   B = "B_mT",
+#'   B.unit = "mT",
+#'   separate.integs = TRUE,
+#'   separate.integ.scales = "free_y"
+#'   )
+#'
 #'
 #'
 #' @export

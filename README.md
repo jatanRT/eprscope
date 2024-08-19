@@ -2,7 +2,6 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -39,7 +38,7 @@ supplied by the EPR spectrometer manufacturers (see
 e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html))
 as well as several other software platforms like the *MS Office* and/or
 *Orgin/SigmaPlot/Igor* which are often applied in the EPR
-processing/analysis workflow. Therefore, the `{eprscope}` also tries to
+processing/analysis workflow. Therefore, the `{eprscope}` tries to
 reduce such many steps/programs if the above-mentioned software
 combination would be adopted. In order to achieve the goal it uses
 superior power of the open source
@@ -227,9 +226,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>          Estimate   Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
-#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
-#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
+#> qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149
+#> k1     0.06043805 5.451458e-03  11.08658  6.161497e-19
+#> alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101
 ```
 
 ## Help, Questions and Contribution
