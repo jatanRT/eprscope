@@ -56,9 +56,8 @@ to the entire \code{x}-range).}
 
 \item{var2nd.series}{Character string referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
-Microwave Power...etc) altered upon individual experiments as a second variable
-(\code{var2nd.series}). Data must be available in \strong{long table} / \strong{tidy}
-format (see also \code{\link{readEPR_Exp_Specs_multif}}).
+Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table} / \strong{tidy}
+format (see also \code{\link{readEPR_Exp_Specs_multif}} or \code{\link{plot_EPR_Specs2D_interact}}).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
 
 \item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the overlay plot,

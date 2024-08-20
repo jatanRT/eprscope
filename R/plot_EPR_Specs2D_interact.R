@@ -8,12 +8,12 @@
 #' @description
 #'   Interactive visualization of EPR spectra or their integrals based on \href{https://plotly.com/r/}{plotly} package.
 #'   In the first step function takes the essential plot parts as \pkg{ggplot2}, which is subsequently transferred
-#'   by \code{\link[plotly]{ggplotly}} into final interactive format. Such plots mainly contain buttons in order to zoom,
+#'   by \code{\link[plotly]{ggplotly}} into the final interactive format. Such plots mainly contain buttons in order to zoom,
 #'   move and select (parts of) the EPR spectra/integrals as well as display the point values directly within
 #'   graph/panel. Additionally, plots can be exported into \code{.png} image
 #'   or \code{.html} formats (see also \code{\link{plot_EPR_present_interact}}) and can optionally
 #'   also \href{https://plotly.com/r/configuration-options/}{contain tools to draw lines and circles}
-#'   directly into the panel of the plot.
+#'   directly into the plot panel.
 #'
 #'
 #' @param data.spectra Spectrum data frame/table object containing magnetic flux density, \eqn{g}-value
@@ -38,13 +38,12 @@
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
 #' @param var2nd.series Character string referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
-#'   Microwave Power...etc) altered upon individual experiments as a second variable
-#'   (\code{var2nd.series}). Data must be available in \strong{long table}
+#'   Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{data.spectra} argument).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise, usually, \code{var2nd.series = "time_s"}.
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well)
-#'   line form of the analyzed EPR spectrum.
+#'   line form of the analyzed EPR spectrum/integral.
 #' @param line.colors Character string (vector). In case of of SIMPLE SPECTRUM
 #'   (NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARACTER STRING IS REQUIRED => therefore,
 #'   \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
@@ -54,20 +53,24 @@
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param bg.color Character string corresponding to background color of the panel/graph.
-#'   Available colors are listed on \href{https://www.w3.org/TR/css-color-3/#svg-color}{CSS Color Module Homepage}.
+#'   Available colors are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 #'   \strong{Default}: \code{bg.color = "#e5ecf6"} (corresponding to light blue-gray).
 #' @param grid.color Character string corresponding to grid lines color of the panel/graph.
-#'   Available colors are listed on \href{https://www.w3.org/TR/css-color-3/#svg-color}{CSS Color Module Homepage}.
+#'   Available colors are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 #'   \strong{Default}: \code{grid.color = "white"}.
 #' @param border.line.width Numeric, width (in \code{px}) of the graph/plot panel border line, \strong{default}:
 #'   \code{border.line.width = 1.2}.
 #' @param border.line.color Character string referring to color of the plot graph/panel border line. Available colors
-#'   are listed on \href{https://www.w3.org/TR/css-color-3/#svg-color}{CSS Color Module Homepage}.
+#'   are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 #'   \strong{Default}: \code{grid.color = "black"}.
 #' @param legend.title Character string \eqn{\equiv} title of the legend (if the \code{var2nd.series} in NOT \code{NULL}).
-#'   Character string must be defined in \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language},
+#'   Character string can be defined either by simple text like \code{legend.title = "Time (s)"}
+#'   or if additional formatting is required,
+#'   the \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language},
 #'   such as \code{legend.title = "<i>Time</i> (s)"}
-#'   or \code{legend.title = "<i>Potential<i> <br> <i>vs</i> Fc/Fc<sup>+</sup> (V)"}.
+#'   or \code{legend.title = "<i>Potential<i> <br> <i>vs</i> Fc/Fc<sup>+</sup> (V)"} is used. If a \eqn{\LaTeX}
+#'   typesetting is required for the title, please refer to
+#'   e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.
 #'   \strong{Default}: \code{legend.title = NULL} (in all cases if \code{var2nd.series = NULL}).
 #' @param legend.title.size Numeric, text size (in \code{px}) for the legend title,
 #'   \strong{default}: \code{legend.title.size = NULL}, which actually corresponds to \code{13} if otherwise not defined.
