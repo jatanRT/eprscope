@@ -6,7 +6,8 @@
 #'
 #'
 #' @description
-#'   tbc...description
+#'   Visualization (static plots based on \pkg{ggplot2}) of integrated EPR spectra coming as data frame
+#'   output from \code{\link{eval_integ_EPR_Spec}}.
 #'
 #'
 #' @inheritParams plot_EPR_Specs
@@ -25,7 +26,7 @@
 #'   (e.g. \code{ylim = c(-1e-4,1e-3)}). This doesn't apply for separated integrals (if \code{separate.integs = TRUE})
 #'   and works only in overlay mode (in one graph/panel). \strong{Default}: \code{ylim = NULL} corresponding to the entire
 #'   \eqn{y}-range of presented integrals.
-#' @param slct.integs Character string vector corresponding to selected integrals/columns/variables (of the original
+#' @param slct.integs Character string vector pointing to selected integrals/columns/variables (of the original
 #'   \code{data.spectra.integ} data frame) to be presented in the actual plot. \strong{Default}:
 #'   \code{slct.integs = c("single_Integ","baseline_Integ_fit","single_Integ_correct")}.
 #' @param separate.integs Logical, should be the integrals presented in overlay mode (in one graph/panel)

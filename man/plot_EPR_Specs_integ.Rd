@@ -43,7 +43,7 @@ of the selected \eqn{B}-region, such as \code{Blim = c(3495.4,3595.4)}. \strong{
 and works only in overlay mode (in one graph/panel). \strong{Default}: \code{ylim = NULL} corresponding to the entire
 \eqn{y}-range of presented integrals.}
 
-\item{slct.integs}{Character string vector corresponding to selected integrals/columns/variables (of the original
+\item{slct.integs}{Character string vector pointing to selected integrals/columns/variables (of the original
 \code{data.spectra.integ} data frame) to be presented in the actual plot. \strong{Default}:
 \code{slct.integs = c("single_Integ","baseline_Integ_fit","single_Integ_correct")}.}
 
@@ -55,7 +55,7 @@ can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \co
 
 \item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in pt for the axes units/descriptions,
+\item{axis.text.size}{Numeric, text size in pt for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{legend.title.size}{Numeric, legend text title size in \code{pt},\strong{default}: \code{legend.title.size = NULL},
@@ -88,7 +88,8 @@ Depending on \code{output.df} argument, function returns plot object including a
   }
 }
 \description{
-tbc...description
+Visualization (static plots based on \pkg{ggplot2}) of integrated EPR spectra coming as data frame
+  output from \code{\link{eval_integ_EPR_Spec}}.
 }
 \examples{
 ## loading the package built-in example

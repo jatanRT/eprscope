@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_Specs2D_interact.R
 \name{plot_EPR_Specs2D_interact}
 \alias{plot_EPR_Specs2D_interact}
-\title{Interactive (incl. Zooming, Data Reading...etc) EPR Spectrum Plot}
+\title{Interactive Plot (incl. Zooming, Data Reading...etc) for EPR Spectra}
 \usage{
 plot_EPR_Specs2D_interact(
   data.spectra,
@@ -15,7 +15,7 @@ plot_EPR_Specs2D_interact(
   line.width = 0.75,
   line.type = 1,
   bg.color = "#e5ecf6",
-  grid.color = "#ffff",
+  grid.color = "white",
   border.line.width = 1.2,
   border.line.color = "black",
   legend.title = NULL,
@@ -25,44 +25,45 @@ plot_EPR_Specs2D_interact(
 )
 }
 \arguments{
-\item{data.spectra}{Spectrum data frame/table containing magnetic flux density, \eqn{g}-value
+\item{data.spectra}{Spectrum data frame/table object containing magnetic flux density, \eqn{g}-value
 or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
 in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 integrated or simulated spectra intensities are present, they can be labeled accordingly.
 See also \code{Intensity} parameter/argument. For spectral series the second independent variable
-\code{var2nd.series} column (like e.g. \code{var2nd.series = "time_s"}) must be available. In such case
-the entire \code{data.spectra} has to be in form of `tidy` table format (see also parameter/argument
-\code{var2nd.series}).}
+\code{var2nd.series} column (e.g. \code{var2nd.series = "time_s"}) must be available. In such case,
+the entire \code{data.spectra} must be present in the form of
+\href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
+(see also parameter/argument \code{var2nd.series}).}
 
-\item{x}{Character/String pointing to \code{x}-axis/column quantity in original \code{data.spectrum} like
+\item{x}{Character string pointing to \code{x}-axis/column quantity in original \code{data.spectrum} like
 magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{x.unit}{Character/String pointing to unit of quantity (coming from original ASCII data, see also
-\code{column.names} parameter) which is to be presented on \eqn{x} abscissa of the EPR spectrum,
-like \code{"G"} (`Gauss`), \code{"mT"} (`millitesla`), \code{"MHz"} (`megahertz` in case of ENDOR spectra)
+\item{x.unit}{Character string pointing to unit of quantity (coming from original ASCII data, see also
+\code{column.names} parameter) which is to be presented on \eqn{x}-axis of the EPR spectrum,
+like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz", in the case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
-\item{Intensity}{Character/String pointing to \code{intensity column} in the original \code{data.spectrum}
+\item{Intensity}{Character string corresponding to intensity column in the original \code{data.spectrum}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
-\strong{default}: \code{Intesity = "dIepr_over_dB"}}
+\strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
-column in the original \code{data.spectra} (e.g. `time`,`Temperature`, `Electrochemical Potential`,
-`Microwave Power`...etc) altered upon individual experiments as a second variable
-(\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
-(or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
-\strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
+\item{var2nd.series}{Character string referred to name of the second independent variable/quantity
+column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
+Microwave Power...etc) altered upon individual experiments as a second variable
+(\code{var2nd.series}). Data must be available in \strong{long table}
+(or \strong{tidy}) \strong{format} (see also \code{data.spectra} argument).
+\strong{Default}: \code{var2nd.series = NULL}. Otherwise, usually, \code{var2nd.series = "time_s"}.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
-or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
-line form of the analyzed EPR spectrum/data.}
+or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well)
+line form of the analyzed EPR spectrum.}
 
-\item{line.colors}{Character string or its vector. In case of \strong{of SIMPLE SPECTRUM}
-(NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARCTER STRING IS REQUIRED => therefore,
+\item{line.colors}{Character string (vector). In case of of SIMPLE SPECTRUM
+(NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARACTER STRING IS REQUIRED => therefore,
 \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
-WITH LENGTH \eqn{\geq 2} must be DEFINED (such as \code{line.colors = c("darkorange","darkblue")}).}
+WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. \code{line.colors = c("darkorange","darkblue")}).}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
 
@@ -70,29 +71,48 @@ WITH LENGTH \eqn{\geq 2} must be DEFINED (such as \code{line.colors = c("darkora
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{bg.color}{Character string corresponding to \strong{background color}}
+\item{bg.color}{Character string corresponding to background color of the panel/graph.
+Available colors are listed on \href{https://www.w3.org/TR/css-color-3/#svg-color}{CSS Color Module Homepage}.
+\strong{Default}: \code{bg.color = "#e5ecf6"} (corresponding to light blue-gray).}
 
-\item{grid.color}{Character string corresponding to \strong{grid color}}
+\item{grid.color}{Character string corresponding to grid lines color of the panel/graph.
+Available colors are listed on \href{https://www.w3.org/TR/css-color-3/#svg-color}{CSS Color Module Homepage}.
+\strong{Default}: \code{grid.color = "white"}.}
 
-\item{border.line.width}{tbc}
+\item{border.line.width}{Numeric, width (in \code{px}) of the graph/plot panel border line, \strong{default}:
+\code{border.line.width = 1.2}.}
 
-\item{border.line.color}{tbc}
+\item{border.line.color}{Character string referring to color of the plot graph/panel border line. Available colors
+are listed on \href{https://www.w3.org/TR/css-color-3/#svg-color}{CSS Color Module Homepage}.
+\strong{Default}: \code{grid.color = "black"}.}
 
-\item{legend.title}{tbc}
+\item{legend.title}{Character string \eqn{\equiv} title of the legend (if the \code{var2nd.series} in NOT \code{NULL}).
+Character string must be defined in \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language},
+such as \code{legend.title = "<i>Time</i> (s)"}
+or \code{legend.title = "<i>Potential<i> <br> <i>vs</i> Fc/Fc<sup>+</sup> (V)"}.
+\strong{Default}: \code{legend.title = NULL} (in all cases if \code{var2nd.series = NULL}).}
 
-\item{legend.title.size}{tbc}
+\item{legend.title.size}{Numeric, text size (in \code{px}) for the legend title,
+\strong{default}: \code{legend.title.size = NULL}, which actually corresponds to \code{13} if otherwise not defined.}
 
-\item{axis.title.size}{Numeric, text size (in \code{pt}) for the axes title,
-\strong{default}: \code{axis.title.size = 15}}
+\item{axis.title.size}{Numeric, text size (in \code{px}) for the axes title,
+\strong{default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size (in \code{pt}) for the axes units/descriptions,
-\strong{default}: \code{axis.text.size = 14}}
+\item{axis.text.size}{Numeric, text size (in \code{px}) for the axes unit values/descriptions,
+\strong{default}: \code{axis.text.size = 14}.}
 }
 \value{
-Interactive EPR spectrum/spectra plot/graph based on \pkg{plotly}
+Interactive plot object of EPR spectrum/spectra based on \pkg{plotly} package.
 }
 \description{
-tbc
+Interactive visualization of EPR spectra or their integrals based on \href{https://plotly.com/r/}{plotly} package.
+  In the first step function takes the essential plot parts as \pkg{ggplot2}, which is subsequently transferred
+  by \code{\link[plotly]{ggplotly}} into final interactive format. Such plots mainly contain buttons in order to zoom,
+  move and select (parts of) the EPR spectra/integrals as well as display the point values directly within
+  graph/panel. Additionally, plots can be exported into \code{.png} image
+  or \code{.html} formats (see also \code{\link{plot_EPR_present_interact}}) and can optionally
+  also \href{https://plotly.com/r/configuration-options/}{contain tools to draw lines and circles}
+  directly into the panel of the plot.
 }
 \examples{
 ## load built-in EPR spectral data
@@ -107,6 +127,36 @@ data.epr <-
                     origin = "winepr")
 ## interactive plot or screenshot
 plot_EPR_Specs2D_interact(data.spectra = data.epr)
+#
+## loading the built-in CW ENDOR spectrum
+## of perinaphthenyl (PNT)
+pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
+## read the PNT CW ENDOR data without intensity
+## normalization
+pnt.endor.data <-
+  readEPR_Exp_Specs(pnt.file.path,
+                    col.names = c("index",
+                                  "RF_MHz",
+                                  "dIepr_over_dB"),
+                    x.unit = "MHz")
+## plotting ENDOR spectrum
+plot_EPR_Specs2D_interact(data.spectra = pnt.endor.data,
+                          x = "RF_MHz",
+                          x.unit = "MHz",
+                          line.colors = "darkgreen",
+                          bg.color = "cornsilk",
+                          grid.color = "darkgrey")
+#
+\dontrun{
+## plot time series EPR spectra = verdazyl radical
+## oxidation kinetics (`verdazylRad.kinet.spectr`)
+plot_EPR_Specs2D_interact(verdazylRad.kinet.spectr,
+  x = "B_G",
+  x.unit = "G",
+  var2nd.series = "time_s",
+  legend.title = "<i>Time</i> (s)"
+  )
+}
 
 
 }

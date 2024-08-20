@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_Specs3D_interact.R
 \name{plot_EPR_Specs3D_interact}
 \alias{plot_EPR_Specs3D_interact}
-\title{Interactive (incl. Zooming, Data Reading...etc) 3D Plot for the Series of EPR Spectra}
+\title{Interactive 3D Surface and 2D Contour Plots for the Series of EPR Spectra}
 \usage{
 plot_EPR_Specs3D_interact(
   data.spectra.series,
@@ -30,9 +30,13 @@ plot_EPR_Specs3D_interact(
 \arguments{
 \item{data.spectra.series}{tbc}
 
-\item{x}{tbc}
+\item{x}{Character string pointing to \code{x}-axis/column quantity in original \code{data.spectrum} like
+magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
+\strong{default}: \code{x = "B_mT"}.}
 
-\item{Intensity}{tbc}
+\item{Intensity}{Character string corresponding to intensity column in the original \code{data.spectrum}
+if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
+\strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
 \item{var2nd.series}{String/Character referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (such as `time`,`Temperature`, `Electrochemical Potential`,
@@ -66,9 +70,11 @@ use `cmin` and `cmax`. Alternatively, `colorscale` may be a palette name string 
 
 \item{zlab}{tbc}
 
-\item{axis.title.size}{tbc}
+\item{axis.title.size}{Numeric, text size (in \code{px}) for the axes title,
+\strong{default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{tbc}
+\item{axis.text.size}{Numeric, text size (in \code{px}) for the axes unit values/descriptions,
+\strong{default}: \code{axis.text.size = 14}.}
 
 \item{bg.x.color}{tbc}
 
@@ -88,12 +94,50 @@ use `cmin` and `cmax`. Alternatively, `colorscale` may be a palette name string 
 tbc
 }
 \description{
-tbc
+tbc, something...
 }
 \examples{
+## loading the built-in package example to demonstrate
+## visualizatioin of time series EPR spectra:
+triarylamine.decay.series.dsc.path <-
+load_data_example(file =
+        "Triarylamine_radCat_decay_series.DSC")
+triarylamine.decay.series.asc.path <-
+load_data_example(file =
+        "Triarylamine_radCat_decay_series.zip")
+unzip(triarylamine.decay.series.asc.path,
+      exdir = tempdir()
+      )
+## loading the kinetics:
+triarylamine.decay.series.data <-
+  readEPR_Exp_Specs_kin(name.root =
+                          "Triarylamine_radCat_decay_series",
+                        dir_ASC = tempdir(),
+                        dir_dsc_par =
+                          system.file("extdata",
+                                      package = "eprscope")
+                        )
+#
+## plot basics `surface` plot (with default arguments)
+## and the `Jet` color scheme including
+## Intensity contour labels
+plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
+  contour.labels = TRUE,
+  scheme.color = "Jet")
+#
+## plot basic `contour` plot (with default arguments)
+plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
+  plot.type = "contour")
+#
 \dontrun{
-tbc
-tbc
+## 3D surface plotting EPR spectra series (in the region
+## of <334,345> mT) from variable temperature
+## (VT) experiments
+plot_EPR_Specs3D_interact(data.spectra.series,
+  var2nd.series = "Temperature_K",
+  xlim = c(334,345),
+  contour.labels = T,
+  ylab = "<i>Temperature</i> (K)")
 }
 
 

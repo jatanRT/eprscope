@@ -81,7 +81,7 @@ it is referred to name of the variable/quantity (such as "time","Temperature","E
 and related to the spectral data.}
 
 \item{var2nd.series.factor}{Logical, whether to factorize \code{var2nd.series} column vector which is useful
-for plotting the overlay spectra. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case
+for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case
 to visualize EPR spectra by \code{plot}-functions.}
 
 \item{origin}{Character string corresponding to \strong{origin} of the ASCII data, like from

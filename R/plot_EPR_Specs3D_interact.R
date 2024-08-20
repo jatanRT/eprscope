@@ -1,17 +1,15 @@
 #
-#' Interactive (incl. Zooming, Data Reading...etc) 3D Plot for the Series of EPR Spectra
+#' Interactive 3D Surface and 2D Contour Plots for the Series of EPR Spectra
 #'
 #'
 #' @family Visualizations and Graphics
 #'
 #'
 #' @description
-#' tbc
+#'   tbc, something...
 #'
-#'
+#' @inheritParams plot_EPR_Specs2D_interact
 #' @param data.spectra.series tbc
-#' @param x tbc
-#' @param Intensity tbc
 #' @param var2nd.series String/Character referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (such as `time`,`Temperature`, `Electrochemical Potential`,
 #'   `Microwave Power`...etc) altered upon individual experiments as a second variable
@@ -36,8 +34,6 @@
 #' @param xlab tbc
 #' @param ylab tbc
 #' @param zlab tbc
-#' @param axis.title.size tbc
-#' @param axis.text.size tbc
 #' @param bg.x.color tbc
 #' @param grid.x.color tbc
 #' @param bg.y.color tbc
@@ -51,9 +47,47 @@
 #'
 #'
 #' @examples
+#' ## loading the built-in package example to demonstrate
+#' ## visualizatioin of time series EPR spectra:
+#' triarylamine.decay.series.dsc.path <-
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.DSC")
+#' triarylamine.decay.series.asc.path <-
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.zip")
+#' unzip(triarylamine.decay.series.asc.path,
+#'       exdir = tempdir()
+#'       )
+#' ## loading the kinetics:
+#' triarylamine.decay.series.data <-
+#'   readEPR_Exp_Specs_kin(name.root =
+#'                           "Triarylamine_radCat_decay_series",
+#'                         dir_ASC = tempdir(),
+#'                         dir_dsc_par =
+#'                           system.file("extdata",
+#'                                       package = "eprscope")
+#'                         )
+#' #
+#' ## plot basics `surface` plot (with default arguments)
+#' ## and the `Jet` color scheme including
+#' ## Intensity contour labels
+#' plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
+#'   contour.labels = TRUE,
+#'   scheme.color = "Jet")
+#' #
+#' ## plot basic `contour` plot (with default arguments)
+#' plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
+#'   plot.type = "contour")
+#' #
 #' \dontrun{
-#' tbc
-#' tbc
+#' ## 3D surface plotting EPR spectra series (in the region
+#' ## of <334,345> mT) from variable temperature
+#' ## (VT) experiments
+#' plot_EPR_Specs3D_interact(data.spectra.series,
+#'   var2nd.series = "Temperature_K",
+#'   xlim = c(334,345),
+#'   contour.labels = T,
+#'   ylab = "<i>Temperature</i> (K)")
 #' }
 #'
 #'
@@ -143,11 +177,13 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     var2nd_select_df <- var2nd_select_df
   }
   #
-  ## Filtering, accordingly (only those `var2nd.series` values defined above in `data.spectra.series`)
+  ## Filtering, accordingly (only those `var2nd.series` values defined
+  ## above in `data.spectra.series`)
   data.spectra.series <- data.spectra.series %>%
     dplyr::filter(.data[[var2nd.series]] %in% var2nd_select_df[[var2nd.series]])
   #
-  ## select NEW!!!UPDATED!!! `var2nd.series` !!! data frame values for `yaxis` within 3D plot
+  ## select NEW!!!UPDATED!!! `var2nd.series` !!! data frame
+  ## values for `yaxis` within 3D plot
   # var2nd_select_df <- data.spectra.series %>%
   #   dplyr::group_by(.data[[var2nd.series]]) %>%
   #   dplyr::group_keys()
@@ -156,16 +192,29 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ## it will be converted  step-by-step because `pivot_wider` doesn't work
   ## 1. group by `var2nd.series` into list
   data.spectra.list <-
-    lapply(var2nd_select_df[[var2nd.series]],
-           function(i) subset(data.spectra.series,data.spectra.series[[var2nd.series]] == i))
+   lapply(
+     var2nd_select_df[[var2nd.series]],
+     function(i) {
+       subset(
+         data.spectra.series,
+         data.spectra.series[[var2nd.series]] == i
+       )
+     }
+   )
   ## 2. select only Intensities columns
-  intensity.list <- lapply(seq(data.spectra.list), function(j) data.spectra.list[[j]][[Intensity]])
+  intensity.list <- lapply(
+  seq(data.spectra.list),
+  function(j) {
+    data.spectra.list[[j]][[Intensity]]
+  }
+)
   ## 3. join all columns into matrix
   Intensity_matrix <-
-    as.matrix(dplyr::bind_cols(intensity.list,
-                               .name_repair = ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE)))
-  ## transpose matrix in order to present 3D spectra properly
-  Intensity_matrix <- t(Intensity_matrix)
+  as.matrix(dplyr::bind_cols(intensity.list,
+    .name_repair = ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE)
+  ))
+## transpose matrix in order to present 3D spectra properly
+Intensity_matrix <- t(Intensity_matrix)
   #
   ## `data.spectra.list` & `intensity.list` are not required anymore
   rm(data.spectra.list,intensity.list)
@@ -175,7 +224,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     dplyr::filter(.data[[var2nd.series]] == .data[[var2nd.series]][1])
   #
   ## own 3D plot (different types "surface","contour","")
-  if (plot.type == "surface") {
+  if (plot.type == "surface" || plot.type == "Surface") {
     if (isTRUE(contour.labels)) {
       base_plot <- plotly::plot_ly(
         x = ~ X_select_df[[x]],
@@ -249,7 +298,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
       )
   }
   #
-  if (plot.type == "contour") {
+  if (plot.type == "contour" || plot.type == "Contour") {
     base_plot <- plotly::plot_ly(
       x = ~ X_select_df[[x]],
       y = ~ var2nd_select_df[[var2nd.series]],
@@ -292,17 +341,17 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #
   ## matrix table output
   if (isTRUE(output.matrix.df)) {
-    ## re-transpose
-    Intensity_matrix <- t(Intensity_matrix)
-    ## matrix -> data frame
-    matrix_to_df_table <- as.data.frame(Intensity_matrix)
-    ## column names
-    colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd.series]])
-    ## return both plot and table in list
-    final_plotPlusTable <- list(plot = final_plot, df = matrix_to_df_table)
-  } else {
-    final_plotPlusTable <- final_plot ## no table/df included
-  }
+  ## re-transpose
+  Intensity_matrix <- t(Intensity_matrix)
+  ## matrix -> data frame
+  matrix_to_df_table <- as.data.frame(Intensity_matrix)
+  ## column names
+  colnames(matrix_to_df_table) <- as.character(var2nd_select_df[[var2nd.series]])
+  ## return both plot and table in list
+  final_plotPlusTable <- list(plot = final_plot, df = matrix_to_df_table)
+} else {
+  final_plotPlusTable <- final_plot ## no table/df included
+}
   #
   return(final_plotPlusTable)
   #

@@ -78,16 +78,16 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 
 \item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in pt for the axes units/descriptions,
+\item{axis.text.size}{Numeric, text size in pt for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
-\item{border.line.color}{Character string referring to color of the graph/plot panel border line. \strong{Default}:
+\item{border.line.color}{Character string referring to color of the plot graph/panel border line. \strong{Default}:
 \code{border.line.color = "black"}.}
 
-\item{border.line.width}{Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
+\item{border.line.width}{Numeric, width (in \code{mm}) of the plot graph/panel border line, \strong{default}:
 \code{border.line.width = 0.5}.}
 
-\item{border.line.type}{Character string or integer corresponding to width of the graph/plot panel border line. Following types
+\item{border.line.type}{Character string or integer corresponding to width of the plot graph/panel border line. Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
@@ -102,7 +102,7 @@ by \pkg{plotly} (\code{plot.interact = TRUE}). \strong{Default}: \code{plot.inte
 \item{ticks}{Character string corresponding to pointing direction of the axis ticks, either pointing into
 the panel graph or outwards (\strong{default}). If \code{ticks = "in"} also the opposite axis ticks are displayed.}
 
-\item{grid}{Logical, whether to dislay the \code{grid} within the panel / graph, \strong{default}: \code{grid = TRUE}.}
+\item{grid}{Logical, whether to display the \code{grid} within the panel/graph, \strong{default}: \code{grid = TRUE}.}
 }
 \value{
 Graphical representation (list object) of voltammogram or chronoamperogram either in static

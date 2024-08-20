@@ -94,7 +94,7 @@
 #'   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz} (in case of ENDOR spectrum)
 #'   or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
 #'   intensities (like integrated spectral form) in \code{procedure defined unit}
-#'   (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
+#'   (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
 #'   which is normalized by the above-described parameters
 #'   and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
 #'   are displayed as well.
@@ -213,6 +213,17 @@
 #'                                 "dIepr_over_dB"),
 #'                   qValue = 2800)
 #' #
+#' ## read `.csv` file which is an output from online
+#' ## converter:
+#' ## https://www.spectra.tools/bin/controller.pl?body=Xepr2gfac
+#' readEPR_Exp_Specs("data.csv",
+#'                   skip = 0,
+#'                   col.names = c("B_G",
+#'                                 "g_Value",
+#'                                 "dIepr_over_dB"),
+#'                   x.id = 1,
+#'                   Intensity.id = 3,
+#'                   origin = "csv")
 #' }
 #'
 #'
@@ -280,7 +291,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     if (data.structure == "spectra") {
       ## parameter definition (automatize value assignments)
-      ## ASSUMING USER CAN MAKE MISTAKES
+      ## ASSUMING USER CAN MAKE MISTAKES :-)
       if (isFALSE(time.series.cond)) {
         sep <- sep %>% `if`(sep != "auto", "auto", .)
         header <- header %>% `if`(isTRUE(header), FALSE, .)
@@ -340,7 +351,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (any(grepl(paste(xenon.string,collapse = "|"),origin))) {
     if (data.structure == "spectra") {
       ## parameter definition (automatize value assignments)
-      ## ASSUMING USER CAN MAKE MISTAKES
+      ## ASSUMING USER CAN MAKE MISTAKES :-)
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header
       skip <- skip
@@ -385,7 +396,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
     if (data.structure == "spectra") {
       ## parameter definition (automatize value assignments)
-      ## ASSUMING USER CAN MAKE MISTAKES
+      ## ASSUMING USER CAN MAKE MISTAKES :-)
       sep <- sep %>% `if`(sep != "auto", "auto", .)
       header <- header %>% `if`(isTRUE(header), FALSE, .)
       skip <- skip %>% `if`(skip != 88, 88, .)

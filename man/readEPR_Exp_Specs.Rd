@@ -102,7 +102,7 @@ Data frame/table consisting of the magnetic flux density
   column \code{B_mT} in millitesla (as well as \code{B_G} in gauss) or \code{RF_MHz} (in case of ENDOR spectrum)
   or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
   intensities (like integrated spectral form) in \code{procedure defined unit}
-  (see \href{http://www.iupac.org/divisions/VII/VII.C.1/C-NPU_Uppsala_081023_25_minutes_confirmed.pdf}{p.d.u.}),
+  (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
   which is normalized by the above-described parameters
   and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
   are displayed as well.
@@ -245,6 +245,17 @@ readEPR_Exp_Specs(path_to_ASC,
                                 "dIepr_over_dB"),
                   qValue = 2800)
 #
+## read `.csv` file which is an output from online
+## converter:
+## https://www.spectra.tools/bin/controller.pl?body=Xepr2gfac
+readEPR_Exp_Specs("data.csv",
+                  skip = 0,
+                  col.names = c("B_G",
+                                "g_Value",
+                                "dIepr_over_dB"),
+                  x.id = 1,
+                  Intensity.id = 3,
+                  origin = "csv")
 }
 
 
