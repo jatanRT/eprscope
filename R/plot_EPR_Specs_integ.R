@@ -38,7 +38,7 @@
 #'   in case of \code{separate.integs = FALSE}.
 #' @param output.df Logical, whether a transformed \code{data.spectra.integ} data frame into
 #'   \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format} is required for additional processing
-#'   or plotting. \strong{Default}: \code{output.df = FALSE}.
+#'   or plotting. \strong{Default}: \code{output.df = TRUE}.
 #'
 #'
 #' @return Depending on \code{output.df} argument, function returns plot object including all selected

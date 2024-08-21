@@ -24,11 +24,12 @@
 #'   is shown.
 #' @param mol.label.color Character string pointing to displayed font color of the chemical structure
 #'   label. \strong{Default}: \code{mol.label.color = "black"}.
-#' @param mol.label.xy.posit Numeric vector of two values matching the x,y-position of the \code{mol.label}
+#' @param mol.label.xy.posit Numeric vector of two values matching the \eqn{x,y}-position of the \code{mol.label}
 #'   within the image having the total size of \code{(1,1,10,10)} =>
 #'   see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
-#'   => the label is positioned in the bottom right corner.
-#' @param sma Character string allowing to highlight sub-structures using \code{SMARTS}
+#'   => the label is positioned at the bottom right corner.
+#' @param sma Character string allowing to highlight sub-structures using
+#'   \href{https://www.daylight.com/dayhtml/doc/theory/theory.smarts.html}{\code{SMARTS}}
 #'   (\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
 #'   the common substructures in a set of molecules, such as \code{sma = "C=O"}.
 #' @param annotate Character string, whether to display (\code{annotate = "number"}) or not display
@@ -46,7 +47,7 @@
 #' @param abbr Character string which controls how the structure is displayed. Following options
 #'   can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
 #'   \code{abbr = "groups"} creating an abbreviation for \code{groups}; \code{abbr = "reagents"} creating
-#'   an abbreviation for \code{reagents} or \code{abbr = "on"} to abbreviate the both.
+#'   an abbreviation for \code{reagents} or \code{abbr = "on"} to abbreviate both.
 #'   The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "off"}!
 #' @param suppressh Logical, denoting whether to suppress displaying the hydrogen atoms.
 #'   The \code{SMILES} or \code{SDF} STRUCTURE MUST CONTAIN \strong{H} ATOMS!

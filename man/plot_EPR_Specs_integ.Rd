@@ -53,9 +53,9 @@ and works only in overlay mode (in one graph/panel). \strong{Default}: \code{yli
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
+\item{axis.title.size}{Numeric, axis text title size in \code{pt}. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in pt for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size in \code{p}t for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{legend.title.size}{Numeric, legend text title size in \code{pt},\strong{default}: \code{legend.title.size = NULL},
@@ -75,7 +75,7 @@ in case of \code{separate.integs = FALSE}.}
 
 \item{output.df}{Logical, whether a transformed \code{data.spectra.integ} data frame into
 \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format} is required for additional processing
-or plotting. \strong{Default}: \code{output.df = FALSE}.}
+or plotting. \strong{Default}: \code{output.df = TRUE}.}
 }
 \value{
 Depending on \code{output.df} argument, function returns plot object including all selected

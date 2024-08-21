@@ -29,33 +29,43 @@
 #'
 #' @examples
 #' \dontrun{
+#' ## magnetic flux density
 #' plot_labels_xyz(B,mT)
 #' #
+#' ## derivative intensity
 #' plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),
 #'                 "("~p.d.u.~")",
 #'                 user.defined = TRUE)
 #' #
+#' ## derivative intesity
 #' plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),p.d.u.)
 #'
 #' #
+#' ## ∆Bpp
 #' plot_labels_xyz(quantity = Delta*B[pp],
 #'                 unit = "("~mT~")",
 #'                 user.defined = TRUE)
 #' #
+#' ## time
 #' plot_labels_xyz(t,s)
 #' #
+#' ## temperature
 #' plot_labels_xyz(T,K)
 #' #
+#' ## electrochemical potential
 #' plot_labels_xyz(E,
 #'                 "("~V~")"~~~italic(vs)~~~italic(Ref.~Electrode),
 #'                 user.defined = TRUE)
 #' #
+#' ## concentration
 #' plot_labels_xyz(c,mmol~dm^-3)
 #' #
+#' ## double integral
 #' plot_labels_xyz(Double~~Integral,
 #'                 p.d.u.,
 #'                 user.defined = FALSE)
 #' #
+#' ## ENDOR frequency
 #' plot_labels_xyz(italic(nu)[RF],"("~MHz~")",
 #'                 user.defined = TRUE)
 #' }

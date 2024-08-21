@@ -12,8 +12,8 @@
 #'   move and select (parts of) the EPR spectra/integrals as well as display the point values directly within
 #'   graph/panel. Additionally, plots can be exported into \code{.png} image
 #'   or \code{.html} formats (see also \code{\link{plot_EPR_present_interact}}) and can optionally
-#'   also \href{https://plotly.com/r/configuration-options/}{contain tools to draw lines and circles}
-#'   directly into the plot panel.
+#'   also \href{https://plotly.com/r/configuration-options/}{contain tools to draw lines, circles or rectangles}
+#'   directly into the plot panel for annotations.
 #'
 #'
 #' @param data.spectra Spectrum data frame/table object containing magnetic flux density, \eqn{g}-value
@@ -26,14 +26,14 @@
 #'   the entire \code{data.spectra} must be present in the form of
 #'   \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
 #'   (see also parameter/argument \code{var2nd.series}).
-#' @param x Character string pointing to \code{x}-axis/column quantity in original \code{data.spectrum} like
+#' @param x Character string pointing to \eqn{x}-axis/column quantity in the original \code{data.spectrum} like
 #'   magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 #'   \strong{default}: \code{x = "B_mT"}.
 #' @param x.unit Character string pointing to unit of quantity (coming from original ASCII data, see also
 #'   \code{column.names} parameter) which is to be presented on \eqn{x}-axis of the EPR spectrum,
 #'   like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz", in the case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.
-#' @param Intensity Character string corresponding to intensity column in the original \code{data.spectrum}
+#' @param Intensity Character string corresponding to the intensity column header in the original \code{data.spectrum}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
 #' @param var2nd.series Character string referred to name of the second independent variable/quantity
@@ -47,22 +47,22 @@
 #' @param line.colors Character string (vector). In case of of SIMPLE SPECTRUM
 #'   (NOT FOR \code{var2nd.series}) ONLY ONE COLOR CHARACTER STRING IS REQUIRED => therefore,
 #'   \strong{default:} \code{line.color = "darkviolet"}. For the SERIES OF SPECTRA CHARACTER COLOR VECTOR
-#'   WITH LENGTH \eqn{\geq 2} must be DEFINED (e.g. \code{line.colors = c("darkorange","darkblue")}).
+#'   WITH THE LENGTH \eqn{\geq 2} must be DEFINED (e.g. \code{line.colors = c("darkorange","darkblue")}).
 #' @param line.width Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.
 #' @param line.type Character string or integer corresponding to width of the (spectral) line(s). Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param bg.color Character string corresponding to background color of the panel/graph.
-#'   Available colors are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
+#'   Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 #'   \strong{Default}: \code{bg.color = "#e5ecf6"} (corresponding to light blue-gray).
 #' @param grid.color Character string corresponding to grid lines color of the panel/graph.
-#'   Available colors are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
+#'   Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 #'   \strong{Default}: \code{grid.color = "white"}.
 #' @param border.line.width Numeric, width (in \code{px}) of the graph/plot panel border line, \strong{default}:
 #'   \code{border.line.width = 1.2}.
 #' @param border.line.color Character string referring to color of the plot graph/panel border line. Available colors
 #'   are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
-#'   \strong{Default}: \code{grid.color = "black"}.
+#'   \strong{Default}: \code{border.line.color = "black"}.
 #' @param legend.title Character string \eqn{\equiv} title of the legend (if the \code{var2nd.series} in NOT \code{NULL}).
 #'   Character string can be defined either by simple text like \code{legend.title = "Time (s)"}
 #'   or if additional formatting is required,

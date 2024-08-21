@@ -12,7 +12,7 @@
 #'   package functions. Depending on the format, plot is saved in working/actual directory either as \code{.html} or as \code{.png}.
 #'   The file name inherits the name of the object/variable (see argument \code{p} and example). Afterwards, during
 #'   the \href{https://rmarkdown.rstudio.com/docs/}{R markdown} or \href{https://quarto.org/docs/guide/}{Quarto}
-#'   processing, the image is automatically attached to document in the above-described format. This function is therefore quite
+#'   processing, the image is automatically attached to document in the above-described format. Therefore, this function is quite
 #'   handy in interactive notebooks (such as \code{.Rmd} or \code{.qmd}).
 #'
 #'
@@ -23,8 +23,9 @@
 #'   \strong{default}: \code{size.height = 5}.
 #' @param res.ppi Numeric, \code{resolution} in \code{ppi}, \strong{default}: \code{res.ppi = 200}.
 #'
-#' @return Interactive plot format corresponding to that of the output document. If the document format \eqn{\equiv} \code{.html},
-#'   interactive plotly graph is saved in working/actual directory in the same format. Otherwise, for \code{.pdf} and \code{.docx}
+#' @return Interactive plot format corresponding to that of the output document. If the desired document
+#'   format \eqn{\equiv} \code{.html}, interactive plotly graph is saved in working/actual directory
+#'   in the same format. Otherwise, for \code{.pdf} and \code{.docx}
 #'   it is saved as \code{.png} bitmap with the resolution of \code{size.with}\eqn{\cdot}\code{res.ppi} x
 #'   \code{size.height}\eqn{\cdot}\code{res.ppi}.
 #'

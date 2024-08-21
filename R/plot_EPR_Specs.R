@@ -5,13 +5,13 @@
 #' @family Visualizations and Graphics
 #'
 #'
-#' @description Plot of an EPR/ENDOR spectrum/spectra (overlay plot) based on \pkg{ggplot2}-functionality.
+#' @description Plot of EPR/ENDOR spectrum/spectra (overlay plot) based on \pkg{ggplot2}-functionality.
 #'   Spectral data input must be available as a data frame object (see also argument \code{data.spectra}).
-#'   Theme of the graphic spectrum representation as well as other graph elements can be varied like
+#'   Theme of the graphic spectrum representation as well as other plot elements can be varied like
 #'   using the \pkg{ggplot2} package. Within a theme, the \code{y} ticks can be either displayed
 #'   or skipped and the intensity (e.g. \code{dIepr_over_dB}) is presented in "procedure defined unit"
 #'   (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
-#'   which is common for visualization of the EPR spectra.
+#'   which is common for visualization of EPR spectra.
 #'
 #'
 #' @details
@@ -22,7 +22,7 @@
 #'   (see also \code{\link[ggplot2]{theme}}) or to
 #'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
 #'   The actual function does not assume a deep knowledge of \pkg{ggplot2} package (as well as the grammar
-#'   of graphics philosophy, see \code{vignette("functionality")}) and literary, one can easily start to plot
+#'   of graphics philosophy, see \code{vignette("functionality")}) and literally, one can easily start to plot
 #'   from scratch. However,
 #'   there is a \href{https://dreamrs.github.io/esquisse/index.html}{great interactive Rstudio addin/package}
 #'   called \pkg{esquisse} which nicely helps to dive into the \href{https://ggplot2.tidyverse.org/}{ggplot2}
@@ -37,17 +37,17 @@
 #'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
 #'   \code{var2nd.series} column (e.g. \code{var2nd.series = "time_s"} or \code{var2nd.series = "T_K"})
 #'   must be available. In such case the entire \code{data.spectra} must inherit the form
-#'   of "tidy" (long) table format (see also argument \code{var2nd.series}).
-#' @param x Character string pointing to \code{x}-axis/column quantity in the original \code{data.spectra}
+#'   of \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format} (see also argument \code{var2nd.series}).
+#' @param x Character string pointing to \eqn{x}-axis/column quantity header in the original \code{data.spectra}
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 #'   \strong{default}: \code{x = "B_mT"}.
 #' @param x.unit Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
 #'   Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 #'   or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.
-#' @param xlim Numeric vector referring to lower and upper limit of the selected \code{x}-region,
+#' @param xlim Numeric vector referring to lower and upper limit of the selected \eqn{x}-region,
 #'   e.g. \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 #'   or \code{xlim = c(2.004,2.001)} (dimensionless \eqn{g}). \strong{Default}: \code{xlim = NULL} (actually corresponding
-#'   to the entire \code{x}-range).
+#'   to the entire \eqn{x}-range).
 #' @param var2nd.series Character string referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
 #'   Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table} / \strong{tidy}
@@ -71,14 +71,14 @@
 #'   line form of the analyzed EPR spectrum/data.
 #' @param line.colors Character string, line color(s) to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
 #'   colors are allowed to plot the individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
-#'   For series of EPR spectra two color scales are used:
+#'   For the series of EPR spectra two color scales are used:
 #'   \enumerate{
 #'   \item \strong{Continuous.} This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
 #'   and \code{var2nd.series.slct.by = NULL}. The \code{line.colors} argument is identical with the continuous
 #'   \code{colorscales}, i.e. with the one from \code{\link[ggplot2]{scale_colour_gradientn}}. Following color definitions
 #'   are allowed =>
 #'   \itemize{
-#'     \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+#'     \item any color vector like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
 #'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
 #'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
 #'     of colors \eqn{n \geq 2} should be specified.
@@ -91,7 +91,7 @@
 #'   as well as \code{var2nd.series.slct.by} are \strong{DISTINCT} FROM \code{NULL}. Following color definitions
 #'   are allowed =>
 #'   \itemize{
-#'   \item an arbitrary vector color like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
+#'   \item any color vector like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
 #'   \item any color definition from \code{\link[ggplot2]{scale_color_viridis_d}} \code{"option"}.
 #'   These involve \code{line.colors = "magma"} (or ...\code{"A"}), \code{line.colors = "inferno"} (or ...\code{"B"}),
 #'   \code{line.colors = "plasma"} (or ...\code{"C"}), \code{line.colors = "viridis"} (or ...\code{"D"}),
@@ -112,16 +112,16 @@
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param theme.basic Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 #'   \describe{
-#'     \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-#'     \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, the theme is suggested \strong{for publications}}
+#'     \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
+#'     \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}
 #'     \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
 #'     \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
 #'     \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
 #'     theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 #'   }
-#' @param axis.text.size Numeric, text size in pt for the axes unit values/descriptions,
+#' @param axis.text.size Numeric, text size in \code{p}t for the axes unit values/descriptions,
 #'   \strong{default}: \code{axis.text.size = 14}.
-#' @param axis.title.size Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.
+#' @param axis.title.size Numeric, axis text title size in \code{pt}. \strong{Default}: \code{axis.title.size = 15}.
 #' @param legend.title Character string identical to legend title, e.g. \code{legend.title = "Time (s)"},
 #'   \code{legend.title = "Electrochem. Potential (V)"} or \code{legend.title = "Sample"}. \strong{Default}:
 #'   \code{legend.title = NULL} in case of \code{var2nd.series = NULL}.
@@ -135,8 +135,8 @@
 #'   (the axis ticks as well as the text are present).
 #'
 #'
-#' @return EPR spectrum/spectra ('overlay') plot using the \pkg{ggplot2} functionality, with the key parameter variations
-#'   like line color, theme, grid...etc.
+#' @return EPR spectrum/spectra ('overlay') plot object (corresponding to list of plot components) using
+#'   the \pkg{ggplot2} functionality, with the key parameter variations like line color, theme, grid...etc.
 #'
 #'
 #' @examples

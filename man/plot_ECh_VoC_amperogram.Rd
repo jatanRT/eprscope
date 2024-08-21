@@ -68,17 +68,17 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 
 \item{theme.basic}{Character string calling a \pkg{ggplot} theme base. The following ones are defined:
 \describe{
-  \item{\code{"theme_gray"}}{(\strong{default} one) => the gray background with white grid lines}
-  \item{\code{"theme_bw"}}{ => the white background with thin gray grid lines, the theme is suggested \strong{for publications}}
+  \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
+  \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}
   \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
   \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
   \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
   theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 }}
 
-\item{axis.title.size}{Numeric, text axis title size. \strong{Default}: \code{axis.title.size = 15}.}
+\item{axis.title.size}{Numeric, axis text title size in \code{pt}. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in pt for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size in \code{p}t for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{border.line.color}{Character string referring to color of the plot graph/panel border line. \strong{Default}:

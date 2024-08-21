@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+#'   visuals/non-data components of the actual plot. Theme can be mainly applied for the basic \pkg{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
 #'   \strong{inside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
@@ -20,12 +20,12 @@
 #' @param axis.title.size Numeric, text size (in \code{pt}) for the axes title,
 #'   \strong{default}: \code{axis.title.size = 15}.
 #' @param grid Logical, whether to display the \code{grid} within the plot/graph panel, \strong{default}: \code{grid = TRUE}.
-#' @param border.line.color Character string, setting up the color of the graph/plot panel border line, \strong{default}:
+#' @param border.line.color Character string, setting up the color of the plot panel border line, \strong{default}:
 #'   \code{border.line.color = "black"}.
 #' @param border.line.type Character string or integer corresponding to width of the graph/plot panel border line. Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..
-#' @param border.line.width Numeric, width (in \code{mm}) of the graph/plot panel border line, \strong{default}:
+#' @param border.line.width Numeric, width (in \code{mm}) of the plot panel border line, \strong{default}:
 #'   \code{border.line.width = 0.5}.
 #' @param bg.transparent Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
 #'   should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.
@@ -33,7 +33,7 @@
 #'   \code{axis.line},...etc) which are not specified by the function.
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing inside the graph/plot panel.
+#' @return Custom \pkg{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing inside the graph/plot panel.
 #'
 #'
 #' @examples
@@ -143,7 +143,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
 #'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
-#'   \strong{inside the graph/plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
+#'   \strong{inside the plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
 #'   For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
 #'   (see also \code{\link[ggplot2]{theme}}) or to
@@ -153,7 +153,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #' @inheritParams plot_theme_In_ticks
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} with \code{x-axis} ticks pointing inside the graph/plot panel,
+#' @return Custom \pkg{ggplot2} \code{theme} (list) with \code{x-axis} ticks pointing inside the graph/plot panel,
 #'   and with \code{y-ticks} being not displayed.
 #'
 #'
@@ -294,7 +294,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
 #'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
-#'   \strong{outside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
+#'   \strong{outside the plot panel}. For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
 #'   (see also \code{\link[ggplot2]{theme}}) or to
 #'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
@@ -303,7 +303,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' @inheritParams plot_theme_In_ticks
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing outside the graph/plot panel.
+#' @return Custom \pkg{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside the graph/plot panel.
 #'
 #'
 #' @examples

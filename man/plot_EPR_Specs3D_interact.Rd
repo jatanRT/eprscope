@@ -39,11 +39,11 @@ the entire \code{data.spectra} must be present in the form of
 \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
 (see also parameter/argument \code{var2nd.series}).}
 
-\item{x}{Character string pointing to \code{x}-axis/column quantity in original \code{data.spectrum} like
+\item{x}{Character string pointing to \eqn{x}-axis/column quantity in the original \code{data.spectrum} like
 magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{Intensity}{Character string corresponding to intensity column in the original \code{data.spectrum}
+\item{Intensity}{Character string corresponding to the intensity column header in the original \code{data.spectrum}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
@@ -62,7 +62,7 @@ See also \href{https://plot.ly/r/reference/#surface-colorscale}{surface-colorsca
 Color scale must be an array containing arrays mapping a normalized value to an RGB, RGBa, HEX, HSL, HSV,
 or named color string. At minimum, a mapping for the lowest (0) and the highest (1) values are required.
 For example, \code{[[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']]} or as a list:
-\code{list(c(0, 1), c("tan", "blue"))}. To control the bounds of the color
+\code{list(c(0, 1), c("tan", "blue"))} or \code{list(c(0, "tan"), c(1, "blue"))}. To control the bounds of the color
 scale in the corresponding space, use \code{cmin} and \code{cmax}. Alternatively, \code{color scale}
 may be a palette name string of the following list: \code{"Blackbody"},\code{"Bluered"},\code{"Blues"},
 \code{"Cividis"},\code{"Earth"},\code{"Electric"},\code{"Greens"},\code{"Greys"},\code{"Hot"},
@@ -82,18 +82,11 @@ the \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup
 such as \code{xlab = "<i>B</i> (mT)"} (\strong{default}). If a \eqn{\LaTeX} typesetting
 is required for the title, please refer to e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.}
 
-\item{ylab}{Character string \eqn{\equiv} title of the \eqn{y}-axis. Either simple, like
-\code{ylab = "Time (s)"} can be applied or if additional formatting is required,
-the \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language} is used,
-such as \code{ylab = "<i>Time</i> (s)"} (\strong{default}). If a \eqn{\LaTeX} typesetting
-is required for the title, please refer to e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.}
+\item{ylab}{Character string \eqn{\equiv} title of the \eqn{y}-axis (see also \code{xlab}), \strong{default}:
+\code{ylab = "<i>Time</i> (s)"}.}
 
-\item{zlab}{Character string \eqn{\equiv} title of the \eqn{z}-axis. Either simple, like
-\code{zlab = "dIepr / dB (p.d.u.)"} can be applied or if additional formatting is required,
-the \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language} is used,
-such as \code{zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)"} (\strong{default}).
-If a \eqn{\LaTeX} typesetting is required for the title, please refer
-to e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.}
+\item{zlab}{Character string \eqn{\equiv} title of the \eqn{z}-axis (see also \code{xlab}), \strong{default}:
+\code{zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)"}.}
 
 \item{axis.title.size}{Numeric, text size (in \code{px}) for the axes title,
 \strong{default}: \code{axis.title.size = 15}.}
@@ -106,21 +99,20 @@ to e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.}
 definitions, consult \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
 
 \item{grid.x.color}{Character string, pointing to color of \eqn{x}-axis grid lines,
-\strong{default}: \code{grid.x.color = "rgb(255, 255, 255)"} (white).}
-
-\item{bg.y.color}{Character string, setting the background color of the \eqn{y}-axis wall.
-\strong{Default}: \code{bg.x.color = "rgb(220, 220,220)"} (light gray). For additional color
+\strong{default}: \code{grid.x.color = "rgb(255, 255, 255)"} (white). For additional color
 definitions, consult \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
+
+\item{bg.y.color}{Character string, setting the background color of the \eqn{y}-axis wall (see also \code{bg.x.color}),
+\strong{default}: \code{bg.y.color = "rgb(220, 220,220)"} (light gray).}
 
 \item{grid.y.color}{Character string, pointing to color of \eqn{y}-axis grid lines,
-\strong{default}: \code{grid.x.color = "rgb(255, 255, 255)"} (white).}
+\strong{default}: \code{grid.y.color = "rgb(255, 255, 255)"} (white).}
 
-\item{bg.z.color}{Character string, setting the background color of the \eqn{z}-axis wall.
-\strong{Default}: \code{bg.x.color = "rgb(220, 220,220)"} (light gray). For additional color
-definitions, consult \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
+\item{bg.z.color}{Character string, setting the background color of the \eqn{z}-axis wall (see also \code{bg.x.color}),
+\strong{default}: \code{bg.z.color = "rgb(220, 220,220)"} (light gray).}
 
 \item{grid.z.color}{Character string, pointing to color of \eqn{z}-axis grid lines,
-\strong{default}: \code{grid.x.color = "rgb(255, 255, 255)"} (white).}
+\strong{default}: \code{grid.z.color = "rgb(255, 255, 255)"} (white).}
 
 \item{output.matrix.df}{Logical, if \code{output.matrix.df = TRUE} a wide data frame format,
  with all spectral/integral intensities and within the (time, Temperature,...etc.) series,
@@ -128,10 +120,28 @@ represented by individual columns/variables, is returned.
 \strong{Default}: \code{output.matrix.df = FALSE}.}
 }
 \value{
-tbc
+Depending on \code{output.matrix.df}, function returns either interactive plot object
+  (\code{output.matrix.df = FALSE}) or if \code{otput.matrix.df = TRUE}, it results in the list
+  consisting of
+  \describe{
+  \item{plot}{Interactive object plot (see below).}
+  \item{df}{Associated data fame object in wide table format for subsequent processing by other graphing
+  software programs. It can be also quite easily transformed into the long/tidy format by the \code{\link[tidyr]{pivot_longer}}.}
+  }
+  In both cases the interactive plot can be visualized either in 3D surface mode (\code{plot.type = "surface"})
+  or in 2D contour mode with the intensity scale mapped onto the color bar (\code{plot.type = "contour"}).
 }
 \description{
-tbc, something...
+Interactive plotting of EPR spectra or their integrals based on \href{https://plotly.com/r/}{plotly} package.
+  The aim of this function is to nicely visualize the series of EPR spectra (or their corresponding integrals),
+  while checking out the EPR intensities upon e.g. kinetic (time series), variable temperature or simultaneous
+  spectroelectrochemical experiments (potential series). For such purpose, the data frame input
+  (see \code{data.spectra.series} argument) is transformed into the \code{matrix} (with columns/variables corresponding
+  to intensities at defined times, potentials, temperatures...etc.). In the next step the \code{\link[plotly]{plot_ly}}
+  function generates either \strong{3D surface} or \strong{2D contour} plot objects which are finally customized
+  by the \code{\link[plotly]{layout}} as well as by the \code{\link[plotly]{colorbar}}. Similarly, as for
+  the \code{\link{plot_EPR_Specs2D_interact}} final plots can be stored or attached to a certain document format,
+  using the \code{\link{plot_EPR_present_interact}} function (or directly within Rstudio), as \code{.png} or \code{.html}.
 }
 \examples{
 ## loading the built-in package example to demonstrate
