@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'  A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
+#'    A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
@@ -112,14 +112,14 @@
 #' ## (`time.correct` of the CW-sweeps is included (`TRUE`))
 #' triaryl_model_kin_fit_02 <-
 #'   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
-#'                          model.react = "(r=1)R --> [k1] B",
-#'                          elementary.react = TRUE,
-#'                          params.guess = c(qvar0R = 0.019,
-#'                                           k1 = 0.0002
-#'                                          ),
-#'                          time.correct = TRUE,
-#'                          path_to_dsc_par = triaryl_radCat_dsc_path,
-#'                          origin = "xenon")
+#'     model.react = "(r=1)R --> [k1] B",
+#'     elementary.react = TRUE,
+#'     params.guess = c(qvar0R = 0.019,
+#'                      k1 = 0.0002
+#'                      ),
+#'     time.correct = TRUE,
+#'     path_to_dsc_par = triaryl_radCat_dsc_path,
+#'     origin = "xenon")
 #' ## plot preview
 #' triaryl_model_kin_fit_02$plot
 #' #

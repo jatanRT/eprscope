@@ -46,8 +46,9 @@ may be varied, see below).
 \strong{Reaction Scheme} \tab \strong{model.react} \cr
 \eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr
  \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}} \tab \code{"(a=2)A --> [k1] (r=2)R"} \cr
- \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R} \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
- \code{"(a=2)A --> [k1] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
+ \eqn{(a=2)\text{A} \xrightleftharpoons[k_4]{k_1} (r=2)\text{R}
+ \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
+ \code{"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
  \eqn{(r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}} \tab
  \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \cr
  \eqn{(a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}} \tab
@@ -64,10 +65,10 @@ or \code{(a=1)}) can be varied within the \code{model.react} character string.
 Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
 string is not fixed and can be skipped for the sake of flexibility.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
-a possible non-integer partial stoichiometric coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
+a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
 must be included in \code{kin.params} (see also \code{kin.params} description).}
 
-\item{elementary.react}{Logical, if the model reaction should be considered as elementary one,
+\item{elementary.react}{Logical, if the model reaction should be considered as the elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
@@ -178,14 +179,14 @@ triaryl_model_kin_fit_01$convergence
 ## (`time.correct` of the CW-sweeps is included (`TRUE`))
 triaryl_model_kin_fit_02 <-
   eval_kinR_EPR_modelFit(data.qt.expr = triaryl_radCat_data,
-                         model.react = "(r=1)R --> [k1] B",
-                         elementary.react = TRUE,
-                         params.guess = c(qvar0R = 0.019,
-                                          k1 = 0.0002
-                                         ),
-                         time.correct = TRUE,
-                         path_to_dsc_par = triaryl_radCat_dsc_path,
-                         origin = "xenon")
+    model.react = "(r=1)R --> [k1] B",
+    elementary.react = TRUE,
+    params.guess = c(qvar0R = 0.019,
+                     k1 = 0.0002
+                     ),
+    time.correct = TRUE,
+    path_to_dsc_par = triaryl_radCat_dsc_path,
+    origin = "xenon")
 ## plot preview
 triaryl_model_kin_fit_02$plot
 #

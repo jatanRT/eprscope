@@ -17,35 +17,42 @@
 #' @details
 #'   According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical reaction
 #'   with the radicals (\eqn{\text{R}}) involved (example see argument \code{model.react})
-#'   \deqn{r\text{R} + b\text{B} \xrightarrow\,\, c\text{C}}
+#'   \deqn{r\text{R} + b\text{B} \xrightarrow\, c\text{C}}
 #'   is expressed via time change of the reaction extend (\eqn{\text{d}\xi/\text{d}t}):
 #'   \deqn{-(1/r)\,(\text{d}n_{\text{R}}/\text{d}t) = -(1/b)\,(\text{d}n_{\text{B}}/\text{d}t) =
 #'   (1/c)\,(\text{d}n_{\text{C}}/\text{d}t)}
-#'   At constant volume (\eqn{V}) conditions (or if volume changes are negligible) the amount
-#'   (\eqn{n} in mole) of reactant/product can be replaced by its corresponding concentration
-#'   (\eqn{c = n/V}). Such reaction rate (expressed in moles per unit volume) is function of temperature,
-#'   pressure as well as of concentration of reactants and products. For the reaction example shown above
-#'   it applies:
-#'   equation...TBC
-#'   In EPR Spectroscopy the number of radicals
-#'   is directly proportional to (double) integral of the radical EPR spectrum
-#'   (see also \code{\link{quantify_EPR_Abs}}).
-#'   Secondary purpose is to fit the experimental EPR spectral time series outputs, e.g. integral
-#'   intensity (area under the spectral curve) \emph{vs} time in order to gather the rate constants
-#'   (\eqn{k}) of radical ("R") formation and/or decay. Quantitative kinetic profiles
-#'   are not evaluated by integration of the kinetic equations, however by numeric solution of the Ordinary
+#'   where \eqn{r,b,c = \nu} are the stoichiometric coefficients. At constant volume (\eqn{V}) conditions
+#'   (or if volume changes are negligible) the amount (\eqn{n} in mole) of reactant/product
+#'   can be replaced by its corresponding concentration (\eqn{c = n/V}). Such reaction rate
+#'   (expressed in moles per unit volume) is function of temperature (\eqn{T}),
+#'   pressure (\eqn{p}) as well as that of concentration of reactants and products.
+#'   For the reaction example shown above it applies (for radical \eqn{\text{R}}):
+#'   \deqn{\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{R}}^{\alpha}\,c_{\text{B}}^{\beta}}
+#'   This is called rate law, where \eqn{k} is the rate constant and its pressure dependence is usually
+#'   small and therefore can be ignored, in the first approach. Coefficients \eqn{\alpha} and \eqn{\beta},
+#'   in general, correspond to fitting parameters, coming from experimental relationship of the reaction
+#'   rate and the concentration of reactants. These coefficients are called \strong{partial reaction orders}
+#'   or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If \code{PROs}
+#'   are identical with stoichiometric coefficients \eqn{\nu}, the reaction is described as elementary
+#'   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
+#'   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, one can obtain
+#'   the rate constant as a rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
+#'   intensity (area under the spectral curve) of radical ("R") formation and/or decay (see also
+#'   \code{\link{eval_kinR_EPR_modelFit}}). Quantitative kinetic profiles (such as that
+#'   \eqn{\text{d}c_{\text{R}}/\text{d}t} described above) are not evaluated
+#'   by integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
 #'   Differential Equations (\href{http://desolve.r-forge.r-project.org/index.html}{ODE}, see also
 #'   \pkg{deSolve} package). Therefore, higher number of models is available than for integrated
-#'   differential equations because for complex mechanisms it's quite often highly demanding.
-#'   Several kinetic models for radical reactions in EPR spectroscopy are predefined and summarized below
-#'   (see also \code{model.react} function argument).
+#'   differential equations because for complex mechanisms it's quite often highly demanding to gather
+#'   the analytical solution by integration. Several kinetic models for radical reactions in EPR spectroscopy
+#'   are predefined and summarized below (see also \code{model.react} function argument).
 #'   \tabular{ll}{
 #'   \strong{model.react} \tab \strong{Short Description} \cr
 #'   \code{"(r=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
 #'   e.g. irrev. dimerization (if \code{(r=2)}). \cr
 #'   \code{"(a=1)A --> [k1] (r=1)R"} \tab Basic irreversible radical formation,
 #'   e.g. irrev. \eqn{\text{e}^-} transfer. \cr
-#'   \code{"(a=1)A --> [k1] (r=1)R <==> [k2] [k3] (c=1)C"} \tab Consecutive reactions,
+#'   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C"} \tab Consecutive reactions,
 #'   e.g. like comproportionation (for \code{(a=2)} and \code{(r=2)}) + follow-up reversible
 #'   dimerization (\code{(c=1)}). \cr
 #'   \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \tab Basic reversible radical quenching,
@@ -80,8 +87,9 @@
 #'   \strong{Reaction Scheme} \tab \strong{model.react} \cr
 #'   \eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr
 #'    \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}} \tab \code{"(a=2)A --> [k1] (r=2)R"} \cr
-#'    \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R} \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
-#'    \code{"(a=2)A --> [k1] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
+#'    \eqn{(a=2)\text{A} \xrightleftharpoons[k_4]{k_1} (r=2)\text{R}
+#'    \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
+#'    \code{"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
 #'    \eqn{(r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}} \tab
 #'    \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \cr
 #'    \eqn{(a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}} \tab
@@ -98,13 +106,13 @@
 #'   Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
 #'   string is not fixed and can be skipped for the sake of flexibility.
 #'   If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
-#'   a possible non-integer partial stoichiometric coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
+#'   a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
 #'   must be included in \code{kin.params} (see also \code{kin.params} description).
 #' @param model.expr.diff Logical, difference between the integral intensities/areas under the EPR spectra calculated
 #'   using the experimental data and those generated by the model. By \strong{default} the argument
 #'   is \strong{FALSE} and it is ONLY ACTIVATED (\code{model.expr.diff = TRUE}) IN THE CASE WHEN THE KINETIC MODEL
 #'   FITTING PROCEDURE (see also \code{\link{eval_kinR_EPR_modelFit}} or examples below) IS PERFORMED.
-#' @param elementary.react Logical, if the model reaction should be considered as elementary one,
+#' @param elementary.react Logical, if the model reaction should be considered as the elementary one,
 #'   i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 #'   identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 #'   If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
@@ -123,8 +131,9 @@
 #'   \strong{model.react} \tab \strong{Essential kin.params components} \cr
 #'   \code{"(r=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0R}, (\code{alpha}) \cr
 #'   \code{"(a=1)A --> [k1] (r=1)R"} \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{alpha}) \cr
-#'   \code{"(a=1)A --> [k1] (r=1)R <==> [k2] [k3] (c=1)C"} \tab \code{k1}, \code{k2}, \code{k3} \code{qvar0A},
-#'   \code{qvar0R}, \code{qvar0C}, (\code{alpha}, \code{beta}, \code{gamma}) \cr
+#'   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C"} \tab \code{k1}, \code{k2},
+#'   \code{k3}, \code{k4}, \code{qvar0A}, \code{qvar0R}, \code{qvar0C}, (\code{alpha},
+#'   \code{beta}, \code{gamma}) \cr
 #'   \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \tab \code{k1}, \code{k2}, \code{qvar0R},
 #'   \code{qvar0B}, (\code{alpha}, \code{beta}) \cr
 #'   \code{"(a=1)A <==> [k1] [k2] (r=1)R"} \tab \code{k1}, \code{k2}, \code{qvar0A},
@@ -140,7 +149,7 @@
 #'   of the model reaction.
 #' @param data.qt.expr A data frame object containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
-#'   columns are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
+#'   column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
 #'   The \code{data.qt.expr} MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
 #'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPERIMENTAL DATA BY THE KINETIC MODEL).
 #'   \strong{Default}: \code{data.qt.expr = NULL}.
@@ -166,8 +175,8 @@
 #'   quantitative variable is presented as well.}
 #'   }
 #'   Applying function \strong{for the fitting} procedure
-#'   requires \code{model.expr.diff = TRUE} and therefore the result is difference between
-#'   the integral intensities/areas under the curves calculated using the experimental data
+#'   requires \code{model.expr.diff = TRUE} and therefore the result is represented by difference between
+#'   the integral intensities/areas, calculated using the experimental data
 #'   and those generated by the model.
 #'
 #'
@@ -185,10 +194,11 @@
 #' ## (`model.react` character string without spaces)
 #' kin.test.02 <-
 #'  eval_kinR_ODE_model(
-#'    model.react = "(a=2)A-->[k1](r=2)R<==>[k2][k3](c=1)C",
+#'    model.react = "(a=2)A<==>[k1][k4](r=2)R<==>[k2][k3](c=1)C",
 #'    kin.params = c(k1 = 0.1,
 #'                   k2 = 0.1,
-#'                   k3 = 0.0002,
+#'                   k3 = 2e-4,
+#'                   k4 = 2e-5,
 #'                   qvar0A = 0.02,
 #'                   qvar0R = 0.002,
 #'                   qvar0C = 0)
@@ -516,15 +526,15 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     #
   }
   #
-  ## --- (3) --- "(a=1)A --> [k1] (r=1)R <==> [k2] [k3] (c=1)C" (a,r,c = 1,2,...integer) ------
+  ## --- (3) --- "(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C" (a,r,c = 1,2,...integer) ------
   #
   ## ...the same `(.*|?!\\s)` arb.character(incl. space)/no space like before
   #
   ## With several `(.*|?!\\s)` the `grepl()` argument would be quite long =>
   ## therefore condition is changed:
   if (grepl("A.*R.*C",model.react) &
-      grepl("-->.*<==>",model.react) &
-      grepl("k1.*k2.*k3",model.react)){
+      grepl("<==>.*<==>",model.react) &
+      grepl("k1.*k4.*k2.*k3",model.react)){
     ## functions for derivative solution of kinetic equations
     react_rates_diff_03 <- function(t,
                                     qvar,
@@ -534,6 +544,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       k1 <- kin.params$k1
       k2 <- kin.params$k2
       k3 <- kin.params$k3
+      k4 <- kin.params$k4
       if (isFALSE(no.pro)) {
         alpha <- kin.params$alpha
         beta <- kin.params$beta
@@ -546,14 +557,14 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       c_r <- stoichio.coeff[2]
       c_c <- stoichio.coeff[3]
       if (isTRUE(no.pro)) {
-        rate[1] <- -k1 * c_a * (qvar["A"])^(c_a)
+        rate[1] <- -(k1 * c_a * (qvar["A"])^(c_a)) + (k4 * c_a * (qvar["R"])^(c_r))
         rate[2] <- (k1 * c_r * (qvar["A"])^(c_a)) - (k2 * c_r * (qvar["R"])^(c_r)) +
-          (k3 * c_r * (qvar["C"])^(c_c))
+          (k3 * c_r * (qvar["C"])^(c_c)) - (k4 * c_r * (qvar["R"])^(c_r))
         rate[3] <- (k2 * c_c * (qvar["R"])^(c_r)) - (k3 * c_c * (qvar["C"])^(c_c))
       } else {
-        rate[1] <- -k1 * c_a * (qvar["A"])^alpha
+        rate[1] <- -(k1 * c_a * (qvar["A"])^alpha) + (k4 * c_a * (qvar["R"])^beta)
         rate[2] <- (k1 * c_r * (qvar["A"])^alpha) - (k2 * c_r * (qvar["R"])^beta) +
-          (k3 * c_r * (qvar["C"])^gamma)
+          (k3 * c_r * (qvar["C"])^gamma) - (k4 * c_r * (qvar["R"])^beta)
         rate[3] <- (k2 * c_c * (qvar["R"])^beta) - (k3 * c_c * (qvar["C"])^gamma)
       }
       ## derivative as a list
@@ -570,6 +581,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     k1 <- kin.params["k1"]
     k2 <- kin.params["k2"]
     k3 <- kin.params["k3"]
+    k4 <- kin.params["k4"]
     if (pro.cond) {
       alpha <- kin.params["alpha"]
       beta <- kin.params["beta"]
@@ -585,9 +597,9 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                          stoichiom_coeff(model.react,coeff = "c")),
       func = react_rates_diff_03,
       parms = switch(2-pro.cond,
-                     list(k1 = k1,k2 = k2,k3 = k3,
+                     list(k1 = k1,k2 = k2,k3 = k3,k4 = k4,
                           alpha = alpha,beta = beta,gamma = gamma),
-                     list(k1 = k1,k2 = k2,k3 = k3)),
+                     list(k1 = k1,k2 = k2,k3 = k3,k4 = k4)),
       ...
     )
     #
@@ -617,10 +629,10 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       c_r <- stoichio.coeff[1]
       c_b <- stoichio.coeff[2]
       if (isTRUE(no.pro)) {
-        rate[1] <- (-k1 * c_r * (qvar["R"])^(c_r)) + (k2 * c_r * (qvar["B"])^(c_b))
+        rate[1] <- -(k1 * c_r * (qvar["R"])^(c_r)) + (k2 * c_r * (qvar["B"])^(c_b))
         rate[2] <- (k1 * c_b * (qvar["R"])^(c_r)) - (k2 * c_b * (qvar["B"])^(c_b))
       } else{
-        rate[1] <- (-k1 * c_r * (qvar["R"])^alpha) + (k2 * c_r * (qvar["B"])^beta)
+        rate[1] <- -(k1 * c_r * (qvar["R"])^alpha) + (k2 * c_r * (qvar["B"])^beta)
         rate[2] <- (k1 * c_b * (qvar["R"])^alpha) - (k2 * c_b * (qvar["B"])^beta)
       }
       ## derivative as a list
@@ -680,10 +692,10 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       c_a <- stoichio.coeff[1]
       c_r <- stoichio.coeff[2]
       if (isTRUE(no.pro)) {
-        rate[1] <- (-k1 * c_a * (qvar["A"])^(c_a)) + (k2 * c_a * (qvar["R"])^(c_r))
+        rate[1] <- -(k1 * c_a * (qvar["A"])^(c_a)) + (k2 * c_a * (qvar["R"])^(c_r))
         rate[2] <- (k1 * c_r * (qvar["A"])^(c_a)) - (k2 * c_r * (qvar["R"])^(c_r))
       } else {
-        rate[1] <- (-k1 * c_a * (qvar["A"])^alpha) + (k2 * c_a * (qvar["R"])^beta)
+        rate[1] <- -(k1 * c_a * (qvar["A"])^alpha) + (k2 * c_a * (qvar["R"])^beta)
         rate[2] <- (k1 * c_r * (qvar["A"])^alpha) - (k2 * c_r * (qvar["R"])^beta)
       }
       ## derivative as a list
