@@ -182,7 +182,7 @@ triarylamine_rc_decay_model$df.coeffs
 
 ## Help, Questions and Contribution
 
-There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy knowledge resource, particularly for students. **In case you are new to *R***, there are couple of great tutorials enabling a quite straightforward diving into <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>. **Please, refer to e.g.**
+There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} knowledge resources, particularly for students. **In case you are completely new to *R***, there are couple of great tutorials enabling a quite straightforward diving into ![](https://www.r-project.org/Rlogo.png){width="16" height="16"}. **Please, refer to e.g.**
 
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/)
 
