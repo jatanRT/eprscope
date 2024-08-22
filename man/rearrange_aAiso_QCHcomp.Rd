@@ -2,7 +2,7 @@
 % Please edit documentation in R/rearrange_aAiso.R
 \name{rearrange_aAiso_QCHcomp}
 \alias{rearrange_aAiso_QCHcomp}
-\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations}
+\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical (QCH) Computations}
 \usage{
 rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 }
@@ -11,7 +11,7 @@ rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
   \eqn{A_{iso}} or \eqn{a_{iso}} values.}
 
-\item{col.names}{Character string vector containing names of all columns from QCH Computational output,
+\item{col.names}{Character string vector containing names of all columns from QCH computational output,
 for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
 with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.}
 

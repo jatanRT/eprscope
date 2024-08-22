@@ -27,17 +27,16 @@ software package was used. Only two values are available => \code{"gaussian"} (\
 or \code{"orca"}.}
 
 \item{output.text.origin}{Logical, whether to write a text file containing the extracted
-\eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined by \code{path_to-QCHoutput}.
+\eqn{A_{iso}}/\eqn{a_{iso}} values from the the original output file defined by the \code{path_to_QCHoutput}.
 \strong{Default}: \code{output.text.origin = FALSE}.}
 
 \item{output.text.path}{Character string, setting the path to file containing
-the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined
-by \code{path_to-QCHoutput}. See the previous argument.}
+the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original uotput file defined
+by the \code{path_to_QCHoutput}. See the previous argument.}
 }
 \value{
 Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
-  structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} computational output
-  files.
+  structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} output files.
 }
 \description{
 Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize

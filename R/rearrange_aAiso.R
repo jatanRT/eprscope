@@ -1,5 +1,5 @@
 #'
-#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical Computations
+#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical (QCH) Computations
 #'
 #'
 #' @family Evaluations and Quantum Chemistry
@@ -32,7 +32,7 @@
 #' @param path_to_ASC Character string pointing to path of ASCII file (\code{txt},\code{csv}...etc,
 #' it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
 #'   \eqn{A_{iso}} or \eqn{a_{iso}} values.
-#' @param col.names Character string vector containing names of all columns from QCH Computational output,
+#' @param col.names Character string vector containing names of all columns from QCH computational output,
 #'   for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.
 #' @param nuclei.list.slct List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
@@ -167,16 +167,15 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 #'   or \code{"orca"}.
 #' @param output.text.origin Logical, whether to write a text file containing the extracted
-#'   \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined by \code{path_to-QCHoutput}.
+#'   \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original output file defined by the \code{path_to_QCHoutput}.
 #'   \strong{Default}: \code{output.text.origin = FALSE}.
 #' @param output.text.path Character string, setting the path to file containing
-#'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined
-#'   by \code{path_to-QCHoutput}. See the previous argument.
+#'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original uotput file defined
+#'   by the \code{path_to_QCHoutput}. See the previous argument.
 #'
 #'
 #' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
-#'   structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} computational output
-#'   files.
+#'   structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} output files.
 #'
 #'
 #' @examples
@@ -237,7 +236,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## therefore, select only the first one
     qchfile.select.A <- qchfile[start.reading.line[1] + 1:No_nuclei_atoms_mod]
     #
-    ## output original gaussian data file file in-between:-) =>
+    ## output original gaussian data file in-between:-) =>
     if (isTRUE(output.text.origin)) {
       fileConn <- ifelse(is.null(output.text.path),
                          stop(" Please define `.txt` file path to be saved ! "),

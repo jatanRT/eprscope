@@ -23,71 +23,72 @@ eval_integ_EPR_Spec(
 or \code{G}) and that of the derivative or already single integrated intensity.
 \code{index} column may be already present as well.}
 
-\item{B}{Character string pointing to magnetic flux density \code{column} (in the original
-\code{data.spectr}) either in \code{millitesla} or in \code{Gauss}, that is \code{B = "B_mT"}
+\item{B}{Character string pointing to magnetic flux density column header (in the original
+\code{data.spectr}) either in \code{millitesla} or in \code{Gauss}, such as \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default}) or \code{B = "Field"}...etc.}
 
-\item{B.unit}{Character string pointing to unit of magnetic flux density (coming from original data) which
-is to be presented on \eqn{B} abscissa of the EPR spectrum,
-like \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), \strong{default}: \code{B.unit = "mT"}.}
+\item{B.unit}{Character string pointing to unit of magnetic flux density, which
+is to be presented on \eqn{x(B)}-axis of the EPR spectrum,
+like \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), \strong{default}: \code{B.unit = "G"}.}
 
-\item{Intensity}{Character string pointing to \code{column} of either derivative
+\item{Intensity}{Character string pointing to column name of either derivative
 (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
-spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual data frame \code{data.spectr}.}
+spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual \code{data.spectr}.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
-or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form of the analyzed
+or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form of analyzed
 EPR spectrum/data.}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper
-limit of the selected \emph{B} region, e.g. \code{Blim = c(3495.4,3595.4)}.
-\strong{Default}: \code{Blim = NULL} (corresponding to entire \emph{B} range of the spectrum).}
+limit of the selected \eqn{B}-region, e.g. \code{Blim = c(3495.4,3595.4)}.
+\strong{Default}: \code{Blim = NULL} (corresponding to the entire spectral \eqn{B}-range).}
 
-\item{correct.integ}{Logical, whether to correct the integral by baseline model fit.
+\item{correct.integ}{Logical, whether to correct the integral by baseline polynomial model fit.
 \strong{Default}: \code{correct.integ = FALSE}.}
 
 \item{BpeaKlim}{Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower
-and upper limit of the SELECTED \eqn{B} PEAK REGION, e.g. \code{BpeaKlim = c(3535.4,3555.4)}.
-This is the region which is actually not considered for the baseline fit.}
+and upper limit of the SELECTED \eqn{B}-PEAK REGION, e.g. \code{BpeaKlim = c(3535.4,3555.4)}.
+This is the region (without peak), which is actually not considered for the baseline fit.}
 
-\item{poly.degree}{Numeric, degree of the polynomial function used to fit the baseline under the single
+\item{poly.degree}{Numeric, degree of the polynomial function used to fit baseline under the single
 integrated curve of the original EPR spectrum (see also \code{BpeaKlim}).}
 
-\item{sigmoid.integ}{Logical, whether to present (column in data frame) the double integral or single
+\item{sigmoid.integ}{Logical, whether to involve (column in data frame) double integral or single
 integral (if the \code{data.spectr} and \code{Intesity} are already in single integrated form),
-in sigmoidal shape, which is required for quantitative analysis,
+in sigmoid shape, which is required for the quantitative analysis,
 \strong{default}: \code{sigmoid.integ = FALSE}.}
 
-\item{output.vecs}{Logical, whether the "integral" \code{columns} are presented within the entire
+\item{output.vecs}{Logical, whether the "integral" columns are presented within the entire
 data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
 additional processing of spectral data series by \href{https://dplyr.tidyverse.org/}{dplyr}
 (see \code{Values} and \code{Examples}).}
 }
 \value{
-The integration results may be divided into following types depending on the above-described
+The integration results may be divided into following types, depending on the above-described
   arguments. Generally, they are either data frames including the original data and the integrals
-  (\code{output.vecs = FALSE}) or vectors corresponding to individual baseline corrected/uncorrected
-  integrals (\code{output.vecs = TRUE}). This is especially useful for the spectral (time) series EPR data,
-  which can be handily processed by the \code{\link[dplyr]{group_by}} using the
+  (\code{output.vecs = FALSE}) or vectors/vectors list, corresponding to individual baseline
+  corrected/uncorrected integrals (\code{output.vecs = TRUE}). This is especially useful
+  for spectral (time) series EPR data, which can be handily processed
+  by the \code{\link[dplyr]{group_by}} using the
   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}).
   \enumerate{
-  \item Data frame/table including the EPR spectral data (general \emph{Intensity}
+  \item Data frame/table including EPR spectral data (general \code{Intensity}
   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
-  (\strong{column} \code{single_Integ}) integral. This is the case if only a single
+  (column \code{single_Integ}) integral. This is the case if only a single
   uncorrected integral is required.
 
   \item Data frame/table with single integral/intensity already corrected by a certain degree
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
   are referred either to derivative or already integrated EPR spectra where corrected
-  integral \code{column} id denoted as \code{single_Integ_correct}. This is the case
-  for \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
+  integral column header is denoted as \code{single_Integ_correct}. This is the case
+  if \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
 
-  \item Data frame with \code{single} and \code{double/sigmoid} integral \strong{column}
-  (\code{sigmoid_Integ}) essential for quantitative analysis. This is the case
-  for \code{output.vecs = FALSE} and \code{correct.integ = FALSE}.
+  \item Data frame with \code{single} and \code{double/sigmoid} integral column/variable
+  (\code{sigmoid_Integ}) essential for quantitative analysis. For such case it applies:
+  \code{output.vecs = FALSE} and \code{correct.integ = FALSE}.
 
   \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
-  and \code{output.vecs = FALSE}. It contains the original data + corrected
+  and \code{output.vecs = FALSE}. It contains the original data frame columns + corrected
   single integral (\code{single_Integ_correct}) and double/sigmoid integral
   (\code{sigmoid_Integ}) which is evaluated from the baseline corrected single one.
   Therefore, such double/sigmoid integral is suitable for the accurate determination
@@ -99,29 +100,29 @@ The integration results may be divided into following types depending on the abo
   \item List of numeric vectors corresponding to:
     \describe{
     \item{single}{Corrected or uncorrected single integral (in case of derivative form)
-    depending on \code{correct.integ} parameter/argument.}
+    depending on \code{correct.integ} argument.}
     \item{sigmoid}{Double integral (in case of derivative form) or single integral
     (in case of integrated spectral form) for quantitative analysis.}
     }
   }
 }
 \description{
-Evaluates integrals of EPR spectra depending on input data => corresponding either to derivative
- or single integrated EPR signal form with the option to correct the single integral baseline
- by the polynomial of \code{poly.degree} level.
+Evaluates integrals of EPR spectra depending on input data => either corresponding to \code{derivative}
+ or single \code{integrated} EPR signal form, with the option to correct the single integral baseline
+ by the polynomial fit of the \code{poly.degree} level.
 }
 \details{
-Integration is done by \code{\link[pracma:trapz]{pracma::cumtrapz}} function. The relative error
+Integration is done by the \code{\link[pracma:trapz]{pracma::cumtrapz}} function. The relative error
  of the cumulative trapezoidal function is minimal, usually falling into the range of
  \eqn{\langle 1,5\rangle\,\%} or even lower depending on the spectral data resolution
  (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}). For the purpose
  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
- Therefore, depending on \emph{B} unit (either \code{G} or \code{mT}) each resulting integral data/column
+ Therefore, depending on \eqn{B} unit (either \code{G} or \code{mT}) each resulting integral column
  have to be optionally (in case of \code{mT}) multiplied by factor of \code{10} because
  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr}
- and \code{Intensity}) \strong{is confusing. In such case the EPR spectrum is integrated only once.}
+ and \code{Intensity}) \strong{is confusing. In such case, the EPR spectrum is integrated only once.}
 }
 \examples{
 \dontrun{

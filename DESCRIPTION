@@ -35,7 +35,7 @@ Description: Processing, analysis and plottting of
              procedures for the most common EPR spectrometers)
              the spectral data are transformed into universal
              R 'data frame' format. Subsequently, the EPR spectra 
-             can be plotted and are fully consistent either with 
+             can be visualized and are fully consistent either with 
              the 'ggplot2' package or with the interactive 
              formats based on 'plotly'. Additionally, simulations 
              and fitting of the isotropic EPR spectra
