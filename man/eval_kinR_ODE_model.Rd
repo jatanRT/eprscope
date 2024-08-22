@@ -24,7 +24,7 @@ time series. Arrow shows direction of the reaction (\code{"-->", irreversible} o
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
 changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
-may be varied, see below).
+may vary, see below).
 \tabular{ll}{
 \strong{Reaction Scheme} \tab \strong{model.react} \cr
 \eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr
@@ -164,18 +164,17 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   intensity (area under the spectral curve) of radical ("R") formation and/or decay (see also
   \code{\link{eval_kinR_EPR_modelFit}}). Quantitative kinetic profiles (such as that
   \eqn{\text{d}c_{\text{R}}/\text{d}t} described above) are not evaluated
-  by integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
-  Differential Equations (\href{http://desolve.r-forge.r-project.org/index.html}{ODE}, see also
-  \pkg{deSolve} package). Therefore, higher number of models is available than for integrated
+  by integration of the kinetic equations/rate laws. However, by numeric solution of the Ordinary
+  Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
+  Therefore, higher number of models is available than for integrated
   differential equations because for complex mechanisms it's quite often highly demanding to gather
-  the analytical solution by integration. Several kinetic models for radical reactions in EPR spectroscopy
-  are predefined and summarized below (see also \code{model.react} function argument).
+  the analytical solution by integration. \strong{Several kinetic models for radical reactions} in EPR spectroscopy
+  \strong{are predefined and summarized} below (see also \code{model.react} function argument).
   \tabular{ll}{
   \strong{model.react} \tab \strong{Short Description} \cr
   \code{"(r=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
   e.g. irrev. dimerization (if \code{(r=2)}). \cr
-  \code{"(a=1)A --> [k1] (r=1)R"} \tab Basic irreversible radical formation,
-  e.g. irrev. \eqn{\text{e}^-} transfer. \cr
+  \code{"(a=1)A --> [k1] (r=1)R"} \tab Basic irreversible radical formation \cr
   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C"} \tab Consecutive reactions,
   e.g. like comproportionation (for \code{(a=2)} and \code{(r=2)}) + follow-up reversible
   dimerization (\code{(c=1)}). \cr
@@ -185,7 +184,7 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   e.g. from rev. comproportionation (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}},
   for \code{(a=2)} and \code{(r=2)}). \cr
   \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \tab Radical formation by chemical reaction like oxidation,
-  reduction or spin trapping (transient radical is not visible within the common EPR time scale). \cr
+  reduction or spin trapping (transient radical, \code{A}, is not visible within the common EPR time scale). \cr
   \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \tab General radical quenching by chemical reaction. \cr
   }
 }

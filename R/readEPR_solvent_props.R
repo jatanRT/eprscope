@@ -6,8 +6,9 @@
 #'
 #'
 #' @description
-#'   Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up only
-#'   a specific \code{solvent} and its corresponding properties (\code{prop} argument).
+#'   Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up
+#'   specific \code{solvent} and its corresponding properties (\code{prop} argument).
+#'   See also \code{vignette("datasets")}.
 #'
 #'
 #' @param solvent Character string pointing to solvent name (or any string from the solvent name/abbreviation),

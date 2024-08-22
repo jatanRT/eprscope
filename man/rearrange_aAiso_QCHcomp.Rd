@@ -8,11 +8,11 @@ rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 }
 \arguments{
 \item{path_to_ASC}{Character string pointing to path of ASCII file (\code{txt},\code{csv}...etc,
-it may be also provided by \code{\link[base]{file.path}}) incl. characteristic
+it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
   \eqn{A_{iso}} or \eqn{a_{iso}} values.}
 
 \item{col.names}{Character string vector containing names of all columns from QCH Computational output,
-for the names see the example in \code{path_to_ASC}, they must contain atomic/structure number, isotopic value
+for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
 with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.}
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
@@ -20,18 +20,18 @@ e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} wher
 correspond to indices of atoms/nuclei in the ASCII text file.}
 }
 \value{
-Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
-  structure/symmetry
+Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
+  structure/symmetry.
 }
 \description{
-Provides table from Gaussian/ORCA output text file to summarize \eqn{A_{iso}}/\eqn{a_{iso}} values
-  according to proposed molecular structure/symmetry.
+Providing table from Gaussian/ORCA/...etc. output text file to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
+  of a nuclear group, according to proposed molecular structure/symmetry.
 }
 \details{
 The \eqn{A_{iso}}/\eqn{a_{iso}} values are computed for each atom/nucleus
   (with its corresponding \code{atomic number within the structure} as well as with the characteristic
-  \code{isotopic number/value}), such an entire table can be copied from \strong{Gaussian} output
-  (after \code{'Isotropic Fermi Contact Couplings'} line) or can be constructed from \strong{ORCA} output,
+  \code{isotopic number/value}), such an entire table can be copied e.g. from \strong{Gaussian} output
+  (after \code{'Isotropic Fermi Contact Couplings'} line) or can be constructed from \strong{ORCA} (or any other) output,
   example for such a file structure (from \strong{Gaussian}):
   \tabular{rcccc}{
    \strong{No_atom} \tab \strong{Atom_Nucleus} \tab \strong{MegaHertz} \tab \strong{Gauss} \tab \strong{1e-4_cm-1} \cr
@@ -39,6 +39,9 @@ The \eqn{A_{iso}}/\eqn{a_{iso}} values are computed for each atom/nucleus
    17 \tab N(14) \tab 13.99707 \tab 4.9945 \tab 4.66892 \cr
    28 \tab H(1) \tab 16.34971 \tab 5.83398 \tab 5.45368 \cr
   }
+  The input table/data frame, like the previous one, must include following columns: atomic/nucleus number, atom/nucleus notation,
+  hyperfine coupling constant in \code{MHz} and finally hyperfine splitting constant in \code{G}. These columns/variables
+  are essential for the evaluation.
 }
 \examples{
 \dontrun{

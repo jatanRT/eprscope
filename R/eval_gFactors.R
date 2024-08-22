@@ -20,7 +20,8 @@
 #'
 #'
 #' @return \eqn{g}-Value from \eqn{(\nu h)/(\mu_{\text{B}} B)}. Physical constants (\eqn{mu_{\text{B}}}
-#'   and \eqn{h}) are taken from \pkg{constants} package by the \code{link[constants]{syms}}.
+#'   and \eqn{h}) are taken from \href{https://r-quantities.github.io/constants/}{constants}
+#'   package by the \code{link[constants]{syms}}.
 #'
 #'
 #' @examples

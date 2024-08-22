@@ -32,7 +32,7 @@ optim_for_EPR_fitness(
 \item{Nmax.evals}{Numeric, maximum number of function evaluations and/or iterations.}
 
 \item{tol.step}{Numeric, the smallest optimization step (relative change) between
-2 iterations to stop the optimization or fitting procedure. For the \code{method == "pswarm"}
+2 iterations to stop the optimization or fitting procedure. For the \code{method = "pswarm"}
 (particle swarm optimization procedure) it actually corresponds to tolerance for restarting
 Once the maximal distance between the best particle and all other particles is less
 than \code{tol.step} * \code{pswarm.diameter}) the algorithm restarts.
@@ -51,10 +51,10 @@ description
 General-purpose optimization of the objective \code{fn} function (also called "fitness")
   which is to be minimized in order to fit theoretical models (EPR simulations)
   onto the experimental data. Several methods/algorithms implemented
-  in \pkg{nloptr} (\code{\link[nloptr]{slsqp}}, \code{\link[nloptr]{neldermead}}, \code{\link[nloptr]{crs2lm}},
-  \code{\link[nloptr]{sbplx}}, \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}),
-  \pkg{minpack.lm} (\code{\link[minpack.lm]{nls.lm}}) and \pkg{pso} (\code{\link[pso]{psoptim}})
-  are used.
+  in \href{https://astamm.github.io/nloptr/}{nloptr} (\code{\link[nloptr]{slsqp}}, \code{\link[nloptr]{neldermead}},
+  \code{\link[nloptr]{crs2lm}}, \code{\link[nloptr]{sbplx}}, \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}),
+  \href{https://cran.r-universe.dev/minpack.lm/doc/manual.html}{minpack.lm} (\code{\link[minpack.lm]{nls.lm}})
+  and \href{https://cran.r-project.org/web/packages/pso/pso.pdf}{pso} (\code{\link[pso]{psoptim}}) are used.
 }
 \details{
 All algorithms are based on the least-square minimization however,
@@ -63,24 +63,24 @@ All algorithms are based on the least-square minimization however,
   The applied optimization/fitting methods are summarized in the following table =>
   \tabular{lcl}{
   \strong{Method/Algorithm} \tab \strong{Package} \tab \strong{Short Description} \cr
-  \code{slsqp} \tab \pkg{nloptr} \tab Sequential quadratic programming method for non-linearly
+  \code{slsqp} \tab \code{{nloptr}} \tab Sequential quadratic programming method for non-linearly
   constrained, gradient-based optimization. \cr
-  \code{cobyla} \tab \pkg{nloptr} \tab Constrained optimization by linear approximations,
+  \code{cobyla} \tab \code{{nloptr}} \tab Constrained optimization by linear approximations,
   algorithm for derivative-free optimization with nonlinear inequality and equality constraints. \cr
-  \code{lbfgs} \tab \pkg{nloptr} \tab Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.
+  \code{lbfgs} \tab \code{{nloptr}} \tab Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.
   This is a quasi-Newton method well suited for the optimization problems with a large number of variables. \cr
-  \code{neldermead} \tab \pkg{nloptr} \tab Nelder-Mead ("N-M") simplex algorithm. \cr
-  \code{crs2lm} \tab \pkg{nloptr} \tab Controlled Random Search (CRS) algorithm (and in particular,
+  \code{neldermead} \tab \code{{nloptr}} \tab Nelder-Mead ("N-M") simplex algorithm. \cr
+  \code{crs2lm} \tab \code{{nloptr}} \tab Controlled Random Search (CRS) algorithm (and in particular,
   the CRS2 variant) with the `local mutation' modification. \cr
-  \code{sbplx} \tab \pkg{nloptr} \tab Subplex algorithm, which is a variant of the "N-M" method
+  \code{sbplx} \tab \code{{nloptr}} \tab Subplex algorithm, which is a variant of the "N-M" method
   on a sequence of subspaces. \cr
-  \code{nls.lm} (\code{levenmarq}) \tab \pkg{minpack.lm} \tab Modified Levenberg-Marquardt algorithm.
+  \code{nls.lm} (\code{levenmarq}) \tab \code{{minpack.lm}} \tab Modified Levenberg-Marquardt algorithm.
   It is a combination of gradient descent and Guass-Newton method. \cr
-  \code{psoptim} (\code{pswarm}) \tab \pkg{pso} \tab Particle swarm optimization, which is a population-based
+  \code{psoptim} (\code{pswarm}) \tab \code{{pso}} \tab Particle swarm optimization, which is a population-based
   stochastic optimization algorithm motivated by the intelligent collective behavior of some animals such
   as flocks of birds or schools of fish. \cr
   }
-  Not all \pkg{nloptr}-methods are implemented into the \code{optim_for_EPR_fitness}. Those summarized above
+  Not all \code{{nloptr}}-methods are implemented into the \code{optim_for_EPR_fitness}. Those summarized above
   were tested by the EPR simulation fit (see \code{\link{eval_sim_EPR_isoFit}}) on the experimental spectra
   of TEMPOL and Wuster's blue radicals. They provide the best results (without extensive "playing"
   with \code{\link[nloptr]{nl.opts}}, i.e. with options to control the optimization procedure) and proceeds

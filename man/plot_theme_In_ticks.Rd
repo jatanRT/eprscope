@@ -44,8 +44,10 @@ should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no 
 Custom \pkg{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing inside the graph/plot panel.
 }
 \description{
-Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-  visuals/non-data components of the actual plot. Theme can be mainly applied for the basic \pkg{ggplot2} components like
+Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs
+  of graph (such as EPR spectrum, kinetic profiles...etc)
+  visuals/non-data components of the actual plot. Theme can be mainly applied
+  for the basic \href{https://ggplot2.tidyverse.org/}{ggplot2} components like
   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
   \strong{inside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}

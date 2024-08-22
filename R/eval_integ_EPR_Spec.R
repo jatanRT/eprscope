@@ -68,7 +68,8 @@
 #'   \strong{default}: \code{sigmoid.integ = FALSE}.
 #' @param output.vecs Logical, whether the "integral" \code{columns} are presented within the entire
 #'   data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
-#'   additional processing of spectral data series by \pkg{dplyr} (see \code{Values} and \code{Examples}).
+#'   additional processing of spectral data series by \href{https://dplyr.tidyverse.org/}{dplyr}
+#'   (see \code{Values} and \code{Examples}).
 #'
 #'
 #' @return The integration results may be divided into following types depending on the above-described

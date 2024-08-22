@@ -24,8 +24,8 @@ Conversion done according to following relation:
   \deqn{a = A\,h / (g\,\mu_{\text{B}})}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
   Both latter are obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
-  using the \pkg{constants} package (see \code{\link[constants]{syms}}). Conversion is suitable
-  for the EPR simulations and/or ENDOR.
+  using the \href{https://r-quantities.github.io/constants/}{constants} package (see \code{\link[constants]{syms}}).
+  Conversion is suitable for the EPR simulations and/or ENDOR.
 }
 \examples{
 convert_A_MHz_2a(A.MHz = 16)

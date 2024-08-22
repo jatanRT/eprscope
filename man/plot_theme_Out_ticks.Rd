@@ -41,13 +41,14 @@ should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no 
 \code{axis.line},...etc) which are not specified by the function.}
 }
 \value{
-Custom \pkg{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside the graph/plot panel.
+Custom \code{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside the graph/plot panel.
 }
 \description{
-Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
-  \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
-  \strong{outside the plot panel}. For details of \code{ggplot2} theme elements please,
+Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs
+  of graph (such as EPR spectrum, kinetic profiles...etc)
+  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic
+  \code{ggplot2} components like \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders,
+  grid and axis ticks pointing \strong{outside the plot panel}. For details of \code{ggplot2} theme elements please,
   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
   (see also \code{\link[ggplot2]{theme}}) or to
   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.

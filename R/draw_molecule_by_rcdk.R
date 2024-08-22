@@ -1,13 +1,13 @@
 #
-#' Draw Molecule by \pkg{rcdk} Defined by SMILES or SDF
+#' Draw Molecule by \code{{rcdk}} Defined by SMILES or SDF
 #'
 #'
 #' @family Visualizations and Graphics
 #'
 #'
 #' @description
-#'   Drawing a molecular structure based on \pkg{rcdk} package and using SMILES or SDF input data.
-#'   This function is inspired by
+#'   Drawing a molecular structure based on \href{https://cdk-r.github.io/cdkr/index.html}{rcdk} package
+#'   and using SMILES or SDF input data. This function is inspired by
 #'   \href{https://riveradelgado.com/post/2021/04/18/chemistry-in-r/}{Edgardo Rivera-Delgado article}.
 #'
 #'

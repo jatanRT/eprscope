@@ -7,8 +7,9 @@
 #'
 #' @description
 #'   Interactive visualization of EPR spectra or their integrals based on \href{https://plotly.com/r/}{plotly} package.
-#'   In the first step function takes the essential plot parts as \pkg{ggplot2}, which is subsequently transferred
-#'   by \code{\link[plotly]{ggplotly}} into the final interactive format. Such plots mainly contain buttons in order to zoom,
+#'   In the first step function takes the essential plot parts as \href{https://ggplot2.tidyverse.org/}{ggplot2},
+#'   which is subsequently transferred by \code{\link[plotly]{ggplotly}} into the final interactive format.
+#'   Such plots mostly contain buttons in order to zoom,
 #'   move and select (parts of) the EPR spectra/integrals as well as display the point values directly within
 #'   graph/panel. Additionally, plots can be exported into \code{.png} image
 #'   or \code{.html} formats (see also \code{\link{plot_EPR_present_interact}}) and can optionally
@@ -80,7 +81,7 @@
 #'   \strong{default}: \code{axis.text.size = 14}.
 #'
 #'
-#' @return Interactive plot object of EPR spectrum/spectra based on \pkg{plotly} package.
+#' @return Interactive plot object of EPR spectrum/spectra based on \pkg{{plotly}} package.
 #'
 #'
 #' @examples

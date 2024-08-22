@@ -35,7 +35,7 @@ EPR spectrum/data.}
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{method}{Character string corresponding to method to fit a smoothing spline provided by \pkg{npreg}
+\item{method}{Character string corresponding to method to fit a smoothing spline provided by \code{{npreg}}
 package (see the \code{method} argument in \code{\link[npreg]{ss}}). The following methods are available
 (they are shortly described
 in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}
@@ -83,8 +83,9 @@ If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR
   }
 }
 \description{
-Smoothing of the EPR spectra by non-parametric fitting a smoothing spline \code{\link[npreg]{ss}}
-  from \pkg{npreg} package.
+Smoothing of the EPR spectra by non-parametric fitting a smoothing spline, \code{\link[npreg]{ss}}
+  from \href{https://cran.r-project.org/web/packages/npreg/npreg.pdf}{npreg} package, onto the experimental
+  EPR spectrum.
 }
 \details{
 The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials,

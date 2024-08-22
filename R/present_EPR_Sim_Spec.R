@@ -38,10 +38,10 @@
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
 #'   line form of the analyzed EPR spectrum/data.
-#' @param line.color.expr String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
+#' @param line.color.expr String, line color to plot simple EPR spectrum. All \code{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "red"}, should be different
 #'   from \code{line.color.sim}.
-#' @param line.color.sim String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
+#' @param line.color.sim String, line color to plot simple EPR spectrum. All \code{ggplot2} compatible
 #'   colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different
 #'   from \code{line.color.expr}.
 #' @param line.width Numeric, linewidth of the plot line in \code{pt}, \strong{default}:

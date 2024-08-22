@@ -51,7 +51,7 @@ one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to
 the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
 \item{qValue}{Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
-the \pkg{eprscope} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
+the \code{{eprscope}} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
 Therefore, \strong{default}: \code{qValue = NULL}.}
 
 \item{tube.sample.id.mm}{Numeric value equal to internal diameter (in \code{mm}) of the tube/cell used

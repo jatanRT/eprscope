@@ -58,11 +58,11 @@ that can be caused by switching ON the Teslameter, it refers to simulated spectr
 or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
 line form of the analyzed EPR spectrum/data.}
 
-\item{line.color.expr}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
+\item{line.color.expr}{String, line color to plot simple EPR spectrum. All \code{ggplot2} compatible
 colors are allowed, \strong{default}: \code{line.color = "red"}, should be different
 from \code{line.color.sim}.}
 
-\item{line.color.sim}{String, line color to plot simple EPR spectrum. All \pkg{ggplot2} compatible
+\item{line.color.sim}{String, line color to plot simple EPR spectrum. All \code{ggplot2} compatible
 colors are allowed, \strong{default}: \code{line.color = "blue"}, should be different
 from \code{line.color.expr}.}
 

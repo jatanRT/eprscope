@@ -92,7 +92,7 @@
 #'   \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
 #'   from the \code{path_to_dsc_par} based on the \code{origin}.
 #' @param qValue Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
-#'   the \pkg{eprscope} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
+#'   the \code{{eprscope}} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
 #'   Therefore, \strong{default}: \code{qValue = NULL}.
 #' @param point.sample.factor Numeric value ... tbc ...
 #' @param tube.sample.id.mm Numeric value equal to internal diameter (in \code{mm}) of the tube/cell used

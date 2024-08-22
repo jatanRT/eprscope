@@ -6,8 +6,9 @@
 #'
 #'
 #' @description
-#'   Smoothing of the EPR spectra by non-parametric fitting a smoothing spline \code{\link[npreg]{ss}}
-#'   from \pkg{npreg} package.
+#'   Smoothing of the EPR spectra by non-parametric fitting a smoothing spline, \code{\link[npreg]{ss}}
+#'   from \href{https://cran.r-project.org/web/packages/npreg/npreg.pdf}{npreg} package, onto the experimental
+#'   EPR spectrum.
 #'
 #'
 #' @details
@@ -38,7 +39,7 @@
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
-#' @param method Character string corresponding to method to fit a smoothing spline provided by \pkg{npreg}
+#' @param method Character string corresponding to method to fit a smoothing spline provided by \code{{npreg}}
 #'   package (see the \code{method} argument in \code{\link[npreg]{ss}}). The following methods are available
 #'   (they are shortly described
 #'   in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}

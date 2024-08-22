@@ -12,7 +12,7 @@
 #'
 #' @details
 #'   ASCII data are transformed into \emph{R} data frames, which can be then easily processed by the actual or other
-#'   R packages, e.g. \pkg{dplyr}), afterwards. Spectral intensities are automatically
+#'   R packages, e.g. \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards. Spectral intensities are automatically
 #'   normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
 #'   These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned

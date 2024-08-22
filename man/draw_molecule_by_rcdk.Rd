@@ -2,7 +2,7 @@
 % Please edit documentation in R/draw_molecule_by_rcdk.R
 \name{draw_molecule_by_rcdk}
 \alias{draw_molecule_by_rcdk}
-\title{Draw Molecule by \pkg{rcdk} Defined by SMILES or SDF}
+\title{Draw Molecule by \code{{rcdk}} Defined by SMILES or SDF}
 \usage{
 draw_molecule_by_rcdk(
   molecule,
@@ -75,8 +75,8 @@ The \code{SMILES} or \code{SDF} STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 Graphics/Figure object with molecular structure.
 }
 \description{
-Drawing a molecular structure based on \pkg{rcdk} package and using SMILES or SDF input data.
-  This function is inspired by
+Drawing a molecular structure based on \href{https://cdk-r.github.io/cdkr/index.html}{rcdk} package
+  and using SMILES or SDF input data. This function is inspired by
   \href{https://riveradelgado.com/post/2021/04/18/chemistry-in-r/}{Edgardo Rivera-Delgado article}.
 }
 \examples{

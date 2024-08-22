@@ -41,7 +41,7 @@ time series. Arrow shows direction of the reaction (\code{"-->", irreversible} o
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
 changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
-may be varied, see below).
+may vary, see below).
 \tabular{ll}{
 \strong{Reaction Scheme} \tab \strong{model.react} \cr
 \eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr

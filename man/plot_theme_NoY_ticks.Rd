@@ -45,8 +45,9 @@ Custom \pkg{ggplot2} \code{theme} (list) with \code{x-axis} ticks pointing insid
   and with \code{y-ticks} being not displayed.
 }
 \description{
-Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order
+  to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
+  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \code{ggplot2} components like
   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
   \strong{inside the plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
   For details of \code{ggplot2} theme elements please,

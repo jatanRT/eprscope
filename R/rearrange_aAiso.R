@@ -6,16 +6,16 @@
 #'
 #'
 #' @description
-#'   Provides table from Gaussian/ORCA output text file to summarize \eqn{A_{iso}}/\eqn{a_{iso}} values
-#'   according to proposed molecular structure/symmetry.
+#'   Providing table from Gaussian/ORCA/...etc. output text file to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
+#'   of a nuclear group, according to proposed molecular structure/symmetry.
 #'
 #'
 #'
 #' @details
 #'   The \eqn{A_{iso}}/\eqn{a_{iso}} values are computed for each atom/nucleus
 #'   (with its corresponding \code{atomic number within the structure} as well as with the characteristic
-#'   \code{isotopic number/value}), such an entire table can be copied from \strong{Gaussian} output
-#'   (after \code{'Isotropic Fermi Contact Couplings'} line) or can be constructed from \strong{ORCA} output,
+#'   \code{isotopic number/value}), such an entire table can be copied e.g. from \strong{Gaussian} output
+#'   (after \code{'Isotropic Fermi Contact Couplings'} line) or can be constructed from \strong{ORCA} (or any other) output,
 #'   example for such a file structure (from \strong{Gaussian}):
 #'   \tabular{rcccc}{
 #'    \strong{No_atom} \tab \strong{Atom_Nucleus} \tab \strong{MegaHertz} \tab \strong{Gauss} \tab \strong{1e-4_cm-1} \cr
@@ -23,22 +23,25 @@
 #'    17 \tab N(14) \tab 13.99707 \tab 4.9945 \tab 4.66892 \cr
 #'    28 \tab H(1) \tab 16.34971 \tab 5.83398 \tab 5.45368 \cr
 #'   }
+#'   The input table/data frame, like the previous one, must include following columns: atomic/nucleus number, atom/nucleus notation,
+#'   hyperfine coupling constant in \code{MHz} and finally hyperfine splitting constant in \code{G}. These columns/variables
+#'   are essential for the evaluation.
 #'
 #'
 #'
 #' @param path_to_ASC Character string pointing to path of ASCII file (\code{txt},\code{csv}...etc,
-#' it may be also provided by \code{\link[base]{file.path}}) incl. characteristic
+#' it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
 #'   \eqn{A_{iso}} or \eqn{a_{iso}} values.
 #' @param col.names Character string vector containing names of all columns from QCH Computational output,
-#'   for the names see the example in \code{path_to_ASC}, they must contain atomic/structure number, isotopic value
+#'   for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.
 #' @param nuclei.list.slct List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 #'   e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
 #'   correspond to indices of atoms/nuclei in the ASCII text file.
 #'
 #'
-#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
-#'   structure/symmetry
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
+#'   structure/symmetry.
 #'
 #'
 #' @examples
@@ -152,11 +155,13 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @description
-#' A short description...the same like \code{\link{rearrange_aAiso_QCHcomp}} something...
+#'   Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize
+#'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group, according to proposed molecular structure/symmetry
+#'   (see also \code{\link{rearrange_aAiso_QCHcomp}}).
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
-#' @param path_to_QCHoutput Character string corresponding to path of `Gaussian` or `ORCA` output text files.
+#' @param path_to_QCHoutput Character string corresponding to path of \code{Gaussian} or \code{ORCA} output text files.
 #' @param Nnuclei Numeric value equal to number of atoms/nuclei within the calculated structure.
 #' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
@@ -164,12 +169,12 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #' @param output.text.origin Logical, whether to write a text file containing the extracted
 #'   \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined by \code{path_to-QCHoutput}.
 #'   \strong{Default}: \code{output.text.origin = FALSE}.
-#' @param output.text.path Character string which coincides with path to file containing
+#' @param output.text.path Character string, setting the path to file containing
 #'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined
 #'   by \code{path_to-QCHoutput}. See the previous argument.
 #'
 #'
-#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
 #'   structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} computational output
 #'   files.
 #'
@@ -216,7 +221,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## ============================ READING `qchfiles` ==============================
   #
   ## Processing of output file depending on the origin
-  if (origin == "gaussian") {
+  if (origin == "gaussian" || origin == "Gaussian" || origin == "GAUSSIAN") {
     #
     ## number of atoms + 1
     ## because it also reads the header therefore, there must be an additional line
@@ -269,7 +274,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     }
     #
   }
-  if (origin == "orca") {
+  if (origin == "orca" || origin == "Orca" || origin == "ORCA") {
     ## indicator (String) to select specific lines (indices) from `qchfile`
     ## in the case of `ORCA` this indicator tells that this is the last part
     ## of `qchfile` with EPR parameters (`ORCA`) has different output file

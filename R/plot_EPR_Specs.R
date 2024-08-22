@@ -5,10 +5,11 @@
 #' @family Visualizations and Graphics
 #'
 #'
-#' @description Plot of EPR/ENDOR spectrum/spectra (overlay plot) based on \pkg{ggplot2}-functionality.
-#'   Spectral data input must be available as a data frame object (see also argument \code{data.spectra}).
+#' @description Plot of EPR/ENDOR spectrum/spectra (overlay plot) based
+#'   on \href{https://ggplot2.tidyverse.org/}{ggplot2}-functionality. Spectral data input must be available
+#'   as a data frame object (see also argument \code{data.spectra}).
 #'   Theme of the graphic spectrum representation as well as other plot elements can be varied like
-#'   using the \pkg{ggplot2} package. Within a theme, the \code{y} ticks can be either displayed
+#'   using the \code{{ggplot2}} package. Within a theme, the \code{y} ticks can be either displayed
 #'   or skipped and the intensity (e.g. \code{dIepr_over_dB}) is presented in "procedure defined unit"
 #'   (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
 #'   which is common for visualization of EPR spectra.
@@ -16,16 +17,16 @@
 #'
 #' @details
 #'   Output from the \code{plot_EPR_Specs} can be additionally combined by the \code{+} sign with other
-#'   \pkg{ggplot2} or internal plotting functions
+#'   \code{ggplot2} or internal plotting functions
 #'   (e.g. with \code{\link{plot_theme_In_ticks}}). For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
 #'   (see also \code{\link[ggplot2]{theme}}) or to
 #'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
-#'   The actual function does not assume a deep knowledge of \pkg{ggplot2} package (as well as the grammar
-#'   of graphics philosophy, see \code{vignette("functionality")}) and literally, one can easily start to plot
-#'   from scratch. However,
-#'   there is a \href{https://dreamrs.github.io/esquisse/index.html}{great interactive Rstudio addin/package}
-#'   called \pkg{esquisse} which nicely helps to dive into the \href{https://ggplot2.tidyverse.org/}{ggplot2}
+#'   The actual function does not assume a deep knowledge of \href{https://ggplot2.tidyverse.org/}{ggplot2}
+#'   package (as well as the grammar of graphics philosophy, see \code{vignette("functionality")}) and literally,
+#'   one can easily start to plot from scratch (see also building plot in example of \code{\link{plot_theme_NoY_ticks}}).
+#'   However, there is a \href{https://dreamrs.github.io/esquisse/index.html}{great interactive Rstudio addin/package}
+#'   called \code{esquisse} which nicely helps to dive into the \href{https://ggplot2.tidyverse.org/}{ggplot2}
 #'   even for complete beginners.
 #'
 #'
@@ -69,7 +70,7 @@
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (in such case also \code{"absorption"} can be used)
 #'   line form of the analyzed EPR spectrum/data.
-#' @param line.colors Character string, line color(s) to plot EPR spectrum/spectra. All \pkg{ggplot2} compatible
+#' @param line.colors Character string, line color(s) to plot EPR spectrum/spectra. All \code{{ggplot2}} compatible
 #'   colors are allowed to plot the individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
 #'   For the series of EPR spectra two color scales are used:
 #'   \enumerate{
@@ -79,7 +80,8 @@
 #'   are allowed =>
 #'   \itemize{
 #'     \item any color vector like \code{c("blue","green","red")} with the length of \eqn{\geq 2}
-#'     \item any color definition from \pkg{grDevices} like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
+#'     \item any color definition from \href{https://r-universe.dev/manuals/grDevices.html}{grDevices}
+#'     like \code{hcl.colors(n,pallete)}, \code{rainbow(n)},
 #'     \code{heat.colors(n)}, \code{terrain.colors(n)}, \code{topo.colors(n)}, \code{cm.colors(n)} where the number
 #'     of colors \eqn{n \geq 2} should be specified.
 #'     See also \href{https://www.rdocumentation.org/packages/grDevices/versions/3.6.2/topics/Palettes}{grDevices Palettes}
@@ -110,7 +112,7 @@
 #' @param border.line.type Character string or integer corresponding to width of the plot graph/panel border line. Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
-#' @param theme.basic Character string calling a \pkg{ggplot} theme base. The following ones are defined:
+#' @param theme.basic Character string calling a \code{ggplot} theme base. The following ones are defined:
 #'   \describe{
 #'     \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
 #'     \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}
@@ -136,7 +138,7 @@
 #'
 #'
 #' @return EPR spectrum/spectra ('overlay') plot object (corresponding to list of plot components) using
-#'   the \pkg{ggplot2} functionality, with the key parameter variations like line color, theme, grid...etc.
+#'   the \code{ggplot2} functionality, with the key parameter variations like line color, theme, grid...etc.
 #'
 #'
 #' @examples

@@ -6,8 +6,10 @@
 #'
 #'
 #' @description
-#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-#'   visuals/non-data components of the actual plot. Theme can be mainly applied for the basic \pkg{ggplot2} components like
+#'   Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs
+#'   of graph (such as EPR spectrum, kinetic profiles...etc)
+#'   visuals/non-data components of the actual plot. Theme can be mainly applied
+#'   for the basic \href{https://ggplot2.tidyverse.org/}{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
 #'   \strong{inside the graph/plot panel}. For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
@@ -140,8 +142,9 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @description
-#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
+#'   Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order
+#'   to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
+#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \code{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
 #'   \strong{inside the plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
 #'   For details of \code{ggplot2} theme elements please,
@@ -291,10 +294,11 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #'
 #'
 #' @description
-#'   Change the \pkg{ggplot2}-based theme in order to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \pkg{ggplot2} components like
-#'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and axis ticks pointing
-#'   \strong{outside the plot panel}. For details of \code{ggplot2} theme elements please,
+#'   Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs
+#'   of graph (such as EPR spectrum, kinetic profiles...etc)
+#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic
+#'   \code{ggplot2} components like \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders,
+#'   grid and axis ticks pointing \strong{outside the plot panel}. For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
 #'   (see also \code{\link[ggplot2]{theme}}) or to
 #'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.
@@ -303,7 +307,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' @inheritParams plot_theme_In_ticks
 #'
 #'
-#' @return Custom \pkg{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside the graph/plot panel.
+#' @return Custom \code{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside the graph/plot panel.
 #'
 #'
 #' @examples

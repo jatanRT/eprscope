@@ -14,7 +14,7 @@ rearrange_aAiso_QCHorgau(
 )
 }
 \arguments{
-\item{path_to_QCHoutput}{Character string corresponding to path of `Gaussian` or `ORCA` output text files.}
+\item{path_to_QCHoutput}{Character string corresponding to path of \code{Gaussian} or \code{ORCA} output text files.}
 
 \item{Nnuclei}{Numeric value equal to number of atoms/nuclei within the calculated structure.}
 
@@ -30,17 +30,19 @@ or \code{"orca"}.}
 \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined by \code{path_to-QCHoutput}.
 \strong{Default}: \code{output.text.origin = FALSE}.}
 
-\item{output.text.path}{Character string which coincides with path to file containing
+\item{output.text.path}{Character string, setting the path to file containing
 the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original file defined
 by \code{path_to-QCHoutput}. See the previous argument.}
 }
 \value{
-Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclei group
+Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
   structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} computational output
   files.
 }
 \description{
-A short description...the same like \code{\link{rearrange_aAiso_QCHcomp}} something...
+Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize
+  the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group, according to proposed molecular structure/symmetry
+  (see also \code{\link{rearrange_aAiso_QCHcomp}}).
 }
 \examples{
 ## built-in file and path

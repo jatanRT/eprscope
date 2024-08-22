@@ -21,8 +21,9 @@ Data frame with row/rows of selected solvent(s) and the corresponding properties
   \code{value/character}.
 }
 \description{
-Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up only
-  a specific \code{solvent} and its corresponding properties (\code{prop} argument).
+Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up
+  specific \code{solvent} and its corresponding properties (\code{prop} argument).
+  See also \code{vignette("datasets")}.
 }
 \examples{
 ## Properties of `DMSO`:
