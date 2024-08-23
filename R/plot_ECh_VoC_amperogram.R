@@ -14,11 +14,11 @@
 #'
 #'
 #' @inheritParams plot_EPR_Specs
-#' @param data.voltamm Data frame (table) object including required columns like \code{Potential}
+#' @param data.vat Data frame (table) object including required columns like \code{Potential}
 #'   (\eqn{E}) and/or \code{Time} (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary
 #'   column label can be used, the best option is to use labels e.g. \code{E_V}, \code{E_mV}, \code{time_s},
 #'   \code{I_uA} or \code{I_mA}.
-#' @param x Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm},
+#' @param x Character string pointing to \code{x}-axis/column quantity, in the original \code{data.vat},
 #'   like \strong{potential} (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"},
 #'   \code{x = "time_min"} or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).
 #' @param x.unit Character string pointing to \code{x}-quantity unit. There are following units available:
@@ -26,7 +26,7 @@
 #'   as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (in case of chronoamperometry,
 #'   \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.
 #' @param Current Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
-#'   \code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).
+#'   \code{data.vat} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).
 #' @param Current.unit Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 #'   (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.
 #' @param xlim Numeric vector of the \code{x}-quantity visual border limits, e.g. \code{xlim = c(-100,400)}
@@ -76,7 +76,7 @@
 #' head(triarylamine.data.cv)
 #' #
 #' ## simple voltammogram plot with ref. electrode string:
-#' plot_ECh_VoC_amperogram(data.voltamm =
+#' plot_ECh_VoC_amperogram(data.vat =
 #'                           triarylamine.data.cv,
 #'                         x = "E_V_app",
 #'                         Current = "I_A",
@@ -86,7 +86,7 @@
 #' #
 #' ## simple chronoamperogram plot with "theme_bw" theme
 #' ## and `ticks` pointing into the graph panel (ticks = "in")
-#' plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+#' plot_ECh_VoC_amperogram(data.vat = triarylamine.data.cv,
 #'                         x = "time_s",
 #'                         x.unit = "s",
 #'                         Current = "I_A",
@@ -98,7 +98,7 @@
 #'                        )
 #' #
 #' ## simple interactive "darkgreen" voltammogram
-#' plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+#' plot_ECh_VoC_amperogram(data.vat = triarylamine.data.cv,
 #'                         x = "E_V_app",
 #'                         Current = "I_A",
 #'                         Current.unit = "A",
@@ -111,7 +111,7 @@
 #'
 #'
 #' @importFrom ggplot2 geom_path
-plot_ECh_VoC_amperogram <- function(data.voltamm,
+plot_ECh_VoC_amperogram <- function(data.vat,
                                     x = "E_V", ## can be "time_s", "time_min" or "time_ms" as well
                                     x.unit = "V", ## can be "mV" or "s" or "min" or "ms" as well
                                     Current = "I_uA",
@@ -138,8 +138,8 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
   data.x.region <- c(
-   min(data.voltamm[[x]]),
-   max(data.voltamm[[x]])
+   min(data.vat[[x]]),
+   max(data.vat[[x]])
    )
    xlim <- xlim %>% `if`(
      is.null(xlim),
@@ -149,8 +149,8 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   ## Define limits for `I` (current,similarly like in case of `x` above)
   ## 10% of the `max` below the `min` and 10% above the `max
   data.I.region <- c(
-   min(data.voltamm[[Current]]),
-   max(data.voltamm[[Current]])
+   min(data.vat[[Current]]),
+   max(data.vat[[Current]])
    )
    data.I.region.2 <- c(
      data.I.region[1] - (data.I.region[2] * 0.1),
@@ -169,15 +169,15 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   ## Time unit conversion
   if (x.unit != "V" || x.unit != "mV"){
     if (x.unit == "min"){
-      data.voltamm[[x]] <- data.voltamm[[x]] * 60
+      data.vat[[x]] <- data.vat[[x]] * 60
       ## rename "x" column
-      data.voltamm <- data.voltamm %>%
+      data.vat <- data.vat %>%
         dplyr::rename(dplyr::all_of(c("time_s" = x))) ## was replaced by general "x"
     }
     if (x.unit == "ms"){
-      data.voltamm[[x]] <- data.voltamm[[x]] * 0.001
+      data.vat[[x]] <- data.vat[[x]] * 0.001
       ## rename "x" column
-      data.voltamm <- data.voltamm %>%
+      data.vat <- data.vat %>%
         dplyr::rename(dplyr::all_of(c("time_s" = x))) ## was replaced by general "x"
     }
   }
@@ -329,7 +329,7 @@ plot_ECh_VoC_amperogram <- function(data.voltamm,
   }
   ## basic voltammogram plot
   basic.voltammogram <-
-    ggplot(data = data.voltamm,
+    ggplot(data = data.vat,
            aes(x = .data[[x]],
                y = .data[[Current]])) +
     geom_path(linewidth = line.width,

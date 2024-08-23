@@ -5,7 +5,7 @@
 \title{Plot Voltammogram or Chronoamperogram from (Spectro)Electrochemical Experiment}
 \usage{
 plot_ECh_VoC_amperogram(
-  data.voltamm,
+  data.vat,
   x = "E_V",
   x.unit = "V",
   Current = "I_uA",
@@ -28,12 +28,12 @@ plot_ECh_VoC_amperogram(
 )
 }
 \arguments{
-\item{data.voltamm}{Data frame (table) object including required columns like \code{Potential}
+\item{data.vat}{Data frame (table) object including required columns like \code{Potential}
 (\eqn{E}) and/or \code{Time} (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary
 column label can be used, the best option is to use labels e.g. \code{E_V}, \code{E_mV}, \code{time_s},
 \code{I_uA} or \code{I_mA}.}
 
-\item{x}{Character string pointing to \code{x}-axis/column quantity, in the original \code{data.voltamm},
+\item{x}{Character string pointing to \code{x}-axis/column quantity, in the original \code{data.vat},
 like \strong{potential} (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"},
 \code{x = "time_min"} or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).}
 
@@ -43,7 +43,7 @@ as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (i
 \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.}
 
 \item{Current}{Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
-\code{data.voltamm} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).}
+\code{data.vat} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).}
 
 \item{Current.unit}{Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.}
@@ -135,7 +135,7 @@ triarylamine.data.cv <-
 head(triarylamine.data.cv)
 #
 ## simple voltammogram plot with ref. electrode string:
-plot_ECh_VoC_amperogram(data.voltamm =
+plot_ECh_VoC_amperogram(data.vat =
                           triarylamine.data.cv,
                         x = "E_V_app",
                         Current = "I_A",
@@ -145,7 +145,7 @@ plot_ECh_VoC_amperogram(data.voltamm =
 #
 ## simple chronoamperogram plot with "theme_bw" theme
 ## and `ticks` pointing into the graph panel (ticks = "in")
-plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+plot_ECh_VoC_amperogram(data.vat = triarylamine.data.cv,
                         x = "time_s",
                         x.unit = "s",
                         Current = "I_A",
@@ -157,7 +157,7 @@ plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
                        )
 #
 ## simple interactive "darkgreen" voltammogram
-plot_ECh_VoC_amperogram(data.voltamm = triarylamine.data.cv,
+plot_ECh_VoC_amperogram(data.vat = triarylamine.data.cv,
                         x = "E_V_app",
                         Current = "I_A",
                         Current.unit = "A",
