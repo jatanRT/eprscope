@@ -208,12 +208,12 @@
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
 #'   readEPR_Exp_Specs_kin(name.root =
-#'                           "Triarylamine_radCat_decay_series",
-#'                         dir_ASC = tempdir(),
-#'                         dir_dsc_par =
-#'                           system.file("extdata",
-#'                                       package = "eprscope")
-#'                         )
+#'     "Triarylamine_radCat_decay_series",
+#'   dir_ASC = tempdir(),
+#'   dir_dsc_par =
+#'     system.file("extdata",
+#'                 package = "eprscope")
+#' )
 #' #
 #' ## plot with the CONTINUOUS COLORSCALE (see argument
 #' ## `line.colors` and color definitions `1.`):
@@ -240,15 +240,15 @@
 #' ## the DISCRETE COLORSCALE where all EPR spectra from
 #' ## the series are presented:
 #' plot_EPR_Specs(data.spectra,
-#'                xlim = c(334,345),
-#'                Ilim = c(-4e-3,4e-3),
-#'                var2nd.series = "T_K", # temperature in Kelvins
-#'                var2nd.series.slct.by = 1,
-#'                line.colors = c("darkblue",
-#'                                "darkorange",
-#'                                "magenta",
-#'                                "steelblue"),
-#'                legend.title = "Temperature (K)")
+#    xlim = c(334,345),
+#'   Ilim = c(-4e-3,4e-3),
+#'   var2nd.series = "T_K", # temperature in Kelvins
+#'   var2nd.series.slct.by = 1,
+#'   line.colors = c("darkblue",
+#'                   "darkorange",
+#'                   "magenta",
+#'                   "steelblue"),
+#'   legend.title = "Temperature (K)")
 #' }
 #'
 #'

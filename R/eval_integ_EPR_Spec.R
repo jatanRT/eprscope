@@ -6,19 +6,27 @@
 #'
 #'
 #' @description
-#'  Evaluates integrals of EPR spectra depending on input data => either corresponding to \code{derivative}
+#'  Evaluates integrals of EPR spectra (based on the \code{\link[pracma:trapz]{pracma::cumtrapz}} function)
+#'  depending on input data => either corresponding to \code{derivative}
 #'  or single \code{integrated} EPR signal form, with the option to correct the single integral baseline
-#'  by the polynomial fit of the \code{poly.degree} level.
+#'  by the polynomial fit of the \code{poly.degree} level. \strong{For EPR time/temperature/...etc spectral series},
+#'  (data frame must be available in \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}),
+#'  there is an \strong{option to integrate all EPR spectra literally in one step} (see also \code{Examples}),
+#'  similarly to function available in acquisition/processing software at EPR spectrometer.
 #'
 #'
 #' @details
-#'  Integration is done by the \code{\link[pracma:trapz]{pracma::cumtrapz}} function. The relative error
-#'  of the cumulative trapezoidal function is minimal, usually falling into the range of
+#'  The relative error of the cumulative trapezoidal function is minimal, usually falling into the range of
 #'  \eqn{\langle 1,5\rangle\,\%} or even lower depending on the spectral data resolution
-#'  (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}). For the purpose
-#'  of quantitative analysis the integrals are evaluated using the \code{B.units = "G"} (see below).
-#'  Therefore, depending on \eqn{B} unit (either \code{G} or \code{mT}) each resulting integral column
-#'  have to be optionally (in case of \code{mT}) multiplied by factor of \code{10} because
+#'  (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}). Therefore,
+#'  the better the resolution the more accurate the integral. If the initial EPR spectrum displays low
+#'  signal-to-noise ratio, the integral often looses its sigmoid-shape,
+#'  and thus the EPR spectrum has to be either simulated (see also \code{vignette("functionality")})
+#'  or smoothed by the \code{\link{smooth_EPR_Spec_by_npreg}}, prior to integration. Afterwards,
+#'  integrals are evaluated from the simulated or smoothed EPR spectra.
+#'  For the purpose of quantitative analysis the integrals are evaluated using the \code{B.units = "G"}
+#'  (see below). Therefore, depending on \eqn{B} unit (either \code{G} or \code{mT}) each resulting integral
+#'  column have to be optionally (in case of \code{mT}) multiplied by factor of \code{10} because
 #'  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
 #'  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
 #'  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr}
@@ -116,64 +124,135 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## Single integration of derivative spectrum with default arguments
-#' ## returns data frame with additional `single_Integ` column
-#' eval_integ_EPR_Spec(data.spectr)
+#' ## loading the built-in package example
+#' ## time series EPR spectra:
+#' triarylamine.decay.series.dsc.path <-
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.DSC")
+#' triarylamine.decay.series.asc.path <-
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.zip")
+#' unzip(triarylamine.decay.series.asc.path,
+#'       exdir = tempdir()
+#'       )
+#' ## loading the kinetics:
+#' triarylamine.decay.series.data <-
+#'   readEPR_Exp_Specs_kin(name.root =
+#'     "Triarylamine_radCat_decay_series",
+#'     dir_ASC = tempdir(),
+#'     dir_dsc_par =
+#'       system.file("extdata",
+#'                   package = "eprscope")
+#'    )
 #' #
-#' ## Integration gathering the double/sigmoid integral
-#' ## without baseline correction returns data frame with
-#' ## two additional columns `single_Integ` + `sigmoid_Integ`
-#' eval_integ_EPR_Spec(data.spectr,
-#'                     sigmoid.integ = T)
+#' ## select the first spectrum
+#' triarylamine.decay.series.data1st <-
+#'    triarylamine.decay.series.data$df %>%
+#'      dplyr::filter(time_s ==
+#'        triarylamine.decay.series.data$time[1])
 #' #
-#' ## Baseline correction (by the polynomial of the 3rd level) for
-#' ## the single integrated spec. as well as evaluating the sigmoid integral,
-#' ## single integral peak is located in the region of c(3430,3560) G,
-#' ## the result is data frame with the following additional columns:
-#' ## `single_Integ`, `baseline_Integ_fit`, `single_Integ_correct`, `sigmoid_Integ`
-#' eval_integ_EPR_Spec(data.spectr,
-#'                     lineSpec.form = "absorption",
-#'                     correct.integ = T,
-#'                     BpeaKlim = c(3430,3560),
-#'                     poly.degree = 3,
-#'                     sigmoid.integ = T)
+#' ## integrate the first spectrum with default arguments
+#' triarylamine.decay.data1st.integ01 <-
+#'   eval_integ_EPR_Spec(triarylamine.decay.series.data1st)
 #' #
-#' ## Vectorized output of the uncorrected `sigmoid integral`
-#' eval_integ_EPR_Spec(data.spectr,sigmoid.integ = T,output.vecs = T)[["sigmoid"]]
+#' ## data frame preview
+#' head(triarylamine.decay.data1st.integ01)
 #' #
-#' ## Incorporation of vectorized integration into data "pipe" ("%>%")
-#' ## `dplyr` processing of EPR spectral time series, creating column
-#' ## with `sigmoid` integral where its corresponding single integral (intensity)
+#' ## integration (including baseline correction)
+#' ## of the 1st spectrum from the series
+#' triarylamine.decay.data1st.integ02 <-
+#'   eval_integ_EPR_Spec(triarylamine.decay.series.data1st,
+#'     ## limits obtained from interactive spectrum:
+#'     BpeaKlim = c(3471.5,3512.5),
+#'     Blim = c(3425,3550),
+#'     correct.integ = TRUE,
+#'     poly.degree = 3,
+#'     sigmoid.integ = TRUE
+#'     )
+#' #
+#' ## data frame preview
+#' head(triarylamine.decay.data1st.integ02)
+#' #
+#' ## plot the single integrated EPR spectrum,
+#' ## including baseline correction
+#' plot_EPR_Specs(triarylamine.decay.data1st.integ02,
+#'                x = "B_G",
+#'                x.unit = "G",
+#'                Intensity = "single_Integ_correct",
+#'                lineSpecs.form = "integrated"
+#'              )
+#' #
+#' ## plot corresponding double/sigmoid integral,
+#' ## which is related to corrected single integral
+#' plot_EPR_Specs(triarylamine.decay.data1st.integ02,
+#'                x = "B_G",
+#'                x.unit = "G",
+#'                Intensity = "sigmoid_Integ",
+#'                lineSpecs.form = "integrated"
+#'              )
+#' #
+#' ## vectorized output of the uncorrected `sigmoid_integral`
+#' triarylamine.decay.data1st.integ03 <-
+#'   eval_integ_EPR_Spec(triarylamine.decay.series.data1st,
+#'                       sigmoid.integ = TRUE,
+#'                       output.vecs = TRUE)[["sigmoid"]]
+#' #
+#' ## preview of the first 6 values
+#' triarylamine.decay.data1st.integ03[1:6]
+#' #
+#' ## Incorporation of vectorized integration into
+#' ## data "pipe" ("%>%") `dplyr` processing of EPR spectral
+#' ## time series, creating column with `sigmoid` integral
+#' ## where its corresponding single integral (intensity)
 #' ## has undergone a baseline correction, finally the max. value
-#' ## of the all sigmoid integrals along the time is summarized in data frame
-#' ## for quantitative or kinetic analysis
-#' data.integrals <- data.spectra %>%
+#' ## of all sigmoid integrals along with the time is
+#' ## summarized in data frame for quantitative kinetic analysis
+#' triarylamine.decay.data.integs <-
+#'   triarylamine.decay.series.data$df %>%
 #'   dplyr::group_by(time_s) %>%
-#'   dplyr::filter(dplyr::between(B_G,3390,3600)) %>%
-#'   dplyr::mutate(sigmoid_Integ = eval_integ_EPR_Spec(dplyr::pick(B_G,dIepr_over_dB),
-#'                                                     correct.integ = T,
-#'                                                     BpeaKlim = c(3430,3560),
-#'                                                     poly.degree = 3,
-#'                                                     sigmoid.integ = T,
-#'                                                     output.vecs = T)$sigmoid) %>%
-#'  dplyr::summarize(Area = max(sigmoid_Integ))
+#'   dplyr::filter(dplyr::between(B_G,3425,3550)) %>%
+#'   dplyr::mutate(sigmoid_Integ =
+#'     eval_integ_EPR_Spec(dplyr::pick(B_G,dIepr_over_dB),
+#'                         correct.integ = TRUE,
+#'                         BpeaKlim = c(3471.5,3512.5),
+#'                         poly.degree = 3,
+#'                         sigmoid.integ = TRUE,
+#'                         output.vecs = TRUE)$sigmoid
+#'                        ) %>%
+#'   dplyr::summarize(Area = max(sigmoid_Integ))
 #' ## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,
 #' ## it must be `Blim = NULL`, however by `dplyr::between()` !!!
 #' #
+#' ## preview of the final data frame
+#' head(triarylamine.decay.data.integs)
+#' #
+#' ## preview of the simple plot
+#' ggplot2::ggplot(triarylamine.decay.data.integs) +
+#'   ggplot2::geom_point(ggplot2::aes(x = time_s,y = Area))
+#' #
+#' ## this does not correspond to examples
+#' ## in `eval_kinR_EPR_modelFit`, `eval_kin_EPR_ODE_model`
+#' ## or in `plot_theme_NoY_ticks` based on the same input data,
+#' ## as those `Area` vs `time` relationships were evaluated using
+#' ## the simulated EPR spectra (see also `vignette("datasets")`)
+#' #
+#' \dontrun{
 #' ## Similar to previous data processing, creating both: corrected
 #' ## single integral + sigmoid integral for each time within the spectral
 #' ## series. Sigmoid integral was evalutated from the single one by
-#' ## `cumtrapz()` function from `pracma` package and finally rescaled.
-#' data.integrals <- data.spectra %>%
+#' ## `cumtrapz()` function from `pracma` package and finally re-scaled.
+#' triarylamine.decay.data.integs <-
+#'   triarylamine.decay.series.data$df %>%
 #'   dplyr::group_by(time_s) %>%
-#'   eval_integ_EPR_Spec(correct.integ = T,
-#'                       Blim = c(3380,3610),
-#'                       BpeaKlim = c(3430,3560),
+#'   eval_integ_EPR_Spec(correct.integ = TRUE,
+#'                       Blim = c(3425,3550),
+#'                       BpeaKlim = c(3472.417,3505.5),
 #'                       poly.degree = 3) %>%
 #'  dplyr::group_by(time_s) %>%
-#'  dplyr::mutate(sigmoid_Integ = pracma::cumtrapz(B_G,single_Integ_correct)[,1]) %>%
-#'  dplyr::mutate(sigmoid_Integ_correct = abs(min(sigmoid_Integ) - sigmoid_Integ))
+#'  dplyr::mutate(sigmoid_Integ =
+#'    pracma::cumtrapz(B_G,single_Integ_correct)[,1]) %>%
+#'  dplyr::mutate(sigmoid_Integ_correct =
+#'    abs(min(sigmoid_Integ) - sigmoid_Integ))
 #' }
 #'
 #'
@@ -306,7 +385,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
       data.NoPeak <- data.spectr %>%
         filter(!between(.data[[B]], BpeaKlim[1], BpeaKlim[2]))
       if (is.null(poly.degree)) {
-        stop(" The degree of a polynomial to model the baseline is not defined. Please, specify ! ")
+        stop(" The degree of a polynomial to fit the baseline is not defined. Please, specify ! ")
       } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
         if (lineSpecs.form == "derivative") {
@@ -347,10 +426,6 @@ eval_integ_EPR_Spec <- function(data.spectr,
                 data.spectr$single_Integ_correct
               )[, 1]
               #
-              ## rescale the `sigmoid_Integ` => from 0 to max
-              data.spectr <- data.spectr %>%
-                dplyr::mutate(sigmoid_Integ =
-                                abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
             }
           }
           if (B.unit == "mT") {
@@ -431,15 +506,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           data.spectr <- data.spectr %>%
             dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
         } else {
-          ## re-scale the absorption line =>
-          if (lineSpecs.form == "derivative") {
-            data.spectr <- data.spectr %>%
-              dplyr::mutate(single_Integ = abs(min(.data$single_Integ) - .data$single_Integ))
-          } else if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
-            data.spectr <- data.spectr %>%
-              dplyr::mutate(!!rlang::quo_name(Intensity) :=
-                              abs(min(.data[[Intensity]]) - .data[[Intensity]]))
-          }
+          data.spectr <- data.spectr
         }
         #
       }
