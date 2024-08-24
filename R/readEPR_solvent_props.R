@@ -20,7 +20,7 @@
 #'
 #'
 #' @return Data frame with row/rows of selected solvent(s) and the corresponding properties. If a specific property
-#'   is called like, e.g. \code{code = "melting"} (\eqn{\equiv} melting point in °C), the function returns
+#'   is called like \code{code = "melting"} (\eqn{\equiv} melting point in °C), the function returns
 #'   \code{value/character}.
 #'
 #'

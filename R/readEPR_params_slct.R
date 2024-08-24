@@ -324,7 +324,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #' @inheritParams readEPR_param_slct
 #' @param path_to_dsc_par String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
-#'   parameters provided by the EPR machine
+#'   parameters provided by the EPR machine.
 #'
 #'
 #' @return List containing:

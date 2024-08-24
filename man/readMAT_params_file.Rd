@@ -25,7 +25,7 @@ Unless the \code{str.var} and/or \code{field.var} are not specified, the output 
 \description{
 Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a \code{.mat}
   simulation file from MATLAB including structures/variables and fields. It can be also used to read and store
-  simulated EPR spectrum in the form of a R data frame.
+  simulated EPR spectrum in the form of R data frame.
 }
 \examples{
 ## loading the package built-in

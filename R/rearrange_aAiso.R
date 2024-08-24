@@ -170,7 +170,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'   \eqn{A_{iso}}/\eqn{a_{iso}} values from the the original output file defined by the \code{path_to_QCHoutput}.
 #'   \strong{Default}: \code{output.text.origin = FALSE}.
 #' @param output.text.path Character string, setting the path to file containing
-#'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original uotput file defined
+#'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original output file defined
 #'   by the \code{path_to_QCHoutput}. See the previous argument.
 #'
 #'

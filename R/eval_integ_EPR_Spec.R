@@ -25,7 +25,7 @@
 #'  or smoothed by the \code{\link{smooth_EPR_Spec_by_npreg}}, prior to integration. Afterwards,
 #'  integrals are evaluated from the simulated or smoothed EPR spectra.
 #'  For the purpose of quantitative analysis the integrals are evaluated using the \code{B.units = "G"}
-#'  (see below). Therefore, depending on \eqn{B} unit (either \code{G} or \code{mT}) each resulting integral
+#'  (see Arguments). Therefore, depending on \eqn{B} unit (either \code{G} or \code{mT}) each resulting integral
 #'  column have to be optionally (in case of \code{mT}) multiplied by factor of \code{10} because
 #'  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
 #'  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
@@ -182,7 +182,7 @@
 #'                lineSpecs.form = "integrated"
 #'              )
 #' #
-#' ## plot corresponding double/sigmoid integral,
+#' ## plot corresponding to double/sigmoid integral,
 #' ## which is related to corrected single integral
 #' plot_EPR_Specs(triarylamine.decay.data1st.integ02,
 #'                x = "B_G",
@@ -200,7 +200,7 @@
 #' ## preview of the first 6 values
 #' triarylamine.decay.data1st.integ03[1:6]
 #' #
-#' ## Incorporation of vectorized integration into
+#' ## incorporation of vectorized integration into
 #' ## data "pipe" ("%>%") `dplyr` processing of EPR spectral
 #' ## time series, creating column with `sigmoid` integral
 #' ## where its corresponding single integral (intensity)
@@ -230,10 +230,10 @@
 #' ggplot2::ggplot(triarylamine.decay.data.integs) +
 #'   ggplot2::geom_point(ggplot2::aes(x = time_s,y = Area))
 #' #
-#' ## this does not correspond to examples
+#' ## this does not correspond to example
 #' ## in `eval_kinR_EPR_modelFit`, `eval_kin_EPR_ODE_model`
 #' ## or in `plot_theme_NoY_ticks` based on the same input data,
-#' ## as those `Area` vs `time` relationships were evaluated using
+#' ## as those `Area` vs `time` relations were evaluated using
 #' ## the simulated EPR spectra (see also `vignette("datasets")`)
 #' #
 #' \dontrun{

@@ -8,7 +8,7 @@ readEPR_params_slct_kin(path_to_dsc_par, origin = "xenon")
 }
 \arguments{
 \item{path_to_dsc_par}{String, path to \code{.DSC/.dsc} or \code{.par} file including all instrumental
-parameters provided by the EPR machine}
+parameters provided by the EPR machine.}
 
 \item{origin}{Character string corresponding to software used to acquire the EPR spectra
 on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether

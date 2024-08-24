@@ -56,7 +56,7 @@ The linear time change of \eqn{var} can be expressed like
  at the turning point( see also \code{var.switch} argument).
 }
 \examples{
-## calculate Potential after 30 s, starting from 200 mV
+## calculate potential after 30 s, starting from 200 mV
 ## into cathodic direction (reduction) by 5 mV s^{-1}
 convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
 #

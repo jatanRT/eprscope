@@ -585,7 +585,7 @@ plot_EPR_Specs_integ(tmpd.data.norm.02.integ,
 
 ```
 
-Obviously, the baseline of the single and double integrated $\small \ce{TMPD^{.+}}$ EPR spectrum is somewhat distorted and must be corrected. To fix the baseline distortion the `eval_integ_EPR_Spec()` function contains corresponding arguments which control the baseline approximation, under the complex peak, by a polynomial fit and provide its subtraction from the single integrated spectrum to evaluate the double/sigmoid integral more accurately ➨
+Obviously, the baseline of the single and double integrated $\small \ce{TMPD^{.+}}$ EPR spectrum is somewhat distorted and must be corrected. To fix the baseline distortion, the `eval_integ_EPR_Spec()` function contains corresponding arguments which control the baseline approximation, under the complex peak, by a polynomial fit and provide its subtraction from the single integrated spectrum to evaluate the double/sigmoid integral more accurately ➨
 
 ```{r tmpd-correct-epr-integ, fig.cap = "Corrected single and double integrated EPR spectrum of $\\small \\ce{TMPD^{.+}}$ (see also Figure \\@ref(fig:tmpd-basic-epr-integ-visual))."}
 

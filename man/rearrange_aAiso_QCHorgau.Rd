@@ -31,7 +31,7 @@ or \code{"orca"}.}
 \strong{Default}: \code{output.text.origin = FALSE}.}
 
 \item{output.text.path}{Character string, setting the path to file containing
-the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original uotput file defined
+the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original output file defined
 by the \code{path_to_QCHoutput}. See the previous argument.}
 }
 \value{

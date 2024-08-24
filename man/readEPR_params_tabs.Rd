@@ -33,7 +33,7 @@ List of data frames/tables containing:
 \description{
 Taking the instrumental parameters from \code{.DSC/.dsc} or \code{.par} files, applied
   to record the EPR Spectra and transfering them into list of \code{Tables/Data Frames} incl.
-  parameter values as well as character/string information about the measurement see also
+  parameter values as well as character/string information about the measurement, see also
   \code{\link{readEPR_param_slct}}.
 }
 \examples{

@@ -30,7 +30,7 @@ Providing more accurate time for EPR spectral line/spectrum appearance. It assum
 The actual time at the middle/crossing point
  is different from that recorder by the EPR acquisition software, see below. This is especially
  important in determining the kinetics of radical generation or decay.
- The time is recorded according to the following scheme where "^v" in the scheme denotes
+ The time is recorded according to the following scheme, where "^v" in the scheme denotes
  the derivative form of an EPR spectrum:
 
  \tabular{cccccc}{

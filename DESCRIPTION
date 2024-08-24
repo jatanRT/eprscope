@@ -41,7 +41,7 @@ Description: Processing, analysis and plottting of
              and fitting of the isotropic EPR spectra
              are also included in the package. Advanced simulation 
              parameters provided by the MATLAB-EasySpin toolbox 
-             and the results from quantum chemical calculations 
+             and results from the quantum chemical calculations 
              like g-factor and hyperfine splitting/coupling 
              constants (a/A) can be compared and summarized 
              in table-format in order to analyze the EPR spectra 

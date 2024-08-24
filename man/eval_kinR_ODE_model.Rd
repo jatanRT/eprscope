@@ -132,9 +132,11 @@ If the function \strong{is not used for fitting} of the experimental and process
 }
 \description{
 Theoretical quantitative kinetic profiles (such as concentration/amount/integral intensity)
-  as well as fitting of the experimental data for various predefined model reactions with
-  the radical(s) (labeled as "R"). Profiles are provided by the numeric solution of rate equations
-  by the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE). This function is inspired by:
+  as well as comparison with experimental data for various predefined model reactions involving
+  radical(s) (labeled as "R"). Profiles are evaluated by the numeric solution of rate equations
+  by the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
+  \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).
+  This function is inspired by:
   \href{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}{R-bloggers
   article}.
 }

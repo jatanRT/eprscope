@@ -6,34 +6,53 @@
 #'
 #'
 #' @description
-#'    A short description...(Integrals/Areas/Concentration \emph{vs.} Time)...
+#'    Fitting of the Integrals/Areas/Concentration/...etc. \emph{vs} time relation (either from experiment
+#'    or from integration of EPR spectral time series) in order to find the kinetic parameters
+#'    (like rate constant, \eqn{k} as well as (partial) reaction order) of proposed radical reaction.
+#'    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
+#'    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
+#'
+#'
+#' @references
+#'  \insertRef{levenmarq2023}{eprscope}
+#'
+#'  \insertRef{gavin2019levenberg}{eprscope}
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
 #' @param data.qt.expr A data frame object containing the concentrations/integral intensities/areas under
-#'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
-#'   columns are described by the character strings like those below \code{time} and \code{qvarR}.
-#' @param time Character string pointing to \code{time} \strong{column/variable name} in the original
+#'   the EPR spectra calculated using the experimental data as well as time column. These two essential
+#'   columns are described by character strings like those below (see arguments \code{time} and \code{qvarR}).
+#' @param time Character string pointing to \code{time} column/variable name in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.
-#' @param qvarR Character string pointing to \code{qvarR} \strong{column/variable name} in the original
-#'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.
+#' @param qvarR Character string pointing to \code{qvarR} (quantitative variable) column/variable
+#'   name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.
 #' @param params.guess Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 #'   ready for optimization/fitting.
-#' @param params.guess.lower Numeric vector of lower bounds on each parameter.
+#' @param params.guess.lower Numeric vector of lower bounds on each parameter in \code{params.guess}.
 #'   If not given, the \strong{default} (\code{params.guess.lower = NULL}) lower bound
 #'   corresponds to \code{-Inf} of each \code{params.guess} component.
-#' @param params.guess.upper Numeric vector of upper bounds on each parameter.
+#' @param params.guess.upper Numeric vector of upper bounds on each parameter in \code{params.guess}.
 #'   If not given, the \strong{default} (\code{params.guess.upper = NULL}) upper bound
 #'   corresponds to \code{+Inf} of each \code{params.guess} component.
 #' @param fit.kin.method Character string pointing to optimization/fitting method. So far,
-#'   the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used.
-#'   It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
+#'   the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used (additional methods
+#'   are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
 #'   because it is based on the numeric solution of the ordinary differential equations and not on the integration
 #'   of rate equations.
-#' @param time.correct Logical, if the time of the recorded series of EPR spectra needs to be corrected
-#'   (see also \code{\link{correct_time_Exp_Specs}}).
-#' @param path_to_dsc_par Character string ... argument/parameter... tbc
-#' @param origin Character string ... argument/parameter... tbc
+#' @param time.correct Logical, if time of recorded series of the EPR spectra needs to be corrected.
+#'   \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
+#'   (either by \code{\link{correct_time_Exp_Specs}} or by \code{\link{readEPR_Exp_Specs_kin}} with
+#'   a subsequent integration), prior to fitting procedure. If \code{time.correct = TRUE},
+#'   the \code{path} to file with EPR instrumental parameters (like \code{.DSC}/\code{.dsc} or \code{par})
+#'   must be defined (see the \code{path_to_dsc_par}).
+#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
+#'   \code{text} files including instrumental parameters and provided by the EPR machine.
+#'   \strong{Default}: \code{path_to_dsc_par = NULL}.
+#' @param origin Character string, corresponding to software which was used to acquire the EPR spectra,
+#'   essential to load the parameters by \code{path_to_dsc_par} (see also \code{\link{readEPR_params_slct_kin}}).
+#'   Two origins are availabe: \code{origin = "winepr"} or \code{origin = "xenon"}.
 #' @param ... additional parameters for \code{\link[minpack.lm]{nls.lm}}.
 #'
 #'
@@ -41,14 +60,14 @@
 #'   \describe{
 #'   \item{df}{Data frame object with the variables/columns such as \code{time},
 #'   experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area},
-#'   concentration \code{c_M} or number of radicals of the relevant EPR spectrum and the corresponding
+#'   concentration \code{c_M} or number of radicals of the relevant EPR spectrum and finally, the corresponding
 #'   quantitative variable \code{fitted} vector values.}
-#'   \item{plot}{Plot/Graph object \emph{Quantitative variable} \emph{vs.} \emph{Time} with the experimental
+#'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{df.coeffs}{Data frame object containing the optimized parameter values (\code{Estimates}),
+#'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
-#'   \item{sum.LSQ.min}{The minimal least-square sum after \code{N.evals}.}
+#'   \item{sum.LSQ.min}{Minimal least-square sum after \code{N.evals}.}
 #'   \item{convergence}{Vector corresponding to residual sum of squares at each iteration/evaluation.
 #'   The length of \code{convergence} is equal to the length of \code{N.evals}.}
 #'   }
@@ -156,6 +175,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   M <- NULL
   p.d.u. <- NULL
   Concentration <- NULL
+  #
   ## convert time if other than `s` appears
   if (time.unit == "min") {
     data.qt.expr[[time]] <- data.qt.expr[[time]] * 60

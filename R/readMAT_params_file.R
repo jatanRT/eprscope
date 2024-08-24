@@ -8,7 +8,7 @@
 #' @description
 #'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a \code{.mat}
 #'   simulation file from MATLAB including structures/variables and fields. It can be also used to read and store
-#'   simulated EPR spectrum in the form of a R data frame.
+#'   simulated EPR spectrum in the form of R data frame.
 #'
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.
