@@ -9,7 +9,7 @@
 #'   Loading the raw \code{.txt},\code{.asc} or \code{.csv} data of a simulated EPR spectrum from different
 #'   sources like "EasySpin" (\emph{Matlab}), "Xenon" (EPR spectrometer), "SimFonia" (WinEPR system)
 #'   or "csv" (comma separated values, universal format or MS Excel). The \code{ASCII} data
-#'   are automatically converted into data frame.
+#'   are automatically converted into data frame by the \code{\link[data.table]{fread}}, afterwards.
 #'
 #'
 #' @param path_to_ASC Character string, path to ASCII file/table
