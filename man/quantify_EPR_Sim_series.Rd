@@ -7,13 +7,13 @@
 quantify_EPR_Sim_series(
   data.spectra.series,
   dir_ASC_sim,
-  name_pattern_sim,
+  name.pattern.sim,
   sim.origin = "easyspin",
   var2nd.series = "time_s",
   B.unit = "G",
   Intensity.expr = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
-  optim.method = "slsqp",
+  optim.method = "sbplx",
   optim.params.init,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
@@ -23,7 +23,8 @@ quantify_EPR_Sim_series(
   pswarm.diameter = NULL,
   single.integ = "single_IntegSim",
   double.integ = "double_IntegSim",
-  output.area.stat = TRUE
+  output.area.stat = TRUE,
+  ...
 )
 }
 \arguments{
@@ -31,16 +32,17 @@ quantify_EPR_Sim_series(
 
 \item{dir_ASC_sim}{tbc}
 
-\item{name_pattern_sim}{description}
+\item{name.pattern.sim}{description}
 
-\item{sim.origin}{description from}
+\item{sim.origin}{Character string referring to "origin" of the simulated ASCII data.
+There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
+\code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.}
 
 \item{var2nd.series}{Character string referred to name of the second independent variable/quantity
-column in the original \code{data.spectra} (such as `time`,`Temperature`, `Electrochemical Potential`,
-`Microwave Power`...etc) altered upon individual experiments as a second variable
-(\code{var2nd.series}) and related to spectra/data. Data must be available in \strong{long table}
-(or \strong{tidy}) \strong{format} (see also \code{\link{readEPR_Exp_Specs_multif}}).
-\strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
+column in the original \code{data.spectra.series} (such as time, temperature, electrochemical potential,
+Microwave Power) altered upon individual experiments as a second variable.
+Data must be available in \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}.
+\strong{Default}: \code{var2nd.series = "time_s"}.}
 
 \item{B.unit}{Character string ...tbc...}
 
@@ -48,41 +50,107 @@ column in the original \code{data.spectra} (such as `time`,`Temperature`, `Elect
 
 \item{Intensity.sim}{Character string ...tbc ...}
 
-\item{optim.method}{Character string description tbc...following methods from \code{\link{optim_for_EPR_fitness}}
-are available ...TBC...}
+\item{optim.method}{Character string, pointing to applied optimization method/algorithm.
+One may choose one from those listed in \code{\link{optim_for_EPR_fitness}}, \strong{default}:
+\code{method = "sbplx"}, setting up
+the \href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex}{"Subplex" method}.}
 
-\item{optim.params.init}{Numeric vector...description tbc...1. element = basiline constant, 2.,3...etc (following)
-elements multiplication intensity constants of all spectral components}
+\item{optim.params.init}{Numeric vector with the elements: baseline constant/intercept
+follow by simulated intensity multiplication coefficient for each EPR spectral component.
+Therefore, the length of this vector is equal to (number of components + 1).}
 
-\item{optim.params.lower}{Numeric vector (with the length of \code{optim.params.init}) with the lower bound constraints.}
+\item{optim.params.lower}{Numeric vector with the length of \code{optim.params.init} and the lower
+bound constraints. \strong{Default}: \code{optim.params.init = NULL}, actually corresponding
+to vector with all \code{0} value elements.}
 
-\item{optim.params.upper}{Numeric vector (with the length of \code{optim.params.init}) with the upper bound constraints.}
+\item{optim.params.upper}{Numeric vector with the length of \code{optim.params.init}) and the upper
+bound constraints. \strong{Default}: \code{optim.params.init = NULL}, actually corresponding
+to vector with all \code{0.9} value elements.}
 
-\item{Nmax.evals}{Numeric, maximum number of function evaluations or iterations.}
+\item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
+The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
+\code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend optimization
+time.}
 
-\item{tol.step}{Numeric, the smallest optimization step (relative change) to stop
-the optimization or fitting procedure.}
+\item{tol.step}{Numeric, the smallest optimization step (relative change) between
+2 iterations to stop the optimization procedure. For the \code{optim.method = "pswarm"}
+(particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
+Once the maximal distance between the "best" particle and all the others is less
+than \code{tol.step} * \code{pswarm.diameter}) the algorithm restarts.
+See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.}
 
-\item{pswarm.size}{Numeric value equal to particle swarm size (i. e. number of particles).}
+\item{pswarm.size}{Numeric value equal to particle swarm size (i.e. number of particles),
+if \code{optim.method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
+corresponds to \code{floor(10+2*sqrt(length(x.0)))}.}
 
-\item{pswarm.diameter}{Numeric value corresponding to diameter of search space.}
+\item{pswarm.diameter}{Numeric value corresponding to diameter of the particle swarm search space
+(in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
+refers to the Euclidian distance, defined as:
+\deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}}
 
 \item{single.integ}{tbc}
 
-\item{double.integ}{tbc can be also \code{NULL} in case of single integral spectral series input}
+\item{double.integ}{tbc can be also \code{NULL} in case of single integral spectral series input.}
 
-\item{output.area.stat}{tbc}
+\item{output.area.stat}{Logical, whether to summarize all fitted EPR spectral components, in columns,
+for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
+(see \code{Details}).\strong{Default}: \code{output.area.stat = TRUE}.}
+
+\item{...}{additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).}
 }
 \value{
-tbc
+Function provides data frame object, depending on the \code{output.area.stat} argument,
+  as listed below:
+  \enumerate{
+  \item If \code{output.area.stat = TRUE} (\strong{default}), the resulting data frame consists
+  of columns/variables like integrals/areas for each simulated and fitted EPR spectrum, where
+  the components are denoted by uppercase letters (\code{Area_Sim_A}, \code{Area_Sim_B},...etc.);
+  best fitted/optimized coefficients to multiply the intensities (\code{Optim_CoeffInt_Sim_A},
+  \code{Optim_CoeffInt_Sim_B},...etc); best fitted/optimized intercept (or baseline constant,
+  \code{Optim_intercept}); minimal sum of residual squares (\code{minLSQ_sum}); number
+  of evaluations/iterations (\code{N_evals}) and finally convergence information/number (\code{N_converg},
+  like already described in \code{\link{optim_for_EPR_fitness}}). These variables are presented for each
+  \code{var2nd.series} (e.g. time) point like example for one EPR spectral component:
+  \tabular{lcccccc}{
+  \strong{time_s} \tab \strong{Area_Sim_A} \tab \strong{Optim_CoeffInt_Sim_A} \tab \strong{Optim_intercept} \tab
+  \strong{minLSQ_sum} \tab \strong{N_evals} \tab \strong{N_converg} \cr
+  6 \tab 0.020624473 \tab 0.052843937 \tab 5.508809e-10 \tab 2.289953e-07 \tab 198 \tab 4 \cr
+  21 \tab 0.020217930\tab 0.051802287\tab 5.401823e-10 \tab 2.438172e-07 \tab 177 \tab 4 \cr
+  36 \tab 0.018836579 \tab 0.048263010 \tab 5.029705e-10 \tab 2.662651e-07 \tab 201 \tab 4 \cr
+  }
+
+  \item Tidy/long table format of the original \code{data.spectra.series} with additional
+  columns/variables (best fitted simulated intensities) for all spectral components: A, B, C, ...etc.
+  }
 }
 \description{
-tbc
+If the analyzed EPR spectrum may consist of
 }
 \examples{
 \dontrun{
-tbc
-tbc
+## example with default arguments corresponding
+## to one simulated spectral component,
+## `optim.params.init` has the length
+## of (number of components + 1)
+quant.data.sim.test.a <-
+  quantify_EPR_Sim_series(data.spectra.series,
+     dir_ASC_sim = "./",
+     optim.method = "sbplx",
+     name.pattern.sim = "DHMB0_1st_04_SimA",
+     optim.params.init = c(0,0.8),
+     output.area.stat = TRUE)
+#
+## similar example with two components
+## (simulated spectra) and tidy data frame
+## output (not the summarized one)
+quant.data.sim.test.b <-
+  quantify_EPR_Sim_series(data.spectra.series,
+     dir_ASC_sim = "./",
+     optim.method = "sbplx",
+     name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]",
+     optim.params.init = c(0,0.8,0.2),
+     output.area.stat = FALSE)
+#
 }
 
 

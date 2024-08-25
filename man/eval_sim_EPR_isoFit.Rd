@@ -154,9 +154,6 @@ List with following components depending on \code{sim.check}:
 \description{
 A short description...
 }
-\details{
-Additional details...
-}
 \examples{
 ## loading built-in example dataset which is simple
 ## EPR spectrum of the aminoxyl radical:

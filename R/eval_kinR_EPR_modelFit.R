@@ -53,7 +53,7 @@
 #' @param origin Character string, corresponding to software which was used to acquire the EPR spectra,
 #'   essential to load the parameters by \code{path_to_dsc_par} (see also \code{\link{readEPR_params_slct_kin}}).
 #'   Two origins are availabe: \code{origin = "winepr"} or \code{origin = "xenon"}.
-#' @param ... additional parameters for \code{\link[minpack.lm]{nls.lm}}.
+#' @param ... additional arguments for \code{\link[minpack.lm]{nls.lm}}.
 #'
 #'
 #' @return List with the following components is available:
