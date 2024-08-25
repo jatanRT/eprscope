@@ -35,9 +35,9 @@ EPR spectrum/data.}
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{method}{Character string corresponding to method to fit a smoothing spline provided by \code{{npreg}}
-package (see the \code{method} argument in \code{\link[npreg]{ss}}). The following methods are available
-(they are shortly described
+\item{method}{Character string corresponding to method to fit an EPR spectrum by a smoothing spline
+from \code{{npreg}} package (see the \code{method} argument in \code{\link[npreg]{ss}}).
+The following methods are available (they are shortly described
 in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}
 or additional information may be found in \code{References}) =>
 \tabular{ll}{
@@ -55,23 +55,23 @@ or additional information may be found in \code{References}) =>
 \item{output.vec}{Logical, whether the function output have to be vectorized, i.e. only the vector
 of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data,
 which can be handily processed by \code{\link[dplyr]{group_by}} using the
-`pipe` operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = NULL}.}
+\code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = NULL}.}
 
 \item{...}{additional arguments passed to the function (see also \code{\link[npreg]{ss}} function).}
 }
 \value{
 If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR intensity
-  (either dereivative \code{lineSpecs.form = "derivative"} or integrated
+  (either derivative \code{lineSpecs.form = "derivative"} or integrated
   \code{lineSpecs.form = "integrated"/"absorption"}) with the length of the original \code{Intensity}.
-  Contrarily if the \code{output.vec} is set to \code{FALSE} the following list is returned =>
+  Contrarily, if the \code{output.vec} is set to \code{FALSE} the following list is returned =>
   \describe{
   \item{df}{Original data frame with the addition column corresponding to smoothed EPR intensity
   (derivative or integrated).}
-  \item{plot}{Plot/Graph object \emph{EPR intensity} \emph{vs.} \emph{B} with the experimental
-  data and its corresponding smoothed relationship performed by splines.}
+  \item{plot}{Plot object (list) \emph{EPR intensity} \emph{vs.} \emph{B} with the experimental
+  data and its corresponding smoothed relation performed by splines.}
   \item{rss}{Weighted (if the optional parameter \code{w} is defined) residual sum of squares.}
   \item{degs.freedom}{Equivalent degrees of freedom used.}
-  \item{fit}{List with components to characterize the spline fit (Details see \code{fit} value
+  \item{fit}{List with elements to characterize the spline fit (Details see \code{fit} value
   in \code{\link[npreg]{ss}} function documentation).}
   \item{sigma}{Estimated error standard deviation.}
   \item{aic}{Akaike’s Information Criterion (if \code{method = "AIC"}). A negative number that has
@@ -85,7 +85,7 @@ If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR
 \description{
 Smoothing of the EPR spectra by non-parametric fitting a smoothing spline, \code{\link[npreg]{ss}}
   from \href{https://cran.r-project.org/web/packages/npreg/npreg.pdf}{npreg} package, onto the experimental
-  EPR spectrum.
+  EPR spectrum/spectra.
 }
 \details{
 The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials,
@@ -99,15 +99,80 @@ The EPR spectrum is fitted by splines which, by default, correspond to cubic Ber
   to \code{m = 1} and the highest quintic polynomial/spline is referred as \code{m = 3}:
   \deqn{I_{\text{EPR}}(B) = B^5 - (5/2)\,B^4 + (5/3)\,B^3 - (1/6)\,B}
   If the optional argument \code{bernoulli} is set to \code{FALSE} then "classic" definition
-  of a smoothing spline, where the function estimate is a piece-wise polynomial function with pieces
-  of degree 2m−1, is produced. Additional optional arguments from \code{\link[npreg]{ss}} like knots
+  of a smoothing spline is produced. In such case the function estimate is a piece-wise polynomial function
+  with pieces of degree 2m−1. Additional optional arguments from \code{\link[npreg]{ss}} like knots
   definition, equivalent degrees of freedom, vector of weights...etc. can be applied as well.
 }
 \examples{
-\dontrun{
-TODO
-TODO
-}
+## loading the built-in package example
+## time series EPR spectra:
+triarylamine.decay.series.dsc.path <-
+load_data_example(file =
+        "Triarylamine_radCat_decay_series.DSC")
+triarylamine.decay.series.asc.path <-
+load_data_example(file =
+        "Triarylamine_radCat_decay_series.zip")
+unzip(triarylamine.decay.series.asc.path,
+      exdir = tempdir()
+      )
+## loading the kinetics:
+triarylamine.decay.series.data <-
+  readEPR_Exp_Specs_kin(name.root =
+    "Triarylamine_radCat_decay_series",
+    dir_ASC = tempdir(),
+    dir_dsc_par =
+      system.file("extdata",
+                  package = "eprscope")
+   )
+#
+## select the first spectrum
+triarylamine.decay.series.data1st <-
+   triarylamine.decay.series.data$df \%>\%
+     dplyr::filter(time_s ==
+       triarylamine.decay.series.data$time[1])
+#
+## smoothing the 1st EPR spectrum with default
+## arguments/parameters
+triarylamine.1st.spec.smooth <-
+  smooth_EPR_Spec_by_npreg(data.spectr =
+    triarylamine.decay.series.data1st
+    )
+#
+## plot preview
+triarylamine.1st.spec.smooth$plot
+#
+## residual sum of squares preview
+triarylamine.1st.spec.smooth$rss
+#
+## estimated error standard deviation
+triarylamine.1st.spec.smooth$sigma
+#
+## smoothing of all EPR spectra in the series
+## with default arguments using the data
+## "pipe" ("\%>\%") `dplyr` processing
+triarylamine.all.spec.smooth <-
+  triarylamine.decay.series.data$df \%>\%
+    dplyr::group_by(time_s) \%>\%
+    dplyr::mutate(smoothed =
+      smooth_EPR_Spec_by_npreg(
+        dplyr::pick(B_mT,dIepr_over_dB),
+        output.vec = TRUE
+     )
+  )
+#
+## data frame preview
+head(triarylamine.all.spec.smooth)
+#
+## plot all smoothed spectra in the series
+plot_EPR_Specs(data.spectra =
+          triarylamine.all.spec.smooth,
+  Intensity = "smoothed",
+  var2nd.series = "time_s",
+  var2nd.series.slct.by = 10,
+  line.colors = c("darkorange",
+                  "darkblue"),
+  legend.title = "Time (s)"
+  )
 
 
 }
