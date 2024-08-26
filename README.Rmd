@@ -32,7 +32,7 @@ Before the installation, please make sure that you have already followed instruc
 
 ```{r installation}
 
-# So far, the package can be installed by =>
+# The package can be installed by =>
 
 # install.packages("devtools")
 # devtools::install_github("jatanRT/eprscope.git")
@@ -51,7 +51,7 @@ Additionally, **an open-source scientific and technical publishing system** [Qua
 
 ## Usage
 
-In this section couple of examples are shown in order to briefly demonstrate the package functionality. More detailed description can be found within the articles/vignettes or documentation examples.
+In this section, couple of examples are shown in order to briefly demonstrate the package functionality. More detailed description can be found within the articles/vignettes or documentation examples.
 
 ### Reading Files with Instrumental Parameters
 

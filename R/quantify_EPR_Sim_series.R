@@ -6,24 +6,54 @@
 #'
 #'
 #' @description
-#'   If the analyzed EPR spectrum may consist of
+#'   Analyzed EPR spectra may consists of several components (see also the \code{\link{eval_sim_EPR_iso_combo}}
+#'   function), like the overlapped EPR spectra of several radicals. In order to follow the concentration/amount
+#'   variations of each individual radical during the kinetic/temperature/...series, one must figure out
+#'   how those individual spectral components are actually changed. In the first approximation, it means,
+#'   to follow the corresponding EPR intensities/integrals, whereas the component positions (\eqn{g}-values)
+#'   are assumed to be fixed (or the changes can be neglected). Therefore, the actual function takes the linear
+#'   combination of the spectral intensities of components and optimizes the related multiplication coefficients
+#'   (refer to the \code{optim.params.init} argument) by the methods gathered in the
+#'   \code{\link{optim_for_EPR_fitness}}. The goal is to fit their sum onto each experimental spectrum in the series.
+#'   So far, the maximal number of components is set to 6.
 #'
 #'
 #'
-#' @param data.spectra.series Data frame object with...corresponding to...TBC...
-#' @param dir_ASC_sim tbc
-#' @param name.pattern.sim description
+#' @param data.spectra.series Spectrum data frame/table object containing magnetic flux density
+#'   as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
+#'   in mT (or \code{B_G} in gauss). The \code{y/Intensity} variable
+#'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
+#'   integrated spectral intensities are present, they can be labeled accordingly.
+#'   See also \code{Intensity.expr} parameter/argument. A second independent variable
+#'   \code{var2nd.series} column (e.g. \code{var2nd.series = "time_s"}) must be available. In such case,
+#'   the entire \code{data.spectra} must be present in the form of
+#'   \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
+#'   (see also parameter/argument \code{var2nd.series}). Such data frame can be created, e.g.
+#'   by the \code{\link{readEPR_Exp_Specs_kin}} function.
+#' @param dir_ASC_sim Character string, pointing to folder where the simulated EPR spectra of all
+#'   components are stored. Path can be alternatively specified by the \code{\link[base]{file.path}} function.
+#' @param name.pattern.sim Character string pattern from file names related to simulated EPR spectral data
+#'   like \code{name.pattern.sim = "DHMB0_1st_04_SimA"}
+#'   or \code{name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]"} (for the file names \code{..._SimA},
+#'   \code{..._SimB},...etc). It assumes, those file must have similar names and this pattern appears
+#'   at the beginning of the file name. One may also consult
+#'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}.
 #' @param sim.origin Character string referring to "origin" of the simulated ASCII data.
 #'   There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
 #'   \code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.
 #' @param var2nd.series Character string referred to name of the second independent variable/quantity
 #'   column in the original \code{data.spectra.series} (such as time, temperature, electrochemical potential,
 #'   Microwave Power) altered upon individual experiments as a second variable.
-#'   Data must be available in \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}.
+#'   Data must be available in tidy/long table format.
 #'   \strong{Default}: \code{var2nd.series = "time_s"}.
-#' @param B.unit Character string ...tbc...
-#' @param Intensity.expr Character string ...tbc ...
-#' @param Intensity.sim Character string ...tbc ...
+#' @param B.unit Character string pointing to unit of magnetic flux density
+#'   like \code{"G"} (Gauss) or \code{"mT"} (millitesla), \strong{default}: \code{B.unit = "G"}.
+#'   THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS/DATAFRAMES.
+#' @param Intensity.expr Character string pointing to column name of the experimental EPR intensity within
+#'   the original \code{data.spectra.series}. \strong{Default}: \code{dIepr_over_dB}.
+#' @param Intensity.sim Character string pointing to column name of the simulated EPR intensity within the related
+#'   data frames (check the simulated spectral data for all components).
+#'   \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param optim.method Character string, pointing to applied optimization method/algorithm.
 #'   One may choose one from those listed in \code{\link{optim_for_EPR_fitness}}, \strong{default}:
 #'   \code{method = "sbplx"}, setting up
@@ -39,7 +69,7 @@
 #'   to vector with all \code{0.9} value elements.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
-#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend optimization
+#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend the optimization
 #'   time.
 #' @param tol.step Numeric, the smallest optimization step (relative change) between
 #'   2 iterations to stop the optimization procedure. For the \code{optim.method = "pswarm"}
@@ -54,8 +84,12 @@
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidian distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
-#' @param single.integ tbc
-#' @param double.integ tbc can be also \code{NULL} in case of single integral spectral series input.
+#' @param single.integ Character string, setting up the column/variable name related to single-integrated spectrum
+#'   within the output data frame, \strong{default}: \code{single.integ = "single_IntegSim"}.
+#' @param double.integ Character string, setting up the column/variable name related to double-integrated spectrum
+#'   within the output data frame, \strong{default}: \code{double.integ = "single_IntegSim"}.
+#'   If \code{double.integ = NULL} only single integrals are calculated/returned (e.g. in the case of
+#'   single integrated spectral data).
 #' @param output.area.stat Logical, whether to summarize all fitted EPR spectral components, in columns,
 #'   for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
 #'   (see \code{Details}).\strong{Default}: \code{output.area.stat = TRUE}.

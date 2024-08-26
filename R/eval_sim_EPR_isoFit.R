@@ -15,7 +15,9 @@
 #'   or \eqn{FWHM} depending on \code{lineSpecs.form}); spectral baseline (see the \code{baseline.correct}) and finally
 #'   the intensity (multiplication coefficient) are optimized by methods listed in \code{\link{optim_for_EPR_fitness}} in order
 #'   to match the experimental EPR spectrum. The \code{lineG.content} corresponding parameter, is the only one,
-#'   which needs to be varied "manually".
+#'   which needs to be varied "manually". In order to interactively control the optimization/fitting process,
+#'   similarly to that of in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
+#'   a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is planned to develop, in the future.
 #'
 #'
 #' @inheritParams eval_gFactor_Spec

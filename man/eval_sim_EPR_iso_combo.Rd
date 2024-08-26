@@ -40,7 +40,7 @@ as well as by \code{origin} arguments.}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density which is to be presented
 on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
-\strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
+\strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !}
 
 \item{path_to_dsc_par}{Character string, path (can be also acquired by the \code{\link[base]{file.path}})

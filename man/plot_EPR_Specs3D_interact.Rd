@@ -32,7 +32,7 @@ plot_EPR_Specs3D_interact(
 or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
 in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
-integrated or simulated spectra intensities are present, they can be labeled accordingly.
+integrated or simulated spectral intensities are present, they can be labeled accordingly.
 See also \code{Intensity} parameter/argument. A second independent variable
 \code{var2nd.series} column (e.g. \code{var2nd.series = "time_s"}) must be available. In such case,
 the entire \code{data.spectra} must be present in the form of

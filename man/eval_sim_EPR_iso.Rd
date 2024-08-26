@@ -54,7 +54,7 @@ the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density which is to be presented
 on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
-\strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
+\strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !}
 
 \item{nuclear.system}{List containing the information about groups of equivalent nuclei
@@ -138,6 +138,7 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   constants \eqn{A_{\text{iso}}/a_{\text{iso}}} (see also the \code{nuclear.system} argument) as well as
   by the above-mentioned linewidth. Many organic radicals exhibit such EPR spectra at room temperature
   and in solutions of low viscosities \insertCite{Gerson2003}{eprscope}.
+
   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined by \code{instrum.params}
   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
@@ -149,9 +150,10 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
   are defined by \code{lineG.content} argument, actually corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
-  is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument) and multiplicities
-  (relative intensity ratios) are computed by the binomic/multinomic coefficients taking into account the spin quantum numbers
-  of interacting nuclei (and their natural abundance) under consideration.
+  is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument)
+  the and multiplicities (relative intensity ratios) are computed by the binomic/multinomic coefficients
+  taking into account the spin quantum numbers of interacting nuclei (and their natural abundance)
+  under consideration.
 }
 \examples{
 ## simulation of simple EPR spectrum (without hyperfine

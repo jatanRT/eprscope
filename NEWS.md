@@ -1,3 +1,50 @@
+# eprscope 0.1.11 (1st public release)
+
+## 2024-08-27
+
+### Bug Fixes/Critical Updates
+
+* reading of the spectral time series coming from `WinEpr` in `readEPR_Exp_Specs`
+
+* the *g*-value scale on *x*-axis within plotting functions is now properly
+  displayed
+  
+* if the related `time(series)` unit is converted, in relevant data frames, 
+  the corresponding column is renamed accordingly to inherit the new unit,
+  like `time_s`
+  
+* multiread ...TBC...addded option fro character names  
+
+### Updates
+
+* polynomial to fit the distribution of (*B*<sub>1</sub>,*B*<sub>m</sub>) 
+  within the cavity was extended in `quantify_EPR_Abs`. Now, the degrees from
+  5 to 12 are available
+  
+* additionally, the above-corresponding (*B*<sub>1</sub>,*B*<sub>m</sub>) 
+  theoretical distribution calculation was removed for now, and will be addressed
+  in the future
+
+* intensity, *B*, and `time.series` column indices arguments, in general reading
+  function `readEPR_Exp_Specs`, were renamed (using `.id`) in order to clearly
+  point to names in `col.names` 
+  
+* `magnettech` option added to reading functions to read the EPR spectra
+  and parameters from these instruments
+  
+* the optimization algorithms, other than `diff-levenmarq`, were removed
+  from `eval_kinR_EPR_modelFit` for now, additional optimization
+  methods will be implemented later on
+
+### New Functions/Files/Vignettes  
+
+* perinaphthenyl ENDOR spectral data added to package database
+  for documentation examples (in plotting, reading functions)
+  
+* setting up the continuous integration R CMD check via github
+  actions
+
+
 # eprscope 0.1.10
 
 ## 2024-01-24
