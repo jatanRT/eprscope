@@ -109,7 +109,6 @@ simulation.iso <-
       list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
       list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
     ),
-    natur.abund = TRUE,
     lineGL.DeltaB = list(0.24, NULL)
   ) # linewidth in G
 #
@@ -248,4 +247,4 @@ Any additional questions, comments, remarks or issues can be addressed through s
 
 ## Acknowledgements
 
-I would like to express a deep gratitude to my colleagues from the [NMR Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially, [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>, [Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>. Without the fruitful environment within the NMR Spectroscopy team it wouldn't be possible to develop such a project like this. Also, I'd like to give a special thanks to my brother [Dr. Peter Tarábek](https://orcid.org/0000-0002-7181-7136) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} for his valuable comments and remarks as well as to [Prof. Milan Mazúr](https://www.scopus.com/authid/detail.uri?authorId=7102655401) for discussion about the quantitative EPR theory and applications.
+I would like to express a deep gratitude to my colleagues from the [NMR Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially, [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>, [Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} and [Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070) <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>. Without the fruitful environment within the NMR Spectroscopy team it wouldn't be possible to develop such a project like this. Also, I'd like to give a special thanks to my brother [Dr. Peter Tarábek](https://orcid.org/0000-0002-7181-7136) ![](https://orcid.org/assets/vectors/orcid.logo.icon.svg){width="16"} for his valuable comments and remarks.

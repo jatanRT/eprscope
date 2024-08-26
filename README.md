@@ -2,7 +2,6 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -152,7 +151,6 @@ simulation.iso <-
       list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
       list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
     ),
-    natur.abund = TRUE,
     lineGL.DeltaB = list(0.24, NULL)
   ) # linewidth in G
 #
@@ -227,9 +225,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>          Estimate   Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
-#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
-#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
+#> qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149
+#> k1     0.06043805 5.451458e-03  11.08658  6.161497e-19
+#> alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101
 ```
 
 ## Help, Questions and Contribution
@@ -355,7 +353,4 @@ wouldn’t be possible to develop such a project like this. Also, I’d like
 to give a special thanks to my brother [Dr. Peter
 Tarábek](https://orcid.org/0000-0002-7181-7136)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
-width="16" /> for his valuable comments and remarks as well as to
-[Prof. Milan
-Mazúr](https://www.scopus.com/authid/detail.uri?authorId=7102655401) for
-discussion about the quantitative EPR theory and applications.
+width="16" /> for his valuable comments and remarks.

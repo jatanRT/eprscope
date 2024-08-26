@@ -79,7 +79,7 @@ or plotting. \strong{Default}: \code{output.df = TRUE}.}
 }
 \value{
 Depending on \code{output.df} argument, function returns plot object including all selected
-  integrated EPR spectra (\code{output.df = FALSE},\strong{default}) or list (\code{output.df = FALSE})
+  integrated EPR spectra (\code{output.df = FALSE},\strong{default}) or list (\code{output.df = TRUE})
   consisting of
   \describe{
   \item{df}{Data frame object with intensities of all selected integrals and magnetic flux density \eqn{B}

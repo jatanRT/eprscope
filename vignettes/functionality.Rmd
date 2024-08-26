@@ -503,10 +503,8 @@ sim.tmpd.iso <-
       list(
         list("14N", 2, 18.6), # A(2 x 14N) = 18.6 MHz
         list("1H", 4, 5.5), # A(4 x 1H) = 5.5 MHz
-        list("1H", 12, 19.6)
-      ), # A(12 x 1H) = 19.6 MHz
-    # natural abundance of the nuclei:
-    natur.abund = TRUE,
+        list("1H", 12, 19.6) # A(12 x 1H) = 19.6 MHz
+      ), 
     # Gauss (G) & Lorentz (L) linewidth (mT):
     lineGL.DeltaB = list(0.05, 0.05),
     # pseudo-Voigt line shape with 0.5 G + 0.5 L:
@@ -537,7 +535,7 @@ present_EPR_Sim_Spec(
 
 ```
 
-Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to gather a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` may be needed.
+Although the simulated $\ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to get a better simulated spectrum a fitting/optimization function `eval_sim_EPR_isoFit()` was performed and the result may be found in `Examples` of the `present_EPR_Sim_Spec()` function.
 
 ## Integrating the EPR Spectrum
 

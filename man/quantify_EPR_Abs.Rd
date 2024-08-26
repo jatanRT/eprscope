@@ -37,17 +37,17 @@ EPR spectrum \cr
 \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
 from the \code{path_to_dsc_par} based on the \code{origin}.}
 
-\item{path_to_dsc_par}{Character string, path (can be also gathered by \code{\link[base]{file.path}})
+\item{path_to_dsc_par}{Character string, path (can be also acquired by the \code{\link[base]{file.path}})
 to \code{.DSC/.dsc} or \code{.par} (depending on the OS, see \code{origin} argument)
 \code{text} files including all instrumental parameters from the EPR machine.
 \strong{Default}: \code{path_to_dsc_par = NULL} in case if the \code{instrum.params}
-is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_dsc_par}
-AS WELL AS \code{origin} MUST BE DEFINED !}
+is already defined. IF the \code{instrum.params = NULL} then BOTH the \code{path_to_dsc_par}
+AS WELL AS the \code{origin} MUST BE DEFINED !}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they
-were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
+\item{origin}{Character string, corresponding to software which was used to obtain the EPR spectra
+on spectrometers, because the files are slightly different, whether they
+were recorded by the "WinEpr" (\code{origin = "winepr"}) or by "Xenon".
+\strong{Default}: \code{origin = NULL} in case no file is used to extract
 the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
 \item{qValue}{Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
