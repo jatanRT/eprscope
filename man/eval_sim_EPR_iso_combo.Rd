@@ -21,7 +21,7 @@ eval_sim_EPR_iso_combo(
 )
 }
 \arguments{
-\item{g.iso.vec}{Numeric vector...tbc...}
+\item{g.iso.vec}{Numeric vector.with all \eqn{g_{\text{iso}}} values fro each component.}
 
 \item{instrum.params}{Named numeric vector containing instrumental parameters required
 for the simulation =>
@@ -31,61 +31,69 @@ for the simulation =>
 \eqn{B_{\text{SW}}}) \cr
 \code{Npoints} \tab number of spectral points (corresponding to resolution) within
 the "sweep width" \cr
-\code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+\code{mwGHz} \tab applied microwave frequency in \code{GHz} to record the continuous wave (CW)
 EPR spectrum \cr
 }
 \strong{Default} values are chosen to cover the EPR spectra of common organic radicals.
-If \code{instrum.params = NULL} then parameters are provided by \code{path_to_dsc_par}
-as well as by \code{origin}.}
+If \code{instrum.params = NULL} then parameters must be provided by the \code{path_to_dsc_par}
+as well as by \code{origin} arguments.}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density which is to be presented
-on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
+on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
 \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
-like `cf` and `sw` within the \code{instrum.params} AS WELL AS THOSE IN \code{lineGL.DeltaB} !}
+like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !}
 
-\item{path_to_dsc_par}{Character string, path (can be also gathered by \code{\link[base]{file.path}})
+\item{path_to_dsc_par}{Character string, path (can be also acquired by the \code{\link[base]{file.path}})
 to \code{.DSC/.dsc} or \code{.par} (depending on the OS, see \code{origin} argument)
 \code{text} files including all instrumental parameters from the EPR machine.
 \strong{Default}: \code{path_to_dsc_par = NULL} in case if the \code{instrum.params}
-is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_dsc_par}
-AS WELL AS \code{origin} MUST BE DEFINED !}
+is already defined. IF the \code{instrum.params = NULL} then BOTH the \code{path_to_dsc_par}
+AS WELL AS the \code{origin} MUST BE DEFINED !}
 
-\item{origin}{String, corresponding to software which was used to acquire the EPR spectra
-on BRUKER spectrometers, because the files are slightly different depending on whether they
-were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
+\item{origin}{Character string, corresponding to software which was used to obtain the EPR spectra
+on spectrometers, because the files are slightly different, whether they
+were recorded by the "WinEpr" (\code{origin = "winepr"}) or by "Xenon".
+\strong{Default}: \code{origin = NULL} in case no file is used to extract
 the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
-\item{nuclear.system}{Nested list ...tbc...}
+\item{nuclear.system}{Nested list with the elements corresponding to considered interacting nuclei for each EPR
+spectral component. For example, the \code{list(list("1H",2,24),NULL,list(list("14N",1,45),list("1H",4,15)))}
+with the following components: 1. \eqn{2\times A(\text{1H}) = 24\,\text{MHz}}, 2. single line spectrum
+without HF structure, 3. \eqn{1\times A(\text{14N}) = 45\,\text{MHz} + 1\times A(\text{1H}) = 15\,\text{MHz}}.}
 
-\item{natur.abund.vec}{Logical vector ...tbc ...}
+\item{natur.abund.vec}{Logical vector, whether to consider natural abundance of the interacting nuclei within
+the components (see also \code{Examples}) like \code{c(TRUE,FALSE,TRUE)}.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 of the analyzed EPR spectrum/data.}
 
-\item{lineGL.DeltaB}{Nested list ...tbc ...}
+\item{lineGL.DeltaB}{Nested list of the Gaussian and Lorentzian linewidths for all individual components
+like \code{list(list(1,NULL),list(3,NULL),list(1,NULL))}.}
 
-\item{lineG.content.vec}{Numeric vector ...tbc...}
+\item{lineG.content.vec}{Numeric vector corresponding to Gaussian line content for all individual components
+of the EPR spectrum like \code{1,1,1} (all spectral components are described by the pure Gaussian line).}
 
-\item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related
-data frame, which is also available in the output list. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
+\item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related output
+data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
-\item{Intensity.sim.coeffs.vec}{Numeric vector ...tbc...}
+\item{Intensity.sim.coeffs.vec}{Numeric vector of multiplication EPR intensity coefficients like \code{c(2,10,0.2)}.}
 
-\item{plot.sim.interact}{Character string "components" or "sum" or NULL (\code{default})}
+\item{plot.sim.interact}{Character string, indicating the interactive plot outputs, to visualize either individual
+\code{"components"} or \code{"sum"} of all components. As \strong{default}, the interactive plot is switched
+off (\code{plot.sim.interact = NULL}).}
 }
 \value{
 List of the following data frames and plots in case of
   \code{plot.sim.interact = NULL} =>
    \describe{
-   \item{df}{Long-format data frame with the simulation components A, B, C, ...
+   \item{df}{Long-format data frame with the simulated EPR spectral components A, B, C, ...
     (e.g. representing the individual radicals) as a categorical variable
-    + magnetic flux density, intensity as well as with the sigmoid integral
+    + magnetic flux density, intensity as well as their sigmoid integral
     column/variable.}
     \item{df.areas}{Data frame with simulation components A, B, C ...and their
-    corresponding double/single integrals (`areas`) and with their related ratios
-    to overall integral sum (`weighted_areas`).}
+    corresponding double/single integrals (or \code{areas}) and their relative ratios
+    to overall integral sum (\code{weighted_areas}).}
     \item{df.sum}{Data frame with the overall intensity (+ magnetic flux density)
     as well as integral sum from all simulation components.}
     \item{plot.comps}{Overlay plot object with all simulated components with their
@@ -93,11 +101,15 @@ List of the following data frames and plots in case of
     \item{plot.sum}{Plot object displaying the sum of all simulation components.}
    }
   If \code{plot.sim.interact} is activated (i.e. possesses either \code{"components"}
-  or \code{"sum"} values) interactive plots (based on `plotly`) are presented either with
-  all individual components or with the overall simulated sum EPR spectrum, respectively.
+  or \code{"sum"} values) interactive plots (based on \code{plotly}) are presented either with
+  all individual components or with the overall simulated EPR spectrum sum, respectively.
 }
 \description{
-A short description...tbc...
+This is an extension of the "basic" EPR simulation provided by the \code{\link{eval_sim_EPR_iso}} function,
+  where one can combine several simulated EPR spectra (components), even with (partial) overlay,
+  into one spectrum corresponding to sum of all components. Such processing might be useful for the simulation
+  of EPR spectra with satellites, especially of those consisted of naturally occurring
+  isotopes like the one presented in \code{Examples}.
 }
 \examples{
 ## Simulation of EPR spectrum of TEMPO (nitroxyl)

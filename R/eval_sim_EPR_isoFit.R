@@ -6,18 +6,43 @@
 #'
 #'
 #' @description
-#'   A short description...
+#'   As already described in the \code{\link{eval_sim_EPR_iso}}, analysis of the hyperfine structure of EPR spectra
+#'   requires an iterative process with modelling
+#'   the \strong{electron-nuclear system} followed by a numerical simulations of the spectra to match the experimental ones.
+#'   Fitting, of the simulated spectrum onto the experimental one, therefore represent an important step in such analysis.
+#'   Parameters of the EPR simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants (in \code{MHz})
+#'   \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth (either \eqn{\Delta B_{\text{pp}}}
+#'   or \eqn{FWHM} depending on \code{lineSpecs.form}); spectral baseline (see the \code{baseline.correct}) and finally
+#'   the intensity (multiplication coefficient) are optimized by methods listed in \code{\link{optim_for_EPR_fitness}} in order
+#'   to match the experimental EPR spectrum. The \code{lineG.content} corresponding parameter, is the only one,
+#'   which needs to be varied "manually".
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
-#' @param data.spectr.expr Data frame object ... TBC ...
-#' @param Intensity.expr Character string ... TBC ...
-#' @param Intensity.sim Character string ... TBC ...
-#' @param nuclear.system.noA List or nested list ... TBC ... without estimated hyperfine coupling constant values
-#' @param baseline.correct Character string ...
-#' @param lineG.content Numeric value ...
-#' @param lineSpecs.form Character string ...
-#' @param optim.method Character string ... TBC ...
+#' @param data.spectr.expr Data frame object/table containing the experimental spectral data the with magnetic flux density
+#'   (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.
+#' @param Intensity.expr Character string pointing to column name of the experimental EPR intensity within
+#'   the original \code{data.spectr.expr}. \strong{Default}: \code{dIepr_over_dB}.
+#' @param Intensity.sim Character string pointing to column name of the simulated EPR intensity within the related output
+#'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
+#' @param nuclear.system.noA List or nested list \strong{without estimated hyperfine coupling constant values},
+#'   such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values
+#'   are already defined as elements of the \code{optim.params.init} argument/vector.
+#' @param baseline.correct Character string, referring to baseline correction of the simulated/fitted spectrum.
+#'   Corrections like \code{"constant"} (\strong{default}), \code{"linear"} or \code{"quadratic"} can be applied.
+#' @param lineG.content Numeric value between \code{0} and \code{1} referring to content of \emph{Gaussian} line form.
+#'   If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
+#'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
+#'   (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
+#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voight}.
+#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
+#'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
+#'   of the analyzed EPR spectrum/data.
+#' @param optim.method Character string (vector), setting the optimization method(s) gathered within
+#'   the \code{\link{optim_for_EPR_fitness}}. \strong{Default}: \code{optim.method = "neldermead"}. Additionally,
+#'   several consecutive methods can be defined like \code{optim.method = c("levenmarq","neldermead")}, where
+#'   the best fit parameters from the previous method are used as input for the next one. In such case the output
+#'   is \code{list} with the elements/vectors from each method in order to see the progress of the optimization.
 #' @param optim.params.init Numeric vector with the initial parameter guess (elements) where the \strong{first five
 #'   elements are immutable}
 #'   \enumerate{
@@ -53,7 +78,7 @@
 #'   intensity multiplication initial constant \eqn{= 1\cdot 10^{-8}}, baseline initial slope \eqn{- 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant are set to \eqn{0.9\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.9\,A_{\text{init}}}.
 #' @param optim.params.upper Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
@@ -61,8 +86,8 @@
 #'   intensity multiplication initial constant \eqn{= 100}, baseline initial slope \eqn{+ 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Upper limits of all hyperfine coupling constant are set to \eqn{1.1\,A_{\text{init}}}.
-#' @param Nmax.evals Numeric value pointing to maximum number of iterations/evaluations. \strong{Default}:
+#'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.
+#' @param Nmax.evals Numeric value, pointing to maximum number of iterations/evaluations. \strong{Default}:
 #'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximal value).
 #' @param tol.step Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
 #'   \strong{Default}: \code{tol.step = 5e-7}.
@@ -72,11 +97,12 @@
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidian distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
-#' @param sim.check Logical, whether to return simple list with the overlay (simulated + experimental
+#' @param sim.check Logical, whether to return simple \code{list} with the overlay (simulated + experimental
 #'   spectrum) as well as residual plot and the best fitting parameters in a vector
 #'   (\code{sim.check = TRUE}, \strong{default}). If \code{sim.check = FALSE} the list contains
 #'   EPR spectra, data frame, best fitting parameters as well as additional statistical measures
 #'   of the optimization/fitting procedure (see \code{Value}).
+#' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
 #'
 #'
 #' @return List with following components depending on \code{sim.check}:
@@ -110,7 +136,8 @@
 #'   equals to vector with the following elements: number of function evaluations, number of iterations
 #'   and the number of restarts.}
 #'   \item{N.converg}{Vector or simple integer code indicating the successful completion
-#'   of the optimization/fit. If the ...TBC...}
+#'   of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements equals
+#'   to sum of squares at each iteration.}
 #'   }
 #'   }
 #'
@@ -246,7 +273,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 tol.step = 5e-7,
                                 pswarm.size = NULL,
                                 pswarm.diameter = NULL,
-                                sim.check = TRUE){
+                                sim.check = TRUE,
+                                ...){
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -280,7 +308,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
          linewidth element, corresponding to 3rd `optim.params.int`, to `0` ! ")
   }
   if (lineG.content == 1 & optim.params.init[2] == 0){
-    stop(" Spectral lineshape is defined as pure Gaussian. Therefore,the corresponding\n
+    stop(" Spectral lineshape is defined as pure Gaussian. Therefore, the corresponding\n
          linewidth (`optim.params.init[2]`) must be DIFFERENT FROM `0` ! ")
   }
   ## ...the same for Lorentz =>
@@ -307,11 +335,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## condition to switch among three values
   ## <==> baseline approximation
   baseline.cond.fn <- function(baseline.correct){
-    if (baseline.correct == "constant"){
+    if (baseline.correct == "constant" || baseline.correct == "Constant"){
       return(0)
-    } else if (baseline.correct == "linear"){
+    } else if (baseline.correct == "linear" || baseline.correct == "Linear"){
         return(1)
-    } else if(baseline.correct == "quadratic"){
+    } else if(baseline.correct == "quadratic" || baseline.correct == "Quadratic"){
         return(2)
     }
   }
@@ -696,7 +724,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                         Nmax.evals = Nmax.evals,
                                         tol.step = tol.step,
                                         pswarm.size = pswarm.size,
-                                        pswarm.diameter = pswarm.diameter)
+                                        pswarm.diameter = pswarm.diameter,
+                                        ...)
     #
     return(optim.list)
   }

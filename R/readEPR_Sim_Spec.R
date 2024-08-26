@@ -95,7 +95,8 @@ if (sim.origin == "simfonia") {
   ))
   ## conditions
   simf.data.condition.01 <- grepl("Data", simf.data.pattern.read.01[2])
-  simf.data.condition.02 <- grepl("--", simf.data.pattern.read.02[length(simf.data.pattern.read.02)])
+  simf.data.condition.02 <-
+    grepl("--", simf.data.pattern.read.02[length(simf.data.pattern.read.02)])
   #
   ## the `sim.data.file` is not required anymore
   rm(simf.data.file)

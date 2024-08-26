@@ -6,15 +6,59 @@
 #'
 #'
 #' @description
-#'   A short description...tbc...of the EPR simulation
+#'   EPR spectra often display hyperfine structure, where the spectral lines split into several other ones,
+#'   as a consequence of the electron-nuclear interaction with nuclei close to the paramagnetic center.
+#'   Sometimes, such splitting can be complicated and requires \strong{simulations}, e.i. computational "synthesis"
+#'   of spectral structure based on quantum chemistry as well as on mathematical description of spectral line shapes
+#'   (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS) of isotropic EPR spectra
+#'   by simulations. For such purpose, properties like nuclear \eqn{g}-value, spin quantum number as well as natural
+#'   abundance of the isotopes, related to interacting nuclei, must be known and are gathered within the \code{\link{isotopes_ds}}.
+#'   EPR spectra can be simulated for the derivative as well as for the integrated line forms (see argument \code{lineSpec.form}).
 #'
 #'
 #' @details
-#'   Theoretical prediction of isotropic EPR spectra proceeds from
+#'   Theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent
+#'   an important step in the analysis of EPR spectra. However, such step requires an iterative process with modelling
+#'   the above-described \strong{electron-nuclear system} followed by a numerical simulations of the spectra
+#'   to match the experimental ones (see also \code{\link{eval_sim_EPR_isoFit}}). Commonly, quantum chemical calculations
+#'   (usually DFT, see also \code{vignette("functionality")} are involved in this process.
+#'   EPR simulations in the isotropic regime assume that the molecules tumble/move extremely fast causing a total averaging
+#'   of any anisotropic properties out. An EPR spectrum corresponding to the latter consists of a series of symmetric
+#'   lines with equal widths. In such case the spectrum is characterized by the isotropic HF coupling/splitting
+#'   constants \eqn{A_{\text{iso}}/a_{\text{iso}}} (see also the \code{nuclear.system} argument) as well as
+#'   by the above-mentioned linewidth. Many organic radicals exhibit such EPR spectra at room temperature
+#'   and in solutions of low viscosities \insertCite{Gerson2003}{eprscope}.
+#'   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined by \code{instrum.params}
+#'   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
+#'   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
+#'   from the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
+#'   for the energy levels. The related \eqn{B}s are computed by the fixed-point iterations, because the corresponding
+#'   \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
+#'   and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated from the analytical formula
+#'   of the linear combination of Gaussian and Lorentzian line-shape (also called pseudo-Voight,
+#'   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
+#'   are defined by \code{lineG.content} argument, actually corresponding to Gaussian line content (the Lorentzian one
+#'   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
+#'   is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument) and multiplicities
+#'   (relative intensity ratios) are computed by the binomic/multinomic coefficients taking into account the spin quantum numbers
+#'   of interacting nuclei (and their natural abundance) under consideration.
 #'
 #'
-#' @param g.iso Numeric value, guess of the isotropic \eqn{g}-factor. It may also possess a `NULL`
-#'   value if the \eqn{g} corresponding to "central field" is equal to `g.iso`.
+#' @references
+#'   \insertRef{weil2007electron}{eprscope}
+#'
+#'   \insertRef{weilBRabi1971}{eprscope}
+#'
+#'   \insertRef{Stoll2006Brabi}{eprscope}
+#'
+#'   \insertRef{StollwebESpin2024}{eprscope}
+#'
+#'   \insertRef{Gerson2003}{eprscope}
+#'
+#'
+#'
+#' @param g.iso Numeric value, guess of the isotropic \eqn{g}-factor. It may also possess a \code{NULL}
+#'   value if the \eqn{g} corresponding to "central field" is equal to \code{g.iso}.
 #'   \strong{Default}: \code{g.iso = 2.00232} (the approximate \eqn{g} of the free electron).
 #' @param instrum.params Named numeric vector containing instrumental parameters required
 #'   for the simulation =>
@@ -24,72 +68,79 @@
 #'   \eqn{B_{\text{SW}}}) \cr
 #'   \code{Npoints} \tab number of spectral points (corresponding to resolution) within
 #'   the "sweep width" \cr
-#'   \code{mwGHz} \tab applied microwave frequency in `GHz` to record the continuous wave (CW)
+#'   \code{mwGHz} \tab applied microwave frequency in \code{GHz} to record the continuous wave (CW)
 #'   EPR spectrum \cr
 #'   }
 #'   \strong{Default} values are chosen to cover the EPR spectra of common organic radicals.
-#'   If \code{instrum.params = NULL} then parameters are provided by \code{path_to_dsc_par}
-#'   as well as by \code{origin}.
-#' @param path_to_dsc_par Character string, path (can be also gathered by \code{\link[base]{file.path}})
+#'   If \code{instrum.params = NULL} then parameters must be provided by the \code{path_to_dsc_par}
+#'   as well as by \code{origin} arguments.
+#' @param path_to_dsc_par Character string, path (can be also acquired by the \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} or \code{.par} (depending on the OS, see \code{origin} argument)
 #'   \code{text} files including all instrumental parameters from the EPR machine.
 #'   \strong{Default}: \code{path_to_dsc_par = NULL} in case if the \code{instrum.params}
-#'   is already defined. IF ARGUMENT \code{instrum.params = NULL} then BOTH \code{path_to_dsc_par}
-#'   AS WELL AS \code{origin} MUST BE DEFINED !
-#' @param origin String, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER spectrometers, because the files are slightly different depending on whether they
-#'   were recorded by the windows based softw. ("WinEpr",\code{origin = "winepr"}) or by the Linux
-#'   one ("Xenon"). \strong{Default}: \code{origin = NULL} in case no file is used to extract
+#'   is already defined. IF the \code{instrum.params = NULL} then BOTH the \code{path_to_dsc_par}
+#'   AS WELL AS the \code{origin} MUST BE DEFINED !
+#' @param origin Character string, corresponding to software which was used to obtain the EPR spectra
+#'   on spectrometers, because the files are slightly different, whether they
+#'   were recorded by the "WinEpr" (\code{origin = "winepr"}) or by "Xenon".
+#'   \strong{Default}: \code{origin = NULL} in case no file is used to extract
 #'   the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).
 #' @param B.unit Character string pointing to unit of magnetic flux density which is to be presented
-#'   on \eqn{B} abscissa of the EPR spectrum, like \code{"G"} (`Gauss`) or \code{"mT"} (`millitesla`),
+#'   on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
 #'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL B ARGUMENTS
-#'   like `cf` and `sw` within the \code{instrum.params} AS WELL AS THOSE IN \code{lineGL.DeltaB} !
+#'   like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !
 #' @param nuclear.system List containing the information about groups of equivalent nuclei
-#'   interacting with the unpaired electron, e.g. \code{nuclear.system = list("14N",1,45)}.
+#'   interacting with the unpaired electron like \code{nuclear.system = list("14N",1,45)}.
 #'   This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
 #'   denotes \strong{the number of nuclei} within the group and \strong{the third number}
 #'   is the \strong{guess of the hyperfine coupling constant in MHz}. Therefore, in summary
 #'   it refers to \eqn{A(1\times ^{14}\text{N}) = 45~\text{MHz}}. If more complex interaction
 #'   is considered, e.g. \eqn{A(3\times ^{1}\text{H}) = 5.06~\text{MHz} +
 #'   A(6\times ^{1}\text{H}) = 17.64~\text{MHz}}, such system must be defined by nested lists like
-#'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}...etc. The number of \code{lists}
+#'   \code{nuclear.system = list(list("1H",3,5.06),list("1H",6,17.64))}. The number of \code{lists}
 #'   is not limited and therefore, any number of equivalent nuclei groups can be used to simulate
 #'   the EPR spectra. \strong{Default}: \code{nuclear.system = NULL} in case
-#'   if no interaction with electron surrounding nuclei is considered and only single
+#'   if no interaction with the unpaired electron surrounding nuclei is considered and only single
 #'   line EPR spectrum is expected.
 #' @param natur.abund Logical, whether the natural abundance of the interacting nuclei
 #'   is taken into the calculation of intensity pattern of the simulated EPR spectrum.
-#'   \strong{Default}: \code{natur.abund = FALSE} which is to be kept for the calculation of a single-line
-#'   EPR spectrum without the hyperfine splitting.
+#'   \strong{Default}: \code{natur.abund = TRUE}. For a single-line
+#'   EPR spectrum without the HFS it is automatically switched to \code{natur.abund = FALSE}.
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 #'   of the analyzed EPR spectrum/data.
-#' @param lineGL.DeltaB List of two values referred to \emph{Gaussian} (G) and \emph{Lorentzian} (L)
+#' @param lineGL.DeltaB List of two values referred to as \emph{Gaussian} (G) and \emph{Lorentzian} (L)
 #'   spectral line-forms, respectively. For the "pure" \emph{Gaussian} only the first value is numeric
 #'   and the second one is \code{NULL} => e.g. \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
 #'   For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g.
 #'   \code{lineGL.DeltaB = list(NULL,0.5)}. If the linear combination of both
-#'   line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voightian},
+#'   line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voight},
 #'   then both values are numeric (e.g. \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
-#'   to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The `DeltaB` corresponds to either
+#'   to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The \code{DeltaB} corresponds either to
 #'   \eqn{\Delta B_{\text{pp}}} (if \code{lineSpecs.form = "derivative"}) or to \eqn{FWHM}
 #'   (if \code{lineSpecs.form = "integrated"} or if \code{lineSpecs.form = "absorption"}).
 #'   The unit of values must coincide with those used in \code{instrum.params} as well as with \code{B.unit}.
-#' @param lineG.content Numeric value between `0` and `1` referring to content of \emph{Gaussian} line form.
+#' @param lineG.content Numeric value between \code{0} and \code{1} referring to content of \emph{Gaussian} line form.
 #'   If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 #'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
 #'   (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
-#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voightian}.
-#' @param Intensity.sim Character string pointing to column of simulated EPR intensity within the related
-#'   data frame, which is also available in the output list. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
-#' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive `plotly` graph
+#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voight}.
+#' @param Intensity.sim Character string pointing to column of simulated EPR intensity within the related output
+#'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
+#' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive \code{plotly} graph
 #'   (see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{dafault}),
-#'   then the output contains the data frame as well as `ggplot2` based plot of the simulated EPR spectrum
+#'   then the output contains the data frame as well as \code{ggplot2} based plot of the simulated EPR spectrum
 #'   within a list.
 #'
 #'
-#' @return ...list...tbc or interactive simulated `plotly` spectrum
+#' @return If \code{plot.sim.interact = TRUE}, function returns an interactive plot obejct with the simulated EPRspectrum.
+#'   Otherwise (if \code{plot.sim.interact = FALSE}), the output is represented by the \code{list} with the following
+#'   elements:
+#'   \describe{
+#'   \item{plot}{\code{ggplot2} static object showing the simulated EPR spectrum.}
+#'
+#'   \item{df}{Data frame/table object related to the simulated spectrum.}
+#'   }
 #'
 #'
 #' @examples
@@ -126,8 +177,7 @@
 #'                           list("1H",1,4.1)),
 #'     lineGL.DeltaB = list(0.034,0.034),
 #'     lineG.content = 0.6,
-#'     B.unit = "mT",
-#'     natur.abund = TRUE
+#'     B.unit = "mT"
 #'  )
 #' #
 #' ## simulated spectrum preview within
@@ -150,7 +200,6 @@
 #'       list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
 #'       list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
 #'    ),
-#'   natur.abund = TRUE,
 #'   lineSpecs.form = "integrated",
 #'   lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
 #'   Intensity.sim = "single_Integ",
@@ -174,13 +223,15 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              origin = NULL,
                              B.unit = "G",
                              nuclear.system = NULL,
-                             natur.abund = FALSE,
+                             natur.abund = TRUE,
                              lineSpecs.form = "derivative",
                              lineGL.DeltaB = list(1,NULL),
                              lineG.content = 1,
                              Intensity.sim = "dIeprSim_over_dB",
                              plot.sim.interact = FALSE){
   #
+  ## Temporary processing variables
+  . <- NULL
   ## Constants
   Planck.const <- constants::syms$h
   nuclear.mu <- constants::syms$mun ## Nuclear magneton
@@ -211,7 +262,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## condition for the `A_iso` < nu.GHz(mwGHz)
     if (any((A_iso_MHz) * 1e-3 >= unname(instrum.params["mwGHz"]))){
       stop(" Any of the `A_{iso}` values is higher than the MW Frequency !\n
-           The isotropic EPR spectrum cannot be simulated ! ")
+           The isotropic EPR spectrum cannot be simulated by this function ! ")
     }
   }
   #
@@ -397,6 +448,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       if (I == 1 & h == 6){
         return(c(1,6,21,50,90,126,141,126,90,50,21,6,1))
       }
+      if (I == 1 & h >= 7){
+        stop(" The multimomial coefficients for such a high number\n
+             of equivalent I = 1 nuclei are not defined !")
+      }
+      # will be fixed later on
       # if (I == 1 & h == 7){
       #   return(c(1,7,28,77,161,266,357,393,357,266,161,77,28,7,1))
       # }
@@ -427,6 +483,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         return(c(1,6,20,56,120,216,336,456,546,580,
                  546,456,336,216,120,56,20,6,1))
       }
+      if (I == 1.5 & h >= 7){
+        stop(" The multimomial coefficients for such a high number\n
+             of equivalent I = 3/2 nuclei are not defined !")
+      }
+      # will be fixed later on
       ## There are no stable isotopes with I = 2 =>
       ## Intensity pattern for I = 5/2 (e.g. 47Ti, 55Mn, 127I, 27Al, 99Ru, 101Ru...)
       if (I == 2.5 & h == 0){
@@ -445,6 +506,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         return(c(1,4,10,20,35,56,80,104,125,140,146,
                  140,125,104,80,56,35,20,10,4,1))
       }
+      if (I == 2.5 & h >= 5){
+        stop(" The multimomial coefficients for such a high number\n
+             of equivalent I = 5/2 nuclei are not defined !")
+      }
+      # will be fixed later, on
       ## Intensity pattern for I = 3 (e.g. 10B)
       if (I == 3 & h == 0){
         return(1)
@@ -462,7 +528,12 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         return(c(1,4,10,20,35,56,84,116,149,180,206,224,231,
                  224,206,180,149,116,84,56,35,20,10,4,1))
       }
+      if (I == 3 & h >= 5){
+        stop(" The multimomial coefficients for such a high number\n
+             of equivalent I = 3 nuclei are not defined !")
+      }
       #
+      ## multinomial coefficients will be fixed later on
     }
     #
     ## intensity pattern list for all nuclei by the previous function
@@ -687,7 +758,9 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   #
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
-    if (isFALSE(natur.abund)){
+    ## no natural abundance
+     natur.abund <- natur.abund %>% `if`(isTRUE(natur.abund),FALSE,.)
+     #
       B.g.sim.df[[Intensity.sim]] <-
         switch(2-line.form.cond,
                deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
@@ -695,9 +768,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],
                                B.0 = convert_B(B_iso,B.unit = "T",B.2unit = B.unit))
       )
-    } else{
-      stop(" There are no interacting nuclei. Please write `natur.abund = FALSE` ! ")
-    }
+
     #
   } else{
     #
