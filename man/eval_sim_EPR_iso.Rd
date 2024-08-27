@@ -11,7 +11,7 @@ eval_sim_EPR_iso(
   origin = NULL,
   B.unit = "G",
   nuclear.system = NULL,
-  natur.abund = TRUE,
+  natur.abund = FALSE,
   lineSpecs.form = "derivative",
   lineGL.DeltaB = list(1, NULL),
   lineG.content = 1,
@@ -73,7 +73,7 @@ line EPR spectrum is expected.}
 
 \item{natur.abund}{Logical, whether the natural abundance of the interacting nuclei
 is taken into the calculation of intensity pattern of the simulated EPR spectrum.
-\strong{Default}: \code{natur.abund = TRUE}. For a single-line
+\strong{Default}: \code{natur.abund = FALSE} (\code{natur.abud} bug will be fixed). For a single-line
 EPR spectrum without the HFS it is automatically switched to \code{natur.abund = FALSE}.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})

@@ -105,7 +105,6 @@
 #'     ),
 #'   lineGL.DeltaB = list(0.46, 0.55),
 #'   lineG.content = 0.4,
-#'   natur.abund = TRUE
 #' )
 #' #
 #' ## comparison of both spectra

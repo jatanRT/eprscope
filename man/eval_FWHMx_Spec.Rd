@@ -55,7 +55,6 @@ pnt.sim.integ.iso <-
       list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
       list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
      ),
-    natur.abund = TRUE,
     lineSpecs.form = "integrated",
     lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
     Intensity.sim = "single_Integ"
