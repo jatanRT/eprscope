@@ -47,7 +47,7 @@ Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height=
 
 3.  [the latest R tools release](https://cran.r-project.org/bin/windows/Rtools/) **ONLY for WINDOWS OS**
 
-Additionally, **an open-source scientific and technical publishing system** [Quarto](https://quarto.org/) together with [Pandoc](https://pandoc.org/), **a document converter system**, may be required for sharing the results coming from `{eprscope}` in desired formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
+Additionally, **the open-source scientific and technical publishing system** [Quarto](https://quarto.org/) together with the [Pandoc](https://pandoc.org/), **a document converter system**, may be required for sharing the results coming from `{eprscope}` in desired formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
 
 ## Usage
 
@@ -81,7 +81,7 @@ tmpd.params.dt
 
 ```{r molecule-drawing,warning=FALSE, message=FALSE}
 
-# Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
+# Pphenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"
 draw_molecule_by_rcdk(
   molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
@@ -96,10 +96,10 @@ draw_molecule_by_rcdk(
 
 ```{r spectra-simulation,warning=FALSE, message=FALSE}
 
-# Simulation of the phenalenyl (perinaphthenyl or PNT) radical,
-# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
-# The additional experimental/instrumental parameters are not shown.
-# They posses their default values => see the corresponding documentation
+# simulation of the phenalenyl (perinaphthenyl or PNT) radical,
+# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,
+# the additional experimental/instrumental parameters are not shown,
+# they posses their default values => see the corresponding documentation
 # of `eval_sim_EPR_iso()` function.
 simulation.iso <-
   eval_sim_EPR_iso(
@@ -122,9 +122,9 @@ simulation.iso$plot +
 
 ```{r kinetic-model-fit,warning=FALSE,message=FALSE}
 
-# Decay of a triarylamine radical cation right after 
+# decay of a triarylamine radical cation right after 
 # its generation by electrochemical potentiostatic oxidation 
-# in TBAPF6/CH3CN. Double integrals (Areas) vs time were obtained 
+# in TBAPF6/CH3CN, double integrals (Areas) vs time were obtained 
 # from the continuos wave (CW) EPR spectrometer
 # acquisition/processing software.
 #
@@ -149,7 +149,7 @@ triarylamine_rc_decay_data <-
     data.structure = "others"
   ) %>% na.omit()
 #
-# Fitting the experimental decay by 2R --> B kinetic model
+# fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial
 # "quantitative variable" (such as concentration, double integral

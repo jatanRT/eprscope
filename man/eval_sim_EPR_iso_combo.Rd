@@ -112,18 +112,18 @@ This is an extension of the "basic" EPR simulation provided by the \code{\link{e
   isotopes like the one presented in \code{Examples}.
 }
 \examples{
-## Simulation of EPR spectrum of TEMPO (nitroxyl)
+## Simulation of EPR spectrum of TEMPO (aminoxyl)
 ## radical with 13C satellites and hyperfine coupling
-## constants A(1 x 14N) = 41 MHz and A(1 x 13C) = 14 MHz:
+## constants A(1 x 14N) = 48 MHz and A(2 x 13C) = 8.6 MHz:
 sim.tempo.13c <-
 eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
-                       nuclear.system = list(list("14N",1,41),
-                                             list(list("14N",1,41),
-                                                  list("13C",1,14))
+                       nuclear.system = list(list("14N",1,48),
+                                             list(list("14N",1,48),
+                                                  list("13C",2,8.6))
                                             ),
                        natur.abund.vec = c(TRUE,TRUE),
-                       lineGL.DeltaB = list(list(1.2,NULL),
-                                            list(1.2,NULL)
+                       lineGL.DeltaB = list(list(1.3,NULL),
+                                            list(1.3,NULL)
                                             ),
                        lineG.content.vec = c(1,1),
                        Intensity.sim.coeffs.vec = c(1,1))
@@ -133,7 +133,10 @@ sim.tempo.13c$plot.sum +
 ggplot2::coord_cartesian(xlim = c(3425,3550))
 #
 ## ...and the corresponding data frame:
-sim.tempo.13c$df.sum[1000:1005,]
+options(pillar.sigfig = 5) ## prevent rounding
+#
+tempo.df.sum <- sim.tempo.13c$df.sum
+tempo.df.sum[1000:1005, ]
 #
 ## data frame with all components:
 sim.tempo.13c$df[1000:1005,]

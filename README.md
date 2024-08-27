@@ -2,7 +2,6 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -82,8 +81,8 @@ installation ➨
     release](https://cran.r-project.org/bin/windows/Rtools/) **ONLY for
     WINDOWS OS**
 
-Additionally, **an open-source scientific and technical publishing
-system** [Quarto](https://quarto.org/) together with
+Additionally, **the open-source scientific and technical publishing
+system** [Quarto](https://quarto.org/) together with the
 [Pandoc](https://pandoc.org/), **a document converter system**, may be
 required for sharing the results coming from `{eprscope}` in desired
 formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
@@ -123,7 +122,7 @@ tmpd.params.dt
 
 ``` r
 
-# Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
+# Pphenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"
 draw_molecule_by_rcdk(
   molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
@@ -139,10 +138,10 @@ draw_molecule_by_rcdk(
 
 ``` r
 
-# Simulation of the phenalenyl (perinaphthenyl or PNT) radical,
-# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b.
-# The additional experimental/instrumental parameters are not shown.
-# They posses their default values => see the corresponding documentation
+# simulation of the phenalenyl (perinaphthenyl or PNT) radical,
+# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,
+# the additional experimental/instrumental parameters are not shown,
+# they posses their default values => see the corresponding documentation
 # of `eval_sim_EPR_iso()` function.
 simulation.iso <-
   eval_sim_EPR_iso(
@@ -166,9 +165,9 @@ simulation.iso$plot +
 
 ``` r
 
-# Decay of a triarylamine radical cation right after 
+# decay of a triarylamine radical cation right after 
 # its generation by electrochemical potentiostatic oxidation 
-# in TBAPF6/CH3CN. Double integrals (Areas) vs time were obtained 
+# in TBAPF6/CH3CN, double integrals (Areas) vs time were obtained 
 # from the continuos wave (CW) EPR spectrometer
 # acquisition/processing software.
 #
@@ -193,7 +192,7 @@ triarylamine_rc_decay_data <-
     data.structure = "others"
   ) %>% na.omit()
 #
-# Fitting the experimental decay by 2R --> B kinetic model
+# fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to initial
 # "quantitative variable" (such as concentration, double integral
@@ -226,9 +225,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>          Estimate   Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
-#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
-#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
+#> qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149
+#> k1     0.06043805 5.451458e-03  11.08658  6.161497e-19
+#> alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101
 ```
 
 ## Help, Questions and Contribution

@@ -4,16 +4,24 @@
 
 ### Bug Fixes/Critical Updates
 
-* reading of the spectral time series coming from `WinEpr` in `readEPR_Exp_Specs`
+* reading of the spectral time series coming within the `readEPR_Exp_Specs`
+  function
 
-* the *g*-value scale on *x*-axis within plotting functions is now properly
+* reading parameter strings from 'parameter' files within the `readEPR_param_slct`
+  function
+
+* the *g*-value scale on *x*-axis within the plotting functions is now properly
   displayed
   
-* if the related `time(series)` unit is converted, in relevant data frames, 
-  the corresponding column is renamed accordingly to inherit the new unit,
-  like `time_s`
+* if the related `time(series)` unit is converted in relevant data frames, 
+  the corresponding column is renamed in in order to inherit the new unit 
+  (like `time_s`), accordingly
   
-* multiread ...TBC...addded option fro character names  
+* elements in `names` argument, within the `readEPR_Exp_Specs_multif`,
+  now can also contain characters like `c("a","b","c")`, not just numbers
+  like `c("250","260","270")`
+  
+* fixed visualization of legend labels within the `plot_EPR_Specs` function  
 
 ### Updates
 
@@ -25,26 +33,67 @@
   theoretical distribution calculation was removed for now, and will be addressed
   in the future
 
-* intensity, *B*, and `time.series` column indices arguments, in general reading
+* intensity, *B*, and the `time.series` column indices arguments, in general reading
   function `readEPR_Exp_Specs`, were renamed (using `.id`) in order to clearly
-  point to names in `col.names` 
+  point to headers in `col.names` 
   
 * `magnettech` option added to reading functions to read the EPR spectra
-  and parameters from these instruments
+  and parameters from these instruments, additionally, the 'general' reading
+  function `readEPR_Exp_Specs` was updated to read files, from
+  the most common EPR instruments, more easily by adding the auxiliary 
+  `data.structure` argument 
   
 * the optimization algorithms, other than `diff-levenmarq`, were removed
-  from `eval_kinR_EPR_modelFit` for now, additional optimization
+  from the `eval_kinR_EPR_modelFit` for now, additional optimization
   methods will be implemented later on
+  
+* many function documentations updated + several examples added +
+  code-cleaning (by `styler` package) done in many functions + 
+  `README`, `DESCRIPTION` and vignettes updated, accordingly
+  
+* vignette to describe the EPR simulations and fitting was removed, for now
+  (will be added later), however, the important points, from that vignette,
+  are summarized in the relevant function documentations
+  
+* stoichiometric coefficient notation as well as reaction model scheme
+  for consecutive reactions within the `eval_kinR_ODE_model` updated/extended
+  
+* option to use Tesla (`T`) unit, now available in all *g*-value evaluations 
+
+* `line.type` option added to all relevant plotting functions
+
+* calculation of confidence interval by the `eval_interval_cnfd_tVec` simplified
+
+* to read the EPR instrumental parameters by `readEPR_params_slct`,
+  added option to read several parameters simultaneously (vectorized input)
+  
+* customized plot themes, like `plot_theme_In_ticks`, were simplified,
+  now, there is no need to add opposite axis-ticks by additional theme layer,
+  those function can now also include additional arguments from general
+  `theme()` function
 
 ### New Functions/Files/Vignettes  
 
-* perinaphthenyl ENDOR spectral data added to package database
-  for documentation examples (in plotting, reading functions)
+* perinaphthenyl (PNT) ENDOR spectral data added to package database
+  for documentation examples (in plotting and reading functions)
   
-* setting up the continuous integration R CMD check via github
-  actions
+* setting up the continuous integrations like `R CMD check` 
+  and `pkgdown` (in order to build the site)  via github actions
+  
+* `CONTRIBUTING.md` added to package/site  
 
+* new vignette for datasets added
 
+* new family functions for EPR spectroelectrochemistry, including
+  the function to plot voltammograms and chronoamperograms 
+  (`plot_ECh_VoC_amperogram`) as well as to calculate the transferred charge
+  and the corresponding number of electrons from chronoamperogram
+  (`eval_ECh_QNe_chronoamp`)
+  
+* new dataset (`Triarylamine_radCat_decay_a`) as an example of time 
+  series experimental data + new datasets coming from `magnettech`
+  instrument: `AcridineDeriv_Irrad_365nm`
+  
 # eprscope 0.1.10
 
 ## 2024-01-24
