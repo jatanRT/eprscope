@@ -285,6 +285,9 @@ tempo.test.sim.fit.c <-
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
 #
+## compare the results with the examples in the `readMAT_params_file`,
+## corresponding to best fit parameters from `Easyspin`
+#
 ## `N.converg` also consists of two components
 ## each corresponding to result of the individual
 ## optimization method where the "levenmarq" returns

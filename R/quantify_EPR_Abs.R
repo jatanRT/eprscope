@@ -8,14 +8,15 @@
 #' @description
 #'   Estimate the number or concentration of "spins"/radicals/paramagnetic species using the absolute
 #'   quantitative method by sigmoid integral as well as by instrumental parameters without the need
-#'   for a standard sample with known concentration/amount of radicals/"spins".
+#'   for a standard sample with known concentration/amount of radicals/"spins". The calculation assumes,
+#'   that the sample height middle point, within an EPR tube, matches the cavity/resonator center.
 #'
 #'
 #' @details
 #'   There are two approaches how to quantify the number of paramagnetic species/radicals/spins.
 #'   The \strong{relative} one needs a standard sample with a known spin number and can be evaluated
 #'   by the sigmoid integral ratio of the sample under study and that of the standard.
-#'   While the \strong{absolute} method do not need the reference sample however, it requires
+#'   While the \strong{absolute} method do not need the reference sample, it requires
 #'   a precise cavity signal calibration as well as standardized cell geometry. Both are provided
 #'   by the EPR instrument and lab-glass manufacturers (see e.g. \insertCite{hirschCapill2023}{eprscope}).
 #'   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
@@ -29,7 +30,7 @@
 #'   \strong{Quantity Symbol} \tab \strong{Meaning/Short Desription} \cr
 #'   \eqn{c}\tab Point sample calibration factor (instrumental). \cr
 #'   \eqn{f(B_1,B_\text{m})} \tab Spatial distribution of the microwave \eqn{B_1} and modulation
-#'   amplitude within the cavity/probehead/resonator (instrumental/theoretical). \cr
+#'   amplitude within the cavity/probehead/resonator (instrumental). \cr
 #'   \eqn{G_{\text{R}}} \tab Receiver gain (commonly in \eqn{\text{dB}} units (instrumental)). \cr
 #'   \eqn{t_{\text{C}}} \tab Conversion time (commonly in \eqn{\text{ms}}) which is an analogy
 #'   to integration time in other spectroscopies (instrumental). \cr
@@ -39,10 +40,10 @@
 #'   \eqn{Q} \tab \emph{Q}-Value or \emph{Q}-Factor characterizing the resonator/cavity/probehead
 #'   sensitivity (unitless and instrumental). \cr
 #'   \eqn{n_{\text{B}}} \tab Boltzmann factor for temperature dependence (instrumental-sample). \cr
-#'   \eqn{S} \tab Total electronic spin quantum number (sample). Commonly for radicals \eqn{S = 1/2}. \cr
+#'   \eqn{S} \tab Total electronic spin quantum number (sample). Commonly, for radicals \eqn{S = 1/2}. \cr
 #'   }
 #'   Almost all summarized quantities are instrument-dependent. Most of them correspond to the essential
-#'   parameters for the experiment to set up and can be easily figured out from the `.DSC`/`.dsc`/`.par` file(s).
+#'   parameters for the experiment and can be easily acquired from the \code{.DSC}/\code{.dsc}/\code{.par} file(s).
 #'   The Boltzmann factor describes the population of spin states
 #'   by \eqn{\exp{(\Delta \varepsilon)\,/\,(k_{\text{B}}\,T)}}, where \eqn{\Delta \varepsilon} denotes
 #'   the energy difference between the basic spin states, \eqn{k_{\text{B}}} is the Boltzmann constant
@@ -54,11 +55,14 @@
 #'   The term \eqn{(G_{\text{R}}\,t_{\text{C}}\,N_{\text{Scans}})} actually corresponds to normalization constant
 #'   which is available from \code{\link{quantify_EPR_Norm_const}}.
 #'   Besides the above-described parameters which can be easily estimated there are however characteristics
-#'   that requires precise calibration and usually are provided by the spectrometer manufactures.
-#'   ...corresponds to integrated intensity distribution within
-#'   the cavity/probehead for different sample length and positions. Such intensity distribution
-#'   is expressed by polynomial and is supplied by the manufacturer as well.
-#'
+#'   that requires precise calibration and usually are provided by the spectrometer manufacturers.
+#'   The spatial distribution of the microwave, \eqn{B_1}, and modulation
+#'   amplitude, \eqn{B_\text{m}}, influences the intensity of the sample predominantly along the \eqn{y}-axis direction
+#'   (i.e. when moving the sample tube up or down within the cavity). Such intensity distribution,
+#'   depending on the cavity/probehead for different sample length and positions, can be approximated by a polynomial
+#'   (see the \code{fn.B1.Bm.fit.y} argument) that is supplied by the manufacturer as well (the coefficients
+#'   of the polynomial can be sometimes found in \code{.DSC}/\code{.dsc}/\code{.par} file(s)). For quantitative
+#'   purposes, such polynomial is integrated over the length of the sample.
 #'
 #' @references
 #'   \insertRef{eatonQepr2010}{eprscope}
@@ -94,21 +98,24 @@
 #' @param qValue Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
 #'   the \code{{eprscope}} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
 #'   Therefore, \strong{default}: \code{qValue = NULL}.
-#' @param point.sample.factor Numeric value ... tbc ...
-#' @param tube.sample.id.mm Numeric value equal to internal diameter (in \code{mm}) of the tube/cell used
+#' @param point.sample.factor Numeric value corresponding to point sample correction factor, provided by the
+#'   cavity/probehead manufacturer. Value for the standard Bruker rectangular cavity is set as \strong{default}.
+#' @param tube.sample.id.mm Numeric value, which equals to internal diameter (in \code{mm}) of the tube/cell used
 #'   for the quantitative EPR experiment.
-#' @param fill.sample.h.mm Numeric value equal to sample height (in \code{mm}) within the tube/cell.
-#' @param eff.cavity.h.mm Numeric value equal to effective cavity/probehead height/length,
+#' @param fill.sample.h.mm Numeric value, referring to sample height (in \code{mm}) within the tube/cell.
+#' @param eff.cavity.h.mm Numeric value, which equals to effective cavity/probehead height/length,
 #'   usually provided by the probehead manufacturer.
-#' @param fn.B1.Bm.fit Numeric vector (coefficients) of the polynomial degree from 5 to 12
-#'   or character string ("theoretical").
+#' @param fn.B1.Bm.fit.y Numeric vector (coefficients) of the polynomial degree from 5 to 12.
+#'   Coefficients for the standard Bruker rectangular cavity are set as \strong{default}.
+#' @param fn.B1.Bm.fit.y.max Numeric value corresponding to maximal value of the polynomial fit.
+#'   Value for the standard Bruker rectangular cavity is set as \strong{default}.
 #' @param Norm.const Numeric value corresponding to normalization constant (see
 #'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
 #'   if the EPR spectrum was normalized by such constant either upon measurement or during processing.
-#'   Otherwise it must be provided by \code{\link{quantify_EPR_Norm_const}}.
-#' @param Temp.K Numeric temperature value in \code{K}. Because the \code{instrum.params} also contains temperature
-#'   input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for calculation.
-#'   Either \code{Temp.K} or \code{TK} CAN BE ALSO \code{NULL} but NOT BOTH !! In the latter case default value
+#'   Otherwise it must be provided by the \code{\link{quantify_EPR_Norm_const}}.
+#' @param Temp.K Numeric value, temperature value in \code{K}. Because the \code{instrum.params} also contains temperature
+#'   input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for the calculation.
+#'   Either \code{Temp.K} or \code{TK} CAN BE ALSO \code{NULL} but NOT BOTH !! In the latter case, default value
 #'   \code{298 K} is considered.
 #' @param S Numeric value, total spin sample quantum number. For radicals \code{S = 0.5}
 #'   (\strong{default}).
@@ -118,7 +125,7 @@
 #'   \describe{
 #'   \item{N.cm}{Number of spins per effective centimeter. It is defined
 #'     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
-#'     distribution curve within the cavity \eqn{f(B_1,B_{\text{m}})} from
+#'     distribution curve/polynomial fit within the cavity \eqn{f(B_1,B_{\text{m}})} from
 #'     the equation above shown in details.}
 #'    \item{N.cm3}{Number of spins per \eqn{\text{cm}^3}.}
 #'    \item{c.M}{Concentration of spins/radicals in \eqn{\text{mol}\,\text{dm}^{-3}}.}
@@ -127,8 +134,22 @@
 #'
 #' @examples
 #' \dontrun{
-#' tbc
-#' tbc
+#' ## quantitative analysis (determining the radical concentration `c.M`)
+#' ## of a sample measured at different temperatures
+#' data.quant <- mapply(function(x,y)
+#'   quantify_EPR_Abs(x,
+#'                    instrum.params = c(PmW = 2.518,
+#'                                       BmmT = 5.4e-02,
+#'                                       TK = NULL, ## 298 K
+#'                                       mwGHz = 9.530265),
+#'                    path_to_dsc_par = NULL,
+#'                    origin = NULL,
+#'                    tube.sample.id.mm = 2.86,
+#'                    fill.sample.h.mm = 23,
+#'                    Temp.K = y)$c.M,
+#'   data.tidy.integ$Area,
+#'   data.tidy.integ$Temperature_K
+#   )
 #' }
 #'
 #'
@@ -144,9 +165,10 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                              point.sample.factor = 8.51e-09,
                              fill.sample.h.mm,
                              eff.cavity.h.mm = 23,
-                             fn.B1.Bm.fit = c(1.00179,-3.07086e-3,-2.65409e-2,
+                             fn.B1.Bm.fit.y = c(1.00179,-3.07086e-3,-2.65409e-2,
                                               2.97603e-4,2.23277e-4,-4.53833e-06,
                                               -4.1451e-07,1.89417e-08,-1.48241e-09),
+                             fn.B1.Bm.fit.y.max = 0.25, # (1/4)
                              Norm.const = NULL,
                              Temp.K = NULL,
                              S = 0.5) {
@@ -202,79 +224,133 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
   third.quant.factor <- sqrt(P.mW * 1e-3) * Bm.mT * 1e-3 * qValue * n.B * S * (S + 1)
   #
   ## polynomial fitting function to integrate (in case if no theoretical description
-  ## is considered) <==> `fn.B1.Bm.fit` != "theoretical"
-  if (length(fn.B1.Bm.fit) > 1){
+  ## is considered) <==> `fn.B1.Bm.fit.y` != "theoretical"
+  ## function to characterize the relative intensity distribution within
+  ## the cavity: see also https://doi.org/10.1016/0022-2364(77)90133-0
+  ## and https://doi.org/10.1006/jmre.1997.1248
+  ## `y` corresponds to distance from cavity center in mm,
+  ##
+  ## see also https://doi.org/10.1016/0022-2364(77)90133-0 +
+  ## https://doi.org/10.1103/PhysRev.91.1071
+  if (length(fn.B1.Bm.fit.y) > 1){
     fn.fit.poly <- function(y,length){
       if (length == 5){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                      (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                    (fn.B1.Bm.fit.y[5] * y^4)
+                                  )
         )
         ## the following simplification do not work, IT MUST BE EXPRESSED EXPLICITELY !!
-        # (1/pi) * sum(sapply(seq(fn.B1.Bm.fit), function(j) fn.B1.Bm.fit[j] * y^(j-1L)))
+        # (1/(2*pi)) * sum(sapply(seq(fn.B1.Bm.fit.y), function(j) fn.B1.Bm.fit.y[j] * y^(j-1L)))
       }
       if (length == 6){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                  (fn.B1.Bm.fit.y[5] * y^4) +
+                                  (fn.B1.Bm.fit.y[6] * y^5)
+                                  )
           )
       }
       if (length == 7){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                  (fn.B1.Bm.fit.y[5] * y^4) +
+                                  (fn.B1.Bm.fit.y[6] * y^5) +
+                                  (fn.B1.Bm.fit.y[7] * y^6)
+                                  )
           )
       }
       if (length == 8){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                    (fn.B1.Bm.fit[8] * y^7))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                 (fn.B1.Bm.fit.y[2] * y) +
+                                 (fn.B1.Bm.fit.y[3] * y^2) +
+                                 (fn.B1.Bm.fit.y[4] * y^3) +
+                                 (fn.B1.Bm.fit.y[5] * y^4) +
+                                 (fn.B1.Bm.fit.y[6] * y^5) +
+                                 (fn.B1.Bm.fit.y[7] * y^6) +
+                                 (fn.B1.Bm.fit.y[8] * y^7)
+                                 )
           )
       }
       if (length == 9){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                  (fn.B1.Bm.fit.y[5] * y^4) +
+                                  (fn.B1.Bm.fit.y[6] * y^5) +
+                                  (fn.B1.Bm.fit.y[7] * y^6) +
+                                  (fn.B1.Bm.fit.y[8] * y^7) +
+                                  (fn.B1.Bm.fit.y[9] * y^8)
+                                  )
                )
       }
       if (length == 10){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8) +
-                    (fn.B1.Bm.fit[10] * y^9))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                  (fn.B1.Bm.fit.y[5] * y^4) +
+                                  (fn.B1.Bm.fit.y[6] * y^5) +
+                                  (fn.B1.Bm.fit.y[7] * y^6) +
+                                  (fn.B1.Bm.fit.y[8] * y^7) +
+                                  (fn.B1.Bm.fit.y[9] * y^8) +
+                                  (fn.B1.Bm.fit.y[10] * y^9)
+                                  )
                )
       }
       if (length == 11){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                    (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                    (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                    (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8) +
-                    (fn.B1.Bm.fit[10] * y^9) + (fn.B1.Bm.fit[11] * y^10))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                  (fn.B1.Bm.fit.y[5] * y^4) +
+                                  (fn.B1.Bm.fit.y[6] * y^5) +
+                                  (fn.B1.Bm.fit.y[7] * y^6) +
+                                  (fn.B1.Bm.fit.y[8] * y^7) +
+                                  (fn.B1.Bm.fit.y[9] * y^8) +
+                                  (fn.B1.Bm.fit.y[10] * y^9) +
+                                  (fn.B1.Bm.fit.y[11] * y^10)
+                                  )
                )
       }
       if (length == 12){
         return(
-          (1/pi) * (fn.B1.Bm.fit[1] + (fn.B1.Bm.fit[2] * y) + (fn.B1.Bm.fit[3] * y^2) +
-                      (fn.B1.Bm.fit[4] * y^3) + (fn.B1.Bm.fit[5] * y^4) +
-                      (fn.B1.Bm.fit[6] * y^5) + (fn.B1.Bm.fit[7] * y^6) +
-                      (fn.B1.Bm.fit[8] * y^7) + (fn.B1.Bm.fit[9] * y^8) +
-                      (fn.B1.Bm.fit[10] * y^9) + (fn.B1.Bm.fit[11] * y^10) +
-                      (fn.B1.Bm.fit[12] * y^11))
+          (fn.B1.Bm.fit.y.max) * (fn.B1.Bm.fit.y[1] +
+                                  (fn.B1.Bm.fit.y[2] * y) +
+                                  (fn.B1.Bm.fit.y[3] * y^2) +
+                                  (fn.B1.Bm.fit.y[4] * y^3) +
+                                  (fn.B1.Bm.fit.y[5] * y^4) +
+                                  (fn.B1.Bm.fit.y[6] * y^5) +
+                                  (fn.B1.Bm.fit.y[7] * y^6) +
+                                  (fn.B1.Bm.fit.y[8] * y^7) +
+                                  (fn.B1.Bm.fit.y[9] * y^8) +
+                                  (fn.B1.Bm.fit.y[10] * y^9) +
+                                  (fn.B1.Bm.fit.y[11] * y^10) +
+                                  (fn.B1.Bm.fit.y[12] * y^11)
+                                  )
         )
       }
     }
     #
-    ## and the final function
-    fn.fit.poly.q <- function(y){fn.fit.poly(y,length = length(fn.B1.Bm.fit))}
+    ## and the final function for the integration
+    fn.fit.poly.q <- function(y){fn.fit.poly(y,length = length(fn.B1.Bm.fit.y))}
+  } else {
+    stop(" The `fn.B1.Bm.fit.y` polynomial of degree between <5,12> \n
+         must be defined to fit the intensity distribution within the cavity !! ")
   }
   #
   if (fill.sample.h.mm <= eff.cavity.h.mm){
@@ -282,47 +358,9 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     ## tube volume in m^3
     tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
     #
-    if (length(fn.B1.Bm.fit) == 1){
-      ## function to characterize the relative intensity distribution within
-      ## the cavity: see also https://doi.org/10.1016/0022-2364(77)90133-0
-      ## and https://doi.org/10.1006/jmre.1997.1248
-      ## `y` corresponds to distance from cavity center in mm:
-      ## It must be normalized per half of the standing wave cycle
-      ## (sample is positioned in the cavity-center) => therefore
-      ## multiplied by `(1/pi)`,
-      ## see also https://doi.org/10.1016/0022-2364(77)90133-0 +
-      ## https://doi.org/10.1103/PhysRev.91.1071
-      fn.fit.theo <- function(y,q){
-        (1/pi) * ((q * (cospi(y/eff.cavity.h.mm))^3) / sqrt(1 + (q^2 * (cospi(y/eff.cavity.h.mm))^2)))
-      }
-      ## coeff. `q` depends on `fill.sample.h.mm`, see below
-      #
-      if (fill.sample.h.mm > (0.1 * eff.cavity.h.mm)){
-        ## function
-        fn.fit.theo.q1 <- function(y){fn.fit.theo(y,q = sqrt(4.3))}
-        #
-        ## Integration of the polynomial function,
-        ## resolution for the integration
-        integral.poly.resolv = fill.sample.h.mm * 5 ## resolution 0.2 mm can be easily measured
-        integral.poly.list <- stats::integrate(fn.fit.theo.q1,
-                                               lower = -(fill.sample.h.mm / 2),
-                                               upper = (fill.sample.h.mm / 2),
-                                               subdivisions = integral.poly.resolv)
-      }
-      if (fill.sample.h.mm == (0.1 * eff.cavity.h.mm)){
-        ## function
-        fn.fit.theo.q2 <- function(y){fn.fit.theo(y,q = sqrt(3.1))}
-        #
-        ## Integration of the polynomial function,
-        ## resolution for the integration
-        integral.poly.resolv = fill.sample.h.mm * 5 ## resolution of 0.2 mm selected
-        integral.poly.list <- stats::integrate(fn.fit.theo.q2,
-                                               lower = -(fill.sample.h.mm / 2),
-                                               upper = (fill.sample.h.mm / 2),
-                                               subdivisions = integral.poly.resolv)
-      }
-    }
-    if (length(fn.B1.Bm.fit) > 1){
+    ## The theoretical distribution will be implemented later
+    #
+    if (length(fn.B1.Bm.fit.y) > 1){
       #
       ## Integration of the polynomial function,
       ## resolution for the integration
@@ -331,6 +369,9 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                                              lower =  -(fill.sample.h.mm / 2),
                                              upper = (fill.sample.h.mm / 2),
                                              subdivisions = integral.poly.resolv)
+    } else {
+      stop(" The `fn.B1.Bm.fit.y` polynomial of degree between <5,12> \n
+         must be defined to fit the intensity distribution within the cavity !! ")
     }
     #
   }
@@ -339,12 +380,12 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     ## tube volume in m^3
     tube.volume.m3 <- (eff.cavity.h.mm * 1e-3) * pi * ((eff.cavity.h.mm / 2) * 1e-3)^2
     #
-    if (length(fn.B1.Bm.fit) == 1){
-      stop(" Theoretical description/fit of `f(B1,Bm)` function for condition\n
-           `fill.sample.h.mm` > `eff.cavity.h.mm` is not available. Please,\n
-           use polynomial fit instead ! ")
-    }
-    if (length(fn.B1.Bm.fit) > 1){
+    # if (length(fn.B1.Bm.fit.y) == 1){
+    #   stop(" Theoretical description/fit of `f(B1,Bm)` function for condition\n
+    #        `fill.sample.h.mm` > `eff.cavity.h.mm` is not available. Please,\n
+    #        use polynomial fit instead ! ")
+    # }
+    if (length(fn.B1.Bm.fit.y) > 1){
       #
       ## Integration of the polynomial function,
       ## resolution for the integration
@@ -353,6 +394,9 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                                              lower =  - (eff.cavity.h.mm / 2),
                                              upper = (eff.cavity.h.mm / 2),
                                              subdivisions = integral.poly.resolv)
+    } else {
+      stop(" The `fn.B1.Bm.fit.y` polynomial of degree between <5,12> \n
+         must be defined to fit the intensity distribution within the cavity !! ")
     }
   }
   #
