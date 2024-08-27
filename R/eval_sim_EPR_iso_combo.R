@@ -55,19 +55,24 @@
 #' @examples
 #' ## Simulation of EPR spectrum of TEMPO (aminoxyl)
 #' ## radical with 13C satellites and hyperfine coupling
-#' ## constants A(1 x 14N) = 48 MHz and A(2 x 13C) = 8.6 MHz:
+#' ## constants A(1 x 14N) = 48 MHz, A(1 x 13C) = 18.2 MHz,
+#' ## the latter 13C may appear on 4 different
+#' ## positions (methyl carbons) => therefore the overall
+#' ## probability is approx. 4,4%
+#' ## see e.g. https://doi.org/10.1016/j.mencom.2014.09.018
 #' sim.tempo.13c <-
 #' eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
 #'                        nuclear.system = list(list("14N",1,48),
 #'                                              list(list("14N",1,48),
-#'                                                   list("13C",2,8.6))
+#'                                                   list("13C",1,18.5)
+#'                                                )
 #'                                             ),
-#'                        natur.abund.vec = c(TRUE,TRUE),
+#'                        natur.abund.vec = c(FALSE,FALSE),
 #'                        lineGL.DeltaB = list(list(1.3,NULL),
 #'                                             list(1.3,NULL)
 #'                                             ),
 #'                        lineG.content.vec = c(1,1),
-#'                        Intensity.sim.coeffs.vec = c(1,1))
+#'                        Intensity.sim.coeffs.vec = c(0.956/3,0.044/6))
 #' #
 #' ## simulated spectrum/plot:
 #' sim.tempo.13c$plot.sum +
@@ -82,7 +87,7 @@
 #' ## data frame with all components:
 #' sim.tempo.13c$df[1000:1005,]
 #' #
-#' ## data frame with all integrals (areas):
+#' ## areas/integrals
 #' sim.tempo.13c$df.areas
 #'
 #'

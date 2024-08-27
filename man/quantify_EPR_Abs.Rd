@@ -156,20 +156,25 @@ There are two approaches how to quantify the number of paramagnetic species/radi
 }
 \examples{
 \dontrun{
-## quantitative analysis (determining the radical concentration `c.M`)
-## of a sample measured at different temperatures
+## quantitative analysis (determining the
+## radical concentration `c.M`) of a sample measured
+## at different temperatures
+## all data summarized in `data.tidy.integ`
 data.quant <- mapply(function(x,y)
-  quantify_EPR_Abs(x,instrum.params = c(PmW = 2.518,
-                                        BmmT = 5.4e-02,
-                                        TK = NULL, ## 298 K
-                                        mwGHz = 9.530265),
-                   path_to_dsc_par = NULL,
-                   origin = NULL,
-                   tube.sample.id.mm = 2.86,
-                   fill.sample.h.mm = 23,
-                   Temp.K = y)$c.M,
+  {quantify_EPR_Abs(x,
+    instrum.params = c(PmW = 2.518,
+                       BmmT = 5.4e-02,
+                       TK = NULL, ## 298 K
+                       mwGHz = 9.530265),
+    path_to_dsc_par = NULL,
+    origin = NULL,
+    tube.sample.id.mm = 2.86,
+    fill.sample.h.mm = 23,
+    Temp.K = y)$c.M
+    },
   data.tidy.integ$Area,
   data.tidy.integ$Temperature_K
+  )
 }
 
 

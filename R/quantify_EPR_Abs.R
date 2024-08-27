@@ -78,9 +78,6 @@
 #'   \insertRef{mailerQuant1977}{eprscope}
 #'
 #'
-#' @importFrom Rdpack reprompt
-#'
-#'
 #' @inheritParams eval_sim_EPR_iso
 #' @param integ.sigmoid.max Numeric value or vector of the entire EPR spectrum sigmoid integral.
 #' @param instrum.params Named numeric vector containing instrumental parameters required
@@ -134,28 +131,32 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## quantitative analysis (determining the radical concentration `c.M`)
-#' ## of a sample measured at different temperatures
+#' ## quantitative analysis (determining the
+#' ## radical concentration `c.M`) of a sample measured
+#' ## at different temperatures
+#' ## all data summarized in `data.tidy.integ`
 #' data.quant <- mapply(function(x,y)
-#'   quantify_EPR_Abs(x,
-#'                    instrum.params = c(PmW = 2.518,
-#'                                       BmmT = 5.4e-02,
-#'                                       TK = NULL, ## 298 K
-#'                                       mwGHz = 9.530265),
-#'                    path_to_dsc_par = NULL,
-#'                    origin = NULL,
-#'                    tube.sample.id.mm = 2.86,
-#'                    fill.sample.h.mm = 23,
-#'                    Temp.K = y)$c.M,
+#'   {quantify_EPR_Abs(x,
+#'     instrum.params = c(PmW = 2.518,
+#'                        BmmT = 5.4e-02,
+#'                        TK = NULL, ## 298 K
+#'                        mwGHz = 9.530265),
+#'     path_to_dsc_par = NULL,
+#'     origin = NULL,
+#'     tube.sample.id.mm = 2.86,
+#'     fill.sample.h.mm = 23,
+#'     Temp.K = y)$c.M
+#'     },
 #'   data.tidy.integ$Area,
 #'   data.tidy.integ$Temperature_K
-#   )
+#'   )
 #' }
 #'
 #'
 #' @export
 #'
 #'
+#' @importFrom Rdpack reprompt
 quantify_EPR_Abs <- function(integ.sigmoid.max,
                              instrum.params = NULL, ##  otherwise c(mwGHz,PmW,BmmT,TK = 298)
                              path_to_dsc_par,
