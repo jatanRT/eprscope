@@ -1,4 +1,4 @@
-url: ~
+url: https://jatanrt.github.io/eprscope/
 template:
   bootstrap: 5
   bootswatch: cerulean
@@ -43,3 +43,4 @@ reference:
 - title: Non-Categorized
   contents:
   - lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data Reading","EPR Spectroelectrochemistry","Evaluations","Evaluations and Quantum Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations and Graphics"))
+
