@@ -1,0 +1,8 @@
+bibentry(
+  bibtype  = "Manual",
+  title    = "eprscope R package - Processing and Analysis of Electron Paramagnetic Resonance Data
+             and Spectra in Chemistry",
+  author   = "Ján Tarábek",
+  year     = "2024",
+  url      = "https://jatanrt.github.io/eprscope/"
+)
