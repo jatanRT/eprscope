@@ -136,7 +136,7 @@ data.spectrum.sim <-
 present_EPR_Sim_Spec(
   data.spectr.expr = data.spectrum.expr,
   data.spectr.sim = data.spectrum.sim$df
-) + plot_theme_NoY_ticks(legend.title =
+) + plot_theme_NoY_ticks(legend.text =
            ggplot2::element_text(size = 13)
            )
 #
@@ -146,7 +146,7 @@ present_EPR_Sim_Spec(
   data.spectr.expr = data.spectrum.expr,
   data.spectr.sim = data.spectrum.sim$df,
   Intensity.shift.ratio = NULL,
-) + plot_theme_NoY_ticks(legend.title =
+) + plot_theme_NoY_ticks(legend.text =
            ggplot2::element_text(size = 13)
            )
 
