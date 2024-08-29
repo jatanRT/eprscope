@@ -11,7 +11,7 @@ eval_sim_EPR_iso(
   origin = NULL,
   B.unit = "G",
   nuclear.system = NULL,
-  natur.abund = FALSE,
+  natur.abund = TRUE,
   lineSpecs.form = "derivative",
   lineGL.DeltaB = list(1, NULL),
   lineG.content = 1,
@@ -73,8 +73,8 @@ line EPR spectrum is expected.}
 
 \item{natur.abund}{Logical, whether the natural abundance of the interacting nuclei
 is taken into the calculation of intensity pattern of the simulated EPR spectrum.
-\strong{Default}: \code{natur.abund = FALSE} (\code{natur.abud} bug will be fixed). For a single-line
-EPR spectrum without the HFS it is automatically switched to \code{natur.abund = FALSE}.}
+\strong{Default}: \code{natur.abund = TRUE}. For a single-line
+EPR spectrum without hyperfine splitting(HFS) it is automatically switched to \code{natur.abund = FALSE}.}
 
 \item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
@@ -129,7 +129,7 @@ EPR spectra often display hyperfine structure, where the spectral lines split in
 \details{
 Theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent
   an important step in the analysis of EPR spectra. However, such step requires an iterative process with modelling
-  the above-described \strong{electron-nuclear system} followed by a numerical simulations of the spectra
+  the above-described \strong{electron-nuclear system} followed by a numerical simulations of EPR spectra
   to match the experimental ones (see also \code{\link{eval_sim_EPR_isoFit}}). Commonly, quantum chemical calculations
   (usually DFT, see also \code{vignette("functionality")} are involved in this process.
   EPR simulations in the isotropic regime assume that the molecules tumble/move extremely fast causing a total averaging
@@ -143,16 +143,16 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
   from the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
-  for the energy levels. The related \eqn{B}s are computed by the fixed-point iterations, because the corresponding
-  \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
-  and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated from the analytical formula
-  of the linear combination of Gaussian and Lorentzian line-shape (also called pseudo-Voight,
+  for the energy levels of interavction nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
+  because the corresponding \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
+  and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated by the analytical formula
+  of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voight,
   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
   are defined by \code{lineG.content} argument, actually corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
-  is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument)
-  the and multiplicities (relative intensity ratios) are computed by the binomic/multinomic coefficients
-  taking into account the spin quantum numbers of interacting nuclei (and their natural abundance)
+  is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument).
+  The multiplicities (relative intensity ratios) are computed by the binomic/multinomic coefficients
+  taking into account the spin quantum numbers of the interacting nuclei (and their natural abundance)
   under consideration.
 }
 \examples{

@@ -20,7 +20,7 @@
 #' @details
 #'   Theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent
 #'   an important step in the analysis of EPR spectra. However, such step requires an iterative process with modelling
-#'   the above-described \strong{electron-nuclear system} followed by a numerical simulations of the spectra
+#'   the above-described \strong{electron-nuclear system} followed by a numerical simulations of EPR spectra
 #'   to match the experimental ones (see also \code{\link{eval_sim_EPR_isoFit}}). Commonly, quantum chemical calculations
 #'   (usually DFT, see also \code{vignette("functionality")} are involved in this process.
 #'   EPR simulations in the isotropic regime assume that the molecules tumble/move extremely fast causing a total averaging
@@ -34,16 +34,16 @@
 #'   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
 #'   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
 #'   from the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
-#'   for the energy levels. The related \eqn{B}s are computed by the fixed-point iterations, because the corresponding
-#'   \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
-#'   and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated from the analytical formula
-#'   of the linear combination of Gaussian and Lorentzian line-shape (also called pseudo-Voight,
+#'   for the energy levels of interavction nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
+#'   because the corresponding \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
+#'   and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated by the analytical formula
+#'   of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voight,
 #'   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
 #'   are defined by \code{lineG.content} argument, actually corresponding to Gaussian line content (the Lorentzian one
 #'   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
-#'   is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument)
-#'   the and multiplicities (relative intensity ratios) are computed by the binomic/multinomic coefficients
-#'   taking into account the spin quantum numbers of interacting nuclei (and their natural abundance)
+#'   is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument).
+#'   The multiplicities (relative intensity ratios) are computed by the binomic/multinomic coefficients
+#'   taking into account the spin quantum numbers of the interacting nuclei (and their natural abundance)
 #'   under consideration.
 #'
 #'
@@ -108,8 +108,8 @@
 #'   line EPR spectrum is expected.
 #' @param natur.abund Logical, whether the natural abundance of the interacting nuclei
 #'   is taken into the calculation of intensity pattern of the simulated EPR spectrum.
-#'   \strong{Default}: \code{natur.abund = FALSE} (\code{natur.abud} bug will be fixed). For a single-line
-#'   EPR spectrum without the HFS it is automatically switched to \code{natur.abund = FALSE}.
+#'   \strong{Default}: \code{natur.abund = TRUE}. For a single-line
+#'   EPR spectrum without hyperfine splitting(HFS) it is automatically switched to \code{natur.abund = FALSE}.
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 #'   of the analyzed EPR spectrum/data.
@@ -227,7 +227,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                              origin = NULL,
                              B.unit = "G",
                              nuclear.system = NULL,
-                             natur.abund = FALSE,
+                             natur.abund = TRUE,
                              lineSpecs.form = "derivative",
                              lineGL.DeltaB = list(1,NULL),
                              lineG.content = 1,
@@ -542,14 +542,43 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## intensity pattern list for all nuclei by the previous function
     intensity_pattern_nuclei <- Map(function(d,c)
-      intensity_pattern(d,c),
+      {intensity_pattern(d,c)},
       spin_nuclear,
-      N_nuclei)
+      N_nuclei
+      )
+    #
+    ## combinatorics if `natur.abund = TRUE` (`FALSE` included as well) =>
+    ## intensity mutiplication coefficients:
+    ## natur.abun^N_nuclei/sum(pattern intensities)
+    combin_abund_coeff_int <-
+      function(nucleus.abund,
+               N_nuclei,
+               natur.abund = natur.abund,
+               intensity.nuclei.patern){
+        #
+        if (isTRUE(natur.abund)){
+          coeff <- ((nucleus.abund)^(N_nuclei)) / sum(intensity.nuclei.patern)
+        } else {
+          coeff <- 1
+        }
+        #
+        return(coeff)
+      }
+
+    # iterate through all coefficients into one variable (list)
+    combin.abund.coeff.intens <-
+      Map(function(p,r,s)
+      {combin_abund_coeff_int(p,r,natur.abund = natur.abund,s)},
+      abund_nuclear,
+      N_nuclei,
+      intensity_pattern_nuclei
+      )
+
     #
     ## ---------------------------------- COMMENT !! -----------------------------------
     ## |                                                                                |
     ## | Function to calculate the entire intensity pattern by the multiplication       |
-    ## | of the adjacent levels such as:                                              |
+    ## | of the adjacent levels such as:                                                |
     ## |          1           1           1 |   level_01 (e.g. 1 x 14N), highest Aiso   |
     ## |      1   2   1 |  ...                  level_02 (e.g. 2 x 1H), mid Aiso        |
     ## |     1 1 | ...                          level_03 (e.g. 1 x 1H), lowest Aiso     |
@@ -559,14 +588,17 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## | pattern. The entire number of lines =>                                         |
     ## | (2 * 1 * 1 + 1) x (2 * 2 * 0.5 + 1) x (2 * 1 * 0.5 + 1) = 3 x 3 x 2 = 18       |
     ## | If the natural abundances have to be considered => each level must be also     |
-    ## | multiplied by the corresponding isotope natur. abundance however only once     |
+    ## | multiplied by the corresponding isotope natur. abundance intensity coefficient |
+    ## | from combinatorics function above, however only once  !!!                      |
     ## | (only the the level corresponding to those nuclei not the other ones) !        |
     ## |                                                                                |
     ## ----------------------------------------------------------------------------------
     #
     intensity_level_pattern_multiply <- function(intensity.nuclei.pattern,
-                                                 natur.abund = FALSE,
-                                                 nuclear.abund){
+                                                 natur.abund = natur.abund,
+                                                 nuclear.abund){ ## `nuclear.abund`
+      ## corresponds to `combin.abund.coeff.intens`
+      #
       ## `intensity.nuclei.pattern` corresponds to list
       ## for all (see N_levels below) nuclear groups
       ## `nuclear.abund` corresponds to vector of all (see N_levels)
@@ -574,59 +606,32 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       N_levels <- length(intensity.nuclei.pattern)
       ## iterating through all patterns
       intensity_pattern_N_Nminus <- c()
-      if (isFALSE(natur.abund)){
-        nuclear.abund <- NULL
-        if (N_levels >= 2){
-          intensity_pattern_N_Nminus[[N_levels-1]] <-
-            lapply(1:length(intensity.nuclei.pattern[[N_levels-1]]),
-                   function(m)
-                     intensity.nuclei.pattern[[N_levels]] *
-                     intensity.nuclei.pattern[[N_levels-1]][m])
+      #
+      if (N_levels >= 2){
+        intensity_pattern_N_Nminus[[N_levels-1]] <-
+          lapply(1:length(intensity.nuclei.pattern[[N_levels-1]]),
+                 function(m)
+                   intensity.nuclei.pattern[[N_levels]] *
+                   nuclear.abund[[N_levels]] *
+                   intensity.nuclei.pattern[[N_levels-1]][m] *
+                   nuclear.abund[[N_levels-1]])
+        ## unlist
+        intensity_pattern_N_Nminus[[N_levels-1]] <-
+          unlist(intensity_pattern_N_Nminus[[N_levels-1]],
+                 use.names = FALSE)
+      }
+      if (N_levels >= 3){
+        for (j in 2:(N_levels-1)){
+          intensity_pattern_N_Nminus[[N_levels - j]] <-
+            lapply(1:length(intensity.nuclei.pattern[[N_levels - j]]),
+                   function(o)
+                     intensity_pattern_N_Nminus[[N_levels - (j-1)]] *
+                     intensity.nuclei.pattern[[N_levels - j]][o] *
+                     nuclear.abund[[N_levels - j]])
           ## unlist
-          intensity_pattern_N_Nminus[[N_levels-1]] <-
-            unlist(intensity_pattern_N_Nminus[[N_levels-1]],
+          intensity_pattern_N_Nminus[[N_levels - j]] <-
+            unlist(intensity_pattern_N_Nminus[[N_levels - j]],
                    use.names = FALSE)
-        }
-        if (N_levels >= 3){
-          for (j in 2:(N_levels-1)){
-            intensity_pattern_N_Nminus[[N_levels - j]] <-
-              lapply(1:length(intensity.nuclei.pattern[[N_levels - j]]),
-                     function(o)
-                       intensity_pattern_N_Nminus[[N_levels - (j-1)]] *
-                       intensity.nuclei.pattern[[N_levels - j]][o])
-            ## unlist
-            intensity_pattern_N_Nminus[[N_levels - j]] <-
-              unlist(intensity_pattern_N_Nminus[[N_levels - j]],
-                     use.names = FALSE)
-          }
-        }
-      } else{
-        if (N_levels >= 2){
-          intensity_pattern_N_Nminus[[N_levels-1]] <-
-            lapply(1:length(intensity.nuclei.pattern[[N_levels-1]]),
-                   function(m)
-                     intensity.nuclei.pattern[[N_levels]] *
-                     nuclear.abund[N_levels] *
-                     intensity.nuclei.pattern[[N_levels-1]][m] *
-                     nuclear.abund[N_levels-1])
-          ## unlist
-          intensity_pattern_N_Nminus[[N_levels-1]] <-
-            unlist(intensity_pattern_N_Nminus[[N_levels-1]],
-                   use.names = FALSE)
-        }
-        if (N_levels >= 3){
-          for (j in 2:(N_levels-1)){
-            intensity_pattern_N_Nminus[[N_levels - j]] <-
-              lapply(1:length(intensity.nuclei.pattern[[N_levels - j]]),
-                     function(o)
-                       intensity_pattern_N_Nminus[[N_levels - (j-1)]] *
-                       intensity.nuclei.pattern[[N_levels - j]][o] *
-                       nuclear.abund[N_levels - j])
-            ## unlist
-            intensity_pattern_N_Nminus[[N_levels - j]] <-
-              unlist(intensity_pattern_N_Nminus[[N_levels - j]],
-                     use.names = FALSE)
-          }
         }
       }
       #
@@ -658,7 +663,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## Definition for the Derivative as well as Integrated EPR Spectral Line Forms
   ## Pseudo-Voight is only required because =>
   ## x*Gaussian(derivative) + y*Lorentzian(derivative)
-  ## see also https://easyspin.org/easyspin/documentation/lineshapes.html
+  ## see also https://easyspin.org/easyspin/documentation/lineshapes.html or
+  ## EPR Wertz and Bolton https://onlinelibrary.wiley.com/doi/book/10.1002/0470084987
   deriv_line_form <- function(B,
                               B.0,
                               g.x = lineG.content,
@@ -731,10 +737,6 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## Function to calculate intensities based on pattern, magnetic flux density (from Breit-Rabi)
   ## as well as line form => either derivative or integrated one (see `length(nuclear.system) >= 1`
   ## below). This function is applied for `length(nuclear.system) >= 2`
-  ## the `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-  ## otherwise the derivative intensity will be twice so high (i.e. abs of "-" part + abs of "+" one),
-  ## although it is not necessary because the relative intensities within the pattern are important,
-  ## for the integrated form it is OK
   intensities <- function(data.frame.sim,
                           B.values.breit.rabi,
                           intensity.pattern,
@@ -742,11 +744,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## condition for derivative/integrated form
     line.form.condN <- ifelse(line.form == "derivative",TRUE,FALSE)
-    ## intensity =>
+    ## intensity (iterate over all Breit-Rabi values and intensity patterns) =>
     intens <-
       Map(function(u,v)
       {switch(2-line.form.condN,
-              u * 0.5 * deriv_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v),
+              u * deriv_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v),
               u * integ_line_form(B = data.frame.sim[[paste0("B_",B.unit)]],B.0 = v)
               )
       },
@@ -792,6 +794,9 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## --------------------------- (1) NUMBER of NUCLEAR GROUPS >= 1 --------------------------
     #
+    ## BULDING LEVELS STEP BY STEP IT MUST BE >= 1 because
+    ## the output from `length(nuclear.system >= 1)` corresponds to input
+    ## for `length(nuclear.system >= 2)` !!!!
     if (length(nuclear.system) >= 1){
       ## frequency for the biggest A_iso
       B_for_m_spin_values1 <-
@@ -814,17 +819,9 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         dplyr::slice(near_row_for_m_spin_values1)
       #
       ## Spectral line intensity in `B.unit`s depending on natur. abund
-      if (isFALSE(natur.abund)){
-        abund_nuclear1 <- 1
-      } else {
-        abund_nuclear1 <- abund_nuclear[1]
-      }
+      abund_nuclear1 <- combin.abund.coeff.intens[[1]]
       ## Simulated Spectra as a variable into nested lists
       Sim_Intensity <- c()
-      ## The `deriv_line_form` has to be multiplied, in addition to `u`, by 0.5,
-      ## otherwise the derivative intensity will be twice so high (i.e. abs of '-' part + abs of '+' part),
-      ## although it is not necessary because the relative intensities within the pattern
-      ## are important and they remain the same.
       #
       ## condition (`line.form.cond`) for derivative/integrated form see above
       #
@@ -832,11 +829,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       Sim_Intensity[[1]] <-
         Map(function(u,v)
         {switch(2-line.form.cond,
-                u * 0.5 * abund_nuclear1 * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v),
-                u * abund_nuclear1 * integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)
+                u * deriv_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v),
+                u * integ_line_form(B = B.g.sim.df[[paste0("B_",B.unit)]],B.0 = v)
                 )
           },
-        intensity_pattern_nuclei[[1]],
+        abund_nuclear1,
         near_B_for_m_spin_values1[[paste0("B_",B.unit)]]
         )
       ## Sum of the spectral lines from `Sim_Intensity[[1]]` list into final sim. spectrum
@@ -895,11 +892,11 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       }
       #
       ## entire line intensities including the natural abundance
-      intensity_pattern_nuclei_total <-
+      abund_nuclearN <-
         intensity_level_pattern_multiply(
           intensity.nuclei.pattern = intensity_pattern_nuclei,
           natur.abund = natur.abund,
-          nuclear.abund = abund_nuclear
+          nuclear.abund = combin.abund.coeff.intens
         )
       #
       ## Spectral line intensities for the last (corresp. to `length(nuclear.system)`)
@@ -909,7 +906,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         intensities(
           data.frame.sim = B.g.sim.df,
           B.values.breit.rabi = near_B_for_m_spin_values[[length(nuclear.system)]][[paste0("B_", B.unit)]],
-          intensity.pattern = intensity_pattern_nuclei_total,
+          intensity.pattern = abund_nuclearN,
           line.form = lineSpecs.form
         )
       #

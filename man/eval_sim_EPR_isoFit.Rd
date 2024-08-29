@@ -172,15 +172,15 @@ List with following components depending on \code{sim.check}:
   }
 }
 \description{
-As already described in the \code{\link{eval_sim_EPR_iso}}, analysis of the hyperfine structure of EPR spectra
+As already described in the \code{\link{eval_sim_EPR_iso}}, analysis of the hyperfine structure (HFS) of EPR spectra
   requires an iterative process with modelling
   the \strong{electron-nuclear system} followed by a numerical simulations of the spectra to match the experimental ones.
   Fitting, of the simulated spectrum onto the experimental one, therefore represent an important step in such analysis.
   Parameters of the EPR simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants (in \code{MHz})
   \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth (either \eqn{\Delta B_{\text{pp}}}
   or \eqn{FWHM} depending on \code{lineSpecs.form}); spectral baseline (see the \code{baseline.correct}) and finally
-  the intensity (multiplication coefficient) are optimized by methods listed in \code{\link{optim_for_EPR_fitness}} in order
-  to match the experimental EPR spectrum. The \code{lineG.content} corresponding parameter, is the only one,
+  the intensity (multiplication coefficient) are optimized by those methods listed in \code{\link{optim_for_EPR_fitness}}
+  in order to match the experimental EPR spectrum. The \code{lineG.content} corresponding parameter, is the only one,
   which needs to be varied "manually". In order to interactively control the optimization/fitting process,
   similarly to that of in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
   a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is planned to develop, in the future.
@@ -208,7 +208,7 @@ tempo.test.sim.fit.a <-
         4.8, # G Delta Bpp
         4.8, # L Delta Bpp
         0, # intercept (constant) lin. baseline
-        0.008, # Sim. intensity multiply
+        0.012, # Sim. intensity multiply
         1e-6, # slope lin. baseline
         49), # A in MHz
     sim.check = FALSE
@@ -247,9 +247,9 @@ tempo.test.sim.fit.b <-
     optim.method = "pswarm",
     nuclear.system.noA = list("14N",1),
     baseline.correct = "constant",
-    optim.params.init = c(2.006,4.8,4.8,0,7e-3,49),
-    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,4e-3,45),
-    optim.params.upper = c(2.0072,5.2,5.2,1e-4,1e-2,53),
+    optim.params.init = c(2.006,4.8,4.8,0,9e-3,49),
+    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,7e-3,45),
+    optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
     sim.check = TRUE
   )
 ## OUTPUTS-RETURN:
