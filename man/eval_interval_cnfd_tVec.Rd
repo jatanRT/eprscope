@@ -25,9 +25,9 @@ Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm\,\,un
   limit for the mean (one side of the confidence interval not including the mean value).
 }
 \description{
-Evaluation of the mean value and its confidence limits (according to Student's t-distribution)
+Calculation of the mean value and its confidence limits (according to Student's t-distribution)
  corresponding to data frame column or vector characterizing dispersion of the individual
- value, such as double integral in quantitative EPR analysis, g-value or linewidth.
+ values, such as double integrals in quantitative EPR analysis, g-values or linewidths.
 }
 \details{
 The confidence interval evaluation suggests that values/observations obey two-tailed Student's t-distribution,

@@ -9,7 +9,7 @@
 #'   Add the interactive plots (see \code{\link{plot_EPR_Specs2D_interact}} or \code{\link{plot_EPR_Specs3D_interact}})
 #'   to various document formats like \code{.html}, \code{.pdf} or \code{.docx}. Function is based on the
 #'   \code{\link[htmlwidgets]{saveWidget}} as well as on the \code{\link[webshot2]{webshot}} with the help
-#'   of \href{https://github.com/yihui/knitr}{knitr} package functions. Depending on the format, plot is saved
+#'   of \href{https://github.com/yihui/knitr}{knitr} package functions. Depending on the output format, plot is saved
 #'   in working/actual directory either as \code{.html} or as \code{.png}.
 #'   The file name inherits the name of the object/variable (see argument \code{p} and example). Afterwards, during
 #'   the \href{https://rmarkdown.rstudio.com/docs/}{R markdown} or \href{https://quarto.org/docs/guide/}{Quarto}

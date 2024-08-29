@@ -244,8 +244,8 @@
 #' ## best fit parameters for both procedures within a list:
 #' tempo.test.sim.fit.c$best.fit.params
 #' #
-#' ## compare the results with the examples in the `readMAT_params_file`,
-#' ## corresponding to best fit parameters from `Easyspin`
+#' ## compare the results with the example in the `readMAT_params_file`,
+#' ## corresponding to the best fit from `Easyspin`
 #' #
 #' ## `N.converg` also consists of two components
 #' ## each corresponding to result of the individual

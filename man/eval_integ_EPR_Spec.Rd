@@ -113,7 +113,7 @@ Evaluates integrals of EPR spectra (based on the \code{\link[pracma:trapz]{pracm
  by the polynomial fit of the \code{poly.degree} level. \strong{For EPR time/temperature/...etc spectral series},
  (data frame must be available in \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}),
  there is an \strong{option to integrate all EPR spectra literally in one step} (see also \code{Examples}),
- similarly to function available in acquisition/processing software at EPR spectrometer.
+ similarly to function available in acquisition/processing software at EPR spectrometers.
 }
 \details{
 The relative error of the cumulative trapezoidal function is minimal, usually falling into the range of

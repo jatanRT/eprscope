@@ -18,7 +18,7 @@
 #' @details
 #'   Output from the \code{plot_EPR_Specs} can be additionally combined by the \code{+} sign with other
 #'   \code{ggplot2} or internal plotting functions
-#'   (e.g. with \code{\link{plot_theme_In_ticks}}). For details of \code{ggplot2} theme elements please,
+#'   (e.g. with \code{\link{plot_theme_In_ticks}}). For details of \code{ggplot2} theme elements, please
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
 #'   (see also \code{\link[ggplot2]{theme}}) or to
 #'   \href{https://henrywang.nl/ggplot2-theme-elements-demonstration/}{ggplot2 Elements Demonstration by Henry Wang}.

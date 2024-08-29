@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up
-#'   specific \code{solvent} and its corresponding properties (\code{prop} argument).
+#'   specific \code{solvent} and its corresponding properties (by the \code{prop} argument).
 #'   See also \code{vignette("datasets")}.
 #'
 #'

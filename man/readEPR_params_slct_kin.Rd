@@ -26,7 +26,7 @@ List containing:
 }
 \description{
 Function takes the selected instrumental parameters relevant to \strong{time series ("kinetic")}
- experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
+ experiment from the \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
  "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
  spectra, see \code{\link{correct_time_Exp_Specs}}.
 }

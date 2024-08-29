@@ -1,6 +1,6 @@
 # eprscope 0.1.11 (1st public release)
 
-## 2024-08-27
+## 2024-08-29
 
 ### Bug Fixes/Critical Updates
 
@@ -21,7 +21,10 @@
   now can also contain characters like `c("a","b","c")`, not just numbers
   like `c("250","260","270")`
   
-* fixed visualization of legend labels within the `plot_EPR_Specs` function  
+* fixed visualization of legend labels within the `plot_EPR_Specs` function 
+
+* natural abundance of interacting nuclei to calculate the intensities
+  within the `eval_sim_EPR_iso` and related functions/examples 
 
 ### Updates
 

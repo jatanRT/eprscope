@@ -172,7 +172,7 @@ plot_EPR_Specs(data.spectra =
   line.colors = c("darkorange",
                   "darkblue"),
   legend.title = "Time (s)",
-  yTicks = FALSE
+  yTicks = TRUE
   )
 
 

@@ -52,7 +52,7 @@ Numeric or character string (e.g. date or comment) corresponding to selected ins
 }
 \description{
 Taking selected instrumental parameters or information
- from \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
+ from the \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
  or \code{WinEpr} Software, respectively).
 }
 \examples{

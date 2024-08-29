@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Evaluating transferred charge and number of electrons
+#'   Evaluating transferred charge and the corresponding number of electrons
 #'   from \href{https://doi.org/10.1515/pac-2018-0109}{chronoamperogram} related to electrochemical
 #'   experiment, performed simultaneously with the EPR time series measurement or independently of the latter.
 #'   To acquire charge, the input \eqn{I} \emph{vs} \eqn{time} relation (coming from
@@ -23,7 +23,7 @@
 #'   by this function one can easily compare the number of radicals with the number of transferred electrons.
 #'   Number of radicals (\eqn{N_{\text{R}}}) are evaluated from quantitative measurements (see also
 #'   \code{\link{quantify_EPR_Abs}}), whereas number of transferred electrons (\eqn{N_{\text{e}}}) is related
-#'   to charge (\eqn{Q}) counter part, according to:
+#'   to charge (\eqn{Q}), according to:
 #'   \deqn{N_{\text{e}} = (Q\,N_{\text{A}})/F}
 #'   where \eqn{N_{\text{A}}} stands for Avogadro's number and \eqn{F} for Faraday's constants.
 #'   Both obtained by \code{constans::syms$na} and \code{constants::syms$f}, respectively,

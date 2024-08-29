@@ -6,7 +6,7 @@
 #'
 #' @description
 #'  Taking selected instrumental parameters or information
-#'  from \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
+#'  from the \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
 #'  or \code{WinEpr} Software, respectively).
 #'
 #'
@@ -317,7 +317,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #' @description
 #'  Function takes the selected instrumental parameters relevant to \strong{time series ("kinetic")}
-#'  experiment from \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
+#'  experiment from the \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
 #'  "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
 #'  spectra, see \code{\link{correct_time_Exp_Specs}}.
 #'
