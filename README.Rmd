@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml) [![Codecov test coverage](https://codecov.io/gh/jatanRT/eprscope/graph/badge.svg)](https://app.codecov.io/gh/jatanRT/eprscope)
 
 <!-- badges: end -->
 
@@ -30,12 +30,12 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
 
 Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of optimization/fitting functions of the `{eprscope}` .
 
-```{r installation}
+```{r installation,eval=FALSE,echo=TRUE}
 
 # The package can be installed by =>
 
 # install.packages("devtools")
-# devtools::install_github("jatanRT/eprscope.git")
+devtools::install_github("jatanRT/eprscope")
 
 ```
 
