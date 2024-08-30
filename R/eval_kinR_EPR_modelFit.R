@@ -347,7 +347,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     labs(
       title = model.react,
       color = "",
-      caption = paste("Least-Square Fit by the Levenberg-Marquardt Algorithm",
+      caption = paste("Fit by the Levenberg-Marquardt Algorithm",
                       "and Numerical Solution of the Ordinary Differential Eqs. System:",
                       caption.params.vec,
                       sep = "\n"),
