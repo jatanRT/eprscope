@@ -77,7 +77,7 @@
 #'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
 #'   \eqn{0.8\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{- 0.001},
-#'   intensity multiplication initial constant \eqn{= 1\cdot 10^{-8}}, baseline initial slope \eqn{- 5} (in case
+#'   intensity multiplication initial constant \eqn{= 0.8\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.9\,A_{\text{init}}}.
@@ -85,7 +85,7 @@
 #'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
 #'   \eqn{1.2\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{+ 0.001},
-#'   intensity multiplication initial constant \eqn{= 100}, baseline initial slope \eqn{+ 5} (in case
+#'   intensity multiplication initial constant \eqn{= 1.2\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.
@@ -167,7 +167,7 @@
 #'         4.8, # G Delta Bpp
 #'         4.8, # L Delta Bpp
 #'         0, # intercept (constant) lin. baseline
-#'         0.012, # Sim. intensity multiply
+#'         0.016, # Sim. intensity multiply
 #'         1e-6, # slope lin. baseline
 #'         49), # A in MHz
 #'     sim.check = FALSE
@@ -206,8 +206,8 @@
 #'     optim.method = "pswarm",
 #'     nuclear.system.noA = list("14N",1),
 #'     baseline.correct = "constant",
-#'     optim.params.init = c(2.006,4.8,4.8,0,9e-3,49),
-#'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,7e-3,45),
+#'     optim.params.init = c(2.006,4.8,4.8,0,1.1e-2,49),
+#'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,9e-3,45),
 #'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
 #'     sim.check = TRUE
 #'   )
@@ -649,18 +649,23 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## initial parameter guesses for the optimization and definition
+  ## g values
   limits.params1a <- optim.params.init[1] - 0.001
   limits.params1b <- optim.params.init[1] + 0.001
+  ## linewidths
   limits.params2 <- optim.params.init[2] * 0.2
   limits.params3 <- optim.params.init[3] * 0.2
+  ## constant
   limits.params4a <- optim.params.init[4] - 0.001
   limits.params4b <- optim.params.init[4] + 0.001
+  ## intensity multiplication coeff.
+  limits.params5 <- optim.params.init[5] * 0.2
   #
   lower.limits <- c(limits.params1a,
                     optim.params.init[2] - limits.params2,
                     optim.params.init[3] - limits.params3,
                     limits.params4a,
-                    1e-8)
+                    optim.params.init[5] - limits.params5)
   lower.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                          c(lower.limits,-5,-5),
                          c(lower.limits,-5),
@@ -670,7 +675,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     optim.params.init[2] + limits.params2,
                     optim.params.init[3] + limits.params3,
                     limits.params4b,
-                    100)
+                    optim.params.init[5] + limits.params5)
   upper.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                          c(upper.limits,5,5),
                          c(upper.limits,5),

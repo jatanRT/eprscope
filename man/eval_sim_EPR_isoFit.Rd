@@ -98,7 +98,7 @@ is \code{list} with the elements/vectors from each method in order to see the pr
 with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
 \eqn{0.8\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{- 0.001},
-intensity multiplication initial constant \eqn{= 1\cdot 10^{-8}}, baseline initial slope \eqn{- 5} (in case
+intensity multiplication initial constant \eqn{= 0.8\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
 \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.9\,A_{\text{init}}}.}
@@ -107,7 +107,7 @@ the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline
 with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
 \eqn{1.2\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{+ 0.001},
-intensity multiplication initial constant \eqn{= 100}, baseline initial slope \eqn{+ 5} (in case
+intensity multiplication initial constant \eqn{= 1.2\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.}
@@ -208,7 +208,7 @@ tempo.test.sim.fit.a <-
         4.8, # G Delta Bpp
         4.8, # L Delta Bpp
         0, # intercept (constant) lin. baseline
-        0.012, # Sim. intensity multiply
+        0.016, # Sim. intensity multiply
         1e-6, # slope lin. baseline
         49), # A in MHz
     sim.check = FALSE
@@ -247,8 +247,8 @@ tempo.test.sim.fit.b <-
     optim.method = "pswarm",
     nuclear.system.noA = list("14N",1),
     baseline.correct = "constant",
-    optim.params.init = c(2.006,4.8,4.8,0,9e-3,49),
-    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,7e-3,45),
+    optim.params.init = c(2.006,4.8,4.8,0,1.1e-2,49),
+    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,9e-3,45),
     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
     sim.check = TRUE
   )
