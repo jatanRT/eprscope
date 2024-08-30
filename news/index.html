@@ -57,11 +57,11 @@
 <h3 id="id_2024-0-1-11">2024-08-29<a class="anchor" aria-label="anchor" href="#id_2024-0-1-11"></a></h3>
 <div class="section level4">
 <h4 id="bug-fixescritical-updates-0-1-11">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-11"></a></h4>
-<ul><li><p>reading of the spectral time series coming within the <code>readEPR_Exp_Specs</code> function</p></li>
+<ul><li><p>reading of the spectral time series within the <code>readEPR_Exp_Specs</code> function</p></li>
 <li><p>reading parameter strings from ‘parameter’ files within the <code>readEPR_param_slct</code> function</p></li>
 <li><p>the <em>g</em>-value scale on <em>x</em>-axis within the plotting functions is now properly displayed</p></li>
-<li><p>if the related <code>time(series)</code> unit is converted in relevant data frames, the corresponding column is renamed in in order to inherit the new unit (like <code>time_s</code>), accordingly</p></li>
-<li><p>elements in <code>names</code> argument, within the <code>readEPR_Exp_Specs_multif</code>, now can also contain characters like <code>c("a","b","c")</code>, not just numbers like <code>c("250","260","270")</code></p></li>
+<li><p>if the related <code>time(series)</code> unit is converted in relevant data frames, the corresponding column is renamed in order to inherit the new unit (like <code>time_s</code>), accordingly</p></li>
+<li><p>now, the elements in <code>names</code> argument, within the <code>readEPR_Exp_Specs_multif</code>, can also contain characters like <code>c("a","b","c")</code>, not just numbers like <code>c("250","260","270")</code></p></li>
 <li><p>fixed visualization of legend labels within the <code>plot_EPR_Specs</code> function</p></li>
 <li><p>natural abundance of interacting nuclei to calculate the intensities within the <code>eval_sim_EPR_iso</code> and related functions/examples</p></li>
 </ul></div>
@@ -73,7 +73,7 @@
 <li><p><code>magnettech</code> option added to reading functions to read the EPR spectra and parameters from these instruments, additionally, the ‘general’ reading function <code>readEPR_Exp_Specs</code> was updated to read files, from the most common EPR instruments, more easily by adding the auxiliary <code>data.structure</code> argument</p></li>
 <li><p>the optimization algorithms, other than <code>diff-levenmarq</code>, were removed from the <code>eval_kinR_EPR_modelFit</code> for now, additional optimization methods will be implemented later on</p></li>
 <li><p>many function documentations updated + several examples added + code-cleaning (by <code>styler</code> package) done in many functions + <code>README</code>, <code>DESCRIPTION</code> and vignettes updated, accordingly</p></li>
-<li><p>vignette to describe the EPR simulations and fitting was removed, for now (will be added later), however, the important points, from that vignette, are summarized in the relevant function documentations</p></li>
+<li><p>vignette to describe the EPR simulations and fitting was removed, for now (will be added later), however, the important points from that vignette are summarized in the relevant function documentations</p></li>
 <li><p>stoichiometric coefficient notation as well as reaction model scheme for consecutive reactions within the <code>eval_kinR_ODE_model</code> updated/extended</p></li>
 <li><p>option to use Tesla (<code>T</code>) unit, now available in all <em>g</em>-value evaluations</p></li>
 <li><p><code>line.type</code> option added to all relevant plotting functions</p></li>
