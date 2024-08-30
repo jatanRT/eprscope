@@ -105,4 +105,4 @@ VignetteBuilder: knitr
 Config/testthat/edition: 3
 Remotes: 
     mitchelloharawild/icons
-URL: https://jatanrt.github.io/eprscope/
+URL: https://jatanrt.github.io/eprscope/, https://github.com/jatanrt/eprscope
