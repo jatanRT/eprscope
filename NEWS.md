@@ -4,7 +4,7 @@
 
 ### Bug Fixes/Critical Updates
 
-* reading of the spectral time series coming within the `readEPR_Exp_Specs`
+* reading of the spectral time series within the `readEPR_Exp_Specs`
   function
 
 * reading parameter strings from 'parameter' files within the `readEPR_param_slct`
@@ -14,11 +14,11 @@
   displayed
   
 * if the related `time(series)` unit is converted in relevant data frames, 
-  the corresponding column is renamed in in order to inherit the new unit 
+  the corresponding column is renamed in order to inherit the new unit 
   (like `time_s`), accordingly
   
-* elements in `names` argument, within the `readEPR_Exp_Specs_multif`,
-  now can also contain characters like `c("a","b","c")`, not just numbers
+* now, the elements in `names` argument, within the `readEPR_Exp_Specs_multif`,
+  can also contain characters like `c("a","b","c")`, not just numbers
   like `c("250","260","270")`
   
 * fixed visualization of legend labels within the `plot_EPR_Specs` function 
@@ -55,7 +55,7 @@
   `README`, `DESCRIPTION` and vignettes updated, accordingly
   
 * vignette to describe the EPR simulations and fitting was removed, for now
-  (will be added later), however, the important points, from that vignette,
+  (will be added later), however, the important points from that vignette
   are summarized in the relevant function documentations
   
 * stoichiometric coefficient notation as well as reaction model scheme
