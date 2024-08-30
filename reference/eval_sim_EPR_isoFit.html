@@ -201,7 +201,7 @@ is <code>list</code> with the elements/vectors from each method in order to see 
 with the lower bound constraints. <strong>Default</strong>: <code>optim.params.lower = NULL</code> which actually
 equals to \(g_{\text{init}} - 0.001\), \(0.8\,\Delta B_{\text{G,init}}\),
 \(0.8\,\Delta B_{\text{L,init}}\), baseline intercept initial constant \(- 0.001\),
-intensity multiplication initial constant \(= 1\cdot 10^{-8}\), baseline initial slope \(- 5\) (in case
+intensity multiplication initial constant \(= 0.8\,\text{init}\), baseline initial slope \(- 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(- 5\) (in case the <code>baseline.correct</code> is set to
 <code>"quadratic"</code>). Lower limits of all hyperfine coupling constant (HFCCs) are set to \(0.9\,A_{\text{init}}\).</p></dd>
@@ -212,7 +212,7 @@ the baseline initial quadratic coefficient \(- 5\) (in case the <code>baseline.c
 with the upper bound constraints. <strong>Default</strong>: <code>optim.params.upper = NULL</code> which actually
 equals to \(g_{\text{init}} + 0.001\), \(1.2\,\Delta B_{\text{G,init}}\),
 \(1.2\,\Delta B_{\text{L,init}}\), baseline intercept initial constant \(+ 0.001\),
-intensity multiplication initial constant \(= 100\), baseline initial slope \(+ 5\) (in case
+intensity multiplication initial constant \(= 1.2\,\text{init}\), baseline initial slope \(+ 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.correct</code> is set to
 <code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.1\,A_{\text{init}}\).</p></dd>
@@ -334,7 +334,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>        <span class="fl">4.8</span>, <span class="co"># G Delta Bpp</span></span></span>
 <span class="r-in"><span>        <span class="fl">4.8</span>, <span class="co"># L Delta Bpp</span></span></span>
 <span class="r-in"><span>        <span class="fl">0</span>, <span class="co"># intercept (constant) lin. baseline</span></span></span>
-<span class="r-in"><span>        <span class="fl">0.012</span>, <span class="co"># Sim. intensity multiply</span></span></span>
+<span class="r-in"><span>        <span class="fl">0.016</span>, <span class="co"># Sim. intensity multiply</span></span></span>
 <span class="r-in"><span>        <span class="fl">1e-6</span>, <span class="co"># slope lin. baseline</span></span></span>
 <span class="r-in"><span>        <span class="fl">49</span><span class="op">)</span>, <span class="co"># A in MHz</span></span></span>
 <span class="r-in"><span>    sim.check <span class="op">=</span> <span class="cn">FALSE</span></span></span>
@@ -343,8 +343,8 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.005784e+00  5.372699e+00  4.312134e+00 -1.373602e-05  1.543462e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  3.944858e-09  5.119106e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.005945e+00  5.127888e+00  5.209871e+00 -4.639211e-05  1.585515e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  1.334143e-08  5.051325e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## spectrum plot with experimental spectrum,</span></span></span>
@@ -357,7 +357,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">## minimal sum of squared residuals:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">sum.LSQ.min</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.278081e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.744428e-07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## number of evaluations / iterations:</span></span></span>
@@ -376,14 +376,14 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of data frame including all spectra:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         B_G    Experiment    Simulation     Residuals Simulation_NoBasLin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;         &lt;num&gt;         &lt;num&gt;         &lt;num&gt;               &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.700 -1.773856e-06 -5.843513e-07 -1.189505e-06        4.645135e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.900  1.220946e-07 -5.835443e-07  7.056390e-07        4.663129e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.101 -1.840379e-07 -5.827333e-07  3.986954e-07        4.681308e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.301 -7.164141e-08 -5.819261e-07  5.102847e-07        4.699491e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.502 -1.736144e-06 -5.811148e-07 -1.155030e-06        4.717860e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.702 -5.153117e-07 -5.803075e-07  6.499578e-08        4.736235e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         B_G    Experiment    Simulation    Residuals Simulation_NoBasLin</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;         &lt;num&gt;         &lt;num&gt;        &lt;num&gt;               &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.700 -1.773856e-06 -1.923358e-06 1.495017e-07        5.777759e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.900  1.220946e-07 -1.920667e-06 2.042762e-06        5.800145e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.101 -1.840379e-07 -1.917963e-06 1.733925e-06        5.822762e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.301 -7.164141e-08 -1.915272e-06 1.843631e-06        5.845383e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.502 -1.736144e-06 -1.912568e-06 1.764234e-07        5.868236e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.702 -5.153117e-07 -1.909877e-06 1.394565e-06        5.891095e-09</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## similar EPR spectrum simulation fit with "particle swarm"</span></span></span>
 <span class="r-in"><span><span class="co">## optimization algorithm and `sim.check = TRUE` option</span></span></span>
@@ -395,8 +395,8 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>    optim.method <span class="op">=</span> <span class="st">"pswarm"</span>,</span></span>
 <span class="r-in"><span>    nuclear.system.noA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"14N"</span>,<span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    baseline.correct <span class="op">=</span> <span class="st">"constant"</span>,</span></span>
-<span class="r-in"><span>    optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.006</span>,<span class="fl">4.8</span>,<span class="fl">4.8</span>,<span class="fl">0</span>,<span class="fl">9e-3</span>,<span class="fl">49</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    optim.params.lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0048</span>,<span class="fl">4.4</span>,<span class="fl">4.4</span>,<span class="op">-</span><span class="fl">1e-4</span>,<span class="fl">7e-3</span>,<span class="fl">45</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.006</span>,<span class="fl">4.8</span>,<span class="fl">4.8</span>,<span class="fl">0</span>,<span class="fl">1.1e-2</span>,<span class="fl">49</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    optim.params.lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0048</span>,<span class="fl">4.4</span>,<span class="fl">4.4</span>,<span class="op">-</span><span class="fl">1e-4</span>,<span class="fl">9e-3</span>,<span class="fl">45</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    optim.params.upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0072</span>,<span class="fl">5.2</span>,<span class="fl">5.2</span>,<span class="fl">1e-4</span>,<span class="fl">1.5e-2</span>,<span class="fl">53</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    sim.check <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
@@ -404,8 +404,8 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.005293e+00  4.710225e+00  4.400000e+00 -6.772583e-10  1.500000e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.258754e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.005256e+00 4.710182e+00 4.400000e+00 9.523309e-08 1.500000e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] 5.258035e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## quick simulation check by plotting the both</span></span></span>
@@ -438,12 +438,12 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.006000e+00  5.760000e+00  5.760000e+00 -7.400473e-10  6.431090e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.006000e+00  5.760000e+00  5.760000e+00 -9.656459e-10  8.400000e-03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  4.900000e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.006898e+00  5.033670e+00  4.528571e+00 -8.887784e-10  1.051356e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.338473e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.007000e+00  4.745743e+00  3.840000e+00 -6.036948e-10  8.400000e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.348910e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## compare the results with the example in the `readMAT_params_file`,</span></span></span>
@@ -457,10 +457,10 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">## as already stated above:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">N.converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.657319e-06 1.585811e-06 1.560160e-06 1.551880e-06 1.551880e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.657319e-06 1.574711e-06 1.567632e-06 1.567632e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
