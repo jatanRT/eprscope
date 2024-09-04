@@ -181,8 +181,8 @@ the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-base
 
 <dt id="arg-optim-params-init">optim.params.init<a class="anchor" aria-label="anchor" href="#arg-optim-params-init"></a></dt>
 <dd><p>Numeric vector with the elements: baseline constant/intercept
-follow by simulated intensity multiplication coefficient for each EPR spectral component.
-Therefore, the length of this vector is equal to (number of components + 1).</p></dd>
+followed by simulated intensity multiplication coefficient for each EPR spectral component.
+Therefore, the length of this vector is equal to: number of components + 1.</p></dd>
 
 
 <dt id="arg-optim-params-lower">optim.params.lower<a class="anchor" aria-label="anchor" href="#arg-optim-params-lower"></a></dt>
@@ -279,11 +279,12 @@ for each time/temperature/...etc. point in row. Additional optimization measures
 <span class="r-in"><span><span class="co">## example with default arguments corresponding</span></span></span>
 <span class="r-in"><span><span class="co">## to one simulated spectral component,</span></span></span>
 <span class="r-in"><span><span class="co">## `optim.params.init` has the length</span></span></span>
-<span class="r-in"><span><span class="co">## of (number of components + 1)</span></span></span>
+<span class="r-in"><span><span class="co">## of =&gt; number of components + 1,</span></span></span>
+<span class="r-in"><span><span class="co">## because of included intercept/baseline constant</span></span></span>
 <span class="r-in"><span><span class="va">quant.data.sim.test.a</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">quantify_EPR_Sim_series</span><span class="op">(</span><span class="va">data.spectra.series</span>,</span></span>
 <span class="r-in"><span>     dir_ASC_sim <span class="op">=</span> <span class="st">"./"</span>,</span></span>
-<span class="r-in"><span>     optim.method <span class="op">=</span> <span class="st">"sbplx"</span>,</span></span>
+<span class="r-in"><span>     optim.method <span class="op">=</span> <span class="st">"pswarm"</span>,</span></span>
 <span class="r-in"><span>     name.pattern.sim <span class="op">=</span> <span class="st">"DHMB0_1st_04_SimA"</span>,</span></span>
 <span class="r-in"><span>     optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>     output.area.stat <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
