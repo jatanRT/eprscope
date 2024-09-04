@@ -77,8 +77,8 @@ One may choose one from those listed in \code{\link{optim_for_EPR_fitness}}, \st
 the \href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex}{"Subplex" method}.}
 
 \item{optim.params.init}{Numeric vector with the elements: baseline constant/intercept
-follow by simulated intensity multiplication coefficient for each EPR spectral component.
-Therefore, the length of this vector is equal to (number of components + 1).}
+followed by simulated intensity multiplication coefficient for each EPR spectral component.
+Therefore, the length of this vector is equal to: number of components + 1.}
 
 \item{optim.params.lower}{Numeric vector with the length of \code{optim.params.init} and the lower
 bound constraints. \strong{Default}: \code{optim.params.init = NULL}, actually corresponding
@@ -165,11 +165,12 @@ Analyzed EPR spectra may consists of several components (see also the \code{\lin
 ## example with default arguments corresponding
 ## to one simulated spectral component,
 ## `optim.params.init` has the length
-## of (number of components + 1)
+## of => number of components + 1,
+## because of included intercept/baseline constant
 quant.data.sim.test.a <-
   quantify_EPR_Sim_series(data.spectra.series,
      dir_ASC_sim = "./",
-     optim.method = "sbplx",
+     optim.method = "pswarm",
      name.pattern.sim = "DHMB0_1st_04_SimA",
      optim.params.init = c(0,0.8),
      output.area.stat = TRUE)
