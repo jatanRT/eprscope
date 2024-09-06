@@ -144,22 +144,22 @@ Theoretical quantitative kinetic profiles (such as concentration/amount/integral
 According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical reaction
   with the radicals (\eqn{\text{R}}) involved (example see argument \code{model.react})
   \deqn{r\text{R} + b\text{B} \xrightarrow\, c\text{C}}
-  is expressed via time change of the reaction extend (\eqn{\text{d}\xi/\text{d}t}):
+  is expressed via time change of extent of the reaction (\eqn{\text{d}\xi/\text{d}t}):
   \deqn{-(1/r)\,(\text{d}n_{\text{R}}/\text{d}t) = -(1/b)\,(\text{d}n_{\text{B}}/\text{d}t) =
   (1/c)\,(\text{d}n_{\text{C}}/\text{d}t)}
-  where \eqn{r,b,c = \nu} are the stoichiometric coefficients. At constant volume (\eqn{V}) conditions
+  where \eqn{r,b,c} are the stoichiometric coefficients. At constant volume (\eqn{V}) conditions
   (or if volume changes are negligible) the amount (\eqn{n} in mole) of reactant/product
   can be replaced by its corresponding concentration (\eqn{c = n/V}). Such reaction rate
-  (expressed in moles per unit volume) is function of temperature (\eqn{T}),
+  (expressed in moles per unit volume and per second) is function of temperature (\eqn{T}),
   pressure (\eqn{p}) as well as that of concentration of reactants and products.
   For the reaction example shown above it applies (for radical \eqn{\text{R}}):
   \deqn{\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{R}}^{\alpha}\,c_{\text{B}}^{\beta}}
   This is called rate law, where \eqn{k} is the rate constant and its pressure dependence is usually
   small and therefore can be ignored, in the first approach. Coefficients \eqn{\alpha} and \eqn{\beta},
-  in general, correspond to fitting parameters, coming from experimental relationship of the reaction
-  rate and the concentration of reactants. These coefficients are called \strong{partial reaction orders}
+  in general, correspond to fitting parameters, coming from experimental relation of the reaction
+  rate and the concentration of reactants/products. These coefficients are called \strong{partial reaction orders}
   or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If the kinetic equation
-  for the reaction correspond to its stoichiometry, the reaction is described as elementary
+  for the reaction corresponds to its stoichiometry, the reaction is described as elementary
   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, one can obtain
   the rate constant as a rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
@@ -169,7 +169,7 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   by integration of the kinetic equations/rate laws. However, by numeric solution of the Ordinary
   Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
   Therefore, higher number of models is available than for integrated
-  differential equations because for complex mechanisms it's quite often highly demanding to gather
+  differential equations because for complex mechanisms it's quite often highly demanding to obtain
   the analytical solution by integration. \strong{Several kinetic models for radical reactions} in EPR spectroscopy
   \strong{are predefined and summarized} below (see also \code{model.react} function argument).
   \tabular{ll}{
