@@ -20,7 +20,7 @@ rearrange_aAiso_QCHorgau(
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
-correspond to indices of atoms/nuclei in the ASCII text file.}
+correspond to indices of proposed equivalent nuclei in the ASCII text file.}
 
 \item{origin}{Character string pointing to origin of DFT EPR calculation parameters <=> which
 software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
@@ -36,12 +36,13 @@ by the \code{path_to_QCHoutput}. See the previous argument.}
 }
 \value{
 Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
-  structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} output files.
+  of proposed equivalent nuclei within the structure/symmetry constructed directly
+  from \emph{Gaussian} or \emph{ORCA} output files.
 }
 \description{
 Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize
-  the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group, according to proposed molecular structure/symmetry
-  (see also \code{\link{rearrange_aAiso_QCHcomp}}).
+  the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group with equivalent nuclei, according
+  to proposed molecular structure/symmetry (see also \code{\link{rearrange_aAiso_QCHcomp}}).
 }
 \examples{
 ## built-in file and path

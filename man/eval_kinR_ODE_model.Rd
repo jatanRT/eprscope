@@ -20,7 +20,7 @@ eval_kinR_ODE_model(
 \arguments{
 \item{model.react}{Character string denoting a specific radical (\code{"R"}) reaction related to
 changes in integral intensities (or any other \strong{q}uantitative \strong{var}iable) in EPR spectral
-time series. Arrow shows direction of the reaction (\code{"-->", irreversible} or \code{"<==>", reversible}).
+time series. Arrow shows direction of the reaction (\code{"-->", forward} or \code{"<==>", forward + reverse}).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
 changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
@@ -158,8 +158,8 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   small and therefore can be ignored, in the first approach. Coefficients \eqn{\alpha} and \eqn{\beta},
   in general, correspond to fitting parameters, coming from experimental relationship of the reaction
   rate and the concentration of reactants. These coefficients are called \strong{partial reaction orders}
-  or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If \code{PROs}
-  are identical with stoichiometric coefficients \eqn{\nu}, the reaction is described as elementary
+  or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If the kinetic equation
+  for the reaction correspond to its stoichiometry, the reaction is described as elementary
   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, one can obtain
   the rate constant as a rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
@@ -174,11 +174,11 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   \strong{are predefined and summarized} below (see also \code{model.react} function argument).
   \tabular{ll}{
   \strong{model.react} \tab \strong{Short Description} \cr
-  \code{"(r=1)R --> [k1] B"} \tab Basic irreversible forward reaction,
+  \code{"(r=1)R --> [k1] B"} \tab Basic forward reaction,
   e.g. irrev. dimerization (if \code{(r=2)}). \cr
-  \code{"(a=1)A --> [k1] (r=1)R"} \tab Basic irreversible radical formation \cr
+  \code{"(a=1)A --> [k1] (r=1)R"} \tab Basic forward radical formation \cr
   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C"} \tab Consecutive reactions,
-  e.g. like comproportionation (for \code{(a=2)} and \code{(r=2)}) + follow-up reversible
+  e.g. considering comproportionation (for \code{(a=2)} and \code{(r=2)}) + follow-up reversible
   dimerization (\code{(c=1)}). \cr
   \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \tab Basic reversible radical quenching,
   e.g. rev. \eqn{\pi-\pi} dimerization for \code{(r=2)} and \code{(b=1)}. \cr
@@ -186,7 +186,8 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   e.g. from rev. comproportionation (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}},
   for \code{(a=2)} and \code{(r=2)}). \cr
   \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \tab Radical formation by chemical reaction like oxidation,
-  reduction or spin trapping (transient radical, \code{A}, is not visible within the common EPR time scale). \cr
+  reduction or spin trapping (if \code{A} refers to transient radical, it is not visible within
+  the common EPR time scale). \cr
   \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \tab General radical quenching by chemical reaction. \cr
   }
 }

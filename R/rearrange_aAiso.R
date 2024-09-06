@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Providing table from Gaussian/ORCA/...etc. output text file to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
-#'   of a nuclear group, according to proposed molecular structure/symmetry.
+#'   of a nuclear group with equivalent nuclei, according to proposed molecular structure/symmetry.
 #'
 #'
 #'
@@ -37,11 +37,11 @@
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.
 #' @param nuclei.list.slct List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 #'   e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
-#'   correspond to indices of atoms/nuclei in the ASCII text file.
+#'   correspond to indices of proposed equivalent nuclei in the ASCII text file.
 #'
 #'
 #' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
-#'   structure/symmetry.
+#'   of equivalent nuclei within the structure/symmetry.
 #'
 #'
 #' @examples
@@ -156,8 +156,8 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #' @description
 #'   Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize
-#'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group, according to proposed molecular structure/symmetry
-#'   (see also \code{\link{rearrange_aAiso_QCHcomp}}).
+#'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group with equivalent nuclei, according
+#'   to proposed molecular structure/symmetry (see also \code{\link{rearrange_aAiso_QCHcomp}}).
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
@@ -175,7 +175,8 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
-#'   structure/symmetry constructed directly form \emph{Gaussian} or \emph{ORCA} output files.
+#'   of proposed equivalent nuclei within the structure/symmetry constructed directly
+#'   from \emph{Gaussian} or \emph{ORCA} output files.
 #'
 #'
 #' @examples

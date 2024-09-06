@@ -17,15 +17,15 @@ with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
-correspond to indices of atoms/nuclei in the ASCII text file.}
+correspond to indices of proposed equivalent nuclei in the ASCII text file.}
 }
 \value{
 Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
-  structure/symmetry.
+  of equivalent nuclei within the structure/symmetry.
 }
 \description{
 Providing table from Gaussian/ORCA/...etc. output text file to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
-  of a nuclear group, according to proposed molecular structure/symmetry.
+  of a nuclear group with equivalent nuclei, according to proposed molecular structure/symmetry.
 }
 \details{
 The \eqn{A_{iso}}/\eqn{a_{iso}} values are computed for each atom/nucleus

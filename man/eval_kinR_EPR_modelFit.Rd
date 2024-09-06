@@ -37,7 +37,7 @@ name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qva
 
 \item{model.react}{Character string denoting a specific radical (\code{"R"}) reaction related to
 changes in integral intensities (or any other \strong{q}uantitative \strong{var}iable) in EPR spectral
-time series. Arrow shows direction of the reaction (\code{"-->", irreversible} or \code{"<==>", reversible}).
+time series. Arrow shows direction of the reaction (\code{"-->", forward} or \code{"<==>", forward + reverse}).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
 changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
