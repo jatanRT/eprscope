@@ -274,7 +274,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 
   <dt>best.fit.params</dt>
 <dd><p>Vector of the best (final) fitting parameters to simulate the EPR spectrum,
-  see also description of the <code>optim.params.init</code>.</p></dd>
+  its elements are actually related to <code>optim.params.init</code>.</p></dd>
 
   <dt>df</dt>
 <dd><p>Data frame (table) with the following variables / columns: magnetic flux density,
@@ -295,7 +295,12 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
   <dt>N.converg</dt>
 <dd><p>Vector or simple integer code indicating the successful completion
   of the optimization/fit. In the case of <code>"levenmarq"</code> method, the vector elements equals
-  to sum of squares at each iteration.</p></dd>
+  to sum of squares at each iteration. If the <code>optim.method = "pswarm"</code> is applied, one of the following
+  codes can be returned: <code>0</code>: algorithm terminated by reaching the absolute tolerance,
+  <code>1</code>: maximal number of function evaluations reached, <code>2</code>: maximal number of iterations reached,
+  <code>3</code>: maximal number of restarts reached, <code>4</code>: maximal number of iterations without improvement reached.
+  For all the remaining methods (coming from <code>{nloptr}</code> package), the integers have to be positive to indicate
+  the successful convergence.</p></dd>
 
 
 </dl></li>
