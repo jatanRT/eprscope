@@ -126,7 +126,7 @@
 #'   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
 #'   corresponds to the best fitted spectrum where the baseline counter part was subtracted.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
-#'   see also description of the \code{optim.params.init}.}
+#'   its elements are actually related to \code{optim.params.init}.}
 #'   \item{df}{Data frame (table) with the following variables / columns: magnetic flux density,
 #'   intensity of the experimental spectrum, intensity of the simulated spectrum (including
 #'   the baseline fit), residual intensity of the fit and finally, simulated spectrum intensity
@@ -139,7 +139,12 @@
 #'   and the number of restarts.}
 #'   \item{N.converg}{Vector or simple integer code indicating the successful completion
 #'   of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements equals
-#'   to sum of squares at each iteration.}
+#'   to sum of squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
+#'   codes can be returned: \code{0}: algorithm terminated by reaching the absolute tolerance,
+#'   \code{1}: maximal number of function evaluations reached, \code{2}: maximal number of iterations reached,
+#'   \code{3}: maximal number of restarts reached, \code{4}: maximal number of iterations without improvement reached.
+#'   For all the remaining methods (coming from \code{{nloptr}} package), the integers have to be positive to indicate
+#'   the successful convergence.}
 #'   }
 #'   }
 #'

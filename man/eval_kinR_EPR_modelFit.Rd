@@ -123,7 +123,7 @@ List with the following components is available:
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{sum.LSQ.min}{Minimal least-square sum after \code{N.evals}.}
-  \item{convergence}{Vector corresponding to residual sum of squares at each iteration/evaluation.
+  \item{N.converg}{Vector corresponding to residual sum of squares at each iteration/evaluation.
   The length of \code{convergence} is equal to the length of \code{N.evals}.}
   }
 }
@@ -184,7 +184,7 @@ triaryl_model_kin_fit_01$plot
 triaryl_model_kin_fit_01$df.coeffs
 #
 ## convergence preview
-triaryl_model_kin_fit_01$convergence
+triaryl_model_kin_fit_01$N.converg
 #
 ## take the same experimental data and perform fit
 ## by first order kinetics where the `model.react`

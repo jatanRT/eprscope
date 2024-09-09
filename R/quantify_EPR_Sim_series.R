@@ -9,13 +9,14 @@
 #'   Analyzed EPR spectra may consists of several components (see also the \code{\link{eval_sim_EPR_iso_combo}}
 #'   function), like the overlapped EPR spectra of several radicals. In order to follow the concentration/amount
 #'   variations of each individual radical during the kinetic/temperature/...series, one must figure out
-#'   how those individual spectral components are actually changed. In the first approximation, it means,
+#'   how those individual spectral components are actually changed. In the first approximation, it means
 #'   to follow the corresponding EPR intensities/integrals, whereas the component positions (\eqn{g}-values)
 #'   are assumed to be fixed (or the changes can be neglected). Therefore, the actual function takes the linear
 #'   combination of the spectral intensities of components and optimizes the related multiplication coefficients
 #'   (refer to the \code{optim.params.init} argument) by the methods gathered in the
 #'   \code{\link{optim_for_EPR_fitness}}. The goal is to fit their sum onto each experimental spectrum in the series.
-#'   So far, the maximal number of components is set to 6.
+#'   So far, the maximal number of components is set to 6. Additional, planned, function will be based on combination
+#'   of the actual function with the \code{\link{eval_sim_EPR_iso_combo}}.
 #'
 #'
 #'

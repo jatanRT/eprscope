@@ -6,8 +6,8 @@
 #'
 #'
 #' @description
-#'   Providing table from Gaussian/ORCA/...etc. output text file to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
-#'   of a nuclear group with equivalent nuclei, according to proposed molecular structure/symmetry.
+#'   Providing table based on Gaussian/ORCA/...etc. output text files in order to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
+#'   of groups with equivalent nuclei, according to proposed molecular structure/symmetry.
 #'
 #'
 #'
@@ -40,7 +40,7 @@
 #'   correspond to indices of proposed equivalent nuclei in the ASCII text file.
 #'
 #'
-#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to groups
 #'   of equivalent nuclei within the structure/symmetry.
 #'
 #'
@@ -155,14 +155,14 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @description
-#'   Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize
-#'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group with equivalent nuclei, according
+#'   Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize
+#'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of groups with equivalent nuclei, according
 #'   to proposed molecular structure/symmetry (see also \code{\link{rearrange_aAiso_QCHcomp}}).
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
 #' @param path_to_QCHoutput Character string corresponding to path of \code{Gaussian} or \code{ORCA} output text files.
-#' @param Nnuclei Numeric value equal to number of atoms/nuclei within the calculated structure.
+#' @param N.nuclei Numeric value that equals to number of atoms/nuclei within the calculated structure.
 #' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 #'   or \code{"orca"}.
@@ -171,10 +171,10 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'   \strong{Default}: \code{output.text.origin = FALSE}.
 #' @param output.text.path Character string, setting the path to file containing
 #'   the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original output file defined
-#'   by the \code{path_to_QCHoutput}. See the previous argument.
+#'   by the \code{path_to_QCHoutput}. See also the previous argument.
 #'
 #'
-#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to groups
 #'   of proposed equivalent nuclei within the structure/symmetry constructed directly
 #'   from \emph{Gaussian} or \emph{ORCA} output files.
 #'
@@ -186,13 +186,13 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #' gauss.file <- unzip(gauss.file.path)
 #' symmetry.As.df <-
 #'   rearrange_aAiso_QCHorgau(gauss.file,
-#'     Nnuclei = 28,
+#'     N.nuclei = 28,
 #'     nuclei.list.slct =
 #'     list(c(7, 8), ## 2 x 14N
 #'          c(13, 14, 15, 16), ## 4 x 1H (aromatic)
 #'          c(17, 18, 19, 20,
 #'            21, 22, 23, 24,
-#'            25, 26, 27, 28) ## 12 x 1H (methyls)
+#'            25, 26, 27, 28) ## 12 x 1H (methyl groups)
 #'          )
 #'      )
 #' #
@@ -204,7 +204,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
-                                     Nnuclei,
+                                     N.nuclei,
                                      nuclei.list.slct,
                                      origin = "gaussian",
                                      output.text.origin = FALSE,
@@ -216,7 +216,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## read output files from Gaussian or ORCA + define number (how many) of atoms/nuclei
   ## either of all (the entire molecule) or relevant (in case of ORCA)
   qchfile <- readLines(path_to_QCHoutput)
-  No_nuclei_atoms <- Nnuclei
+  No_nuclei_atoms <- N.nuclei
   #
   ## ============================ READING `qchfiles` ==============================
   #
@@ -353,7 +353,8 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## Generate the data frame,
     ## first of all define numeric columns
     A.qchfile.select.iso.mhz <- as.numeric(as.character(A.qchfile.select.iso))
-    A.qchfile.select.iso.gauss <- convert_A_MHz_2a(as.numeric(as.character(A.qchfile.select.iso))) * 10
+    A.qchfile.select.iso.gauss <-
+      convert_A_MHz_2a(as.numeric(as.character(A.qchfile.select.iso))) * 10
     #
     table.select.A <- data.frame(
       "No" = nuclei.qchfile.select.n,

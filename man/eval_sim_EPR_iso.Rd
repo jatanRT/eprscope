@@ -143,17 +143,17 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
   from the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
-  for the energy levels of interavction nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
+  for the energy levels of interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
   because the corresponding \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
   and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated by the analytical formula
   of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voight,
   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
-  are defined by \code{lineG.content} argument, actually corresponding to Gaussian line content (the Lorentzian one
+  are defined by \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
   is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument).
-  The multiplicities (relative intensity ratios) are computed by the binomic/multinomic coefficients
-  taking into account the spin quantum numbers of the interacting nuclei (and their natural abundance)
-  under consideration.
+  The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
+  taking into account the spin quantum numbers of the interacting nuclei as well as their natural abundance
+  (if \code{natur.abund = TRUE}).
 }
 \examples{
 ## simulation of simple EPR spectrum (without hyperfine

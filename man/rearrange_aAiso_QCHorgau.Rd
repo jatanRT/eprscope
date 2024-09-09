@@ -6,7 +6,7 @@
 \usage{
 rearrange_aAiso_QCHorgau(
   path_to_QCHoutput,
-  Nnuclei,
+  N.nuclei,
   nuclei.list.slct,
   origin = "gaussian",
   output.text.origin = FALSE,
@@ -16,7 +16,7 @@ rearrange_aAiso_QCHorgau(
 \arguments{
 \item{path_to_QCHoutput}{Character string corresponding to path of \code{Gaussian} or \code{ORCA} output text files.}
 
-\item{Nnuclei}{Numeric value equal to number of atoms/nuclei within the calculated structure.}
+\item{N.nuclei}{Numeric value that equals to number of atoms/nuclei within the calculated structure.}
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
@@ -32,16 +32,16 @@ or \code{"orca"}.}
 
 \item{output.text.path}{Character string, setting the path to file containing
 the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original output file defined
-by the \code{path_to_QCHoutput}. See the previous argument.}
+by the \code{path_to_QCHoutput}. See also the previous argument.}
 }
 \value{
-Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to nuclear group
+Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to groups
   of proposed equivalent nuclei within the structure/symmetry constructed directly
   from \emph{Gaussian} or \emph{ORCA} output files.
 }
 \description{
-Providing table, specifically from \code{Gaussian} or \code{ORCA} output text file to summarize
-  the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of a nuclear group with equivalent nuclei, according
+Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize
+  the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of groups with equivalent nuclei, according
   to proposed molecular structure/symmetry (see also \code{\link{rearrange_aAiso_QCHcomp}}).
 }
 \examples{
@@ -51,13 +51,13 @@ gauss.file.path <-
 gauss.file <- unzip(gauss.file.path)
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.file,
-    Nnuclei = 28,
+    N.nuclei = 28,
     nuclei.list.slct =
     list(c(7, 8), ## 2 x 14N
          c(13, 14, 15, 16), ## 4 x 1H (aromatic)
          c(17, 18, 19, 20,
            21, 22, 23, 24,
-           25, 26, 27, 28) ## 12 x 1H (methyls)
+           25, 26, 27, 28) ## 12 x 1H (methyl groups)
          )
      )
 #

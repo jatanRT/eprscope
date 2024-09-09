@@ -90,7 +90,7 @@ Presenting experimental as well as simulated/fitted EPR spectra together
   sometimes it is rather difficult to figure out differences between the experimental
   and the simulated EPR spectrum by such manner (the details can be "hidden" in overlays).
   Therefore, there is also an option to offset the EPR simulated spectrum underneath the experimental
-  one, see argument \code{Intensity.shift.ratio}. For the sake of the presentation, the maximal
+  one, see argument \code{Intensity.shift.ratio}. For the sake of presentation, the maximal
   and the minimal intensity difference, of the simulated spectrum, is automatically scaled onto
   the experimental one.
 }

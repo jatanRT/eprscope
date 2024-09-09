@@ -68,7 +68,7 @@
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
 #'   \item{sum.LSQ.min}{Minimal least-square sum after \code{N.evals}.}
-#'   \item{convergence}{Vector corresponding to residual sum of squares at each iteration/evaluation.
+#'   \item{N.converg}{Vector corresponding to residual sum of squares at each iteration/evaluation.
 #'   The length of \code{convergence} is equal to the length of \code{N.evals}.}
 #'   }
 #'
@@ -123,7 +123,7 @@
 #' triaryl_model_kin_fit_01$df.coeffs
 #' #
 #' ## convergence preview
-#' triaryl_model_kin_fit_01$convergence
+#' triaryl_model_kin_fit_01$N.converg
 #' #
 #' ## take the same experimental data and perform fit
 #' ## by first order kinetics where the `model.react`
@@ -378,7 +378,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,
     sum.LSQ.min = residsq.react.kin.fit,
-    convergence = converg.react.kin.fit
+    N.converg = converg.react.kin.fit
   )
   #
   return(fit.summary)
