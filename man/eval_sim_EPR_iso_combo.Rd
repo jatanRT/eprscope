@@ -58,8 +58,8 @@ the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
 \item{nuclear.system}{Nested list with the elements corresponding to considered interacting nuclei for each EPR
 spectral component. For example, the \code{list(list("1H",2,24),NULL,list(list("14N",1,45),list("1H",4,15)))}
-with the following components: 1. \eqn{2\times A(\text{1H}) = 24\,\text{MHz}}, 2. single line spectrum
-without HF structure, 3. \eqn{1\times A(\text{14N}) = 45\,\text{MHz} + 1\times A(\text{1H}) = 15\,\text{MHz}}.}
+refers to the following components: 1. \eqn{2\times A(\text{1H}) = 24\,\text{MHz}}, 2. single line spectrum
+without HF structure, 3. \eqn{1\times A(\text{14N}) = 45\,\text{MHz} + 4\times A(\text{1H}) = 15\,\text{MHz}}.}
 
 \item{natur.abund.vec}{Logical vector, whether to consider natural abundance of the interacting nuclei within
 the components (see also \code{Examples}) like \code{c(TRUE,FALSE,TRUE)}.}
@@ -77,7 +77,8 @@ of the EPR spectrum like \code{1,1,1} (all spectral components are described by 
 \item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related output
 data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
-\item{Intensity.sim.coeffs.vec}{Numeric vector of multiplication EPR intensity coefficients like \code{c(2,10,0.2)}.}
+\item{Intensity.sim.coeffs.vec}{Numeric vector of multiplication coefficients related to EPR component intensities
+like \code{c(2,10,0.2)}.}
 
 \item{plot.sim.interact}{Character string, indicating the interactive plot outputs, to visualize either individual
 \code{"components"} or \code{"sum"} of all components. As \strong{default}, the interactive plot is switched
@@ -109,7 +110,7 @@ This is an extension of the "basic" EPR simulation provided by the \code{\link{e
   where one can combine several simulated EPR spectra (components), even with (partial) overlay,
   into one spectrum corresponding to sum of all components. Such processing might be useful for the simulation
   of EPR spectra with satellites, especially of those consisted of naturally occurring
-  isotopes like the one presented in \code{Examples}.
+  isotopes, like the one presented in \code{Examples}.
 }
 \examples{
 ## Simulation of EPR spectrum of TEMPO (aminoxyl)
