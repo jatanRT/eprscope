@@ -1,5 +1,38 @@
-## transition state params Eyring only original model not the linearized one
-## import tidy and glace from `{broom}` + ggplot2 gom_ribbon
+#'
+#' Title
+#'
+#'
+#' @family Evaluations
+#'
+#'
+#' @description
+#'   A short description...
+#'
+#'
+#'
+#' @param data.kvT Data frame object, ...TBC...
+#' @param rate.const Character string ... TBC ...
+#' @param rate.const.unit Character string ... TBC ...
+#' @param Temp Character string ... TBC ...
+#' @param Temp.unit Character string ... TBC ...
+#' @param transmiss.coeff Numeric, ... TBC ...
+#' @param fit.method Character string, ...TBC ...
+#'
+#'
+#'
+#' @return
+#'
+#'
+#' @examples
+#'
+#'
+#'
+#' @export
+#'
+#'
+#'
+#' ## transition state params Eyring only original model not the linearized one
+#' ## import tidy from `{broom}` + ggplot2 gom_ribbon
 eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
                                  rate.const.unit = "M^{-1}~s^{-1}",
