@@ -158,8 +158,9 @@ Analyzed EPR spectra may consists of several components (see also the \code{\lin
   combination of the spectral intensities of components and optimizes the related multiplication coefficients
   (refer to the \code{optim.params.init} argument) by the methods gathered in the
   \code{\link{optim_for_EPR_fitness}}. The goal is to fit their sum onto each experimental spectrum in the series.
-  So far, the maximal number of components is set to 6. Additional function based on combination
-  of the actual one with the \code{\link{eval_sim_EPR_iso_combo}} is under development.
+  So far, the maximum number of components is set to 6. Additional analysis, where the positions of spectral
+  components are not fixed and can be optimized as well, is based on the combination
+  of the actual function with the \code{\link{eval_sim_EPR_iso_combo}} is under development.
 }
 \examples{
 \dontrun{
