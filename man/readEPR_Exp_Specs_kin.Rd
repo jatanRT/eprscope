@@ -95,7 +95,7 @@ List of spectral data (incl. time) in tidy long table format (\code{df}) + corre
    into time domain by \code{time.delta.slice.s} (see arguments and examples).
 }
 \description{
-Reaading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
+Reading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
  experiment in "Xenon" acquisition/processing software). Function (based on \code{\link{readEPR_Exp_Specs}}) includes
  automatic time correction for CW EPR \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 }

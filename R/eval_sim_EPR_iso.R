@@ -33,11 +33,11 @@
 #'   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined by \code{instrum.params}
 #'   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
 #'   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
-#'   from the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
+#'   by the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
 #'   for the energy levels of interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
 #'   because the corresponding \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
 #'   and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated by the analytical formula
-#'   of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voight,
+#'   of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voigt,
 #'   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
 #'   are defined by \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
 #'   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
@@ -118,7 +118,7 @@
 #'   and the second one is \code{NULL} => e.g. \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
 #'   For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g.
 #'   \code{lineGL.DeltaB = list(NULL,0.5)}. If the linear combination of both
-#'   line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voight},
+#'   line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voigt},
 #'   then both values are numeric (e.g. \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
 #'   to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The \code{DeltaB} corresponds either to
 #'   \eqn{\Delta B_{\text{pp}}} (if \code{lineSpecs.form = "derivative"}) or to \eqn{FWHM}
@@ -128,7 +128,7 @@
 #'   If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 #'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
 #'   (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
-#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voight}.
+#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voigt}.
 #' @param Intensity.sim Character string pointing to column of simulated EPR intensity within the related output
 #'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive \code{plotly} graph
@@ -137,7 +137,7 @@
 #'   within a list.
 #'
 #'
-#' @return If \code{plot.sim.interact = TRUE}, function returns an interactive plot obejct with the simulated EPRspectrum.
+#' @return If \code{plot.sim.interact = TRUE}, function returns an interactive plot object with the simulated EPR spectrum.
 #'   Otherwise (if \code{plot.sim.interact = FALSE}), the output is represented by the \code{list} with the following
 #'   elements:
 #'   \describe{
@@ -661,7 +661,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## ====================== DERIVATIVE/INTEGRATED LINE FORMS =========================
   #
   ## Definition for the Derivative as well as Integrated EPR Spectral Line Forms
-  ## Pseudo-Voight is only required because =>
+  ## Pseudo-Voigt is only required because =>
   ## x*Gaussian(derivative) + y*Lorentzian(derivative)
   ## see also https://easyspin.org/easyspin/documentation/lineshapes.html or
   ## EPR Wertz and Bolton https://onlinelibrary.wiley.com/doi/book/10.1002/0470084987
@@ -687,7 +687,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                (1 + 4/3 * ((B - B.0)/lDeltaBpp)^2)^(-2))
     }
     if (g.x != 0 & l.y != 0 & g.x != 1 & l.y != 1 & !is.null(gDeltaBpp) & !is.null(lDeltaBpp)){
-      ## x*Gaussian(derivative) + y*Lorentzian(derivative) <=> pseudo-Voightian
+      ## x*Gaussian(derivative) + y*Lorentzian(derivative) <=> pseudo-Voigtian
       intens_deriv <- g.x * (- 4 * sqrt(2/pi) * ((B - B.0)/(gDeltaBpp^3)) *
                                exp(- 2 * ((B - B.0)/gDeltaBpp)^2)) +
         l.y * (- 16 * (1/(pi * 3 * sqrt(3))) * ((B - B.0)/lDeltaBpp^3) *
@@ -721,7 +721,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         (1 + (4/3) * ((B - B.0) / lGamma.deltaB)^2)^(-1))
     }
     if (g.x != 0 & l.y != 0 & g.x != 1 & l.y != 1 & !is.null(gDeltaB) & !is.null(lDeltaB)){
-      ## x*Gaussian(integrated) + y*Lorentzian(integrated) <=> pseudo-Voightian
+      ## x*Gaussian(integrated) + y*Lorentzian(integrated) <=> pseudo-Voigtian
       intens_integ <- g.x * (sqrt(2 / pi) * (1 / gGamma.deltaB) *
                                exp(-2 * ((B - B.0) / gGamma.deltaB)^2)) +
         l.y * ((2 / (pi * sqrt(3))) * (1 / lGamma.deltaB) *

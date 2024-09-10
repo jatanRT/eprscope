@@ -79,10 +79,10 @@ eval_gFactor <- function(nu.val,
 #'
 #'
 #' @description
-#'   Calculation of g-value according to the fundamental formula, see \code{\link{eval_gFactor}}.
+#'   Calculation of g-value according to fundamental formula, see \code{\link{eval_gFactor}}.
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{\text{iso}}} or \eqn{B_{\text{center}}})
 #'   is directly taken from EPR spectrum. If positive and negative derivative intensities of the spectral
-#'   line are similar and their distance from the middle of the spectrum equals,
+#'   line are similar and their distance from the middle point of the spectrum equals,
 #'   the \eqn{B_{\text{iso}}} should be considered. Otherwise, the \eqn{B_{\text{center}}} must be taken
 #'   into account. In case of integrated EPR spectrum/data the \eqn{B_{\text{max}}} is used for
 #'   the \eqn{g}-value calculation.
@@ -109,7 +109,9 @@ eval_gFactor <- function(nu.val,
 #' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B}-value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB},
 #'   that is \eqn{g_{\text{iso}}} (this is the \strong{default}: \code{iso = TRUE}), or by finding
-#'   the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).
+#'   the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close to zero, which is \code{iso = FALSE}).
+#'   For the \code{lineSpecs.form = "integrated"} (or \code{absorptiion}), the \code{iso} is related to magnetic
+#'   flux density with \code{max.} intensity.
 #'
 #'
 #' @return Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
@@ -224,14 +226,14 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #'
 #' @description
-#'   \eqn{g}-Values (3 principal ones) are presented in a form of differences from
-#'   the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
-#'   and calculates the entire \eqn{g}-values or parses the corresponding \eqn{g}-mean value
-#'   from "Gaussian" or "ORCA" output.
+#'   In the Gaussian and ORCA outputs, the \eqn{g}-Values (3 principal ones) are presented in the form
+#'   of differences from the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
+#'   to calculate the entire \eqn{g}-factor components or parses the corresponding \eqn{g}-mean value
+#'   from the outputs.
 #'
 #'
 #' @param path_to_QCHoutput Character string corresponding to path of "Gaussian" or "ORCA" output text files
-#'   including all \eqn{g}-values. Alternatively, the \code{\link[base]{file.path}} can be applied to get
+#'   including all \eqn{g}-factors. Alternatively, the \code{\link[base]{file.path}} can be applied to get
 #'   the full/relative path.
 #' @param mean Logical, whether to calculate the \code{mean value/iso} from the principal components,
 #'   \strong{default}: \code{mean = TRUE}, or return the entire vector with the all 3 components.

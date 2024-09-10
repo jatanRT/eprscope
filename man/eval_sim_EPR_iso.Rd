@@ -85,7 +85,7 @@ spectral line-forms, respectively. For the "pure" \emph{Gaussian} only the first
 and the second one is \code{NULL} => e.g. \code{lineGL.DeltaB = list(1,NULL)} (\strong{default}).
 For the "pure" \emph{Lorentzian} the opposite expression must be used => e.g.
 \code{lineGL.DeltaB = list(NULL,0.5)}. If the linear combination of both
-line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voight},
+line forms is taken into account (see \code{lineG.content}), that is so called \emph{pseudo-Voigt},
 then both values are numeric (e.g. \code{lineGL.DeltaB = list(0.5,0.5)}) and are related
 to \emph{Gaussian} and \emph{Lorentzian} forms, respectively. The \code{DeltaB} corresponds either to
 \eqn{\Delta B_{\text{pp}}} (if \code{lineSpecs.form = "derivative"}) or to \eqn{FWHM}
@@ -96,7 +96,7 @@ The unit of values must coincide with those used in \code{instrum.params} as wel
 If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
 (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
-with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voight}.}
+with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voigt}.}
 
 \item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related output
 data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
@@ -107,7 +107,7 @@ then the output contains the data frame as well as \code{ggplot2} based plot of 
 within a list.}
 }
 \value{
-If \code{plot.sim.interact = TRUE}, function returns an interactive plot obejct with the simulated EPRspectrum.
+If \code{plot.sim.interact = TRUE}, function returns an interactive plot object with the simulated EPR spectrum.
   Otherwise (if \code{plot.sim.interact = FALSE}), the output is represented by the \code{list} with the following
   elements:
   \describe{
@@ -142,11 +142,11 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined by \code{instrum.params}
   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
-  from the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
+  by the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
   for the energy levels of interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
   because the corresponding \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
   and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated by the analytical formula
-  of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voight,
+  of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voigt,
   \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
   are defined by \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,

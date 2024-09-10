@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Theoretical quantitative kinetic profiles (such as concentration/amount/integral intensity)
-#'   as well as comparison with experimental data for various predefined model reactions involving
+#'   as well as comparison with the experimental data for various predefined model reactions involving
 #'   radical(s) (labeled as "R"). Profiles are evaluated by the numeric solution of rate equations
 #'   by the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
 #'   \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).

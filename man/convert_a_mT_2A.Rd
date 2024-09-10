@@ -17,7 +17,7 @@ Numeric value/vector corresponding to HFCCs (\eqn{A}) in \code{MHz}.
 }
 \description{
 Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
-  into hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz}).
+  into hyperfine coupling ones (HFCCs, \eqn{A} values in \code{MHz}).
 }
 \details{
 Conversion done according to following relation:

@@ -16,8 +16,8 @@
 #'
 #'
 #' @details
-#'  The relative error of the cumulative trapezoidal function is minimal, usually falling into the range of
-#'  \eqn{\langle 1,5\rangle\,\%} or even lower depending on the spectral data resolution
+#'  The relative error of the cumulative trapezoidal (\code{cumtrapz}) function is minimal, usually falling into the range of
+#'  \eqn{\langle 1,5\rangle\,\%} or even lower, depending on the spectral data resolution
 #'  (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}). Therefore,
 #'  the better the resolution the more accurate the integral. If the initial EPR spectrum displays low
 #'  signal-to-noise ratio, the integral often looses its sigmoid-shape,
@@ -30,7 +30,7 @@
 #'  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
 #'  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
 #'  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr}
-#'  and \code{Intensity}) \strong{is confusing. In such case, the EPR spectrum is integrated only once.}
+#'  and \code{Intensity}) \strong{is confusing. In such case, the EPR spectrum is integrated just once.}
 #'
 #'
 #' @references

@@ -36,7 +36,7 @@ Numeric value of the normalization constant for quantitative EPR and intensity n
 }
 \description{
 Normalization constant used by \code{\link{quantify_EPR_Abs}} or to normalize
-  the EPR spectrum intensity. The calculation depends on expression of the receiver gain.
+  the EPR spectrum intensity. Calculation depends on expression of the receiver gain.
 }
 \details{
 For the receiver gain expressed in \eqn{\text{dB}} units the normalization constant is defined

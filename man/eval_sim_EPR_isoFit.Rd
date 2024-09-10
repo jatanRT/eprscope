@@ -49,13 +49,13 @@ are already defined as elements of the \code{optim.params.init} argument/vector.
 \item{baseline.correct}{Character string, referring to baseline correction of the simulated/fitted spectrum.
 Corrections like \code{"constant"} (\strong{default}), \code{"linear"} or \code{"quadratic"} can be applied.}
 
-\item{lineG.content}{Numeric value between \code{0} and \code{1} referring to content of \emph{Gaussian} line form.
+\item{lineG.content}{Numeric value between \code{0} and \code{1}, referring to content of \emph{Gaussian} line form.
 If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
 (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
-with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voight}.}
+with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voigt}.}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+\item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 of the analyzed EPR spectrum/data.}
 
@@ -129,7 +129,7 @@ refers to the Euclidian distance, defined as:
 \item{sim.check}{Logical, whether to return simple \code{list} with the overlay (simulated + experimental
 spectrum) as well as residual plot and the best fitting parameters in a vector
 (\code{sim.check = TRUE}, \strong{default}). If \code{sim.check = FALSE} the list contains
-EPR spectra, data frame, best fitting parameters as well as additional statistical measures
+EPR spectra, data frame, best fitting parameters as well as additional characteristics
 of the optimization/fitting procedure (see \code{Value}).}
 
 \item{...}{additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).}
@@ -166,8 +166,8 @@ List with following components depending on \code{sim.check}:
   equals to vector with the following elements: number of function evaluations, number of iterations
   and the number of restarts.}
   \item{N.converg}{Vector or simple integer code indicating the successful completion
-  of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements equals
-  to sum of squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
+  of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements coincide with
+  the sum of squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
   codes can be returned: \code{0}: algorithm terminated by reaching the absolute tolerance,
   \code{1}: maximal number of function evaluations reached, \code{2}: maximal number of iterations reached,
   \code{3}: maximal number of restarts reached, \code{4}: maximal number of iterations without improvement reached.
@@ -177,18 +177,18 @@ List with following components depending on \code{sim.check}:
   }
 }
 \description{
-As already described in the \code{\link{eval_sim_EPR_iso}}, analysis of the hyperfine structure (HFS) of EPR spectra
-  requires an iterative process with modelling
-  the \strong{electron-nuclear system} followed by a numerical simulations of the spectra to match the experimental ones.
-  Fitting, of the simulated spectrum onto the experimental one, therefore represent an important step in such analysis.
+As already described in the \code{\link{eval_sim_EPR_iso}}, analysis of the hyperfine structure (HFS), of EPR spectra,
+  requires an iterative process to model
+  the \strong{electron-nuclear system} followed by a numerical simulations to match the experimental spectra.
+  Fitting of the simulated spectrum, onto the experimental one, therefore represent an important step in such analysis.
   Parameters of the EPR simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants (in \code{MHz})
   \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth (either \eqn{\Delta B_{\text{pp}}}
   or \eqn{FWHM} depending on \code{lineSpecs.form}); spectral baseline (see the \code{baseline.correct}) and finally
-  the intensity (multiplication coefficient) are optimized by those methods listed in \code{\link{optim_for_EPR_fitness}}
-  in order to match the experimental EPR spectrum. The \code{lineG.content} corresponding parameter, is the only one,
-  which needs to be varied "manually". In order to interactively control the optimization/fitting process,
-  similarly to that of in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
-  a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is planned to develop, in the future.
+  the intensity (multiplication coefficient) are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
+  The \code{lineG.content} corresponding parameter is the only one,
+  which needs to be varied "manually". In order to control the optimization/fitting process,
+  by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
+  a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is under development.
 }
 \examples{
 ## loading built-in example dataset which is simple

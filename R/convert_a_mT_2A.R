@@ -6,7 +6,7 @@
 #'
 #'
 #' @description Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
-#'   into hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz}).
+#'   into hyperfine coupling ones (HFCCs, \eqn{A} values in \code{MHz}).
 #'
 #'
 #' @details

@@ -6,9 +6,9 @@
 #'
 #'
 #' @description
-#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the content reading of a \code{.mat}
-#'   simulation file from EasySpin MATLAB including structures/variables and fields. It can be also used to read and store
-#'   simulated EPR spectrum in the form of R data frame.
+#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the reading of a \code{.mat}
+#'   simulation file content from EasySpin MATLAB, including structures/variables and fields.
+#'   It can be also used to read and store simulated EPR spectrum in the form of R data frame (see \code{Examples}).
 #'
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.

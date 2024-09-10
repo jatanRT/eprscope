@@ -99,7 +99,7 @@ List of the following quantities:
 \description{
 Estimate the number or concentration of "spins"/radicals/paramagnetic species using the absolute
   quantitative method by sigmoid integral as well as by instrumental parameters without the need
-  for a standard sample with known concentration/amount of radicals/"spins". The calculation assumes,
+  for a standard sample with known concentration/amount of radicals/"spins". The calculation assumes
   that the sample height middle point, within an EPR tube, matches the cavity/resonator center.
 }
 \details{

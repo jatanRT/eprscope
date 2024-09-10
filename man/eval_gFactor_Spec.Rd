@@ -44,17 +44,19 @@ of the selected \eqn{B}-region, such as \code{Blim = c(3495.4,3595.4)}. \strong{
 \item{iso}{Logical, whether to calculate the \eqn{g}-factor from the \eqn{B}-value corresponding to
 that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB},
 that is \eqn{g_{\text{iso}}} (this is the \strong{default}: \code{iso = TRUE}), or by finding
-the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close/near zero, which is \code{iso = FALSE}).}
+the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close to zero, which is \code{iso = FALSE}).
+For the \code{lineSpecs.form = "integrated"} (or \code{absorptiion}), the \code{iso} is related to magnetic
+flux density with \code{max.} intensity.}
 }
 \value{
 Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
   from the EPR spectrum, according to \eqn{(\nu h)/(\mu_{B} B)}.
 }
 \description{
-Calculation of g-value according to the fundamental formula, see \code{\link{eval_gFactor}}.
+Calculation of g-value according to fundamental formula, see \code{\link{eval_gFactor}}.
   \eqn{g}-related magnetic flux density (like \eqn{B_{\text{iso}}} or \eqn{B_{\text{center}}})
   is directly taken from EPR spectrum. If positive and negative derivative intensities of the spectral
-  line are similar and their distance from the middle of the spectrum equals,
+  line are similar and their distance from the middle point of the spectrum equals,
   the \eqn{B_{\text{iso}}} should be considered. Otherwise, the \eqn{B_{\text{center}}} must be taken
   into account. In case of integrated EPR spectrum/data the \eqn{B_{\text{max}}} is used for
   the \eqn{g}-value calculation.

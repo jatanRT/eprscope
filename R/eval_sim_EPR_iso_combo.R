@@ -59,7 +59,7 @@
 #' ## constants A(1 x 14N) = 48 MHz, A(1 x 13C) = 18.2 MHz,
 #' ## the latter 13C may appear on 4 different
 #' ## positions (methyl carbons) => therefore the overall
-#' ## probability is approx. 4,4% (1.1% per one 13C),
+#' ## probability to find them is approx. 4,4% (1.1% per one 13C),
 #' ## the additional two quaternary α-Carbons are not considered
 #' ## see e.g. https://doi.org/10.1016/j.mencom.2014.09.018
 #' sim.tempo.13c <-

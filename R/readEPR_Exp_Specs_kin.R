@@ -5,7 +5,7 @@
 #' @family Data Reading
 #'
 #'
-#' @description Reaading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
+#' @description Reading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
 #'  experiment in "Xenon" acquisition/processing software). Function (based on \code{\link{readEPR_Exp_Specs}}) includes
 #'  automatic time correction for CW EPR \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
 #'
