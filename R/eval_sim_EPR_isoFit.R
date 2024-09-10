@@ -6,14 +6,12 @@
 #'
 #'
 #' @description
-#'   As already described in the \code{\link{eval_sim_EPR_iso}}, analysis of the hyperfine structure (HFS), of EPR spectra,
-#'   requires an iterative process to model
-#'   the \strong{electron-nuclear system} followed by a numerical simulations to match the experimental spectra.
-#'   Fitting of the simulated spectrum, onto the experimental one, therefore represents an important step in such analysis.
-#'   Parameters of the EPR simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants (in \code{MHz})
-#'   \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth (either \eqn{\Delta B_{\text{pp}}}
-#'   or \eqn{FWHM} depending on \code{lineSpecs.form}); spectral baseline (see the \code{baseline.correct}) and finally
-#'   the intensity (multiplication coefficient) are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
+#'   Fitting of the simulated spectrum, onto the experimental one represents an important step in the analysis
+#'   of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
+#'   (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
+#'   (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on \code{lineSpecs.form});
+#'   spectral baseline (see the \code{baseline.correct}) and finally the intensity (multiplication coefficient)
+#'   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". In order to control the optimization/fitting process,
 #'   by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},

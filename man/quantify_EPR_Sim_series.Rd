@@ -149,18 +149,23 @@ Function provides data frame object, depending on the \code{output.area.stat} ar
   }
 }
 \description{
+Evaluating the linear combination of spectral intensities of components (loaded as ASCII text files corresponding
+  to simulated spectra). The related intensity multiplication coefficients
+  (please, refer to the \code{optim.params.init} argument) are optimized by methods gathered in the
+  \code{\link{optim_for_EPR_fitness}}. The goal is to fit the sum of the simulated components
+  onto each experimental spectrum within the series. So far, the maximum number of components is set to 6.
+}
+\details{
 Analyzed EPR spectra may consists of several components (see also the \code{\link{eval_sim_EPR_iso_combo}}
   function), like the overlapped EPR spectra of several radicals. In order to follow the concentration/amount
   variations of each individual radical during the kinetic/temperature/...series, one must figure out
   how those individual spectral components are actually changed. In the first approximation, it means
   to follow the corresponding EPR intensities/integrals, whereas the component positions (\eqn{g}-values)
-  are assumed to be fixed (or the changes can be neglected). Therefore, the actual function takes the linear
-  combination of the spectral intensities of components and optimizes the related multiplication coefficients
-  (refer to the \code{optim.params.init} argument) by the methods gathered in the
-  \code{\link{optim_for_EPR_fitness}}. The goal is to fit their sum onto each experimental spectrum in the series.
-  So far, the maximum number of components is set to 6. Additional analysis, where the positions of spectral
-  components are not fixed and can be optimized as well, is based on the combination
-  of the actual function with the \code{\link{eval_sim_EPR_iso_combo}} is under development.
+  are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
+  combination of the spectral intensities of components (simulated spectra) and optimizes
+  the related multiplication coefficients. Additional analysis, where the positions of spectral
+  components (simulated spectra) are not fixed and can be optimized as well, is based on the combination
+  of the actual function with the \code{\link{eval_sim_EPR_iso_combo}} and currently, is under development.
 }
 \examples{
 \dontrun{

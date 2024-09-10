@@ -9,7 +9,7 @@
 #'   EPR spectra often display hyperfine structure, where the spectral lines split into several other ones,
 #'   as a consequence of the electron-nuclear interaction with nuclei close to the paramagnetic center.
 #'   Sometimes, such splitting can be complicated and requires \strong{simulations}, e.i. computational "synthesis"
-#'   of spectral structure based on quantum chemistry as well as on mathematical description of spectral line shapes
+#'   of spectral structure based on quantum chemistry as well as on mathematical description of spectral lineshapes
 #'   (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS) of isotropic EPR spectra
 #'   by simulations. For such purpose, properties like nuclear \eqn{g}-value, spin quantum number as well as natural
 #'   abundance of the isotopes, related to interacting nuclei, must be known and are gathered within the \code{\link{isotopes_ds}}.
