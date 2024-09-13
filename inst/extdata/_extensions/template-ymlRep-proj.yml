@@ -1,0 +1,52 @@
+project: 
+  title: MainTitle
+  type: default
+  output-dir: _output
+  
+from: markdown+emoji
+prefer-html: true
+toc: true
+toc-title: "Table of Contents"
+fig-format: retina
+fig-width: 7
+fig-height: 5
+df-print: default
+bibliography: Project_Report.bib
+highlight-style: kate
+execute: 
+  echo: false
+csl:   
+  
+format:
+  pdf:
+    documentclass: scrartcl
+    pdf-engine: lualatex
+    include-in-header: 
+      - header.tex
+    template-partials: 
+      - title.tex
+    links-as-notes: true
+    code-line-numbers: true
+    code-block-bg: "#E5F0FA"
+    colorlinks: true
+    keep-tex: true
+    keep-md: true
+  html:
+    theme: 
+      - cerulean
+      - styles.scss
+    title-block-style: default
+    title-block-banner: "#00205b"
+    html-math-method:
+      method: mathjax
+      url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    number-sections: true
+    code-line-numbers: true
+    code-overflow: wrap
+    keep-md: true
+    code-fold: true
+  docx: 
+    number-sections: true
+    keep-md: true
+    
+editor: visual 
