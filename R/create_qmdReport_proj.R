@@ -6,25 +6,47 @@
 #'   A short description...
 #'
 #'
+#' @details
+#'   Additional details...
+#'
+#'
 #' @param title Character string, corresponding to title of the report like the \strong{default} one:
 #'   \code{title = "Project Report"}. It appears on the title page in all document formats:
 #'   \code{.pdf}, \code{.html} and \code{.docx}.
 #' @param path_to_wd Character string, setting up the path for \strong{w}orking \strong{d}irectory,
-#'   i.e. the parent one, where the entire project with \code{wd.subdir.name} will be stored.
+#'   i.e. the parent one, where the project with \code{wd.subdir.name} will be stored.
 #'   Alternatively, the \code{\link[base]{file.path}} can be used to set the path.
 #'   \strong{Default}: \code{path_to_wd = "."}, referring to actual directory.
-#' @param wd.subdir.name Character string, pointing to \code{subdirectory} (name), under which the entire
-#'   report project is stored. This actually corresponds to main project directory. \strong{Default}:
-#'   \code{wd.subdir.name = "Project_Report"}.
-#' @param citation.style Character string
-#' @param Rproj.init Logical,
-#' @param git.init Logical,
+#' @param wd.subdir.name Character string, pointing to \code{subdirectory} (name, see also \code{path_to_wd}),
+#'   under which the entire report project is stored. This actually corresponds to main project directory.
+#'   \strong{Default}: \code{wd.subdir.name = "Project_Report"}.
+#' @param citation.style Character string referring to citation style used for \code{References} and citations
+#'   in the main \code{.qmd} document, which inherits the name from \code{wd.subdir.name}. This file
+#'   is automatically created under the \code{subdirectory}. The argument must be added in the form
+#'   of \code{https} url, like \code{citation.style = "https://www.zotero.org/styles/american-chemical-society"}.
+#'   All available citation styles can be found
+#'   at \href{https://www.zotero.org/styles}{Zotero Citation Style Language Repository}. \strong{Default}:
+#'   \code{citation.style = NULL}, actually corresponding
+#'   to \href{https://quarto.org/docs/authoring/citations.html}{Chicago Manual of Style (Author-Date)}.
+#' @param Rproj.init Logical, whether to initiate the newly created repository/directory as
+#'   \href{https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects}{R-project
+#'   when working in RStudio}. Therefore, \strong{default}: \code{Rproj.init = TRUE}, which triggers
+#'   the creation of \code{.Rproj} file, with the name inherited from \code{wd.subdir.name}. If the RStudio
+#'   is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.
+#' @param git.init Logical, if \code{git.init = TRUE}, the whole repository/directory
+#'   become (initiated by the \code{\link[usethis]{use_git}}) a version-controlled
+#'   using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F}{\strong{git system}}.
+#'   \strong{Dafault}: \code{git.init = FALSE}. This is meant to be an option either for standard user
+#'   or for those who don't want track changes within the repository by the \code{git}
 #'
 #'
 #' @return
 #'
 #'
 #' @examples
+#' \dontrun{
+#' TODO
+#' }
 #'
 #'
 #' @importFrom usethis create_project use_git
@@ -33,7 +55,7 @@ create_qmdReport_proj <- function(title = "Project Report",
                                   wd.subdir.name = "Project_Report",
                                   citation.style = NULL, ## Character string (`https://...` =>
                                   ## https://www.zotero.org/styles)
-                                  Rproj.init = FALSE,
+                                  Rproj.init = TRUE,
                                   git.init = FALSE){
   #
   ## create folder structure for input data within the project =>
