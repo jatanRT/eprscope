@@ -3,11 +3,63 @@
 #'
 #'
 #' @description
-#'   A short description...
+#'   Creating files and folders for the basic \href{https://quarto.org/}{Quarto} project having the structure shown
+#'   in \code{Details} and corresponding to reproducible report in EPR. The main \code{.qmd} ("quarto markdown")
+#'   file \code{wd.subdir.name.qmd} is editable (so do the additional files as well) and used for rendering.
+#'   The latter can be done directly within the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating
+#'   the \code{Render} button and selecting the desired output format like \code{.html},\code{.pdf} or \code{.docx}).
+#'   Alternatively, the rendering can be also performed in the \href{https://quarto.org/docs/computations/r.html}{terminal}
+#'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires one of the \eqn{\TeX}
+#'   distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
+#'   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}.
 #'
 #'
 #' @details
-#'   Additional details...
+#'   Additional details...:
+#'   \code{path_to_wd}
+#'   |
+#'   +--\code{wd.subdir.name}
+#'      |
+#'      +--\code{wd.subdir.name.qmd}
+#'      |
+#'      +--\code{header.tex}
+#'      |
+#'      +--\code{title.tex}
+#'      |
+#'      +--\code{styles.scss}
+#'      |
+#'      +--\code{wd.subdir.name.bib}
+#'      |
+#'      +--\code{README.Rmd}
+#'      |
+#'      +--\code{_quarto.yml}
+#'      |
+#'      +--\code{Input_Data}
+#'      |  |
+#'      |  +--\code{EPR_RAW}
+#'      |  |  |
+#'      |  |  +--...folder dedicated for all raw files from EPR spectrometer,
+#'      |  |  like \code{.dsc/.DSC/.par}, \code{.DTA}, \code{.YGF}
+#'      |  |
+#'      |  +--\code{EPR_ASCII}
+#'      |  |  |
+#'      |  |  +--...folder dedicated to all additional text files from EPR spectrometer,
+#'      |  |  like \code{.txt}, \code{.csv}, \code{.asc}
+#'      |  |
+#'      |  +--\code{EasySpin_Simulations}
+#'      |     |
+#'      |     +--...folder dedicated for output files from the \code{EasySpin}(-MATLAB),
+#'      |     like \code{.mat} or \code{.txt} corresponding to EPR simulated spectral data
+#'      |
+#'      +--\code{_output}
+#'         |
+#'         +--\code{Figures}
+#'         |
+#'         +--\code{Tables}
+#'         |
+#'         +--...\code{.html},\code{.pdf},\code{.docx} formats and supporting files of the report,
+#'         these are created by rendering the main \code{wd.subdir.name.qmd} file (they are not
+#'         present right after the creation)
 #'
 #'
 #' @param title Character string, corresponding to title of the report like the \strong{default} one:
@@ -34,10 +86,13 @@
 #'   the creation of \code{.Rproj} file, with the name inherited from \code{wd.subdir.name}. If the RStudio
 #'   is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.
 #' @param git.init Logical, if \code{git.init = TRUE}, the whole repository/directory
-#'   become (initiated by the \code{\link[usethis]{use_git}}) a version-controlled
+#'   become (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
 #'   using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F}{\strong{git system}}.
-#'   \strong{Dafault}: \code{git.init = FALSE}. This is meant to be an option either for standard user
-#'   or for those who don't want track changes within the repository by the \code{git}
+#'   \strong{Dafault}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
+#'   or for those who don't want track changes within the repository by the \code{git}. However, they prefer
+#'   cloud storage services like
+#'   \href{https://nextcloud.com/}{nexcloud}/\href{https://owncloud.com/}{owncloud}/
+#'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version (history of changes) control.
 #'
 #'
 #' @return
@@ -45,7 +100,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' TODO
+#' ## creating reproducible report structure
+#' ## with default parameters
+#' create_qmdReport_proj()
+#' #
+#' ##
 #' }
 #'
 #'
