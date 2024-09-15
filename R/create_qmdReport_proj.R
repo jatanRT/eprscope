@@ -59,7 +59,7 @@
 #'         |
 #'         +--...\code{.html},\code{.pdf},\code{.docx} formats and supporting files of the report,
 #'         these are created by rendering the main \code{wd.subdir.name.qmd} file (they are not
-#'         present right after the creation)
+#'         present right after the project creation)
 #'
 #'
 #' @param title Character string, corresponding to title of the report like the \strong{default} one:
@@ -86,7 +86,7 @@
 #'   the creation of \code{.Rproj} file, with the name inherited from \code{wd.subdir.name}. If the RStudio
 #'   is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.
 #' @param git.init Logical, if \code{git.init = TRUE}, the whole repository/directory
-#'   become (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
+#'   becomes (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
 #'   using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F}{\strong{git system}}.
 #'   \strong{Dafault}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
 #'   or for those who don't want track changes within the repository by the \code{git}. However, they prefer
@@ -104,7 +104,14 @@
 #' ## with default parameters
 #' create_qmdReport_proj()
 #' #
-#' ##
+#' ## creating report with specified citation
+#' ## style (ACS) and with version-controlled
+#' ## by the `git`
+#' create_qmdReport_proj(
+#'   citation.style =
+#'     "https://www.zotero.org/styles/american-chemical-society",
+#'   git.init = TRUE
+#' )
 #' }
 #'
 #'
