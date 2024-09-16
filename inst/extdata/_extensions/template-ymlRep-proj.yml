@@ -1,29 +1,30 @@
-project: 
+project:
   title: MainTitle
   type: default
   output-dir: _output
-  
+
 from: markdown+emoji
 prefer-html: true
 toc: true
 toc-title: "Table of Contents"
-fig-format: retina
+number-sections: true
 fig-width: 7
 fig-height: 5
 df-print: default
 bibliography: Project_Report.bib
+# the bibliography can be also managed by `Citedrive`, see https://www.citedrive.com/en/quarto/
 highlight-style: kate
-execute: 
+execute:
   echo: false
-csl:   
-  
+csl:
+
 format:
   pdf:
     documentclass: scrartcl
     pdf-engine: lualatex
-    include-in-header: 
+    include-in-header:
       - header.tex
-    template-partials: 
+    template-partials:
       - title.tex
     links-as-notes: true
     code-line-numbers: true
@@ -32,7 +33,7 @@ format:
     keep-tex: true
     keep-md: true
   html:
-    theme: 
+    theme:
       - cerulean
       - styles.scss
     title-block-style: default
@@ -40,13 +41,11 @@ format:
     html-math-method:
       method: mathjax
       url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-    number-sections: true
     code-line-numbers: true
     code-overflow: wrap
     keep-md: true
     code-fold: true
-  docx: 
-    number-sections: true
+  docx:
     keep-md: true
-    
-editor: visual 
+
+editor: visual
