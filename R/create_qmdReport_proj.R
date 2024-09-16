@@ -9,30 +9,49 @@
 #'   The latter can be done directly within the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating
 #'   the \code{Render} button and selecting the desired output format like \code{.html},\code{.pdf} or \code{.docx}).
 #'   Alternatively, the rendering can be also performed in the \href{https://quarto.org/docs/computations/r.html}{terminal}
-#'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires one of the \eqn{\TeX}
+#'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires one of the \eqn{\LaTeX}
 #'   distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
-#'   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}.
+#'   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}. The complete
+#'   above-described R-environmental setup is also available at \href{https://posit.cloud/}{Posit Cloud}.
 #'
 #'
 #' @details
-#'   Additional details...:
+#'   In order to support reproducible research workflow (see \code{References}) in EPR from scratch, a central
+#'   data hub (repository/directory) with a well-defined structure must be available. The one, presented below
+#'   is created using the essential \code{\link[base]{dir.create}} and \code{\link[base]{file.create}} file-folder
+#'   management functions. For several files (like \code{wd.subdir.name.qmd}, \code{header.tex}, \coded{title.tex},
+#'   \code{styles.scss} and \code{_quarto.yml}) customized templates (stored under \code{/extdata/_extensions}) are used.
+#'   Remaining \code{wd.subdir.name.bib} and \code{README.Rmd} files are generated "ab initio".
+#'   The \code{wd.subdir.name} is everywhere replaced by the actual character string defined by the argument of the same name.
+#'   Therefore, if we take the default string like "Project_Report", file/directory names turn into
+#'   \code{Project_Report/Project_Report.ext} (\code{.ext} \eqn{\equiv} \code{.qmd}, \code{.bib},...etc). Prior to rendering,
+#'   you may provide the information about the author like \code{name:}, \code{email:}, \code{orcid:} and affiliations
+#'   \code{name:} and \code{url:}.
+#'
 #'   \code{path_to_wd}
 #'   |
 #'   +--\code{wd.subdir.name}
 #'      |
-#'      +--\code{wd.subdir.name.qmd}
+#'      +--\code{wd.subdir.name.qmd}..."dynamic" document, main file for the entire
+#'      |  data processing and analysis workflow
 #'      |
-#'      +--\code{header.tex}
+#'      +--\code{header.tex}...file to set up the \code{.qmd} (\code{.tex})
+#'      |  ==> \code{.pdf} conversion, usually containing additional \eqn{LaTeX}
+#'      |  packages and visual setup for the \code{.pdf} output
 #'      |
-#'      +--\code{title.tex}
+#'      +--\code{title.tex}...file for setting up the title and authors
+#'      |  in the output \code{.pdf} file format
 #'      |
-#'      +--\code{styles.scss}
+#'      +--\code{styles.scss}...style sheet to setup visual style
+#'      |  of the \code{.html} output format
 #'      |
-#'      +--\code{wd.subdir.name.bib}
+#'      +--\code{wd.subdir.name.bib}...bibliographic file database of all
+#'      |  reference-list entries related to the project report
 #'      |
-#'      +--\code{README.Rmd}
+#'      +--\code{README.Rmd}...general documentation for the entire project/repository
 #'      |
-#'      +--\code{_quarto.yml}
+#'      +--\code{_quarto.yml}...setup for the main \code{wd.subdir.name.qmd} file,
+#'      |  providing different format outputs (\code{.html},\code{.pdf},\code{.docx})
 #'      |
 #'      +--\code{Input_Data}
 #'      |  |
@@ -44,12 +63,12 @@
 #'      |  +--\code{EPR_ASCII}
 #'      |  |  |
 #'      |  |  +--...folder dedicated to all additional text files from EPR spectrometer,
-#'      |  |  like \code{.txt}, \code{.csv}, \code{.asc}
+#'      |  |     like \code{.txt}, \code{.csv}, \code{.asc}
 #'      |  |
 #'      |  +--\code{EasySpin_Simulations}
 #'      |     |
 #'      |     +--...folder dedicated for output files from the \code{EasySpin}(-MATLAB),
-#'      |     like \code{.mat} or \code{.txt} corresponding to EPR simulated spectral data
+#'      |        like \code{.mat} or \code{.txt} corresponding to EPR simulated spectral data
 #'      |
 #'      +--\code{_output}
 #'         |
@@ -57,16 +76,42 @@
 #'         |
 #'         +--\code{Tables}
 #'         |
-#'         +--...\code{.html},\code{.pdf},\code{.docx} formats and supporting files of the report,
-#'         these are created by rendering the main \code{wd.subdir.name.qmd} file (they are not
-#'         present right after the project creation)
+#'         +--...+ \code{.html},\code{.pdf},\code{.docx} formats and supporting files
+#'            of the report, these are created by rendering the main
+#'            \code{wd.subdir.name.qmd} file (they are not present right after
+#'            the project creation)
+#'
+#'   Rendering of the \code{wd.subdir.name.qmd} into different formats (\code{.html},\code{.pdf},\code{.docx}) is provided
+#'   by the open-source scientific and technical publishing system (based on \href{https://pandoc.org/}{pandoc}), called
+#'   Quarto \insertCite{AllaireQuarto2024}{eprscope}. The main \code{.qmd} file represents a "dynamic" document, combining
+#'   \href{https://quarto.org/docs/authoring/markdown-basics.html}{text}, code (besides R, also other programming languages
+#'   like Python, Julia or Observable can be used as well) and outputs (usually, figures and/or tables).
+#'   Upon rendering, they are nicely combined into shareable above-listed
+#'   report formats stored under \code{_output}. Among them, the \code{.html} output possesses a distinctive position,
+#'   because it preserves the structure of interactive EPR spectra or tables
+#'   (see e.g. \code{\link{plot_EPR_Specs3D_interact}} or \code{\link{readEPR_params_tabs}}).
+#'   File-Folder structure, presented above, is flexible and customizable to meet the user's needs, right after its
+#'   creation by the actual function. For such purpose, please consult
+#'   the \href{https://quarto.org/docs/guide/}{Quarto documentation}, as well.
+#'
+#'
+#'
+#' @references
+#'   \insertRef{alston2021}{eprscope}
+#'
+#'   \insertRef{gandrud2020}{eprscope}
+#'
+#'   \insertRef{nih2019}{eprscope}
+#'
+#'   \insertRef{AllaireQuarto2024}{eprscope}
+#'
 #'
 #'
 #' @param title Character string, corresponding to title of the report like the \strong{default} one:
-#'   \code{title = "Project Report"}. It appears on the title page in all document formats:
+#'   \code{title = "Project Report"}. It appears on the title page in all formats:
 #'   \code{.pdf}, \code{.html} and \code{.docx}.
 #' @param path_to_wd Character string, setting up the path for \strong{w}orking \strong{d}irectory,
-#'   i.e. the parent one, where the project with \code{wd.subdir.name} will be stored.
+#'   i.e. the parent one, where the project with \code{wd.subdir.name} will be stored (see also \code{Details}).
 #'   Alternatively, the \code{\link[base]{file.path}} can be used to set the path.
 #'   \strong{Default}: \code{path_to_wd = "."}, referring to actual directory.
 #' @param wd.subdir.name Character string, pointing to \code{subdirectory} (name, see also \code{path_to_wd}),
@@ -81,7 +126,7 @@
 #'   \code{citation.style = NULL}, actually corresponding
 #'   to \href{https://quarto.org/docs/authoring/citations.html}{Chicago Manual of Style (Author-Date)}.
 #' @param Rproj.init Logical, whether to initiate the newly created repository/directory as
-#'   \href{https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects}{R-project
+#'   \href{https://docs.posit.co/ide/user/ide/guide/code/projects.html}{R-project
 #'   when working in RStudio}. Therefore, \strong{default}: \code{Rproj.init = TRUE}, which triggers
 #'   the creation of \code{.Rproj} file, with the name inherited from \code{wd.subdir.name}. If the RStudio
 #'   is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.
@@ -95,7 +140,8 @@
 #'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version (history of changes) control.
 #'
 #'
-#' @return
+#' @return File-folder structure ("tree") for the basic Quarto reproducible report in R, which may be used
+#'   for data processing and analysis in Electron Paramagnetic Resonance (EPR).
 #'
 #'
 #' @examples
@@ -104,9 +150,9 @@
 #' ## with default parameters
 #' create_qmdReport_proj()
 #' #
-#' ## creating report with specified citation
-#' ## style (ACS) and with version-controlled
-#' ## by the `git`
+#' ## creating report with specified citation style (ACS)
+#' ## and with version-controlled by the `git` within
+#' ## the RStudio (Rproj.init = TRUE)
 #' create_qmdReport_proj(
 #'   citation.style =
 #'     "https://www.zotero.org/styles/american-chemical-society",
@@ -237,7 +283,11 @@ create_qmdReport_proj <- function(title = "Project Report",
     "  year = {2024},\n",
     "  url = {https://jatanrt.github.io/eprscope/} \n",
     "} \n",
-    "% \n"
+    "% to add a bibliography item,\n",
+    "% see https://bibtex.eu/types/, \n",
+    "% or https://www.citedrive.com/en/quarto/ or https://bibtex.eu/quarto/ \n",
+    "% \n",
+    " \n"
   )
   #
   bib.file <- file.path(subdir_path,paste0(wd.subdir.name,".bib"))
@@ -260,7 +310,7 @@ create_qmdReport_proj <- function(title = "Project Report",
     "``` \n",
     " \n\n",
     "## Introduction \n\n",
-    "This is an R Markdown document that generates a github readme.md file. \n",
+    "This is an R Markdown document that generates a github README.md file. \n",
     "Please, write your project documentation here...and finally `Knit -> knit github_document` \n",
     " \n"
   )
