@@ -3,30 +3,36 @@
 #'
 #'
 #' @description
-#'   Creating files and folders for the basic \href{https://quarto.org/}{Quarto} project having the structure shown
-#'   in \code{Details} and corresponding to reproducible report in EPR. The main \code{.qmd} ("quarto markdown")
-#'   file \code{wd.subdir.name.qmd} is editable (so do the additional files as well) and used for rendering.
-#'   The latter can be done directly within the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating
-#'   the \code{Render} button and selecting the desired output format like \code{.html},\code{.pdf} or \code{.docx}).
-#'   Alternatively, the rendering can be also performed in the \href{https://quarto.org/docs/computations/r.html}{terminal}
-#'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires one of the \eqn{\LaTeX}
-#'   distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
-#'   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}. The complete
-#'   above-described R-environmental setup is also available at \href{https://posit.cloud/}{Posit Cloud}.
+#'   Creating files and folders for the basic \href{https://quarto.org/}{Quarto} project having
+#'   the structure shown in \code{Details} and corresponding to reproducible report in EPR.
+#'   The main \code{.qmd} ("quarto markdown") file \code{wd.subdir.name.qmd} is editable
+#'   (so do the additional files as well) and used for rendering. The latter can be done directly within
+#'   the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating
+#'   the \code{Render} button and selecting the desired output format
+#'   like \code{.html},\code{.pdf} or \code{.docx}).
+#'   Alternatively, the rendering can be also performed
+#'   in the \href{https://quarto.org/docs/computations/r.html}{terminal}
+#'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires
+#'   one of the \eqn{\LaTeX} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
+#'   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}.
+#'   The complete above-described R-environmental setup is also available
+#'   at \href{https://posit.cloud/}{Posit Cloud}.
 #'
 #'
 #' @details
-#'   In order to support reproducible research workflow (see \code{References}) in EPR from scratch, a central
-#'   data hub (repository/directory) with a well-defined structure must be available. The one, presented below
-#'   is created using the essential \code{\link[base]{dir.create}} and \code{\link[base]{file.create}} file-folder
-#'   management functions. For several files (like \code{wd.subdir.name.qmd}, \code{header.tex}, \coded{title.tex},
-#'   \code{styles.scss} and \code{_quarto.yml}) customized templates (stored under \code{/extdata/_extensions}) are used.
+#'   In order to support reproducible research workflow (see \code{References}) in EPR from scratch,
+#'   a central data hub (repository/directory) with a well-defined structure must be available.
+#'   The one, presented below is created using the essential \code{\link[base]{dir.create}}
+#'   and \code{\link[base]{file.create}} file-folder management functions. For several files
+#'   (like \code{wd.subdir.name.qmd}, \code{header.tex}, \code{title.tex}, \code{styles.scss}
+#'   and \code{_quarto.yml}) customized templates (stored under \code{/extdata/_extensions}) are used.
 #'   Remaining \code{wd.subdir.name.bib} and \code{README.Rmd} files are generated "ab initio".
-#'   The \code{wd.subdir.name} is everywhere replaced by the actual character string defined by the argument of the same name.
-#'   Therefore, if we take the default string like "Project_Report", file/directory names turn into
-#'   \code{Project_Report/Project_Report.ext} (\code{.ext} \eqn{\equiv} \code{.qmd}, \code{.bib},...etc). Prior to rendering,
-#'   you may provide the information about the author like \code{name:}, \code{email:}, \code{orcid:} and affiliations
-#'   \code{name:} and \code{url:}.
+#'   The \code{wd.subdir.name} is everywhere replaced by the actual character string defined
+#'   by the argument of the same name. Therefore, if we take the default string like "Project_Report",
+#'   file/directory names turn into \code{Project_Report/Project_Report.ext} (\code{.ext} \eqn{\equiv}
+#'   \code{.qmd}, \code{.bib},...etc). Prior to rendering,
+#'   you may provide information about the author like \code{name:}, \code{email:},
+#'   \code{orcid:} and affiliations \code{name:} and \code{url:}, directly within the main \code{.qmd} file.
 #'
 #'   \code{path_to_wd}
 #'   |
@@ -78,21 +84,22 @@
 #'         |
 #'         +--...+ \code{.html},\code{.pdf},\code{.docx} formats and supporting files
 #'            of the report, these are created by rendering the main
-#'            \code{wd.subdir.name.qmd} file (they are not present right after
+#'            \code{wd.subdir.name.qmd} file (they are not present after
 #'            the project creation)
 #'
-#'   Rendering of the \code{wd.subdir.name.qmd} into different formats (\code{.html},\code{.pdf},\code{.docx}) is provided
-#'   by the open-source scientific and technical publishing system (based on \href{https://pandoc.org/}{pandoc}), called
-#'   Quarto \insertCite{AllaireQuarto2024}{eprscope}. The main \code{.qmd} file represents a "dynamic" document, combining
-#'   \href{https://quarto.org/docs/authoring/markdown-basics.html}{text}, code (besides R, also other programming languages
-#'   like Python, Julia or Observable can be used as well) and outputs (usually, figures and/or tables).
-#'   Upon rendering, they are nicely combined into shareable above-listed
-#'   report formats stored under \code{_output}. Among them, the \code{.html} output possesses a distinctive position,
-#'   because it preserves the structure of interactive EPR spectra or tables
+#'   Rendering of the \code{wd.subdir.name.qmd} into different formats (\code{.html},\code{.pdf},
+#'   \code{.docx}) is provided by the open-source scientific and technical publishing system
+#'   (based on \href{https://pandoc.org/}{pandoc}), called Quarto \insertCite{AllaireQuarto2024}{eprscope}.
+#'   The main \code{.qmd} file represents a "dynamic" document, combining
+#'   \href{https://quarto.org/docs/authoring/markdown-basics.html}{text}, code (besides R, also other
+#'   programming languages like Python, Julia or Observable can be used as well) and outputs
+#'   (usually, figures and/or tables). Upon rendering, they are nicely combined into shareable above-listed
+#'   report formats stored under the \code{_output}. Among them, the \code{.html} output possesses
+#'   a distinctive position, because it preserves the structure of interactive EPR spectra or tables
 #'   (see e.g. \code{\link{plot_EPR_Specs3D_interact}} or \code{\link{readEPR_params_tabs}}).
-#'   File-Folder structure, presented above, is flexible and customizable to meet the user's needs, right after its
-#'   creation by the actual function. For such purpose, please consult
-#'   the \href{https://quarto.org/docs/guide/}{Quarto documentation}, as well.
+#'   File-Folder structure, presented above, is flexible and customizable to meet the user's needs,
+#'   right after its creation by the actual function. For such purpose, please consult
+#'   the \href{https://quarto.org/docs/guide/}{Quarto documentation} as well.
 #'
 #'
 #'
@@ -132,9 +139,9 @@
 #'   is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.
 #' @param git.init Logical, if \code{git.init = TRUE}, the whole repository/directory
 #'   becomes (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
-#'   using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F}{\strong{git system}}.
-#'   \strong{Dafault}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
-#'   or for those who don't want track changes within the repository by the \code{git}. However, they prefer
+#'   using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git}{git system}.
+#'   \strong{Default}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
+#'   or for those who do not want track changes within the repository by the \code{git}. However, they prefer
 #'   cloud storage services like
 #'   \href{https://nextcloud.com/}{nexcloud}/\href{https://owncloud.com/}{owncloud}/
 #'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version (history of changes) control.
@@ -161,7 +168,7 @@
 #' }
 #'
 #'
-#' @importFrom usethis create_project use_git
+#'
 create_qmdReport_proj <- function(title = "Project Report",
                                   path_to_wd = ".",
                                   wd.subdir.name = "Project_Report",
@@ -179,7 +186,9 @@ create_qmdReport_proj <- function(title = "Project Report",
   if (isTRUE(Rproj.init)){
     #
     invisible(
-      usethis::create_project(path = subdir_path,open = FALSE,rstudio = TRUE),
+      usethis::create_project(path = subdir_path,open = FALSE,rstudio = TRUE)
+    )
+    invisible(
       ## at the beginning this is not required:
       file.remove(file.path(main_dir,wd.subdir.name,".gitignore"))
     )
@@ -279,7 +288,7 @@ create_qmdReport_proj <- function(title = "Project Report",
     "@Manual{eprscope2024,\n",
     "  title = {eprscope R package - Processing and Analysis of Electron \n",
     "Paramagnetic Resonance Data and Spectra in Chemistry},\n",
-    "  author = {Ján Tarábek},\n",
+    "  author = {J\'{a}n Tar\'{a}bek},\n",
     "  year = {2024},\n",
     "  url = {https://jatanrt.github.io/eprscope/} \n",
     "} \n",
@@ -366,7 +375,7 @@ create_qmdReport_proj <- function(title = "Project Report",
      yml.txt
   )
   #
-  ## finally the message with the check mark ('\u2713') =>
-  message(" \u2713 The basic structure of your reproducible EPR project repository was successfully created !")
+  ## finally the message with the check mark (v) =>
+  message(" \u2713 The basic structure of your reproducible EPR project repository was successfully created ! ")
   #
 }
