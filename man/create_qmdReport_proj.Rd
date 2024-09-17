@@ -44,8 +44,9 @@ is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.}
 
 \item{git.init}{Logical, if \code{git.init = TRUE}, the whole repository/directory
 becomes (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
-using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git}{git system}.
-\strong{Default}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
+using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git}{git system}. PLEASE, FOLLOW
+THE R CONSOLE PROMPT and select whether you want to commit your changes immediately or later.
+\strong{Default}: \code{git.init = FALSE}. This is meant to be an option either for novice users
 or for those who do not want track changes within the repository by the \code{git}. However, they prefer
 cloud storage services like
 \href{https://nextcloud.com/}{nexcloud}/\href{https://owncloud.com/}{owncloud}/
