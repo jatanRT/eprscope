@@ -28,7 +28,7 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
 
 ## Installation
 
-Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of optimization/fitting functions of the `{eprscope}` .
+Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of the `{eprscope}` optimization/fitting functions.
 
 ```{r installation,eval=FALSE,echo=TRUE}
 
@@ -109,8 +109,8 @@ simulation.iso <-
       list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
       list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
     ),
-    lineGL.DeltaB = list(0.24, NULL)
-  ) # linewidth in G
+    lineGL.DeltaB = list(0.24, NULL) # linewidth in G
+  )
 #
 # simulation spectrum preview in the region from 3470 G to 3522 G
 simulation.iso$plot + 
@@ -124,9 +124,9 @@ simulation.iso$plot +
 
 # decay of a triarylamine radical cation right after 
 # its generation by electrochemical potentiostatic oxidation 
-# in TBAPF6/CH3CN, double integrals (Areas) vs time were obtained 
-# from the continuos wave (CW) EPR spectrometer
-# acquisition/processing software.
+# in TBAPF6/CH3CN, double integrals (Areas) vs time were 
+# obtained by data pre-processing within the continuous 
+# wave (CW) EPR spectrometer acquisition/processing software.
 #
 # loading the built-in example file with instrumental parameters
 triarylamine_rc_decay_dsc <-
