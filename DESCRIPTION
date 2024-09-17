@@ -76,6 +76,7 @@ Suggests:
     pso,
     grid,
     osfr,
+    usethis,
     vctrs,
     R.utils,
     report,
@@ -95,6 +96,7 @@ Suggests:
     posterdown,
     rmarkdown,
     bookdown,
+    quarto,
     testthat (>= 3.0.0),
     icons (>= 0.2.0)
 RoxygenNote: 7.3.2

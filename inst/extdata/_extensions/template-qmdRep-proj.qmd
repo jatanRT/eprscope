@@ -1,0 +1,93 @@
+---
+title: MainTitle
+author: 
+  - name: 
+    email: 
+    orcid: 
+    affiliations: 
+      - name: 
+        url:
+date: today
+---
+
+::: content-hidden
+$$
+\require{mhchem}
+$$
+:::
+
+```{r}
+#| label: required-libraries
+#| include: false
+
+library(tidyverse)
+library(eprscope)
+library(patchwork)
+library(knitr)
+library(kableExtra)
+library(gt)
+library(epoxy)
+library(tinytable)
+
+```
+
+```{r}
+#| label: data-location-directories
+#| include: false
+
+raw.expr.data.loc <- file.path(".","Input_Data","EPR_RAW")
+asc.expr.data.loc <- file.path(".","Input_Data","EPR_ASCII")
+sim.easyspin.data.loc <- file.path(".","Input_Data","EasySpin_Simulations") 
+fig.out.dir.loc <- file.path(".","_output","Figures")
+tab.out.dir.loc <- file.path(".","_output","Tables")
+
+```
+
+# Experimental
+
+This is experimental section ... electrolyte $0.2\,\mathrm{M}~\ce{TBAPF6}/\ce{CH3CN}$ ...
+
+## Additional Chemistry
+
+Acetonitrile $\ce{CH3CN}$, Dichloromethane $\ce{CH2Cl2}$ or corresponding radical $\ce{^.CH2Cl}$. Or Fenton reaction @eq-fenton
+
+$$
+\ce{H2O2 + Fe^2+ <=> Fe^3+ + ^.OH + ^{-}OH}
+$$ {#eq-fenton}
+
+{{< pagebreak >}}
+
+# Computational Details
+
+This section is dedicated to computations, processing and analysis of data ...
+
+## Math & Physics
+
+Schroedinger (@eq-schroedinger) 🙂 💻
+
+$$
+\begin{aligned}
+\hat{H}\,|\psi\rangle & = \varepsilon\,|\psi\rangle  \\
+\langle \psi|\,\hat{H}\,|\psi\rangle & = \varepsilon 
+\end{aligned}
+$$ {#eq-schroedinger}
+
+{{< pagebreak >}}
+
+# Results
+
+Section summarizing all results + discussion ...
+
+Detailed description, see [@eprscope2024], ...
+
+## Callouts 📓
+
+::: callout-important
+## Important Callout
+
+Including something important
+:::
+
+{{< pagebreak >}}
+
+# References {.unnumbered}

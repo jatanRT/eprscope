@@ -1,0 +1,46 @@
+%% header for pdf/latex add. packages and settings support
+
+%% PACKAGES
+\usepackage[version=4]{mhchem}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{emoji}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{fontawesome5}
+\captionsetup{labelfont = bf}
+\usepackage{subcaption}
+\captionsetup[sub]{labelfont = bf}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+%%
+%% FOOTNOTES
+\renewcommand{\thefootnote}{\alph{footnote}}
+\newcommand{\urlfoot}[2]{#2\footnote{\url{#1}}}
+% 
+%%
+%% AUTHOR(s) & AFFILIATION(S)
+\usepackage{authblk}
+\renewcommand*{\Authsep}{, }
+\renewcommand*{\Authand}{, }
+\renewcommand*{\Authands}{, }
+\renewcommand\Affilfont{\small}
+%%
+%% EMOJIS :-)
+\directlua{luaotfload.add_fallback
+   ("emojifallback",
+    {
+      "NotoColorEmoji:mode=harf;"
+    }
+   )}
+
+\setmainfont{texgyretermes-regular}[
+  Extension      = .otf ,
+  BoldFont       = texgyretermes-bold,
+  ItalicFont     = texgyretermes-italic,
+  BoldItalicFont = texgyretermes-bolditalic,
+  RawFeature={fallback=emojifallback}
+]

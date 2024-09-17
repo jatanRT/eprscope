@@ -24,11 +24,11 @@ knitr::opts_chunk$set(
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
-The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The `{eprscope}`, as the first complex ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} **package** 📦 for EPR, **doesn't want to replace the latter nor the excellent and standard EPR simulation/processing** [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, **it may be considered like a complementary** 📦 **or toolbox with practical functions which have to be otherwise performed by several proprietary tools**. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing/analysis workflow. Therefore, the `{eprscope}` tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power of the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/). Everything at one place (see the RStudio IDE below) without the need to switch between or employ any other additional software.
+The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The `{eprscope}`, as the first complex ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} **package** 📦 for EPR, **doesn't want to replace the latter nor the excellent and standard EPR simulation/processing** [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, **it may be considered like a complementary** 📦 **or toolbox with practical functions which have to be otherwise performed by several proprietary tools**. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing/analysis workflow. Therefore, the `{eprscope}` tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power of the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/). Everything at one place (see the [RStudio IDE](https://docs.posit.co/ide/user/)) without the need to switch between or employ any other additional software.
 
 ## Installation
 
-Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of optimization/fitting functions of the `{eprscope}` .
+Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of the `{eprscope}` optimization/fitting functions.
 
 ```{r installation,eval=FALSE,echo=TRUE}
 
@@ -43,11 +43,11 @@ Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height=
 
 1.  [the R installation procedure](https://cran.rstudio.com/)
 
-2.  [installation of the Rstudio IDE](https://posit.co/download/rstudio-desktop/)
+2.  [installation of the Rstudio IDE](https://posit.co/download/rstudio-desktop/) (alternatively, you may try its [cloud version](https://docs.posit.co/cloud/) without the need for ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} installation)
 
 3.  [the latest R tools release](https://cran.r-project.org/bin/windows/Rtools/) **ONLY for WINDOWS OS**
 
-Additionally, **the open-source scientific and technical publishing system** [Quarto](https://quarto.org/) together with the [Pandoc](https://pandoc.org/), **a document converter system**, may be required for sharing the results coming from `{eprscope}` in desired formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
+Additionally, **the open-source scientific and technical publishing system** [Quarto](https://quarto.org/) together with the [Pandoc](https://pandoc.org/), **a document converter system**, may be required for sharing the results coming from `{eprscope}` in desired formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be found in the `create_qmdReport_proj()` documentation).
 
 ## Usage
 
@@ -109,8 +109,8 @@ simulation.iso <-
       list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
       list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
     ),
-    lineGL.DeltaB = list(0.24, NULL)
-  ) # linewidth in G
+    lineGL.DeltaB = list(0.24, NULL) # linewidth in G
+  )
 #
 # simulation spectrum preview in the region from 3470 G to 3522 G
 simulation.iso$plot + 
@@ -124,9 +124,9 @@ simulation.iso$plot +
 
 # decay of a triarylamine radical cation right after 
 # its generation by electrochemical potentiostatic oxidation 
-# in TBAPF6/CH3CN, double integrals (Areas) vs time were obtained 
-# from the continuos wave (CW) EPR spectrometer
-# acquisition/processing software.
+# in TBAPF6/CH3CN, double integrals (Areas) vs time were 
+# obtained by data pre-processing within the continuous 
+# wave (CW) EPR spectrometer acquisition/processing software.
 #
 # loading the built-in example file with instrumental parameters
 triarylamine_rc_decay_dsc <-
@@ -209,6 +209,10 @@ There are several ways how to get help. If the users are already familiar with t
 
 -   [Reproducible Research in R and Guides for the R-Cubed Courses](https://guides.rostools.org/)
 
+-   [Quarto - An Open Source Scientific and Technical Publishing System](https://quarto.org/docs/get-started/hello/rstudio.html)
+
+-   [R for Non-Programmers: A Guide for Social Scientists](https://bookdown.org/daniel_dauber_io/r4np_book/)
+
 -   YouTube Video Tutorials ➨
 
     -   [Introduction to R Programming for Excel Users](https://www.youtube.com/watch?v=Ekp2mfxQSzw)
@@ -228,6 +232,10 @@ There are several ways how to get help. If the users are already familiar with t
     -   [Introduction to R for Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
 
     -   [Reproducible Research with R](https://www.youtube.com/watch?v=mg95lLyCpQA)
+
+    -   [R for Ecology](https://www.youtube.com/@RforEcology/videos)
+
+    -   [R Quarto](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df)
 
 Even though the **EPR spectroscopy** is a quite complex field there are some introductory on-line materials which may help to start with this special magnetic resonance method ➨
 

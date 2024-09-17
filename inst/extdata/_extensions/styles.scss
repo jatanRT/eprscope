@@ -1,0 +1,30 @@
+/*-- scss:defaults --*/
+//
+// To change only dafault variables see `https://quarto.org/docs/presentations/revealjs/themes.html`
+//
+// Color Variables
+//
+$color_10gy: #E2E2E2;
+$color_13bl: #C4D6E7;
+$color_14bl: #E5F0FA;
+$color_title: #EAEAEA;
+//
+// Changing color background for inline code
+$code-bg: $color_10gy;
+//
+// Changing color code block background
+$code-block-bg: $color_14bl;
+//
+/*-- scss:rules --*/
+//
+// Customization
+//
+// Mathjax font setup
+.MathJax {
+  font-size: 97% !important;
+}
+//
+// Title Color
+.title {
+  color: $color_title;
+} 
