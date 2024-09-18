@@ -2,15 +2,15 @@
 $if(title)$
 \title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
-
+%
 $if(subtitle)$
 \subtitle{$subtitle$}
 $endif$
-
+%
 $for(by-author)$
 \author[$for(by-author.affiliations)$$it.number$$sep$,$endfor$]{$by-author.name.literal$}
 $endfor$
-
+%
 $for(by-author)$
 $if(by-author.affiliations)$
 $for(by-author.affiliations)$
@@ -18,6 +18,6 @@ $for(by-author.affiliations)$
 $endfor$
 $endif$
 $endfor$
-
-
+%
+%
 \date{$date$}

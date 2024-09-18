@@ -45,9 +45,9 @@ is not the preferred IDE of your choice, set \code{Rproj.init = FALSE}.}
 \item{git.init}{Logical, if \code{git.init = TRUE}, the whole repository/directory
 becomes (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
 using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git}{git system}. PLEASE, FOLLOW
-THE R CONSOLE PROMPT and select whether you want to commit your changes immediately or later.
+THE R CONSOLE PROMPT and select whether to commit your changes immediately or later.
 \strong{Default}: \code{git.init = FALSE}. This is meant to be an option either for novice users
-or for those who do not want track changes within the repository by the \code{git}. However, they prefer
+or for those who do not want track changes within the repository by the \code{git}. Instead, they prefer
 cloud storage services like
 \href{https://nextcloud.com/}{nexcloud}/\href{https://owncloud.com/}{owncloud}/
 \href{https://osf.io/}{Open Science Framework}...etc., supporting version (history of changes) control.}
@@ -103,7 +103,7 @@ In order to support reproducible research workflow (see \code{References}) in EP
   \verb{    }| \cr
   \verb{    }| \cr
   \verb{    }|----- \code{title.tex}...file for setting up the title and authors \cr
-  \verb{    }|\verb{            } in the output \code{.pdf} file format \cr
+  \verb{    }|\verb{            } in the \code{.pdf} output \cr
   \verb{    }| \cr
   \verb{    }| \cr
   \verb{    }|----- \code{styles.scss}...style sheet to set up visual style \cr

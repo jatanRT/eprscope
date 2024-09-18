@@ -76,9 +76,53 @@ $$ {#eq-schroedinger}
 
 # Results
 
-Section summarizing all results + discussion ...
+Section summarizing all results + discussion ... Detailed description, see [@eprscope2024], ...
 
-Detailed description, see [@eprscope2024], ...
+## Simulation of EPR Spectra
+
+```{r}
+#| label: fig-epr-simulation-example
+#| echo: false
+#| fig-cap: "This is example of the \\ce{TMPD^{.+}} simulated EPR spectrum."
+#| warning: false
+#| message: false
+
+# simulation
+sim.tmpd.spec <- eval_sim_EPR_iso(
+  g.iso = 2.00303,
+  instrum.params = c(Bcf = 3499.17,
+                     Bsw = 120,
+                     Npoints = 2401,
+                     mwGHz = 9.814155),
+  nuclear.system = list(
+    list("14N", 2, 19.32),
+    list("1H", 4, 5.50),
+    list("1H", 12, 19.66)
+  ),
+  lineGL.DeltaB = list(0.44, 0.39),
+  lineG.content = 0.4
+)
+
+# spectrum preview
+sim.tmpd.spec$plot
+
+```
+
+@fig-epr-simulation-example illustrates the HF-structure of the EPR spectrum.
+
+Figure out the $g$-value from the previous spectrum:
+
+```{r}
+#| label: epr-g-simulation-example
+#| echo: true
+
+eval_gFactor_Spec(sim.tmpd.spec$df,
+  nu.GHz = 9.814155,
+  B = "Bsim_G",
+  Intensity = "dIeprSim_over_dB"
+)
+
+```
 
 ## Callouts 📓
 
