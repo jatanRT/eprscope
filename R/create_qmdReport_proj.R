@@ -188,6 +188,8 @@
 #' }
 #'
 #'
+#' @export
+#'
 #'
 create_qmdReport_proj <- function(title = "Project Report",
                                   path_to_wd = ".",
