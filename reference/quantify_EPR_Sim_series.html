@@ -109,7 +109,7 @@ See also <code>Intensity.expr</code> parameter/argument. A second independent va
 the entire <code>data.spectra</code> must be present in the form of
 <a href="https://r4ds.had.co.nz/tidy-data.html" class="external-link">tidy/long table format</a>
 (see also parameter/argument <code>var2nd.series</code>). Such data frame can be created, e.g.
-by the <code><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></code> function.</p></dd>
+by the <code><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></code> or the <code><a href="readEPR_Exp_Specs_multif.html">readEPR_Exp_Specs_multif</a></code> function.</p></dd>
 
 
 <dt id="arg-dir-asc-sim">dir_ASC_sim<a class="anchor" aria-label="anchor" href="#arg-dir-asc-sim"></a></dt>
@@ -207,7 +207,7 @@ corresponds to <code>floor(10+2*sqrt(length(x.0)))</code>.</p></dd>
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
 <dd><p>Numeric value corresponding to diameter of the particle swarm search space
 (in case <code>optim.method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
-refers to the Euclidian distance, defined as:
+refers to the Euclidean distance, defined as:
 $$\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}$$</p></dd>
 
 
@@ -258,8 +258,8 @@ for each time/temperature/...etc. point in row. Additional optimization measures
   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
   combination of the spectral intensities of components (simulated spectra) and optimizes
   the related multiplication coefficients. Additional analysis, where the positions of spectral
-  components (simulated spectra) are not fixed and can be optimized as well, is based on the combination
-  of the actual function with the <code><a href="eval_sim_EPR_iso_combo.html">eval_sim_EPR_iso_combo</a></code> and currently, is under development.</p>
+  components (simulated spectra) are not fixed and can be optimized as well. It is based on the combination
+  of the actual function with the <code><a href="eval_sim_EPR_iso_combo.html">eval_sim_EPR_iso_combo</a></code> and currently, it is under development.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
