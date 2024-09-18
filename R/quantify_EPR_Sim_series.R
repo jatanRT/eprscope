@@ -22,8 +22,8 @@
 #'   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
 #'   combination of the spectral intensities of components (simulated spectra) and optimizes
 #'   the related multiplication coefficients. Additional analysis, where the positions of spectral
-#'   components (simulated spectra) are not fixed and can be optimized as well, is based on the combination
-#'   of the actual function with the \code{\link{eval_sim_EPR_iso_combo}} and currently, is under development.
+#'   components (simulated spectra) are not fixed and can be optimized as well. It is based on the combination
+#'   of the actual function with the \code{\link{eval_sim_EPR_iso_combo}} and currently, it is under development.
 #'
 #'
 #'
@@ -37,7 +37,7 @@
 #'   the entire \code{data.spectra} must be present in the form of
 #'   \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
 #'   (see also parameter/argument \code{var2nd.series}). Such data frame can be created, e.g.
-#'   by the \code{\link{readEPR_Exp_Specs_kin}} function.
+#'   by the \code{\link{readEPR_Exp_Specs_kin}} or the \code{\link{readEPR_Exp_Specs_multif}} function.
 #' @param dir_ASC_sim Character string, pointing to folder where the simulated EPR spectra of all
 #'   components are stored. Path can be alternatively specified by the \code{\link[base]{file.path}} function.
 #' @param name.pattern.sim Character string pattern from file names related to simulated EPR spectral data
@@ -90,7 +90,7 @@
 #'   corresponds to \code{floor(10+2*sqrt(length(x.0)))}.
 #' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
-#'   refers to the Euclidian distance, defined as:
+#'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
 #' @param single.integ Character string, setting up the column/variable name related to single-integrated spectrum
 #'   within the output data frame, \strong{default}: \code{single.integ = "single_IntegSim"}.

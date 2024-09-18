@@ -53,7 +53,7 @@
 #'   \verb{    }|\verb{            } in the output \code{.pdf} file format \cr
 #'   \verb{    }| \cr
 #'   \verb{    }| \cr
-#'   \verb{    }|----- \code{styles.scss}...style sheet to setup visual style \cr
+#'   \verb{    }|----- \code{styles.scss}...style sheet to set up visual style \cr
 #'   \verb{    }|\verb{            } of the \code{.html} output format \cr
 #'   \verb{    }| \cr
 #'   \verb{    }| \cr

@@ -95,7 +95,7 @@
 #'   if \code{optim.method = "pswarm"}. Otherwise, \code{pswarm.size = NULL} (\strong{default}).
 #' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
-#'   refers to the Euclidian distance, defined as:
+#'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
 #' @param sim.check Logical, whether to return simple \code{list} with the overlay (simulated + experimental
 #'   spectrum) as well as residual plot and the best fitting parameters in a vector

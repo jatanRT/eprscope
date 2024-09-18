@@ -88,7 +88,7 @@
 #'   corresponds to \code{floor(10+2*sqrt(length(x.0)))}.
 #' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
 #'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
-#'   refers to the Euclidian distance, defined as:
+#'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}}
 #'
 #'
