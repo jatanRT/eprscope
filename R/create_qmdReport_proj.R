@@ -5,7 +5,7 @@
 #' @description
 #'   Creating files and folders for the basic \href{https://quarto.org/}{Quarto} project having
 #'   the structure shown in \code{Details} and corresponding to reproducible report in EPR.
-#'   The main \code{.qmd} ("quarto markdown") file \code{wd.subdir.name.qmd} is editable
+#'   The main \code{.qmd} ("quarto markdown") file, \code{wd.subdir.name.qmd}, is editable
 #'   (so do the additional files as well) and used for rendering. The latter can be done directly within
 #'   the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating
 #'   the \code{Render} button and selecting the desired output format
@@ -34,58 +34,77 @@
 #'   you may provide information about the author like \code{name:}, \code{email:},
 #'   \code{orcid:} and affiliations \code{name:} and \code{url:}, directly within the main \code{.qmd} file.
 #'
-#'   \code{path_to_wd}
-#'   |
-#'   +--\code{wd.subdir.name}
-#'      |
-#'      +--\code{wd.subdir.name.qmd}..."dynamic" document, main file for the entire
-#'      |  data processing and analysis workflow
-#'      |
-#'      +--\code{header.tex}...file to set up the \code{.qmd} (\code{.tex})
-#'      |  ==> \code{.pdf} conversion, usually containing additional \eqn{LaTeX}
-#'      |  packages and visual setup for the \code{.pdf} output
-#'      |
-#'      +--\code{title.tex}...file for setting up the title and authors
-#'      |  in the output \code{.pdf} file format
-#'      |
-#'      +--\code{styles.scss}...style sheet to setup visual style
-#'      |  of the \code{.html} output format
-#'      |
-#'      +--\code{wd.subdir.name.bib}...bibliographic file database of all
-#'      |  reference-list entries related to the project report
-#'      |
-#'      +--\code{README.Rmd}...general documentation for the entire project/repository
-#'      |
-#'      +--\code{_quarto.yml}...setup for the main \code{wd.subdir.name.qmd} file,
-#'      |  providing different format outputs (\code{.html},\code{.pdf},\code{.docx})
-#'      |
-#'      +--\code{Input_Data}
-#'      |  |
-#'      |  +--\code{EPR_RAW}
-#'      |  |  |
-#'      |  |  +--...folder dedicated for all raw files from EPR spectrometer,
-#'      |  |  like \code{.dsc/.DSC/.par}, \code{.DTA}, \code{.YGF}
-#'      |  |
-#'      |  +--\code{EPR_ASCII}
-#'      |  |  |
-#'      |  |  +--...folder dedicated to all additional text files from EPR spectrometer,
-#'      |  |     like \code{.txt}, \code{.csv}, \code{.asc}
-#'      |  |
-#'      |  +--\code{EasySpin_Simulations}
-#'      |     |
-#'      |     +--...folder dedicated for output files from the \code{EasySpin}(-MATLAB),
-#'      |        like \code{.mat} or \code{.txt} corresponding to EPR simulated spectral data
-#'      |
-#'      +--\code{_output}
-#'         |
-#'         +--\code{Figures}
-#'         |
-#'         +--\code{Tables}
-#'         |
-#'         +--...+ \code{.html},\code{.pdf},\code{.docx} formats and supporting files
-#'            of the report, these are created by rendering the main
-#'            \code{wd.subdir.name.qmd} file (they are not present after
-#'            the project creation)
+#'   \code{path_to_wd} \cr
+#'   | \cr
+#'   | \cr
+#'   |----- \code{wd.subdir.name} \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{wd.subdir.name.qmd}..."dynamic" document, main file for the entire \cr
+#'   \verb{    }|\verb{            } data processing and analysis workflow \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{header.tex}...file to set up the \code{.qmd} (\code{.tex}) \cr
+#'   \verb{    }|\verb{            } ==> \code{.pdf} conversion, usually containing additional \eqn{LaTeX} \cr
+#'   \verb{    }|\verb{            } packages and visual setup for the \code{.pdf} output \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{title.tex}...file for setting up the title and authors \cr
+#'   \verb{    }|\verb{            } in the output \code{.pdf} file format \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{styles.scss}...style sheet to setup visual style \cr
+#'   \verb{    }|\verb{            } of the \code{.html} output format \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{wd.subdir.name.bib}...bibliographic file database of all \cr
+#'   \verb{    }|\verb{            } reference-list entries related to the project report \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{README.Rmd}...general documentation for the entire project/repository \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{_quarto.yml}...setup for the main \code{wd.subdir.name.qmd} file, \cr
+#'   \verb{    }|\verb{            } providing different format outputs (\code{.html},\code{.pdf},\code{.docx}) \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{Input_Data} \cr
+#'   \verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|----- \code{EPR_RAW} \cr
+#'   \verb{    }|\verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|\verb{    }|-----...folder dedicated for all raw files from EPR spectrometer, \cr
+#'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.dsc/.DSC/.par}, \code{.DTA}, \code{.YGF} \cr
+#'   \verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|----- \code{EPR_ASCII} \cr
+#'   \verb{    }|\verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|\verb{    }|-----...folder dedicated to all additional text files from EPR spectrometer, \cr
+#'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.txt}, \code{.csv}, \code{.asc} \cr
+#'   \verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|----- \code{EasySpin_Simulations} \cr
+#'   \verb{    }|\verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|\verb{    }| \cr
+#'   \verb{    }|\verb{    }|\verb{    }|-----...folder dedicated for output files from the \code{EasySpin}(-MATLAB), \cr
+#'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.mat} or \code{.txt} corresponding to EPR simulated spectral data \cr
+#'   \verb{    }| \cr
+#'   \verb{    }| \cr
+#'   \verb{    }|----- \code{_output} \cr
+#'   \verb{    } \verb{    }| \cr
+#'   \verb{    } \verb{    }| \cr
+#'   \verb{    } \verb{    }|----- \code{Figures} \cr
+#'   \verb{    } \verb{    }| \cr
+#'   \verb{    } \verb{    }| \cr
+#'   \verb{    } \verb{    }|----- \code{Tables} \cr
+#'   \verb{    } \verb{    }| \cr
+#'   \verb{    } \verb{    }| \cr
+#'   \verb{    } \verb{    }|-----...+ \code{.html},\code{.pdf},\code{.docx} formats and supporting files \cr
+#'   \verb{    } \verb{    } \verb{    } of the report, these are created by rendering the main \cr
+#'   \verb{    } \verb{    } \verb{    } \code{wd.subdir.name.qmd} file (they are not present after \cr
+#'   \verb{    } \verb{    } \verb{    } the project is created) \cr
 #'
 #'   Rendering of the \code{wd.subdir.name.qmd} into different formats (\code{.html},\code{.pdf},
 #'   \code{.docx}) is provided by the open-source scientific and technical publishing system
@@ -155,11 +174,11 @@
 #' @examples
 #' \dontrun{
 #' ## creating reproducible report structure
-#' ## with default parameters
+#' ## with the default parameters
 #' create_qmdReport_proj()
 #' #
 #' ## creating report with specified citation style (ACS)
-#' ## and with version-controlled by the `git` within
+#' ## and with versioning controlled by the `git` within
 #' ## the RStudio (Rproj.init = TRUE)
 #' create_qmdReport_proj(
 #'   citation.style =

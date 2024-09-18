@@ -2,7 +2,6 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -49,17 +48,17 @@ superior power of the open source
 ecosystem that combines data processing, analysis and great scientific
 visualizations together with the extensive publishing capabilities by
 [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
-[Quarto](https://quarto.org/). Everything at one place (see the RStudio
-IDE below) without the need to switch between or employ any other
-additional software.
+[Quarto](https://quarto.org/). Everything at one place (see the [RStudio
+IDE](https://docs.posit.co/ide/user/)) without the need to switch
+between or employ any other additional software.
 
 ## Installation
 
 Before the installation, please make sure that you have already followed
 instructions for the [{nloptr} package
 installation](https://astamm.github.io/nloptr/) depending on your
-operating system. This package is required for the proper running of
-optimization/fitting functions of the `{eprscope}` .
+operating system. This package is required for the proper running of the
+`{eprscope}` optimization/fitting functions.
 
 ``` r
 
@@ -78,7 +77,11 @@ installation ➨
 1.  [the R installation procedure](https://cran.rstudio.com/)
 
 2.  [installation of the Rstudio
-    IDE](https://posit.co/download/rstudio-desktop/)
+    IDE](https://posit.co/download/rstudio-desktop/) (alternatively, you
+    may try its [cloud version](https://docs.posit.co/cloud/) without
+    the need for
+    <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+    installation)
 
 3.  [the latest R tools
     release](https://cran.r-project.org/bin/windows/Rtools/) **ONLY for
@@ -88,7 +91,8 @@ Additionally, **the open-source scientific and technical publishing
 system** [Quarto](https://quarto.org/) together with the
 [Pandoc](https://pandoc.org/), **a document converter system**, may be
 required for sharing the results coming from `{eprscope}` in desired
-formats like `pdf` , `html` , `docx` , `pptx` or `tex`.
+formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be
+found in the `create_qmdReport_proj()` documentation).
 
 ## Usage
 
@@ -154,8 +158,8 @@ simulation.iso <-
       list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
       list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
     ),
-    lineGL.DeltaB = list(0.24, NULL)
-  ) # linewidth in G
+    lineGL.DeltaB = list(0.24, NULL) # linewidth in G
+  )
 #
 # simulation spectrum preview in the region from 3470 G to 3522 G
 simulation.iso$plot + 
@@ -170,9 +174,9 @@ simulation.iso$plot +
 
 # decay of a triarylamine radical cation right after 
 # its generation by electrochemical potentiostatic oxidation 
-# in TBAPF6/CH3CN, double integrals (Areas) vs time were obtained 
-# from the continuos wave (CW) EPR spectrometer
-# acquisition/processing software.
+# in TBAPF6/CH3CN, double integrals (Areas) vs time were 
+# obtained by data pre-processing within the continuous 
+# wave (CW) EPR spectrometer acquisition/processing software.
 #
 # loading the built-in example file with instrumental parameters
 triarylamine_rc_decay_dsc <-
@@ -228,9 +232,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>          Estimate   Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149
-#> k1     0.06043803 0.0054514524  11.08659  6.161251e-19
-#> alpha  2.03820600 0.0196761800 103.58748 3.921209e-101
+#> qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149
+#> k1     0.06043805 5.451458e-03  11.08658  6.161497e-19
+#> alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101
 ```
 
 ## Help, Questions and Contribution
@@ -278,6 +282,12 @@ quite straightforward diving into
 - [Reproducible Research in R and Guides for the R-Cubed
   Courses](https://guides.rostools.org/)
 
+- [Quarto - An Open Source Scientific and Technical Publishing
+  System](https://quarto.org/docs/get-started/hello/rstudio.html)
+
+- [R for Non-Programmers: A Guide for Social
+  Scientists](https://bookdown.org/daniel_dauber_io/r4np_book/)
+
 - YouTube Video Tutorials ➨
 
   - [Introduction to R Programming for Excel
@@ -303,6 +313,11 @@ quite straightforward diving into
 
   - [Reproducible Research with
     R](https://www.youtube.com/watch?v=mg95lLyCpQA)
+
+  - [R for Ecology](https://www.youtube.com/@RforEcology/videos)
+
+  - [R
+    Quarto](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df)
 
 Even though the **EPR spectroscopy** is a quite complex field there are
 some introductory on-line materials which may help to start with this
