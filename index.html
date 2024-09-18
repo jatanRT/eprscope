@@ -86,12 +86,12 @@
 <div class="section level2">
 <h2 id="overview-">Overview <img src="reference/figures/logo_new.png" align="right" height="104"><a class="anchor" aria-label="anchor" href="#overview-"></a>
 </h2>
-<p>The key objective of this open source <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> package is to bring handy functions corresponding to “everyday” data processing/analysis in the EPR (<a href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)" class="external-link">Electron Paramagnetic Resonance</a>) spectroscopy mainly in chemistry. Similar <img src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" width="16" height="16"> tools like <a href="https://www.cwepr.de/index" class="external-link">cwepr</a> and the <a href="https://docs.cwepr.de/v0.5/" class="external-link">related projetcs</a> have been developed, so far. The <a href="https://jatanrt.github.io/eprscope/">eprscope</a>, as the first complex <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"><strong>package</strong> 📦 for EPR, <strong>doesn’t want to replace the latter nor the excellent and standard EPR simulation/processing</strong> <a href="https://www.easyspin.org/" class="external-link">EasySpin Toolbox</a> for <a href="https://www.mathworks.com/products/matlab.html" class="external-link">MATLAB</a> and its additional frameworks like <a href="https://www.radicals.uni-freiburg.de/de/software" class="external-link">SpecProFi</a> or <a href="https://bip.cnrs.fr/epr-facility/software-and-scripts/" class="external-link">CW EPR Scripts by Emilien Etienne</a>. Rather, <strong>it may be considered like a complementary</strong> 📦 <strong>or toolbox with practical functions which have to be otherwise performed by several proprietary tools</strong>. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. <a href="https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html" class="external-link"><em>Xenon/WinEPR</em></a>) as well as several other software platforms like the <em>MS Office</em> and/or <em>Orgin/SigmaPlot/Igor</em> which are often applied in the EPR processing/analysis workflow. Therefore, the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power of the open source <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by <a href="https://rmarkdown.rstudio.com/index.html" class="external-link">Rmarkdown</a> and <a href="https://quarto.org/" class="external-link">Quarto</a>. Everything at one place (see the RStudio IDE below) without the need to switch between or employ any other additional software.</p>
+<p>The key objective of this open source <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> package is to bring handy functions corresponding to “everyday” data processing/analysis in the EPR (<a href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)" class="external-link">Electron Paramagnetic Resonance</a>) spectroscopy mainly in chemistry. Similar <img src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png" width="16" height="16"> tools like <a href="https://www.cwepr.de/index" class="external-link">cwepr</a> and the <a href="https://docs.cwepr.de/v0.5/" class="external-link">related projetcs</a> have been developed, so far. The <a href="https://jatanrt.github.io/eprscope/">eprscope</a>, as the first complex <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"><strong>package</strong> 📦 for EPR, <strong>doesn’t want to replace the latter nor the excellent and standard EPR simulation/processing</strong> <a href="https://www.easyspin.org/" class="external-link">EasySpin Toolbox</a> for <a href="https://www.mathworks.com/products/matlab.html" class="external-link">MATLAB</a> and its additional frameworks like <a href="https://www.radicals.uni-freiburg.de/de/software" class="external-link">SpecProFi</a> or <a href="https://bip.cnrs.fr/epr-facility/software-and-scripts/" class="external-link">CW EPR Scripts by Emilien Etienne</a>. Rather, <strong>it may be considered like a complementary</strong> 📦 <strong>or toolbox with practical functions which have to be otherwise performed by several proprietary tools</strong>. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. <a href="https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html" class="external-link"><em>Xenon/WinEPR</em></a>) as well as several other software platforms like the <em>MS Office</em> and/or <em>Orgin/SigmaPlot/Igor</em> which are often applied in the EPR processing/analysis workflow. Therefore, the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power of the open source <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by <a href="https://rmarkdown.rstudio.com/index.html" class="external-link">Rmarkdown</a> and <a href="https://quarto.org/" class="external-link">Quarto</a>. Everything at one place (see the <a href="https://docs.posit.co/ide/user/" class="external-link">RStudio IDE</a>) without the need to switch between or employ any other additional software.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system. This package is required for the proper running of optimization/fitting functions of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> .</p>
+<p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system. This package is required for the proper running of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> optimization/fitting functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># The package can be installed by =&gt;</span></span>
@@ -101,10 +101,10 @@
 <p>Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> users or people who haven’t already installed the <em>R</em> environment, please consult the following steps prior to own <a href="https://jatanrt.github.io/eprscope/">eprscope</a> installation ➨</p>
 <ol style="list-style-type: decimal">
 <li><p><a href="https://cran.rstudio.com/" class="external-link">the R installation procedure</a></p></li>
-<li><p><a href="https://posit.co/download/rstudio-desktop/" class="external-link">installation of the Rstudio IDE</a></p></li>
+<li><p><a href="https://posit.co/download/rstudio-desktop/" class="external-link">installation of the Rstudio IDE</a> (alternatively, you may try its <a href="https://docs.posit.co/cloud/" class="external-link">cloud version</a> without the need for <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> installation)</p></li>
 <li><p><a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">the latest R tools release</a> <strong>ONLY for WINDOWS OS</strong></p></li>
 </ol>
-<p>Additionally, <strong>the open-source scientific and technical publishing system</strong> <a href="https://quarto.org/" class="external-link">Quarto</a> together with the <a href="https://pandoc.org/" class="external-link">Pandoc</a>, <strong>a document converter system</strong>, may be required for sharing the results coming from <a href="https://jatanrt.github.io/eprscope/">eprscope</a> in desired formats like <code>pdf</code> , <code>html</code> , <code>docx</code> , <code>pptx</code> or <code>tex</code>.</p>
+<p>Additionally, <strong>the open-source scientific and technical publishing system</strong> <a href="https://quarto.org/" class="external-link">Quarto</a> together with the <a href="https://pandoc.org/" class="external-link">Pandoc</a>, <strong>a document converter system</strong>, may be required for sharing the results coming from <a href="https://jatanrt.github.io/eprscope/">eprscope</a> in desired formats like <code>pdf</code> , <code>html</code> , <code>docx</code> , <code>pptx</code> or <code>tex</code> (details may be found in the <code><a href="reference/create_qmdReport_proj.html">create_qmdReport_proj()</a></code> documentation).</p>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -167,8 +167,8 @@
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">3</span>, <span class="fl">5.09</span><span class="op">)</span>, <span class="co"># 3 x A(1H) = 5.09 MHz</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">6</span>, <span class="fl">17.67</span><span class="op">)</span> <span class="co"># 6 x A(1H) = 17.67 MHz</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    lineGL.DeltaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.24</span>, <span class="cn">NULL</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="co"># linewidth in G</span></span>
+<span>    lineGL.DeltaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.24</span>, <span class="cn">NULL</span><span class="op">)</span> <span class="co"># linewidth in G</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># simulation spectrum preview in the region from 3470 G to 3522 G</span></span>
 <span><span class="va">simulation.iso</span><span class="op">$</span><span class="va">plot</span> <span class="op">+</span> </span>
@@ -182,9 +182,9 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># decay of a triarylamine radical cation right after </span></span>
 <span><span class="co"># its generation by electrochemical potentiostatic oxidation </span></span>
-<span><span class="co"># in TBAPF6/CH3CN, double integrals (Areas) vs time were obtained </span></span>
-<span><span class="co"># from the continuos wave (CW) EPR spectrometer</span></span>
-<span><span class="co"># acquisition/processing software.</span></span>
+<span><span class="co"># in TBAPF6/CH3CN, double integrals (Areas) vs time were </span></span>
+<span><span class="co"># obtained by data pre-processing within the continuous </span></span>
+<span><span class="co"># wave (CW) EPR spectrometer acquisition/processing software.</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># loading the built-in example file with instrumental parameters</span></span>
 <span><span class="va">triarylamine_rc_decay_dsc</span> <span class="op">&lt;-</span></span>
@@ -237,9 +237,9 @@
 <span><span class="co"># of the Ordinary Differential Equations</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">df.coeffs</span></span>
 <span><span class="co">#&gt;          Estimate   Std. Error   t value      Pr(&gt;|t|)</span></span>
-<span><span class="co">#&gt; qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149</span></span>
-<span><span class="co">#&gt; k1     0.06043803 0.0054514524  11.08659  6.161251e-19</span></span>
-<span><span class="co">#&gt; alpha  2.03820600 0.0196761800 103.58748 3.921209e-101</span></span></code></pre></div>
+<span><span class="co">#&gt; qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149</span></span>
+<span><span class="co">#&gt; k1     0.06043805 5.451458e-03  11.08658  6.161497e-19</span></span>
+<span><span class="co">#&gt; alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -260,6 +260,8 @@
 <li><p><a href="https://cran.r-project.org/other-docs.html" class="external-link">Official Contributed Documentation of R</a></p></li>
 <li><p><a href="https://www.bigbookofr.com/" class="external-link">The Big Book of R</a></p></li>
 <li><p><a href="https://guides.rostools.org/" class="external-link">Reproducible Research in R and Guides for the R-Cubed Courses</a></p></li>
+<li><p><a href="https://quarto.org/docs/get-started/hello/rstudio.html" class="external-link">Quarto - An Open Source Scientific and Technical Publishing System</a></p></li>
+<li><p><a href="https://bookdown.org/daniel_dauber_io/r4np_book/" class="external-link">R for Non-Programmers: A Guide for Social Scientists</a></p></li>
 <li>
 <p>YouTube Video Tutorials ➨</p>
 <ul>
@@ -272,6 +274,8 @@
 <li><p><a href="https://www.youtube.com/@Riffomonas" class="external-link">Riffomonas Project</a></p></li>
 <li><p><a href="https://www.youtube.com/@DataSciencePursuit/playlists" class="external-link">Introduction to R for Beginners</a></p></li>
 <li><p><a href="https://www.youtube.com/watch?v=mg95lLyCpQA" class="external-link">Reproducible Research with R</a></p></li>
+<li><p><a href="https://www.youtube.com/@RforEcology/videos" class="external-link">R for Ecology</a></p></li>
+<li><p><a href="https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df" class="external-link">R Quarto</a></p></li>
 </ul>
 </li>
 </ul>
