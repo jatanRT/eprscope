@@ -187,8 +187,7 @@ cloud storage services like
   |—– <code>wd.subdir.name</code> <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>wd.subdir.name.qmd</code>..."dynamic" document, main file for the entire <br><code>    </code>|<code>            </code> data processing and analysis workflow <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>header.tex</code>...file to set up the <code>.qmd</code> (<code>.tex</code>) <br><code>    </code>|<code>            </code> ==&gt; <code>.pdf</code> conversion, usually containing additional \(LaTeX\) <br><code>    </code>|<code>            </code> packages and visual setup for the <code>.pdf</code> output <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>title.tex</code>...file for setting up the title and authors <br><code>    </code>|<code>            </code> in the output <code>.pdf</code> file format <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>styles.scss</code>...style sheet to setup visual style <br><code>    </code>|<code>            </code> of the <code>.html</code> output format <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>wd.subdir.name.bib</code>...bibliographic file database of all <br><code>    </code>|<code>            </code> reference-list entries related to the project report <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>README.Rmd</code>...general documentation for the entire project/repository <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>_quarto.yml</code>...setup for the main <code>wd.subdir.name.qmd</code> file, <br><code>    </code>|<code>            </code> providing different format outputs (<code>.html</code>,<code>.pdf</code>,<code>.docx</code>) <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>Input_Data</code> <br><code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|—– <code>EPR_RAW</code> <br><code>    </code>|<code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|<code>    </code>|—–...folder dedicated for all raw files from EPR spectrometer, <br><code>    </code>|<code>    </code>|<code>    </code><code>    </code>like <code>.dsc/.DSC/.par</code>, <code>.DTA</code>, <code>.YGF</code> <br><code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|—– <code>EPR_ASCII</code> <br><code>    </code>|<code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|<code>    </code>|—–...folder dedicated to all additional text files from EPR spectrometer, <br><code>    </code>|<code>    </code>|<code>    </code><code>    </code>like <code>.txt</code>, <code>.csv</code>, <code>.asc</code> <br><code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|—– <code>EasySpin_Simulations</code> <br><code>    </code>|<code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|<code>    </code>| <br><code>    </code>|<code>    </code>|<code>    </code>|—–...folder dedicated for output files from the <code>EasySpin</code>(-MATLAB), <br><code>    </code>|<code>    </code>|<code>    </code><code>    </code>like <code>.mat</code> or <code>.txt</code> corresponding to EPR simulated spectral data <br><code>    </code>| <br><code>    </code>| <br><code>    </code>|—– <code>_output</code> <br><code>    </code> <code>    </code>| <br><code>    </code> <code>    </code>| <br><code>    </code> <code>    </code>|—– <code>Figures</code> <br><code>    </code> <code>    </code>| <br><code>    </code> <code>    </code>| <br><code>    </code> <code>    </code>|—– <code>Tables</code> <br><code>    </code> <code>    </code>| <br><code>    </code> <code>    </code>| <br><code>    </code> <code>    </code>|—–...+ <code>.html</code>,<code>.pdf</code>,<code>.docx</code> formats and supporting files <br><code>    </code> <code>    </code> <code>    </code> of the report, these are created by rendering the main <br><code>    </code> <code>    </code> <code>    </code> <code>wd.subdir.name.qmd</code> file (they are not present after <br><code>    </code> <code>    </code> <code>    </code> the project is created) <br></p>
 <p>Rendering of the <code>wd.subdir.name.qmd</code> into different formats (<code>.html</code>,<code>.pdf</code>,
   <code>.docx</code>) is provided by the open-source scientific and technical publishing system
-  (based on <a href="https://pandoc.org/" class="external-link">pandoc</a>), called Quarto (Allaire et al. 2024)
-.
+  (based on <a href="https://pandoc.org/" class="external-link">pandoc</a>), called Quarto AllaireQuarto2024eprscope.
   The main <code>.qmd</code> file represents a "dynamic" document, combining
   <a href="https://quarto.org/docs/authoring/markdown-basics.html" class="external-link">text</a>, code (besides R, also other
   programming languages like Python, Julia or Observable can be used as well) and outputs
@@ -202,23 +201,10 @@ cloud storage services like
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Alston JM, Rick JA (2021).
-“A Beginner's Guide to Conducting Reproducible Research.”
-<em>Bull. Ecol. Soc. Am.</em>, <b>102</b>(2), e01801–14.
-<a href="https://doi.org/10.1002/bes2.1801" class="external-link">doi:10.1002/bes2.1801</a>
-.</p>
-<p>Gandrud C (2020).
-<em>Reproducible Research with R and RStudio</em>, 3rd edition.
-Chapman and Hall/CRC.
-ISBN 978-0-429-03185-4, <a href="https://doi.org/10.1201/9780429031854" class="external-link">https://doi.org/10.1201/9780429031854</a>.</p>
-<p>National Academies of Sciences, Engineering, and Medicine, Policy and Global Affairs, Committee on Science, Engineering, Medicine, and Public Policy, Board on Research Data and Information, Division on Engineering and Physical Sciences, Committee on Applied and Theoretical Statistics, Board on Mathematical Sciences and Analytics, Division on Earth and Life Studies, Nuclear and Radiation Studies Board, Division of Behavioral and Social Sciences and Education, Committee on National Statistics, Board on Behavioral, Cognitive, and Sensory Sciences, Committee on Reproducibility and Replicability in Science (2019).
-“Reproducibility and Replicability in Science: Understanding Reproducibility and Replicability.”
-<a href="https://www.ncbi.nlm.nih.gov/books/NBK547546/" class="external-link">https://www.ncbi.nlm.nih.gov/books/NBK547546/</a>.
-National Academies Press (US).</p>
-<p>Allaire JJ, Teague C, Scheidegger C, Xie Y, Dervieux C (2024).
-<em>Quarto</em>.
-<a href="https://doi.org/10.5281/zenodo.5960048" class="external-link">doi:10.5281/zenodo.5960048</a>
-, v1.5, <a href="https://github.com/quarto-dev/quarto-cli" class="external-link">https://github.com/quarto-dev/quarto-cli</a>.</p>
+    <p>alston2021eprscope</p>
+<p>gandrud2020eprscope</p>
+<p>nih2019eprscope</p>
+<p>AllaireQuarto2024eprscope</p>
     </div>
 
     <div class="section level2">
@@ -251,7 +237,7 @@ National Academies Press (US).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>

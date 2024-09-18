@@ -113,8 +113,8 @@ the <code>index</code> column can be included as well.</p></dd>
 <dd><p>Data frame object related to experimental spectrum including the magnetic flux
 density (in <code>mT</code> or <code>G</code>) column, which can be labeled as <code>Bsim_mT</code>
 in mT (or <code>Bsim_G</code> in gauss), and the intensity column such as <code>dIeprSim_over_dB</code>.
-Column names are acquired automatically if the <code><a href="readEPR_Sim_Spec.html">readEPR_Sim_Spec</a></code> function is used
-to read the spectrum data in ASCII.</p></dd>
+These column names are acquired automatically if function like the <code><a href="readEPR_Sim_Spec.html">readEPR_Sim_Spec</a></code>
+or the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code> is used to get the simulated spectrum data in ASCII.</p></dd>
 
 
 <dt id="arg-b-unit">B.unit<a class="anchor" aria-label="anchor" href="#arg-b-unit"></a></dt>
@@ -140,8 +140,8 @@ the <code><a href="readEPR_Sim_Spec.html">readEPR_Sim_Spec</a></code> function i
 <dd><p>Numeric (<strong>CANNOT BE <code>0</code></strong>), showing how 'far' is the simulated
 EPR spectrum presented underneath the experimental one. The lower the ratio, the 'deeper' the simulated
 spectrum offset, <strong>default</strong>: <code>Intensity.shift.ratio = 1.2</code>, other common
-values : <code>0.6</code>,<code>0.8</code>, <code>1.2</code>,<code>1.1</code>. If the <code>Intensity.shift.ratio = NULL</code>
-BOTH SPECTRA ARE PRESENTED IN OVERAY MODE !</p></dd>
+values : <code>0.6</code>,<code>0.8</code>, <code>1.2</code>,<code>1.1</code>. If the <code>Intensity.shift.ratio = NULL</code>,
+BOTH SPECTRA ARE PRESENTED IN OVERLAY MODE !</p></dd>
 
 
 <dt id="arg-b-shift">B.shift<a class="anchor" aria-label="anchor" href="#arg-b-shift"></a></dt>
@@ -277,7 +277,7 @@ i.e. only graphical representation is shown.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
