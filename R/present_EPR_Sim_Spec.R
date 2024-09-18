@@ -24,8 +24,8 @@
 #' @param data.spectr.sim Data frame object related to experimental spectrum including the magnetic flux
 #'   density (in \code{mT} or \code{G}) column, which can be labeled as \code{Bsim_mT}
 #'   in mT (or \code{Bsim_G} in gauss), and the intensity column such as \code{dIeprSim_over_dB}.
-#'   Column names are acquired automatically if the \code{\link{readEPR_Sim_Spec}} function is used
-#'   to read the spectrum data in ASCII.
+#'   These column names are acquired automatically if function like the \code{\link{readEPR_Sim_Spec}}
+#'   or the \code{\link{eval_sim_EPR_iso}} is used to get the simulated spectrum data in ASCII.
 #' @param B.unit Character string pointing to unit of magnetic flux density (coming from the original
 #'   datasets) which is to be presented on \eqn{B}-axis of the EPR spectrum.
 #'   Strings like \code{"G"} (`Gauss`) (\strong{default}) or \code{"mT"} (`millitesla`) can be used.
@@ -39,8 +39,8 @@
 #' @param Intensity.shift.ratio Numeric (\strong{CANNOT BE \code{0}}), showing how 'far' is the simulated
 #'   EPR spectrum presented underneath the experimental one. The lower the ratio, the 'deeper' the simulated
 #'   spectrum offset, \strong{default}: \code{Intensity.shift.ratio = 1.2}, other common
-#'   values : \code{0.6},\code{0.8}, \code{1.2},\code{1.1}. If the \code{Intensity.shift.ratio = NULL}
-#'   BOTH SPECTRA ARE PRESENTED IN OVERAY MODE !
+#'   values : \code{0.6},\code{0.8}, \code{1.2},\code{1.1}. If the \code{Intensity.shift.ratio = NULL},
+#'   BOTH SPECTRA ARE PRESENTED IN OVERLAY MODE !
 #' @param B.shift Numeric, difference between the \eqn{B_{center}} of simulated and experimental spectrum,
 #'   that can be caused by switching ON the Teslameter. It refers to simulated spectrum, \strong{default}:
 #'   \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>

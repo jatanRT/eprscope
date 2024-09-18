@@ -58,7 +58,7 @@ to the entire \eqn{x}-range).}
 column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
 Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table} / \strong{tidy}
 format (see also \code{\link{readEPR_Exp_Specs_multif}} or \code{\link{plot_EPR_Specs2D_interact}}).
-\strong{Default}: \code{var2nd.series = NULL}. Otherwise \strong{usually} \code{var2nd.series = "time_s"}.}
+\strong{Default}: \code{var2nd.series = NULL}. Otherwise, \strong{usually} \code{var2nd.series = "time_s"}.}
 
 \item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the overlay plot,
 e.g. display each second (\code{var2nd.series.slct.by = 2}) or third (\code{var2nd.series.slct.by = 3}),
@@ -140,7 +140,7 @@ can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \co
 
 \item{axis.title.size}{Numeric, axis text title size in \code{pt}. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in \code{p}t for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size in \code{pt} for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{legend.title}{Character string identical to legend title, e.g. \code{legend.title = "Time (s)"},
@@ -156,7 +156,7 @@ actually corresponding to 11/11pt.}
 \item{grid}{Logical, whether to display the \code{grid} within the panel/graph, \strong{default}: \code{grid = TRUE}.}
 
 \item{yTicks}{Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
-(not the axis title!), which is usually skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
+(not the axis title!), which is often skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
 (the axis ticks as well as the text are present).}
 }
 \value{
@@ -167,11 +167,10 @@ EPR spectrum/spectra ('overlay') plot object (corresponding to list of plot comp
 Plot of EPR/ENDOR spectrum/spectra (overlay plot) based
   on \href{https://ggplot2.tidyverse.org/}{ggplot2}-functionality. Spectral data input must be available
   as a data frame object (see also argument \code{data.spectra}).
-  Theme of the graphic spectrum representation as well as other plot elements can be varied like
+  Theme of the graphic spectrum representation as well as additional plot elements can be varied like
   using the \code{{ggplot2}} package. Within a theme, the \code{y} ticks can be either displayed
-  or skipped and the intensity (e.g. \code{dIepr_over_dB}) is presented in "procedure defined unit"
-  (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
-  which is common for visualization of EPR spectra.
+  or skipped (which is common for visualization of EPR spectra) and the intensity (e.g. \code{dIepr_over_dB})
+  is presented in "procedure defined unit" (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}).
 }
 \details{
 Output from the \code{plot_EPR_Specs} can be additionally combined by the \code{+} sign with other

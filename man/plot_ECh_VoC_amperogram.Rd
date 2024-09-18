@@ -78,7 +78,7 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 
 \item{axis.title.size}{Numeric, axis text title size in \code{pt}. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in \code{p}t for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size in \code{pt} for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{border.line.color}{Character string referring to color of the plot graph/panel border line. \strong{Default}:

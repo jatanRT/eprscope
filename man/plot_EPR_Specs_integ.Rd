@@ -55,7 +55,7 @@ can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \co
 
 \item{axis.title.size}{Numeric, axis text title size in \code{pt}. \strong{Default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size in \code{p}t for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size in \code{pt} for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{legend.title.size}{Numeric, legend text title size in \code{pt},\strong{default}: \code{legend.title.size = NULL},
