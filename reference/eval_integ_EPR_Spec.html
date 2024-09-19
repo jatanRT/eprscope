@@ -205,9 +205,9 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
     <p>The relative error of the cumulative trapezoidal (<code>cumtrapz</code>) function is minimal, usually falling into the range of
  \(\langle 1,5\rangle\,\%\) or even lower, depending on the spectral data resolution
  (see epperson2013introeprscope and LibreMath2023eprscope). Therefore,
- the better the resolution the more accurate the integral. If the initial EPR spectrum displays low
- signal-to-noise ratio, the integral often looses its sigmoid-shape,
- and thus the EPR spectrum has to be either simulated (see also <code><a href="../articles/functionality.html">vignette("functionality")</a></code>)
+ the better the resolution, the more accurate the integral. If the initial EPR spectrum displays low
+ signal-to-noise ratio, the integral often looses its sigmoid-shape
+ and thus, the EPR spectrum has to be either simulated (see also <code><a href="../articles/functionality.html">vignette("functionality")</a></code>)
  or smoothed by the <code><a href="smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg</a></code>, prior to integration. Afterwards,
  integrals are evaluated from the simulated or smoothed EPR spectra.
  For the purpose of quantitative analysis the integrals are evaluated using the <code>B.units = "G"</code>

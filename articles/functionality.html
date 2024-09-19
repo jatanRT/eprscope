@@ -179,10 +179,11 @@
 <span><span class="co"># loading package built-in example file =&gt; "TMPD_specelchem_accu_b.asc"</span></span>
 <span><span class="va">tmpd.data.file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"TMPD_specelchem_accu_b.asc"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># The intensity is normalized by the Q value (sensitivity factor)</span></span>
-<span><span class="co"># and the number of scans (`Nscans`). From the previous parameter/info</span></span>
-<span><span class="co"># reading we know: Q = 3500 (in the `info` ddata frame), </span></span>
-<span><span class="co"># Nscans = 20 (from `tmpd.params$params` in the 5th row and the 2nd column).</span></span>
+<span><span class="co"># intensity is normalized by the Q value (sensitivity factor)</span></span>
+<span><span class="co"># and the number of scans (`Nscans`). From the previous </span></span>
+<span><span class="co"># parameter/info reading we know: Q = 3500 (in the `info` </span></span>
+<span><span class="co"># data frame), Nscans = 20 (from `tmpd.params$params` </span></span>
+<span><span class="co"># in the 5th row and the 2nd column)</span></span>
 <span><span class="va">tmpd.data.norm.01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></span><span class="op">(</span></span>
 <span>  path_to_ASC <span class="op">=</span> <span class="va">tmpd.data.file</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B_G"</span>, <span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span>
@@ -204,40 +205,31 @@
 <p>An arbitrary character string may be chosen for the column names (see <code>col.names</code> argument)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;For such reason there are arguments &lt;code&gt;x.id&lt;/code&gt; and &lt;code&gt;Intensity.id&lt;/code&gt; , pointing to original column indices, in order to properly pick up the corresponding variables.&lt;/p&gt;"><sup>1</sup></a>. However, a safe rule of thumb is to use notation like “quantity_unit” as already shown above in the case of magnetic flux density <span class="math inline">\(\small B\)</span>. The name for the intensity column reads <code>dIepr_over_dB</code> (without units) because it reflects the derivative mode <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B\)</span> in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function <code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code> can automatically convert <span class="math inline">\(\small B\)</span> values by the argument <code>convertB.unit=TRUE</code> (or <code>FALSE</code>) depending on the original units “G” or “mT”. The reason is that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like <span class="math inline">\(\small \Delta B\)</span>, <span class="math inline">\(g\)</span> or hyperfine splitting constants <span class="math inline">\(a\)</span>. If the <code>Intensity</code> has to be normalized also by additional instrumental parameters like <em>conversion time</em> and <em>receiver gain</em> (automatically performed within “Xenon” software)<em>,</em> one should use the <code><a href="../reference/quantify_EPR_Norm_const.html">quantify_EPR_Norm_const()</a></code> function from the <code>Evaluations and Quantification</code> family ➨</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Calculation of the advanced normalization constant</span></span>
-<span><span class="co"># by selected parameters from the parameter list above.</span></span>
-<span><span class="co"># These parameters (WinEPR acq. spectrometer software)</span></span>
-<span><span class="co"># can be also obtained by `readEPR_param_slct()`</span></span>
+<span><span class="co"># calculation of the advanced normalization constant</span></span>
+<span><span class="co"># by selected parameters from the parameter list above,</span></span>
+<span><span class="co"># these parameters (WinEPR acq. spectrometer software)</span></span>
+<span><span class="co"># can be also obtained by the `readEPR_param_slct()`</span></span>
 <span><span class="co"># function with the codes described in the corresponding</span></span>
-<span><span class="co"># documentation.</span></span>
+<span><span class="co"># documentation</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># Following parameters are required (`req.params`) =&gt;</span></span>
-<span><span class="co"># conversion time (RCT) in milliseconds, receiver gain (RRG) unitless,</span></span>
-<span><span class="co"># sweep with (HSW) in Gauss, number of points (RES) and number</span></span>
-<span><span class="co"># of scans/accumulations (JSD).</span></span>
+<span><span class="co"># following parameters are required (`req.params`) =&gt;</span></span>
+<span><span class="co"># conversion time (RCT) in milliseconds, receiver gain (RRG) </span></span>
+<span><span class="co"># unitless, sweep with (HSW) in Gauss, number of points (RES) </span></span>
+<span><span class="co"># and number of scans/accumulations (JSD).</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># creating a vector of codes</span></span>
-<span><span class="va">params.code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RCT"</span>, <span class="st">"RRG"</span>, <span class="st">"HSW"</span>, <span class="st">"RES"</span>, <span class="st">"JSD"</span><span class="op">)</span></span>
-<span><span class="co">#</span></span>
-<span><span class="co"># iterating over its components by the `sapply()` function</span></span>
 <span><span class="va">req.params</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
-<span>    <span class="va">params.code</span>,</span>
-<span>    <span class="kw">function</span><span class="op">(</span><span class="va">c</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="../reference/readEPR_param_slct.html">readEPR_param_slct</a></span><span class="op">(</span><span class="va">tmpd.params.file</span>,</span>
-<span>        <span class="va">c</span>,</span>
-<span>        origin <span class="op">=</span> <span class="st">"WinEPR"</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
+<span>  <span class="fu"><a href="../reference/readEPR_param_slct.html">readEPR_param_slct</a></span><span class="op">(</span><span class="va">tmpd.params.file</span>,</span>
+<span>    string <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RCT"</span>, <span class="st">"RRG"</span>, <span class="st">"HSW"</span>, <span class="st">"RES"</span>, <span class="st">"JSD"</span><span class="op">)</span>,</span>
+<span>    origin <span class="op">=</span> <span class="st">"winepr"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="va">adv.norm.constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quantify_EPR_Norm_const.html">quantify_EPR_Norm_const</a></span><span class="op">(</span></span>
-<span>  conv.time.ms <span class="op">=</span> <span class="va">req.params</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  Nscans <span class="op">=</span> <span class="va">req.params</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span>,</span>
-<span>  Npoints <span class="op">=</span> <span class="va">req.params</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span>
-<span>  rg <span class="op">=</span> <span class="va">req.params</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>  conv.time.ms <span class="op">=</span> <span class="va">req.params</span><span class="op">$</span><span class="va">RCT</span>,</span>
+<span>  Nscans <span class="op">=</span> <span class="va">req.params</span><span class="op">$</span><span class="va">JSD</span>,</span>
+<span>  Npoints <span class="op">=</span> <span class="va">req.params</span><span class="op">$</span><span class="va">RES</span>,</span>
+<span>  rg <span class="op">=</span> <span class="va">req.params</span><span class="op">$</span><span class="va">RRG</span>,</span>
 <span>  rg.unit <span class="op">=</span> <span class="st">"Unitless"</span>,</span>
-<span>  Bsw <span class="op">=</span> <span class="va">req.params</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
+<span>  Bsw <span class="op">=</span> <span class="va">req.params</span><span class="op">$</span><span class="va">HSW</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># therefore, the reading of the experimental</span></span>
@@ -261,75 +253,122 @@
 <span><span class="co">#&gt; 5: 3439.37 -7.253136e-07 343.937</span></span>
 <span><span class="co">#&gt; 6: 3439.42 -5.631705e-07 343.942</span></span></code></pre></div>
 <p>Moreover, the <code>norm.vec.add</code> argument can involve additional normalization quantities like sample weight, concentration, number of scans (if not normalized by the spectrometer)…etc. If needed, all such quantities can be defined at once within the <code>norm.vec.add</code> .</p>
-<p>Visualization and/or conversion of data frames (tables) into several formats like <code>.html</code> , <code>.pdf</code> , <code>.docx</code> or <code>.pptx</code>. can be provided by the most used <a href="https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/" class="external-link">“table” packages</a>. Among them, libraries/packages like <a href="https://rstudio.github.io/DT/" class="external-link">{DT}</a>, <a href="https://davidgohel.github.io/flextable/index.html" class="external-link">{flextable}</a>, <a href="https://gt.rstudio.com/" class="external-link">{gt}</a> and <a href="https://haozhu233.github.io/kableExtra/" class="external-link">{kableExtra}</a> (see Section <a href="#hf-structure">5.3</a> below) are often used for publication ready table visualization. The last data frame previewed by the <a href="https://ardata-fr.github.io/flextable-book/" class="external-link">flextable</a> is shown in the following example.</p>
+<p>Visualization and/or conversion of data frames (tables) into several formats like <code>.html</code> , <code>.pdf</code> , <code>.docx</code> or <code>.pptx</code>. can be provided by the most used <a href="https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/" class="external-link">“table” packages</a>. Among them, libraries/packages like <a href="https://rstudio.github.io/DT/" class="external-link">{DT}</a>, <a href="https://davidgohel.github.io/flextable/index.html" class="external-link">{flextable}</a>, <a href="https://gt.rstudio.com/" class="external-link">{gt}</a>, <a href="https://vincentarelbundock.github.io/tinytable/" class="external-link">{tinytable}</a> and <a href="https://haozhu233.github.io/kableExtra/" class="external-link">{kableExtra}</a> (see Section <a href="#hf-structure">5.3</a> below) are often used for publication ready table visualization. The last data frame previewed by the <a href="https://vincentarelbundock.github.io/tinytable/" class="external-link">tinytable</a> is shown in the following example.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># visualization of the first 10 rows by `{flextable}` in `booktabs` (LaTeX-like) theme</span></span>
-<span><span class="co"># (`theme_booktabs()`)</span></span>
-<span><span class="fu">flextable</span><span class="fu">::</span><span class="fu"><a href="https://davidgohel.github.io/flextable/reference/flextable.html" class="external-link">flextable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">flextable</span><span class="fu">::</span><span class="fu"><a href="https://davidgohel.github.io/flextable/reference/theme_booktabs.html" class="external-link">theme_booktabs</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="tabwid">
-<style>.cl-ba43564e{}.cl-ba3d80fc{font-family:'DejaVu Sans';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ba400138{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ba401bbe{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ba401bc8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ba401bc9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style>
-<table data-quarto-disable-processing="true" class="table cl-ba43564e">
-<thead><tr style="overflow-wrap:break-word;">
-<th class="cl-ba401bbe"><p class="cl-ba400138"><span class="cl-ba3d80fc">B_G</span></p></th>
-<th class="cl-ba401bbe"><p class="cl-ba400138"><span class="cl-ba3d80fc">dIepr_over_dB</span></p></th>
-<th class="cl-ba401bbe"><p class="cl-ba400138"><span class="cl-ba3d80fc">B_mT</span></p></th>
-</tr></thead>
+<span><span class="co"># visualization of the first 10 rows by `{tinytable}` </span></span>
+<span><span class="fu">tinytable</span><span class="fu">::</span><span class="fu"><a href="https://vincentarelbundock.github.io/tinytable/man/tt.html" class="external-link">tt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<!-- preamble start -->
+
+    <script>
+      function styleCell_rrapy1m2305li10rw6b1(i, j, css_id) {
+        var table = document.getElementById("tinytable_rrapy1m2305li10rw6b1");
+        table.rows[i].cells[j].classList.add(css_id);
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_rrapy1m2305li10rw6b1');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_rrapy1m2305li10rw6b1(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_rrapy1m2305li10rw6b1");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 0, 'tinytable_css_id9n8o98iosemua6rb2f7b') })
+window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 1, 'tinytable_css_id9n8o98iosemua6rb2f7b') })
+window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 2, 'tinytable_css_id9n8o98iosemua6rb2f7b') })
+    </script><style>
+    .table td.tinytable_css_id9n8o98iosemua6rb2f7b, .table th.tinytable_css_id9n8o98iosemua6rb2f7b {  border-bottom: solid 0.1em #d3d8dc; }
+    </style>
+<div class="container">
+      <table class="table table table-borderless" id="tinytable_rrapy1m2305li10rw6b1" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+<thead><tr>
+<th scope="col">B_G</th>
+                <th scope="col">dIepr_over_dB</th>
+                <th scope="col">B_mT</th>
+              </tr></thead>
 <tbody>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.17</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000004389096799</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.917</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.22</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000002388979731</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.922</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.27</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000003016694134</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.927</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.32</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">0.0000000003070431</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.932</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.37</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000007253135804</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.937</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.42</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000005631705406</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.942</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.47</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000007140010696</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.947</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.52</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000009662168092</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.952</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.57</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">-0.0000001331855044</span></p></td>
-<td class="cl-ba401bc8"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.957</span></p></td>
-</tr>
-<tr style="overflow-wrap:break-word;">
-<td class="cl-ba401bc9"><p class="cl-ba400138"><span class="cl-ba3d80fc">3,439.62</span></p></td>
-<td class="cl-ba401bc9"><p class="cl-ba400138"><span class="cl-ba3d80fc">0.0000008633893919</span></p></td>
-<td class="cl-ba401bc9"><p class="cl-ba400138"><span class="cl-ba3d80fc">343.962</span></p></td>
-</tr>
+<tr>
+<td>3439.17</td>
+                  <td>-4.389097e-07</td>
+                  <td>343.917</td>
+                </tr>
+<tr>
+<td>3439.22</td>
+                  <td>-2.388980e-07</td>
+                  <td>343.922</td>
+                </tr>
+<tr>
+<td>3439.27</td>
+                  <td>-3.016694e-07</td>
+                  <td>343.927</td>
+                </tr>
+<tr>
+<td>3439.32</td>
+                  <td> 3.070431e-10</td>
+                  <td>343.932</td>
+                </tr>
+<tr>
+<td>3439.37</td>
+                  <td>-7.253136e-07</td>
+                  <td>343.937</td>
+                </tr>
+<tr>
+<td>3439.42</td>
+                  <td>-5.631705e-07</td>
+                  <td>343.942</td>
+                </tr>
+<tr>
+<td>3439.47</td>
+                  <td>-7.140011e-07</td>
+                  <td>343.947</td>
+                </tr>
+<tr>
+<td>3439.52</td>
+                  <td>-9.662168e-07</td>
+                  <td>343.952</td>
+                </tr>
+<tr>
+<td>3439.57</td>
+                  <td>-1.331855e-07</td>
+                  <td>343.957</td>
+                </tr>
+<tr>
+<td>3439.62</td>
+                  <td> 8.633894e-07</td>
+                  <td>343.962</td>
+                </tr>
 </tbody>
 </table>
 </div>
+<!-- hack to avoid NA insertion in last line -->
 <p>In order to process data frames by other software tools, different from <img src="images%2FRcoreLogo.png" width="16" height="12"> (e.g. in excel-like sheet format), they may be exported into universal <code>.csv</code> table format like by <code>base::write.csv()</code> function ➨</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -350,9 +389,10 @@
 <p>The <code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code> is the essential function for plotting individual EPR spectra as well as those within series (e.g. time series <span class="math inline">\(\equiv\)</span> kinetic measurements). Now, by means of this function and by the <a href="https://patchwork.data-imaginist.com/" class="external-link">{patchwork}</a> 📦 , we can compare the EPR spectra with basic and “advanced” normalization ➨</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Plotting the spectrum with basic normalization,</span></span>
-<span><span class="co"># the B abscissa can be presented either in "mT" (default) or "G"</span></span>
-<span><span class="co"># plot title is added by `ggtitle()` function from `{ggplot2}` package</span></span>
+<span><span class="co"># plotting the spectrum with basic normalization,</span></span>
+<span><span class="co"># the B-axis can be presented either </span></span>
+<span><span class="co"># in "mT" (default) or "G" plot title is added </span></span>
+<span><span class="co"># by `ggtitle()` function from `{ggplot2}` package</span></span>
 <span><span class="va">tmpd.plot.norm.01</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs</a></span><span class="op">(</span>data.spectra <span class="op">=</span> <span class="va">tmpd.data.norm.01</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Basic Normalization"</span><span class="op">)</span></span>
@@ -368,14 +408,15 @@ Figure 4.1: EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)<
 <p>Comparison of both spectra with different normalization ➨</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Spectrum with the "advanced" normalization</span></span>
+<span><span class="co"># spectrum with the "advanced" normalization</span></span>
 <span><span class="va">tmpd.plot.norm.02</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs</a></span><span class="op">(</span>data.spectra <span class="op">=</span> <span class="va">tmpd.data.norm.02</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Advanced Normalization"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># Both spectra together by `{patchwork}` package</span></span>
-<span><span class="co"># without y/Intensity label (`ggplot2::labs(y = NULL)`) because</span></span>
-<span><span class="co"># the EPR spectra will be displayed close to each other in two columns</span></span>
+<span><span class="co"># both spectra together by `{patchwork}` package</span></span>
+<span><span class="co"># without y/Intensity label (`ggplot2::labs(y = NULL)`) </span></span>
+<span><span class="co"># because the EPR spectra will be displayed close </span></span>
+<span><span class="co"># to each other in two columns</span></span>
 <span><span class="va">tmpd.plot.norm.0102</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">tmpd.plot.norm.01</span> <span class="op">+</span></span>
 <span>  <span class="va">tmpd.plot.norm.02</span> <span class="op">+</span></span>
@@ -442,8 +483,9 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span>    string <span class="op">=</span> <span class="st">"MF"</span>,</span>
 <span>    origin <span class="op">=</span> <span class="st">"winepr"</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co"># B region (349.677, 350.457) mT, incl. the B mid-point,</span></span>
-<span><span class="co"># to calculate the g-value is obtained from the interactive plot above</span></span>
+<span><span class="co"># B region (349.677, 350.457) mT, including </span></span>
+<span><span class="co"># the B mid-point, to calculate the g-value </span></span>
+<span><span class="co"># is obtained from the interactive plot above</span></span>
 <span><span class="va">tmpd.g.iso.spec</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/eval_gFactor_Spec.html">eval_gFactor_Spec</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span>,</span>
 <span>    nu.GHz <span class="op">=</span> <span class="va">tmpd.mw.freq</span>,</span>
@@ -458,14 +500,16 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <p>The above (from spectrum) obtained <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value may be compared with that computed by Density Functional Theory (DFT) quantum chemical calculations of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>, namely by PBE0/EPR-II/CPCM-DMSO//B3LYP/6-31+G(d,p) (see also <a href="https://gaussian.com/dft/" class="external-link">Gaussian DFT Methods</a> and <a href="https://gaussian.com/basissets/" class="external-link">Basis Sets</a>). The extraction of <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value from the <em>Gaussian</em> (or from the <a href="https://www.orcasoftware.de/tutorials_orca/index.html" class="external-link">ORCA quantum chemical package</a>) output file is provided by the <code><a href="../reference/eval_gFactor_QCHcomp.html">eval_gFactor_QCHcomp()</a></code> function ➨</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># package built-in example file =&gt; "TMPDAradCatEPRa.inp.log.zip"</span></span>
+<span><span class="co"># package built-in example file =&gt; </span></span>
+<span><span class="co"># "TMPDAradCatEPRa.inp.log.zip"</span></span>
 <span><span class="co"># which is a `.zip` of the Gaussian output file</span></span>
 <span><span class="va">gauss.tmpd.load</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"TMPDAradCatEPRa.inp.log.zip"</span><span class="op">)</span></span>
 <span><span class="va">gauss.tmpd.output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">gauss.tmpd.load</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># giso-value is automatically calculated as the mean</span></span>
-<span><span class="co"># of its principal components (g1,g2,g3) summarized in output files</span></span>
+<span><span class="co"># of its principal components (g1,g2,g3) </span></span>
+<span><span class="co"># summarized in output files</span></span>
 <span><span class="va">tmpd.g.iso.dft</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/eval_gFactor_QCHcomp.html">eval_gFactor_QCHcomp</a></span><span class="op">(</span><span class="va">gauss.tmpd.output</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
@@ -475,8 +519,8 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span><span class="co">#</span></span>
 <span><span class="co"># comparison of both theoretical and experimental g-values</span></span>
 <span><span class="co"># within the tolerance of 1e-3, to illustrate the automatic</span></span>
-<span><span class="co"># comparison of two values in R language, the function `all.equal()`</span></span>
-<span><span class="co"># can be applied</span></span>
+<span><span class="co"># comparison of two values in R language, the function </span></span>
+<span><span class="co"># `all.equal()`can be applied</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">tmpd.g.iso.spec</span>, <span class="va">tmpd.g.iso.dft</span>, tolerance <span class="op">=</span> <span class="fl">1e-3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>The <code>TRUE</code> value represents a perfect agreement between the theoretically (<code>2.00317</code>) and the experimentally (<code>2.00304</code>) determined <span class="math inline">\(g_{\mathrm{iso}}\)</span>-values, thus supporting the structure of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>. Its difference from the free electron <span class="math inline">\(g_{\mathrm{e}}\approx \small 2.00232\)</span> is a consequence of <a href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift" class="external-link">spin-orbit coupling (SOC)</a> of the unpaired electron within the radical cation. Namely, it tells how the individual atomic orbitals contribute to single occupied molecular orbital (SOMO), i.e. the orbital characterizing the unpaired electronic state. Therefore, for <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> the SOC is not so pronounced because of the small difference from <span class="math inline">\(g_{\mathrm{e}}\)</span>. However, for heavy atoms (e.g. central atoms in metal complexes) the difference is often large and indicates larger SOC than for organic radicals like for the one mentioned above <span class="citation">(<a href="#ref-Weilepr2007">9</a>)</span>.</p>
@@ -496,8 +540,9 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">350.822</span>, <span class="fl">351.072</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># all Delta Bpp as vector created by the iteration through</span></span>
-<span><span class="co"># all elements (with the help of `sapply()` function) of `B.regions.mT`</span></span>
+<span><span class="co"># all Delta Bpp as vector, created by the iteration </span></span>
+<span><span class="co"># through all elements (with the help of </span></span>
+<span><span class="co"># `sapply()` function) of `B.regions.mT`</span></span>
 <span><span class="va">tmpd.delta.Bpp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
 <span>  <span class="va">B.regions.mT</span>,</span>
 <span>  <span class="kw">function</span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
@@ -563,7 +608,8 @@ Figure 5.1: DFT optimized structure of TMPD radical cation with atom numbering i
 <p>In order to compare the theoretical as well as experimental HFCCs, the function <code><a href="../reference/rearrange_aAiso_QCHorgau.html">rearrange_aAiso_QCHorgau()</a></code> extracts the <span class="math inline">\(\small A\)</span> values from the Gaussian or <a href="https://www.orcasoftware.de/tutorials_orca/index.html" class="external-link">ORCA</a> output files and calculates the mean values corresponding to selected groups of equivalent nuclei which are defined by the <code>nuclei.list.slct</code> argument. Therefore, according to numbering shown in Figure <a href="#fig:dft-tmpd-structure">5.1</a> ➨</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># The same package built-in example file (`TMPDAradCatEPRa.inp.log.zip`)</span></span>
+<span><span class="co"># The same package built-in example file </span></span>
+<span><span class="co"># (`TMPDAradCatEPRa.inp.log.zip`)</span></span>
 <span><span class="co"># as for the extraction of g-value is used (see above).</span></span>
 <span><span class="va">symmetry.As.df</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/rearrange_aAiso_QCHorgau.html">rearrange_aAiso_QCHorgau</a></span><span class="op">(</span><span class="va">gauss.tmpd.output</span>,</span>
@@ -647,8 +693,8 @@ aiso_mT_QCH
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># isotropic simulation of the TMPD radical cation where</span></span>
-<span><span class="co"># the instrumental parameters are taken from the corresponding</span></span>
-<span><span class="co"># `.par` file: `tmpd.params.file` :</span></span>
+<span><span class="co"># the instrumental parameters are taken from </span></span>
+<span><span class="co"># the corresponding `.par` file: `tmpd.params.file` :</span></span>
 <span><span class="va">sim.tmpd.iso</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></span><span class="op">(</span></span>
 <span>    g.iso <span class="op">=</span> <span class="va">tmpd.g.iso.spec</span>,</span>
@@ -668,8 +714,8 @@ aiso_mT_QCH
 <span>    lineG.content <span class="op">=</span> <span class="fl">0.5</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># The output is either interactive spectrum plot</span></span>
-<span><span class="co"># or list of plot with the simulated spectrum data frame.</span></span>
+<span><span class="co"># output is either interactive spectrum plot</span></span>
+<span><span class="co"># or list of plot and the simulated spectrum data frame.</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># preview of the data frame</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span>
@@ -683,8 +729,9 @@ aiso_mT_QCH
 <p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function, which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> as shown below (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.2</a>) ➨</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># The intesinty of the simulated spectrum</span></span>
-<span><span class="co"># is automatically scalled onto the experimental one.</span></span>
+<span><span class="co"># intesinty of the simulated spectrum</span></span>
+<span><span class="co"># is automatically scalled onto </span></span>
+<span><span class="co"># the experimental one.</span></span>
 <span><span class="fu"><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec</a></span><span class="op">(</span></span>
 <span>  data.spectr.expr <span class="op">=</span> <span class="va">tmpd.data.norm.02</span>,</span>
 <span>  data.spectr.sim <span class="op">=</span> <span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span>,</span>
@@ -708,7 +755,7 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <p>The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of <span class="math inline">\(\small \langle 1-5\rangle\,\%\)</span> or even lower depending on the spectrum resolution <span class="citation">(<a href="#ref-LibreMath2023">11</a>, <a href="#ref-epperson2013intro">13</a>)</span>. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape ( see below an example of such shape). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. <code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code> function). The upside of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled in the same manner like within the EPR spectrometer acquisitions/processing software (see also <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function below). The integration of the EPR spectral data is essentially provided by the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> and its application to the experimental <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectrum is documented by the following scripts ➨</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Basic integration without baseline correction</span></span>
+<span><span class="co"># basic integration without baseline correction</span></span>
 <span><span class="co"># during the first integration.</span></span>
 <span><span class="va">tmpd.data.norm.02.integ</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec</a></span><span class="op">(</span></span>
@@ -718,8 +765,9 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <span>    sigmoid.integ <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># The integration returns the original data frame</span></span>
-<span><span class="co"># with the additional integrals `single_Integ` + `sigmoid_Integ`</span></span>
+<span><span class="co"># integration returns the original data frame</span></span>
+<span><span class="co"># with the additional integrals </span></span>
+<span><span class="co"># `single_Integ` + `sigmoid_Integ`</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02.integ</span><span class="op">)</span></span>
@@ -734,7 +782,7 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <p>Both integrals, within the entire <span class="math inline">\(\small B\)</span>-range, can be visualized by <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function from <code>Visualization and Graphics</code> family:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Both integrals are presented separately</span></span>
+<span><span class="co"># both integrals are presented separately</span></span>
 <span><span class="co"># with their corresponding intensities automatically</span></span>
 <span><span class="co"># scaled onto the `y`-axis (defined by "free_y")</span></span>
 <span><span class="fu"><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02.integ</span>,</span>
@@ -771,7 +819,7 @@ Figure 5.3: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</
 <span>    sigmoid.integ <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># Integrals preview</span></span>
+<span><span class="co"># preview of the integrals,</span></span>
 <span><span class="co"># data frame column of corrected integral</span></span>
 <span><span class="co"># is denoted as `single_Integ_correct`</span></span>
 <span><span class="fu"><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02.integCorr</span>,</span>
