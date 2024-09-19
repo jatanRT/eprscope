@@ -1,5 +1,5 @@
 #'
-#' Title
+#' Activation Parameters (Enthalpy, Entropy and Gibbs Energy) by Transition State Theory
 #'
 #'
 #' @family Evaluations
@@ -9,9 +9,14 @@
 #'   A short description...
 #'
 #'
+#' @details
+#'   Additional details...
 #'
-#' @param data.kvT Data frame object, ...TBC...
-#' @param rate.const Character string ... TBC ...
+#'
+#'
+#' @param data.kvT Data frame object, which must include two essential columns: rate constant (\eqn{k} of an elementary
+#'   radical reaction) and the corresponding temperatures at which the \eqn{k} was acquired.
+#' @param rate.const Character string, pointing to rate constant column header in the actual \code{data.kvT} data frame.
 #' @param rate.const.unit Character string ... TBC ...
 #' @param Temp Character string ... TBC ...
 #' @param Temp.unit Character string ... TBC ...
@@ -37,7 +42,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
                                  rate.const.unit = "M^{-1}~s^{-1}",
                                  Temp,
-                                 Temp.unit = "K", ## "K" or "oC"
+                                 Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
                                  fit.method = "default"){ ## "Gauss-Newton" + "plinear" (Golub-Pereyra) and "port" (all from `nls`)
   #
@@ -71,9 +76,11 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
     }
     #
-  } else if (Temp.unit != "K" || Temp.unit != "oC") {
-    stop(" Temperature must be defined either in `K` or `oC` !\n
-         Please, provide the approrpiate temperature unit !! ")
+  } else if (Temp.unit == "oF") { ## Fahrenheit
+    data.kvT <- data.kvT %>%
+      dplyr::mutate(!!rlang::quo_name(Temp) := ((.data[[Temp]] - 32) * (5/9)) + 273.15)
+    ## rename column afterwards
+    colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
   }
   #
   ## --------------------------- ORIGINAL MODEL -------------------------------
