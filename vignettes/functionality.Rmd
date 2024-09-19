@@ -119,10 +119,11 @@ The `origin` argument in reading functions reflects the differences in the ASCII
 # loading package built-in example file => "TMPD_specelchem_accu_b.asc"
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
-# The intensity is normalized by the Q value (sensitivity factor)
-# and the number of scans (`Nscans`). From the previous parameter/info
-# reading we know: Q = 3500 (in the `info` ddata frame), 
-# Nscans = 20 (from `tmpd.params$params` in the 5th row and the 2nd column).
+# intensity is normalized by the Q value (sensitivity factor)
+# and the number of scans (`Nscans`). From the previous 
+# parameter/info reading we know: Q = 3500 (in the `info` 
+# data frame), Nscans = 20 (from `tmpd.params$params` 
+# in the 5th row and the 2nd column)
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_ASC = tmpd.data.file,
   col.names = c("B_G", "dIepr_over_dB"),
@@ -142,40 +143,31 @@ An arbitrary character string may be chosen for the column names (see `col.names
 
 ```{r spectral-data-read-norm}
 
-# Calculation of the advanced normalization constant
-# by selected parameters from the parameter list above.
-# These parameters (WinEPR acq. spectrometer software)
-# can be also obtained by `readEPR_param_slct()`
+# calculation of the advanced normalization constant
+# by selected parameters from the parameter list above,
+# these parameters (WinEPR acq. spectrometer software)
+# can be also obtained by the `readEPR_param_slct()`
 # function with the codes described in the corresponding
-# documentation.
+# documentation
 #
-# Following parameters are required (`req.params`) =>
-# conversion time (RCT) in milliseconds, receiver gain (RRG) unitless,
-# sweep with (HSW) in Gauss, number of points (RES) and number
-# of scans/accumulations (JSD).
+# following parameters are required (`req.params`) =>
+# conversion time (RCT) in milliseconds, receiver gain (RRG) 
+# unitless, sweep with (HSW) in Gauss, number of points (RES) 
+# and number of scans/accumulations (JSD).
 #
-# creating a vector of codes
-params.code <- c("RCT", "RRG", "HSW", "RES", "JSD")
-#
-# iterating over its components by the `sapply()` function
 req.params <-
-  sapply(
-    params.code,
-    function(c) {
-      readEPR_param_slct(tmpd.params.file,
-        c,
-        origin = "WinEPR"
-      )
-    }
+  readEPR_param_slct(tmpd.params.file,
+    string = c("RCT", "RRG", "HSW", "RES", "JSD"),
+    origin = "winepr"
   )
 #
 adv.norm.constant <- quantify_EPR_Norm_const(
-  conv.time.ms = req.params[1],
-  Nscans = req.params[5],
-  Npoints = req.params[4],
-  rg = req.params[2],
+  conv.time.ms = req.params$RCT,
+  Nscans = req.params$JSD,
+  Npoints = req.params$RES,
+  rg = req.params$RRG,
   rg.unit = "Unitless",
-  Bsw = req.params[3]
+  Bsw = req.params$HSW
 )
 #
 # therefore, the reading of the experimental
@@ -195,14 +187,12 @@ head(tmpd.data.norm.02)
 
 Moreover, the `norm.vec.add` argument can involve additional normalization quantities like sample weight, concentration, number of scans (if not normalized by the spectrometer)...etc. If needed, all such quantities can be defined at once within the `norm.vec.add` .
 
-Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the most used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/). Among them, libraries/packages like [{DT}](https://rstudio.github.io/DT/), [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. The last data frame previewed by the `{flextable}` is shown in the following example.
+Visualization and/or conversion of data frames (tables) into several formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by the most used ["table" packages](https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/). Among them, libraries/packages like [{DT}](https://rstudio.github.io/DT/), [{flextable}](https://davidgohel.github.io/flextable/index.html), [{gt}](https://gt.rstudio.com/), [{tinytable}](https://vincentarelbundock.github.io/tinytable/) and [{kableExtra}](https://haozhu233.github.io/kableExtra/) (see Section \@ref(hf-structure) below) are often used for publication ready table visualization. The last data frame previewed by the `{tinytable}` is shown in the following example.
 
-```{r spectral-data-read-norm-flextable}
+```{r spectral-data-read-norm-tinytable}
 
-# visualization of the first 10 rows by `{flextable}` in `booktabs` (LaTeX-like) theme
-# (`theme_booktabs()`)
-flextable::flextable(head(tmpd.data.norm.02, n = 10)) %>%
-  flextable::theme_booktabs()
+# visualization of the first 10 rows by `{tinytable}` 
+tinytable::tt(head(tmpd.data.norm.02, n = 10))
 
 ```
 
@@ -229,9 +219,10 @@ The `plot_EPR_Specs()` is the essential function for plotting individual EPR spe
 
 ```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\small \\ce{TMPD^{.+}}$ in $\\small 0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $\\small 0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensitivity Q-factor, 'qValue'."}
 
-# Plotting the spectrum with basic normalization,
-# the B abscissa can be presented either in "mT" (default) or "G"
-# plot title is added by `ggtitle()` function from `{ggplot2}` package
+# plotting the spectrum with basic normalization,
+# the B-axis can be presented either 
+# in "mT" (default) or "G" plot title is added 
+# by `ggtitle()` function from `{ggplot2}` package
 tmpd.plot.norm.01 <-
   plot_EPR_Specs(data.spectra = tmpd.data.norm.01) +
   ggplot2::ggtitle("Basic Normalization")
@@ -245,14 +236,15 @@ Comparison of both spectra with different normalization ➨
 
 ```{r spectral-data-norm0102-visual,fig.cap="Comparison of $\\small \\ce{TMPD^{.+}}$ EPR spectra with different intensity normalization."}
 
-# Spectrum with the "advanced" normalization
+# spectrum with the "advanced" normalization
 tmpd.plot.norm.02 <-
   plot_EPR_Specs(data.spectra = tmpd.data.norm.02) +
   ggplot2::ggtitle("Advanced Normalization")
 #
-# Both spectra together by `{patchwork}` package
-# without y/Intensity label (`ggplot2::labs(y = NULL)`) because
-# the EPR spectra will be displayed close to each other in two columns
+# both spectra together by `{patchwork}` package
+# without y/Intensity label (`ggplot2::labs(y = NULL)`) 
+# because the EPR spectra will be displayed close 
+# to each other in two columns
 tmpd.plot.norm.0102 <-
   tmpd.plot.norm.01 +
   tmpd.plot.norm.02 +
@@ -320,8 +312,9 @@ tmpd.mw.freq <-
     string = "MF",
     origin = "winepr"
   )
-# B region (349.677, 350.457) mT, incl. the B mid-point,
-# to calculate the g-value is obtained from the interactive plot above
+# B region (349.677, 350.457) mT, including 
+# the B mid-point, to calculate the g-value 
+# is obtained from the interactive plot above
 tmpd.g.iso.spec <-
   eval_gFactor_Spec(tmpd.data.norm.02,
     nu.GHz = tmpd.mw.freq,
@@ -339,14 +332,16 @@ The above (from spectrum) obtained $g_{\mathrm{iso}}$-value may be compared with
 
 ```{r dft-data-norm02-gvalue}
 
-# package built-in example file => "TMPDAradCatEPRa.inp.log.zip"
+# package built-in example file => 
+# "TMPDAradCatEPRa.inp.log.zip"
 # which is a `.zip` of the Gaussian output file
 gauss.tmpd.load <- 
   load_data_example(file = "TMPDAradCatEPRa.inp.log.zip")
 gauss.tmpd.output <- unzip(gauss.tmpd.load)
 #
 # giso-value is automatically calculated as the mean
-# of its principal components (g1,g2,g3) summarized in output files
+# of its principal components (g1,g2,g3) 
+# summarized in output files
 tmpd.g.iso.dft <- 
   eval_gFactor_QCHcomp(gauss.tmpd.output)
 #
@@ -355,8 +350,8 @@ tmpd.g.iso.dft
 #
 # comparison of both theoretical and experimental g-values
 # within the tolerance of 1e-3, to illustrate the automatic
-# comparison of two values in R language, the function `all.equal()`
-# can be applied
+# comparison of two values in R language, the function 
+# `all.equal()`can be applied
 all.equal(tmpd.g.iso.spec, tmpd.g.iso.dft, tolerance = 1e-3)
 
 ```
@@ -377,8 +372,9 @@ B.regions.mT <- list(
   c(350.822, 351.072)
 )
 #
-# all Delta Bpp as vector created by the iteration through
-# all elements (with the help of `sapply()` function) of `B.regions.mT`
+# all Delta Bpp as vector, created by the iteration 
+# through all elements (with the help of 
+# `sapply()` function) of `B.regions.mT`
 tmpd.delta.Bpp <- sapply(
   B.regions.mT,
   function(b) {
@@ -447,7 +443,8 @@ In order to compare the theoretical as well as experimental HFCCs, the function 
 
 ```{r As-DFT-from-gaussian}
 
-# The same package built-in example file (`TMPDAradCatEPRa.inp.log.zip`)
+# The same package built-in example file 
+# (`TMPDAradCatEPRa.inp.log.zip`)
 # as for the extraction of g-value is used (see above).
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.tmpd.output,
@@ -490,8 +487,8 @@ Required arguments of the `eval_sim_EPR_iso()` function are presented after the 
 ```{r tmpd-radcat-simulation}
 
 # isotropic simulation of the TMPD radical cation where
-# the instrumental parameters are taken from the corresponding
-# `.par` file: `tmpd.params.file` :
+# the instrumental parameters are taken from 
+# the corresponding `.par` file: `tmpd.params.file` :
 sim.tmpd.iso <-
   eval_sim_EPR_iso(
     g.iso = tmpd.g.iso.spec,
@@ -511,8 +508,8 @@ sim.tmpd.iso <-
     lineG.content = 0.5
   )
 #
-# The output is either interactive spectrum plot
-# or list of plot with the simulated spectrum data frame.
+# output is either interactive spectrum plot
+# or list of plot and the simulated spectrum data frame.
 #
 # preview of the data frame
 head(sim.tmpd.iso$df)
@@ -523,8 +520,9 @@ Afterwards, the simulated EPR spectrum can be presented/compared with the experi
 
 ```{r tmpd-radcat-sim-expr-compar, fig.cap="Comparison of simulated and experiental EPR spectrum of $\\small \\ce{TMPD^{.+}}$."}
 
-# The intesinty of the simulated spectrum
-# is automatically scalled onto the experimental one.
+# intesinty of the simulated spectrum
+# is automatically scalled onto 
+# the experimental one.
 present_EPR_Sim_Spec(
   data.spectr.expr = tmpd.data.norm.02,
   data.spectr.sim = sim.tmpd.iso$df,
@@ -545,7 +543,7 @@ The relative error of the cumulative trapezoidal integration is minimal, usually
 
 ```{r tmpd-basic-epr-integ}
 
-# Basic integration without baseline correction
+# basic integration without baseline correction
 # during the first integration.
 tmpd.data.norm.02.integ <-
   eval_integ_EPR_Spec(
@@ -555,8 +553,9 @@ tmpd.data.norm.02.integ <-
     sigmoid.integ = TRUE
   )
 #
-# The integration returns the original data frame
-# with the additional integrals `single_Integ` + `sigmoid_Integ`
+# integration returns the original data frame
+# with the additional integrals 
+# `single_Integ` + `sigmoid_Integ`
 #
 # preview
 head(tmpd.data.norm.02.integ)
@@ -567,7 +566,7 @@ Both integrals, within the entire $\small B$-range, can be visualized by `plot_E
 
 ```{r tmpd-basic-epr-integ-visual,fig.cap = "Single (`single_Integ`) and double (`sigmoid_Integ`) integrated EPR spectrum of $\\small \\ce{TMPD^{.+}}$."}
 
-# Both integrals are presented separately
+# both integrals are presented separately
 # with their corresponding intensities automatically
 # scaled onto the `y`-axis (defined by "free_y")
 plot_EPR_Specs_integ(tmpd.data.norm.02.integ,
@@ -602,7 +601,7 @@ tmpd.data.norm.02.integCorr <-
     sigmoid.integ = TRUE
   )
 #
-# Integrals preview
+# preview of the integrals,
 # data frame column of corrected integral
 # is denoted as `single_Integ_correct`
 plot_EPR_Specs_integ(tmpd.data.norm.02.integCorr,

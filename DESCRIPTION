@@ -88,7 +88,7 @@ Suggests:
     patchwork,
     openxlsx,
     webshot2,
-    flextable,
+    tinytable,
     kableExtra,
     htmlwidgets,
     RColorBrewer,
