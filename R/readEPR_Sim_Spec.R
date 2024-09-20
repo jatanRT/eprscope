@@ -6,10 +6,10 @@
 #'
 #'
 #' @description
-#'   Loading the raw \code{.txt},\code{.asc} or \code{.csv} data of a simulated EPR spectrum from different
+#'   Loading the ASCII data like \code{.txt},\code{.asc} or \code{.csv}, related to simulated EPR spectrum from different
 #'   sources like "EasySpin" (\emph{Matlab}), "Xenon" (EPR spectrometer), "SimFonia" (WinEPR system)
-#'   or "csv" (comma separated values, universal format or MS Excel). The \code{ASCII} data
-#'   are automatically converted into data frame by the \code{\link[data.table]{fread}}, afterwards.
+#'   or "csv" (comma separated values, universal format or MS Excel). Finally, they are automatically converted
+#'   into data frame by the \code{\link[data.table]{fread}}.
 #'
 #'
 #' @param path_to_ASC Character string, path to ASCII file/table
@@ -86,13 +86,17 @@ if (sim.origin == "simfonia") {
   ## There are two file types 'txt' and 'asc' therefore
   ## they have to be differentiated by the corresponding pattern
   simf.data.file <- readLines(path_to_ASC)
-  simf.data.pattern.read.01 <- unlist(stringr::str_split(simf.data.file[5],
-    pattern = "[[:space:]]+",
-    n = 5
-  ))
-  simf.data.pattern.read.02 <- unlist(stringr::str_split(simf.data.file[6],
-    pattern = "---"
-  ))
+  simf.data.pattern.read.01 <-
+    unlist(stringr::str_split(simf.data.file[5],
+                              pattern = "[[:space:]]+",
+                              n = 5
+    )
+  )
+  simf.data.pattern.read.02 <-
+    unlist(stringr::str_split(simf.data.file[6],
+                              pattern = "---"
+    )
+  )
   ## conditions
   simf.data.condition.01 <- grepl("Data", simf.data.pattern.read.01[2])
   simf.data.condition.02 <-

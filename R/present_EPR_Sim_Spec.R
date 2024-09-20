@@ -207,10 +207,10 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
     xlab <- bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")")
   #
   ## Intensity (y) label depending on intensity (derivative, integrated...)
-  if (lineSpecs.form == "derivative") {
+  if (grepl("deriv|Deriv",lineSpecs.form)) {
     ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+  if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #

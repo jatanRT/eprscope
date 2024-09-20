@@ -185,7 +185,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
   data.spectr[["smoothed"]] <- smooth.epr.spec.list$y
   #
   ## derivative/integrated spectrum condition
-  deriv.form.cond <- ifelse(lineSpecs.form == "derivative",TRUE,FALSE)
+  deriv.form.cond <- grepl("deriv|Deriv",lineSpecs.form)
   #
   ## plot both EPR spectra
   plot.expr.smoothed <- ggplot(data.spectr) +

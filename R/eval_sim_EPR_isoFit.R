@@ -964,6 +964,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     best.fit.df[[Intensity.sim]]
   #
   ## plotting all spectra
+  ## condition to present the intensity =>
+  ylab <- switch(2-grepl("deriv|Deriv",lineSpecs.form),
+                 bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")"),
+                 bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+  )
   #
   if (isTRUE(sim.check)){
     ## display both overlay spectra (upper part) and residuals
@@ -977,7 +982,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       labs(title = "EPR Simulation Fit",
            color = NULL,
            x = NULL,
-           y = bquote(d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")")) +
+           y = ylab) +
       plot_theme_In_ticks() +
       theme(legend.text = element_text(size = 13))
       #
@@ -989,7 +994,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                   alpha = 0.75) +
         labs(title = "Residuals",
              x = bquote(italic(B)~~"("~.(B.unit)~")"),
-             y = bquote(Diff.~d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")")) +
+             y = switch(2-grepl("deriv|Deriv",lineSpecs.form),
+                        bquote(Diff. ~ ~ d*italic(I)[EPR]~ ~"/"~ ~d*italic(B) ~ ~ ~ "(" ~ p.d.u. ~ ")"),
+                        bquote(Diff. ~ ~ italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+            )
+          ) +
         plot_theme_In_ticks()
       #
       ## entire plot
@@ -1010,7 +1019,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                     "Simulation\n-Baseline Fit")) +
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
-           y = bquote(d~italic(I)[EPR]~~"/"~~d~italic(B)~~~"("~p.d.u.~")")) +
+           y = ylab) +
       plot_theme_NoY_ticks() +
       theme(legend.text = element_text(size = 13))
   }

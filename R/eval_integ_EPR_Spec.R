@@ -16,18 +16,19 @@
 #'
 #'
 #' @details
-#'  The relative error of the cumulative trapezoidal (\code{cumtrapz}) function is minimal, usually falling into the range of
-#'  \eqn{\langle 1,5\rangle\,\%} or even lower, depending on the spectral data resolution
-#'  (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}). Therefore,
-#'  the better the resolution, the more accurate the integral. If the initial EPR spectrum displays low
+#'  The relative error of the cumulative trapezoidal (\code{cumtrapz}) function is minimal,
+#'  usually falling into the range of \eqn{\langle 1,5\rangle\,\%} or even lower, depending on the spectral
+#'  data resolution (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}).
+#'  Therefore, the better the resolution, the more accurate the integral. If the initial EPR spectrum displays low
 #'  signal-to-noise ratio, the integral often looses its sigmoid-shape
 #'  and thus, the EPR spectrum has to be either simulated (see also \code{vignette("functionality")})
 #'  or smoothed by the \code{\link{smooth_EPR_Spec_by_npreg}}, prior to integration. Afterwards,
 #'  integrals are evaluated from the simulated or smoothed EPR spectra.
 #'  For the purpose of quantitative analysis the integrals are evaluated using the \code{B.units = "G"}
-#'  (see Arguments). Therefore, depending on \eqn{B} unit (either \code{G} or \code{mT}) each resulting integral
-#'  column have to be optionally (in case of \code{mT}) multiplied by factor of \code{10} because
-#'  \eqn{1\,\text{mT}\equiv 10\,\text{G}}. Such correction is already included in the function/script.
+#'  (see Arguments). Therefore, depending on \eqn{B}-unit (\code{G} or \code{mT} or \code{T}) each resulting integral
+#'  column have to be optionally (in case of \code{mT} or \code{T}) multiplied by the factor of \code{10} or \code{10000},
+#'  respectively, because \eqn{1\,\text{mT}\equiv 10\,\text{G}} and \eqn{1\,\text{T}\equiv 10^4\,\text{G}}.
+#'  Such corrections are already included in the function/script.
 #'  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
 #'  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr}
 #'  and \code{Intensity}) \strong{is confusing. In such case, the EPR spectrum is integrated just once.}
@@ -55,26 +56,27 @@
 #'   (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 #'   spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual \code{data.spectr}.
 #' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
-#'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form of analyzed
+#'   or \code{"integrated"} (i.e. \code{"absorption"}, which can be used as well) line form of the analyzed
 #'   EPR spectrum/data.
 #' @param B.unit Character string pointing to unit of magnetic flux density, which
 #'   is to be presented on \eqn{x(B)}-axis of the EPR spectrum,
-#'   like \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), \strong{default}: \code{B.unit = "G"}.
-#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper
+#'   like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla") or \code{"T"} ("Tesla").
+#'   \strong{Default}: \code{B.unit = "G"}.
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G}/\code{T} corresponding to lower and upper
 #'   limit of the selected \eqn{B}-region, e.g. \code{Blim = c(3495.4,3595.4)}.
 #'   \strong{Default}: \code{Blim = NULL} (corresponding to the entire spectral \eqn{B}-range).
 #' @param correct.integ Logical, whether to correct the integral by baseline polynomial model fit.
 #'   \strong{Default}: \code{correct.integ = FALSE}.
-#' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower
+#' @param BpeaKlim Numeric vector, magnetic flux density in \code{mT}/\code{G}/\code{T} corresponding to lower
 #'   and upper limit of the SELECTED \eqn{B}-PEAK REGION, e.g. \code{BpeaKlim = c(3535.4,3555.4)}.
-#'   This is the region (without peak), which is actually not considered for the baseline fit.
+#'   This is the region (without the peak), which is actually not considered for the baseline fit.
 #' @param poly.degree Numeric, degree of the polynomial function used to fit baseline under the single
 #'   integrated curve of the original EPR spectrum (see also \code{BpeaKlim}).
 #' @param sigmoid.integ Logical, whether to involve (column in data frame) double integral or single
 #'   integral (if the \code{data.spectr} and \code{Intesity} are already in single integrated form),
 #'   in sigmoid shape, which is required for the quantitative analysis,
 #'   \strong{default}: \code{sigmoid.integ = FALSE}.
-#' @param output.vecs Logical, whether the "integral" columns are presented within the entire
+#' @param output.vecs Logical, whether the "integral" columns are presented within the original \code{data.spectr}
 #'   data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
 #'   additional processing of spectral data series by \href{https://dplyr.tidyverse.org/}{dplyr}
 #'   (see \code{Values} and \code{Examples}).
@@ -288,72 +290,58 @@ eval_integ_EPR_Spec <- function(data.spectr,
   ## evaluating primary integral based on `Intensity`
   ## and `B` (`B.unit` has to be in "G") parameter
   ## otherwise each integration has to be multiplied by 10,
-  ## because 1 mT = 10 G
+  ## because 1 mT = 10 G or by 1e4, if `B.unit = "T"`,
+  ## therefore function to distinguish between units =>
+  fn_units <- function(unit){
+    if (unit == "G"){
+      return(0)
+    }
+    if (unit == "mT"){
+      return(1)
+    }
+    if (unit == "T"){
+      return(2)
+    }
+  }
   #
   ## primary data for integration
   data.spectr <- data.spectr %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
   #
-  if (lineSpecs.form == "derivative") {
+  if (grepl("deriv|Deriv",lineSpecs.form)) {
     #
     ## integration depending on `B` unit
-    if (B.unit == "G") {
-      data.spectr <- data.spectr %>%
-        dplyr::mutate(single_Integ = pracma::cumtrapz(
-          .data[[B]],
-          .data[[Intensity]]
-        )[, 1])
-      if (isFALSE(sigmoid.integ)) {
-        data.spectr <- data.spectr
-      } else {
-        data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-          data.spectr[[B]],
-          data.spectr$single_Integ
-        )[, 1]
-        #
-      }
-    }
-    if (B.unit == "mT") {
-      data.spectr <- data.spectr %>%
-        dplyr::mutate(single_Integ = pracma::cumtrapz(
-          .data[[B]],
-          .data[[Intensity]]
-        )[, 1] * 10)
-      if (isFALSE(sigmoid.integ)) {
-        data.spectr <- data.spectr
-      } else {
-        data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-          data.spectr[[B]],
-          data.spectr$single_Integ
-        )[, 1] * 10
-        #
-      }
+    data.spectr <- data.spectr %>%
+      dplyr::mutate(single_Integ =
+          switch(3-fn_units(unit = B.unit),
+                 pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1] * 1e+4,
+                 pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1] * 10,
+                 pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1]
+      )
+    )
+    if (isFALSE(sigmoid.integ)) {
+      data.spectr <- data.spectr
+    } else {
+      data.spectr$sigmoid_Integ <-
+        switch(3-fn_units(unit = B.unit),
+               pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1] * 1e+4,
+               pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1] * 10,
+               pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1]
+      )
     }
   }
-  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+  if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     #
     ## integration depending on `B` unit
-    if (B.unit == "G") {
-      if (isFALSE(sigmoid.integ)) {
-        data.spectr <- data.spectr
-      } else {
-        data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-          data.spectr[[B]],
-          data.spectr[[Intensity]]
-        )[, 1]
-        #
-      }
-    }
-    if (B.unit == "mT") {
-      if (isFALSE(sigmoid.integ)) {
-        data.spectr <- data.spectr
-      } else {
-        data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-          data.spectr[[B]],
-          data.spectr[[Intensity]]
-        )[, 1] * 10
-        #
-      }
+    if (isFALSE(sigmoid.integ)) {
+      data.spectr <- data.spectr
+    } else {
+      data.spectr$sigmoid_Integ <-
+        switch(3-fn_units(unit = B.unit),
+               pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1] * 1e+4,
+               pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1] * 10,
+               pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1]
+      )
     }
   }
   #
@@ -363,10 +351,10 @@ eval_integ_EPR_Spec <- function(data.spectr,
       dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
   } else {
     ## re-scale the absorption line =>
-    if (lineSpecs.form == "derivative") {
+    if (grepl("deriv|Deriv",lineSpecs.form)) {
       data.spectr <- data.spectr %>%
         dplyr::mutate(single_Integ = abs(min(.data$single_Integ) - .data$single_Integ))
-    } else if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+    } else if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
       data.spectr <- data.spectr %>%
         dplyr::mutate(!!rlang::quo_name(Intensity) :=
                         abs(min(.data[[Intensity]]) - .data[[Intensity]]))
@@ -380,15 +368,17 @@ eval_integ_EPR_Spec <- function(data.spectr,
     ## considered ("!") for the baseline correction / fit
     ## (limits are 'BpeaKlim[1]'<=> 'start','BpeaKlim[2]' <=> 'end'):
     if (is.null(BpeaKlim)) {
-      stop(" The `B`-range for the peak baseline correction is not defined. Please, specify the range ! ")
+      stop(" The `B`-range for the peak baseline correction is not specified.\n
+           Please, define the range ! ")
     } else {
       data.NoPeak <- data.spectr %>%
         filter(!between(.data[[B]], BpeaKlim[1], BpeaKlim[2]))
       if (is.null(poly.degree)) {
-        stop(" The degree of a polynomial to fit the baseline is not defined. Please, specify ! ")
+        stop(" The degree of a polynomial to fit the baseline is not specified.\n
+             Please, define the `poly.degree` ! ")
       } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
-        if (lineSpecs.form == "derivative") {
+        if (grepl("deriv|Deriv",lineSpecs.form)) {
           ## Polynomial baseline fit:
           #
           ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
@@ -411,43 +401,25 @@ eval_integ_EPR_Spec <- function(data.spectr,
                             abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
           #
           ## integration depending on `B` unit
-          if (B.unit == "G") {
-            if (isFALSE(sigmoid.integ)) {
-              data.spectr <- data.spectr %>%
-                ## remove previous double integral (if present)
-                `if`(
-                  any(grepl("sigmoid_Integ", colnames(data.spectr))),
-                  dplyr::select(!dplyr::all_of(c("sigmoid_Integ"))), .
-                )
-            } else {
-              ## uncorrected double integral is `overwritten`
-              data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-                data.spectr[[B]],
-                data.spectr$single_Integ_correct
-              )[, 1]
-              #
-            }
-          }
-          if (B.unit == "mT") {
-            if (isFALSE(sigmoid.integ)) {
-              data.spectr <- data.spectr %>%
-                ## remove previous double integral (if present)
-                `if`(
-                  any(grepl("sigmoid_Integ", colnames(data.spectr))),
-                  dplyr::select(!dplyr::all_of(c("sigmoid_Integ"))), .
-                )
-            } else {
-              ## uncorrected double integral is `overwritten`
-              data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-                data.spectr[[B]],
-                data.spectr$single_Integ_correct
-              )[, 1] * 10
-              #
-            }
+          if (isFALSE(sigmoid.integ)) {
+            data.spectr <- data.spectr %>%
+              ## remove previous double integral (if present)
+              `if`(
+                any(grepl("sigmoid_Integ", colnames(data.spectr))),
+                dplyr::select(!dplyr::all_of(c("sigmoid_Integ"))), .
+              )
+          } else {
+            ## uncorrected double integral is `overwritten`
+            data.spectr$sigmoid_Integ <-
+              switch(3-fn_units(unit = B.unit),
+                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 1e+4,
+                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 10,
+                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1]
+             )
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
-        if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+        if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
           ## Polynomial baseline fit:
           integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
             data = data.NoPeak
@@ -468,37 +440,20 @@ eval_integ_EPR_Spec <- function(data.spectr,
                                                        .data$single_Integ_correct))
           #
           ## integration depending on `B` unit
-          if (B.unit == "G") {
-            if (isFALSE(sigmoid.integ)) {
-              data.spectr <- data.spectr %>%
-                ## remove previous sigmoid integral (if present)
-                `if`(
-                  any(grepl("sigmoid_Integ", colnames(data.spectr))),
-                  dplyr::select(!dplyr::all_of(c("sigmoid_Integ"))), .
-                )
-            } else {
-              data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-                data.spectr[[B]],
-                data.spectr$single_Integ_correct
-              )[, 1]
-              #
-            }
-          }
-          if (B.unit == "mT") {
-            if (isFALSE(sigmoid.integ)) {
-              data.spectr <- data.spectr %>%
-                ## remove previous sigmoid integral (if present)
-                `if`(
-                  any(grepl("sigmoid_Integ", colnames(data.spectr))),
-                  dplyr::select(!dplyr::all_of(c("sigmoid_Integ"))), .
-                )
-            } else {
-              data.spectr$sigmoid_Integ <- pracma::cumtrapz(
-                data.spectr[[B]],
-                data.spectr$single_Integ_correct
-              )[, 1] * 10
-              #
-            }
+          if (isFALSE(sigmoid.integ)) {
+            data.spectr <- data.spectr %>%
+              ## remove previous sigmoid integral (if present)
+              `if`(
+                any(grepl("sigmoid_Integ", colnames(data.spectr))),
+                dplyr::select(!dplyr::all_of(c("sigmoid_Integ"))), .
+              )
+          } else {
+            data.spectr$sigmoid_Integ <-
+              switch(3-fn_units(unit = B.unit),
+                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 1e+4,
+                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 10,
+                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1]
+            )
           }
         }
         ## ----------- finally re-scale the integrals => from 0 to max -----------
@@ -544,7 +499,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
         data.spectr$single_Integ_correct
       )
     } else {
-      if (lineSpecs.form == "derivative") {
+      if (grepl("deriv|Deriv",lineSpecs.form)) {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectr$single_Integ,
@@ -553,7 +508,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           sigmoid = data.spectr$sigmoid_Integ
         )
       }
-      if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+      if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectr[[Intensity]],

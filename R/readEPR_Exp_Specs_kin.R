@@ -150,12 +150,18 @@ readEPR_Exp_Specs_kin <- function(name.root,
     )
     #
     ## path to `DSC` or `dsc`
-    path.to.dsc.par <- list.files(path = dir_dsc_par,
-                                  pattern = paste0("^",name.root, "\\.(DSC|dsc)$"),
-                                  full.names = TRUE)
+    path.to.dsc.par <-
+      list.files(path = dir_dsc_par,
+                 pattern = paste0("^",name.root, "\\.(DSC|dsc)$"),
+                 full.names = TRUE
+      )
     #
     ## Qvalue
-    qValue.obtain <- readEPR_param_slct(path.to.dsc.par, string = "QValue",origin = origin)
+    qValue.obtain <-
+      readEPR_param_slct(path.to.dsc.par,
+                         string = "QValue",
+                         origin = origin
+    )
   }
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     ## path to asc
@@ -175,7 +181,8 @@ readEPR_Exp_Specs_kin <- function(name.root,
   }
   #
   ## 'Kinetic' instrum. params
-  instrument.params.kinet <- readEPR_params_slct_kin(path.to.dsc.par, origin = origin)
+  instrument.params.kinet <-
+    readEPR_params_slct_kin(path.to.dsc.par, origin = origin)
   #
   ## ================= Reading Data & Processing ==================
   #
@@ -197,7 +204,7 @@ readEPR_Exp_Specs_kin <- function(name.root,
     origin = origin,
     ...
   ) %>%
-    dplyr::filter(.data[[IntensityString]] != 0) ## only non-zero intensities selected
+    dplyr::filter(.data[[IntensityString]] != 0) ## only non-zero intens. selected
   #
   ## recalculate  the time
   ## time var for `data.spectra.time`
@@ -231,7 +238,8 @@ readEPR_Exp_Specs_kin <- function(name.root,
     dplyr::group_by(.data[[timeString]]) %>%
     dplyr::group_keys()
   #
-  data.all.spectra <- list(df = data.spectra.time, time = time.corrected[[timeString]])
+  data.all.spectra <-
+    list(df = data.spectra.time, time = time.corrected[[timeString]])
   #
   return(data.all.spectra)
   #
