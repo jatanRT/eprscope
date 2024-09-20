@@ -270,7 +270,8 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## origin strings vectors to define "origin" conditions =>
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
+                         "magnetTech","MAGNETECH")
   #
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`

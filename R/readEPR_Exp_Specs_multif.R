@@ -142,7 +142,8 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   ## origin strings vectors to define "origin" conditions =>
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
+                         "magnetTech","MAGNETECH")
   #
   ## =========================== FILES AND PARAMETERS ==============================
   #
