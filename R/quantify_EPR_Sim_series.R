@@ -192,48 +192,48 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   N_converg <- NULL
   #
   ## Reading simulated EPR spectra from MATLAB or other simulation sources
-## sim file paths
-pattern.sim.files <- paste0("^", name.pattern.sim, ".*\\.(txt|asc|csv)$")
-sim.file.orig.paths <- list.files(
-  path = dir_ASC_sim,
-  pattern = pattern.sim.files,
-  full.names = TRUE
-)
-## load all simulation spectral parts at once
-data.specs.orig.sim <-
-  lapply(
-    sim.file.orig.paths,
-    function(f) {
-      readEPR_Sim_Spec(f,
-        B.unit = B.unit,
-        Intensity.sim = Intensity.sim,
-        sim.origin = sim.origin
-      )
-    }
+  ## sim file paths
+  pattern.sim.files <- paste0("^", name.pattern.sim, ".*\\.(txt|asc|csv)$")
+  sim.file.orig.paths <- list.files(
+    path = dir_ASC_sim,
+    pattern = pattern.sim.files,
+    full.names = TRUE
   )
-#
-## checking number of points for experimental and simulated spectra
-## experimental
-resolution.exp <- data.spectra.series %>%
-  dplyr::filter(.data[[var2nd.series]] == .data[[var2nd.series]][1]) %>%
-  dim.data.frame()
-resolution.exp <- resolution.exp[1]
-## simulation number of rows
-resolution.sim <- sapply(
-  data.specs.orig.sim,
-  function(r) dim.data.frame(r)[1]
-)
-#
-## condition to check resolution of all simulations
-if (length(data.specs.orig.sim) > 1) {
-  resolution.check <-
-    sapply(
-      seq(resolution.sim),
-      function(c) if (resolution.sim[c] == resolution.exp) TRUE else FALSE
+  ## load all simulation spectral parts at once
+  data.specs.orig.sim <-
+    lapply(
+      sim.file.orig.paths,
+      function(f) {
+        readEPR_Sim_Spec(f,
+          B.unit = B.unit,
+          Intensity.sim = Intensity.sim,
+          sim.origin = sim.origin
+        )
+      }
     )
-} else {
-  resolution.check <- if (resolution.sim == resolution.exp) TRUE else FALSE
-}
+  #
+  ## checking number of points for experimental and simulated spectra
+  ## experimental
+  resolution.exp <- data.spectra.series %>%
+    dplyr::filter(.data[[var2nd.series]] == .data[[var2nd.series]][1]) %>%
+    dim.data.frame()
+  resolution.exp <- resolution.exp[1]
+  ## simulation number of rows
+  resolution.sim <- sapply(
+    data.specs.orig.sim,
+    function(r) dim.data.frame(r)[1]
+  )
+  #
+  ## condition to check resolution of all simulations
+  if (length(data.specs.orig.sim) > 1) {
+    resolution.check <-
+      sapply(
+        seq(resolution.sim),
+        function(c) if (resolution.sim[c] == resolution.exp) TRUE else FALSE
+      )
+  } else {
+    resolution.check <- if (resolution.sim == resolution.exp) TRUE else FALSE
+  }
 
   ## add simulated (non-processed, original) spectra into one long-table format
   ## to all experimental spectra
@@ -596,56 +596,58 @@ if (length(data.specs.orig.sim) > 1) {
         rowSums(dplyr::across(dplyr::matches("Sim.*_[[:upper:]]$"))))
   }
   #
-  ## INTEGRATION
+  ## -------------------------- INTEGRATION -----------------------------
+  ## therefore function to distinguish between units =>
+  fn_units <- function(unit){
+    if (unit == "G"){
+      return(0)
+    }
+    if (unit == "mT"){
+      return(1)
+    }
+    if (unit == "T"){
+      return(2)
+    }
+  }
+  #
   ## data substitution/renaming
   result_df_base <- data.specs.sim
   #
-  if (B.unit == "G"){
-    ## single integration
-    for (d in seq(data.specs.orig.sim)) {
-      result_df_base <- result_df_base %>%
-        dplyr::group_by(.data[[var2nd.series]]) %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
-                        pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
-                          .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1]
+  for (d in seq(data.specs.orig.sim)) {
+    result_df_base <- result_df_base %>%
+      dplyr::group_by(.data[[var2nd.series]]) %>%
+      dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
+                    switch(3-fn_units(unit = B.unit),
+                           pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
+                                     .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1] * 1e+4,
+                           pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
+                                     .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1] * 10,
+                           pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
+                                     .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1]
       )
-    }
-    if (length(data.specs.orig.sim) > 1){
-      ## single integration of the overall spectrum/signal
-      result_df_base <- result_df_base %>%
-        dplyr::group_by(.data[[var2nd.series]]) %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
-                        pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                            .data[[paste0(Intensity.sim,"_aLL")]])[,1]
+    )
+  }
+  if (length(data.specs.orig.sim) > 1){
+    ## single integration of the overall spectrum/signal
+    result_df_base <- result_df_base %>%
+      dplyr::group_by(.data[[var2nd.series]]) %>%
+      dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
+                    switch(3-fn_units(unit = B.unit),
+                           pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                            .data[[paste0(Intensity.sim,"_aLL")]])[,1] * 1e+4,
+                           pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                            .data[[paste0(Intensity.sim,"_aLL")]])[,1] * 10,
+                           pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                            .data[[paste0(Intensity.sim,"_aLL")]])[,1]
       )
-    }
-   #
+    )
   }
   #
-  if (B.unit == "mT"){
-    ## single integration
-    for (d in seq(data.specs.orig.sim)) {
-      result_df_base <- result_df_base %>%
-        dplyr::group_by(.data[[var2nd.series]]) %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
-                        pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
-                            .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1] * 10
-      )
-    }
-    if (length(data.specs.orig.sim) > 1){
-      ## single integration of the overall spectrum/signal
-      result_df_base <- result_df_base %>%
-        dplyr::group_by(.data[[var2nd.series]]) %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
-                        pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                            .data[[paste0(Intensity.sim,"_aLL")]])[,1] * 10
-      )
-    }
-    #
-    ## remove `data.specs.sim` which is not required anymore
-    rm(data.specs.sim)
-    #
-  }
+  ## remove `data.specs.sim` which is not required anymore
+  rm(data.specs.sim)
+  #
+  #
+  ## ----------------------- AREAS AND RUSULTS ------------------------
   #
   if (isFALSE(output.area.stat)){
     if (is.null(double.integ)){
@@ -654,43 +656,35 @@ if (length(data.specs.orig.sim) > 1) {
       ## double_integrals
       ## data substitution/renaming
       result_df <- result_df_base
-      if (B.unit == "G"){
-        for(d in seq(data.specs.orig.sim)){
-          result_df <- result_df %>%
-            dplyr::group_by(.data[[var2nd.series]]) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
-                      pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]
+      #
+      for(d in seq(data.specs.orig.sim)){
+        result_df <- result_df %>%
+          dplyr::group_by(.data[[var2nd.series]]) %>%
+          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+                        switch(3-fn_units(unit = B.unit),
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                          .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 1e+4,
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                          .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 10,
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                          .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]
           )
-        }
-        #
-        if (length(data.specs.orig.sim) > 1){
-          result_df <- result_df %>%
-            dplyr::group_by(.data[[var2nd.series]]) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
-                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                    .data[[paste0(single.integ,"_aLL")]])[,1]
-          )
-        }
+        )
       }
-      if (B.unit == "mT"){
-        for(d in seq(data.specs.orig.sim)){
-          result_df <- result_df %>%
-            dplyr::group_by(.data[[var2nd.series]]) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
-                     pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 10
+      #
+      if (length(data.specs.orig.sim) > 1){
+        result_df <- result_df %>%
+          dplyr::group_by(.data[[var2nd.series]]) %>%
+          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+                          switch(3-fn_units(unit = B.unit),
+                                 pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                  .data[[paste0(single.integ,"_aLL")]])[,1] * 1e+4,
+                                 pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                  .data[[paste0(single.integ,"_aLL")]])[,1] * 10,
+                                 pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                  .data[[paste0(single.integ,"_aLL")]])[,1]
           )
-        }
-        #
-        if (length(data.specs.orig.sim) > 1){
-          result_df <- result_df %>%
-            dplyr::group_by(.data[[var2nd.series]]) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
-                      pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                .data[[paste0(single.integ,"_aLL")]])[,1] * 10
-          )
-        }
+        )
       }
     }
   } else{
@@ -720,59 +714,47 @@ if (length(data.specs.orig.sim) > 1) {
     } else{
       ## double_integrals
       result_df <- c()
-      if (B.unit == "G"){
-        for (d in seq(data.specs.orig.sim)){
-          result_df[[d]] <- result_df_base %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
-                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                               .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]) %>%
-            dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
-                               max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
-                            optim.list.x0n.df[[d]]
+      #
+      for (d in seq(data.specs.orig.sim)){
+        result_df[[d]] <- result_df_base %>%
+          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+                        switch(3-fn_units(unit = B.unit),
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 1e+4,
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 10,
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]
+            )
+          ) %>%
+          dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
+                             max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
+          dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
+                          optim.list.x0n.df[[d]]
           )
-        }
-        #
-        ## the resulting data frame (without additional var2nd columns)
-        result_df <- data.frame(result_df) %>%
-          dplyr::select(-dplyr::matches("\\.[[:digit:]]"))
-        #
-        if (length(data.specs.orig.sim) > 1){
-          result_df_Sim_aLL <- result_df_base %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
-                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                             .data[[paste0(single.integ,"_aLL")]])[,1]) %>%
-            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
-            dplyr::select(!dplyr::all_of(c(var2nd.series)))
-          result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
-        }
       }
-      if (B.unit == "mT"){
-        for (d in seq(data.specs.orig.sim)){
-          result_df[[d]] <- result_df_base %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
-                          pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]*10) %>%
-            dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
-                               max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-            dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
-                            optim.list.x0n.df[[d]]
-          )
-        }
-        ## the resulting data frame (without additional var2nd columns)
-        result_df <- data.frame(result_df) %>%
-          dplyr::select(-dplyr::matches("\\.[[:digit:]]"))
-        #
-        if (length(data.specs.orig.sim) > 1){
-          result_df_Sim_aLL <- result_df_base %>%
-            dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
-                            pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                  .data[[paste0(single.integ,"_aLL")]])[,1]*10) %>%
-            dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
-            dplyr::select(!dplyr::all_of(c(var2nd.series)))
-          result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
-        }
+      #
+      ## resulting data frame (without additional var2nd columns)
+      result_df <- data.frame(result_df) %>%
+        dplyr::select(-dplyr::matches("\\.[[:digit:]]"))
+      #
+      if (length(data.specs.orig.sim) > 1){
+        result_df_Sim_aLL <- result_df_base %>%
+          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+                        switch(3-fn_units(unit = B.unit),
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                .data[[paste0(single.integ,"_aLL")]])[,1] * 1e+4,
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                .data[[paste0(single.integ,"_aLL")]])[,1] * 10,
+                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
+                                                .data[[paste0(single.integ,"_aLL")]])[,1]
+            )
+          ) %>%
+          dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
+          dplyr::select(!dplyr::all_of(c(var2nd.series)))
+        result_df <- cbind.data.frame(result_df,result_df_Sim_aLL)
       }
+     #
     }
     #
     ## adding available info/statistics about optimization
