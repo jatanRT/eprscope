@@ -255,7 +255,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## reordering the `nuclear.system` from the highest A_iso to the lowest one
     nuclear.system <- nuclear.system[order(sapply(nuclear.system,"[[",3),decreasing = TRUE)]
     #
-    ## extract list components and transfer them into vectors
+    ## extract list components and convert them into vectors
     nucle_us_i <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[1]])
     N_nuclei <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[2]])
     A_iso_MHz <- sapply(1:length(nuclear.system), function(e) nuclear.system[[e]][[3]])
@@ -289,7 +289,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         stop(" Please provide an `origin` of the `.DSC`/`.dsc` or `.par` file ! ")
       } else{
         ## reading the table and extracting values from it
-        instr.params.list <- readEPR_params_slct_sim(path_to_dsc_par,origin = origin,B.unit = B.unit)
+        instr.params.list <-
+          readEPR_params_slct_sim(path_to_dsc_par,origin = origin,B.unit = B.unit)
         B.CF <- instr.params.list$Bcf
         B.SW <- instr.params.list$Bsw
         Npoints <- instr.params.list$Npoints
@@ -732,7 +733,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   }
   #
   ## Condition for derivative or integrated line form spectrum
-  line.form.cond <- ifelse(lineSpecs.form == "derivative",TRUE,FALSE)
+  line.form.cond <- grepl("deriv|Deriv",lineSpecs.form)
   #
   ## Function to calculate intensities based on pattern, magnetic flux density (from Breit-Rabi)
   ## as well as line form => either derivative or integrated one (see `length(nuclear.system) >= 1`
@@ -743,7 +744,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                           line.form){
     #
     ## condition for derivative/integrated form
-    line.form.condN <- ifelse(line.form == "derivative",TRUE,FALSE)
+    line.form.condN <- grepl("deriv|Deriv",line.form)
     ## intensity (iterate over all Breit-Rabi values and intensity patterns) =>
     intens <-
       Map(function(u,v)
@@ -1032,12 +1033,14 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
   } else{
     #
-    return(plot_EPR_Specs2D_interact(data.spectra = B.g.sim.df,
-                                     x = paste0("B_",B.unit),
-                                     x.unit = B.unit,
-                                     Intensity = Intensity.sim,
-                                     lineSpecs.form = lineSpecs.form)
-           )
+    return(plot_EPR_Specs2D_interact(
+      data.spectra = B.g.sim.df,
+      x = paste0("B_", B.unit),
+      x.unit = B.unit,
+      Intensity = Intensity.sim,
+      lineSpecs.form = lineSpecs.form
+      )
+    )
   }
   #
 }

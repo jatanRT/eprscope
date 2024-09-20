@@ -323,10 +323,10 @@ plot_EPR_Specs <- function(data.spectra,
   ## g-factor condition =>
   g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
   #
-  if (lineSpecs.form == "derivative") {
+  if (grepl("deriv|Deriv",lineSpecs.form)) {
     y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+  if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     y.label <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #

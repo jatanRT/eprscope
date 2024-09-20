@@ -175,10 +175,10 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
   ## g-factor condition =>
   g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
   #
-  if (lineSpecs.form == "derivative") {
+  if (grepl("deriv|Deriv",lineSpecs.form)) {
     ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
   }
-  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+  if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     ylabel <- "<i>Intensity</i>  (p.d.u.)"
   }
   #

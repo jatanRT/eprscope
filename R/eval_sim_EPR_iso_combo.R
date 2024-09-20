@@ -153,7 +153,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     Intensity.sim.weight.vec
     )
   #
-  ## LONG-TABLE FORMAT FOR OVERLAY SPECTRA
+  ##  -------------  LONG-TABLE FORMAT FOR OVERLAY SPECTRA ----------------
   #
   ## `df.systems.weight` into long table format
   ## however, before generating the alphabet character vector in order to
@@ -166,7 +166,8 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     factor(df.systems.weighted.long$Sim_Components,
            labels = character.component.vec)
   #
-  ## Integration
+  ##  ---------------------  Integration ---------------------------------
+  #
   df.systems.weighted.integ.long <- df.systems.weighted.long %>%
     dplyr::group_by(.data$Sim_Components) %>%
     dplyr::mutate(Sim_sigmoid_Integs =
@@ -178,7 +179,9 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
                                         lineSpecs.form = lineSpecs.form,
                                         sigmoid.integ = TRUE,
                                         output.vecs = TRUE)$sigmoid)
-  ## Areas
+  #
+  ##  ------------------------ Areas ---------------------------------------
+  #
   df.systems.areas <- df.systems.weighted.integ.long %>%
     dplyr::group_by(.data$Sim_Components) %>%
     dplyr::summarize(Sim_areas = max(.data$Sim_sigmoid_Integs))
@@ -191,7 +194,8 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_Sum")) :=
                     rowSums(dplyr::across(dplyr::matches("^[[:upper:]]$"))))
   #
-  ## Overall Integration
+  ## ------------------- Overall Integration ------------------------------
+  #
   df.systems.weighted.wide$Sim_sigmoid_Integ <-
     eval_integ_EPR_Spec(df.systems.weighted.wide,
                         B = paste0("Bsim_",B.unit),
@@ -213,21 +217,24 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   #               .data$Sim_sigmoid_Integ,
   #               .data[[paste0(Intensity.sim,"_Sum")]])
   #
-  ## Overall Sum
+  ##  -------------------- Overall Sum --------------------------------------
+  #
   systems.area <- max(df.systems.weighted.wide$Sim_sigmoid_Integ)
   #
-  ## new weighted sum column in `df.systems.areas`
+  ##  ----------- new weighted sum column in `df.systems.areas` -------------
+  #
   df.systems.areas <- df.systems.areas %>%
     dplyr::mutate(weighted_Sim_areas = .data$Sim_areas / systems.area)
   #
-  ## SUMMARIZING ALL THE RESULTS (AT THE END IT WILL BE LIST OF DFs and PLOTS)
+  ## ------------------- SUMMARIZING ALL THE RESULTS --------------------
+  ## ----------- (AT THE END IT WILL BE LIST OF DFs and PLOTS) -------------
   #
   ## overlay plot from the long table format
   ## y-axis label depending on derivative or integrated line form
-  if (lineSpecs.form == "derivative"){
+  if (grepl("deriv|Deriv",lineSpecs.form)){
     ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
-  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption"){
+  if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)){
     ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   }
   #
@@ -262,30 +269,36 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     plot_theme_NoY_ticks()
   #
   ## list of the all results and/or plots
-  if (is.null(plot.sim.interact)){
-    result.sim <- list(df = df.systems.weighted.integ.long,
-                       df.areas = df.systems.areas,
-                       df.sum = df.systems.weighted.wide,
-                       plot.comps = plot.sim.comps.overlay,
-                       plot.sum = plot.sim.sum)
-  } else{
-    if (plot.sim.interact == "components"){
-      result.sim <- plot_EPR_Specs2D_interact(data.spectra = df.systems.weighted.long,
-                                              x = paste0("Bsim_",B.unit),
-                                              x.unit = B.unit,
-                                              Intensity = Intensity.sim,
-                                              var2nd.series = "Sim_Components",
-                                              lineSpecs.form = lineSpecs.form,
-                                              legend.title = "Sim. Components",
-                                              legend.title.size = 14)
-    }
-    if (plot.sim.interact == "sum"){
-      result.sim <- plot_EPR_Specs2D_interact(data.spectra = df.systems.weighted.wide,
-                                              x = paste0("Bsim_",B.unit),
-                                              x.unit = B.unit,
-                                              Intensity = paste0(Intensity.sim,"_Sum"),
-                                              lineSpecs.form = lineSpecs.form)
-    }
+  if (is.null(plot.sim.interact)) {
+  result.sim <- list(
+    df = df.systems.weighted.integ.long,
+    df.areas = df.systems.areas,
+    df.sum = df.systems.weighted.wide,
+    plot.comps = plot.sim.comps.overlay,
+    plot.sum = plot.sim.sum
+  )
+} else {
+  if (plot.sim.interact == "components") {
+    result.sim <- plot_EPR_Specs2D_interact(
+      data.spectra = df.systems.weighted.long,
+      x = paste0("Bsim_", B.unit),
+      x.unit = B.unit,
+      Intensity = Intensity.sim,
+      var2nd.series = "Sim_Components",
+      lineSpecs.form = lineSpecs.form,
+      legend.title = "Sim. Components",
+      legend.title.size = 14
+    )
   }
+  if (plot.sim.interact == "sum") {
+    result.sim <- plot_EPR_Specs2D_interact(
+      data.spectra = df.systems.weighted.wide,
+      x = paste0("Bsim_", B.unit),
+      x.unit = B.unit,
+      Intensity = paste0(Intensity.sim, "_Sum"),
+      lineSpecs.form = lineSpecs.form
+    )
+  }
+}
   return(result.sim)
 }
