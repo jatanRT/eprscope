@@ -110,7 +110,8 @@ or <code>B = "B_G"</code> (<strong>default</strong>) or <code>B = "Field"</code>
 <dt id="arg-b-unit">B.unit<a class="anchor" aria-label="anchor" href="#arg-b-unit"></a></dt>
 <dd><p>Character string pointing to unit of magnetic flux density, which
 is to be presented on \(x(B)\)-axis of the EPR spectrum,
-like <code>"G"</code> ("Gauss") or <code>"mT"</code> ("millitesla"), <strong>default</strong>: <code>B.unit = "G"</code>.</p></dd>
+like <code>"G"</code> ("Gauss"), <code>"mT"</code> ("millitesla") or <code>"T"</code> ("Tesla").
+<strong>Default</strong>: <code>B.unit = "G"</code>.</p></dd>
 
 
 <dt id="arg-intensity">Intensity<a class="anchor" aria-label="anchor" href="#arg-intensity"></a></dt>
@@ -121,12 +122,12 @@ spectrum (e.g. <code>Intensity = "single_Integrated"</code>) within the actual <
 
 <dt id="arg-linespecs-form">lineSpecs.form<a class="anchor" aria-label="anchor" href="#arg-linespecs-form"></a></dt>
 <dd><p>Character string describing either <code>"derivative"</code> (<strong>default</strong>)
-or <code>"integrated"</code> (i.e. <code>"absorption"</code> which can be used as well) line form of analyzed
+or <code>"integrated"</code> (i.e. <code>"absorption"</code>, which can be used as well) line form of the analyzed
 EPR spectrum/data.</p></dd>
 
 
 <dt id="arg-blim">Blim<a class="anchor" aria-label="anchor" href="#arg-blim"></a></dt>
-<dd><p>Numeric vector, magnetic flux density in <code>mT</code>/<code>G</code> corresponding to lower and upper
+<dd><p>Numeric vector, magnetic flux density in <code>mT</code>/<code>G</code>/<code>T</code> corresponding to lower and upper
 limit of the selected \(B\)-region, e.g. <code>Blim = c(3495.4,3595.4)</code>.
 <strong>Default</strong>: <code>Blim = NULL</code> (corresponding to the entire spectral \(B\)-range).</p></dd>
 
@@ -137,9 +138,9 @@ limit of the selected \(B\)-region, e.g. <code>Blim = c(3495.4,3595.4)</code>.
 
 
 <dt id="arg-bpeaklim">BpeaKlim<a class="anchor" aria-label="anchor" href="#arg-bpeaklim"></a></dt>
-<dd><p>Numeric vector, magnetic flux density in <code>mT</code>/<code>G</code> corresponding to lower
+<dd><p>Numeric vector, magnetic flux density in <code>mT</code>/<code>G</code>/<code>T</code> corresponding to lower
 and upper limit of the SELECTED \(B\)-PEAK REGION, e.g. <code>BpeaKlim = c(3535.4,3555.4)</code>.
-This is the region (without peak), which is actually not considered for the baseline fit.</p></dd>
+This is the region (without the peak), which is actually not considered for the baseline fit.</p></dd>
 
 
 <dt id="arg-poly-degree">poly.degree<a class="anchor" aria-label="anchor" href="#arg-poly-degree"></a></dt>
@@ -155,7 +156,7 @@ in sigmoid shape, which is required for the quantitative analysis,
 
 
 <dt id="arg-output-vecs">output.vecs<a class="anchor" aria-label="anchor" href="#arg-output-vecs"></a></dt>
-<dd><p>Logical, whether the "integral" columns are presented within the entire
+<dd><p>Logical, whether the "integral" columns are presented within the original <code>data.spectr</code>
 data frame (<code>output.vecs = FALSE</code>, <strong>default</strong>) or called as a vectors or list for
 additional processing of spectral data series by <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a>
 (see <code>Values</code> and <code>Examples</code>).</p></dd>
@@ -202,18 +203,19 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 </ol></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The relative error of the cumulative trapezoidal (<code>cumtrapz</code>) function is minimal, usually falling into the range of
- \(\langle 1,5\rangle\,\%\) or even lower, depending on the spectral data resolution
- (see epperson2013introeprscope and LibreMath2023eprscope). Therefore,
- the better the resolution, the more accurate the integral. If the initial EPR spectrum displays low
+    <p>The relative error of the cumulative trapezoidal (<code>cumtrapz</code>) function is minimal,
+ usually falling into the range of \(\langle 1,5\rangle\,\%\) or even lower, depending on the spectral
+ data resolution (see epperson2013introeprscope and LibreMath2023eprscope).
+ Therefore, the better the resolution, the more accurate the integral. If the initial EPR spectrum displays low
  signal-to-noise ratio, the integral often looses its sigmoid-shape
  and thus, the EPR spectrum has to be either simulated (see also <code><a href="../articles/functionality.html">vignette("functionality")</a></code>)
  or smoothed by the <code><a href="smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg</a></code>, prior to integration. Afterwards,
  integrals are evaluated from the simulated or smoothed EPR spectra.
  For the purpose of quantitative analysis the integrals are evaluated using the <code>B.units = "G"</code>
- (see Arguments). Therefore, depending on \(B\) unit (either <code>G</code> or <code>mT</code>) each resulting integral
- column have to be optionally (in case of <code>mT</code>) multiplied by factor of <code>10</code> because
- \(1\,\text{mT}\equiv 10\,\text{G}\). Such correction is already included in the function/script.
+ (see Arguments). Therefore, depending on \(B\)-unit (<code>G</code> or <code>mT</code> or <code>T</code>) each resulting integral
+ column have to be optionally (in case of <code>mT</code> or <code>T</code>) multiplied by the factor of <code>10</code> or <code>10000</code>,
+ respectively, because \(1\,\text{mT}\equiv 10\,\text{G}\) and \(1\,\text{T}\equiv 10^4\,\text{G}\).
+ Such corrections are already included in the function/script.
  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
  <strong>in the case of originally single integrated EPR spectrum</strong> (see <code>data.spectr</code>
  and <code>Intensity</code>) <strong>is confusing. In such case, the EPR spectrum is integrated just once.</strong></p>

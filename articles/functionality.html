@@ -98,7 +98,7 @@
 \small \ce{TMPD &lt;=&gt;[-e^-] TMPD^{.+}}
 \tag{1.1}
 \end{equation}\]</span>
-<p>where the <span class="math inline">\(\small \ce{TMPD}\)</span> stands for <em>N,N,N’,N’</em>-tetramethyl-<em>p</em>-phenylenediamine (Wuster’s reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation <a href="#eq:tmpdoxid">(1.1)</a>) takes place far (<span class="math inline">\(\small \approx (0.5-0.6)\,\mathrm{V}\)</span>) from the first one <span class="citation">(<a href="#ref-Dadpou2018">3</a>)</span>. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by a characteristic EPR spectrum, as shown below. Such change is not only visible by “magic” where the nicely structured EPR spectrum rises from the noisy background upon oxidation, however, it is also associated with an exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, <strong>the radical cation of <em>N,N,N’,N’</em>-tetramethyl-<em>p</em>-phenylenediamine is</strong> described as <strong><em>Wuster’s</em></strong> <strong>blue</strong>. Such an example will demonstrate the main workflow to process and analyse EPR spectra by the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦 . The <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> was generated electrochemically by potentiostatic electrolysis at 0.308 V (<em>vs</em> Ag-<em>quasiref.</em> electrode) of the corresponding <span class="math inline">\(\small 1\,\mathrm{mM}\)</span> <span class="math inline">\(\small \ce{TMPD}\)</span> solution in <span class="math inline">\(\small 0.3\,\mathrm{M}\,\,\ce{TBAPF6}/\ce{DMSO}\)</span>.</p>
+<p>where the <span class="math inline">\(\small \ce{TMPD}\)</span> stands for <em>N,N,N’,N’</em>-tetramethyl-<em>p</em>-phenylenediamine (Wuster’s reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation <a href="#eq:tmpdoxid">(1.1)</a>) takes place far (<span class="math inline">\(\small \approx (0.5-0.6)\,\mathrm{V}\)</span>) from the first one <span class="citation">(<a href="#ref-Dadpou2018">3</a>)</span>. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by a characteristic EPR spectrum, as shown below. Such change is not only visible by the “magic” where the nicely structured EPR spectrum rises from the noisy background upon oxidation, however, it is also associated with an exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, <strong>the radical cation of <em>N,N,N’,N’</em>-tetramethyl-<em>p</em>-phenylenediamine is</strong> described as <strong><em>Wuster’s</em></strong> <strong>blue</strong>. Such example will demonstrate the main workflow to process and analyse EPR spectra by the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦 . The <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> was generated electrochemically by potentiostatic electrolysis at 0.308 V (<em>vs</em> Ag-<em>quasiref.</em> electrode) of the corresponding <span class="math inline">\(\small 1\,\mathrm{mM}\)</span> <span class="math inline">\(\small \ce{TMPD}\)</span> solution in <span class="math inline">\(\small 0.3\,\mathrm{M}\,\,\ce{TBAPF6}/\ce{DMSO}\)</span>.</p>
 </div>
 <div class="section level2" number="2">
 <h2 id="drawing-of-molecular-structures">
@@ -126,8 +126,8 @@
 <h2 id="reading-files-and-writing-data-frames">
 <span class="header-section-number">3</span> Reading Files and Writing Data Frames<a class="anchor" aria-label="anchor" href="#reading-files-and-writing-data-frames"></a>
 </h2>
-<p>The <a href="https://jatanrt.github.io/eprscope/">eprscope</a> reads and converts pure (except the <code>.mat</code> format) text files. Therefore, to read the instrumental data files, the recorded EPR spectra must be first converted into ASCII format at the spectrometer. If the conversion option is not available, one can also try a free online converter by <em>Leland B. Gee</em> <span class="citation">(<a href="#ref-xepr2gfac2023">7</a>)</span>. To process the EPR spectral data it is important not only to read the files with <em>Intensity vs. B</em> (usually in <code>.asc</code>, <code>.txt</code>, <code>.csv</code> format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in <code>.DSC</code> , <code>.dsc</code> or <code>.par</code> format). The information including in these files is required to e.g. normalize the Intensity (like <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B\)</span> in the derivative spectral form) or to evaluate the <span class="math inline">\(g\)</span>-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.</p>
-<p>Reading of the instrumental parameters from <code>.DSC</code> / <code>.dsc</code> or <code>.par</code> files (corresponding to acquisition software “xenon”/“magnetech” or “winepr”, respectively) is provided by several functions for different purposes e.g., for kinetic measurements or simulations. The general function <code><a href="../reference/readEPR_params_tabs.html">readEPR_params_tabs()</a></code> summarizes all important parameters in a list of data frames and can be converted into individual interactive tables by <a href="https://rstudio.github.io/DT/" class="external-link">{DT}</a> package ➨</p>
+<p>The <a href="https://jatanrt.github.io/eprscope/">eprscope</a> reads and converts pure (except the <code>.mat</code> format) text files. Therefore, to read the instrumental data files, recorded EPR spectra must be first converted into the ASCII format at the spectrometer. If the conversion option is not available, one can also try a free online converter by <em>Leland B. Gee</em> <span class="citation">(<a href="#ref-xepr2gfac2023">7</a>)</span>. To process the EPR spectral data, it is important not only to read the files with <em>Intensity vs. B</em> (usually in <code>.asc</code>, <code>.txt</code>, <code>.csv</code> format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in <code>.DSC</code> , <code>.dsc</code> or <code>.par</code> format). The information including in these files is required to e.g. normalize the Intensity (like <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B\)</span> in the derivative spectral form) or to evaluate the <span class="math inline">\(g\)</span>-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.</p>
+<p>Reading of the instrumental parameters from <code>.DSC</code> / <code>.dsc</code> or <code>.par</code> files (corresponding to acquisition software “xenon”/“magnetech” or “winepr”, respectively) is provided by several functions for different purposes e.g. for kinetic measurements or simulations. The general function <code><a href="../reference/readEPR_params_tabs.html">readEPR_params_tabs()</a></code> summarizes all important parameters in a list of data frames and can be converted into individual interactive tables by <a href="https://rstudio.github.io/DT/" class="external-link">{DT}</a> package ➨</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># package built-in example file =&gt; "TMPD_specelchem_accu_b.par"</span></span>
@@ -173,7 +173,7 @@
 <span><span class="co">#&gt; 12          Temperature   295.068344        K</span></span>
 <span><span class="co">#&gt; 13        Receiver Gain 39905.250000 Unitless</span></span></code></pre></div>
 <p>Finally, conversion of the second data frame (<code>tmpd.params$params</code>) can be performed by the <code><a href="../reference/readEPR_params_tabs.html">readEPR_params_tabs()</a></code> function with the argument <code>interact = "params"</code> .</p>
-<p>The <code>origin</code> argument in reading functions reflects the differences in the ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within “xenon”/“magnetech” software, the “winepr” intensity has to be normalized after the measurement if one wants to compare the intensities of two or several EPR spectra. The reading of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectral data by <code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code> proceeds as follows with the output having the form of the universal <code>data frame</code> format ➨</p>
+<p>The <code>origin</code> argument in reading functions reflects the differences in ASCII text file structure depending on the acquisition software. Moreover, while the intensity can be automatically normalized upon spectrum recording within “xenon”/“magnetech” software, the “winepr” intensity has to be normalized after the measurement if one wants to compare the intensities of two or several EPR spectra. The reading of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectral data by <code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code> proceeds as follows with the output having the form of the universal <code>data frame</code> format ➨</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># loading package built-in example file =&gt; "TMPD_specelchem_accu_b.asc"</span></span>
@@ -202,7 +202,7 @@
 <span><span class="co">#&gt; 4: 3439.32   0.001960421 343.932</span></span>
 <span><span class="co">#&gt; 5: 3439.37  -4.631011161 343.937</span></span>
 <span><span class="co">#&gt; 6: 3439.42  -3.595753795 343.942</span></span></code></pre></div>
-<p>An arbitrary character string may be chosen for the column names (see <code>col.names</code> argument)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;For such reason there are arguments &lt;code&gt;x.id&lt;/code&gt; and &lt;code&gt;Intensity.id&lt;/code&gt; , pointing to original column indices, in order to properly pick up the corresponding variables.&lt;/p&gt;"><sup>1</sup></a>. However, a safe rule of thumb is to use notation like “quantity_unit” as already shown above in the case of magnetic flux density <span class="math inline">\(\small B\)</span>. The name for the intensity column reads <code>dIepr_over_dB</code> (without units) because it reflects the derivative mode <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B\)</span> in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function <code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code> can automatically convert <span class="math inline">\(\small B\)</span> values by the argument <code>convertB.unit=TRUE</code> (or <code>FALSE</code>) depending on the original units “G” or “mT”. The reason is that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like <span class="math inline">\(\small \Delta B\)</span>, <span class="math inline">\(g\)</span> or hyperfine splitting constants <span class="math inline">\(a\)</span>. If the <code>Intensity</code> has to be normalized also by additional instrumental parameters like <em>conversion time</em> and <em>receiver gain</em> (automatically performed within “Xenon” software)<em>,</em> one should use the <code><a href="../reference/quantify_EPR_Norm_const.html">quantify_EPR_Norm_const()</a></code> function from the <code>Evaluations and Quantification</code> family ➨</p>
+<p>An arbitrary character string may be chosen for the column names (see <code>col.names</code> argument)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;For such reason there are arguments &lt;code&gt;x.id&lt;/code&gt; and &lt;code&gt;Intensity.id&lt;/code&gt; , pointing to original column indices, in order to properly pick up the corresponding variables.&lt;/p&gt;"><sup>1</sup></a>. However, a safe rule of thumb is to use notation like “quantity_unit” as already shown above in the case of magnetic flux density <span class="math inline">\(\small B\)</span>. The name for the intensity column reads <code>dIepr_over_dB</code> (without units) because it reflects the derivative mode <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B\)</span> in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function <code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code> can automatically convert <span class="math inline">\(\small B\)</span> values by the argument <code>convertB.unit=TRUE</code> (or <code>FALSE</code>) depending on the original units “G” or “mT”. The reason is, that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like <span class="math inline">\(\small \Delta B\)</span>, <span class="math inline">\(g\)</span> or hyperfine splitting constants <span class="math inline">\(a\)</span>. If the <code>Intensity</code> has to be normalized also by additional instrumental parameters like <em>conversion time</em> and <em>receiver gain</em> (automatically performed within “Xenon” software)<em>,</em> one should use the <code><a href="../reference/quantify_EPR_Norm_const.html">quantify_EPR_Norm_const()</a></code> function from the <code>Evaluations and Quantification</code> family ➨</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># calculation of the advanced normalization constant</span></span>
@@ -375,7 +375,7 @@ window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"tabs/TMPD_EPR_Norm_data02.csv"</span>,</span>
 <span>  row.names <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2" number="4">
 <h2 id="visualizations-of-spectral-data">
@@ -386,7 +386,7 @@ window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 
 <h3 id="static-plots-by-ggplot2-and-patchwork">
 <span class="header-section-number">4.1</span> Static Plots by <code>{ggplot2}</code> and <code>{patchwork}</code><a class="anchor" aria-label="anchor" href="#static-plots-by-ggplot2-and-patchwork"></a>
 </h3>
-<p>The <code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code> is the essential function for plotting individual EPR spectra as well as those within series (e.g. time series <span class="math inline">\(\equiv\)</span> kinetic measurements). Now, by means of this function and by the <a href="https://patchwork.data-imaginist.com/" class="external-link">{patchwork}</a> 📦 , we can compare the EPR spectra with basic and “advanced” normalization ➨</p>
+<p>The <code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code> is the essential function for plotting individual EPR spectra as well as those within series (e.g. time series <span class="math inline">\(\equiv\)</span> kinetic measurements). Now, by means of this function and by the <a href="https://patchwork.data-imaginist.com/" class="external-link">{patchwork}</a> 📦 , we can compare the EPR spectra with the basic and “advanced” normalization ➨</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># plotting the spectrum with basic normalization,</span></span>
@@ -461,7 +461,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <p>There are four basic parameters to characterize the EPR spectrum ➨</p>
 <ol style="list-style-type: decimal">
 <li><p>Spectrum position expressed by the <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value</p></li>
-<li><p>Linewidth, for derivative line form expressed by <span class="math inline">\(\small \Delta B_{\mathrm{pp}}\)</span>, that is the difference between <span class="math inline">\(\small B_{\mathrm{max}}\)</span> and <span class="math inline">\(\small B_{\mathrm{min}}\)</span> corresponding to position of maximal and minimal intensity, respectively. For the integrated spectral form the linewidth is expressed by <span class="math inline">\(\small FWHM\)</span> (“full width at half-maximum” or “full width at half-height”).</p></li>
+<li><p>Linewidth, for derivative line form expressed by the <span class="math inline">\(\small \Delta B_{\mathrm{pp}}\)</span>, that is the difference between <span class="math inline">\(\small B_{\mathrm{max}}\)</span> and <span class="math inline">\(\small B_{\mathrm{min}}\)</span> corresponding to position of maximum and minimum intensity, respectively. For the integrated spectral form, the linewidth is expressed by the <span class="math inline">\(\small FWHM\)</span> (“full width at half-maximum” or “full width at half-height”).</p></li>
 <li><p>Hyperfine splitting, <span class="math inline">\(a\)</span> (in <span class="math inline">\(\mathrm{m \small T}\)</span> or <span class="math inline">\(\small \mathrm{G}\)</span>) which is the distance between the individual lines corresponding to interaction of the unpaired electron with the group of surrounding equivalent nuclei.</p></li>
 <li><p>Single or double integral depending on the original spectral line form ➨ either integrated or derivative. This is directly proportional to the number of paramagnetic species/radicals.</p></li>
 </ol>
@@ -509,7 +509,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span><span class="co">#</span></span>
 <span><span class="co"># giso-value is automatically calculated as the mean</span></span>
 <span><span class="co"># of its principal components (g1,g2,g3) </span></span>
-<span><span class="co"># summarized in output files</span></span>
+<span><span class="co"># summarized in the output files</span></span>
 <span><span class="va">tmpd.g.iso.dft</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/eval_gFactor_QCHcomp.html">eval_gFactor_QCHcomp</a></span><span class="op">(</span><span class="va">gauss.tmpd.output</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
@@ -622,16 +622,17 @@ Figure 5.1: DFT optimized structure of TMPD radical cation with atom numbering i
 <span>          <span class="fl">17</span>, <span class="fl">18</span>, <span class="fl">19</span>, <span class="fl">20</span>,</span>
 <span>          <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">24</span>,</span>
 <span>          <span class="fl">25</span>, <span class="fl">26</span>, <span class="fl">27</span>, <span class="fl">28</span></span>
-<span>        <span class="op">)</span> <span class="co"># 12 x 1H (methyls)</span></span>
-<span>      <span class="op">)</span></span>
+<span>      <span class="op">)</span> <span class="co"># 12 x 1H (methyls)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># data frame presentation by `{kableExtra}` package</span></span>
 <span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kbl.html" class="external-link">kbl</a></span><span class="op">(</span><span class="va">symmetry.As.df</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span>bootstrap_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"striped"</span>,</span>
-<span>    <span class="st">"hover"</span>,</span>
-<span>    <span class="st">"condensed"</span></span>
+<span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kableExtra/man/kable_styling.html" class="external-link">kable_styling</a></span><span class="op">(</span></span>
+<span>    bootstrap_options <span class="op">=</span> </span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"striped"</span>,</span>
+<span>        <span class="st">"hover"</span>,</span>
+<span>        <span class="st">"condensed"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
@@ -715,7 +716,8 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
-<span><span class="co"># or list of plot and the simulated spectrum data frame.</span></span>
+<span><span class="co"># or list of plot and the simulated </span></span>
+<span><span class="co"># spectrum data frame.</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># preview of the data frame</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span>
@@ -726,7 +728,7 @@ aiso_mT_QCH
 <span><span class="co">#&gt; 4 3439.32 343.932     9.762535e-05</span></span>
 <span><span class="co">#&gt; 5 3439.37 343.937     9.808922e-05</span></span>
 <span><span class="co">#&gt; 6 3439.42 343.942     9.856182e-05</span></span></code></pre></div>
-<p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function, which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> as shown below (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.2</a>) ➨</p>
+<p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.2</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> .</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># intesinty of the simulated spectrum</span></span>
@@ -736,8 +738,8 @@ aiso_mT_QCH
 <span>  data.spectr.expr <span class="op">=</span> <span class="va">tmpd.data.norm.02</span>,</span>
 <span>  data.spectr.sim <span class="op">=</span> <span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span>,</span>
 <span>  B.unit <span class="op">=</span> <span class="st">"mT"</span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># `plot_theme_NoY_ticks` theme from `{eprscope}` + `{ggplot2}` function</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># `plot_theme_NoY_ticks` theme from `{eprscope}`</span></span>
 <span>  <span class="fu"><a href="../reference/plot_theme_NoY_ticks.html">plot_theme_NoY_ticks</a></span><span class="op">(</span>legend.text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:tmpd-radcat-sim-expr-compar"></span>
@@ -745,14 +747,14 @@ aiso_mT_QCH
 Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
 </p>
 </div>
-<p>Although the simulated <span class="math inline">\(\ce{TMPD^{.+}}\)</span> EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, to get a better simulated spectrum a fitting/optimization function <code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> was performed and the result may be found in <code>Examples</code> of the <code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code> function.</p>
+<p>Although the simulated <span class="math inline">\(\ce{TMPD^{.+}}\)</span> EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization function <code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> was used to get a more accurate simulated spectrum. The result may be found in <code>Examples</code> of the <code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code> function.</p>
 </div>
 <div class="section level3" number="5.4">
 <h3 id="integrating-the-epr-spectrum">
 <span class="header-section-number">5.4</span> Integrating the EPR Spectrum<a class="anchor" aria-label="anchor" href="#integrating-the-epr-spectrum"></a>
 </h3>
-<p>Integration process in the analysis of EPR spectra is undoubtedly an important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also <code><a href="../reference/quantify_EPR_Abs.html">quantify_EPR_Abs()</a></code>). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Therefore, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation available from the <a href="https://github.com/cran/pracma" class="external-link">{pracma}</a> 📦 <code><a href="https://rdrr.io/pkg/pracma/man/trapz.html" class="external-link">pracma::cumtrapz()</a></code> <span class="citation">(<a href="#ref-Rpracma2023">10</a>–<a href="#ref-epperson2013intro">13</a>)</span>.</p>
-<p>The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of <span class="math inline">\(\small \langle 1-5\rangle\,\%\)</span> or even lower depending on the spectrum resolution <span class="citation">(<a href="#ref-LibreMath2023">11</a>, <a href="#ref-epperson2013intro">13</a>)</span>. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape ( see below an example of such shape). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. <code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code> function). The upside of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled in the same manner like within the EPR spectrometer acquisitions/processing software (see also <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function below). The integration of the EPR spectral data is essentially provided by the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> and its application to the experimental <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectrum is documented by the following scripts ➨</p>
+<p>Integration process in the analysis of EPR spectra is undoubtedly an important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also <code><a href="../reference/quantify_EPR_Abs.html">quantify_EPR_Abs()</a></code>). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Hence, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation, available from the <a href="https://github.com/cran/pracma" class="external-link">{pracma}</a> 📦 <code><a href="https://rdrr.io/pkg/pracma/man/trapz.html" class="external-link">pracma::cumtrapz()</a></code> <span class="citation">(<a href="#ref-Rpracma2023">10</a>–<a href="#ref-epperson2013intro">13</a>)</span>.</p>
+<p>The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of <span class="math inline">\(\small \langle 1-5\rangle\,\%\)</span> or even lower depending on the spectrum resolution <span class="citation">(<a href="#ref-LibreMath2023">11</a>, <a href="#ref-epperson2013intro">13</a>)</span>. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape ( see below an example of such shape). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. <code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code> function). The big advantage of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled in the same manner like within the EPR spectrometer acquisitions/processing software (see also <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function below). The integration of the EPR spectral data is essentially provided by the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> and its application to the experimental <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectrum is documented by the following scripts ➨</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># basic integration without baseline correction</span></span>
@@ -785,7 +787,8 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <span><span class="co"># both integrals are presented separately</span></span>
 <span><span class="co"># with their corresponding intensities automatically</span></span>
 <span><span class="co"># scaled onto the `y`-axis (defined by "free_y")</span></span>
-<span><span class="fu"><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02.integ</span>,</span>
+<span><span class="fu"><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ</a></span><span class="op">(</span></span>
+<span>  <span class="va">tmpd.data.norm.02.integ</span>,</span>
 <span>  slct.integs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"single_Integ"</span>,</span>
 <span>    <span class="st">"sigmoid_Integ"</span></span>
@@ -814,7 +817,8 @@ Figure 5.3: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</
 <span>    correct.integ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    <span class="co"># peak region to correct the baseline:</span></span>
 <span>    BpeaKlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">344.5</span>, <span class="fl">355.5</span><span class="op">)</span>,</span>
-<span>    <span class="co"># polynomial degree to fit baseline under the peak region:</span></span>
+<span>    <span class="co"># polynomial degree to fit baseline </span></span>
+<span>    <span class="co"># under the peak region:</span></span>
 <span>    poly.degree <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    sigmoid.integ <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
@@ -822,7 +826,8 @@ Figure 5.3: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</
 <span><span class="co"># preview of the integrals,</span></span>
 <span><span class="co"># data frame column of corrected integral</span></span>
 <span><span class="co"># is denoted as `single_Integ_correct`</span></span>
-<span><span class="fu"><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02.integCorr</span>,</span>
+<span><span class="fu"><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ</a></span><span class="op">(</span></span>
+<span>  <span class="va">tmpd.data.norm.02.integCorr</span>,</span>
 <span>  slct.integs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"single_Integ_correct"</span>,</span>
 <span>    <span class="st">"sigmoid_Integ"</span></span>
