@@ -17,15 +17,27 @@
 #' @param data.kvT Data frame object, which must include two essential columns: rate constant (\eqn{k} of an elementary
 #'   radical reaction) and the corresponding temperatures at which the \eqn{k} was acquired.
 #' @param rate.const Character string, pointing to rate constant column header in the actual \code{data.kvT} data frame.
-#' @param rate.const.unit Character string ... TBC ...
-#' @param Temp Character string ... TBC ...
-#' @param Temp.unit Character string ... TBC ...
+#' @param rate.const.unit Character string, referring to rate constant unit. This has to be specified using
+#'   the \code{\link[grDevices]{plotmath}} notation, like \code{rate.const.unit = "M^{-1}~s^{-1}"}
+#'   or \code{rate.const.unit = "s^{-1}"} (\strong{default}).
+#' @param Temp Character string, pointing to temperature column header within the original \code{data.kvT} data frame.
+#' @param Temp.unit Character string, corresponding to temperature unit related to \code{Temp}. Temperature can be defined
+#'   in the following units: \code{Temp.unit = "K"} (kelvin, \strong{default}), \code{Temp.unit = "oC"} (degree Celsius)
+#'   or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} specified, temperature values
+#'   (column characterized by \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
 #' @param transmiss.coeff Numeric, ... TBC ...
-#' @param fit.method Character string, ...TBC ...
+#' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
+#'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k} \emph{vs} \eqn{T}
+#'   dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
+#'   under its \code{algorithm} argument, are available: \code{"default"}
+#'   (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
+#'   \code{"plinear} (which is
+#'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm)
 #'
 #'
 #'
 #' @return
+#'
 #'
 #'
 #' @examples
@@ -36,11 +48,11 @@
 #'
 #'
 #'
-#' ## transition state params Eyring only original model not the linearized one
-#' ## import tidy from `{broom}` + ggplot2 gom_ribbon
+#' @importFrom broom tidy augment
+#' @importFrom ggplot2 geom_ribbon
 eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
-                                 rate.const.unit = "M^{-1}~s^{-1}",
+                                 rate.const.unit = "s^{-1}",
                                  Temp,
                                  Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
@@ -61,7 +73,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
          ...such as `s^-1` or `M^{-1}~s^{-1}`...etc !! ")
   }
   #
-  ## checking whether the temperature is in K or oC
+  ## checking whether the temperature is in K or oC or oF
   if (Temp.unit == "oC"){
     data.kvT <- data.kvT %>%
       dplyr::mutate(!!rlang::quo_name(Temp) := .data[[Temp]] + 273.15)
