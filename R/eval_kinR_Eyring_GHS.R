@@ -6,7 +6,8 @@
 #'
 #'
 #' @description
-#'   A short description...
+#'   Finding the temperature-dependence of a rate constant, related to elementary radical reaction, using the transition
+#'   state theory (TST). The activation parameters, such as \eqn{}
 #'
 #'
 #' @details
@@ -25,7 +26,8 @@
 #'   in the following units: \code{Temp.unit = "K"} (kelvin, \strong{default}), \code{Temp.unit = "oC"} (degree Celsius)
 #'   or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} specified, temperature values
 #'   (column characterized by \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
-#' @param transmiss.coeff Numeric, ... TBC ...
+#' @param transmiss.coeff Numeric, corresponding to probability that the activated complex is transformed into products.
+#'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
 #' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
 #'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k} \emph{vs} \eqn{T}
 #'   dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
@@ -33,6 +35,8 @@
 #'   (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
 #'   \code{"plinear} (which is
 #'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm)
+#'   or \code{"port"} (\href{https://ms.mcmaster.ca/%7Ebolker/misc/port.pdf}{Fortran PORT ("portable") library for numerical
+#'   computation}).
 #'
 #'
 #'
@@ -41,6 +45,8 @@
 #'
 #'
 #' @examples
+#' ## as an example, the raw data from
+#' ##
 #'
 #'
 #'
