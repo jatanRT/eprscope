@@ -6,8 +6,14 @@
 #'
 #'
 #' @description
-#'   Finding the temperature-dependence of a rate constant, related to elementary radical reaction, using the transition
-#'   state theory (TST). The activation parameters, such as \eqn{}
+#'   Finding the temperature-dependence of a rate constant (\eqn{k}), related to elementary radical reaction, using the transition
+#'   state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
+#'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring-Polanyi expression
+#'   (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
+#'   refer to \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
+#'   from sigmoid-integrals of the EPR spectra recorded at different temperatures. Finally, the activation Gibbs energy
+#'   (\eqn{\Delta^{\ddagger} G^o}) is calculated, using the optimized \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o},
+#'   for each temperature in the series.
 #'
 #'
 #' @details
@@ -25,7 +31,7 @@
 #' @param Temp.unit Character string, corresponding to temperature unit related to \code{Temp}. Temperature can be defined
 #'   in the following units: \code{Temp.unit = "K"} (kelvin, \strong{default}), \code{Temp.unit = "oC"} (degree Celsius)
 #'   or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} specified, temperature values
-#'   (column characterized by \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
+#'   (column characterized by the \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
 #' @param transmiss.coeff Numeric, corresponding to probability that the activated complex is transformed into products.
 #'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
 #' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
@@ -39,15 +45,49 @@
 #'   computation}).
 #'
 #'
-#'
 #' @return
 #'
 #'
-#'
 #' @examples
-#' ## as an example, the raw data from
-#' ##
-#'
+#' ## demonstration on raw data, presented
+#' ## in https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
+#' ## considering reaction H+ + (S2O6)2- <==> SO2 + (HSO4)-
+#' kinet.test.data <-
+#'   data.frame(k_per_M_per_s =
+#'                c(9.54e-7,1.91e-6,3.76e-6,
+#'                  7.33e-6,1.38e-5,2.56e-5,
+#'                  4.71e-5,8.43e-5,1.47e-4),
+#'              T_oC = c(50,55,60,65,70,
+#'                       75,80,85,90)
+#' )
+#' activ.kinet.test.data <-
+#'   eval_kinR_Eyring_GHS(
+#'     data.kvT = kinet.test.data,
+#'     rate.const = "k_per_M_per_s",
+#'     rate.const.unit = "M^{-1}~s^{-1}",
+#'     Temp = "T_oC",
+#'     Temp.unit = "oC"
+#'   )
+#' #
+#' ## preview of the original data + ∆G (activated)
+#' activ.kinet.test.data$df
+#' #
+#' ## preview of the non-linear fit plot
+#' activ.kinet.test.data$plot
+#' #
+#' ## preview of the optimized (activated)
+#' ## ∆S and ∆H parameters
+#' activ.kinet.test.data$df.coeffs.HS
+#' #
+#' ## compare values with those presented in
+#' ## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
+#' ## ∆S = (7.2 +- 1.1) kJ/mol*K & ∆H = (118.80 +- 0.41) kJ/mol
+#' #
+#' ## preview of the new `.fitted` data frame
+#' activ.kinet.test.data$df.fit
+#' #
+#' ## preview of the convergence measures
+#' activ.kinet.test.data$converg
 #'
 #'
 #' @export
