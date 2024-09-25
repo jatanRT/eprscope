@@ -139,7 +139,7 @@ time.</p></dd>
 <dd><p>Numeric, the smallest optimization step (relative change) between
 2 iterations to stop the optimization procedure. For the <code>method = "pswarm"</code>
 (particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
-Once the maximal distance between the "best" particle and all the others is less
+Once the maximum distance between the "best" particle and all the others is less
 than <code>tol.step</code> * <code>pswarm.diameter</code>) the algorithm restarts.
 See also <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">psoptim</a></code>. <strong>Default</strong>: <code>tol.step = 5e-7</code>.</p></dd>
 
@@ -169,13 +169,13 @@ $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
 <li><p>Number of evaluations and/or iterations (in case of <code>method = "pswarm"</code>,
   see also <code>Value</code> in <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">psoptim</a></code>) before the termination.</p></li>
 <li><p>(Un)successful termination information (<code>convergence</code> or <code>rsstrace</code>), usually
-  corresponding either to integer value showing the (un)successful termination like <code>2: Maximal number
+  corresponding either to integer value showing the (un)successful termination like <code>2: Maximum number
   of iterations reached</code> (or integer code &gt; 0 indicating successful completion) or in the case
   of <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, it returns a vector with the values equal
-  to sum of squares at each iteration.</p></li>
+  to sum of residual squares at each iteration.</p></li>
 <li><p>A descriptive message/character string giving additional information about the optimization
   procedure/termination. <strong>By default</strong>, this is however <strong>"turned off"</strong>, for the sake of simplicity,
-  because most of the information can be found in the previous convergence.</p></li>
+  because most of the information can be found in the previous convergence measures.</p></li>
 </ol></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -222,10 +222,10 @@ $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
 <span class="r-in"><span><span class="co">## the `quantify_EPR_Sim_series` function</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## if an EPR spectrum consists of several</span></span></span>
-<span class="r-in"><span><span class="co">## components or several radicals partly overlay,</span></span></span>
+<span class="r-in"><span><span class="co">## components or several radical spectra partly overlay,</span></span></span>
 <span class="r-in"><span><span class="co">## following simple function, taking the linear</span></span></span>
 <span class="r-in"><span><span class="co">## combination of EPR simulated intensities (max. 6),</span></span></span>
-<span class="r-in"><span><span class="co">## can be applied in order to fit the sum of individual</span></span></span>
+<span class="r-in"><span><span class="co">## can be applied in order to fit the sum of the individual</span></span></span>
 <span class="r-in"><span><span class="co">## simulations onto the experimental EPR spectrum</span></span></span>
 <span class="r-in"><span><span class="co">## envelope, the input parameters therefore correspond</span></span></span>
 <span class="r-in"><span><span class="co">## to zero-point/intercept(par[1]) and coefficients</span></span></span>

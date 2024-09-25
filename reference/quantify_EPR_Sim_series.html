@@ -193,7 +193,7 @@ time.</p></dd>
 <dd><p>Numeric, the smallest optimization step (relative change) between
 2 iterations to stop the optimization procedure. For the <code>optim.method = "pswarm"</code>
 (particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
-Once the maximal distance between the "best" particle and all the others is less
+Once the maximum distance between the "best" particle and all the others is less
 than <code>tol.step</code> * <code>pswarm.diameter</code>) the algorithm restarts.
 See also <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">psoptim</a></code>. <strong>Default</strong>: <code>tol.step = 5e-7</code>.</p></dd>
 
@@ -241,7 +241,7 @@ for each time/temperature/...etc. point in row. Additional optimization measures
   the components are denoted by uppercase letters (<code>Area_Sim_A</code>, <code>Area_Sim_B</code>,...etc.);
   best fitted/optimized coefficients to multiply the intensities (<code>Optim_CoeffInt_Sim_A</code>,
   <code>Optim_CoeffInt_Sim_B</code>,...etc); best fitted/optimized intercept (or baseline constant,
-  <code>Optim_intercept</code>); minimal sum of residual squares (<code>minLSQ_sum</code>); number
+  <code>Optim_intercept</code>); minimum sum of the residual squares (<code>minLSQ_sum</code>); number
   of evaluations/iterations (<code>N_evals</code>) and finally convergence information/number (<code>N_converg</code>,
   like already described in <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>). These variables are presented for each
   <code>var2nd.series</code> (e.g. time) point like example for one EPR spectral component:</p><table class="table table"><tr><td><strong>time_s</strong></td><td><strong>Area_Sim_A</strong></td><td><strong>Optim_CoeffInt_Sim_A</strong></td><td><strong>Optim_intercept</strong></td><td><strong>minLSQ_sum</strong></td><td><strong>N_evals</strong></td><td><strong>N_converg</strong></td></tr><tr><td>6</td><td>0.020624473</td><td>0.052843937</td><td>5.508809e-10</td><td>2.289953e-07</td><td>198</td><td>4</td></tr><tr><td>21</td><td>0.020217930</td><td>0.051802287</td><td>5.401823e-10</td><td>2.438172e-07</td><td>177</td><td>4</td></tr><tr><td>36</td><td>0.018836579</td><td>0.048263010</td><td>5.029705e-10</td><td>2.662651e-07</td><td>201</td><td>4</td></tr></table></li>

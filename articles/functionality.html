@@ -94,10 +94,10 @@
 <span class="header-section-number">1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>The <em>Wuster’s</em> reagent got its name according to <em>C. Wuster</em> who discovered the oxidation products of <em>p</em>-phenylenediamine derivatives <span class="citation">(<a href="#ref-GramppGpda2005">1</a>)</span>. It is a suitable compound to demonstrate the feasibility of Electron paramagnetic resonance (EPR) combined with the <em>in situ</em> electrochemistry/voltammetry because of the one-electron oxidation <span class="citation">(<a href="#ref-PetrAse1996">2</a>)</span>:</p>
-<span class="math display" id="eq:tmpdoxid">\[\begin{equation}
+<p><span class="math display" id="eq:tmpdoxid">\[\begin{equation}
 \small \ce{TMPD &lt;=&gt;[-e^-] TMPD^{.+}}
 \tag{1.1}
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 <p>where the <span class="math inline">\(\small \ce{TMPD}\)</span> stands for <em>N,N,N’,N’</em>-tetramethyl-<em>p</em>-phenylenediamine (Wuster’s reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation <a href="#eq:tmpdoxid">(1.1)</a>) takes place far (<span class="math inline">\(\small \approx (0.5-0.6)\,\mathrm{V}\)</span>) from the first one <span class="citation">(<a href="#ref-Dadpou2018">3</a>)</span>. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by a characteristic EPR spectrum, as shown below. Such change is not only visible by the “magic” where the nicely structured EPR spectrum rises from the noisy background upon oxidation, however, it is also associated with an exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, <strong>the radical cation of <em>N,N,N’,N’</em>-tetramethyl-<em>p</em>-phenylenediamine is</strong> described as <strong><em>Wuster’s</em></strong> <strong>blue</strong>. Such example will demonstrate the main workflow to process and analyse EPR spectra by the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦 . The <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> was generated electrochemically by potentiostatic electrolysis at 0.308 V (<em>vs</em> Ag-<em>quasiref.</em> electrode) of the corresponding <span class="math inline">\(\small 1\,\mathrm{mM}\)</span> <span class="math inline">\(\small \ce{TMPD}\)</span> solution in <span class="math inline">\(\small 0.3\,\mathrm{M}\,\,\ce{TBAPF6}/\ce{DMSO}\)</span>.</p>
 </div>
 <div class="section level2" number="2">
@@ -470,10 +470,10 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span class="header-section-number">5.1</span> Finding the <em>g</em><sub>iso</sub>-Value<a class="anchor" aria-label="anchor" href="#finding-the-giso-value"></a>
 </h3>
 <p>The parameter is defined by the following Equation <a href="#eq:gfactor">(5.1)</a>:</p>
-<span class="math display" id="eq:gfactor">\[\begin{equation}
+<p><span class="math display" id="eq:gfactor">\[\begin{equation}
 \small g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B_0}
 \tag{5.1}
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 <p>where the <span class="math inline">\(h\)</span> and <span class="math inline">\(\mu_{\mathrm{B}}\)</span> are Plank’s and Bohr magneton constants, respectively. Therefore, it is determined only by the microwave frequency (<span class="math inline">\(\nu\)</span>) and the magnetic flux density (<span class="math inline">\(\small B_0\)</span>) of the spectrum mid-point where <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0\)</span> (in the case of CW EPR spectra, see also function <code><a href="../reference/eval_gFactor_Spec.html">eval_gFactor_Spec()</a></code>).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -565,10 +565,10 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span class="header-section-number">5.3</span> Hyperfine (HF) Structure and Simulations<a class="anchor" aria-label="anchor" href="#hf-structure"></a>
 </h3>
 <p>The <strong>HF</strong> structure represents one of the most important characteristic of EPR spectra because it reflects the distribution of unpaired electron within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants (<span class="math inline">\(a\)</span>, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by <code><a href="../reference/convert_a_mT_2A.html">convert_a_mT_2A()</a></code> into hyperfine coupling constants in <span class="math inline">\(\mathrm{\small{MH}z}\)</span> (<span class="math inline">\(\small A\)</span>, HFCCs), by the following relation (Equation <a href="#eq:hfatoA">(5.2)</a>) ➨</p>
-<span class="math display" id="eq:hfatoA">\[\begin{equation}
+<p><span class="math display" id="eq:hfatoA">\[\begin{equation}
 \small A = \frac{a\,g\,\mu_{\mathrm{B}}}{h}
 \tag{5.2}
-\end{equation}\]</span>
+\end{equation}\]</span></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># two visible distances or HFSCs (a in mT)</span></span>
@@ -843,7 +843,7 @@ Figure 5.3: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</
 Figure 5.4: Corrected single and double integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> (see also Figure <a href="#fig:tmpd-basic-epr-integ-visual">5.3</a>).
 </p>
 </div>
-<p>Maximal value of the double/sigmoid integral 0.0024 can be used for the estimation of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> amount within the sample.</p>
+<p>Maximum value of the double/sigmoid integral 0.0024 can be used for the estimation of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> amount within the sample.</p>
 </div>
 </div>
 <div class="section level2">
