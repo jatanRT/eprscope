@@ -88,7 +88,7 @@
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.
 #' @param Nmax.evals Numeric value, pointing to maximum number of iterations/evaluations. \strong{Default}:
-#'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximal value).
+#'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximum value).
 #' @param tol.step Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
 #'   \strong{Default}: \code{tol.step = 5e-7}.
 #' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles), only
@@ -129,7 +129,7 @@
 #'   intensity of the experimental spectrum, intensity of the simulated spectrum (including
 #'   the baseline fit), residual intensity of the fit and finally, simulated spectrum intensity
 #'   without the baseline fit.}
-#'   \item{sum.LSQ.min}{The minimal sum of the residual square vector after the least-square
+#'   \item{sum.LSQ.min}{The minimum sum of the residual square vector after the least-square
 #'   procedure.}
 #'   \item{N.evals}{Number of iterations/function evaluations completed before termination.
 #'   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
@@ -139,9 +139,9 @@
 #'   of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements coincide with
 #'   the sum of squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
 #'   codes can be returned: \code{0}: algorithm terminated by reaching the absolute tolerance,
-#'   \code{1}: maximal number of function evaluations reached, \code{2}: maximal number of iterations reached,
-#'   \code{3}: maximal number of restarts reached, \code{4}: maximal number of iterations without improvement reached.
-#'   For all the remaining methods (coming from \code{{nloptr}} package), the integers have to be positive to indicate
+#'   \code{1}: maximum number of function evaluations reached, \code{2}: maximum number of iterations reached,
+#'   \code{3}: maximum number of restarts reached, \code{4}: maximum number of iterations without improvement reached.
+#'   For all the other remaining methods (coming from \code{{nloptr}} package), the integers have to be positive to indicate
 #'   the successful convergence.}
 #'   }
 #'   }
@@ -185,7 +185,7 @@
 #' ## fit subtracted:
 #' tempo.test.sim.fit.a$plot
 #' #
-#' ## minimal sum of squared residuals:
+#' ## minimum sum of squared residuals:
 #' tempo.test.sim.fit.a$sum.LSQ.min
 #' #
 #' ## number of evaluations / iterations:
@@ -1050,10 +1050,10 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       N.converg[[m]] <-
         optimization.list[[m]]$convergence ## An integer code. `0` indicates that the algorithm
                                            ## terminated by reaching the absolute tolerance; otherwise:
-                                           ## `1` Maximal number of function evaluations reached.
-                                           ## `2` Maximal number of iterations reached.
-                                           ## `3` Maximal number of restarts reached.
-                                           ## `4` Maximal number of iterations without improvement reached.
+                                           ## `1` Maximum number of function evaluations reached.
+                                           ## `2` Maximum number of iterations reached.
+                                           ## `3` Maximum number of restarts reached.
+                                           ## `4` Maximum number of iterations without improvement reached.
 
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||

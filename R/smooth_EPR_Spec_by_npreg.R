@@ -71,7 +71,7 @@
 #'   (derivative or integrated).}
 #'   \item{plot}{Plot object (list) \emph{EPR intensity} \emph{vs.} \emph{B} with the experimental
 #'   data and its corresponding smoothed relation performed by splines.}
-#'   \item{rss}{Weighted (if the optional parameter \code{w} is defined) residual sum of squares.}
+#'   \item{rss}{Weighted (if the optional parameter \code{w} is defined) sum of residual squares.}
 #'   \item{degs.freedom}{Equivalent degrees of freedom used.}
 #'   \item{fit}{List with elements to characterize the spline fit (Details see \code{fit} value
 #'   in \code{\link[npreg]{ss}} function documentation).}
@@ -123,7 +123,7 @@
 #' ## plot preview
 #' triarylamine.1st.spec.smooth$plot
 #' #
-#' ## residual sum of squares preview
+#' ## sum of residual squares preview
 #' triarylamine.1st.spec.smooth$rss
 #' #
 #' ## estimated error standard deviation
@@ -228,7 +228,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
     results <- list(
       df = data.spectr,
       plot = plot.expr.smoothed,
-      rss = smooth.epr.spec.list$pen.crit, ## (weighted) residual sum of squares
+      rss = smooth.epr.spec.list$pen.crit, ## (weighted) sum of residual squares
       degs.freedom = smooth.epr.spec.list$df, ## corresponding degrees of freedom
       fit = smooth.epr.spec.list$fit, ## list with fit characteristics
       sigma = smooth.epr.spec.list$sigma, ## estimated error standard deviation.

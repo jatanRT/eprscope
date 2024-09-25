@@ -99,14 +99,14 @@ a subsequent integration), prior to fitting procedure. If \code{time.correct = T
 the \code{path} to file with EPR instrumental parameters (like \code{.DSC}/\code{.dsc} or \code{par})
 must be defined (see the \code{path_to_dsc_par}).}
 
-\item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
+\item{path_to_dsc_par}{Character string, path (also provided by the \code{\link[base]{file.path}})
 to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
 \code{text} files including instrumental parameters and provided by the EPR machine.
 \strong{Default}: \code{path_to_dsc_par = NULL}.}
 
 \item{origin}{Character string, corresponding to software which was used to acquire the EPR spectra,
 essential to load the parameters by \code{path_to_dsc_par} (see also \code{\link{readEPR_params_slct_kin}}).
-Two origins are availabe: \code{origin = "winepr"} or \code{origin = "xenon"}.}
+Two origins are available: \code{origin = "winepr"} or \code{origin = "xenon"}.}
 
 \item{...}{additional arguments for \code{\link[minpack.lm]{nls.lm}}.}
 }
@@ -122,9 +122,9 @@ List with the following components is available:
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
-  \item{sum.LSQ.min}{Minimal least-square sum after \code{N.evals}.}
-  \item{N.converg}{Vector corresponding to residual sum of squares at each iteration/evaluation.
-  The length of \code{convergence} is equal to the length of \code{N.evals}.}
+  \item{sum.LSQ.min}{Minimum residual least-squares sum after \code{N.evals}.}
+  \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.
+  The length of \code{N.converg} is equal to the length of \code{N.evals}.}
   }
 }
 \description{

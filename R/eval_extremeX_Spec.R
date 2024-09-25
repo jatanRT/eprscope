@@ -15,8 +15,8 @@
 #' @param extreme Character string with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default}).
 #'
 #'
-#' @returns Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF} corresponding
-#'  to \code{minimal} or \code{maximal} \code{intensity} within the EPR/ENDOR spectrum or its integrated form.
+#' @returns Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF}, corresponding
+#'  to \code{intensity} \code{minimum} or its \code{maximum}, within the EPR/ENDOR spectrum or its integrated form.
 #'
 #'
 #' @examples

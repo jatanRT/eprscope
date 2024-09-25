@@ -72,7 +72,7 @@ List containing the following elements, depending on \code{separate.plots}:
     \describe{
     \item{df}{Original \code{data.at} data frame object with the following additional
     columns/variables: \code{Q_C} (charge in coulombs), \code{Q_mC} (charge in millicoulombs,
-    if the maximal charge \eqn{\leq 0.099\,\text{C}}) and \code{Ne} (number of transferred
+    if the maximum charge \eqn{\leq 0.099\,\text{C}}) and \code{Ne} (number of transferred
     electrons, if \code{Ne.output = TRUE}).}
     \item{plot}{Side-by-side plot object (list) of \eqn{N_{\text{e}}} \emph{vs} \eqn{t,E}
     as well as \eqn{Q} \emph{vs} \eqn{t,E}.}
@@ -82,7 +82,7 @@ List containing the following elements, depending on \code{separate.plots}:
     \describe{
     \item{df}{Original \code{data.at} data frame object with the following additional
     columns/variables: \code{Q_C} (charge in coulombs), \code{Q_mC} (charge in millicoulombs,
-    if the maximal charge \eqn{\leq 0.099\,\text{C}}) and \code{Ne} (number of transferred
+    if the maximum charge \eqn{\leq 0.099\,\text{C}}) and \code{Ne} (number of transferred
     electrons, if \code{Ne.output = TRUE}).}
     \item{plot.Ne}{Plot object (list) of \eqn{N_{\text{e}}} \emph{vs} \eqn{t,E}.}
     \item{plot.Q}{Plot object (list) of \eqn{Q} \emph{vs} \eqn{t,E}.}

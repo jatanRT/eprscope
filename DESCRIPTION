@@ -14,7 +14,7 @@ Description: Processing, analysis and plottting of
              may be also used for the integrated forms of 1D 
              PULSED EPR spectra. It is able to find the most 
              important spectral characteristics like g-factor, 
-             linewidth, maximal derivative or integral intensities 
+             linewidth, maximum of derivative or integral intensities 
              and single/double integrals. This is especially 
              important in spectral (time) series consisting of many 
              EPR spectra like during variable temperature experiments, 

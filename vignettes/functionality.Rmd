@@ -47,12 +47,11 @@ library(plotly)
 
 The *Wuster's* reagent got its name according to *C. Wuster* who discovered the oxidation products of *p*-phenylenediamine derivatives [@GramppGpda2005]. It is a suitable compound to demonstrate the feasibility of Electron paramagnetic resonance (EPR) combined with the *in situ* electrochemistry/voltammetry because of the one-electron oxidation [@PetrAse1996]:
 
-```{=tex}
 \begin{equation}
 \small \ce{TMPD <=>[-e^-] TMPD^{.+}}
 (\#eq:tmpdoxid)
 \end{equation}
-```
+
 where the $\small \ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenediamine (Wuster's reagent) abbreviation. The second oxidation step into di-cationic structure (not depicted in Equation \@ref(eq:tmpdoxid)) takes place far ($\small \approx (0.5-0.6)\,\mathrm{V}$) from the first one [@Dadpou2018]. Therefore, upon the first oxidation step, it changes its state from diamagnetic (not visible by EPR) to paramagnetic (with one unpaired electron) observable by a characteristic EPR spectrum, as shown below. Such change is not only visible by the "magic" where the nicely structured EPR spectrum rises from the noisy background upon oxidation, however, it is also associated with an exciting color change from almost colorless to violet-blue. Accordingly and unsurprisingly, **the radical cation of *N,N,N',N'*-tetramethyl-*p*-phenylenediamine is** described as ***Wuster's*** **blue**. Such example will demonstrate the main workflow to process and analyse EPR spectra by the `{eprscope}` 📦 . The $\small \ce{TMPD^{.+}}$ was generated electrochemically by potentiostatic electrolysis at 0.308 V (*vs* Ag-*quasiref.* electrode) of the corresponding $\small 1\,\mathrm{mM}$ $\small \ce{TMPD}$ solution in $\small 0.3\,\mathrm{M}\,\,\ce{TBAPF6}/\ce{DMSO}$.
 
 # Drawing of Molecular Structures
@@ -296,12 +295,11 @@ There are four basic parameters to characterize the EPR spectrum ➨
 
 The parameter is defined by the following Equation \@ref(eq:gfactor):
 
-```{=tex}
 \begin{equation}
 \small g_{\mathrm{iso}} = \frac{h\,\nu}{\mu_{\mathrm{B}}\,B_0}
 (\#eq:gfactor)
 \end{equation}
-```
+
 where the $h$ and $\mu_{\mathrm{B}}$ are Plank's and Bohr magneton constants, respectively. Therefore, it is determined only by the microwave frequency ($\nu$) and the magnetic flux density ($\small B_0$) of the spectrum mid-point where $\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B = 0$ (in the case of CW EPR spectra, see also function `eval_gFactor_Spec()`).
 
 ```{r spectral-data-norm02-gvalue}
@@ -397,12 +395,11 @@ tmpd.delta.Bpp.mean
 
 The **HF** structure represents one of the most important characteristic of EPR spectra because it reflects the distribution of unpaired electron within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants ($a$, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by `convert_a_mT_2A()` into hyperfine coupling constants in $\mathrm{\small{MH}z}$ ($\small A$, HFCCs), by the following relation (Equation \@ref(eq:hfatoA)) ➨
 
-```{=tex}
 \begin{equation}
  \small A = \frac{a\,g\,\mu_{\mathrm{B}}}{h}
  (\#eq:hfatoA)
  \end{equation}
-```
+
 ```{r a-to-A-from-spectrum}
 
 # two visible distances or HFSCs (a in mT)
@@ -622,6 +619,6 @@ plot_EPR_Specs_integ(
 
 ```
 
-Maximal value of the double/sigmoid integral `r round(max(tmpd.data.norm.02.integCorr$sigmoid_Integ),digits = 4)` can be used for the estimation of $\small \ce{TMPD^{.+}}$ amount within the sample.
+Maximum value of the double/sigmoid integral `r round(max(tmpd.data.norm.02.integCorr$sigmoid_Integ),digits = 4)` can be used for the estimation of $\small \ce{TMPD^{.+}}$ amount within the sample.
 
 # References {.unnumbered}

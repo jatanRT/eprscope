@@ -41,7 +41,7 @@ time.}
 \item{tol.step}{Numeric, the smallest optimization step (relative change) between
 2 iterations to stop the optimization procedure. For the \code{method = "pswarm"}
 (particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
-Once the maximal distance between the "best" particle and all the others is less
+Once the maximum distance between the "best" particle and all the others is less
 than \code{tol.step} * \code{pswarm.diameter}) the algorithm restarts.
 See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.}
 
@@ -68,14 +68,14 @@ For all listed algorithms the function returns \code{list}, with the elements li
   see also \code{Value} in \code{\link[pso]{psoptim}}) before the termination.
 
   \item (Un)successful termination information (\code{convergence} or \code{rsstrace}), usually
-  corresponding either to integer value showing the (un)successful termination like \code{2: Maximal number
+  corresponding either to integer value showing the (un)successful termination like \code{2: Maximum number
   of iterations reached} (or integer code > 0 indicating successful completion) or in the case
   of \code{\link[minpack.lm]{nls.lm}}, it returns a vector with the values equal
-  to sum of squares at each iteration.
+  to sum of residual squares at each iteration.
 
   \item A descriptive message/character string giving additional information about the optimization
   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
-  because most of the information can be found in the previous convergence.
+  because most of the information can be found in the previous convergence measures.
   }
 }
 \description{
@@ -126,10 +126,10 @@ All algorithms are based on the least-square minimization however,
 ## the `quantify_EPR_Sim_series` function
 #
 ## if an EPR spectrum consists of several
-## components or several radicals partly overlay,
+## components or several radical spectra partly overlay,
 ## following simple function, taking the linear
 ## combination of EPR simulated intensities (max. 6),
-## can be applied in order to fit the sum of individual
+## can be applied in order to fit the sum of the individual
 ## simulations onto the experimental EPR spectrum
 ## envelope, the input parameters therefore correspond
 ## to zero-point/intercept(par[1]) and coefficients

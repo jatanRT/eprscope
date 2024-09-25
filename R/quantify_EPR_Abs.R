@@ -104,7 +104,7 @@
 #'   usually provided by the probehead manufacturer.
 #' @param fn.B1.Bm.fit.y Numeric vector (coefficients) of the polynomial degree from 5 to 12.
 #'   Coefficients for the standard Bruker rectangular cavity are set as \strong{default}.
-#' @param fn.B1.Bm.fit.y.max Numeric value corresponding to maximal value of the polynomial fit.
+#' @param fn.B1.Bm.fit.y.max Numeric value corresponding to maximum value of the polynomial fit.
 #'   Value for the standard Bruker rectangular cavity is set as \strong{default}.
 #' @param Norm.const Numeric value corresponding to normalization constant (see
 #'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case

@@ -82,7 +82,7 @@
 #' @param tol.step Numeric, the smallest optimization step (relative change) between
 #'   2 iterations to stop the optimization procedure. For the \code{optim.method = "pswarm"}
 #'   (particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
-#'   Once the maximal distance between the "best" particle and all the others is less
+#'   Once the maximum distance between the "best" particle and all the others is less
 #'   than \code{tol.step} * \code{pswarm.diameter}) the algorithm restarts.
 #'   See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.
 #' @param pswarm.size Numeric value equal to particle swarm size (i.e. number of particles),
@@ -112,7 +112,7 @@
 #'   the components are denoted by uppercase letters (\code{Area_Sim_A}, \code{Area_Sim_B},...etc.);
 #'   best fitted/optimized coefficients to multiply the intensities (\code{Optim_CoeffInt_Sim_A},
 #'   \code{Optim_CoeffInt_Sim_B},...etc); best fitted/optimized intercept (or baseline constant,
-#'   \code{Optim_intercept}); minimal sum of residual squares (\code{minLSQ_sum}); number
+#'   \code{Optim_intercept}); minimum sum of the residual squares (\code{minLSQ_sum}); number
 #'   of evaluations/iterations (\code{N_evals}) and finally convergence information/number (\code{N_converg},
 #'   like already described in \code{\link{optim_for_EPR_fitness}}). These variables are presented for each
 #'   \code{var2nd.series} (e.g. time) point like example for one EPR spectral component:
@@ -446,7 +446,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
            function(n) paste0("coeffInt_Sim_",LETTERS[n])
            )
   #
-  ## minimal value for the least-square optimization method
+  ## minimum value for the least-square optimization method
   method.cond <- ifelse(optim.method == "levenmarq",TRUE,FALSE)
   optim.vec.min.val <-
     switch(2-method.cond,

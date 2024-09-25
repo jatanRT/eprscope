@@ -38,7 +38,7 @@ Finding the full width at half-maximum (FWHM) height of the EPR integrated spect
   If this is not the case, the derivative EPR spectrum (with the intensity \code{dIepr_over_dB})
   can be integrated by \code{\link{eval_integ_EPR_Spec}}. The FWHM is evaluated as a difference
   between the points (\eqn{x > x_{\text{max}}} and \eqn{x < x_{\text{max}}}) having the intensity
-  closest to the maximal intensity/2 corresponding to one individual EPR line/peak defined
+  closest to the intensity maximum/2 corresponding to one individual EPR line/peak defined
   by the \code{xlim} argument.
 }
 \examples{

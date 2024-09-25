@@ -113,7 +113,7 @@ the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline
 \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.}
 
 \item{Nmax.evals}{Numeric value, pointing to maximum number of iterations/evaluations. \strong{Default}:
-\code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximal value).}
+\code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximum value).}
 
 \item{tol.step}{Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
 \strong{Default}: \code{tol.step = 5e-7}.}
@@ -159,7 +159,7 @@ List with following components depending on \code{sim.check}:
   intensity of the experimental spectrum, intensity of the simulated spectrum (including
   the baseline fit), residual intensity of the fit and finally, simulated spectrum intensity
   without the baseline fit.}
-  \item{sum.LSQ.min}{The minimal sum of the residual square vector after the least-square
+  \item{sum.LSQ.min}{The minimum sum of the residual square vector after the least-square
   procedure.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
@@ -169,9 +169,9 @@ List with following components depending on \code{sim.check}:
   of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements coincide with
   the sum of squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
   codes can be returned: \code{0}: algorithm terminated by reaching the absolute tolerance,
-  \code{1}: maximal number of function evaluations reached, \code{2}: maximal number of iterations reached,
-  \code{3}: maximal number of restarts reached, \code{4}: maximal number of iterations without improvement reached.
-  For all the remaining methods (coming from \code{{nloptr}} package), the integers have to be positive to indicate
+  \code{1}: maximum number of function evaluations reached, \code{2}: maximum number of iterations reached,
+  \code{3}: maximum number of restarts reached, \code{4}: maximum number of iterations without improvement reached.
+  For all the other remaining methods (coming from \code{{nloptr}} package), the integers have to be positive to indicate
   the successful convergence.}
   }
   }
@@ -226,7 +226,7 @@ tempo.test.sim.fit.a$best.fit.params
 ## fit subtracted:
 tempo.test.sim.fit.a$plot
 #
-## minimal sum of squared residuals:
+## minimum sum of squared residuals:
 tempo.test.sim.fit.a$sum.LSQ.min
 #
 ## number of evaluations / iterations:
