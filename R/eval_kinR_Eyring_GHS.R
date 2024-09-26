@@ -45,7 +45,12 @@
 #'   computation}).
 #'
 #'
-#' @return
+#' @return As a result of the Eyring-relation fit, list with the following components is avalilable:
+#'   \describe{
+#'   \item{}{.}
+#'   \item{}{.}
+#'   \item{}{.}
+#'   }
 #'
 #'
 #' @examples
@@ -102,7 +107,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  Temp,
                                  Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
-                                 fit.method = "default"){ ## "Gauss-Newton" + "plinear" (Golub-Pereyra) and "port" (all from `nls`)
+                                 fit.method = "default"){ ## "Gauss-Newton" +
+                                 ## "plinear" (Golub-Pereyra) and "port" (all from `nls`)
   #
   ## 'Temporary' processing variables
   T_K <- NULL
