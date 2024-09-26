@@ -123,13 +123,13 @@
 #'
 #'
 #' @references
-#'   \insertRef{alston2021}{eprscope}
+#'  \insertRef{alston2021}{eprscope}
 #'
-#'   \insertRef{gandrud2020}{eprscope}
+#'  \insertRef{gandrud2020}{eprscope}
 #'
-#'   \insertRef{nih2019}{eprscope}
+#'  \insertRef{nih2019}{eprscope}
 #'
-#'   \insertRef{AllaireQuarto2024}{eprscope}
+#'  \insertRef{AllaireQuarto2024}{eprscope}
 #'
 #'
 #'
