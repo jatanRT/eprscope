@@ -2,7 +2,7 @@
 % Please edit documentation in R/readMAT_params_file.R
 \name{readMAT_params_file}
 \alias{readMAT_params_file}
-\title{Read all Parameters (incl. the Simulation ones) from \emph{MATLAB} \code{.mat} File}
+\title{Read EPR Simulation Parameters and Information from \emph{MATLAB} \code{.mat} File}
 \usage{
 readMAT_params_file(path_to_MAT, str.var = NULL, field.var = NULL)
 }

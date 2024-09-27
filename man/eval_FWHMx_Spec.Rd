@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_FWHMx_Spec.R
 \name{eval_FWHMx_Spec}
 \alias{eval_FWHMx_Spec}
-\title{Evaluating Full Width at Half-Maximum (FWHM) from integrated EPR Spectra}
+\title{Evaluating Full Width at Half-Maximum (FWHM) from Integrated EPR Spectrum}
 \usage{
 eval_FWHMx_Spec(
   data.spectr.integ,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantify_EPR_Sim_series.R
 \name{quantify_EPR_Sim_series}
 \alias{quantify_EPR_Sim_series}
-\title{Quantify (Components) Area of Simulated EPR Spectral Series Instead of Experimental One}
+\title{Quantify (Components) Areas of Series of Simulated EPR Spectra}
 \usage{
 quantify_EPR_Sim_series(
   data.spectra.series,

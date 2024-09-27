@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_Sim_Spec.R
 \name{readEPR_Sim_Spec}
 \alias{readEPR_Sim_Spec}
-\title{Read the Simulated ASCII EPR Spectrum}
+\title{Read Simulated ASCII EPR Spectrum}
 \usage{
 readEPR_Sim_Spec(
   path_to_ASC,

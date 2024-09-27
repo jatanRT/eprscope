@@ -1,6 +1,6 @@
 
 #
-#' Plot Voltammogram or Chronoamperogram from (Spectro)Electrochemical Experiment
+#' Plot Voltammogram or Chronoamperogram of the (Spectro)Electrochemical Experiment
 #'
 #'
 #' @family EPR Spectroelectrochemistry

@@ -72,7 +72,7 @@ eval_gFactor <- function(nu.val,
 #
 #
 #
-#' Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
+#' Calculation of \eqn{g}-factor ("Position") from EPR Spectrum/Data
 #'
 #'
 #' @family Evaluations

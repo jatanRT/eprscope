@@ -1,4 +1,4 @@
-#' Read the Selected EPR Instrumental Parameters and Information
+#' Read Selected EPR Instrumental Parameters and Information
 #'
 #'
 #' @family Data Reading
@@ -309,7 +309,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #
 #
 #
-#' Read the Selected Instrumental Parameters of Time Series Experiment
+#' Read the Selected Instrumental Parameters of EPR Time Series Experiment
 #'
 #'
 #' @family Data Reading

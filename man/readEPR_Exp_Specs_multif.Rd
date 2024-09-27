@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_Exp_Specs_multif.R
 \name{readEPR_Exp_Specs_multif}
 \alias{readEPR_Exp_Specs_multif}
-\title{Load Several/Multiple EPR Spectral Data Files Simultaneously}
+\title{Load Several/Multiple EPR Data/Spectra Files Simultaneously}
 \usage{
 readEPR_Exp_Specs_multif(
   name.pattern,

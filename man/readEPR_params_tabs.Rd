@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_tabs.R
 \name{readEPR_params_tabs}
 \alias{readEPR_params_tabs}
-\title{Read the EPR Instrumental Parameters and Experiment Information}
+\title{Read EPR Instrumental Parameters and Information into Tables}
 \usage{
 readEPR_params_tabs(path_to_dsc_par, origin = "xenon", interact = NULL)
 }

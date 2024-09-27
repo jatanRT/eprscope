@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_params_slct_kin}
 \alias{readEPR_params_slct_kin}
-\title{Read the Selected Instrumental Parameters of Time Series Experiment}
+\title{Read the Selected Instrumental Parameters of EPR Time Series Experiment}
 \usage{
 readEPR_params_slct_kin(path_to_dsc_par, origin = "xenon")
 }

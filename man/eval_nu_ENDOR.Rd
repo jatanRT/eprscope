@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_nu_ENDOR.R
 \name{eval_nu_ENDOR}
 \alias{eval_nu_ENDOR}
-\title{Calculation of ENDOR/Larmor Frequency for a Specific Nucleus}
+\title{ENDOR/Larmor Frequency of Specific Nucleus}
 \usage{
 eval_nu_ENDOR(nucle_us_i, B.unit = "G", B.val)
 }

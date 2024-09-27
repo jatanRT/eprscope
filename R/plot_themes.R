@@ -135,7 +135,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #
 #
 #
-#' Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks
+#' Custom \code{ggplot2} Theme without \code{Y} Axis Ticks
 #'
 #'
 #' @family Visualizations and Graphics
@@ -287,7 +287,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #
 #
 #
-#' Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside of the Panel
+#' Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside the Panel
 #'
 #'
 #' @family Visualizations and Graphics

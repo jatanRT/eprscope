@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_layout2D_interact.R
 \name{plot_layout2D_interact}
 \alias{plot_layout2D_interact}
-\title{Additional Layout for Interactive Plots Similar to Layout from Plotly Package}
+\title{Additional Layout for Interactive 2D Plots}
 \usage{
 plot_layout2D_interact(
   p,

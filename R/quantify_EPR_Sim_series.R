@@ -1,5 +1,5 @@
 #
-#' Quantify (Components) Area of Simulated EPR Spectral Series Instead of Experimental One
+#' Quantify (Components) Areas of Series of Simulated EPR Spectra
 #'
 #'
 #' @family Simulations and Optimization

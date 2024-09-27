@@ -1,5 +1,5 @@
 #
-#' Quantitative Kinetic Model Profiles by Numeric Solution of the ODE.
+#' Quantitative EPR Kinetic Model Profiles by Numeric Solution of the ODE.
 #'
 #'
 #' @family Evaluations and Quantification

@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_integ_EPR_Spec.R
 \name{eval_integ_EPR_Spec}
 \alias{eval_integ_EPR_Spec}
-\title{Integration of EPR Spectral Data for Quantitative Analysis}
+\title{Integration of EPR Spectrum/Data for Quantitative Analysis}
 \usage{
 eval_integ_EPR_Spec(
   data.spectr,

@@ -1,5 +1,5 @@
 #
-#' Read the EPR Experimental ASCII or other Text-Based Data.
+#' Read the Experimental ASCII or other Text-Based EPR Data.
 #'
 #'
 #' @family Data Reading

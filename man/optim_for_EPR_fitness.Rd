@@ -2,7 +2,7 @@
 % Please edit documentation in R/optim_for_EPR_fitness.R
 \name{optim_for_EPR_fitness}
 \alias{optim_for_EPR_fitness}
-\title{General Function to Non-Linear Optimization of the EPR Data}
+\title{General Function for Non-Linear Optimization/Fitting of EPR Parameters/Data}
 \usage{
 optim_for_EPR_fitness(
   method = "neldermead",

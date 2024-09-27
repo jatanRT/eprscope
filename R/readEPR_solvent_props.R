@@ -1,5 +1,5 @@
 #'
-#' Reading Solvent Properties from \code{solvents_ds} Data Frame (Database)
+#' Reading Solvent Properties from \code{solvents_ds} Dataset
 #'
 #'
 #' @family Data Reading

@@ -1,5 +1,5 @@
 #'
-#'  Calculation of ENDOR/Larmor Frequency for a Specific Nucleus
+#'  ENDOR/Larmor Frequency of Specific Nucleus
 #'
 #'
 #' @family Evaluations

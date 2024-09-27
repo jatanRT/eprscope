@@ -1,5 +1,5 @@
 #
-#' Read the EPR Instrumental Parameters and Experiment Information
+#' Read EPR Instrumental Parameters and Information into Tables
 #'
 #'
 #' @family Data Reading

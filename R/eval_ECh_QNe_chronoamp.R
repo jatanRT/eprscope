@@ -32,6 +32,7 @@
 #'   it reveals the presence of one-electron oxidation/reduction, while different numbers may point
 #'   to a more complex mechanism (such as comproportionation, follow-up reactions, multiple electron transfer).
 #'
+#'
 #' @references
 #'   \insertRef{Bard2022elcheM}{eprscope}
 #'

@@ -1,5 +1,5 @@
 #
-#' Integration of EPR Spectral Data for Quantitative Analysis
+#' Integration of EPR Spectrum/Data for Quantitative Analysis
 #'
 #'
 #' @family Evaluations and Quantification

@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_solvent_props.R
 \name{readEPR_solvent_props}
 \alias{readEPR_solvent_props}
-\title{Reading Solvent Properties from \code{solvents_ds} Data Frame (Database)}
+\title{Reading Solvent Properties from \code{solvents_ds} Dataset}
 \usage{
 readEPR_solvent_props(solvent, prop = NULL)
 }

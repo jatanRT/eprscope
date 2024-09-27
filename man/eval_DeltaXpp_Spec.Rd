@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_DeltaXpp_Spec.R
 \name{eval_DeltaXpp_Spec}
 \alias{eval_DeltaXpp_Spec}
-\title{Calculation of Spectral Linewidth ( e.g. \eqn{\Delta B_{pp}}) of the EPR/ENDOR Spectrum}
+\title{Calculation of EPR/ENDOR Spectrum Linewidth ( e.g. \eqn{\Delta B_{pp}})}
 \usage{
 eval_DeltaXpp_Spec(
   data.spectr,

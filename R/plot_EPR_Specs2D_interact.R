@@ -1,5 +1,5 @@
 #
-#' Interactive Plot (incl. Zooming, Data Reading...etc) for EPR Spectra
+#' Interactive Plot (incl. Zooming, Data Reading...etc) of EPR Spectra
 #'
 #'
 #' @family Visualizations and Graphics

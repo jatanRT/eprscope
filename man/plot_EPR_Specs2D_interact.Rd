@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_Specs2D_interact.R
 \name{plot_EPR_Specs2D_interact}
 \alias{plot_EPR_Specs2D_interact}
-\title{Interactive Plot (incl. Zooming, Data Reading...etc) for EPR Spectra}
+\title{Interactive Plot (incl. Zooming, Data Reading...etc) of EPR Spectra}
 \usage{
 plot_EPR_Specs2D_interact(
   data.spectra,

@@ -1,5 +1,5 @@
 #
-#' Additional Layout for Interactive Plots Similar to Layout from Plotly Package
+#' Additional Layout for Interactive 2D Plots
 #'
 #'
 #' @family Visualizations and Graphics

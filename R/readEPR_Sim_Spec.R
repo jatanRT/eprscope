@@ -1,5 +1,5 @@
 #
-#' Read the Simulated ASCII EPR Spectrum
+#' Read Simulated ASCII EPR Spectrum
 #'
 #'
 #' @family Data Reading

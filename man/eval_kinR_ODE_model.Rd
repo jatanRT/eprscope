@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_kinR_ODE_model.R
 \name{eval_kinR_ODE_model}
 \alias{eval_kinR_ODE_model}
-\title{Quantitative Kinetic Model Profiles by Numeric Solution of the ODE.}
+\title{Quantitative EPR Kinetic Model Profiles by Numeric Solution of the ODE.}
 \usage{
 eval_kinR_ODE_model(
   model.react = "(r=1)R --> [k1] B",

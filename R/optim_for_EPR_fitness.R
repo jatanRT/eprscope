@@ -1,6 +1,6 @@
 #'
 #'
-#' General Function to Non-Linear Optimization of the EPR Data
+#' General Function for Non-Linear Optimization/Fitting of EPR Parameters/Data
 #'
 #'
 #' @family Simulations and Optimization

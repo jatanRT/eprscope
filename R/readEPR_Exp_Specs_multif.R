@@ -1,5 +1,5 @@
 #
-#' Load Several/Multiple EPR Spectral Data Files Simultaneously
+#' Load Several/Multiple EPR Data/Spectra Files Simultaneously
 #'
 #'
 #' @family Data Reading

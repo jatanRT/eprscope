@@ -1,6 +1,6 @@
 #
 #'
-#' Calculation of Spectral Linewidth ( e.g. \eqn{\Delta B_{pp}}) of the EPR/ENDOR Spectrum
+#' Calculation of EPR/ENDOR Spectrum Linewidth ( e.g. \eqn{\Delta B_{pp}})
 #'
 #'
 #' @family Evaluations

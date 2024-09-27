@@ -1,5 +1,5 @@
 #
-#' Time Correction for the Experimental CW EPR Spectral Time Series.
+#' Time Correction for the Experimental CW EPR Time Series.
 #'
 #'
 #' @family Conversions and Corrections

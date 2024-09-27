@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_themes.R
 \name{plot_theme_Out_ticks}
 \alias{plot_theme_Out_ticks}
-\title{Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside of the Panel}
+\title{Custom \code{ggplot2} Theme with Axis Ticks Oriented Outside the Panel}
 \usage{
 plot_theme_Out_ticks(
   axis.text.size = 14,

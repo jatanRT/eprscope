@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Fitting of the simulated spectrum, onto the experimental one represents an important step in the analysis
+#'   Fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
 #'   of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
 #'   (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
 #'   (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on \code{lineSpecs.form});

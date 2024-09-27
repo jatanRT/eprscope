@@ -1,5 +1,5 @@
 #
-#' Convert Coupling Constants into Splitting ones.
+#' Convert Coupling Constants into Splitting Ones.
 #'
 #'
 #' @family Conversions and Corrections

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ECh_VoC_amperogram.R
 \name{plot_ECh_VoC_amperogram}
 \alias{plot_ECh_VoC_amperogram}
-\title{Plot Voltammogram or Chronoamperogram from (Spectro)Electrochemical Experiment}
+\title{Plot Voltammogram or Chronoamperogram of the (Spectro)Electrochemical Experiment}
 \usage{
 plot_ECh_VoC_amperogram(
   data.vat,

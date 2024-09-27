@@ -1,5 +1,5 @@
 #'
-#' Radical Kinetic Models Fitted to Experimental Data
+#' Radical Kinetic Models Fitted onto Experimental Data
 #'
 #'
 #' @family Evaluations and Quantification

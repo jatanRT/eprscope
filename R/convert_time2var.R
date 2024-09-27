@@ -41,7 +41,7 @@
 #'   \strong{Default}: \code{var.rate.unit = "s^{-1}"}.
 #'
 #'
-#' @return Numeric value or vector of the variable such as electrochem. potential or temperature,
+#' @return Numeric value or vector of the variable such as electrochemical potential or temperature,
 #'   linearly changing upon time.
 #'
 #'

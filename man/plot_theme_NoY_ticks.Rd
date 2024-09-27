@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_themes.R
 \name{plot_theme_NoY_ticks}
 \alias{plot_theme_NoY_ticks}
-\title{Custom \code{ggplot2} Theme with NO \code{Y} Axis Ticks}
+\title{Custom \code{ggplot2} Theme without \code{Y} Axis Ticks}
 \usage{
 plot_theme_NoY_ticks(
   axis.text.size = 14,

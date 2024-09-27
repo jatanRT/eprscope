@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_a_mT_2A.R
 \name{convert_a_mT_2A}
 \alias{convert_a_mT_2A}
-\title{Convert Splitting Constants into Coupling ones.}
+\title{Convert Splitting Constants into Coupling Ones.}
 \usage{
 convert_a_mT_2A(a.mT, g.val = 2.0023193)
 }

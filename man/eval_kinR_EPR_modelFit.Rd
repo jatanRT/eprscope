@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_kinR_EPR_modelFit.R
 \name{eval_kinR_EPR_modelFit}
 \alias{eval_kinR_EPR_modelFit}
-\title{Radical Kinetic Models Fitted to Experimental Data}
+\title{Radical Kinetic Models Fitted onto Experimental Data}
 \usage{
 eval_kinR_EPR_modelFit(
   data.qt.expr,
