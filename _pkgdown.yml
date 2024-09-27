@@ -2,45 +2,28 @@ url: https://jatanrt.github.io/eprscope/
 template:
   bootstrap: 5
   bootswatch: cerulean
-
 reference:
 - title: Built-In Datasets
-  contents:
-  - has_concept("Built-In Datasets")
-
+  contents: has_concept("Built-In Datasets")
 - title: Conversions and Corrections
-  contents:
-  - has_concept("Conversions and Corrections")
-
+  contents: has_concept("Conversions and Corrections")
 - title: Data Reading
-  contents:
-  - has_concept("Data Reading")
-
+  contents: has_concept("Data Reading")
 - title: EPR Spectroelectrochemistry
-  contents:
-  - has_concept("EPR Spectroelectrochemistry")
-
+  contents: has_concept("EPR Spectroelectrochemistry")
 - title: Evaluations
-  contents:
-  - has_concept("Evaluations")
-
+  contents: has_concept("Evaluations")
 - title: Evaluations and Quantum Chemistry
-  contents:
-  - has_concept("Evaluations and Quantum Chemistry")
-
+  contents: has_concept("Evaluations and Quantum Chemistry")
 - title: Evaluations and Quantification
-  contents:
-  - has_concept("Evaluations and Quantification")
-
+  contents: has_concept("Evaluations and Quantification")
 - title: Simulations and Optimization
-  contents:
-  - has_concept("Simulations and Optimization")
-
+  contents: has_concept("Simulations and Optimization")
 - title: Visualizations and Graphics
-  contents:
-  - has_concept("Visualizations and Graphics")
-
+  contents: has_concept("Visualizations and Graphics")
 - title: Non-Categorized
-  contents:
-  - lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data Reading","EPR Spectroelectrochemistry","Evaluations","Evaluations and Quantum Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations and Graphics"))
+  contents: lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data
+    Reading","EPR Spectroelectrochemistry","Evaluations","Evaluations and Quantum
+    Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations
+    and Graphics"))
 
