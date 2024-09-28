@@ -45,9 +45,15 @@
 #'   computation}).
 #'
 #'
-#' @return As a result of the Eyring-relation fit, list with the following components is avalilable:
+#' @return As a result of the Eyring-Polanyi-relation fit, list with the following components is available:
 #'   \describe{
-#'   \item{}{.}
+#'   \item{df}{Data frame including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
+#'   with the name of \code{DeltaG_active_kJ_per_mol}.}
+#'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
+#'   however with the resolution of 1000 points) and the corresponding \code{.fitted} \eqn{k}, according
+#'   Eyring-Polanyi model.}
+#'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
+#'   together with the Eyring-Polanyi equation.}
 #'   \item{}{.}
 #'   \item{}{.}
 #'   }
@@ -203,7 +209,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
               color = "magenta",
               linewidth = 1.1) +
     #{if(interv.cnfd)geom_ribbon(aes(ymin = lwr,ymax = upr),fill = "steelblue2",alpha = 0.2)} +
-    labs(title = "Eyring Fit",
+    labs(title = "Eyring-Polanyi Fit",
          caption = bquote(Delta^{active}*italic(H)^o ~ '=' ~ .(DeltaH_active*1e-3)~k*J~mol^-1~","
                           ~Delta^{active}*italic(S)^o~ '=' ~ .(DeltaS_active)~~J~K^-1~mol^-1~","
                           ~ kappa ~ '=' ~ .(transmiss.coeff) ~ "," ~ italic(c)^o ~ '=' ~ 1~~mol~dm^{-3}),
