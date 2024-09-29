@@ -32,10 +32,14 @@ Before the installation, please make sure that you have already followed instruc
 
 ```{r installation,eval=FALSE,echo=TRUE}
 
-# The package can be installed by =>
+# package can be installed by =>
 
-# install.packages("devtools")
+if (!require(devtools)) {install.packages("devtools")}
 devtools::install_github("jatanRT/eprscope")
+
+# alternatively, install package together with vignettes/articles:
+# if (!require(devtools)) {install.packages("devtools")}
+# devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 
 ```
 
