@@ -40,8 +40,8 @@ The confidence interval evaluation suggests that values/observations obey two-ta
   the sample standard deviation, defined by the following relation (regarding the \eqn{g}-value series example):
   \deqn{s = \sqrt{(1/(N-1))\,\sum_{i=1}^N (g_i - \overline{g})^2}}
   which is computed by the \code{\link[stats]{sd}}. The above-mentioned \eqn{t}-quantile is actually calculated
-  by the \code{\link[stats:TDist]{stats::qt}} function. Alternatively, one could also evaluate the confidence
-  interval by one sample \code{\link[stats]{t.test}} for a certain level of confidence, giving a descriptive output
+  by the \code{\link[stats:TDist]{stats::qt}} function. Alternatively, one could also evaluate confidence
+  interval by the one sample \code{\link[stats]{t.test}} for a certain level of confidence, giving a descriptive output
   with statistical characteristics.
 }
 \examples{
@@ -60,17 +60,26 @@ eval_interval_cnfd_tVec(di.vec,
 
 }
 \references{
-\insertRef{miller2018chmem}{eprscope}
+Miller JN, Miller JC, Miller RD (2018). \emph{Statistics and Chemometrics for Analytical Chemistry}, 7th edition,
+  Pearson Education. ISBN 978-1-292-18674-0, \url{https://elibrary.pearson.de/book/99.150005/9781292186726}.
 
-  \insertRef{distro32022}{eprscope}
+  Hayes A, Moller-Trane R, Jordan D, Northrop P, Lang MN, Zeileis A (2022). \emph{distributions3: Probability Distributions
+  as S3 Objects}. \url{https://github.com/alexpghayes/distributions3}, \url{https://alexpghayes.github.io/distributions3/},
+  see also \emph{Vignette: t-confidence interval for a mean},
+  \url{https://alexpghayes.github.io/distributions3/articles/one-sample-t-confidence-interval.html}.
 
-  \insertRef{nist2012confid}{eprscope}
+  National Institute of Standards and Technology (NIST) (2012). “Confidence Limits for the Mean”,
+  \url{https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm}.
 
-  \insertRef{kaleta2012carb}{eprscope}
+  Kaleta J, Tarábek J, Akdag A, Pohl R, Michl J (2012). “The 16 CB11(CH3)n(CD3)12–N• Radicals with
+  5-Fold Substitution Symmetry: Spin Density Distribution in CB11Me12•”,
+  \emph{Inorg. Chem.}, \strong{51}(20), 10819–10824, \url{https://doi.org/10.1021/ic301236s}.
 
-  \insertRef{psy2020confid}{eprscope}
+  Curley JP, Milewski TM (2020). “PSY317L Guidebook - Confidence Intervals”,
+  \url{https://bookdown.org/curleyjp0/psy317l_guides5/confidence-intervals.html}.
 
-  \insertRef{goods2011mathM}{eprscope}
+  Goodson DZ (2011). \emph{Mathematical Methods for Physical and Analytical Chemistry}, 1st edition,
+  John Wiley and Sons, Inc. ISBN 978-0-470-47354-2, \url{https://onlinelibrary.wiley.com/doi/book/10.1002/9781118135204}.
 }
 \seealso{
 Other Evaluations: 

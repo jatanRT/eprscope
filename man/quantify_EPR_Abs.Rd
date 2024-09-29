@@ -108,10 +108,10 @@ There are two approaches how to quantify the number of paramagnetic species/radi
   by the sigmoid integral ratio of the sample under study and that of the standard.
   While the \strong{absolute} method do not need the reference sample, it requires
   a precise cavity signal calibration as well as standardized cell geometry. Both are provided
-  by the EPR instrument and lab-glass manufacturers (see e.g. \insertCite{hirschCapill2023}{eprscope}).
+  by the EPR instrument and lab-glass manufacturers (see e.g. Hirschmann-Laborgeräte (2023), \code{References}).
   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
   \eqn{I_{\text{sigmoid}}},can be used to calculate the number of "spins"/radicals/paramagnetic species,
-  \eqn{N_{\text{Spins}}} \insertCite{eatonQepr2010,RWeberXenon2011}{eprscope} =>
+  \eqn{N_{\text{Spins}}} (see also \code{References}) =>
   \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
   \,N_{\text{Scans}})\,[\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)])}
   where the quantity notations possess the following meaning (whether it is instrumental or sample
@@ -180,17 +180,23 @@ data.quant <- mapply(function(x,y)
 
 }
 \references{
-\insertRef{eatonQepr2010}{eprscope}
+Eaton GR, Eaton SS, Barr DP, Weber RT (2010). \emph{Quantitative EPR}. Springer Science and Business Media.
+  ISBN 978-3-211-92947-6, \url{https://link.springer.com/book/10.1007/978-3-211-92948-3}.
 
-  \insertRef{RWeberXenon2011}{eprscope}
+  Weber RT (2011). \emph{Xenon User's Guide}. Bruker BioSpin Manual Version 1.3, Software Version 1.1b50.
 
-  \insertRef{hirschCapill2023}{eprscope}
+  Hirschmann-Laborgeräte (2023). “Ringcaps.” \url{https://hirschmannlab.de/en/produkt/ringcaps/}.
 
-  \insertRef{mazurAnalysis2000}{eprscope}
+  Mazúr M, Valko M, Morris H (2000). “Analysis of the Radial and Longitudinal Effect in a Double TE104
+  and a Single TE102 Rectangular Cavity.” \emph{J. Magn. Reson.}, \strong{142}(1), 37–56. ISSN 1090-7807,
+  \url{https://doi.org/10.1006/jmre.1999.1915}.
 
-  \insertRef{portisElectro1953}{eprscope}
+  Portis AM (1953). “Electronic Structure ofF Centers: Saturation of the Electron Spin Resonance.”
+  \emph{Phys. Rev.}, \strong{91}(5), 1071–1078, \url{https://doi.org/10.1103/PhysRev.91.1071}.
 
-  \insertRef{mailerQuant1977}{eprscope}
+  Mailer C, Sarna T, Swartz HM, Hyde JS (1977). “Quantitative Studies of Free Radicals in Biology:
+  Corrections to ESR Saturation Data.” \emph{J. Magn. Reson.} (1969), \strong{25}(1), 205–210, ISSN 0022-2364,
+  \url{https://doi.org/10.1016/0022-2364(77)90133-0}.
 }
 \seealso{
 Other Evaluations and Quantification: 

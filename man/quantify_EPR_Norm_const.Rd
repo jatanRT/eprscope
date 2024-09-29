@@ -73,9 +73,9 @@ quantify_EPR_Norm_const(conv.time.ms = 13.1,
 
 }
 \references{
-\insertRef{RWeberXenon2011}{eprscope}
+Weber RT (2011). \emph{Xenon User's Guide}. Bruker BioSpin Manual Version 1.3, Software Version 1.1b50.
 
- \insertRef{WinEPR2007}{eprscope}
+ Bruker Biospin (2007). \emph{WIN-EPR User's Manual}.
 }
 \seealso{
 Other Evaluations and Quantification: 

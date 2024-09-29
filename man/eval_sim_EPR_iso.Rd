@@ -124,7 +124,8 @@ EPR spectra often display hyperfine structure, where the spectral lines split in
   (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS) of isotropic EPR spectra
   by simulations. For such purpose, properties like nuclear \eqn{g}-value, spin quantum number as well as natural
   abundance of the isotopes, related to interacting nuclei, must be known and are gathered within the \code{\link{isotopes_ds}}.
-  EPR spectra can be simulated for the derivative as well as for the integrated line forms (see argument \code{lineSpec.form}).
+  EPR spectra can be simulated for the derivative as well as for the integrated line forms
+  (see the argument \code{lineSpec.form}).
 }
 \details{
 Theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent
@@ -137,18 +138,18 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   lines with equal widths. In such case the spectrum is characterized by the isotropic HF coupling/splitting
   constants \eqn{A_{\text{iso}}/a_{\text{iso}}} (see also the \code{nuclear.system} argument) as well as
   by the above-mentioned linewidth. Many organic radicals exhibit such EPR spectra at room temperature
-  and in solutions of low viscosities \insertCite{Gerson2003}{eprscope}.
+  and in solutions of low viscosities (Gerson F, Huber W (2003), see \code{References}).
 
   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined by \code{instrum.params}
   argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
   Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
-  by the resonance condition (see also \code{\link{eval_gFactor}}) and the by the Breit-Rabi analytical expression
-  for the energy levels of interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
-  because the corresponding \eqn{g}-value for each of the HFS-lines is not known, see \insertCite{weilBRabi1971}{eprscope}
-  and \insertCite{Stoll2006Brabi}{eprscope}. The shape of spectral lines are calculated by the analytical formula
+  by the resonance condition (see also the \code{\link{eval_gFactor}}) and by the Breit-Rabi analytical expression
+  for energy levels of the interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
+  because the corresponding \eqn{g}-value for each of the HFS-lines is not known (Weil JA (1971)
+  and Stoll A, Schweiger A (2006)). The shape of spectral lines are calculated by the analytical formula
   of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voigt,
-  \insertCite{weil2007electron}{eprscope} and \insertCite{StollwebESpin2024}{eprscope}). The linear coefficients
-  are defined by \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
+  Weil JA, Bolton JR (2007) and Stoll S (2024)).  The linear coefficients
+  are defined by the \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
   is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument).
   The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
@@ -173,8 +174,8 @@ sim.simple.a$plot
 ## simulation of luteolin radical anion with
 ## the following four hyperfine coupling constants
 ## A(1 x 1H) = 3.1 MHz, A(1 x 1H) = 2.8 MHz,
-## A(1 x 1H) = 8.0 MHz and A(1 x 1H) = 4.1 MHz, o
-## ne may check out the simulation
+## A(1 x 1H) = 8.0 MHz and A(1 x 1H) = 4.1 MHz,
+## one may check out the simulation
 ## at https://doi.org/10.1016/j.electacta.2013.06.136
 ## (see Fig. 6 in that article):
 sim.luteol <-
@@ -222,15 +223,22 @@ eval_sim_EPR_iso(g = 2.0027,
 
 }
 \references{
-\insertRef{weil2007electron}{eprscope}
+Weil JA, Bolton JR (2007). \emph{Electron paramagnetic resonance: elementary theory and practical applications},
+  2nd edition. John Wiley and Sons. ISBN 978-0-471-75496-1,
+  \url{https://onlinelibrary.wiley.com/doi/book/10.1002/0470084987}.
 
-  \insertRef{weilBRabi1971}{eprscope}
+  Weil JA (1971). “The Analysis of Large Hyperfine Splitting in Paramagnetic Resonance Spectroscopy.”
+  \emph{J. Magn. Reson.} (1969), \strong{4}(3), 394–399, \url{https://doi.org/10.1016/0022-2364(71)90049-7}.
 
-  \insertRef{Stoll2006Brabi}{eprscope}
+  Stoll S, Schweiger A (2006). “EasySpin, A Comprehensive Software Package for Spectral Simulation
+  and Analysis in EPR.” \emph{J. Magn. Reson.}, \strong{178}(1), 42–55,
+  \url{https://doi.org/10.1016/j.jmr.2005.08.013}.
 
-  \insertRef{StollwebESpin2024}{eprscope}
+  Stoll S (2024). “EasySpin Documentation - Line Shapes.”,
+  \url{https://easyspin.org/easyspin/documentation/lineshapes.html}.
 
-  \insertRef{Gerson2003}{eprscope}
+  Gerson F, Huber W (2003). \emph{Electron Spin Resonance Spectroscopy of Organic Radicals},
+  Biotechnology Series, Wiley-VCH, ISBN 978-3-527-30275-8, \url{https://books.google.cz/books?id=SEPeNjG3IvYC}.
 }
 \seealso{
 Other Simulations and Optimization: 

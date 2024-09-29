@@ -58,7 +58,7 @@ may vary, see below).
  \eqn{(r=1)\text{R} + (b=1)\text{B} \xrightarrow{k_1} (c=1)\text{C}} \tab
  \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \cr
 }
-Couple of examples are also given in details. The function is relatively flexible and enables
+Couple of examples are also given in \code{Details}. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 or \code{(a=1)}) can be varied within the \code{model.react} character string.
@@ -73,7 +73,7 @@ i.e. the stoichiometric coefficients equal to the partial reaction orders. Such 
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
 one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} into
-the \code{kin.params}, e.g like \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
+the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
 
 \item{params.guess}{Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 ready for optimization/fitting.}
@@ -129,7 +129,7 @@ List with the following components is available:
 }
 \description{
 Fitting of the Integrals/Areas/Concentration/...etc. \emph{vs} time relation (either from experiment
-   or from integration of EPR spectral time series) in order to find the kinetic parameters
+   or from integration of the EPR spectral time series) in order to find the kinetic parameters
    (like rate constant, \eqn{k} as well as (partial) reaction order) of proposed radical reaction.
    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
@@ -209,9 +209,11 @@ triaryl_model_kin_fit_02$df.coeffs
 
 }
 \references{
-\insertRef{levenmarq2023}{eprscope}
+Mullen KM, Elzhov TV, Spiess A, Bolker B (2023). “minpack.lm.” \url{https://github.com/cran/minpack.lm}.
 
- \insertRef{gavin2019levenberg}{eprscope}
+ Gavin HP (2024). “The Levenberg-Marquardt algorithm for nonlinear least squares curve-fitting problems.”
+ \emph{Department of civil and environmental engineering, Duke University},
+ \url{https://people.duke.edu/~hpgavin/ce281/lm.pdf}.
 }
 \seealso{
 Other Evaluations and Quantification: 

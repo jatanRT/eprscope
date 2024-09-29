@@ -51,17 +51,19 @@
 #'
 #'
 #' @references
-#'  \insertRef{nlopt2023}{eprscope}
+#'  Johnson SG (2023). “The NLopt nonlinear-optimization package.” \url{https://github.com/stevengj/nlopt}.
 #'
-#'  \insertRef{nloptr2023}{eprscope}
+#'  Stamm A (2023). “nloptr.” \url{https://github.com/astamm/nloptr/}.
 #'
-#'  \insertRef{levenmarq2023}{eprscope}
+#'  Mullen KM, Elzhov TV, Spiess A, Bolker B (2023). “minpack.lm.” \url{https://github.com/cran/minpack.lm}.
 #'
-#'  \insertRef{gavin2019levenberg}{eprscope}
+#'  Gavin HP (2019). “The Levenberg-Marquardt algorithm for nonlinear least squares curve-fitting problems.”
+#'  \emph{Department of civil and environmental engineering, Duke University}, \strong{19}.
 #'
-#'  \insertRef{AdyatamaPSO2019}{eprscope}
+#'  Adyatama A (2019). “Particle Swarm Optimization.” \url{https://rpubs.com/argaadya/intro-pso}.
 #'
-#'  \insertRef{TamPSO2021}{eprscope}
+#'  Tam A (2021). “A Gentle Introduction to Particle Swarm Optimization.”
+#'  \url{https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/}.
 #'
 #'
 #' @inheritParams nloptr::slsqp

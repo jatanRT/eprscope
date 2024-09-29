@@ -96,10 +96,10 @@ Evaluating transferred charge and the corresponding number of electrons
   To acquire charge, the input \eqn{I} \emph{vs} \eqn{time} relation (coming from
   \code{data.at}) is integrated by the \code{\link[pracma:trapz]{pracma::cumtrapz}} function.
   \strong{Prior to integration a capacitive current correction must be done}, especially if it is relatively
-  high in comparison to Faradaic one. Afterwards, the number of electrons is calculated
-  by Faraday's law (see details). The output plot can be visualized either as \eqn{Q(N_{\text{e}})} \emph{vs}
-  \eqn{t} (time) or as \eqn{Q(N_{\text{e}})} \emph{vs} \eqn{E} (potential, if available
-  in the input \code{data.at}).
+  high in comparison to \href{https://doi.org/10.1515/pac-2018-0109}{faradaic} one. Afterwards,
+  the number of electrons is calculated by Faraday's law (see details). The output plot can be visualized
+  either as \eqn{Q(N_{\text{e}})} \emph{vs} \eqn{t} (time) or as \eqn{Q(N_{\text{e}})} \emph{vs} \eqn{E}
+  (potential, if available in the input \code{data.at}).
 }
 \details{
 When quantitative EPR is carried out along with electrochemistry simultaneously,
@@ -156,13 +156,19 @@ triarylamine.data.QNe$plot
 
 }
 \references{
-\insertRef{Bard2022elcheM}{eprscope}
+Bard AJ, Faulkner LR, White HS (2022). \emph{Electrochemical methods: Fundamentals and Applications},
+  3rd edition, John Wiley and Sons, Inc., ISBN 978-1-119-33405-7, \url{https://www.wiley.com/en-us/9781119334064}.
 
-  \insertRef{BarekIUPAC2019}{eprscope}
+  Pingarrón JM, Labuda J, Barek J, Brett CMA, Camões MF, Fojta M, Hibbert DB (2020).
+  “Terminology of Electrochemical Methods of Analysis (IUPAC Recommendations 2019).”
+  \emph{Pure Appl. Chem.}, \strong{92}(4), 641–694, \url{https://doi.org/10.1515/pac-2018-0109}.
 
-  \insertRef{Neudeck1999}{eprscope}
+  Neudeck A, Petr A, Dunsch L (1999). “The redox mechanism of Polyaniline Studied by Simultaneous
+  ESR–UV–vis Spectroelectrochemistry.” \emph{Synth. Met.}, \strong{107}(3), 143–158,
+  \url{https://doi.org/10.1016/S0379-6779(99)00135-6}.
 
-  \insertRef{Rpracma2023}{eprscope}
+  Hans W. Borchers (2023). \emph{pracma: Practical Numerical Math Functions}.
+  R package version 2.4.4, \url{https://cran.r-project.org/web/packages/pracma/index.html}.
 }
 \seealso{
 Other EPR Spectroelectrochemistry: 

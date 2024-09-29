@@ -36,7 +36,7 @@ The frequency in MHz is calculated according to relation
   density at which the ENDOR spectra are recorded (see also \code{B.val} in arguments). The \eqn{10^{-6}} coefficient
   is referred to the resulting frequency in MHz. The negative sign "\eqn{-}" mirrors the convention to describe the direction
   of magnetic spin moments precession either counter-clockwise (\eqn{+}, if \eqn{\gamma_{\text{n}}^{} < 0})
-  or clockwise (\eqn{-}, if \eqn{\gamma_{\text{n}}^{} > 0}) \insertCite{levitt2013spin}{eprscope}.
+  or clockwise (\eqn{-}, if \eqn{\gamma_{\text{n}}^{} > 0}, Levitt MH (2013)).
 }
 \examples{
 ## Larmor/ENDOR frequency for one selected nucleus
@@ -54,7 +54,8 @@ eval_nu_ENDOR(nucle_us_i = c("1H","31P"),
 
 }
 \references{
-\insertRef{levitt2013spin}{eprscope}
+Levitt MH (2013). \emph{Spin Dynamics: Basics of Nuclear Magnetic Resonance}.
+  Wiley, ISBN 978-1-118-68184-8, \url{https://books.google.cz/books?id=bysFAa4MPQcC}.
 }
 \seealso{
 Other Evaluations: 

@@ -7,16 +7,18 @@
 #'
 #' @description
 #'    Fitting of the Integrals/Areas/Concentration/...etc. \emph{vs} time relation (either from experiment
-#'    or from integration of EPR spectral time series) in order to find the kinetic parameters
+#'    or from integration of the EPR spectral time series) in order to find the kinetic parameters
 #'    (like rate constant, \eqn{k} as well as (partial) reaction order) of proposed radical reaction.
 #'    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
 #'    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
 #'
 #'
 #' @references
-#'  \insertRef{levenmarq2023}{eprscope}
+#'  Mullen KM, Elzhov TV, Spiess A, Bolker B (2023). “minpack.lm.” \url{https://github.com/cran/minpack.lm}.
 #'
-#'  \insertRef{gavin2019levenberg}{eprscope}
+#'  Gavin HP (2024). “The Levenberg-Marquardt algorithm for nonlinear least squares curve-fitting problems.”
+#'  \emph{Department of civil and environmental engineering, Duke University},
+#'  \url{https://people.duke.edu/~hpgavin/ce281/lm.pdf}.
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model

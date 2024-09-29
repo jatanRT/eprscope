@@ -108,7 +108,7 @@
 #'
 #'   Rendering of the \code{wd.subdir.name.qmd} into different formats (\code{.html},\code{.pdf},
 #'   \code{.docx}) is provided by the open-source scientific and technical publishing system
-#'   (based on \href{https://pandoc.org/}{pandoc}), called Quarto \insertCite{AllaireQuarto2024}{eprscope}.
+#'   (based on \href{https://pandoc.org/}{pandoc}), called Quarto (Allaire JJ et al. (2024) in the \code{References}).
 #'   The main \code{.qmd} file represents a "dynamic" document, combining
 #'   \href{https://quarto.org/docs/authoring/markdown-basics.html}{text}, code (besides R, also other
 #'   programming languages like Python, Julia or Observable can be used as well) and outputs
@@ -123,13 +123,24 @@
 #'
 #'
 #' @references
-#'  \insertRef{alston2021}{eprscope}
+#'  Alston JM, Rick JA (2021). “A Beginner's Guide to Conducting Reproducible Research”,
+#'  \emph{Bull. Ecol. Soc. Am.}, \strong{102}(2), e01801–14, \url{https://doi.org/10.1002/bes2.1801}.
 #'
-#'  \insertRef{gandrud2020}{eprscope}
+#'  Gandrud C (2020). \emph{Reproducible Research with R and RStudio, 3rd edition},
+#'  Chapman and Hall/CRC. ISBN 978-0-429-03185-4, \url{https://doi.org/10.1201/9780429031854}.
 #'
-#'  \insertRef{nih2019}{eprscope}
+#'  National Academies of Sciences, Engineering, and Medicine, Policy and Global Affairs,
+#'  Committee on Science, Engineering, Medicine, and Public Policy, Board on Research Data and Information,
+#'  Division on Engineering and Physical Sciences, Committee on Applied and Theoretical Statistics,
+#'  Board on Mathematical Sciences and Analytics, Division on Earth and Life Studies,
+#'  Nuclear and Radiation Studies Board, Division of Behavioral and Social Sciences and Education,
+#'  Committee on National Statistics, Board on Behavioral, Cognitive, and Sensory Sciences,
+#'  Committee on Reproducibility and Replicability in Science (2019).
+#'  “Reproducibility and Replicability in Science: Understanding Reproducibility and Replicability”,
+#'  \url{https://www.ncbi.nlm.nih.gov/books/NBK547546/}, National Academies Press (US).
 #'
-#'  \insertRef{AllaireQuarto2024}{eprscope}
+#'  Allaire JJ, Teague C, Scheidegger C, Xie Y, Dervieux C (2024). \emph{Quarto}.
+#'  \url{https://doi.org/10.5281/zenodo.5960048}, v1.5, \url{https://github.com/quarto-dev/quarto-cli}.
 #'
 #'
 #'

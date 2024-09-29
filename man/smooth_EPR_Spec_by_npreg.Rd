@@ -178,13 +178,19 @@ plot_EPR_Specs(data.spectra =
 
 }
 \references{
-\insertRef{BerryCrossValid2021}{eprscope}
+Berry LN, Helwig NE (2021). “Cross-Validation, Information Theory, or Maximum Likelihood?
+  A Comparison of Tuning Methods for Penalized Splines.” \emph{Stats}, \strong{4}(3), 701–724,
+  \url{https://doi.org/10.3390/stats4030042}.
 
-  \insertRef{ElezovicGeneral2016}{eprscope}
+  Elezović N (2016). “Generalized Bernoulli Polynomials and Numbers, Revisited.”
+  \emph{Mediterr. J. Math.}, \strong{13}(1), 141–151. ISSN 1660-5454,
+  \url{https://doi.org/10.1007/s00009-014-0498-7}.
 
-  \insertRef{WeissteinBernPol2023}{eprscope}
+  Weisstein EW (2023). “Bernoulli Polynomial”,
+  \url{https://mathworld.wolfram.com/BernoulliPolynomial.html}, MathWorld–A Wolfram Web Resource.
 
-  \insertRef{HelwigMan2022}{eprscope}
+  Helwig NE (2022). "Non-parametric Regression via Smoothing Splines",
+  R package version 1.0-9, \url{https://cran.r-project.org/web/packages/npreg/npreg.pdf}.
 }
 \seealso{
 Other Simulations and Optimization: 

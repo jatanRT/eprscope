@@ -41,7 +41,7 @@ may vary, see below).
  \eqn{(r=1)\text{R} + (b=1)\text{B} \xrightarrow{k_1} (c=1)\text{C}} \tab
  \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \cr
 }
-Couple of examples are also given in details. The function is relatively flexible and enables
+Couple of examples are also given in \code{Details}. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 or \code{(a=1)}) can be varied within the \code{model.react} character string.
@@ -61,7 +61,7 @@ i.e. the stoichiometric coefficients equal to the partial reaction orders. Such 
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
 one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} into
-the \code{kin.params}, e.g like \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
+the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
 
 \item{kin.params}{Named numeric vector containing rate constants as well as initial radical
 or other reactant/product concentration/integral intensities/areas...etc. Therefore, a general
@@ -141,7 +141,7 @@ Theoretical quantitative kinetic profiles (such as concentration/amount/integral
   article}.
 }
 \details{
-According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical reaction
+According to IUPAC (2019), see \code{References}, the rate of a chemical reaction
   with the radicals (\eqn{\text{R}}) involved (example see argument \code{model.react})
   \deqn{r\text{R} + b\text{B} \xrightarrow\, c\text{C}}
   is expressed via time change of extent of the reaction (\eqn{\text{d}\xi/\text{d}t}):
@@ -183,10 +183,10 @@ According to IUPAC \insertCite{IUPACkinetR2019}{eprscope} the rate of a chemical
   \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \tab Basic reversible radical quenching,
   e.g. rev. \eqn{\pi-\pi} dimerization for \code{(r=2)} and \code{(b=1)}. \cr
   \code{"(a=1)A <==> [k1] [k2] (r=1)R"} \tab Basic reversible radical formation,
-  e.g. from rev. comproportionation (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}},
-  for \code{(a=2)} and \code{(r=2)}). \cr
+  e.g. from rev. comproportionation of conjugated thiophene oligomers
+  (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}}, for \code{(a=2)} and \code{(r=2)}). \cr
   \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \tab Radical formation by chemical reaction like oxidation,
-  reduction or spin trapping (if \code{A} refers to transient radical, it is not visible within
+  reduction or spin trapping (if \code{A} refers to transient radical, which is not visible within
   the common EPR time scale). \cr
   \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \tab General radical quenching by chemical reaction. \cr
   }
@@ -277,13 +277,17 @@ compar_model_expr_data_02$plot
 
 }
 \references{
-\insertRef{IUPACkinetR2019}{eprscope}
+International Union of Pure and Applied Chemistry (IUPAC) (2019). “Rate of Reaction”,
+ \url{https://goldbook.iupac.org/terms/view/R05156}.
 
- \insertRef{KinetRJCE2006}{eprscope}
+ Quisenberry KT, Tellinghuisen J (2006). “Textbook Deficiencies: Ambiguities in Chemical Kinetics Rates
+ and Rate Constants.” \emph{J. Chem. Educ.}, \strong{83}(3), 510, \url{https://doi.org/10.1021/ed083p510}.
 
- \insertRef{LevinePCbook2009}{eprscope}
+ Levine IN (2009). \emph{Physical Chemistry}, 6th edition. McGraw-Hill, ISBN 978-0-072-53862-5,
+ \url{https://books.google.cz/books/about/Physical_Chemistry.html?id=L5juAAAAMAAJ&redir_esc=y}.
 
- \insertRef{RbloggKinet2013}{eprscope}
+ rdabbler (2013). “Learning R: Parameter Fitting for Models Involving Differential Equations”,
+ \url{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}.
 }
 \seealso{
 Other Evaluations and Quantification: 

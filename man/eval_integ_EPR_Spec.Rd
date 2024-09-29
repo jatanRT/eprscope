@@ -119,7 +119,7 @@ Evaluates integrals of EPR spectra (based on the \code{\link[pracma:trapz]{pracm
 \details{
 The relative error of the cumulative trapezoidal (\code{cumtrapz}) function is minimal,
  usually falling into the range of \eqn{\langle 1,5\rangle\,\%} or even lower, depending on the spectral
- data resolution (see \insertCite{epperson2013intro}{eprscope} and \insertCite{LibreMath2023}{eprscope}).
+ data resolution (see Epperson JF (2013) and Seeburger P (2023) in the \code{References}).
  Therefore, the better the resolution, the more accurate the integral. If the initial EPR spectrum displays low
  signal-to-noise ratio, the integral often looses its sigmoid-shape
  and thus, the EPR spectrum has to be either simulated (see also \code{vignette("functionality")})
@@ -269,15 +269,19 @@ triarylamine.decay.data.integs <-
 
 }
 \references{
-\insertRef{RWeberXenon2011}{eprscope}
+Weber RT (2011). \emph{Xenon User's Guide}. Bruker BioSpin Manual Version 1.3, Software Version 1.1b50.
 
- \insertRef{Rpracma2023}{eprscope}
+ Hans W. Borchers (2023). \emph{pracma: Practical Numerical Math Functions}. R package version 2.4.4,
+ \url{https://cran.r-project.org/web/packages/pracma/index.html}.
 
- \insertRef{LibreMath2023}{eprscope}
+ Seeburger P (2023). “Numerical Integration - Midpoint, Trapezoid, Simpson's rule”,
+ \url{http://tinyurl.com/trapz-integral}.
 
- \insertRef{Math24net2023}{eprscope}
+ Svirin A (2023). “Calculus, Integration of Functions-Trapezoidal Rule”,
+ \url{https://math24.net/trapezoidal-rule.html}.
 
- \insertRef{epperson2013intro}{eprscope}
+ Epperson JF (2013). \emph{An Introduction to Numerical Methods and Analysis}. Wiley and Sons,
+ ISBN 978-1-118-36759-9, \url{https://books.google.cz/books?id=310lAgAAQBAJ}.
 }
 \seealso{
 Other Evaluations and Quantification: 
