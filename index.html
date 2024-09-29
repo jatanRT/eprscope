@@ -94,10 +94,14 @@
 <p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system. This package is required for the proper running of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> optimization/fitting functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># The package can be installed by =&gt;</span></span>
+<span><span class="co"># package can be installed by =&gt;</span></span>
 <span></span>
-<span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># alternatively, install package together with vignettes/articles:</span></span>
+<span><span class="co"># if (!require(devtools)) {install.packages("devtools")}</span></span>
+<span><span class="co"># devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)</span></span></code></pre></div>
 <p>Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> users or people who haven’t already installed the <em>R</em> environment, please consult the following steps prior to own <a href="https://jatanrt.github.io/eprscope/">eprscope</a> installation ➨</p>
 <ol style="list-style-type: decimal">
 <li><p><a href="https://cran.rstudio.com/" class="external-link">the R installation procedure</a></p></li>
@@ -237,9 +241,9 @@
 <span><span class="co"># of the Ordinary Differential Equations</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">df.coeffs</span></span>
 <span><span class="co">#&gt;          Estimate   Std. Error   t value      Pr(&gt;|t|)</span></span>
-<span><span class="co">#&gt; qvar0R 0.01857004 5.720314e-05 324.63320 4.380941e-149</span></span>
-<span><span class="co">#&gt; k1     0.06043805 5.451458e-03  11.08658  6.161497e-19</span></span>
-<span><span class="co">#&gt; alpha  2.03820607 1.967620e-02 103.58736 3.921671e-101</span></span></code></pre></div>
+<span><span class="co">#&gt; qvar0R 0.01857004 0.0000572031 324.63342 4.380657e-149</span></span>
+<span><span class="co">#&gt; k1     0.06043803 0.0054514524  11.08659  6.161251e-19</span></span>
+<span><span class="co">#&gt; alpha  2.03820600 0.0196761800 103.58748 3.921209e-101</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
