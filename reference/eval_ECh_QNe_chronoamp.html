@@ -5,19 +5,19 @@
   To acquire charge, the input \(I\) vs \(time\) relation (coming from
   data.at) is integrated by the pracma::cumtrapz function.
   Prior to integration a capacitive current correction must be done, especially if it is relatively
-  high in comparison to Faradaic one. Afterwards, the number of electrons is calculated
-  by Faraday's law (see details). The output plot can be visualized either as \(Q(N_{\text{e}})\) vs
-  \(t\) (time) or as \(Q(N_{\text{e}})\) vs \(E\) (potential, if available
-  in the input data.at)."><title>Transferred Charge and Number of Electrons from Chronoamperogram — eval_ECh_QNe_chronoamp • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Transferred Charge and Number of Electrons from Chronoamperogram — eval_ECh_QNe_chronoamp"><meta property="og:description" content="Evaluating transferred charge and the corresponding number of electrons
+  high in comparison to faradaic one. Afterwards,
+  the number of electrons is calculated by Faraday's law (see details). The output plot can be visualized
+  either as \(Q(N_{\text{e}})\) vs \(t\) (time) or as \(Q(N_{\text{e}})\) vs \(E\)
+  (potential, if available in the input data.at)."><title>Transferred Charge and Number of Electrons from Chronoamperogram — eval_ECh_QNe_chronoamp • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Transferred Charge and Number of Electrons from Chronoamperogram — eval_ECh_QNe_chronoamp"><meta property="og:description" content="Evaluating transferred charge and the corresponding number of electrons
   from chronoamperogram related to electrochemical
   experiment, performed simultaneously with the EPR time series measurement or independently of the latter.
   To acquire charge, the input \(I\) vs \(time\) relation (coming from
   data.at) is integrated by the pracma::cumtrapz function.
   Prior to integration a capacitive current correction must be done, especially if it is relatively
-  high in comparison to Faradaic one. Afterwards, the number of electrons is calculated
-  by Faraday's law (see details). The output plot can be visualized either as \(Q(N_{\text{e}})\) vs
-  \(t\) (time) or as \(Q(N_{\text{e}})\) vs \(E\) (potential, if available
-  in the input data.at)."><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
+  high in comparison to faradaic one. Afterwards,
+  the number of electrons is calculated by Faraday's law (see details). The output plot can be visualized
+  either as \(Q(N_{\text{e}})\) vs \(t\) (time) or as \(Q(N_{\text{e}})\) vs \(E\)
+  (potential, if available in the input data.at)."><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
 </script><!--
 <script>
   (function () {
@@ -77,10 +77,10 @@
   To acquire charge, the input \(I\) <em>vs</em> \(time\) relation (coming from
   <code>data.at</code>) is integrated by the <code><a href="https://rdrr.io/pkg/pracma/man/trapz.html" class="external-link">pracma::cumtrapz</a></code> function.
   <strong>Prior to integration a capacitive current correction must be done</strong>, especially if it is relatively
-  high in comparison to Faradaic one. Afterwards, the number of electrons is calculated
-  by Faraday's law (see details). The output plot can be visualized either as \(Q(N_{\text{e}})\) <em>vs</em>
-  \(t\) (time) or as \(Q(N_{\text{e}})\) <em>vs</em> \(E\) (potential, if available
-  in the input <code>data.at</code>).</p>
+  high in comparison to <a href="https://doi.org/10.1515/pac-2018-0109" class="external-link">faradaic</a> one. Afterwards,
+  the number of electrons is calculated by Faraday's law (see details). The output plot can be visualized
+  either as \(Q(N_{\text{e}})\) <em>vs</em> \(t\) (time) or as \(Q(N_{\text{e}})\) <em>vs</em> \(E\)
+  (potential, if available in the input <code>data.at</code>).</p>
     </div>
 
     <div class="section level2">
@@ -218,10 +218,16 @@ up the <code>separate.plots = TRUE</code>.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Bard2022elcheMeprscope</p>
-<p>BarekIUPAC2019eprscope</p>
-<p>Neudeck1999eprscope</p>
-<p>Rpracma2023eprscope</p>
+    <p>Bard AJ, Faulkner LR, White HS (2022). <em>Electrochemical methods: Fundamentals and Applications</em>,
+  3rd edition, John Wiley and Sons, Inc., ISBN 978-1-119-33405-7, <a href="https://www.wiley.com/en-us/9781119334064" class="external-link">https://www.wiley.com/en-us/9781119334064</a>.</p>
+<p>Pingarrón JM, Labuda J, Barek J, Brett CMA, Camões MF, Fojta M, Hibbert DB (2020).
+  “Terminology of Electrochemical Methods of Analysis (IUPAC Recommendations 2019).”
+  <em>Pure Appl. Chem.</em>, <strong>92</strong>(4), 641–694, <a href="https://doi.org/10.1515/pac-2018-0109" class="external-link">https://doi.org/10.1515/pac-2018-0109</a>.</p>
+<p>Neudeck A, Petr A, Dunsch L (1999). “The redox mechanism of Polyaniline Studied by Simultaneous
+  ESR–UV–vis Spectroelectrochemistry.” <em>Synth. Met.</em>, <strong>107</strong>(3), 143–158,
+  <a href="https://doi.org/10.1016/S0379-6779(99)00135-6" class="external-link">https://doi.org/10.1016/S0379-6779(99)00135-6</a>.</p>
+<p>Hans W. Borchers (2023). <em>pracma: Practical Numerical Math Functions</em>.
+  R package version 2.4.4, <a href="https://cran.r-project.org/web/packages/pracma/index.html" class="external-link">https://cran.r-project.org/web/packages/pracma/index.html</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

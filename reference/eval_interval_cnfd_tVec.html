@@ -107,18 +107,27 @@ and the <code>uncertaity</code>. Otherwise, the result is returned in the format
   the sample standard deviation, defined by the following relation (regarding the \(g\)-value series example):
   $$s = \sqrt{(1/(N-1))\,\sum_{i=1}^N (g_i - \overline{g})^2}$$
   which is computed by the <code><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></code>. The above-mentioned \(t\)-quantile is actually calculated
-  by the <code><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">stats::qt</a></code> function. Alternatively, one could also evaluate the confidence
-  interval by one sample <code><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></code> for a certain level of confidence, giving a descriptive output
+  by the <code><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">stats::qt</a></code> function. Alternatively, one could also evaluate confidence
+  interval by the one sample <code><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></code> for a certain level of confidence, giving a descriptive output
   with statistical characteristics.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>miller2018chmemeprscope</p>
-<p>distro32022eprscope</p>
-<p>nist2012confideprscope</p>
-<p>kaleta2012carbeprscope</p>
-<p>psy2020confideprscope</p>
-<p>goods2011mathMeprscope</p>
+    <p>Miller JN, Miller JC, Miller RD (2018). <em>Statistics and Chemometrics for Analytical Chemistry</em>, 7th edition,
+  Pearson Education. ISBN 978-1-292-18674-0, <a href="https://elibrary.pearson.de/book/99.150005/9781292186726" class="external-link">https://elibrary.pearson.de/book/99.150005/9781292186726</a>.</p>
+<p>Hayes A, Moller-Trane R, Jordan D, Northrop P, Lang MN, Zeileis A (2022). <em>distributions3: Probability Distributions
+  as S3 Objects</em>. <a href="https://github.com/alexpghayes/distributions3" class="external-link">https://github.com/alexpghayes/distributions3</a>, <a href="https://alexpghayes.github.io/distributions3/" class="external-link">https://alexpghayes.github.io/distributions3/</a>,
+  see also <em>Vignette: t-confidence interval for a mean</em>,
+  <a href="https://alexpghayes.github.io/distributions3/articles/one-sample-t-confidence-interval.html" class="external-link">https://alexpghayes.github.io/distributions3/articles/one-sample-t-confidence-interval.html</a>.</p>
+<p>National Institute of Standards and Technology (NIST) (2012). “Confidence Limits for the Mean”,
+  <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" class="external-link">https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm</a>.</p>
+<p>Kaleta J, Tarábek J, Akdag A, Pohl R, Michl J (2012). “The 16 CB11(CH3)n(CD3)12–N• Radicals with
+  5-Fold Substitution Symmetry: Spin Density Distribution in CB11Me12•”,
+  <em>Inorg. Chem.</em>, <strong>51</strong>(20), 10819–10824, <a href="https://doi.org/10.1021/ic301236s" class="external-link">https://doi.org/10.1021/ic301236s</a>.</p>
+<p>Curley JP, Milewski TM (2020). “PSY317L Guidebook - Confidence Intervals”,
+  <a href="https://bookdown.org/curleyjp0/psy317l_guides5/confidence-intervals.html" class="external-link">https://bookdown.org/curleyjp0/psy317l_guides5/confidence-intervals.html</a>.</p>
+<p>Goodson DZ (2011). <em>Mathematical Methods for Physical and Analytical Chemistry</em>, 1st edition,
+  John Wiley and Sons, Inc. ISBN 978-0-470-47354-2, <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118135204" class="external-link">https://onlinelibrary.wiley.com/doi/book/10.1002/9781118135204</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
