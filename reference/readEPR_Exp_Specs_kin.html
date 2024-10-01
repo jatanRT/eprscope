@@ -168,7 +168,7 @@ weight, number of scans, ...etc (e.g. <code>norm.vec.add = c(2000,0.5,2)</code>)
 most common spectrometers (from which data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific <code>origin</code> may be added later) =&gt;</p><table class="table table"><tr><td><strong>String</strong></td><td><strong>Description</strong></td></tr><tr><td>"xenon"</td><td><strong>default</strong> automatically loads data from the "Xenon" software with dafault params.</td></tr><tr><td>"winepr"</td><td>automatically loads data from the "WinEpr" software.</td></tr><tr><td>"magnettech"</td><td>automatically loads data from the new "Magnettech" software.</td></tr><tr><td>"other" (arbitrary string, e.g. "csv")</td><td>general, loads any other original
 data like <code>csv</code>, <code>txt</code>, <code>asc</code> incl. also data from other instrumental/spectrometer software.
-<strong>In such case all the arguments for</strong> <code>readEPR_Exp_Specs</code> <strong>have to be set up accordingly</strong>.</td></tr></table></dd>
+<strong>In such case, all the arguments for</strong> <code>readEPR_Exp_Specs</code> <strong>have to be set up accordingly</strong>.</td></tr></table></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -178,7 +178,7 @@ and <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html"
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List of spectral data (incl. time) in tidy long table format (<code>df</code>) + corrected
+    <p>List of EPR spectrum data (including time) in tidy long table format (<code>df</code>) + corrected
    time vector (<code>time</code>). For <code>origon = "winepr"</code> "time" slices/indices must be already converted
    into time domain by <code>time.delta.slice.s</code> (see arguments and examples).</p>
     </div>

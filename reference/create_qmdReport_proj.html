@@ -126,7 +126,7 @@ Alternatively, the <code><a href="https://rdrr.io/r/base/file.path.html" class="
 
 <dt id="arg-wd-subdir-name">wd.subdir.name<a class="anchor" aria-label="anchor" href="#arg-wd-subdir-name"></a></dt>
 <dd><p>Character string, pointing to <code>subdirectory</code> (name, see also <code>path_to_wd</code>),
-under which the entire report project is stored. This actually corresponds to main project directory.
+under which the entire report project is stored. <strong>This actually corresponds to main project directory</strong>.
 <strong>Default</strong>: <code>wd.subdir.name = "Project_Report"</code>.</p></dd>
 
 
@@ -171,7 +171,7 @@ cloud storage services like
     <p>In order to support reproducible research workflow (see <code>References</code>) in EPR from scratch,
   a central data hub (repository/directory) with a well-defined structure must be available.
   The one, presented below is created using the essential <code><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></code>
-  and <code><a href="https://rdrr.io/r/base/files.html" class="external-link">file.create</a></code> file-folder management functions. For several files
+  and <code><a href="https://rdrr.io/r/base/files.html" class="external-link">file.create</a></code> file-folder R-management functions. For several files
   (like <code>wd.subdir.name.qmd</code>, <code>header.tex</code>, <code>title.tex</code>, <code>styles.scss</code>
   and <code>_quarto.yml</code>) customized templates (stored under <code>/extdata/_extensions</code>) are used.
   Remaining <code>wd.subdir.name.bib</code> and <code>README.Rmd</code> files are generated "ab initio".
@@ -190,7 +190,7 @@ cloud storage services like
   (based on <a href="https://pandoc.org/" class="external-link">pandoc</a>), called Quarto (Allaire JJ et al. (2024) in the <code>References</code>).
   The main <code>.qmd</code> file represents a "dynamic" document, combining
   <a href="https://quarto.org/docs/authoring/markdown-basics.html" class="external-link">text</a>, code (besides R, also other
-  programming languages like Python, Julia or Observable can be used as well) and outputs
+  programming languages like <em>Python</em>, <em>Julia</em> or <em>Observable</em> can be used as well) and outputs
   (usually, figures and/or tables). Upon rendering, they are nicely combined into shareable above-listed
   report formats stored under the <code>_output</code>. Among them, the <code>.html</code> output possesses
   a distinctive position, because it preserves the structure of interactive EPR spectra or tables
