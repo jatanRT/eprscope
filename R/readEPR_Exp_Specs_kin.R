@@ -40,7 +40,7 @@
 #' @param ... additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
-#' @return List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
+#' @return List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
 #'    time vector (\code{time}). For \code{origon = "winepr"} "time" slices/indices must be already converted
 #'    into time domain by \code{time.delta.slice.s} (see arguments and examples).
 #'

@@ -24,8 +24,9 @@ Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to gro
   of equivalent nuclei within the structure/symmetry.
 }
 \description{
-Providing table based on Gaussian/ORCA/...etc. output text files in order to summarize the mean \eqn{A_{iso}}/\eqn{a_{iso}} values
-  of groups with equivalent nuclei, according to proposed molecular structure/symmetry.
+Providing table, based on Gaussian/ORCA/...etc. output text files in order to summarize
+  the mean \eqn{A_{iso}}/\eqn{a_{iso}} values of groups with equivalent nuclei, according to proposed
+  molecular structure/symmetry.
 }
 \details{
 The \eqn{A_{iso}}/\eqn{a_{iso}} values are computed for each atom/nucleus

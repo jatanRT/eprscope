@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Drawing a molecular structure based on \href{https://cdk-r.github.io/cdkr/index.html}{rcdk} package
-#'   and using SMILES or SDF input data. This function is inspired by
+#'   and using SMILES or SDF input data. This function is inspired by the
 #'   \href{https://riveradelgado.com/post/2021/04/18/chemistry-in-r/}{Edgardo Rivera-Delgado article}.
 #'
 #'

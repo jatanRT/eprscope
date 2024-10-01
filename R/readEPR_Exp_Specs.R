@@ -16,7 +16,7 @@
 #'   normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
 #'   These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
-#'   quantities represented by the vector. If \code{qValue = NULL}, the Q-value ca be also defined a component
+#'   quantities represented by the vector. If \code{qValue = NULL}, the Q-value can be also defined as a component
 #'   of the \code{norm.vec.add}. Finally, the normalized intensity is calculated by the following
 #'   expression:
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
@@ -77,13 +77,13 @@
 #'   "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
 #'   "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 #'   data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
-#'   \strong{In such case all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
+#'   \strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 #'   }
 #' @param data.structure Character string referring to structure of the ASCII data. Common spectral data files
 #'   with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
 #'   time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
 #'   ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
-#'   see example, or any other data) put \code{data.structure = "others"}. \strong{In such case all the arguments for}
+#'   see example, or any other data) put \code{data.structure = "others"}. \strong{In such case, all the arguments for}
 #'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
 #'   (assuming \code{time.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
 #'   \code{origin} argument.

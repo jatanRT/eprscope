@@ -23,8 +23,8 @@ Numeric value or vector of nuclear Larmor/ENDOR frequencies in MHz for selected
 }
 \description{
 Larmor/ENDOR frequency calculations for the analysis in EPR/Electron Nuclear Double Resonance (ENDOR).
-  Function inspired by the similar \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
-  Calculator} available online.
+  Function is inspired by the similar \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
+  Calculator}, available online.
 }
 \details{
 The frequency in MHz is calculated according to relation
@@ -32,7 +32,7 @@ The frequency in MHz is calculated according to relation
   where \eqn{h} is the Planck's constant, \eqn{\mu_{\text{N}}^{}} is the nuclear magneton
   available from \href{https://r-quantities.github.io/constants/}{constants} package (\code{constants::syms$mun}),
   \eqn{g_{\text{n}}^{}} is the nuclear \eqn{g}-factor of the specific nucleus (reported in the package
-  \code{isotopes_ds} data frame as \code{g_Nuclear}) and finally, the \eqn{B} denotes the magnetic flux
+  \code{\link{isotopes_ds}} data frame as \code{g_Nuclear}) and finally, the \eqn{B} denotes the magnetic flux
   density at which the ENDOR spectra are recorded (see also \code{B.val} in arguments). The \eqn{10^{-6}} coefficient
   is referred to the resulting frequency in MHz. The negative sign "\eqn{-}" mirrors the convention to describe the direction
   of magnetic spin moments precession either counter-clockwise (\eqn{+}, if \eqn{\gamma_{\text{n}}^{} < 0})

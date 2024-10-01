@@ -24,8 +24,8 @@
 #'   and sweep width in Gauss, respectively. \eqn{N_{\text{points}}} equals to number of points (resolution of
 #'   an individual sweep). One can gather all parameters
 #'   by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
-#'   the corresponding `.DSC`/`.dsc` or `.par` file. \strong{If during the recording of EPR spectra
-#'   the option} `Normalize Acquisition` (in Spectrometer Configuration/Acquisition Options)
+#'   the corresponding \code{.DSC}/\code{.dsc} or \code{.par} file. \strong{If during recording of EPR spectra
+#'   the option} \code{Normalize Acquisition} (in Spectrometer Configuration/Acquisition Options)
 #'   \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRE ANY ADDITIONAL
 #'   NORMALIZATION !}. See also \code{\link{quantify_EPR_Abs}}.
 #'

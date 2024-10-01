@@ -19,9 +19,9 @@
 #'   \strong{default}: \code{B.unit = "mT"}.
 #'
 #'
-#' @return \eqn{g}-Value from \eqn{(\nu h)/(\mu_{\text{B}} B)}. Physical constants (\eqn{mu_{\text{B}}}
+#' @return \eqn{g}-Value from \eqn{(\nu h)/(\mu_{\text{B}} B)}. Physical constants (\eqn{\mu_{\text{B}}}
 #'   and \eqn{h}) are taken from \href{https://r-quantities.github.io/constants/}{constants}
-#'   package by the \code{link[constants]{syms}}.
+#'   package by the \code{\link[constants]{syms}}.
 #'
 #'
 #' @examples
@@ -175,15 +175,15 @@ eval_gFactor_Spec <- function(data.spectr,
     dplyr::pull(.data[[B]])
   ## B between minimum and maximum of dIepr_over_dB:
   if (isTRUE(iso)) {
-    if (lineSpecs.form == "derivative") {
+    if (grepl("deriv|Deriv",lineSpecs.form)) {
       B.center <- (B.min + B.max) / 2
       ## B at dIepr_over_dB = 0 (near 0, see next comment on `B.center`):
     }
-    if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+    if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
       B.center <- B.max
     }
   } else {
-    if (lineSpecs.form == "derivative") {
+    if (grepl("deriv|Deriv",lineSpecs.form)) {
       ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/2)
       B.center <- data.spectr %>%
         dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
@@ -192,7 +192,7 @@ eval_gFactor_Spec <- function(data.spectr,
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
-    if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption") {
+    if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
       B.center <- B.max
     }
   }
@@ -226,7 +226,7 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #'
 #' @description
-#'   In the Gaussian and ORCA outputs, the \eqn{g}-Values (3 principal ones) are presented in the form
+#'   In the Gaussian and ORCA outputs, the \eqn{g}-values (3 principal ones) are presented in the form
 #'   of differences from the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
 #'   to calculate the entire \eqn{g}-factor components or parses the corresponding \eqn{g}-mean value
 #'   from the outputs.

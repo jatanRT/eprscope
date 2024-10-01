@@ -23,7 +23,7 @@
 #'   In order to support reproducible research workflow (see \code{References}) in EPR from scratch,
 #'   a central data hub (repository/directory) with a well-defined structure must be available.
 #'   The one, presented below is created using the essential \code{\link[base]{dir.create}}
-#'   and \code{\link[base]{file.create}} file-folder management functions. For several files
+#'   and \code{\link[base]{file.create}} file-folder R-management functions. For several files
 #'   (like \code{wd.subdir.name.qmd}, \code{header.tex}, \code{title.tex}, \code{styles.scss}
 #'   and \code{_quarto.yml}) customized templates (stored under \code{/extdata/_extensions}) are used.
 #'   Remaining \code{wd.subdir.name.bib} and \code{README.Rmd} files are generated "ab initio".
@@ -111,7 +111,7 @@
 #'   (based on \href{https://pandoc.org/}{pandoc}), called Quarto (Allaire JJ et al. (2024) in the \code{References}).
 #'   The main \code{.qmd} file represents a "dynamic" document, combining
 #'   \href{https://quarto.org/docs/authoring/markdown-basics.html}{text}, code (besides R, also other
-#'   programming languages like Python, Julia or Observable can be used as well) and outputs
+#'   programming languages like \emph{Python}, \emph{Julia} or \emph{Observable} can be used as well) and outputs
 #'   (usually, figures and/or tables). Upon rendering, they are nicely combined into shareable above-listed
 #'   report formats stored under the \code{_output}. Among them, the \code{.html} output possesses
 #'   a distinctive position, because it preserves the structure of interactive EPR spectra or tables
@@ -152,7 +152,7 @@
 #'   Alternatively, the \code{\link[base]{file.path}} can be used to set the path.
 #'   \strong{Default}: \code{path_to_wd = "."}, referring to actual directory.
 #' @param wd.subdir.name Character string, pointing to \code{subdirectory} (name, see also \code{path_to_wd}),
-#'   under which the entire report project is stored. This actually corresponds to main project directory.
+#'   under which the entire report project is stored. \strong{This actually corresponds to main project directory}.
 #'   \strong{Default}: \code{wd.subdir.name = "Project_Report"}.
 #' @param citation.style Character string referring to citation style used for \code{References} and citations
 #'   in the main \code{.qmd} document, which inherits the name from \code{wd.subdir.name}. This file

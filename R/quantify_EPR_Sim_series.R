@@ -22,8 +22,8 @@
 #'   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
 #'   combination of the spectral intensities of components (simulated spectra) and optimizes
 #'   the related multiplication coefficients. Additional analysis, where the positions of spectral
-#'   components (simulated spectra) are not fixed and can be optimized as well. It is based on the combination
-#'   of the actual function with the \code{\link{eval_sim_EPR_iso_combo}} and currently, it is under development.
+#'   components (simulated spectra) are not fixed and can be optimized as well is under development.
+#'   That will be based on the combination of the actual function with the \code{\link{eval_sim_EPR_iso_combo}}.
 #'
 #'
 #'

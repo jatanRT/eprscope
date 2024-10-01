@@ -7,7 +7,7 @@
 #'
 #'
 #' @description
-#'   Calculating the \code{peak-to-peak} (distance between of the \emph{x}-axis
+#'   Calculating the \code{peak-to-peak} (distance between the \emph{x}-axis
 #'   projection of "min" and "max" derivative intensities) linewidth of an EPR/ENDOR spectrum.
 #'
 #'
@@ -22,7 +22,7 @@
 #' @param xlim Numeric vector corresponding to lower and upper limit of the selected \emph{x} region,
 #'   such as \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 #'   or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
-#'   to the entire \code{x} range).
+#'   to the entire \code{x}-range).
 #'
 #'
 #' @return Numeric value difference of the \code{x}-axis quantity like \emph{B},\emph{g},\emph{RF} (the absolute value)

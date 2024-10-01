@@ -239,7 +239,8 @@ Johnson SG (2023). “The NLopt nonlinear-optimization package.” \url{https://
  Mullen KM, Elzhov TV, Spiess A, Bolker B (2023). “minpack.lm.” \url{https://github.com/cran/minpack.lm}.
 
  Gavin HP (2019). “The Levenberg-Marquardt algorithm for nonlinear least squares curve-fitting problems.”
- \emph{Department of civil and environmental engineering, Duke University}, \strong{19}.
+ \emph{Department of civil and environmental engineering, Duke University},
+ \url{https://people.duke.edu/~hpgavin/lm.pdf}.
 
  Adyatama A (2019). “Particle Swarm Optimization.” \url{https://rpubs.com/argaadya/intro-pso}.
 

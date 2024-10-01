@@ -126,7 +126,7 @@ There are two approaches how to quantify the number of paramagnetic species/radi
   to integration time in other spectroscopies (instrumental). \cr
   \eqn{N_{\text{Scans}}} \tab Number of scans/accumulations during the experiment (instrumental). \cr
   \eqn{P_{\text{MW}}} \tab Microwave power (instrumental). \cr
-  \eqn{B_{\text{m}}} \tab Modulation amplitude. \cr
+  \eqn{B_{\text{m}}} \tab Modulation amplitude (instrumental). \cr
   \eqn{Q} \tab \emph{Q}-Value or \emph{Q}-Factor characterizing the resonator/cavity/probehead
   sensitivity (unitless and instrumental). \cr
   \eqn{n_{\text{B}}} \tab Boltzmann factor for temperature dependence (instrumental-sample). \cr

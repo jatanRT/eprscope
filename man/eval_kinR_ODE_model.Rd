@@ -136,7 +136,7 @@ Theoretical quantitative kinetic profiles (such as concentration/amount/integral
   radical(s) (labeled as "R"). Profiles are evaluated by the numeric solution of rate equations
   by the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
   \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).
-  This function is inspired by:
+  This function is inspired by the
   \href{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}{R-bloggers
   article}.
 }

@@ -23,7 +23,7 @@ Axis labels/expressions for different plots.
 }
 \description{
 Using physico-chemical notation of quantities or formulas (labels and titles with greek symbols,
-  subscript and superscript...etc) in static plots. The function is inspired by
+  subscript and superscript...etc) in static plots. The function is inspired by the
   \href{https://www.r-bloggers.com/math-notation-for-r-plot-titles-expression-and-bquote/}{R-Bloggers:Math Notation}
   and \href{https://www.r-bloggers.com/r-plotmath-functions-combined-with-variable-values/}{R-Bloggers:Plotmath},
   in order to simplify the writing. See also \code{\link[grDevices]{plotmath}} documentation or in console

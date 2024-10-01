@@ -83,14 +83,14 @@ Options are summarized in the following table (any other specific \code{origin} 
 "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
-\strong{In such case all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
+\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}
 
 \item{...}{additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
 and \code{\link[data.table]{fread}}.}
 }
 \value{
-List of spectral data (incl. time) in tidy long table format (\code{df}) + corrected
+List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
    time vector (\code{time}). For \code{origon = "winepr"} "time" slices/indices must be already converted
    into time domain by \code{time.delta.slice.s} (see arguments and examples).
 }

@@ -24,7 +24,7 @@ Numeric mean \eqn{g}-factor value from the principal difference (from \eqn{g_e})
   if \code{mean = FALSE}.
 }
 \description{
-In the Gaussian and ORCA outputs, the \eqn{g}-Values (3 principal ones) are presented in the form
+In the Gaussian and ORCA outputs, the \eqn{g}-values (3 principal ones) are presented in the form
   of differences from the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
   to calculate the entire \eqn{g}-factor components or parses the corresponding \eqn{g}-mean value
   from the outputs.
