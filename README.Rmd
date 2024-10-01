@@ -32,12 +32,16 @@ Before the installation, please make sure that you have already followed instruc
 
 ```{r installation,eval=FALSE,echo=TRUE}
 
+# after the initial R-environment setup (see below) it's always 
+# good to install essential collection of packages for data science 
+# with all their dependencies:
+# install.packages("tidyverse",dependencies = TRUE)
+#
 # package can be installed by =>
-
 if (!require(devtools)) {install.packages("devtools")}
 devtools::install_github("jatanRT/eprscope")
-
-# alternatively, install package together with vignettes/articles:
+#
+# alternatively, install package together with the vignettes/articles:
 # if (!require(devtools)) {install.packages("devtools")}
 # devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 
