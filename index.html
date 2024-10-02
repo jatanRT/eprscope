@@ -94,7 +94,9 @@
 <p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system. This package is required for the proper running of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> optimization/fitting functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># after the initial R-environment setup (see below) it's always </span></span>
+<span><span class="co"># Run the code in R Console</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># after the initial R environment setup (see below) it's always </span></span>
 <span><span class="co"># good to install essential collection of packages for data science </span></span>
 <span><span class="co"># with all their dependencies:</span></span>
 <span><span class="co"># install.packages("tidyverse",dependencies = TRUE)</span></span>
@@ -115,13 +117,24 @@
 <p>Additionally, <strong>the open-source scientific and technical publishing system</strong> <a href="https://quarto.org/" class="external-link">Quarto</a> together with the <a href="https://pandoc.org/" class="external-link">Pandoc</a>, <strong>a document converter system</strong>, may be required for sharing the results coming from <a href="https://jatanrt.github.io/eprscope/">eprscope</a> in desired formats like <code>pdf</code> , <code>html</code> , <code>docx</code> , <code>pptx</code> or <code>tex</code> (details may be found in the <code><a href="reference/create_qmdReport_proj.html">create_qmdReport_proj()</a></code> documentation).</p>
 </div>
 <div class="section level2">
+<h2 id="updates">Updates<a class="anchor" aria-label="anchor" href="#updates"></a>
+</h2>
+<p>To update the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦, just run the following code in R Console ➨</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># update package together with vignettes/articles:</span></span>
+<span><span class="co"># devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>In this section, couple of examples are shown in order to briefly demonstrate the package functionality. More detailed description can be found within the articles/vignettes or documentation examples.</p>
 <div class="section level3">
 <h3 id="reading-files-with-instrumental-parameters">Reading Files with Instrumental Parameters<a class="anchor" aria-label="anchor" href="#reading-files-with-instrumental-parameters"></a>
 </h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># loading the package/library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jatanrt.github.io/eprscope/">eprscope</a></span><span class="op">)</span></span>
@@ -145,7 +158,7 @@
 <div class="section level3">
 <h3 id="depict-molecular-structures">Depict Molecular Structures<a class="anchor" aria-label="anchor" href="#depict-molecular-structures"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Pphenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:</span></span>
 <span><span class="co"># "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"</span></span>
@@ -160,13 +173,13 @@
 <div class="section level3">
 <h3 id="simulation-of-isotropic-epr-spectra">Simulation of Isotropic EPR Spectra<a class="anchor" aria-label="anchor" href="#simulation-of-isotropic-epr-spectra"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># simulation of the phenalenyl (perinaphthenyl or PNT) radical,</span></span>
 <span><span class="co"># see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,</span></span>
 <span><span class="co"># the additional experimental/instrumental parameters are not shown,</span></span>
-<span><span class="co"># they posses their default values =&gt; see the corresponding documentation</span></span>
-<span><span class="co"># of `eval_sim_EPR_iso()` function.</span></span>
+<span><span class="co"># they possess their default values =&gt; see corresponding documentation</span></span>
+<span><span class="co"># of the `eval_sim_EPR_iso()` function.</span></span>
 <span><span class="va">simulation.iso</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></span><span class="op">(</span></span>
 <span>    g.iso <span class="op">=</span> <span class="fl">2.0027</span>,</span>
@@ -178,7 +191,7 @@
 <span>    lineGL.DeltaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.24</span>, <span class="cn">NULL</span><span class="op">)</span> <span class="co"># linewidth in G</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># simulation spectrum preview in the region from 3470 G to 3522 G</span></span>
+<span><span class="co"># simulated spectrum preview, in the region from 3470 G to 3522 G</span></span>
 <span><span class="va">simulation.iso</span><span class="op">$</span><span class="va">plot</span> <span class="op">+</span> </span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3470</span>, <span class="fl">3522</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-spectra-simulation-1.png"><!-- --></p>
@@ -186,7 +199,7 @@
 <div class="section level3">
 <h3 id="radical-kinetic-model-fitted-onto-the-experimental-data">Radical Kinetic Model Fitted onto the Experimental Data<a class="anchor" aria-label="anchor" href="#radical-kinetic-model-fitted-onto-the-experimental-data"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># decay of a triarylamine radical cation right after </span></span>
 <span><span class="co"># its generation by electrochemical potentiostatic oxidation </span></span>
@@ -238,7 +251,7 @@
 <span><span class="co"># graph preview</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">plot</span></span></code></pre></div>
 <p><img src="reference/figures/README-kinetic-model-fit-1.png"><!-- --></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#</span></span>
 <span><span class="co"># data frame/table of the obtained kinetic parameters</span></span>
 <span><span class="co"># by the non-linear fit and numeric solution</span></span>
