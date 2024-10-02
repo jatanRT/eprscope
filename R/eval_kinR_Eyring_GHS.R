@@ -20,6 +20,16 @@
 #'   Additional details...
 #'
 #'
+#' @references
+#'   Ptáček P, Šoukal F, Opravil T (2018). "Introduction to the Transition State Theory",
+#'   \emph{InTech.}, \url{https://doi.org/10.5772/intechopen.78705}.
+#'
+#'   Anslyn EV, Dougherty DA (2006). \emph{Modern Physical Organic Chemistry}, University Science Books,
+#'   ISBN 978-1-891-38931-3, \url{https://uscibooks.aip.org/books/modern-physical-organic-chemistry/}.
+#'
+#'   Lente G, Fábián I, Poë AJ (2005). "A common Misconception about the Eyring Equation",
+#'   \emph{New J. Chem.}, \strong{29}(6), 759–760, \url{https://doi.org/10.1039/B501687H}.
+#'
 #'
 #' @param data.kvT Data frame object, which must include two essential columns: rate constant (\eqn{k} of an elementary
 #'   radical reaction) and the corresponding temperatures at which the \eqn{k} was acquired.
@@ -34,7 +44,7 @@
 #'   (column characterized by the \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
 #' @param transmiss.coeff Numeric, corresponding to probability that the activated complex is transformed into products.
 #'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
-#' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
+#' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring-Polanyi relation
 #'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k} \emph{vs} \eqn{T}
 #'   dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
 #'   under its \code{algorithm} argument, are available: \code{"default"}
@@ -50,12 +60,20 @@
 #'   \item{df}{Data frame including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
 #'   with the name of \code{DeltaG_active_kJ_per_mol}.}
 #'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
-#'   however with the resolution of 1000 points) and the corresponding \code{.fitted} \eqn{k}, according
+#'   however with the resolution of 1000 points) and the corresponding \code{.fitted} \eqn{k}, according to
 #'   Eyring-Polanyi model.}
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
 #'   together with the Eyring-Polanyi equation.}
-#'   \item{}{.}
-#'   \item{}{.}
+#'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
+#'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for both \eqn{\Delta^{\ddagger} H^o}
+#'   and \eqn{\Delta^{\ddagger} S^o}.}
+#'   \item{converg}{List, containing fitting/optimization characteristics like number of evaluations/iterations
+#'   (\code{N.evals}); character string denoting the (un)successful convergence (\code{message})
+#'   and finally, standard deviation of the residuals (or the residual standard error, \code{residual.sd}),
+#'   which is defined as:
+#'   \deqn{\sqrt{(\sum_i (y_i - y_{i,\text{fit/model}})^2)\,/\,(N - k_{\text{pars}} - 1)}}
+#'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
+#'   Therefore, the smaller the \code{residual.sd}, the better the Eyring-Polanyi-relation fit.}
 #'   }
 #'
 #'
