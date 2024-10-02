@@ -62,7 +62,9 @@ operating system. This package is required for the proper running of the
 
 ``` r
 
-# after the initial R-environment setup (see below) it's always 
+# Run the code in R Console
+#
+# after the initial R environment setup (see below) it's always 
 # good to install essential collection of packages for data science 
 # with all their dependencies:
 # install.packages("tidyverse",dependencies = TRUE)
@@ -101,6 +103,19 @@ system** [Quarto](https://quarto.org/) together with the
 required for sharing the results coming from `{eprscope}` in desired
 formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be
 found in the `create_qmdReport_proj()` documentation).
+
+## Updates
+
+To update the `{eprscope}` 📦, just run the following code in R Console
+➨
+
+``` r
+
+devtools::install_github("jatanRT/eprscope")
+#
+# update package together with vignettes/articles:
+# devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
+```
 
 ## Usage
 
@@ -156,8 +171,8 @@ draw_molecule_by_rcdk(
 # simulation of the phenalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,
 # the additional experimental/instrumental parameters are not shown,
-# they posses their default values => see the corresponding documentation
-# of `eval_sim_EPR_iso()` function.
+# they possess their default values => see corresponding documentation
+# of the `eval_sim_EPR_iso()` function.
 simulation.iso <-
   eval_sim_EPR_iso(
     g.iso = 2.0027,
@@ -169,7 +184,7 @@ simulation.iso <-
     lineGL.DeltaB = list(0.24, NULL) # linewidth in G
   )
 #
-# simulation spectrum preview in the region from 3470 G to 3522 G
+# simulated spectrum preview, in the region from 3470 G to 3522 G
 simulation.iso$plot + 
   ggplot2::coord_cartesian(xlim = c(3470, 3522))
 ```
