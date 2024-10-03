@@ -17,12 +17,19 @@
 #'
 #'
 #' @details
-#'   Additional details...
+#'   The basic assumption of Transition State Theory (TST) is the existence of activated state/complex, formed
+#'   by the collision of reactant molecules, which does not actually lead to reaction products directly. The activated state
+#'   is formed as highly energized, and therefore as an unstable intermediate, decomposing into products of the reaction.
+#'   Accordingly, the reaction rate is given by the rate of decomposition. Additional important assumption of TST
+#'   is the presence of pre-equilibrium of reactants with the activated complex.
 #'
 #'
 #' @references
 #'   Ptáček P, Šoukal F, Opravil T (2018). "Introduction to the Transition State Theory",
 #'   \emph{InTech.}, \url{https://doi.org/10.5772/intechopen.78705}.
+#'
+#'   International Union of Pure and Applied Chemistry (IUPAC) (2019). “Transition State Theory”,
+#'   \url{https://goldbook.iupac.org/terms/view/T06470}.
 #'
 #'   Anslyn EV, Dougherty DA (2006). \emph{Modern Physical Organic Chemistry}, University Science Books,
 #'   ISBN 978-1-891-38931-3, \url{https://uscibooks.aip.org/books/modern-physical-organic-chemistry/}.
@@ -68,7 +75,7 @@
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for both \eqn{\Delta^{\ddagger} H^o}
 #'   and \eqn{\Delta^{\ddagger} S^o}.}
 #'   \item{converg}{List, containing fitting/optimization characteristics like number of evaluations/iterations
-#'   (\code{N.evals}); character string denoting the (un)successful convergence (\code{message})
+#'   (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
 #'   and finally, standard deviation of the residuals (or the residual standard error, \code{residual.sd}),
 #'   which is defined as:
 #'   \deqn{\sqrt{(\sum_i (y_i - y_{i,\text{fit/model}})^2)\,/\,(N - k_{\text{pars}} - 1)}}
