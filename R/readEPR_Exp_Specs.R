@@ -62,7 +62,7 @@
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by the spectrometer,
 #'   in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
 #'   \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.
-#' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector including
+#' @param norm.vec.add Numeric vector. Additional normalization constant in the form of vector, including
 #'   all additional (in addition to \code{qValue}) normalization(s) like concentration, powder sample
 #'   weight, number of scans, ...etc. (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},

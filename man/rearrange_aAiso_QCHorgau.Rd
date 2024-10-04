@@ -14,7 +14,7 @@ rearrange_aAiso_QCHorgau(
 )
 }
 \arguments{
-\item{path_to_QCHoutput}{Character string corresponding to path of \code{Gaussian} or \code{ORCA} output text files.}
+\item{path_to_QCHoutput}{Character string, corresponding to path of \code{Gaussian} or \code{ORCA} output text files.}
 
 \item{N.nuclei}{Numeric value that equals to number of atoms/nuclei within the calculated structure.}
 
@@ -22,7 +22,7 @@ rearrange_aAiso_QCHorgau(
 e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
 correspond to indices of proposed equivalent nuclei in the ASCII text file.}
 
-\item{origin}{Character string pointing to origin of DFT EPR calculation parameters <=> which
+\item{origin}{Character string, pointing to origin of DFT EPR calculation parameters <=> which
 software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 or \code{"orca"}.}
 
@@ -35,9 +35,9 @@ the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original output file d
 by the \code{path_to_QCHoutput}. See also the previous argument.}
 }
 \value{
-Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to groups
+Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values, corresponding to groups
   of proposed equivalent nuclei within the structure/symmetry constructed directly
-  from \emph{Gaussian} or \emph{ORCA} output files.
+  from \emph{Gaussian} or \emph{ORCA} output text files.
 }
 \description{
 Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize

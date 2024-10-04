@@ -50,26 +50,26 @@
 #'
 #'
 #' @inheritParams plot_ECh_VoC_amperogram
-#' @param data.at Data frame (table) object including required columns like \code{Time} (\eqn{t}),
+#' @param data.at Data frame (table) object, including required columns like \code{Time} (\eqn{t}),
 #'   \code{Current} (\eqn{I}). Even though an arbitrary column label can be used, the best option
 #'   is to use labels e.g. \code{time_s}, \code{I_uA} or \code{I_mA}. Optionally, column related
 #'   to potential (\eqn{E}) may be present as well for transferred charge (\eqn{Q}) or number
 #'   of electrons (\eqn{N_{\text{e}}}) \emph{vs} \eqn{E} visualization (see also arguments
 #'   \code{E}, \code{E.unit} and \code{ref.electrode}).
-#' @param time Character string pointing to \code{time}-axis/column header in the original \code{data.at}.
+#' @param time Character string, pointing to \code{time}-axis/column header in the original \code{data.at}.
 #'   \strong{Default}: \code{time = "time_s"} (time in seconds).
-#' @param time.unit Character string pointing to \code{time}-quantity unit. There are following units available:
+#' @param time.unit Character string, pointing to \code{time}-quantity unit. There are following units available:
 #'   \code{time.unit = "s"} (\strong{default}), \code{time.unit = "ms"}, \code{time.unit = "us"} (microseconds),
 #'   \code{time.unit = "ns"} or \code{time.unit = "min"}.
-#' @param Current Character string indicating the \code{Current}(\eqn{I})-axis/column quantity name
+#' @param Current Character string, indicating the \code{Current}(\eqn{I})-axis/column quantity name
 #'   in the original \code{data.at} object. \strong{Default}: \code{Current = "I_A"} (current in \eqn{\text{A}}).
-#' @param Current.unit Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
+#' @param Current.unit Character string, pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 #'   (microamps) \code{Current.unit = "A"} (\strong{default}), \code{Current.unit = "mA"}
 #'   and \code{Current.unit = "nA"}.
 #' @param tlim Numeric vector of the \code{time}-quantity lower and upper limit, e.g. \code{xlim = c(5,400)}
 #'   (time in seconds. \strong{Default}: \code{tlim = NULL} actually setting the entire \code{time} span
 #'   from the original dataset.
-#' @param E Character string referring to \eqn{E}(potential) column name within the input \code{data.at}
+#' @param E Character string, referring to \eqn{E}(potential) column name within the input \code{data.at}
 #'   dataset. \strong{Default}: \code{E = NULL} corresponding to situation, when one doesn't want to
 #'   visualize transferred charge (or number of electrons) \emph{vs} \eqn{E}.
 #' @param E.unit Character string, setting the potential unit (see \code{E} argument), usually

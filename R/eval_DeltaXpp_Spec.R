@@ -16,16 +16,16 @@
 #'   \code{Intensity}. \code{Index} column may be included as well.
 #' @param x Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.
-#' @param Intensity Character string pointing to name of the \code{intensity column/variable}, in the original \code{data.spectr},
+#' @param Intensity Character string, pointing to name of the \code{intensity column/variable}, in the original \code{data.spectr},
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
 #'   \strong{Default}: \code{Intesity = "dIepr_over_dB"}.
-#' @param xlim Numeric vector corresponding to lower and upper limit of the selected \emph{x} region,
+#' @param xlim Numeric vector, corresponding to lower and upper limit of the selected \emph{x}-region,
 #'   such as \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\emph{RF} in \code{MHz})
 #'   or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
 #'   to the entire \code{x}-range).
 #'
 #'
-#' @return Numeric value difference of the \code{x}-axis quantity like \emph{B},\emph{g},\emph{RF} (the absolute value)
+#' @return Numeric value difference of the \code{x}-axis quantity like \emph{B},\emph{g},\emph{RF} (the absolute value),
 #'   corresponding to \code{minimum} and \code{maximum} of the derivative intensity (\code{dIepr_over_dB})
 #'   in EPR/ENDOR spectrum.
 #'

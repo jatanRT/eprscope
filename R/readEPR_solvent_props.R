@@ -6,12 +6,12 @@
 #'
 #'
 #' @description
-#'   Gathering the solvent properties from \code{\link{solvents_ds}} in order to pick-up
+#'   Gathering the solvent properties from \code{\link{solvents_ds}} in order to filter out
 #'   specific \code{solvent} and its corresponding properties (by the \code{prop} argument).
 #'   See also \code{vignette("datasets")}.
 #'
 #'
-#' @param solvent Character string pointing to solvent name (or any string from the solvent name/abbreviation),
+#' @param solvent Character string, pointing to solvent name (or any string from the solvent name/abbreviation),
 #'   such as \code{solvent = "DMSO"},\code{solvent = "acetone"}, \code{solvent = "xylene"}.
 #'   If more than one rows/observations are being returned (e.g. in case of \code{solvent = "xylene"}) => additional
 #'   solvent specification must be provided e.g. \code{solvent = "o-xylene"}.

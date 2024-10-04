@@ -9,7 +9,7 @@ convert_a_mT_2A(a.mT, g.val = 2.0023193)
 \arguments{
 \item{a.mT}{Numeric value/vector of HFSCs in \code{mT} ('line distances' from EPR spectrum)}
 
-\item{g.val}{Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
+\item{g.val}{Numeric value/vector, corresponding to actual \eqn{g}-factor (\code{unitless}).
 \strong{Default:} \code{g.val = 2.00231930} (corresponding to free electron).}
 }
 \value{

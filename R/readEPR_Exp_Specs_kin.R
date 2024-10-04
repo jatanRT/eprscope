@@ -11,17 +11,19 @@
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
-#' @param name.root Character string corresponding to entire \strong{file name without extension}.
+#' @param name.root Character string, corresponding to entire \strong{file name without extension}.
 #' @param dir_ASC Character string, path (can be also defined by \code{\link[base]{file.path}})
 #'   to directory where the \code{ASCII} spectral data is stored.
 #' @param dir_dsc_par Character string, path (can be also defined by \code{\link[base]{file.path}})
 #'   to directory where the \code{.DSC}/\code{.dsc} or \code{.par} parameter file is stored
 #'   (to calculate \eqn{g}-value and/or normalize intensities).
-#' @param time.unit Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+#' @param time.unit Character string, specifying \code{"s"},\code{"min"}, \code{"h"}
+#'   or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 #'   \strong{Default}: \code{time.unit = "s"}
 #' @param time.delta.slice.s Numeric, time span/interval in seconds between \code{slices},
-#'   in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.
-#' @param col.names Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+#'   in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
+#'   corresponding to \code{1 s}).
+#' @param col.names Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.
@@ -33,7 +35,7 @@
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 #'   \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
 #'   by the "Winepr" software Q value must be defined like \code{qValue = 3400}.
-#' @param norm.vec.add Numeric vector. Additional normalization constant in form of vector involving
+#' @param norm.vec.add Numeric vector, additional normalization constant in the form of vector, involving
 #'   all additional (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 #'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).
@@ -220,13 +222,19 @@ readEPR_Exp_Specs_kin <- function(name.root,
     ## rename column
     colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
   }
-  ## Definition for `time.delta.slice.s`
-  time.delta.slice.s <- time.delta.slice.s %>% `if`(is.null(time.delta.slice.s),1, .)
-  #
-  ## `time` if spectra are recorded as `slices` series
-  if (time.unit == "unitless" & !is.null(time.delta.slice.s)) {
-    times <- times * time.delta.slice.s
+  ## Re-definition for `time.delta.slice.s`
+  if (any(grepl(paste(winepr.string,collapse = "|"),origin))){
+    ## ASSUMING USER CAN MAKE MISTAKES :-)
+    time.delta.slice.s <- time.delta.slice.s %>% `if`(is.null(time.delta.slice.s),1, .)
+    #
+    ## `time` if spectra are recorded as `slices` series
+    if (grepl("s",time.unit) & !is.null(time.delta.slice.s)) {
+      times <- times * time.delta.slice.s
+    } else {
+      stop(" `time.unit` must be either 's' or `unitless` !! ")
+    }
   }
+  #
   data.spectra.time[[timeString]] <- correct_time_Exp_Specs(
     time.s = times,
     Nscans = instrument.params.kinet$Nscans,

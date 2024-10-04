@@ -35,7 +35,7 @@ EPR spectrum/data.}
 \item{Intensity}{Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}}
 
-\item{method}{Character string corresponding to method to fit an EPR spectrum by a smoothing spline
+\item{method}{Character string, corresponding to method to fit an EPR spectrum by a smoothing spline
 from \code{{npreg}} package (see the \code{method} argument in \code{\link[npreg]{ss}}).
 The following methods are available (they are shortly described
 in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}
@@ -49,12 +49,12 @@ or additional information may be found in \code{References}) =>
 "REML" \tab Restricted Maximum Likelihood \cr
 "ML" \tab Maximum Likelihood \cr
 "AIC" \tab Akaike’s Information Criterion \cr
-"BIC" \tab Bayesian Information Criterion \cr
+"BIC" \tab Bayesian Information Criterion (\strong{default}) \cr
 }}
 
 \item{output.vec}{Logical, whether the function output have to be vectorized, i.e. only the vector
-of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data,
-which can be handily processed by \code{\link[dplyr]{group_by}} using the
+of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data/spectra,
+which can be handily processed by the \code{\link[dplyr]{group_by}} using the
 \code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = NULL}.}
 
 \item{...}{additional arguments passed to the function (see also \code{\link[npreg]{ss}} function).}
@@ -65,7 +65,7 @@ If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR
   \code{lineSpecs.form = "integrated"/"absorption"}) with the length of the original \code{Intensity}.
   Contrarily, if the \code{output.vec} is set to \code{FALSE} the following list is returned =>
   \describe{
-  \item{df}{Original data frame with the addition column corresponding to smoothed EPR intensity
+  \item{df}{Original data frame with the addition column, corresponding to smoothed EPR intensity
   (derivative or integrated).}
   \item{plot}{Plot object (list) \emph{EPR intensity} \emph{vs.} \emph{B} with the experimental
   data and its corresponding smoothed relation performed by splines.}
@@ -88,11 +88,11 @@ Smoothing of the EPR spectra by non-parametric fitting a smoothing spline, \code
   EPR spectrum/spectra.
 }
 \details{
-The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials,
+The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials
   like
   \deqn{I_{\text{EPR}}(B) = B^3 - (3/2)\,B^2 + (1/2)\,B}
   where \eqn{I_{\text{EPR}}} equals to general EPR intensity and \eqn{B} is the magnetic flux density.
-  This may be applied to both derivative or single integrated EPR spectral forms. Also a higher/lower polynomial
+  This may be applied to both derivative or single integrated EPR spectrum forms. Also a higher/lower polynomial
   degree may be applied by the \code{method} (see the argument description) and by the \code{m} optional argument
   (see \code{...} additional arguments) which is a penalty order (integer). For the above-mentioned cubic
   spline/polynomial \code{m = 2}. Linear polynomial corresponds

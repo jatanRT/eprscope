@@ -10,10 +10,10 @@
 #'
 #'
 #'
-#' @param B.val Numeric value/vector corresponding to input value(s) of magnetic flux density.
-#' @param B.unit Character string referring to input magnetic flux density units.
+#' @param B.val Numeric value/vector, corresponding to input value(s) of magnetic flux density.
+#' @param B.unit Character string, referring to input magnetic flux density units.
 #'   Usually \code{T}, \code{mT} or \code{G} are used.
-#' @param B.2unit Character string referring to output magnetic flux density units.
+#' @param B.2unit Character string, referring to output magnetic flux density units.
 #'   Usually \code{T}, \code{mT} or \code{G} are used.
 #'
 #'

@@ -27,7 +27,7 @@ Alternatively, the \code{\link[base]{file.path}} can be used to set the path.
 under which the entire report project is stored. \strong{This actually corresponds to main project directory}.
 \strong{Default}: \code{wd.subdir.name = "Project_Report"}.}
 
-\item{citation.style}{Character string referring to citation style used for \code{References} and citations
+\item{citation.style}{Character string, referring to citation style used for \code{References} and citations
 in the main \code{.qmd} document, which inherits the name from \code{wd.subdir.name}. This file
 is automatically created under the \code{subdirectory}. The argument must be added in the form
 of \code{https} url, like \code{citation.style = "https://www.zotero.org/styles/american-chemical-society"}.

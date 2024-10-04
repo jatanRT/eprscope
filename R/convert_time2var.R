@@ -24,7 +24,7 @@
 #'
 #'
 #'
-#' @param time.vals Numeric value or vector corresponding to time (points) where the variable \code{var}
+#' @param time.vals Numeric value or vector, corresponding to time (points) where the variable \code{var}
 #'   is changed.
 #' @param time.unit Character string time unit defined by \code{s},\code{min} or \code{h}.
 #'   \strong{Default}: \code{time.unit = "s"}.
@@ -35,7 +35,7 @@
 #'   \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).
 #' @param var.rate Numeric, corresponding to rate of linear \code{var} change (INCL. ALSO NEGATIVE SIGN,
 #'   if required, e.g. in the case of electrochemical reduction or sample cooling).
-#' @param var.rate.unit Character string corresponding to \code{var.rate} unit defined
+#' @param var.rate.unit Character string, corresponding to \code{var.rate} unit defined
 #'   by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
 #'   \code{"min^{-1}"} \eqn{\equiv \text{min}^{-1}} or \code{"h^{-1}"} \eqn{\equiv \text{h}^{-1}}.
 #'   \strong{Default}: \code{var.rate.unit = "s^{-1}"}.

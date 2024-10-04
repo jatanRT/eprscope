@@ -27,20 +27,20 @@ pointing to \code{".sdf"} file.}
 either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\code{type = "SDF"}.
 \strong{Default}: \code{type = "smiles"}.}
 
-\item{mol.label}{Character string pointing to name of the molecule/compound, e.g.
+\item{mol.label}{Character string, pointing to name of the molecule/compound, e.g.
 \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
 (\strong{default}) a character string "mol. structure viewer" with gray color
 is shown.}
 
-\item{mol.label.color}{Character string pointing to displayed font color of the chemical structure
+\item{mol.label.color}{Character string, pointing to displayed font color of the chemical structure
 label. \strong{Default}: \code{mol.label.color = "black"}.}
 
-\item{mol.label.xy.posit}{Numeric vector of two values matching the \eqn{x,y}-position of the \code{mol.label}
+\item{mol.label.xy.posit}{Numeric vector of two values, matching the \eqn{x,y}-position of the \code{mol.label}
 within the image having the total size of \code{(1,1,10,10)} =>
 see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.posit = c(8.2,1,2)}
 => the label is positioned at the bottom right corner.}
 
-\item{sma}{Character string allowing to highlight sub-structures using
+\item{sma}{Character string, allowing to highlight sub-structures using
 \href{https://www.daylight.com/dayhtml/doc/theory/theory.smarts.html}{\code{SMARTS}}
 (\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
 the common substructures in a set of molecules, such as \code{sma = "C=O"}.}
@@ -48,7 +48,7 @@ the common substructures in a set of molecules, such as \code{sma = "C=O"}.}
 \item{annotate}{Character string, whether to display (\code{annotate = "number"}) or not display
 (\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.}
 
-\item{style}{Character string denoting the plotting style like =>
+\item{style}{Character string, denoting the plotting style like =>
 \tabular{ll}{
  \strong{Plotting Style} \tab \strong{Style Text String} \cr
  "color on black" \tab \code{style = "cob"} \cr
@@ -59,7 +59,7 @@ the common substructures in a set of molecules, such as \code{sma = "C=O"}.}
 }
 \strong{Default}: \code{style = "cow"}.}
 
-\item{abbr}{Character string which controls how the structure is displayed. Following options
+\item{abbr}{Character string, which controls how the structure is displayed. Following options
 can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
 \code{abbr = "groups"} creating an abbreviation for \code{groups}; \code{abbr = "reagents"} creating
 an abbreviation for \code{reagents} or \code{abbr = "on"} to abbreviate both.

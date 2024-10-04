@@ -26,7 +26,7 @@ eval_kinR_EPR_modelFit(
 the EPR spectra calculated using the experimental data as well as time column. These two essential
 columns are described by character strings like those below (see arguments \code{time} and \code{qvarR}).}
 
-\item{time.unit}{Character string corresponding to time unit like \code{"s"} (\strong{default}),
+\item{time.unit}{Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 \code{"min"} or \code{"h"}.}
 
 \item{time}{Character string pointing to \code{time} column/variable name in the original
@@ -35,7 +35,7 @@ columns are described by character strings like those below (see arguments \code
 \item{qvarR}{Character string pointing to \code{qvarR} (quantitative variable) column/variable
 name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.}
 
-\item{model.react}{Character string denoting a specific radical (\code{"R"}) reaction related to
+\item{model.react}{Character string, denoting a specific radical (\code{"R"}) reaction related to
 changes in integral intensities (or any other \strong{q}uantitative \strong{var}iable) in EPR spectral
 time series. Arrow shows direction of the reaction (\code{"-->", forward} or \code{"<==>", forward + reverse}).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
@@ -66,14 +66,16 @@ Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within
 string is not fixed and can be skipped for the sake of flexibility.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
-must be included in \code{kin.params} (see also \code{kin.params} description).}
+must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
+presented above, it applies only to one part of the mechanism.}
 
 \item{elementary.react}{Logical, if the model reaction should be considered as the elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
-one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} into
-the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}.}
+one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
+the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}. For the consecutive
+model reaction presented above, it applies only to one part of the mechanism.}
 
 \item{params.guess}{Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 ready for optimization/fitting.}

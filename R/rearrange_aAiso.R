@@ -30,10 +30,10 @@
 #'
 #'
 #'
-#' @param path_to_ASC Character string pointing to path of ASCII file (\code{txt},\code{csv}...etc,
+#' @param path_to_ASC Character string, pointing to path of ASCII file (\code{txt},\code{csv}...etc,
 #' it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
 #'   \eqn{A_{iso}} or \eqn{a_{iso}} values.
-#' @param col.names Character string vector containing names of all columns from QCH computational output,
+#' @param col.names Character string vector, containing names of all columns from QCH computational output,
 #'   for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.
 #' @param nuclei.list.slct List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
@@ -162,9 +162,9 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
-#' @param path_to_QCHoutput Character string corresponding to path of \code{Gaussian} or \code{ORCA} output text files.
+#' @param path_to_QCHoutput Character string, corresponding to path of \code{Gaussian} or \code{ORCA} output text files.
 #' @param N.nuclei Numeric value that equals to number of atoms/nuclei within the calculated structure.
-#' @param origin Character string pointing to origin of DFT EPR calculation parameters <=> which
+#' @param origin Character string, pointing to origin of DFT EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 #'   or \code{"orca"}.
 #' @param output.text.origin Logical, whether to write a text file containing the extracted
@@ -175,9 +175,9 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'   by the \code{path_to_QCHoutput}. See also the previous argument.
 #'
 #'
-#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values corresponding to groups
+#' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values, corresponding to groups
 #'   of proposed equivalent nuclei within the structure/symmetry constructed directly
-#'   from \emph{Gaussian} or \emph{ORCA} output files.
+#'   from \emph{Gaussian} or \emph{ORCA} output text files.
 #'
 #'
 #' @examples
@@ -282,8 +282,9 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## structure in comparison to `Gaussian`
     main.indicator.line <- "ELECTRIC AND MAGNETIC HYPERFINE STRUCTURE"
     start.reading.line <- grep(main.indicator.line, qchfile)
-    ## Select only part of `qchfile` with EPR params. with all lines down
-    qchfile.select <- qchfile[-(1:start.reading.line - 1)]
+    ## Select only part of `qchfile` with EPR params. with all lines down,
+    ## therefore =>
+    qchfile.select <- qchfile[-(1:(start.reading.line - 1))]
     #
     ## output original orca data file in-between:-) =>
     if (isTRUE(output.text.origin)) {

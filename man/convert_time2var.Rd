@@ -14,7 +14,7 @@ convert_time2var(
 )
 }
 \arguments{
-\item{time.vals}{Numeric value or vector corresponding to time (points) where the variable \code{var}
+\item{time.vals}{Numeric value or vector, corresponding to time (points) where the variable \code{var}
 is changed.}
 
 \item{time.unit}{Character string time unit defined by \code{s},\code{min} or \code{h}.
@@ -30,7 +30,7 @@ negative electrochemical potential) of the variable (\code{var}).}
 \item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (INCL. ALSO NEGATIVE SIGN,
 if required, e.g. in the case of electrochemical reduction or sample cooling).}
 
-\item{var.rate.unit}{Character string corresponding to \code{var.rate} unit defined
+\item{var.rate.unit}{Character string, corresponding to \code{var.rate} unit defined
 by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
 \code{"min^{-1}"} \eqn{\equiv \text{min}^{-1}} or \code{"h^{-1}"} \eqn{\equiv \text{h}^{-1}}.
 \strong{Default}: \code{var.rate.unit = "s^{-1}"}.}

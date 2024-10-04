@@ -96,11 +96,11 @@
 #'   were recorded by the "WinEpr" (\code{origin = "winepr"}) or by "Xenon".
 #'   \strong{Default}: \code{origin = NULL} in case no file is used to extract
 #'   the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).
-#' @param B.unit Character string pointing to unit of magnetic flux density which is to be presented
+#' @param B.unit Character string, pointing to unit of magnetic flux density which is to be presented
 #'   on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
 #'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 #'   like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !
-#' @param nuclear.system List containing the information about groups of equivalent nuclei
+#' @param nuclear.system List, containing the information about groups of equivalent nuclei
 #'   interacting with the unpaired electron like \code{nuclear.system = list("14N",1,45)}.
 #'   This corresponds to one group of "14N" interacting nuclei where \strong{the second number}
 #'   denotes \strong{the number of nuclei} within the group and \strong{the third number}
@@ -117,7 +117,7 @@
 #'   is taken into the calculation of intensity pattern of the simulated EPR spectrum.
 #'   \strong{Default}: \code{natur.abund = TRUE}. For a single-line
 #'   EPR spectrum without hyperfine splitting(HFS) it is automatically switched to \code{natur.abund = FALSE}.
-#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
+#' @param lineSpecs.form Character string, describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 #'   of the analyzed EPR spectrum/data.
 #' @param lineGL.DeltaB List of two values referred to as \emph{Gaussian} (G) and \emph{Lorentzian} (L)
@@ -136,7 +136,7 @@
 #'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
 #'   (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
 #'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voigt}.
-#' @param Intensity.sim Character string pointing to column of simulated EPR intensity within the related output
+#' @param Intensity.sim Character string, pointing to column of simulated EPR intensity within the related output
 #'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive \code{plotly} graph
 #'   (see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{dafault}),

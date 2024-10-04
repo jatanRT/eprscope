@@ -38,7 +38,7 @@ EPR spectrum \cr
 If \code{instrum.params = NULL} then parameters must be provided by the \code{path_to_dsc_par}
 as well as by \code{origin} arguments.}
 
-\item{B.unit}{Character string pointing to unit of magnetic flux density which is to be presented
+\item{B.unit}{Character string, pointing to unit of magnetic flux density which is to be presented
 on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
 \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !}
@@ -64,7 +64,7 @@ without HF structure, 3. \eqn{1\times A(\text{14N}) = 45\,\text{MHz} + 4\times A
 \item{natur.abund.vec}{Logical vector, whether to consider natural abundance of the interacting nuclei within
 the components (see also \code{Examples}) like \code{c(TRUE,FALSE,TRUE)}.}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+\item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
 of the analyzed EPR spectrum/data.}
 
@@ -74,7 +74,7 @@ like \code{list(list(1,NULL),list(3,NULL),list(1,NULL))}.}
 \item{lineG.content.vec}{Numeric vector corresponding to Gaussian line content for all individual components
 of the EPR spectrum like \code{1,1,1} (all spectral components are described by the pure Gaussian line).}
 
-\item{Intensity.sim}{Character string pointing to column of simulated EPR intensity within the related output
+\item{Intensity.sim}{Character string, pointing to column of simulated EPR intensity within the related output
 data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
 \item{Intensity.sim.coeffs.vec}{Numeric vector of multiplication coefficients related to EPR component intensities

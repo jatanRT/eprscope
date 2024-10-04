@@ -23,7 +23,7 @@ readEPR_Exp_Specs_kin(
 )
 }
 \arguments{
-\item{name.root}{Character string corresponding to entire \strong{file name without extension}.}
+\item{name.root}{Character string, corresponding to entire \strong{file name without extension}.}
 
 \item{dir_ASC}{Character string, path (can be also defined by \code{\link[base]{file.path}})
 to directory where the \code{ASCII} spectral data is stored.}
@@ -32,13 +32,15 @@ to directory where the \code{ASCII} spectral data is stored.}
 to directory where the \code{.DSC}/\code{.dsc} or \code{.par} parameter file is stored
 (to calculate \eqn{g}-value and/or normalize intensities).}
 
-\item{time.unit}{Character string \strong{time unit} defined by \code{"s"},\code{"min"} or \code{"h"}.
+\item{time.unit}{Character string, specifying \code{"s"},\code{"min"}, \code{"h"}
+or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 \strong{Default}: \code{time.unit = "s"}}
 
 \item{time.delta.slice.s}{Numeric, time span/interval in seconds between \code{slices},
-in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL}.}
+in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
+corresponding to \code{1 s}).}
 
-\item{col.names}{Character/String vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+\item{col.names}{Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.}
@@ -68,7 +70,7 @@ In case of "Xenon" software the parameter is included in \code{.DSC} file, there
 \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
 by the "Winepr" software Q value must be defined like \code{qValue = 3400}.}
 
-\item{norm.vec.add}{Numeric vector. Additional normalization constant in form of vector involving
+\item{norm.vec.add}{Numeric vector, additional normalization constant in the form of vector, involving
 all additional (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).}

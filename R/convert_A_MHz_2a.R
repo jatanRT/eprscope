@@ -19,8 +19,8 @@
 #'
 #'
 #'
-#' @param A.MHz Numeric value/vector corresponding to HFCCs in \code{MHz}.
-#' @param g.val Numeric value/vector corresponding to actual \eqn{g}-factor (\code{unitless}).
+#' @param A.MHz Numeric value/vector, corresponding to HFCCs in \code{MHz}.
+#' @param g.val Numeric value/vector, corresponding to actual \eqn{g}-factor (\code{unitless}).
 #'   \strong{Default:} \code{g.val = 2.00231930} (corresponding to free electron).
 #'
 #'
