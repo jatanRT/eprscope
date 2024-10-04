@@ -88,7 +88,7 @@
 
 
 <dl><dt id="arg-name-root">name.root<a class="anchor" aria-label="anchor" href="#arg-name-root"></a></dt>
-<dd><p>Character string corresponding to entire <strong>file name without extension</strong>.</p></dd>
+<dd><p>Character string, corresponding to entire <strong>file name without extension</strong>.</p></dd>
 
 
 <dt id="arg-dir-asc">dir_ASC<a class="anchor" aria-label="anchor" href="#arg-dir-asc"></a></dt>
@@ -103,17 +103,19 @@ to directory where the <code>.DSC</code>/<code>.dsc</code> or <code>.par</code> 
 
 
 <dt id="arg-time-unit">time.unit<a class="anchor" aria-label="anchor" href="#arg-time-unit"></a></dt>
-<dd><p>Character string <strong>time unit</strong> defined by <code>"s"</code>,<code>"min"</code> or <code>"h"</code>.
+<dd><p>Character string, specifying <code>"s"</code>,<code>"min"</code>, <code>"h"</code>
+or <code>time.unit = "unitless"</code> (if <code>time.delta.slice.s</code> is different from <code>NULL</code>).
 <strong>Default</strong>: <code>time.unit = "s"</code></p></dd>
 
 
 <dt id="arg-time-delta-slice-s">time.delta.slice.s<a class="anchor" aria-label="anchor" href="#arg-time-delta-slice-s"></a></dt>
 <dd><p>Numeric, time span/interval in seconds between <code>slices</code>,
-in the case if <code>origin = "winepr"</code>. <strong>Default</strong>: <code>time.delta.slice = NULL</code>.</p></dd>
+in the case if <code>origin = "winepr"</code>. <strong>Default</strong>: <code>time.delta.slice = NULL</code> (actually,
+corresponding to <code>1 s</code>).</p></dd>
 
 
 <dt id="arg-col-names">col.names<a class="anchor" aria-label="anchor" href="#arg-col-names"></a></dt>
-<dd><p>Character/String vector, inherited from <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></code>, corresponding to
+<dd><p>Character/String vector inherited from <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></code>, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, <code>Quantity_Unit</code> like <code>"B_G"</code>, <code>"RF_MHz"</code>, <code>"Bsim_mT"</code> (e.g. pointing
 to simulated EPR spectrum abscissa)...etc, <strong>default</strong>: <code>col.names = c("index","B_G","dIepr_over_dB")</code>.</p></dd>
@@ -157,7 +159,7 @@ by the "Winepr" software Q value must be defined like <code>qValue = 3400</code>
 
 
 <dt id="arg-norm-vec-add">norm.vec.add<a class="anchor" aria-label="anchor" href="#arg-norm-vec-add"></a></dt>
-<dd><p>Numeric vector. Additional normalization constant in form of vector involving
+<dd><p>Numeric vector, additional normalization constant in the form of vector, involving
 all additional (in addition to <code>qValue</code>) normalization(s) such as concentration, powder sample
 weight, number of scans, ...etc (e.g. <code>norm.vec.add = c(2000,0.5,2)</code>). <strong>Default</strong>:
 <code>norm.vec.add = NULL</code> (actually corresponding to value <code>1</code>).</p></dd>

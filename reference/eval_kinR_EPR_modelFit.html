@@ -99,7 +99,7 @@ columns are described by character strings like those below (see arguments <code
 
 
 <dt id="arg-time-unit">time.unit<a class="anchor" aria-label="anchor" href="#arg-time-unit"></a></dt>
-<dd><p>Character string corresponding to time unit like <code>"s"</code> (<strong>default</strong>),
+<dd><p>Character string, corresponding to time unit like <code>"s"</code> (<strong>default</strong>),
 <code>"min"</code> or <code>"h"</code>.</p></dd>
 
 
@@ -114,7 +114,7 @@ name in the original <code>data.qt.expr</code> data frame. <strong>Default</stro
 
 
 <dt id="arg-model-react">model.react<a class="anchor" aria-label="anchor" href="#arg-model-react"></a></dt>
-<dd><p>Character string denoting a specific radical (<code>"R"</code>) reaction related to
+<dd><p>Character string, denoting a specific radical (<code>"R"</code>) reaction related to
 changes in integral intensities (or any other <strong>q</strong>uantitative <strong>var</strong>iable) in EPR spectral
 time series. Arrow shows direction of the reaction (<code>"--&gt;", forward</code> or <code>"&lt;==&gt;", forward + reverse</code>).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
@@ -129,7 +129,8 @@ Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within
 string is not fixed and can be skipped for the sake of flexibility.
 If <code>elementary.react = FALSE</code> (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. <code>alpha</code>,<code>beta</code> or <code>gamma</code>)
-must be included in <code>kin.params</code> (see also <code>kin.params</code> description).</p></dd>
+must be included in <code>kin.params</code> (see also <code>kin.params</code> description). For the consecutive model reaction
+presented above, it applies only to one part of the mechanism.</p></dd>
 
 
 <dt id="arg-elementary-react">elementary.react<a class="anchor" aria-label="anchor" href="#arg-elementary-react"></a></dt>
@@ -137,8 +138,9 @@ must be included in <code>kin.params</code> (see also <code>kin.params</code> de
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. <strong>Default</strong>: <code>elementary.react = TRUE</code>.
 If <code>elementary.react = FALSE</code>, i.e. the <code>model.react</code> cannot be considered like an elementary one,
-one must include the parameterized reaction orders \(\alpha\), \(\beta\) or \(\gamma\) into
-the <code>kin.params</code>, e.g <code>kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)</code>.</p></dd>
+one must include the parameterized reaction orders \(\alpha\), \(\beta\) or \(\gamma\) in
+the <code>kin.params</code>, e.g <code>kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)</code>. For the consecutive
+model reaction presented above, it applies only to one part of the mechanism.</p></dd>
 
 
 <dt id="arg-params-guess">params.guess<a class="anchor" aria-label="anchor" href="#arg-params-guess"></a></dt>

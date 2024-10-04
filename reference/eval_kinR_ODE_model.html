@@ -98,7 +98,7 @@
 
 
 <dl><dt id="arg-model-react">model.react<a class="anchor" aria-label="anchor" href="#arg-model-react"></a></dt>
-<dd><p>Character string denoting a specific radical (<code>"R"</code>) reaction related to
+<dd><p>Character string, denoting a specific radical (<code>"R"</code>) reaction related to
 changes in integral intensities (or any other <strong>q</strong>uantitative <strong>var</strong>iable) in EPR spectral
 time series. Arrow shows direction of the reaction (<code>"--&gt;", forward</code> or <code>"&lt;==&gt;", forward + reverse</code>).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
@@ -113,7 +113,8 @@ Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within
 string is not fixed and can be skipped for the sake of flexibility.
 If <code>elementary.react = FALSE</code> (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. <code>alpha</code>,<code>beta</code> or <code>gamma</code>)
-must be included in <code>kin.params</code> (see also <code>kin.params</code> description).</p></dd>
+must be included in <code>kin.params</code> (see also <code>kin.params</code> description). For the consecutive model reaction
+presented above, it applies only to one part of the mechanism.</p></dd>
 
 
 <dt id="arg-model-expr-diff">model.expr.diff<a class="anchor" aria-label="anchor" href="#arg-model-expr-diff"></a></dt>
@@ -128,12 +129,13 @@ FITTING PROCEDURE (see also <code><a href="eval_kinR_EPR_modelFit.html">eval_kin
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. <strong>Default</strong>: <code>elementary.react = TRUE</code>.
 If <code>elementary.react = FALSE</code>, i.e. the <code>model.react</code> cannot be considered like an elementary one,
-one must include the parameterized reaction orders \(\alpha\), \(\beta\) or \(\gamma\) into
-the <code>kin.params</code>, e.g <code>kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)</code>.</p></dd>
+one must include the parameterized reaction orders \(\alpha\), \(\beta\) or \(\gamma\) in
+the <code>kin.params</code>, e.g <code>kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)</code>. For the consecutive
+model reaction presented above, it applies only to one part of the mechanism.</p></dd>
 
 
 <dt id="arg-kin-params">kin.params<a class="anchor" aria-label="anchor" href="#arg-kin-params"></a></dt>
-<dd><p>Named numeric vector containing rate constants as well as initial radical
+<dd><p>Named numeric vector, containing rate constants as well as initial radical
 or other reactant/product concentration/integral intensities/areas...etc. Therefore, a general
 <code>qvar</code> (<strong>q</strong>uantitative <strong>var</strong>iable) was defined which may actually reflect
 all above-mentioned quantities. <strong>Default</strong>: <code>kin.params = c(k1 = 0.001,qvar0R = 0.02)</code>.
@@ -151,17 +153,17 @@ in the following table:</p><table class="table table"><tr><td><strong>model.reac
 
 
 <dt id="arg-time-unit">time.unit<a class="anchor" aria-label="anchor" href="#arg-time-unit"></a></dt>
-<dd><p>Character string corresponding to time unit like <code>"s"</code> (<strong>default</strong>),
+<dd><p>Character string, corresponding to time unit like <code>"s"</code> (<strong>default</strong>),
 <code>"min"</code> or <code>"h"</code>.</p></dd>
 
 
 <dt id="arg-timelim-model">timeLim.model<a class="anchor" aria-label="anchor" href="#arg-timelim-model"></a></dt>
-<dd><p>Numeric vector incl. two values corresponding to starting and final time/termination
+<dd><p>Numeric vector, including two values corresponding to starting and final time/termination
 of the model reaction.</p></dd>
 
 
 <dt id="arg-data-qt-expr">data.qt.expr<a class="anchor" aria-label="anchor" href="#arg-data-qt-expr"></a></dt>
-<dd><p>A data frame object containing the concentrations/integral intensities/areas under
+<dd><p>A data frame object, containing the concentrations/integral intensities/areas under
 the EPR spectra calculated using the <strong>experimental data</strong> as well as time column. These two essential
 column headers are described by the character strings like those below <code>time.expr</code> and <code>qvar.expr</code>.
 The <code>data.qt.expr</code> MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
@@ -170,14 +172,14 @@ IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPERIMENTAL DATA BY THE KINE
 
 
 <dt id="arg-time-expr">time.expr<a class="anchor" aria-label="anchor" href="#arg-time-expr"></a></dt>
-<dd><p>Character string pointing to <code>time</code> column/variable name in the original
+<dd><p>Character string, pointing to <code>time</code> column/variable name in the original
 <code>data.qt.expr</code> data frame. <strong>Default</strong>: <code>time.expr = NULL</code> (when the experimental
 data aren't taken into account). If the time has to be corrected (e.g. in the case of double integrals),
 please use <code><a href="correct_time_Exp_Specs.html">correct_time_Exp_Specs</a></code> function prior to kinetic evaluation.</p></dd>
 
 
 <dt id="arg-qvar-expr">qvar.expr<a class="anchor" aria-label="anchor" href="#arg-qvar-expr"></a></dt>
-<dd><p>Character string pointing to <code>qvar</code> column/variable name in the original
+<dd><p>Character string, pointing to <code>qvar</code> column/variable name in the original
 <code>data.qt.expr</code> data frame. <strong>Default</strong>: <code>qvar.expr = NULL</code> (when the experimental
 data aren't taken into account).</p></dd>
 

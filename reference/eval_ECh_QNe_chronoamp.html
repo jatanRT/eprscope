@@ -105,7 +105,7 @@
 
 
 <dl><dt id="arg-data-at">data.at<a class="anchor" aria-label="anchor" href="#arg-data-at"></a></dt>
-<dd><p>Data frame (table) object including required columns like <code>Time</code> (\(t\)),
+<dd><p>Data frame (table) object, including required columns like <code>Time</code> (\(t\)),
 <code>Current</code> (\(I\)). Even though an arbitrary column label can be used, the best option
 is to use labels e.g. <code>time_s</code>, <code>I_uA</code> or <code>I_mA</code>. Optionally, column related
 to potential (\(E\)) may be present as well for transferred charge (\(Q\)) or number
@@ -114,12 +114,12 @@ of electrons (\(N_{\text{e}}\)) <em>vs</em> \(E\) visualization (see also argume
 
 
 <dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
-<dd><p>Character string pointing to <code>time</code>-axis/column header in the original <code>data.at</code>.
+<dd><p>Character string, pointing to <code>time</code>-axis/column header in the original <code>data.at</code>.
 <strong>Default</strong>: <code>time = "time_s"</code> (time in seconds).</p></dd>
 
 
 <dt id="arg-time-unit">time.unit<a class="anchor" aria-label="anchor" href="#arg-time-unit"></a></dt>
-<dd><p>Character string pointing to <code>time</code>-quantity unit. There are following units available:
+<dd><p>Character string, pointing to <code>time</code>-quantity unit. There are following units available:
 <code>time.unit = "s"</code> (<strong>default</strong>), <code>time.unit = "ms"</code>, <code>time.unit = "us"</code> (microseconds),
 <code>time.unit = "ns"</code> or <code>time.unit = "min"</code>.</p></dd>
 
@@ -131,18 +131,18 @@ from the original dataset.</p></dd>
 
 
 <dt id="arg-current">Current<a class="anchor" aria-label="anchor" href="#arg-current"></a></dt>
-<dd><p>Character string indicating the <code>Current</code>(\(I\))-axis/column quantity name
+<dd><p>Character string, indicating the <code>Current</code>(\(I\))-axis/column quantity name
 in the original <code>data.at</code> object. <strong>Default</strong>: <code>Current = "I_A"</code> (current in \(\text{A}\)).</p></dd>
 
 
 <dt id="arg-current-unit">Current.unit<a class="anchor" aria-label="anchor" href="#arg-current-unit"></a></dt>
-<dd><p>Character string pointing to <code>Current</code> quantity unit like <code>Current.unit = "uA"</code>
+<dd><p>Character string, pointing to <code>Current</code> quantity unit like <code>Current.unit = "uA"</code>
 (microamps) <code>Current.unit = "A"</code> (<strong>default</strong>), <code>Current.unit = "mA"</code>
 and <code>Current.unit = "nA"</code>.</p></dd>
 
 
 <dt id="arg-e">E<a class="anchor" aria-label="anchor" href="#arg-e"></a></dt>
-<dd><p>Character string referring to \(E\)(potential) column name within the input <code>data.at</code>
+<dd><p>Character string, referring to \(E\)(potential) column name within the input <code>data.at</code>
 dataset. <strong>Default</strong>: <code>E = NULL</code> corresponding to situation, when one doesn't want to
 visualize transferred charge (or number of electrons) <em>vs</em> \(E\).</p></dd>
 

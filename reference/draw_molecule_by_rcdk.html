@@ -96,26 +96,26 @@ either <code>type = "smiles"</code>/<code>type = "SMILES"</code> or <code>type =
 
 
 <dt id="arg-mol-label">mol.label<a class="anchor" aria-label="anchor" href="#arg-mol-label"></a></dt>
-<dd><p>Character string pointing to name of the molecule/compound, e.g.
+<dd><p>Character string, pointing to name of the molecule/compound, e.g.
 <code>mol.label = c("acetone")</code> or <code>mol.label = c("PBN")</code>. If <code>mol.label = NULL</code>
 (<strong>default</strong>) a character string "mol. structure viewer" with gray color
 is shown.</p></dd>
 
 
 <dt id="arg-mol-label-color">mol.label.color<a class="anchor" aria-label="anchor" href="#arg-mol-label-color"></a></dt>
-<dd><p>Character string pointing to displayed font color of the chemical structure
+<dd><p>Character string, pointing to displayed font color of the chemical structure
 label. <strong>Default</strong>: <code>mol.label.color = "black"</code>.</p></dd>
 
 
 <dt id="arg-mol-label-xy-posit">mol.label.xy.posit<a class="anchor" aria-label="anchor" href="#arg-mol-label-xy-posit"></a></dt>
-<dd><p>Numeric vector of two values matching the \(x,y\)-position of the <code>mol.label</code>
+<dd><p>Numeric vector of two values, matching the \(x,y\)-position of the <code>mol.label</code>
 within the image having the total size of <code>(1,1,10,10)</code> =&gt;
 see <code><a href="https://rdrr.io/r/graphics/rasterImage.html" class="external-link">rasterImage</a></code>. <strong>Default</strong>: <code>mol.label.xy.posit = c(8.2,1,2)</code>
 =&gt; the label is positioned at the bottom right corner.</p></dd>
 
 
 <dt id="arg-sma">sma<a class="anchor" aria-label="anchor" href="#arg-sma"></a></dt>
-<dd><p>Character string allowing to highlight sub-structures using
+<dd><p>Character string, allowing to highlight sub-structures using
 <a href="https://www.daylight.com/dayhtml/doc/theory/theory.smarts.html" class="external-link"><code>SMARTS</code></a>
 (<strong>SM</strong>ILES <strong>AR</strong>bitrary <strong>T</strong>arget <strong>S</strong>pecification) to highlight
 the common substructures in a set of molecules, such as <code>sma = "C=O"</code>.</p></dd>
@@ -127,11 +127,11 @@ the common substructures in a set of molecules, such as <code>sma = "C=O"</code>
 
 
 <dt id="arg-style">style<a class="anchor" aria-label="anchor" href="#arg-style"></a></dt>
-<dd><p>Character string denoting the plotting style like =&gt;</p><table class="table table"><tr><td><strong>Plotting Style</strong></td><td><strong>Style Text String</strong></td></tr><tr><td>"color on black"</td><td><code>style = "cob"</code></td></tr><tr><td>"color on white"</td><td><code>style = "cow"</code></td></tr><tr><td>"black on white"</td><td><code>style = "bow"</code></td></tr><tr><td>"white on black"</td><td><code>style = "wob"</code></td></tr><tr><td>"neon on black"</td><td><code>style = "nob"</code></td></tr></table><p><strong>Default</strong>: <code>style = "cow"</code>.</p></dd>
+<dd><p>Character string, denoting the plotting style like =&gt;</p><table class="table table"><tr><td><strong>Plotting Style</strong></td><td><strong>Style Text String</strong></td></tr><tr><td>"color on black"</td><td><code>style = "cob"</code></td></tr><tr><td>"color on white"</td><td><code>style = "cow"</code></td></tr><tr><td>"black on white"</td><td><code>style = "bow"</code></td></tr><tr><td>"white on black"</td><td><code>style = "wob"</code></td></tr><tr><td>"neon on black"</td><td><code>style = "nob"</code></td></tr></table><p><strong>Default</strong>: <code>style = "cow"</code>.</p></dd>
 
 
 <dt id="arg-abbr">abbr<a class="anchor" aria-label="anchor" href="#arg-abbr"></a></dt>
-<dd><p>Character string which controls how the structure is displayed. Following options
+<dd><p>Character string, which controls how the structure is displayed. Following options
 can be set =&gt; <code>abbr = "off"</code> (<strong>default</strong>) pointing to present structure as is;
 <code>abbr = "groups"</code> creating an abbreviation for <code>groups</code>; <code>abbr = "reagents"</code> creating
 an abbreviation for <code>reagents</code> or <code>abbr = "on"</code> to abbreviate both.

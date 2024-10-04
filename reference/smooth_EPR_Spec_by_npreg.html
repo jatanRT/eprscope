@@ -110,17 +110,17 @@ name/label is used (e.g. for simulated spectra), <strong>default</strong>: <code
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Character string corresponding to method to fit an EPR spectrum by a smoothing spline
+<dd><p>Character string, corresponding to method to fit an EPR spectrum by a smoothing spline
 from <code>{npreg}</code> package (see the <code>method</code> argument in <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code>).
 The following methods are available (they are shortly described
 in <a href="http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html" class="external-link">Nathaniel's E. Helwig Introduction</a>
-or additional information may be found in <code>References</code>) =&gt;</p><table class="table table"><tr><td><strong>Method</strong></td><td><strong>Short Description</strong></td></tr><tr><td>"GCV"</td><td>Generalized Cross-Validation</td></tr><tr><td>"OCV"</td><td>Ordinary Cross-Validation</td></tr><tr><td>"GACV"</td><td>Generalized Approximate Cross-Validation</td></tr><tr><td>"ACV"</td><td>Approximate Cross-Validation</td></tr><tr><td>"REML"</td><td>Restricted Maximum Likelihood</td></tr><tr><td>"ML"</td><td>Maximum Likelihood</td></tr><tr><td>"AIC"</td><td>Akaike’s Information Criterion</td></tr><tr><td>"BIC"</td><td>Bayesian Information Criterion</td></tr></table></dd>
+or additional information may be found in <code>References</code>) =&gt;</p><table class="table table"><tr><td><strong>Method</strong></td><td><strong>Short Description</strong></td></tr><tr><td>"GCV"</td><td>Generalized Cross-Validation</td></tr><tr><td>"OCV"</td><td>Ordinary Cross-Validation</td></tr><tr><td>"GACV"</td><td>Generalized Approximate Cross-Validation</td></tr><tr><td>"ACV"</td><td>Approximate Cross-Validation</td></tr><tr><td>"REML"</td><td>Restricted Maximum Likelihood</td></tr><tr><td>"ML"</td><td>Maximum Likelihood</td></tr><tr><td>"AIC"</td><td>Akaike’s Information Criterion</td></tr><tr><td>"BIC"</td><td>Bayesian Information Criterion (<strong>default</strong>)</td></tr></table></dd>
 
 
 <dt id="arg-output-vec">output.vec<a class="anchor" aria-label="anchor" href="#arg-output-vec"></a></dt>
 <dd><p>Logical, whether the function output have to be vectorized, i.e. only the vector
-of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data,
-which can be handily processed by <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></code> using the
+of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data/spectra,
+which can be handily processed by the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></code> using the
 <code>pipe</code> operators (<code>%&gt;%</code>). <strong>Default</strong>: <code>output.vec = NULL</code>.</p></dd>
 
 
@@ -134,7 +134,7 @@ which can be handily processed by <code><a href="https://dplyr.tidyverse.org/ref
   (either derivative <code>lineSpecs.form = "derivative"</code> or integrated
   <code>lineSpecs.form = "integrated"/"absorption"</code>) with the length of the original <code>Intensity</code>.
   Contrarily, if the <code>output.vec</code> is set to <code>FALSE</code> the following list is returned =&gt;</p><dl><dt>df</dt>
-<dd><p>Original data frame with the addition column corresponding to smoothed EPR intensity
+<dd><p>Original data frame with the addition column, corresponding to smoothed EPR intensity
   (derivative or integrated).</p></dd>
 
   <dt>plot</dt>
@@ -170,11 +170,11 @@ which can be handily processed by <code><a href="https://dplyr.tidyverse.org/ref
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials,
+    <p>The EPR spectrum is fitted by splines which, by default, correspond to cubic Bernoulli polynomials
   like
   $$I_{\text{EPR}}(B) = B^3 - (3/2)\,B^2 + (1/2)\,B$$
   where \(I_{\text{EPR}}\) equals to general EPR intensity and \(B\) is the magnetic flux density.
-  This may be applied to both derivative or single integrated EPR spectral forms. Also a higher/lower polynomial
+  This may be applied to both derivative or single integrated EPR spectrum forms. Also a higher/lower polynomial
   degree may be applied by the <code>method</code> (see the argument description) and by the <code>m</code> optional argument
   (see <code>...</code> additional arguments) which is a penalty order (integer). For the above-mentioned cubic
   spline/polynomial <code>m = 2</code>. Linear polynomial corresponds
