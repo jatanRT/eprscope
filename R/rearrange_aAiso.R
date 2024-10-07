@@ -97,7 +97,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
   ## Build up new rearranged data frame for Nuclei A/a:
   data.slct.nucs.group <- data.frame(
     No = integer(), Nucleus = character(),
-    MegaHertz = double(), Gauss = double(), NuclearGroup = character()
+    MegaHertz = numeric(), Gauss = numeric(), NuclearGroup = character()
   )
   #
   ## cycle for each `nuclei.list.slct` component
@@ -268,10 +268,10 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     }
     #
     ## converting columns into character and numeric (double) format
-    table.select.A$No <- as.double(as.character(table.select.A$No))
+    table.select.A$No <- as.numeric(table.select.A$No)
     table.select.A$Nucleus <- as.character(table.select.A$Nucleus)
     for (j in 3:length(colnames(table.select.A))) {
-      table.select.A[, j] <- as.double(as.character(table.select.A[, j]))
+      table.select.A[, j] <- as.numeric(table.select.A[, j])
     }
     #
   }
@@ -354,9 +354,9 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     #
     ## Generate the data frame,
     ## first of all define numeric columns
-    A.qchfile.select.iso.mhz <- as.numeric(as.character(A.qchfile.select.iso))
+    A.qchfile.select.iso.mhz <- as.numeric(A.qchfile.select.iso)
     A.qchfile.select.iso.gauss <-
-      convert_A_MHz_2a(as.numeric(as.character(A.qchfile.select.iso))) * 10
+      convert_A_MHz_2a(as.numeric(A.qchfile.select.iso)) * 10
     #
     table.select.A <- data.frame(
       "No" = nuclei.qchfile.select.n,
@@ -375,7 +375,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## Build up new rearranged data frame for Nuclei A/a:
   data.slct.nucs.group <- data.frame(
     "No" = integer(), "Nucleus" = character(),
-    "Megahertz" = double(), "Gauss" = double(), "NuclearGroup" = character()
+    "Megahertz" = numeric(), "Gauss" = numeric(), "NuclearGroup" = character()
   )
   #
   ## cycle for each `nuclei.list.slct` component
