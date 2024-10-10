@@ -8,7 +8,7 @@
 #' @description
 #'   Finding the temperature-dependence of a rate constant (\eqn{k}), related to elementary radical reaction, using the transition
 #'   state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
-#'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring-Polanyi expression
+#'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring expression
 #'   (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
 #'   refer to \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
 #'   from sigmoid-integrals of the EPR spectra recorded at different temperatures. Finally, the activation Gibbs energy
@@ -18,13 +18,24 @@
 #'
 #' @details
 #'   The basic assumption of Transition State Theory (TST) is the existence of activated state/complex, formed
-#'   by the collision of reactant molecules, which does not actually lead to reaction products directly. The activated state
+#'   by the collision of reactant molecules, which does not actually lead to reaction products directly. The activated state (AS)
 #'   is formed as highly energized, and therefore as an unstable intermediate, decomposing into products of the reaction.
 #'   Accordingly, the reaction rate is given by the rate of decomposition. Additional important assumption of TST
-#'   is the presence of pre-equilibrium of reactants with the activated complex.
+#'   is the presence of pre-equilibrium (characterized by the \eqn{K^{\ddagger}} constant) of reactants with
+#'   the activated complex (AC). Because the latter is not stable, it dissociates with motion along the corresponding
+#'   bond-stretching coordinate. For that reason, the rate constant (\eqn{k}) must be related to the associated vibration
+#'   frequency (\eqn{\nu}). Thus, every time, if an AC is formed, the \eqn{k} of AC-dissociation
+#'   actually equals to \eqn{\nu}. Nevertheless, it is possible that the AC will revert back to reactants and therefore,
+#'   only a fraction of ACs will lead to product(s). Such situation is reflected by the transmission coefficient \eqn{\kappa}
+#'   (see also the argument \code{transmiss.coeff}), where \eqn{k = \kappa\,\nu}.
+#'
+#'   ...statistical thermodynamics + quantum mechanics of molecular vibrations...
 #'
 #'
 #' @references
+#'   Engel T, Reid P (2013). \emph{Physical Chemistry, 3rd Edition}, Pearson Education, ISBN 978-0-321-81200-1,
+#'   \url{https://elibrary.pearson.de/book/99.150005/9781292035444}.
+#'
 #'   Ptáček P, Šoukal F, Opravil T (2018). "Introduction to the Transition State Theory",
 #'   \emph{InTech.}, \url{https://doi.org/10.5772/intechopen.78705}.
 #'
@@ -49,9 +60,9 @@
 #'   in the following units: \code{Temp.unit = "K"} (kelvin, \strong{default}), \code{Temp.unit = "oC"} (degree Celsius)
 #'   or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} specified, temperature values
 #'   (column characterized by the \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
-#' @param transmiss.coeff Numeric, corresponding to probability that the activated complex is transformed into products.
+#' @param transmiss.coeff Numeric value, corresponding to probability that the activated complex is transformed into products.
 #'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
-#' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring-Polanyi relation
+#' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
 #'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k} \emph{vs} \eqn{T}
 #'   dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
 #'   under its \code{algorithm} argument, are available: \code{"default"}
@@ -62,15 +73,15 @@
 #'   computation}).
 #'
 #'
-#' @return As a result of the Eyring-Polanyi-relation fit, list with the following components is available:
+#' @return As a result of the Eyring-relation fit, list with the following components is available:
 #'   \describe{
 #'   \item{df}{Data frame including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
 #'   with the name of \code{DeltaG_active_kJ_per_mol}.}
 #'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
 #'   however with the resolution of 1000 points) and the corresponding \code{.fitted} \eqn{k}, according to
-#'   Eyring-Polanyi model.}
+#'   Eyring model.}
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
-#'   together with the Eyring-Polanyi equation.}
+#'   together with the Eyring equation.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for both \eqn{\Delta^{\ddagger} H^o}
 #'   and \eqn{\Delta^{\ddagger} S^o}.}
@@ -80,7 +91,7 @@
 #'   which is defined as:
 #'   \deqn{\sqrt{(\sum_i (y_i - y_{i,\text{fit/model}})^2)\,/\,(N - k_{\text{pars}} - 1)}}
 #'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{residual.sd}, the better the Eyring-Polanyi-relation fit.}
+#'   Therefore, the smaller the \code{residual.sd}, the better the Eyring-relation fit.}
 #'   }
 #'
 #'
@@ -234,7 +245,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
               color = "magenta",
               linewidth = 1.1) +
     #{if(interv.cnfd)geom_ribbon(aes(ymin = lwr,ymax = upr),fill = "steelblue2",alpha = 0.2)} +
-    labs(title = "Eyring-Polanyi Fit",
+    labs(title = "Eyring Fit",
          caption = bquote(Delta^{active}*italic(H)^o ~ '=' ~ .(DeltaH_active*1e-3)~k*J~mol^-1~","
                           ~Delta^{active}*italic(S)^o~ '=' ~ .(DeltaS_active)~~J~K^-1~mol^-1~","
                           ~ kappa ~ '=' ~ .(transmiss.coeff) ~ "," ~ italic(c)^o ~ '=' ~ 1~~mol~dm^{-3}),
