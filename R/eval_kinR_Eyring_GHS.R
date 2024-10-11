@@ -23,13 +23,16 @@
 #'   Accordingly, the reaction rate is given by the rate of decomposition. Additional important assumption of TST
 #'   is the presence of pre-equilibrium (characterized by the \eqn{K^{\ddagger}} constant) of reactants with
 #'   the activated complex (AC). Because the latter is not stable, it dissociates with motion along the corresponding
-#'   bond-stretching coordinate. For that reason, the rate constant (\eqn{k}) must be related to the associated vibration
+#'   bond-stretching coordinate. For this reason, the rate constant (\eqn{k}) must be related to the associated vibration
 #'   frequency (\eqn{\nu}). Thus, every time, if an AC is formed, the \eqn{k} of AC-dissociation
 #'   actually equals to \eqn{\nu}. Nevertheless, it is possible that the AC will revert back to reactants and therefore,
 #'   only a fraction of ACs will lead to product(s). Such situation is reflected by the transmission coefficient \eqn{\kappa}
 #'   (see also the argument \code{transmiss.coeff}), where \eqn{k = \kappa\,\nu}.
 #'
-#'   ...statistical thermodynamics + quantum mechanics of molecular vibrations...
+#'   According to statistical thermodynamics, the equilibrium constant can be expressed by the partition function,
+#'   which corresponds, by definition, to ratio of total number of particles to the number of particles in the ground state.
+#'   In essence, it is the measure of degree to which the particles are spread out (partitioned among) over the energy levels.
+#'   ...go ahead...`in thech open`...partition function and vibrations...
 #'
 #'
 #' @references
