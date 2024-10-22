@@ -194,14 +194,14 @@
 <span><span class="co">#</span></span>
 <span><span class="co"># preview of the first six rows</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmpd.data.norm.01</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        B_G dIepr_over_dB    B_mT</span></span>
-<span><span class="co">#&gt;      &lt;num&gt;         &lt;num&gt;   &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 3439.17  -2.802368080 343.917</span></span>
-<span><span class="co">#&gt; 2: 3439.22  -1.525325335 343.922</span></span>
-<span><span class="co">#&gt; 3: 3439.27  -1.926110938 343.927</span></span>
-<span><span class="co">#&gt; 4: 3439.32   0.001960421 343.932</span></span>
-<span><span class="co">#&gt; 5: 3439.37  -4.631011161 343.937</span></span>
-<span><span class="co">#&gt; 6: 3439.42  -3.595753795 343.942</span></span></code></pre></div>
+<span><span class="co">#&gt;          B_G dIepr_over_dB      B_mT</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;         &lt;num&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 3439.1699 -2.8023680804 343.91699</span></span>
+<span><span class="co">#&gt; 2: 3439.2200 -1.5253253348 343.92200</span></span>
+<span><span class="co">#&gt; 3: 3439.2700 -1.9261109375 343.92700</span></span>
+<span><span class="co">#&gt; 4: 3439.3201  0.0019604213 343.93201</span></span>
+<span><span class="co">#&gt; 5: 3439.3701 -4.6310111607 343.93701</span></span>
+<span><span class="co">#&gt; 6: 3439.4199 -3.5957537946 343.94199</span></span></code></pre></div>
 <p>An arbitrary character string may be chosen for the column names (see <code>col.names</code> argument)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;For such reason there are arguments &lt;code&gt;x.id&lt;/code&gt; and &lt;code&gt;Intensity.id&lt;/code&gt; , pointing to original column indices, in order to properly pick up the corresponding variables.&lt;/p&gt;"><sup>1</sup></a>. However, a safe rule of thumb is to use notation like “quantity_unit” as already shown above in the case of magnetic flux density <span class="math inline">\(\small B\)</span>. The name for the intensity column reads <code>dIepr_over_dB</code> (without units) because it reflects the derivative mode <span class="math inline">\(\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B\)</span> in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function <code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code> can automatically convert <span class="math inline">\(\small B\)</span> values by the argument <code>convertB.unit=TRUE</code> (or <code>FALSE</code>) depending on the original units “G” or “mT”. The reason is, that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like <span class="math inline">\(\small \Delta B\)</span>, <span class="math inline">\(g\)</span> or hyperfine splitting constants <span class="math inline">\(a\)</span>. If the <code>Intensity</code> has to be normalized also by additional instrumental parameters like <em>conversion time</em> and <em>receiver gain</em> (automatically performed within “Xenon” software)<em>,</em> one should use the <code><a href="../reference/quantify_EPR_Norm_const.html">quantify_EPR_Norm_const()</a></code> function from the <code>Evaluations and Quantification</code> family ➨</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -244,14 +244,14 @@
 <span><span class="co">#</span></span>
 <span><span class="co"># data frame preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        B_G dIepr_over_dB    B_mT</span></span>
-<span><span class="co">#&gt;      &lt;num&gt;         &lt;num&gt;   &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 3439.17 -4.389097e-07 343.917</span></span>
-<span><span class="co">#&gt; 2: 3439.22 -2.388980e-07 343.922</span></span>
-<span><span class="co">#&gt; 3: 3439.27 -3.016694e-07 343.927</span></span>
-<span><span class="co">#&gt; 4: 3439.32  3.070431e-10 343.932</span></span>
-<span><span class="co">#&gt; 5: 3439.37 -7.253136e-07 343.937</span></span>
-<span><span class="co">#&gt; 6: 3439.42 -5.631705e-07 343.942</span></span></code></pre></div>
+<span><span class="co">#&gt;          B_G  dIepr_over_dB      B_mT</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;          &lt;num&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 3439.1699 -4.3890968e-07 343.91699</span></span>
+<span><span class="co">#&gt; 2: 3439.2200 -2.3889797e-07 343.92200</span></span>
+<span><span class="co">#&gt; 3: 3439.2700 -3.0166941e-07 343.92700</span></span>
+<span><span class="co">#&gt; 4: 3439.3201  3.0704314e-10 343.93201</span></span>
+<span><span class="co">#&gt; 5: 3439.3701 -7.2531358e-07 343.93701</span></span>
+<span><span class="co">#&gt; 6: 3439.4199 -5.6317054e-07 343.94199</span></span></code></pre></div>
 <p>Moreover, the <code>norm.vec.add</code> argument can involve additional normalization quantities like sample weight, concentration, number of scans (if not normalized by the spectrometer)…etc. If needed, all such quantities can be defined at once within the <code>norm.vec.add</code> .</p>
 <p>Visualization and/or conversion of data frames (tables) into several formats like <code>.html</code> , <code>.pdf</code> , <code>.docx</code> or <code>.pptx</code>. can be provided by the most used <a href="https://rfortherestofus.com/2019/11/how-to-make-beautiful-tables-in-r/" class="external-link">“table” packages</a>. Among them, libraries/packages like <a href="https://rstudio.github.io/DT/" class="external-link">{DT}</a>, <a href="https://davidgohel.github.io/flextable/index.html" class="external-link">{flextable}</a>, <a href="https://gt.rstudio.com/" class="external-link">{gt}</a>, <a href="https://vincentarelbundock.github.io/tinytable/" class="external-link">{tinytable}</a> and <a href="https://haozhu233.github.io/kableExtra/" class="external-link">{kableExtra}</a> (see Section <a href="#hf-structure">5.3</a> below) are often used for publication ready table visualization. The last data frame previewed by the <a href="https://vincentarelbundock.github.io/tinytable/" class="external-link">tinytable</a> is shown in the following example.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -316,54 +316,54 @@ window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 
               </tr></thead>
 <tbody>
 <tr>
-<td>3439.17</td>
-                  <td>-4.389097e-07</td>
-                  <td>343.917</td>
+<td>3439.1699</td>
+                  <td>-4.3890968e-07</td>
+                  <td>343.91699</td>
                 </tr>
 <tr>
-<td>3439.22</td>
-                  <td>-2.388980e-07</td>
-                  <td>343.922</td>
+<td>3439.2200</td>
+                  <td>-2.3889797e-07</td>
+                  <td>343.92200</td>
                 </tr>
 <tr>
-<td>3439.27</td>
-                  <td>-3.016694e-07</td>
-                  <td>343.927</td>
+<td>3439.2700</td>
+                  <td>-3.0166941e-07</td>
+                  <td>343.92700</td>
                 </tr>
 <tr>
-<td>3439.32</td>
-                  <td> 3.070431e-10</td>
-                  <td>343.932</td>
+<td>3439.3201</td>
+                  <td> 3.0704314e-10</td>
+                  <td>343.93201</td>
                 </tr>
 <tr>
-<td>3439.37</td>
-                  <td>-7.253136e-07</td>
-                  <td>343.937</td>
+<td>3439.3701</td>
+                  <td>-7.2531358e-07</td>
+                  <td>343.93701</td>
                 </tr>
 <tr>
-<td>3439.42</td>
-                  <td>-5.631705e-07</td>
-                  <td>343.942</td>
+<td>3439.4199</td>
+                  <td>-5.6317054e-07</td>
+                  <td>343.94199</td>
                 </tr>
 <tr>
-<td>3439.47</td>
-                  <td>-7.140011e-07</td>
-                  <td>343.947</td>
+<td>3439.4700</td>
+                  <td>-7.1400107e-07</td>
+                  <td>343.94700</td>
                 </tr>
 <tr>
-<td>3439.52</td>
-                  <td>-9.662168e-07</td>
-                  <td>343.952</td>
+<td>3439.5200</td>
+                  <td>-9.6621681e-07</td>
+                  <td>343.95200</td>
                 </tr>
 <tr>
-<td>3439.57</td>
-                  <td>-1.331855e-07</td>
-                  <td>343.957</td>
+<td>3439.5701</td>
+                  <td>-1.3318550e-07</td>
+                  <td>343.95701</td>
                 </tr>
 <tr>
-<td>3439.62</td>
-                  <td> 8.633894e-07</td>
-                  <td>343.962</td>
+<td>3439.6201</td>
+                  <td> 8.6338939e-07</td>
+                  <td>343.96201</td>
                 </tr>
 </tbody>
 </table>
@@ -722,12 +722,12 @@ aiso_mT_QCH
 <span><span class="co"># preview of the data frame</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Bsim_G Bsim_mT dIeprSim_over_dB</span></span>
-<span><span class="co">#&gt; 1 3439.17 343.917     9.628132e-05</span></span>
-<span><span class="co">#&gt; 2 3439.22 343.922     9.672184e-05</span></span>
-<span><span class="co">#&gt; 3 3439.27 343.927     9.716971e-05</span></span>
-<span><span class="co">#&gt; 4 3439.32 343.932     9.762535e-05</span></span>
-<span><span class="co">#&gt; 5 3439.37 343.937     9.808922e-05</span></span>
-<span><span class="co">#&gt; 6 3439.42 343.942     9.856182e-05</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 3439.17 343.917    9.6281321e-05</span></span>
+<span><span class="co">#&gt; 2 3439.22 343.922    9.6721842e-05</span></span>
+<span><span class="co">#&gt; 3 3439.27 343.927    9.7169711e-05</span></span>
+<span><span class="co">#&gt; 4 3439.32 343.932    9.7625349e-05</span></span>
+<span><span class="co">#&gt; 5 3439.37 343.937    9.8089217e-05</span></span>
+<span><span class="co">#&gt; 6 3439.42 343.942    9.8561824e-05</span></span></code></pre></div>
 <p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.2</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> .</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -773,14 +773,14 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <span><span class="co">#</span></span>
 <span><span class="co"># preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02.integ</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        B_G dIepr_over_dB    B_mT  single_Integ sigmoid_Integ</span></span>
-<span><span class="co">#&gt;      &lt;num&gt;         &lt;num&gt;   &lt;num&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 3439.17 -4.389097e-07 343.917  0.000000e+00  1.918816e-05</span></span>
-<span><span class="co">#&gt; 2: 3439.22 -2.388980e-07 343.922 -1.696180e-08  1.918773e-05</span></span>
-<span><span class="co">#&gt; 3: 3439.27 -3.016694e-07 343.927 -3.048923e-08  1.918654e-05</span></span>
-<span><span class="co">#&gt; 4: 3439.32  3.070431e-10 343.932 -3.803052e-08  1.918483e-05</span></span>
-<span><span class="co">#&gt; 5: 3439.37 -7.253136e-07 343.937 -5.617344e-08  1.918247e-05</span></span>
-<span><span class="co">#&gt; 6: 3439.42 -5.631705e-07 343.942 -8.825992e-08  1.917888e-05</span></span></code></pre></div>
+<span><span class="co">#&gt;          B_G  dIepr_over_dB      B_mT   single_Integ sigmoid_Integ</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;          &lt;num&gt;     &lt;num&gt;          &lt;num&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 3439.1699 -4.3890968e-07 343.91699  0.0000000e+00 1.9188156e-05</span></span>
+<span><span class="co">#&gt; 2: 3439.2200 -2.3889797e-07 343.92200 -1.6961798e-08 1.9187731e-05</span></span>
+<span><span class="co">#&gt; 3: 3439.2700 -3.0166941e-07 343.92700 -3.0489226e-08 1.9186544e-05</span></span>
+<span><span class="co">#&gt; 4: 3439.3201  3.0704314e-10 343.93201 -3.8030518e-08 1.9184829e-05</span></span>
+<span><span class="co">#&gt; 5: 3439.3701 -7.2531358e-07 343.93701 -5.6173444e-08 1.9182472e-05</span></span>
+<span><span class="co">#&gt; 6: 3439.4199 -5.6317054e-07 343.94199 -8.8259920e-08 1.9178875e-05</span></span></code></pre></div>
 <p>Both integrals, within the entire <span class="math inline">\(\small B\)</span>-range, can be visualized by <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function from <code>Visualization and Graphics</code> family:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>

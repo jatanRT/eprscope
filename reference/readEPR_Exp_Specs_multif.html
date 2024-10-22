@@ -96,8 +96,8 @@
 
 <dl><dt id="arg-name-pattern">name.pattern<a class="anchor" aria-label="anchor" href="#arg-name-pattern"></a></dt>
 <dd><p>Character string ('specimen'), inherited from <code><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></code>. A pattern
-from file name which might not necessarily appear at the beginning of the file name. One may also consult
-how to <a href="https://r4ds.hadley.nz/regexps" class="external-link">use regular expressions in R</a>. THE SAME NAME AND <code>name_pattern</code>
+from file name which might not necessarily appear at the beginning of the file name. One might also consult
+how to <a href="https://r4ds.hadley.nz/regexps" class="external-link">use regular expressions in R</a>. THE SAME NAME AND <code>name.pattern</code>
 MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES.</p></dd>
 
 
@@ -170,7 +170,7 @@ by alpha character (e.g. <code>c("a","b","c","d")</code>) being varied by the in
 
 
 <dt id="arg-var-nd-series">var2nd.series<a class="anchor" aria-label="anchor" href="#arg-var-nd-series"></a></dt>
-<dd><p>Character string, if <code>tidy = TRUE</code> (see <code>tidy</code> argument)
+<dd><p>Character string, if <code>tidy = TRUE</code> (see also the <code>tidy</code> argument)
 it is referred to name of the variable/quantity (such as "time","Temperature","Electrochemical Potential",
 "Microwave Power"...etc) altered upon individual experiments as a second variable series (<code>var2nd.series</code>)
 and related to the spectral data.</p></dd>
@@ -178,7 +178,7 @@ and related to the spectral data.</p></dd>
 
 <dt id="arg-var-nd-series-factor">var2nd.series.factor<a class="anchor" aria-label="anchor" href="#arg-var-nd-series-factor"></a></dt>
 <dd><p>Logical, whether to factorize <code>var2nd.series</code> column vector which is useful
-for plotting the spectra in overlay form. <strong>Default</strong>: <code>var2nd.series.factor = FALSE</code>, which the case
+for plotting the spectra in overlay form. <strong>Default</strong>: <code>var2nd.series.factor = FALSE</code>, which is the case
 to visualize EPR spectra by <code>plot</code>-functions.</p></dd>
 
 
@@ -199,7 +199,7 @@ and <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html"
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>List of Data Frames (or long table <code>tidy</code> format) corresponding
   to multiple spectral data files/data sets. g-Value column (if <code>x.unit = "mT"</code> or <code>"G"</code>)
-  is automatically calculated during the processing and it is included in the data frame list/database, as well.</p>
+  is automatically calculated during the processing and it is included in the data frame list/database as well.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
