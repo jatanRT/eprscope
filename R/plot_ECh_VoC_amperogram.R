@@ -217,7 +217,6 @@ plot_ECh_VoC_amperogram <- function(data.vat,
   }
   ## Conditions (V)
   if (x.unit == "V") {
-  x.plot.limits <- c(x.start - 0.1, x.end + 0.1)
   ## label for interactive graph/plot
   if (isTRUE(plot.interact)) {
     ## reference electrode
@@ -235,7 +234,6 @@ plot_ECh_VoC_amperogram <- function(data.vat,
   }
   ## Conditions (mV) =>
   if (x.unit == "mV"){
-    x.plot.limits <- c(x.start - 100,x.end + 100)
     ## label for interactive graph/plot
     if (isTRUE(plot.interact)){
       ## reference electrode
@@ -251,7 +249,6 @@ plot_ECh_VoC_amperogram <- function(data.vat,
   }
   ## Conditions (s)
   if (x.unit == "s"){
-    x.plot.limits <- c(x.start - 10,x.end + 10)
     if (!is.null(ref.electrode)){
       cat("To display the chronoamperogram",
           "no reference electrode is required.",
@@ -264,6 +261,8 @@ plot_ECh_VoC_amperogram <- function(data.vat,
       }
     }
   }
+  x.plot.limits <- c(x.start,x.end)
+  #
   ## y (Current/I) Label Condition function (incl. interactive plot labels) =>
   yLabel <- function(unit,interact = FALSE){
     if (unit == "A"){

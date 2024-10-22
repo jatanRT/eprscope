@@ -46,7 +46,7 @@ like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
 \item{x.unit}{Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
-Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
+Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"T"} (tesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.}
 
 \item{xlim}{Numeric vector referring to lower and upper limit of the selected \eqn{x}-region,

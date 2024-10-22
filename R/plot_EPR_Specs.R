@@ -42,7 +42,7 @@
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 #'   \strong{default}: \code{x = "B_mT"}.
 #' @param x.unit Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
-#'   Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
+#'   Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"T"} (tesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 #'   or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.
 #' @param xlim Numeric vector referring to lower and upper limit of the selected \eqn{x}-region,
 #'   e.g. \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
@@ -308,18 +308,17 @@ plot_EPR_Specs <- function(data.spectra,
   ## label <=> selection
   ## & the plot function (distance from the y-axis borders
   ## e.g. ('B.start-0.5 (or 5 or 3)','B.end+0.5 (or 5 or 3)')):
-  if (x.unit == "mT" || x.unit == "G") {
+  if (x.unit == "mT" || x.unit == "G" || x.unit == "T") {
     x.label <- bquote(italic(B) ~ "(" ~ .(x.unit) ~ ")")
-    x.plot.limits <- c(x.start - 1, x.end + 1)
   }
   if (x.unit == "MHz") {
     x.label <- bquote(italic(nu)[RF] ~ "(" ~ .(x.unit) ~ ")")
-    x.plot.limits <- c(x.start - 3, x.end + 3)
   }
   if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x))) {
     x.label <- bquote(italic(g))
-    x.plot.limits <- c(x.start - 0.0002, x.end + 0.0002)
   }
+  x.plot.limits <- c(x.start, x.end)
+  #
   ## g-factor condition =>
   g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
   #
