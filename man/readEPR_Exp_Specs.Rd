@@ -110,7 +110,8 @@ Data frame/table consisting of the magnetic flux density
 \description{
 The function is based on the \code{\link[data.table]{fread}} with the purpose to read
   the experimental EPR/ENDOR spectra or other original (pre-processed) data from the EPR spectrometers
-  in tabular ASCII format (such as \code{.txt}, \code{.csv} or \code{.asc}).
+  in tabular ASCII format (such as \code{.txt}, \code{.csv} or \code{.asc}). Default argument values correspond
+  to data reading from \emph{Xenon} files (see the argument \code{origin}).
 }
 \details{
 ASCII data are transformed into \emph{R} data frames, which can be then easily processed by the actual or other
@@ -118,16 +119,19 @@ ASCII data are transformed into \emph{R} data frames, which can be then easily p
   normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
   These are defined by the two arguments:
   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
-  quantities represented by the vector. If \code{qValue = NULL}, the Q-value can be also defined as a component
-  of the \code{norm.vec.add}. Finally, the normalized intensity is calculated by the following
-  expression:
-  \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
+  quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
+  the Q-value can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
+  is calculated by the following expression (depending \code{qValue} and/or \code{norm.vec.add}):
+  \deqn{dI_{EPR} / dB = Original~Intensity \, 1/qValue}
+  or
+  \deqn{dI_{EPR} / dB = Original~Intensity \, 1/qValue \, \prod_{k} 1/(norm.vec.add[k])}
   where \eqn{k} is iterating through all components of the \code{norm.vec.add}.
   The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
   This is mirrored mainly by the \code{origin} and \code{data.structure} arguments. Default arguments
   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
-  any arbitrary string e.g. \code{origin = "csv"} (see also \code{origin argument}).
+  any arbitrary string e.g. \code{origin = "csv"} (see also the \code{origin} argument). For the latter,
+  all arguments must be set accordingly, as already demonstrated in \code{Examples}.
   Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series.id} argument.
   In such case the ASCII data table also contains additional column either with recorded
   time (see also \code{\link{correct_time_Exp_Specs}}) or with slice number for each spectrum.
