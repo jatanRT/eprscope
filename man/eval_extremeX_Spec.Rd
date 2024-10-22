@@ -33,11 +33,11 @@ to the entire \code{x}-range).}
 }
 \value{
 Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF}, corresponding
- to \code{intensity} \code{minimum} or its \code{maximum}, within the EPR/ENDOR spectrum or its integrated form.
+ to \code{Intensity} \code{minimum} or its \code{maximum}, within the EPR/ENDOR spectrum or its integrated form.
 }
 \description{
-Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})) or \emph{g} (unitless)
-  or \emph{RF} (in \code{MHz}) of intensity minimum or maximum within the selected region
+Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})), \emph{g} (unitless)
+  or \emph{RF} (in \code{MHz}) of the intensity minimum or maximum within the selected region
   of an EPR/ENDOR spectrum.
 }
 \examples{

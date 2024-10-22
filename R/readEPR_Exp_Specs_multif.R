@@ -14,8 +14,8 @@
 #'
 #' @inheritParams readEPR_Exp_Specs
 #' @param name.pattern Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
-#'   from file name which might not necessarily appear at the beginning of the file name. One may also consult
-#'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}. THE SAME NAME AND \code{name_pattern}
+#'   from file name which might not necessarily appear at the beginning of the file name. One might also consult
+#'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}. THE SAME NAME AND \code{name.pattern}
 #'   MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES.
 #' @param dir_ASC Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
 #'   the \code{ASCII} files are stored.
@@ -43,12 +43,12 @@
 #'   by alpha character (e.g. \code{c("a","b","c","d")}) being varied by the individual experiments.
 #' @param tidy Logical, whether to transform the list of data frames into the long table (\code{tidy}) format,
 #'   \strong{default}: \code{tidy = FALSE}.
-#' @param var2nd.series Character string, if \code{tidy = TRUE} (see \code{tidy} argument)
+#' @param var2nd.series Character string, if \code{tidy = TRUE} (see also the \code{tidy} argument)
 #'   it is referred to name of the variable/quantity (such as "time","Temperature","Electrochemical Potential",
 #'   "Microwave Power"...etc) altered upon individual experiments as a second variable series (\code{var2nd.series})
 #'   and related to the spectral data.
 #' @param var2nd.series.factor Logical, whether to factorize \code{var2nd.series} column vector which is useful
-#'   for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which the case
+#'   for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
 #'   to visualize EPR spectra by \code{plot}-functions.
 #' @param ... additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
@@ -56,7 +56,7 @@
 #'
 #' @return List of Data Frames (or long table \code{tidy} format) corresponding
 #'   to multiple spectral data files/data sets. g-Value column (if \code{x.unit = "mT"} or \code{"G"})
-#'   is automatically calculated during the processing and it is included in the data frame list/database, as well.
+#'   is automatically calculated during the processing and it is included in the data frame list/database as well.
 #'
 #'
 #' @examples

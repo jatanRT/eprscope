@@ -8,11 +8,11 @@
 #' @description
 #'   EPR spectra often display hyperfine structure, where the spectral lines split into several other ones,
 #'   as a consequence of the electron-nuclear interaction with nuclei close to the paramagnetic center.
-#'   Sometimes, such splitting can be complicated and requires \strong{simulations}, e.i. computational "synthesis"
+#'   Sometimes, such splitting can be complicated and requires \strong{simulations}, i.e. computational "synthesis"
 #'   of spectral structure based on quantum chemistry as well as on mathematical description of spectral lineshapes
 #'   (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS) of isotropic EPR spectra
 #'   by simulations. For such purpose, properties like nuclear \eqn{g}-value, spin quantum number as well as natural
-#'   abundance of the isotopes, related to interacting nuclei, must be known and are gathered within the \code{\link{isotopes_ds}}.
+#'   abundance of the isotopes, related to interacting nuclei, must be known and are collected in the \code{\link{isotopes_ds}}.
 #'   EPR spectra can be simulated for the derivative as well as for the integrated line forms
 #'   (see the argument \code{lineSpec.form}).
 #'
@@ -41,7 +41,7 @@
 #'   Weil JA, Bolton JR (2007) and Stoll S (2024)).  The linear coefficients
 #'   are defined by the \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
 #'   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
-#'   is defined individually for the Gaussian and the Lorentzian (refer to the \code{lineGL.DeltaB} argument).
+#'   is defined individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
 #'   The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
 #'   taking into account the spin quantum numbers of the interacting nuclei as well as their natural abundance
 #'   (if \code{natur.abund = TRUE}).

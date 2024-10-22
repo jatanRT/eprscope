@@ -9,7 +9,7 @@
 #'   Loading the ASCII data like \code{.txt},\code{.asc} or \code{.csv}, related to simulated EPR spectrum from different
 #'   sources like "EasySpin" (\emph{Matlab}), "Xenon" (EPR spectrometer), "SimFonia" (WinEPR system)
 #'   or "csv" (comma separated values, universal format or MS Excel). Finally, they are automatically converted
-#'   into data frame by the \code{\link[data.table]{fread}}.
+#'   into data frames by the \code{\link[data.table]{fread}}.
 #'
 #'
 #' @param path_to_ASC Character string, path to ASCII file/table
@@ -60,7 +60,7 @@ x.col.string <- paste0("Bsim_", B.unit)
 y.col.string <- Intensity.sim
 #
 ## Conditions depending on "origin"
-if (sim.origin == "easyspin") {
+if (sim.origin == "easyspin"|| sim.origin == "Easyspin" || sim.origin == "EasySpin") {
   spectrum.data <- data.table::fread(
     file = path_to_ASC,
     sep = "auto",
@@ -70,7 +70,7 @@ if (sim.origin == "easyspin") {
     )
   )
 }
-if (sim.origin == "xenon") {
+if (sim.origin == "xenon" || sim.origin == "Xenon") {
   spectrum.data <- data.table::fread(
     file = path_to_ASC,
     sep = "auto",
@@ -82,7 +82,7 @@ if (sim.origin == "xenon") {
     )
   )
 }
-if (sim.origin == "simfonia") {
+if (sim.origin == "simfonia" || sim.origin == "Simfonia") {
   ## There are two file types 'txt' and 'asc' therefore
   ## they have to be differentiated by the corresponding pattern
   simf.data.file <- readLines(path_to_ASC)

@@ -6,8 +6,8 @@
 #'
 #'
 #' @description
-#'   Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})) or \emph{g} (unitless)
-#'   or \emph{RF} (in \code{MHz}) of intensity minimum or maximum within the selected region
+#'   Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})), \emph{g} (unitless)
+#'   or \emph{RF} (in \code{MHz}) of the intensity minimum or maximum within the selected region
 #'   of an EPR/ENDOR spectrum.
 #'
 #'
@@ -16,7 +16,7 @@
 #'
 #'
 #' @returns Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF}, corresponding
-#'  to \code{intensity} \code{minimum} or its \code{maximum}, within the EPR/ENDOR spectrum or its integrated form.
+#'  to \code{Intensity} \code{minimum} or its \code{maximum}, within the EPR/ENDOR spectrum or its integrated form.
 #'
 #'
 #' @examples
@@ -66,22 +66,22 @@ eval_extremeX_Spec <- function(data.spectr,
   data.x.region <- c(min(data.spectr[[x]]), max(data.spectr[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim), data.x.region, .)
   #
-  if (extreme == "min") {
+  if (extreme == "min" || extreme == "Min" || extreme == "MIN") {
     x.min <- data.spectr %>%
       filter(between(.data[[x]], xlim[1], xlim[2])) %>%
       filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
       pull(.data[[x]])
     #
-    return(round(x.min, digits = 2))
+    return(round(x.min, digits = 3))
     #
   }
-  if (extreme == "max") {
+  if (extreme == "max" || extreme == "Max" || extreme == "MAX") {
     x.max <- data.spectr %>%
       filter(between(.data[[x]], xlim[1], xlim[2])) %>%
       filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
       pull(.data[[x]])
     #
-    return(round(x.max, digits = 2))
+    return(round(x.max, digits = 3))
     #
   }
 }

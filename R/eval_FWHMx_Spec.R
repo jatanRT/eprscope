@@ -85,7 +85,8 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
   #
   ## Define limits if `xlim = NULL` take the entire data region
   ## otherwise use predefined vector
-  data.x.region <- c(min(data.spectr.integ[[x]]), max(data.spectr.integ[[x]]))
+  data.x.region <-
+    c(min(data.spectr.integ[[x]]), max(data.spectr.integ[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim), data.x.region, .)
   #
   # ===== This is not required, however it's better to select a narrow region at the beginning =====
@@ -123,8 +124,10 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
         dplyr::filter(.data[[x]] < x.max)
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
-      Intens.cond.left <- which.min(abs(x.init.low[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
-      Intens.cond.left <- x.init.low[Intens.cond.left,] %>% dplyr::pull(.data[[Intensity]])
+      Intens.cond.left <-
+        which.min(abs(x.init.low[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
+      Intens.cond.left <-
+        x.init.low[Intens.cond.left,] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.low <- x.init.low %>%
         dplyr::filter(.data[[Intensity]] == Intens.cond.left) %>%
@@ -136,8 +139,10 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
         dplyr::filter(.data[[x]] > x.max)
       ## intensity condition by `which.min` and results in indices (res. one line df)
       ## => it is just like dplyr filtering, therefore
-      Intens.cond.right <- which.min(abs(x.init.high[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
-      Intens.cond.right <- x.init.high[Intens.cond.right,] %>% dplyr::pull(.data[[Intensity]])
+      Intens.cond.right <-
+        which.min(abs(x.init.high[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
+      Intens.cond.right <-
+        x.init.high[Intens.cond.right,] %>% dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.high <- x.init.high %>%
         dplyr::filter(.data[[Intensity]] == Intens.cond.right) %>%
