@@ -56,7 +56,7 @@ where the $\small \ce{TMPD}$ stands for *N,N,N',N'*-tetramethyl-*p*-phenylenedia
 
 # Drawing of Molecular Structures
 
-Structure of the investigated compound can be depicted by the `draw_molecule_by_rcdk()` based on function coming from [{rcdk}](https://cdk-r.github.io/cdkr/) 📦 (see also [@GuhaRrcdk2007]) which is an ![](images/RcoreLogo.png){width="16" height="12"} toolbox of the [Chemistry Development Kit](https://cdk.github.io/), an open source modular java library for chemoinformatics [@WillighagenCDK2017].
+Structure of the investigated compound can be depicted by the `draw_molecule_by_rcdk()` based on function coming from [{rcdk}](https://cdk-r.github.io/cdkr/) 📦 (see also [@GuhaRrcdk2007]) which is an ![](RcoreLogo.png){width="16" height="12"} toolbox of the [Chemistry Development Kit](https://cdk.github.io/), an open source modular java library for chemoinformatics [@WillighagenCDK2017].
 
 ```{r draw-molecule}
 
@@ -195,12 +195,12 @@ tinytable::tt(head(tmpd.data.norm.02, n = 10))
 
 ```
 
-In order to process data frames by other software tools, different from ![](images/RcoreLogo.png){width="16" height="12"} (e.g. in excel-like sheet format), they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
+In order to process data frames by other software tools, different from ![](RcoreLogo.png){width="16" height="12"} (e.g. in excel-like sheet format), they may be exported into universal `.csv` table format like by `base::write.csv()` function ➨
 
 ```{r spectral-data-read-norm-csv-save}
 
 write.csv(tmpd.data.norm.02,
-  file = "./tabs/TMPD_EPR_Norm_data02.csv",
+  file = "TMPD_EPR_Norm_data02.csv",
   row.names = FALSE
   )
 
@@ -260,7 +260,7 @@ If one wants to save the previous Figure \@ref(fig:spectral-data-norm0102-visual
 
 # to save the plot `tmpd.plot.norm.0102` with the size
 # of (7 x 5) inches and the resolution of dpi = 200
-ggplot2::ggsave("./images/TMPD_EPR_Norm_compar.png",
+ggplot2::ggsave("TMPD_EPR_Norm_compar.png",
   plot = tmpd.plot.norm.0102,
   width = 7,
   height = 5,
@@ -277,7 +277,7 @@ ggplot2::ggsave("./images/TMPD_EPR_Norm_compar.png",
 
 In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function `plot_EPR_Specs2D_interact()` is applied (consult the corresponding function example). Additionally, it can be also used for a series of overlaid EPR spectra similarly to `plot_EPR_Specs()`. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during kinetic or variable temperature experiments are provided by the `plot_EPR_Specs3D_interact()` function.
 
-![](images/epr_spectr_interactive.gif){width="654"}
+![](epr_spectr_interactive.gif){width="654"}
 
 # Basic EPR Spectral Characteristics
 
@@ -432,7 +432,7 @@ According to literature [@GramppGpda2005] and the $\small \ce{TMPD^{.+}}$ struct
 ```{r dft-tmpd-structure,fig.cap="DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file."}
 
 # loading built-in image
-knitr::include_graphics("./images/TMPD_EPR_DFT_radCat_ab.png",dpi = 200)
+knitr::include_graphics("TMPD_EPR_DFT_radCat_ab.png",dpi = 200)
 
 ```
 

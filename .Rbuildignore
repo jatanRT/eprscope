@@ -9,3 +9,4 @@
 ^pkgdown$
 ^\.github$
 ^tests/testthat\.R$
+^README\.Rmd$
