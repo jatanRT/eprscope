@@ -208,9 +208,9 @@ see example, or any other data) put <code>data.structure = "others"</code>. <str
   quantities represented by the vector. If <code>qValue = NULL</code> (actually corresponding to <code>1</code>),
   the Q-value can be also defined as a component of the <code>norm.vec.add</code>. Finally, the normalized intensity
   is calculated by the following expression (depending <code>qValue</code> and/or <code>norm.vec.add</code>):
-  $$dI_{EPR} / dB = Original~Intensity \, 1/qValue$$
+  $$dI_{EPR} / dB = Original~Intensity \, (1/qValue)$$
   or
-  $$dI_{EPR} / dB = Original~Intensity \, 1/qValue \, \prod_{k} 1/(norm.vec.add[k])$$
+  $$dI_{EPR} / dB = Original~Intensity \, (1/qValue) \, \prod_{k} 1/(norm.vec.add[k])$$
   where \(k\) is iterating through all components of the <code>norm.vec.add</code>.
   The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
   This is mirrored mainly by the <code>origin</code> and <code>data.structure</code> arguments. Default arguments
