@@ -19,11 +19,12 @@
 #'
 #'
 #' @note
-#'   In order to guess the intensity multiplication constant (please, refer to the \code{optim.params.init} argument),
-#'   one might compare the intensities of the experimental (\code{expr}) and simulated (\code{sim}) EPR spectrum
-#'   by one of the interactive or static plotting functions (e.g. \code{\link{plot_EPR_Specs}}
-#'   or \code{\link{plot_EPR_Specs2D_interact}}). Accordingly, \strong{the initial intensity multiplication constant}
-#'   can be estimated as the ratio \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
+#'   In order to guess the intensity multiplication constant (please, refer to the \code{optim.params.init}
+#'   argument), one might compare the intensities of the experimental (\code{expr}) and simulated (\code{sim})
+#'   EPR spectrum by one of the interactive or static plotting functions (e.g. \code{\link{plot_EPR_Specs}}
+#'   or \code{\link{plot_EPR_Specs2D_interact}}) as well as by the \code{\link{eval_sim_EPR_iso}}. Accordingly,
+#'   \strong{the initial intensity multiplication constant} can be estimated as the ratio
+#'   \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
