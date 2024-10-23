@@ -18,6 +18,14 @@
 #'   a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is under development.
 #'
 #'
+#' @note
+#'   In order to guess the intensity multiplication constant (please, refer to the \code{optim.params.init} argument),
+#'   one might compare the intensities of the experimental (\code{expr}) and simulated (\code{sim}) EPR spectrum
+#'   by one of the interactive or static plotting functions (e.g. \code{\link{plot_EPR_Specs}}
+#'   or \code{\link{plot_EPR_Specs2D_interact}}). Accordingly, \strong{the initial intensity multiplication constant}
+#'   can be estimated as the ratio \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
+#'
+#'
 #' @inheritParams eval_gFactor_Spec
 #' @param data.spectr.expr Data frame object/table containing the experimental spectral data the with magnetic flux density
 #'   (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.

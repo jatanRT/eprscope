@@ -188,6 +188,13 @@ Fitting of the simulated spectrum onto the experimental one represents an import
   by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
   a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is under development.
 }
+\note{
+In order to guess the intensity multiplication constant (please, refer to the \code{optim.params.init} argument),
+  one might compare the intensities of the experimental (\code{expr}) and simulated (\code{sim}) EPR spectrum
+  by one of the interactive or static plotting functions (e.g. \code{\link{plot_EPR_Specs}}
+  or \code{\link{plot_EPR_Specs2D_interact}}). Accordingly, \strong{the initial intensity multiplication constant}
+  can be estimated as the ratio \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
+}
 \examples{
 ## loading built-in example dataset which is simple
 ## EPR spectrum of the aminoxyl radical:

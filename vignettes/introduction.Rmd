@@ -51,7 +51,7 @@ Unlike the *EasySpin* [@Easyspin2024], which is more concentrated on the simulat
 
 ```{r scheme-intro, echo=FALSE, out.width="91%", fig.cap="Schematic representation of the data workflow in EPR spectroscopy and the compatibility of the newly developed `{eprscope}` software package within the R ecosystem."}
 #
-include_graphics("images/introduction_b.png",dpi = 200)
+include_graphics("./images/introduction_b.png",dpi = 200)
 #
 ```
 

@@ -122,9 +122,9 @@ ASCII data are transformed into \emph{R} data frames, which can be then easily p
   quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
   the Q-value can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
   is calculated by the following expression (depending \code{qValue} and/or \code{norm.vec.add}):
-  \deqn{dI_{EPR} / dB = Original~Intensity \, 1/qValue}
+  \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
   or
-  \deqn{dI_{EPR} / dB = Original~Intensity \, 1/qValue \, \prod_{k} 1/(norm.vec.add[k])}
+  \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue) \, \prod_{k} 1/(norm.vec.add[k])}
   where \eqn{k} is iterating through all components of the \code{norm.vec.add}.
   The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
   This is mirrored mainly by the \code{origin} and \code{data.structure} arguments. Default arguments
