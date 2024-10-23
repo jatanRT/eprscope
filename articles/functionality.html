@@ -104,7 +104,7 @@
 <h2 id="drawing-of-molecular-structures">
 <span class="header-section-number">2</span> Drawing of Molecular Structures<a class="anchor" aria-label="anchor" href="#drawing-of-molecular-structures"></a>
 </h2>
-<p>Structure of the investigated compound can be depicted by the <code><a href="../reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code> based on function coming from <a href="https://cdk-r.github.io/cdkr/" class="external-link">{rcdk}</a> 📦 (see also <span class="citation">(<a href="#ref-GuhaRrcdk2007">4</a>)</span>) which is an <img src="images%2FRcoreLogo.png" width="16" height="12"> toolbox of the <a href="https://cdk.github.io/" class="external-link">Chemistry Development Kit</a>, an open source modular java library for chemoinformatics <span class="citation">(<a href="#ref-WillighagenCDK2017">5</a>)</span>.</p>
+<p>Structure of the investigated compound can be depicted by the <code><a href="../reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code> based on function coming from <a href="https://cdk-r.github.io/cdkr/" class="external-link">{rcdk}</a> 📦 (see also <span class="citation">(<a href="#ref-GuhaRrcdk2007">4</a>)</span>) which is an <img src="RcoreLogo.png" width="16" height="12"> toolbox of the <a href="https://cdk.github.io/" class="external-link">Chemistry Development Kit</a>, an open source modular java library for chemoinformatics <span class="citation">(<a href="#ref-WillighagenCDK2017">5</a>)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># radical cation Wuster's Reagent equivalent</span></span>
@@ -369,11 +369,11 @@ window.addEventListener('load', function () { styleCell_rrapy1m2305li10rw6b1(0, 
 </table>
 </div>
 <!-- hack to avoid NA insertion in last line -->
-<p>In order to process data frames by other software tools, different from <img src="images%2FRcoreLogo.png" width="16" height="12"> (e.g. in excel-like sheet format), they may be exported into universal <code>.csv</code> table format like by <code>base::write.csv()</code> function ➨</p>
+<p>In order to process data frames by other software tools, different from <img src="RcoreLogo.png" width="16" height="12"> (e.g. in excel-like sheet format), they may be exported into universal <code>.csv</code> table format like by <code>base::write.csv()</code> function ➨</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span>,</span>
-<span>  file <span class="op">=</span> <span class="st">"./tabs/TMPD_EPR_Norm_data02.csv"</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"TMPD_EPR_Norm_data02.csv"</span>,</span>
 <span>  row.names <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
@@ -435,7 +435,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <code class="sourceCode R"><span></span>
 <span><span class="co"># to save the plot `tmpd.plot.norm.0102` with the size</span></span>
 <span><span class="co"># of (7 x 5) inches and the resolution of dpi = 200</span></span>
-<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"./images/TMPD_EPR_Norm_compar.png"</span>,</span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="st">"TMPD_EPR_Norm_compar.png"</span>,</span>
 <span>  plot <span class="op">=</span> <span class="va">tmpd.plot.norm.0102</span>,</span>
 <span>  width <span class="op">=</span> <span class="fl">7</span>,</span>
 <span>  height <span class="op">=</span> <span class="fl">5</span>,</span>
@@ -451,7 +451,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span class="header-section-number">4.2</span> Interactive Plots by <code>{plotly}</code><a class="anchor" aria-label="anchor" href="#interactive-plots-by-plotly"></a>
 </h3>
 <p>In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), function <code><a href="../reference/plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact()</a></code> is applied (consult the corresponding function example). Additionally, it can be also used for a series of overlaid EPR spectra similarly to <code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code>. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during kinetic or variable temperature experiments are provided by the <code><a href="../reference/plot_EPR_Specs3D_interact.html">plot_EPR_Specs3D_interact()</a></code> function.</p>
-<p><img src="images%2Fepr_spectr_interactive.gif" width="654"></p>
+<p><img src="epr_spectr_interactive.gif" width="654"></p>
 </div>
 </div>
 <div class="section level2" number="5">
@@ -598,10 +598,10 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># loading built-in image</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"./images/TMPD_EPR_DFT_radCat_ab.png"</span>,dpi <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"TMPD_EPR_DFT_radCat_ab.png"</span>,dpi <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:dft-tmpd-structure"></span>
-<img src="images%2FTMPD_EPR_DFT_radCat_ab.png" alt="DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file." width="691"><p class="caption">
+<img src="TMPD_EPR_DFT_radCat_ab.png" alt="DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file." width="691"><p class="caption">
 Figure 5.1: DFT optimized structure of TMPD radical cation with atom numbering inherited from Gaussian 16 output file.
 </p>
 </div>
