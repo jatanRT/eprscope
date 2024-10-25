@@ -248,9 +248,10 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List with following components depending on <code>sim.check</code>:</p><ol><li><p>if <code>sim.check = TRUE</code> it returns list with two components:</p><dl><dt>plot</dt>
+    <p>List with following components depending on <code>sim.check</code>:</p><ol><li><p>if <code>sim.check = TRUE</code>, it returns list components like:</p><dl><dt>plot</dt>
 <dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectrum
-  in "overlay" mode. Additional graph, below to the latter, showing the residuals (difference between
+  together with the initial simulation (see the <code>optim.params.init</code> argument) in "overlay" mode.
+  Additional graph, below to the latter, showing the residuals (difference between
   the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
   in order to quickly evaluate the quality of the fit.</p></dd>
 
@@ -258,9 +259,14 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <dd><p>Vector of the best (final) fitting parameters to simulate the EPR spectrum,
   see also description of the <code>optim.params.init</code>.</p></dd>
 
+  <dt>df</dt>
+<dd><p>Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
+  the best simulated/fitted, as well as the the initially simulated EPR spectrum
+  (defined by the <code>optim.params.init</code> argument).</p></dd>
+
 
 </dl></li>
-<li><p>if <code>sim.check = FALSE</code> it returns list with the following components:</p><dl><dt>plot</dt>
+<li><p>if <code>sim.check = FALSE</code>, it returns list with the following components:</p><dl><dt>plot</dt>
 <dd><p>Visualization of three spectra which are offset for clarity. The first
   (the upper one) is the original experimental spectrum. The second one (in the middle)
   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
