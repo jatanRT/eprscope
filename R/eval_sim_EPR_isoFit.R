@@ -116,17 +116,21 @@
 #'
 #' @return List with following components depending on \code{sim.check}:
 #'   \enumerate{
-#'   \item if \code{sim.check = TRUE} it returns list with two components:
+#'   \item if \code{sim.check = TRUE}, it returns list components like:
 #'   \describe{
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectrum
-#'   in "overlay" mode. Additional graph, below to the latter, showing the residuals (difference between
+#'   together with the initial simulation (see the \code{optim.params.init} argument) in "overlay" mode.
+#'   Additional graph, below to the latter, showing the residuals (difference between
 #'   the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
 #'   in order to quickly evaluate the quality of the fit.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
 #'   see also description of the \code{optim.params.init}.}
+#'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
+#'   the best simulated/fitted, as well as the the initially simulated EPR spectrum
+#'   (defined by the \code{optim.params.init} argument).}
 #'   }
 #'
-#'   \item if \code{sim.check = FALSE} it returns list with the following components:
+#'   \item if \code{sim.check = FALSE}, it returns list with the following components:
 #'   \describe{
 #'   \item{plot}{Visualization of three spectra which are offset for clarity. The first
 #'   (the upper one) is the original experimental spectrum. The second one (in the middle)
@@ -972,6 +976,71 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   data.sim.expr$Simulation_NoBasLin <- best.fit.params[[length(optim.method)]][5] *
     best.fit.df[[Intensity.sim]]
   #
+  # ---------------- add initial simulation only if `sim.check = TRUE` ------------------
+  #
+  ## Add initial (corresponding to `optim.params.init`) simulation to spectra
+  #
+  ## ...first of all, create initial `nuclear.system` =>
+  if (isTRUE(sim.check)) {
+    A.init <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                     optim.params.init[8:(7+length(nuclear.system.noA))],
+                     optim.params.init[7:(6+length(nuclear.system.noA))],
+                     optim.params.init[6:(5+length(nuclear.system.noA))]
+    )
+    A.init <- round(A.init,digits = 3)
+    nucs.system.init <- c()
+    for (j in seq(nuclear.system.noA)) {
+      nucs.system.init[[j]] <- c(nuclear.system.noA[[j]],A.init[j])
+      nucs.system.init[[j]] <- as.list(nucs.system.init[[j]])
+    }
+    ##...initial simulation data frame + 1.) extract and create list for DeltaBs
+    DeltaB.init <- c()
+    DeltaB.init <- Map(function(p,q) {
+      DeltaB.init[[p]] <- optim.params.init[q] %>%
+        `if`(optim.params.init[q] == 0, NULL, .)
+    },
+    c(1,2),
+    c(2,3)
+    )
+    sim.df.init <-
+      eval_sim_EPR_iso(g.iso = optim.params.init[1],
+                       B.unit = B.unit,
+                       instrum.params = instrum.params,
+                       natur.abund = TRUE,
+                       nuclear.system = nucs.system.init,
+                       lineSpecs.form = lineSpecs.form,
+                       lineGL.DeltaB = DeltaB.init,
+                       lineG.content = lineG.content,
+                       Intensity.sim = Intensity.expr)$df
+    ## `Intensity.expr` due to `data.sim.expr.long` (see its creation above)
+    #
+    ## multiply the intensity by the initial factor
+    ## from `opotim.params.init` (5th component)
+    sim.df.init[[Intensity.expr]] <-
+      sim.df.init[[Intensity.expr]] * optim.params.init[5]
+    ## and rename and select only required columns
+    sim.df.init <- sim.df.init %>%
+      dplyr::select(
+        dplyr::all_of(c(paste0("Bsim_",B.unit),Intensity.expr))
+        ) %>%
+      dplyr::rename_with(~ c(paste0("B_",B.unit)),
+                         dplyr::all_of(c(paste0("Bsim_",B.unit)))
+    )
+    #
+    ## create a column "Spectrum" (repeat "Init_Sim")
+    ## in order to `bind_rows` with `data.sim.expr.long` =>
+    sim.df.init[["Spectrum"]] <-
+      rep("Simulation_Init",times = nrow(sim.df.init))
+    #
+    ## finally, `bind_rows` => both data frames together
+    data.sim.expr.long <-
+      data.sim.expr.long %>%
+      dplyr::bind_rows(sim.df.init) # %>%
+      # dplyr::arrange(.data$Spectrum)
+  }
+  #
+  # ----------------------------------------------------------------------
+  #
   ## plotting all spectra
   ## condition to present the intensity =>
   ylab <- switch(2-grepl("deriv|Deriv",lineSpecs.form),
@@ -987,7 +1056,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     y = .data[[Intensity.expr]],
                     color = .data$Spectrum),
                 linewidth = 0.75) +
-      scale_color_manual(values = c("darkcyan","magenta")) +
+      scale_color_manual(values = c("darkcyan","magenta","darkblue"),
+                         labels = c("Experiment\n",
+                                    "Best\nSimulation Fit\n",
+                                    "Initial\nSimulation")
+                         ) +
       labs(title = "EPR Simulation Fit",
            color = NULL,
            x = NULL,
@@ -1084,7 +1157,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## switching between final list components
   result.list <- switch(2-sim.check,
                         list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params), ## all params., for all methods
+                             best.fit.params = best.fit.params,
+                             df = data.sim.expr.long), ## all params., for all methods
                         list(plot = plot.sim.expr,
                              best.fit.params = best.fit.params, ## all params., for all methods
                              df = data.sim.expr,

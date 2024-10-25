@@ -137,17 +137,21 @@ of the optimization/fitting procedure (see \code{Value}).}
 \value{
 List with following components depending on \code{sim.check}:
   \enumerate{
-  \item if \code{sim.check = TRUE} it returns list with two components:
+  \item if \code{sim.check = TRUE}, it returns list components like:
   \describe{
   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectrum
-  in "overlay" mode. Additional graph, below to the latter, showing the residuals (difference between
+  together with the initial simulation (see the \code{optim.params.init} argument) in "overlay" mode.
+  Additional graph, below to the latter, showing the residuals (difference between
   the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
   in order to quickly evaluate the quality of the fit.}
   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
   see also description of the \code{optim.params.init}.}
+  \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
+  the best simulated/fitted, as well as the the initially simulated EPR spectrum
+  (defined by the \code{optim.params.init} argument).}
   }
 
-  \item if \code{sim.check = FALSE} it returns list with the following components:
+  \item if \code{sim.check = FALSE}, it returns list with the following components:
   \describe{
   \item{plot}{Visualization of three spectra which are offset for clarity. The first
   (the upper one) is the original experimental spectrum. The second one (in the middle)
