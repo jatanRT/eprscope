@@ -248,7 +248,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List with following components depending on <code>sim.check</code>:</p><ol><li><p>if <code>sim.check = TRUE</code>, it returns list components like:</p><dl><dt>plot</dt>
+    <p>List with the following components depending on <code>sim.check</code>:</p><ol><li><p>if <code>sim.check = TRUE</code>, it returns list components like:</p><dl><dt>plot</dt>
 <dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectrum
   together with the initial simulation (see the <code>optim.params.init</code> argument) in "overlay" mode.
   Additional graph, below to the latter, showing the residuals (difference between
@@ -261,7 +261,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 
   <dt>df</dt>
 <dd><p>Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
-  the best simulated/fitted, as well as the the initially simulated EPR spectrum
+  the best simulated/fitted, as well as the initially simulated EPR spectrum
   (defined by the <code>optim.params.init</code> argument).</p></dd>
 
 
@@ -270,7 +270,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <dd><p>Visualization of three spectra which are offset for clarity. The first
   (the upper one) is the original experimental spectrum. The second one (in the middle)
   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
-  corresponds to the best fitted spectrum where the baseline counter part was subtracted.</p></dd>
+  corresponds to the best fitted spectrum where the baseline counter part is subtracted.</p></dd>
 
   <dt>best.fit.params</dt>
 <dd><p>Vector of the best (final) fitting parameters to simulate the EPR spectrum,
@@ -309,7 +309,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>In order to guess the intensity multiplication constant (please, refer to the <code>optim.params.init</code>
   argument), one might compare the intensities of the experimental (<code>expr</code>) and simulated (<code>sim</code>)
-  EPR spectrum by one of the interactive or static plotting functions (e.g. <code><a href="plot_EPR_Specs.html">plot_EPR_Specs</a></code>
+  EPR spectrum by one of the interactive or static plot functions (e.g. <code><a href="plot_EPR_Specs.html">plot_EPR_Specs</a></code>
   or <code><a href="plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact</a></code>) as well as by the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>. Accordingly,
   <strong>the initial intensity multiplication constant</strong> can be estimated as the ratio
   <strong>max(<code>expr</code> intensity)/max(<code>sim</code> intensity)</strong>.</p>
@@ -353,7 +353,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>        <span class="fl">49</span><span class="op">)</span>, <span class="co"># A in MHz</span></span></span>
 <span class="r-in"><span>    sim.check <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## OUTPUTS-RETURN:</span></span></span>
+<span class="r-in"><span><span class="co">## OUTPUTS RETURNED:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
@@ -388,7 +388,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## preview of data frame including all spectra:</span></span></span>
+<span class="r-in"><span><span class="co">## preview of data frame including all EPR spectra:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          B_G     Experiment     Simulation     Residuals Simulation_NoBasLin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;          &lt;num&gt;          &lt;num&gt;         &lt;num&gt;               &lt;num&gt;</span>
@@ -424,8 +424,9 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## quick simulation check by plotting the both</span></span></span>
 <span class="r-in"><span><span class="co">## simulated and the experimental EPR spectra</span></span></span>
-<span class="r-in"><span><span class="co">## together with the residuals (differences between the</span></span></span>
-<span class="r-in"><span><span class="co">## both latter)</span></span></span>
+<span class="r-in"><span><span class="co">## together with the initial simulation</span></span></span>
+<span class="r-in"><span><span class="co">## and the residuals (differences between the</span></span></span>
+<span class="r-in"><span><span class="co">## experiment and the best fit)</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">plot</span></span></span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
@@ -448,7 +449,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>                                            <span class="fl">49</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      sim.check <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>                    <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## OUTPUTS-RETURN:</span></span></span>
+<span class="r-in"><span><span class="co">## OUTPUTS RETURNED:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
@@ -466,7 +467,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span><span class="co">## `N.converg` also consists of two components</span></span></span>
 <span class="r-in"><span><span class="co">## each corresponding to result of the individual</span></span></span>
 <span class="r-in"><span><span class="co">## optimization method where the "levenmarq" returns</span></span></span>
-<span class="r-in"><span><span class="co">## sum of squares at each iteration, therefore the 1st</span></span></span>
+<span class="r-in"><span><span class="co">## the sum of squares at each iteration, therefore the 1st</span></span></span>
 <span class="r-in"><span><span class="co">## component is vector and the 2nd one is integer code</span></span></span>
 <span class="r-in"><span><span class="co">## as already stated above:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">N.converg</span></span></span>
