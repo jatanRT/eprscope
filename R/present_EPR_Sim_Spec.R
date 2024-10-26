@@ -117,7 +117,7 @@
 #'            )
 #' #
 #' ## comparison of both spectra
-#' ## in overley mode
+#' ## in overlay mode
 #' present_EPR_Sim_Spec(
 #'   data.spectr.expr = data.spectrum.expr,
 #'   data.spectr.sim = data.spectrum.sim$df,

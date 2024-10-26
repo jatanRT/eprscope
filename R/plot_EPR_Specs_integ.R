@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Visualization (static plots based on \href{https://ggplot2.tidyverse.org/}{ggplot2}) of integrated EPR spectra
-#'   coming as data frame output from \code{\link{eval_integ_EPR_Spec}}.
+#'   coming as data frame outputs from \code{\link{eval_integ_EPR_Spec}}.
 #'
 #'
 #' @inheritParams plot_EPR_Specs

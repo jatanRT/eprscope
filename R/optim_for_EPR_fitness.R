@@ -9,13 +9,13 @@
 #' @description
 #'   General-purpose optimization of the objective \code{fn} function (also called "fitness")
 #'   which is to be minimized in order to fit theoretical models (EPR simulations)
-#'   onto the experimental data. Several methods/algorithms are implemented (see also \code{Details}).
-#'   From \href{https://astamm.github.io/nloptr/}{nloptr} package: \code{\link[nloptr]{slsqp}},
+#'   onto the experimental data. Several methods/algorithms are implemented (see also \code{Details});
+#'   from the \href{https://astamm.github.io/nloptr/}{nloptr} package: \code{\link[nloptr]{slsqp}},
 #'   \code{\link[nloptr]{neldermead}}, \code{\link[nloptr]{crs2lm}}, \code{\link[nloptr]{sbplx}},
-#'   \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}; from
+#'   \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}; from the
 #'   \href{https://cran.r-universe.dev/minpack.lm/doc/manual.html}{minpack.lm} package:
 #'   \code{\link[minpack.lm]{nls.lm}} and finally
-#'   from \href{https://cran.r-project.org/web/packages/pso/pso.pdf}{pso} package:
+#'   from the \href{https://cran.r-project.org/web/packages/pso/pso.pdf}{pso} package:
 #'   \code{\link[pso]{psoptim}} are used.
 #'
 #'
@@ -109,11 +109,11 @@
 #'   corresponding either to integer value showing the (un)successful termination like \code{2: Maximum number
 #'   of iterations reached} (or integer code > 0 indicating successful completion) or in the case
 #'   of \code{\link[minpack.lm]{nls.lm}}, it returns a vector with the values equal
-#'   to sum of residual squares at each iteration.
+#'   to sum of the residual squares at each iteration.
 #'
 #'   \item A descriptive message/character string giving additional information about the optimization
 #'   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
-#'   because most of the information can be found in the previous convergence measures.
+#'   because most of the information can be found in the previous convergence information.
 #'   }
 #'
 #'

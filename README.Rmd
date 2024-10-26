@@ -270,7 +270,9 @@ Even though the **EPR spectroscopy** is a quite complex field there are some int
 
 -   [Bruker EPR Instruments](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments.html)
 
--   [EPR Everywhere](https://researchoutreach.org/articles/electron-paramagnetic-resonance-epr-everywhere/)
+-   [EPR Everywhere - Webpage](https://researchoutreach.org/articles/electron-paramagnetic-resonance-epr-everywhere/)
+
+-   [EPR Everywhere - Article](https://link.springer.com/article/10.1007/s00723-020-01304-z?fromPaywallRec=true)
 
 -   [Basic Concepts of EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 

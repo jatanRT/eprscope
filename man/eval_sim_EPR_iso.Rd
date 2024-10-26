@@ -121,11 +121,11 @@ EPR spectra often display hyperfine structure, where the spectral lines split in
   as a consequence of the electron-nuclear interaction with nuclei close to the paramagnetic center.
   Sometimes, such splitting can be complicated and requires \strong{simulations}, i.e. computational "synthesis"
   of spectral structure based on quantum chemistry as well as on mathematical description of spectral lineshapes
-  (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS) of isotropic EPR spectra
-  by simulations. For such purpose, properties like nuclear \eqn{g}-value, spin quantum number as well as natural
-  abundance of the isotopes, related to interacting nuclei, must be known and are collected in the \code{\link{isotopes_ds}}.
-  EPR spectra can be simulated for the derivative as well as for the integrated line forms
-  (see the argument \code{lineSpec.form}).
+  (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS)
+  of the isotropic EPR spectra by simulations. For such purpose, properties like nuclear \eqn{g}-value,
+  spin quantum number as well as natural abundance of the isotopes, related to interacting nuclei,
+  must be known and are collected in the \code{\link{isotopes_ds}}. EPR spectra can be simulated
+  for the derivative as well as for the integrated line forms (see the argument \code{lineSpec.form}).
 }
 \details{
 Theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent
@@ -140,21 +140,22 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   by the above-mentioned linewidth. Many organic radicals exhibit such EPR spectra at room temperature
   and in solutions of low viscosities (Gerson F, Huber W (2003), see \code{References}).
 
-  In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined by \code{instrum.params}
-  argument or can be directly acquired from the parameter file using the \code{path_to_dsc_par} argument.
-  Position of the spectrum (within the desired \eqn{B}-region) as well as those of HFS-lines are evaluated
-  by the resonance condition (see also the \code{\link{eval_gFactor}}) and by the Breit-Rabi analytical expression
-  for energy levels of the interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
+  In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined
+  by the \code{instrum.params} argument or can be directly acquired from the parameter file using
+  the \code{path_to_dsc_par} argument. Position of the spectrum (within the desired \eqn{B}-region)
+  as well as those of HFS-lines are evaluated by the resonance condition (see also the \code{\link{eval_gFactor}})
+  and by the Breit-Rabi analytical expression for energy levels of the interacting nuclei.
+  The related \eqn{B}s are computed by the fixed-point iterations,
   because the corresponding \eqn{g}-value for each of the HFS-lines is not known (Weil JA (1971)
   and Stoll A, Schweiger A (2006)). The shape of spectral lines are calculated by the analytical formula
-  of linear combination of the Gaussian and Lorentzian line-shapes (also referred to as pseudo-Voigt,
+  of linear combination of the Gaussian and the Lorentzian line-shapes (also referred to as pseudo-Voigt,
   Weil JA, Bolton JR (2007) and Stoll S (2024)).  The linear coefficients
   are defined by the \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
   is defined individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
   The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
-  taking into account the spin quantum numbers of the interacting nuclei as well as their natural abundance
-  (if \code{natur.abund = TRUE}).
+  taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups,
+  as well as their natural abundance (if \code{natur.abund = TRUE}).
 }
 \examples{
 ## simulation of simple EPR spectrum (without hyperfine

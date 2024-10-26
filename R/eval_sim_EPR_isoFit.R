@@ -21,7 +21,7 @@
 #' @note
 #'   In order to guess the intensity multiplication constant (please, refer to the \code{optim.params.init}
 #'   argument), one might compare the intensities of the experimental (\code{expr}) and simulated (\code{sim})
-#'   EPR spectrum by one of the interactive or static plotting functions (e.g. \code{\link{plot_EPR_Specs}}
+#'   EPR spectrum by one of the interactive or static plot functions (e.g. \code{\link{plot_EPR_Specs}}
 #'   or \code{\link{plot_EPR_Specs2D_interact}}) as well as by the \code{\link{eval_sim_EPR_iso}}. Accordingly,
 #'   \strong{the initial intensity multiplication constant} can be estimated as the ratio
 #'   \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
@@ -114,7 +114,7 @@
 #' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
 #'
 #'
-#' @return List with following components depending on \code{sim.check}:
+#' @return List with the following components depending on \code{sim.check}:
 #'   \enumerate{
 #'   \item if \code{sim.check = TRUE}, it returns list components like:
 #'   \describe{
@@ -126,7 +126,7 @@
 #'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
 #'   see also description of the \code{optim.params.init}.}
 #'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
-#'   the best simulated/fitted, as well as the the initially simulated EPR spectrum
+#'   the best simulated/fitted, as well as the initially simulated EPR spectrum
 #'   (defined by the \code{optim.params.init} argument).}
 #'   }
 #'
@@ -135,7 +135,7 @@
 #'   \item{plot}{Visualization of three spectra which are offset for clarity. The first
 #'   (the upper one) is the original experimental spectrum. The second one (in the middle)
 #'   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
-#'   corresponds to the best fitted spectrum where the baseline counter part was subtracted.}
+#'   corresponds to the best fitted spectrum where the baseline counter part is subtracted.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
 #'   its elements are actually related to \code{optim.params.init}.}
 #'   \item{df}{Data frame (table) with the following variables / columns: magnetic flux density,
@@ -188,7 +188,7 @@
 #'         49), # A in MHz
 #'     sim.check = FALSE
 #'   )
-#' ## OUTPUTS-RETURN:
+#' ## OUTPUTS RETURNED:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.a$best.fit.params
 #' #
@@ -209,7 +209,7 @@
 #' ## completion (it must be > 0):
 #' tempo.test.sim.fit.a$N.converg
 #' #
-#' ## preview of data frame including all spectra:
+#' ## preview of data frame including all EPR spectra:
 #' head(tempo.test.sim.fit.a$df)
 #' #
 #' ## similar EPR spectrum simulation fit with "particle swarm"
@@ -233,8 +233,9 @@
 #' #
 #' ## quick simulation check by plotting the both
 #' ## simulated and the experimental EPR spectra
-#' ## together with the residuals (differences between the
-#' ## both latter)
+#' ## together with the initial simulation
+#' ## and the residuals (differences between the
+#' ## experiment and the best fit)
 #' tempo.test.sim.fit.b$plot
 #' #
 #' ## fitting of the aminoxyl EPR spectrum
@@ -256,7 +257,7 @@
 #'                                             49),
 #'                       sim.check = FALSE
 #'                     )
-#' ## OUTPUTS-RETURN:
+#' ## OUTPUTS RETURNED:
 #' ## best fit parameters for both procedures within a list:
 #' tempo.test.sim.fit.c$best.fit.params
 #' #
@@ -266,7 +267,7 @@
 #' ## `N.converg` also consists of two components
 #' ## each corresponding to result of the individual
 #' ## optimization method where the "levenmarq" returns
-#' ## sum of squares at each iteration, therefore the 1st
+#' ## the sum of squares at each iteration, therefore the 1st
 #' ## component is vector and the 2nd one is integer code
 #' ## as already stated above:
 #' tempo.test.sim.fit.c$N.converg

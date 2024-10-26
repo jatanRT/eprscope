@@ -45,7 +45,7 @@
 #' aminoxyl.mat.sim1
 #' #
 #' ## compare the previous simulation parameters with
-#' ## those obtained by `eval_sim_EPR_isoFit()`
+#' ## those obtained by the `eval_sim_EPR_isoFit()`
 #' ## function (look at the corresponding examples)
 #' #
 #' ## alternatively the `Sim1` (its dimension > 2)
