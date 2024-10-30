@@ -28,7 +28,7 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
 
 ## Installation
 
-Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system. This package is required for the proper running of the `{eprscope}` optimization/fitting functions.
+Before the installation, please make sure that you have already followed instructions for the [{nloptr} package installation](https://astamm.github.io/nloptr/) depending on your operating system (OS). This package is required for the proper running of the `{eprscope}` optimization/fitting functions. Additionally, the function `draw_molecule_by_rcdk()` depends on [*JAVA* JDK Development Kit](https://www.oracle.com/java/technologies/downloads/?er=221886), which has to be also installed on your corresponding OS.
 
 ```{r installation,eval=FALSE,echo=TRUE}
 
