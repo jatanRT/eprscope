@@ -125,7 +125,9 @@ readEPR_Exp_Specs_kin <- function(name.root,
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech",
-                         "magnetTech","MAGNETECH")
+                         "magnetTech","MAGNETTECH","magnetech",
+                         "Magnetech","MAGNETECH")
+  ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {

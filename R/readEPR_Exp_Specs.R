@@ -72,11 +72,11 @@
 #'   \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
 #'   the Q-factor/value might be also included in the \code{norm.vec.add}.
 #' @param origin Character string corresponding to \strong{origin} of the ASCII data, like from
-#'   most common spectrometers (from which data are loaded automatically using the default parameters).
+#'   most common spectrometers (from which the data are loaded automatically using the default parameters).
 #'   Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 #'   \tabular{rl}{
 #'   \strong{String} \tab \strong{Description} \cr
-#'   "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with dafault params. \cr
+#'   "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with default params. \cr
 #'   "winepr" \tab automatically loads data from the "WinEpr" software. \cr
 #'   "magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
 #'   "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
@@ -87,8 +87,8 @@
 #'   with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
 #'   time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
 #'   ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
-#'   see example, or any other data) put \code{data.structure = "others"}. \strong{In such case, all the arguments for}
-#'   \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
+#'   see \code{Examples}, or any other data) put \code{data.structure = "others"}. \strong{In such case, all the arguments for}
+#'   the \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
 #'   (assuming \code{time.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
 #'   \code{origin} argument.
 #' @param ... additional arguments specified (see also \code{\link[data.table]{fread}}).
@@ -277,7 +277,9 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech",
-                         "magnetTech","MAGNETECH")
+                         "magnetTech","MAGNETTECH","magnetech",
+                         "Magnetech","MAGNETECH")
+  ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## basic `fread` parameters to read the spectral data
   ## additional arguments see `?data.table::fread`

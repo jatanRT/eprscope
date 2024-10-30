@@ -18,7 +18,7 @@
 #' @param origin Character string, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
 #'   were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
-#'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnetech"}).
+#'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnettech"}).
 #' @param interact Character string, whether or not to display interactive tables by \code{\link[DT]{datatable}}.
 #'   \strong{Default}: \code{interact = NULL}. Interactive table with parameters can be displayed by
 #'   \code{interact = "params"} or to display the additional information table:
@@ -81,7 +81,10 @@ readEPR_params_tabs <- function(path_to_dsc_par,
   ## origin strings vectors to define "origin" conditions =>
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
+                         "magnetTech","MAGNETTECH","magnetech",
+                         "Magnetech","MAGNETECH")
+  ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## condition for switching between xenon and magnettech
   xen.magnet.cond <- function(origin){

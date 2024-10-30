@@ -14,7 +14,7 @@ to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
 \item{origin}{Character string, corresponding to software which was used to acquire the EPR spectra
 on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
 were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
-(\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnetech"}).}
+(\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnettech"}).}
 
 \item{interact}{Character string, whether or not to display interactive tables by \code{\link[DT]{datatable}}.
 \strong{Default}: \code{interact = NULL}. Interactive table with parameters can be displayed by

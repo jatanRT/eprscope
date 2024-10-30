@@ -108,7 +108,10 @@ readEPR_param_slct <- function(path_to_dsc_par,
   ## origin strings vectors to define "origin" conditions =>
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
+                         "magnetTech","MAGNETTECH","magnetech",
+                         "Magnetech","MAGNETECH")
+  ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## conditions to couple `string` with origin
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
@@ -352,7 +355,10 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
   ## origin strings vectors to define "origin" conditions =>
   winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech","magnetTech","MAGNETECH")
+  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
+                         "magnetTech","MAGNETTECH","magnetech",
+                         "Magnetech","MAGNETECH")
+  ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## condition for switching between xenon and magnettech
   xen.magnet.cond <- function(origin){
