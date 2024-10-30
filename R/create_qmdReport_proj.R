@@ -33,6 +33,11 @@
 #'   \code{.qmd}, \code{.bib},...etc). Prior to rendering,
 #'   you may provide information about the author like \code{name:}, \code{email:},
 #'   \code{orcid:} and affiliations \code{name:} and \code{url:}, directly within the main \code{.qmd} file.
+#'   The \code{.bib} file is already pre-populated by one example, actually corresponding to \code{{eprscope}}
+#'   package citation. The \code{.bib} reference/citation database/file can be extended and organized
+#'   by the online service called \href{https://www.citedrive.com/en/docs/}{CiteDrive}, which can be also used
+#'   as a web clipper for your references/citations,
+#'   please refer to the \href{https://www.citedrive.com/en/docs/collect/browser-extension/}{available browser extensions}.
 #'
 #'   \code{path_to_wd} \cr
 #'   | \cr

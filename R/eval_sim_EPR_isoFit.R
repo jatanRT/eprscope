@@ -50,7 +50,7 @@
 #' @param optim.method Character string (vector), setting the optimization method(s) gathered within
 #'   the \code{\link{optim_for_EPR_fitness}}. \strong{Default}: \code{optim.method = "neldermead"}. Additionally,
 #'   several consecutive methods can be defined like \code{optim.method = c("levenmarq","neldermead")}, where
-#'   the best fit parameters from the previous method are used as input for the next one. In such case the output
+#'   the best fit parameters from the previous method are used as input for the next one. In such case, the output
 #'   is \code{list} with the elements/vectors from each method in order to see the progress of the optimization.
 #' @param optim.params.init Numeric vector with the initial parameter guess (elements) where the \strong{first five
 #'   elements are immutable}
