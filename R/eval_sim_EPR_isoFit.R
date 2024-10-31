@@ -15,7 +15,8 @@
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". In order to control the optimization/fitting process,
 #'   by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
-#'   a \href{https://www.rstudio.com/products/shiny/}{Shiny app} is under development.
+#'   a \href{https://www.rstudio.com/products/shiny/}{Shiny app}
+#'   and/or \href{https://gganimate.com/}{{gganimate}} visualization is under development.
 #'
 #'
 #' @note
@@ -757,10 +758,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     return(optim.list)
   }
   #
-  ## own optimization which can be performed also with two consecutive
-  ## methods depending on the `optim.method` vector length
+  ## =========== OWN OPTIMIZATION which can be performed also WITH SEVERAL =========
+  ## =========== CONSECUTIVE METHODS DEPENDING on the `optim.method` ===============
+  ## ============================== VECTOR LENGTH ==================================
   optimization.list <- c()
   best.fit.params <- c()
+  optim.params.init.list <- list()
+  optim.params.init.list[[1]] <- optim.params.init
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
@@ -784,7 +788,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_lm,
                                          method = "levenmarq",
-                                         x.0 = optim.params.init)
+                                         x.0 = optim.params.init.list[[m]])
     }
     if (optim.method[m] == "pswarm"){
       ## LSQ FUNCTION
@@ -807,7 +811,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_ps,
                                          method = "pswarm",
-                                         x.0 = optim.params.init)
+                                         x.0 = optim.params.init.list[[m]])
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
@@ -832,14 +836,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_nl,
                                          method = optim.method[m],
-                                         x.0 = optim.params.init)
+                                         x.0 = optim.params.init.list[[m]])
     }
     #
-    ## best parameters as input (`optim.params.init`) for the next cycle
+    ## best parameters as input (`optim.params.init.list`) for the next cycle
     ## if several subsequent `optim.method` applied
     best.fit.params[[m]] <- optimization.list[[m]]$par
     if (length(optim.method) > 1){
-      optim.params.init <- best.fit.params[[m]]
+      if (m < length(optim.method)) {
+        optim.params.init.list[[m+1]] <- best.fit.params[[m]]
+      }
     }
     #
   }
@@ -1015,10 +1021,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                        Intensity.sim = Intensity.expr)$df
     ## `Intensity.expr` due to `data.sim.expr.long` (see its creation above)
     #
-    ## multiply the intensity by the initial factor
-    ## from `opotim.params.init` (5th component)
+    ## intensity based on baseline
+    Intens.init.baseline.switch <-
+      switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+             ((optim.params.init[6] * sim.df.init[[paste0("Bsim_",B.unit)]]) +
+                (optim.params.init[7] * (sim.df.init[[paste0("Bsim_",B.unit)]])^2)),
+             (optim.params.init[6] * sim.df.init[[paste0("Bsim_",B.unit)]]),
+             0
+      )
+    ## finally, the initial sim intensity =>
+    ## from `optim.params.init` (
     sim.df.init[[Intensity.expr]] <-
-      sim.df.init[[Intensity.expr]] * optim.params.init[5]
+      optim.params.init[4] +
+      (optim.params.init[5] * sim.df.init[[Intensity.expr]]) +
+      Intens.init.baseline.switch
+    #
     ## and rename and select only required columns
     sim.df.init <- sim.df.init %>%
       dplyr::select(
