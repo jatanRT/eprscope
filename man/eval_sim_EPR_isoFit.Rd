@@ -10,7 +10,7 @@ eval_sim_EPR_isoFit(
   Intensity.sim = "dIeprSim_over_dB",
   nu.GHz,
   B.unit = "G",
-  nuclear.system.noA,
+  nuclear.system.noA = NULL,
   baseline.correct = "constant",
   lineG.content = 0.5,
   lineSpecs.form = "derivative",
@@ -44,7 +44,8 @@ for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.}
 
 \item{nuclear.system.noA}{List or nested list \strong{without estimated hyperfine coupling constant values},
 such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values
-are already defined as elements of the \code{optim.params.init} argument/vector.}
+are already defined as elements of the \code{optim.params.init} argument/vector. If the EPR spectrum
+does not display any hyperfine splitting, the argument definition reads \code{nuclear.system.noA = NULL} (\strong{default}).}
 
 \item{baseline.correct}{Character string, referring to baseline correction of the simulated/fitted spectrum.
 Corrections like \code{"constant"} (\strong{default}), \code{"linear"} or \code{"quadratic"} can be applied.}

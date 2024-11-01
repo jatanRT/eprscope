@@ -37,7 +37,8 @@
 #'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param nuclear.system.noA List or nested list \strong{without estimated hyperfine coupling constant values},
 #'   such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values
-#'   are already defined as elements of the \code{optim.params.init} argument/vector.
+#'   are already defined as elements of the \code{optim.params.init} argument/vector. If the EPR spectrum
+#'   does not display any hyperfine splitting, the argument definition reads \code{nuclear.system.noA = NULL} (\strong{default}).
 #' @param baseline.correct Character string, referring to baseline correction of the simulated/fitted spectrum.
 #'   Corrections like \code{"constant"} (\strong{default}), \code{"linear"} or \code{"quadratic"} can be applied.
 #' @param lineG.content Numeric value between \code{0} and \code{1}, referring to content of \emph{Gaussian} line form.
@@ -284,7 +285,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 Intensity.sim = "dIeprSim_over_dB",
                                 nu.GHz,
                                 B.unit = "G",
-                                nuclear.system.noA,
+                                nuclear.system.noA = NULL,
                                 baseline.correct = "constant", ## "linear" or "quadratic"
                                 lineG.content = 0.5,
                                 lineSpecs.form = "derivative",
@@ -367,7 +368,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
   }
   #
-  ## functions to parameterize simulation by arguments/parameters
+  # ==================== FUNCTIONS TO PARAMETRIZE SIMULATIONS =====================
+  #
+  ## ....... by arguments/parameters
   ## based on `optim.method` and the corresponding argument
   ## therefore => AS a FITNESS FUNCTIONS THEY MUST BE DEFINED SEPARATELY !!
   ## OTHERWISE THE OPTIMIZATION WON'T WORK
@@ -666,6 +669,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     #
   }
   #
+  # ====================== PARAMETER GUESSES =======================
+  #
   ## initial parameter guesses for the optimization and definition
   ## g values
   limits.params1a <- optim.params.init[1] - 0.001
@@ -735,8 +740,10 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   optim.params.upper <- optim.params.upper %>%
     `if`(is.null(optim.params.upper), upper.limits, .)
   #
-  ## "general" function for optimization because it depends
-  ## on method (`method`) and function (`fun`) and initial params (`x.0`)
+  # ================== GENERAL FUNCTION FOR OPTIMIZATION ====================
+  #
+  ## because it depends on method (`method`), function (`fun`)
+  ## and initial params (`x.0`), define it accordingly
   optim_fn <- function(fun,method,x.0){
     optim.list <- optim_for_EPR_fitness(x.0 = x.0,
                                         fn = fun,
@@ -761,6 +768,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## =========== OWN OPTIMIZATION which can be performed also WITH SEVERAL =========
   ## =========== CONSECUTIVE METHODS DEPENDING on the `optim.method` ===============
   ## ============================== VECTOR LENGTH ==================================
+  #
   optimization.list <- c()
   best.fit.params <- c()
   optim.params.init.list <- list()
@@ -849,6 +857,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
     #
   }
+  # =================== THE BEST PARAMS. VECTOR ====================
   #
   ## The best system is the last one from the `best.fit.params` =>
   ## therefore it correspond to `best.fit.params[[length(optim.method)]]`
@@ -871,9 +880,10 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
   }
   #
-  ## Conditions for linewidths from obtained from `best.fit.params`
+  ## Conditions for linewidths obtained from `best.fit.params`
   #
-  ## function to simulate spectra with final params. =>
+  ## ============ FUNCTION TO SIMULATE SPECTRA WITH THE FINAL (BEST FIT) PARAMS ============
+  #
   sim_epr_iso_df_final <- function(GL.linewidth){
     #
     ## `GL.linewidth` is list
@@ -925,7 +935,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
            (best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]),
            0
     )
-  ## the overall intensity incl. that defined above
+  ## add the overall simulated intensity including baseline
   data.spectr.expr[[Intensity.sim]] <-
     best.fit.params[[length(optim.method)]][4] +
     (best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]) +
@@ -933,12 +943,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## ======================== DATA & PLOTTING =============================
   #
-  ## final data frame and rename columns
+  ## final data  new frame and rename columns
   data.sim.expr <- data.spectr.expr %>%
     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
                                   Intensity.expr,Intensity.sim))) %>%
     dplyr::rename_with(~ c("Experiment","Simulation"),
                        dplyr::all_of(c(Intensity.expr,Intensity.sim)))
+  #
   rm(data.spectr.expr) ## not required anymore
   #
   ## calculating `rowwise` difference between expr. and sim. spectra
@@ -962,11 +973,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     #
   } else {
     ## for plotting both spectra as publication ready => spectra will be offset
-    ## => recalculate the intensity => shift the simulated intensity
+    ## for clarity => recalculate the intensity => shift the simulated intensity
     ## down below by factor of difference between `max()` and `min()`
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
-      ## offset due to clarity
+      ## offset for clarity
       dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
       ## simulation without baseline
       dplyr::mutate(Simulation_NoBasLin = (best.fit.params[[length(optim.method)]][5] *
@@ -978,10 +989,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   ## Adding residuals and `pure` simulation (without baseline)
-  ## to the overall data frame
+  ## to the overall data frame which will be returned
+  ## in the case of `sim.check = FALSE`
   data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
-  data.sim.expr$Simulation_NoBasLin <- best.fit.params[[length(optim.method)]][5] *
-    best.fit.df[[Intensity.sim]]
+  data.sim.expr$Simulation_NoBasLin <-
+    best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]
   #
   # ---------------- add initial simulation only if `sim.check = TRUE` ------------------
   #
@@ -989,16 +1001,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## ...first of all, create initial `nuclear.system` =>
   if (isTRUE(sim.check)) {
-    A.init <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
-                     optim.params.init[8:(7+length(nuclear.system.noA))],
-                     optim.params.init[7:(6+length(nuclear.system.noA))],
-                     optim.params.init[6:(5+length(nuclear.system.noA))]
-    )
-    A.init <- round(A.init,digits = 3)
-    nucs.system.init <- c()
-    for (j in seq(nuclear.system.noA)) {
-      nucs.system.init[[j]] <- c(nuclear.system.noA[[j]],A.init[j])
-      nucs.system.init[[j]] <- as.list(nucs.system.init[[j]])
+    if (!is.null(nuclear.system.noA)){
+      A.init <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                       optim.params.init[8:(7+length(nuclear.system.noA))],
+                       optim.params.init[7:(6+length(nuclear.system.noA))],
+                       optim.params.init[6:(5+length(nuclear.system.noA))]
+      )
+      A.init <- round(A.init,digits = 3)
+      nucs.system.init <- c()
+      for (j in seq(nuclear.system.noA)) {
+        nucs.system.init[[j]] <- c(nuclear.system.noA[[j]],A.init[j])
+        nucs.system.init[[j]] <- as.list(nucs.system.init[[j]])
+      }
+    } else {
+      nucs.system.init <- NULL
     }
     ##...initial simulation data frame + 1.) extract and create list for DeltaBs
     DeltaB.init <- c()
@@ -1053,8 +1069,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## finally, `bind_rows` => both data frames together
     data.sim.expr.long <-
       data.sim.expr.long %>%
-      dplyr::bind_rows(sim.df.init) # %>%
-      # dplyr::arrange(.data$Spectrum)
+      dplyr::bind_rows(sim.df.init) %>%
+      dplyr::arrange(.data$Spectrum)
   }
   #
   # ----------------------------------------------------------------------
@@ -1074,7 +1090,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     y = .data[[Intensity.expr]],
                     color = .data$Spectrum),
                 linewidth = 0.75) +
-      scale_color_manual(values = c("darkcyan","magenta","darkblue"),
+      scale_color_manual(values = c("darkcyan","magenta","#5D5DFF"), #674EA7 #7F6000 #351C75 #4C4CFF
                          labels = c("Experiment\n",
                                     "Best\nSimulation Fit\n",
                                     "Initial\nSimulation")
@@ -1092,7 +1108,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                   color = "black",
                   linewidth = 0.75,
                   alpha = 0.75) +
-        labs(title = "Residuals",
+        labs(title = "Residuals (Experiment - Best Simulation Fit)",
              x = bquote(italic(B)~~"("~.(B.unit)~")"),
              y = switch(2-grepl("deriv|Deriv",lineSpecs.form),
                         bquote(Diff. ~ ~ d*italic(I)[EPR]~ ~"/"~ ~d*italic(B) ~ ~ ~ "(" ~ p.d.u. ~ ")"),
