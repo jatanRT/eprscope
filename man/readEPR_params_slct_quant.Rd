@@ -14,7 +14,7 @@ to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter
 \item{origin}{Character string corresponding to software used to acquire the EPR spectra
 on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
 they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
-(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).}
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
 }
 \value{
 List consisting of:

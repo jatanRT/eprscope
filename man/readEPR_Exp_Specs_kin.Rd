@@ -82,7 +82,7 @@ Options are summarized in the following table (any other specific \code{origin} 
 \strong{String} \tab \strong{Description} \cr
 "xenon" \tab \strong{default} automatically loads data from the "Xenon" software with default params. \cr
 "winepr" \tab automatically loads data from the "WinEpr" software. \cr
-"magnettech" \tab automatically loads data from the new "Magnettech" software. \cr
+"magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
 \strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr

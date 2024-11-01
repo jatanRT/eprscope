@@ -71,6 +71,11 @@ which has to be also installed on your corresponding OS.
 # good to install essential collection of packages for data science 
 # with all their dependencies:
 # install.packages("tidyverse",dependencies = TRUE)
+# install.packages(
+#   c("DT","vctrs","npreg","patchwork","kableExtra",
+#     "htmlwidgets","webshot2","tinytable","gsignal"),
+#   dependencies = TRUE
+# )
 #
 # package can be installed by =>
 if (!require(devtools)) {install.packages("devtools")}

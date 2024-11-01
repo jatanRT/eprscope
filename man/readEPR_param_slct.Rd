@@ -35,7 +35,7 @@ Following \strong{strings are defined for all three main acquisition software de
   "RCTC" ("RTC") \tab time constant in \code{s} (ms),
   not available in "magnettech" \code{.dsc} \cr
   "RCAG" ("RRG") \tab signal receiver gain in \code{dB} (unitless),
-  not available in "magnetech" \code{.dsc} \cr
+  not available in "magnettech" \code{.dsc} \cr
   "ConvFact" \tab conversion factor/instr. calibration constant for quantitative
   analysis \code{unitless}, not available in "magnettech" \code{.dsc} \cr
 }}
@@ -43,7 +43,7 @@ Following \strong{strings are defined for all three main acquisition software de
 \item{origin}{Character string corresponding to software used to acquire the EPR spectra
 on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
 they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
-(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (\code{origin = "magnettech"}).}
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
 }
 \value{
 Numeric or character string (e.g. date or comment) corresponding to selected instrumental parameter

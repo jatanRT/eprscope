@@ -18,7 +18,8 @@
 #' @param origin Character string, corresponding to software which was used to acquire the EPR spectra
 #'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
 #'   were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
-#'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" softw. (\code{origin = "magnettech"}).
+#'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" software
+#'   (ESR5000 [11-0422],\code{origin = "magnettech"}).
 #' @param interact Character string, whether or not to display interactive tables by \code{\link[DT]{datatable}}.
 #'   \strong{Default}: \code{interact = NULL}. Interactive table with parameters can be displayed by
 #'   \code{interact = "params"} or to display the additional information table:
@@ -110,7 +111,7 @@ readEPR_params_tabs <- function(path_to_dsc_par,
       "AVGS", "NbScansDone", "NbScansToDo", "A1RS",
       "MWPW", "SPTP", "RCTC", "RCAG", "STMP", "B0MF", "ConvFact"
     )
-    ## magnetech
+    ## magnettech
     str.epr.Instr.params.V.m <- str.epr.Instr.params.V.x[-c(7,8,12,13,16)]
     ## switch between
     str.epr.Instr.params.V <- switch(2-xen.magnet.cond(origin = origin),
@@ -140,7 +141,7 @@ readEPR_params_tabs <- function(path_to_dsc_par,
     #
     ## xenon
     str.epr.Instr.params.Ch.x <- c("OPER", "DATE", "TIME", "CMNT", "SAMP") ## corresp. to character
-    ## magnetech
+    ## magnettech
     str.epr.Instr.params.Ch.m <- str.epr.Instr.params.Ch.x[-5]
     ## switch between
     str.epr.Instr.params.Ch <- switch(2-xen.magnet.cond(origin = origin),
@@ -181,7 +182,7 @@ readEPR_params_tabs <- function(path_to_dsc_par,
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))){
     #
-    ## general parameter string for xenon + magnetech => next step select
+    ## general parameter string for xenon + magnettech => next step select
     ParameterV <- c(
       "Frequency", "QValue", "Central Field", "Sweep Width", "Modulation Amplitude",
       "Num. of Scans", "Num. of Scans Done", "Num. of Scans ToDo", "Number of Points",

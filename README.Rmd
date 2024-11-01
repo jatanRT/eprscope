@@ -38,6 +38,11 @@ Before the installation, please make sure that you have already followed instruc
 # good to install essential collection of packages for data science 
 # with all their dependencies:
 # install.packages("tidyverse",dependencies = TRUE)
+# install.packages(
+#   c("DT","vctrs","npreg","patchwork","kableExtra",
+#     "htmlwidgets","webshot2","tinytable","gsignal"),
+#   dependencies = TRUE
+# )
 #
 # package can be installed by =>
 if (!require(devtools)) {install.packages("devtools")}
