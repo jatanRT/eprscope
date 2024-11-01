@@ -94,7 +94,7 @@
 <span>  Intensity.sim <span class="op">=</span> <span class="st">"dIeprSim_over_dB"</span>,</span>
 <span>  <span class="va">nu.GHz</span>,</span>
 <span>  B.unit <span class="op">=</span> <span class="st">"G"</span>,</span>
-<span>  <span class="va">nuclear.system.noA</span>,</span>
+<span>  nuclear.system.noA <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  baseline.correct <span class="op">=</span> <span class="st">"constant"</span>,</span>
 <span>  lineG.content <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  lineSpecs.form <span class="op">=</span> <span class="st">"derivative"</span>,</span>
@@ -143,7 +143,8 @@ for EPR spectra. Additionally, <code>B.unit = "T"</code> (tesla) can be set as w
 <dt id="arg-nuclear-system-noa">nuclear.system.noA<a class="anchor" aria-label="anchor" href="#arg-nuclear-system-noa"></a></dt>
 <dd><p>List or nested list <strong>without estimated hyperfine coupling constant values</strong>,
 such as <code>list("14N",1)</code> or <code>list(list("14N", 2),list("1H", 4),list("1H", 12))</code>. The \(A\)-values
-are already defined as elements of the <code>optim.params.init</code> argument/vector.</p></dd>
+are already defined as elements of the <code>optim.params.init</code> argument/vector. If the EPR spectrum
+does not display any hyperfine splitting, the argument definition reads <code>nuclear.system.noA = NULL</code> (<strong>default</strong>).</p></dd>
 
 
 <dt id="arg-baseline-correct">baseline.correct<a class="anchor" aria-label="anchor" href="#arg-baseline-correct"></a></dt>
