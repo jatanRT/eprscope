@@ -323,6 +323,10 @@ eval_integ_EPR_Spec <- function(data.spectr,
                  pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1]
       )
     )
+    # integral with proper scaling (from `0`)
+    data.spectr <- data.spectr %>%
+      dplyr::mutate(single_Integ = abs(min(.data$single_Integ) - .data$single_Integ))
+    #
     if (isFALSE(sigmoid.integ)) {
       data.spectr <- data.spectr
     } else {
@@ -332,13 +336,19 @@ eval_integ_EPR_Spec <- function(data.spectr,
                pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1] * 10,
                pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1]
       )
+      # scaling integral
+      data.spectr <- data.spectr %>%
+        dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
     }
   }
   if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     #
     ## integration depending on `B` unit
     if (isFALSE(sigmoid.integ)) {
-      data.spectr <- data.spectr
+      # scale integral/intensity simultaneously
+      data.spectr <- data.spectr %>%
+        dplyr::mutate(!!rlang::quo_name(Intensity) :=
+                        abs(min(.data[[Intensity]]) - .data[[Intensity]]))
     } else {
       data.spectr$sigmoid_Integ <-
         switch(3-fn_units(unit = B.unit),
@@ -346,24 +356,10 @@ eval_integ_EPR_Spec <- function(data.spectr,
                pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1] * 10,
                pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1]
       )
-    }
-  }
-  #
-  ## ----------- finally re-scale the integrals => from 0 to max -----------
-  if (isTRUE(sigmoid.integ)){
-    data.spectr <- data.spectr %>%
-      dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
-  } else {
-    ## re-scale the absorption line =>
-    if (grepl("deriv|Deriv",lineSpecs.form)) {
+      # scaling integral
       data.spectr <- data.spectr %>%
-        dplyr::mutate(single_Integ = abs(min(.data$single_Integ) - .data$single_Integ))
-    } else if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
-      data.spectr <- data.spectr %>%
-        dplyr::mutate(!!rlang::quo_name(Intensity) :=
-                        abs(min(.data[[Intensity]]) - .data[[Intensity]]))
+        dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
     }
-  #
   }
   #
   ## Integral baseline correction
@@ -385,9 +381,12 @@ eval_integ_EPR_Spec <- function(data.spectr,
         if (grepl("deriv|Deriv",lineSpecs.form)) {
           ## Polynomial baseline fit:
           #
-          ## convert B to variable in formula by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
-          integ.baseline.fit <- stats::lm(single_Integ ~ stats::poly(get(B), degree = poly.degree),
-            data = data.NoPeak
+          ## convert B to variable in formula
+          ## by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
+          integ.baseline.fit <-
+            stats::lm(
+              single_Integ ~ stats::poly(get(B), degree = poly.degree),
+              data = data.NoPeak
           )
           #
           ## apply fit to data.spectr
@@ -425,8 +424,10 @@ eval_integ_EPR_Spec <- function(data.spectr,
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
         if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
           ## Polynomial baseline fit:
-          integ.baseline.fit <- stats::lm(get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
-            data = data.NoPeak
+          integ.baseline.fit <-
+            stats::lm(
+              get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
+              data = data.NoPeak
           )
           #
           ## apply fit to data.spectr
