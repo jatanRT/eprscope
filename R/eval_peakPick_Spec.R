@@ -24,21 +24,51 @@
 #'   peaks depending on \code{lineSpecs.form}. In addition to \code{only.peak.pn = "positive"}
 #'   and \code{only.peak.pn = "negative"} strings, the short code like \code{only.peak.pn = "p"} (or \code{"P"})
 #'   and \code{only.peak.pn = "n"} (or \code{"N"}) can be applied as well.
-#' @param min.peak.height Numeric, setting the \code{Intensity} threshold (its absolute value) in order filter
-#'   out only those intensity values, taken to find to maxima and/or minima. \strong{Default}: \eqn{20\,\%}
-#'   of the maximum Intensity value.
-#' @param min.peak.dist
-#' @param min.peak.width
-#' @param max.peak.width
-#' @param double.sided
-#' @param line.color
-#' @param peak.color
-#' @param peak.text.angle
-#' @param peak.text.size
-#' @param peak.point.size
-#' @param peak.point.shape
-#' @param peak.text.overlap
-#' @param ...
+#' @param min.peak.height Numeric, setting the \code{Intensity} threshold (its absolute value) in order filter/select
+#'   only those intensity values, which are taken to find to maxima and/or minima. \strong{Default}: \code{min.peak.height = NULL},
+#'   corresponding to \eqn{20\\%} of the maximum Intensity value.
+#' @param min.peak.dist Numeric (integer > 0), pointing to minimum distance (in points) between the expected peaks,
+#'   which are constructed by parabola fits over the points. For such purpose, the shortened (vertex) parabola (the 2nd polynomial)
+#'   expression like \eqn{a\,(x - h)^2 + k} is applied, where \eqn{a} and \eqn{h,k} denote the concavity and the vertex, respectively.
+#'   These vertices actually correspond to peak maxima (\eqn{a < 0}) or minima (\eqn{a > 0}).
+#'   Peaks separated by less than this distance are considered as a single peak. Please, also refer to documentation
+#'   of the \code{\link[gsignal]{findpeaks}} function. The \strong{default} distance (\code{min.peak.dist = NULL}) actually equals
+#'   to one-half divided by the distance between the adjacent points, rounded to the integer: e.g.
+#'   \deqn{round(0.5\,/\,(x_2 - x_1))}
+#'   where such formula corresponds to \code{round(0.5/(data.spectr[[x]][2] - data.spectr[[x]][1]))}. This is especially useful
+#'   for rather noisy EPR spectra or spectra with high resolution. If according to \code{{ggplot2}} graphical representation
+#'   the peak-picking fails, i.e. not all peaks are properly detected, try lower values than the \strong{default} one
+#'   (such as 1 or 4 or ...etc.).
+#' @param min.peak.width Numeric (integer > 0), setting the minimum peak-width (points) to fit the vertex parabola expression
+#'   (see also the \code{min.peak.dist} argument and the \code{\link[gsignal]{findpeaks}} documentation) to find the peaks.
+#'   \strong{Default}: \code{min.peak.width = 1}.
+#' @param max.peak.width Numeric (integer > 0), pointing to maximum peak-width (points) to find the peaks. \strong{Default}:
+#'   \code{max.peak.width = Inf} (infinity).
+#' @param double.sided Logical. Should be the peaks found for both intensity sites (\code{data.spectr[[Intensity]]} > 0
+#'   as well as \code{data.spectr[[Intensity]]} < 0)? If \code{lineSpecs.form = "derivative"} then \code{double.sided = TRUE},
+#'   \strong{default}, otherwise, for the single integrated EPR spectra, it applies \code{double.sided = FALSE}.
+#' @param line.color Character string, line color to plot the EPR/ENDOR spectrum.
+#'   All \href{https://ggplot2.tidyverse.org/reference/aes_colour_fill_alpha.html}{\code{{ggplot2}} colors} are available
+#'   (see also \code{\link[ggplot2]{aes_colour_fill_alpha}}). \strong{Default}: \code{line.color = "darkviolet"}.
+#' @param peak.color Character string, "point" color to visualize/emphasize the peaks.
+#'   Similarly, as for the \code{line.color} argument, all \code{{ggplot2}} color definitions are available.
+#'   \strong{Default}: \code{peak.color = "steelblue"}.
+#' @param peak.text.angle Numeric, setting the angle (in deg) of the peak value (projection onto the \eqn{x}-axis) annotation text,
+#'   presented near the local maximum or minimum, and measured relatively to the \eqn{x}-axis
+#'   (see also \code{\link[ggplot2]{geom_text}}). \strong{Default}: \code{peak.text.angle = 90}.
+#' @param peak.text.size Numeric, pointing to peak annotation text size
+#'   (in mm, see the \code{\link[ggplot2]{aes_linetype_size_shape}}). \strong{Default}: \code{peak.text.size = 3}.
+#' @param peak.point.size Numeric, size (in mm) of the peak "point" in graphical representation of the peak-picking.
+#'   Please consult the \code{\link[ggplot2]{aes_linetype_size_shape}}
+#'   \href{https://ggplot2-book.org/scales-other}{\code{{ggplot2}} aesthetic arguments}. \strong{Default}:
+#'   \code{peak.point.size = 2}.
+#' @param peak.point.shape Numeric (integer between 0 and 24), controlling the "point" symbol like square, triangle, circle,
+#'   asterisk...etc,
+#'   refer to e.g. \href{https://ggplot2.tidyverse.org/articles/ggplot2-specs.html}{\code{{ggplot2}} aesthetic specifications}.
+#'   \strong{Default}: \code{peak.point.shape = 16} (filled circle).
+#' @param peak.text.overlap Logical, ...TBC.
+#' @param ... additional arguments specified, please refer to the \code{\link{plot_EPR_Specs}} function, in order to customize
+#'   the graphical output.
 #'
 #'
 #' @return
@@ -120,7 +150,7 @@ eval_peakPick_Spec <- function(data.spectr,
   min.peak.dist <-
     min.peak.dist %>%
     `if` (is.null(min.peak.dist),
-          round(0.5 / (data.spectr[[x]][4] - data.spectr[[x]][3])), .)
+          round(0.5 / (data.spectr[[x]][2] - data.spectr[[x]][1])), .)
   #
   peaks.list <-
     gsignal::findpeaks(
@@ -138,7 +168,7 @@ eval_peakPick_Spec <- function(data.spectr,
   ## x-values/indices corresponding to peaks
   peaks.x.vec <- data.spectr[[x]][peaks.list$loc]
   #
-  ## creating a data frame from the previously picked peaks
+  ## constructing a data frame from the previously picked peaks
   ## depending on positive/negative conditions
   peaks.df.base <-
     data.frame(xvar = round(peaks.x.vec,digits = 4)) %>%
