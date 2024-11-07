@@ -82,6 +82,7 @@
 <span>  params.guess.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit.kin.method <span class="op">=</span> <span class="st">"diff-levenmarq"</span>,</span>
 <span>  time.correct <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  time.Frames.model <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  path_to_dsc_par <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  origin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -175,6 +176,14 @@ of rate equations.</p></dd>
 a subsequent integration), prior to fitting procedure. If <code>time.correct = TRUE</code>,
 the <code>path</code> to file with EPR instrumental parameters (like <code>.DSC</code>/<code>.dsc</code> or <code>par</code>)
 must be defined (see the <code>path_to_dsc_par</code>).</p></dd>
+
+
+<dt id="arg-time-frames-model">time.Frames.model<a class="anchor" aria-label="anchor" href="#arg-time-frames-model"></a></dt>
+<dd><p>Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+between two consecutive points. The number of points is thus defined by
+$$((Interval[2] - Interval[1])\,/\,Frames) + 1$$
+This argument is required to numerically solve the kinetic differential equations by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>.
+For the default interval mentioned above, the <strong>default</strong> <code>time.Frames.model = 2</code> (in seconds).</p></dd>
 
 
 <dt id="arg-path-to-dsc-par">path_to_dsc_par<a class="anchor" aria-label="anchor" href="#arg-path-to-dsc-par"></a></dt>
