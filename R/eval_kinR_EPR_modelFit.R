@@ -166,8 +166,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    params.guess.lower = NULL,
                                    params.guess.upper = NULL,
                                    fit.kin.method = "diff-levenmarq",
+                                   time.Frame.model = 2,
                                    time.correct = FALSE,
-                                   time.Frames.model = 2,
                                    path_to_dsc_par = NULL,
                                    origin = NULL,
                                    ...) {
@@ -240,7 +240,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       model.expr.diff = TRUE,
       elementary.react = elementary.react,
       time.Interval.model = timeLim.model,
-      time.Frames.model = time.Frames.model,
+      time.Frame.model = time.Frame.model,
       data.qt.expr = data.qt.expr,
       time.expr = time,
       qvar.expr = qvarR,
@@ -248,7 +248,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     )
     #
     ## Summary as table
-    summar.react.kin.fit.df <- as.data.frame(summary(model.react.kin.fit)$coefficients)
+    summar.react.kin.fit.df <-
+      as.data.frame(summary(model.react.kin.fit)$coefficients)
     #
     ## number of iterations/evaluations
     iters.react.kin.fit <- model.react.kin.fit$niter
@@ -260,8 +261,10 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     converg.react.kin.fit <- model.react.kin.fit$rsstrace
     #
     ## obtained parameters from the fit
-    predict.model.params <- as.vector(summar.react.kin.fit.df$Estimate)
-    names(predict.model.params) <- rownames(summar.react.kin.fit.df)
+    predict.model.params <-
+      as.vector(summar.react.kin.fit.df$Estimate)
+    names(predict.model.params) <-
+      rownames(summar.react.kin.fit.df)
     #
     ## the `model.expr.time` and `model.react.kin.fit` is not required anymore
     # rm(model.expr.time, model.react.kin.fit)
@@ -281,7 +284,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                         kin.params = predict.model.params,
                         elementary.react = elementary.react,
                         time.Interval.model = timeLim.model,
-                        time.Frames.model = time.Frames.model,
+                        time.Frame.model = time.Frame.model,
                         data.qt.expr = data.qt.expr,
                         time.expr = time,
                         qvar.expr = qvarR

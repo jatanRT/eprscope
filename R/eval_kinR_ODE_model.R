@@ -155,11 +155,11 @@
 #'   \code{"min"} or \code{"h"}.
 #' @param time.Interval.model Numeric vector, including two values: starting and final time/termination
 #'   of the model reaction (e.g. \code{c(0,1800)} in seconds, \strong{default}).
-#' @param time.Frames.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+#' @param time.Frame.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
 #'   between two consecutive points. The number of points is thus defined by
-#'   \deqn{((Interval[2] - Interval[1])\,/\,Frames) + 1}
+#'   \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 #'   This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-#'   For the default interval mentioned above, the \strong{default} \code{time.Frames.model = 2} (in seconds).
+#'   For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).
 #' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
 #'   column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
@@ -291,7 +291,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                                 ),  ## add. "alpha", "beta", "gamma" for general partial react. orders
                                 time.unit = "s", ## also "min" and "h" can be defined
                                 time.Interval.model = c(0,1800), ## also provided for expr.
-                                time.Frames.model = 2, # time resolution in s
+                                time.Frame.model = 2, # time resolution in s
                                 data.qt.expr = NULL,
                                 time.expr = NULL,
                                 qvar.expr = NULL,
@@ -332,8 +332,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   #
   ## time definition for the spectral series
   if (is.null(time.Interval.model)){
-    stop(" Please define the hypothetical time\n
-           span for the model reaction ! ")
+    stop(" Please define the hypothetical interval for the model reaction ! ")
   } else{
     if (!is.null(data.qt.expr)){
       start.time <- min(time.expr.vec)
@@ -344,11 +343,11 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     }
     ## time resolution for different spans
     ## due point limitations of `ODE` solution
-    t <- seq(start.time, final.time, by = time.Frames.model)
+    t <- seq(start.time, final.time, by = time.Frame.model)
     #
     if (final.time > 259200){
       if (time.unit == "s"){
-        stop(" Hypothetical time span for the model reaction > 3 days.\n
+        stop(" Hypothetical time interval for the model reaction > 3 days.\n
                Please, define the `time.unit` in minutes or in hours ! ")
       }
     }

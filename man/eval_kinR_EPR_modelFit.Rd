@@ -15,8 +15,8 @@ eval_kinR_EPR_modelFit(
   params.guess.lower = NULL,
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
+  time.Frame.model = 2,
   time.correct = FALSE,
-  time.Frames.model = 2,
   path_to_dsc_par = NULL,
   origin = NULL,
   ...
@@ -95,18 +95,18 @@ are planned). It corresponds to differential Levenberg-Marquardt (see also \code
 because it is based on the numeric solution of the ordinary differential equations and not on the integration
 of rate equations.}
 
+\item{time.Frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+between two consecutive points. The number of points is thus defined by
+\deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
+This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
+For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).}
+
 \item{time.correct}{Logical, if time of recorded series of the EPR spectra needs to be corrected.
 \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
 (either by \code{\link{correct_time_Exp_Specs}} or by \code{\link{readEPR_Exp_Specs_kin}} with
 a subsequent integration), prior to fitting procedure. If \code{time.correct = TRUE},
 the \code{path} to file with EPR instrumental parameters (like \code{.DSC}/\code{.dsc} or \code{par})
 must be defined (see the \code{path_to_dsc_par}).}
-
-\item{time.Frames.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by
-\deqn{((Interval[2] - Interval[1])\,/\,Frames) + 1}
-This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-For the default interval mentioned above, the \strong{default} \code{time.Frames.model = 2} (in seconds).}
 
 \item{path_to_dsc_par}{Character string, path (also provided by the \code{\link[base]{file.path}})
 to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
