@@ -86,7 +86,7 @@
 <span>  kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.001</span>, qvar0R <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span>,</span>
 <span>  time.unit <span class="op">=</span> <span class="st">"s"</span>,</span>
 <span>  time.Interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1800</span><span class="op">)</span>,</span>
-<span>  time.Frames.model <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  time.Frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  data.qt.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  time.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  qvar.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -163,12 +163,12 @@ in the following table:</p><table class="table table"><tr><td><strong>model.reac
 of the model reaction (e.g. <code>c(0,1800)</code> in seconds, <strong>default</strong>).</p></dd>
 
 
-<dt id="arg-time-frames-model">time.Frames.model<a class="anchor" aria-label="anchor" href="#arg-time-frames-model"></a></dt>
+<dt id="arg-time-frame-model">time.Frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>
 <dd><p>Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
 between two consecutive points. The number of points is thus defined by
-$$((Interval[2] - Interval[1])\,/\,Frames) + 1$$
+$$((Interval[2] - Interval[1])\,/\,Frame) + 1$$
 This argument is required to numerically solve the kinetic differential equations by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>.
-For the default interval mentioned above, the <strong>default</strong> <code>time.Frames.model = 2</code> (in seconds).</p></dd>
+For the default interval mentioned above, the <strong>default</strong> value reads <code>time.Frame.model = 2</code> (in seconds).</p></dd>
 
 
 <dt id="arg-data-qt-expr">data.qt.expr<a class="anchor" aria-label="anchor" href="#arg-data-qt-expr"></a></dt>
