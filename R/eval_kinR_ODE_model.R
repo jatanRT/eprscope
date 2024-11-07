@@ -153,8 +153,13 @@
 #'   }
 #' @param time.unit Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 #'   \code{"min"} or \code{"h"}.
-#' @param timeLim.model Numeric vector, including two values corresponding to starting and final time/termination
-#'   of the model reaction.
+#' @param time.Interval.model Numeric vector, including two values: starting and final time/termination
+#'   of the model reaction (e.g. \code{c(0,1800)} in seconds, \strong{default}).
+#' @param time.Frames.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+#'   between two consecutive points. The number of points is thus defined by
+#'   \deqn{((Interval[2] - Interval[1])\,/\,Frames) + 1}
+#'   This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
+#'   For the default interval mentioned above, the \strong{default} \code{time.Frames.model = 2} (in seconds).
 #' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
 #'   column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
@@ -246,7 +251,7 @@
 #'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
 #'                       kin.params = c(qvar0R = 0.019,
 #'                                      k1 = 0.04),
-#'                       timeLim.model = c(0,1500),
+#'                       time.Interval.model = c(0,1500),
 #'                       data.qt.expr = triaryl_radCat_data,
 #'                       qvar.expr = "Area",
 #'                       time.expr = "time_s")
@@ -264,7 +269,7 @@
 #'                                      k1 = 0.04,
 #'                                      alpha = 1.9
 #'                                     ),
-#'                       timeLim.model = c(0,1500),
+#'                       time.Interval.model = c(0,1500),
 #'                       data.qt.expr = triaryl_radCat_data,
 #'                       qvar.expr = "Area",
 #'                       time.expr = "time_s")
@@ -285,7 +290,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                                   qvar0R = 0.02
                                 ),  ## add. "alpha", "beta", "gamma" for general partial react. orders
                                 time.unit = "s", ## also "min" and "h" can be defined
-                                timeLim.model = c(0,1800), ## also provided for expr.
+                                time.Interval.model = c(0,1800), ## also provided for expr.
+                                time.Frames.model = 2, # time resolution in s
                                 data.qt.expr = NULL,
                                 time.expr = NULL,
                                 qvar.expr = NULL,
@@ -325,7 +331,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   }
   #
   ## time definition for the spectral series
-  if (is.null(timeLim.model)){
+  if (is.null(time.Interval.model)){
     stop(" Please define the hypothetical time\n
            span for the model reaction ! ")
   } else{
@@ -333,38 +339,13 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       start.time <- min(time.expr.vec)
       final.time <- max(time.expr.vec)
     } else{
-      start.time <- timeLim.model[1]
-      final.time <- timeLim.model[2]
+      start.time <- time.Interval.model[1]
+      final.time <- time.Interval.model[2]
     }
     ## time resolution for different spans
     ## due point limitations of `ODE` solution
-    if (final.time < 0.1 & final.time >= 0.001){
-      t <- seq(start.time, final.time, by = 0.0001)
-    }
-    if (final.time < 6 & final.time >= 0.1){
-      t <- seq(start.time, final.time, by = 0.005)
-    }
-    if (final.time < 100 & final.time >= 6){
-      t <- seq(start.time, final.time, by = 0.1)
-    }
-    if (final.time < 600 & final.time >= 100){
-      t <- seq(start.time, final.time, by = 0.5)
-    }
-    if (final.time < 1000 & final.time >= 600){
-      t <- seq(start.time, final.time, by = 1)
-    }
-    if (final.time < 2000 & final.time >= 1000){
-      t <- seq(start.time, final.time, by = 2)
-    }
-    if (final.time < 3600 & final.time >= 2000){
-      t <- seq(start.time, final.time, by = 4)
-    }
-    if (final.time < 86400 & final.time >= 3600){
-      t <- seq(start.time, final.time, by = 60)
-    }
-    if (final.time < 259200 & final.time >= 86400){
-      t <- seq(start.time, final.time, by = 300)
-    }
+    t <- seq(start.time, final.time, by = time.Frames.model)
+    #
     if (final.time > 259200){
       if (time.unit == "s"){
         stop(" Hypothetical time span for the model reaction > 3 days.\n

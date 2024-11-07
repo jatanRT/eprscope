@@ -16,6 +16,7 @@ eval_kinR_EPR_modelFit(
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
   time.correct = FALSE,
+  time.Frames.model = 2,
   path_to_dsc_par = NULL,
   origin = NULL,
   ...
@@ -100,6 +101,12 @@ of rate equations.}
 a subsequent integration), prior to fitting procedure. If \code{time.correct = TRUE},
 the \code{path} to file with EPR instrumental parameters (like \code{.DSC}/\code{.dsc} or \code{par})
 must be defined (see the \code{path_to_dsc_par}).}
+
+\item{time.Frames.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+between two consecutive points. The number of points is thus defined by
+\deqn{((Interval[2] - Interval[1])\,/\,Frames) + 1}
+This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
+For the default interval mentioned above, the \strong{default} \code{time.Frames.model = 2} (in seconds).}
 
 \item{path_to_dsc_par}{Character string, path (also provided by the \code{\link[base]{file.path}})
 to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
