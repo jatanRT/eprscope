@@ -41,30 +41,30 @@ changes in integral intensities (or any other \strong{q}uantitative \strong{var}
 time series. Arrow shows direction of the reaction (\code{"-->", forward} or \code{"<==>", forward + reverse}).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
-changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
+changes during the EPR time series experiment (the \code{r,a,b} stoichiometric coefficients
 may vary, see below).
 \tabular{ll}{
 \strong{Reaction Scheme} \tab \strong{model.react} \cr
 \eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr
  \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}} \tab \code{"(a=2)A --> [k1] (r=2)R"} \cr
  \eqn{(a=2)\text{A} \xrightleftharpoons[k_4]{k_1} (r=2)\text{R}
- \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
- \code{"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
+ \xrightleftharpoons[k_3]{k_2} (b=1)\text{B}} \tab
+ \code{"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (b=1)B"} \cr
  \eqn{(r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}} \tab
  \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \cr
  \eqn{(a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}} \tab
  \code{"(a=2)A <==> [k1] [k2] (r=2)R"} \cr
  \eqn{(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}} \tab
  \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \cr
- \eqn{(r=1)\text{R} + (b=1)\text{B} \xrightarrow{k_1} (c=1)\text{C}} \tab
- \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \cr
+ \eqn{(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab
+ \code{"(a=1)A + (r=1)R --> [k1] B"} \cr
 }
 Couple of examples are also given in \code{Details}. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 or \code{(a=1)}) can be varied within the \code{model.react} character string.
 Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
-string is not fixed and can be skipped for the sake of flexibility.
+string is not fixed and can be skipped for the sake of simplicity.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
 must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
@@ -96,7 +96,7 @@ because it is based on the numeric solution of the ordinary differential equatio
 of rate equations.}
 
 \item{time.Frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by
+between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
 \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
 For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).}

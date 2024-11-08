@@ -38,7 +38,7 @@
 #'   for the reaction corresponds to its stoichiometry, the reaction is described as elementary
 #'   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
 #'   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, one can obtain
-#'   the rate constant as a rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
+#'   the rate constant from the rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
 #'   intensity (area under the spectral curve) of radical ("R") formation and/or decay (see also
 #'   \code{\link{eval_kinR_EPR_modelFit}}). Quantitative kinetic profiles (such as that
 #'   \eqn{\text{d}c_{\text{R}}/\text{d}t} described above) are not evaluated
@@ -53,9 +53,9 @@
 #'   \code{"(r=1)R --> [k1] B"} \tab Basic forward reaction,
 #'   e.g. irrev. dimerization (if \code{(r=2)}). \cr
 #'   \code{"(a=1)A --> [k1] (r=1)R"} \tab Basic forward radical formation \cr
-#'   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C"} \tab Consecutive reactions,
+#'   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B"} \tab Consecutive reactions,
 #'   e.g. considering comproportionation (for \code{(a=2)} and \code{(r=2)}) + follow-up reversible
-#'   dimerization (\code{(c=1)}). \cr
+#'   dimerization (\code{(b=1)}). \cr
 #'   \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \tab Basic reversible radical quenching,
 #'   e.g. rev. \eqn{\pi-\pi} dimerization for \code{(r=2)} and \code{(b=1)}. \cr
 #'   \code{"(a=1)A <==> [k1] [k2] (r=1)R"} \tab Basic reversible radical formation,
@@ -64,7 +64,7 @@
 #'   \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \tab Radical formation by chemical reaction like oxidation,
 #'   reduction or spin trapping (if \code{A} refers to transient radical, which is not visible within
 #'   the common EPR time scale). \cr
-#'   \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \tab General radical quenching by chemical reaction. \cr
+#'   \code{"(a=1)A + (r=1)R --> [k1] B"} \tab General radical quenching by chemical reaction. \cr
 #'   }
 #'
 #'
@@ -87,30 +87,30 @@
 #'   time series. Arrow shows direction of the reaction (\code{"-->", forward} or \code{"<==>", forward + reverse}).
 #'   Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 #'   are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
-#'   changes during the EPR time series experiment (the \code{r,a,b,c} stoichiometric coefficients
+#'   changes during the EPR time series experiment (the \code{r,a,b} stoichiometric coefficients
 #'   may vary, see below).
 #'   \tabular{ll}{
 #'   \strong{Reaction Scheme} \tab \strong{model.react} \cr
 #'   \eqn{(r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab \code{"(r=1)R --> [k1] B"} \cr
 #'    \eqn{(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}} \tab \code{"(a=2)A --> [k1] (r=2)R"} \cr
 #'    \eqn{(a=2)\text{A} \xrightleftharpoons[k_4]{k_1} (r=2)\text{R}
-#'    \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}} \tab
-#'    \code{"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (c=1)C"} \cr
+#'    \xrightleftharpoons[k_3]{k_2} (b=1)\text{B}} \tab
+#'    \code{"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (b=1)B"} \cr
 #'    \eqn{(r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}} \tab
 #'    \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \cr
 #'    \eqn{(a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}} \tab
 #'    \code{"(a=2)A <==> [k1] [k2] (r=2)R"} \cr
 #'    \eqn{(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}} \tab
 #'    \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \cr
-#'    \eqn{(r=1)\text{R} + (b=1)\text{B} \xrightarrow{k_1} (c=1)\text{C}} \tab
-#'    \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \cr
+#'    \eqn{(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab
+#'    \code{"(a=1)A + (r=1)R --> [k1] B"} \cr
 #'   }
 #'   Couple of examples are also given in \code{Details}. The function is relatively flexible and enables
 #'   later addition of any other reaction schemes describing the EPR time series experiments
 #'   (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 #'   or \code{(a=1)}) can be varied within the \code{model.react} character string.
 #'   Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
-#'   string is not fixed and can be skipped for the sake of flexibility.
+#'   string is not fixed and can be skipped for the sake of simplicity.
 #'   If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 #'   a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
 #'   must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
@@ -133,14 +133,14 @@
 #'   The initial values are denoted as \code{qvar0X} (e.g. qvar0R for radical or qvar0A for the reactant \code{A}).
 #'   The components of \code{kin.params} depend on \code{model.react} as well as on the \code{elementary.react}.
 #'   If \code{elementary.react = FALSE} additional parameters like partial reaction orders (\code{alpha}
-#'   and/or \code{beta} and/or \code{gamma}) must be defined within \code{kin.params}, like summarized
+#'   and/or \code{beta} and/or \code{gamma}) must be defined within the \code{kin.params}, like summarized
 #'   in the following table:
 #'   \tabular{ll}{
 #'   \strong{model.react} \tab \strong{Essential kin.params components} \cr
 #'   \code{"(r=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0R}, (\code{alpha}) \cr
 #'   \code{"(a=1)A --> [k1] (r=1)R"} \tab \code{k1}, \code{qvar0A}, \code{qvar0R}, (\code{alpha}) \cr
-#'   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C"} \tab \code{k1}, \code{k2},
-#'   \code{k3}, \code{k4}, \code{qvar0A}, \code{qvar0R}, \code{qvar0C}, (\code{alpha},
+#'   \code{"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B"} \tab \code{k1}, \code{k2},
+#'   \code{k3}, \code{k4}, \code{qvar0A}, \code{qvar0R}, \code{qvar0B}, (\code{alpha},
 #'   \code{beta}, \code{gamma}) \cr
 #'   \code{"(r=1)R <==> [k1] [k2] (b=1)B"} \tab \code{k1}, \code{k2}, \code{qvar0R},
 #'   \code{qvar0B}, (\code{alpha}, \code{beta}) \cr
@@ -148,15 +148,15 @@
 #'   \code{qvar0R}, (\code{alpha}, \code{beta}) \cr
 #'   \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \tab \code{k1}, \code{qvar0A}, \code{qvar0B},
 #'   \code{qvar0R}, (\code{alpha},\code{beta}) \cr
-#'   \code{"(r=1)R + (b=1)B --> [k1] (c=1)C"} \tab \code{k1}, \code{qvar0R}, \code{qvar0B},
-#'   \code{qvar0C}, (\code{alpha},\code{beta}) \cr
+#'   \code{"(a=1)A + (r=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0A},
+#'   \code{qvar0R}, (\code{alpha},\code{beta}) \cr
 #'   }
 #' @param time.unit Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 #'   \code{"min"} or \code{"h"}.
 #' @param time.Interval.model Numeric vector, including two values: starting and final time/termination
 #'   of the model reaction (e.g. \code{c(0,1800)} in seconds, \strong{default}).
 #' @param time.Frame.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-#'   between two consecutive points. The number of points is thus defined by
+#'   between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
 #'   \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 #'   This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
 #'   For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).
@@ -207,14 +207,14 @@
 #' ## (`model.react` character string without spaces)
 #' kin.test.02 <-
 #'  eval_kinR_ODE_model(
-#'    model.react = "(a=2)A<==>[k1][k4](r=2)R<==>[k2][k3](c=1)C",
+#'    model.react = "(a=2)A<==>[k1][k4](r=2)R<==>[k2][k3](b=1)B",
 #'    kin.params = c(k1 = 0.1,
 #'                   k2 = 0.1,
 #'                   k3 = 2e-4,
 #'                   k4 = 2e-5,
 #'                   qvar0A = 0.02,
 #'                   qvar0R = 0.002,
-#'                   qvar0C = 0)
+#'                   qvar0B = 0)
 #'  )
 #' ## plot preview
 #' kin.test.02$plot
@@ -378,9 +378,6 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     if (coeff == "b"){
       rabc.string <- stringr::str_extract(expression, pattern = "\\(b=[[:digit:]]\\)")
     }
-    if (coeff == "c"){
-      rabc.string <- stringr::str_extract(expression, pattern = "\\(c=[[:digit:]]\\)")
-    }
     model.react.rabc <- stringr::str_extract(rabc.string, pattern = "[[:digit:]]")
     model.react.rabc <- as.numeric(model.react.rabc)
     #
@@ -514,13 +511,13 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     #
   }
   #
-  ## --- (3) --- "(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (c=1)C" (a,r,c = 1,2,...integer) ------
+  ## --- (3) --- "(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B" (a,r,b = 1,2,...integer) ------
   #
   ## ...the same `(.*|?!\\s)` arb.character(incl. space)/no space like before
   #
   ## With several `(.*|?!\\s)` the `grepl()` argument would be quite long =>
   ## therefore condition is changed:
-  if (grepl("A.*R.*C",model.react) &
+  if (grepl("A.*R.*B",model.react) &
       grepl("<==>.*<==>",model.react) &
       grepl("k1.*k4.*k2.*k3",model.react)){
     ## functions for derivative solution of kinetic equations
@@ -543,17 +540,17 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       ## differential equations
       c_a <- stoichio.coeff[1]
       c_r <- stoichio.coeff[2]
-      c_c <- stoichio.coeff[3]
+      c_b <- stoichio.coeff[3]
       if (isTRUE(no.pro)) {
         rate[1] <- -(k1 * c_a * (qvar["A"])^(c_a)) + (k4 * c_a * (qvar["R"])^(c_r))
         rate[2] <- (k1 * c_r * (qvar["A"])^(c_a)) - (k2 * c_r * (qvar["R"])^(c_r)) +
-          (k3 * c_r * (qvar["C"])^(c_c)) - (k4 * c_r * (qvar["R"])^(c_r))
-        rate[3] <- (k2 * c_c * (qvar["R"])^(c_r)) - (k3 * c_c * (qvar["C"])^(c_c))
+          (k3 * c_r * (qvar["B"])^(c_b)) - (k4 * c_r * (qvar["R"])^(c_r))
+        rate[3] <- (k2 * c_b * (qvar["R"])^(c_r)) - (k3 * c_b * (qvar["B"])^(c_b))
       } else {
         rate[1] <- -(k1 * c_a * (qvar["A"])^alpha) + (k4 * c_a * (qvar["R"])^beta)
         rate[2] <- (k1 * c_r * (qvar["A"])^alpha) - (k2 * c_r * (qvar["R"])^beta) +
-          (k3 * c_r * (qvar["C"])^gamma) - (k4 * c_r * (qvar["R"])^beta)
-        rate[3] <- (k2 * c_c * (qvar["R"])^beta) - (k3 * c_c * (qvar["C"])^gamma)
+          (k3 * c_r * (qvar["B"])^gamma) - (k4 * c_r * (qvar["R"])^beta)
+        rate[3] <- (k2 * c_b * (qvar["R"])^beta) - (k3 * c_b * (qvar["B"])^gamma)
       }
       ## derivative as a list
       return(list(rate))
@@ -562,7 +559,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     qvar0 <- c(
       A = unname(kin.params["qvar0A"]),
       R = unname(kin.params["qvar0R"]),
-      C = unname(kin.params["qvar0C"])
+      B = unname(kin.params["qvar0B"])
     )
     #
     ## rate constant and other params. definition
@@ -582,7 +579,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
                          stoichiom_coeff(model.react,coeff = "r"),
-                         stoichiom_coeff(model.react,coeff = "c")),
+                         stoichiom_coeff(model.react,coeff = "b")),
       func = react_rates_diff_03,
       parms = switch(2-pro.cond,
                      list(k1 = k1,k2 = k2,k3 = k3,k4 = k4,
@@ -785,11 +782,11 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     #
   }
   #
-  ## --- (7) --- "(r=1)R + (b=1)B --> [k1] (c=1)C", (r,b,c = 1,2,...integer) -----------
+  ## --- (7) --- "(a=1)A + (r=1)R --> [k1] B", (a,r = 1,2,...integer) -----------
   #
   ## ...the same `(.*|?!\\s)` arb.character(incl. space)/no space like before
   #
-  if (grepl("^\\(r=.*R(.*|?!\\s)\\+(.*|?!\\s)\\(b=.*B(.*|?!\\s)-->(.*|?!\\s)\\[k1\\](.*|?!\\s)\\(c=.*C$",
+  if (grepl("^\\(a=.*A(.*|?!\\s)\\+(.*|?!\\s)\\(r=.*R(.*|?!\\s)-->(.*|?!\\s)\\[k1\\](.*|?!\\s)B$",
             model.react)) {
     ## functions for derivative solution of kinetic equations
     react_rates_diff_07 <- function(t,
@@ -803,19 +800,16 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
         beta <- kin.params$beta
       }
       ## initial conditions
-      rate <- rep(0, times = 3)
+      rate <- rep(0, times = 2)
       ## differential equations
-      c_r <- stoichio.coeff[1]
-      c_b <- stoichio.coeff[2]
-      c_c <- stoichio.coeff[3]
+      c_a <- stoichio.coeff[1]
+      c_r <- stoichio.coeff[2]
       if (isTRUE(no.pro)) {
-        rate[1] <- -k1 * c_r * ((qvar["R"])^(c_r)) * ((qvar["B"])^(c_b))
-        rate[2] <- -k1 * c_b * ((qvar["B"])^(c_b)) * ((qvar["R"])^(c_r))
-        rate[3] <- k1 * c_c * ((qvar["R"])^(c_r)) * ((qvar["B"])^(c_b))
+        rate[1] <- -k1 * c_a * ((qvar["A"])^(c_a)) * ((qvar["R"])^(c_r))
+        rate[2] <- -k1 * c_r * ((qvar["R"])^(c_r)) * ((qvar["A"])^(c_a))
       } else {
-        rate[1] <- -k1 * c_r * ((qvar["R"])^alpha) * ((qvar["B"])^beta)
-        rate[2] <- -k1 * c_b * ((qvar["B"])^beta) * ((qvar["R"])^alpha)
-        rate[3] <- k1 * c_c * ((qvar["R"])^alpha) * ((qvar["B"])^beta)
+        rate[1] <- -k1 * c_a * ((qvar["A"])^alpha) * ((qvar["R"])^beta)
+        rate[2] <- -k1 * c_r * ((qvar["R"])^beta) * ((qvar["A"])^alpha)
       }
       ## derivative as a list
       return(list(rate))
@@ -823,9 +817,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     #
     ## initial (`0`) qvar (e.g. concentration)
     qvar0 <- c(
-      R = unname(kin.params["qvar0R"]),
-      B = unname(kin.params["qvar0B"]),
-      C = unname(kin.params["qvar0C"])
+      A = unname(kin.params["qvar0A"]),
+      R = unname(kin.params["qvar0R"])
     )
     #
     ## rate constant and other params. definition
@@ -839,9 +832,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     result <- deSolve::ode(
       y = qvar0,
       times = t,
-      stoichio.coeff = c(stoichiom_coeff(model.react),
-                         stoichiom_coeff(model.react,coeff = "b"),
-                         stoichiom_coeff(model.react,coeff = "c")),
+      stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
+                         stoichiom_coeff(model.react,coeff = "r")),
       func = react_rates_diff_07,
       parms = switch(2-pro.cond,
                      list(k1 = k1,alpha = alpha,beta = beta),
