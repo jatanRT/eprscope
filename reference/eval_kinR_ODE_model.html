@@ -203,12 +203,12 @@ data aren't taken into account).</p></dd>
   the result is <code>list</code> consisting of:</p><dl><dt>df</dt>
 <dd><p>Data frame containing <code>time</code> column and <code>qvar</code>, quantitative variable,
   columns corresponding to quantities of different relevant species
-  denoted as <code>"R"</code>, <code>"A"</code>, <code>"B"</code>, ... etc. + if <code>data.qt.expr</code> is NOT NULL
+  denoted as <code>"R"</code>, <code>"A"</code>, <code>"B"</code> + if <code>data.qt.expr</code> is NOT NULL
   additional experimental quantitative variable is present.</p></dd>
 
   <dt>plot</dt>
-<dd><p>Plot object containing <code>time</code> as abscissa and <code>qvar</code>
-  (see <code>df</code> above) as \(y\)-axis. + if <code>data.qt.expr</code> is NOT NULL the experimental
+<dd><p>Plot object containing <code>time</code> as \(x\)-axis and <code>qvar</code>
+  (see <code>df</code> above) as \(y\)-axis + if <code>data.qt.expr</code> is NOT NULL the experimental
   quantitative variable is presented as well.</p></dd>
 
 
@@ -221,23 +221,23 @@ data aren't taken into account).</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>According to IUPAC (2019), see <code>References</code>, the rate of a chemical reaction
   with the radicals (\(\text{R}\)) involved (example see argument <code>model.react</code>)
-  $$r\text{R} + b\text{B} \xrightarrow\, c\text{C}$$
+  $$a\text{A} + r\text{R} \xrightarrow\, b\text{B}$$
   is expressed via time change of extent of the reaction (\(\text{d}\xi/\text{d}t\)):
-  $$-(1/r)\,(\text{d}n_{\text{R}}/\text{d}t) = -(1/b)\,(\text{d}n_{\text{B}}/\text{d}t) =
-  (1/c)\,(\text{d}n_{\text{C}}/\text{d}t)$$
-  where \(r,b,c\) are the stoichiometric coefficients. At constant volume (\(V\)) conditions
+  $$-(1/r)\,(\text{d}n_{\text{R}}/\text{d}t) = -(1/a)\,(\text{d}n_{\text{A}}/\text{d}t) =
+  (1/b)\,(\text{d}n_{\text{B}}/\text{d}t)$$
+  where \(a,r,b\) are the stoichiometric coefficients. At constant volume (\(V\)) conditions
   (or if volume changes are negligible) the amount (\(n\) in mole) of reactant/product
   can be replaced by its corresponding concentration (\(c = n/V\)). Such reaction rate
   (expressed in moles per unit volume and per second) is function of temperature (\(T\)),
-  pressure (\(p\)) as well as that of concentration of reactants and products.
+  pressure (\(p\)) as well as that of concentration of reactants/products.
   For the reaction example shown above it applies (for radical \(\text{R}\)):
-  $$\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{R}}^{\alpha}\,c_{\text{B}}^{\beta}$$
+  $$\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{A}}^{\alpha}\,c_{\text{R}}^{\beta}$$
   This is called rate law, where \(k\) is the rate constant and its pressure dependence is usually
   small and therefore can be ignored, in the first approach. Coefficients \(\alpha\) and \(\beta\),
   in general, correspond to fitting parameters, coming from experimental relation of the reaction
   rate and the concentration of reactants/products. These coefficients are called <strong>partial reaction orders</strong>
   or <code>PROs</code> and their <strong>sum</strong> represents <strong>total order of the reaction</strong>. If the kinetic equation
-  for the reaction corresponds to its stoichiometry, the reaction is described as elementary
+  for the reaction corresponds to its stoichiometry, the reaction is described as the elementary
   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
   of the radical EPR spectrum (see also <code><a href="quantify_EPR_Abs.html">quantify_EPR_Abs</a></code>). Therefore, one can obtain
   the rate constant from the rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
