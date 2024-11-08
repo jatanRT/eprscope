@@ -120,14 +120,14 @@ changes in integral intensities (or any other <strong>q</strong>uantitative <str
 time series. Arrow shows direction of the reaction (<code>"--&gt;", forward</code> or <code>"&lt;==&gt;", forward + reverse</code>).
 Rate constants are indicated by square brackets after the arrows. Following examples of the reaction schemes
 are predefined and commonly used to describe the integral intensity and/or radical concentration/amount
-changes during the EPR time series experiment (the <code>r,a,b,c</code> stoichiometric coefficients
+changes during the EPR time series experiment (the <code>r,a,b</code> stoichiometric coefficients
 may vary, see below).</p><table class="table table"><tr><td><strong>Reaction Scheme</strong></td><td><strong>model.react</strong></td></tr><tr><td>\((r=1)\text{R} \xrightarrow{k_1} \text{B}\)</td><td><code>"(r=1)R --&gt; [k1] B"</code></td></tr><tr><td>\((a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}\)</td><td><code>"(a=2)A --&gt; [k1] (r=2)R"</code></td></tr><tr><td>\((a=2)\text{A} \xrightleftharpoons[k_4]{k_1} (r=2)\text{R}
- \xrightleftharpoons[k_3]{k_2} (c=1)\text{C}\)</td><td><code>"(a=2)A &lt;==&gt; [k1] [k4] (r=2)R &lt;==&gt; [k2] [k3] (c=1)C"</code></td></tr><tr><td>\((r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}\)</td><td><code>"(r=1)R &lt;==&gt; [k1] [k2] (b=1)B"</code></td></tr><tr><td>\((a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}\)</td><td><code>"(a=2)A &lt;==&gt; [k1] [k2] (r=2)R"</code></td></tr><tr><td>\((a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\)</td><td><code>"(a=1)A + (b=1)B --&gt; [k1] (r=1)R"</code></td></tr><tr><td>\((r=1)\text{R} + (b=1)\text{B} \xrightarrow{k_1} (c=1)\text{C}\)</td><td><code>"(r=1)R + (b=1)B --&gt; [k1] (c=1)C"</code></td></tr></table><p>Couple of examples are also given in <code>Details</code>. The function is relatively flexible and enables
+ \xrightleftharpoons[k_3]{k_2} (b=1)\text{B}\)</td><td><code>"(a=2)A &lt;==&gt; [k1] [k4] (r=2)R &lt;==&gt; [k2] [k3] (b=1)B"</code></td></tr><tr><td>\((r=1)\text{R} \xrightleftharpoons[k_2]{k_1} (b=1)\text{B}\)</td><td><code>"(r=1)R &lt;==&gt; [k1] [k2] (b=1)B"</code></td></tr><tr><td>\((a=2)\text{A} \xrightleftharpoons[k_2]{k_1} (r=2)\text{R}\)</td><td><code>"(a=2)A &lt;==&gt; [k1] [k2] (r=2)R"</code></td></tr><tr><td>\((a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\)</td><td><code>"(a=1)A + (b=1)B --&gt; [k1] (r=1)R"</code></td></tr><tr><td>\((a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\)</td><td><code>"(a=1)A + (r=1)R --&gt; [k1] B"</code></td></tr></table><p>Couple of examples are also given in <code>Details</code>. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as <code>(r=1)</code>
 or <code>(a=1)</code>) can be varied within the <code>model.react</code> character string.
 Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the <code>model.react</code>
-string is not fixed and can be skipped for the sake of flexibility.
+string is not fixed and can be skipped for the sake of simplicity.
 If <code>elementary.react = FALSE</code> (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. <code>alpha</code>,<code>beta</code> or <code>gamma</code>)
 must be included in <code>kin.params</code> (see also <code>kin.params</code> description). For the consecutive model reaction
@@ -171,7 +171,7 @@ of rate equations.</p></dd>
 
 <dt id="arg-time-frame-model">time.Frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>
 <dd><p>Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by
+between two consecutive points. The number of points is thus defined by the <code>time.Interval.model</code> argument:
 $$((Interval[2] - Interval[1])\,/\,Frame) + 1$$
 This argument is required to numerically solve the kinetic differential equations by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>.
 For the default interval mentioned above, the <strong>default</strong> value reads <code>time.Frame.model = 2</code> (in seconds).</p></dd>
