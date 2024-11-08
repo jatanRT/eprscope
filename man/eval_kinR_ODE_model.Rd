@@ -128,10 +128,10 @@ If the function \strong{is not used for fitting} of the experimental and process
   \describe{
   \item{df}{Data frame containing \code{time} column and \code{qvar}, quantitative variable,
   columns corresponding to quantities of different relevant species
-  denoted as \code{"R"}, \code{"A"}, \code{"B"}, ... etc. + if \code{data.qt.expr} is NOT NULL
+  denoted as \code{"R"}, \code{"A"}, \code{"B"} + if \code{data.qt.expr} is NOT NULL
   additional experimental quantitative variable is present.}
-  \item{plot}{Plot object containing \code{time} as abscissa and \code{qvar}
-  (see \code{df} above) as \eqn{y}-axis. + if \code{data.qt.expr} is NOT NULL the experimental
+  \item{plot}{Plot object containing \code{time} as \eqn{x}-axis and \code{qvar}
+  (see \code{df} above) as \eqn{y}-axis + if \code{data.qt.expr} is NOT NULL the experimental
   quantitative variable is presented as well.}
   }
   Applying function \strong{for the fitting} procedure
@@ -152,23 +152,23 @@ Theoretical quantitative kinetic profiles (such as concentration/amount/integral
 \details{
 According to IUPAC (2019), see \code{References}, the rate of a chemical reaction
   with the radicals (\eqn{\text{R}}) involved (example see argument \code{model.react})
-  \deqn{r\text{R} + b\text{B} \xrightarrow\, c\text{C}}
+  \deqn{a\text{A} + r\text{R} \xrightarrow\, b\text{B}}
   is expressed via time change of extent of the reaction (\eqn{\text{d}\xi/\text{d}t}):
-  \deqn{-(1/r)\,(\text{d}n_{\text{R}}/\text{d}t) = -(1/b)\,(\text{d}n_{\text{B}}/\text{d}t) =
-  (1/c)\,(\text{d}n_{\text{C}}/\text{d}t)}
-  where \eqn{r,b,c} are the stoichiometric coefficients. At constant volume (\eqn{V}) conditions
+  \deqn{-(1/r)\,(\text{d}n_{\text{R}}/\text{d}t) = -(1/a)\,(\text{d}n_{\text{A}}/\text{d}t) =
+  (1/b)\,(\text{d}n_{\text{B}}/\text{d}t)}
+  where \eqn{a,r,b} are the stoichiometric coefficients. At constant volume (\eqn{V}) conditions
   (or if volume changes are negligible) the amount (\eqn{n} in mole) of reactant/product
   can be replaced by its corresponding concentration (\eqn{c = n/V}). Such reaction rate
   (expressed in moles per unit volume and per second) is function of temperature (\eqn{T}),
-  pressure (\eqn{p}) as well as that of concentration of reactants and products.
+  pressure (\eqn{p}) as well as that of concentration of reactants/products.
   For the reaction example shown above it applies (for radical \eqn{\text{R}}):
-  \deqn{\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{R}}^{\alpha}\,c_{\text{B}}^{\beta}}
+  \deqn{\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{A}}^{\alpha}\,c_{\text{R}}^{\beta}}
   This is called rate law, where \eqn{k} is the rate constant and its pressure dependence is usually
   small and therefore can be ignored, in the first approach. Coefficients \eqn{\alpha} and \eqn{\beta},
   in general, correspond to fitting parameters, coming from experimental relation of the reaction
   rate and the concentration of reactants/products. These coefficients are called \strong{partial reaction orders}
   or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If the kinetic equation
-  for the reaction corresponds to its stoichiometry, the reaction is described as elementary
+  for the reaction corresponds to its stoichiometry, the reaction is described as the elementary
   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, one can obtain
   the rate constant from the rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
