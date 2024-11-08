@@ -823,9 +823,9 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     #
     ## initial (`0`) qvar (e.g. concentration)
     qvar0 <- c(
-      A = unname(kin.params["qvar0R"]),
+      R = unname(kin.params["qvar0R"]),
       B = unname(kin.params["qvar0B"]),
-      R = unname(kin.params["qvar0C"])
+      C = unname(kin.params["qvar0C"])
     )
     #
     ## rate constant and other params. definition
