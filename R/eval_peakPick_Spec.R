@@ -1,13 +1,18 @@
 #'
-#' Peak-Picking of EPR/ENDOR Spectra
+#' Peak Picking of EPR/ENDOR Spectra
 #'
 #'
 #' @family Evaluations
 #'
 #'
 #' @description
-#'   A short description...
-#'
+#'   The peak picking expands the functionality of the basic \code{\link{eval_extremeX_Spec}} to quickly
+#'   find extremes within several regions of the entire EPR/ENDOR Spectrum (without a need for an
+#'   interactive plotting). The function is based on the \code{\link[gsignal]{findpeaks}} to find
+#'   the local intensity maxima and/or minima by fitting the experimental EPR spectral parts/points using the shortened
+#'   \href{https://www.radfordmathematics.com/functions/quadratic-functions-parabola/vertex-form/vertex-form-finding-equation-parabola.html}{vertex form of a parabola}.
+#'   The parabola vertices actually represent maxima or minima. Visualization of the peak picking is provided
+#'   by the \code{\link{plot_EPR_Specs}} together with the \code{geom_text} function (see \code{\link[ggplot2]{geom_label}}).
 #'
 #' @inheritParams plot_EPR_Specs
 #' @param data.spectr Data frame object/table, containing \code{x}-values and the \code{Intensity}
@@ -40,7 +45,7 @@
 #'   \deqn{round(0.5\,/\,(x_2 - x_1))}
 #'   where such formula corresponds to \code{round(0.5/(data.spectr[[x]][2] - data.spectr[[x]][1]))}.
 #'   This is especially useful for rather noisy EPR spectra or spectra with high resolution.
-#'   If according to \code{{ggplot2}} graphical representation the peak-picking fails, i.e. not all peaks
+#'   If according to \code{{ggplot2}} graphical representation the peak picking fails, i.e. not all peaks
 #'   are properly detected, try lower values than the \strong{default} one (such as 1 or 4 or ...etc.).
 #' @param min.peak.width Numeric (integer > 0), setting the minimum peak-width (points) to fit the vertex
 #'   parabola expression (see also the \code{min.peak.dist} argument and the \code{\link[gsignal]{findpeaks}}
@@ -63,7 +68,7 @@
 #'   to the \eqn{x}-axis (see also \code{\link[ggplot2]{geom_text}}). \strong{Default}: \code{peak.text.angle = 90}.
 #' @param peak.text.size Numeric, pointing to peak annotation text size
 #'   (in mm, see the \code{\link[ggplot2]{aes_linetype_size_shape}}). \strong{Default}: \code{peak.text.size = 3}.
-#' @param peak.point.size Numeric, size (in mm) of the peak "point" in graphical representation of the peak-picking.
+#' @param peak.point.size Numeric, size (in mm) of the peak "point" in graphical representation of the peak picking.
 #'   Please consult the \code{\link[ggplot2]{aes_linetype_size_shape}}
 #'   \href{https://ggplot2-book.org/scales-other}{\code{{ggplot2}} aesthetic arguments}. \strong{Default}:
 #'   \code{peak.point.size = 2}.
@@ -101,20 +106,20 @@
 #'                     norm.vec.add = 20,
 #'                     origin = "winepr")
 #' #
-#' ## peak-picking of only positive (Intensitity > 0)
+#' ## peak picking of only positive (Intensitity > 0)
 #' ## peaks in derivative EPR spectrum of TMPD:
 #' tmpd.peak.pick.01 <-
 #'   eval_peakPick_Spec(data.spectr = tmpd.data.file,
 #'                      only.peak.pn = "p",
 #'                      min.peak.dist = 1)
 #' #
-#' ## peak-picking visualization:
+#' ## peak picking visualization:
 #' tmpd.peak.pick.01$plot
 #' #
 #' ## found peaks data frame preview
 #' head(tmpd.peak.pick.01$df)
 #' #
-#' ## peak-picking in 'G' (not in default 'mT')
+#' ## peak picking in 'G' (not in default 'mT')
 #' ## of both positive as well as negative intensities
 #' ## with the intensity threshold 10% of the maximum,
 #' ## peaks annotation text angle 60 deg:
@@ -134,7 +139,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom ggplot2 geom_text
 eval_peakPick_Spec <- function(data.spectr,
                                x = "B_mT",
                                x.unit = "mT", ## or "G" or "T" or "MHz" or "unitless" (g)
@@ -180,8 +185,8 @@ eval_peakPick_Spec <- function(data.spectr,
     if (isFALSE(double.sided)){
       double.sided <- double.sided %>% `if`(isFALSE(double.sided),TRUE,.)
       message(" For the derivative line form both positive and negative values\n
-            are taken. Therefore, the `double.sided` argument \n
-            was automamtically set to TRUE. ")
+              are taken. Therefore, the `double.sided` argument \n
+              was automamtically set to TRUE. ")
     } else {
       double.sided <- double.sided
     }
@@ -220,7 +225,7 @@ eval_peakPick_Spec <- function(data.spectr,
       DoubleSided = double.sided
     )
   #
-  ## Intetensity values corresponding to peaks =>
+  ## Intensity values corresponding to peaks =>
   peaks.values.vec <- peaks.list$pks
   #
   ## x-values/indices corresponding to peaks
