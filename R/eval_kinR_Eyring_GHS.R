@@ -10,7 +10,7 @@
 #'   state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
 #'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring expression
 #'   (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
-#'   refer to \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
+#'   refer to the \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
 #'   from sigmoid-integrals of the EPR spectra recorded at different temperatures. Finally, the activation Gibbs energy
 #'   (\eqn{\Delta^{\ddagger} G^o}) is calculated, using the optimized \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o},
 #'   for each temperature in the series.
@@ -20,7 +20,7 @@
 #'   The basic assumption of Transition State Theory (TST) is the existence of activated state/complex, formed
 #'   by the collision of reactant molecules, which does not actually lead to reaction products directly. The activated state (AS)
 #'   is formed as highly energized, and therefore as an unstable intermediate, decomposing into products of the reaction.
-#'   Accordingly, the reaction rate is given by the rate of decomposition. Additional important assumption of TST
+#'   Accordingly, the reaction rate is given by the rate of its decomposition. Additional important assumption for TST
 #'   is the presence of pre-equilibrium (characterized by the \eqn{K^{\ddagger}} constant) of reactants with
 #'   the activated complex (AC). Because the latter is not stable, it dissociates with motion along the corresponding
 #'   bond-stretching coordinate. For this reason, the rate constant (\eqn{k}) must be related to the associated vibration
@@ -30,9 +30,21 @@
 #'   (see also the argument \code{transmiss.coeff}), where \eqn{k = \kappa\,\nu}.
 #'
 #'   According to statistical thermodynamics, the equilibrium constant can be expressed by the partition function,
-#'   which corresponds, by definition, to ratio of total number of particles to the number of particles in the ground state.
+#'   which, by definition, corresponds to ratio of total number of particles to the number of particles in the ground state.
 #'   In essence, it is the measure of degree to which the particles are spread out (partitioned among) over the energy levels.
-#'   ...go ahead...`in thech open`...partition function and vibrations...
+#'   Therefore, taking into account the energies of quantum oscillator vibrating along the reaction coordinate as well as
+#'   partition functions of the AC (\eqn{q^{\ddagger}(\text{AC})}) and those of the reactants (q(\text{R}_i)),
+#'   the rate constant can be expressed as follows:
+#'   \deqn{k = \kappa\,(k_{\text{B}}\,T\,/\,h)\,(q^{\ddagger}(\text{AC})\,/\,\prod_i q(\text{R}_i))\,
+#'   exp[- (\Delta^{\ddagger} \varepsilon_0)\,/\,(k_{\text{B}}\,T)]}
+#'   where the \eqn{k_{\text{B}}} and \eqn{h} are the Boltzmann and Planck constants, respectively, \eqn{T} corresponds
+#'   to temperature and finally, the \eqn{\Delta^{\ddagger} \varepsilon_0} represents the energy difference between AC
+#'   and the state of the reactants. In order evaluate partition function of the AC, its structure must be known.
+#'   However, due to the lack of information about the AC-structure it is difficult (if not impossible) to evaluate
+#'   the corresponding \eqn{q^{\ddagger}(\text{AC})}. Therefore, considering the equilibrium between reactants and AC,
+#'   one may express the \eqn{K^{\ddagger}} in terms of \emph{Gibbs} activation energy (\qen{\Delta^{\ddagger} G}):
+#'   ...TBC
+#'
 #'
 #'
 #' @references
@@ -57,7 +69,8 @@
 #' @param rate.const Character string, pointing to rate constant column header in the actual \code{data.kvT} data frame.
 #' @param rate.const.unit Character string, referring to rate constant unit. This has to be specified using
 #'   the \code{\link[grDevices]{plotmath}} notation, like \code{rate.const.unit = "M^{-1}~s^{-1}"}
-#'   or \code{rate.const.unit = "s^{-1}"} (\strong{default}).
+#'   or \code{rate.const.unit = "s^{-1}"} (\strong{default}) because it is automatically applied as \eqn{y}-axis unit
+#'   in the graphical output by the \code{{ggplot2}}.
 #' @param Temp Character string, pointing to temperature column header within the original \code{data.kvT} data frame.
 #' @param Temp.unit Character string, corresponding to temperature unit related to \code{Temp}. Temperature can be defined
 #'   in the following units: \code{Temp.unit = "K"} (kelvin, \strong{default}), \code{Temp.unit = "oC"} (degree Celsius)
@@ -81,7 +94,7 @@
 #'   \item{df}{Data frame including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
 #'   with the name of \code{DeltaG_active_kJ_per_mol}.}
 #'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
-#'   however with the resolution of 1000 points) and the corresponding \code{.fitted} \eqn{k}, according to
+#'   however with the resolution of 1024 points) and the corresponding \code{.fitted} \eqn{k}, according to
 #'   Eyring model.}
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
 #'   together with the Eyring equation.}
@@ -216,10 +229,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## parameters related to the model =>
   df.dSH.coeffs <- broom::tidy(origin.Eyring.model.HS)
   #
-  ## new data for the fit with 1000 points =>
+  ## new data for the fit with 1024 points =>
   new.fit.data <- data.frame(T_K = seq(
     from = min(data.kvT$T_K), to = max(data.kvT$T_K),
-    length.out = 1e3)
+    length.out = 1.024e3)
   )
   #
   new.fit.data <-
