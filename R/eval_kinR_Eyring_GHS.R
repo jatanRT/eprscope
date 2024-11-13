@@ -17,34 +17,66 @@
 #'
 #'
 #' @details
-#'   The basic assumption of Transition State Theory (TST) is the existence of activated state/complex, formed
+#'   The basic assumption of the Transition State Theory (TST) is the existence of activated state/complex, formed
 #'   by the collision of reactant molecules, which does not actually lead to reaction products directly. The activated state (AS)
 #'   is formed as highly energized, and therefore as an unstable intermediate, decomposing into products of the reaction.
 #'   Accordingly, the reaction rate is given by the rate of its decomposition. Additional important assumption for TST
-#'   is the presence of pre-equilibrium (characterized by the \eqn{K^{\ddagger}} constant) of reactants with
+#'   is the presence of pre-equilibrium (characterized by the \eqn{K^{\ddagger}} constant) of the reactants with
 #'   the activated complex (AC). Because the latter is not stable, it dissociates with motion along the corresponding
 #'   bond-stretching coordinate. For this reason, the rate constant (\eqn{k}) must be related to the associated vibration
-#'   frequency (\eqn{\nu}). Thus, every time, if an AC is formed, the \eqn{k} of AC-dissociation
+#'   frequency (\eqn{\nu}). Thus, every time, if the AC is formed, the \eqn{k} of AC-dissociation
 #'   actually equals to \eqn{\nu}. Nevertheless, it is possible that the AC will revert back to reactants and therefore,
 #'   only a fraction of ACs will lead to product(s). Such situation is reflected by the transmission coefficient \eqn{\kappa}
 #'   (see also the argument \code{transmiss.coeff}), where \eqn{k = \kappa\,\nu}.
 #'
-#'   According to statistical thermodynamics, the equilibrium constant can be expressed by the partition function,
-#'   which, by definition, corresponds to ratio of total number of particles to the number of particles in the ground state.
-#'   In essence, it is the measure of degree to which the particles are spread out (partitioned among) over the energy levels.
-#'   Therefore, taking into account the energies of quantum oscillator vibrating along the reaction coordinate as well as
-#'   partition functions of the AC (\eqn{q^{\ddagger}(\text{AC})}) and those of the reactants (q(\text{R}_i)),
-#'   the rate constant can be expressed as follows:
-#'   \deqn{k = \kappa\,(k_{\text{B}}\,T\,/\,h)\,(q^{\ddagger}(\text{AC})\,/\,\prod_i q(\text{R}_i))\,
-#'   exp[- (\Delta^{\ddagger} \varepsilon_0)\,/\,(k_{\text{B}}\,T)]}
+#'   According to statistical thermodynamics, the equilibrium constant can be expressed by the partition function (\eqn{q})
+#'   of the reactants and that of the AC. By definition, each \eqn{q} corresponds to ratio of total number of particles
+#'   to the number of particles in the ground state. In essence, it is the measure of degree to which the particles
+#'   are spread out (partitioned among) over the energy levels. Therefore, taking into account the energies of quantum
+#'   oscillator vibrating along the reaction coordinate as well as partition functions of the AC and those of the reactants,
+#'   the rate constant can be expressed as follows (see e.g. Ptáček P, Šoukal F, Opravil T (2018) in the \code{References}):
+#'   \deqn{k = \kappa\,(k_{\text{B}}\,T\,/\,h)\,K^{\ddagger}}
 #'   where the \eqn{k_{\text{B}}} and \eqn{h} are the Boltzmann and Planck constants, respectively, \eqn{T} corresponds
-#'   to temperature and finally, the \eqn{\Delta^{\ddagger} \varepsilon_0} represents the energy difference between AC
-#'   and the state of the reactants. In order evaluate partition function of the AC, its structure must be known.
-#'   However, due to the lack of information about the AC-structure it is difficult (if not impossible) to evaluate
-#'   the corresponding \eqn{q^{\ddagger}(\text{AC})}. Therefore, considering the equilibrium between reactants and AC,
-#'   one may express the \eqn{K^{\ddagger}} in terms of \emph{Gibbs} activation energy (\qen{\Delta^{\ddagger} G}):
-#'   ...TBC
+#'   to temperature and finally, the \eqn{K^{\ddagger}} represents the equilibrium constant including the partition functions
+#'   of reactants and that of the AC. In order to evaluate the AC partition function, its structure must be known.
+#'   However, often, due to the lack of information about the AC-structure, it is difficult (if not impossible) to evaluate
+#'   the corresponding \eqn{q^{\ddagger}(\text{AC})}. Therefore, considering the equilibrium between the reactants and the AC,
+#'   one may express the \eqn{K^{\ddagger}} in terms of \emph{Gibbs} activation energy (\eqn{\Delta^{\ddagger} G^o}),
+#'   because \eqn{\Delta^{\ddagger} G^o = - R\,T\,ln K^{\ddagger}} and thus the Eyring equation reads:
+#'   \deqn{k = \kappa\,(k_{\text{B}}\,T\,/\,h)\,exp[- (\Delta^{\ddagger} G^o)/(R\,T)] =
+#'   \kappa\,(k_{\text{B}}\,T\,/\,h)\,exp[- (\Delta^{\ddagger} H^o)/(R\,T)]\,exp[\Delta^{\ddagger} S^o / R]}
+#'   where \eqn{R\approx 8.31446\,\text{J\,mol^{-1}\,K^{-1}}} is the universal gas constant and the upper index \eqn{^o}
+#'   denotes the standard molar state (see IUPAC (2019) in the \code{References}). Previous formula is applied
+#'   as a model to fit onto the experimental \eqn{k\,\,vs\,\,T} (see the argument \code{data.kvT}) relation, where both
+#'   \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o} (in the graphical output also denoted as
+#'   \eqn{\Delta^{active} S^o} and \eqn{\Delta^{active} H^o}, respectively) are optimized using the \code{fit.method}
+#'   (by the \code{\link[stats]{nls}} function). Often, the Eyring equation is not applied in the original form,
+#'   however in the linearized one. Nevertheless, the latter is not recommended as a model for fitting the experimental \eqn{k(T)}
+#'   (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}). The reason inherits in the misinterpretation
+#'   of the extrapolation to \eqn{T\rightarrow \infty} (or \eqn{1/T\rightarrow 0}) by which the \eqn{\Delta^{\ddagger} S^o}
+#'   is obtained and thus it is unreliable. Accordingly, \strong{the original exponential Eyring form is recommended}
+#'   as a model to fit the experimental \eqn{k(T)}.
+#'   The \href{https://goldbook.iupac.org/terms/view/E02142}{\eqn{k}-unit depends on the molecularity of the reaction},
+#'   please also refer to the \code{rate.const.unit} argument. Therefore, the left hand site of the Eyring equation above
+#'   must be multiplied by the standard molar concentration \eqn{c^o = 1\,\text{mol}\,\text{dm^{-3}}}:
+#'   \deqn{k\,(c^o)^{- \sum_i \nu_i^{\ddagger}}}
+#'   where \eqn{\sum_i \nu_i^{\ddagger}} goes through stoichiometric coefficients (including the negative sign for reactants)
+#'   of the AC formation reaction (therefore the index \eqn{^{\ddagger}} is used), i.e. for the bi-molecular reaction,
+#'   the sum results in \code{-1}, however for the mono-molecular one, the sum results in \code{0}.
 #'
+#'   Even though the transition state theory is a very nice and helpful tool to get information about the mechanism
+#'   of an elementary reaction, it has some limitations:
+#'   \enumerate{
+#'   \item One should be very careful, if applied to elementary steps in a multistep reaction kinetics (e.g. like
+#'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the transition states of a two-step
+#'   reaction are close to each other, the TS can be approximated by the highest one (corresponding to rate-determining step).
+#'
+#'   \item The equilibrium between ...TBC very short living intermediates...TBC
+#'
+#'   \item ...very high or very low temperatures...TBC
+#'
+#'   \item ...tunneling (classical vs quantum mechanics)...TBC
+#'   }
 #'
 #'
 #' @references
