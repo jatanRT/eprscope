@@ -39,7 +39,7 @@
 #'   where the \eqn{k_{\text{B}}} and \eqn{h} are the Boltzmann and Planck constants, respectively, \eqn{T} corresponds
 #'   to temperature and finally, the \eqn{K^{\ddagger}} represents the equilibrium constant including the partition functions
 #'   of reactants and that of the AC. In order to evaluate the AC partition function, its structure must be known.
-#'   However, often, due to the lack of information about the AC-structure, it is difficult (if not impossible) to evaluate
+#'   However, often, due to the lack of structural information, it is difficult (if not impossible) to evaluate
 #'   the corresponding \eqn{q^{\ddagger}(\text{AC})}. Therefore, considering the equilibrium between the reactants and the AC,
 #'   one may express the \eqn{K^{\ddagger}} in terms of \emph{Gibbs} activation energy (\eqn{\Delta^{\ddagger} G^o}),
 #'   because \eqn{\Delta^{\ddagger} G^o = - R\,T\,ln K^{\ddagger}} and thus the Eyring equation reads:
@@ -60,20 +60,21 @@
 #'   please also refer to the \code{rate.const.unit} argument. Therefore, the left hand site of the Eyring equation above
 #'   must be multiplied by the standard molar concentration \eqn{c^o = 1\,\text{mol}\,\text{dm^{-3}}}:
 #'   \deqn{k\,(c^o)^{- \sum_i \nu_i^{\ddagger}}}
-#'   where \eqn{\sum_i \nu_i^{\ddagger}} goes through stoichiometric coefficients (including the negative sign for reactants)
+#'   where the \eqn{\sum_i \nu_i^{\ddagger}} goes through stoichiometric coefficients (including the negative sign for reactants)
 #'   of the AC formation reaction (therefore the index \eqn{^{\ddagger}} is used), i.e. for the bi-molecular reaction,
 #'   the sum results in \code{-1}, however for the mono-molecular one, the sum results in \code{0}.
 #'
 #'   Even though the transition state theory is a very nice and helpful tool to get information about the mechanism
-#'   of an elementary reaction, it has some limitations:
+#'   of an elementary reaction, it has some limitations.
 #'   \enumerate{
 #'   \item One should be very careful, if applied to elementary steps in a multistep reaction kinetics (e.g. like
 #'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the transition states of a two-step
-#'   reaction are close to each other, the TS can be approximated by the highest one (corresponding to rate-determining step).
+#'   reaction are close to each other, the TS can be approximated by the highest one (corresponding to the rate-determining step).
 #'
 #'   \item The equilibrium between ...TBC very short living intermediates...TBC
 #'
-#'   \item ...very high or very low temperatures...TBC
+#'   \item ...very high or very low temperatures...TBC (several hundreds of K -> \eqn{\gtrapprox > 600\,\text{K}},
+#'   see e.g. https://doi.org/10.1073/pnas.72.5.1717)
 #'
 #'   \item ...tunneling (classical vs quantum mechanics)...TBC
 #'   }
