@@ -64,16 +64,16 @@
 #'   of the AC formation reaction (therefore the index \eqn{^{\ddagger}} is used), i.e. for the bi-molecular reaction,
 #'   the sum results in \code{-1}, however for the mono-molecular one, the sum results in \code{0}.
 #'
-#'   Even though the transition state theory is a very nice and helpful tool to get information about the mechanism
-#'   of an elementary reaction, it has some limitations.
+#'   Even though the transition state theory is a helpful tool to get information about the mechanism
+#'   of an elementary reaction, it has some limitations. Several of them are listed below.
 #'   \enumerate{
 #'   \item One should be very careful, if applied to elementary steps in a multistep reaction kinetics (e.g. like
-#'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the transition states of a two-step
-#'   reaction are close to each other, the TS can be approximated by the highest one (corresponding to the rate-determining step).
+#'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the intermediate (e.g. in the consecutive
+#'   reaction mechanism) possesses a short life-time, the TST fails.
 #'
 #'   \item The equilibrium between ...TBC very short living intermediates...TBC
 #'
-#'   \item ...very high or very low temperatures...TBC (several hundreds of K -> \eqn{\gtrapprox > 600\,\text{K}},
+#'   \item At high temperatures ...very high or very low temperatures...TBC (several hundreds of K -> \eqn{\gtrapprox > 1000\,\text{K}},
 #'   see e.g. https://doi.org/10.1073/pnas.72.5.1717)
 #'
 #'   \item ...tunneling (classical vs quantum mechanics)...TBC
