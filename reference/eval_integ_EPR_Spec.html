@@ -5,7 +5,7 @@
  by the polynomial fit of the poly.degree level. For EPR time/temperature/...etc spectral series,
  (data frame must be available in tidy/long table format),
  there is an option to integrate all EPR spectra literally in one step (see also Examples),
- similarly to function available in acquisition/processing software at EPR spectrometers."><title>Integration of EPR Spectrum/Data for Quantitative Analysis — eval_integ_EPR_Spec • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Integration of EPR Spectrum/Data for Quantitative Analysis — eval_integ_EPR_Spec"><meta property="og:description" content="Evaluates integrals of EPR spectra (based on the pracma::cumtrapz function)
+ similarly to function available in acquisition/processing software at EPR spectrometers."><title>Integration of EPR Spectrum/Data for Quantitative Analysis — eval_integ_EPR_Spec • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Integration of EPR Spectrum/Data for Quantitative Analysis — eval_integ_EPR_Spec"><meta property="og:description" content="Evaluates integrals of EPR spectra (based on the pracma::cumtrapz function)
  depending on input data =&amp;gt; either corresponding to derivative
  or single integrated EPR signal form, with the option to correct the single integral baseline
  by the polynomial fit of the poly.degree level. For EPR time/temperature/...etc spectral series,
@@ -97,13 +97,13 @@
 
 <dl><dt id="arg-data-spectr">data.spectr<a class="anchor" aria-label="anchor" href="#arg-data-spectr"></a></dt>
 <dd><p>Spectrum data frame/table object with magnetic flux density (in <code>mT</code>
-or <code>G</code>) and that of the derivative or already single integrated intensity.
+or <code>G</code> or <code>T</code>) and that of the derivative or already single integrated intensity.
 <code>index</code> column may be already present as well.</p></dd>
 
 
 <dt id="arg-b">B<a class="anchor" aria-label="anchor" href="#arg-b"></a></dt>
-<dd><p>Character string pointing to magnetic flux density column header (in the original
-<code>data.spectr</code>) either in <code>millitesla</code> or in <code>Gauss</code>, such as <code>B = "B_mT"</code>
+<dd><p>Character string, pointing to magnetic flux density column header (in the original
+<code>data.spectr</code>) either in <code>millitesla</code>/<code>tesla</code> or in <code>Gauss</code>, such as <code>B = "B_mT"</code>
 or <code>B = "B_G"</code> (<strong>default</strong>) or <code>B = "Field"</code>...etc.</p></dd>
 
 
@@ -115,13 +115,13 @@ like <code>"G"</code> ("Gauss"), <code>"mT"</code> ("millitesla") or <code>"T"</
 
 
 <dt id="arg-intensity">Intensity<a class="anchor" aria-label="anchor" href="#arg-intensity"></a></dt>
-<dd><p>Character string pointing to column name of either derivative
+<dd><p>Character string, pointing to column name of either derivative
 (e.g. <code>Intensity = "dIepr_over_dB"</code>, <strong>default</strong>) or single integrated EPR
 spectrum (e.g. <code>Intensity = "single_Integrated"</code>) within the actual <code>data.spectr</code>.</p></dd>
 
 
 <dt id="arg-linespecs-form">lineSpecs.form<a class="anchor" aria-label="anchor" href="#arg-linespecs-form"></a></dt>
-<dd><p>Character string describing either <code>"derivative"</code> (<strong>default</strong>)
+<dd><p>Character string, describing either <code>"derivative"</code> (<strong>default</strong>)
 or <code>"integrated"</code> (i.e. <code>"absorption"</code>, which can be used as well) line form of the analyzed
 EPR spectrum/data.</p></dd>
 
@@ -159,28 +159,28 @@ in sigmoid shape, which is required for the quantitative analysis,
 <dd><p>Logical, whether the "integral" columns are presented within the original <code>data.spectr</code>
 data frame (<code>output.vecs = FALSE</code>, <strong>default</strong>) or called as a vectors or list for
 additional processing of spectral data series by <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a>
-(see <code>Values</code> and <code>Examples</code>).</p></dd>
+(see <code>Value</code> and <code>Examples</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>The integration results may be divided into following types, depending on the above-described
-  arguments. Generally, they are either data frames including the original data and the integrals
+  arguments. Generally, they are either data frames, including the original data and the integrals
   (<code>output.vecs = FALSE</code>) or vectors/vectors list, corresponding to individual baseline
   corrected/uncorrected integrals (<code>output.vecs = TRUE</code>). This is especially useful
   for spectral (time) series EPR data, which can be handily processed
   by the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></code> using the
-  <code>pipe</code> operators (<code>%&gt;%</code>).</p><ol><li><p>Data frame/table including EPR spectral data (general <code>Intensity</code>
+  <code>pipe</code> operators (<code>%&gt;%</code>).</p><ol><li><p>Data frame/table, including EPR spectral data (general <code>Intensity</code>
   (integrated or derivative) <em>vs</em> \(B\)) as well as its corresponding <code>single</code>
   (column <code>single_Integ</code>) integral. This is the case if only a single
   uncorrected integral is required.</p></li>
 <li><p>Data frame/table with single integral/intensity already corrected by a certain degree
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
-  are referred either to derivative or already integrated EPR spectra where corrected
+  are related either to derivative or already integrated EPR spectra where corrected
   integral column header is denoted as <code>single_Integ_correct</code>. This is the case
   if <code>correct.integ = TRUE</code> and <code>sigmoid.integ = FALSE</code> + <code>output.vecs = FALSE</code>.</p></li>
 <li><p>Data frame with <code>single</code> and <code>double/sigmoid</code> integral column/variable
-  (<code>sigmoid_Integ</code>) essential for quantitative analysis. For such case it applies:
+  (<code>sigmoid_Integ</code>), essential for the quantitative analysis. For such case it applies:
   <code>output.vecs = FALSE</code> and <code>correct.integ = FALSE</code>.</p></li>
 <li><p>Data frame in case of <code>correct.integ = TRUE</code>, <code>sigmoid.integ = TRUE</code>
   and <code>output.vecs = FALSE</code>. It contains the original data frame columns + corrected
@@ -188,11 +188,11 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
   (<code>sigmoid_Integ</code>) which is evaluated from the baseline corrected single one.
   Therefore, such double/sigmoid integral is suitable for the accurate determination
   of radical (paramagnetic centers) amount.</p></li>
-<li><p>Numeric vector corresponding to baseline uncorrected/corrected single integral
+<li><p>Numeric vector, corresponding to baseline uncorrected/corrected single integral
   in case of <code>sigmoid.integ = FALSE</code> + <code>output.vecs = TRUE</code>.</p></li>
 <li><p>List of numeric vectors corresponding to:</p><dl><dt>single</dt>
-<dd><p>Corrected or uncorrected single integral (in case of derivative form)
-    depending on <code>correct.integ</code> argument.</p></dd>
+<dd><p>Corrected or uncorrected single integral (in case of derivative form),
+    depending on the <code>correct.integ</code> argument.</p></dd>
 
     <dt>sigmoid</dt>
 <dd><p>Double integral (in case of derivative form) or single integral
@@ -211,8 +211,8 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
  and thus, the EPR spectrum has to be either simulated (see also <code><a href="../articles/functionality.html">vignette("functionality")</a></code>)
  or smoothed by the <code><a href="smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg</a></code>, prior to integration. Afterwards,
  integrals are evaluated from the simulated or smoothed EPR spectra.
- For the purpose of quantitative analysis the integrals are evaluated using the <code>B.units = "G"</code>
- (see Arguments). Therefore, depending on \(B\)-unit (<code>G</code> or <code>mT</code> or <code>T</code>) each resulting integral
+ For the purpose of quantitative analysis, the integrals are evaluated using the <code>B.units = "G"</code>
+ (see Arguments). Hence, depending on \(B\)-unit (<code>G</code> or <code>mT</code> or <code>T</code>) each resulting integral
  column have to be optionally (in case of <code>mT</code> or <code>T</code>) multiplied by the factor of <code>10</code> or <code>10000</code>,
  respectively, because \(1\,\text{mT}\equiv 10\,\text{G}\) and \(1\,\text{T}\equiv 10^4\,\text{G}\).
  Such corrections are already included in the function/script.
@@ -320,7 +320,7 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 <span class="r-in"><span>             <span class="op">)</span></span></span>
 <span class="r-plt img"><img src="eval_integ_EPR_Spec-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## plot corresponding to double/sigmoid integral,</span></span></span>
+<span class="r-in"><span><span class="co">## plot, corresponding to double/sigmoid integral,</span></span></span>
 <span class="r-in"><span><span class="co">## which is related to corrected single integral</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plot_EPR_Specs.html">plot_EPR_Specs</a></span><span class="op">(</span><span class="va">triarylamine.decay.data1st.integ02</span>,</span></span>
 <span class="r-in"><span>               x <span class="op">=</span> <span class="st">"B_G"</span>,</span></span>
@@ -362,7 +362,7 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 <span class="r-in"><span>                       <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>Area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">sigmoid_Integ</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,</span></span></span>
-<span class="r-in"><span><span class="co">## it must be `Blim = NULL`, however by `dplyr::between()` !!!</span></span></span>
+<span class="r-in"><span><span class="co">## the `Blim = NULL` and `dplyr::between()` must be set !!!</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the final data frame</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triarylamine.decay.data.integs</span><span class="op">)</span></span></span>

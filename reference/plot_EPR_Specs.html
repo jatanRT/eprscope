@@ -5,7 +5,7 @@
   Theme of the graphic spectrum representation as well as additional plot elements can be varied like
   using the {ggplot2} package. Within a theme, the y ticks can be either displayed
   or skipped (which is common for visualization of EPR spectra) and the intensity (e.g. dIepr_over_dB)
-  is presented in "procedure defined unit" (see p.d.u.).'><title>Essential Plotting of EPR/ENDOR Spectrum/Spectra — plot_EPR_Specs • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Essential Plotting of EPR/ENDOR Spectrum/Spectra — plot_EPR_Specs"><meta property="og:description" content='Plot of EPR/ENDOR spectrum/spectra (overlay plot) based
+  is presented in "procedure defined unit" (see p.d.u.).'><title>Essential Plotting of EPR/ENDOR Spectrum/Spectra — plot_EPR_Specs • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Essential Plotting of EPR/ENDOR Spectrum/Spectra — plot_EPR_Specs"><meta property="og:description" content='Plot of EPR/ENDOR spectrum/spectra (overlay plot) based
   on ggplot2-functionality. Spectral data input must be available
   as a data frame object (see also argument data.spectra).
   Theme of the graphic spectrum representation as well as additional plot elements can be varied like
@@ -108,7 +108,7 @@
 
 
 <dl><dt id="arg-data-spectra">data.spectra<a class="anchor" aria-label="anchor" href="#arg-data-spectra"></a></dt>
-<dd><p>Data frame/table object containing magnetic flux density, \(g\)-value
+<dd><p>Data frame/table object, containing magnetic flux density, \(g\)-value
 or radio-frequency columns as <code>x</code> variable. They can be labeled as <code>Field</code>, <code>B_mT</code>,
 <code>B_G</code> or <code>RF_MHz</code> see also <code>x</code> argument. The <code>y / Intensity</code> variable
 can be labeled as <code>dIepr_over_dB</code>, in case of derivative intensity, or if
@@ -120,26 +120,26 @@ of <a href="https://r4ds.had.co.nz/tidy-data.html" class="external-link">tidy/lo
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Character string pointing to \(x\)-axis/column quantity header in the original <code>data.spectra</code>
+<dd><p>Character string, pointing to \(x\)-axis/column quantity header in the original <code>data.spectra</code>
 like magnetic flux density \(B\), \(g\)-Value or \(RF\) (radio frequency),
 <strong>default</strong>: <code>x = "B_mT"</code>.</p></dd>
 
 
 <dt id="arg-x-unit">x.unit<a class="anchor" aria-label="anchor" href="#arg-x-unit"></a></dt>
-<dd><p>Character string pointing to unit of <code>x</code>-quantity coming from the original <code>data.spectra</code>.
+<dd><p>Character string, pointing to unit of <code>x</code>-quantity coming from the original <code>data.spectra</code>.
 Units like <code>"G"</code> (Gauss), <code>"mT"</code> (millitesla), <code>"T"</code> (tesla), <code>"MHz"</code> (megahertz in case of ENDOR spectra)
 or <code>"Unitless"</code> / <code>"unitless"</code> (in case of \(g\)-values) can be used. <strong>Default</strong>: <code>x.unit = "mT"</code>.</p></dd>
 
 
 <dt id="arg-xlim">xlim<a class="anchor" aria-label="anchor" href="#arg-xlim"></a></dt>
-<dd><p>Numeric vector referring to lower and upper limit of the selected \(x\)-region,
+<dd><p>Numeric vector, referring to lower and upper limit of the selected \(x\)-region,
 e.g. <code>xlim = c(3495.4,3595.4)</code> (\(B\) in <code>G</code>) or <code>xlim = c(12.5,21.2)</code> (\(RF\) in <code>MHz</code>)
 or <code>xlim = c(2.004,2.001)</code> (dimensionless \(g\)). <strong>Default</strong>: <code>xlim = NULL</code> (actually corresponding
 to the entire \(x\)-range).</p></dd>
 
 
 <dt id="arg-var-nd-series">var2nd.series<a class="anchor" aria-label="anchor" href="#arg-var-nd-series"></a></dt>
-<dd><p>Character string referred to name of the second independent variable/quantity
+<dd><p>Character string, referred to name of the second independent variable/quantity
 column in the original <code>data.spectra</code> (such as time, Temperature, Electrochemical Potential,
 Microwave Power...etc) altered upon individual experiments. Data must be available in <strong>long table</strong> / <strong>tidy</strong>
 format (see also <code><a href="readEPR_Exp_Specs_multif.html">readEPR_Exp_Specs_multif</a></code> or <code><a href="plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact</a></code>).
@@ -147,7 +147,7 @@ format (see also <code><a href="readEPR_Exp_Specs_multif.html">readEPR_Exp_Specs
 
 
 <dt id="arg-var-nd-series-slct-by">var2nd.series.slct.by<a class="anchor" aria-label="anchor" href="#arg-var-nd-series-slct-by"></a></dt>
-<dd><p>Numeric, number corresponding to each \(n-th\) presented spectrum in the overlay plot,
+<dd><p>Numeric, corresponding to each \(n-th\) presented spectrum in the overlay plot,
 e.g. display each second (<code>var2nd.series.slct.by = 2</code>) or third (<code>var2nd.series.slct.by = 3</code>),
 ...etc. spectrum. The argument is only used if <code>var2nd.series</code> is <strong>NOT NULL</strong>
 (e.g. <code>var2nd.series = "time_s"</code>) and one wants to present
@@ -157,19 +157,19 @@ However, the RECOMENDED MAX. NUMBER of spectra/lines IS <code>12</code>.</p></dd
 
 
 <dt id="arg-intensity">Intensity<a class="anchor" aria-label="anchor" href="#arg-intensity"></a></dt>
-<dd><p>Character string pointing to <code>intensity column</code> name in the original <code>data.spectra</code>
+<dd><p>Character string, pointing to <code>intensity column</code> name in the original <code>data.spectra</code>
 if other than <code>dIepr_over_dB</code> name/label is used (e.g. for simulated or integrated spectra),
 <strong>default</strong>: <code>Intesity = "dIepr_over_dB"</code>.</p></dd>
 
 
 <dt id="arg-ilim">Ilim<a class="anchor" aria-label="anchor" href="#arg-ilim"></a></dt>
-<dd><p>Numeric vector corresponding to limits of the selected <code>y</code> / <code>Intensity</code>
+<dd><p>Numeric vector, corresponding to limits of the selected <code>y</code> / <code>Intensity</code>
 region, e.g. <code>Ilim = c(-2e-3,2e-3)</code>. <strong>Default</strong>: <code>Ilim = NULL</code> (actually corresponding
 to the entire Intensity range).</p></dd>
 
 
 <dt id="arg-linespecs-form">lineSpecs.form<a class="anchor" aria-label="anchor" href="#arg-linespecs-form"></a></dt>
-<dd><p>Character string describing either <code>"derivative"</code> (<strong>default</strong>)
+<dd><p>Character string, describing either <code>"derivative"</code> (<strong>default</strong>)
 or <code>"integrated"</code> (in such case also <code>"absorption"</code> can be used)
 line form of the analyzed EPR spectrum/data.</p></dd>
 
@@ -206,7 +206,7 @@ line form of the analyzed EPR spectrum/data.</p></dd>
 
 
 <dt id="arg-line-type">line.type<a class="anchor" aria-label="anchor" href="#arg-line-type"></a></dt>
-<dd><p>Character string or integer corresponding to width of the (spectral) line(s). Following types
+<dd><p>Character string or integer, corresponding to width of the (spectral) line(s). Following types
 can be specified: <code>0 = "blank"</code>, <code>1 = "solid"</code> (<strong>default</strong>), <code>2 = "dashed"</code>, <code>3 = "dotted"</code>,
 <code>4 = "dotdash"</code>, <code>5 = "longdash"</code> and <code>6 = "twodash"</code>.</p></dd>
 
@@ -217,18 +217,18 @@ can be specified: <code>0 = "blank"</code>, <code>1 = "solid"</code> (<strong>de
 
 
 <dt id="arg-border-line-color">border.line.color<a class="anchor" aria-label="anchor" href="#arg-border-line-color"></a></dt>
-<dd><p>Character string referring to color of the plot graph/panel border line. <strong>Default</strong>:
+<dd><p>Character string ,referring to color of the plot graph/panel border line. <strong>Default</strong>:
 <code>border.line.color = "black"</code>.</p></dd>
 
 
 <dt id="arg-border-line-type">border.line.type<a class="anchor" aria-label="anchor" href="#arg-border-line-type"></a></dt>
-<dd><p>Character string or integer corresponding to width of the plot graph/panel border line. Following types
+<dd><p>Character string or integer, corresponding to width of the plot graph/panel border line. Following types
 can be specified: <code>0 = "blank"</code>, <code>1 = "solid"</code> (<strong>default</strong>), <code>2 = "dashed"</code>, <code>3 = "dotted"</code>,
 <code>4 = "dotdash"</code>, <code>5 = "longdash"</code> and <code>6 = "twodash"</code>.</p></dd>
 
 
 <dt id="arg-theme-basic">theme.basic<a class="anchor" aria-label="anchor" href="#arg-theme-basic"></a></dt>
-<dd><p>Character string calling a <code>ggplot</code> theme base. The following ones are defined:</p><dl><dt><code>"theme_gray"</code></dt>
+<dd><p>Character string, calling a <code>ggplot</code> theme base. The following ones are defined:</p><dl><dt><code>"theme_gray"</code></dt>
 <dd><p>(<strong>default</strong> one) =&gt; gray background with the white grid lines</p></dd>
 
   <dt><code>"theme_bw"</code></dt>
