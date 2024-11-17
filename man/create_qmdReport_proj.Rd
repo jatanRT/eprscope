@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_qmdReport_proj.R
 \name{create_qmdReport_proj}
 \alias{create_qmdReport_proj}
-\title{Basic Quarto Reproducible Report Project Structure for EPR}
+\title{Basic Quarto Reproducible Project File/Folder Structure for the EPR Reports}
 \usage{
 create_qmdReport_proj(
   title = "Project Report",
@@ -69,13 +69,13 @@ Creating files and folders for the basic \href{https://quarto.org/}{Quarto} proj
   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires
   one of the \eqn{\LaTeX} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}.
-  The complete above-described R-environmental setup is also available
+  The complete, above-described, R-environmental setup is also available
   at \href{https://posit.cloud/}{Posit Cloud}.
 }
 \details{
 In order to support reproducible research workflow (see \code{References}) in EPR from scratch,
   a central data hub (repository/directory) with a well-defined structure must be available.
-  The one, presented below is created using the essential \code{\link[base]{dir.create}}
+  The one, presented below, is created using the essential \code{\link[base]{dir.create}}
   and \code{\link[base]{file.create}} file-folder R-management functions. For several files
   (like \code{wd.subdir.name.qmd}, \code{header.tex}, \code{title.tex}, \code{styles.scss}
   and \code{_quarto.yml}) customized templates (stored under \code{/extdata/_extensions}) are used.
@@ -184,7 +184,7 @@ In order to support reproducible research workflow (see \code{References}) in EP
 ## with the default parameters
 create_qmdReport_proj()
 #
-## creating report with specified citation style (ACS)
+## creating report with the specified citation style (ACS)
 ## and with versioning controlled by the `git` within
 ## the RStudio (Rproj.init = TRUE)
 create_qmdReport_proj(

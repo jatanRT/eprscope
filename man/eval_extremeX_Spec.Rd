@@ -14,10 +14,10 @@ eval_extremeX_Spec(
 }
 \arguments{
 \item{data.spectr}{EPR/ENDOR spectrum data frame object with magnetic flux density \emph{B} (in \code{mT} or \code{G})
-or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
-\code{Intensity}. \code{Index} column may be included as well.}
+or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable as well as including the derivative \code{dIepr_over_dB}
+\code{Intensity}. Also \code{index} column may be present.}
 
-\item{x}{Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
+\item{x}{Character string, pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
 like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.}
 
 \item{Intensity}{Character string, pointing to name of the \code{intensity column/variable}, in the original \code{data.spectr},
@@ -29,7 +29,7 @@ such as \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(
 or \code{xlim = c(2.004,2.001)} (\emph{g} dimensionless). \strong{Default}: \code{xlim = NULL} (corresponding
 to the entire \code{x}-range).}
 
-\item{extreme}{Character string with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default}).}
+\item{extreme}{Character string with only two values allowed: \code{"min"} or \code{"max"} (\strong{default}).}
 }
 \value{
 Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF}, corresponding
@@ -38,7 +38,8 @@ Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF}, corres
 \description{
 Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})), \emph{g} (unitless)
   or \emph{RF} (in \code{MHz}) of the intensity minimum or maximum within the selected region
-  of an EPR/ENDOR spectrum.
+  of an EPR/ENDOR spectrum. In terms of extremes, If one wants to perform peak picking of an EPR/ENDOR spectrum,
+  the \code{\link{eval_peakPick_Spec}} function can be applied.
 }
 \examples{
 ## loading TMPD built-in example file:

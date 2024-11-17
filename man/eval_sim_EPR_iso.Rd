@@ -24,7 +24,7 @@ eval_sim_EPR_iso(
 value if the \eqn{g} corresponding to "central field" is equal to \code{g.iso}.
 \strong{Default}: \code{g.iso = 2.00232} (the approximate \eqn{g} of the free electron).}
 
-\item{instrum.params}{Named numeric vector containing instrumental parameters required
+\item{instrum.params}{Named numeric vector, containing instrumental parameters required
 for the simulation =>
 \tabular{ll}{
 \code{Bcf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr

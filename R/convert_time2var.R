@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Conversion of time (\eqn{t}) into variable (\eqn{var}) which is linearly changed upon time.
+#'   Conversion of time (\eqn{t}) into variable (\eqn{var}) which is linearly changed on time.
 #'
 #'
 #' @details
@@ -19,21 +19,21 @@
 #'  like =>
 #'  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
 #'  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
-#'  where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
+#'  where the \eqn{t_{\text{switch}}}, corresponding to \eqn{var_{\text{switch}}}, are the quantities
 #'  at the turning point( see also \code{var.switch} argument).
 #'
 #'
 #'
 #' @param time.vals Numeric value or vector, corresponding to time (points) where the variable \code{var}
 #'   is changed.
-#' @param time.unit Character string time unit defined by \code{s},\code{min} or \code{h}.
+#' @param time.unit Character string, time unit defined by \code{s},\code{min} or \code{h}.
 #'   \strong{Default}: \code{time.unit = "s"}.
-#' @param var0 Numeric, the initial value (INCL. ALSO NEGATIVE SIGN, if required, e.g.
-#'   negative electrochemical potential) of the variable (\code{var}).
+#' @param var0 Numeric, the initial value (ALSO WITH NEGATIVE SIGN, if required, e.g.
+#'   negative electrochemical potential).
 #' @param var.switch Numeric, the switching point \code{var} value, in case when a linear CYCLIC CHANGE
-#'   (or 'triangular ramp') of \code{var} upon time is applied (e.g. in cyclic voltammetry).
+#'   (or 'triangular ramp') of \code{var} on time is applied (e.g. in cyclic voltammetry).
 #'   \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).
-#' @param var.rate Numeric, corresponding to rate of linear \code{var} change (INCL. ALSO NEGATIVE SIGN,
+#' @param var.rate Numeric, corresponding to rate of linear \code{var} change (INCLUDING ALSO NEGATIVE SIGN,
 #'   if required, e.g. in the case of electrochemical reduction or sample cooling).
 #' @param var.rate.unit Character string, corresponding to \code{var.rate} unit defined
 #'   by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
@@ -42,7 +42,7 @@
 #'
 #'
 #' @return Numeric value or vector of the variable such as electrochemical potential or temperature,
-#'   linearly changing upon time.
+#'   linearly changing on time.
 #'
 #'
 #' @examples

@@ -27,20 +27,19 @@ eval_sim_EPR_isoFit(
 )
 }
 \arguments{
-\item{data.spectr.expr}{Data frame object/table containing the experimental spectral data the with magnetic flux density
+\item{data.spectr.expr}{Data frame object/table, containing the experimental spectral data the with magnetic flux density
 (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.}
 
-\item{Intensity.expr}{Character string pointing to column name of the experimental EPR intensity within
+\item{Intensity.expr}{Character string, pointing to column name of the experimental EPR intensity within
 the original \code{data.spectr.expr}. \strong{Default}: \code{dIepr_over_dB}.}
 
-\item{Intensity.sim}{Character string pointing to column name of the simulated EPR intensity within the related output
+\item{Intensity.sim}{Character string, pointing to column name of the simulated EPR intensity within the related output
 data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
 \item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
 
-\item{B.unit}{Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
-(gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
-for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.}
+\item{B.unit}{Character string, denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
+(gauss, \strong{default}) or \code{B.unit = "mT"}/\code{"T"} (millitesla/tesla).}
 
 \item{nuclear.system.noA}{List or nested list \strong{without estimated hyperfine coupling constant values},
 such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values
@@ -64,7 +63,7 @@ of the analyzed EPR spectrum/data.}
 the \code{\link{optim_for_EPR_fitness}}. \strong{Default}: \code{optim.method = "neldermead"}. Additionally,
 several consecutive methods can be defined like \code{optim.method = c("levenmarq","neldermead")}, where
 the best fit parameters from the previous method are used as input for the next one. In such case, the output
-is \code{list} with the elements/vectors from each method in order to see the progress of the optimization.}
+is \code{list} with the elements/vectors from each method, in order to see the progress of the optimization.}
 
 \item{optim.params.init}{Numeric vector with the initial parameter guess (elements) where the \strong{first five
   elements are immutable}
@@ -116,10 +115,10 @@ the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline
 \item{Nmax.evals}{Numeric value, pointing to maximum number of iterations/evaluations. \strong{Default}:
 \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximum value).}
 
-\item{tol.step}{Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
+\item{tol.step}{Numeric value, describing the smallest optimization step (tolerance) to stop the optimization.
 \strong{Default}: \code{tol.step = 5e-7}.}
 
-\item{pswarm.size}{Numeric value equal to particle swarm size (i. e. number of particles), only
+\item{pswarm.size}{Numeric value, equal to particle swarm size (i. e. number of particles), only
 if \code{optim.method = "pswarm"}. Otherwise, \code{pswarm.size = NULL} (\strong{default}).}
 
 \item{pswarm.diameter}{Numeric value corresponding to diameter of the particle swarm search space

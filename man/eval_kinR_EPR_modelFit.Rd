@@ -23,17 +23,17 @@ eval_kinR_EPR_modelFit(
 )
 }
 \arguments{
-\item{data.qt.expr}{A data frame object containing the concentrations/integral intensities/areas under
+\item{data.qt.expr}{A data frame object, containing the concentrations/integral intensities/areas under
 the EPR spectra calculated using the experimental data as well as time column. These two essential
 columns are described by character strings like those below (see arguments \code{time} and \code{qvarR}).}
 
 \item{time.unit}{Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 \code{"min"} or \code{"h"}.}
 
-\item{time}{Character string pointing to \code{time} column/variable name in the original
+\item{time}{Character string, pointing to \code{time} column/variable name in the original
 \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.}
 
-\item{qvarR}{Character string pointing to \code{qvarR} (quantitative variable) column/variable
+\item{qvarR}{Character string, pointing to \code{qvarR} (quantitative variable) column/variable
 name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.}
 
 \item{model.react}{Character string, denoting a specific radical (\code{"R"}) reaction related to
@@ -89,11 +89,11 @@ corresponds to \code{-Inf} of each \code{params.guess} component.}
 If not given, the \strong{default} (\code{params.guess.upper = NULL}) upper bound
 corresponds to \code{+Inf} of each \code{params.guess} component.}
 
-\item{fit.kin.method}{Character string pointing to optimization/fitting method. So far,
+\item{fit.kin.method}{Character string, pointing to optimization/fitting method. So far,
 the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used (additional methods
 are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
-because it is based on the numeric solution of the ordinary differential equations and not on the integration
-of rate equations.}
+because it is based on the numeric solution of the ordinary differential equations
+and not on the common integration of rate equations.}
 
 \item{time.Frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
 between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
@@ -139,7 +139,7 @@ List with the following components is available:
 \description{
 Fitting of the Integrals/Areas/Concentration/...etc. \emph{vs} time relation (either from experiment
    or from integration of the EPR spectral time series) in order to find the kinetic parameters
-   (like rate constant, \eqn{k} as well as (partial) reaction order) of proposed radical reaction.
+   (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
 }

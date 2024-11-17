@@ -7,7 +7,7 @@
 correct_time_Exp_Specs(time.s, Nscans, sweep.time.s)
 }
 \arguments{
-\item{time.s}{Numeric value/vector/column in \code{data frame} corresponding to \code{time} (in \code{s})
+\item{time.s}{Numeric value/vector/column in \code{data frame}, corresponding to \code{time} (in \code{s})
 at which the individual EPR spectra were recorded (supplied by the EPR acquisition software).}
 
 \item{Nscans}{Numeric, number of accumulations (number of scans usually denoted as \code{AVGS})
@@ -17,7 +17,7 @@ for each spectrum in EPR time series.}
 one "accumulation".}
 }
 \value{
-Numeric value/vector corresponding to time at which the middle (on abscissa) of EPR
+Numeric value/vector, corresponding to time at which the middle (\eqn{x}-axis) of EPR
   spectrum/spectra were recorded during the kinetic measurements (e.g. radical formation,
   stability, electrochemical and/or photochemical measurements).
 }
@@ -30,7 +30,7 @@ Providing more accurate time for EPR spectral line/spectrum appearance. It assum
 The actual time at the middle/crossing point
  is different from that recorder by the EPR acquisition software, see below. This is especially
  important in determining the kinetics of radical generation or decay.
- The time is recorded according to the following scheme, where "^v" in the scheme denotes
+ Time is recorded according to the following scheme, where "^v" in the scheme denotes
  the derivative form of an EPR spectrum:
 
  \tabular{cccccc}{

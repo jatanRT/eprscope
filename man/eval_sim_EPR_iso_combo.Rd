@@ -21,9 +21,9 @@ eval_sim_EPR_iso_combo(
 )
 }
 \arguments{
-\item{g.iso.vec}{Numeric vector.with all \eqn{g_{\text{iso}}} values fro each component.}
+\item{g.iso.vec}{Numeric vector with all \eqn{g_{\text{iso}}} values fro each component.}
 
-\item{instrum.params}{Named numeric vector containing instrumental parameters required
+\item{instrum.params}{Named numeric vector, containing instrumental parameters required
 for the simulation =>
 \tabular{ll}{
 \code{Bcf} \tab "central field" (magnetic flux density, \eqn{B_{\text{CF}}}) \cr
@@ -71,7 +71,7 @@ of the analyzed EPR spectrum/data.}
 \item{lineGL.DeltaB}{Nested list of the Gaussian and Lorentzian linewidths for all individual components
 like \code{list(list(1,NULL),list(3,NULL),list(1,NULL))}.}
 
-\item{lineG.content.vec}{Numeric vector corresponding to Gaussian line content for all individual components
+\item{lineG.content.vec}{Numeric vector, corresponding to Gaussian line content for all individual components
 of the EPR spectrum like \code{1,1,1} (all spectral components are described by the pure Gaussian line).}
 
 \item{Intensity.sim}{Character string, pointing to column of simulated EPR intensity within the related output

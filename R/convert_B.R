@@ -31,7 +31,7 @@
 #' convert_B(B.val = 3500,B.unit = "G",B.2unit = "T")
 #' #
 #' ## conversion of B.seq vector with the Sweep Width = 100 G
-#' ## and central field 3496 G :
+#' ## and the central field 3496 G :
 #' B.seq <- seq(3496-100/2,3496+100/2,length.out = 1024)
 #' Bnew <- convert_B(B.seq,B.unit = "G",B.2unit = "mT")
 #' head(as.matrix(Bnew),n = 20)

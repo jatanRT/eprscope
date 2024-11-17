@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Larmor/ENDOR frequency calculations for the analysis in EPR/Electron Nuclear Double Resonance (ENDOR).
+#'   Larmor/ENDOR frequency calculations for the analysis in EPR/Electron-Nuclear Double Resonance (ENDOR).
 #'   Function is inspired by the similar \href{https://bio.groups.et.byu.net/LarmourFreqCal.phtml}{Larmor Frequency
 #'   Calculator}, available online.
 #'
@@ -29,10 +29,10 @@
 #'   Wiley, ISBN 978-1-118-68184-8, \url{https://books.google.cz/books?id=bysFAa4MPQcC}.
 #'
 #'
-#' @param nucle_us_i (Vector) character string, in the form like \code{"14N"} or \code{c("1H","13C")},
-#'   pointing to specific nucleus/nuclei for which the frequency should by calculated. The nuclear \emph{g}-factors
+#' @param nucle_us_i (Vector) character string in the form like \code{"14N"} or \code{c("1H","13C")},
+#'   pointing to specific nucleus/nuclei, for which the frequency should by calculated. The nuclear \emph{g}-factors
 #'   for those nuclei are taken from the \code{\link{isotopes_ds}}.
-#' @param B.unit Character string denoting the magnetic flux density \emph{B} unit. \strong{Default}:
+#' @param B.unit Character string, denoting the magnetic flux density \emph{B} unit. \strong{Default}:
 #'   \code{B.unit = "G"}.
 #' @param B.val Numeric, magnetic flux density \eqn{B}-\code{value}. This actually corresponds
 #'   to \eqn{B} at which the EPR signal saturates to record the ENDOR spectrum/spectra.

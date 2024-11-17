@@ -7,24 +7,24 @@
 eval_gFactor_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 }
 \arguments{
-\item{path_to_QCHoutput}{Character string corresponding to path of "Gaussian" or "ORCA" output text files
+\item{path_to_QCHoutput}{Character string, corresponding to path of "Gaussian" or "ORCA" output text files
 including all \eqn{g}-factors. Alternatively, the \code{\link[base]{file.path}} can be applied to get
-the full/relative path.}
+the full/relative path of that file.}
 
 \item{mean}{Logical, whether to calculate the \code{mean value/iso} from the principal components,
 \strong{default}: \code{mean = TRUE}, or return the entire vector with the all 3 components.}
 
-\item{origin}{Character string pointing to origin of the EPR calculation parameters <=> which
+\item{origin}{Character string, pointing to origin of the EPR calculation parameters <=> which
 software package was used. Only two values are available => \code{"Gaussian"} (\strong{default})
 or \code{"ORCA"}.}
 }
 \value{
 Numeric mean \eqn{g}-factor value from the principal difference (from \eqn{g_e}) components
-  calculated by QCH the method (e.g. by DFT) or numeric vector with the principal \eqn{g}-components
+  calculated by the QCH method (e.g. by DFT) or numeric vector with the principal \eqn{g}-components
   if \code{mean = FALSE}.
 }
 \description{
-In the Gaussian and ORCA outputs, the \eqn{g}-values (3 principal ones) are presented in the form
+In the Gaussian and ORCA outputs, the \eqn{g}-value (its 3 principal components) is presented in the form
   of differences from the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
   to calculate the entire \eqn{g}-factor components or parses the corresponding \eqn{g}-mean value
   from the outputs.

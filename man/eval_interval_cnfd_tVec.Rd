@@ -10,8 +10,8 @@ eval_interval_cnfd_tVec(data.vec.col, level.cnfd = 0.95, separate = TRUE)
 \item{data.vec.col}{Numeric vector (pointing to column) of interest (within a data frame)
 to calculate the confidence interval or uncertainty (margin of error).}
 
-\item{level.cnfd}{Numeric (floating) value corresponding to confidence level \strong{default}:
-\code{level.cnfd = 0.95}. This value is related to significance level \eqn{alpha} defined
+\item{level.cnfd}{Numeric (floating) value, corresponding to confidence level (\strong{default}:
+\code{level.cnfd = 0.95}). This value is related to significance level \eqn{alpha} defined
 by \eqn{1 - confidence\,\,level}.}
 
 \item{separate}{Logical, whether to separate the mean value and the uncertainty (margin of error),
@@ -25,9 +25,9 @@ Named vector of (mean) \code{value} and \code{uncertaity} or \eqn{value\pm\,\,un
   limit for the mean (one side of the confidence interval not including the mean value).
 }
 \description{
-Calculation of the mean value and its confidence limits (according to Student's t-distribution)
- corresponding to data frame column or vector characterizing dispersion of the individual
- values, such as double integrals in quantitative EPR analysis, g-values or linewidths.
+Calculation of the mean value and its confidence limits (according to Student's t-distribution),
+ corresponding to data frame column or vector, characterizing dispersion of the individual
+ values such as double integrals in quantitative EPR analysis, g-values or linewidths.
 }
 \details{
 The confidence interval evaluation suggests that values/observations obey two-tailed Student's t-distribution,
@@ -39,8 +39,8 @@ The confidence interval evaluation suggests that values/observations obey two-ta
   see the \code{level.cnfd} argument) and the degrees of freedom \eqn{df = N -1}. Finally, the \eqn{s} represents
   the sample standard deviation, defined by the following relation (regarding the \eqn{g}-value series example):
   \deqn{s = \sqrt{(1/(N-1))\,\sum_{i=1}^N (g_i - \overline{g})^2}}
-  which is computed by the \code{\link[stats]{sd}}. The above-mentioned \eqn{t}-quantile is actually calculated
-  by the \code{\link[stats:TDist]{stats::qt}} function. Alternatively, one could also evaluate confidence
+  which is computed by the \code{\link[stats]{sd}} function. The above-mentioned \eqn{t}-quantile is actually calculated
+  by the \code{\link[stats:TDist]{stats::qt}}. Alternatively, one could also evaluate confidence
   interval by the one sample \code{\link[stats]{t.test}} for a certain level of confidence, giving a descriptive output
   with statistical characteristics.
 }

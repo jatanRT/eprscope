@@ -29,11 +29,11 @@
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
-#' @param data.spectr.expr Data frame object/table containing the experimental spectral data the with magnetic flux density
+#' @param data.spectr.expr Data frame object/table, containing the experimental spectral data the with magnetic flux density
 #'   (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.
-#' @param Intensity.expr Character string pointing to column name of the experimental EPR intensity within
+#' @param Intensity.expr Character string, pointing to column name of the experimental EPR intensity within
 #'   the original \code{data.spectr.expr}. \strong{Default}: \code{dIepr_over_dB}.
-#' @param Intensity.sim Character string pointing to column name of the simulated EPR intensity within the related output
+#' @param Intensity.sim Character string, pointing to column name of the simulated EPR intensity within the related output
 #'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param nuclear.system.noA List or nested list \strong{without estimated hyperfine coupling constant values},
 #'   such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values
@@ -53,7 +53,7 @@
 #'   the \code{\link{optim_for_EPR_fitness}}. \strong{Default}: \code{optim.method = "neldermead"}. Additionally,
 #'   several consecutive methods can be defined like \code{optim.method = c("levenmarq","neldermead")}, where
 #'   the best fit parameters from the previous method are used as input for the next one. In such case, the output
-#'   is \code{list} with the elements/vectors from each method in order to see the progress of the optimization.
+#'   is \code{list} with the elements/vectors from each method, in order to see the progress of the optimization.
 #' @param optim.params.init Numeric vector with the initial parameter guess (elements) where the \strong{first five
 #'   elements are immutable}
 #'   \enumerate{
@@ -100,9 +100,9 @@
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.
 #' @param Nmax.evals Numeric value, pointing to maximum number of iterations/evaluations. \strong{Default}:
 #'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximum value).
-#' @param tol.step Numeric value describing the smallest optimization step (tolerance) to stop the optimization.
+#' @param tol.step Numeric value, describing the smallest optimization step (tolerance) to stop the optimization.
 #'   \strong{Default}: \code{tol.step = 5e-7}.
-#' @param pswarm.size Numeric value equal to particle swarm size (i. e. number of particles), only
+#' @param pswarm.size Numeric value, equal to particle swarm size (i. e. number of particles), only
 #'   if \code{optim.method = "pswarm"}. Otherwise, \code{pswarm.size = NULL} (\strong{default}).
 #' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})

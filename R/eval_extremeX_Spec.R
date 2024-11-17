@@ -8,11 +8,12 @@
 #' @description
 #'   Finding the \code{x} positions like \emph{B} (in \code{mT} or \code{G})), \emph{g} (unitless)
 #'   or \emph{RF} (in \code{MHz}) of the intensity minimum or maximum within the selected region
-#'   of an EPR/ENDOR spectrum.
+#'   of an EPR/ENDOR spectrum. In terms of extremes, If one wants to perform peak picking of an EPR/ENDOR spectrum,
+#'   the \code{\link{eval_peakPick_Spec}} function can be applied.
 #'
 #'
 #' @inheritParams eval_DeltaXpp_Spec
-#' @param extreme Character string with only a two values allowed: \code{"min"} or \code{"max"} (\strong{default}).
+#' @param extreme Character string with only two values allowed: \code{"min"} or \code{"max"} (\strong{default}).
 #'
 #'
 #' @returns Numeric value of \code{x}-axis variable like \emph{B},\emph{g},\emph{RF}, corresponding

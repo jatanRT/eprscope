@@ -20,11 +20,11 @@ eval_integ_EPR_Spec(
 }
 \arguments{
 \item{data.spectr}{Spectrum data frame/table object with magnetic flux density (in \code{mT}
-or \code{G}) and that of the derivative or already single integrated intensity.
+or \code{G} or \code{T}) and that of the derivative or already single integrated intensity.
 \code{index} column may be already present as well.}
 
-\item{B}{Character string pointing to magnetic flux density column header (in the original
-\code{data.spectr}) either in \code{millitesla} or in \code{Gauss}, such as \code{B = "B_mT"}
+\item{B}{Character string, pointing to magnetic flux density column header (in the original
+\code{data.spectr}) either in \code{millitesla}/\code{tesla} or in \code{Gauss}, such as \code{B = "B_mT"}
 or \code{B = "B_G"} (\strong{default}) or \code{B = "Field"}...etc.}
 
 \item{B.unit}{Character string pointing to unit of magnetic flux density, which
@@ -32,11 +32,11 @@ is to be presented on \eqn{x(B)}-axis of the EPR spectrum,
 like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla") or \code{"T"} ("Tesla").
 \strong{Default}: \code{B.unit = "G"}.}
 
-\item{Intensity}{Character string pointing to column name of either derivative
+\item{Intensity}{Character string, pointing to column name of either derivative
 (e.g. \code{Intensity = "dIepr_over_dB"}, \strong{default}) or single integrated EPR
 spectrum (e.g. \code{Intensity = "single_Integrated"}) within the actual \code{data.spectr}.}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+\item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"}, which can be used as well) line form of the analyzed
 EPR spectrum/data.}
 
@@ -62,30 +62,30 @@ in sigmoid shape, which is required for the quantitative analysis,
 \item{output.vecs}{Logical, whether the "integral" columns are presented within the original \code{data.spectr}
 data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
 additional processing of spectral data series by \href{https://dplyr.tidyverse.org/}{dplyr}
-(see \code{Values} and \code{Examples}).}
+(see \code{Value} and \code{Examples}).}
 }
 \value{
 The integration results may be divided into following types, depending on the above-described
-  arguments. Generally, they are either data frames including the original data and the integrals
+  arguments. Generally, they are either data frames, including the original data and the integrals
   (\code{output.vecs = FALSE}) or vectors/vectors list, corresponding to individual baseline
   corrected/uncorrected integrals (\code{output.vecs = TRUE}). This is especially useful
   for spectral (time) series EPR data, which can be handily processed
   by the \code{\link[dplyr]{group_by}} using the
   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}).
   \enumerate{
-  \item Data frame/table including EPR spectral data (general \code{Intensity}
+  \item Data frame/table, including EPR spectral data (general \code{Intensity}
   (integrated or derivative) \emph{vs} \eqn{B}) as well as its corresponding \code{single}
   (column \code{single_Integ}) integral. This is the case if only a single
   uncorrected integral is required.
 
   \item Data frame/table with single integral/intensity already corrected by a certain degree
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
-  are referred either to derivative or already integrated EPR spectra where corrected
+  are related either to derivative or already integrated EPR spectra where corrected
   integral column header is denoted as \code{single_Integ_correct}. This is the case
   if \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
 
   \item Data frame with \code{single} and \code{double/sigmoid} integral column/variable
-  (\code{sigmoid_Integ}) essential for quantitative analysis. For such case it applies:
+  (\code{sigmoid_Integ}), essential for the quantitative analysis. For such case it applies:
   \code{output.vecs = FALSE} and \code{correct.integ = FALSE}.
 
   \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
@@ -95,13 +95,13 @@ The integration results may be divided into following types, depending on the ab
   Therefore, such double/sigmoid integral is suitable for the accurate determination
   of radical (paramagnetic centers) amount.
 
-  \item Numeric vector corresponding to baseline uncorrected/corrected single integral
+  \item Numeric vector, corresponding to baseline uncorrected/corrected single integral
   in case of \code{sigmoid.integ = FALSE} + \code{output.vecs = TRUE}.
 
   \item List of numeric vectors corresponding to:
     \describe{
-    \item{single}{Corrected or uncorrected single integral (in case of derivative form)
-    depending on \code{correct.integ} argument.}
+    \item{single}{Corrected or uncorrected single integral (in case of derivative form),
+    depending on the \code{correct.integ} argument.}
     \item{sigmoid}{Double integral (in case of derivative form) or single integral
     (in case of integrated spectral form) for quantitative analysis.}
     }
@@ -125,8 +125,8 @@ The relative error of the cumulative trapezoidal (\code{cumtrapz}) function is m
  and thus, the EPR spectrum has to be either simulated (see also \code{vignette("functionality")})
  or smoothed by the \code{\link{smooth_EPR_Spec_by_npreg}}, prior to integration. Afterwards,
  integrals are evaluated from the simulated or smoothed EPR spectra.
- For the purpose of quantitative analysis the integrals are evaluated using the \code{B.units = "G"}
- (see Arguments). Therefore, depending on \eqn{B}-unit (\code{G} or \code{mT} or \code{T}) each resulting integral
+ For the purpose of quantitative analysis, the integrals are evaluated using the \code{B.units = "G"}
+ (see Arguments). Hence, depending on \eqn{B}-unit (\code{G} or \code{mT} or \code{T}) each resulting integral
  column have to be optionally (in case of \code{mT} or \code{T}) multiplied by the factor of \code{10} or \code{10000},
  respectively, because \eqn{1\,\text{mT}\equiv 10\,\text{G}} and \eqn{1\,\text{T}\equiv 10^4\,\text{G}}.
  Such corrections are already included in the function/script.
@@ -193,7 +193,7 @@ plot_EPR_Specs(triarylamine.decay.data1st.integ02,
                lineSpecs.form = "integrated"
              )
 #
-## plot corresponding to double/sigmoid integral,
+## plot, corresponding to double/sigmoid integral,
 ## which is related to corrected single integral
 plot_EPR_Specs(triarylamine.decay.data1st.integ02,
                x = "B_G",
@@ -232,7 +232,7 @@ triarylamine.decay.data.integs <-
                        ) \%>\%
   dplyr::summarize(Area = max(sigmoid_Integ))
 ## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,
-## it must be `Blim = NULL`, however by `dplyr::between()` !!!
+## the `Blim = NULL` and `dplyr::between()` must be set !!!
 #
 ## preview of the final data frame
 head(triarylamine.decay.data.integs)

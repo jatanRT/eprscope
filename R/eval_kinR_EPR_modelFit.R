@@ -8,7 +8,7 @@
 #' @description
 #'    Fitting of the Integrals/Areas/Concentration/...etc. \emph{vs} time relation (either from experiment
 #'    or from integration of the EPR spectral time series) in order to find the kinetic parameters
-#'    (like rate constant, \eqn{k} as well as (partial) reaction order) of proposed radical reaction.
+#'    (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
 #'    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
 #'    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
 #'
@@ -22,12 +22,12 @@
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
-#' @param data.qt.expr A data frame object containing the concentrations/integral intensities/areas under
+#' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the experimental data as well as time column. These two essential
 #'   columns are described by character strings like those below (see arguments \code{time} and \code{qvarR}).
-#' @param time Character string pointing to \code{time} column/variable name in the original
+#' @param time Character string, pointing to \code{time} column/variable name in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.
-#' @param qvarR Character string pointing to \code{qvarR} (quantitative variable) column/variable
+#' @param qvarR Character string, pointing to \code{qvarR} (quantitative variable) column/variable
 #'   name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.
 #' @param params.guess Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 #'   ready for optimization/fitting.
@@ -37,11 +37,11 @@
 #' @param params.guess.upper Numeric vector of upper bounds on each parameter in \code{params.guess}.
 #'   If not given, the \strong{default} (\code{params.guess.upper = NULL}) upper bound
 #'   corresponds to \code{+Inf} of each \code{params.guess} component.
-#' @param fit.kin.method Character string pointing to optimization/fitting method. So far,
+#' @param fit.kin.method Character string, pointing to optimization/fitting method. So far,
 #'   the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used (additional methods
 #'   are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
-#'   because it is based on the numeric solution of the ordinary differential equations and not on the integration
-#'   of rate equations.
+#'   because it is based on the numeric solution of the ordinary differential equations
+#'   and not on the common integration of rate equations.
 #' @param time.correct Logical, if time of recorded series of the EPR spectra needs to be corrected.
 #'   \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
 #'   (either by \code{\link{correct_time_Exp_Specs}} or by \code{\link{readEPR_Exp_Specs_kin}} with

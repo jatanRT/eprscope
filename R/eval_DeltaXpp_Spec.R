@@ -12,9 +12,9 @@
 #'
 #'
 #' @param data.spectr EPR/ENDOR spectrum data frame object with magnetic flux density \emph{B} (in \code{mT} or \code{G})
-#'   or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable and that of the derivative \code{dIepr_over_dB}
-#'   \code{Intensity}. \code{Index} column may be included as well.
-#' @param x Character string pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
+#'   or \emph{g}-Value or \emph{RF} (in \code{MHz}) column/variable as well as including the derivative \code{dIepr_over_dB}
+#'   \code{Intensity}. Also \code{index} column may be present.
+#' @param x Character string, pointing to name of the \code{x}-axis/column/variable (in the original \code{data.spectr})
 #'   like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency), \strong{default}: \code{x = "B_mT"}.
 #' @param Intensity Character string, pointing to name of the \code{intensity column/variable}, in the original \code{data.spectr},
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated spectra).
@@ -77,7 +77,7 @@
 #' ## directly checked from the previous interactive
 #' ## CW ENDOR spectrum as a difference between
 #' ## the minimum and maximum of the `dIepr_over_dB`
-#' ## 4th line intensity:
+#' ## of the 4th line intensity:
 #' 23.42-23.30
 #'
 #'

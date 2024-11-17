@@ -29,7 +29,7 @@ either \code{type = "smiles"}/\code{type = "SMILES"} or \code{type = "sdf"}/\cod
 
 \item{mol.label}{Character string, pointing to name of the molecule/compound, e.g.
 \code{mol.label = c("acetone")} or \code{mol.label = c("PBN")}. If \code{mol.label = NULL}
-(\strong{default}) a character string "mol. structure viewer" with gray color
+(\strong{default}) a character string "mol. structure viewer" with the gray color
 is shown.}
 
 \item{mol.label.color}{Character string, pointing to displayed font color of the chemical structure
@@ -45,8 +45,8 @@ see \code{\link[graphics]{rasterImage}}. \strong{Default}: \code{mol.label.xy.po
 (\strong{SM}ILES \strong{AR}bitrary \strong{T}arget \strong{S}pecification) to highlight
 the common substructures in a set of molecules, such as \code{sma = "C=O"}.}
 
-\item{annotate}{Character string, whether to display (\code{annotate = "number"}) or not display
-(\code{annotate = "off"}) atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.}
+\item{annotate}{Character string, whether to display (\code{annotate = "number"}) or do not display
+(\code{annotate = "off"}) the atomic numbers/indexes. \strong{Default}: \code{annotate = "off"}.}
 
 \item{style}{Character string, denoting the plotting style like =>
 \tabular{ll}{
@@ -60,16 +60,16 @@ the common substructures in a set of molecules, such as \code{sma = "C=O"}.}
 \strong{Default}: \code{style = "cow"}.}
 
 \item{abbr}{Character string, which controls how the structure is displayed. Following options
-can be set => \code{abbr = "off"} (\strong{default}) pointing to present structure as is;
-\code{abbr = "groups"} creating an abbreviation for \code{groups}; \code{abbr = "reagents"} creating
+can be set => \code{abbr = "off"} (\strong{default}), pointing to present structure as is;
+\code{abbr = "groups"}, creating an abbreviation for \code{groups}; \code{abbr = "reagents"}, creating
 an abbreviation for \code{reagents} or \code{abbr = "on"} to abbreviate both.
 The \code{abbr = "groups"} WORKS ONLY IF \code{annotate = "off"}!}
 
-\item{suppressh}{Logical, denoting whether to suppress displaying the hydrogen atoms.
+\item{suppressh}{Logical, denoting whether to suppress displaying of the hydrogen atoms.
 The \code{SMILES} or \code{SDF} STRUCTURE MUST CONTAIN \strong{H} ATOMS!
 \strong{Default}: \code{supressh = TRUE}.}
 
-\item{...}{additional options/arguments for \code{\link[rcdk]{get.depictor}}.}
+\item{...}{additional options/arguments for the \code{\link[rcdk]{get.depictor}}.}
 }
 \value{
 Graphics/Figure object with molecular structure.
@@ -81,14 +81,14 @@ Drawing a molecular structure based on \href{https://cdk-r.github.io/cdkr/index.
 }
 \examples{
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based
-## on `smiles` code character with highlighting
+## on the `smiles` code character with highlighting
 ## the "C(aromatic)--N" bond
 draw_molecule_by_rcdk("CN(C)C1=C([H])C([H])=C(N(C)C)C([H])=C1[H]",
                       type = "smiles",
                       sma = "cN")
 #
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical
-## cation based on `smiles` code character, with hydrogen atoms
+## cation based on the `smiles` code character, with hydrogen atoms
 ## and molecule name label = "TMPD^(+.)"
 draw_molecule_by_rcdk("CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
                       type = "smiles",
@@ -97,7 +97,7 @@ draw_molecule_by_rcdk("CN(C)[C+]1C([H])=C([H])[C.]([N](C)C)C([H])=C1[H]",
                       suppressh = FALSE)
 #
 ## draw N,N,N',N'-tetramethyl-p-phenylenediamine based
-## on `sdf` file path ("TMPD.sdf") with "color on black"
+## on the `sdf` file path ("TMPD.sdf") with "color on black"
 ## style + atom numbering
 draw_molecule_by_rcdk(molecule = load_data_example("TMPD.sdf"),
                       type = "sdf",

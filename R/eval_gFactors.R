@@ -7,7 +7,7 @@
 #'
 #' @description Calculation of \eqn{g}-factor according to fundamental formula (see \code{Value}).
 #'   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
-#'   can be defined having the common units like \code{G} (Gauss) \code{mT}
+#'   can be defined, having the common units like \code{G} (Gauss) \code{mT}
 #'   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}.
 #'
 #'
@@ -81,41 +81,42 @@ eval_gFactor <- function(nu.val,
 #' @description
 #'   Calculation of g-value according to fundamental formula, see \code{\link{eval_gFactor}}.
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{\text{iso}}} or \eqn{B_{\text{center}}})
-#'   is directly taken from EPR spectrum. If positive and negative derivative intensities of the spectral
+#'   is directly taken from the EPR spectrum. If positive and negative derivative intensities of the spectral
 #'   line are similar and their distance from the middle point of the spectrum equals,
 #'   the \eqn{B_{\text{iso}}} should be considered. Otherwise, the \eqn{B_{\text{center}}} must be taken
-#'   into account. In case of integrated EPR spectrum/data the \eqn{B_{\text{max}}} is used for
+#'   into account. In case of integrated EPR spectrum/data, the \eqn{B_{\text{max}}} is used for
 #'   the \eqn{g}-value calculation.
 #'
 #'
-#' @param data.spectr Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}) column
-#'   can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity as \code{dIepr_over_dB}
-#'   or single integrated intensity like \code{Integrated_Intensity} (\code{index} column might be included as well).
+#' @param data.spectr Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}
+#'   or \code{T}) column can be labeled as \code{Field} or \code{B_G} and that of the derivative intensity
+#'   as \code{dIepr_over_dB} or single integrated intensity like \code{Integrated_Intensity}
+#'   (\code{index} column might be included as well).
 #' @param nu.GHz Numeric value, microwave frequency in \code{GHz}.
-#' @param B.unit Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
-#'   (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla). These are the usual units used
-#'   for EPR spectra. Additionally, \code{B.unit = "T"} (tesla) can be set as well.
-#' @param B Character string pointing to magnetic flux density \code{column} of the EPR spectrum data frame
-#'   \code{data.spectr} either in "millitesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
-#'   or \code{B = "B_G"} or \code{B = "Bsim_G"} to include simulated EPR spectra as well.
-#' @param Intensity Character string pointing to \code{intensity column} if other than \code{dIepr_over_dB}
+#' @param B.unit Character string, denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
+#'   (gauss, \strong{default}) or \code{B.unit = "mT"}/\code{"T"} (millitesla/tesla).
+#' @param B Character string, pointing to magnetic flux density \code{column} of the EPR spectrum data frame
+#'   \code{data.spectr} either in "millitesla"/"tesla" or in "gauss", that is \code{B = "B_mT"} (\strong{default})
+#'   or \code{B = "B_G"}/\code{B = "T"} or \code{B = "Bsim_G"} to include simulated EPR spectra as well.
+#' @param Intensity Character string, pointing to \code{intensity column} if other than \code{dIepr_over_dB}
 #'   name/label is used (e.g. for simulated spectra), \strong{default}: \code{Intesity = "dIepr_over_dB"}
-#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default}) or
+#' @param lineSpecs.form Character string, describing either \code{"derivative"} (\strong{default}) or
 #'   \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form of the analyzed
 #'   EPR spectrum/data.
-#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper limit
-#'   of the selected \eqn{B}-region, such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
-#'   (corresponding to the entire \eqn{B}-range of the EPR spectrum).
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G}/\code{T}
+#'   corresponding to lower and upper limit of the selected \eqn{B}-region,
+#'   such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
+#'   \eqn{B}-range of the EPR spectrum).
 #' @param iso Logical, whether to calculate the \eqn{g}-factor from the \eqn{B}-value corresponding to
 #'   that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr_over_dB},
-#'   that is \eqn{g_{\text{iso}}} (this is the \strong{default}: \code{iso = TRUE}), or by finding
+#'   that is \eqn{g_{\text{iso}}} (this is the \strong{default} one: \code{iso = TRUE}), or by finding
 #'   the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close to zero, which is \code{iso = FALSE}).
 #'   For the \code{lineSpecs.form = "integrated"} (or \code{absorptiion}), the \code{iso} is related to magnetic
 #'   flux density with \code{max.} intensity.
 #'
 #'
 #' @return Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
-#'   from the EPR spectrum, according to \eqn{(\nu h)/(\mu_{B} B)}.
+#'   from the EPR spectrum, according to \eqn{(h\,\nu)/(\mu_{\text{B}}\,B)}.
 #'
 #'
 #' @examples
@@ -226,24 +227,24 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #'
 #' @description
-#'   In the Gaussian and ORCA outputs, the \eqn{g}-values (3 principal ones) are presented in the form
+#'   In the Gaussian and ORCA outputs, the \eqn{g}-value (its 3 principal components) is presented in the form
 #'   of differences from the \eqn{g_e} (\eqn{g} of the free electron). Therefore, the function takes these values
 #'   to calculate the entire \eqn{g}-factor components or parses the corresponding \eqn{g}-mean value
 #'   from the outputs.
 #'
 #'
-#' @param path_to_QCHoutput Character string corresponding to path of "Gaussian" or "ORCA" output text files
+#' @param path_to_QCHoutput Character string, corresponding to path of "Gaussian" or "ORCA" output text files
 #'   including all \eqn{g}-factors. Alternatively, the \code{\link[base]{file.path}} can be applied to get
-#'   the full/relative path.
+#'   the full/relative path of that file.
 #' @param mean Logical, whether to calculate the \code{mean value/iso} from the principal components,
 #'   \strong{default}: \code{mean = TRUE}, or return the entire vector with the all 3 components.
-#' @param origin Character string pointing to origin of the EPR calculation parameters <=> which
+#' @param origin Character string, pointing to origin of the EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"Gaussian"} (\strong{default})
 #'   or \code{"ORCA"}.
 #'
 #'
 #' @return Numeric mean \eqn{g}-factor value from the principal difference (from \eqn{g_e}) components
-#'   calculated by QCH the method (e.g. by DFT) or numeric vector with the principal \eqn{g}-components
+#'   calculated by the QCH method (e.g. by DFT) or numeric vector with the principal \eqn{g}-components
 #'   if \code{mean = FALSE}.
 #'
 #'

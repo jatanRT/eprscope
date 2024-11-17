@@ -36,11 +36,11 @@ eval_peakPick_Spec(
 \code{data.spectr} like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{x.unit}{Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
+\item{x.unit}{Character string, pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
 Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"T"} (tesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.}
 
-\item{xlim}{Numeric vector referring to lower and upper limit of the selected \eqn{x}-region,
+\item{xlim}{Numeric vector, referring to lower and upper limit of the selected \eqn{x}-region,
 e.g. \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 or \code{xlim = c(2.004,2.001)} (dimensionless \eqn{g}). \strong{Default}: \code{xlim = NULL} (actually corresponding
 to the entire \eqn{x}-range).}
@@ -49,11 +49,11 @@ to the entire \eqn{x}-range).}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{Ilim}{Numeric vector corresponding to limits of the selected \code{y} / \code{Intensity}
+\item{Ilim}{Numeric vector, corresponding to limits of the selected \code{y} / \code{Intensity}
 region, e.g. \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
 to the entire Intensity range).}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+\item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (in such case also \code{"absorption"} can be used)
 line form of the analyzed EPR spectrum/data.}
 
@@ -67,7 +67,7 @@ the short code like \code{only.peak.pn = "p"} (or \code{"P"}) and \code{only.pea
 can be applied as well.}
 
 \item{min.peak.height}{Numeric, setting the \code{Intensity} threshold (its absolute value)
-in order filter/select only those intensity values, which are taken to find to maxima and/or minima.
+in order to filter/select only those intensity values, which are taken to find to maxima and/or minima.
 \strong{Default}: \code{min.peak.height = NULL}, corresponding to \eqn{20\,\%} of the maximum Intensity value.}
 
 \item{min.peak.dist}{Numeric (integer > 0), pointing to minimum distance (in points) between the expected peaks,
@@ -161,7 +161,7 @@ tmpd.data.file <-
                     origin = "winepr")
 #
 ## peak picking of only positive (Intensitity > 0)
-## peaks in derivative EPR spectrum of TMPD:
+## peaks in the derivative EPR spectrum of TMPD:
 tmpd.peak.pick.01 <-
   eval_peakPick_Spec(data.spectr = tmpd.data.file,
                      only.peak.pn = "p",

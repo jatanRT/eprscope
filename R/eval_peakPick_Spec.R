@@ -32,7 +32,7 @@
 #'   the short code like \code{only.peak.pn = "p"} (or \code{"P"}) and \code{only.peak.pn = "n"} (or \code{"N"})
 #'   can be applied as well.
 #' @param min.peak.height Numeric, setting the \code{Intensity} threshold (its absolute value)
-#'   in order filter/select only those intensity values, which are taken to find to maxima and/or minima.
+#'   in order to filter/select only those intensity values, which are taken to find to maxima and/or minima.
 #'   \strong{Default}: \code{min.peak.height = NULL}, corresponding to \eqn{20\,\%} of the maximum Intensity value.
 #' @param min.peak.dist Numeric (integer > 0), pointing to minimum distance (in points) between the expected peaks,
 #'   which are constructed by parabola fits over the points. For such purpose, the shortened (vertex)
@@ -107,7 +107,7 @@
 #'                     origin = "winepr")
 #' #
 #' ## peak picking of only positive (Intensitity > 0)
-#' ## peaks in derivative EPR spectrum of TMPD:
+#' ## peaks in the derivative EPR spectrum of TMPD:
 #' tmpd.peak.pick.01 <-
 #'   eval_peakPick_Spec(data.spectr = tmpd.data.file,
 #'                      only.peak.pn = "p",

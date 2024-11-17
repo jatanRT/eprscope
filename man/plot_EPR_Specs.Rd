@@ -31,7 +31,7 @@ plot_EPR_Specs(
 )
 }
 \arguments{
-\item{data.spectra}{Data frame/table object containing magnetic flux density, \eqn{g}-value
+\item{data.spectra}{Data frame/table object, containing magnetic flux density, \eqn{g}-value
 or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT},
 \code{B_G} or \code{RF_MHz} see also \code{x} argument. The \code{y / Intensity} variable
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
@@ -41,26 +41,26 @@ See also \code{Intensity} parameter/argument. For spectral series the second ind
 must be available. In such case the entire \code{data.spectra} must inherit the form
 of \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format} (see also argument \code{var2nd.series}).}
 
-\item{x}{Character string pointing to \eqn{x}-axis/column quantity header in the original \code{data.spectra}
+\item{x}{Character string, pointing to \eqn{x}-axis/column quantity header in the original \code{data.spectra}
 like magnetic flux density \eqn{B}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{x.unit}{Character string pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
+\item{x.unit}{Character string, pointing to unit of \code{x}-quantity coming from the original \code{data.spectra}.
 Units like \code{"G"} (Gauss), \code{"mT"} (millitesla), \code{"T"} (tesla), \code{"MHz"} (megahertz in case of ENDOR spectra)
 or \code{"Unitless"} / \code{"unitless"} (in case of \eqn{g}-values) can be used. \strong{Default}: \code{x.unit = "mT"}.}
 
-\item{xlim}{Numeric vector referring to lower and upper limit of the selected \eqn{x}-region,
+\item{xlim}{Numeric vector, referring to lower and upper limit of the selected \eqn{x}-region,
 e.g. \code{xlim = c(3495.4,3595.4)} (\eqn{B} in \code{G}) or \code{xlim = c(12.5,21.2)} (\eqn{RF} in \code{MHz})
 or \code{xlim = c(2.004,2.001)} (dimensionless \eqn{g}). \strong{Default}: \code{xlim = NULL} (actually corresponding
 to the entire \eqn{x}-range).}
 
-\item{var2nd.series}{Character string referred to name of the second independent variable/quantity
+\item{var2nd.series}{Character string, referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
 Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table} / \strong{tidy}
 format (see also \code{\link{readEPR_Exp_Specs_multif}} or \code{\link{plot_EPR_Specs2D_interact}}).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise, \strong{usually} \code{var2nd.series = "time_s"}.}
 
-\item{var2nd.series.slct.by}{Numeric, number corresponding to each \eqn{n-th} presented spectrum in the overlay plot,
+\item{var2nd.series.slct.by}{Numeric, corresponding to each \eqn{n-th} presented spectrum in the overlay plot,
 e.g. display each second (\code{var2nd.series.slct.by = 2}) or third (\code{var2nd.series.slct.by = 3}),
 ...etc. spectrum. The argument is only used if \code{var2nd.series} is \strong{NOT NULL}
 (e.g. \code{var2nd.series = "time_s"}) and one wants to present
@@ -68,15 +68,15 @@ DISCRETE LABELS / LEVELS for the overlay spectra (see also \code{line.colors} ar
 THE \code{var2nd.series.slct.by = 1} MAY DISPLAY ALL DISCRETE SPECTRA WITHIN THE SERIES.
 However, the RECOMENDED MAX. NUMBER of spectra/lines IS \code{12}.}
 
-\item{Intensity}{Character string pointing to \code{intensity column} name in the original \code{data.spectra}
+\item{Intensity}{Character string, pointing to \code{intensity column} name in the original \code{data.spectra}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{Ilim}{Numeric vector corresponding to limits of the selected \code{y} / \code{Intensity}
+\item{Ilim}{Numeric vector, corresponding to limits of the selected \code{y} / \code{Intensity}
 region, e.g. \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
 to the entire Intensity range).}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+\item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (in such case also \code{"absorption"} can be used)
 line form of the analyzed EPR spectrum/data.}
 
@@ -114,21 +114,21 @@ line form of the analyzed EPR spectrum/data.}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
 
-\item{line.type}{Character string or integer corresponding to width of the (spectral) line(s). Following types
+\item{line.type}{Character string or integer, corresponding to width of the (spectral) line(s). Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
 \item{border.line.width}{Numeric, width (in \code{mm}) of the plot graph/panel border line, \strong{default}:
 \code{border.line.width = 0.5}.}
 
-\item{border.line.color}{Character string referring to color of the plot graph/panel border line. \strong{Default}:
+\item{border.line.color}{Character string ,referring to color of the plot graph/panel border line. \strong{Default}:
 \code{border.line.color = "black"}.}
 
-\item{border.line.type}{Character string or integer corresponding to width of the plot graph/panel border line. Following types
+\item{border.line.type}{Character string or integer, corresponding to width of the plot graph/panel border line. Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{theme.basic}{Character string calling a \code{ggplot} theme base. The following ones are defined:
+\item{theme.basic}{Character string, calling a \code{ggplot} theme base. The following ones are defined:
 \describe{
   \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
   \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}

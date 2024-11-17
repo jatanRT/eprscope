@@ -17,17 +17,17 @@ convert_time2var(
 \item{time.vals}{Numeric value or vector, corresponding to time (points) where the variable \code{var}
 is changed.}
 
-\item{time.unit}{Character string time unit defined by \code{s},\code{min} or \code{h}.
+\item{time.unit}{Character string, time unit defined by \code{s},\code{min} or \code{h}.
 \strong{Default}: \code{time.unit = "s"}.}
 
-\item{var0}{Numeric, the initial value (INCL. ALSO NEGATIVE SIGN, if required, e.g.
-negative electrochemical potential) of the variable (\code{var}).}
+\item{var0}{Numeric, the initial value (ALSO WITH NEGATIVE SIGN, if required, e.g.
+negative electrochemical potential).}
 
 \item{var.switch}{Numeric, the switching point \code{var} value, in case when a linear CYCLIC CHANGE
-(or 'triangular ramp') of \code{var} upon time is applied (e.g. in cyclic voltammetry).
+(or 'triangular ramp') of \code{var} on time is applied (e.g. in cyclic voltammetry).
 \strong{Default}: \code{var.switch = NULL} (in case there is no such cyclic change).}
 
-\item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (INCL. ALSO NEGATIVE SIGN,
+\item{var.rate}{Numeric, corresponding to rate of linear \code{var} change (INCLUDING ALSO NEGATIVE SIGN,
 if required, e.g. in the case of electrochemical reduction or sample cooling).}
 
 \item{var.rate.unit}{Character string, corresponding to \code{var.rate} unit defined
@@ -37,10 +37,10 @@ by following strings \code{"s^{-1}"} \eqn{\equiv \text{s}^{-1}},
 }
 \value{
 Numeric value or vector of the variable such as electrochemical potential or temperature,
-  linearly changing upon time.
+  linearly changing on time.
 }
 \description{
-Conversion of time (\eqn{t}) into variable (\eqn{var}) which is linearly changed upon time.
+Conversion of time (\eqn{t}) into variable (\eqn{var}) which is linearly changed on time.
 }
 \details{
 The linear time change of \eqn{var} can be expressed like
@@ -52,7 +52,7 @@ The linear time change of \eqn{var} can be expressed like
  like =>
  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
- where the \eqn{t_{\text{switch}}} corresponding to \eqn{var_{\text{switch}}} are the quantities
+ where the \eqn{t_{\text{switch}}}, corresponding to \eqn{var_{\text{switch}}}, are the quantities
  at the turning point( see also \code{var.switch} argument).
 }
 \examples{

@@ -120,17 +120,18 @@ please use \code{\link{correct_time_Exp_Specs}} function prior to kinetic evalua
 \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 data aren't taken into account).}
 
-\item{...}{additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).}
+\item{...}{additional arguments passed to the ODE, like the integrator \code{method} argument,
+applied to find the numeric solution of ODE (see also \code{\link[deSolve]{ode}}).}
 }
 \value{
 If the function \strong{is not used for fitting} of the experimental and processed data,
   the result is \code{list} consisting of:
   \describe{
-  \item{df}{Data frame containing \code{time} column and \code{qvar}, quantitative variable,
+  \item{df}{Data frame, containing \code{time} column and \code{qvar}, quantitative variable,
   columns corresponding to quantities of different relevant species
   denoted as \code{"R"}, \code{"A"}, \code{"B"} + if \code{data.qt.expr} is NOT NULL
   additional experimental quantitative variable is present.}
-  \item{plot}{Plot object containing \code{time} as \eqn{x}-axis and \code{qvar}
+  \item{plot}{Plot object, containing \code{time} as \eqn{x}-axis and \code{qvar}
   (see \code{df} above) as \eqn{y}-axis + if \code{data.qt.expr} is NOT NULL the experimental
   quantitative variable is presented as well.}
   }
@@ -175,11 +176,11 @@ According to IUPAC (2019), see \code{References}, the rate of a chemical reactio
   intensity (area under the spectral curve) of radical ("R") formation and/or decay (see also
   \code{\link{eval_kinR_EPR_modelFit}}). Quantitative kinetic profiles (such as that
   \eqn{\text{d}c_{\text{R}}/\text{d}t} described above) are not evaluated
-  by integration of the kinetic equations/rate laws. However, by numeric solution of the Ordinary
+  by common integration of the kinetic equations/rate laws. However, by numeric solution of the Ordinary
   Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
-  Therefore, higher number of models is available than for integrated
-  differential equations because for complex mechanisms it's quite often highly demanding to obtain
-  the analytical solution by integration. \strong{Several kinetic models for radical reactions} in EPR spectroscopy
+  Therefore, higher number of models can be available than for integrated
+  differential equations, because for complex mechanisms it's quite often highly demanding to obtain
+  the analytical solution by common integration. \strong{Several kinetic models for radical reactions} in EPR spectroscopy
   \strong{are predefined and summarized} below (see also \code{model.react} function argument).
   \tabular{ll}{
   \strong{model.react} \tab \strong{Short Description} \cr
@@ -230,7 +231,7 @@ kin.test.02$plot
 head(kin.test.02$df)
 #
 ## loading example data (incl. `Area` and `time` variables)
-## from Xenon: decay of a triarylamine radical cation
+## from Xenon software: decay of a triarylamine radical cation
 ## after its generation by electrochemical oxidation
 triaryl_radCat_path <-
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")

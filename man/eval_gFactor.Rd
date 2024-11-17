@@ -25,7 +25,7 @@ eval_gFactor(nu.val, nu.unit = "GHz", B.val, B.unit = "mT")
 \description{
 Calculation of \eqn{g}-factor according to fundamental formula (see \code{Value}).
   The magnetic flux density (\code{B.val}) and microwave frequency (\code{nu.val},\eqn{\nu})
-  can be defined having the common units like \code{G} (Gauss) \code{mT}
+  can be defined, having the common units like \code{G} (Gauss) \code{mT}
   (millitesla) or \code{T} (tesla) as well as \code{GHz} or \code{Hz}.
 }
 \examples{

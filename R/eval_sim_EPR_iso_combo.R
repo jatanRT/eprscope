@@ -14,7 +14,7 @@
 #'
 #'
 #' @inheritParams eval_sim_EPR_iso
-#' @param g.iso.vec Numeric vector.with all \eqn{g_{\text{iso}}} values fro each component.
+#' @param g.iso.vec Numeric vector with all \eqn{g_{\text{iso}}} values fro each component.
 #' @param nuclear.system Nested list with the elements corresponding to considered interacting nuclei for each EPR
 #'   spectral component. For example, the \code{list(list("1H",2,24),NULL,list(list("14N",1,45),list("1H",4,15)))}
 #'   refers to the following components: 1. \eqn{2\times A(\text{1H}) = 24\,\text{MHz}}, 2. single line spectrum
@@ -23,7 +23,7 @@
 #'   the components (see also \code{Examples}) like \code{c(TRUE,FALSE,TRUE)}.
 #' @param lineGL.DeltaB Nested list of the Gaussian and Lorentzian linewidths for all individual components
 #'   like \code{list(list(1,NULL),list(3,NULL),list(1,NULL))}.
-#' @param lineG.content.vec Numeric vector corresponding to Gaussian line content for all individual components
+#' @param lineG.content.vec Numeric vector, corresponding to Gaussian line content for all individual components
 #'   of the EPR spectrum like \code{1,1,1} (all spectral components are described by the pure Gaussian line).
 #' @param Intensity.sim.coeffs.vec Numeric vector of multiplication coefficients related to EPR component intensities
 #'   like \code{c(2,10,0.2)}.

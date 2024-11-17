@@ -21,9 +21,9 @@ eval_ECh_QNe_chronoamp(
 \arguments{
 \item{data.at}{Data frame (table) object, including required columns like \code{Time} (\eqn{t}),
 \code{Current} (\eqn{I}). Even though an arbitrary column label can be used, the best option
-is to use labels e.g. \code{time_s}, \code{I_uA} or \code{I_mA}. Optionally, column related
-to potential (\eqn{E}) may be present as well for transferred charge (\eqn{Q}) or number
-of electrons (\eqn{N_{\text{e}}}) \emph{vs} \eqn{E} visualization (see also arguments
+is to use labels such as \code{time_s}, \code{I_uA} or \code{I_mA}. Optionally, column related
+to potential (\eqn{E}) may be present as well for the transferred charge (\eqn{Q}) or number
+of electrons (\eqn{N_{\text{e}}}) \emph{vs} \eqn{E} visualization (see also the arguments
 \code{E}, \code{E.unit} and \code{ref.electrode}).}
 
 \item{time}{Character string, pointing to \code{time}-axis/column header in the original \code{data.at}.
@@ -34,7 +34,7 @@ of electrons (\eqn{N_{\text{e}}}) \emph{vs} \eqn{E} visualization (see also argu
 \code{time.unit = "ns"} or \code{time.unit = "min"}.}
 
 \item{tlim}{Numeric vector of the \code{time}-quantity lower and upper limit, e.g. \code{xlim = c(5,400)}
-(time in seconds. \strong{Default}: \code{tlim = NULL} actually setting the entire \code{time} span
+(time in seconds. \strong{Default}: \code{tlim = NULL} actually setting the entire \code{time} interval
 from the original dataset.}
 
 \item{Current}{Character string, indicating the \code{Current}(\eqn{I})-axis/column quantity name
@@ -45,11 +45,11 @@ in the original \code{data.at} object. \strong{Default}: \code{Current = "I_A"} 
 and \code{Current.unit = "nA"}.}
 
 \item{E}{Character string, referring to \eqn{E}(potential) column name within the input \code{data.at}
-dataset. \strong{Default}: \code{E = NULL} corresponding to situation, when one doesn't want to
+dataset. \strong{Default}: \code{E = NULL}, corresponding to situation, when one doesn't want to
 visualize transferred charge (or number of electrons) \emph{vs} \eqn{E}.}
 
 \item{E.unit}{Character string, setting the potential unit (see \code{E} argument), usually
-\code{E.unit = "mV"} or \code{E.unit = "V"}. \strong{Default}: \code{E.unit = NULL} corresponding
+\code{E.unit = "mV"} or \code{E.unit = "V"}. \strong{Default}: \code{E.unit = NULL}, corresponding
 to situation, when one doesn't want to visualize transferred charge (or number of electrons)
 \emph{vs} \eqn{E}.}
 
@@ -93,7 +93,7 @@ List containing the following elements, depending on \code{separate.plots}:
 Evaluating transferred charge and the corresponding number of electrons
   from \href{https://doi.org/10.1515/pac-2018-0109}{chronoamperogram} related to electrochemical
   experiment, performed simultaneously with the EPR time series measurement or independently of the latter.
-  To acquire charge, the input \eqn{I} \emph{vs} \eqn{time} relation (coming from
+  To acquire charge, the input \eqn{I} \emph{vs} \eqn{time} relation (coming from the
   \code{data.at}) is integrated by the \code{\link[pracma:trapz]{pracma::cumtrapz}} function.
   \strong{Prior to integration a capacitive current correction must be done}, especially if it is relatively
   high in comparison to \href{https://doi.org/10.1515/pac-2018-0109}{faradaic} one. Afterwards,
@@ -103,12 +103,12 @@ Evaluating transferred charge and the corresponding number of electrons
 }
 \details{
 When quantitative EPR is carried out along with electrochemistry simultaneously,
-  by this function one can easily compare the number of radicals with the number of transferred electrons.
+  one can easily compare the number of radicals with the number of transferred electrons.
   Number of radicals (\eqn{N_{\text{R}}}) are evaluated from quantitative measurements (see also
   \code{\link{quantify_EPR_Abs}}), whereas number of transferred electrons (\eqn{N_{\text{e}}}) is related
   to charge (\eqn{Q}), according to:
   \deqn{N_{\text{e}} = (Q\,N_{\text{A}})/F}
-  where \eqn{N_{\text{A}}} stands for Avogadro's number and \eqn{F} for Faraday's constants.
+  where \eqn{N_{\text{A}}} stands for the Avogadro's number and \eqn{F} for the Faraday's constants.
   Both obtained by \code{constans::syms$na} and \code{constants::syms$f}, respectively,
   using the \href{https://r-quantities.github.io/constants/}{constants} package
   (see \code{\link[constants]{syms}}). If both numbers match (\eqn{N_{\text{R}} = N_{\text{e}}}),
@@ -121,7 +121,7 @@ When quantitative EPR is carried out along with electrochemistry simultaneously,
 triarylamine.path.cv <-
 load_data_example(file = "Triarylamine_ECh_CV_ivium.txt")
 ## the data frame contains following variables:
-## time, desired potential, current and actual/applied
+## time, desired potential, current and the actual/applied
 ## potential
 triarylamine.data.cv <-
   data.table::fread(file = triarylamine.path.cv,
@@ -141,7 +141,7 @@ plot_ECh_VoC_amperogram(data.vat = triarylamine.data.cv,
   ticks = "in"
  )
 #
-## transferred charge and number of electrons
+## transferred charge and the number of electrons
 ## with default parameters
 triarylamine.data.QNe <-
   eval_ECh_QNe_chronoamp(data.at = triarylamine.data.cv)

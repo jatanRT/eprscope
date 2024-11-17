@@ -49,7 +49,7 @@ and works only in overlay mode (in one graph/panel). \strong{Default}: \code{yli
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
 
-\item{line.type}{Character string or integer corresponding to width of the (spectral) line(s). Following types
+\item{line.type}{Character string or integer, corresponding to width of the (spectral) line(s). Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 

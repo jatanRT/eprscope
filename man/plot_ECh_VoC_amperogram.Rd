@@ -66,7 +66,7 @@ colors are allowed, e.g. \code{line.color = "blue"}. \strong{Default}: \code{lin
 Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"},
 \code{3 = "dotted"}, \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{theme.basic}{Character string calling a \code{ggplot} theme base. The following ones are defined:
+\item{theme.basic}{Character string, calling a \code{ggplot} theme base. The following ones are defined:
 \describe{
   \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
   \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}
@@ -81,13 +81,13 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 \item{axis.text.size}{Numeric, text size in \code{pt} for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
-\item{border.line.color}{Character string referring to color of the plot graph/panel border line. \strong{Default}:
+\item{border.line.color}{Character string ,referring to color of the plot graph/panel border line. \strong{Default}:
 \code{border.line.color = "black"}.}
 
 \item{border.line.width}{Numeric, width (in \code{mm}) of the plot graph/panel border line, \strong{default}:
 \code{border.line.width = 0.5}.}
 
-\item{border.line.type}{Character string or integer corresponding to width of the plot graph/panel border line. Following types
+\item{border.line.type}{Character string or integer, corresponding to width of the plot graph/panel border line. Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
