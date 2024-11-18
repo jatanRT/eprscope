@@ -81,6 +81,7 @@
 <span>  params.guess.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  params.guess.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit.kin.method <span class="op">=</span> <span class="st">"diff-levenmarq"</span>,</span>
+<span>  solve.ode.method <span class="op">=</span> <span class="st">"lsoda"</span>,</span>
 <span>  time.Frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  time.correct <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  path_to_dsc_par <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -167,6 +168,12 @@ the default one (<code>fit.kin.method = "diff-levenmarq"</code>) is exclusively 
 are planned). It corresponds to differential Levenberg-Marquardt (see also <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>)
 because it is based on the numeric solution of the ordinary differential equations
 and not on the common integration of rate equations.</p></dd>
+
+
+<dt id="arg-solve-ode-method">solve.ode.method<a class="anchor" aria-label="anchor" href="#arg-solve-ode-method"></a></dt>
+<dd><p>Character string, setting up the integrator (the <code>method</code> argument in <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>),
+applied to find the numeric solution of ODE. <strong>Default</strong>: <code>solve.ode.method = "lsoda"</code>
+(<code><a href="https://rdrr.io/pkg/deSolve/man/lsoda.html" class="external-link">lsoda</a></code>, additional methods, see the <code>ode</code> link above).</p></dd>
 
 
 <dt id="arg-time-frame-model">time.Frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>

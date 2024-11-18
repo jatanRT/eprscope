@@ -87,6 +87,7 @@
 <span>  time.unit <span class="op">=</span> <span class="st">"s"</span>,</span>
 <span>  time.Interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1800</span><span class="op">)</span>,</span>
 <span>  time.Frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  solve.ode.method <span class="op">=</span> <span class="st">"lsoda"</span>,</span>
 <span>  data.qt.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  time.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  qvar.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -171,6 +172,12 @@ This argument is required to numerically solve the kinetic differential equation
 For the default interval mentioned above, the <strong>default</strong> value reads <code>time.Frame.model = 2</code> (in seconds).</p></dd>
 
 
+<dt id="arg-solve-ode-method">solve.ode.method<a class="anchor" aria-label="anchor" href="#arg-solve-ode-method"></a></dt>
+<dd><p>Character string, setting up the integrator (the <code>method</code> argument in <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>),
+applied to find the numeric solution of ODE. <strong>Default</strong>: <code>solve.ode.method = "lsoda"</code>
+(<code><a href="https://rdrr.io/pkg/deSolve/man/lsoda.html" class="external-link">lsoda</a></code>, additional methods, see the <code>ode</code> link above).</p></dd>
+
+
 <dt id="arg-data-qt-expr">data.qt.expr<a class="anchor" aria-label="anchor" href="#arg-data-qt-expr"></a></dt>
 <dd><p>A data frame object, containing the concentrations/integral intensities/areas under
 the EPR spectra calculated using the <strong>experimental data</strong> as well as time column. These two essential
@@ -194,8 +201,7 @@ data aren't taken into account).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments passed to the ODE, like the integrator <code>method</code> argument,
-applied to find the numeric solution of ODE (see also <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>).</p></dd>
+<dd><p>additional arguments passed to the ODE (see also <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -281,25 +287,28 @@ applied to find the numeric solution of ODE (see also <code><a href="https://rdr
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## irreversible dimerization quantitative kinetic profile</span></span></span>
-<span class="r-in"><span><span class="co">## table (df) with first 10 observations/rows</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## irreversible dimerization quantitative kinetic profile,</span></span></span>
+<span class="r-in"><span><span class="co">## table (df) with first 10 observations/rows and application</span></span></span>
+<span class="r-in"><span><span class="co">## of the "euler" integrator (to solve ODE) method</span></span></span>
+<span class="r-in"><span><span class="co">##</span></span></span>
 <span class="r-in"><span><span class="va">kin.test.01</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span>model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
 <span class="r-in"><span>                      kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.012</span>,</span></span>
-<span class="r-in"><span>                                     qvar0R <span class="op">=</span> <span class="fl">0.08</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                     qvar0R <span class="op">=</span> <span class="fl">0.08</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      solve.ode.method <span class="op">=</span> <span class="st">"euler"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## preview</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">kin.test.01</span><span class="op">$</span><span class="va">df</span>,n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    time           R</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     0 0.080000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2 0.079693973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     4 0.079390278</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     6 0.079088889</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     8 0.078789783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    10 0.078492930</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    12 0.078198306</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    14 0.077905884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    16 0.077615642</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   18 0.077327554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2 0.079692800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     4 0.079387955</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     6 0.079085437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     8 0.078785221</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    10 0.078487280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    12 0.078191588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    14 0.077898119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    16 0.077606850</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   18 0.077317754</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## consecutive reactions and the corresponding plot</span></span></span>
 <span class="r-in"><span><span class="co">## (`model.react` character string without spaces)</span></span></span>
