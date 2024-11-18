@@ -160,6 +160,9 @@
 #'   \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 #'   This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
 #'   For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).
+#' @param solve.ode.method Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
+#'   applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
+#'   (\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).
 #' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under
 #'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
 #'   column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
@@ -173,8 +176,7 @@
 #' @param qvar.expr Character string, pointing to \code{qvar} column/variable name in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 #'   data aren't taken into account).
-#' @param ... additional arguments passed to the ODE, like the integrator \code{method} argument,
-#'   applied to find the numeric solution of ODE (see also \code{\link[deSolve]{ode}}).
+#' @param ... additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).
 #'
 #'
 #' @return If the function \strong{is not used for fitting} of the experimental and processed data,
@@ -195,12 +197,15 @@
 #'
 #'
 #' @examples
-#' ## irreversible dimerization quantitative kinetic profile
-#' ## table (df) with first 10 observations/rows
+#' ## irreversible dimerization quantitative kinetic profile,
+#' ## table (df) with first 10 observations/rows and application
+#' ## of the "euler" integrator (to solve ODE) method
+#' ##
 #' kin.test.01 <-
 #'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
 #'                       kin.params = c(k1 = 0.012,
-#'                                      qvar0R = 0.08))
+#'                                      qvar0R = 0.08),
+#'                       solve.ode.method = "euler")
 #' ## preview
 #' head(kin.test.01$df,n = 10)
 #' #
@@ -293,6 +298,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                                 time.unit = "s", ## also "min" and "h" can be defined
                                 time.Interval.model = c(0,1800), ## also provided for expr.
                                 time.Frame.model = 2, # time resolution in s
+                                solve.ode.method = "lsoda", # numeric integrator method
                                 data.qt.expr = NULL,
                                 time.expr = NULL,
                                 qvar.expr = NULL,
@@ -448,6 +454,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       parms = switch(2-pro.cond,
                      list(k1 = k1,alpha = alpha),
                      list(k1 = k1)),
+      method = solve.ode.method,
       ...
     )
     #
@@ -507,6 +514,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       parms = switch(2-pro.cond,
                      list(k1 = k1,alpha = alpha),
                      list(k1 = k1)),
+      method = solve.ode.method,
       ...
     )
     #
@@ -586,6 +594,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                      list(k1 = k1,k2 = k2,k3 = k3,k4 = k4,
                           alpha = alpha,beta = beta,gamma = gamma),
                      list(k1 = k1,k2 = k2,k3 = k3,k4 = k4)),
+      method = solve.ode.method,
       ...
     )
     #
@@ -649,6 +658,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       parms = switch(2-pro.cond,
                      list(k1 = k1,k2 = k2,alpha = alpha,beta = beta),
                      list(k1 = k1,k2 = k2)),
+      method = solve.ode.method,
       ...
     )
     #
@@ -712,6 +722,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       parms = switch(2-pro.cond,
                      list(k1 = k1,k2 = k2,alpha = alpha,beta = beta),
                      list(k1 = k1,k2 = k2)),
+      method = solve.ode.method,
       ...
     )
     #
@@ -778,6 +789,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       parms = switch(2-pro.cond,
                      list(k1 = k1,alpha = alpha,beta = beta),
                      list(k1 = k1)),
+      method = solve.ode.method,
       ...
     )
     #
@@ -839,6 +851,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       parms = switch(2-pro.cond,
                      list(k1 = k1,alpha = alpha,beta = beta),
                      list(k1 = k1)),
+      method = solve.ode.method,
       ...
     )
     #

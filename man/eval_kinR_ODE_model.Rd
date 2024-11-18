@@ -12,6 +12,7 @@ eval_kinR_ODE_model(
   time.unit = "s",
   time.Interval.model = c(0, 1800),
   time.Frame.model = 2,
+  solve.ode.method = "lsoda",
   data.qt.expr = NULL,
   time.expr = NULL,
   qvar.expr = NULL,
@@ -104,6 +105,10 @@ between two consecutive points. The number of points is thus defined by the \cod
 This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
 For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).}
 
+\item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
+applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
+(\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).}
+
 \item{data.qt.expr}{A data frame object, containing the concentrations/integral intensities/areas under
 the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
 column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
@@ -120,8 +125,7 @@ please use \code{\link{correct_time_Exp_Specs}} function prior to kinetic evalua
 \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 data aren't taken into account).}
 
-\item{...}{additional arguments passed to the ODE, like the integrator \code{method} argument,
-applied to find the numeric solution of ODE (see also \code{\link[deSolve]{ode}}).}
+\item{...}{additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).}
 }
 \value{
 If the function \strong{is not used for fitting} of the experimental and processed data,
@@ -202,12 +206,15 @@ According to IUPAC (2019), see \code{References}, the rate of a chemical reactio
   }
 }
 \examples{
-## irreversible dimerization quantitative kinetic profile
-## table (df) with first 10 observations/rows
+## irreversible dimerization quantitative kinetic profile,
+## table (df) with first 10 observations/rows and application
+## of the "euler" integrator (to solve ODE) method
+##
 kin.test.01 <-
   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
                       kin.params = c(k1 = 0.012,
-                                     qvar0R = 0.08))
+                                     qvar0R = 0.08),
+                      solve.ode.method = "euler")
 ## preview
 head(kin.test.01$df,n = 10)
 #

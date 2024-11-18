@@ -15,6 +15,7 @@ eval_kinR_EPR_modelFit(
   params.guess.lower = NULL,
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
+  solve.ode.method = "lsoda",
   time.Frame.model = 2,
   time.correct = FALSE,
   path_to_dsc_par = NULL,
@@ -94,6 +95,10 @@ the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used (
 are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
 because it is based on the numeric solution of the ordinary differential equations
 and not on the common integration of rate equations.}
+
+\item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
+applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
+(\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).}
 
 \item{time.Frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
 between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
