@@ -12,21 +12,21 @@
 #'
 #' @inheritParams plot_EPR_Specs
 #' @param data.spectra.integ Data frame object, inherited output from the \code{\link{eval_integ_EPR_Spec}},
-#'   if \code{output.vecs = FALSE} (argument from the latter) corresponding to data frame including the original
+#'   if \code{output.vecs = FALSE} (argument from the latter), corresponding to data frame including the original
 #'   EPR spectral data and the integral(s).
-#' @param B Character string pointing to magnetic flux density \code{column} of the original (\code{data.spectra.integ})
+#' @param B Character string, pointing to magnetic flux density \code{column} of the original (\code{data.spectra.integ})
 #'   data frame, either in "millitesla" or in "gauss", that is \code{B = "B_G"} (\strong{default})
 #'   or \code{B = "B_mT"} or \code{B = "Bsim_G"} to include simulated EPR spectra as well.
-#' @param B.unit Character string denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
-#'   (gauss, \strong{default}) or \code{B.unit = "mT"} (millitesla).
+#' @param B.unit Character string, denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
+#'   (gauss, \strong{default}), \code{B.unit = "mT"} (millitesla) or \code{B.unit = T} (tesla).
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G} corresponding to lower and upper limit
 #'   of the selected \eqn{B}-region, such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL}
 #'   (corresponding to the entire \eqn{B}-range of the integrated EPR spectrum).
-#' @param ylim Numeric vector corresponding to lower and upper limit of the \eqn{y}-axis scale
+#' @param ylim Numeric vector, corresponding to lower and upper limit of the \eqn{y}-axis scale
 #'   (e.g. \code{ylim = c(-1e-4,1e-3)}). This doesn't apply for separated integrals (if \code{separate.integs = TRUE})
 #'   and works only in overlay mode (in one graph/panel). \strong{Default}: \code{ylim = NULL} corresponding to the entire
 #'   \eqn{y}-range of presented integrals.
-#' @param slct.integs Character string vector pointing to selected integrals/columns/variables (of the original
+#' @param slct.integs Character string vector, pointing to selected integrals/columns/variables (of the original
 #'   \code{data.spectra.integ} data frame) to be presented in the actual plot. \strong{Default}:
 #'   \code{slct.integs = c("single_Integ","baseline_Integ_fit","single_Integ_correct")}.
 #' @param separate.integs Logical, should be the integrals presented in overlay mode (in one graph/panel)

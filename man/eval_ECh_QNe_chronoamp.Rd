@@ -53,7 +53,7 @@ visualize transferred charge (or number of electrons) \emph{vs} \eqn{E}.}
 to situation, when one doesn't want to visualize transferred charge (or number of electrons)
 \emph{vs} \eqn{E}.}
 
-\item{ref.electrode}{Character string corresponding to reference electrode label, e.g.
+\item{ref.electrode}{Character string, corresponding to reference electrode notiation/label, e.g.
 \code{ref.electrode = "Ag-quasiref"} or \code{ref.electrode = "Fc/Fc+"}. \strong{Default}: \code{ref.electrode = NULL}
 (displayed potential is not related to any \code{ref.electrode}).}
 

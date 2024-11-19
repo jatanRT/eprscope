@@ -21,7 +21,7 @@
 #'   see examples below) referring to displayed physical quantity unit, like \code{mT}, \code{s},
 #'   \code{p.d.u.}, ...etc.
 #' @param user.defined Logical, in order to bring more flexibility to customize quantities and units
-#'   to meet the users needs.
+#'   to meet the users needs. \strong{Default}: \code{user.defined = FALSE}.
 #'
 #'
 #' @return Axis labels/expressions for different plots.

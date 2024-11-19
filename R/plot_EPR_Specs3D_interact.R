@@ -10,7 +10,7 @@
 #'   The aim of this function is to nicely visualize the series of EPR spectra (or their corresponding integrals),
 #'   while checking out the EPR intensities upon e.g. kinetic (time series), variable temperature or simultaneous
 #'   spectroelectrochemical experiments (potential series). For such purpose, the data frame input
-#'   (see \code{data.spectra.series} argument) is transformed into the \code{matrix} (with columns/variables corresponding
+#'   (see the \code{data.spectra.series} argument) is transformed into the \code{matrix} (with columns/variables corresponding
 #'   to intensities at defined times, potentials, temperatures...etc.). In the next step the \code{\link[plotly]{plot_ly}}
 #'   function generates either \strong{3D surface} or \strong{2D contour} plot objects which are finally customized
 #'   by the \code{\link[plotly]{layout}} as well as by the \code{\link[plotly]{colorbar}}. Similarly, as for
@@ -19,7 +19,7 @@
 #'
 #'
 #' @inheritParams plot_EPR_Specs2D_interact
-#' @param data.spectra.series Spectrum data frame/table object containing magnetic flux density, \eqn{g}-value
+#' @param data.spectra.series Spectrum data frame/table, object containing magnetic flux density, \eqn{g}-value
 #'   or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
 #'   in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
 #'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
@@ -29,15 +29,15 @@
 #'   the entire \code{data.spectra} must be present in the form of
 #'   \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
 #'   (see also parameter/argument \code{var2nd.series}).
-#' @param var2nd.series Character string referred to name of the second independent variable/quantity
-#'   column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
+#' @param var2nd.series Character string, referred to name of the second independent variable/quantity
+#'   column in the original \code{data.spectra.series} (such as time, Temperature, Electrochemical Potential,
 #'   Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table}
 #'   (or \strong{tidy}) \strong{format} (see also \code{data.spectra.series} argument).
 #'   \strong{Default}: \code{var2nd.series = NULL}. Otherwise, usually, \code{var2nd.series = "time_s"}.
 #' @param plot.type Character string, inherited from \code{\link[plotly]{plot_ly}}, specifying the trace. Only two
 #'   character strings are available: \code{plot.type = "surface"} (\strong{default}, for 3D surface plots)
 #'   or \code{plot.type = "contour"} (for 2D contour plots).
-#' @param scheme.color Character/String corresponding to \code{color scale}.
+#' @param scheme.color Character string, corresponding to \code{color scale}.
 #'   See also \href{https://plot.ly/r/reference/#surface-colorscale}{surface-colorscale}.
 #'   Color scale must be an array containing arrays mapping a normalized value to an RGB, RGBa, HEX, HSL, HSV,
 #'   or named color string. At minimum, a mapping for the lowest (0) and the highest (1) values are required.
@@ -50,7 +50,7 @@
 #'   \code{"Viridis"},\code{"YlGnBu"},\code{"YlOrRd"}. \strong{Default}: \code{scheme.color = "Viridis"}.
 #' @param contour.labels Logical, whether contours of intensity "hills" and "valleys" are projected
 #'   onto the \eqn{x,y}-plane. \strong{Default}: \code{contour.labels = FALSE}.
-#' @param xlim Numeric vector pointing to lower and upper limit of the \eqn{x}-axis range.
+#' @param xlim Numeric vector, pointing to lower and upper limit of the \eqn{x}-axis range.
 #'   Assignment of \code{xlim = NULL} (\strong{default}) actually corresponds to the entire original
 #'   range (see also the \code{data.spectra.series} argument).
 #' @param xlab Character string \eqn{\equiv} title of the \eqn{x}-axis. Either simple, like

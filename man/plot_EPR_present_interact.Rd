@@ -7,7 +7,7 @@
 plot_EPR_present_interact(p, size.width = 7, size.height = 5, res.ppi = 200)
 }
 \arguments{
-\item{p}{Plot object/variable.}
+\item{p}{Plot object/variable name.}
 
 \item{size.width}{Numeric, \code{width} of the image/object window in \code{in},
 \strong{default}: \code{size.width = 7}.}
@@ -32,8 +32,9 @@ Add the interactive plots (see \code{\link{plot_EPR_Specs2D_interact}} or \code{
   in working/actual directory either as \code{.html} or as \code{.png}.
   The file name inherits the name of the object/variable (see argument \code{p} and example). Afterwards, during
   the \href{https://rmarkdown.rstudio.com/docs/}{R markdown} or \href{https://quarto.org/docs/guide/}{Quarto}
-  processing, the image is automatically attached to document in the above-described format. Therefore, this function is quite
-  handy in interactive notebooks (such as \code{.Rmd} or \code{.qmd}, refer also to the \code{\link{create_qmdReport_proj}}).
+  processing, the image is automatically attached to the document in the above-described format. Therefore, this function is quite
+  handy in interactive notebooks (such as \code{.Rmd} or \code{.qmd}, please also consult
+  the \code{\link{create_qmdReport_proj}} function).
 }
 \examples{
 \dontrun{

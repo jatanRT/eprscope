@@ -9,14 +9,14 @@
 #' @description
 #'   General-purpose optimization of the objective \code{fn} function (also called "fitness")
 #'   which is to be minimized in order to fit theoretical models (EPR simulations)
-#'   onto the experimental data. Several methods/algorithms are implemented (see also \code{Details});
+#'   onto the experimental data. Several methods/algorithms are implemented (see also \code{Details}):
 #'   from the \href{https://astamm.github.io/nloptr/}{nloptr} package: \code{\link[nloptr]{slsqp}},
 #'   \code{\link[nloptr]{neldermead}}, \code{\link[nloptr]{crs2lm}}, \code{\link[nloptr]{sbplx}},
 #'   \code{\link[nloptr]{cobyla}}, \code{\link[nloptr]{lbfgs}}; from the
 #'   \href{https://cran.r-universe.dev/minpack.lm/doc/manual.html}{minpack.lm} package:
 #'   \code{\link[minpack.lm]{nls.lm}} and finally
 #'   from the \href{https://cran.r-project.org/web/packages/pso/pso.pdf}{pso} package:
-#'   \code{\link[pso]{psoptim}} are used.
+#'   \code{\link[pso]{psoptim}}.
 #'
 #'
 #' @details
@@ -74,11 +74,11 @@
 #' @param x.0 Numeric vector with the initial values to be optimized in order to fit onto the experimental data.
 #' @param fn Objective function that is to be minimized. Usually the sum of residual squares (see \code{Details}
 #'   and \code{Examples}).
-#' @param data Data frame object containing columns/variables (e.g. intensity of an EPR spectrum),
+#' @param data Data frame object, containing columns/variables (e.g. intensity of an EPR spectrum),
 #'   required to undergo a fitting/optimization process.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
-#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend optimization
+#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend the optimization
 #'   time.
 #' @param tol.step Numeric, the smallest optimization step (relative change) between
 #'   2 iterations to stop the optimization procedure. For the \code{method = "pswarm"}
@@ -86,21 +86,22 @@
 #'   Once the maximum distance between the "best" particle and all the others is less
 #'   than \code{tol.step} * \code{pswarm.diameter}) the algorithm restarts.
 #'   See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.
-#' @param pswarm.size Numeric value equal to particle swarm size (i.e. number of particles),
+#' @param pswarm.size Numeric value, which equals to particle swarm size (i.e. number of particles),
 #'   if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))}.
-#' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
+#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))}, e.g. to optimize 8 parameters,
+#'   number of particles = 15.
+#' @param pswarm.diameter Numeric value, corresponding to diameter of the particle swarm search space
 #'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}}
 #'
 #'
-#' @return For all listed algorithms the function returns \code{list}, with the elements like
+#' @return For all listed algorithms the function returns \code{list} with the elements like
 #'   (please, refer to e.g. \code{Value} in \code{\link{eval_sim_EPR_isoFit}})
 #'   \enumerate{
 #'   \item The best parameters found (\code{par} vector, depending on the initial \code{x.0} set of parameters).
 #'
-#'   \item The value of \code{fn} corresponding to the best \code{par}.
+#'   \item The value of \code{fn} (minimum value) corresponding to the best \code{par}.
 #'
 #'   \item Number of evaluations and/or iterations (in case of \code{method = "pswarm"},
 #'   see also \code{Value} in \code{\link[pso]{psoptim}}) before the termination.
@@ -113,7 +114,7 @@
 #'
 #'   \item A descriptive message/character string giving additional information about the optimization
 #'   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
-#'   because most of the information can be found in the previous convergence information.
+#'   because most of the information can be found in the previous convergence list element.
 #'   }
 #'
 #'

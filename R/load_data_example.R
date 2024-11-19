@@ -9,7 +9,7 @@
 #'   see also \code{\link{isotopes_ds}}). Details of all data are summarized in \code{vignette("datasets")}.
 #'
 #'
-#' @param file Character string corresponding to file name + extension.
+#' @param file Character string, corresponding to file name + extension.
 #'
 #'
 #' @examples

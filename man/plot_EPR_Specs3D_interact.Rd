@@ -28,7 +28,7 @@ plot_EPR_Specs3D_interact(
 )
 }
 \arguments{
-\item{data.spectra.series}{Spectrum data frame/table object containing magnetic flux density, \eqn{g}-value
+\item{data.spectra.series}{Spectrum data frame/table, object containing magnetic flux density, \eqn{g}-value
 or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
 in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
@@ -39,16 +39,16 @@ the entire \code{data.spectra} must be present in the form of
 \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
 (see also parameter/argument \code{var2nd.series}).}
 
-\item{x}{Character string pointing to \eqn{x}-axis/column quantity in the original \code{data.spectrum} like
+\item{x}{Character string, pointing to \eqn{x}-axis/column quantity in the original \code{data.spectrum} like
 magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{Intensity}{Character string corresponding to the intensity column header in the original \code{data.spectrum}
+\item{Intensity}{Character string, corresponding to the intensity column header in the original \code{data.spectrum}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{var2nd.series}{Character string referred to name of the second independent variable/quantity
-column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
+\item{var2nd.series}{Character string, referred to name of the second independent variable/quantity
+column in the original \code{data.spectra.series} (such as time, Temperature, Electrochemical Potential,
 Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table}
 (or \strong{tidy}) \strong{format} (see also \code{data.spectra.series} argument).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise, usually, \code{var2nd.series = "time_s"}.}
@@ -57,7 +57,7 @@ Microwave Power...etc) altered upon individual experiments. Data must be availab
 character strings are available: \code{plot.type = "surface"} (\strong{default}, for 3D surface plots)
 or \code{plot.type = "contour"} (for 2D contour plots).}
 
-\item{scheme.color}{Character/String corresponding to \code{color scale}.
+\item{scheme.color}{Character string, corresponding to \code{color scale}.
 See also \href{https://plot.ly/r/reference/#surface-colorscale}{surface-colorscale}.
 Color scale must be an array containing arrays mapping a normalized value to an RGB, RGBa, HEX, HSL, HSV,
 or named color string. At minimum, a mapping for the lowest (0) and the highest (1) values are required.
@@ -72,7 +72,7 @@ may be a palette name string of the following list: \code{"Blackbody"},\code{"Bl
 \item{contour.labels}{Logical, whether contours of intensity "hills" and "valleys" are projected
 onto the \eqn{x,y}-plane. \strong{Default}: \code{contour.labels = FALSE}.}
 
-\item{xlim}{Numeric vector pointing to lower and upper limit of the \eqn{x}-axis range.
+\item{xlim}{Numeric vector, pointing to lower and upper limit of the \eqn{x}-axis range.
 Assignment of \code{xlim = NULL} (\strong{default}) actually corresponds to the entire original
 range (see also the \code{data.spectra.series} argument).}
 
@@ -88,10 +88,10 @@ is required for the title, please refer to e.g. \href{https://plotly.com/r/LaTeX
 \item{zlab}{Character string \eqn{\equiv} title of the \eqn{z}-axis (see also \code{xlab}), \strong{default}:
 \code{zlab = "d <i>I</i><sub>EPR</sub> / d <i>B</i> (p.d.u.)"}.}
 
-\item{axis.title.size}{Numeric, text size (in \code{px}) for the axes title,
+\item{axis.title.size}{Numeric, text size (in \code{px}) for the axis title,
 \strong{default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size (in \code{px}) for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size (in \code{px}) for the axis unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
 \item{bg.x.color}{Character string, setting the background color of the \eqn{x}-axis wall.
@@ -136,7 +136,7 @@ Interactive plotting of EPR spectra or their integrals based on \href{https://pl
   The aim of this function is to nicely visualize the series of EPR spectra (or their corresponding integrals),
   while checking out the EPR intensities upon e.g. kinetic (time series), variable temperature or simultaneous
   spectroelectrochemical experiments (potential series). For such purpose, the data frame input
-  (see \code{data.spectra.series} argument) is transformed into the \code{matrix} (with columns/variables corresponding
+  (see the \code{data.spectra.series} argument) is transformed into the \code{matrix} (with columns/variables corresponding
   to intensities at defined times, potentials, temperatures...etc.). In the next step the \code{\link[plotly]{plot_ly}}
   function generates either \strong{3D surface} or \strong{2D contour} plot objects which are finally customized
   by the \code{\link[plotly]{layout}} as well as by the \code{\link[plotly]{colorbar}}. Similarly, as for

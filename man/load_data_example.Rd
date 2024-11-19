@@ -7,7 +7,7 @@
 load_data_example(file = NULL)
 }
 \arguments{
-\item{file}{Character string corresponding to file name + extension.}
+\item{file}{Character string, corresponding to file name + extension.}
 }
 \description{
 Loads built-in package data files which are required either to demonstrate the package functionality

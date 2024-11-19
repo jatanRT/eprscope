@@ -16,7 +16,7 @@ see examples below) referring to displayed physical quantity unit, like \code{mT
 \code{p.d.u.}, ...etc.}
 
 \item{user.defined}{Logical, in order to bring more flexibility to customize quantities and units
-to meet the users needs.}
+to meet the users needs. \strong{Default}: \code{user.defined = FALSE}.}
 }
 \value{
 Axis labels/expressions for different plots.

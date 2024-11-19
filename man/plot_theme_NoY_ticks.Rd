@@ -27,7 +27,7 @@ plot_theme_NoY_ticks(
 \item{border.line.color}{Character string, setting up the color of the plot panel border line, \strong{default}:
 \code{border.line.color = "black"}.}
 
-\item{border.line.type}{Character string or integer corresponding to width of the graph/plot panel border line. Following types
+\item{border.line.type}{Character string or integer, corresponding to width of the graph/plot panel border line. Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}..}
 
@@ -37,8 +37,8 @@ can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \co
 \item{bg.transparent}{Logical, whether the \strong{entire plot background} (excluding the \strong{panel})
 should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no transparent background.}
 
-\item{...}{additional arguments specified by \code{\link[ggplot2]{theme}} (such as \code{panel.backgroud},
-\code{axis.line},...etc) which are not specified by the function.}
+\item{...}{additional arguments specified by the \code{\link[ggplot2]{theme}} (such as \code{panel.backgroud},
+\code{axis.line},...etc), which are not specified otherwise.}
 }
 \value{
 Custom \pkg{ggplot2} \code{theme} (list) with \code{x-axis} ticks pointing inside the graph/plot panel,

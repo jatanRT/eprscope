@@ -12,12 +12,12 @@
 #'   sometimes it is rather difficult to figure out differences between the experimental
 #'   and the simulated EPR spectrum by such manner (the details can be "hidden" in overlays).
 #'   Therefore, there is also an option to offset the EPR simulated spectrum underneath the experimental
-#'   one, see argument \code{Intensity.shift.ratio}. For the sake of presentation, the maximal
-#'   and the minimal intensity difference, of the simulated spectrum, is automatically scaled onto
+#'   one, see argument \code{Intensity.shift.ratio}. For the sake of presentation, the maximum-minimum
+#'   intensity difference, of the simulated spectrum, is automatically scaled onto
 #'   the experimental one.
 #'
 #'
-#' @param data.spectr.expr Data frame object related to experimental spectrum including the magnetic flux
+#' @param data.spectr.expr Data frame object related to experimental spectrum, including the magnetic flux
 #'   density (in \code{mT} or \code{G}) column, which can be labeled as \code{B_mT}
 #'   in mT (or \code{B_G} in gauss), and the intensity column such as \code{dIepr_over_dB}, where
 #'   the \code{index} column can be included as well.
@@ -26,13 +26,13 @@
 #'   in mT (or \code{Bsim_G} in gauss), and the intensity column such as \code{dIeprSim_over_dB}.
 #'   These column names are acquired automatically if function like the \code{\link{readEPR_Sim_Spec}}
 #'   or the \code{\link{eval_sim_EPR_iso}} is used to get the simulated spectrum data in ASCII.
-#' @param B.unit Character string pointing to unit of magnetic flux density (coming from the original
+#' @param B.unit Character string, pointing to unit of magnetic flux density (coming from the original
 #'   datasets) which is to be presented on \eqn{B}-axis of the EPR spectrum.
 #'   Strings like \code{"G"} (`Gauss`) (\strong{default}) or \code{"mT"} (`millitesla`) can be used.
-#' @param Intensity.expr Character string referring to intensity column name if other
+#' @param Intensity.expr Character string, referring to intensity column name if other
 #'   than \code{dIepr_over_dB} name/label is used (e.g. for integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
-#' @param Intensity.sim Character string referring to intensity column name of the simulated spectrum
+#' @param Intensity.sim Character string, referring to intensity column name of the simulated spectrum
 #'   if other than \code{dIeprSim_over_dB} name/label is used (e.g. for integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIeprSim_over_dB"}, which is automatically set if
 #'   the \code{\link{readEPR_Sim_Spec}} function is used to read the spectrum in ASCII.
@@ -45,8 +45,8 @@
 #'   that can be caused by switching ON the Teslameter. It refers to simulated spectrum, \strong{default}:
 #'   \code{B.shift = 0} (\strong{NOTE}: It depends on the \code{B} parameter. If \code{B.unit = "mT"} =>
 #'   \code{B.shift} must be in \code{mT}, or if \code{B.unit = "G"} then \code{B.shift} must be in \code{G}).
-#' @param lineSpecs.form Character string describing either \code{"derivative"} (\strong{default})
-#'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated which can be used as well)
+#' @param lineSpecs.form Character string, describing either \code{"derivative"} (\strong{default})
+#'   or \code{"integrated"} (i.e. \code{"absorption"} or sigmoid-integrated, which can be used as well)
 #'   line form of the analyzed EPR spectrum/data.
 #' @param line.color.expr Character string, line color to plot simple EPR spectrum. All \code{ggplot2}
 #'   compatible colors are allowed (see also \code{\link{plot_EPR_Specs}}), \strong{default}:
@@ -67,7 +67,7 @@
 #' @return Plot object (list) of the experimental and the simulated EPR (in derivative or integrated form)
 #'   spectrum or \code{list} consisting of \code{plot} and the corresponding data frame \code{df}.
 #'   Any output plot corresponds to simple \code{ggplot2} object and can be combined with a desired \code{theme}
-#'   (e.g. with \code{\link{plot_theme_NoY_ticks}}).
+#'   (e.g. with \code{\link{plot_theme_NoY_ticks}}, see also \code{Examples}).
 #'
 #'
 #' @examples
@@ -99,12 +99,12 @@
 #'     path_to_dsc_par = tmpd.params.file,
 #'     origin = "winepr",
 #'     nuclear.system = list(
-#'       list("14N", 2, 19.3),
-#'       list("1H", 4, 5.5),
-#'       list("1H", 12, 19.7)
+#'       list("14N", 2, 19.29),
+#'       list("1H", 4, 5.49),
+#'       list("1H", 12, 19.66)
 #'     ),
-#'   lineGL.DeltaB = list(0.46, 0.55),
-#'   lineG.content = 0.4,
+#'   lineGL.DeltaB = list(0.48, 0.32),
+#'   lineG.content = 0.5,
 #' )
 #' #
 #' ## comparison of both spectra
@@ -146,6 +146,12 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   #
   ## 'Temporary' processing variables
   B <- NULL
+  #
+  # condition, having equal number of points/observations:
+  if (nrow(data.spectr.expr) != nrow(data.spectr.sim)) {
+    stop(" Experimental and simulated spectrum differ in number of points !!\n
+         Please, provide the same resolution/number of points for both spectra !! ")
+  }
   #
   ## Join both tables/data frames
   both.spectr.data <- dplyr::bind_cols(data.spectr.expr,
@@ -212,6 +218,12 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   }
   if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+  }
+  #
+  # condition for corresponding EPR spectrum color
+  if (line.color.expr == line.color.sim) {
+    message(" Experimental and simulated spectrum possess the same `line.color`.\n
+            Use different colors to distinguish both EPR spectra !! ")
   }
   #
   ## plot variable:

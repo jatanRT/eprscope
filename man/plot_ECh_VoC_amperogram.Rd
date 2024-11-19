@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ECh_VoC_amperogram.R
 \name{plot_ECh_VoC_amperogram}
 \alias{plot_ECh_VoC_amperogram}
-\title{Plot Voltammogram or Chronoamperogram of the (Spectro)Electrochemical Experiment}
+\title{Plot Voltammogram or Chronoamperogram from the (Spectro)Electrochemical Experiment}
 \usage{
 plot_ECh_VoC_amperogram(
   data.vat,
@@ -28,24 +28,24 @@ plot_ECh_VoC_amperogram(
 )
 }
 \arguments{
-\item{data.vat}{Data frame (table) object including required columns like \code{Potential}
+\item{data.vat}{Data frame (table) object, including required columns like \code{Potential}
 (\eqn{E}) and/or \code{Time} (\eqn{t}) as well as \code{Current} (\eqn{I}). Even though an arbitrary
 column label can be used, the best option is to use labels e.g. \code{E_V}, \code{E_mV}, \code{time_s},
 \code{I_uA} or \code{I_mA}.}
 
-\item{x}{Character string pointing to \code{x}-axis/column quantity, in the original \code{data.vat},
+\item{x}{Character string, pointing to \code{x}-axis/column quantity, in the original \code{data.vat},
 like \strong{potential} (e.g. \code{x = "E_V"}, \code{x = "E_mV"}) or \strong{time} (e.g. \code{x = "time_s"},
 \code{x = "time_min"} or \code{x = "time_ms"}). \strong{Default}: \code{x = "E_V"} (potential in volts).}
 
-\item{x.unit}{Character string pointing to \code{x}-quantity unit. There are following units available:
+\item{x.unit}{Character string, pointing to \code{x}-quantity unit. There are following units available:
 \code{x.unit = "V"}, \code{x.unit = "mV"} (in case of voltammetry, \code{x} corresponds to potential)
 as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (in case of chronoamperometry,
 \code{x} corresponds to time). \strong{Default}: \code{x.unit = "V"}.}
 
-\item{Current}{Character string indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
+\item{Current}{Character string, indicating the \code{Current}(\eqn{I})-axis/column quantity in the original
 \code{data.vat} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).}
 
-\item{Current.unit}{Character string pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
+\item{Current.unit}{Character string, pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.}
 
 \item{xlim}{Numeric vector of the \code{x}-quantity lower and upper limit, e.g. \code{xlim = c(-100,400)}
@@ -53,25 +53,25 @@ as well as \code{x.unit = "s"}, \code{x.unit = "ms"} or \code{x.unit = "min"} (i
 in case of chronoamperometry). \strong{Default}: \code{xlim = NULL} actually setting the entire \code{x}-range
 from the original dataset.}
 
-\item{Ilim}{Numeric vector characterizing the lower and upper limit of the current, e.g. \code{Ilim = c(-0.05,0.2)},
+\item{Ilim}{Numeric vector, characterizing the lower and upper limit of the current, e.g. \code{Ilim = c(-0.05,0.2)},
 corresponding to current in milliamps. \strong{Default}: \code{Ilim = NULL} related to the entire current (\eqn{I}) range
 from the original dataset.}
 
-\item{line.color}{Character string pointing to line color of the voltammogram / chronoamperogram. All \code{{ggplot2}} compatible
+\item{line.color}{Character string, pointing to line color of the voltammogram / chronoamperogram. All \code{{ggplot2}} compatible
 colors are allowed, e.g. \code{line.color = "blue"}. \strong{Default}: \code{line.color = "darkviolet"}.}
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
 
-\item{line.type}{Character string or integer corresponding to width of the voltammogram/chronoamperogram line.
+\item{line.type}{Character string or integer, corresponding to width of the voltammogram/chronoamperogram line.
 Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"},
 \code{3 = "dotted"}, \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{theme.basic}{Character string, calling a \code{ggplot} theme base. The following ones are defined:
+\item{theme.basic}{Character string, calling a \code{ggplot} theme base. Following themes are defined:
 \describe{
   \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
   \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}
   \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
-  \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
+  \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however without opposite ones}
   \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
   theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 }}
@@ -81,7 +81,7 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 \item{axis.text.size}{Numeric, text size in \code{pt} for the axes unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 
-\item{border.line.color}{Character string ,referring to color of the plot graph/panel border line. \strong{Default}:
+\item{border.line.color}{Character string, referring to color of the plot graph/panel border line. \strong{Default}:
 \code{border.line.color = "black"}.}
 
 \item{border.line.width}{Numeric, width (in \code{mm}) of the plot graph/panel border line, \strong{default}:
@@ -91,7 +91,7 @@ Following types can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\stron
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{ref.electrode}{Character string corresponding to reference electrode label, e.g.
+\item{ref.electrode}{Character string, corresponding to reference electrode notiation/label, e.g.
 \code{ref.electrode = "Ag-quasiref"} or \code{ref.electrode = "Fc/Fc+"}. \strong{Default}: \code{ref.electrode = NULL}
 (displayed potential is not related to any \code{ref.electrode}).}
 
@@ -99,7 +99,7 @@ can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \co
 by \code{{plotly}} (\code{plot.interact = TRUE}). \strong{Default}: \code{plot.interact = FALSE}
 (static plot by \code{{ggplot2}} is displayed).}
 
-\item{ticks}{Character string corresponding to pointing direction of the axis ticks, either pointing into
+\item{ticks}{Character string, corresponding to pointing direction of the axis ticks, either pointing into
 the panel graph or outwards (\strong{default}). If \code{ticks = "in"} also the opposite axis ticks are displayed.}
 
 \item{grid}{Logical, whether to display the \code{grid} within the panel/graph, \strong{default}: \code{grid = TRUE}.}
@@ -114,7 +114,7 @@ Visualization of  electrochemical responses like
   \href{https://doi.org/10.1515/pac-2018-0109}{voltammogram or chronoamperogram}
   either by \href{https://ggplot2.tidyverse.org/}{ggplot2} (static plot) or by \href{https://plotly.com/r/}{plotly}
   interactive package. The corresponding data frame for the plot can be created from the ASCII text file,
-  generated by the potentiostat electrochemical instrument, using the \code{\link[data.table]{fread}}
+  generated by the potentiostat electrochemical instrument, using the \code{\link[data.table]{fread}} function
   (see also section \code{Examples}).
 }
 \examples{
@@ -123,7 +123,7 @@ Visualization of  electrochemical responses like
 triarylamine.path.cv <-
 load_data_example(file = "Triarylamine_ECh_CV_ivium.txt")
 ## the data frame contains following variables:
-## time, desired potential, current and actual/applied
+## time, desired potential, current and the actual/applied
 ## potential
 triarylamine.data.cv <-
   data.table::fread(file = triarylamine.path.cv,

@@ -36,9 +36,9 @@ plot_layout2D_interact(
 )
 }
 \arguments{
-\item{p}{\code{Plotly} object corresponding to previous/actual graph/plot.}
+\item{p}{\code{Plotly} object, corresponding to previous/actual graph/plot.}
 
-\item{data}{Data frame object to associate with the layout (optional). If not provided, arguments are evaluated
+\item{data}{Data frame object in order to associate with the layout (optional). If not provided, arguments are evaluated
 using the data frame in \code{\link[plotly]{plot_ly}} function of the previous/actual plot. Therefore,
 \strong{default}: \code{data = NULL}.}
 
@@ -51,22 +51,22 @@ is required for the title, please refer to e.g. \href{https://plotly.com/r/LaTeX
 \item{ylab}{Character string \eqn{\equiv} title of the \eqn{y}-axis (see also \code{xlab}), \strong{default}:
 \code{ylab = "d <i>I</i> <sub>EPR</sub> / d <i>B</i>  (p.d.u.)"}.}
 
-\item{axis.title.x.family}{Character string setting the font of the \eqn{x}-axis title. Following \code{html} fonts
+\item{axis.title.x.family}{Character string, setting the font of the \eqn{x}-axis title. Following \code{html} fonts
 are available: "Arial" (\strong{default}), "Balto", "Courier New", "Droid Sans", "Droid Serif", "Droid Sans Mono",
 "Gravitas One", "Old Standard TT", "Open Sans", "Overpass", "PT Sans Narrow", "Raleway" and "Times New Roman".}
 
-\item{axis.title.x.color}{Character string pointing to color of the \eqn{x}-axis title font, \strong{default}:
+\item{axis.title.x.color}{Character string, pointing to color of the \eqn{x}-axis title font, \strong{default}:
 \code{axis.title.x.color = "black"}. Additional available colors are listed
 at the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
 
 \item{axis.title.x.size}{Numeric, setting up the size of the \eqn{x}-axis title font in \code{px}, \strong{default}:
 \code{axis.title.x.size = 15}.}
 
-\item{axis.text.x.family}{Character string setting the font of the \eqn{x}-axis text. Following \code{html} fonts
+\item{axis.text.x.family}{Character string, setting the font of the \eqn{x}-axis text. Following \code{html} fonts
 are available: "Arial" (\strong{default}), "Balto", "Courier New", "Droid Sans", "Droid Serif", "Droid Sans Mono",
 "Gravitas One", "Old Standard TT", "Open Sans", "Overpass", "PT Sans Narrow", "Raleway" and "Times New Roman".}
 
-\item{axis.text.x.color}{Character string pointing to color of the \eqn{x}-axis text font, \strong{default}:
+\item{axis.text.x.color}{Character string, pointing to color of the \eqn{x}-axis text font, \strong{default}:
 \code{axis.title.x.color = "black"}. Additional available colors are listed
 at the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
 
@@ -76,23 +76,23 @@ at the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
 \item{axis.title.y.family}{Character string, setting the font of the \eqn{y}-axis title (see also \code{axis.title.x.family}).
 \strong{Default}: \code{axis.title.y.family = "Arial"}.}
 
-\item{axis.title.y.color}{Character string pointing to color of the \eqn{y}-axis title font (see also \code{axis.title.x.color}).
+\item{axis.title.y.color}{Character string, pointing to color of the \eqn{y}-axis title font (see also \code{axis.title.x.color}).
 \strong{Default}: \code{axis.title.y.color = "black"}.}
 
 \item{axis.title.y.size}{Numeric, setting up the size of the \eqn{y}-axis title font in \code{px}, \strong{default}:
 \code{axis.title.x.size = 15}.}
 
-\item{axis.text.y.family}{Character string setting the font of the \eqn{y}-axis text (see also \code{axis.text.x.family}).
+\item{axis.text.y.family}{Character string, setting the font of the \eqn{y}-axis text (see also \code{axis.text.x.family}).
 \strong{Default}: \code{axis.text.y.family = "Arial"}.}
 
-\item{axis.text.y.color}{Character string pointing to color of the \eqn{y}-axis text font (see also \code{axis.text.x.color}).
+\item{axis.text.y.color}{Character string, pointing to color of the \eqn{y}-axis text font (see also \code{axis.text.x.color}).
 \strong{Default}: \code{axis.text.y.color = "black"}.}
 
 \item{axis.text.y.size}{Numeric, setting up the size of the \eqn{y}-axis text font in \code{px}, \strong{default}:
 \code{axis.text.x.size = 14}.}
 
 \item{legend.title}{Character string \eqn{\equiv} title of the legend (if the \code{var2nd.series} in NOT \code{NULL}).
-Character string can be defined either by simple text like \code{legend.title = "Time (s)"}
+It can be defined either by simple text like \code{legend.title = "Time (s)"}
 or if additional formatting is required,
 the \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language},
 such as \code{legend.title = "<i>Time</i> (s)"}
@@ -101,7 +101,7 @@ typesetting is required for the title, please refer to
 e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.
 \strong{Default}: \code{legend.title = NULL} (in all cases if \code{var2nd.series = NULL}).}
 
-\item{legend.title.family}{Character string setting the font of the legend title. Following \code{html} fonts
+\item{legend.title.family}{Character string, setting the font of the legend title. Following \code{html} fonts
 are available: "Arial" (\strong{default}), "Balto", "Courier New", "Droid Sans", "Droid Serif", "Droid Sans Mono",
 "Gravitas One", "Old Standard TT", "Open Sans", "Overpass", "PT Sans Narrow", "Raleway" and "Times New Roman".}
 
@@ -110,9 +110,9 @@ are available: "Arial" (\strong{default}), "Balto", "Courier New", "Droid Sans",
 at the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.}
 
 \item{legend.title.size}{Numeric, text size (in \code{px}) for the legend title,
-\strong{default}: \code{legend.title.size = NULL}, which actually corresponds to \code{13} if otherwise not defined.}
+\strong{default}: \code{legend.title.size = NULL}, which actually corresponds to \code{13} if not otherwise defined.}
 
-\item{bg.color}{Character string corresponding to background color of the panel/graph.
+\item{bg.color}{Character string, corresponding to background color of the panel/graph.
 Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 \strong{Default}: \code{bg.color = "#e5ecf6"} (corresponding to light blue-gray).}
 
@@ -120,20 +120,20 @@ Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS
 
 \item{grid.y}{Logical, whether to show (\code{grid.y = TRUE}, \strong{default}) or hide the grid \eqn{y}-axis lines.}
 
-\item{grid.color}{Character string corresponding to grid lines color of the panel/graph.
+\item{grid.color}{Character string, corresponding to grid lines color of the panel/graph.
 Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 \strong{Default}: \code{grid.color = "white"}.}
 
 \item{grid.line.width}{Numeric, width (in \code{px}) of the graph/plot panel grid lines, \strong{default}:
 \code{grid.line.width = 1.4}.}
 
-\item{grid.line.type}{Character string corresponding to type of the grid line. In addition to \code{grid.line.type = "solid"}
+\item{grid.line.type}{Character string, corresponding to type of the grid line. In addition to \code{grid.line.type = "solid"}
 (\strong{default}), "dot", "dash", "longdash", "dashdot", "longdashdot" can be used, as well.}
 
 \item{border.line.width}{Numeric, width (in \code{px}) of the graph/plot panel border line, \strong{default}:
 \code{border.line.width = 1.2}.}
 
-\item{border.line.color}{Character string referring to color of the plot graph/panel border line. Available colors
+\item{border.line.color}{Character string, referring to color of the plot graph/panel border line. Available colors
 are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 \strong{Default}: \code{border.line.color = "black"}.}
 }
@@ -145,7 +145,7 @@ List of the interactive plot object properties/parts, which can be used in conne
 Additional customization of interactive 2D plots (see also \code{\link{plot_EPR_Specs2D_interact}}).
    The main goal is to simplify setting up process of the \code{\link[plotly]{layout}} via several nested \code{lists}.
    Mostly, it nicely works (using the \code{\link[magrittr]{\%>\%}}) either with the general \code{\link[plotly]{plot_ly}}
-   or the above-mentioned \code{\link{plot_EPR_Specs2D_interact}} (see also example).
+   or the above-mentioned \code{\link{plot_EPR_Specs2D_interact}} (see also \code{Examples}).
 }
 \examples{
 ## example from `plot_EPR_Specs2D_interact()`
