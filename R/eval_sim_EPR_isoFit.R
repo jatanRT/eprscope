@@ -108,17 +108,20 @@
 #'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
-#' @param sim.check Logical, whether to return simple \code{list} with the overlay (simulated + experimental
-#'   spectrum) as well as residual plot and the best fitting parameters in a vector
-#'   (\code{sim.check = TRUE}, \strong{default}). If \code{sim.check = FALSE} the list contains
-#'   EPR spectra, data frame, best fitting parameters as well as additional characteristics
-#'   of the optimization/fitting procedure (see \code{Value}).
+#' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + best simulation
+#'   fit + experimental spectrum (including the residuals in the lower part of the plot,
+#'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
+#'   (\code{check.fit.plot = FALSE}): 1. Experimental, 2. Simulated one with the baseline fit
+#'   and 3. Simulated one with the baseline fit subtracted. The latter two are offset for clarity.
+#' @param return.params.only Logical. Should be just optimized parameters from the best fit
+#'   (together with the minimum sum of residual squares) returned (\code{best.params.only = TRUE})?
+#'   If ...TBC
 #' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
 #'
 #'
-#' @return List with the following components depending on \code{sim.check}:
+#' @return List with the following components depending on \code{check.fit.plot}:
 #'   \enumerate{
-#'   \item if \code{sim.check = TRUE}, it returns list components like:
+#'   \item if \code{check.fit.plot = TRUE}, it returns list components like:
 #'   \describe{
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectrum
 #'   together with the initial simulation (see the \code{optim.params.init} argument) in "overlay" mode.
@@ -132,7 +135,7 @@
 #'   (defined by the \code{optim.params.init} argument).}
 #'   }
 #'
-#'   \item if \code{sim.check = FALSE}, it returns list with the following components:
+#'   \item if \code{check.fit.plot = FALSE}, it returns list with the following components:
 #'   \describe{
 #'   \item{plot}{Visualization of three spectra which are offset for clarity. The first
 #'   (the upper one) is the original experimental spectrum. The second one (in the middle)
@@ -172,7 +175,7 @@
 #'                     qValue = 2100)
 #' #
 #' ## EPR spectrum simulation fit with "Nelder-Mead"
-#' ## optimization method with `sim.check = FALSE`:
+#' ## optimization method with `check.fit.plot = FALSE`:
 #' tempo.test.sim.fit.a <-
 #'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
 #'     nu.GHz = 9.806769,
@@ -188,7 +191,7 @@
 #'         0.016, # Sim. intensity multiply
 #'         1e-6, # slope lin. baseline
 #'         49), # A in MHz
-#'     sim.check = FALSE
+#'     check.fit.plot = FALSE
 #'   )
 #' ## OUTPUTS RETURNED:
 #' ## best fit parameters:
@@ -215,7 +218,7 @@
 #' head(tempo.test.sim.fit.a$df)
 #' #
 #' ## similar EPR spectrum simulation fit with "particle swarm"
-#' ## optimization algorithm and `sim.check = TRUE` option
+#' ## optimization algorithm and `check.fit.plot = TRUE` option
 #' ## as well as user defined bound constraints:
 #' tempo.test.sim.fit.b <-
 #'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
@@ -227,7 +230,7 @@
 #'     optim.params.init = c(2.006,4.8,4.8,0,1.1e-2,49),
 #'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,9e-3,45),
 #'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
-#'     sim.check = TRUE
+#'     check.fit.plot = TRUE
 #'   )
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters:
@@ -257,7 +260,7 @@
 #'                                             0,
 #'                                             7e-3,
 #'                                             49),
-#'                       sim.check = FALSE
+#'                       check.fit.plot = FALSE
 #'                     )
 #' ## OUTPUTS RETURNED:
 #' ## best fit parameters for both procedures within a list:
@@ -297,7 +300,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 tol.step = 5e-7,
                                 pswarm.size = NULL,
                                 pswarm.diameter = NULL,
-                                sim.check = TRUE,
+                                check.fit.plot = TRUE,
+                                return.params.only = FALSE,
                                 ...){
   #
   ## 'Temporary' processing variables
@@ -961,9 +965,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),"Residuals")))
   #
   ## results (incl. comparison of experimental and simulated spectra)
-  ## depending on `sim.check` which shows only the overlay spectra and best
+  ## depending on `check.fit.plot` which shows only the overlay spectra and best
   ## fitting parameters. Otherwise the entire list (see below) will be returned.
-  if (isTRUE(sim.check)){
+  if (isTRUE(check.fit.plot)){
     ## transformation into long table ("tidy") format for visualization
     data.sim.expr.long <- data.sim.expr %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
@@ -990,17 +994,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## Adding residuals and `pure` simulation (without baseline)
   ## to the overall data frame which will be returned
-  ## in the case of `sim.check = FALSE`
+  ## in the case of `check.fit.plot = FALSE`
   data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
   data.sim.expr$Simulation_NoBasLin <-
     best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]
   #
-  # ---------------- add initial simulation only if `sim.check = TRUE` ------------------
+  # ---------------- add initial simulation only if `check.fit.plot = TRUE` ------------------
   #
   ## Add initial (corresponding to `optim.params.init`) simulation to spectra
   #
   ## ...first of all, create initial `nuclear.system` =>
-  if (isTRUE(sim.check)) {
+  if (isTRUE(check.fit.plot)) {
     if (!is.null(nuclear.system.noA)){
       A.init <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                        optim.params.init[8:(7+length(nuclear.system.noA))],
@@ -1082,7 +1086,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                  bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   )
   #
-  if (isTRUE(sim.check)){
+  if (isTRUE(check.fit.plot)){
     ## display both overlay spectra (upper part) and residuals
     ## (lower part) in 1 col. by `{patchwork}`
     plot.sim.expr.upper <- ggplot(data = data.sim.expr.long) +
@@ -1188,17 +1192,30 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## ================================= RESULTS =============================
   #
+  if (isTRUE(check.fit.plot)) {
+    ## finally add residuals to `data.sim.expr.long`
+    data.sim.expr.resids <- data.sim.expr.resid$Residuals
+    data.sim.expr.resids[["Spectrum"]] <-
+      rep("Residuals",times = nrow(data.sim.expr.resids))
+    #
+    data.sim.expr.long <-
+      data.sim.expr.long %>%
+      dplyr::bind_rows(data.sim.expr.resids) %>%
+      dplyr::arrange(.data$Spectrum)
+    #
+  }
+  #
   ## switching between final list components
-  result.list <- switch(2-sim.check,
-                        list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params,
-                             df = data.sim.expr.long), ## all params., for all methods
-                        list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params, ## all params., for all methods
-                             df = data.sim.expr,
-                             sum.LSQ.min = min.LSQ.sum,
-                             N.evals = N.evals,
-                             N.converg = N.converg))
+  result.list <- list(
+    plot = plot.sim.expr,
+    best.fit.params = best.fit.params,
+    df = switch(2-check.fit.plot,
+                data.sim.expr.long,
+                data.sim.expr),
+    sum.LSQ.min = min.LSQ.sum,
+    N.evals = N.evals,
+    N.converg = N.converg
+  )
   #
   return(result.list)
   #
