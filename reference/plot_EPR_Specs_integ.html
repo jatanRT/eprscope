@@ -86,19 +86,19 @@
 
 <dl><dt id="arg-data-spectra-integ">data.spectra.integ<a class="anchor" aria-label="anchor" href="#arg-data-spectra-integ"></a></dt>
 <dd><p>Data frame object, inherited output from the <code><a href="eval_integ_EPR_Spec.html">eval_integ_EPR_Spec</a></code>,
-if <code>output.vecs = FALSE</code> (argument from the latter) corresponding to data frame including the original
+if <code>output.vecs = FALSE</code> (argument from the latter), corresponding to data frame including the original
 EPR spectral data and the integral(s).</p></dd>
 
 
 <dt id="arg-b">B<a class="anchor" aria-label="anchor" href="#arg-b"></a></dt>
-<dd><p>Character string pointing to magnetic flux density <code>column</code> of the original (<code>data.spectra.integ</code>)
+<dd><p>Character string, pointing to magnetic flux density <code>column</code> of the original (<code>data.spectra.integ</code>)
 data frame, either in "millitesla" or in "gauss", that is <code>B = "B_G"</code> (<strong>default</strong>)
 or <code>B = "B_mT"</code> or <code>B = "Bsim_G"</code> to include simulated EPR spectra as well.</p></dd>
 
 
 <dt id="arg-b-unit">B.unit<a class="anchor" aria-label="anchor" href="#arg-b-unit"></a></dt>
-<dd><p>Character string denoting the magnetic flux density unit e.g. <code>B.unit = "G"</code>
-(gauss, <strong>default</strong>) or <code>B.unit = "mT"</code> (millitesla).</p></dd>
+<dd><p>Character string, denoting the magnetic flux density unit e.g. <code>B.unit = "G"</code>
+(gauss, <strong>default</strong>), <code>B.unit = "mT"</code> (millitesla) or <code>B.unit = T</code> (tesla).</p></dd>
 
 
 <dt id="arg-blim">Blim<a class="anchor" aria-label="anchor" href="#arg-blim"></a></dt>
@@ -108,14 +108,14 @@ of the selected \(B\)-region, such as <code>Blim = c(3495.4,3595.4)</code>. <str
 
 
 <dt id="arg-ylim">ylim<a class="anchor" aria-label="anchor" href="#arg-ylim"></a></dt>
-<dd><p>Numeric vector corresponding to lower and upper limit of the \(y\)-axis scale
+<dd><p>Numeric vector, corresponding to lower and upper limit of the \(y\)-axis scale
 (e.g. <code>ylim = c(-1e-4,1e-3)</code>). This doesn't apply for separated integrals (if <code>separate.integs = TRUE</code>)
 and works only in overlay mode (in one graph/panel). <strong>Default</strong>: <code>ylim = NULL</code> corresponding to the entire
 \(y\)-range of presented integrals.</p></dd>
 
 
 <dt id="arg-slct-integs">slct.integs<a class="anchor" aria-label="anchor" href="#arg-slct-integs"></a></dt>
-<dd><p>Character string vector pointing to selected integrals/columns/variables (of the original
+<dd><p>Character string vector, pointing to selected integrals/columns/variables (of the original
 <code>data.spectra.integ</code> data frame) to be presented in the actual plot. <strong>Default</strong>:
 <code>slct.integs = c("single_Integ","baseline_Integ_fit","single_Integ_correct")</code>.</p></dd>
 
