@@ -6,9 +6,9 @@
 #'
 #'
 #' @description Plot of EPR/ENDOR spectrum/spectra (overlay plot) based
-#'   on \href{https://ggplot2.tidyverse.org/}{ggplot2}-functionality. Spectral data input must be available
+#'   on the \href{https://ggplot2.tidyverse.org/}{ggplot2}-functionality. Spectral data input must be available
 #'   as a data frame object (see also argument \code{data.spectra}).
-#'   Theme of the graphic spectrum representation as well as additional plot elements can be varied like
+#'   Theme of the visual spectrum representation as well as additional plot elements can be varied like
 #'   using the \code{{ggplot2}} package. Within a theme, the \code{y} ticks can be either displayed
 #'   or skipped (which is common for visualization of EPR spectra) and the intensity (e.g. \code{dIepr_over_dB})
 #'   is presented in "procedure defined unit" (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}).
@@ -34,7 +34,7 @@
 #'   \code{B_G} or \code{RF_MHz} see also \code{x} argument. The \code{y / Intensity} variable
 #'   can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
 #'   integrated or simulated spectra intensities are present, they can be labeled accordingly.
-#'   See also \code{Intensity} parameter/argument. For spectral series the second independent variable
+#'   See also \code{Intensity} parameter/argument. For the spectral series, the second independent variable
 #'   \code{var2nd.series} column (e.g. \code{var2nd.series = "time_s"} or \code{var2nd.series = "T_K"})
 #'   must be available. In such case the entire \code{data.spectra} must inherit the form
 #'   of \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format} (see also argument \code{var2nd.series}).
@@ -69,8 +69,9 @@
 #' @param lineSpecs.form Character string, describing either \code{"derivative"} (\strong{default})
 #'   or \code{"integrated"} (in such case also \code{"absorption"} can be used)
 #'   line form of the analyzed EPR spectrum/data.
-#' @param line.colors Character string, line color(s) to plot EPR spectrum/spectra. All \code{{ggplot2}} compatible
-#'   colors are allowed to plot the individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
+#' @param line.colors Character string, line color(s) to plot EPR spectrum/spectra.
+#'   \href{https://ggplot2.tidyverse.org/reference/aes_colour_fill_alpha.html}{All \code{{ggplot2}} compatible colors}
+#'   are allowed to plot the individual spectrum, \strong{default}: \code{line.colors = "steelblue"}.
 #'   For the series of EPR spectra two color scales are used:
 #'   \enumerate{
 #'   \item \strong{Continuous.} This is the case when \code{var2nd.series} \strong{IS NOT} \code{NULL}
@@ -106,17 +107,17 @@
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
 #' @param border.line.width Numeric, width (in \code{mm}) of the plot graph/panel border line, \strong{default}:
 #'   \code{border.line.width = 0.5}.
-#' @param border.line.color Character string ,referring to color of the plot graph/panel border line. \strong{Default}:
+#' @param border.line.color Character string, referring to color of the plot graph/panel border line. \strong{Default}:
 #'   \code{border.line.color = "black"}.
 #' @param border.line.type Character string or integer, corresponding to width of the plot graph/panel border line. Following types
 #'   can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 #'   \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.
-#' @param theme.basic Character string, calling a \code{ggplot} theme base. The following ones are defined:
+#' @param theme.basic Character string, calling a \code{ggplot} theme base. Following themes are defined:
 #'   \describe{
 #'     \item{\code{"theme_gray"}}{(\strong{default} one) => gray background with the white grid lines}
 #'     \item{\code{"theme_bw"}}{ => white background with thin gray grid lines, the theme is suggested \strong{for publications}}
 #'     \item{\code{"theme_light"}}{ => similar to \code{theme_bw()} but without the pronounced axis black lines}
-#'     \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however no opposite ones}
+#'     \item{\code{"theme_classic"}}{ => without grid, pronounced axis lines, however without opposite ones}
 #'     \item{\code{"theme_linedraw"}}{ => pronounced axis lines (both for the origin and the opposite) as well as the grid ones,
 #'     theme is suggested \strong{for publications} if the \code{grid} is set to \code{FALSE}}
 #'   }
@@ -131,7 +132,7 @@
 #' @param legend.text.size Numeric, legend text size in \code{pt}, \strong{default}: \code{legend.text.size = NULL},
 #'   actually corresponding to 11/11pt.
 #' @param grid Logical, whether to display the \code{grid} within the panel/graph, \strong{default}: \code{grid = TRUE}.
-#' @param yTicks Logical, whether to display the \code{y} (\code{dIepr_over_dB}) ticks and the corresponding text
+#' @param yTicks Logical, whether to display the \code{y} (\code{Intensity}) ticks and the corresponding text
 #'   (not the axis title!), which is often skipped in the EPR community, \strong{default}: \code{yTicks = TRUE}
 #'   (the axis ticks as well as the text are present).
 #'
@@ -186,7 +187,7 @@
 #'                     x.unit = "MHz")
 #' ## plotting the previous ENDOR data spectrum
 #' ## in derivative form with `darkred` linecolor
-#' ## and 1.2pt linewidth:
+#' ## and 1.2 mm linewidth:
 #' plot_EPR_Specs(pnt.endor.data,
 #'                x = "RF_MHz",
 #'                x.unit = "MHz",
@@ -455,6 +456,17 @@ plot_EPR_Specs <- function(data.spectra,
               labs(color = legend.title, x = x.label, y = y.label)
           }
           if (length(line.colors) == 1){
+            if (line.colors != "magma" || line.colors != "A" || line.colors != "inferno" ||
+                line.colors != "B" || line.colors != "plasma" || line.colors != "C" ||
+                line.colors != "viridis" || line.colors != "D" || line.colors != "cividis" ||
+                line.colors != "E" || line.colors != "rocket" || line.colors != "F" ||
+                line.colors != "mako" || line.colors != "G" || line.colors != "turbo" ||
+                line.colors != "H") {
+              line.colors <- "F"
+              message(' The argument `line.colors` was automatically set to "F"/"rocket" !\n
+                      You may set your custom colors accordingly.\n
+                      Please, consult the `line.colors` argument definition !')
+            }
             plot.vector.colors <- line.colors
             #
             simplePlot <- simplePlot.nocolor +

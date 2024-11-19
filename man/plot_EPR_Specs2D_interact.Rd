@@ -25,7 +25,7 @@ plot_EPR_Specs2D_interact(
 )
 }
 \arguments{
-\item{data.spectra}{Spectrum data frame/table object containing magnetic flux density, \eqn{g}-value
+\item{data.spectra}{Spectrum data frame/table object, containing magnetic flux density, \eqn{g}-value
 or radio-frequency columns as \code{x} variable. They can be labeled as \code{Field}, \code{B_mT}
 in mT (or \code{B_G} in gauss), see also \code{x} parameter/argument. The \code{y/Intensity} variable
 can be labeled as \code{dIepr_over_dB}, in case of derivative intensity, or if
@@ -36,26 +36,26 @@ the entire \code{data.spectra} must be present in the form of
 \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}
 (see also parameter/argument \code{var2nd.series}).}
 
-\item{x}{Character string pointing to \eqn{x}-axis/column quantity in the original \code{data.spectrum} like
+\item{x}{Character string, pointing to \eqn{x}-axis/column quantity in the original \code{data.spectrum} like
 magnetic flux density \eqn{B}, \eqn{Field}, \eqn{g}-Value or \eqn{RF} (radio frequency),
 \strong{default}: \code{x = "B_mT"}.}
 
-\item{x.unit}{Character string pointing to unit of quantity (coming from original ASCII data, see also
+\item{x.unit}{Character string pointing to \eqn{x}-unit of quantity (coming from the original ASCII data, see also
 \code{column.names} parameter) which is to be presented on \eqn{x}-axis of the EPR spectrum,
 like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz", in the case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values, \strong{default}: \code{x.unit = "mT"}.}
 
-\item{Intensity}{Character string corresponding to the intensity column header in the original \code{data.spectrum}
+\item{Intensity}{Character string, corresponding to the intensity column header in the original \code{data.spectrum}
 if other than \code{dIepr_over_dB} name/label is used (e.g. for integrated or simulated spectra),
 \strong{default}: \code{Intesity = "dIepr_over_dB"}.}
 
-\item{var2nd.series}{Character string referred to name of the second independent variable/quantity
+\item{var2nd.series}{Character string, referred to name of the second independent variable/quantity
 column in the original \code{data.spectra} (such as time, Temperature, Electrochemical Potential,
 Microwave Power...etc) altered upon individual experiments. Data must be available in \strong{long table}
 (or \strong{tidy}) \strong{format} (see also \code{data.spectra} argument).
 \strong{Default}: \code{var2nd.series = NULL}. Otherwise, usually, \code{var2nd.series = "time_s"}.}
 
-\item{lineSpecs.form}{Character string describing either \code{"derivative"} (\strong{default})
+\item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well)
 line form of the analyzed EPR spectrum/integral.}
 
@@ -66,27 +66,27 @@ WITH THE LENGTH \eqn{\geq 2} must be DEFINED (e.g. \code{line.colors = c("darkor
 
 \item{line.width}{Numeric, linewidth of the plot line in \code{mm}, \strong{default}: \code{line.width = 0.75}.}
 
-\item{line.type}{Character string or integer corresponding to width of the (spectral) line(s). Following types
+\item{line.type}{Character string or integer, corresponding to width of the (spectral) line(s). Following types
 can be specified: \code{0 = "blank"}, \code{1 = "solid"} (\strong{default}), \code{2 = "dashed"}, \code{3 = "dotted"},
 \code{4 = "dotdash"}, \code{5 = "longdash"} and \code{6 = "twodash"}.}
 
-\item{bg.color}{Character string corresponding to background color of the panel/graph.
+\item{bg.color}{Character string, corresponding to background color of the panel/graph.
 Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 \strong{Default}: \code{bg.color = "#e5ecf6"} (corresponding to light blue-gray).}
 
-\item{grid.color}{Character string corresponding to grid lines color of the panel/graph.
+\item{grid.color}{Character string, corresponding to grid lines color of the panel/graph.
 Available colors are listed on the \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 \strong{Default}: \code{grid.color = "white"}.}
 
 \item{border.line.width}{Numeric, width (in \code{px}) of the graph/plot panel border line, \strong{default}:
 \code{border.line.width = 1.2}.}
 
-\item{border.line.color}{Character string referring to color of the plot graph/panel border line. Available colors
+\item{border.line.color}{Character string, referring to color of the plot graph/panel border line. Available colors
 are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepage}.
 \strong{Default}: \code{border.line.color = "black"}.}
 
 \item{legend.title}{Character string \eqn{\equiv} title of the legend (if the \code{var2nd.series} in NOT \code{NULL}).
-Character string can be defined either by simple text like \code{legend.title = "Time (s)"}
+It can be defined either by simple text like \code{legend.title = "Time (s)"}
 or if additional formatting is required,
 the \href{https://www.w3schools.com/html/html_formatting.asp}{\code{html} markup language},
 such as \code{legend.title = "<i>Time</i> (s)"}
@@ -96,12 +96,12 @@ e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.
 \strong{Default}: \code{legend.title = NULL} (in all cases if \code{var2nd.series = NULL}).}
 
 \item{legend.title.size}{Numeric, text size (in \code{px}) for the legend title,
-\strong{default}: \code{legend.title.size = NULL}, which actually corresponds to \code{13} if otherwise not defined.}
+\strong{default}: \code{legend.title.size = NULL}, which actually corresponds to \code{13} if not otherwise defined.}
 
-\item{axis.title.size}{Numeric, text size (in \code{px}) for the axes title,
+\item{axis.title.size}{Numeric, text size (in \code{px}) for the axis title,
 \strong{default}: \code{axis.title.size = 15}.}
 
-\item{axis.text.size}{Numeric, text size (in \code{px}) for the axes unit values/descriptions,
+\item{axis.text.size}{Numeric, text size (in \code{px}) for the axis unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
 }
 \value{
@@ -112,7 +112,7 @@ Interactive visualization of EPR spectra or their integrals based on \href{https
   In the first step function takes the essential plot parts as \href{https://ggplot2.tidyverse.org/}{ggplot2},
   which is subsequently transferred by \code{\link[plotly]{ggplotly}} into the final interactive format.
   Such plots mostly contain buttons in order to zoom,
-  move and select (parts of) the EPR spectra/integrals as well as display the point values directly within
+  move and select (parts of) the EPR spectra/integrals as well as to display the point values directly within
   graph/panel. Additionally, plots can be exported into \code{.png} image
   or \code{.html} formats (see also \code{\link{plot_EPR_present_interact}}) and can optionally
   also \href{https://plotly.com/r/configuration-options/}{contain tools to draw lines, circles or rectangles}
@@ -158,7 +158,8 @@ plot_EPR_Specs2D_interact(verdazylRad.kinet.spectr,
   x = "B_G",
   x.unit = "G",
   var2nd.series = "time_s",
-  legend.title = "<i>Time</i> (s)"
+  legend.title = "<i>Time</i> (s)",
+  line.colors = c("darkorange","darkblue")
   )
 }
 
