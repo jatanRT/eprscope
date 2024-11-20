@@ -102,48 +102,51 @@
 #'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximum value).
 #' @param tol.step Numeric value, describing the smallest optimization step (tolerance) to stop the optimization.
 #'   \strong{Default}: \code{tol.step = 5e-7}.
-#' @param pswarm.size Numeric value, equal to particle swarm size (i. e. number of particles), only
-#'   if \code{optim.method = "pswarm"}. Otherwise, \code{pswarm.size = NULL} (\strong{default}).
-#' @param pswarm.diameter Numeric value corresponding to diameter of the particle swarm search space
-#'   (in case \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
+#' @param pswarm.size Numeric value, which equals to particle swarm size (i.e. number of particles),
+#'   if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
+#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))}, e.g. to optimize 8 parameters,
+#'   number of particles = 15.
+#' @param pswarm.diameter Numeric value, corresponding to diameter of the particle swarm search space
+#'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
-#' @param sim.check Logical, whether to return simple \code{list} with the overlay (simulated + experimental
-#'   spectrum) as well as residual plot and the best fitting parameters in a vector
-#'   (\code{sim.check = TRUE}, \strong{default}). If \code{sim.check = FALSE} the list contains
-#'   EPR spectra, data frame, best fitting parameters as well as additional characteristics
-#'   of the optimization/fitting procedure (see \code{Value}).
+#' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
+#'   fit + experimental spectrum (including residuals in the lower part of the plot,
+#'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
+#'   (\code{check.fit.plot = FALSE}): 1. experimental, 2. the best simulated one with the baseline fit
+#'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
+#'   within the plot.
+#' @param output.params.final Logical. Should be just optimized parameters from the best fit
+#'   (together with the minimum sum of residual squares) returned (\code{best.params.only = TRUE})?
+#'   If \code{output.params.final = FALSE}, \strong{default}, function returns the desired plot
+#'   (see the \code{check.fit.plot} argument) + the data frame with all corresponding spectra,
+#'   as well as characteristics of the optimization/fitting procedure (see \code{Value}).
+#' @param output.spec.final Logical, whether to return only data frame of the final best simulated spectrum
+#'   with and without the baseline fit, i.e. \code{output.spec.final = TRUE}. The \strong{default} assignment,
+#'   \code{output.spec.final = FALSE}, returns the desired plot (see the \code{check.fit.plot} argument) +
+#'   the data frame with all corresponding spectra, as well as characteristics of the optimization/fitting
+#'   procedure (see \code{Value}).
 #' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
 #'
 #'
-#' @return List with the following components depending on \code{sim.check}:
+#' @return Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
+#'   and \code{output...} arguments.
 #'   \enumerate{
-#'   \item if \code{sim.check = TRUE}, it returns list components like:
+#'   \item If \code{check.fit.plot = TRUE} or \code{check.fit.plot = FALSE}, it returns list with the following components:
 #'   \describe{
-#'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectrum
-#'   together with the initial simulation (see the \code{optim.params.init} argument) in "overlay" mode.
-#'   Additional graph, below to the latter, showing the residuals (difference between
-#'   the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
-#'   in order to quickly evaluate the quality of the fit.}
-#'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
-#'   see also description of the \code{optim.params.init}.}
+#'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra.
+#'   If \code{check.fit.plot = TRUE}, the overlay plot consists of the initial simulation + the best simulation
+#'   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
+#'   following three spectra: 1. experimental, 2. the best simulated one with the baseline fit
+#'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
+#'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
+#'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
-#'   the best simulated/fitted, as well as the initially simulated EPR spectrum
-#'   (defined by the \code{optim.params.init} argument).}
-#'   }
-#'
-#'   \item if \code{sim.check = FALSE}, it returns list with the following components:
-#'   \describe{
-#'   \item{plot}{Visualization of three spectra which are offset for clarity. The first
-#'   (the upper one) is the original experimental spectrum. The second one (in the middle)
-#'   is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
-#'   corresponds to the best fitted spectrum where the baseline counter part is subtracted.}
-#'   \item{best.fit.params}{Vector of the best (final) fitting parameters to simulate the EPR spectrum,
-#'   its elements are actually related to \code{optim.params.init}.}
-#'   \item{df}{Data frame (table) with the following variables / columns: magnetic flux density,
-#'   intensity of the experimental spectrum, intensity of the simulated spectrum (including
-#'   the baseline fit), residual intensity of the fit and finally, simulated spectrum intensity
-#'   without the baseline fit.}
+#'   the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
+#'   (if \code{check.fit.plot = TRUE}), or data frame with the following variables / columns
+#'   (for \code{check.fit.plot = FALSE}): magnetic flux density, intensity of the experimental
+#'   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
+#'   the best simulated spectrum intensity without the baseline fit.}
 #'   \item{sum.LSQ.min}{The minimum sum of the residual square vector after the least-square
 #'   procedure.}
 #'   \item{N.evals}{Number of iterations/function evaluations completed before termination.
@@ -152,13 +155,22 @@
 #'   and the number of restarts.}
 #'   \item{N.converg}{Vector or simple integer code indicating the successful completion
 #'   of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements coincide with
-#'   the sum of squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
+#'   the sum of residual squares at each iteration. If the \code{optim.method = "pswarm"} is applied, one of the following
 #'   codes can be returned: \code{0}: algorithm terminated by reaching the absolute tolerance,
 #'   \code{1}: maximum number of function evaluations reached, \code{2}: maximum number of iterations reached,
 #'   \code{3}: maximum number of restarts reached, \code{4}: maximum number of iterations without improvement reached.
-#'   For all the other remaining methods (coming from \code{{nloptr}} package), the integers have to be positive to indicate
-#'   the successful convergence.}
+#'   For all the other remaining methods (coming from \code{{nloptr}} package), the integers have to be positive
+#'   to indicate the successful convergence.}
 #'   }
+#'
+#'   \item If \code{output.params.final = TRUE}, vector, corresponding to the best fitting (optimized) parameters (related
+#'   to the \code{optim.params.init} argument) after the (final) \code{optim.method} procedure is exclusively available.
+#'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
+#'   as stated in the \code{Description}.
+#'
+#'   \item If \code{output.spec.final = TRUE}, the function exclusively returns data frame with the final best simulated
+#'   spectrum with and without the baseline fit. Such output will be applied for the more complex optimization/fitting
+#'   (which is currently under development), as stated in the \code{Description}.
 #'   }
 #'
 #'
@@ -172,7 +184,7 @@
 #'                     qValue = 2100)
 #' #
 #' ## EPR spectrum simulation fit with "Nelder-Mead"
-#' ## optimization method with `sim.check = FALSE`:
+#' ## optimization method with `check.fit.plot = FALSE`:
 #' tempo.test.sim.fit.a <-
 #'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
 #'     nu.GHz = 9.806769,
@@ -188,7 +200,7 @@
 #'         0.016, # Sim. intensity multiply
 #'         1e-6, # slope lin. baseline
 #'         49), # A in MHz
-#'     sim.check = FALSE
+#'     check.fit.plot = FALSE
 #'   )
 #' ## OUTPUTS RETURNED:
 #' ## best fit parameters:
@@ -215,7 +227,7 @@
 #' head(tempo.test.sim.fit.a$df)
 #' #
 #' ## similar EPR spectrum simulation fit with "particle swarm"
-#' ## optimization algorithm and `sim.check = TRUE` option
+#' ## optimization algorithm and `check.fit.plot = TRUE` option
 #' ## as well as user defined bound constraints:
 #' tempo.test.sim.fit.b <-
 #'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
@@ -227,7 +239,7 @@
 #'     optim.params.init = c(2.006,4.8,4.8,0,1.1e-2,49),
 #'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,9e-3,45),
 #'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
-#'     sim.check = TRUE
+#'     check.fit.plot = TRUE
 #'   )
 #' ## OUTPUTS-RETURN:
 #' ## best fit parameters:
@@ -257,7 +269,7 @@
 #'                                             0,
 #'                                             7e-3,
 #'                                             49),
-#'                       sim.check = FALSE
+#'                       check.fit.plot = FALSE
 #'                     )
 #' ## OUTPUTS RETURNED:
 #' ## best fit parameters for both procedures within a list:
@@ -297,13 +309,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 tol.step = 5e-7,
                                 pswarm.size = NULL,
                                 pswarm.diameter = NULL,
-                                sim.check = TRUE,
+                                check.fit.plot = TRUE,
+                                output.params.final = FALSE,
+                                output.spec.final = FALSE,
                                 ...){
   #
   ## 'Temporary' processing variables
   . <- NULL
   Residuals <- NULL
   Simulation_NoBasLin <- NULL
+  Spectrum <- NULL
   ## delete index column if present
   if (any(grepl("index", colnames(data.spectr.expr)))) {
     data.spectr.expr$index <- NULL
@@ -961,9 +976,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),"Residuals")))
   #
   ## results (incl. comparison of experimental and simulated spectra)
-  ## depending on `sim.check` which shows only the overlay spectra and best
+  ## depending on `check.fit.plot` which shows only the overlay spectra and best
   ## fitting parameters. Otherwise the entire list (see below) will be returned.
-  if (isTRUE(sim.check)){
+  if (isTRUE(check.fit.plot)){
     ## transformation into long table ("tidy") format for visualization
     data.sim.expr.long <- data.sim.expr %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
@@ -990,17 +1005,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## Adding residuals and `pure` simulation (without baseline)
   ## to the overall data frame which will be returned
-  ## in the case of `sim.check = FALSE`
+  ## in the case of `check.fit.plot = FALSE`
   data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
   data.sim.expr$Simulation_NoBasLin <-
     best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]
   #
-  # ---------------- add initial simulation only if `sim.check = TRUE` ------------------
+  # ---------------- add initial simulation only if `check.fit.plot = TRUE` ------------------
   #
   ## Add initial (corresponding to `optim.params.init`) simulation to spectra
   #
   ## ...first of all, create initial `nuclear.system` =>
-  if (isTRUE(sim.check)) {
+  if (isTRUE(check.fit.plot)) {
     if (!is.null(nuclear.system.noA)){
       A.init <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
                        optim.params.init[8:(7+length(nuclear.system.noA))],
@@ -1082,7 +1097,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                  bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   )
   #
-  if (isTRUE(sim.check)){
+  if (isTRUE(check.fit.plot)){
     ## display both overlay spectra (upper part) and residuals
     ## (lower part) in 1 col. by `{patchwork}`
     plot.sim.expr.upper <- ggplot(data = data.sim.expr.long) +
@@ -1188,18 +1203,50 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## ================================= RESULTS =============================
   #
-  ## switching between final list components
-  result.list <- switch(2-sim.check,
-                        list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params,
-                             df = data.sim.expr.long), ## all params., for all methods
-                        list(plot = plot.sim.expr,
-                             best.fit.params = best.fit.params, ## all params., for all methods
-                             df = data.sim.expr,
-                             sum.LSQ.min = min.LSQ.sum,
-                             N.evals = N.evals,
-                             N.converg = N.converg))
+  if (isTRUE(check.fit.plot)) {
+    ## finally add residuals to `data.sim.expr.long`
+    data.sim.expr.resids <- data.sim.expr.resid %>%
+      dplyr::rename_with(~ c(Intensity.expr),dplyr::all_of("Residuals"))
+    #
+    data.sim.expr.resids[["Spectrum"]] <-
+      rep("Residuals",times = nrow(data.sim.expr.resids))
+    #
+    data.sim.expr.long <-
+      data.sim.expr.long %>%
+      dplyr::bind_rows(data.sim.expr.resids) %>%
+      dplyr::arrange(.data$Spectrum)
+  }
   #
-  return(result.list)
+  # return list, vector, data frame ...
+  if (isTRUE(output.params.final)) {
+    ## final optimized parameters ffrom the last `optim.method`
+    ## if `length(optim.method) > 0`
+    result <- best.fit.params[[length(optim.method)]]
+  } else {
+    if (isTRUE(output.spec.final) & isTRUE(check.fit.plot)) {
+      result <- data.sim.expr.long %>%
+        dplyr::filter(Spectrum == "Simulation") %>%
+        dplyr::select(!dplyr::all_of(c("Spectrum")))
+    } else if (isTRUE(output.spec.final) & isFALSE(check.fit.plot)) {
+      result <- data.sim.expr %>%
+        dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
+                                      "Simulation",
+                                      "Simulation_NoBasLin")))
+    } else {
+      ## final list components (switching between `check.fit.plot` condition)
+      result <- list(
+        plot = plot.sim.expr,
+        best.fit.params = best.fit.params,
+        df = switch(2-check.fit.plot,
+                    data.sim.expr.long,
+                    data.sim.expr),
+        sum.LSQ.min = min.LSQ.sum,
+        N.evals = N.evals,
+        N.converg = N.converg
+      )
+    }
+  }
+  #
+  return(result)
   #
 }
