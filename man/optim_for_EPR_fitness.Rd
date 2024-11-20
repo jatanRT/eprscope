@@ -35,7 +35,7 @@ required to undergo a fitting/optimization process.}
 
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
-\code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend the optimization
+\code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extremely extend the optimization
 time.}
 
 \item{tol.step}{Numeric, the smallest optimization step (relative change) between
@@ -65,8 +65,8 @@ For all listed algorithms the function returns \code{list} with the elements lik
 
   \item The value of \code{fn} (minimum value) corresponding to the best \code{par}.
 
-  \item Number of evaluations and/or iterations (in case of \code{method = "pswarm"},
-  see also \code{Value} in \code{\link[pso]{psoptim}}) before the termination.
+  \item Number of evaluations and/or iterations (in case of the \code{method = "pswarm"},
+  see also \code{Value} in the \code{\link[pso]{psoptim}}) before the termination.
 
   \item (Un)successful termination information (\code{convergence} or \code{rsstrace}), usually
   corresponding either to integer value showing the (un)successful termination like \code{2: Maximum number

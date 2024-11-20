@@ -79,7 +79,7 @@
 #'   required to undergo a fitting/optimization process.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
-#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extend the optimization
+#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extremely extend the optimization
 #'   time.
 #' @param tol.step Numeric, the smallest optimization step (relative change) between
 #'   2 iterations to stop the optimization procedure. For the \code{method = "pswarm"}
@@ -104,8 +104,8 @@
 #'
 #'   \item The value of \code{fn} (minimum value) corresponding to the best \code{par}.
 #'
-#'   \item Number of evaluations and/or iterations (in case of \code{method = "pswarm"},
-#'   see also \code{Value} in \code{\link[pso]{psoptim}}) before the termination.
+#'   \item Number of evaluations and/or iterations (in case of the \code{method = "pswarm"},
+#'   see also \code{Value} in the \code{\link[pso]{psoptim}}) before the termination.
 #'
 #'   \item (Un)successful termination information (\code{convergence} or \code{rsstrace}), usually
 #'   corresponding either to integer value showing the (un)successful termination like \code{2: Maximum number
@@ -377,11 +377,11 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     #
     ## control of the PSO function
     contrl.list.pso <-
-      list(maxit = Nmax.evals, ## The maximum number of iterations.
+      list(maxit = floor(Nmax.evals/pswarm.size) + 1, ## The maximum number of iterations (per one particle).
            maxf = Nmax.evals, ## The maximum number of function evaluations.
            reltol = tol.step, ## The tolerance for restarting (see arguments above).
-           max.restart = 512, ## The maximum number of restarts.
-           maxit.stagnate = 512, ## The maximum number of iterations without improvement.
+           max.restart = 128, ## The maximum number of restarts.
+           maxit.stagnate = 128, ## The maximum number of iterations without improvement.
            s = pswarm.size, ## The swarm size.
            d = pswarm.diameter) ## The diameter of the search space.
     ## + maybe in the future add average percentage of informants for each particle (`p`)
