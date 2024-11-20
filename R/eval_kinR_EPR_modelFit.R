@@ -70,8 +70,7 @@
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
 #'   \item{sum.LSQ.min}{Minimum residual least-squares sum after \code{N.evals}.}
-#'   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.
-#'   The length of \code{N.converg} is equal to the length of \code{N.evals}.}
+#'   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
 #'   }
 #'
 #'
