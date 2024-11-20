@@ -23,7 +23,8 @@
 #'   All algorithms are based on the least-square minimization however,
 #'   the \code{fn} definition in case of \code{nls.lm} must be provided as a difference/residual
 #'   vector (see also \code{\link{eval_kinR_EPR_modelFit}}) and not as sum of difference/residual squares.
-#'   The applied optimization/fitting methods are summarized in the following table =>
+#'   The applied optimization/fitting methods are summarized in the following table (please, consult the details
+#'   in \code{References} or in the individual function documentation - links in the \code{Description}) =>
 #'   \tabular{lcl}{
 #'   \strong{Method/Algorithm} \tab \strong{Package} \tab \strong{Short Description} \cr
 #'   \code{slsqp} \tab \code{{nloptr}} \tab Sequential quadratic programming method for non-linearly
