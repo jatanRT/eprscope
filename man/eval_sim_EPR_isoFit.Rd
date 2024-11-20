@@ -138,7 +138,7 @@ and 3. the best simulated spectrum with the baseline fit subtracted. The latter 
 within the plot.}
 
 \item{output.params.final}{Logical. Should be just optimized parameters from the best fit
-(together with the minimum sum of residual squares) returned (\code{best.params.only = TRUE})?
+(together with the minimum sum of residual squares) returned (\code{output.params.final = TRUE})?
 If \code{output.params.final = FALSE}, \strong{default}, function returns the desired plot
 (see the \code{check.fit.plot} argument) + the data frame with all corresponding spectra,
 as well as characteristics of the optimization/fitting procedure (see \code{Value}).}
@@ -160,13 +160,13 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra.
   If \code{check.fit.plot = TRUE}, the overlay plot consists of the initial simulation + the best simulation
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
-  following three spectra: 1. experimental, 2. the best simulated one with the baseline fit
+  following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
   the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
-  (if \code{check.fit.plot = TRUE}), or data frame with the following variables / columns
+  (if \code{check.fit.plot = TRUE}), or wide data frame with the following variables / columns
   (for \code{check.fit.plot = FALSE}): magnetic flux density, intensity of the experimental
   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
   the best simulated spectrum intensity without the baseline fit.}
@@ -174,7 +174,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   procedure.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
-  equals to vector with the following elements: number of function evaluations, number of iterations
+  equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)
   and the number of restarts.}
   \item{N.converg}{Vector or simple integer code indicating the successful completion
   of the optimization/fit. In the case of \code{"levenmarq"} method, the vector elements coincide with
