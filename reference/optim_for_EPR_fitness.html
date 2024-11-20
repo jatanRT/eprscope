@@ -131,7 +131,7 @@ required to undergo a fitting/optimization process.</p></dd>
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
 <dd><p>Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
-<code>Nmax.evals = 1024</code> (<strong>default</strong>). Higher <code>Nmax.evals</code> may extend the optimization
+<code>Nmax.evals = 1024</code> (<strong>default</strong>). Higher <code>Nmax.evals</code> may extremely extend the optimization
 time.</p></dd>
 
 
@@ -167,8 +167,8 @@ $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
     <p>For all listed algorithms the function returns <code>list</code> with the elements like
   (please, refer to e.g. <code>Value</code> in <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>)</p><ol><li><p>The best parameters found (<code>par</code> vector, depending on the initial <code>x.0</code> set of parameters).</p></li>
 <li><p>The value of <code>fn</code> (minimum value) corresponding to the best <code>par</code>.</p></li>
-<li><p>Number of evaluations and/or iterations (in case of <code>method = "pswarm"</code>,
-  see also <code>Value</code> in <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">psoptim</a></code>) before the termination.</p></li>
+<li><p>Number of evaluations and/or iterations (in case of the <code>method = "pswarm"</code>,
+  see also <code>Value</code> in the <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">psoptim</a></code>) before the termination.</p></li>
 <li><p>(Un)successful termination information (<code>convergence</code> or <code>rsstrace</code>), usually
   corresponding either to integer value showing the (un)successful termination like <code>2: Maximum number
   of iterations reached</code> (or integer code &gt; 0 indicating successful completion) or in the case
@@ -183,7 +183,8 @@ $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
     <p>All algorithms are based on the least-square minimization however,
   the <code>fn</code> definition in case of <code>nls.lm</code> must be provided as a difference/residual
   vector (see also <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>) and not as sum of difference/residual squares.
-  The applied optimization/fitting methods are summarized in the following table =&gt;</p><table class="table table"><tr><td><strong>Method/Algorithm</strong></td><td><strong>Package</strong></td><td><strong>Short Description</strong></td></tr><tr><td><code>slsqp</code></td><td><code>{nloptr}</code></td><td>Sequential quadratic programming method for non-linearly
+  The applied optimization/fitting methods are summarized in the following table (please, consult the details
+  in <code>References</code> or in the individual function documentation - links in the <code>Description</code>) =&gt;</p><table class="table table"><tr><td><strong>Method/Algorithm</strong></td><td><strong>Package</strong></td><td><strong>Short Description</strong></td></tr><tr><td><code>slsqp</code></td><td><code>{nloptr}</code></td><td>Sequential quadratic programming method for non-linearly
   constrained, gradient-based optimization.</td></tr><tr><td><code>cobyla</code></td><td><code>{nloptr}</code></td><td>Constrained optimization by linear approximations,
   algorithm for derivative-free optimization with nonlinear inequality and equality constraints.</td></tr><tr><td><code>lbfgs</code></td><td><code>{nloptr}</code></td><td>Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.
   This is a quasi-Newton method well suited for the optimization problems with a large number of variables.</td></tr><tr><td><code>neldermead</code></td><td><code>{nloptr}</code></td><td>Nelder-Mead ("N-M") simplex algorithm.</td></tr><tr><td><code>crs2lm</code></td><td><code>{nloptr}</code></td><td>Controlled Random Search (CRS) algorithm (and in particular,

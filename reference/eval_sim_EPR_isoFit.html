@@ -106,7 +106,9 @@
 <span>  tol.step <span class="op">=</span> <span class="fl">5e-07</span>,</span>
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  sim.check <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  output.params.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  output.spec.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -226,23 +228,42 @@ the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.c
 
 
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
-<dd><p>Numeric value, equal to particle swarm size (i. e. number of particles), only
-if <code>optim.method = "pswarm"</code>. Otherwise, <code>pswarm.size = NULL</code> (<strong>default</strong>).</p></dd>
+<dd><p>Numeric value, which equals to particle swarm size (i.e. number of particles),
+if <code>method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
+corresponds to <code>floor(10+2*sqrt(length(x.0)))</code>, e.g. to optimize 8 parameters,
+number of particles = 15.</p></dd>
 
 
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
-<dd><p>Numeric value corresponding to diameter of the particle swarm search space
-(in case <code>optim.method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
+<dd><p>Numeric value, corresponding to diameter of the particle swarm search space
+(in case <code>method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
 refers to the Euclidean distance, defined as:
 $$\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}$$</p></dd>
 
 
-<dt id="arg-sim-check">sim.check<a class="anchor" aria-label="anchor" href="#arg-sim-check"></a></dt>
-<dd><p>Logical, whether to return simple <code>list</code> with the overlay (simulated + experimental
-spectrum) as well as residual plot and the best fitting parameters in a vector
-(<code>sim.check = TRUE</code>, <strong>default</strong>). If <code>sim.check = FALSE</code> the list contains
-EPR spectra, data frame, best fitting parameters as well as additional characteristics
-of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
+<dt id="arg-check-fit-plot">check.fit.plot<a class="anchor" aria-label="anchor" href="#arg-check-fit-plot"></a></dt>
+<dd><p>Logical, whether to return overlay plot with the initial simulation + the best simulation
+fit + experimental spectrum (including residuals in the lower part of the plot,
+<code>check.fit.plot = TRUE</code>, <strong>default</strong>) or with the following three spectra
+(<code>check.fit.plot = FALSE</code>): 1. experimental, 2. the best simulated one with the baseline fit
+and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
+within the plot.</p></dd>
+
+
+<dt id="arg-output-params-final">output.params.final<a class="anchor" aria-label="anchor" href="#arg-output-params-final"></a></dt>
+<dd><p>Logical. Should be just optimized parameters from the best fit
+(together with the minimum sum of residual squares) returned (<code>output.params.final = TRUE</code>)?
+If <code>output.params.final = FALSE</code>, <strong>default</strong>, function returns the desired plot
+(see the <code>check.fit.plot</code> argument) + the data frame with all corresponding spectra,
+as well as characteristics of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
+
+
+<dt id="arg-output-spec-final">output.spec.final<a class="anchor" aria-label="anchor" href="#arg-output-spec-final"></a></dt>
+<dd><p>Logical, whether to return only data frame of the final best simulated spectrum
+with and without the baseline fit, i.e. <code>output.spec.final = TRUE</code>. The <strong>default</strong> assignment,
+<code>output.spec.final = FALSE</code>, returns the desired plot (see the <code>check.fit.plot</code> argument) +
+the data frame with all corresponding spectra, as well as characteristics of the optimization/fitting
+procedure (see <code>Value</code>).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -251,39 +272,25 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>List with the following components depending on <code>sim.check</code>:</p><ol><li><p>if <code>sim.check = TRUE</code>, it returns list components like:</p><dl><dt>plot</dt>
-<dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectrum
-  together with the initial simulation (see the <code>optim.params.init</code> argument) in "overlay" mode.
-  Additional graph, below to the latter, showing the residuals (difference between
-  the experimental and the fitted simulated EPR spectrum) after the optimization / fitting procedure
-  in order to quickly evaluate the quality of the fit.</p></dd>
+    <p>Optimization/Fitting procedure results in vector or data frame or list depending on the <code>check.fit.plot</code>
+  and <code>output...</code> arguments.</p><ol><li><p>If <code>check.fit.plot = TRUE</code> or <code>check.fit.plot = FALSE</code>, it returns list with the following components:</p><dl><dt>plot</dt>
+<dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectra.
+  If <code>check.fit.plot = TRUE</code>, the overlay plot consists of the initial simulation + the best simulation
+  fit + experimental spectrum, including residuals in the plot lower part. Whereas, if <code>check.fit.plot = FALSE</code>,
+  following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
+  and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.</p></dd>
 
   <dt>best.fit.params</dt>
-<dd><p>Vector of the best (final) fitting parameters to simulate the EPR spectrum,
-  see also description of the <code>optim.params.init</code>.</p></dd>
+<dd><p>Vector of the best (final) fitting (optimized) parameters, for each corresponding
+  <code>optim.method</code>, to simulate the experimental EPR spectrum, see also description of the <code>optim.params.init</code>.</p></dd>
 
   <dt>df</dt>
 <dd><p>Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
-  the best simulated/fitted, as well as the initially simulated EPR spectrum
-  (defined by the <code>optim.params.init</code> argument).</p></dd>
-
-
-</dl></li>
-<li><p>if <code>sim.check = FALSE</code>, it returns list with the following components:</p><dl><dt>plot</dt>
-<dd><p>Visualization of three spectra which are offset for clarity. The first
-  (the upper one) is the original experimental spectrum. The second one (in the middle)
-  is the best fitted spectrum together with its baseline counterpart. Finally, the 3rd one
-  corresponds to the best fitted spectrum where the baseline counter part is subtracted.</p></dd>
-
-  <dt>best.fit.params</dt>
-<dd><p>Vector of the best (final) fitting parameters to simulate the EPR spectrum,
-  its elements are actually related to <code>optim.params.init</code>.</p></dd>
-
-  <dt>df</dt>
-<dd><p>Data frame (table) with the following variables / columns: magnetic flux density,
-  intensity of the experimental spectrum, intensity of the simulated spectrum (including
-  the baseline fit), residual intensity of the fit and finally, simulated spectrum intensity
-  without the baseline fit.</p></dd>
+  the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
+  (if <code>check.fit.plot = TRUE</code>), or wide data frame with the following variables / columns
+  (for <code>check.fit.plot = FALSE</code>): magnetic flux density, intensity of the experimental
+  spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
+  the best simulated spectrum intensity without the baseline fit.</p></dd>
 
   <dt>sum.LSQ.min</dt>
 <dd><p>The minimum sum of the residual square vector after the least-square
@@ -292,21 +299,28 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
   <dt>N.evals</dt>
 <dd><p>Number of iterations/function evaluations completed before termination.
   If the <code>pswarm</code> optimization algorithm is included in <code>optim.method</code>, the <code>N.evals</code>
-  equals to vector with the following elements: number of function evaluations, number of iterations
+  equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)
   and the number of restarts.</p></dd>
 
   <dt>N.converg</dt>
 <dd><p>Vector or simple integer code indicating the successful completion
   of the optimization/fit. In the case of <code>"levenmarq"</code> method, the vector elements coincide with
-  the sum of squares at each iteration. If the <code>optim.method = "pswarm"</code> is applied, one of the following
+  the sum of residual squares at each iteration. If the <code>optim.method = "pswarm"</code> is applied, one of the following
   codes can be returned: <code>0</code>: algorithm terminated by reaching the absolute tolerance,
   <code>1</code>: maximum number of function evaluations reached, <code>2</code>: maximum number of iterations reached,
   <code>3</code>: maximum number of restarts reached, <code>4</code>: maximum number of iterations without improvement reached.
-  For all the other remaining methods (coming from <code>{nloptr}</code> package), the integers have to be positive to indicate
-  the successful convergence.</p></dd>
+  For all the other remaining methods (coming from <code>{nloptr}</code> package), the integers have to be positive
+  to indicate the successful convergence.</p></dd>
 
 
 </dl></li>
+<li><p>If <code>output.params.final = TRUE</code>, vector, corresponding to the best fitting (optimized) parameters (related
+  to the <code>optim.params.init</code> argument) after the (final) <code>optim.method</code> procedure is exclusively available.
+  Such output will be applied for the more complex optimization/fitting (which is currently under development),
+  as stated in the <code>Description</code>.</p></li>
+<li><p>If <code>output.spec.final = TRUE</code>, the function exclusively returns data frame with the final best simulated
+  spectrum with and without the baseline fit. Such output will be applied for the more complex optimization/fitting
+  (which is currently under development), as stated in the <code>Description</code>.</p></li>
 </ol></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
@@ -338,7 +352,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>                    qValue <span class="op">=</span> <span class="fl">2100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## EPR spectrum simulation fit with "Nelder-Mead"</span></span></span>
-<span class="r-in"><span><span class="co">## optimization method with `sim.check = FALSE`:</span></span></span>
+<span class="r-in"><span><span class="co">## optimization method with `check.fit.plot = FALSE`:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">eval_sim_EPR_isoFit</span><span class="op">(</span>data.spectr.expr <span class="op">=</span> <span class="va">aminoxyl.data</span>,</span></span>
 <span class="r-in"><span>    nu.GHz <span class="op">=</span> <span class="fl">9.806769</span>,</span></span>
@@ -354,7 +368,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>        <span class="fl">0.016</span>, <span class="co"># Sim. intensity multiply</span></span></span>
 <span class="r-in"><span>        <span class="fl">1e-6</span>, <span class="co"># slope lin. baseline</span></span></span>
 <span class="r-in"><span>        <span class="fl">49</span><span class="op">)</span>, <span class="co"># A in MHz</span></span></span>
-<span class="r-in"><span>    sim.check <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## OUTPUTS RETURNED:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
@@ -403,7 +417,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -1.9098767e-06 1.3945650e-06       5.8910954e-09</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## similar EPR spectrum simulation fit with "particle swarm"</span></span></span>
-<span class="r-in"><span><span class="co">## optimization algorithm and `sim.check = TRUE` option</span></span></span>
+<span class="r-in"><span><span class="co">## optimization algorithm and `check.fit.plot = TRUE` option</span></span></span>
 <span class="r-in"><span><span class="co">## as well as user defined bound constraints:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">eval_sim_EPR_isoFit</span><span class="op">(</span>data.spectr.expr <span class="op">=</span> <span class="va">aminoxyl.data</span>,</span></span>
@@ -415,7 +429,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>    optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.006</span>,<span class="fl">4.8</span>,<span class="fl">4.8</span>,<span class="fl">0</span>,<span class="fl">1.1e-2</span>,<span class="fl">49</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    optim.params.lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0048</span>,<span class="fl">4.4</span>,<span class="fl">4.4</span>,<span class="op">-</span><span class="fl">1e-4</span>,<span class="fl">9e-3</span>,<span class="fl">45</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    optim.params.upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0072</span>,<span class="fl">5.2</span>,<span class="fl">5.2</span>,<span class="fl">1e-4</span>,<span class="fl">1.5e-2</span>,<span class="fl">53</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    sim.check <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## OUTPUTS-RETURN:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
@@ -450,7 +464,7 @@ of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
 <span class="r-in"><span>                                            <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>                                            <span class="fl">7e-3</span>,</span></span>
 <span class="r-in"><span>                                            <span class="fl">49</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      sim.check <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>                      check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>                    <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## OUTPUTS RETURNED:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
