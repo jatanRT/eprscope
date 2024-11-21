@@ -23,8 +23,7 @@ eval_sim_EPR_isoFit(
   pswarm.size = NULL,
   pswarm.diameter = NULL,
   check.fit.plot = TRUE,
-  output.params.final = FALSE,
-  output.spec.final = FALSE,
+  output.list.final = FALSE,
   ...
 )
 }
@@ -137,17 +136,11 @@ fit + experimental spectrum (including residuals in the lower part of the plot,
 and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
 within the plot.}
 
-\item{output.params.final}{Logical. Should be just optimized parameters from the best fit
-(together with the minimum sum of residual squares) returned (\code{output.params.final = TRUE})?
-If \code{output.params.final = FALSE}, \strong{default}, function returns the desired plot
-(see the \code{check.fit.plot} argument) + the data frame with all corresponding spectra,
-as well as characteristics of the optimization/fitting procedure (see \code{Value}).}
-
-\item{output.spec.final}{Logical, whether to return only data frame of the final best simulated spectrum
-with and without the baseline fit, i.e. \code{output.spec.final = TRUE}. The \strong{default} assignment,
-\code{output.spec.final = FALSE}, returns the desired plot (see the \code{check.fit.plot} argument) +
-the data frame with all corresponding spectra, as well as characteristics of the optimization/fitting
-procedure (see \code{Value}).}
+\item{output.list.final}{Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
+1. optimized parameters from the best fit (together with the minimum sum of residual squares)
+and 2. data frame of the final best simulated spectrum with and without the baseline fit (see \code{Value}).
+Such output will be applied for the more complex optimization/fitting (which is currently under development),
+as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.}
 
 \item{...}{additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).}
 }
@@ -155,7 +148,8 @@ procedure (see \code{Value}).}
 Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
   and \code{output...} arguments.
   \enumerate{
-  \item If \code{check.fit.plot = TRUE} or \code{check.fit.plot = FALSE}, it returns list with the following components:
+  \item If \code{check.fit.plot = TRUE} or \code{check.fit.plot = FALSE}, the result corresponds
+  to list with the following components:
   \describe{
   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra.
   If \code{check.fit.plot = TRUE}, the overlay plot consists of the initial simulation + the best simulation
@@ -186,14 +180,14 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   to indicate the successful convergence.}
   }
 
-  \item If \code{output.params.final = TRUE}, vector, corresponding to the best fitting (optimized) parameters (related
-  to the \code{optim.params.init} argument) after the (final) \code{optim.method} procedure is exclusively available.
-  Such output will be applied for the more complex optimization/fitting (which is currently under development),
-  as stated in the \code{Description}.
-
-  \item If \code{output.spec.final = TRUE}, the function exclusively returns data frame with the final best simulated
-  spectrum with and without the baseline fit. Such output will be applied for the more complex optimization/fitting
-  (which is currently under development), as stated in the \code{Description}.
+  \item If \code{output.list.final = TRUE}, the function exclusively returns list with the two components,
+  which will be applied for the more complex optimization/fitting (which is currently under development).
+  \describe{
+  \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
+  to the \code{optim.params.init} argument, see also list above) + minimum sum of the residual squares,
+  after the (final) \code{optim.method} procedure.}
+  \item{df}{Data frame including the final best simulated spectrum with and without the baseline fit.}
+  }
   }
 }
 \description{

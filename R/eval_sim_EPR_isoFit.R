@@ -116,23 +116,19 @@
 #'   (\code{check.fit.plot = FALSE}): 1. experimental, 2. the best simulated one with the baseline fit
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
 #'   within the plot.
-#' @param output.params.final Logical. Should be just optimized parameters from the best fit
-#'   (together with the minimum sum of residual squares) returned (\code{output.params.final = TRUE})?
-#'   If \code{output.params.final = FALSE}, \strong{default}, function returns the desired plot
-#'   (see the \code{check.fit.plot} argument) + the data frame with all corresponding spectra,
-#'   as well as characteristics of the optimization/fitting procedure (see \code{Value}).
-#' @param output.spec.final Logical, whether to return only data frame of the final best simulated spectrum
-#'   with and without the baseline fit, i.e. \code{output.spec.final = TRUE}. The \strong{default} assignment,
-#'   \code{output.spec.final = FALSE}, returns the desired plot (see the \code{check.fit.plot} argument) +
-#'   the data frame with all corresponding spectra, as well as characteristics of the optimization/fitting
-#'   procedure (see \code{Value}).
+#' @param output.list.final Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
+#'   1. optimized parameters from the best fit (together with the minimum sum of residual squares)
+#'   and 2. data frame of the final best simulated spectrum with and without the baseline fit (see \code{Value}).
+#'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
+#'   as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
 #' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
 #'
 #'
 #' @return Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
 #'   and \code{output...} arguments.
 #'   \enumerate{
-#'   \item If \code{check.fit.plot = TRUE} or \code{check.fit.plot = FALSE}, it returns list with the following components:
+#'   \item If \code{check.fit.plot = TRUE} or \code{check.fit.plot = FALSE}, the result corresponds
+#'   to list with the following components:
 #'   \describe{
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra.
 #'   If \code{check.fit.plot = TRUE}, the overlay plot consists of the initial simulation + the best simulation
@@ -163,14 +159,14 @@
 #'   to indicate the successful convergence.}
 #'   }
 #'
-#'   \item If \code{output.params.final = TRUE}, vector, corresponding to the best fitting (optimized) parameters (related
-#'   to the \code{optim.params.init} argument) after the (final) \code{optim.method} procedure is exclusively available.
-#'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
-#'   as stated in the \code{Description}.
-#'
-#'   \item If \code{output.spec.final = TRUE}, the function exclusively returns data frame with the final best simulated
-#'   spectrum with and without the baseline fit. Such output will be applied for the more complex optimization/fitting
-#'   (which is currently under development), as stated in the \code{Description}.
+#'   \item If \code{output.list.final = TRUE}, the function exclusively returns list with the two components,
+#'   which will be applied for the more complex optimization/fitting (which is currently under development).
+#'   \describe{
+#'   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
+#'   to the \code{optim.params.init} argument, see also list above) + minimum sum of the residual squares,
+#'   after the (final) \code{optim.method} procedure.}
+#'   \item{df}{Data frame including the final best simulated spectrum with and without the baseline fit.}
+#'   }
 #'   }
 #'
 #'
@@ -310,8 +306,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 pswarm.size = NULL,
                                 pswarm.diameter = NULL,
                                 check.fit.plot = TRUE,
-                                output.params.final = FALSE,
-                                output.spec.final = FALSE,
+                                output.list.final = FALSE,
                                 ...){
   #
   ## 'Temporary' processing variables
@@ -1218,24 +1213,28 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   # return list, vector, data frame ...
-  if (isTRUE(output.params.final)) {
+  if (isTRUE(output.list.final)) {
     ## final optimized parameters (+ min.LSQ) from the last `optim.method`
     ## if `length(optim.method) > 0`
-    result <- c(
+    result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.LSQ.sum[[length(optim.method)]]
     )
-  } else {
-    if (isTRUE(output.spec.final) & isTRUE(check.fit.plot)) {
-      result <- data.sim.expr.long %>%
+    ## final data frame
+    if (isTRUE(check.fit.plot)){
+      result.df <- data.sim.expr.long %>%
         dplyr::filter(Spectrum == "Simulation") %>%
         dplyr::select(!dplyr::all_of(c("Spectrum")))
-    } else if (isTRUE(output.spec.final) & isFALSE(check.fit.plot)) {
-      result <- data.sim.expr %>%
+    } else {
+      result.df <- data.sim.expr %>%
         dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
                                       "Simulation",
                                       "Simulation_NoBasLin")))
-    } else {
+    }
+    #
+    result <- list(params = result.vec,df = result.df)
+    #
+  } else {
       ## final list components (switching between `check.fit.plot` condition)
       result <- list(
         plot = plot.sim.expr,
@@ -1248,7 +1247,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         N.converg = N.converg
       )
     }
-  }
   #
   return(result)
   #
