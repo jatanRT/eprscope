@@ -107,8 +107,7 @@
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  output.params.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  output.spec.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  output.list.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -250,20 +249,12 @@ and 3. the best simulated spectrum with the baseline fit subtracted. The latter 
 within the plot.</p></dd>
 
 
-<dt id="arg-output-params-final">output.params.final<a class="anchor" aria-label="anchor" href="#arg-output-params-final"></a></dt>
-<dd><p>Logical. Should be just optimized parameters from the best fit
-(together with the minimum sum of residual squares) returned (<code>output.params.final = TRUE</code>)?
-If <code>output.params.final = FALSE</code>, <strong>default</strong>, function returns the desired plot
-(see the <code>check.fit.plot</code> argument) + the data frame with all corresponding spectra,
-as well as characteristics of the optimization/fitting procedure (see <code>Value</code>).</p></dd>
-
-
-<dt id="arg-output-spec-final">output.spec.final<a class="anchor" aria-label="anchor" href="#arg-output-spec-final"></a></dt>
-<dd><p>Logical, whether to return only data frame of the final best simulated spectrum
-with and without the baseline fit, i.e. <code>output.spec.final = TRUE</code>. The <strong>default</strong> assignment,
-<code>output.spec.final = FALSE</code>, returns the desired plot (see the <code>check.fit.plot</code> argument) +
-the data frame with all corresponding spectra, as well as characteristics of the optimization/fitting
-procedure (see <code>Value</code>).</p></dd>
+<dt id="arg-output-list-final">output.list.final<a class="anchor" aria-label="anchor" href="#arg-output-list-final"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, <code>list</code> with the following components will be exclusively returned:
+1. optimized parameters from the best fit (together with the minimum sum of residual squares)
+and 2. data frame of the final best simulated spectrum with and without the baseline fit (see <code>Value</code>).
+Such output will be applied for the more complex optimization/fitting (which is currently under development),
+as stated in the <code>Description</code>, therefore, the <strong>default</strong> value reads <code>output.list.final = FALSE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -273,7 +264,8 @@ procedure (see <code>Value</code>).</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Optimization/Fitting procedure results in vector or data frame or list depending on the <code>check.fit.plot</code>
-  and <code>output...</code> arguments.</p><ol><li><p>If <code>check.fit.plot = TRUE</code> or <code>check.fit.plot = FALSE</code>, it returns list with the following components:</p><dl><dt>plot</dt>
+  and <code>output...</code> arguments.</p><ol><li><p>If <code>check.fit.plot = TRUE</code> or <code>check.fit.plot = FALSE</code>, the result corresponds
+  to list with the following components:</p><dl><dt>plot</dt>
 <dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectra.
   If <code>check.fit.plot = TRUE</code>, the overlay plot consists of the initial simulation + the best simulation
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if <code>check.fit.plot = FALSE</code>,
@@ -314,13 +306,17 @@ procedure (see <code>Value</code>).</p></dd>
 
 
 </dl></li>
-<li><p>If <code>output.params.final = TRUE</code>, vector, corresponding to the best fitting (optimized) parameters (related
-  to the <code>optim.params.init</code> argument) after the (final) <code>optim.method</code> procedure is exclusively available.
-  Such output will be applied for the more complex optimization/fitting (which is currently under development),
-  as stated in the <code>Description</code>.</p></li>
-<li><p>If <code>output.spec.final = TRUE</code>, the function exclusively returns data frame with the final best simulated
-  spectrum with and without the baseline fit. Such output will be applied for the more complex optimization/fitting
-  (which is currently under development), as stated in the <code>Description</code>.</p></li>
+<li><p>If <code>output.list.final = TRUE</code>, the function exclusively returns list with the two components,
+  which will be applied for the more complex optimization/fitting (which is currently under development).</p><dl><dt>params</dt>
+<dd><p>Vector, corresponding to the best fitting (optimized) parameters (related
+  to the <code>optim.params.init</code> argument, see also list above) + minimum sum of the residual squares,
+  after the (final) <code>optim.method</code> procedure.</p></dd>
+
+  <dt>df</dt>
+<dd><p>Data frame including the final best simulated spectrum with and without the baseline fit.</p></dd>
+
+
+</dl></li>
 </ol></div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
