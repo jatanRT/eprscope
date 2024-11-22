@@ -3,11 +3,11 @@
   to simulated spectra). The related intensity multiplication coefficients
   (please, refer to the optim.params.init argument) are optimized by methods gathered in the
   optim_for_EPR_fitness. The goal is to fit the sum of the simulated components
-  onto each experimental spectrum within the series. So far, the maximum number of components is set to 6."><title>Quantify (Components) Areas of Series of Simulated EPR Spectra — quantify_EPR_Sim_series • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Quantify (Components) Areas of Series of Simulated EPR Spectra — quantify_EPR_Sim_series"><meta property="og:description" content="Evaluating the linear combination of spectral intensities of components (loaded as ASCII text files corresponding
+  onto each experimental spectrum within series. So far, the maximum number of components is set to 6."><title>Quantify (Components) Areas of Series of Simulated EPR Spectra — quantify_EPR_Sim_series • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Quantify (Components) Areas of Series of Simulated EPR Spectra — quantify_EPR_Sim_series"><meta property="og:description" content="Evaluating the linear combination of spectral intensities of components (loaded as ASCII text files corresponding
   to simulated spectra). The related intensity multiplication coefficients
   (please, refer to the optim.params.init argument) are optimized by methods gathered in the
   optim_for_EPR_fitness. The goal is to fit the sum of the simulated components
-  onto each experimental spectrum within the series. So far, the maximum number of components is set to 6."><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
+  onto each experimental spectrum within series. So far, the maximum number of components is set to 6."><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
 </script><!--
 <script>
   (function () {
@@ -65,7 +65,7 @@
   to simulated spectra). The related intensity multiplication coefficients
   (please, refer to the <code>optim.params.init</code> argument) are optimized by methods gathered in the
   <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>. The goal is to fit the sum of the simulated components
-  onto each experimental spectrum within the series. So far, the maximum number of components is set to 6.</p>
+  onto each experimental spectrum within series. So far, the maximum number of components is set to 6.</p>
     </div>
 
     <div class="section level2">
@@ -108,12 +108,12 @@ See also <code>Intensity.expr</code> parameter/argument. A second independent va
 <code>var2nd.series</code> column (e.g. <code>var2nd.series = "time_s"</code>) must be available. In such case,
 the entire <code>data.spectra</code> must be present in the form of
 <a href="https://r4ds.had.co.nz/tidy-data.html" class="external-link">tidy/long table format</a>
-(see also parameter/argument <code>var2nd.series</code>). Such data frame can be created, e.g.
+(see also the parameter/argument <code>var2nd.series</code>). Such data frame can be created, e.g.
 by the <code><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></code> or the <code><a href="readEPR_Exp_Specs_multif.html">readEPR_Exp_Specs_multif</a></code> function.</p></dd>
 
 
 <dt id="arg-dir-asc-sim">dir_ASC_sim<a class="anchor" aria-label="anchor" href="#arg-dir-asc-sim"></a></dt>
-<dd><p>Character string, pointing to folder where the simulated EPR spectra of all
+<dd><p>Character string, pointing to folder where the simulated EPR spectra (data files) of all
 components are stored. Path can be alternatively specified by the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code> function.</p></dd>
 
 
@@ -121,13 +121,13 @@ components are stored. Path can be alternatively specified by the <code><a href=
 <dd><p>Character string pattern from file names related to simulated EPR spectral data
 like <code>name.pattern.sim = "DHMB0_1st_04_SimA"</code>
 or <code>name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]"</code> (for the file names <code>..._SimA</code>,
-<code>..._SimB</code>,...etc). It assumes, those file must have similar names and this pattern appears
+<code>..._SimB</code>,...etc). It assumes, those files must have similar names and this pattern appears
 at the beginning of the file name. One may also consult
 how to <a href="https://r4ds.hadley.nz/regexps" class="external-link">use regular expressions in R</a>.</p></dd>
 
 
 <dt id="arg-sim-origin">sim.origin<a class="anchor" aria-label="anchor" href="#arg-sim-origin"></a></dt>
-<dd><p>Character string referring to "origin" of the simulated ASCII data.
+<dd><p>Character string, referring to "origin" of the simulated ASCII data.
 There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</code> (<strong>default</strong>),
 <code>"xenon"</code>, <code>"simfonia"</code> as well as universal <code>"csv"</code>.</p></dd>
 
@@ -135,19 +135,19 @@ There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</cod
 <dt id="arg-var-nd-series">var2nd.series<a class="anchor" aria-label="anchor" href="#arg-var-nd-series"></a></dt>
 <dd><p>Character string referred to name of the second independent variable/quantity
 column in the original <code>data.spectra.series</code> (such as time, temperature, electrochemical potential,
-Microwave Power) altered upon individual experiments as a second variable.
+Microwave Power) altered during individual experiments as a second variable.
 Data must be available in tidy/long table format.
 <strong>Default</strong>: <code>var2nd.series = "time_s"</code>.</p></dd>
 
 
 <dt id="arg-b-unit">B.unit<a class="anchor" aria-label="anchor" href="#arg-b-unit"></a></dt>
-<dd><p>Character string pointing to unit of magnetic flux density
+<dd><p>Character string, pointing to unit of magnetic flux density
 like <code>"G"</code> (Gauss) or <code>"mT"</code> (millitesla), <strong>default</strong>: <code>B.unit = "G"</code>.
 THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS/DATAFRAMES.</p></dd>
 
 
 <dt id="arg-intensity-expr">Intensity.expr<a class="anchor" aria-label="anchor" href="#arg-intensity-expr"></a></dt>
-<dd><p>Character string pointing to column name of the experimental EPR intensity within
+<dd><p>Character string, pointing to column name of the experimental EPR intensity within
 the original <code>data.spectra.series</code>. <strong>Default</strong>: <code>dIepr_over_dB</code>.</p></dd>
 
 
@@ -159,7 +159,7 @@ data frames (check the simulated spectral data for all components).
 
 <dt id="arg-optim-method">optim.method<a class="anchor" aria-label="anchor" href="#arg-optim-method"></a></dt>
 <dd><p>Character string, pointing to applied optimization method/algorithm.
-One may choose one from those listed in <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>, <strong>default</strong>:
+One may choose <strong>one</strong> from those listed in <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>, <strong>default</strong>:
 <code>method = "sbplx"</code>, setting up
 the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex" class="external-link">"Subplex" method</a>.</p></dd>
 
@@ -167,7 +167,7 @@ the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-base
 <dt id="arg-optim-params-init">optim.params.init<a class="anchor" aria-label="anchor" href="#arg-optim-params-init"></a></dt>
 <dd><p>Numeric vector with the elements: baseline constant/intercept
 followed by simulated intensity multiplication coefficient for each EPR spectral component.
-Therefore, the length of this vector is equal to: number of components + 1.</p></dd>
+Therefore, the length of this vector is equal to number of components + 1.</p></dd>
 
 
 <dt id="arg-optim-params-lower">optim.params.lower<a class="anchor" aria-label="anchor" href="#arg-optim-params-lower"></a></dt>
@@ -201,12 +201,13 @@ See also <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="externa
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
 <dd><p>Numeric value equal to particle swarm size (i.e. number of particles),
 if <code>optim.method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(x.0)))</code>.</p></dd>
+corresponds to <code>floor(10+2*sqrt(length(optim.params.init)))</code> (e.g. for 3 spectral components
+<code>pswarm.size</code> = 14).</p></dd>
 
 
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
-<dd><p>Numeric value corresponding to diameter of the particle swarm search space
-(in case <code>optim.method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
+<dd><p>Numeric value, corresponding to diameter of the particle swarm search space
+(in case when <code>optim.method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
 refers to the Euclidean distance, defined as:
 $$\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}$$</p></dd>
 
@@ -218,8 +219,8 @@ within the output data frame, <strong>default</strong>: <code>single.integ = "si
 
 <dt id="arg-double-integ">double.integ<a class="anchor" aria-label="anchor" href="#arg-double-integ"></a></dt>
 <dd><p>Character string, setting up the column/variable name related to double-integrated spectrum
-within the output data frame, <strong>default</strong>: <code>double.integ = "single_IntegSim"</code>.
-If <code>double.integ = NULL</code> only single integrals are calculated/returned (e.g. in the case of
+within the output data frame, <strong>default</strong>: <code>double.integ = "double_IntegSim"</code>.
+If <code>double.integ = NULL</code>, only single integrals are calculated/returned (e.g. in the case of
 single integrated spectral data).</p></dd>
 
 
@@ -238,12 +239,12 @@ for each time/temperature/...etc. point in row. Additional optimization measures
     <p>Function provides data frame object, depending on the <code>output.area.stat</code> argument,
   as listed below:</p><ol><li><p>If <code>output.area.stat = TRUE</code> (<strong>default</strong>), the resulting data frame consists
   of columns/variables like integrals/areas for each simulated and fitted EPR spectrum, where
-  the components are denoted by uppercase letters (<code>Area_Sim_A</code>, <code>Area_Sim_B</code>,...etc.);
+  the components are denoted by the uppercase letters (<code>Area_Sim_A</code>, <code>Area_Sim_B</code>,...etc.);
   best fitted/optimized coefficients to multiply the intensities (<code>Optim_CoeffInt_Sim_A</code>,
   <code>Optim_CoeffInt_Sim_B</code>,...etc); best fitted/optimized intercept (or baseline constant,
   <code>Optim_intercept</code>); minimum sum of the residual squares (<code>minLSQ_sum</code>); number
   of evaluations/iterations (<code>N_evals</code>) and finally convergence information/number (<code>N_converg</code>,
-  like already described in <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>). These variables are presented for each
+  like already described in the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>). These variables are presented for each
   <code>var2nd.series</code> (e.g. time) point like example for one EPR spectral component:</p><table class="table table"><tr><td><strong>time_s</strong></td><td><strong>Area_Sim_A</strong></td><td><strong>Optim_CoeffInt_Sim_A</strong></td><td><strong>Optim_intercept</strong></td><td><strong>minLSQ_sum</strong></td><td><strong>N_evals</strong></td><td><strong>N_converg</strong></td></tr><tr><td>6</td><td>0.020624473</td><td>0.052843937</td><td>5.508809e-10</td><td>2.289953e-07</td><td>198</td><td>4</td></tr><tr><td>21</td><td>0.020217930</td><td>0.051802287</td><td>5.401823e-10</td><td>2.438172e-07</td><td>177</td><td>4</td></tr><tr><td>36</td><td>0.018836579</td><td>0.048263010</td><td>5.029705e-10</td><td>2.662651e-07</td><td>201</td><td>4</td></tr></table></li>
 <li><p>Tidy/long table format of the original <code>data.spectra.series</code> with additional
   columns/variables (best fitted simulated intensities) for all spectral components: A, B, C, ...etc.</p></li>
@@ -252,14 +253,13 @@ for each time/temperature/...etc. point in row. Additional optimization measures
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Analyzed EPR spectra may consists of several components (see also the <code><a href="eval_sim_EPR_iso_combo.html">eval_sim_EPR_iso_combo</a></code>
   function), like the overlapped EPR spectra of several radicals. In order to follow the concentration/amount
-  variations of each individual radical during the kinetic/temperature/...series, one must figure out
+  variations of each individual radical during the kinetic/temperature/...series, one must figure out,
   how those individual spectral components are actually changed. In the first approximation, it means
   to follow the corresponding EPR intensities/integrals, whereas the component positions (\(g\)-values)
   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
   combination of the spectral intensities of components (simulated spectra) and optimizes
   the related multiplication coefficients. Additional analysis, where the positions of spectral
-  components (simulated spectra) are not fixed and can be optimized as well is under development.
-  That will be based on the combination of the actual function with the <code><a href="eval_sim_EPR_iso_combo.html">eval_sim_EPR_iso_combo</a></code>.</p>
+  components (simulated spectra) are not fixed and can be optimized as well is under development.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -229,7 +229,7 @@ the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.c
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
 <dd><p>Numeric value, which equals to particle swarm size (i.e. number of particles),
 if <code>method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(x.0)))</code>, e.g. to optimize 8 parameters,
+corresponds to <code>floor(10+2*sqrt(length(optim.params.init)))</code>, e.g. to optimize 8 parameters,
 number of particles = 15.</p></dd>
 
 

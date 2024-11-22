@@ -91,10 +91,10 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system (OS). This package is required for the proper running of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> optimization/fitting functions. Additionally, the function <code><a href="reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code> depends on <a href="https://www.oracle.com/java/technologies/downloads/?er=221886" class="external-link"><em>JAVA</em> JDK Development Kit</a>, which has to be also installed on your corresponding OS.</p>
+<p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system (OS). This package is required for the proper running of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> optimization/fitting functions. Additionally, the function <code><a href="reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code> depends on the <a href="https://www.oracle.com/java/technologies/downloads/?er=221886" class="external-link">JDK Development Kit</a> (<em>JAVA</em>), which must be installed on your desired OS as well.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Run the code in R Console</span></span>
+<span><span class="co"># run code in the R console</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># after the initial R environment setup (see below) it's always </span></span>
 <span><span class="co"># good to install essential collection of packages for data science </span></span>
@@ -106,17 +106,17 @@
 <span><span class="co">#   dependencies = TRUE</span></span>
 <span><span class="co"># )</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># package can be installed by =&gt;</span></span>
+<span><span class="co"># package can be installed using the following command =&gt;</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">}</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># alternatively, install package together with the vignettes/articles:</span></span>
+<span><span class="co"># alternatively, install package together with all the vignettes/articles:</span></span>
 <span><span class="co"># if (!require(devtools)) {install.packages("devtools")}</span></span>
 <span><span class="co"># devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)</span></span></code></pre></div>
-<p>Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> users or people who haven’t already installed the <em>R</em> environment, please consult the following steps prior to own <a href="https://jatanrt.github.io/eprscope/">eprscope</a> installation ➨</p>
+<p>Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> users or people who haven’t already installed the <em>R</em> environment, please consult these steps, prior to own <a href="https://jatanrt.github.io/eprscope/">eprscope</a> installation ➨</p>
 <ol style="list-style-type: decimal">
 <li><p><a href="https://cran.rstudio.com/" class="external-link">the R installation procedure</a></p></li>
-<li><p><a href="https://posit.co/download/rstudio-desktop/" class="external-link">installation of the Rstudio IDE</a> (alternatively, you may try its <a href="https://docs.posit.co/cloud/" class="external-link">cloud version</a> without the need for <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> installation)</p></li>
+<li><p><a href="https://posit.co/download/rstudio-desktop/" class="external-link">installation of the Rstudio IDE</a> (alternatively, you may try its <a href="https://docs.posit.co/cloud/" class="external-link">cloud version</a> without the need for an <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> installation)</p></li>
 <li><p><a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">the latest R tools release</a> <strong>ONLY for WINDOWS OS</strong></p></li>
 </ol>
 <p>Additionally, <strong>the open-source scientific and technical publishing system</strong> <a href="https://quarto.org/" class="external-link">Quarto</a> together with the <a href="https://pandoc.org/" class="external-link">Pandoc</a>, <strong>a document converter system</strong>, may be required for sharing the results coming from <a href="https://jatanrt.github.io/eprscope/">eprscope</a> in desired formats like <code>pdf</code> , <code>html</code> , <code>docx</code> , <code>pptx</code> or <code>tex</code> (details may be found in the <code><a href="reference/create_qmdReport_proj.html">create_qmdReport_proj()</a></code> documentation).</p>
@@ -124,7 +124,7 @@
 <div class="section level2">
 <h2 id="updates">Updates<a class="anchor" aria-label="anchor" href="#updates"></a>
 </h2>
-<p>To update the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦, just run the following code in R Console ➨</p>
+<p>To update the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦, just run the following code in the R console ➨</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
@@ -212,7 +212,7 @@
 <span><span class="co"># obtained by data pre-processing within the continuous </span></span>
 <span><span class="co"># wave (CW) EPR spectrometer acquisition/processing software.</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># loading the built-in example file with instrumental parameters</span></span>
+<span><span class="co"># loading the built-in example file with the instrumental parameters</span></span>
 <span><span class="va">triarylamine_rc_decay_dsc</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"Triarylamine_radCat_decay_a.DSC"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
@@ -235,7 +235,7 @@
 <span><span class="co">#</span></span>
 <span><span class="co"># fitting the experimental decay by 2R --&gt; B kinetic model</span></span>
 <span><span class="co"># with "k1" rate constant and the corresponding partial</span></span>
-<span><span class="co"># rection order "alpha". "qvar0R" refers to initial</span></span>
+<span><span class="co"># rection order "alpha". "qvar0R" refers to the initial</span></span>
 <span><span class="co"># "quantitative variable" (such as concentration, double integral</span></span>
 <span><span class="co"># or number of radicals) of the triarylamine radical cation "R".</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span> <span class="op">&lt;-</span></span>
@@ -258,7 +258,7 @@
 <p><img src="reference/figures/README-kinetic-model-fit-1.png"><!-- --></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#</span></span>
-<span><span class="co"># data frame/table of the obtained kinetic parameters</span></span>
+<span><span class="co"># data frame/table, showing the obtained kinetic parameters</span></span>
 <span><span class="co"># by the non-linear fit and numeric solution</span></span>
 <span><span class="co"># of the Ordinary Differential Equations</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">df.coeffs</span></span>
