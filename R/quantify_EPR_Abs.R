@@ -6,10 +6,10 @@
 #'
 #'
 #' @description
-#'   Estimate the number or concentration of "spins"/radicals/paramagnetic species using the absolute
-#'   quantitative method by sigmoid integral as well as by instrumental parameters without the need
-#'   for a standard sample with known concentration/amount of radicals/"spins". The calculation assumes
-#'   that the sample height middle point, within an EPR tube, matches the cavity/resonator center.
+#'   Estimate the number (or concentration) of "spins"/radicals/paramagnetic species using the absolute
+#'   quantitative method by sigmoid integral as well as by the instrumental parameters without the need
+#'   for a standard sample with known concentration/amount of radicals/"spins". \strong{The calculation assumes
+#'   that the sample height middle point, within an EPR tube, matches the cavity/resonator center}.
 #'
 #'
 #' @details
@@ -24,8 +24,8 @@
 #'   \eqn{N_{\text{Spins}}} (see also \code{References}) =>
 #'   \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
 #'   \,N_{\text{Scans}})\,[\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)])}
-#'   where the quantity notations possess the following meaning (whether it is instrumental or sample
-#'   dependent it is presented in parentheses):
+#'   where the quantity notations possess the following meaning (parentheses denote whether it is an instrumental
+#'   or sample dependent parameter):
 #'   \tabular{ll}{
 #'   \strong{Quantity Symbol} \tab \strong{Meaning/Short Desription} \cr
 #'   \eqn{c}\tab Point sample calibration factor (instrumental). \cr
@@ -50,11 +50,11 @@
 #'   (available from \code{\link[constants]{syms}}) and the \eqn{T} represents the temperature in \eqn{\text{K}}.
 #'   For temperatures \eqn{\geq 4\,\text{K}} and continuous wave experiments where
 #'   the \eqn{\Delta \varepsilon = h\,\nu_{\text{MW}}^{}} is constant, this factor may be very well estimated
-#'   by the following formula
+#'   by the following formula:
 #'   \deqn{n_{\text{B}} = h\,\nu_{\text{MW}}^{}\,/\,(2\,k_{\text{B}}\,T)}
 #'   The term \eqn{(G_{\text{R}}\,t_{\text{C}}\,N_{\text{Scans}})} actually corresponds to normalization constant
 #'   which is available from \code{\link{quantify_EPR_Norm_const}}.
-#'   Besides the above-described parameters which can be easily estimated there are however characteristics
+#'   Besides the above-described parameters which can be easily estimated, there are however characteristics
 #'   that requires precise calibration and usually are provided by the spectrometer manufacturers.
 #'   The spatial distribution of the microwave, \eqn{B_1}, and modulation
 #'   amplitude, \eqn{B_\text{m}}, influences the intensity of the sample predominantly along the \eqn{y}-axis direction
@@ -84,9 +84,8 @@
 #'   \url{https://doi.org/10.1016/0022-2364(77)90133-0}.
 #'
 #'
-#' @inheritParams eval_sim_EPR_iso
 #' @param integ.sigmoid.max Numeric value or vector of the entire EPR spectrum sigmoid integral.
-#' @param instrum.params Named numeric vector containing instrumental parameters required
+#' @param instrum.params Named numeric vector, containing instrumental parameters required
 #'   for the quantification =>
 #'   \tabular{ll}{
 #'   \code{PmW} \tab power of the MW source in mW \cr
@@ -98,10 +97,19 @@
 #'   }
 #'   \strong{Default}: \code{instrum.params = NULL} because they are primarily extracted
 #'   from the \code{path_to_dsc_par} based on the \code{origin}.
+#' @param path_to_dsc_par Character string, path (can be also acquired by the \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on the OS, see the \code{origin} argument)
+#'   \code{text} files including all instrumental parameters from the EPR machine.
+#'   If the \code{instrum.params} is already defined, the \code{path_to_dsc_par = NULL}. Otherwise,
+#'   BOTH the \code{path_to_dsc_par} AS WELL AS the \code{origin} MUST BE SPECIFIED !
+#' @param origin Character string, corresponding to software which was used to obtain the EPR spectra
+#'   on spectrometers, because the files are slightly different, whether they
+#'   were recorded by the "WinEpr" (\code{origin = "winepr"}) or by the "Xenon" (\strong{default}).
+#'   If \code{origin = NULL} as well as \code{path_to_dsc_par = NULL}, the \code{instrum.params} have to be set.
 #' @param qValue Numeric value of the sensitivity \code{Q} factor. For the processed EPR spectra by
 #'   the \code{{eprscope}} package the \code{integ.sigmoid.max} is usually normalized by the \code{Q} value.
-#'   Therefore, \strong{default}: \code{qValue = NULL}.
-#' @param point.sample.factor Numeric value corresponding to point sample correction factor, provided by the
+#'   Therefore, \strong{default}: \code{qValue = NULL} (corresponding to \code{1}).
+#' @param point.sample.factor Numeric value, corresponding to point sample correction factor, provided by the
 #'   cavity/probehead manufacturer. Value for the standard Bruker rectangular cavity is set as \strong{default}.
 #' @param tube.sample.id.mm Numeric value, which equals to internal diameter (in \code{mm}) of the tube/cell used
 #'   for the quantitative EPR experiment.
@@ -110,15 +118,15 @@
 #'   usually provided by the probehead manufacturer.
 #' @param fn.B1.Bm.fit.y Numeric vector (coefficients) of the polynomial degree from 5 to 12.
 #'   Coefficients for the standard Bruker rectangular cavity are set as \strong{default}.
-#' @param fn.B1.Bm.fit.y.max Numeric value corresponding to maximum value of the polynomial fit.
+#' @param fn.B1.Bm.fit.y.max Numeric value, corresponding to maximum value of the polynomial fit.
 #'   Value for the standard Bruker rectangular cavity is set as \strong{default}.
-#' @param Norm.const Numeric value corresponding to normalization constant (see
+#' @param Norm.const Numeric value, corresponding to normalization constant (see
 #'   \code{\link{quantify_EPR_Norm_const}}). \strong{Default}: \code{Norm.const = NULL} in case
-#'   if the EPR spectrum was normalized by such constant either upon measurement or during processing.
+#'   if the EPR spectrum was normalized by such constant either during the measurement or processing.
 #'   Otherwise it must be provided by the \code{\link{quantify_EPR_Norm_const}}.
 #' @param Temp.K Numeric value, temperature value in \code{K}. Because the \code{instrum.params} also contains temperature
 #'   input one may choose which definition (\code{Temp.K} or \code{TK}) is taken for the calculation.
-#'   Either \code{Temp.K} or \code{TK} CAN BE ALSO \code{NULL} but NOT BOTH !! In the latter case, default value
+#'   Either \code{Temp.K} or \code{TK} CAN BE ALSO \code{NULL} but NOT BOTH !! In the latter case, \strong{default value}
 #'   \code{298 K} is considered.
 #' @param S Numeric value, total spin sample quantum number. For radicals \code{S = 0.5}
 #'   (\strong{default}).
@@ -129,7 +137,7 @@
 #'   \item{N.cm}{Number of spins per effective centimeter. It is defined
 #'     as the cm around the maximum, \eqn{\pm 5\,\text{mm}}, of the intensity
 #'     distribution curve/polynomial fit within the cavity \eqn{f(B_1,B_{\text{m}})} from
-#'     the equation above shown in details.}
+#'     the equation shown in \code{Details}.}
 #'    \item{N.cm3}{Number of spins per \eqn{\text{cm}^3}.}
 #'    \item{c.M}{Concentration of spins/radicals in \eqn{\text{mol}\,\text{dm}^{-3}}.}
 #'   }
@@ -174,7 +182,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                              fn.B1.Bm.fit.y = c(1.00179,-3.07086e-3,-2.65409e-2,
                                               2.97603e-4,2.23277e-4,-4.53833e-06,
                                               -4.1451e-07,1.89417e-08,-1.48241e-09),
-                             fn.B1.Bm.fit.y.max = 0.25, # (1/4)
+                             fn.B1.Bm.fit.y.max = 0.25,
                              Norm.const = NULL,
                              Temp.K = NULL,
                              S = 0.5) {
@@ -359,7 +367,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
          must be defined to fit the intensity distribution within the cavity !! ")
   }
   #
-  if (fill.sample.h.mm <= eff.cavity.h.mm){
+  if (fill.sample.h.mm < eff.cavity.h.mm){
     #
     ## tube volume in m^3
     tube.volume.m3 <- (fill.sample.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
@@ -381,10 +389,10 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
     }
     #
   }
-  if (fill.sample.h.mm > eff.cavity.h.mm){
+  if (fill.sample.h.mm >= eff.cavity.h.mm){
     #
     ## tube volume in m^3
-    tube.volume.m3 <- (eff.cavity.h.mm * 1e-3) * pi * ((eff.cavity.h.mm / 2) * 1e-3)^2
+    tube.volume.m3 <- (eff.cavity.h.mm * 1e-3) * pi * ((tube.sample.id.mm / 2) * 1e-3)^2
     #
     # if (length(fn.B1.Bm.fit.y) == 1){
     #   stop(" Theoretical description/fit of `f(B1,Bm)` function for condition\n

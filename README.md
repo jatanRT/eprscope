@@ -59,13 +59,13 @@ instructions for the [{nloptr} package
 installation](https://astamm.github.io/nloptr/) depending on your
 operating system (OS). This package is required for the proper running
 of the `{eprscope}` optimization/fitting functions. Additionally, the
-function `draw_molecule_by_rcdk()` depends on [*JAVA* JDK Development
-Kit](https://www.oracle.com/java/technologies/downloads/?er=221886),
-which has to be also installed on your corresponding OS.
+function `draw_molecule_by_rcdk()` depends on the [JDK Development
+Kit](https://www.oracle.com/java/technologies/downloads/?er=221886)
+(*JAVA*), which must be installed on your desired OS as well.
 
 ``` r
 
-# Run the code in R Console
+# run code in the R console
 #
 # after the initial R environment setup (see below) it's always 
 # good to install essential collection of packages for data science 
@@ -77,11 +77,11 @@ which has to be also installed on your corresponding OS.
 #   dependencies = TRUE
 # )
 #
-# package can be installed by =>
+# package can be installed using the following command =>
 if (!require(devtools)) {install.packages("devtools")}
 devtools::install_github("jatanRT/eprscope")
 #
-# alternatively, install package together with the vignettes/articles:
+# alternatively, install package together with all the vignettes/articles:
 # if (!require(devtools)) {install.packages("devtools")}
 # devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 ```
@@ -89,15 +89,14 @@ devtools::install_github("jatanRT/eprscope")
 Completely new
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>
 users or people who haven’t already installed the *R* environment,
-please consult the following steps prior to own `{eprscope}`
-installation ➨
+please consult these steps, prior to own `{eprscope}` installation ➨
 
 1.  [the R installation procedure](https://cran.rstudio.com/)
 
 2.  [installation of the Rstudio
     IDE](https://posit.co/download/rstudio-desktop/) (alternatively, you
     may try its [cloud version](https://docs.posit.co/cloud/) without
-    the need for
+    the need for an
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
     installation)
 
@@ -114,8 +113,8 @@ found in the `create_qmdReport_proj()` documentation).
 
 ## Updates
 
-To update the `{eprscope}` 📦, just run the following code in R Console
-➨
+To update the `{eprscope}` 📦, just run the following code in the R
+console ➨
 
 ``` r
 
@@ -209,7 +208,7 @@ simulation.iso$plot +
 # obtained by data pre-processing within the continuous 
 # wave (CW) EPR spectrometer acquisition/processing software.
 #
-# loading the built-in example file with instrumental parameters
+# loading the built-in example file with the instrumental parameters
 triarylamine_rc_decay_dsc <-
   load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
 #
@@ -232,7 +231,7 @@ triarylamine_rc_decay_data <-
 #
 # fitting the experimental decay by 2R --> B kinetic model
 # with "k1" rate constant and the corresponding partial
-# rection order "alpha". "qvar0R" refers to initial
+# rection order "alpha". "qvar0R" refers to the initial
 # "quantitative variable" (such as concentration, double integral
 # or number of radicals) of the triarylamine radical cation "R".
 triarylamine_rc_decay_model <-
@@ -258,7 +257,7 @@ triarylamine_rc_decay_model$plot
 
 ``` r
 #
-# data frame/table of the obtained kinetic parameters
+# data frame/table, showing the obtained kinetic parameters
 # by the non-linear fit and numeric solution
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs

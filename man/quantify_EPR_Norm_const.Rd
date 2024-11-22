@@ -36,7 +36,7 @@ Numeric value of the normalization constant for quantitative EPR and intensity n
 }
 \description{
 Normalization constant used by \code{\link{quantify_EPR_Abs}} or to normalize
-  the EPR spectrum intensity. Calculation depends on expression of the receiver gain.
+  the EPR spectrum intensity. Calculation depends on the receiver gain expression.
 }
 \details{
 For the receiver gain expressed in \eqn{\text{dB}} units the normalization constant is defined
@@ -45,18 +45,18 @@ For the receiver gain expressed in \eqn{\text{dB}} units the normalization const
   10^{(G_{\text{R}}(\text{dB})/20)}}
   where \eqn{t_{\text{C}}(\text{ms})} depicts the conversion time in \eqn{\text{ms}};
   \eqn{N_{\text{Scans}}} corresponds to number of scans and \eqn{G_{\text{R}}(\text{dB})}
-  is the receiver gain in \eqn{\text{dB}}. In case the receiver gain is unitless, the normalization
+  is the receiver gain in \eqn{\text{dB}}. In the case that the receiver gain is unitless, the normalization
   constant is defined by =>
   \deqn{N_{\text{norm}} = t_{\text{C}}(\text{ms})\,G_{\text{R}}\,
   (N_{\text{points}} - 1)\,N_{\text{scans}}\,/\,B_{\text{SW}}(\text{G})}
   where \eqn{G_{\text{R}}} and \eqn{B_{\text{SW}}(\text{G})} correspond to unitless receiver gain
-  and sweep width in Gauss, respectively. \eqn{N_{\text{points}}} equals to number of points (resolution of
+  and sweep width in Gauss, respectively. \eqn{N_{\text{points}}} equals to the number of points (resolution of
   an individual sweep). One can gather all parameters
-  by \code{\link{readEPR_param_slct}} or by \code{\link{readEPR_params_tabs}} functions from
+  by the \code{\link{readEPR_param_slct}} or by the \code{\link{readEPR_params_tabs}} function from
   the corresponding \code{.DSC}/\code{.dsc} or \code{.par} file. \strong{If during recording of EPR spectra
   the option} \code{Normalize Acquisition} (in Spectrometer Configuration/Acquisition Options)
   \strong{is activated, THE INTENSITY is ALREADY NORMALIZED and DOESN'T REQUIRE ANY ADDITIONAL
-  NORMALIZATION !}. See also \code{\link{quantify_EPR_Abs}}.
+  NORMALIZATION !}. Please, refer also to the \code{\link{quantify_EPR_Abs}} function.
 }
 \examples{
 quantify_EPR_Norm_const(conv.time.ms = 8.2,

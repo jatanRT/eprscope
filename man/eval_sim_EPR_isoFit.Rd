@@ -121,7 +121,7 @@ the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline
 
 \item{pswarm.size}{Numeric value, which equals to particle swarm size (i.e. number of particles),
 if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-corresponds to \code{floor(10+2*sqrt(length(x.0)))}, e.g. to optimize 8 parameters,
+corresponds to \code{floor(10+2*sqrt(length(optim.params.init)))}, e.g. to optimize 8 parameters,
 number of particles = 15.}
 
 \item{pswarm.diameter}{Numeric value, corresponding to diameter of the particle swarm search space

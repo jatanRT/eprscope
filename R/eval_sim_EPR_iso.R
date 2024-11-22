@@ -94,7 +94,7 @@
 #'   AS WELL AS the \code{origin} MUST BE DEFINED !
 #' @param origin Character string, corresponding to software which was used to obtain the EPR spectra
 #'   on spectrometers, because the files are slightly different, whether they
-#'   were recorded by the "WinEpr" (\code{origin = "winepr"}) or by "Xenon".
+#'   were recorded by the "WinEpr" (\code{origin = "winepr"}) or by the "Xenon".
 #'   \strong{Default}: \code{origin = NULL} in case no file is used to extract
 #'   the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).
 #' @param B.unit Character string, pointing to unit of magnetic flux density which is to be presented
