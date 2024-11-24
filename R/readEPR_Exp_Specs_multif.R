@@ -33,19 +33,19 @@
 #'   or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \code{x.unit = "G"}.
 #' @param qValues Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either loaded from
 #'   instrumental parameters (\code{.DSC} or \code{.par}), therefore \code{qValues = NULL} (\strong{default}),
-#'   or in case of \code{origin = "winepr"} they have to be provided by the spectrometer operator.
-#' @param norm.list.add Numeric list of vectors. Additional normalization constants in form of vectors involving
-#'   all additional (i.e. in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
+#'   or in case of the \code{origin = "winepr"}, they have to be provided by the spectrometer operator.
+#' @param norm.list.add Numeric list of vectors. Additional normalization constants in the form of vectors involving
+#'   all (i.e. in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 #'   weight, number of scans, ...etc (e.g. \code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
 #'   \code{norm.list.add = NULL}.
-#' @param names Character string vector corresponding either to values of \strong{additional quantity}
+#' @param names Character string vector, corresponding either to values of \strong{additional quantity}
 #'   (e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
 #'   by alpha character (e.g. \code{c("a","b","c","d")}) being varied by the individual experiments.
 #' @param tidy Logical, whether to transform the list of data frames into the long table (\code{tidy}) format,
 #'   \strong{default}: \code{tidy = FALSE}.
 #' @param var2nd.series Character string, if \code{tidy = TRUE} (see also the \code{tidy} argument)
 #'   it is referred to name of the variable/quantity (such as "time","Temperature","Electrochemical Potential",
-#'   "Microwave Power"...etc) altered upon individual experiments as a second variable series (\code{var2nd.series})
+#'   "Microwave Power"...etc) altered during individual experiments as a second variable series (\code{var2nd.series})
 #'   and related to the spectral data.
 #' @param var2nd.series.factor Logical, whether to factorize \code{var2nd.series} column vector which is useful
 #'   for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
@@ -62,7 +62,7 @@
 #' @examples
 #' \dontrun{
 #' ## multiple ENDOR spectra at different temperatures recorded by `Xenon` software
-#' ## read and transformed into `longtable`, prepared to plot the overlay
+#' ## read and transformed into `longtable`, ready to plot the overlay
 #' ## EPR spectra => `var2nd.series.factor = FALSE` (default).
 #' readEPR_Exp_Specs_multif(name.pattern = "^.*_sample_VT_",
 #'                          file.path(".","ASCII_data_dir"),
@@ -97,7 +97,7 @@
 #' ## multiple `Xenon` EPR spectra related to one powder sample (m = 8 mg)
 #' ## where several instrumental parameters are changed
 #' ## at once, the file names (files are stored in the actual directory)
-#' ## start with "R5228_AV_powder_", function returns all spectral data
+#' ## start with the "R5228_AV_powder_", function returns all spectral data
 #' ## in `tidy` (long) table format
 #' readEPR_Exp_Specs_multif(name.pattern = "R5228_AV_powder_",
 #'                          dir_ASC = ".",

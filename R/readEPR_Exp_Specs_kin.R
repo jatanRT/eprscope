@@ -12,21 +12,21 @@
 #'
 #' @inheritParams readEPR_Exp_Specs
 #' @param name.root Character string, corresponding to entire \strong{file name without extension}.
-#' @param dir_ASC Character string, path (can be also defined by \code{\link[base]{file.path}})
+#' @param dir_ASC Character string, path (can be also defined by the \code{\link[base]{file.path}})
 #'   to directory where the \code{ASCII} spectral data is stored.
-#' @param dir_dsc_par Character string, path (can be also defined by \code{\link[base]{file.path}})
+#' @param dir_dsc_par Character string, path (can be also defined by the \code{\link[base]{file.path}})
 #'   to directory where the \code{.DSC}/\code{.dsc} or \code{.par} parameter file is stored
-#'   (to calculate \eqn{g}-value and/or normalize intensities).
-#' @param time.unit Character string, specifying \code{"s"},\code{"min"}, \code{"h"}
+#'   (in order to calculate \eqn{g}-value and/or normalize intensities).
+#' @param time.unit Character string, specifying the \code{"s"},\code{"min"}, \code{"h"}
 #'   or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 #'   \strong{Default}: \code{time.unit = "s"}
-#' @param time.delta.slice.s Numeric, time span/interval in seconds between \code{slices},
+#' @param time.delta.slice.s Numeric, time interval in seconds between \code{slices},
 #'   in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
 #'   corresponding to \code{1 s}).
 #' @param col.names Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.
+#'   to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.
 #' @param time.series.id Numeric index related to \code{col.names} pointing to \code{time} column for time series
 #'   EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 #'   use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
@@ -34,16 +34,16 @@
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 #'   \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
-#'   by the "Winepr" software Q value must be defined like \code{qValue = 3400}.
+#'   by the "Winepr" software, the Q value must be defined like \code{qValue = 3400}.
 #' @param norm.vec.add Numeric vector, additional normalization constant in the form of vector, involving
-#'   all additional (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
+#'   all (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 #'   weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).
-#' @param ... additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
+#' @param ... additional arguments specified, see also the \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
 #' @return List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
-#'    time vector (\code{time}). For \code{origon = "winepr"} "time" slices/indices must be already converted
+#'    time vector (\code{time}). For the \code{origon = "winepr"} "time" slices/indices must be already converted
 #'    into time domain by \code{time.delta.slice.s} (see arguments and examples).
 #'
 #'

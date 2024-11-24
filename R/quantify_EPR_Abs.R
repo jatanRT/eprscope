@@ -22,8 +22,8 @@
 #'   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
 #'   \eqn{I_{\text{sigmoid}}},can be used to calculate the number of "spins"/radicals/paramagnetic species,
 #'   \eqn{N_{\text{Spins}}} (see also \code{References}) =>
-#'   \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
-#'   \,N_{\text{Scans}})\,[\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)])}
+#'   \deqn{N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,[(c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
+#'   \,N_{\text{Scans}})\,(\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1))]}
 #'   where the quantity notations possess the following meaning (parentheses denote whether it is an instrumental
 #'   or sample dependent parameter):
 #'   \tabular{ll}{
@@ -182,7 +182,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
                              fn.B1.Bm.fit.y = c(1.00179,-3.07086e-3,-2.65409e-2,
                                               2.97603e-4,2.23277e-4,-4.53833e-06,
                                               -4.1451e-07,1.89417e-08,-1.48241e-09),
-                             fn.B1.Bm.fit.y.max = 0.25,
+                             fn.B1.Bm.fit.y.max = 0.28,
                              Norm.const = NULL,
                              Temp.K = NULL,
                              S = 0.5) {
@@ -429,7 +429,7 @@ quantify_EPR_Abs <- function(integ.sigmoid.max,
   #
   ## Number of species in cm^3:
   No.paramag.V.spc <- No.paramag.spc / (tube.volume.m3 * 1e+6)
-  ## Number od species => concentration mol*dm^{-3}
+  ## Number of species => concentration mol*dm^{-3}
   No.paramag.c.spc <- (No.paramag.spc / Avogadro.No) / (tube.volume.m3 * 1e+3)
   #
   ## RESULT:

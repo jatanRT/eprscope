@@ -33,33 +33,33 @@ or \code{.asc} format) with the spectral data (\eqn{Intensity} vs \eqn{B}, Field
 
 \item{header}{ Does the first data line contain column names? Defaults according to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column names are given a default name. }
 
-\item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+\item{col.names}{Character string vector, inherited from the \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 For spectral time series \code{col.names} must include \code{"T(t)ime"} or \code{"S(s)lice"} character
 string in order to identify the corresponding time column/variable in the original ASCII file.
 The default (for the original \code{\link[data.table]{fread}}) is to use the header column
-if present or detected, or if not the name is denoted as \code{"V"} followed by the column number.}
+if present or detected. If not, the name is denoted as \code{"V"} followed by the column number.}
 
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
-to \eqn{x}-axis in the spectra or other plots.}
+to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).}
 
-\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, such as \code{"G"},
+\item{x.unit}{Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
-\item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
+\item{Intensity.id}{Numeric index related to \code{col.names} vector, pointing to \code{general} intensity,
 like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
 integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
-\eqn{y}-axis in the EPR spectra or other plots.}
+\eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).}
 
 \item{time.series.id}{Numeric index related to \code{col.names} vector and pointing to \code{time} column for time series
-EPR spectra. If data contains simple relationship like \eqn{Area} vs \eqn{time}
-use \code{x} and \code{x.unit} parameters/arguments instead (see also examples). This argument is dedicated
-to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL} (see also \code{data.structure}
+EPR spectra. If data contains simple relation like \eqn{Area} vs \eqn{time},
+use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}). This argument is dedicated
+to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL} (see also the \code{data.structure}
 argument).}
 
-\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
+\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
 \eqn{B} in \code{mT}/\code{G} is created.}
 
@@ -68,17 +68,17 @@ in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is inclu
 \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.}
 
 \item{norm.vec.add}{Numeric vector. Additional normalization constant in the form of vector, including
-all additional (in addition to \code{qValue}) normalization(s) like concentration, powder sample
+all (in addition to \code{qValue}) normalization(s) like concentration, powder sample
 weight, number of scans, ...etc. (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
 the Q-factor/value might be also included in the \code{norm.vec.add}.}
 
-\item{origin}{Character string corresponding to \strong{origin} of the ASCII data, like from
+\item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the
 most common spectrometers (from which the data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
-"xenon" \tab \strong{default} automatically loads data from the "Xenon" software with default params. \cr
+"xenon" \tab \strong{default} automatically loads data from the "Xenon" software with the default parameters. \cr
 "winepr" \tab automatically loads data from the "WinEpr" software. \cr
 "magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
@@ -86,7 +86,7 @@ data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrume
 \strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}
 
-\item{data.structure}{Character string referring to structure of the ASCII data. Common spectral data files
+\item{data.structure}{Character string, referring to structure of the ASCII data. Common spectral data files
 with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
 time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
 ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
@@ -95,7 +95,7 @@ the \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{d
 (assuming \code{time.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
 \code{origin} argument.}
 
-\item{...}{additional arguments specified (see also \code{\link[data.table]{fread}}).}
+\item{...}{additional arguments specified (see also the \code{\link[data.table]{fread}} function).}
 }
 \value{
 Data frame/table consisting of the magnetic flux density
@@ -108,8 +108,8 @@ Data frame/table consisting of the magnetic flux density
   are displayed as well.
 }
 \description{
-The function is based on the \code{\link[data.table]{fread}} with the purpose to read
-  the experimental EPR/ENDOR spectra or other original (pre-processed) data from the EPR spectrometers
+This function is based on the \code{\link[data.table]{fread}} with the purpose to read
+  the experimental EPR/ENDOR spectra or other original (pre-processed) data, from the EPR spectrometers,
   in tabular ASCII format (such as \code{.txt}, \code{.csv} or \code{.asc}). Default argument values correspond
   to data reading from \emph{Xenon} files (see the argument \code{origin}).
 }
@@ -121,7 +121,7 @@ ASCII data are transformed into \emph{R} data frames, which can be then easily p
   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
   quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
   the Q-value can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
-  is calculated by the following expression (depending \code{qValue} and/or \code{norm.vec.add}):
+  is calculated by the following expression (depending on the \code{qValue} and/or \code{norm.vec.add}):
   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
   or
   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue) \, \prod_{k} 1/(norm.vec.add[k])}
@@ -212,7 +212,7 @@ triarylamine.rc.decay.data <-
 head(triarylamine.rc.decay.data)
 #
 ## reading the "magnettech" file example,
-## first of all load the path of package example file
+## first of all load the package example file
 acridineRad.data.path <-
   load_data_example("AcridineDeriv_Irrad_365nm.csv.zip")
 ## unzip
@@ -220,7 +220,7 @@ acridineRad.data <-
   unzip(acridineRad.data.path,
         files = c("AcridineDeriv_Irrad_365nm.csv"),
         exdir = tempdir())
-## reading
+## reading "magnettech"
 acridineRad.data <-
   readEPR_Exp_Specs(acridineRad.data,
                     col.names = c("B_mT","dIepr_over_dB"),

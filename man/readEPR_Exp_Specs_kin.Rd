@@ -25,62 +25,62 @@ readEPR_Exp_Specs_kin(
 \arguments{
 \item{name.root}{Character string, corresponding to entire \strong{file name without extension}.}
 
-\item{dir_ASC}{Character string, path (can be also defined by \code{\link[base]{file.path}})
+\item{dir_ASC}{Character string, path (can be also defined by the \code{\link[base]{file.path}})
 to directory where the \code{ASCII} spectral data is stored.}
 
-\item{dir_dsc_par}{Character string, path (can be also defined by \code{\link[base]{file.path}})
+\item{dir_dsc_par}{Character string, path (can be also defined by the \code{\link[base]{file.path}})
 to directory where the \code{.DSC}/\code{.dsc} or \code{.par} parameter file is stored
-(to calculate \eqn{g}-value and/or normalize intensities).}
+(in order to calculate \eqn{g}-value and/or normalize intensities).}
 
-\item{time.unit}{Character string, specifying \code{"s"},\code{"min"}, \code{"h"}
+\item{time.unit}{Character string, specifying the \code{"s"},\code{"min"}, \code{"h"}
 or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 \strong{Default}: \code{time.unit = "s"}}
 
-\item{time.delta.slice.s}{Numeric, time span/interval in seconds between \code{slices},
+\item{time.delta.slice.s}{Numeric, time interval in seconds between \code{slices},
 in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
 corresponding to \code{1 s}).}
 
 \item{col.names}{Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum abscissa)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.}
+to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.}
 
 \item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
-to \eqn{x}-axis in the spectra or other plots.}
+to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).}
 
-\item{x.unit}{Character string corresponding to original \code{x} variable/column unit, such as \code{"G"},
+\item{x.unit}{Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
-\item{Intensity.id}{Numeric index related to \code{col.names} vector pointing to \code{general} intensity,
+\item{Intensity.id}{Numeric index related to \code{col.names} vector, pointing to \code{general} intensity,
 like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
 integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
-\eqn{y}-axis in the EPR spectra or other plots.}
+\eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).}
 
 \item{time.series.id}{Numeric index related to \code{col.names} pointing to \code{time} column for time series
 EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
 use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
 to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.}
 
-\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}) whether upon reading an automatic
+\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
 \eqn{B} in \code{mT}/\code{G} is created.}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
-by the "Winepr" software Q value must be defined like \code{qValue = 3400}.}
+by the "Winepr" software, the Q value must be defined like \code{qValue = 3400}.}
 
 \item{norm.vec.add}{Numeric vector, additional normalization constant in the form of vector, involving
-all additional (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
+all (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL} (actually corresponding to value \code{1}).}
 
-\item{origin}{Character string corresponding to \strong{origin} of the ASCII data, like from
+\item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the
 most common spectrometers (from which the data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
-"xenon" \tab \strong{default} automatically loads data from the "Xenon" software with default params. \cr
+"xenon" \tab \strong{default} automatically loads data from the "Xenon" software with the default parameters. \cr
 "winepr" \tab automatically loads data from the "WinEpr" software. \cr
 "magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
@@ -88,12 +88,12 @@ data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrume
 \strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
 }}
 
-\item{...}{additional arguments specified, see also \code{\link{readEPR_Exp_Specs}}
+\item{...}{additional arguments specified, see also the \code{\link{readEPR_Exp_Specs}}
 and \code{\link[data.table]{fread}}.}
 }
 \value{
 List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
-   time vector (\code{time}). For \code{origon = "winepr"} "time" slices/indices must be already converted
+   time vector (\code{time}). For the \code{origon = "winepr"} "time" slices/indices must be already converted
    into time domain by \code{time.delta.slice.s} (see arguments and examples).
 }
 \description{
