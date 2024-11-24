@@ -47,7 +47,7 @@
 #'   Not all \code{{nloptr}}-methods are implemented into the \code{optim_for_EPR_fitness}. Those summarized above
 #'   were tested by the EPR simulation fit (see \code{\link{eval_sim_EPR_isoFit}}) on the experimental spectra
 #'   of TEMPOL and Wuster's blue radicals. They provide the best results (without extensive "playing"
-#'   with \code{\link[nloptr]{nl.opts}}, i.e. with options to control the optimization procedure) and proceeds
+#'   with \code{\link[nloptr]{nl.opts}}, i.e. with options to control the optimization procedure) and proceed
 #'   relatively fast.
 #'
 #'
@@ -67,6 +67,15 @@
 #'  Tam A (2021). “A Gentle Introduction to Particle Swarm Optimization.”
 #'  \url{https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/}.
 #'
+#'  Ugolotti R, Cagnoni S (2016). "A Fair Comparison Between Standard PSO Versions."
+#'  In: Rossi F, Mavelli F, Stano P, Caivano D (eds), \emph{Advances in Artificial Life, Evolutionary
+#'  Computation and Systems Chemistry}, WIVACE 2015, \emph{Communications in Computer and Information Science},
+#'  Springer, \url{https://doi.org/10.1007/978-3-319-32695-5_1}.
+#'
+#'  Zambrano-Bigiarini M, Clerc M, Rojas-Mujica R (2013). "Standard Particle Swarm Optimisation 2011
+#'  at CEC-2013: A baseline for future PSO improvements." \emph{2013 IEEE Congress on Evolutionary Computation},
+#'  \url{https://ieeexplore.ieee.org/document/6557848}.
+#'
 #'
 #' @inheritParams nloptr::slsqp
 #' @param method Character string, pointing to applied optimization method/algorithm. One may choose one from
@@ -79,8 +88,9 @@
 #'   required to undergo a fitting/optimization process.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
-#'   \code{Nmax.evals = 1024} (\strong{default}). Higher \code{Nmax.evals} may extremely extend the optimization
-#'   time.
+#'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
+#'   time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
+#'   method requires at least the default or even higher values.
 #' @param tol.step Numeric, the smallest optimization step (relative change) between
 #'   2 iterations to stop the optimization procedure. For the \code{method = "pswarm"}
 #'   (particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
@@ -89,12 +99,22 @@
 #'   See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.
 #' @param pswarm.size Numeric value, which equals to particle swarm size (i.e. number of particles),
 #'   if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))}, e.g. to optimize 8 parameters,
-#'   number of particles = 15.
+#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))} (for \code{SPSO2007}, see the \code{pswarm.type}
+#'   argument), e.g. to optimize 8 parameters, number of particles = 15. For the \code{SPSO2011}
+#'   the default number of particles equals to \code{40}.
 #' @param pswarm.diameter Numeric value, corresponding to diameter of the particle swarm search space
 #'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}}
+#' @param pswarm.type Character string, setting the type/version of particle swarm algorithm
+#'   if \code{method = "pswarm"}. There are two types available: \code{pswarm.type = "SPSO2007"}
+#'   and \code{pswarm.type = "SPSO2011"}. The latter introduced an adaptive random topology,
+#'   which allows the swarm to dynamically adjust its communication structure.
+#'   This helps in maintaining diversity in the swarm and improves the algorithm's ability
+#'   to escape local optima. This type generally offers better performance on larger multidimensional spaces
+#'   than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
+#'   in the \code{References}. \strong{Default}: \code{pswarm.type = NULL} (actually corresponding
+#'   to \code{"SPSO2007"}, that performs slightly better on smaller scales such as simulations of EPR spectra).
 #'
 #'
 #' @return For all listed algorithms the function returns \code{list} with the elements like
@@ -240,10 +260,11 @@ optim_for_EPR_fitness <- function(method = "neldermead",
                                   lower,
                                   upper,
                                   data,
-                                  Nmax.evals = 1024,
+                                  Nmax.evals = 512,
                                   tol.step = 5e-7,
                                   pswarm.size = NULL,
                                   pswarm.diameter = NULL,
+                                  pswarm.type = NULL,
                                   ...) {
   #
   ## 'Temporary' processing variables
@@ -365,10 +386,19 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ## Particle Swarm Optimizatioin/Algorithm
   if (method == "pswarm"){
     #
+    ## definition for the `pswarm.type`
+    pswarm.type <- pswarm.type %>% `if`(is.null(pswarm.type),"SPSO2007", .)
+    #
     ## definition => size of particle swarm
-    ## `floor(10+2*sqrt(length(x.0)))` is the default one
-    pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),
-                                        floor(10+2*sqrt(length(x.0))), .)
+    ## `floor(10+2*sqrt(length(x.0)))` is the default one (for "SPSO2007")
+    ## or 40 (for "SPSO2011")
+    if (pswarm.type == "SPSO2007") {
+      pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),
+                                          floor(10+2*sqrt(length(x.0))), .)
+    }
+    if (pswarm.type == "SPSO2011") {
+      pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),40, .)
+    }
     #
     ## definition => particle swarm diameter
     ## `sqrt(sum((upper - lower)^2))` ("Euclidean Distance") is the default one
@@ -377,15 +407,18 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     #
     ## control of the PSO function
     contrl.list.pso <-
-      list(maxit = floor(Nmax.evals/pswarm.size) + 1, ## The maximum number of iterations (per one particle).
+      list(maxit = 256, ## The maximum number of iterations (per one particle).
            maxf = Nmax.evals, ## The maximum number of function evaluations.
            reltol = tol.step, ## The tolerance for restarting (see arguments above).
            max.restart = 128, ## The maximum number of restarts.
            maxit.stagnate = 128, ## The maximum number of iterations without improvement.
            s = pswarm.size, ## The swarm size.
-           d = pswarm.diameter) ## The diameter of the search space.
-    ## + maybe in the future add average percentage of informants for each particle (`p`)
-    ## and The exponent for calculating number of informants (`k`)
+           d = pswarm.diameter, ## The diameter of the search space.
+           k = 6, ## The exponent for calculating the number of informants.
+           type = pswarm.type, ## which reference implementation of SPSO is followed.
+           ## Can take the value of “SPSO2007” or “SPSO2011”. Defaults to “SPSO2007”
+           vectorize = FALSE) ## Particles are processed in a vectorized manner,
+           ## more time efficient for cheap function evaluations.
     #
     return(pso::psoptim(
       par = x.0,

@@ -98,18 +98,32 @@
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.
-#' @param Nmax.evals Numeric value, pointing to maximum number of iterations/evaluations. \strong{Default}:
-#'   \code{Nmax.evals = 1024} (for \code{optim.method = "levenmarq"} this is the maximum value).
+#' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
+#'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
+#'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
+#'   time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
+#'   method requires at least the default or even higher values.
 #' @param tol.step Numeric value, describing the smallest optimization step (tolerance) to stop the optimization.
 #'   \strong{Default}: \code{tol.step = 5e-7}.
 #' @param pswarm.size Numeric value, which equals to particle swarm size (i.e. number of particles),
 #'   if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-#'   corresponds to \code{floor(10+2*sqrt(length(optim.params.init)))}, e.g. to optimize 8 parameters,
-#'   number of particles = 15.
+#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))} (for \code{SPSO2007}, see the \code{pswarm.type}
+#'   argument), e.g. to optimize 8 parameters, number of particles = 15. For the \code{SPSO2011}
+#'   the default number of particles equals to \code{40}.
 #' @param pswarm.diameter Numeric value, corresponding to diameter of the particle swarm search space
 #'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidean distance, defined as:
 #'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
+#' @param pswarm.type Character string, setting the type/version of particle swarm algorithm
+#'   if \code{method = "pswarm"}. There are two types available: \code{pswarm.type = "SPSO2007"}
+#'   and \code{pswarm.type = "SPSO2011"}. The latter introduced an adaptive random topology,
+#'   which allows the swarm to dynamically adjust its communication structure.
+#'   This helps in maintaining diversity in the swarm and improves the algorithm's ability
+#'   to escape local optima. This type generally offers better performance on larger multidimensional spaces
+#'   than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
+#'   in the \code{References} of the \code{\link{optim_for_EPR_fitness}}.
+#'   \strong{Default}: \code{pswarm.type = NULL} (actually corresponding to \code{"SPSO2007"},
+#'   that performs slightly better on smaller scales such as simulations of EPR spectra).
 #' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
 #'   fit + experimental spectrum (including residuals in the lower part of the plot,
 #'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
@@ -198,7 +212,7 @@
 #'         49), # A in MHz
 #'     check.fit.plot = FALSE
 #'   )
-#' ## OUTPUTS RETURNED:
+#' ## OUTPUTS:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.a$best.fit.params
 #' #
@@ -237,7 +251,7 @@
 #'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
 #'     check.fit.plot = TRUE
 #'   )
-#' ## OUTPUTS-RETURN:
+#' ## OUTPUTS:
 #' ## best fit parameters:
 #' tempo.test.sim.fit.b$best.fit.params
 #' #
@@ -267,7 +281,7 @@
 #'                                             49),
 #'                       check.fit.plot = FALSE
 #'                     )
-#' ## OUTPUTS RETURNED:
+#' ## OUTPUTS:
 #' ## best fit parameters for both procedures within a list:
 #' tempo.test.sim.fit.c$best.fit.params
 #' #
@@ -301,10 +315,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 optim.params.init,
                                 optim.params.lower = NULL,
                                 optim.params.upper = NULL,
-                                Nmax.evals = 1024,
+                                Nmax.evals = 512,
                                 tol.step = 5e-7,
                                 pswarm.size = NULL,
                                 pswarm.diameter = NULL,
+                                pswarm.type = NULL,
                                 check.fit.plot = TRUE,
                                 output.list.final = FALSE,
                                 ...){
@@ -770,6 +785,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                         tol.step = tol.step,
                                         pswarm.size = pswarm.size,
                                         pswarm.diameter = pswarm.diameter,
+                                        pswarm.type = pswarm.type,
                                         ...)
     #
     return(optim.list)
