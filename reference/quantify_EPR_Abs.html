@@ -79,7 +79,7 @@
 <span>  eff.cavity.h.mm <span class="op">=</span> <span class="fl">23</span>,</span>
 <span>  fn.B1.Bm.fit.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.00179</span>, <span class="op">-</span><span class="fl">0.00307086</span>, <span class="op">-</span><span class="fl">0.0265409</span>, <span class="fl">0.000297603</span>, <span class="fl">0.000223277</span>,</span>
 <span>    <span class="op">-</span><span class="fl">4.53833e-06</span>, <span class="op">-</span><span class="fl">4.1451e-07</span>, <span class="fl">1.89417e-08</span>, <span class="op">-</span><span class="fl">1.48241e-09</span><span class="op">)</span>,</span>
-<span>  fn.B1.Bm.fit.y.max <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  fn.B1.Bm.fit.y.max <span class="op">=</span> <span class="fl">0.28</span>,</span>
 <span>  Norm.const <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Temp.K <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  S <span class="op">=</span> <span class="fl">0.5</span></span>
@@ -198,8 +198,8 @@ Either <code>Temp.K</code> or <code>TK</code> CAN BE ALSO <code>NULL</code> but 
   In case of absolute quantitative EPR analysis the sigmoid integral (its maximum value),
   \(I_{\text{sigmoid}}\),can be used to calculate the number of "spins"/radicals/paramagnetic species,
   \(N_{\text{Spins}}\) (see also <code>References</code>) =&gt;
-  $$N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,((c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
-  \,N_{\text{Scans}})\,[\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1)])$$
+  $$N_{\text{Spins}} = I_{\text{sigmoid}}\,/\,[(c/f(B_1,B_{\text{m}}))\,(G_{\text{R}}\,t_{\text{C}}
+  \,N_{\text{Scans}})\,(\sqrt{P_{\text{MW}}}\,B_{\text{m}}\,Q\,n_{\text{B}}\,S(S+1))]$$
   where the quantity notations possess the following meaning (parentheses denote whether it is an instrumental
   or sample dependent parameter):</p><table class="table table"><tr><td><strong>Quantity Symbol</strong></td><td><strong>Meaning/Short Desription</strong></td></tr><tr><td>\(c\)</td><td>Point sample calibration factor (instrumental).</td></tr><tr><td>\(f(B_1,B_\text{m})\)</td><td>Spatial distribution of the microwave \(B_1\) and modulation
   amplitude within the cavity/probehead/resonator (instrumental).</td></tr><tr><td>\(G_{\text{R}}\)</td><td>Receiver gain (commonly in \(\text{dB}\) units (instrumental)).</td></tr><tr><td>\(t_{\text{C}}\)</td><td>Conversion time (commonly in \(\text{ms}\)) which is an analogy

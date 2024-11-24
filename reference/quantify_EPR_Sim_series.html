@@ -83,10 +83,11 @@
 <span>  <span class="va">optim.params.init</span>,</span>
 <span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  Nmax.evals <span class="op">=</span> <span class="fl">1024</span>,</span>
+<span>  Nmax.evals <span class="op">=</span> <span class="fl">512</span>,</span>
 <span>  tol.step <span class="op">=</span> <span class="fl">5e-07</span>,</span>
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  single.integ <span class="op">=</span> <span class="st">"single_IntegSim"</span>,</span>
 <span>  double.integ <span class="op">=</span> <span class="st">"double_IntegSim"</span>,</span>
 <span>  output.area.stat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -185,8 +186,9 @@ to vector with all <code>0.9</code> value elements.</p></dd>
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
 <dd><p>Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
-<code>Nmax.evals = 1024</code> (<strong>default</strong>). Higher <code>Nmax.evals</code> may extend the optimization
-time.</p></dd>
+<code>Nmax.evals = 1024</code>. Higher <code>Nmax.evals</code> may extremely extend the optimization
+time, therefore the <strong>default</strong> value reads <code>Nmax.evals = 512</code>. However, the <code>"pswarm"</code>
+method requires at least the default or even higher values.</p></dd>
 
 
 <dt id="arg-tol-step">tol.step<a class="anchor" aria-label="anchor" href="#arg-tol-step"></a></dt>
@@ -201,8 +203,9 @@ See also <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="externa
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
 <dd><p>Numeric value equal to particle swarm size (i.e. number of particles),
 if <code>optim.method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(optim.params.init)))</code> (e.g. for 3 spectral components
-<code>pswarm.size</code> = 14).</p></dd>
+corresponds to <code>floor(10+2*sqrt(length(optim.params.init)))</code> (for <code>SPSO2007</code>,
+see the <code>pswarm.type</code> argument), e.g. to optimize 3 components, number of particles = 14.
+For the <code>SPSO2011</code> the default number of particles equals to <code>40</code>.</p></dd>
 
 
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
@@ -210,6 +213,19 @@ corresponds to <code>floor(10+2*sqrt(length(optim.params.init)))</code> (e.g. fo
 (in case when <code>optim.method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
 refers to the Euclidean distance, defined as:
 $$\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}$$</p></dd>
+
+
+<dt id="arg-pswarm-type">pswarm.type<a class="anchor" aria-label="anchor" href="#arg-pswarm-type"></a></dt>
+<dd><p>Character string, setting the type/version of particle swarm algorithm
+if <code>method = "pswarm"</code>. There are two types available: <code>pswarm.type = "SPSO2007"</code>
+and <code>pswarm.type = "SPSO2011"</code>. The latter introduced an adaptive random topology,
+which allows the swarm to dynamically adjust its communication structure.
+This helps in maintaining diversity in the swarm and improves the algorithm's ability
+to escape local optima. This type generally offers better performance on larger multidimensional spaces
+than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
+in the <code>References</code> of the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>.
+<strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding to <code>"SPSO2007"</code>,
+that performs slightly better on smaller scales such as simulations of EPR spectra).</p></dd>
 
 
 <dt id="arg-single-integ">single.integ<a class="anchor" aria-label="anchor" href="#arg-single-integ"></a></dt>

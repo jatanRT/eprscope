@@ -102,10 +102,11 @@
 <span>  <span class="va">optim.params.init</span>,</span>
 <span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  Nmax.evals <span class="op">=</span> <span class="fl">1024</span>,</span>
+<span>  Nmax.evals <span class="op">=</span> <span class="fl">512</span>,</span>
 <span>  tol.step <span class="op">=</span> <span class="fl">5e-07</span>,</span>
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  output.list.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -217,8 +218,11 @@ the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.c
 
 
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
-<dd><p>Numeric value, pointing to maximum number of iterations/evaluations. <strong>Default</strong>:
-<code>Nmax.evals = 1024</code> (for <code>optim.method = "levenmarq"</code> this is the maximum value).</p></dd>
+<dd><p>Numeric value, maximum number of function evaluations and/or iterations.
+The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
+<code>Nmax.evals = 1024</code>. Higher <code>Nmax.evals</code> may extremely extend the optimization
+time, therefore the <strong>default</strong> value reads <code>Nmax.evals = 512</code>. However, the <code>"pswarm"</code>
+method requires at least the default or even higher values.</p></dd>
 
 
 <dt id="arg-tol-step">tol.step<a class="anchor" aria-label="anchor" href="#arg-tol-step"></a></dt>
@@ -229,8 +233,9 @@ the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.c
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
 <dd><p>Numeric value, which equals to particle swarm size (i.e. number of particles),
 if <code>method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(optim.params.init)))</code>, e.g. to optimize 8 parameters,
-number of particles = 15.</p></dd>
+corresponds to <code>floor(10+2*sqrt(length(x.0)))</code> (for <code>SPSO2007</code>, see the <code>pswarm.type</code>
+argument), e.g. to optimize 8 parameters, number of particles = 15. For the <code>SPSO2011</code>
+the default number of particles equals to <code>40</code>.</p></dd>
 
 
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
@@ -238,6 +243,19 @@ number of particles = 15.</p></dd>
 (in case <code>method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
 refers to the Euclidean distance, defined as:
 $$\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}$$</p></dd>
+
+
+<dt id="arg-pswarm-type">pswarm.type<a class="anchor" aria-label="anchor" href="#arg-pswarm-type"></a></dt>
+<dd><p>Character string, setting the type/version of particle swarm algorithm
+if <code>method = "pswarm"</code>. There are two types available: <code>pswarm.type = "SPSO2007"</code>
+and <code>pswarm.type = "SPSO2011"</code>. The latter introduced an adaptive random topology,
+which allows the swarm to dynamically adjust its communication structure.
+This helps in maintaining diversity in the swarm and improves the algorithm's ability
+to escape local optima. This type generally offers better performance on larger multidimensional spaces
+than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
+in the <code>References</code> of the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>.
+<strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding to <code>"SPSO2007"</code>,
+that performs slightly better on smaller scales such as simulations of EPR spectra).</p></dd>
 
 
 <dt id="arg-check-fit-plot">check.fit.plot<a class="anchor" aria-label="anchor" href="#arg-check-fit-plot"></a></dt>
@@ -366,12 +384,12 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>        <span class="fl">49</span><span class="op">)</span>, <span class="co"># A in MHz</span></span></span>
 <span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## OUTPUTS RETURNED:</span></span></span>
+<span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0059449e+00  5.1278882e+00  5.2098710e+00 -4.6392112e-05  1.5855150e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  1.3341428e-08  5.0513246e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0059445e+00  5.3288684e+00  5.2023563e+00 -1.9373036e-04  1.6195008e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.5609764e-08  5.0512019e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## spectrum plot with experimental spectrum,</span></span></span>
@@ -384,13 +402,13 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span><span class="co">## minimum sum of squared residuals:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">sum.LSQ.min</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.7444284e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.9819491e-07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## number of evaluations / iterations:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">N.evals</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 512</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## convergence, in this case it is represented</span></span></span>
@@ -405,12 +423,12 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          B_G     Experiment     Simulation     Residuals Simulation_NoBasLin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;          &lt;num&gt;          &lt;num&gt;         &lt;num&gt;               &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.7000 -1.7738564e-06 -1.9233581e-06 1.4950175e-07       5.7777589e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.9005  1.2209461e-07 -1.9206675e-06 2.0427621e-06       5.8001455e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.1009 -1.8403788e-07 -1.9179632e-06 1.7339253e-06       5.8227615e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.3014 -7.1641412e-08 -1.9152723e-06 1.8436309e-06       5.8453828e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.5019 -1.7361444e-06 -1.9125678e-06 1.7642342e-07       5.8682363e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -1.9098767e-06 1.3945650e-06       5.8910954e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.7000 -1.7738564e-06 -8.3938120e-06 6.6199557e-06       5.8931225e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.9005  1.2209461e-07 -8.3826673e-06 8.5047619e-06       5.9159561e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.1009 -1.8403788e-07 -8.3714666e-06 8.1874287e-06       5.9390238e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.3014 -7.1641412e-08 -8.3603216e-06 8.2886802e-06       5.9620968e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.5019 -1.7361444e-06 -8.3491207e-06 6.6129763e-06       5.9854067e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -8.3379755e-06 7.8226638e-06       6.0087223e-09</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## similar EPR spectrum simulation fit with "particle swarm"</span></span></span>
 <span class="r-in"><span><span class="co">## optimization algorithm and `check.fit.plot = TRUE` option</span></span></span>
@@ -427,12 +445,12 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>    optim.params.upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0072</span>,<span class="fl">5.2</span>,<span class="fl">5.2</span>,<span class="fl">1e-4</span>,<span class="fl">1.5e-2</span>,<span class="fl">53</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## OUTPUTS-RETURN:</span></span></span>
+<span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0052556e+00 4.7101823e+00 4.4000000e+00 9.5233092e-08 1.4999999e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] 5.2580350e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0054356e+00 4.6948967e+00 4.4000000e+00 3.3271591e-07 1.4952839e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] 5.2989415e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## quick simulation check by plotting the both</span></span></span>
@@ -462,7 +480,7 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>                                            <span class="fl">49</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>                    <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## OUTPUTS RETURNED:</span></span></span>
+<span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
@@ -470,8 +488,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  4.9000000e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0070000e+00  4.7457426e+00  3.8400000e+00 -6.0369482e-10  8.4000000e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.3489102e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0070000e+00  4.7501604e+00  3.8400010e+00 -1.6255959e-09  8.3999998e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.3563022e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## compare the results with the example in the `readMAT_params_file`,</span></span></span>

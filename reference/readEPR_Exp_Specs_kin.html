@@ -92,24 +92,24 @@
 
 
 <dt id="arg-dir-asc">dir_ASC<a class="anchor" aria-label="anchor" href="#arg-dir-asc"></a></dt>
-<dd><p>Character string, path (can be also defined by <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code>)
+<dd><p>Character string, path (can be also defined by the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code>)
 to directory where the <code>ASCII</code> spectral data is stored.</p></dd>
 
 
 <dt id="arg-dir-dsc-par">dir_dsc_par<a class="anchor" aria-label="anchor" href="#arg-dir-dsc-par"></a></dt>
-<dd><p>Character string, path (can be also defined by <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code>)
+<dd><p>Character string, path (can be also defined by the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code>)
 to directory where the <code>.DSC</code>/<code>.dsc</code> or <code>.par</code> parameter file is stored
-(to calculate \(g\)-value and/or normalize intensities).</p></dd>
+(in order to calculate \(g\)-value and/or normalize intensities).</p></dd>
 
 
 <dt id="arg-time-unit">time.unit<a class="anchor" aria-label="anchor" href="#arg-time-unit"></a></dt>
-<dd><p>Character string, specifying <code>"s"</code>,<code>"min"</code>, <code>"h"</code>
+<dd><p>Character string, specifying the <code>"s"</code>,<code>"min"</code>, <code>"h"</code>
 or <code>time.unit = "unitless"</code> (if <code>time.delta.slice.s</code> is different from <code>NULL</code>).
 <strong>Default</strong>: <code>time.unit = "s"</code></p></dd>
 
 
 <dt id="arg-time-delta-slice-s">time.delta.slice.s<a class="anchor" aria-label="anchor" href="#arg-time-delta-slice-s"></a></dt>
-<dd><p>Numeric, time span/interval in seconds between <code>slices</code>,
+<dd><p>Numeric, time interval in seconds between <code>slices</code>,
 in the case if <code>origin = "winepr"</code>. <strong>Default</strong>: <code>time.delta.slice = NULL</code> (actually,
 corresponding to <code>1 s</code>).</p></dd>
 
@@ -118,24 +118,24 @@ corresponding to <code>1 s</code>).</p></dd>
 <dd><p>Character/String vector inherited from <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></code>, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, <code>Quantity_Unit</code> like <code>"B_G"</code>, <code>"RF_MHz"</code>, <code>"Bsim_mT"</code> (e.g. pointing
-to simulated EPR spectrum abscissa)...etc, <strong>default</strong>: <code>col.names = c("index","B_G","dIepr_over_dB")</code>.</p></dd>
+to simulated EPR spectrum \(x\)-axis)...etc, <strong>default</strong>: <code>col.names = c("index","B_G","dIepr_over_dB")</code>.</p></dd>
 
 
 <dt id="arg-x-id">x.id<a class="anchor" aria-label="anchor" href="#arg-x-id"></a></dt>
 <dd><p>Numeric index related to <code>col.names</code> vector pointing to independent variable, which corresponds
-to \(x\)-axis in the spectra or other plots.</p></dd>
+to \(x\)-axis in the spectra or other plots. <strong>Default</strong>: <code>x.id = 2</code> (for <em>Xenon</em>).</p></dd>
 
 
 <dt id="arg-x-unit">x.unit<a class="anchor" aria-label="anchor" href="#arg-x-unit"></a></dt>
-<dd><p>Character string corresponding to original <code>x</code> variable/column unit, such as <code>"G"</code>,
+<dd><p>Character string, corresponding to original <code>x</code> variable/column unit, such as <code>"G"</code>,
 <code>"mT"</code> or <code>"MHz"</code>.</p></dd>
 
 
 <dt id="arg-intensity-id">Intensity.id<a class="anchor" aria-label="anchor" href="#arg-intensity-id"></a></dt>
-<dd><p>Numeric index related to <code>col.names</code> vector pointing to <code>general</code> intensity,
+<dd><p>Numeric index related to <code>col.names</code> vector, pointing to <code>general</code> intensity,
 like derivative intensity (<code>dIepr_over_dB</code>), integral one (e.g. <code>single_Integ</code>), double or sigmoid
 integral (e.g. <code>Area</code>)...etc. This corresponds to column/vector which should be presented like
-\(y\)-axis in the EPR spectra or other plots.</p></dd>
+\(y\)-axis in the EPR spectra or other plots. <strong>Default</strong>: <code>Intensity.id = 3</code> (for <em>Xenon</em>).</p></dd>
 
 
 <dt id="arg-time-series-id">time.series.id<a class="anchor" aria-label="anchor" href="#arg-time-series-id"></a></dt>
@@ -146,7 +146,7 @@ to kinetic-like experiments. <strong>Default</strong>: <code>time.series.id = 3<
 
 
 <dt id="arg-convertb-unit">convertB.unit<a class="anchor" aria-label="anchor" href="#arg-convertb-unit"></a></dt>
-<dd><p>Logical (<strong>default</strong>: <code>convertB.unit = TRUE</code>) whether upon reading an automatic
+<dd><p>Logical (<strong>default</strong>: <code>convertB.unit = TRUE</code>), whether upon reading, an automatic
 conversion between <code>G</code> and <code>mT</code> should be performed. If default is chosen, a new column/variable
 \(B\) in <code>mT</code>/<code>G</code> is created.</p></dd>
 
@@ -155,33 +155,33 @@ conversion between <code>G</code> and <code>mT</code> should be performed. If de
 <dd><p>Numeric, Q value (quality factor, number) displayed at specific <code>dB</code> by spectrometer.
 In case of "Xenon" software the parameter is included in <code>.DSC</code> file, therefore <strong>default</strong>:
 <code>qValue = NULL</code> (actually corresponding to value <code>1</code>). If EPR spectra were acquired
-by the "Winepr" software Q value must be defined like <code>qValue = 3400</code>.</p></dd>
+by the "Winepr" software, the Q value must be defined like <code>qValue = 3400</code>.</p></dd>
 
 
 <dt id="arg-norm-vec-add">norm.vec.add<a class="anchor" aria-label="anchor" href="#arg-norm-vec-add"></a></dt>
 <dd><p>Numeric vector, additional normalization constant in the form of vector, involving
-all additional (in addition to <code>qValue</code>) normalization(s) such as concentration, powder sample
+all (in addition to <code>qValue</code>) normalization(s) such as concentration, powder sample
 weight, number of scans, ...etc (e.g. <code>norm.vec.add = c(2000,0.5,2)</code>). <strong>Default</strong>:
 <code>norm.vec.add = NULL</code> (actually corresponding to value <code>1</code>).</p></dd>
 
 
 <dt id="arg-origin">origin<a class="anchor" aria-label="anchor" href="#arg-origin"></a></dt>
-<dd><p>Character string corresponding to <strong>origin</strong> of the ASCII data, like from
+<dd><p>Character string, corresponding to <strong>origin</strong> of the ASCII data, like from the
 most common spectrometers (from which the data are loaded automatically using the default parameters).
-Options are summarized in the following table (any other specific <code>origin</code> may be added later) =&gt;</p><table class="table table"><tr><td><strong>String</strong></td><td><strong>Description</strong></td></tr><tr><td>"xenon"</td><td><strong>default</strong> automatically loads data from the "Xenon" software with default params.</td></tr><tr><td>"winepr"</td><td>automatically loads data from the "WinEpr" software.</td></tr><tr><td>"magnettech"</td><td>automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]).</td></tr><tr><td>"other" (arbitrary string, e.g. "csv")</td><td>general, loads any other original
+Options are summarized in the following table (any other specific <code>origin</code> may be added later) =&gt;</p><table class="table table"><tr><td><strong>String</strong></td><td><strong>Description</strong></td></tr><tr><td>"xenon"</td><td><strong>default</strong> automatically loads data from the "Xenon" software with the default parameters.</td></tr><tr><td>"winepr"</td><td>automatically loads data from the "WinEpr" software.</td></tr><tr><td>"magnettech"</td><td>automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]).</td></tr><tr><td>"other" (arbitrary string, e.g. "csv")</td><td>general, loads any other original
 data like <code>csv</code>, <code>txt</code>, <code>asc</code> incl. also data from other instrumental/spectrometer software.
 <strong>In such case, all the arguments for</strong> <code>readEPR_Exp_Specs</code> <strong>have to be set up accordingly</strong>.</td></tr></table></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments specified, see also <code><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></code>
+<dd><p>additional arguments specified, see also the <code><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></code>
 and <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>List of EPR spectrum data (including time) in tidy long table format (<code>df</code>) + corrected
-   time vector (<code>time</code>). For <code>origon = "winepr"</code> "time" slices/indices must be already converted
+   time vector (<code>time</code>). For the <code>origon = "winepr"</code> "time" slices/indices must be already converted
    into time domain by <code>time.delta.slice.s</code> (see arguments and examples).</p>
     </div>
     <div class="section level2">

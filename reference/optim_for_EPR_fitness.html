@@ -92,10 +92,11 @@
 <span>  <span class="va">lower</span>,</span>
 <span>  <span class="va">upper</span>,</span>
 <span>  <span class="va">data</span>,</span>
-<span>  Nmax.evals <span class="op">=</span> <span class="fl">1024</span>,</span>
+<span>  Nmax.evals <span class="op">=</span> <span class="fl">512</span>,</span>
 <span>  tol.step <span class="op">=</span> <span class="fl">5e-07</span>,</span>
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -131,8 +132,9 @@ required to undergo a fitting/optimization process.</p></dd>
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
 <dd><p>Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
-<code>Nmax.evals = 1024</code> (<strong>default</strong>). Higher <code>Nmax.evals</code> may extremely extend the optimization
-time.</p></dd>
+<code>Nmax.evals = 1024</code>. Higher <code>Nmax.evals</code> may extremely extend the optimization
+time, therefore the <strong>default</strong> value reads <code>Nmax.evals = 512</code>. However, the <code>"pswarm"</code>
+method requires at least the default or even higher values.</p></dd>
 
 
 <dt id="arg-tol-step">tol.step<a class="anchor" aria-label="anchor" href="#arg-tol-step"></a></dt>
@@ -147,8 +149,9 @@ See also <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="externa
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
 <dd><p>Numeric value, which equals to particle swarm size (i.e. number of particles),
 if <code>method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(x.0)))</code>, e.g. to optimize 8 parameters,
-number of particles = 15.</p></dd>
+corresponds to <code>floor(10+2*sqrt(length(x.0)))</code> (for <code>SPSO2007</code>, see the <code>pswarm.type</code>
+argument), e.g. to optimize 8 parameters, number of particles = 15. For the <code>SPSO2011</code>
+the default number of particles equals to <code>40</code>.</p></dd>
 
 
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
@@ -156,6 +159,18 @@ number of particles = 15.</p></dd>
 (in case <code>method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
 refers to the Euclidean distance, defined as:
 $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
+
+
+<dt id="arg-pswarm-type">pswarm.type<a class="anchor" aria-label="anchor" href="#arg-pswarm-type"></a></dt>
+<dd><p>Character string, setting the type/version of particle swarm algorithm
+if <code>method = "pswarm"</code>. There are two types available: <code>pswarm.type = "SPSO2007"</code>
+and <code>pswarm.type = "SPSO2011"</code>. The latter introduced an adaptive random topology,
+which allows the swarm to dynamically adjust its communication structure.
+This helps in maintaining diversity in the swarm and improves the algorithm's ability
+to escape local optima. This type generally offers better performance on larger multidimensional spaces
+than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
+in the <code>References</code>. <strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding
+to <code>"SPSO2007"</code>, that performs slightly better on smaller scales such as simulations of EPR spectra).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -195,7 +210,7 @@ $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
   as flocks of birds or schools of fish.</td></tr></table><p>Not all <code>{nloptr}</code>-methods are implemented into the <code>optim_for_EPR_fitness</code>. Those summarized above
   were tested by the EPR simulation fit (see <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>) on the experimental spectra
   of TEMPOL and Wuster's blue radicals. They provide the best results (without extensive "playing"
-  with <code><a href="https://astamm.github.io/nloptr/reference/nl.opts.html" class="external-link">nl.opts</a></code>, i.e. with options to control the optimization procedure) and proceeds
+  with <code><a href="https://astamm.github.io/nloptr/reference/nl.opts.html" class="external-link">nl.opts</a></code>, i.e. with options to control the optimization procedure) and proceed
   relatively fast.</p>
     </div>
     <div class="section level2">
@@ -209,6 +224,13 @@ $$\sqrt{\sum_k\,(\text{upper}[k] - \text{lower}[k])^2}$$</p></dd>
 <p>Adyatama A (2019). “Particle Swarm Optimization.” <a href="https://rpubs.com/argaadya/intro-pso" class="external-link">https://rpubs.com/argaadya/intro-pso</a>.</p>
 <p>Tam A (2021). “A Gentle Introduction to Particle Swarm Optimization.”
  <a href="https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/" class="external-link">https://machinelearningmastery.com/a-gentle-introduction-to-particle-swarm-optimization/</a>.</p>
+<p>Ugolotti R, Cagnoni S (2016). "A Fair Comparison Between Standard PSO Versions."
+ In: Rossi F, Mavelli F, Stano P, Caivano D (eds), <em>Advances in Artificial Life, Evolutionary
+ Computation and Systems Chemistry</em>, WIVACE 2015, <em>Communications in Computer and Information Science</em>,
+ Springer, <a href="https://doi.org/10.1007/978-3-319-32695-5_1" class="external-link">https://doi.org/10.1007/978-3-319-32695-5_1</a>.</p>
+<p>Zambrano-Bigiarini M, Clerc M, Rojas-Mujica R (2013). "Standard Particle Swarm Optimisation 2011
+ at CEC-2013: A baseline for future PSO improvements." <em>2013 IEEE Congress on Evolutionary Computation</em>,
+ <a href="https://ieeexplore.ieee.org/document/6557848" class="external-link">https://ieeexplore.ieee.org/document/6557848</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
