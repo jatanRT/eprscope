@@ -203,7 +203,7 @@ equals to \(g_{\text{init}} - 0.001\), \(0.8\,\Delta B_{\text{G,init}}\),
 intensity multiplication initial constant \(= 0.8\,\text{init}\), baseline initial slope \(- 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(- 5\) (in case the <code>baseline.correct</code> is set to
-<code>"quadratic"</code>). Lower limits of all hyperfine coupling constant (HFCCs) are set to \(0.9\,A_{\text{init}}\).</p></dd>
+<code>"quadratic"</code>). Lower limits of all hyperfine coupling constant (HFCCs) are set to \(0.875\,A_{\text{init}}\).</p></dd>
 
 
 <dt id="arg-optim-params-upper">optim.params.upper<a class="anchor" aria-label="anchor" href="#arg-optim-params-upper"></a></dt>
@@ -214,7 +214,7 @@ equals to \(g_{\text{init}} + 0.001\), \(1.2\,\Delta B_{\text{G,init}}\),
 intensity multiplication initial constant \(= 1.2\,\text{init}\), baseline initial slope \(+ 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.correct</code> is set to
-<code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.1\,A_{\text{init}}\).</p></dd>
+<code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.125\,A_{\text{init}}\).</p></dd>
 
 
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
@@ -388,8 +388,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0059445e+00  5.3288684e+00  5.2023563e+00 -1.9373036e-04  1.6195008e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.5609764e-08  5.0512019e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0058005e+00  5.3018790e+00  5.7508704e+00 -5.9891781e-06  1.6724428e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  1.6964173e-09  5.1142528e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## spectrum plot with experimental spectrum,</span></span></span>
@@ -402,7 +402,7 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span><span class="co">## minimum sum of squared residuals:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">sum.LSQ.min</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.9819491e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.2997381e-07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## number of evaluations / iterations:</span></span></span>
@@ -421,14 +421,14 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of data frame including all EPR spectra:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          B_G     Experiment     Simulation     Residuals Simulation_NoBasLin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;          &lt;num&gt;          &lt;num&gt;         &lt;num&gt;               &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.7000 -1.7738564e-06 -8.3938120e-06 6.6199557e-06       5.8931225e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.9005  1.2209461e-07 -8.3826673e-06 8.5047619e-06       5.9159561e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.1009 -1.8403788e-07 -8.3714666e-06 8.1874287e-06       5.9390238e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.3014 -7.1641412e-08 -8.3603216e-06 8.2886802e-06       5.9620968e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.5019 -1.7361444e-06 -8.3491207e-06 6.6129763e-06       5.9854067e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -8.3379755e-06 7.8226638e-06       6.0087223e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          B_G     Experiment     Simulation      Residuals Simulation_NoBasLin</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;          &lt;num&gt;          &lt;num&gt;          &lt;num&gt;               &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.7000 -1.7738564e-06 -3.2882168e-07 -1.4450347e-06       6.7065691e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.9005  1.2209461e-07 -3.2845643e-07  4.5055104e-07       6.7325324e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.1009 -1.8403788e-07 -3.2808922e-07  1.4405134e-07       6.7587618e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.3014 -7.1641412e-08 -3.2772370e-07  2.5608229e-07       6.7849972e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.5019 -1.7361444e-06 -3.2735622e-07 -1.4087882e-06       6.8115018e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -3.2699042e-07 -1.8832127e-07       6.8380128e-09</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## similar EPR spectrum simulation fit with "particle swarm"</span></span></span>
 <span class="r-in"><span><span class="co">## optimization algorithm and `check.fit.plot = TRUE` option</span></span></span>
@@ -488,8 +488,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  4.9000000e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0070000e+00  4.7501604e+00  3.8400010e+00 -1.6255959e-09  8.3999998e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.3563022e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0069962e+00  4.7457426e+00  3.8400000e+00 -6.0710550e-10  8.4000000e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.3445202e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## compare the results with the example in the `readMAT_params_file`,</span></span></span>
