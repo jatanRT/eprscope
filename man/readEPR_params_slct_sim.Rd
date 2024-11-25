@@ -8,24 +8,24 @@ readEPR_params_slct_sim(path_to_dsc_par, origin = "xenon", B.unit = "G")
 }
 \arguments{
 \item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
+to \code{.DSC/.dsc} or \code{.par} (depending on OS, see the \code{origin} argument)
 \code{text} files including all instrumental parameters and provided by the EPR machine.}
 
-\item{origin}{Character string corresponding to software used to acquire the EPR spectra
-on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
-they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+\item{origin}{Character string, corresponding to software used to acquire EPR spectra.
+The files are slightly different depending on whether
+they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
 (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
 
-\item{B.unit}{Character string pointing to unit of magnetic flux density which is the output
+\item{B.unit}{Character string, pointing to unit of magnetic flux density which is the output
 "unit", \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), for \code{"sweep width"}
-and \code{"central field"} (see \code{\link{eval_sim_EPR_iso}}).
+and \code{"central field"} (see also the \code{\link{eval_sim_EPR_iso}}).
 \strong{Default}: \code{B.unit = "G"}.}
 }
 \value{
 List consisting of:
   \describe{
-  \item{Bcf}{Central field (magnetic fux density, \emph{B}) value in \code{B.unit}.}
-  \item{Bsw}{Sweep width (magnetic fux density, \emph{B}, experimental range) value in \code{B.unit}.}
+  \item{Bcf}{Central field (magnetic flux density, \emph{B}) value in \code{B.unit}.}
+  \item{Bsw}{Sweep width (magnetic flux density, \emph{B}, experimental range) value in \code{B.unit}.}
   \item{Npoints}{Number of points (spectral resolution).}
   \item{mwGHz}{Microwave frequency value in \code{GHz}.}
   }
@@ -33,7 +33,8 @@ List consisting of:
 \description{
 Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
   "sweep width", "central field", "number of points" as well as "microwave frequency"
-  which are are required for the simulations of EPR spectra (see \code{\link{eval_sim_EPR_iso}}).
+  which are are required for the simulations of EPR spectra (see also
+  the \code{\link{eval_sim_EPR_iso}} function).
 }
 \examples{
 ## loading `.par` (`WinEPR`) parameter file example

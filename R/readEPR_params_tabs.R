@@ -1,5 +1,5 @@
 #
-#' Read EPR Instrumental Parameters and Information into Tables
+#' Read EPR Instrumental Parameters and Information and Write them into Tables
 #'
 #'
 #' @family Data Reading
@@ -9,18 +9,17 @@
 #'   Taking the instrumental parameters from the \code{.DSC/.dsc} or \code{.par} files, applied
 #'   to record the EPR Spectra, and transferring them into list of \code{Tables/Data Frames}.
 #'   They include either parameter values and their units or character/string information about the measurement,
-#'   see also \code{\link{readEPR_param_slct}}.
+#'   see also the \code{\link{readEPR_param_slct}}.
 #'
 #'
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
-#'   \code{text} files including instrumental parameters and provided by the EPR machine.
-#' @param origin Character string, corresponding to software which was used to acquire the EPR spectra
-#'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether they
-#'   were recorded by the "WinEpr",\code{origin = "winepr"} softw. or by the "Xenon"
-#'   (\strong{default}: \code{origin = "xenon"}) one or by the "Magnettech" software
-#'   (ESR5000 [11-0422],\code{origin = "magnettech"}).
-#' @param interact Character string, whether or not to display interactive tables by \code{\link[DT]{datatable}}.
+#'   \code{text} files, including instrumental parameters and provided by the EPR machine.
+#' @param origin Character string, corresponding to software used to acquire EPR spectra.
+#'   The files are slightly different depending on whether
+#'   they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
+#'   (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).
+#' @param interact Character string, whether to display interactive tables by the \code{\link[DT]{datatable}}.
 #'   \strong{Default}: \code{interact = NULL}. Interactive table with parameters can be displayed by
 #'   \code{interact = "params"} or to display the additional information table:
 #'   \code{interact = "info"}.
@@ -32,7 +31,7 @@
 #'  \item{info}{Information character string, such as date, operator, comment...etc.}
 #'  }
 #'  Both data frames may be depicted in the form of interactive tables
-#'  by \code{interact} function argument.
+#'  by the \code{interact} function argument.
 #'
 #'
 #' @examples
@@ -41,7 +40,7 @@
 #' ## spectrometer software
 #' AcridinRad.data.file <-
 #'   load_data_example("AcridineDeriv_Irrad_365nm.dsc")
-#' ## reading nd displaying parameters as data frame
+#' ## reading and displaying parameters as data frame
 #' AcridinRad.params.data <-
 #'   readEPR_params_tabs(AcridinRad.data.file,
 #'                       origin = "magnettech")

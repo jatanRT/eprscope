@@ -51,10 +51,10 @@ does not display any hyperfine splitting, the argument definition reads \code{nu
 \item{baseline.correct}{Character string, referring to baseline correction of the simulated/fitted spectrum.
 Corrections like \code{"constant"} (\strong{default}), \code{"linear"} or \code{"quadratic"} can be applied.}
 
-\item{lineG.content}{Numeric value between \code{0} and \code{1}, referring to content of \emph{Gaussian} line form.
+\item{lineG.content}{Numeric value between \code{0} and \code{1}, referring to content of the \emph{Gaussian} line form.
 If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
-(e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
+(e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above,
 with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voigt}.}
 
 \item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
@@ -210,7 +210,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
 Fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
   of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
   (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
-  (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on \code{lineSpecs.form});
+  (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on the \code{lineSpecs.form} argument);
   spectral baseline (see the \code{baseline.correct}) and finally the intensity (multiplication coefficient)
   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
   The \code{lineG.content} corresponding parameter is the only one,

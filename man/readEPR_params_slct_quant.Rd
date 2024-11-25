@@ -8,12 +8,12 @@ readEPR_params_slct_quant(path_to_dsc_par, origin = "xenon")
 }
 \arguments{
 \item{path_to_dsc_par}{Character string, path (also provided by \code{\link[base]{file.path}})
-to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
+to \code{.DSC/.dsc} or \code{.par} (depending on OS, see the \code{origin} argument)
 \code{text} files including all instrumental parameters and provided by the EPR machine.}
 
-\item{origin}{Character string corresponding to software used to acquire the EPR spectra
-on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
-they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+\item{origin}{Character string, corresponding to software used to acquire EPR spectra.
+The files are slightly different depending on whether
+they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
 (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
 }
 \value{
@@ -29,7 +29,7 @@ List consisting of:
 Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
   "modulation amplitude", "temperature", "microwave power" as well as "microwave frequency"
   which are are required for the absolute EPR quantitative analysis (\eqn{\equiv}
-  radical or paramagnetic species number determination).
+  radical or paramagnetic species number determination, see the \code{\link{quantify_EPR_Abs}} function).
 }
 \examples{
 ## loading `.DSC` (`Xenon`) parameter file example

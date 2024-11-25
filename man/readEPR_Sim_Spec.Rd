@@ -16,21 +16,21 @@ readEPR_Sim_Spec(
 with simulated spectral data (\eqn{Intensity\,\,vs\,\,B}(Field) obtained from various sources.
 Path can be alternatively defined by the \code{\link[base]{file.path}} function.}
 
-\item{B.unit}{Character string pointing to unit of magnetic flux density coming from the original data
+\item{B.unit}{Character string, pointing to unit of magnetic flux density coming from the original data
 which is to be presented on the \eqn{B}-axis of an EPR spectrum,
 like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"). \strong{Default}: \code{B.unit = "G"}.}
 
-\item{Intensity.sim}{Character string pointing to intensity data frame column corresponding
-to simulated EPR spectrum. If used together with quantification of radicals,
+\item{Intensity.sim}{Character string, pointing to intensity data frame column name, corresponding
+to simulated EPR spectrum. If used together with the quantification of radicals,
 this argument must be equal to that of the \code{\link{quantify_EPR_Sim_series}}.}
 
-\item{sim.origin}{Character string referring to "origin" of the simulated ASCII data.
+\item{sim.origin}{Character string, referring to the "origin" of a simulated spectrum ASCII data.
 There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
 \code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.}
 }
 \value{
-Data frame consisting of magnetic flux density (\code{Bsim_mT} or \code{Bsim_G}) and intensity
-  variable/column (depending on \code{Intensity.sim} argument) corresponding to simulated EPR spectrum.
+Data frame, consisting of magnetic flux density (\code{Bsim_mT} or \code{Bsim_G}) and intensity
+  variable/column (depending on the \code{Intensity.sim} argument), corresponding to simulated EPR spectrum.
 }
 \description{
 Loading the ASCII data like \code{.txt},\code{.asc} or \code{.csv}, related to simulated EPR spectrum from different

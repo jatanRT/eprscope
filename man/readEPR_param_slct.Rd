@@ -8,12 +8,12 @@ readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 }
 \arguments{
 \item{path_to_dsc_par}{Character string, path to \code{.DSC/.dsc} or \code{.par} file including the instrumental
-parameters provided by the EPR machine. File path can be also defined by \code{\link[base]{file.path}}.}
+parameters provided by the EPR machine. File path can be also defined by the \code{\link[base]{file.path}} function.}
 
-\item{string}{Character (vector) string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
- corresponding to instrumental parameter.
-Following \strong{strings are defined for all three main acquisition software described-above}
- (\strong{in parenthesis for "winepr" software}):
+\item{string}{Character (vector) string (appeared at the line beginning) within the \code{.DSC/.dsc} or \code{.par} file
+ corresponding to instrumental parameter or information.
+Following \strong{strings are defined for all three main acquisition softwares described-above}
+ (\strong{in parenthesis for the "winepr" origin}):
 \tabular{ll}{
  \strong{String} \tab \strong{Instrumental Parameter} \cr
   "OPER" ("JON") \tab operator (of the EPR instrument) \cr
@@ -40,20 +40,20 @@ Following \strong{strings are defined for all three main acquisition software de
   analysis \code{unitless}, not available in "magnettech" \code{.dsc} \cr
 }}
 
-\item{origin}{Character string corresponding to software used to acquire the EPR spectra
-on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
-they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+\item{origin}{Character string, corresponding to software used to acquire EPR spectra.
+The files are slightly different depending on whether
+they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
 (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
 }
 \value{
-Numeric or character string (e.g. date or comment) corresponding to selected instrumental parameter
+Numeric or character string (e.g. date or comment), corresponding to selected instrumental parameter(s)
   applied to record the EPR spectra. In case of \code{string} character vector, named list, containing
   either character and/or numeric values, is returned with the names corresponding to \code{string}.
 }
 \description{
 Taking selected instrumental parameters or information
  from the \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
- or \code{WinEpr} Software, respectively).
+ or \code{WinEpr} software, respectively).
 }
 \examples{
 ## loading `.DSC` (`Xenon`) parameter file example

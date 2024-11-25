@@ -7,15 +7,15 @@
 #' @description
 #'  Taking selected instrumental parameters or information
 #'  from the \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
-#'  or \code{WinEpr} Software, respectively).
+#'  or \code{WinEpr} software, respectively).
 #'
 #'
 #' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including the instrumental
-#'   parameters provided by the EPR machine. File path can be also defined by \code{\link[base]{file.path}}.
-#' @param string Character (vector) string within the \code{.DSC/.dsc} or \code{.par} (at the line beginning) file
-#'   corresponding to instrumental parameter.
-#'  Following \strong{strings are defined for all three main acquisition software described-above}
-#'   (\strong{in parenthesis for "winepr" software}):
+#'   parameters provided by the EPR machine. File path can be also defined by the \code{\link[base]{file.path}} function.
+#' @param string Character (vector) string (appeared at the line beginning) within the \code{.DSC/.dsc} or \code{.par} file
+#'   corresponding to instrumental parameter or information.
+#'  Following \strong{strings are defined for all three main acquisition softwares described-above}
+#'   (\strong{in parenthesis for the "winepr" origin}):
 #'  \tabular{ll}{
 #'   \strong{String} \tab \strong{Instrumental Parameter} \cr
 #'    "OPER" ("JON") \tab operator (of the EPR instrument) \cr
@@ -41,13 +41,13 @@
 #'    "ConvFact" \tab conversion factor/instr. calibration constant for quantitative
 #'    analysis \code{unitless}, not available in "magnettech" \code{.dsc} \cr
 #'  }
-#' @param origin Character string corresponding to software used to acquire the EPR spectra
-#'   on BRUKER/MAGNETTECH spectrometers, because the files are slightly different depending on whether
-#'   they were recorded by the "WinEpr",\code{origin = "winepr"}, by the "Xenon"
+#' @param origin Character string, corresponding to software used to acquire EPR spectra.
+#'   The files are slightly different depending on whether
+#'   they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
 #'   (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).
 #'
 #'
-#' @return Numeric or character string (e.g. date or comment) corresponding to selected instrumental parameter
+#' @return Numeric or character string (e.g. date or comment), corresponding to selected instrumental parameter(s)
 #'   applied to record the EPR spectra. In case of \code{string} character vector, named list, containing
 #'   either character and/or numeric values, is returned with the names corresponding to \code{string}.
 #'
@@ -320,9 +320,9 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'
 #' @description
 #'  Function takes selected instrumental parameters relevant to \strong{time series ("kinetic")}
-#'  experiment from the \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum and written by the "Xenon",
-#'  "WinEpr" or "Magnettech" software, respectively. These parameters are required for the time correction of EPR
-#'  spectra, see \code{\link{correct_time_Exp_Specs}}.
+#'  experiment from the \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum, obtained from the "Xenon",
+#'  "WinEpr" or "Magnettech" software. These parameters are required for time correction of the CW (continuous wave) EPR
+#'  spectra, see the \code{\link{correct_time_Exp_Specs}}.
 #'
 #'
 #' @inheritParams readEPR_param_slct
@@ -426,12 +426,12 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
 #'   Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
 #'   "modulation amplitude", "temperature", "microwave power" as well as "microwave frequency"
 #'   which are are required for the absolute EPR quantitative analysis (\eqn{\equiv}
-#'   radical or paramagnetic species number determination).
+#'   radical or paramagnetic species number determination, see the \code{\link{quantify_EPR_Abs}} function).
 #'
 #'
 #' @inheritParams readEPR_param_slct
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see the \code{origin} argument)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
 #'
 #'
@@ -501,23 +501,24 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
 #' @description
 #'   Reading the \code{.DSC/.dsc} or \code{.par} file to extract the important parameters like
 #'   "sweep width", "central field", "number of points" as well as "microwave frequency"
-#'   which are are required for the simulations of EPR spectra (see \code{\link{eval_sim_EPR_iso}}).
+#'   which are are required for the simulations of EPR spectra (see also
+#'   the \code{\link{eval_sim_EPR_iso}} function).
 #'
 #'
 #' @inheritParams readEPR_param_slct
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see \code{origin} parameter)
+#'   to \code{.DSC/.dsc} or \code{.par} (depending on OS, see the \code{origin} argument)
 #'   \code{text} files including all instrumental parameters and provided by the EPR machine.
-#' @param B.unit Character string pointing to unit of magnetic flux density which is the output
+#' @param B.unit Character string, pointing to unit of magnetic flux density which is the output
 #'   "unit", \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), for \code{"sweep width"}
-#'   and \code{"central field"} (see \code{\link{eval_sim_EPR_iso}}).
+#'   and \code{"central field"} (see also the \code{\link{eval_sim_EPR_iso}}).
 #'   \strong{Default}: \code{B.unit = "G"}.
 #'
 #'
 #' @return List consisting of:
 #'   \describe{
-#'   \item{Bcf}{Central field (magnetic fux density, \emph{B}) value in \code{B.unit}.}
-#'   \item{Bsw}{Sweep width (magnetic fux density, \emph{B}, experimental range) value in \code{B.unit}.}
+#'   \item{Bcf}{Central field (magnetic flux density, \emph{B}) value in \code{B.unit}.}
+#'   \item{Bsw}{Sweep width (magnetic flux density, \emph{B}, experimental range) value in \code{B.unit}.}
 #'   \item{Npoints}{Number of points (spectral resolution).}
 #'   \item{mwGHz}{Microwave frequency value in \code{GHz}.}
 #'   }
