@@ -86,27 +86,27 @@ Path can be alternatively defined by the <code><a href="https://rdrr.io/r/base/f
 
 
 <dt id="arg-b-unit">B.unit<a class="anchor" aria-label="anchor" href="#arg-b-unit"></a></dt>
-<dd><p>Character string pointing to unit of magnetic flux density coming from the original data
+<dd><p>Character string, pointing to unit of magnetic flux density coming from the original data
 which is to be presented on the \(B\)-axis of an EPR spectrum,
 like <code>"G"</code> ("Gauss"), <code>"mT"</code> ("millitesla"). <strong>Default</strong>: <code>B.unit = "G"</code>.</p></dd>
 
 
 <dt id="arg-intensity-sim">Intensity.sim<a class="anchor" aria-label="anchor" href="#arg-intensity-sim"></a></dt>
-<dd><p>Character string pointing to intensity data frame column corresponding
-to simulated EPR spectrum. If used together with quantification of radicals,
+<dd><p>Character string, pointing to intensity data frame column name, corresponding
+to simulated EPR spectrum. If used together with the quantification of radicals,
 this argument must be equal to that of the <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></code>.</p></dd>
 
 
 <dt id="arg-sim-origin">sim.origin<a class="anchor" aria-label="anchor" href="#arg-sim-origin"></a></dt>
-<dd><p>Character string referring to "origin" of the simulated ASCII data.
+<dd><p>Character string, referring to the "origin" of a simulated spectrum ASCII data.
 There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</code> (<strong>default</strong>),
 <code>"xenon"</code>, <code>"simfonia"</code> as well as universal <code>"csv"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Data frame consisting of magnetic flux density (<code>Bsim_mT</code> or <code>Bsim_G</code>) and intensity
-  variable/column (depending on <code>Intensity.sim</code> argument) corresponding to simulated EPR spectrum.</p>
+    <p>Data frame, consisting of magnetic flux density (<code>Bsim_mT</code> or <code>Bsim_G</code>) and intensity
+  variable/column (depending on the <code>Intensity.sim</code> argument), corresponding to simulated EPR spectrum.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
