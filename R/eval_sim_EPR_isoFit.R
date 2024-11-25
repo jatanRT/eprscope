@@ -89,7 +89,7 @@
 #'   intensity multiplication initial constant \eqn{= 0.8\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.9\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.
 #' @param optim.params.upper Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
@@ -97,7 +97,7 @@
 #'   intensity multiplication initial constant \eqn{= 1.2\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
 #'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
@@ -739,20 +739,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     A.upper.limits <- c()
     if (baseline.correct == "constant"){
       for (a in 6:(5+length(nuclear.system.noA))){
-        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
-        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
+        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
+        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
       }
     }
     if (baseline.correct == "linear"){
       for (a in 7:(6+length(nuclear.system.noA))){
-        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
-        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
+        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
+        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
       }
     }
     if (baseline.correct == "quadratic"){
       for (a in 8:(7+length(nuclear.system.noA))){
-        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.1)
-        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.1)
+        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
+        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
       }
     }
     #

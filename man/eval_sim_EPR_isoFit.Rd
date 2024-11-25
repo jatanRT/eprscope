@@ -103,7 +103,7 @@ equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
 intensity multiplication initial constant \eqn{= 0.8\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
-\code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.9\,A_{\text{init}}}.}
+\code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.}
 
 \item{optim.params.upper}{Numeric vector (with the same element order like \code{optim.params.init})
 with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
@@ -112,7 +112,7 @@ equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
 intensity multiplication initial constant \eqn{= 1.2\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
-\code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.1\,A_{\text{init}}}.}
+\code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
 
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where

@@ -141,7 +141,7 @@ test_that("The parameters determined from the expr. EPR spectrum
   # The expected differences are processed by `expect_lt(e)` because of fitting
   expect_length(aminoxyl.rad.data.simFit.a$best.fit.params[[1]], 6)
   ## A MHz, the same tol. as before =>
-  expect_lt(abs(A.iso.sim.fit - mean.A.iso.expr), 4e-1) # 0.4 MHz \approx 0.14 G should be OK
+  expect_lt(abs(A.iso.sim.fit - mean.A.iso.expr), 5e-1) # 0.5 MHz \approx 0.18 G should be OK
   ## sum of the residual squares (lower than ...) =>
   expect_lt(aminoxyl.rad.data.simFit.a$sum.LSQ.min[[1]], 1.3e-8)
   ## Linewidths => expr. + sim. fit. comparison (difference lower than 0.03)  =>
