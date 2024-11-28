@@ -48,7 +48,7 @@
 #'   where \eqn{R\approx 8.31446\,\text{J\,mol^{-1}\,K^{-1}}} is the universal gas constant and the upper index \eqn{^o}
 #'   denotes the standard molar state (see IUPAC (2019) in the \code{References}). Previous formula is applied
 #'   as a model to fit onto the experimental \eqn{k\,\,vs\,\,T} (see the argument \code{data.kvT}) relation, where both
-#'   \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o} (in the graphical output also denoted as
+#'   the \eqn{\Delta^{\ddagger} S^o} and the \eqn{\Delta^{\ddagger} H^o} (in the graphical output also denoted as
 #'   \eqn{\Delta^{active} S^o} and \eqn{\Delta^{active} H^o}, respectively) are optimized using the \code{fit.method}
 #'   (by the \code{\link[stats]{nls}} function). Often, the Eyring equation is not applied in the original form,
 #'   however in the linearized one. Nevertheless, the latter is not recommended as a model for fitting the experimental \eqn{k(T)}
@@ -124,7 +124,7 @@
 #'
 #' @return As a result of the Eyring-relation fit, list with the following components is available:
 #'   \describe{
-#'   \item{df}{Data frame including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
+#'   \item{df}{Data frame, including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
 #'   with the name of \code{DeltaG_active_kJ_per_mol}.}
 #'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
 #'   however with the resolution of 1024 points) and the corresponding \code{.fitted} \eqn{k}, according to
