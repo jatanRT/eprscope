@@ -35,7 +35,7 @@ columns are described by character strings like those below (see arguments \code
 \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.}
 
 \item{qvarR}{Character string, pointing to \code{qvarR} (quantitative variable) column/variable
-name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.}
+name in the original \code{data.qt.expr}. \strong{Default}: \code{qvarR = "Area"}.}
 
 \item{model.react}{Character string, denoting a specific radical (\code{"R"}) reaction related to
 changes in integral intensities (or any other \strong{q}uantitative \strong{var}iable) in EPR spectral
@@ -77,7 +77,7 @@ identifiable intermediate species forming. \strong{Default}: \code{elementary.re
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
 one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
 the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}. For the consecutive
-model reaction presented above, it applies only to one part of the mechanism.}
+model reaction presented above, it applies only to one part/step of the mechanism.}
 
 \item{params.guess}{Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 ready for optimization/fitting.}

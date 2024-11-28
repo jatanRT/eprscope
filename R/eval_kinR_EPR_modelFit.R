@@ -28,7 +28,7 @@
 #' @param time Character string, pointing to \code{time} column/variable name in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.
 #' @param qvarR Character string, pointing to \code{qvarR} (quantitative variable) column/variable
-#'   name in the original \code{data.qt.expr} data frame. \strong{Default}: \code{qvarR = "Area"}.
+#'   name in the original \code{data.qt.expr}. \strong{Default}: \code{qvarR = "Area"}.
 #' @param params.guess Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 #'   ready for optimization/fitting.
 #' @param params.guess.lower Numeric vector of lower bounds on each parameter in \code{params.guess}.

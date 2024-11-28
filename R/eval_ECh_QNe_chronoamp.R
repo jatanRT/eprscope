@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   Evaluating transferred charge and the corresponding number of electrons
+#'   Evaluation of the transferred charge and the corresponding number of electrons
 #'   from \href{https://doi.org/10.1515/pac-2018-0109}{chronoamperogram} related to electrochemical
 #'   experiment, performed simultaneously with the EPR time series measurement or independently of the latter.
 #'   To acquire charge, the input \eqn{I} \emph{vs} \eqn{time} relation (coming from the
@@ -26,7 +26,7 @@
 #'   to charge (\eqn{Q}), according to:
 #'   \deqn{N_{\text{e}} = (Q\,N_{\text{A}})/F}
 #'   where \eqn{N_{\text{A}}} stands for the Avogadro's number and \eqn{F} for the Faraday's constants.
-#'   Both obtained by \code{constans::syms$na} and \code{constants::syms$f}, respectively,
+#'   Both are obtained by the \code{constans::syms$na} and the \code{constants::syms$f}, respectively,
 #'   using the \href{https://r-quantities.github.io/constants/}{constants} package
 #'   (see \code{\link[constants]{syms}}). If both numbers match (\eqn{N_{\text{R}} = N_{\text{e}}}),
 #'   it reveals the presence of one-electron oxidation/reduction, while different numbers may point

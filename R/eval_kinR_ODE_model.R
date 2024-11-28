@@ -37,17 +37,20 @@
 #'   or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If the kinetic equation
 #'   for the reaction corresponds to its stoichiometry, the reaction is described as the elementary
 #'   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
-#'   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, one can obtain
-#'   the rate constant from the rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
-#'   intensity (area under the spectral curve) of radical ("R") formation and/or decay (see also
-#'   \code{\link{eval_kinR_EPR_modelFit}}). Quantitative kinetic profiles (such as that
-#'   \eqn{\text{d}c_{\text{R}}/\text{d}t} described above) are not evaluated
+#'   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, for a quick examination,
+#'   one can also obtain the rate constant from the rate law fit onto the experimental EPR spectral time
+#'   series outputs, i.e. integral intensity (area under the spectral curve) of radical ("R") formation
+#'   and/or decay (see also the \code{\link{eval_kinR_EPR_modelFit}}). Accordingly, the "R" concentration
+#'   (or number of radicals/V) can be replaced by the corresponding integral. For such a purpose a more general
+#'   \strong{q}uantitative \strong{var}iable (\eqn{qvar}, see the \code{kin.params} argument) is defined.
+#'   Quantitative kinetic profiles (such as that \eqn{\text{d}c_{\text{R}}/\text{d}t}
+#'   or \eqn{\text{d}qvar_{\text{R}}/\text{d}t} described above) are not evaluated
 #'   by common integration of the kinetic equations/rate laws. However, by numeric solution of the Ordinary
 #'   Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
-#'   Therefore, higher number of models can be available than for integrated
+#'   Therefore, higher number of models might be available than for integrated
 #'   differential equations, because for complex mechanisms it's quite often highly demanding to obtain
 #'   the analytical solution by common integration. \strong{Several kinetic models for radical reactions} in EPR spectroscopy
-#'   \strong{are predefined and summarized} below (see also \code{model.react} function argument).
+#'   \strong{are predefined and summarized} below (see also the \code{model.react} function argument).
 #'   \tabular{ll}{
 #'   \strong{model.react} \tab \strong{Short Description} \cr
 #'   \code{"(r=1)R --> [k1] B"} \tab Basic forward reaction,
@@ -125,7 +128,7 @@
 #'   If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
 #'   one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
 #'   the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}. For the consecutive
-#'   model reaction presented above, it applies only to one part of the mechanism.
+#'   model reaction presented above, it applies only to one part/step of the mechanism.
 #' @param kin.params Named numeric vector, containing rate constants as well as initial radical
 #'   or other reactant/product concentration/integral intensities/areas...etc. Therefore, a general
 #'   \code{qvar} (\strong{q}uantitative \strong{var}iable) was defined which may actually reflect
@@ -151,6 +154,8 @@
 #'   \code{"(a=1)A + (r=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0A},
 #'   \code{qvar0R}, (\code{alpha},\code{beta}) \cr
 #'   }
+#'   The \code{k1} unit eventually contains \eqn{s^{-1}} as well as depends on the applied \code{qvar} (e.g. \code{c})
+#'   and on the partial reaction order (PRO, see above).
 #' @param time.unit Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 #'   \code{"min"} or \code{"h"}.
 #' @param time.Interval.model Numeric vector, including two values: starting and final time/termination
