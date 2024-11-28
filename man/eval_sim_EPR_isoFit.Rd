@@ -180,8 +180,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   (for \code{check.fit.plot = FALSE}): magnetic flux density, intensity of the experimental
   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
   the best simulated spectrum intensity without the baseline fit.}
-  \item{sum.LSQ.min}{The minimum sum of the residual square vector after the least-square
-  procedure.}
+  \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
   equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)
@@ -200,7 +199,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   which will be applied for the more complex optimization/fitting (which is currently under development).
   \describe{
   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
-  to the \code{optim.params.init} argument, see also list above) + minimum sum of the residual squares,
+  to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares,
   after the (final) \code{optim.method} procedure.}
   \item{df}{Data frame including the final best simulated spectrum with and without the baseline fit.}
   }
@@ -265,8 +264,8 @@ tempo.test.sim.fit.a$best.fit.params
 ## fit subtracted:
 tempo.test.sim.fit.a$plot
 #
-## minimum sum of squared residuals:
-tempo.test.sim.fit.a$sum.LSQ.min
+## minimum sum of residual squares:
+tempo.test.sim.fit.a$min.rss
 #
 ## number of evaluations / iterations:
 tempo.test.sim.fit.a$N.evals

@@ -117,10 +117,6 @@ test_that("The parameters determined from the expr. EPR spectrum
   A.iso.sim.fit <-
     round(aminoxyl.rad.data.simFit.a$best.fit.params[[1]][6], digits = 2)
   #
-  ## extracting the sum of the residual squares
-  sum.LSQ.min.sim <-
-    aminoxyl.rad.data.simFit.a$sum.LSQ.min
-  #
   ## weighted value of the Gaussian and Lorentzian linewidths
   weight.DeltaB.sim.fit <-
     round(
@@ -143,7 +139,7 @@ test_that("The parameters determined from the expr. EPR spectrum
   ## A MHz, the same tol. as before =>
   expect_lt(abs(A.iso.sim.fit - mean.A.iso.expr), 5e-1) # 0.5 MHz \approx 0.18 G should be OK
   ## sum of the residual squares (lower than ...) =>
-  expect_lt(aminoxyl.rad.data.simFit.a$sum.LSQ.min[[1]], 1.3e-8)
+  expect_lt(aminoxyl.rad.data.simFit.a$min.rss[[1]], 1.3e-8)
   ## Linewidths => expr. + sim. fit. comparison (difference lower than 0.03)  =>
   expect_lte(abs(weight.DeltaB.sim.fit - mean.DeltaB.expr), 0.03) # in mT
   ## g-Values => expr. + sim. fit. comparison

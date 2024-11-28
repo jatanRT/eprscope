@@ -123,13 +123,13 @@
 #'   the components are denoted by the uppercase letters (\code{Area_Sim_A}, \code{Area_Sim_B},...etc.);
 #'   best fitted/optimized coefficients to multiply the intensities (\code{Optim_CoeffInt_Sim_A},
 #'   \code{Optim_CoeffInt_Sim_B},...etc); best fitted/optimized intercept (or baseline constant,
-#'   \code{Optim_intercept}); minimum sum of the residual squares (\code{minLSQ_sum}); number
+#'   \code{Optim_intercept}); minimum sum of residual squares (\code{min_RSS}); number
 #'   of evaluations/iterations (\code{N_evals}) and finally convergence information/number (\code{N_converg},
 #'   like already described in the \code{\link{optim_for_EPR_fitness}}). These variables are presented for each
 #'   \code{var2nd.series} (e.g. time) point like example for one EPR spectral component:
 #'   \tabular{lcccccc}{
 #'   \strong{time_s} \tab \strong{Area_Sim_A} \tab \strong{Optim_CoeffInt_Sim_A} \tab \strong{Optim_intercept} \tab
-#'   \strong{minLSQ_sum} \tab \strong{N_evals} \tab \strong{N_converg} \cr
+#'   \strong{min_RSS} \tab \strong{N_evals} \tab \strong{N_converg} \cr
 #'   6 \tab 0.020624473 \tab 0.052843937 \tab 5.508809e-10 \tab 2.289953e-07 \tab 198 \tab 4 \cr
 #'   21 \tab 0.020217930\tab 0.051802287\tab 5.401823e-10 \tab 2.438172e-07 \tab 177 \tab 4 \cr
 #'   36 \tab 0.018836579 \tab 0.048263010 \tab 5.029705e-10 \tab 2.662651e-07 \tab 201 \tab 4 \cr
@@ -199,7 +199,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   . <- NULL
   Area_Sim_aLL <- NULL
   Optim_intercept <- NULL
-  minLSQ_sum <- NULL
+  min_RSS <- NULL
   N_evals <- NULL
   N_converg <- NULL
   #
@@ -773,7 +773,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     ## adding available info/statistics about optimization
     result_df <- result_df %>%
       dplyr::mutate(Optim_intercept = optim.vec.x01) %>%
-      dplyr::mutate(minLSQ_sum = optim.vec.min.val) %>%
+      dplyr::mutate(min_RSS = optim.vec.min.val) %>%
       dplyr::mutate(N_evals = optim.vec.no.iter) %>%
       dplyr::mutate(N_converg = optim.vec.no.converg)
   }

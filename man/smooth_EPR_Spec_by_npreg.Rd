@@ -144,7 +144,7 @@ triarylamine.1st.spec.smooth$plot
 ## sum of residual squares preview
 triarylamine.1st.spec.smooth$rss
 #
-## estimated error standard deviation
+## estimated standard deviation
 triarylamine.1st.spec.smooth$sigma
 #
 ## smoothing of all EPR spectra in the series

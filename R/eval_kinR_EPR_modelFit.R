@@ -69,7 +69,7 @@
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
-#'   \item{sum.LSQ.min}{Minimum residual least-squares sum after \code{N.evals}.}
+#'   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
 #'   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
 #'   }
 #'
@@ -387,7 +387,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     plot = plot.fit,
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,
-    sum.LSQ.min = residsq.react.kin.fit,
+    min.rss = residsq.react.kin.fit,
     N.converg = converg.react.kin.fit
   )
   #

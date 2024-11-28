@@ -157,8 +157,7 @@
 #'   (for \code{check.fit.plot = FALSE}): magnetic flux density, intensity of the experimental
 #'   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
 #'   the best simulated spectrum intensity without the baseline fit.}
-#'   \item{sum.LSQ.min}{The minimum sum of the residual square vector after the least-square
-#'   procedure.}
+#'   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
 #'   \item{N.evals}{Number of iterations/function evaluations completed before termination.
 #'   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
 #'   equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)
@@ -177,7 +176,7 @@
 #'   which will be applied for the more complex optimization/fitting (which is currently under development).
 #'   \describe{
 #'   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
-#'   to the \code{optim.params.init} argument, see also list above) + minimum sum of the residual squares,
+#'   to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares,
 #'   after the (final) \code{optim.method} procedure.}
 #'   \item{df}{Data frame including the final best simulated spectrum with and without the baseline fit.}
 #'   }
@@ -222,8 +221,8 @@
 #' ## fit subtracted:
 #' tempo.test.sim.fit.a$plot
 #' #
-#' ## minimum sum of squared residuals:
-#' tempo.test.sim.fit.a$sum.LSQ.min
+#' ## minimum sum of residual squares:
+#' tempo.test.sim.fit.a$min.rss
 #' #
 #' ## number of evaluations / iterations:
 #' tempo.test.sim.fit.a$N.evals
@@ -1169,12 +1168,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## ==================== BASIC OPTIMIZATION INFORMATION/STATISTICS ======================
   #
   ## final list components depending on method
-  min.LSQ.sum <- c()
+  min.rss <- c()
   N.evals <- c()
   N.converg <- c()
   for(m in seq(optim.method)){
     if (optim.method[m] == "levenmarq"){
-      min.LSQ.sum[[m]] <-
+      min.rss[[m]] <-
         optimization.list[[m]]$deviance ## The min sum of the squared residual vector.
       # fn.min <- optimization.list$fvec ## The result of the last `fn` evaluation; i.e. the residuals.
       N.evals[[m]] <-
@@ -1183,7 +1182,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         optimization.list[[m]]$rsstrace ## Sum of squares at each iteration.
     }
     if (optim.method[m] == "pswarm"){
-      min.LSQ.sum[[m]] <-
+      min.rss[[m]] <-
         optimization.list[[m]]$value ## The value of `fn` corresponding to best `par`.
                                      ## because `fn` is sum of squares
       N.evals[[m]] <-
@@ -1201,7 +1200,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
         optim.method[m] == "cobyla" || optim.method[m] == "lbfgs"){ ## with `else` it doesn't work
-      min.LSQ.sum[[m]] <-
+      min.rss[[m]] <-
         optimization.list[[m]]$value ## the function value corresponding to `par`.
                                      ## because function is sum of squares
       N.evals[[m]] <-
@@ -1230,11 +1229,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   # return list, vector, data frame ...
   if (isTRUE(output.list.final)) {
-    ## final optimized parameters (+ min.LSQ) from the last `optim.method`
+    ## final optimized parameters (+ min.rss) from the last `optim.method`
     ## if `length(optim.method) > 0`
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
-      min.LSQ.sum[[length(optim.method)]]
+      min.rss[[length(optim.method)]]
     )
     ## final data frame
     if (isTRUE(check.fit.plot)){
@@ -1258,7 +1257,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         df = switch(2-check.fit.plot,
                     data.sim.expr.long,
                     data.sim.expr),
-        sum.LSQ.min = min.LSQ.sum,
+        min.rss = min.rss,
         N.evals = N.evals,
         N.converg = N.converg
       )

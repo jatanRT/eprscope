@@ -26,8 +26,8 @@ the \href{https://brandewinder.com/2022/03/31/breaking-down-Nelder-Mead/}{"Nelde
 
 \item{x.0}{Numeric vector with the initial values to be optimized in order to fit onto the experimental data.}
 
-\item{fn}{Objective function that is to be minimized. Usually the sum of residual squares (see \code{Details}
-and \code{Examples}).}
+\item{fn}{Objective function that is to be minimized. Usually it is the function calculating the sum of residual squares,
+in which a more general parameterized one can be implemented (see \code{Details} and \code{Examples}).}
 
 \item{lower, upper}{lower and upper bound constraints.}
 
@@ -107,7 +107,7 @@ General-purpose optimization of the objective \code{fn} function (also called "f
 \details{
 All algorithms are based on the least-square minimization however,
   the \code{fn} definition in case of \code{nls.lm} must be provided as a difference/residual
-  vector (see also \code{\link{eval_kinR_EPR_modelFit}}) and not as sum of difference/residual squares.
+  vector (see also \code{\link{eval_kinR_EPR_modelFit}}) and not as sum of differences/residual squares.
   The applied optimization/fitting methods are summarized in the following table (please, consult the details
   in \code{References} or in the individual function documentation - links in the \code{Description}) =>
   \tabular{lcl}{
