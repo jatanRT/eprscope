@@ -133,7 +133,7 @@ identifiable intermediate species forming. <strong>Default</strong>: <code>eleme
 If <code>elementary.react = FALSE</code>, i.e. the <code>model.react</code> cannot be considered like an elementary one,
 one must include the parameterized reaction orders \(\alpha\), \(\beta\) or \(\gamma\) in
 the <code>kin.params</code>, e.g <code>kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)</code>. For the consecutive
-model reaction presented above, it applies only to one part of the mechanism.</p></dd>
+model reaction presented above, it applies only to one part/step of the mechanism.</p></dd>
 
 
 <dt id="arg-kin-params">kin.params<a class="anchor" aria-label="anchor" href="#arg-kin-params"></a></dt>
@@ -151,7 +151,8 @@ in the following table:</p><table class="table table"><tr><td><strong>model.reac
 <code>qvar0B</code>, (<code>alpha</code>, <code>beta</code>)</td></tr><tr><td><code>"(a=1)A &lt;==&gt; [k1] [k2] (r=1)R"</code></td><td><code>k1</code>, <code>k2</code>, <code>qvar0A</code>,
 <code>qvar0R</code>, (<code>alpha</code>, <code>beta</code>)</td></tr><tr><td><code>"(a=1)A + (b=1)B --&gt; [k1] (r=1)R"</code></td><td><code>k1</code>, <code>qvar0A</code>, <code>qvar0B</code>,
 <code>qvar0R</code>, (<code>alpha</code>,<code>beta</code>)</td></tr><tr><td><code>"(a=1)A + (r=1)R --&gt; [k1] B"</code></td><td><code>k1</code>, <code>qvar0A</code>,
-<code>qvar0R</code>, (<code>alpha</code>,<code>beta</code>)</td></tr></table></dd>
+<code>qvar0R</code>, (<code>alpha</code>,<code>beta</code>)</td></tr></table><p>The <code>k1</code> unit eventually contains \(s^{-1}\) as well as depends on the applied <code>qvar</code> (e.g. <code>c</code>)
+and on the partial reaction order (PRO, see above).</p></dd>
 
 
 <dt id="arg-time-unit">time.unit<a class="anchor" aria-label="anchor" href="#arg-time-unit"></a></dt>
@@ -246,17 +247,20 @@ data aren't taken into account).</p></dd>
   or <code>PROs</code> and their <strong>sum</strong> represents <strong>total order of the reaction</strong>. If the kinetic equation
   for the reaction corresponds to its stoichiometry, the reaction is described as the elementary
   one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
-  of the radical EPR spectrum (see also <code><a href="quantify_EPR_Abs.html">quantify_EPR_Abs</a></code>). Therefore, one can obtain
-  the rate constant from the rate law fit onto the experimental EPR spectral time series outputs, i.e. integral
-  intensity (area under the spectral curve) of radical ("R") formation and/or decay (see also
-  <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>). Quantitative kinetic profiles (such as that
-  \(\text{d}c_{\text{R}}/\text{d}t\) described above) are not evaluated
+  of the radical EPR spectrum (see also <code><a href="quantify_EPR_Abs.html">quantify_EPR_Abs</a></code>). Therefore, for a quick examination,
+  one can also obtain the rate constant from the rate law fit onto the experimental EPR spectral time
+  series outputs, i.e. integral intensity (area under the spectral curve) of radical ("R") formation
+  and/or decay (see also the <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>). Accordingly, the "R" concentration
+  (or number of radicals/V) can be replaced by the corresponding integral. For such a purpose a more general
+  <strong>q</strong>uantitative <strong>var</strong>iable (\(qvar\), see the <code>kin.params</code> argument) is defined.
+  Quantitative kinetic profiles (such as that \(\text{d}c_{\text{R}}/\text{d}t\)
+  or \(\text{d}qvar_{\text{R}}/\text{d}t\) described above) are not evaluated
   by common integration of the kinetic equations/rate laws. However, by numeric solution of the Ordinary
   Differential Equations, <a href="https://desolve.r-forge.r-project.org/index.html" class="external-link">ODE in <code>{desolve}</code> R package</a>.
-  Therefore, higher number of models can be available than for integrated
+  Therefore, higher number of models might be available than for integrated
   differential equations, because for complex mechanisms it's quite often highly demanding to obtain
   the analytical solution by common integration. <strong>Several kinetic models for radical reactions</strong> in EPR spectroscopy
-  <strong>are predefined and summarized</strong> below (see also <code>model.react</code> function argument).</p><table class="table table"><tr><td><strong>model.react</strong></td><td><strong>Short Description</strong></td></tr><tr><td><code>"(r=1)R --&gt; [k1] B"</code></td><td>Basic forward reaction,
+  <strong>are predefined and summarized</strong> below (see also the <code>model.react</code> function argument).</p><table class="table table"><tr><td><strong>model.react</strong></td><td><strong>Short Description</strong></td></tr><tr><td><code>"(r=1)R --&gt; [k1] B"</code></td><td>Basic forward reaction,
   e.g. irrev. dimerization (if <code>(r=2)</code>).</td></tr><tr><td><code>"(a=1)A --&gt; [k1] (r=1)R"</code></td><td>Basic forward radical formation</td></tr><tr><td><code>"(a=1)A &lt;==&gt; [k1] [k4] (r=1)R &lt;==&gt; [k2] [k3] (b=1)B"</code></td><td>Consecutive reactions,
   e.g. considering comproportionation (for <code>(a=2)</code> and <code>(r=2)</code>) + follow-up reversible
   dimerization (<code>(b=1)</code>).</td></tr><tr><td><code>"(r=1)R &lt;==&gt; [k1] [k2] (b=1)B"</code></td><td>Basic reversible radical quenching,
