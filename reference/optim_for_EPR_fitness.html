@@ -116,8 +116,8 @@ the <a href="https://brandewinder.com/2022/03/31/breaking-down-Nelder-Mead/" cla
 
 
 <dt id="arg-fn">fn<a class="anchor" aria-label="anchor" href="#arg-fn"></a></dt>
-<dd><p>Objective function that is to be minimized. Usually the sum of residual squares (see <code>Details</code>
-and <code>Examples</code>).</p></dd>
+<dd><p>Objective function that is to be minimized. Usually it is the function calculating the sum of residual squares,
+in which a more general parameterized one can be implemented (see <code>Details</code> and <code>Examples</code>).</p></dd>
 
 
 <dt id="arg-lower-upper">lower, upper<a class="anchor" aria-label="anchor" href="#arg-lower-upper"></a></dt>
@@ -197,7 +197,7 @@ to <code>"SPSO2007"</code>, that performs slightly better on smaller scales such
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>All algorithms are based on the least-square minimization however,
   the <code>fn</code> definition in case of <code>nls.lm</code> must be provided as a difference/residual
-  vector (see also <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>) and not as sum of difference/residual squares.
+  vector (see also <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>) and not as sum of differences/residual squares.
   The applied optimization/fitting methods are summarized in the following table (please, consult the details
   in <code>References</code> or in the individual function documentation - links in the <code>Description</code>) =&gt;</p><table class="table table"><tr><td><strong>Method/Algorithm</strong></td><td><strong>Package</strong></td><td><strong>Short Description</strong></td></tr><tr><td><code>slsqp</code></td><td><code>{nloptr}</code></td><td>Sequential quadratic programming method for non-linearly
   constrained, gradient-based optimization.</td></tr><tr><td><code>cobyla</code></td><td><code>{nloptr}</code></td><td>Constrained optimization by linear approximations,
