@@ -42,7 +42,7 @@ Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values, corresponding to gr
 \description{
 Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize
   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of groups with equivalent nuclei, according
-  to proposed molecular structure/symmetry (see also \code{\link{rearrange_aAiso_QCHcomp}}).
+  to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
 }
 \examples{
 ## built-in file and path

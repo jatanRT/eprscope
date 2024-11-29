@@ -31,10 +31,10 @@
 #'
 #'
 #' @param path_to_ASC Character string, pointing to path of ASCII file (\code{txt},\code{csv}...etc,
-#' it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
+#' it may be also provided by the \code{\link[base]{file.path}} function). The file must include characteristic
 #'   \eqn{A_{iso}} or \eqn{a_{iso}} values.
 #' @param col.names Character string vector, containing names of all columns from QCH computational output,
-#'   for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
+#'   for the names see example in \code{Details}, they must contain atomic/structure number, isotop value
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.
 #' @param nuclei.list.slct List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 #'   e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
@@ -158,7 +158,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #' @description
 #'   Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize
 #'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of groups with equivalent nuclei, according
-#'   to proposed molecular structure/symmetry (see also \code{\link{rearrange_aAiso_QCHcomp}}).
+#'   to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp

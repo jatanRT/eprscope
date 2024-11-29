@@ -9,7 +9,7 @@ A data frame with 351 rows and 9 variables/columns:
 \describe{
   \item{No_Proton}{Numeric, proton number.}
   \item{Isotope}{Character, ponting to isotope in format like "14N".}
-  \item{Stability}{Character, pointing either to stable, "STB", or radio-active, "RA", isotope.}
+  \item{Stability}{Character, pointing either to stable, "STB", or to radio-active, "RA", isotope.}
   \item{Name}{Character, corresponding to isotope name.}
   \item{Spin}{Numeric, denoting the spin quantum number.}
   \item{g_Nuclear}{Numeric, corresponding to nuclear \eqn{g}-factor (\eqn{g_{\text{n}}^{}}).}

@@ -23,7 +23,7 @@
 #'   to \code{m = 1} and the highest quintic polynomial/spline is referred as \code{m = 3}:
 #'   \deqn{I_{\text{EPR}}(B) = B^5 - (5/2)\,B^4 + (5/3)\,B^3 - (1/6)\,B}
 #'   If the optional argument \code{bernoulli} is set to \code{FALSE} then "classic" definition
-#'   of a smoothing spline is produced. In such case the function estimate is a piece-wise polynomial function
+#'   of a smoothing spline is produced. In such case, the function estimate is a piece-wise polynomial function
 #'   with pieces of degree 2m−1. Additional optional arguments from \code{\link[npreg]{ss}} like knots
 #'   definition, equivalent degrees of freedom, vector of weights...etc. can be applied as well.
 #'
@@ -45,7 +45,7 @@
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
-#' @param method Character string, corresponding to method to fit an EPR spectrum by a smoothing spline
+#' @param method Character string, corresponding to method in order to fit an EPR spectrum by a smoothing spline
 #'   from \code{{npreg}} package (see the \code{method} argument in \code{\link[npreg]{ss}}).
 #'   The following methods are available (they are shortly described
 #'   in \href{http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html}{Nathaniel's E. Helwig Introduction}
@@ -62,10 +62,10 @@
 #'   "BIC" \tab Bayesian Information Criterion (\strong{default}) \cr
 #'   }
 #' @param output.vec Logical, whether the function output have to be vectorized, i.e. only the vector
-#'   of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data/spectra,
+#'   of smoothed EPR intensity is provided. This is especially useful for the EPR spectral (time) series,
 #'   which can be handily processed by the \code{\link[dplyr]{group_by}} using the
-#'   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = NULL}.
-#' @param ... additional arguments passed to the function (see also \code{\link[npreg]{ss}} function).
+#'   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = FALSE}.
+#' @param ... additional arguments passed to the function (see also the \code{\link[npreg]{ss}}).
 #'
 #'
 #' @return If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR intensity
@@ -80,13 +80,13 @@
 #'   \item{rss}{Weighted (if the optional parameter \code{w} is defined) sum of residual squares.}
 #'   \item{degs.freedom}{Equivalent degrees of freedom used.}
 #'   \item{fit}{List with elements to characterize the spline fit (Details see \code{fit} value
-#'   in \code{\link[npreg]{ss}} function documentation).}
-#'   \item{sigma}{Estimated error standard deviation.}
-#'   \item{aic}{Akaike’s Information Criterion (if \code{method = "AIC"}). A negative number that has
+#'   in the \code{\link[npreg]{ss}} function documentation).}
+#'   \item{sigma}{Estimated standard deviation.}
+#'   \item{aic}{Akaike’s Information Criterion (if the \code{method = "AIC"}). A negative number that has
 #'   the largest modulus (deepest down in the negative territory) indicates the preferred model.}
-#'   \item{bic}{Bayesian Information Criterion (if \code{method = "BIC"}). A negative number that has
+#'   \item{bic}{Bayesian Information Criterion (if the \code{method = "BIC"}). A negative number that has
 #'   the largest modulus (deepest down in the negative territory) indicates the preferred model.}
-#'   \item{log.likehood}{Likelihood logarithm if \code{method = "REML"/"ML"}. Log likelihood value
+#'   \item{log.likehood}{Likelihood logarithm, if the \code{method = "REML"/"ML"}. Log likelihood value
 #'   is a measure of goodness of fit for any model. The higher the value, the better the model.}
 #'   }
 #'

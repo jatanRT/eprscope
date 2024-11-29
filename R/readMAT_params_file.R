@@ -11,16 +11,16 @@
 #'   It can be also used to read and store simulated EPR spectrum in the form of R data frame (see \code{Examples}).
 #'
 #'
-#' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in workspace.
-#'   The file path can be also defined by \code{\link[base]{file.path}}.
-#' @param str.var Character string, \code{structure/variable}, which may contain \code{fields}, such as \code{Sys}
+#' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in MATLAB workspace.
+#'   The file path can be also defined by the \code{\link[base]{file.path}}.
+#' @param str.var Character string, denoting structure/variable, which may contain \code{fields}, such as \code{Sys}
 #'   and \code{g} => \strong{Sys}.g, respectively. \strong{Default}: \code{str.var = NULL}.
-#' @param field.var Character string, \code{field variable after 'dot'}, which is available only for certain
-#'   structures/variables, see e.g. example above (Sys.\strong{g}), therefore
+#' @param field.var Character string, corresponding to field variable after 'dot', which is available only for certain
+#'   structures/variables, see e.g. example above (Sys.\strong{g}). Therefore,
 #'   the \strong{default} value is \code{NULL} and the \code{string} \strong{is applied only for structures with fields}.
 #'
 #'
-#' @return Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} with all original
+#' @return Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} with the all original
 #'   parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character \code{vector/value}
 #'   or list depending on \code{class} of the original parameter/field variable.
 #'
@@ -81,6 +81,11 @@
 #'   readMAT_params_file(aminoxyl.mat.file,
 #'                       str.var = "fit1",
 #'                       field.var = "fitSpec")
+#' #
+#' ## for the newer EasySpin version (> 6.0.0),
+#' ## the "fitSpec" is replaced by the simple "fit",
+#' ## all additional parameters (array) are stored under
+#' ## the "pfit_full" variable
 #' #
 #' ## preview of the first 6 values
 #' aminoxyl.sim.fitSpec[1:6]

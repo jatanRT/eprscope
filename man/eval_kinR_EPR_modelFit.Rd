@@ -69,7 +69,7 @@ string is not fixed and can be skipped for the sake of simplicity.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
 must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
-presented above, it applies only to one part of the mechanism.}
+presented above, it applies only to one part/step of the mechanism.}
 
 \item{elementary.react}{Logical, if the model reaction should be considered as the elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
@@ -80,7 +80,11 @@ the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha 
 model reaction presented above, it applies only to one part/step of the mechanism.}
 
 \item{params.guess}{Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
-ready for optimization/fitting.}
+ready for optimization/fitting. The \code{k1}-unit is eventually expressed
+in terms of \eqn{s^{-1}} as well as in units of the applied \code{qvar}
+(e.g. \code{c}, concentration) and depends on the partial reaction order(s), which power(s) the \code{qvar(s)}.
+For example, the \code{k1}-unit of elementary radical recombination, evaluated by double integrals,
+like \code{model.react = "(r=2)R --> [k1] B"}, reads: \eqn{\text{s}^{-1}\,(\text{p.d.u.})^{-1}}.}
 
 \item{params.guess.lower}{Numeric vector of lower bounds on each parameter in \code{params.guess}.
 If not given, the \strong{default} (\code{params.guess.lower = NULL}) lower bound
@@ -141,11 +145,17 @@ List with the following components is available:
   }
 }
 \description{
-Fitting of the Integrals/Areas/Concentration/...etc. \emph{vs} time relation (either from experiment
+Fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
    or from integration of the EPR spectral time series) in order to find the kinetic parameters
    (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
+   Because the radical concentration is directly proportional to the EPR spectrum (double)
+   integral (see the \code{\link{quantify_EPR_Abs}}), for a quick evaluation and/or comparison of different
+   kinetic data, it is possible to obtain the rate constants (\eqn{k}) by the integrals/areas \emph{vs} time fit.
+   Therefore, the unit of \eqn{k} is expressed in terms of \eqn{\text{s}^{-1}} as well as in units of integrals/areas,
+   e.g. \code{procedure defined unit} (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
+   depending on the order of reaction (see the \code{params.guess} argument).
 }
 \examples{
 ## loading example data (incl. `Area` and `time` variables)

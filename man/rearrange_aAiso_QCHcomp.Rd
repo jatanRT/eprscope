@@ -8,11 +8,11 @@ rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 }
 \arguments{
 \item{path_to_ASC}{Character string, pointing to path of ASCII file (\code{txt},\code{csv}...etc,
-it may be also provided by \code{\link[base]{file.path}}). The file must include characteristic
+it may be also provided by the \code{\link[base]{file.path}} function). The file must include characteristic
   \eqn{A_{iso}} or \eqn{a_{iso}} values.}
 
 \item{col.names}{Character string vector, containing names of all columns from QCH computational output,
-for the names see the example in \code{Details}, they must contain atomic/structure number, isotopic value
+for the names see example in \code{Details}, they must contain atomic/structure number, isotop value
 with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.}
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
