@@ -72,24 +72,24 @@
 
 
 <dl><dt id="arg-path-to-mat">path_to_MAT<a class="anchor" aria-label="anchor" href="#arg-path-to-mat"></a></dt>
-<dd><p>Character string, path to <code>.mat</code> MATLAB file with all variables saved in workspace.
-The file path can be also defined by <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code>.</p></dd>
+<dd><p>Character string, path to <code>.mat</code> MATLAB file with all variables saved in MATLAB workspace.
+The file path can be also defined by the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code>.</p></dd>
 
 
 <dt id="arg-str-var">str.var<a class="anchor" aria-label="anchor" href="#arg-str-var"></a></dt>
-<dd><p>Character string, <code>structure/variable</code>, which may contain <code>fields</code>, such as <code>Sys</code>
+<dd><p>Character string, denoting structure/variable, which may contain <code>fields</code>, such as <code>Sys</code>
 and <code>g</code> =&gt; <strong>Sys</strong>.g, respectively. <strong>Default</strong>: <code>str.var = NULL</code>.</p></dd>
 
 
 <dt id="arg-field-var">field.var<a class="anchor" aria-label="anchor" href="#arg-field-var"></a></dt>
-<dd><p>Character string, <code>field variable after 'dot'</code>, which is available only for certain
-structures/variables, see e.g. example above (Sys.<strong>g</strong>), therefore
+<dd><p>Character string, corresponding to field variable after 'dot', which is available only for certain
+structures/variables, see e.g. example above (Sys.<strong>g</strong>). Therefore,
 the <strong>default</strong> value is <code>NULL</code> and the <code>string</code> <strong>is applied only for structures with fields</strong>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Unless the <code>str.var</code> and/or <code>field.var</code> are not specified, the output is <code>list</code> with all original
+    <p>Unless the <code>str.var</code> and/or <code>field.var</code> are not specified, the output is <code>list</code> with the all original
   parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character <code>vector/value</code>
   or list depending on <code>class</code> of the original parameter/field variable.</p>
     </div>
@@ -202,6 +202,11 @@ the <strong>default</strong> value is <code>NULL</code> and the <code>string</co
 <span class="r-in"><span>  <span class="fu">readMAT_params_file</span><span class="op">(</span><span class="va">aminoxyl.mat.file</span>,</span></span>
 <span class="r-in"><span>                      str.var <span class="op">=</span> <span class="st">"fit1"</span>,</span></span>
 <span class="r-in"><span>                      field.var <span class="op">=</span> <span class="st">"fitSpec"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## for the newer EasySpin version (&gt; 6.0.0),</span></span></span>
+<span class="r-in"><span><span class="co">## the "fitSpec" is replaced by the simple "fit",</span></span></span>
+<span class="r-in"><span><span class="co">## all additional parameters (array) are stored under</span></span></span>
+<span class="r-in"><span><span class="co">## the "pfit_full" variable</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the first 6 values</span></span></span>
 <span class="r-in"><span><span class="va">aminoxyl.sim.fitSpec</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></span>

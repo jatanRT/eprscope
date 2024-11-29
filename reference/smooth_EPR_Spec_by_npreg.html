@@ -110,7 +110,7 @@ name/label is used (e.g. for simulated spectra), <strong>default</strong>: <code
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Character string, corresponding to method to fit an EPR spectrum by a smoothing spline
+<dd><p>Character string, corresponding to method in order to fit an EPR spectrum by a smoothing spline
 from <code>{npreg}</code> package (see the <code>method</code> argument in <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code>).
 The following methods are available (they are shortly described
 in <a href="http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html" class="external-link">Nathaniel's E. Helwig Introduction</a>
@@ -119,13 +119,13 @@ or additional information may be found in <code>References</code>) =&gt;</p><tab
 
 <dt id="arg-output-vec">output.vec<a class="anchor" aria-label="anchor" href="#arg-output-vec"></a></dt>
 <dd><p>Logical, whether the function output have to be vectorized, i.e. only the vector
-of smoothed EPR intensity is provided. This is especially useful for the spectral (time) series EPR data/spectra,
+of smoothed EPR intensity is provided. This is especially useful for the EPR spectral (time) series,
 which can be handily processed by the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></code> using the
-<code>pipe</code> operators (<code>%&gt;%</code>). <strong>Default</strong>: <code>output.vec = NULL</code>.</p></dd>
+<code>pipe</code> operators (<code>%&gt;%</code>). <strong>Default</strong>: <code>output.vec = FALSE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments passed to the function (see also <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code> function).</p></dd>
+<dd><p>additional arguments passed to the function (see also the <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -149,21 +149,21 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 
   <dt>fit</dt>
 <dd><p>List with elements to characterize the spline fit (Details see <code>fit</code> value
-  in <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code> function documentation).</p></dd>
+  in the <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code> function documentation).</p></dd>
 
   <dt>sigma</dt>
-<dd><p>Estimated error standard deviation.</p></dd>
+<dd><p>Estimated standard deviation.</p></dd>
 
   <dt>aic</dt>
-<dd><p>Akaike’s Information Criterion (if <code>method = "AIC"</code>). A negative number that has
+<dd><p>Akaike’s Information Criterion (if the <code>method = "AIC"</code>). A negative number that has
   the largest modulus (deepest down in the negative territory) indicates the preferred model.</p></dd>
 
   <dt>bic</dt>
-<dd><p>Bayesian Information Criterion (if <code>method = "BIC"</code>). A negative number that has
+<dd><p>Bayesian Information Criterion (if the <code>method = "BIC"</code>). A negative number that has
   the largest modulus (deepest down in the negative territory) indicates the preferred model.</p></dd>
 
   <dt>log.likehood</dt>
-<dd><p>Likelihood logarithm if <code>method = "REML"/"ML"</code>. Log likelihood value
+<dd><p>Likelihood logarithm, if the <code>method = "REML"/"ML"</code>. Log likelihood value
   is a measure of goodness of fit for any model. The higher the value, the better the model.</p></dd>
 
 
@@ -181,7 +181,7 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
   to <code>m = 1</code> and the highest quintic polynomial/spline is referred as <code>m = 3</code>:
   $$I_{\text{EPR}}(B) = B^5 - (5/2)\,B^4 + (5/3)\,B^3 - (1/6)\,B$$
   If the optional argument <code>bernoulli</code> is set to <code>FALSE</code> then "classic" definition
-  of a smoothing spline is produced. In such case the function estimate is a piece-wise polynomial function
+  of a smoothing spline is produced. In such case, the function estimate is a piece-wise polynomial function
   with pieces of degree 2m−1. Additional optional arguments from <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code> like knots
   definition, equivalent degrees of freedom, vector of weights...etc. can be applied as well.</p>
     </div>
