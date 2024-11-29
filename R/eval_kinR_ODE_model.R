@@ -440,9 +440,9 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       ## differential equations
       c_r <- stoichio.coeff[1]
       if (isTRUE(no.pro)) {
-        rate[1] <- -k1 * c_r * (qvar)^(c_r) ## - (1/c_r) * (dc(R)/dt) = k * c^(c_r)(R)
+        rate[1] <- -k1 * c_r * (qvar["R"])^(c_r) ## - (1/c_r) * (dc(R)/dt) = k * c^(c_r)(R)
       } else {
-        rate[1] <- -k1 * c_r * (qvar)^alpha ## - (1/c_r) * (dc(R)/dt) = k * c^(alpha)(R)
+        rate[1] <- -k1 * c_r * (qvar["R"])^alpha ## - (1/c_r) * (dc(R)/dt) = k * c^(alpha)(R)
       }
       ## derivative as a list
       return(list(rate))
@@ -869,82 +869,73 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   #
   ## ======================== DATA AND KINETIC PLOTS ============================
   #
+  ## DATA processing
+  ## conversion into data frame
+  result.df <- data.frame(result)
+  if (!is.null(data.qt.expr)) {
+    ## following operation required for the difference
+    ## the same number of points for the model as well as for the expr.
+    result.df <- result.df %>%
+      dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
+      ## add `qvar.expr`
+      dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
+  }
+  if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
+    ## difference
+    diff.model.expr <- result.df[[paste0(qvar.expr,"_expr")]] - result.df[["R"]]
+  }
+  #
   if (grepl("^\\(r=.*R(.*|?!\\s)-->(.*|?!\\s)\\[k1\\](.*|?!\\s)B$", model.react)) {
     #
-    ## DATA processing
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.qt.expr)) {
-      ## following operation required for the difference
-      ## the same number of points for the model as well as for the expr.
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
-        ## add `qvar.expr`
-        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
-    }
     ## the first col. is `time` and 2nd has to be renamed
-    names(result.df)[2] <- "R"
-    #
-    if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.qt.expr[[qvar.expr]] - result.df[["R"]]
-    }
+    # names(result.df)[2] <- "R"
     #
     ## data frame for plotting
-    result.df.plot <- result.df
+    if (isFALSE(model.expr.diff)) {
+      result.df.plot <- result.df
+      #
+      ## BASE PLOT
+      plot.base <- ggplot(result.df.plot) +
+        geom_point(
+          aes(
+            x = .data[["time"]],
+            y = .data[["R"]]
+          ),
+          size = 2.0,
+          shape = 18,
+          color = "darkviolet"
+        )
+    }
     #
-    ## BASE PLOT
-    plot.base <- ggplot(result.df.plot) +
-      geom_point(
-        aes(
-          x = .data[["time"]],
-          y = .data[["R"]]
-        ),
-        size = 2.0,
-        shape = 18,
-        color = "darkviolet"
-      )
   } else {
     #
-    ## DATA processing
-    ## conversion into data frame
-    result.df <- data.frame(result)
-    if (!is.null(data.qt.expr)) {
-      result.df <- result.df %>%
-        dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
-        ## add `qvar.expr`
-        dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
+    if (isFALSE(model.expr.diff)) {
+      ## data frame for plotting
+      result.df.plot <- result.df %>%
+        tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
+        dplyr::arrange(time)
+      #
+      ## BASE PLOT
+      plot.base <- ggplot(result.df.plot) +
+        geom_point(
+          aes(
+            x = .data[["time"]],
+            y = .data[["qvar"]],
+            color = .data[["Species"]]
+          ),
+          size = 2.0,
+          shape = 18
+        ) +
+        theme(
+          legend.title = element_text(size = 14),
+          legend.text = element_text(size = 13)
+        )
     }
-    #
-    if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
-      ## difference
-      diff.model.expr <- data.qt.expr[[qvar.expr]] - result.df[["R"]]
-    }
-    #
-    ## data frame for plotting
-    result.df.plot <- result.df %>%
-      tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
-      dplyr::arrange(time)
-    #
-    ## BASE PLOT
-    plot.base <- ggplot(result.df.plot) +
-      geom_point(
-        aes(
-          x = .data[["time"]],
-          y = .data[["qvar"]],
-          color = .data[["Species"]]
-        ),
-        size = 2.0,
-        shape = 18
-      ) +
-      theme(
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 13)
-      )
   }
   #
   ## ============================= ENTIRE PLOTS & RESULTS ==============================
   #
+  if (isFALSE(model.expr.diff)) {
   ## Caption character vector
   caption.char.vec <- mapply(function(i, j) paste0(i, " = ", j), names(kin.params), kin.params)
   caption.char.vec <- paste(unname(caption.char.vec), collapse = ", ")
@@ -960,7 +951,6 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     theme(plot.title = element_text(hjust = 0.5))
   #
   ## RESULTS
-  if (isFALSE(model.expr.diff)) {
     if (!is.null(data.qt.expr)){
       ## plot with experimental data + model
       plot.compar <- ggplot(result.df) +
