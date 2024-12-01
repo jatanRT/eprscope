@@ -133,10 +133,12 @@ List with the following components is available:
   \describe{
   \item{df}{Data frame object with the variables/columns such as \code{time},
   experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area},
-  concentration \code{c_M} or number of radicals of the relevant EPR spectrum and finally, the corresponding
-  quantitative variable \code{fitted} vector values.}
+  concentration \code{c_M} or number of radicals of the relevant EPR spectrum, the corresponding
+  quantitative variable \code{fitted} vector values as well as residual vector (experiment - kinetic model).}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
+  \item{plot.ra}{GGplot2 object (related to \strong{r}esidual \strong{a}nalysis), including
+  two main plots: Q-Q plot and residuals vs predicted \code{qvar}s from the kinetic model.}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}

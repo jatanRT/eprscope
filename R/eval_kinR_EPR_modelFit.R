@@ -72,10 +72,12 @@
 #'   \describe{
 #'   \item{df}{Data frame object with the variables/columns such as \code{time},
 #'   experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area},
-#'   concentration \code{c_M} or number of radicals of the relevant EPR spectrum and finally, the corresponding
-#'   quantitative variable \code{fitted} vector values.}
+#'   concentration \code{c_M} or number of radicals of the relevant EPR spectrum, the corresponding
+#'   quantitative variable \code{fitted} vector values as well as residual vector (experiment - kinetic model).}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
+#'   \item{plot.ra}{GGplot2 object (related to \strong{r}esidual \strong{a}nalysis), including
+#'   two main plots: Q-Q plot and residuals vs predicted \code{qvar}s from the kinetic model.}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -161,7 +163,7 @@
 #'
 #'
 #' @importFrom minpack.lm nls.lm
-#' @importFrom ggplot2 guide_legend
+#' @importFrom ggplot2 guide_legend stat_qq stat_qq_line geom_histogram
 eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    time.unit = "s",
                                    time = "time_s",
@@ -188,6 +190,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   M <- NULL
   p.d.u. <- NULL
   Concentration <- NULL
+  residuals <- NULL
   #
   ## convert time if other than `s` appears
   if (time.unit == "min") {
@@ -281,11 +284,11 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     # rm(model.expr.time, model.react.kin.fit)
   }
   #
-  ## ---------------- ADDITIONAL (INTEGRAL) METHODS --------------------
+  ## ================= ADDITIONAL (INTEGRAL) METHODS ===================
   #
   ## will be implemented later
   #
-  ## -------------------- PREDICT THE BEST FIT -------------------------
+  ## ==================== PREDICT THE BEST FIT =========================
   #
   ## parameters from the fit applied to generate `R` (`qvarR`)
   ## with experimental `time` <=> it corresponds to `predicted`
@@ -308,7 +311,49 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     dplyr::select(dplyr::all_of(c(time,qvarR))) %>%
     dplyr::mutate(fitted = model.expr.time$df[["R"]])
   #
-  ## ---------------------------- EXPERIMENT-FIT PLOT -----------------------------
+  ## ======================== RESIDUAL ANALYSIS/PLOTS ========================
+  #
+  ## add residuals to `new.predict.df`
+  new.predict.df$residuals <- stats::residuals(model.react.kin.fit)
+  #
+  ## residual plot (`{ggplot2}`)
+  plot.resids <-
+    ggplot(new.predict.df,
+      mapping = aes(
+        x = fitted,y = residuals
+      )
+    ) +
+    geom_point(size = 2.6,color = "darkblue") +
+    labs(
+      x = bquote(italic(Kinetic~~Model~~Fit)*","~~italic(qvar)),
+      y = bquote(italic(Residuals)),
+      title = "Residuals"
+    ) +
+    plot_theme_In_ticks()
+  #
+  ## q-q plot (`{ggplot2}`)
+  plot.qq <-
+    ggplot(new.predict.df,
+      mapping = aes(
+        sample = residuals
+      )
+    ) +
+    stat_qq(size = 2.6,color = "darkblue") +
+    stat_qq_line() +
+    labs(
+      x = bquote(italic(Theoretical~~Quantiles)),
+      y = bquote(italic(Sample~~Quantiles)),
+      title = "Normal Q-Q Plot of Residuals"
+    ) +
+    plot_theme_In_ticks()
+  #
+  ## patchwork combination all both plots:
+  plot.ra <-
+    patchwork::wrap_plots(plot.resids,
+                          plot.qq,
+                          ncol = 1)
+  #
+  ## ====================== EXPERIMENT-FIT PLOT ============================
   #
   ## create plot
   plot.fit.base <- ggplot(new.predict.df) +
@@ -388,13 +433,14 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       legend.box.margin = margin(l = -0.24, unit = "in")
     )
   #
-  ## ---------------------------- RESULT LIST -----------------------------
+  ## ========================== RESULT LIST ==============================
   #
   df.result <- summar.react.kin.fit.df
   ## Summary
   fit.summary <- list(
     df = new.predict.df,
     plot = plot.fit,
+    plot.ra = plot.ra,
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,
     min.rss = residsq.react.kin.fit,
