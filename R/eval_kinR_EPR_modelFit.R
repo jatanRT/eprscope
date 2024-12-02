@@ -142,7 +142,7 @@
 #' ## simple residual analysis plots
 #' ## showing the random pattern, which indicates that
 #' ## kinetic model provides a decent fit to the data +
-#' ## normal quantile (qq) plot, indicating that residuals
+#' ## normal quantile (Q-Q) plot, indicating that residuals
 #' ## are normally distributed
 #' triaryl_model_kin_fit_01$plot.ra
 #' #
@@ -171,7 +171,7 @@
 #'
 #'
 #' @importFrom minpack.lm nls.lm
-#' @importFrom ggplot2 guide_legend stat_qq stat_qq_line geom_histogram
+#' @importFrom ggplot2 guide_legend stat_qq stat_qq_line geom_histogram geom_hline after_stat
 eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    time.unit = "s",
                                    time = "time_s",
@@ -332,6 +332,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       )
     ) +
     geom_point(size = 2.6,color = "darkblue") +
+    geom_hline(yintercept = 0,color = "darkred") +
     labs(
       x = bquote(italic(Kinetic~~Model~~Fit)*","~~italic(qvarR)),
       y = bquote(italic(Residuals)),
@@ -354,6 +355,27 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       title = "Normal Q-Q Plot of Residuals"
     ) +
     plot_theme_In_ticks()
+  #
+  ## optional histogram with density plot
+  # ggplot(data = new.predict.df,
+  #   mapping = aes(
+  #          x = residuals,
+  #          after_stat(density)
+  #        )
+  # ) + geom_histogram(
+  #   fill = "darkblue",
+  #   alpha = 0.75,
+  #   bins = 42
+  # ) +
+  #   geom_density(
+  #     fill = "darkred",alpha = 0.42
+  #   ) +
+  #   labs(
+  #     x = bquote(italic(Residuals)),
+  #     y = bquote(italic(Density)),
+  #     title = "Histogram and Density of Residuals"
+  #   ) +
+  #   plot_theme_In_ticks()
   #
   ## patchwork combination all both plots:
   plot.ra <-

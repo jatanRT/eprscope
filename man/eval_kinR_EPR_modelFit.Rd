@@ -215,7 +215,7 @@ triaryl_model_kin_fit_01$N.converg
 ## simple residual analysis plots
 ## showing the random pattern, which indicates that
 ## kinetic model provides a decent fit to the data +
-## normal quantile (qq) plot, indicating that residuals
+## normal quantile (Q-Q) plot, indicating that residuals
 ## are normally distributed
 triaryl_model_kin_fit_01$plot.ra
 #
