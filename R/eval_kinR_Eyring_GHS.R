@@ -65,9 +65,9 @@
 #'   the sum results in \code{-1}, however for the mono-molecular one, the sum results in \code{0}.
 #'
 #'   Even though the transition state theory is a helpful tool to get information about the mechanism
-#'   of an elementary reaction, it has some limitations. Several of them are listed below.
+#'   of an elementary reaction, it has some limitations, particularly for radical reactions. Couple of them are listed below.
 #'   \enumerate{
-#'   \item One should be very careful, if applied to elementary steps in a multistep reaction kinetics (e.g. like
+#'   \item One should be very careful, if applied to elementary steps in a multistep reaction kinetics (like
 #'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the intermediate (e.g. in the consecutive
 #'   reaction mechanism) possesses a short life-time, the TST fails.
 #'
@@ -131,6 +131,8 @@
 #'   Eyring model.}
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
 #'   together with the Eyring equation.}
+#'   \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
+#'   two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T} from the Eyring fit.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for both \eqn{\Delta^{\ddagger} H^o}
 #'   and \eqn{\Delta^{\ddagger} S^o}.}
@@ -165,7 +167,8 @@
 #'     Temp.unit = "oC"
 #'   )
 #' #
-#' ## preview of the original data + ∆G (activated)
+#' ## preview of the original data
+#' ## + ∆G (activated) + fitted + residuals
 #' activ.kinet.test.data$df
 #' #
 #' ## preview of the non-linear fit plot
@@ -205,6 +208,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   T_K <- NULL
   DeltaG_active_kJ_per_mol <- NULL
   #
+  ## ======================== TEMPERATURE + CONSTANTS ==========================
+  #
   ## Pysical sonstants
   Boltzmann <- constants::syms$k
   gas.const <- constants::syms$r
@@ -238,7 +243,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
   }
   #
-  ## --------------------------- ORIGINAL MODEL -------------------------------
+  ## =========================== ORIGINAL MODEL FIT ===========================
+  #
   ## formula for the original Eyring theory
   ## ("theory of absolute reaction rates" :-))
   ## rate.const = ((kappa * k_B * T) / h) * exp((DeltaS / R) - (DeltaH / RT))
@@ -282,6 +288,73 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                     (DeltaH_active - (.data[["T_K"]] * DeltaS_active)) * 1e-3
     )
   #
+  ## ================= SIMPLE RESIDUAL ANALYSIS/PLOTS ======================
+  #
+  ## add residuals and predicted/fitted values to `data.kvT`
+  data.kvT$fitted <- stats::fitted(origin.Eyring.model.HS)
+  data.kvT$residuals <- stats::residuals(origin.Eyring.model.HS)
+  #
+  ## residual plot (`{ggplot2}`)
+  plot.resids <-
+    ggplot(data.kvT,
+           mapping = aes(
+             x = fitted,y = residuals
+           )
+    ) +
+    geom_point(size = 2.6,color = "darkblue") +
+    geom_hline(yintercept = 0,color = "darkred") +
+    labs(
+      x = bquote(italic(Eyring~~Fit)*","~~italic(k)),
+      y = bquote(italic(Residuals)),
+      title = "Residual Plot"
+    ) +
+    plot_theme_In_ticks()
+  #
+  ## q-q plot (`{ggplot2}`)
+  plot.qq <-
+    ggplot(data.kvT,
+           mapping = aes(
+             sample = residuals
+           )
+    ) +
+    stat_qq(size = 2.6,color = "darkblue") +
+    stat_qq_line(color = "darkred") +
+    labs(
+      x = bquote(italic(Theoretical~~Quantiles)),
+      y = bquote(italic(Sample~~Quantiles)),
+      title = "Normal Q-Q Plot of Residuals"
+    ) +
+    plot_theme_In_ticks()
+  #
+  ## optional histogram with density plot
+  # ggplot(data = data.kvT,
+  #   mapping = aes(
+  #          x = residuals,
+  #          after_stat(density)
+  #        )
+  # ) + geom_histogram(
+  #   fill = "darkblue",
+  #   alpha = 0.75,
+  #   bins = 42
+  # ) +
+  #   geom_density(
+  #     fill = "darkred",alpha = 0.42
+  #   ) +
+  #   labs(
+  #     x = bquote(italic(Residuals)),
+  #     y = bquote(italic(Density)),
+  #     title = "Histogram and Density of Residuals"
+  #   ) +
+  #   plot_theme_In_ticks()
+  #
+  ## patchwork combination all both plots:
+  plot.ra <-
+    patchwork::wrap_plots(plot.resids,
+                          plot.qq,
+                          ncol = 1)
+  #
+  ## ===================== EYRING PLOT (GGPLOT2) ===========================
+  #
   plot_Eyring <-
     ggplot() +
     geom_point(data = data.kvT,
@@ -313,10 +386,13 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                      ~~ frac(Delta^{active}*italic(H)^o,italic(R)~italic(T))))") +
     theme(plot.title = element_text(hjust = 0.5))
   #
+  ## ============================== RESULTS =====================================
+  #
   ## Results as list
-  result <- list(df = data.kvT, ## including DeltaG
+  result <- list(df = data.kvT, ## including DeltaG, residuals and fitted
                  df.fit = new.fit.data,
                  plot = plot_Eyring,
+                 plot.ra = plot.ra,
                  df.coeffs.HS = df.dSH.coeffs,
                  converg = list(N.evals = origin.Eyring.model.HS[["convInfo"]]$finIter,
                                 message = origin.Eyring.model.HS[["convInfo"]]$stopMessage,
@@ -324,6 +400,6 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                  )
   )
   #
-  return(results)
+  return(result)
   #
 }
