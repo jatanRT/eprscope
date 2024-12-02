@@ -10,8 +10,8 @@ eval_kinR_ODE_model(
   elementary.react = TRUE,
   kin.params = c(k1 = 0.001, qvar0R = 0.02),
   time.unit = "s",
-  time.Interval.model = c(0, 1800),
-  time.Frame.model = 2,
+  time.interval.model = c(0, 1800),
+  time.frame.model = 2,
   solve.ode.method = "lsoda",
   data.qt.expr = NULL,
   time.expr = NULL,
@@ -102,14 +102,14 @@ where \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.} stand
 \item{time.unit}{Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 \code{"min"} or \code{"h"}.}
 
-\item{time.Interval.model}{Numeric vector, including two values: starting and final time/termination
+\item{time.interval.model}{Numeric vector, including two values: starting and final time/termination
 of the model reaction (e.g. \code{c(0,1800)} in seconds, \strong{default}).}
 
-\item{time.Frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
+\item{time.frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+between two consecutive points. The number of points is thus defined by the \code{time.interval.model} argument:
 \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).}
+For the default interval mentioned above, the \strong{default} value reads \code{time.frame.model = 2} (in seconds).}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
@@ -276,7 +276,7 @@ compar_model_expr_data_01 <-
   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
                       kin.params = c(qvar0R = 0.019,
                                      k1 = 0.04),
-                      time.Interval.model = c(0,1500),
+                      time.interval.model = c(0,1500),
                       data.qt.expr = triaryl_radCat_data,
                       qvar.expr = "Area",
                       time.expr = "time_s")
@@ -294,7 +294,7 @@ compar_model_expr_data_02 <-
                                      k1 = 0.04,
                                      alpha = 1.9
                                     ),
-                      time.Interval.model = c(0,1500),
+                      time.interval.model = c(0,1500),
                       data.qt.expr = triaryl_radCat_data,
                       qvar.expr = "Area",
                       time.expr = "time_s")

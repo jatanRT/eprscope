@@ -16,7 +16,7 @@ eval_kinR_EPR_modelFit(
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
   solve.ode.method = "lsoda",
-  time.Frame.model = 2,
+  time.frame.model = 2,
   time.correct = FALSE,
   path_to_dsc_par = NULL,
   origin = NULL,
@@ -104,11 +104,11 @@ and not on the common integration of rate equations.}
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
 (\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).}
 
-\item{time.Frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
+\item{time.frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+between two consecutive points. The number of points is thus defined by the \code{time.interval.model} argument:
 \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).}
+For the default interval mentioned above, the \strong{default} value reads \code{time.frame.model = 2} (in seconds).}
 
 \item{time.correct}{Logical, if time of recorded series of the EPR spectra needs to be corrected.
 \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
@@ -133,12 +133,13 @@ List with the following components is available:
   \describe{
   \item{df}{Data frame object with the variables/columns such as \code{time},
   experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area},
-  concentration \code{c_M} or number of radicals of the relevant EPR spectrum, the corresponding
-  quantitative variable \code{fitted} vector values as well as residual vector (experiment - kinetic model).}
+  concentration \code{c_M} or number of radicals of the relevant EPR spectrum; the corresponding
+  quantitative variable \code{fitted} vector values as well as residual vector (experiment - kinetic model)
+  related to the \code{qvarR} argument.}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{plot.ra}{GGplot2 object (related to \strong{r}esidual \strong{a}nalysis), including
-  two main plots: Q-Q plot and residuals vs predicted \code{qvar}s from the kinetic model.}
+  \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
+  two main plots: Q-Q plot and residuals vs predicted \code{qvarR} from the kinetic model.}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -210,6 +211,13 @@ triaryl_model_kin_fit_01$df.coeffs
 #
 ## convergence preview
 triaryl_model_kin_fit_01$N.converg
+#
+## simple residual analysis plots
+## showing the random pattern, which indicates that
+## kinetic model provides a decent fit to the data +
+## normal quantile (qq) plot, indicating that residuals
+## are normally distributed
+triaryl_model_kin_fit_01$plot.ra
 #
 ## take the same experimental data and perform fit
 ## by first order kinetics where the `model.react`

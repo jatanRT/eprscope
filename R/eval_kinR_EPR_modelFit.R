@@ -72,12 +72,13 @@
 #'   \describe{
 #'   \item{df}{Data frame object with the variables/columns such as \code{time},
 #'   experimental quantitative variable like \code{sigmoid_Integ} (sigmoid integral) or \code{Area},
-#'   concentration \code{c_M} or number of radicals of the relevant EPR spectrum, the corresponding
-#'   quantitative variable \code{fitted} vector values as well as residual vector (experiment - kinetic model).}
+#'   concentration \code{c_M} or number of radicals of the relevant EPR spectrum; the corresponding
+#'   quantitative variable \code{fitted} vector values as well as residual vector (experiment - kinetic model)
+#'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{plot.ra}{GGplot2 object (related to \strong{r}esidual \strong{a}nalysis), including
-#'   two main plots: Q-Q plot and residuals vs predicted \code{qvar}s from the kinetic model.}
+#'   \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
+#'   two main plots: Q-Q plot and residuals vs predicted \code{qvarR} from the kinetic model.}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -138,6 +139,13 @@
 #' ## convergence preview
 #' triaryl_model_kin_fit_01$N.converg
 #' #
+#' ## simple residual analysis plots
+#' ## showing the random pattern, which indicates that
+#' ## kinetic model provides a decent fit to the data +
+#' ## normal quantile (qq) plot, indicating that residuals
+#' ## are normally distributed
+#' triaryl_model_kin_fit_01$plot.ra
+#' #
 #' ## take the same experimental data and perform fit
 #' ## by first order kinetics where the `model.react`
 #' ## is considered as an elementary step
@@ -178,7 +186,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    params.guess.upper = NULL,
                                    fit.kin.method = "diff-levenmarq",
                                    solve.ode.method = "lsoda",
-                                   time.Frame.model = 2,
+                                   time.frame.model = 2,
                                    time.correct = FALSE,
                                    path_to_dsc_par = NULL,
                                    origin = NULL,
@@ -252,8 +260,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       model.react = model.react,
       model.expr.diff = TRUE,
       elementary.react = elementary.react,
-      time.Interval.model = timeLim.model,
-      time.Frame.model = time.Frame.model,
+      time.interval.model = timeLim.model,
+      time.frame.model = time.frame.model,
       solve.ode.method = solve.ode.method,
       data.qt.expr = data.qt.expr,
       time.expr = time,
@@ -297,8 +305,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                         model.expr.diff = FALSE,
                         kin.params = predict.model.params,
                         elementary.react = elementary.react,
-                        time.Interval.model = timeLim.model,
-                        time.Frame.model = time.Frame.model,
+                        time.interval.model = timeLim.model,
+                        time.frame.model = time.frame.model,
                         solve.ode.method = solve.ode.method,
                         data.qt.expr = data.qt.expr,
                         time.expr = time,
@@ -311,7 +319,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     dplyr::select(dplyr::all_of(c(time,qvarR))) %>%
     dplyr::mutate(fitted = model.expr.time$df[["R"]])
   #
-  ## ======================== RESIDUAL ANALYSIS/PLOTS ========================
+  ## ================== SIMPLE RESIDUAL ANALYSIS/PLOTS ===================
   #
   ## add residuals to `new.predict.df`
   new.predict.df$residuals <- stats::residuals(model.react.kin.fit)
@@ -325,9 +333,9 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     ) +
     geom_point(size = 2.6,color = "darkblue") +
     labs(
-      x = bquote(italic(Kinetic~~Model~~Fit)*","~~italic(qvar)),
+      x = bquote(italic(Kinetic~~Model~~Fit)*","~~italic(qvarR)),
       y = bquote(italic(Residuals)),
-      title = "Residuals"
+      title = "Residual Plot"
     ) +
     plot_theme_In_ticks()
   #
@@ -339,7 +347,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       )
     ) +
     stat_qq(size = 2.6,color = "darkblue") +
-    stat_qq_line() +
+    stat_qq_line(color = "darkred") +
     labs(
       x = bquote(italic(Theoretical~~Quantiles)),
       y = bquote(italic(Sample~~Quantiles)),

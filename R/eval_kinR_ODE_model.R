@@ -163,13 +163,13 @@
 #'   where \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.} stands for the procedure defined units.
 #' @param time.unit Character string, corresponding to time unit like \code{"s"} (\strong{default}),
 #'   \code{"min"} or \code{"h"}.
-#' @param time.Interval.model Numeric vector, including two values: starting and final time/termination
+#' @param time.interval.model Numeric vector, including two values: starting and final time/termination
 #'   of the model reaction (e.g. \code{c(0,1800)} in seconds, \strong{default}).
-#' @param time.Frame.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-#'   between two consecutive points. The number of points is thus defined by the \code{time.Interval.model} argument:
+#' @param time.frame.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
+#'   between two consecutive points. The number of points is thus defined by the \code{time.interval.model} argument:
 #'   \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 #'   This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-#'   For the default interval mentioned above, the \strong{default} value reads \code{time.Frame.model = 2} (in seconds).
+#'   For the default interval mentioned above, the \strong{default} value reads \code{time.frame.model = 2} (in seconds).
 #' @param solve.ode.method Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 #'   applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
 #'   (\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).
@@ -267,7 +267,7 @@
 #'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
 #'                       kin.params = c(qvar0R = 0.019,
 #'                                      k1 = 0.04),
-#'                       time.Interval.model = c(0,1500),
+#'                       time.interval.model = c(0,1500),
 #'                       data.qt.expr = triaryl_radCat_data,
 #'                       qvar.expr = "Area",
 #'                       time.expr = "time_s")
@@ -285,7 +285,7 @@
 #'                                      k1 = 0.04,
 #'                                      alpha = 1.9
 #'                                     ),
-#'                       time.Interval.model = c(0,1500),
+#'                       time.interval.model = c(0,1500),
 #'                       data.qt.expr = triaryl_radCat_data,
 #'                       qvar.expr = "Area",
 #'                       time.expr = "time_s")
@@ -306,8 +306,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                                   qvar0R = 0.02
                                 ),  ## add. "alpha", "beta", "gamma" for general partial react. orders
                                 time.unit = "s", ## also "min" and "h" can be defined
-                                time.Interval.model = c(0,1800), ## also provided for expr.
-                                time.Frame.model = 2, # time resolution in s
+                                time.interval.model = c(0,1800), ## also provided for expr.
+                                time.frame.model = 2, # time resolution in s
                                 solve.ode.method = "lsoda", # numeric integrator method
                                 data.qt.expr = NULL,
                                 time.expr = NULL,
@@ -348,19 +348,19 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   }
   #
   ## time definition for the spectral series
-  if (is.null(time.Interval.model)){
+  if (is.null(time.interval.model)){
     stop(" Please define the hypothetical interval for the model reaction ! ")
   } else{
     if (!is.null(data.qt.expr)){
       start.time <- min(time.expr.vec)
       final.time <- max(time.expr.vec)
     } else{
-      start.time <- time.Interval.model[1]
-      final.time <- time.Interval.model[2]
+      start.time <- time.interval.model[1]
+      final.time <- time.interval.model[2]
     }
     ## time resolution for different spans
     ## due point limitations of `ODE` solution
-    t <- seq(start.time, final.time, by = time.Frame.model)
+    t <- seq(start.time, final.time, by = time.frame.model)
     #
     if (final.time > 259200){
       if (time.unit == "s"){
