@@ -85,8 +85,8 @@
 <span>  elementary.react <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.001</span>, qvar0R <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span>,</span>
 <span>  time.unit <span class="op">=</span> <span class="st">"s"</span>,</span>
-<span>  time.Interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1800</span><span class="op">)</span>,</span>
-<span>  time.Frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1800</span><span class="op">)</span>,</span>
+<span>  time.frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  solve.ode.method <span class="op">=</span> <span class="st">"lsoda"</span>,</span>
 <span>  data.qt.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  time.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -164,17 +164,17 @@ where <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/" class="ext
 <code>"min"</code> or <code>"h"</code>.</p></dd>
 
 
-<dt id="arg-time-interval-model">time.Interval.model<a class="anchor" aria-label="anchor" href="#arg-time-interval-model"></a></dt>
+<dt id="arg-time-interval-model">time.interval.model<a class="anchor" aria-label="anchor" href="#arg-time-interval-model"></a></dt>
 <dd><p>Numeric vector, including two values: starting and final time/termination
 of the model reaction (e.g. <code>c(0,1800)</code> in seconds, <strong>default</strong>).</p></dd>
 
 
-<dt id="arg-time-frame-model">time.Frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>
+<dt id="arg-time-frame-model">time.frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>
 <dd><p>Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by the <code>time.Interval.model</code> argument:
+between two consecutive points. The number of points is thus defined by the <code>time.interval.model</code> argument:
 $$((Interval[2] - Interval[1])\,/\,Frame) + 1$$
 This argument is required to numerically solve the kinetic differential equations by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>.
-For the default interval mentioned above, the <strong>default</strong> value reads <code>time.Frame.model = 2</code> (in seconds).</p></dd>
+For the default interval mentioned above, the <strong>default</strong> value reads <code>time.frame.model = 2</code> (in seconds).</p></dd>
 
 
 <dt id="arg-solve-ode-method">solve.ode.method<a class="anchor" aria-label="anchor" href="#arg-solve-ode-method"></a></dt>
@@ -383,7 +383,7 @@ data aren't taken into account).</p></dd>
 <span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span>model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
 <span class="r-in"><span>                      kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>qvar0R <span class="op">=</span> <span class="fl">0.019</span>,</span></span>
 <span class="r-in"><span>                                     k1 <span class="op">=</span> <span class="fl">0.04</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      time.Interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      data.qt.expr <span class="op">=</span> <span class="va">triaryl_radCat_data</span>,</span></span>
 <span class="r-in"><span>                      qvar.expr <span class="op">=</span> <span class="st">"Area"</span>,</span></span>
 <span class="r-in"><span>                      time.expr <span class="op">=</span> <span class="st">"time_s"</span><span class="op">)</span></span></span>
@@ -402,7 +402,7 @@ data aren't taken into account).</p></dd>
 <span class="r-in"><span>                                     k1 <span class="op">=</span> <span class="fl">0.04</span>,</span></span>
 <span class="r-in"><span>                                     alpha <span class="op">=</span> <span class="fl">1.9</span></span></span>
 <span class="r-in"><span>                                    <span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      time.Interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      data.qt.expr <span class="op">=</span> <span class="va">triaryl_radCat_data</span>,</span></span>
 <span class="r-in"><span>                      qvar.expr <span class="op">=</span> <span class="st">"Area"</span>,</span></span>
 <span class="r-in"><span>                      time.expr <span class="op">=</span> <span class="st">"time_s"</span><span class="op">)</span></span></span>

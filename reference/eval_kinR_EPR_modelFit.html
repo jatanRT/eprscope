@@ -100,7 +100,7 @@
 <span>  params.guess.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit.kin.method <span class="op">=</span> <span class="st">"diff-levenmarq"</span>,</span>
 <span>  solve.ode.method <span class="op">=</span> <span class="st">"lsoda"</span>,</span>
-<span>  time.Frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  time.frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  time.correct <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  path_to_dsc_par <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  origin <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -198,12 +198,12 @@ applied to find the numeric solution of ODE. <strong>Default</strong>: <code>sol
 (<code><a href="https://rdrr.io/pkg/deSolve/man/lsoda.html" class="external-link">lsoda</a></code>, additional methods, see the <code>ode</code> link above).</p></dd>
 
 
-<dt id="arg-time-frame-model">time.Frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>
+<dt id="arg-time-frame-model">time.frame.model<a class="anchor" aria-label="anchor" href="#arg-time-frame-model"></a></dt>
 <dd><p>Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by the <code>time.Interval.model</code> argument:
+between two consecutive points. The number of points is thus defined by the <code>time.interval.model</code> argument:
 $$((Interval[2] - Interval[1])\,/\,Frame) + 1$$
 This argument is required to numerically solve the kinetic differential equations by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>.
-For the default interval mentioned above, the <strong>default</strong> value reads <code>time.Frame.model = 2</code> (in seconds).</p></dd>
+For the default interval mentioned above, the <strong>default</strong> value reads <code>time.frame.model = 2</code> (in seconds).</p></dd>
 
 
 <dt id="arg-time-correct">time.correct<a class="anchor" aria-label="anchor" href="#arg-time-correct"></a></dt>
@@ -237,16 +237,17 @@ Two origins are available: <code>origin = "winepr"</code> or <code>origin = "xen
     <p>List with the following components is available:</p><dl><dt>df</dt>
 <dd><p>Data frame object with the variables/columns such as <code>time</code>,
   experimental quantitative variable like <code>sigmoid_Integ</code> (sigmoid integral) or <code>Area</code>,
-  concentration <code>c_M</code> or number of radicals of the relevant EPR spectrum, the corresponding
-  quantitative variable <code>fitted</code> vector values as well as residual vector (experiment - kinetic model).</p></dd>
+  concentration <code>c_M</code> or number of radicals of the relevant EPR spectrum; the corresponding
+  quantitative variable <code>fitted</code> vector values as well as residual vector (experiment - kinetic model)
+  related to the <code>qvarR</code> argument.</p></dd>
 
   <dt>plot</dt>
 <dd><p>Plot object <em>Quantitative variable</em> <em>vs</em> <em>Time</em> with the experimental
   data and the corresponding fit.</p></dd>
 
   <dt>plot.ra</dt>
-<dd><p>GGplot2 object (related to <strong>r</strong>esidual <strong>a</strong>nalysis), including
-  two main plots: Q-Q plot and residuals vs predicted <code>qvar</code>s from the kinetic model.</p></dd>
+<dd><p>GGplot2 object (related to simple <strong>r</strong>esidual <strong>a</strong>nalysis), including
+  two main plots: Q-Q plot and residuals vs predicted <code>qvarR</code> from the kinetic model.</p></dd>
 
   <dt>df.coeffs</dt>
 <dd><p>Data frame object containing the optimized (best fit) parameter values (<code>Estimates</code>),
@@ -353,6 +354,14 @@ Two origins are available: <code>origin = "winepr"</code> or <code>origin = "xen
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">N.converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.2424078e-04 2.8726168e-06 1.3678869e-06 1.3672908e-06 1.3672908e-06</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## simple residual analysis plots</span></span></span>
+<span class="r-in"><span><span class="co">## showing the random pattern, which indicates that</span></span></span>
+<span class="r-in"><span><span class="co">## kinetic model provides a decent fit to the data +</span></span></span>
+<span class="r-in"><span><span class="co">## normal quantile (qq) plot, indicating that residuals</span></span></span>
+<span class="r-in"><span><span class="co">## are normally distributed</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">plot.ra</span></span></span>
+<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## take the same experimental data and perform fit</span></span></span>
 <span class="r-in"><span><span class="co">## by first order kinetics where the `model.react`</span></span></span>
 <span class="r-in"><span><span class="co">## is considered as an elementary step</span></span></span>
@@ -369,7 +378,7 @@ Two origins are available: <code>origin = "winepr"</code> or <code>origin = "xen
 <span class="r-in"><span>    origin <span class="op">=</span> <span class="st">"xenon"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## plot preview</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## coefficients/parameters table preview</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">df.coeffs</span></span></span>
