@@ -237,12 +237,16 @@ Two origins are available: <code>origin = "winepr"</code> or <code>origin = "xen
     <p>List with the following components is available:</p><dl><dt>df</dt>
 <dd><p>Data frame object with the variables/columns such as <code>time</code>,
   experimental quantitative variable like <code>sigmoid_Integ</code> (sigmoid integral) or <code>Area</code>,
-  concentration <code>c_M</code> or number of radicals of the relevant EPR spectrum and finally, the corresponding
-  quantitative variable <code>fitted</code> vector values.</p></dd>
+  concentration <code>c_M</code> or number of radicals of the relevant EPR spectrum, the corresponding
+  quantitative variable <code>fitted</code> vector values as well as residual vector (experiment - kinetic model).</p></dd>
 
   <dt>plot</dt>
 <dd><p>Plot object <em>Quantitative variable</em> <em>vs</em> <em>Time</em> with the experimental
   data and the corresponding fit.</p></dd>
+
+  <dt>plot.ra</dt>
+<dd><p>GGplot2 object (related to <strong>r</strong>esidual <strong>a</strong>nalysis), including
+  two main plots: Q-Q plot and residuals vs predicted <code>qvar</code>s from the kinetic model.</p></dd>
 
   <dt>df.coeffs</dt>
 <dd><p>Data frame object containing the optimized (best fit) parameter values (<code>Estimates</code>),
@@ -326,14 +330,14 @@ Two origins are available: <code>origin = "winepr"</code> or <code>origin = "xen
 <span class="r-in"><span>                         origin <span class="op">=</span> <span class="st">"xenon"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## data frame preview</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    time_s        Area      fitted</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;num&gt;       &lt;num&gt;       &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      6 0.018741176 0.018498974</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     21 0.018117647 0.017992445</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     36 0.017617647 0.017512916</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     51 0.017194118 0.017058284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     66 0.016511765 0.016626659</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:     81 0.016347059 0.016216338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    time_s        Area      fitted      residuals</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;num&gt;       &lt;num&gt;       &lt;num&gt;          &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      6 0.018741176 0.018498974  0.00024220227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     21 0.018117647 0.017992445  0.00012520241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     36 0.017617647 0.017512916  0.00010473112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:     51 0.017194118 0.017058284  0.00013583347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     66 0.016511765 0.016626659 -0.00011489474</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:     81 0.016347059 0.016216338  0.00013072040</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## plot preview</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">plot</span></span></span>
