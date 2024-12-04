@@ -6,8 +6,8 @@
 #'
 #'
 #' @description
-#'   Finding the temperature-dependence of a rate constant (\eqn{k}), related to elementary radical reaction, using the transition
-#'   state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
+#'   Finding the temperature-dependence of a rate constant (\eqn{k}), related to elementary radical reaction, using the essential
+#'   transition state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
 #'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring expression
 #'   (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
 #'   refer to the \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
@@ -64,19 +64,26 @@
 #'   of the AC formation reaction (therefore the index \eqn{^{\ddagger}} is used), i.e. for the bi-molecular reaction,
 #'   the sum results in \code{-1}, however for the mono-molecular one, the sum results in \code{0}.
 #'
-#'   Even though the transition state theory is a helpful tool to get information about the mechanism
+#'   While the transition state theory (TST) is a helpful tool to get information about the mechanism
 #'   of an elementary reaction, it has some limitations, particularly for radical reactions. Couple of them are listed below.
 #'   \enumerate{
-#'   \item One should be very careful, if applied to elementary steps in a multistep reaction kinetics (like
+#'   \item One should be very careful if applied to elementary steps in a multistep reaction kinetics (like
 #'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the intermediate (e.g. in the consecutive
 #'   reaction mechanism) possesses a short life-time, the TST fails.
 #'
-#'   \item The equilibrium between ...TBC very short living intermediates...TBC
+#'   \item For very fast reactions the assumed equilibrium between the reactants and the AC won't be reached.
+#'   Therefore, the spin trapping reactions, which \eqn{k}s may actually fall into the order
+#'   of \eqn{10^9\,\text{dm}^3\,\text{mol}^{-1}\,\text{s}^{-1}} (or oven higher, see Kemp TJ (1999) in the \code{References})
+#'   should be taken with caution in terms of TST.
 #'
-#'   \item At high temperatures ...very high or very low temperatures...TBC (several hundreds of K -> \eqn{\gtrapprox > 1000\,\text{K}},
-#'   see e.g. https://doi.org/10.1073/pnas.72.5.1717)
-#'
-#'   \item ...tunneling (classical vs quantum mechanics)...TBC
+#'   \item Formation of AC in TST is based on classical mechanics, that is molecules/atoms will only collide,
+#'   having enough energy (to form the AC), otherwise reaction does not occur. Whereas, taking into account the quantum
+#'   mechanical principle, molecules/atoms with any finite energy may (with a certain probability) tunnel across
+#'   the energy barrier. Such effect will be less probable for high energy barriers, however e.g. for radical-radical
+#'   recombination, where the barriers are typically very low, the tunneling probability is high and TST may fail.
+#'   In addition, such reactions proceed relatively fast and therefore the TST (Eyring fit) can also strongly bias
+#'   the activation parameters. This type of reactions may also exhibit negative \eqn{k} \emph{vs} \eqn{T} dependence
+#'   (see Wardlaw DM and Marcus RA (1986) in the \code{References}).
 #'   }
 #'
 #'
@@ -95,6 +102,13 @@
 #'
 #'   Lente G, Fábián I, Poë AJ (2005). "A common Misconception about the Eyring Equation",
 #'   \emph{New J. Chem.}, \strong{29}(6), 759–760, \url{https://doi.org/10.1039/B501687H}.
+#'
+#'   Kemp TJ (1999), "Kinetic Aspects of Spin Trapping", \emph{Progress in Reaction Kinetics}, \strong{24}(4),
+#'   287-358, \url{https://doi.org/10.3184/007967499103165102}.
+#'
+#'   Wardlaw DM and Marcus RA (1986), "Unimolecular reaction rate theory for transition states of any looseness.
+#'   3. Application to methyl radical recombination", \emph{J. Phys. Chem.}, \strong{90}(21), 5383-5393,
+#'   \url{https://doi.org/10.1021/j100412a098}.
 #'
 #'
 #' @param data.kvT Data frame object, which must include two essential columns: rate constant (\eqn{k} of an elementary
