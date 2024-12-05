@@ -129,7 +129,7 @@ columns are described by character strings like those below (see arguments <code
 
 
 <dt id="arg-qvarr">qvarR<a class="anchor" aria-label="anchor" href="#arg-qvarr"></a></dt>
-<dd><p>Character string, pointing to <code>qvarR</code> (quantitative variable) column/variable
+<dd><p>Character string, pointing to <code>qvarR</code> (quantitative variable related to radical) column/variable
 name in the original <code>data.qt.expr</code>. <strong>Default</strong>: <code>qvarR = "Area"</code>.</p></dd>
 
 
@@ -145,7 +145,7 @@ may vary, see below).</p><table class="table table"><tr><td><strong>Reaction Sch
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as <code>(r=1)</code>
 or <code>(a=1)</code>) can be varied within the <code>model.react</code> character string.
-Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the <code>model.react</code>
+Defined/Allowed values are integers, e.g. 1,2,3...etc. The space character within the <code>model.react</code>
 string is not fixed and can be skipped for the sake of simplicity.
 If <code>elementary.react = FALSE</code> (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. <code>alpha</code>,<code>beta</code> or <code>gamma</code>)
@@ -224,12 +224,13 @@ to <code>.DSC/.dsc</code> or <code>.par</code> (depending on <code>origin</code>
 
 <dt id="arg-origin">origin<a class="anchor" aria-label="anchor" href="#arg-origin"></a></dt>
 <dd><p>Character string, corresponding to software which was used to acquire the EPR spectra,
-essential to load the parameters by <code>path_to_dsc_par</code> (see also <code><a href="readEPR_params_slct_kin.html">readEPR_params_slct_kin</a></code>).
+essential to load the parameters by the <code>path_to_dsc_par</code> (see also the <code><a href="readEPR_params_slct_kin.html">readEPR_params_slct_kin</a></code>).
 Two origins are available: <code>origin = "winepr"</code> or <code>origin = "xenon"</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments for <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>.</p></dd>
+<dd><p>additional arguments for <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, e.g. defined
+by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
