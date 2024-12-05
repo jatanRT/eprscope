@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,16 +52,53 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.12" id="eprscope-0112">eprscope 0.1.12<a class="anchor" aria-label="anchor" href="#eprscope-0112"></a></h2>
+<div class="section level3">
+<h3 id="id_2024-0-1-12">2024-12-05<a class="anchor" aria-label="anchor" href="#id_2024-0-1-12"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-12">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-12"></a></h4>
+<ul><li><p><code>README</code> documentation → fixed/updated, because it did not contain the information about the <em>JDK</em> installation as well as that about the essential R packages + couple of learning or tutorial resources and comments were added</p></li>
+<li><p>several fixes and/or updates in documentation (functions + vignettes)</p></li>
+<li><p>the default intensity multiplication coefficient (parameter) boundaries within the <code>eval_sim_EPR_isoFit</code> function are fixed and correctly set up + extended default boundaries for hyperfine coupling constants (<em>A</em>) added</p></li>
+<li><p>fixed visualization of an EPR spectrum fit within the <code>eval_sim_EPR_isoFit</code> + the initial simulation (see updates) also includes a baseline correction (it should also work for the consecutive <code>optim.method</code> (vector))</p></li>
+<li><p>increased decimal places of the magnetic flux density (<em>B</em>) and intensity by the reading of ASCII files, using the <code>read_EPR_Specs</code> and related functions</p></li>
+<li><p>fixed issue with the <code>origin</code> argument definition (regarding the spectrometer software labels/names) in reading functions</p></li>
+<li><p>initial <code>qvar</code>s for the <code>"(a=1)A + (r=1)R --&gt; [k1] B"</code> model reaction (see also updates) are now correctly set up</p></li>
+<li><p>the minimum sum of residual squares (RSS) value argument was renamed (<code>min.LSQ.sum</code> → <code>min.rss</code>) and unified in all relevant fitting functions</p></li>
+<li><p>tube diameter within the <code>quantify_EPR_Abs</code> is now correctly defined</p></li>
+<li><p>fixed issue with the integral scale within the <code>eval_integ_EPR_Spec</code></p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-12">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-12"></a></h4>
+<ul><li><p>code in several functions → cleaned up in order to be more readable, this also includes renaming of several arguments in those functions + <code>messages</code> and <code>stop</code>s added on couple of places, within the code, for the sake of interactivity/awareness of operations</p></li>
+<li><p>reorganization of files and folders related to vignettes</p></li>
+<li><p>code for the integration of EPR spectra (see the <code>eval_integ_EPR_Spec</code> function) was simplified and supplemented with the option to integrate spectra having the [B] = T units, this also applies to the <code>quantify_EPR_Sim_series</code> function</p></li>
+<li><p>the initial simulated EPR spectrum was added to output graphics of the <code>eval_sim_EPR_isoFit</code> value/list (for the case of <code>check.fit.plot = TRUE</code>) in order to compare it with the final/best fit as well as with the experimental EPR spectrum</p></li>
+<li><p>number of letters in kinetic reaction schemes were decreased in order to be more readable + the last scheme (see also bug fixes above) as well as the time duration and resolution were simplified in order to better work with the numeric ODE integration (by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">deSolve::ode</a></code> function)</p></li>
+<li><p>option to select a method for the numeric ODE integration (argument <code>solve.ode.method</code>) was added to both key functions analyzing the radical kinetics</p></li>
+<li><p>added option to select a specific implementation of the <code>pswarm</code> (“particle swarm”) optimization algorithm/method, within the <code>optim_for_EPR_fitness</code> → either <code>“SPSO2007”</code> (for small particle spaces and swarm sizes) or <code>“SPSO2011”</code> (for larger ones) can be set up + internal function updated (not provided as a user option), the number of “informants” (related to particles) was slightly increased by the corresponding exponent, <em>k = 6</em> (see also documentation for the <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">pso::psoptim</a></code>)</p></li>
+<li><p>value/output list of the <code>eval_sim_EPR_isoFit</code> was extended to exclusively include vector of the optimized parameters (together with the <code>min.rss</code>) and data frame of the best EPR simulation fit in order to be ready for the new fitting function (currently under development)</p></li>
+<li><p>simple residual analysis (plots) added to the <code>eval_kinR_EPR_modelFit</code> output/value list, including the Q-Q (“quantile-quantile”) plot (to check weather residuals are normally distributed) as well as the Residual plot (residuals <em>vs</em> predicted/fitted <code>qvarR</code>s, e.g. concentration) in order to check the kinetic model fit and precision of the optimized kinetic parameters</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="new-functionsfilesvignettes-0-1-12">New Functions/Files/Vignettes<a class="anchor" aria-label="anchor" href="#new-functionsfilesvignettes-0-1-12"></a></h4>
+<ul><li><p><code>create_qmdReport_proj</code> → create file-folder structure of an EPR project to create a reproducible Quarto report (please, also refer to the <a href="https://quarto.org/" class="external-link uri">https://quarto.org/</a> website)</p></li>
+<li><p>peak picking in EPR/ENDOR spectrum: <code>eval_peakPick_Spec</code>, with the selection of positive or negative intensity peaks for both derivative as well as integrated forms of an EPR/ENDOR spectrum</p></li>
+<li><p>evaluate activation parameters of an elementary radical reaction, obtained by the “Eyring fit” of the experimental <em>k vs T</em> dependence, based on the essential transition state theory (TST) → <code>eval_kinR_Eyring_GHS</code></p></li>
+</ul></div>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.11" id="eprscope-0111-1st-public-release">eprscope 0.1.11 (1st public release)<a class="anchor" aria-label="anchor" href="#eprscope-0111-1st-public-release"></a></h2>
 <div class="section level3">
 <h3 id="id_2024-0-1-11">2024-08-29<a class="anchor" aria-label="anchor" href="#id_2024-0-1-11"></a></h3>
 <div class="section level4">
 <h4 id="bug-fixescritical-updates-0-1-11">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-11"></a></h4>
-<ul><li><p>reading of the spectral time series within the <code>readEPR_Exp_Specs</code> function</p></li>
-<li><p>reading parameter strings from ‘parameter’ files within the <code>readEPR_param_slct</code> function</p></li>
+<ul><li><p>fixed reading of spectral time series within the <code>readEPR_Exp_Specs</code> function</p></li>
+<li><p>reading parameter strings from ‘parameter’ files within the <code>readEPR_param_slct</code> function fixed</p></li>
 <li><p>the <em>g</em>-value scale on <em>x</em>-axis within the plotting functions is now properly displayed</p></li>
-<li><p>if the related <code>time(series)</code> unit is converted in relevant data frames, the corresponding column is renamed in order to inherit the new unit (like <code>time_s</code>), accordingly</p></li>
-<li><p>now, the elements in <code>names</code> argument, within the <code>readEPR_Exp_Specs_multif</code>, can also contain characters like <code>c("a","b","c")</code>, not just numbers like <code>c("250","260","270")</code></p></li>
+<li><p>if the related <code>time(series)</code> unit is converted in relevant data frames, the corresponding column is renamed in order to inherit the new unit (like <code>time_s</code>) accordingly</p></li>
+<li><p>now, the elements in <code>names</code> argument, within the <code>readEPR_Exp_Specs_multif</code>, can also contain characters like <code>c("a","b","c")</code>, not just numbers, e.g. <code>c("250","260","270")</code></p></li>
 <li><p>fixed visualization of legend labels within the <code>plot_EPR_Specs</code> function</p></li>
 <li><p>natural abundance of interacting nuclei to calculate the intensities within the <code>eval_sim_EPR_iso</code> and related functions/examples</p></li>
 </ul></div>
