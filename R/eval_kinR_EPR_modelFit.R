@@ -33,7 +33,7 @@
 #'   columns are described by character strings like those below (see arguments \code{time} and \code{qvarR}).
 #' @param time Character string, pointing to \code{time} column/variable name in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.
-#' @param qvarR Character string, pointing to \code{qvarR} (quantitative variable) column/variable
+#' @param qvarR Character string, pointing to \code{qvarR} (quantitative variable related to radical) column/variable
 #'   name in the original \code{data.qt.expr}. \strong{Default}: \code{qvarR = "Area"}.
 #' @param params.guess Named vector, initial values of \code{kin.params} (see \code{\link{eval_kinR_ODE_model}})
 #'   ready for optimization/fitting. The \code{k1}-unit is eventually expressed
@@ -63,9 +63,10 @@
 #'   \code{text} files including instrumental parameters and provided by the EPR machine.
 #'   \strong{Default}: \code{path_to_dsc_par = NULL}.
 #' @param origin Character string, corresponding to software which was used to acquire the EPR spectra,
-#'   essential to load the parameters by \code{path_to_dsc_par} (see also \code{\link{readEPR_params_slct_kin}}).
+#'   essential to load the parameters by the \code{path_to_dsc_par} (see also the \code{\link{readEPR_params_slct_kin}}).
 #'   Two origins are available: \code{origin = "winepr"} or \code{origin = "xenon"}.
-#' @param ... additional arguments for \code{\link[minpack.lm]{nls.lm}}.
+#' @param ... additional arguments for \code{\link[minpack.lm]{nls.lm}}, e.g. defined
+#'   by the \code{control = minpack.lm::nls.lm.control()}.
 #'
 #'
 #' @return List with the following components is available:

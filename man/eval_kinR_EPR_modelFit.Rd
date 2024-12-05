@@ -34,7 +34,7 @@ columns are described by character strings like those below (see arguments \code
 \item{time}{Character string, pointing to \code{time} column/variable name in the original
 \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.}
 
-\item{qvarR}{Character string, pointing to \code{qvarR} (quantitative variable) column/variable
+\item{qvarR}{Character string, pointing to \code{qvarR} (quantitative variable related to radical) column/variable
 name in the original \code{data.qt.expr}. \strong{Default}: \code{qvarR = "Area"}.}
 
 \item{model.react}{Character string, denoting a specific radical (\code{"R"}) reaction related to
@@ -64,7 +64,7 @@ Couple of examples are also given in \code{Details}. The function is relatively 
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 or \code{(a=1)}) can be varied within the \code{model.react} character string.
-Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
+Defined/Allowed values are integers, e.g. 1,2,3...etc. The space character within the \code{model.react}
 string is not fixed and can be skipped for the sake of simplicity.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
@@ -123,10 +123,11 @@ to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
 \strong{Default}: \code{path_to_dsc_par = NULL}.}
 
 \item{origin}{Character string, corresponding to software which was used to acquire the EPR spectra,
-essential to load the parameters by \code{path_to_dsc_par} (see also \code{\link{readEPR_params_slct_kin}}).
+essential to load the parameters by the \code{path_to_dsc_par} (see also the \code{\link{readEPR_params_slct_kin}}).
 Two origins are available: \code{origin = "winepr"} or \code{origin = "xenon"}.}
 
-\item{...}{additional arguments for \code{\link[minpack.lm]{nls.lm}}.}
+\item{...}{additional arguments for \code{\link[minpack.lm]{nls.lm}}, e.g. defined
+by the \code{control = minpack.lm::nls.lm.control()}.}
 }
 \value{
 List with the following components is available:

@@ -1,12 +1,12 @@
 #'
-#' Activation Parameters (Enthalpy, Entropy and Gibbs Energy) by Transition State Theory
+#' Reaction Activation Parameters Obtained by Essential Transition State Theory
 #'
 #'
 #' @family Evaluations
 #'
 #'
 #' @description
-#'   Finding the temperature-dependence of a rate constant (\eqn{k}), related to elementary radical reaction, using the essential
+#'   Finding the temperature-dependence of a rate constant (\eqn{k}) related to the elementary radical reaction, using the essential
 #'   transition state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
 #'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring expression
 #'   (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
@@ -32,7 +32,7 @@
 #'   According to statistical thermodynamics, the equilibrium constant can be expressed by the partition function (\eqn{q})
 #'   of the reactants and that of the AC. By definition, each \eqn{q} corresponds to ratio of total number of particles
 #'   to the number of particles in the ground state. In essence, it is the measure of degree to which the particles
-#'   are spread out (partitioned among) over the energy levels. Therefore, taking into account the energies of quantum
+#'   are spread out (partitioned among) over the energy levels. Therefore, taking into account the energies of a harmonic quantum
 #'   oscillator vibrating along the reaction coordinate as well as partition functions of the AC and those of the reactants,
 #'   the rate constant can be expressed as follows (see e.g. Ptáček P, Šoukal F, Opravil T (2018) in the \code{References}):
 #'   \deqn{k = \kappa\,(k_{\text{B}}\,T\,/\,h)\,K^{\ddagger}}
@@ -45,12 +45,13 @@
 #'   because \eqn{\Delta^{\ddagger} G^o = - R\,T\,ln K^{\ddagger}} and thus the Eyring equation reads:
 #'   \deqn{k = \kappa\,(k_{\text{B}}\,T\,/\,h)\,exp[- (\Delta^{\ddagger} G^o)/(R\,T)] =
 #'   \kappa\,(k_{\text{B}}\,T\,/\,h)\,exp[- (\Delta^{\ddagger} H^o)/(R\,T)]\,exp[\Delta^{\ddagger} S^o / R]}
-#'   where \eqn{R\approx 8.31446\,\text{J\,mol^{-1}\,K^{-1}}} is the universal gas constant and the upper index \eqn{^o}
+#'   where \eqn{R\approx 8.31446\,\text{J}\,\text{mol}^{-1}\,\text{K}^{-1}} is the universal gas constant and the upper index \eqn{^o}
 #'   denotes the standard molar state (see IUPAC (2019) in the \code{References}). Previous formula is applied
-#'   as a model to fit onto the experimental \eqn{k\,\,vs\,\,T} (see the argument \code{data.kvT}) relation, where both
-#'   the \eqn{\Delta^{\ddagger} S^o} and the \eqn{\Delta^{\ddagger} H^o} (in the graphical output also denoted as
+#'   as a model to fit the experimental \eqn{k\,\,vs\,\,T} (see the argument \code{data.kvT}) relation, where both
+#'   the \eqn{\Delta^{\ddagger} S^o} and the \eqn{\Delta^{\ddagger} H^o} (in the graphical output, are also denoted as
 #'   \eqn{\Delta^{active} S^o} and \eqn{\Delta^{active} H^o}, respectively) are optimized using the \code{fit.method}
-#'   (by the \code{\link[stats]{nls}} function). Often, the Eyring equation is not applied in the original form,
+#'   (by the \code{\link[stats]{nls}} function). In the first approach, both latter are considered as temperature independent
+#'   within the selected temperature range. Often, the Eyring equation is not applied in the original form,
 #'   however in the linearized one. Nevertheless, the latter is not recommended as a model for fitting the experimental \eqn{k(T)}
 #'   (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}). The reason inherits in the misinterpretation
 #'   of the extrapolation to \eqn{T\rightarrow \infty} (or \eqn{1/T\rightarrow 0}) by which the \eqn{\Delta^{\ddagger} S^o}
@@ -58,7 +59,7 @@
 #'   as a model to fit the experimental \eqn{k(T)}.
 #'   The \href{https://goldbook.iupac.org/terms/view/E02142}{\eqn{k}-unit depends on the molecularity of the reaction},
 #'   please also refer to the \code{rate.const.unit} argument. Therefore, the left hand site of the Eyring equation above
-#'   must be multiplied by the standard molar concentration \eqn{c^o = 1\,\text{mol}\,\text{dm^{-3}}}:
+#'   must be multiplied by the standard molar concentration \eqn{c^o = 1\,\text{mol}\,\text{dm}^{-3}}:
 #'   \deqn{k\,(c^o)^{- \sum_i \nu_i^{\ddagger}}}
 #'   where the \eqn{\sum_i \nu_i^{\ddagger}} goes through stoichiometric coefficients (including the negative sign for reactants)
 #'   of the AC formation reaction (therefore the index \eqn{^{\ddagger}} is used), i.e. for the bi-molecular reaction,
@@ -69,12 +70,12 @@
 #'   \enumerate{
 #'   \item One should be very careful if applied to elementary steps in a multistep reaction kinetics (like
 #'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the intermediate (e.g. in the consecutive
-#'   reaction mechanism) possesses a short life-time, the TST fails.
+#'   reaction mechanism) possesses a short life-time, the TST probably fails.
 #'
 #'   \item For very fast reactions the assumed equilibrium between the reactants and the AC won't be reached.
 #'   Therefore, the spin trapping reactions, which \eqn{k}s may actually fall into the order
 #'   of \eqn{10^9\,\text{dm}^3\,\text{mol}^{-1}\,\text{s}^{-1}} (or oven higher, see Kemp TJ (1999) in the \code{References})
-#'   should be taken with caution in terms of TST.
+#'   should be taken with extreme caution in terms of TST.
 #'
 #'   \item Formation of AC in TST is based on classical mechanics, that is molecules/atoms will only collide,
 #'   having enough energy (to form the AC), otherwise reaction does not occur. Whereas, taking into account the quantum
@@ -116,7 +117,7 @@
 #' @param rate.const Character string, pointing to rate constant column header in the actual \code{data.kvT} data frame.
 #' @param rate.const.unit Character string, referring to rate constant unit. This has to be specified using
 #'   the \code{\link[grDevices]{plotmath}} notation, like \code{rate.const.unit = "M^{-1}~s^{-1}"}
-#'   or \code{rate.const.unit = "s^{-1}"} (\strong{default}) because it is automatically applied as \eqn{y}-axis unit
+#'   or \code{rate.const.unit = "s^{-1}"} (\strong{default}), because it is automatically applied as \eqn{y}-axis unit
 #'   in the graphical output by the \code{{ggplot2}}.
 #' @param Temp Character string, pointing to temperature column header within the original \code{data.kvT} data frame.
 #' @param Temp.unit Character string, corresponding to temperature unit related to \code{Temp}. Temperature can be defined
@@ -130,16 +131,17 @@
 #'   dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
 #'   under its \code{algorithm} argument, are available: \code{"default"}
 #'   (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
-#'   \code{"plinear} (which is
-#'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm)
-#'   or \code{"port"} (\href{https://ms.mcmaster.ca/%7Ebolker/misc/port.pdf}{Fortran PORT ("portable") library for numerical
-#'   computation}).
+#'   \code{"plinear"}, which is
+#'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
+#'   or \code{"port"}
+#'   (\href{https://ms.mcmaster.ca/\%7Ebolker/misc/port.pdf}{Fortran PORT, "portable" library for numerical computation}).
 #'
 #'
 #' @return As a result of the Eyring-relation fit, list with the following components is available:
 #'   \describe{
-#'   \item{df}{Data frame, including the original \code{data.kvT} and the column of \eqn{\Delta^{\ddagger} G^o}
-#'   with the name of \code{DeltaG_active_kJ_per_mol}.}
+#'   \item{df}{Data frame, including the original \code{data.kvT} + the column of \eqn{\Delta^{\ddagger} G^o},
+#'   with the name of \code{DeltaG_active_kJ_per_mol}, as well as \code{fitted}/predicted values of the rate constant
+#'   and finally, the corresponding residuals.}
 #'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
 #'   however with the resolution of 1024 points) and the corresponding \code{.fitted} \eqn{k}, according to
 #'   Eyring model.}
@@ -152,9 +154,8 @@
 #'   and \eqn{\Delta^{\ddagger} S^o}.}
 #'   \item{converg}{List, containing fitting/optimization characteristics like number of evaluations/iterations
 #'   (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
-#'   and finally, standard deviation of the residuals (or the residual standard error, \code{residual.sd}),
-#'   which is defined as:
-#'   \deqn{\sqrt{(\sum_i (y_i - y_{i,\text{fit/model}})^2)\,/\,(N - k_{\text{pars}} - 1)}}
+#'   and finally, standard deviation of the residuals (\code{residual.sd}), which is defined as:
+#'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
 #'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
 #'   Therefore, the smaller the \code{residual.sd}, the better the Eyring-relation fit.}
 #'   }
@@ -208,7 +209,7 @@
 #'
 #'
 #' @importFrom broom tidy augment
-#' @importFrom ggplot2 geom_ribbon
+#' @importFrom ggplot2 geom_ribbon annotate
 eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
                                  rate.const.unit = "s^{-1}",
@@ -221,6 +222,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## 'Temporary' processing variables
   T_K <- NULL
   DeltaG_active_kJ_per_mol <- NULL
+  fitted <- NULL
+  residuals <- NULL
   #
   ## ======================== TEMPERATURE + CONSTANTS ==========================
   #
@@ -263,7 +266,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## ("theory of absolute reaction rates" :-))
   ## rate.const = ((kappa * k_B * T) / h) * exp((DeltaS / R) - (DeltaH / RT))
   origin.Eyring.formula.HS <-
-    as.formula(
+    stats::as.formula(
       paste0(
         rate.const,
         "~",
@@ -377,7 +380,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                color = "darkcyan",size = 3.2) +
     geom_line(data = new.fit.data,
               aes(x = T_K,
-                  y = .fitted),
+                  y = .data[[".fitted"]]),
               color = "magenta",
               linewidth = 1.1) +
     #{if(interv.cnfd)geom_ribbon(aes(ymin = lwr,ymax = upr),fill = "steelblue2",alpha = 0.2)} +

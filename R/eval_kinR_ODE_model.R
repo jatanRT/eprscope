@@ -113,7 +113,7 @@
 #'   later addition of any other reaction schemes describing the EPR time series experiments
 #'   (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 #'   or \code{(a=1)}) can be varied within the \code{model.react} character string.
-#'   Defined/Allowed values are integers e.g. 1,2,3...etc. The space character within the \code{model.react}
+#'   Defined/Allowed values are integers, e.g. 1,2,3...etc. The space character within the \code{model.react}
 #'   string is not fixed and can be skipped for the sake of simplicity.
 #'   If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 #'   a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
