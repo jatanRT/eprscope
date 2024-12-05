@@ -1,25 +1,124 @@
+# eprscope 0.1.12
+
+## 2024-12-05
+
+### Bug Fixes/Critical Updates
+
+* `README` documentation &rarr; fixed/updated, because it did not contain 
+  the information about the *JDK* installation as well as that about the essential 
+  R packages + couple of learning or tutorial resources and comments were added
+  
+* several fixes and/or updates in documentation (functions + vignettes)  
+
+* the default intensity multiplication coefficient (parameter) boundaries 
+  within the `eval_sim_EPR_isoFit` function are fixed and correctly set up +
+  extended default boundaries for hyperfine coupling constants (*A*) added
+
+* fixed visualization of an EPR spectrum fit within the `eval_sim_EPR_isoFit` +
+  the initial simulation (see updates) also includes a baseline correction 
+  (it should also work for the consecutive `optim.method` (vector))
+
+* increased decimal places of the magnetic flux density (*B*) and intensity
+  by the reading of ASCII files, using the `read_EPR_Specs` and related functions
+  
+* fixed issue with the `origin` argument definition (regarding the spectrometer 
+  software labels/names) in reading functions
+
+* initial `qvar`s for the `"(a=1)A + (r=1)R --> [k1] B"` model reaction 
+  (see also updates) are now correctly set up
+
+* the minimum sum of residual squares (RSS) value argument was renamed 
+  (`min.LSQ.sum` &rarr; `min.rss`) and unified in all relevant 
+  fitting functions
+  
+* tube diameter within the `quantify_EPR_Abs` is now correctly defined  
+
+* fixed issue with the integral scale within the `eval_integ_EPR_Spec`
+
+### Updates
+
+* code in several functions &rarr; cleaned up in order to be more readable,
+  this also includes renaming of several arguments in those functions +
+  `messages` and `stop`s added on couple of places, within the code,
+  for the sake of interactivity/awareness of operations
+  
+* reorganization of files and folders related to vignettes
+
+* code for the integration of EPR spectra (see the `eval_integ_EPR_Spec` function) 
+  was simplified and supplemented with the option to integrate spectra having
+  the [B] = T units, this also applies to the `quantify_EPR_Sim_series` function 
+  
+* the initial simulated EPR spectrum was added to output graphics 
+  of the `eval_sim_EPR_isoFit` value/list (for the case of `check.fit.plot = TRUE`) 
+  in order to compare it with the final/best fit as well as 
+  with the experimental EPR spectrum   
+
+* number of letters in kinetic reaction schemes were decreased 
+  in order to be more readable + the last scheme (see also bug fixes above)
+  as well as the time duration and resolution were simplified in order 
+  to better work with the numeric ODE integration (by the `deSolve::ode` function)
+
+* option to select a method for the numeric ODE integration 
+  (argument `solve.ode.method`) was added to both key functions analyzing 
+  the radical kinetics
+  
+* added option to select a specific implementation of the `pswarm` ("particle swarm") 
+  optimization algorithm/method, within the `optim_for_EPR_fitness` &rarr; either
+  `“SPSO2007”` (for small particle spaces and swarm sizes) or `“SPSO2011”` 
+  (for larger ones) can be set up + internal function updated (not provided 
+  as a user option), the number of "informants" (related to particles) 
+  was slightly increased by the corresponding exponent, *k = 6* 
+  (see also documentation for the `pso::psoptim`)
+  
+* value/output list of the `eval_sim_EPR_isoFit` was extended to exclusively 
+  include vector of the optimized parameters (together with the `min.rss`)
+  and data frame of the best EPR simulation fit in order to be ready for the new
+  fitting function (currently under development)
+  
+* simple residual analysis (plots) added to the `eval_kinR_EPR_modelFit` 
+  output/value list, including the Q-Q ("quantile-quantile") plot 
+  (to check weather residuals are normally distributed) 
+  as well as the Residual plot (residuals *vs* predicted/fitted `qvarR`s,
+  e.g. concentration) in order to check the kinetic model fit
+  and precision of the optimized kinetic parameters
+
+### New Functions/Files/Vignettes
+
+* `create_qmdReport_proj` &rarr; create file-folder structure 
+  of an EPR project to create a reproducible Quarto report (please, 
+  also refer to the https://quarto.org/ website)
+
+* peak picking in EPR/ENDOR spectrum: `eval_peakPick_Spec`, 
+  with the selection of positive or negative intensity peaks for both derivative 
+  as well as integrated forms of an EPR/ENDOR spectrum
+  
+* evaluate activation parameters of an elementary radical reaction,
+  obtained by the "Eyring fit" of the experimental *k vs T* dependence,
+  based on the essential transition state theory (TST) &rarr;
+  `eval_kinR_Eyring_GHS`
+
 # eprscope 0.1.11 (1st public release)
 
 ## 2024-08-29
 
 ### Bug Fixes/Critical Updates
 
-* reading of the spectral time series within the `readEPR_Exp_Specs`
+* fixed reading of spectral time series within the `readEPR_Exp_Specs`
   function
 
 * reading parameter strings from 'parameter' files within the `readEPR_param_slct`
-  function
+  function fixed
 
 * the *g*-value scale on *x*-axis within the plotting functions is now properly
   displayed
   
 * if the related `time(series)` unit is converted in relevant data frames, 
   the corresponding column is renamed in order to inherit the new unit 
-  (like `time_s`), accordingly
+  (like `time_s`) accordingly
   
 * now, the elements in `names` argument, within the `readEPR_Exp_Specs_multif`,
-  can also contain characters like `c("a","b","c")`, not just numbers
-  like `c("250","260","270")`
+  can also contain characters like `c("a","b","c")`, not just numbers,
+  e.g. `c("250","260","270")`
   
 * fixed visualization of legend labels within the `plot_EPR_Specs` function 
 
