@@ -206,7 +206,7 @@
 #'         4.8, # G Delta Bpp
 #'         4.8, # L Delta Bpp
 #'         0, # intercept (constant) lin. baseline
-#'         0.016, # Sim. intensity multiply
+#'         0.018, # Sim. intensity multiply
 #'         1e-6, # slope lin. baseline
 #'         49), # A in MHz
 #'     check.fit.plot = FALSE
@@ -245,9 +245,9 @@
 #'     optim.method = "pswarm",
 #'     nuclear.system.noA = list("14N",1),
 #'     baseline.correct = "constant",
-#'     optim.params.init = c(2.006,4.8,4.8,0,1.1e-2,49),
-#'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,9e-3,45),
-#'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
+#'     optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49),
+#'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,1.1e-2,45),
+#'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.7e-2,53),
 #'     check.fit.plot = TRUE
 #'   )
 #' ## OUTPUTS:
@@ -882,89 +882,45 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     }
     #
   }
-  # =================== THE BEST PARAMS. VECTOR ====================
+  # =================== THE BEST PARAMS. VECTOR INTO FUNCTION ====================
+  # ======================= GENERATE SIMULATION BEST FIT =========================
   #
-  ## The best system is the last one from the `best.fit.params` =>
-  ## therefore it correspond to `best.fit.params[[length(optim.method)]]`
-  ## to simulate and display the spectrum
+  last.method <- length(optim.method)
   #
-  ## "best" (i.e. including best As) nuclear system
-  if (is.null(nuclear.system.noA)){
-    nucs.system.best <- NULL
-  } else{
-    A.best <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
-                     best.fit.params[[length(optim.method)]][8:(7+length(nuclear.system.noA))],
-                     best.fit.params[[length(optim.method)]][7:(6+length(nuclear.system.noA))],
-                     best.fit.params[[length(optim.method)]][6:(5+length(nuclear.system.noA))]
-                     )
-    A.best <- round(A.best,digits = 3)
-    nucs.system.best <- c()
-    for (j in seq(nuclear.system.noA)) {
-      nucs.system.best[[j]] <- c(nuclear.system.noA[[j]],A.best[j])
-      nucs.system.best[[j]] <- as.list(nucs.system.best[[j]])
-    }
-  }
-  #
-  ## Conditions for linewidths obtained from `best.fit.params`
-  #
-  ## ============ FUNCTION TO SIMULATE SPECTRA WITH THE FINAL (BEST FIT) PARAMS ============
-  #
-  sim_epr_iso_df_final <- function(GL.linewidth){
+  ## based on last algorithm generate simulated intensity column
+  ## (corresponding to `best.fit.params`) in the original
+  ## `data.spectr.expr` data frame
+  if (optim.method[last.method] == "levenmarq" ||
+      optim.method[last.method] == "pswarm"){
     #
-    ## `GL.linewidth` is list
-    sim.df <-
-      eval_sim_EPR_iso(g.iso = best.fit.params[[length(optim.method)]][1],
-                       B.unit = B.unit,
-                       instrum.params = instrum.params,
-                       natur.abund = TRUE,
-                       nuclear.system = nucs.system.best,
-                       lineSpecs.form = lineSpecs.form,
-                       lineGL.DeltaB = GL.linewidth,
-                       lineG.content = lineG.content,
-                       Intensity.sim = Intensity.sim)$df
-
-  }
-  #
-  if (best.fit.params[[length(optim.method)]][2] == 0){
-    ## best simulated spectrum data frame
-    best.fit.df <-
-      sim_epr_iso_df_final(
-        GL.linewidth = list(NULL,
-                            best.fit.params[[length(optim.method)]][3])
-      )
-    #
-  } else if (best.fit.params[[length(optim.method)]][3] == 0){
-    ## best simulated spectrum data frame
-    best.fit.df <-
-      sim_epr_iso_df_final(
-        GL.linewidth = list(best.fit.params[[length(optim.method)]][2],
-                            NULL)
-      )
-    #
-  } else{
-    ## best simulated spectrum data frame
-    best.fit.df <-
-      sim_epr_iso_df_final(
-        GL.linewidth = list(best.fit.params[[length(optim.method)]][2],
-                            best.fit.params[[length(optim.method)]][3])
+    # use function defined at the beginning of the script
+    data.spectr.expr[[Intensity.sim]] <-
+      fit_sim_params_par(
+        data = data.spectr.expr,
+        nucs.system = nuclear.system.noA,
+        Intensity.sim = Intensity.sim,
+        lineG.content = lineG.content,
+        baseline = baseline.correct,
+        B.unit = B.unit,
+        par = best.fit.params[[last.method]]
       )
   }
-  #
-  ## best simulated Intensity and add the `Intensity.sim` to experimental
-  # spectrum data based on the baseline.correct condition
-  ## first of all the intensity part which depends on `baseline.correct`
-  Intens.baseline.switch <-
-    switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
-           ((best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]) +
-              (best.fit.params[[length(optim.method)]][7] * (best.fit.df[[paste0("Bsim_",B.unit)]])^2)),
-           (best.fit.params[[length(optim.method)]][6] * best.fit.df[[paste0("Bsim_",B.unit)]]),
-           0
-    )
-  ## add the overall simulated intensity including baseline
-  data.spectr.expr[[Intensity.sim]] <-
-    best.fit.params[[length(optim.method)]][4] +
-    (best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]) +
-    Intens.baseline.switch
+  if (optim.method[last.method] == "slsqp" || optim.method[last.method] == "neldermead" ||
+      optim.method[last.method] == "crs2lm" || optim.method[last.method] == "sbplx" ||
+      optim.method[last.method] == "cobyla" || optim.method[last.method] == "lbfgs") {
+    #
+    # use function defined at the beginning of the script
+    data.spectr.expr[[Intensity.sim]] <-
+      fit_sim_params_x0(
+        data = data.spectr.expr,
+        nucs.system = nuclear.system.noA,
+        Intensity.sim = Intensity.sim,
+        lineG.content = lineG.content,
+        baseline = baseline.correct,
+        B.unit = B.unit,
+        x0 = best.fit.params[[last.method]]
+      )
+  }
   #
   ## ======================== DATA & PLOTTING =============================
   #
@@ -1002,11 +958,28 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## down below by factor of difference between `max()` and `min()`
     Int.diff <- max(data.sim.expr$Experiment) - min(data.sim.expr$Experiment)
     data.sim.expr.long <- data.sim.expr %>%
+      ## simulation without baseline
+      dplyr::mutate(Simulation_NoBasLin =
+                      switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+                             .data$Simulation -
+                               best.fit.params[[length(optim.method)]][4] -
+                               (best.fit.params[[length(optim.method)]][6] *
+                                  .data[[paste0("B_",B.unit)]]) -
+                               (best.fit.params[[length(optim.method)]][7] *
+                                  .data[[paste0("B_",B.unit)]]^2) -
+                               (1.8 * Int.diff),
+                             .data$Simulation -
+                               best.fit.params[[length(optim.method)]][4] -
+                               (best.fit.params[[length(optim.method)]][6] *
+                                  .data[[paste0("B_",B.unit)]]) -
+                               (1.8 * Int.diff),
+                             .data$Simulation -
+                               best.fit.params[[length(optim.method)]][4] -
+                               (1.8 * Int.diff)
+                             )
+                      ) %>%
       ## offset for clarity
       dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
-      ## simulation without baseline
-      dplyr::mutate(Simulation_NoBasLin = (best.fit.params[[length(optim.method)]][5] *
-                      best.fit.df[[Intensity.sim]]) - (1.9 * Int.diff)) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -1017,8 +990,25 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## to the overall data frame which will be returned
   ## in the case of `check.fit.plot = FALSE`
   data.sim.expr$Residuals <- data.sim.expr.resid$Residuals
-  data.sim.expr$Simulation_NoBasLin <-
-    best.fit.params[[length(optim.method)]][5] * best.fit.df[[Intensity.sim]]
+  data.sim.expr <- data.sim.expr %>%
+    dplyr::mutate(
+      Simulation_NoBasLin =
+        switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
+               .data$Simulation -
+                 best.fit.params[[length(optim.method)]][4] -
+                 (best.fit.params[[length(optim.method)]][6] *
+                    .data[[paste0("B_",B.unit)]]) -
+                 (best.fit.params[[length(optim.method)]][7] *
+                    .data[[paste0("B_",B.unit)]]^2),
+               .data$Simulation -
+                 best.fit.params[[length(optim.method)]][4] -
+                 (best.fit.params[[length(optim.method)]][6] *
+                    .data[[paste0("B_",B.unit)]]),
+               .data$Simulation -
+                 best.fit.params[[length(optim.method)]][4]
+        )
+
+    )
   #
   # ---------------- add initial simulation only if `check.fit.plot = TRUE` ------------------
   #

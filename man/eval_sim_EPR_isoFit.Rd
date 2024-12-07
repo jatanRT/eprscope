@@ -249,7 +249,7 @@ tempo.test.sim.fit.a <-
         4.8, # G Delta Bpp
         4.8, # L Delta Bpp
         0, # intercept (constant) lin. baseline
-        0.016, # Sim. intensity multiply
+        0.018, # Sim. intensity multiply
         1e-6, # slope lin. baseline
         49), # A in MHz
     check.fit.plot = FALSE
@@ -288,9 +288,9 @@ tempo.test.sim.fit.b <-
     optim.method = "pswarm",
     nuclear.system.noA = list("14N",1),
     baseline.correct = "constant",
-    optim.params.init = c(2.006,4.8,4.8,0,1.1e-2,49),
-    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,9e-3,45),
-    optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.5e-2,53),
+    optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49),
+    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,1.1e-2,45),
+    optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.7e-2,53),
     check.fit.plot = TRUE
   )
 ## OUTPUTS:
