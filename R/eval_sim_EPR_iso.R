@@ -616,6 +616,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## iterating through all patterns
       intensity_pattern_N_Nminus <- c()
       #
+      ## with several groups
       if (N_levels >= 2){
         intensity_pattern_N_Nminus[[N_levels-1]] <-
           lapply(1:length(intensity.nuclei.pattern[[N_levels-1]]),
@@ -828,7 +829,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
         dplyr::slice(near_row_for_m_spin_values1)
       #
       ## Spectral line intensity in `B.unit`s depending on natur. abund
-      abund_nuclear1 <- combin.abund.coeff.intens[[1]]
+      abund_nuclear1 <- combin.abund.coeff.intens[[1]] * intensity_pattern_nuclei[[1]]
       ## Simulated Spectra as a variable into nested lists
       Sim_Intensity <- c()
       #
