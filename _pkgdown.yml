@@ -17,6 +17,8 @@ reference:
   contents: has_concept("Evaluations and Quantum Chemistry")
 - title: Evaluations and Quantification
   contents: has_concept("Evaluations and Quantification")
+- title: Shiny Interactive Applications
+  contents: has_concept("Shiny Interactive Applications")
 - title: Simulations and Optimization
   contents: has_concept("Simulations and Optimization")
 - title: Visualizations and Graphics
@@ -24,6 +26,6 @@ reference:
 - title: Non-Categorized
   contents: lacks_concepts(c("Built-In Datasets", "Conversions and Corrections","Data
     Reading","EPR Spectroelectrochemistry","Evaluations","Evaluations and Quantum
-    Chemistry","Evaluations and Quantification","Simulations and Optimization","Visualizations
-    and Graphics"))
+    Chemistry","Evaluations and Quantification","Simulations and Optimization","Shiny
+    Interactive Applications","Visualizations and Graphics"))
 

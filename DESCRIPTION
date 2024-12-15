@@ -73,6 +73,7 @@ Imports:
     pso
 Suggests: 
     DT,
+    shiny,
     grid,
     osfr,
     gsignal,
@@ -89,6 +90,7 @@ Suggests:
     openxlsx,
     webshot2,
     tinytable,
+    shinythemes,
     kableExtra,
     htmlwidgets,
     RColorBrewer,

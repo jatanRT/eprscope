@@ -949,7 +949,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## separate description into several lines
     if (length(char.title) <= 3){
         char.title <- paste(unname(char.title), collapse = ", ")
-        char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
+        char.title.title <- paste("EPR Spectrum Simulation with ",char.title,sep = "\n")
     }
     if (length(char.title) > 3){
       ## first line variable =>
@@ -957,7 +957,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     }
     if (length(char.title) > 3 & length(char.title) <= 6){
       char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = ", ") ## 2nd Line
-      char.title.title <- paste("EPR Spectrum Simulation of ",
+      char.title.title <- paste("EPR Spectrum Simulation with ",
                                 char.title1L,
                                 char.title2L,
                                 sep = "\n")
@@ -968,7 +968,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     }
     if (length(char.title) > 6 & length(char.title) <= 9){
       char.title3L <- paste(unname(char.title[7:length(char.title)]), collapse = ", ") ## 3rd Line
-      char.title.title <- paste("EPR Spectrum Simulation of ",
+      char.title.title <- paste("EPR Spectrum Simulation with ",
                                 char.title1L,
                                 char.title2L,
                                 char.title3L,
@@ -977,7 +977,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     if (length(char.title) > 9 & length(char.title) <= 12){
       char.title3L <- paste(unname(char.title[7:9]), collapse = ", ") ## 3rd Line
       char.title4L <- paste(unname(char.title[10:length(char.title)]), collapse = ", ") ## 4th Line
-      char.title.title <- paste("EPR Spectrum Simulation of ",
+      char.title.title <- paste("EPR Spectrum Simulation with ",
                                 char.title1L,
                                 char.title2L,
                                 char.title3L,
@@ -990,7 +990,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                 sep = "\n")
     }
    } else {
-    char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
+    char.title.title <- paste("EPR Spectrum Simulation with ",char.title,sep = "\n")
   }
   ## caption
   if (is.null(lineGL.DeltaB[[1]])){

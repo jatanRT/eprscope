@@ -40,7 +40,8 @@ Before the installation, please make sure that you have already followed instruc
 # install.packages("tidyverse",dependencies = TRUE)
 # install.packages(
 #   c("DT","vctrs","npreg","patchwork","kableExtra",
-#     "htmlwidgets","webshot2","tinytable","gsignal"),
+#     "htmlwidgets","webshot2","tinytable","gsignal",
+#     "shiny","shinythemes"),
 #   dependencies = TRUE
 # )
 #
@@ -145,6 +146,17 @@ simulation.iso$plot +
   ggplot2::coord_cartesian(xlim = c(3470, 3522))
 
 ```
+
+### Interactive R Shiny Application to Visualize and Simulate CW Isotropic EPR Spectra
+
+```{r shiny-sim-vis,eval=FALSE,echo=TRUE}
+
+# just run the following command in R console
+plot_eval_ExpSim_app()
+
+```
+
+### ![](man/figures/plot_eval_ExpSim_app_view.png)
 
 ### Radical Kinetic Model Fitted onto the Experimental Data
 

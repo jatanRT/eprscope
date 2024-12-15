@@ -215,7 +215,7 @@ Fitting of the simulated spectrum onto the experimental one represents an import
   The \code{lineG.content} corresponding parameter is the only one,
   which needs to be varied "manually". In order to control the optimization/fitting process,
   by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
-  a \href{https://www.rstudio.com/products/shiny/}{Shiny app}
+  a \href{https://shiny.posit.co/}{Shiny app}
   and/or \href{https://gganimate.com/}{{gganimate}} visualization is under development.
 }
 \note{
