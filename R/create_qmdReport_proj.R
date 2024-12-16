@@ -375,8 +375,11 @@ create_qmdReport_proj <- function(title = "Project Report",
                                      "template-ymlRep-proj.yml",
                                      package = "eprscope")
   suppressWarnings({yml.txt <- readLines(path_to_ymlTemplate)})
-  ## replace title:
+  ## replace title + `bib` in `bibliography`:
   yml.txt <- gsub(pattern = "MainTitle",replacement = title,x = yml.txt)
+  yml.txt <- gsub(pattern = "Project_Report.bib",
+                  replacement = paste0(wd.subdir.name,".bib"),
+                  x = yml.txt)
   ## define citation style based on `citation.style`
   if (is.null(citation.style)){
     ## get rid off `csl`
