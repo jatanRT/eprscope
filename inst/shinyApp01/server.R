@@ -310,7 +310,7 @@ server <- function(input, output,session) {
                                   sep = "\n")
       }
     } else {
-      char.title.title <- paste("EPR Spectrum Simulation with ",char.title,sep = "\n")
+      char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
     }
     #
     ## caption

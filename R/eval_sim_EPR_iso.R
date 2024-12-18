@@ -990,7 +990,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                 sep = "\n")
     }
    } else {
-    char.title.title <- paste("EPR Spectrum Simulation with ",char.title,sep = "\n")
+    char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
   }
   ## caption
   if (is.null(lineGL.DeltaB[[1]])){

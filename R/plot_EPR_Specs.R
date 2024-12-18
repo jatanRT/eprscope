@@ -315,13 +315,13 @@ plot_EPR_Specs <- function(data.spectra,
   if (x.unit == "MHz") {
     x.label <- bquote(italic(nu)[RF] ~ "(" ~ .(x.unit) ~ ")")
   }
-  if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x))) {
+  if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x)) & (x.unit == "unitless" || x.unit == "Unitless")) {
     x.label <- bquote(italic(g))
   }
   x.plot.limits <- c(x.start, x.end)
   #
   ## g-factor condition =>
-  g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
+  g.factor.cond <- any(grepl(paste(slct.vec.x.g,collapse = "|"), x))
   #
   if (grepl("deriv|Deriv",lineSpecs.form)) {
     y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
@@ -374,8 +374,7 @@ plot_EPR_Specs <- function(data.spectra,
                   color = line.colors,
                   show.legend = FALSE
         ) +
-        coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
-        {if(g.factor.cond)scale_x_reverse()} +
+        # coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         labs(x = x.label, y = y.label)
     }
   }
@@ -412,9 +411,8 @@ plot_EPR_Specs <- function(data.spectra,
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]],color = ""),
                   linewidth = line.width,
                   linetype = line.type) +
-        coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
+        # coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
         scale_color_manual(values = line.colors) +
-        {if(g.factor.cond)scale_x_reverse()} +
         labs(color = legend.title, x = x.label, y = y.label)
     } else {
       if (is.null(legend.title)){
@@ -442,8 +440,8 @@ plot_EPR_Specs <- function(data.spectra,
                           y = .data[[Intensity]],
                           color = .data[[var2nd.series]]),
                       linewidth = line.width,
-                      linetype = line.type) +
-            coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
+                      linetype = line.type) # +
+            # coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
           #
           ## colors definition for the plot
           if (length(line.colors) > 1){
@@ -451,7 +449,6 @@ plot_EPR_Specs <- function(data.spectra,
               grDevices::colorRampPalette(colors = line.colors)(var2nd.series.len/var2nd.series.slct.by)
             #
             simplePlot <- simplePlot.nocolor +
-              {if(g.factor.cond)scale_x_reverse()} +
               scale_color_manual(values = plot.vector.colors) +
               labs(color = legend.title, x = x.label, y = y.label)
           }
@@ -465,12 +462,11 @@ plot_EPR_Specs <- function(data.spectra,
               line.colors <- "F"
               message(' The argument `line.colors` was automatically set to "F"/"rocket" !\n
                       You may set your custom colors accordingly.\n
-                      Please, consult the `line.colors` argument definition !')
+                      Please, refer to the `line.colors` argument definition !')
             }
             plot.vector.colors <- line.colors
             #
             simplePlot <- simplePlot.nocolor +
-              {if(g.factor.cond)scale_x_reverse()} +
               scale_color_viridis_d(option = plot.vector.colors,
                                     direction = 1) +
               labs(color = legend.title, x = x.label, y = y.label)
@@ -483,8 +479,7 @@ plot_EPR_Specs <- function(data.spectra,
                           color = .data[[var2nd.series]]),
                       linewidth = line.width,
                       linetype = line.type) +
-            coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
-            {if(g.factor.cond)scale_x_reverse()} +
+            # coord_cartesian(xlim = x.plot.limits,ylim = Ilim) +
             scale_color_gradientn(colors = line.colors) +
             labs(color = legend.title, x = x.label, y = y.label)
         }
@@ -637,18 +632,34 @@ plot_EPR_Specs <- function(data.spectra,
   }
   #
   ## conditions for legend
-  ## Legend title and text definition
+  ## Legend title and text definition + g_Value condition
   legend.title.size.def <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
   legend.text.size.def <- legend.text.size %>% `if`(is.null(legend.text.size),11, .)
   if (!is.null(legend.title)){
-    return(
-      p +
-        theme(legend.title = element_text(size = legend.title.size.def),
-              legend.text = element_text(size = legend.text.size.def)
-              )
-    )
+    if (isTRUE(g.factor.cond)) {
+      p.fin <- p +
+        theme(
+          legend.title = element_text(size = legend.title.size.def),
+          legend.text = element_text(size = legend.text.size.def)
+        ) + coord_cartesian(ylim = Ilim) +
+        scale_x_reverse(limits = c(x.end,x.start))
+    } else {
+     p.fin <- p +
+        theme(
+          legend.title = element_text(size = legend.title.size.def),
+          legend.text = element_text(size = legend.text.size.def)
+        ) + coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
+    }
+    #
   } else {
-    return(p)
+    if (isTRUE(g.factor.cond)) {
+      p.fin <- p + coord_cartesian(ylim = Ilim) +
+        scale_x_reverse(limits = c(x.end,x.start))
+    } else {
+      p.fin <- p + coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
+    }
   }
+  #
+  return(p.fin)
   #
 }

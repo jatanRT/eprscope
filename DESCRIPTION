@@ -19,7 +19,7 @@ Description: Processing, analysis and plottting of
              important in spectral (time) series consisting of many 
              EPR spectra like during variable temperature experiments, 
              electrochemical or photochemical radical generation 
-             and/or decay. Package also enables to process 
+             and/or decay. Package also enables processing of 
              data/spectra for the analytical (quantitative) purposes. 
              Namely, how many radicals or paramagnetic centers 
              can be found in the analyte/sample. 
