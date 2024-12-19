@@ -156,7 +156,7 @@ plot_eval_ExpSim_app()
 
 ```
 
-### ![](man/figures/plot_eval_ExpSim_app_view.png)
+### ![](man/figures/plot_eval_ExpSim_app_view_b.png)
 
 ### Radical Kinetic Model Fitted onto the Experimental Data
 

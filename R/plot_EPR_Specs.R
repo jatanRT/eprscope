@@ -506,12 +506,12 @@ plot_EPR_Specs <- function(data.spectra,
         p <- simplePlot +
           theme_gray() +
           theme.Noticks +
-          axis_x_duplicate
+          {if(isFALSE(g.factor.cond))axis_x_duplicate}
       } else {
         p <- simplePlot +
           theme_gray() +
           theme.Noticks +
-          axis_x_duplicate +
+          {if(isFALSE(g.factor.cond))axis_x_duplicate} +
           theme.Nogrid
       }
     }
@@ -533,12 +533,12 @@ plot_EPR_Specs <- function(data.spectra,
         p <- simplePlot +
           theme_bw() +
           theme.Noticks +
-          axis_x_duplicate
+          {if(isFALSE(g.factor.cond))axis_x_duplicate}
       } else {
         p <- simplePlot +
           theme_bw() +
           theme.Noticks +
-          axis_x_duplicate +
+          {if(isFALSE(g.factor.cond))axis_x_duplicate} +
           theme.Nogrid
       }
     }
@@ -562,13 +562,13 @@ plot_EPR_Specs <- function(data.spectra,
         p <- simplePlot +
           theme_light() +
           theme.Noticks +
-          axis_x_duplicate +
+          {if(isFALSE(g.factor.cond))axis_x_duplicate} +
           theme(panel.border = element_blank())
       } else {
         p <- simplePlot +
           theme_light() +
           theme.Noticks +
-          axis_x_duplicate +
+          {if(isFALSE(g.factor.cond))axis_x_duplicate} +
           theme.Nogrid +
           theme(panel.border = element_blank())
       }
@@ -591,12 +591,12 @@ plot_EPR_Specs <- function(data.spectra,
         p <- simplePlot +
           theme_linedraw() +
           theme.Noticks +
-          axis_x_duplicate
+          {if(isFALSE(g.factor.cond))axis_x_duplicate}
       } else {
         p <- simplePlot +
           theme_linedraw() +
           theme.Noticks +
-          axis_x_duplicate +
+          {if(isFALSE(g.factor.cond))axis_x_duplicate} +
           theme.Nogrid
       }
     }
@@ -642,7 +642,11 @@ plot_EPR_Specs <- function(data.spectra,
           legend.title = element_text(size = legend.title.size.def),
           legend.text = element_text(size = legend.text.size.def)
         ) + coord_cartesian(ylim = Ilim) +
-        scale_x_reverse(limits = c(x.end,x.start))
+        scale_x_continuous(
+          transform = "reverse",
+          limits = c(x.end,x.start),
+          sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),ggplot2::waiver())
+        )
     } else {
      p.fin <- p +
         theme(
@@ -654,7 +658,11 @@ plot_EPR_Specs <- function(data.spectra,
   } else {
     if (isTRUE(g.factor.cond)) {
       p.fin <- p + coord_cartesian(ylim = Ilim) +
-        scale_x_reverse(limits = c(x.end,x.start))
+        scale_x_continuous(
+          transform = "reverse",
+          limits = c(x.end,x.start),
+          sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),ggplot2::waiver())
+        )
     } else {
       p.fin <- p + coord_cartesian(xlim = x.plot.limits,ylim = Ilim)
     }
