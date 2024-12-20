@@ -1,0 +1,108 @@
+---
+title: "First Steps"
+output: 
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    self_contained: TRUE
+number_sections: TRUE
+fig_caption: TRUE
+link-citations: TRUE
+bibliography: firstSteps.bib
+csl: iso690-numeric-en.csl
+vignette: >
+  %\VignetteIndexEntry{First Steps}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+pkgdown:
+  as_is: TRUE
+---
+
+```{r knitr-setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  webshot = "webshot",
+  fig.width = 7.2,
+  fig.height = 4.8
+)
+options(
+  rmarkdown.html_vignette.check_title = FALSE
+)
+```
+
+$\require{mhchem}$
+
+```{r setup, include = FALSE}
+library(eprscope)
+library(knitr)
+library(patchwork)
+library(htmlwidgets)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+```
+
+# Installation Details
+
+Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be followed by these steps ➨
+
+1.   Installation of *JDK Development Kit* where the corresponding package, suitable for your operating system, can be downloaded from the [official *Oracle* website](https://www.oracle.com/java/technologies/downloads/?er=221886).
+
+2.  Please, follow the instructions for the [base ![](RcoreLogo.png){width="16" height="12"} installation and setup](https://cran.r-project.org/).
+
+3.  Download and install [*RStudio IDE*](https://posit.co/download/rstudio-desktop/) (Integrated Development Environment).
+
+4.  Download and install the latest release of [*Rtools* (WINDOWS only)](https://cran.r-project.org/bin/windows/Rtools/) or on *macOS/Linux* [follow the instructions to install *CMake*](https://astamm.github.io/nloptr/). Alternatively, on *macOS*, *CMake* can be set up through [Homebrew](https://brew.sh/) repository (see also <https://formulae.brew.sh/formula/cmake#default>). This step is required to use the `{nloptr}` 📦 for the fitting of EPR spectra.
+
+5.  In the ![](RcoreLogo.png){width="16" height="12"} *Console* (lower left panel within the *RStudio IDE*) run the following code in order to install essential ![](RcoreLogo.png){width="16" height="12"} packages for data science with all their dependencies ➨
+
+    ```{r essential-r-packages,eval = FALSE,echo = TRUE}
+
+    install.packages("tidyverse",dependencies = TRUE)
+    #
+    install.packages(
+      c("DT","vctrs","npreg","patchwork","kableExtra",
+        "htmlwidgets","webshot2","tinytable","gsignal",
+        "shiny","shinythemes","nloptr"),
+      dependencies = TRUE
+    )
+
+    ```
+
+There are two options how to install the `{eprscope}` 📦 via the ![](RcoreLogo.png){width="16" height="12"} *Console* ➨
+
+```{r install-eprscope-01-opt,eval = FALSE,echo = TRUE}
+
+## from the GitHub repository:
+if (!require(devtools)) {install.packages("devtools")}
+devtools::install_github("jatanRT/eprscope")
+
+```
+
+or
+
+```{r install-eprscope-02-opt,eval = FALSE,echo = TRUE}
+
+## from the R-Universe (https://r-universe.dev/search)
+## and CRAN (https://cran.r-project.org/) repositories:
+install.packages(
+  "eprscope",
+  repos = c(
+    "https://jatanrt.r-universe.dev",
+    "https://cloud.r-project.org"
+  )
+)
+
+```
+
+If one wants to install the entire 📦 including all the documentation vignettes/articles ➨
+
+```{r install-eprscope-03-opt,eval = FALSE,echo = TRUE}
+
+if (!require(devtools)) {install.packages("devtools")}
+devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
+
+```
+
+# First Steps in ![](RcoreLogo.png){width="28" height="21"} Statistical Language
