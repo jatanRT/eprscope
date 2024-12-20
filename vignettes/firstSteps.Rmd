@@ -74,7 +74,7 @@ There are two options how to install the `{eprscope}` 📦 via the ![](RcoreLogo
 
 ```{r install-eprscope-01-opt,eval = FALSE,echo = TRUE}
 
-## from the GitHub repository:
+# from the GitHub repository:
 if (!require(devtools)) {install.packages("devtools")}
 devtools::install_github("jatanRT/eprscope")
 
@@ -84,8 +84,8 @@ or
 
 ```{r install-eprscope-02-opt,eval = FALSE,echo = TRUE}
 
-## from the R-Universe (https://r-universe.dev/search)
-## and CRAN (https://cran.r-project.org/) repositories:
+# from the R-Universe (https://r-universe.dev/search)
+# and CRAN (https://cran.r-project.org/) repositories:
 install.packages(
   "eprscope",
   repos = c(
@@ -106,3 +106,26 @@ devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 ```
 
 # First Steps in ![](RcoreLogo.png){width="28" height="21"} Statistical Language
+
+In this section, only essential syntax and basic commands to run the `{eprscope}` functions will be described. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html).
+
+## Variable/Function Names and Assignment
+
+Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the example below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the first one is more common. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
+
+```{r names-assignments}
+
+# Q value (EPR sensitivity instrumental factor) assignment
+Q_value <- 3500
+#
+# loading package built-in example file/data => "TMPD_specelchem_accu_b.asc",
+# which corresponds to EPR spectrum of Wuster's blue
+tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+
+```
+
+The `file` within the parentheses represents an **argument of the function** `load_data_example()` , however **its assignment must be solely provided by the `=` operator.** If several arguments are defined, they have to be separated by `,` ("comma").
+
+## Functions and Packages
+
+BlahBlah
