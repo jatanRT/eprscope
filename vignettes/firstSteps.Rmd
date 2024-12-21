@@ -38,8 +38,6 @@ library(eprscope)
 library(knitr)
 library(patchwork)
 library(htmlwidgets)
-library(ggplot2)
-library(dplyr)
 library(plotly)
 ```
 
@@ -47,7 +45,7 @@ library(plotly)
 
 Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be followed by these steps ➨
 
-1.   Installation of *JDK Development Kit* where the corresponding package, suitable for your operating system, can be downloaded from the [official *Oracle* website](https://www.oracle.com/java/technologies/downloads/?er=221886).
+1.  Installation of *JDK Development Kit* where the corresponding package, suitable for your operating system, can be downloaded from the [official *Oracle* website](https://www.oracle.com/java/technologies/downloads/?er=221886).
 
 2.  Please, follow the instructions for the [base ![](RcoreLogo.png){width="16" height="12"} installation and setup](https://cran.r-project.org/).
 
@@ -61,10 +59,11 @@ Prior to own `{eprscope}` 📦 installation a minimal system setup is required a
 
     install.packages("tidyverse",dependencies = TRUE)
     #
+    ## additional packages required by the `{eprscope}`:
     install.packages(
       c("DT","vctrs","npreg","patchwork","kableExtra",
         "htmlwidgets","webshot2","tinytable","gsignal",
-        "shiny","shinythemes","nloptr"),
+        "shiny","shinythemes"),
       dependencies = TRUE
     )
 
@@ -111,7 +110,7 @@ In this section, only essential syntax and basic commands to run the `{eprscope}
 
 ## Variable/Function Names and Assignment
 
-Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the example below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the first one is more common. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
+Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the example below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure asignment operator and it does not neccessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
 
 ```{r names-assignments}
 
@@ -128,4 +127,20 @@ The `file` within the parentheses represents an **argument of the function** `lo
 
 ## Functions and Packages
 
-BlahBlah
+Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` have to be executed. It actually refers to the place (folder) where the 📦 is stored on your computer. e.g. like loading collection of the essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
+
+```{r loading-tidyverse}
+
+library(tidyverse)
+
+```
+
+## Vectors and Data Frames
+
+Blah
+
+## Lists
+
+Blah
+
+# References
