@@ -43,7 +43,7 @@ library(plotly)
 
 # Installation Details
 
-Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be followed by these steps ➨
+Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be followed by these steps:
 
 1.  Installation of *JDK Development Kit* where the corresponding package, suitable for your operating system, can be downloaded from the [official *Oracle* website](https://www.oracle.com/java/technologies/downloads/?er=221886).
 
@@ -59,7 +59,7 @@ Prior to own `{eprscope}` 📦 installation a minimal system setup is required a
 
     install.packages("tidyverse",dependencies = TRUE)
     #
-    ## additional packages required by the `{eprscope}`:
+    # additional packages required by the `{eprscope}`:
     install.packages(
       c("DT","vctrs","npreg","patchwork","kableExtra",
         "htmlwidgets","webshot2","tinytable","gsignal",
@@ -106,11 +106,11 @@ devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 
 # First Steps in ![](RcoreLogo.png){width="28" height="21"} Statistical Language
 
-In this section, only essential syntax and basic commands to run the `{eprscope}` functions will be described. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html).
+In this section, only essential syntax and/or basic commands to run the `{eprscope}` functions will be described. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html).
 
 ## Variable/Function Names and Assignment
 
-Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the example below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure asignment operator and it does not neccessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
+Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the example below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure asignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
 
 ```{r names-assignments}
 
@@ -127,7 +127,7 @@ The `file` within the parentheses represents an **argument of the function** `lo
 
 ## Functions and Packages
 
-Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` have to be executed. It actually refers to the place (folder) where the 📦 is stored on your computer. e.g. like loading collection of the essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
+Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` have to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading collection of the essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
 
 ```{r loading-tidyverse}
 
@@ -135,9 +135,235 @@ library(tidyverse)
 
 ```
 
-## Vectors and Data Frames
+Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` )[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
 
-Blah
+[^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several $\LaTeX$ packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
+
+## Vectors, Matrices and Data Frames
+
+In order to hold multiple data values of the same type (e.g. numeric, character or logical) the ![](RcoreLogo.png){width="16" height="12"} language uses the vector object, which is created by the `c(...)` command/function (the "c" stands for "combine" or "concatenate") like:
+
+```{r creating-vector}
+
+# creating a vector of EPR intensity 
+# normalization constants:
+str.norm <- c("NumberOfScans","Concentration","QValue")
+#
+# ...and their corresponding values:
+value.norm <- c(24,1e-3,3500)
+#
+# preview of both vectors:
+str.norm
+value.norm
+
+```
+
+The combination of different types automatically turns the vector components into character:
+
+```{r creating-vector-combination}
+
+# combination/concatenation of both
+# vectors created above:
+comb.norm <- c(str.norm,value.norm)
+#
+# preview
+comb.norm
+
+```
+
+In order to avoid such behavior one has to define a `list` as shown below. The length of the a vector can be figured out by the `length()` function, counting the number of vector components:
+
+```{r vector-length}
+
+# dermine vector length (`comb.norm`)
+length(comb.norm)
+
+```
+
+Performing operations on individual elements requires indexing (vectors in ![](RcoreLogo.png){width="16" height="12"} are 1 based indexing unlike the normal *C* or *Python*), which is quite simple and demonstrated on the following examples:
+
+```{r vector-element-operations}
+
+# select the third element:
+comb.norm[3]
+#
+# select the last element:
+comb.norm[length(comb.norm)]
+#
+# remove the second and fifth  element:
+comb.norm[-c(2,5)]
+#
+# ...or the same selection 
+# by logical operations
+comb.norm[c(TRUE,FALSE,TRUE,TRUE,FALSE,TRUE)]
+#
+# replace the fourth element:
+comb.norm[4] <- 50 # or "50"
+#
+# the actual `comb.norm` vector
+# (with replacement of the 4th element):
+comb.norm
+
+```
+
+The basic arithmetic operations on vectors are also performed elementwise:
+
+```{r vector-basic-operations}
+
+# create vector of 10 numeric values,
+# repeating `0.1` 10-times:
+vec.01 <- rep(0.1,times = 10)
+#
+# vector of B_{central} (magnetic flux density) 
+# in Gauss to calculate the g_{iso} values:
+B.central.vec <- c(
+  3485.22,3490.47,3491.78,3488.35,3492.55,
+  3489.21,3491.99,3491.47,3492.50,3490.23
+)
+#
+# addition (+ preview):
+add.vec <- vec.01 + B.central.vec
+add.vec
+#
+# multiplication (+ preview, values in mT): 
+multiple.vec <- vec.01 * B.central.vec
+multiple.vec
+#
+# microwave frequency to calculate the g_{iso}
+nu.GHz <- 9.892546
+#
+# operation (calculate g_{iso}) in a loop, iteration
+# through all elements (i) of `B.central.vec`:
+vec.g.iso.a <- sapply(
+  B.central.vec, {function(i) 
+    eval_gFactor(
+      nu.val = nu.GHz,
+      B.val = i,
+      B.unit = "G"
+    )}
+)
+# such operation is an equivalent 
+# (simplification of) to `for` loop:
+vec.g.iso.b <- c()
+for (i in seq(B.central.vec)) {
+  vec.g.iso.b[i] <- eval_gFactor(
+    nu.val = nu.GHz,
+    B.val = B.central.vec[i],
+    B.unit = "G"
+  )
+}
+# preview (comparison):
+vec.g.iso.a
+identical(vec.g.iso.a,vec.g.iso.b) # Are vectors identical ?
+
+```
+
+Previous examples show how the vectors can be created by `loops` , however in to order to calculate the *g*~iso~-values, one can just simply apply the `eval_gFactor()` function on the entire `B.central.vec` like:
+
+```{r simple-g-iso}
+
+vec.g.iso.c <- eval_gFactor(
+  nu.val = nu.GHz,
+  B.val = B.central.vec,
+  B.unit = "G"
+)
+# preview
+vec.g.iso.c
+
+```
+
+Matrices can be created from vectors as demonstrated by the following example:
+
+```{r creation-of-matrices}
+
+# define vector of hypothetical g-values:
+mat.01.vec <- seq(2.001,2.009,length.out = 9)
+#
+# create 3 x 3 matrix with `mat.01.vec` 
+# elements arranged in rows:
+mat.01 <- matrix(mat.01.vec,3,3,byrow = TRUE)
+#
+# preview:
+mat.01
+#
+# 3 x 3 diagonal identity matrix
+mat.02 <- diag(nrow = 3,ncol = 3)
+#
+# preview
+mat.02
+#
+# create matrix from the vectors 
+# bound into columns (see the next operation):
+mat.02.vec <- c(2.0033,2.0034)
+mat.03.vec <- c(2.0035,2.0036)
+#
+# ...and the corresponding matrix:
+mat.03 <- cbind( # "c" for column
+  mat.02.vec,
+  mat.03.vec,
+  deparse.level = 0 # no labels
+)
+# preview
+mat.03
+
+```
+
+Selection of elements is similar to that of vectors with additional second dimension:
+
+```{r selections-in-matrices}
+
+# select element in 2nd row
+# and 3rd column within `mat.01`:
+mat.01[2,3]
+#
+# subset 2 x 2 matrix from
+# the `mat.01`
+mat.01[1:2,1:2]
+
+```
+
+Transpose the `mat.01` matrix:
+
+```{r matrix-transposition}
+
+# `mat.01` transposition
+mat.01.t <- t(mat.01)
+#
+# preview
+mat.01.t
+
+```
+
+Inverse matrix ($A^{-1}$) can be obtained by the `solve()` (`{base}` package) function, where $A^{-1}\,A = A\,A^{-1}\,=\mathrm{1}$ (identity matrix):
+
+```{r inverse-matrix}
+
+# 3 x 3 matrix of magnetic flux density:
+A <- matrix(B.central.vec[1:9],3,3)
+#
+# inverse matrix
+A_1 <- solve(A)
+#
+# preview
+A_1
+#
+# check if A_1 * A = 1,
+# by matrix multiplication (A_1 %*% A):
+identical(
+  diag(nrow = 3,ncol = 3),
+  round(A_1 %*% A,digits = 8)
+) # Are matrices identical ?
+
+```
+
+The inverse matrix calculations requires following condition:
+
+```{r determinant}
+
+# determinat of A matrix must be different from 0:
+identical(det(A),0)
+
+```
 
 ## Lists
 
