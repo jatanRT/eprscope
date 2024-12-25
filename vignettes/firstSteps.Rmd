@@ -114,11 +114,11 @@ Any name, even the complex one (see vide infra), can be applied to assign the va
 
 ```{r names-assignments}
 
-# Q value (EPR sensitivity instrumental factor) assignment
+# Q value (EPR sensitivity instrumental factor) assignment:
 Q_value <- 3500
 #
 # loading package built-in example file/data => "TMPD_specelchem_accu_b.asc",
-# which corresponds to EPR spectrum of Wuster's blue
+# which corresponds to EPR spectrum of Wuster's blue:
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
 ```
@@ -135,11 +135,11 @@ library(tidyverse)
 
 ```
 
-Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` )[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
+Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` , see also massage after `{tidyverse}` loading, above)[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
 
 [^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several $\LaTeX$ packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
 
-## Vectors, Matrices and Data Frames
+## Vectors and Matrices
 
 In order to hold multiple data values of the same type (e.g. numeric, character or logical) the ![](RcoreLogo.png){width="16" height="12"} language uses the vector object, which is created by the `c(...)` command/function (the "c" stands for "combine" or "concatenate") like:
 
@@ -175,7 +175,7 @@ In order to avoid such behavior one has to define a `list` as shown below. The l
 
 ```{r vector-length}
 
-# dermine vector length (`comb.norm`)
+# dermine vector length (`comb.norm`):
 length(comb.norm)
 
 ```
@@ -194,7 +194,7 @@ comb.norm[length(comb.norm)]
 comb.norm[-c(2,5)]
 #
 # ...or the same selection 
-# by logical operations
+# by logical operations:
 comb.norm[c(TRUE,FALSE,TRUE,TRUE,FALSE,TRUE)]
 #
 # replace the fourth element:
@@ -229,7 +229,7 @@ add.vec
 multiple.vec <- vec.01 * B.central.vec
 multiple.vec
 #
-# microwave frequency to calculate the g_{iso}
+# microwave frequency to calculate the g_{iso}:
 nu.GHz <- 9.892546
 #
 # operation (calculate g_{iso}) in a loop, iteration
@@ -267,7 +267,7 @@ vec.g.iso.c <- eval_gFactor(
   B.val = B.central.vec,
   B.unit = "G"
 )
-# preview
+# preview:
 vec.g.iso.c
 
 ```
@@ -286,10 +286,10 @@ mat.01 <- matrix(mat.01.vec,3,3,byrow = TRUE)
 # preview:
 mat.01
 #
-# 3 x 3 diagonal identity matrix
+# 3 x 3 diagonal identity matrix:
 mat.02 <- diag(nrow = 3,ncol = 3)
 #
-# preview
+# preview:
 mat.02
 #
 # create matrix from the vectors 
@@ -303,7 +303,11 @@ mat.03 <- cbind( # "c" for column
   mat.03.vec,
   deparse.level = 0 # no labels
 )
-# preview
+# similarly, the matrix can be also created,
+# from vectors bound into rows,
+# by the `rbind()` function
+#
+# preview of `mat.03`:
 mat.03
 
 ```
@@ -317,7 +321,7 @@ Selection of elements is similar to that of vectors with additional second dimen
 mat.01[2,3]
 #
 # subset 2 x 2 matrix from
-# the `mat.01`
+# the `mat.01`:
 mat.01[1:2,1:2]
 
 ```
@@ -326,10 +330,10 @@ Transpose the `mat.01` matrix:
 
 ```{r matrix-transposition}
 
-# `mat.01` transposition
+# `mat.01` transposition:
 mat.01.t <- t(mat.01)
 #
-# preview
+# preview:
 mat.01.t
 
 ```
@@ -341,17 +345,17 @@ Inverse matrix ($A^{-1}$) can be obtained by the `solve()` (`{base}` package) fu
 # 3 x 3 matrix of magnetic flux density:
 A <- matrix(B.central.vec[1:9],3,3)
 #
-# inverse matrix
+# inverse matrix:
 A_1 <- solve(A)
 #
-# preview
+# preview:
 A_1
 #
 # check if A_1 * A = 1,
 # by matrix multiplication (A_1 %*% A):
 identical(
   diag(nrow = 3,ncol = 3),
-  round(A_1 %*% A,digits = 8)
+  round(A_1 %*% A,digits = 8) # rounding on 8 decim. places
 ) # Are matrices identical ?
 
 ```
@@ -361,9 +365,13 @@ The inverse matrix calculations requires following condition:
 ```{r determinant}
 
 # determinat of A matrix must be different from 0:
-identical(det(A),0)
+isFALSE(det(A) == 0)
 
 ```
+
+## Data Frames and the Pipe Operator
+
+Blah
 
 ## Lists
 
