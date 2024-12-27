@@ -371,7 +371,7 @@ isFALSE(det(A) == 0)
 
 ## Data Frames and the Pipe Operator
 
-Blah
+Data frame is one of most important structure/object in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/datasets. It is similar to matrix (because it is represented by the 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements (with equal indices).
 
 ## Lists
 
