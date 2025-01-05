@@ -51,7 +51,7 @@ Prior to own `{eprscope}` 📦 installation a minimal system setup is required a
 
 3.  Download and install [*RStudio IDE*](https://posit.co/download/rstudio-desktop/) (Integrated Development Environment).
 
-4.  Download and install the latest release of [*Rtools* (WINDOWS only)](https://cran.r-project.org/bin/windows/Rtools/) or on *macOS/Linux* [follow the instructions to install *CMake*](https://astamm.github.io/nloptr/). Alternatively, on *macOS*, *CMake* can be set up through [Homebrew](https://brew.sh/) repository (see also <https://formulae.brew.sh/formula/cmake#default>). This step is required to use the `{nloptr}` 📦 for the fitting of EPR spectra.
+4.  Download and install the latest release of [*Rtools* (WINDOWS only)](https://cran.r-project.org/bin/windows/Rtools/) or on *macOS/Linux* [follow the instructions to install *CMake*](https://astamm.github.io/nloptr/). Alternatively, on *macOS*, *CMake* can be set up through the [Homebrew](https://brew.sh/) repository (see also <https://formulae.brew.sh/formula/cmake#default>). This step is required to use the `{nloptr}` 📦 for the fitting of EPR spectra.
 
 5.  In the ![](RcoreLogo.png){width="16" height="12"} *Console* (lower left panel within the *RStudio IDE*) run the following code in order to install essential ![](RcoreLogo.png){width="16" height="12"} packages for data science with all their dependencies ➨
 
@@ -135,7 +135,7 @@ library(tidyverse)
 
 ```
 
-Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` , see also massage after `{tidyverse}` loading, above)[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
+Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` , see also the massage after `{tidyverse}` loading, above)[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
 
 [^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several $\LaTeX$ packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
 
@@ -355,12 +355,12 @@ A_1
 # by matrix multiplication (A_1 %*% A):
 identical(
   diag(nrow = 3,ncol = 3),
-  round(A_1 %*% A,digits = 8) # rounding on 8 decim. places
+  round(A_1 %*% A,digits = 8) # rounding to 8 decim. places
 ) # Are matrices identical ?
 
 ```
 
-The inverse matrix calculations requires following condition:
+The inverse matrix calculation requires following condition:
 
 ```{r determinant}
 
@@ -371,7 +371,7 @@ isFALSE(det(A) == 0)
 
 ## Data Frames and the Pipe Operator
 
-Data frame is one of most important structure/object in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/datasets. It is similar to matrix (because it is represented by the 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements (with equal indices).
+Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is represented by the 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example ...
 
 ## Lists
 
