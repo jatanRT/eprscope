@@ -17,7 +17,11 @@ ui <- fluidPage(
             border-radius: 6px;
             padding: 6px;"
   ),
-  shiny::tags$h4("Data"),
+  shiny::tags$div(
+    shiny::icon("computer"),
+    "Data",
+    style = "color: #346DB6;font-size = 16pt"
+  ),
   fluidRow(
     column(width = 4,
            selectInput(
@@ -31,8 +35,8 @@ ui <- fluidPage(
              inputId = "ASCIIfile",
              NULL,
              buttonLabel = shiny::div(
-               "Upload spectrum data",
-               shiny::icon("file-waveform")
+               shiny::icon("file-waveform"),
+               "Upload spectrum data"
              ),
              accept = c(".asc",".txt",".csv")
            )),
@@ -41,10 +45,10 @@ ui <- fluidPage(
              inputId = "ParamsFile",
              NULL,
              buttonLabel = shiny::div(
-               "Upload params. file",
-               shiny::icon("file-invoice")
+               shiny::icon("file-invoice"),
+               "Upload params. file"
              ),
-             accept = c(".dsc",".DSC",".par")
+             accept = c(".dsc",".par")
            ))),
   tabsetPanel(
     tabPanel(
@@ -132,8 +136,8 @@ ui <- fluidPage(
       mainPanel(
         # plot
         shiny::tags$h3(
-          "Spectrum",
           shiny::icon("chart-line"),
+          "Spectrum",
           style = h3.style.string
         ),
         plotly::plotlyOutput("plot"),
@@ -141,14 +145,14 @@ ui <- fluidPage(
         conditionalPanel(
           condition = "input.instPars == true",
           shiny::tags$h3(
-            "Info",
             shiny::icon("circle-info"),
+            "Info",
             style = h3.style.string
           ),
           DT::DTOutput("tab2"),
           shiny::tags$h3(
-            "Parameters",
             shiny::icon("table"),
+            "Parameters",
             style = h3.style.string
           ),
           DT::DTOutput("tab1")
@@ -178,17 +182,25 @@ ui <- fluidPage(
           label = "Show interactive table (data frame)",
           FALSE
         ),
-        selectInput(
-          inputId = "exprColor",
-          label = "Experimental spectrum color",
-          choices = color.select,
-          selected = "red"
-        ),
-        selectInput(
-          inputId = "simColor",
-          label = "Simulated spectrum color",
-          choices = color.select,
-          selected = "blue"
+        fluidRow(
+          column(
+            width = 6,
+            selectInput(
+              inputId = "exprColor",
+              label = "Expr. spectrum color",
+              choices = color.select,
+              selected = "red"
+            )
+          ),
+          column(
+            width = 6,
+            selectInput(
+              inputId = "simColor",
+              label = "Sim. spectrum color",
+              choices = color.select,
+              selected = "blue"
+            )
+          )
         ),
         shiny::tags$h4("Parameter Estimation"),
         numericInput(
@@ -260,8 +272,8 @@ ui <- fluidPage(
       mainPanel(
         # plot
         shiny::tags$h3(
-          "Experimental (Expr.) & Simulated (Sim.) Spectrum",
           shiny::icon("chart-line"),
+          "Experimental (Expr.) & Simulated (Sim.) Spectrum",
           style = h3.style.string
         ),
         plotOutput("simPlot"),
@@ -290,8 +302,8 @@ ui <- fluidPage(
         conditionalPanel(
           condition = "input.exprSimTable == true",
           shiny::tags$h3(
-            "Table (Data Frame) of Expr. & Sim. Spectrum",
             shiny::icon("table"),
+            "Table (Data Frame) of Expr. & Sim. Spectrum",
             style = h3.style.string
           ),
           DT::DTOutput("simTab")

@@ -155,7 +155,8 @@ server <- function(input, output,session) {
   # ------------------ SIMULATION ------------------------
   #
   #
-  ## updating DeltaBpp based on Gaussian (Gau) content:
+  ## updating DeltaBpp and content based on Gaussian (Gau) content:
+  ## Linewidth
   observeEvent(req(input$Gcontent == 0),{
     updateNumericInput(
       session,
@@ -169,6 +170,23 @@ server <- function(input, output,session) {
       session,
       "DeltaBppL",
       value = 0
+    )
+  })
+  #
+  ## Gaussian Content
+  observeEvent(req(input$DeltaBppG == 0),{
+    updateNumericInput(
+      session,
+      "Gcontent",
+      value = 0
+    )
+  })
+  #
+  observeEvent(req(input$DeltaBppL == 0),{
+    updateNumericInput(
+      session,
+      "Gcontent",
+      value = 1
     )
   })
   #
@@ -220,8 +238,14 @@ server <- function(input, output,session) {
     sim.spec.df <-
       eval_sim_EPR_iso(
         g.iso = input$giso,
-        instrum.params = NULL,
-        path_to_dsc_par = input$ParamsFile$datapath,
+        instrum.params = c(
+          Bcf = stats::median(expr_data()[[paste0("B_",input$Bunit)]]),
+          Bsw = max(expr_data()[[paste0("B_",input$Bunit)]]) -
+            min(expr_data()[[paste0("B_",input$Bunit)]]),
+          Npoints = nrow(expr_data()),
+          mwGHz = input$MWnuGHz
+        ),
+        path_to_dsc_par = NULL,
         origin = input$origin,
         B.unit = input$Bunit,
         nuclear.system = nucs_list(),
