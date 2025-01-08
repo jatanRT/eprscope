@@ -110,7 +110,7 @@ In this section, only essential syntax and/or basic commands to run the `{eprsco
 
 ## Variable/Function Names and Assignment
 
-Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the example below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure asignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
+Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
 
 ```{r names-assignments}
 
@@ -190,7 +190,7 @@ comb.norm[3]
 # select the last element:
 comb.norm[length(comb.norm)]
 #
-# remove the second and fifth  element:
+# remove the second and the fifth  element:
 comb.norm[-c(2,5)]
 #
 # ...or the same selection 
@@ -233,7 +233,7 @@ multiple.vec
 nu.GHz <- 9.892546
 #
 # operation (calculate g_{iso}) in a loop, iteration
-# through all elements (i) of `B.central.vec`:
+# through all elements (i) of the `B.central.vec`:
 vec.g.iso.a <- sapply(
   B.central.vec, {function(i) 
     eval_gFactor(
@@ -371,7 +371,51 @@ isFALSE(det(A) == 0)
 
 ## Data Frames and the Pipe Operator
 
-Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is represented by the 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example ...
+Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is an 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
+
+```{r create-df-example-01}
+
+# read the EPR spectrum from the already 
+# defined path `tmpd.data.file`:
+df.example.01 <- readEPR_Exp_Specs(
+  tmpd.data.file,
+  col.names = c("B_G","dIepr_over_dB"),
+  qValue = Q_value, # defined above
+  origin = "winepr"
+)
+#
+# preview (first 6 rows)
+head(df.example.01)
+
+```
+
+The previous data frame consists of the following columns/variables represented by their headers:
+
+```{r df-example-01-headers}
+
+# headers for 2D schemes like matrices or data frames:
+colnames(df.example.01)
+#
+# ...or in general:
+names(df.example.01)
+
+```
+
+These column names are reffered to the following vectors:
+
+1.  Magnetic flux density $B$ in Gauss (`B_G`)
+
+2.  Derivative EPR intensity (`dIepr_over_dB`) in p.d.u. (processing defined units [@HansIUPAC2019])
+
+3.  Magnetic flux density $B$ in millitesla (`B_mT`)
+
+One can preview the structure of data frame by the `str()` function from the `{utils}` 📦:
+
+```{r df-example-01-structure}
+
+str(df.example.01)
+
+```
 
 ## Lists
 
