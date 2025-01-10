@@ -401,13 +401,13 @@ names(df.example.01)
 
 ```
 
-These column names are reffered to the following vectors:
+These column names are referred to the following vectors:
 
-1.  Magnetic flux density $B$ in Gauss (`B_G`)
+1.  Magnetic flux density $\small B$ in Gauss (`B_G`)
 
 2.  Derivative EPR intensity (`dIepr_over_dB`) in p.d.u. (processing defined units [@HansIUPAC2019])
 
-3.  Magnetic flux density $B$ in millitesla (`B_mT`)
+3.  Magnetic flux density $\small B$ in millitesla (`B_mT`)
 
 One can preview the structure of data frame by the `str()` function from the `{utils}` 📦:
 
@@ -417,7 +417,43 @@ str(df.example.01)
 
 ```
 
+We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represent an operator to select the entire data frame column (variable), namely:
+
+```{r df-example-01-select-col-a}
+
+# vector of magnetic flux density in G:
+vec.B.G.a <- df.example.01$B_G
+#
+# preview of the first 12 values:
+vec.B.G.a[1:12]
+
+```
+
+Similarly, the same vector/column can be also selected by double square brackets `[[]]` , like:
+
+```{r example-01-select-col-b}
+
+vec.B.G.b <- df.example.01[[1]]
+# or
+vec.B.G.c <- df.example.01[["B_G"]]
+#
+# preview of the first 12 values:
+vec.B.G.b[1:12]
+vec.B.G.c[1:12]
+
+```
+
+Selection/Subset by single square brackets results ...
+
 ## Lists
+
+Blah
+
+## Plots
+
+Blah
+
+## Basic String Operations
 
 Blah
 
