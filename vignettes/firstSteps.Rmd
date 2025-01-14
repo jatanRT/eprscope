@@ -417,7 +417,7 @@ str(df.example.01)
 
 ```
 
-We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represent an operator to select the entire data frame column (variable), namely:
+We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represent an operator to select the column (variable) of a data frame, namely:
 
 ```{r df-example-01-select-col-a}
 
@@ -443,7 +443,51 @@ vec.B.G.c[1:12]
 
 ```
 
-Selection/Subset by single square brackets results ...
+Selection/Subset by single square brackets results in data frame structure, even with one row or column/variable, which is kind of similar to matrices, as already depicted above. An alternative way would be the usage of `subset()` function from the `{base}` 📦. Both ways are documented by the following code:
+
+```{r example-01-select-fiter-df}
+
+# select the first column,
+# resulting in data frame:
+head(df.example.01[ ,1])
+#
+# select the 4th row of the original
+# data frame and extract the `B_mT` value:
+df.example.01[4, ][["B_mT"]]
+#
+# select and/or subset data frame
+# with magnetic flux density `B_G` <= `Bcf`,
+# which is the central field (or `median(B_G)`):
+head(df.example.01[df.example.01$B_G <= median(df.example.01$B_G), ])
+#
+# the same with `subset()`:
+head(subset(df.example.01,B_G <= median(B_G)))
+
+```
+
+To create or delete a column/variable one may use:
+
+```{r example-01-creat-del-col}
+
+# create g-value column (`g_Val`):
+df.example.01$g_Val <- # or `df.example.01[["g_Val"]] <-`
+  eval_gFactor(
+    nu.val = nu.GHz,
+    B.val = df.example.01$B_mT
+  )
+#
+# ...right after that delete
+# the `B_mT` column/variable:
+df.example.01$B_mT <- NULL
+#
+# ...the same operation can be done
+# by: `df.example.01[,-3]` or 
+# `subset(df.example.01,select = -B_mT)`
+#
+# data frame preview
+head(df.example.01)
+
+```
 
 ## Lists
 
