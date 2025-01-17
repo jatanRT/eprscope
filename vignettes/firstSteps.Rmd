@@ -409,7 +409,7 @@ These column names are referred to the following vectors:
 
 3.  Magnetic flux density $\small B$ in millitesla (`B_mT`)
 
-One can preview the structure of data frame by the `str()` function from the `{utils}` 📦:
+One can preview the **str**ucture of data frame by the `str()` function from the `{utils}` 📦:
 
 ```{r df-example-01-structure}
 
@@ -440,6 +440,19 @@ vec.B.G.c <- df.example.01[["B_G"]]
 # preview of the first 12 values:
 vec.B.G.b[1:12]
 vec.B.G.c[1:12]
+
+```
+
+In order to select/convert a data frame row into vector one has to, first of all, `unlist()` the row (because it possesses the form of data frame) and finally remove the names:
+
+```{r exxample-01-df-row-vector}
+
+# first row of data data frame:
+df.example.01[1, ]
+#
+# convert the row data frame 
+# into the vector:
+unname(unlist(df.example.01[1, ]))
 
 ```
 
@@ -488,6 +501,8 @@ df.example.01$B_mT <- NULL
 head(df.example.01)
 
 ```
+
+A data frame can be created by definition (see above)
 
 ## Lists
 
