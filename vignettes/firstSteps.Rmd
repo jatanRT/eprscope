@@ -110,7 +110,7 @@ In this section, only essential syntax and/or basic commands to run the `{eprsco
 
 ## Variable/Function Names and Assignment
 
-Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting with the "hashtag" `#` like already shown in the installation code above.
+Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting the line with the hash symbol `#` like already shown in the installation code above.
 
 ```{r names-assignments}
 
@@ -123,7 +123,7 @@ tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
 ```
 
-The `file` within the parentheses represents an **argument of the function** `load_data_example()` , however **its assignment must be solely provided by the `=` operator.** If several arguments are defined, they have to be separated by `,` ("comma").
+The `file` within the parentheses represents an **argument of the function** `load_data_example()` and **its assignment must be solely provided by the `=` operator.** If several arguments are defined, they have to be separated by `,` ("comma").
 
 ## Functions and Packages
 
@@ -146,7 +146,7 @@ In order to hold multiple data values of the same type (e.g. numeric, character 
 ```{r creating-vector}
 
 # creating a vector of EPR intensity 
-# normalization constants:
+# normalization constant names:
 str.norm <- c("NumberOfScans","Concentration","QValue")
 #
 # ...and their corresponding values:
@@ -171,11 +171,11 @@ comb.norm
 
 ```
 
-In order to avoid such behavior one has to define a `list` as shown below. The length of the a vector can be figured out by the `length()` function, counting the number of vector components:
+In order to avoid such behavior one has to define a `list` as shown below. The length of a vector can be figured out by the `length()` function, counting the number of vector components:
 
 ```{r vector-length}
 
-# dermine vector length (`comb.norm`):
+# dermine the vector length (`comb.norm`):
 length(comb.norm)
 
 ```
@@ -206,7 +206,7 @@ comb.norm
 
 ```
 
-The basic arithmetic operations on vectors are also performed elementwise:
+The basic arithmetic operations on vectors are also performed element-wise:
 
 ```{r vector-basic-operations}
 
@@ -276,7 +276,7 @@ Matrices can be created from vectors as demonstrated by the following example:
 
 ```{r creation-of-matrices}
 
-# define vector of hypothetical g-values:
+# define vector (sequence) of hypothetical g-values:
 mat.01.vec <- seq(2.001,2.009,length.out = 9)
 #
 # create 3 x 3 matrix with `mat.01.vec` 
@@ -316,8 +316,8 @@ Selection of elements is similar to that of vectors with additional second dimen
 
 ```{r selections-in-matrices}
 
-# select element in 2nd row
-# and 3rd column within `mat.01`:
+# select element in the 2nd row
+# and the 3rd column within `mat.01`:
 mat.01[2,3]
 #
 # subset 2 x 2 matrix from
@@ -417,7 +417,7 @@ str(df.example.01)
 
 ```
 
-We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represent an operator to select the column (variable) of a data frame, namely:
+We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows/observations) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represent an operator to select the column (variable) of a data frame, namely:
 
 ```{r df-example-01-select-col-a}
 
@@ -447,7 +447,7 @@ In order to select/convert a data frame row into vector one has to, first of all
 
 ```{r exxample-01-df-row-vector}
 
-# first row of data data frame:
+# first row of data frame:
 df.example.01[1, ]
 #
 # convert the row data frame 
@@ -502,7 +502,23 @@ head(df.example.01)
 
 ```
 
-A data frame can be created by definition (see above)
+A data frame can be also created, by definition (see above), using equally long vectors (refer to the vector definition at the beginning of this vignette), like:
+
+```{r create-df-from-vectors}
+
+# create a data frame by the `data.frame()` base 
+# function using the vectors already defined above:
+normalization.df <- data.frame(
+  norm_names = str.norm,
+  norm_values = value.norm
+)
+#
+# preview:
+normalization.df
+
+```
+
+...dplyr + pipe operator
 
 ## Lists
 
