@@ -518,7 +518,9 @@ normalization.df
 
 ```
 
-...dplyr + pipe operator
+**Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png){width="16" height="12"} **Programming Language**
+
+In order understand where does these operators come from we may start with a brief historical background [@dataCamp2022pipe]. The basic principle actually comes from mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as an input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, ...
 
 ## Lists
 
