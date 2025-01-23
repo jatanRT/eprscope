@@ -171,7 +171,7 @@ comb.norm
 
 ```
 
-In order to avoid such behavior one has to define a `list` as shown below. The length of a vector can be figured out by the `length()` function, counting the number of vector components:
+To avoid such behavior one has to define a `list` as shown below. The length of a vector can be figured out by the `length()` function, counting the number of vector components:
 
 ```{r vector-length}
 
@@ -254,7 +254,7 @@ for (i in seq(B.central.vec)) {
 }
 # preview (comparison):
 vec.g.iso.a
-identical(vec.g.iso.a,vec.g.iso.b) # Are vectors identical ?
+identical(vec.g.iso.a,vec.g.iso.b) # Are these vectors identical ?
 
 ```
 
@@ -520,7 +520,9 @@ normalization.df
 
 **Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png){width="16" height="12"} **Programming Language**
 
-In order understand where does these operators come from we may start with a brief historical background [@dataCamp2022pipe]. The basic principle actually comes from mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as an input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, ...
+In order understand where does these operators come from we may start with a brief historical background [@dataCamp2022pipe]. The basic principle actually comes from mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as an input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, $\small g(x)\equiv B$ and $\small f(g(x))\equiv C$. The pipe operator is also well known in other programming languages (e.g. in *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may possess a different syntax in comparison to ![](RcoreLogo.png){width="16" height="12"} [^2]. Its broad range of applications actually started in 2013-2014 by the development of [{magrittr}](https://magrittr.tidyverse.org/) and [{dplyr}](https://dplyr.tidyverse.org/) packages in order to express sequences of operations in a readable and concise way.
+
+[^2]: One may come across symbols like `.` , `>>` , `|>` or `|`
 
 ## Lists
 
