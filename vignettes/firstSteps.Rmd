@@ -520,11 +520,23 @@ normalization.df
 
 **Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png){width="16" height="12"} **Programming Language**
 
-In order understand where does these operators come from we may start with a brief historical background [@dataCamp2022pipe]. The basic principle actually comes from mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as an input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, $\small g(x)\equiv B$ and $\small f(g(x))\equiv C$. The pipe operator is also well known in other programming languages (e.g. in *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may possess a different syntax in comparison to ![](RcoreLogo.png){width="16" height="12"} [^2]. Its broad range of applications actually started in 2013-2014 by development of [{magrittr}](https://magrittr.tidyverse.org/) and [{dplyr}](https://dplyr.tidyverse.org/) packages in order to express sequences of operations in a readable and concise way. **For beginners in programming, one might imagine the "pipe" as a command (or narrator), saying: "...and then..." where in the background it takes the result on its left side and passes it as a first argument to the function on its right-hand side** (see examples below)**. This allows users to avoid creation of intermediate variables, makes the code easier to follow and finally also reduces the likelyhood of a bug appearence.**
+In order to understand where does these operators come from we may start with a brief historical background [@dataCamp2022pipe]. The basic principle can be actually found in mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as the input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, $\small g(x)\equiv B$ and $\small f(g(x))\equiv C$. Broad range of pipe applications actually started in 2013-2014 by development of the [{magrittr}](https://magrittr.tidyverse.org/) and [{dplyr}](https://dplyr.tidyverse.org/) packages in order to express sequences of operations in a readable and concise way. **For beginners in programming, one might imagine the "pipe" as a command (or narrator), saying: "...and then..." where in the background it takes the result on its left-hand side and passes it as a first argument to the function on its right-hand side** (see examples below)**. This allows users to avoid creation of intermediate variables, makes the code easier to follow and finally also reduces the likelihood of a bug appearence.** The pipe operator is also well known in other programming languages (e.g. in *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may possess a different syntax in comparison to ![](RcoreLogo.png){width="16" height="12"} [^2].
 
 [^2]: One may come across symbols like `.` , `>>` , `|>` or `|`
 
-For the simple cases both `%>%` and `|>` (the latter, also known as a native pipe operator) behave identically. However, they differ...
+For the simple cases both `%>%` and `|>` (the latter, also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
+
+1.  The native pipe operator is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/Rstudio IDE and does not require any additional 📦, whereas the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use.
+
+...
+
+... settings for the pipe operator within the Rstudio `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the checkbox "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
+
+```{r rstudio-pipe-setup,echo = FALSE,out.width = "91%",fig.cap = "Pipe operator setup with the Rstudio Options."}
+
+knitr::include_graphics("Rstudio_pipe_setup_a.png",dpi = 200)
+
+```
 
 ## Lists
 
