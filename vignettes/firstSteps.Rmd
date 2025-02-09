@@ -95,7 +95,7 @@ install.packages(
 
 ```
 
-If one wants to install the entire 📦 including all the documentation vignettes/articles ➨
+If one wants to install the entire 📦 including the documentation vignettes/articles ➨
 
 ```{r install-eprscope-03-opt,eval = FALSE,echo = TRUE}
 
@@ -127,7 +127,7 @@ The `file` within the parentheses represents an **argument of the function** `lo
 
 ## Functions and Packages
 
-Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` have to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading collection of the essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
+Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console or *Rstudio* IDE. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` has to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading collection of the essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
 
 ```{r loading-tidyverse}
 
@@ -180,7 +180,7 @@ length(comb.norm)
 
 ```
 
-Performing operations on individual elements requires indexing (vectors in ![](RcoreLogo.png){width="16" height="12"} are 1 based indexing unlike the normal *C* or *Python*), which is quite simple and demonstrated on the following examples:
+Performing operations on individual elements requires indexing (vectors in ![](RcoreLogo.png){width="16" height="12"} are 1 based indexing unlike the normal *C* or *Python*), which is quite simple and demonstrated by the following examples:
 
 ```{r vector-element-operations}
 
@@ -303,8 +303,8 @@ mat.03 <- cbind( # "c" for column
   mat.03.vec,
   deparse.level = 0 # no labels
 )
-# similarly, the matrix can be also created,
-# from vectors bound into rows,
+# similarly, the matrix can be also created
+# from vectors bound into rows
 # by the `rbind()` function
 #
 # preview of `mat.03`:
@@ -371,7 +371,7 @@ isFALSE(det(A) == 0)
 
 ## Data Frames and the Pipe Operator
 
-Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is an 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
+Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is an 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct a data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
 
 ```{r create-df-example-01}
 
@@ -524,13 +524,34 @@ In order to understand where does these operators come from we may start with a 
 
 [^2]: One may come across symbols like `.` , `>>` , `|>` or `|`
 
-For the simple cases both `%>%` and `|>` (the latter, also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
+For the simple cases both `%>%` and `|>` (the latter also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
 
-1.  The native pipe operator is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/Rstudio IDE and does not require any additional 📦, whereas the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use.
+1.  The native pipe operator `|>` is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦, while the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use.
+2.  The `|>` requires parentheses for the right-hand side functions, whereas the `{magrittr}` operator does not:
+
+```{r pipe-oterator-parentheses}
+
+# take the `vec.B.G.b(c)` vector from above
+# round it (for 2 decimal places) 
+# and find the mean value:
+vec.B.G.b %>% round(digits = 2) %>% mean
+#
+# however, the same operations for native
+# `|>` pipe operator without the `mean`
+# parenthesis gives an error
+vec.B.G.c |> round(digits = 2) |> mean
+#
+# therefore parenthesis must be included
+# in the `mean` function call like:
+# vec.B.G.c |> round(digits = 2) |> mean()
+
+```
+
+3.  ...
 
 ...
 
-... settings for the pipe operator within the Rstudio `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the checkbox "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
+... keyboard shortcut: `ctrl(cmd)` + `shift` + `m` ... settings for the pipe operator within the Rstudio `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the checkbox "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
 
 ```{r rstudio-pipe-setup,echo = FALSE,out.width = "91%",fig.cap = "Pipe operator setup with the Rstudio Options."}
 
