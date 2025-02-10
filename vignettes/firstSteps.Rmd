@@ -526,7 +526,7 @@ In order to understand where does these operators come from we may start with a 
 
 For the simple cases both `%>%` and `|>` (the latter also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
 
-1.  The native pipe operator `|>` is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦, while the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use.
+1.  The native pipe operator `|>` is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦, while the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **.**
 2.  The `|>` requires parentheses for the right-hand side functions, whereas the `{magrittr}` operator does not:
 
 ```{r pipe-oterator-parentheses}
@@ -538,7 +538,7 @@ vec.B.G.b %>% round(digits = 2) %>% mean
 #
 # however, the same operations for native
 # `|>` pipe operator without the `mean`
-# parenthesis gives an error
+# parenthesis gives an error:
 vec.B.G.c |> round(digits = 2) |> mean
 #
 # therefore parenthesis must be included
@@ -547,7 +547,7 @@ vec.B.G.c |> round(digits = 2) |> mean
 
 ```
 
-3.  ...
+3.  
 
 ...
 
@@ -558,6 +558,126 @@ vec.B.G.c |> round(digits = 2) |> mean
 knitr::include_graphics("Rstudio_pipe_setup_a.png",dpi = 200)
 
 ```
+
+...
+
+Due to the above-mentioned reasons (mainly due to the compatibility) the `{eprscope}` primarily uses the `{magrittr}` type operator, even though the native one can be applied as well, keeping in mind its limitations. If the `{tidyverse}` 📦 bundle is already installed and loaded, we may perform the above-described data frame operations by the included packages (mainly by [{dplyr}](https://dplyr.tidyverse.org/index.html)) as shown below.
+
+Create a vector from the column of a data frame:
+
+```{r vector-df-pipe-operator}
+
+# selecting column (`B_G`) from data 
+# frame by pipe and `$` operators:
+vec.B.G.d <- df.example.01 %>% .$B_G
+#
+# preview of the first 10 values:
+vec.B.G.d[1:10]
+#
+# ...similar operation by the `{dplyr}`
+# `select()` function where the output
+# corresponds to data frame, therefore:
+vec.B.G.e <- df.example.01 %>% 
+  dplyr::select(B_G) %>% unlist %>% as.vector
+#
+# preview of the first 10 values:
+vec.B.G.e[1:10]
+
+```
+
+The `dplyr::select()` function can be also applied to drop columns as well as to select columns, resulting in data frame, only by a specific conditions or with specific names (see the related [documentation](https://dplyr.tidyverse.org/reference/select.html)).
+
+Create a new column by the `dplyr::mutate()` function:
+
+```{r mutate-df-pipe-operator}
+
+# create a new `B_mT` column:
+df.example.02 <- df.example.01 %>% 
+  dplyr::mutate(B_mT = B_G * 0.1)
+#
+# preview:
+head(df.example.02)
+
+```
+
+Basic filtering by the `dplyr::filter()` , where either `|>` or `%>%` can be applied:
+
+```{r filter-df-pipe-operator}
+
+# filter the `B_G`/`B_mT` 
+# values <= central field:
+df.example.03 <- df.example.02 |> 
+  dplyr::filter(B_G <= median(B_G))
+#
+# preview
+df.example.03
+#
+# find the `B_mT` corresponding
+# to the maximum of `dIepr_over_dB` intensity:
+df.example.02 %>% 
+  dplyr::filter(dIepr_over_dB == max(dIepr_over_dB)) %>% 
+  dplyr::pull(B_mT)
+
+```
+
+Filter values within a specific `g_Val` **range** (see the function `dplyr::between()`) and **rename** the column:
+
+```{r filter-range-df-pipe-operator}
+
+df.example.04 <- df.example.03 %>% 
+  dplyr::filter(dplyr::between(g_Val,2.0548,2.0550)) %>% 
+  # rename syntax: "new name = old name":
+  dplyr::rename(g_Fac = g_Val) 
+#
+# preview:
+df.example.04
+
+```
+
+Last example, using the `{dplyr}` and the pipe operator, will show the processing and analysis of EPR time series (kinetics). In the first step, the "kinetic" must be loaded from the `.zip` file :
+
+```{r load-kinetic-data}
+
+# loading the package built-in example file/data 
+# kinetics => "Triarylamine_radCat_decay_series",
+# file with instrumental parameters:
+triarylam.decay.series.dsc.path <-
+  load_data_example(
+    file = "Triarylamine_radCat_decay_series.DSC"
+  )
+#
+# ascii table data in the form of `.zip`:
+triarylam.decay.series.asc.path <-
+  load_data_example(
+    file = "Triarylamine_radCat_decay_series.zip"
+  )
+#
+# unzip the data:
+unzip(
+  triarylam.decay.series.asc.path,
+  exdir = tempdir()
+)
+
+```
+
+Finally, the data is transformed into the data frame by the `readEPR_Exp_Specs_kin()` function:
+
+```{r triarylamine-kinet-df-read}
+
+# reading the data and correcting
+# the recording time for each CW EPR spectrum:
+triarylam.decay.df <- readEPR_Exp_Specs_kin(
+  name.root = "Triarylamine_radCat_decay_series",
+  dir_ASC = tempdir(),
+  dir_dsc_par = system.file("extdata",package = "eprscope")
+)
+#
+# preview:
+triarylam.decay.df$df
+
+```
+
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one have to do is just to define the file path for both parameter as well as ASCII table files (see also the documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.df` is list (see also below), it consists of two compotents: the data frame `df` and the vector of corrected `time` at which the middle of the CW EPR spectrum appears.
 
 ## Lists
 
