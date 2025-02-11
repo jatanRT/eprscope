@@ -43,7 +43,7 @@ library(plotly)
 
 # Installation Details
 
-Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be followed by these steps:
+Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be summarized into the following steps:
 
 1.  Installation of *JDK Development Kit* where the corresponding package, suitable for your operating system, can be downloaded from the [official *Oracle* website](https://www.oracle.com/java/technologies/downloads/?er=221886).
 
@@ -118,7 +118,7 @@ Any name, even the complex one (see vide infra), can be applied to assign the va
 Q_value <- 3500
 #
 # loading package built-in example file/data => "TMPD_specelchem_accu_b.asc",
-# which corresponds to EPR spectrum of Wuster's blue:
+# which corresponds to the EPR spectrum of Wuster's blue:
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
 ```
@@ -127,7 +127,7 @@ The `file` within the parentheses represents an **argument of the function** `lo
 
 ## Functions and Packages
 
-Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console or *Rstudio* IDE. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` has to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading collection of the essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
+Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console or *Rstudio* IDE. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` has to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading the collection of essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
 
 ```{r loading-tidyverse}
 
@@ -351,10 +351,10 @@ A_1 <- solve(A)
 # preview:
 A_1
 #
-# check if A_1 * A = 1,
+# check if A_1 * A = 1 (identity matrix),
 # by matrix multiplication (A_1 %*% A):
 identical(
-  diag(nrow = 3,ncol = 3),
+  diag(nrow = 3,ncol = 3), # identity matrix
   round(A_1 %*% A,digits = 8) # rounding to 8 decim. places
 ) # Are matrices identical ?
 
@@ -417,7 +417,7 @@ str(df.example.01)
 
 ```
 
-We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows/observations) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represent an operator to select the column (variable) of a data frame, namely:
+We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows/observations) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represents an operator to select the column (variable) of a data frame, namely:
 
 ```{r df-example-01-select-col-a}
 
@@ -502,7 +502,7 @@ head(df.example.01)
 
 ```
 
-A data frame can be also created, by definition (see above), using equally long vectors (refer to the vector definition at the beginning of this vignette), like:
+A data frame can be also created, by definition (see above), using the equally long vectors (refer to the vector definition at the beginning of this vignette), like:
 
 ```{r create-df-from-vectors}
 
@@ -520,13 +520,13 @@ normalization.df
 
 **Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png){width="16" height="12"} **Programming Language**
 
-In order to understand where does these operators come from we may start with a brief historical background [@dataCamp2022pipe]. The basic principle can be actually found in mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as the input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, $\small g(x)\equiv B$ and $\small f(g(x))\equiv C$. Broad range of pipe applications actually started in 2013-2014 by development of the [{magrittr}](https://magrittr.tidyverse.org/) and [{dplyr}](https://dplyr.tidyverse.org/) packages in order to express sequences of operations in a readable and concise way. **For beginners in programming, one might imagine the "pipe" as a command (or narrator), saying: "...and then..." where in the background it takes the result on its left-hand side and passes it as a first argument to the function on its right-hand side** (see examples below)**. This allows users to avoid creation of intermediate variables, makes the code easier to follow and finally also reduces the likelihood of a bug appearence.** The pipe operator is also well known in other programming languages (e.g. in *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may possess a different syntax in comparison to ![](RcoreLogo.png){width="16" height="12"} [^2].
+In order to understand where does these operators come from and why they are used, we may start with a brief historical background [@dataCamp2022pipe]. The basic principle can be actually found in mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as the input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, $\small g(x)\equiv B$ and $\small f(g(x))\equiv C$. Broad range of pipe applications actually started in 2013-2014 by development of the [{magrittr}](https://magrittr.tidyverse.org/) and [{dplyr}](https://dplyr.tidyverse.org/) packages in order to express sequences of operations in a readable and concise way. **For beginners in programming, one might imagine the "pipe" as a command (or narrator), saying: "...and then..." where in the background it takes the result on its left-hand side and passes it as a first argument to the function on its right-hand side** (see examples below)**. This allows users to avoid creation of intermediate variables, makes the code easier to follow and finally also reduces the likelihood of a bug appearence.** The pipe operator is also well known in other programming languages (e.g. in *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may possess a different syntax in comparison to ![](RcoreLogo.png){width="16" height="12"} [^2].
 
 [^2]: One may come across symbols like `.` , `>>` , `|>` or `|`
 
-For the simple cases both `%>%` and `|>` (the latter also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
+For the simple cases, both `%>%` and `|>` (the latter also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
 
-1.  The native pipe operator `|>` is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦, while the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **.**
+1.  The native pipe operator `|>` is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦, while the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **!**
 2.  The `|>` requires parentheses for the right-hand side functions, whereas the `{magrittr}` operator does not:
 
 ```{r pipe-oterator-parentheses}
@@ -539,17 +539,17 @@ vec.B.G.b %>% round(digits = 2) %>% mean
 # however, the same operations for native
 # `|>` pipe operator without the `mean`
 # parenthesis gives an error:
-vec.B.G.c |> round(digits = 2) |> mean
+# vec.B.G.c |> round(digits = 2) |> mean
 #
-# therefore parenthesis must be included
-# in the `mean` function call like:
-# vec.B.G.c |> round(digits = 2) |> mean()
+# therefore, parenthesis must be included
+# in the `mean` function call, like:
+vec.B.G.c |> round(digits = 2) |> mean()
 
 ```
 
-3.  
+3.   ... TBC <!-- TODO -->
 
-...
+... TBC <!-- TODO -->
 
 ... keyboard shortcut: `ctrl(cmd)` + `shift` + `m` ... settings for the pipe operator within the Rstudio `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the checkbox "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
 
@@ -559,7 +559,7 @@ knitr::include_graphics("Rstudio_pipe_setup_a.png",dpi = 200)
 
 ```
 
-...
+... TBC <!-- TODO -->
 
 Due to the above-mentioned reasons (mainly due to the compatibility) the `{eprscope}` primarily uses the `{magrittr}` type operator, even though the native one can be applied as well, keeping in mind its limitations. If the `{tidyverse}` 📦 bundle is already installed and loaded, we may perform the above-described data frame operations by the included packages (mainly by [{dplyr}](https://dplyr.tidyverse.org/index.html)) as shown below.
 
@@ -585,7 +585,7 @@ vec.B.G.e[1:10]
 
 ```
 
-The `dplyr::select()` function can be also applied to drop columns as well as to select columns, resulting in data frame, only by a specific conditions or with specific names (see the related [documentation](https://dplyr.tidyverse.org/reference/select.html)).
+The `dplyr::select()` function can be also applied to drop columns as well as to select columns, resulting in data frame, by specific conditions or with specific names (see the related [documentation](https://dplyr.tidyverse.org/reference/select.html)).
 
 Create a new column by the `dplyr::mutate()` function:
 
@@ -666,18 +666,18 @@ Finally, the data is transformed into the data frame by the `readEPR_Exp_Specs_k
 
 # reading the data and correcting
 # the recording time for each CW EPR spectrum:
-triarylam.decay.df <- readEPR_Exp_Specs_kin(
+triarylam.decay.dat <- readEPR_Exp_Specs_kin(
   name.root = "Triarylamine_radCat_decay_series",
   dir_ASC = tempdir(),
   dir_dsc_par = system.file("extdata",package = "eprscope")
 )
 #
 # preview:
-triarylam.decay.df$df
+triarylam.decay.dat$df
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one have to do is just to define the file path for both parameter as well as ASCII table files (see also the documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.df` is list (see also below), it consists of two compotents: the data frame `df` and the vector of corrected `time` at which the middle of the CW EPR spectrum appears.
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of the CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. ...TBC <!-- TODO -->
 
 ## Lists
 
@@ -685,7 +685,7 @@ Blah
 
 ## Plots
 
-Blah
+As already mentioned in `vignette("functionality")` the EPR spectra and the related data can be mostly visualized by several options using the... packages
 
 ## Basic String Operations
 
