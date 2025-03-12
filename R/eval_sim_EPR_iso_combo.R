@@ -64,18 +64,20 @@
 #' ## two quaternary α-Carbons are not considered
 #' ## see e.g. https://doi.org/10.1016/j.mencom.2014.09.018
 #' sim.tempo.13c <-
-#' eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
-#'                        nuclear.system = list(list("14N",1,48),
-#'                                              list(list("14N",1,48),
-#'                                                   list("13C",1,18.5)
-#'                                                )
-#'                                             ),
-#'                        natur.abund.vec = c(FALSE,FALSE),
-#'                        lineGL.DeltaB = list(list(1.3,NULL),
-#'                                             list(1.3,NULL)
-#'                                             ),
-#'                        lineG.content.vec = c(1,1),
-#'                        Intensity.sim.coeffs.vec = c(0.956/3,0.044/6))
+#' eval_sim_EPR_iso_combo(
+#'   g.iso.vec = c(2.0059,2.0059),
+#'   nuclear.system = list(list("14N",1,48),
+#'                         list(list("14N",1,48),
+#'                              list("13C",1,18.5)
+#'                             )
+#'                        ),
+#'   natur.abund.vec = c(FALSE,FALSE),
+#'   lineGL.DeltaB = list(list(1.3,NULL),
+#'                        list(1.3,NULL)
+#'                       ),
+#'   lineG.content.vec = c(1,1),
+#'   Intensity.sim.coeffs.vec = c(0.956/3,0.044/6)
+#'   )
 #' #
 #' ## simulated spectrum/plot:
 #' sim.tempo.13c$plot.sum +
@@ -92,6 +94,47 @@
 #' #
 #' ## areas/integrals
 #' sim.tempo.13c$df.areas
+#' #
+#' ## Simulation of BMPO spin trap *OH radical
+#' ## adduct consisting of two diasteromers (A,B),
+#' ## see at https://doi.org/10.1016/S0891-5849(01)00619-0
+#' sim.hobmpo.spec <-
+#'   eval_sim_EPR_iso_combo(
+#'     g.iso.vec = c(2.005,2.005),
+#'     nuclear.system = list(
+#'       list(
+#'         list("14N",1,38.06),# 13.6 G )
+#'         list("1H",1,34.52), # 12.3 G  > DIASTEROMER A, 81.6 %
+#'         list("1H",1,1.85)   # 0.70 G )
+#'       ),
+#'       list(
+#'         list("14N",1,37.8),# 13.5 G )
+#'         list("1H",1,42.96),# 15.3 G  > DIASTEROMER B, 18.4 %
+#'         list("1H",1,1.74)  # 0.60 G )
+#'       )
+#'     ),
+#'     natur.abund.vec = c(TRUE,TRUE),
+#'     lineGL.DeltaB = list(
+#'       list(1.05,NULL),
+#'       list(1.05,NULL)
+#'     ),
+#'     lineG.content.vec = c(1,1),
+#'     Intensity.sim.coeffs.vec = c(0.816,0.184) # 81.6 % + 18.4 %
+#'   )
+#' #
+#' ## preview of both components and the overall EPR simulation,
+#' ## using the `{patchwork}` R package,
+#' ## see also at https://patchwork.data-imaginist.com/
+#' library(patchwork)
+#' (sim.hobmpo.spec$plot.sum +
+#'  ggplot2::coord_cartesian(xlim = c(3420,3560)) +
+#'  ggplot2::labs(x = NULL)
+#' ) / (sim.hobmpo.spec$plot.comps +
+#'     ggplot2::coord_cartesian(xlim = c(3420,3560))
+#' )
+#' #
+#' ## ...and the corresponding areas/integrals
+#' sim.hobmpo.spec$df.areas
 #'
 #'
 #' @export
@@ -117,39 +160,49 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
                                    Intensity.sim.coeffs.vec, ## e.g. c(2,10,0.2)
                                    plot.sim.interact = NULL){ ## default or "components" or "sum"
   #
-  ## 'Temporary' processing variables
+  ## 'Temporary' processing variables:
   Sim_sigmoid_Integs <- NULL
   weighted_Sim_areas <- NULL
   #
-  ## all data frames of simulated spectra corresponding to each nuclear group in one list
+  ## all data frames of simulated spectra
+  ## corresponding to each nuclear group in one list:
   df.systems <-
     Map(
       function(o,p,q,r,s)
-      {eval_sim_EPR_iso(g.iso = o,
-                        instrum.params = instrum.params,
-                        B.unit = B.unit,
-                        path_to_dsc_par = path_to_dsc_par,
-                        origin = origin,
-                        nuclear.system = p,
-                        natur.abund = q,
-                        lineSpecs.form = lineSpecs.form,
-                        lineGL.DeltaB = r,
-                        lineG.content = s,
-                        Intensity.sim = Intensity.sim)$df
+      {
+        eval_sim_EPR_iso(
+          g.iso = o,
+          instrum.params = instrum.params,
+          B.unit = B.unit,
+          path_to_dsc_par = path_to_dsc_par,
+          origin = origin,
+          nuclear.system = p,
+          natur.abund = q,
+          lineSpecs.form = lineSpecs.form,
+          lineGL.DeltaB = r,
+          lineG.content = s,
+          Intensity.sim = Intensity.sim
+        )$df ## data frame from the simulation list
+
       },
       g.iso.vec,
       nuclear.system,
       natur.abund.vec,
       lineGL.DeltaB,
-      lineG.content.vec)
+      lineG.content.vec
+    )
   #
   ## Multiplication of the individual data frame `Intensity.sim`
   ## by the corresponding components of coeffs.weight.vctr
-  Intensity.sim.weight.vec <- Intensity.sim.coeffs.vec / sum(Intensity.sim.coeffs.vec)
+  Intensity.sim.weight.vec <-
+    Intensity.sim.coeffs.vec / sum(Intensity.sim.coeffs.vec)
   df.systems.weighted <-
     Map(function(u,v)
-    { df.systems[[u]] <- df.systems[[u]] %>%
-      dplyr::mutate(!!rlang::quo_name(Intensity.sim) := v * .data[[Intensity.sim]]) },
+    {
+      df.systems[[u]] <- df.systems[[u]] %>%
+        dplyr::mutate(!!rlang::quo_name(Intensity.sim) :=
+                        v * .data[[Intensity.sim]])
+    },
     seq(df.systems),
     Intensity.sim.weight.vec
     )
@@ -157,61 +210,89 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   ##  -------------  LONG-TABLE FORMAT FOR OVERLAY SPECTRA ----------------
   #
   ## `df.systems.weight` into long table format
-  ## however, before generating the alphabet character vector in order to
-  ## replace numbers by alphabet characters after the `bind_rows()`
-  character.component.vec <- sapply(1:length(df.systems.weighted), function(k) LETTERS[k])
-  df.systems.weighted.long <- dplyr::bind_rows(df.systems.weighted,
-                                               .id = "Sim_Components")
-  ## convert character numbers into alphabet characters defined by `character.component.vec`
+  ## however, before generating the alphabet character
+  ## vector in order to replace numbers by alphabet
+  ## characters after the `bind_rows()`:
+  character.component.vec <-
+    sapply(
+      1:length(df.systems.weighted),
+      function(k) LETTERS[k]
+    )
+  df.systems.weighted.long <-
+    dplyr::bind_rows(
+      df.systems.weighted,
+      .id = "Sim_Components"
+    )
+  ## convert character numbers into alphabet characters
+  ## defined by `character.component.vec`:
   df.systems.weighted.long$Sim_Components <-
-    factor(df.systems.weighted.long$Sim_Components,
-           labels = character.component.vec)
+    factor(
+      df.systems.weighted.long$Sim_Components,
+      labels = character.component.vec
+    )
   #
   ##  ---------------------  Integration ---------------------------------
   #
-  df.systems.weighted.integ.long <- df.systems.weighted.long %>%
+  df.systems.weighted.integ.long <-
+    df.systems.weighted.long %>%
     dplyr::group_by(.data$Sim_Components) %>%
-    dplyr::mutate(Sim_sigmoid_Integs =
-                    eval_integ_EPR_Spec(dplyr::pick(dplyr::all_of(c(paste0("Bsim_",B.unit),
-                                                                    Intensity.sim))),
-                                        B = paste0("Bsim_",B.unit),
-                                        B.unit = B.unit,
-                                        Intensity = Intensity.sim,
-                                        lineSpecs.form = lineSpecs.form,
-                                        sigmoid.integ = TRUE,
-                                        output.vecs = TRUE)$sigmoid)
+    dplyr::mutate(
+      Sim_sigmoid_Integs =
+        eval_integ_EPR_Spec(
+          dplyr::pick(dplyr::all_of(c(paste0("Bsim_",B.unit),
+                                      Intensity.sim))),
+          B = paste0("Bsim_",B.unit),
+          B.unit = B.unit,
+          Intensity = Intensity.sim,
+          lineSpecs.form = lineSpecs.form,
+          sigmoid.integ = TRUE,
+          output.vecs = TRUE
+        )$sigmoid ## take the sigmoid integral from evaluation
+    )
   #
   ##  ------------------------ Areas ---------------------------------------
   #
-  df.systems.areas <- df.systems.weighted.integ.long %>%
+  df.systems.areas <-
+    df.systems.weighted.integ.long %>%
     dplyr::group_by(.data$Sim_Components) %>%
     dplyr::summarize(Sim_areas = max(.data$Sim_sigmoid_Integs))
   #
   ## WIDE-TABLE FORMAT FOR THE SIM. EPR SPECTRAL SUM rowwise by `rowSums`
   #
-  df.systems.weighted.wide <- df.systems.weighted.long %>%
-    tidyr::pivot_wider(names_from = dplyr::all_of(c("Sim_Components")),
-                       values_from = dplyr::all_of(c(Intensity.sim))) %>%
-    dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_Sum")) :=
-                    rowSums(dplyr::across(dplyr::matches("^[[:upper:]]$"))))
+  df.systems.weighted.wide <-
+    df.systems.weighted.long %>%
+    tidyr::pivot_wider(
+      names_from = dplyr::all_of(c("Sim_Components")),
+      values_from = dplyr::all_of(c(Intensity.sim))
+    ) %>%
+    dplyr::mutate(
+      !!rlang::quo_name(paste0(Intensity.sim,"_Sum")) :=
+        rowSums(dplyr::across(dplyr::matches("^[[:upper:]]$")))
+    )
   #
   ## ------------------- Overall Integration ------------------------------
   #
   df.systems.weighted.wide$Sim_sigmoid_Integ <-
-    eval_integ_EPR_Spec(df.systems.weighted.wide,
-                        B = paste0("Bsim_",B.unit),
-                        B.unit = B.unit,
-                        Intensity = paste0(Intensity.sim,"_Sum"),
-                        lineSpecs.form = lineSpecs.form,
-                        sigmoid.integ = TRUE,
-                        output.vecs = TRUE)$sigmoid
+    eval_integ_EPR_Spec(
+      df.systems.weighted.wide,
+      B = paste0("Bsim_",B.unit),
+      B.unit = B.unit,
+      Intensity = paste0(Intensity.sim,"_Sum"),
+      lineSpecs.form = lineSpecs.form,
+      sigmoid.integ = TRUE,
+      output.vecs = TRUE
+    )$sigmoid
   ## delete/-select columns A,B,C,...etc
   df.systems.weighted.wide <-
     df.systems.weighted.wide %>%
-    dplyr::select(dplyr::all_of(c("Bsim_mT",
-                                  "Bsim_G",
-                                  "Sim_sigmoid_Integ",
-                                  paste0(Intensity.sim,"_Sum"))))
+    dplyr::select(
+      dplyr::all_of(
+        c("Bsim_mT",
+          "Bsim_G",
+          "Sim_sigmoid_Integ",
+          paste0(Intensity.sim,"_Sum"))
+      )
+    )
   ## instead of =>
   # dplyr::select(.data$B_mT,
   #               .data$B_G,
@@ -224,7 +305,8 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   #
   ##  ----------- new weighted sum column in `df.systems.areas` -------------
   #
-  df.systems.areas <- df.systems.areas %>%
+  df.systems.areas <-
+    df.systems.areas %>%
     dplyr::mutate(weighted_Sim_areas = .data$Sim_areas / systems.area)
   #
   ## ------------------- SUMMARIZING ALL THE RESULTS --------------------
@@ -233,7 +315,10 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   ## overlay plot from the long table format
   ## y-axis label depending on derivative or integrated line form
   if (grepl("deriv|Deriv",lineSpecs.form)){
-    ylab <- bquote(d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")")
+    ylab <-
+      bquote(
+        d * italic(I)[EPR] ~ "/" ~ d * italic(B) ~ ~"(" ~ p.d.u. ~ ")"
+      )
   }
   if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)){
     ylab <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")

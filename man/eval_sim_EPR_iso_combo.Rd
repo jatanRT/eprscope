@@ -123,18 +123,20 @@ This is an extension of the "basic" EPR simulation provided by the \code{\link{e
 ## two quaternary α-Carbons are not considered
 ## see e.g. https://doi.org/10.1016/j.mencom.2014.09.018
 sim.tempo.13c <-
-eval_sim_EPR_iso_combo(g.iso.vec = c(2.0059,2.0059),
-                       nuclear.system = list(list("14N",1,48),
-                                             list(list("14N",1,48),
-                                                  list("13C",1,18.5)
-                                               )
-                                            ),
-                       natur.abund.vec = c(FALSE,FALSE),
-                       lineGL.DeltaB = list(list(1.3,NULL),
-                                            list(1.3,NULL)
-                                            ),
-                       lineG.content.vec = c(1,1),
-                       Intensity.sim.coeffs.vec = c(0.956/3,0.044/6))
+eval_sim_EPR_iso_combo(
+  g.iso.vec = c(2.0059,2.0059),
+  nuclear.system = list(list("14N",1,48),
+                        list(list("14N",1,48),
+                             list("13C",1,18.5)
+                            )
+                       ),
+  natur.abund.vec = c(FALSE,FALSE),
+  lineGL.DeltaB = list(list(1.3,NULL),
+                       list(1.3,NULL)
+                      ),
+  lineG.content.vec = c(1,1),
+  Intensity.sim.coeffs.vec = c(0.956/3,0.044/6)
+  )
 #
 ## simulated spectrum/plot:
 sim.tempo.13c$plot.sum +
@@ -151,6 +153,47 @@ sim.tempo.13c$df[1000:1005,]
 #
 ## areas/integrals
 sim.tempo.13c$df.areas
+#
+## Simulation of BMPO spin trap *OH radical
+## adduct consisting of two diasteromers (A,B),
+## see at https://doi.org/10.1016/S0891-5849(01)00619-0
+sim.hobmpo.spec <-
+  eval_sim_EPR_iso_combo(
+    g.iso.vec = c(2.005,2.005),
+    nuclear.system = list(
+      list(
+        list("14N",1,38.06),# 13.6 G )
+        list("1H",1,34.52), # 12.3 G  > DIASTEROMER A, 81.6 \%
+        list("1H",1,1.85)   # 0.70 G )
+      ),
+      list(
+        list("14N",1,37.8),# 13.5 G )
+        list("1H",1,42.96),# 15.3 G  > DIASTEROMER B, 18.4 \%
+        list("1H",1,1.74)  # 0.60 G )
+      )
+    ),
+    natur.abund.vec = c(TRUE,TRUE),
+    lineGL.DeltaB = list(
+      list(1.05,NULL),
+      list(1.05,NULL)
+    ),
+    lineG.content.vec = c(1,1),
+    Intensity.sim.coeffs.vec = c(0.816,0.184) # 81.6 \% + 18.4 \%
+  )
+#
+## preview of both components and the overall EPR simulation,
+## using the `{patchwork}` R package,
+## see also at https://patchwork.data-imaginist.com/
+library(patchwork)
+(sim.hobmpo.spec$plot.sum +
+ ggplot2::coord_cartesian(xlim = c(3420,3560)) +
+ ggplot2::labs(x = NULL)
+) / (sim.hobmpo.spec$plot.comps +
+    ggplot2::coord_cartesian(xlim = c(3420,3560))
+)
+#
+## ...and the corresponding areas/integrals
+sim.hobmpo.spec$df.areas
 
 
 }
