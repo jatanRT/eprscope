@@ -24,7 +24,8 @@ eval_sim_EPR_isoFit(
   pswarm.diameter = NULL,
   pswarm.type = NULL,
   check.fit.plot = TRUE,
-  output.list.final = FALSE,
+  msg.optim.progress = TRUE,
+  output.list.forFitSp = FALSE,
   ...
 )
 }
@@ -152,9 +153,13 @@ fit + experimental spectrum (including residuals in the lower part of the plot,
 and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
 within the plot.}
 
-\item{output.list.final}{Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
+\item{msg.optim.progress}{Logical, whether to display message (in the R console) about progress of the \code{optim.method}
+during the optimization/fitting procedure. \strong{Default}: \code{msg.optim.progress = TRUE}. If FALSE, no message
+is displayed. Latter option is especially suitable for the case when \code{output.list.forFitSp = TRUE} (see below).}
+
+\item{output.list.forFitSp}{Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
 1. optimized parameters from the best fit (together with the minimum sum of residual squares)
-and 2. data frame of the final best simulated spectrum with and without the baseline fit (see \code{Value}).
+and 2. Plot of the experimental as well as simulated EPR spectrum depending on \code{check.fit.plot} (see \code{Value}).
 Such output will be applied for the more complex optimization/fitting (which is currently under development),
 as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.}
 
@@ -195,13 +200,15 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   to indicate the successful convergence.}
   }
 
-  \item If \code{output.list.final = TRUE}, the function exclusively returns list with the two components,
-  which will be applied for the more complex optimization/fitting (which is currently under development).
+  \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
+  which will be applied for the more complex optimization/fitting (currently under development).
   \describe{
   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
   to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares,
   after the (final) \code{optim.method} procedure.}
-  \item{df}{Data frame including the final best simulated spectrum with and without the baseline fit.}
+  \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
+  on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
+  (refer to the \code{check.fit.plot} argument description).}
   }
   }
 }
@@ -214,7 +221,7 @@ Fitting of the simulated spectrum onto the experimental one represents an import
   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
   The \code{lineG.content} corresponding parameter is the only one,
   which needs to be varied "manually". In order to control the optimization/fitting process,
-  by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
+  by the similar way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
   a \href{https://shiny.posit.co/}{Shiny app}
   and/or \href{https://gganimate.com/}{{gganimate}} visualization is under development.
 }
@@ -252,7 +259,8 @@ tempo.test.sim.fit.a <-
         0.018, # Sim. intensity multiply
         1e-6, # slope lin. baseline
         49), # A in MHz
-    check.fit.plot = FALSE
+    check.fit.plot = FALSE,
+    msg.optim.progress = FALSE
   )
 ## OUTPUTS:
 ## best fit parameters:

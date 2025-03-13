@@ -109,7 +109,8 @@ test_that("The parameters determined from the expr. EPR spectrum
         1e-4,
         mean.A.iso.expr
       ),
-      check.fit.plot = FALSE
+      check.fit.plot = FALSE,
+      msg.optim.progress = FALSE
     )
   #
   ## extracting A.iso from the simulation 6th index in `optim.params.init`

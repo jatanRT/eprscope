@@ -14,7 +14,7 @@
 #'   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". In order to control the optimization/fitting process,
-#'   by similar interactive way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
+#'   by the similar way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
 #'   a \href{https://shiny.posit.co/}{Shiny app}
 #'   and/or \href{https://gganimate.com/}{{gganimate}} visualization is under development.
 #'
@@ -130,9 +130,12 @@
 #'   (\code{check.fit.plot = FALSE}): 1. experimental, 2. the best simulated one with the baseline fit
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
 #'   within the plot.
-#' @param output.list.final Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
+#' @param msg.optim.progress Logical, whether to display message (in the R console) about progress of the \code{optim.method}
+#'   during the optimization/fitting procedure. \strong{Default}: \code{msg.optim.progress = TRUE}. If FALSE, no message
+#'   is displayed. Latter option is especially suitable for the case when \code{output.list.forFitSp = TRUE} (see below).
+#' @param output.list.forFitSp Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
 #'   1. optimized parameters from the best fit (together with the minimum sum of residual squares)
-#'   and 2. data frame of the final best simulated spectrum with and without the baseline fit (see \code{Value}).
+#'   and 2. Plot of the experimental as well as simulated EPR spectrum depending on \code{check.fit.plot} (see \code{Value}).
 #'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
 #'   as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
 #' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
@@ -172,13 +175,15 @@
 #'   to indicate the successful convergence.}
 #'   }
 #'
-#'   \item If \code{output.list.final = TRUE}, the function exclusively returns list with the two components,
-#'   which will be applied for the more complex optimization/fitting (which is currently under development).
+#'   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
+#'   which will be applied for the more complex optimization/fitting (currently under development).
 #'   \describe{
 #'   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
 #'   to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares,
 #'   after the (final) \code{optim.method} procedure.}
-#'   \item{df}{Data frame including the final best simulated spectrum with and without the baseline fit.}
+#'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
+#'   on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
+#'   (refer to the \code{check.fit.plot} argument description).}
 #'   }
 #'   }
 #'
@@ -209,7 +214,8 @@
 #'         0.018, # Sim. intensity multiply
 #'         1e-6, # slope lin. baseline
 #'         49), # A in MHz
-#'     check.fit.plot = FALSE
+#'     check.fit.plot = FALSE,
+#'     msg.optim.progress = FALSE
 #'   )
 #' ## OUTPUTS:
 #' ## best fit parameters:
@@ -320,7 +326,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 pswarm.diameter = NULL,
                                 pswarm.type = NULL,
                                 check.fit.plot = TRUE,
-                                output.list.final = FALSE,
+                                msg.optim.progress = TRUE,
+                                output.list.forFitSp = FALSE,
                                 ...){
   #
   ## 'Temporary' processing variables
@@ -798,6 +805,50 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   best.fit.params <- c()
   optim.params.init.list <- list()
   optim.params.init.list[[1]] <- optim.params.init
+  #
+  ## essential message pointing to calculation by the actual method,
+  ## corresponding to progress of `optim.method` in loop
+  msg.base <- "EPR simulation parameters are being currently optimized by  "
+  #
+  # function to print message before/after individual optimization method
+  fun.msg.method.time <-
+    function(
+        msg.show = msg.optim.progress,
+        msg.main = msg.base,
+        time = "before",
+        method.optim,
+        x ## number in seq. related to loop
+      ) {
+      if (isTRUE(msg.show)) {
+        if (time == "before") {
+          # cat("\n")
+          message("\r", # or replace by `cat`
+                  msg.main,
+                  toupper(method.optim),
+                  ";  method  ",x,
+                  "  of  ",
+                  length(optim.method),
+                  rep("...",x),"\n"
+          )
+          #
+        } else if (time == "after") {
+          #
+          # cat("\n")
+          message("\r", # or replace by `cat`
+                  "Done!"," (",
+                  round((x / length(optim.method)),digits = 2) * 100,
+                  " %)  ",
+                  " elapsed time ",
+                  round(as.numeric(
+                    difftime(time1 = end.tm, time2 = start.tm, units = "secs")
+                  ), 3), " s","\n"
+          )
+        }
+      } else {
+        return(invisible(NULL))
+      }
+    }
+  #
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
@@ -819,9 +870,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                     par))
       }
       #
+      # message + time before optimization
+      fun.msg.method.time(time = "before",method.optim = optim.method[m],x = m)
+      ## see definition function above
+      #
+      if (isTRUE(msg.optim.progress)) {start.tm <- Sys.time()} # stop watch time, before :-)
+      #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_lm,
                                          method = "levenmarq",
                                          x.0 = optim.params.init.list[[m]])
+      #
+      # message + time after optimization
+      if (isTRUE(msg.optim.progress)) {end.tm <- Sys.time()} # stop watch time, after :-)
+      #
+      fun.msg.method.time(time = "after",method.optim = optim.method[m],x = m)
+      #
     }
     if (optim.method[m] == "pswarm"){
       ## LSQ FUNCTION
@@ -842,9 +905,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                             par))^2))
       }
       #
+      # message + time before optimization
+      fun.msg.method.time(time = "before",method.optim = optim.method[m],x = m)
+      #
+      if (isTRUE(msg.optim.progress)) {start.tm <- Sys.time()} # stop watch time, before :-)
+      #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_ps,
                                          method = "pswarm",
                                          x.0 = optim.params.init.list[[m]])
+      #
+      # message + time after optimization
+      if (isTRUE(msg.optim.progress)) {end.tm <- Sys.time()} # stop watch time, after :-)
+      #
+      fun.msg.method.time(time = "after",method.optim = optim.method[m],x = m)
+      #
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
         optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
@@ -867,9 +941,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                            x0))^2))
       }
       #
+      # message + time before optimization
+      fun.msg.method.time(time = "before",method.optim = optim.method[m],x = m)
+      #
+      if (isTRUE(msg.optim.progress)) {start.tm <- Sys.time()} # stop watch time, before :-)
+      #
       optimization.list[[m]] <- optim_fn(fun = min_residuals_nl,
                                          method = optim.method[m],
                                          x.0 = optim.params.init.list[[m]])
+      #
+      # message + time after optimization
+      if (isTRUE(msg.optim.progress)) {end.tm <- Sys.time()} # stop watch time, after :-)
+      #
+      fun.msg.method.time(time = "after",method.optim = optim.method[m],x = m)
+      #
     }
     #
     ## best parameters as input (`optim.params.init.list`) for the next cycle
@@ -926,14 +1011,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## final data  new frame and rename columns
   data.sim.expr <- data.spectr.expr %>%
-    dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
-                                  Intensity.expr,Intensity.sim))) %>%
-    dplyr::rename_with(~ c("Experiment","Simulation"),
-                       dplyr::all_of(c(Intensity.expr,Intensity.sim)))
+    dplyr::select(
+      dplyr::all_of(
+        c(paste0("B_",B.unit),
+          Intensity.expr,
+          Intensity.sim)
+      )
+    ) %>%
+    dplyr::rename_with(
+      ~ c("Experiment","Simulation"),
+      dplyr::all_of(c(Intensity.expr,Intensity.sim))
+    )
   #
   rm(data.spectr.expr) ## not required anymore
   #
-  ## calculating `rowwise` difference between expr. and sim. spectra
+  ## calculating the `rowwise` difference between expr. and sim. spectra
   data.sim.expr.resid <- data.sim.expr %>%
     dplyr::rowwise() %>%
     dplyr::mutate(Residuals = .data$Experiment - .data$Simulation)
@@ -979,7 +1071,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                              )
                       ) %>%
       ## offset for clarity
-      dplyr::mutate(!!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)) %>%
+      dplyr::mutate(
+        !!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)
+      ) %>%
       tidyr::pivot_longer(!dplyr::all_of(paste0("B_",B.unit)),
                           names_to = "Spectrum",
                           values_to = Intensity.expr) %>%
@@ -1218,26 +1312,28 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   # return list, vector, data frame ...
-  if (isTRUE(output.list.final)) {
+  if (isTRUE(output.list.forFitSp)) {
     ## final optimized parameters (+ min.rss) from the last `optim.method`
     ## if `length(optim.method) > 0`
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]]
     )
-    ## final data frame
-    if (isTRUE(check.fit.plot)){
-      result.df <- data.sim.expr.long %>%
-        dplyr::filter(Spectrum == "Simulation") %>%
-        dplyr::select(!dplyr::all_of(c("Spectrum")))
-    } else {
-      result.df <- data.sim.expr %>%
-        dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
-                                      "Simulation",
-                                      "Simulation_NoBasLin")))
-    }
     #
-    result <- list(params = result.vec,df = result.df)
+    ## final data frame ## MAYBE WILL BE ADDED LATER
+    # if (isTRUE(check.fit.plot)){
+    #   result.df <- data.sim.expr.long %>%
+    #     dplyr::filter(Spectrum == "Simulation") %>%
+    #     dplyr::select(!dplyr::all_of(c("Spectrum")))
+    # } else {
+    #   result.df <- data.sim.expr %>%
+    #     dplyr::select(dplyr::all_of(c(paste0("B_",B.unit),
+    #                                   "Simulation",
+    #                                   "Simulation_NoBasLin")))
+    # }
+    #
+    result <- list(params = result.vec,plot = plot.sim.expr)
+    ## and/or add `df = result.df`
     #
   } else {
       ## final list components (switching between `check.fit.plot` condition)
