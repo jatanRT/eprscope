@@ -90,6 +90,7 @@
 <span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  single.integ <span class="op">=</span> <span class="st">"single_IntegSim"</span>,</span>
 <span>  double.integ <span class="op">=</span> <span class="st">"double_IntegSim"</span>,</span>
+<span>  msg.optim.progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  output.area.stat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -238,6 +239,11 @@ within the output data frame, <strong>default</strong>: <code>single.integ = "si
 within the output data frame, <strong>default</strong>: <code>double.integ = "double_IntegSim"</code>.
 If <code>double.integ = NULL</code>, only single integrals are calculated/returned (e.g. in the case of
 single integrated spectral data).</p></dd>
+
+
+<dt id="arg-msg-optim-progress">msg.optim.progress<a class="anchor" aria-label="anchor" href="#arg-msg-optim-progress"></a></dt>
+<dd><p>Logical. If TRUE (<strong>default</strong>) a message in the R console displays the information
+about the progress of optimization/fitting. In case when <code>msg.optim.progress = FALSE</code>, no message is displayed.</p></dd>
 
 
 <dt id="arg-output-area-stat">output.area.stat<a class="anchor" aria-label="anchor" href="#arg-output-area-stat"></a></dt>
