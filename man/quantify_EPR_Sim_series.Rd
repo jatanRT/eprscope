@@ -24,6 +24,7 @@ quantify_EPR_Sim_series(
   pswarm.type = NULL,
   single.integ = "single_IntegSim",
   double.integ = "double_IntegSim",
+  msg.optim.progress = TRUE,
   output.area.stat = TRUE,
   ...
 )
@@ -131,6 +132,9 @@ within the output data frame, \strong{default}: \code{single.integ = "single_Int
 within the output data frame, \strong{default}: \code{double.integ = "double_IntegSim"}.
 If \code{double.integ = NULL}, only single integrals are calculated/returned (e.g. in the case of
 single integrated spectral data).}
+
+\item{msg.optim.progress}{Logical. If TRUE (\strong{default}) a message in the R console displays the information
+about the progress of optimization/fitting. In case when \code{msg.optim.progress = FALSE}, no message is displayed.}
 
 \item{output.area.stat}{Logical, whether to summarize all fitted EPR spectral components, in columns,
 for each time/temperature/...etc. point in row. Additional optimization measures are presented as well

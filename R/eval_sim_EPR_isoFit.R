@@ -808,7 +808,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## essential message pointing to calculation by the actual method,
   ## corresponding to progress of `optim.method` in loop
-  msg.base <- "EPR simulation parameters are being currently optimized by  "
+  msg.base <- "EPR simulation parameters are currently being optimized by  "
   #
   # function to print message before/after individual optimization method
   fun.msg.method.time <-

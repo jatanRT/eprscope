@@ -109,6 +109,8 @@
 #'   within the output data frame, \strong{default}: \code{double.integ = "double_IntegSim"}.
 #'   If \code{double.integ = NULL}, only single integrals are calculated/returned (e.g. in the case of
 #'   single integrated spectral data).
+#' @param msg.optim.progress Logical. If TRUE (\strong{default}) a message in the R console displays the information
+#'   about the progress of optimization/fitting. In case when \code{msg.optim.progress = FALSE}, no message is displayed.
 #' @param output.area.stat Logical, whether to summarize all fitted EPR spectral components, in columns,
 #'   for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
 #'   (see \code{Details}).\strong{Default}: \code{output.area.stat = TRUE}.
@@ -193,6 +195,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
                                     pswarm.type = NULL,
                                     single.integ = "single_IntegSim",
                                     double.integ = "double_IntegSim",
+                                    msg.optim.progress = TRUE,
                                     output.area.stat = TRUE,
                                     ...) {
   ## 'Temporary' processing variables
@@ -391,6 +394,22 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## optimization list by `data.list` methods depending on the `optim.method`
   # min. function for optimization incl. `fit_params_specs()` based on method
   ## + optimization
+  #
+  ## base message to display the progres of the intensity optimization:
+  msg.base <- "Intensities of simulated EPR spectral components are currently\nbeing evaluated/optimized by  "
+  #
+  ## message + time, pointing to optimization start
+  if (isTRUE(msg.optim.progress)) {
+    # cat("\n")
+    message("\r", # or replace by `cat`
+            msg.base,toupper(optim.method),";  method  ",
+            "(",length(data.specs.orig.sim)," Component(s))","...","\n"
+    )
+    #
+    ## start time
+    start.tm <- Sys.time() # stop watch time, before :-)
+  }
+  #
   if (optim.method == "levenmarq"){
     ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
     min_residuals_lm <- function(data,col.name.pattern,par){
@@ -496,6 +515,20 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
            sapply(seq_along(optimization.list),
                   function(l) optimization.list[[l]]$convergence)
            )
+  #
+  ## end time
+  if (isTRUE(msg.optim.progress)) {
+  #
+  end.tm <- Sys.time() # stop watch time, after :-)
+  #
+  ## ...and the message, pointing to the optimization end
+
+    # cat("\n")
+    message("\r", # or replace by `cat`
+            "Done!"," elapsed time ",
+            round(as.numeric(difftime(time1 = end.tm, time2 = start.tm, units = "secs")), 3), " s","\n"
+    )
+  }
   #
   ## creating matrix (`mapply` is creating vectors) with modified
   ## ONLY 1st SIMULATION taking into account the coefficients
