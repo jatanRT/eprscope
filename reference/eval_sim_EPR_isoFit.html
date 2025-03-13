@@ -7,7 +7,7 @@
   are optimized by the methods listed in optim_for_EPR_fitness.
   The lineG.content corresponding parameter is the only one,
   which needs to be varied "manually". In order to control the optimization/fitting process,
-  by similar interactive way like in EasySpin,
+  by the similar way like in EasySpin,
   a Shiny app
   and/or gganimate visualization is under development.'><title>Least-Squares Fitting of Isotropic EPR spectra by Simulations — eval_sim_EPR_isoFit • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Least-Squares Fitting of Isotropic EPR spectra by Simulations — eval_sim_EPR_isoFit"><meta property="og:description" content='Fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
   of EPR spectra. Parameters of the simulated spectrum like \(g_{\text{iso}}\); coupling constants
@@ -17,7 +17,7 @@
   are optimized by the methods listed in optim_for_EPR_fitness.
   The lineG.content corresponding parameter is the only one,
   which needs to be varied "manually". In order to control the optimization/fitting process,
-  by similar interactive way like in EasySpin,
+  by the similar way like in EasySpin,
   a Shiny app
   and/or gganimate visualization is under development.'><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
 </script><!--
@@ -81,7 +81,7 @@
   are optimized by the methods listed in <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>.
   The <code>lineG.content</code> corresponding parameter is the only one,
   which needs to be varied "manually". In order to control the optimization/fitting process,
-  by similar interactive way like in <a href="https://easyspin.org/easyspin/documentation/userguide_fitting.html" class="external-link">EasySpin</a>,
+  by the similar way like in <a href="https://easyspin.org/easyspin/documentation/userguide_fitting.html" class="external-link">EasySpin</a>,
   a <a href="https://shiny.posit.co/" class="external-link">Shiny app</a>
   and/or <a href="https://gganimate.com/" class="external-link">gganimate</a> visualization is under development.</p>
     </div>
@@ -108,7 +108,8 @@
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  output.list.final <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  msg.optim.progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  output.list.forFitSp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -267,10 +268,16 @@ and 3. the best simulated spectrum with the baseline fit subtracted. The latter 
 within the plot.</p></dd>
 
 
-<dt id="arg-output-list-final">output.list.final<a class="anchor" aria-label="anchor" href="#arg-output-list-final"></a></dt>
+<dt id="arg-msg-optim-progress">msg.optim.progress<a class="anchor" aria-label="anchor" href="#arg-msg-optim-progress"></a></dt>
+<dd><p>Logical, whether to display message (in the R console) about progress of the <code>optim.method</code>
+during the optimization/fitting procedure. <strong>Default</strong>: <code>msg.optim.progress = TRUE</code>. If FALSE, no message
+is displayed. Latter option is especially suitable for the case when <code>output.list.forFitSp = TRUE</code> (see below).</p></dd>
+
+
+<dt id="arg-output-list-forfitsp">output.list.forFitSp<a class="anchor" aria-label="anchor" href="#arg-output-list-forfitsp"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, <code>list</code> with the following components will be exclusively returned:
 1. optimized parameters from the best fit (together with the minimum sum of residual squares)
-and 2. data frame of the final best simulated spectrum with and without the baseline fit (see <code>Value</code>).
+and 2. Plot of the experimental as well as simulated EPR spectrum depending on <code>check.fit.plot</code> (see <code>Value</code>).
 Such output will be applied for the more complex optimization/fitting (which is currently under development),
 as stated in the <code>Description</code>, therefore, the <strong>default</strong> value reads <code>output.list.final = FALSE</code>.</p></dd>
 
@@ -323,14 +330,16 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 
 
 </dl></li>
-<li><p>If <code>output.list.final = TRUE</code>, the function exclusively returns list with the two components,
-  which will be applied for the more complex optimization/fitting (which is currently under development).</p><dl><dt>params</dt>
+<li><p>If <code>output.list.forFitSp = TRUE</code>, the function exclusively returns list with the two components,
+  which will be applied for the more complex optimization/fitting (currently under development).</p><dl><dt>params</dt>
 <dd><p>Vector, corresponding to the best fitting (optimized) parameters (related
   to the <code>optim.params.init</code> argument, see also list above) + minimum sum of residual squares,
   after the (final) <code>optim.method</code> procedure.</p></dd>
 
-  <dt>df</dt>
-<dd><p>Data frame including the final best simulated spectrum with and without the baseline fit.</p></dd>
+  <dt>plot</dt>
+<dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectra depending
+  on the <code>check.fit.plot</code>. It corresponds either to EPR spectra with residuals or to those with baseline correction,
+  (refer to the <code>check.fit.plot</code> argument description).</p></dd>
 
 
 </dl></li>
@@ -381,7 +390,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>        <span class="fl">0.018</span>, <span class="co"># Sim. intensity multiply</span></span></span>
 <span class="r-in"><span>        <span class="fl">1e-6</span>, <span class="co"># slope lin. baseline</span></span></span>
 <span class="r-in"><span>        <span class="fl">49</span><span class="op">)</span>, <span class="co"># A in MHz</span></span></span>
-<span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>    msg.optim.progress <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
@@ -444,6 +454,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>    optim.params.upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0072</span>,<span class="fl">5.2</span>,<span class="fl">5.2</span>,<span class="fl">1e-4</span>,<span class="fl">1.7e-2</span>,<span class="fl">53</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are being currently optimized by  PSWARM;  method  1  of  1...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 7.446 s</span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -479,6 +491,10 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>                                            <span class="fl">49</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>                    <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are being currently optimized by  LEVENMARQ;  method  1  of  2...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (50 %)   elapsed time 0.277 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are being currently optimized by  NELDERMEAD;  method  2  of  2......</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 6.339 s</span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
