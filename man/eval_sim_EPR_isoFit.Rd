@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_sim_EPR_isoFit.R
 \name{eval_sim_EPR_isoFit}
 \alias{eval_sim_EPR_isoFit}
-\title{Least-Squares Fitting of Isotropic EPR spectra by Simulations}
+\title{Least-Squares Fitting of Isotropic EPR Spectra by Simulations}
 \usage{
 eval_sim_EPR_isoFit(
   data.spectr.expr,

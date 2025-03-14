@@ -1,5 +1,5 @@
 #'
-#' Least-Squares Fitting of Isotropic EPR spectra by Simulations
+#' Least-Squares Fitting of Isotropic EPR Spectra by Simulations
 #'
 #'
 #' @family Simulations and Optimization
@@ -426,7 +426,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     if (is.null(nucs.system)){
       #
       ## function to simulate EPR spectra WITHOUT NUCLEI INTERACTION
-      sim_epr_iso_df_noNucs <- function(GL.linewidth,G.line.content){
+      sim_epr_iso_df_noNucs <- function(GL.linewidth,G.line.content) {
         #
         ## `GL.linewidth` is list
         sim.df <-
@@ -443,19 +443,19 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         return(sim.df)
       }
       #
-      if (lineG.content == 0 & gB.width.var == 0){
+      if (lineG.content == 0 & gB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(NULL,lB.width.var),
                                 G.line.content = 0
           )
        #
-      } else if(lineG.content == 1 & lB.width.var == 0){
+      } else if (lineG.content == 1 & lB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,NULL),
                                 G.line.content = 1
           )
         #
-      } else{
+      } else {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,lB.width.var),
                                 G.line.content = lineG.content
@@ -467,11 +467,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## Define the length of `nucs.system` similarly as in simple simulation
       ## check if the list is nested (several groups) or simple (only one group)
       nested_list <- any(sapply(nucs.system, is.list))
-      if (isFALSE(nested_list)){
+      if (isFALSE(nested_list)) {
         ## redefinition of `nucs.system` list to calculate the spectra without
         ## any additional conditions just by simple =>
         nucs.system <- list(nucs.system)
-      } else{
+      } else {
         nucs.system <- nucs.system
       }
       ## what is the length of the list (how many nuclear groups)
@@ -511,20 +511,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
       ## evaluating simulated intensity like before (in the case of `nucs.system = NULL`)
-      if (lineG.content == 0 & gB.width.var == 0){
+      if (lineG.content == 0 & gB.width.var == 0) {
         #
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(NULL,lB.width.var),
                               G.line.content = 0
           )
         #
-      } else if (lineG.content == 1 & lB.width.var == 0){
+      } else if (lineG.content == 1 & lB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,NULL),
                               G.line.content = 1
           )
         #
-      } else{
+      } else {
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,lB.width.var),
                               G.line.content = lineG.content
@@ -532,16 +532,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
     }
-    if (baseline == "constant"){
+    if (baseline == "constant") {
       ## Intensity = a + b*Intensity
       data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]])
     }
-    if (baseline == "linear"){
+    if (baseline == "linear") {
       ## Intensity = a + b*Intensity + c*B (B = "magnetic flux density")
       data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]]) +
         (par[6] * sim.fit.df[[paste0("Bsim_",B.unit)]])
     }
-    if (baseline == "quadratic"){
+    if (baseline == "quadratic") {
       ## Intensity = a + b*Intensity + c*B + d*B^2
       data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]]) +
         (par[6] * sim.fit.df[[paste0("Bsim_",B.unit)]]) +
@@ -591,19 +591,19 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         return(sim.df)
       }
       #
-      if (lineG.content == 0 & gB.width.var == 0){
+      if (lineG.content == 0 & gB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(NULL,lB.width.var),
                                 G.line.content = 0
           )
         #
-      } else if(lineG.content == 1 & lB.width.var == 0){
+      } else if (lineG.content == 1 & lB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,NULL),
                                 G.line.content = 1
           )
         #
-      } else{
+      } else {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,lB.width.var),
                                 G.line.content = lineG.content
@@ -615,11 +615,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## Define the length of `nucs.system` similarly as in simple simulation
       ## check if the list is nested (several groups) or simple (only one group)
       nested_list <- any(sapply(nucs.system, is.list))
-      if (isFALSE(nested_list)){
+      if (isFALSE(nested_list)) {
         ## redefinition of `nucs.system` list to calculate the spectra without
         ## any additional conditions just by simple =>
         nucs.system <- list(nucs.system)
-      } else{
+      } else {
         nucs.system <- nucs.system
       }
       ## what is the length of the list (how many nuclear groups)
@@ -641,7 +641,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
       ## function to simulate EPR spectra WITH MUCLEI INTERACTION
-      sim_epr_iso_df_Nucs <- function(GL.linewidth,G.line.content){
+      sim_epr_iso_df_Nucs <- function(GL.linewidth,G.line.content) {
         #
         ## `GL.linewidth` is list
         sim.df <-
@@ -659,20 +659,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
       ## evaluating simulated intensity like before (in the case of `nucs.system = NULL`)
-      if (lineG.content == 0 & gB.width.var == 0){
+      if (lineG.content == 0 & gB.width.var == 0) {
         #
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(NULL,lB.width.var),
                               G.line.content = 0
           )
         #
-      } else if (lineG.content == 1 & lB.width.var == 0){
+      } else if (lineG.content == 1 & lB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,NULL),
                               G.line.content = 1
           )
         #
-      } else{
+      } else {
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,lB.width.var),
                               G.line.content = lineG.content
@@ -680,16 +680,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
     }
-    if (baseline == "constant"){
+    if (baseline == "constant") {
       ## Intensity = a + b*Intensity
       data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]])
     }
-    if (baseline == "linear"){
+    if (baseline == "linear") {
       ## Intensity = a + b*Intensity + c*B (B = "magnetic flux density")
       data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]]) +
         (x0[6] * sim.fit.df[[paste0("Bsim_",B.unit)]])
     }
-    if (baseline == "quadratic"){
+    if (baseline == "quadratic") {
       ## Intensity = a + b*Intensity + c*B + d*B^2
       data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]]) +
         (x0[6] * sim.fit.df[[paste0("Bsim_",B.unit)]]) +
@@ -743,20 +743,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## individual optimization limits for As
     A.lower.limits <- c()
     A.upper.limits <- c()
-    if (baseline.correct == "constant"){
-      for (a in 6:(5+length(nuclear.system.noA))){
+    if (baseline.correct == "constant") {
+      for (a in 6:(5+length(nuclear.system.noA))) {
         A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
         A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
       }
     }
-    if (baseline.correct == "linear"){
-      for (a in 7:(6+length(nuclear.system.noA))){
+    if (baseline.correct == "linear") {
+      for (a in 7:(6+length(nuclear.system.noA))) {
         A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
         A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
       }
     }
-    if (baseline.correct == "quadratic"){
-      for (a in 8:(7+length(nuclear.system.noA))){
+    if (baseline.correct == "quadratic") {
+      for (a in 8:(7+length(nuclear.system.noA))) {
         A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
         A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
       }
@@ -960,7 +960,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## best parameters as input (`optim.params.init.list`) for the next cycle
     ## if several subsequent `optim.method` applied
     best.fit.params[[m]] <- optimization.list[[m]]$par
-    if (length(optim.method) > 1){
+    if (length(optim.method) > 1) {
       if (m < length(optim.method)) {
         optim.params.init.list[[m+1]] <- best.fit.params[[m]]
       }

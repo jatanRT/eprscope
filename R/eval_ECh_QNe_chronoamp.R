@@ -294,7 +294,7 @@ eval_ECh_QNe_chronoamp <- function(data.at,
   } else {
     if (!is.null(E) || !is.null(E.unit)) {
       stop("Charge and Ne are evaluated from `chronoamperogram` !\n
-           Please, set both `E` arguments to `NULL` !! ")
+           Please, set both `E` arguments (E + E.unit) to `NULL` !! ")
     } else {
       ## plot Charge and Time
       plot.Q.vs.t <-

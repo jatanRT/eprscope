@@ -377,7 +377,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## According to above-referenced theory the following condition must be fulfilled
     if (all((spin_nuclear + 0.5) * A_iso_MHz >= 200 * nu.GHz)){
       stop(" The Breit-Rabi Energy/Frequency/B calculations\n
-         cannot be used to predict the EPR spectra ! ")
+           cannot be used to predict the EPR spectra\n
+           due to extremly large `A_iso(MHz)` ! ")
     }
     fun_breit_rabi <- function(A_iso, ## in energy units NOT in MHz !! <-> convert into energy (A * h)
                                B.0, ## in Tesla
@@ -463,7 +464,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       }
       if (I == 1 & h >= 7){
         stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 1 nuclei are not defined !")
+             of equivalent I = 1 nuclei are not defined.\n
+             This issue will be fixed later on, in higher versions !")
       }
       # will be fixed later on
       # if (I == 1 & h == 7){
@@ -498,7 +500,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       }
       if (I == 1.5 & h >= 7){
         stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 3/2 nuclei are not defined !")
+             of equivalent I = 3/2 nuclei are not defined.\n
+             This issue will be fixed later on, in higher versions !")
       }
       # will be fixed later on
       ## There are no stable isotopes with I = 2 =>
@@ -521,7 +524,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       }
       if (I == 2.5 & h >= 5){
         stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 5/2 nuclei are not defined !")
+             of equivalent I = 5/2 nuclei are not defined.\n
+             This issue will be fixed later on, in higher versions !")
       }
       # will be fixed later, on
       ## Intensity pattern for I = 3 (e.g. 10B)
@@ -543,10 +547,10 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       }
       if (I == 3 & h >= 5){
         stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 3 nuclei are not defined !")
+             of equivalent I = 3 nuclei are not defined.\n
+             This issue will be fixed later on, in higher versions !")
       }
       #
-      ## multinomial coefficients will be fixed later on
     }
     #
     ## intensity pattern list for all nuclei by the previous function

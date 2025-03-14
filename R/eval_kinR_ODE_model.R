@@ -324,7 +324,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     if (any(grepl("alpha|beta|gamma",names(kin.params)))){
       stop(" The model reaction is considered as an elementary one.\n
            Parameterized partial reaction orders ('alpha','beta',...)\n
-           have not to be incl. in `kin.params` ! ")
+           must not be included in `kin.params` ! ")
     }
   } else {
     if (!any(grepl("alpha|beta|gamma",names(kin.params)))){
@@ -349,7 +349,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   #
   ## time definition for the spectral series
   if (is.null(time.interval.model)){
-    stop(" Please define the hypothetical interval for the model reaction ! ")
+    stop(" Please define the hypothetical time interval for the model reaction ! ")
   } else{
     if (!is.null(data.qt.expr)){
       start.time <- min(time.expr.vec)
@@ -373,8 +373,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     t <- t
   } else {
     if (is.null(time.expr)){
-      stop(" Time vector/column to compare the experiment with\n
-           the kinetic model must be defined ! ")
+      stop(" Time vector/column in the original `data.qt.expr`,\n
+           to compare the experiment with the kinetic model, must be defined ! ")
     } else{
       ## time to combine  model + experiment for better "resolution"
       t <- c(t, time.expr.vec)

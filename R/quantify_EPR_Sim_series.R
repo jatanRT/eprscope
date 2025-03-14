@@ -396,14 +396,14 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## + optimization
   #
   ## base message to display the progres of the intensity optimization:
-  msg.base <- "Intensities of simulated EPR spectral components are currently\nbeing evaluated/optimized by  "
+  msg.base <- "Intensities of simulated EPR spectral component(s) are currently\nbeing evaluated/optimized by  "
   #
   ## message + time, pointing to optimization start
   if (isTRUE(msg.optim.progress)) {
     # cat("\n")
     message("\r", # or replace by `cat`
-            msg.base,toupper(optim.method),";  method  ",
-            "(",length(data.specs.orig.sim)," Component(s))","...","\n"
+            msg.base,toupper(optim.method),"  method  ",
+            "(",length(data.specs.orig.sim)," Component(s))","......","\n"
     )
     #
     ## start time

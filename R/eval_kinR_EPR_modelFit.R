@@ -217,7 +217,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   if (isTRUE(time.correct)) {
     if (is.null(path_to_dsc_par) & is.null(origin)) {
       stop(" Please define the origin and the path\n
-           for the file incl. instrumental parameters ! ")
+           for the file with the instrumental parameters ! ")
     } else {
       #
       ## instrumental parameters for time series EPR spectra

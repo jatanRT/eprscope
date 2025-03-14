@@ -374,7 +374,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
       data.NoPeak <- data.spectr %>%
         filter(!between(.data[[B]], BpeaKlim[1], BpeaKlim[2]))
       if (is.null(poly.degree)) {
-        stop(" The degree of a polynomial to fit the baseline is not specified.\n
+        stop("Degree of a polynomial to fit the baseline is not specified.\n
              Please, define the `poly.degree` ! ")
       } else {
         ## Polynomial baseline and integrate fit incl. derivative intensities =>

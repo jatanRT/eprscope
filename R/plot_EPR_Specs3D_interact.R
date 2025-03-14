@@ -202,7 +202,8 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   data.spectra.series <- data.spectra.series %>%
     dplyr::select(dplyr::all_of(c(x,var2nd.series,Intensity)))
   ## `var2nd.series` (e.g. time) as factor to properly present the spectral series
-  data.spectra.series[[var2nd.series]] <- as.factor(data.spectra.series[[var2nd.series]])
+  data.spectra.series[[var2nd.series]] <-
+    as.factor(data.spectra.series[[var2nd.series]])
   #
   ## Length of the `var2nd.series`
   var2nd_select_df <- data.spectra.series %>%
@@ -217,11 +218,23 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ##    \/
   ## var2nd.series length => how many points + conditions + filtering
   if (var2nd_select_len >= 80 & var2nd_select_len < 160) {
-    var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 2), ]
-  }
-  if (var2nd_select_len >= 160) {
-    var2nd_select_df <- var2nd_select_df[seq(1, var2nd_select_len, by = 4), ]
-  } else{
+    #
+    var2nd_select_df <-
+      var2nd_select_df[seq(1, var2nd_select_len, by = 2), ]
+    #
+    message("There are more than 80 EPR spectra in the series.\n
+            In order to to speed-up the graph rendering the number\n
+            of spectra was reduced to 1/2 of the original one.")
+    #
+  } else if (var2nd_select_len >= 160) {
+    #
+    var2nd_select_df <-
+      var2nd_select_df[seq(1, var2nd_select_len, by = 4), ]
+    #
+    message("There are more than 160 EPR spectra in the series.\n
+            In order to to speed-up the graph rendering the number\n
+            of spectra was reduced to 1/4 of the original one.")
+  } else {
     var2nd_select_df <- var2nd_select_df
   }
   #

@@ -235,7 +235,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## check the units of k (rate.const)
   if (isFALSE(grepl("s-1|second|s\\^-1|s\\^{-1}|sec|per_sec_|per_s|per_second",rate.const.unit))) {
     stop(" The rate constant (k) unit must contain `seconds` ! \n
-         ...such as `s^-1` or `M^{-1}~s^{-1}`...etc !! ")
+         ...such as `s^-1` or `M^{-1}~s^{-1}`...etc.\n
+         Please, refer to description of the `rate.const.unit` argument !! ")
   }
   #
   ## checking whether the temperature is in K or oC or oF

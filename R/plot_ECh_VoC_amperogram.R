@@ -250,9 +250,7 @@ plot_ECh_VoC_amperogram <- function(data.vat,
   ## Conditions (s)
   if (x.unit == "s"){
     if (!is.null(ref.electrode)){
-      cat("To display the chronoamperogram",
-          "no reference electrode is required.",
-          sep = "\n")
+      stop(" To display the chronoamperogram no reference electrode is required ! ")
     } else {
       if (isTRUE(plot.interact)){
         x.label.html <- paste0("<i>Time</i> (",x.unit,")")
