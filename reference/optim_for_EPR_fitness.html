@@ -97,6 +97,7 @@
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  eval.optim.progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -170,7 +171,21 @@ This helps in maintaining diversity in the swarm and improves the algorithm's ab
 to escape local optima. This type generally offers better performance on larger multidimensional spaces
 than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
 in the <code>References</code>. <strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding
-to <code>"SPSO2007"</code>, that performs slightly better on smaller scales such as simulations of EPR spectra).</p></dd>
+to <code>"SPSO2007"</code>, that performs slightly better on smaller scales such as common simulations of EPR spectra
+with lower number of parameters, hyperfine coupling constants).</p></dd>
+
+
+<dt id="arg-eval-optim-progress">eval.optim.progress<a class="anchor" aria-label="anchor" href="#arg-eval-optim-progress"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> a progress of the optimization/fitting, defined by the <code>method</code>
+argument, is monitored/tracked in the R console. The <strong>default</strong> value is set to <code>FALSE</code>
+because higher number of evaluations/iterations might result in several tens or hundreds of rows
+with the information, depending on the applied <code>method</code>. In the case of <code>{nloptr}</code> methods/functions
+as well as <code>method = "pswarm"</code> it displays the iteration number (each 10-th iteration
+shown for <code>pswarm</code>) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
+Additionally, <code>pswarm</code> method shows the shrinking of the particle swarm diameter by the convergence.
+For the <code>method = "levenmarq"</code> it shows the iteration/evaluation number, sum of residual squares (RSS)
+and the corresponding parameter (Par.) values. In the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>
+and <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></code> this argument can be combined with the <code>msg.optim.progress</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -191,7 +206,8 @@ to <code>"SPSO2007"</code>, that performs slightly better on smaller scales such
   to sum of the residual squares at each iteration.</p></li>
 <li><p>A descriptive message/character string giving additional information about the optimization
   procedure/termination. <strong>By default</strong>, this is however <strong>"turned off"</strong>, for the sake of simplicity,
-  because most of the information can be found in the previous convergence list element.</p></li>
+  because most of the information can be found in the previous convergence list element
+  or can be turned on by the <code>eval.optim.progress</code> argument.</p></li>
 </ol></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

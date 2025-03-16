@@ -256,7 +256,8 @@ to escape local optima. This type generally offers better performance on larger 
 than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
 in the <code>References</code> of the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>.
 <strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding to <code>"SPSO2007"</code>,
-that performs slightly better on smaller scales such as simulations of EPR spectra).</p></dd>
+that performs slightly better on smaller scales such as common simulations of EPR spectra
+with lower number of parameters, hyperfine coupling constants).</p></dd>
 
 
 <dt id="arg-check-fit-plot">check.fit.plot<a class="anchor" aria-label="anchor" href="#arg-check-fit-plot"></a></dt>
@@ -270,8 +271,12 @@ within the plot.</p></dd>
 
 <dt id="arg-msg-optim-progress">msg.optim.progress<a class="anchor" aria-label="anchor" href="#arg-msg-optim-progress"></a></dt>
 <dd><p>Logical, whether to display message (in the R console) about progress of the <code>optim.method</code>
-during the optimization/fitting procedure. <strong>Default</strong>: <code>msg.optim.progress = TRUE</code>. If FALSE, no message
-is displayed. Latter option is especially suitable for the case when <code>output.list.forFitSp = TRUE</code> (see below).</p></dd>
+during the optimization/fitting procedure, e.g.
+<code>"EPR simulation parameters are currently being optimized by NELDERMEAD, method 1 of 2..."</code> and at the end
+it shows the elapsed time. <strong>Default</strong>: <code>msg.optim.progress = TRUE</code>. If <code>FALSE</code>, no message
+is displayed. Latter option is especially suitable for the case when <code>output.list.forFitSp = TRUE</code> (see below).
+This argument can be combined with the optional <code>eval.optim.progress</code> (see below or described in the
+<code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>).</p></dd>
 
 
 <dt id="arg-output-list-forfitsp">output.list.forFitSp<a class="anchor" aria-label="anchor" href="#arg-output-list-forfitsp"></a></dt>
@@ -283,7 +288,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments specified (see also <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>).</p></dd>
+<dd><p>additional arguments specified, see also <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>,
+like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <strong>default</strong>).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -455,7 +461,7 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are currently being optimized by  PSWARM;  method  1  of  1...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 7.417 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 7.359 s</span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -492,9 +498,9 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 <span class="r-in"><span>                      check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>                    <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are currently being optimized by  LEVENMARQ;  method  1  of  2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (50 %)   elapsed time 0.299 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (50 %)   elapsed time 0.294 s</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are currently being optimized by  NELDERMEAD;  method  2  of  2......</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 6.792 s</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 6.583 s</span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
