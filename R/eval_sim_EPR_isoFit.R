@@ -123,7 +123,8 @@
 #'   than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
 #'   in the \code{References} of the \code{\link{optim_for_EPR_fitness}}.
 #'   \strong{Default}: \code{pswarm.type = NULL} (actually corresponding to \code{"SPSO2007"},
-#'   that performs slightly better on smaller scales such as simulations of EPR spectra).
+#'   that performs slightly better on smaller scales such as common simulations of EPR spectra
+#'   with lower number of parameters, hyperfine coupling constants).
 #' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
 #'   fit + experimental spectrum (including residuals in the lower part of the plot,
 #'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
@@ -131,14 +132,19 @@
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity,
 #'   within the plot.
 #' @param msg.optim.progress Logical, whether to display message (in the R console) about progress of the \code{optim.method}
-#'   during the optimization/fitting procedure. \strong{Default}: \code{msg.optim.progress = TRUE}. If FALSE, no message
+#'   during the optimization/fitting procedure, e.g.
+#'   \code{"EPR simulation parameters are currently being optimized by NELDERMEAD, method 1 of 2..."} and at the end
+#'   it shows the elapsed time. \strong{Default}: \code{msg.optim.progress = TRUE}. If \code{FALSE}, no message
 #'   is displayed. Latter option is especially suitable for the case when \code{output.list.forFitSp = TRUE} (see below).
+#'   This argument can be combined with the optional \code{eval.optim.progress} (see below or described in the
+#'   \code{\link{optim_for_EPR_fitness}}).
 #' @param output.list.forFitSp Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
 #'   1. optimized parameters from the best fit (together with the minimum sum of residual squares)
 #'   and 2. Plot of the experimental as well as simulated EPR spectrum depending on \code{check.fit.plot} (see \code{Value}).
 #'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
 #'   as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
-#' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
+#' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
+#'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}).
 #'
 #'
 #' @return Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
@@ -339,6 +345,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   if (any(grepl("index", colnames(data.spectr.expr)))) {
     data.spectr.expr$index <- NULL
   }
+  ## if method defined by letter case - upper
+  ## convert it automatically into lower
+  if (any(grepl("^[[:upper:]]+",optim.method))) {
+    optim.method <- tolower(optim.method)
+  }
+  ## if `baseline.correct` defined by letter case - upper
+  ## convert it automatically into lower
+  if (grepl("^[[:upper:]]+",baseline.correct)) {
+    baseline.correct <- tolower(baseline.correct)
+  }
+  #
   ## instrumental parameters except the microwave frequency must be read from
   ## the experimental data. It cannot be done by the same way like in simulation
   ## because the relevant instrum. params. like Bsw (B.SW) and Bcf (B.CF) differs

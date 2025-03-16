@@ -16,6 +16,7 @@ optim_for_EPR_fitness(
   pswarm.size = NULL,
   pswarm.diameter = NULL,
   pswarm.type = NULL,
+  eval.optim.progress = FALSE,
   ...
 )
 }
@@ -66,7 +67,19 @@ This helps in maintaining diversity in the swarm and improves the algorithm's ab
 to escape local optima. This type generally offers better performance on larger multidimensional spaces
 than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
 in the \code{References}. \strong{Default}: \code{pswarm.type = NULL} (actually corresponding
-to \code{"SPSO2007"}, that performs slightly better on smaller scales such as simulations of EPR spectra).}
+to \code{"SPSO2007"}, that performs slightly better on smaller scales such as common simulations of EPR spectra
+with lower number of parameters, hyperfine coupling constants).}
+
+\item{eval.optim.progress}{Logical. If \code{TRUE} a progress of the optimization/fitting, defined by the \code{method}
+argument, is monitored/tracked in the R console. The \strong{default} value is set to \code{FALSE}
+because higher number of evaluations/iterations might result in several tens or hundreds of rows
+with the information, depending on the applied \code{method}. In the case of \code{{nloptr}} methods/functions
+as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration
+shown for \code{pswarm}) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
+Additionally, \code{pswarm} method shows the shrinking of the particle swarm diameter by the convergence.
+For the \code{method = "levenmarq"} it shows the iteration/evaluation number, sum of residual squares (RSS)
+and the corresponding parameter (Par.) values. In the \code{\link{eval_sim_EPR_isoFit}}
+and \code{\link{quantify_EPR_Sim_series}} this argument can be combined with the \code{msg.optim.progress}.}
 
 \item{...}{additional arguments passed to the function.}
 }
@@ -89,7 +102,8 @@ For all listed algorithms the function returns \code{list} with the elements lik
 
   \item A descriptive message/character string giving additional information about the optimization
   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
-  because most of the information can be found in the previous convergence list element.
+  because most of the information can be found in the previous convergence list element
+  or can be turned on by the \code{eval.optim.progress} argument.
   }
 }
 \description{

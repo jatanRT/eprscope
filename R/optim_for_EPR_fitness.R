@@ -114,7 +114,18 @@
 #'   to escape local optima. This type generally offers better performance on larger multidimensional spaces
 #'   than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
 #'   in the \code{References}. \strong{Default}: \code{pswarm.type = NULL} (actually corresponding
-#'   to \code{"SPSO2007"}, that performs slightly better on smaller scales such as simulations of EPR spectra).
+#'   to \code{"SPSO2007"}, that performs slightly better on smaller scales such as common simulations of EPR spectra
+#'   with lower number of parameters, hyperfine coupling constants).
+#' @param eval.optim.progress Logical. If \code{TRUE} a progress of the optimization/fitting, defined by the \code{method}
+#'   argument, is monitored/tracked in the R console. The \strong{default} value is set to \code{FALSE}
+#'   because higher number of evaluations/iterations might result in several tens or hundreds of rows
+#'   with the information, depending on the applied \code{method}. In the case of \code{{nloptr}} methods/functions
+#'   as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration
+#'   shown for \code{pswarm}) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
+#'   Additionally, \code{pswarm} method shows the shrinking of the particle swarm diameter by the convergence.
+#'   For the \code{method = "levenmarq"} it shows the iteration/evaluation number, sum of residual squares (RSS)
+#'   and the corresponding parameter (Par.) values. In the \code{\link{eval_sim_EPR_isoFit}}
+#'   and \code{\link{quantify_EPR_Sim_series}} this argument can be combined with the \code{msg.optim.progress}.
 #'
 #'
 #' @return For all listed algorithms the function returns \code{list} with the elements like
@@ -135,7 +146,8 @@
 #'
 #'   \item A descriptive message/character string giving additional information about the optimization
 #'   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
-#'   because most of the information can be found in the previous convergence list element.
+#'   because most of the information can be found in the previous convergence list element
+#'   or can be turned on by the \code{eval.optim.progress} argument.
 #'   }
 #'
 #'
@@ -265,15 +277,26 @@ optim_for_EPR_fitness <- function(method = "neldermead",
                                   pswarm.size = NULL,
                                   pswarm.diameter = NULL,
                                   pswarm.type = NULL,
+                                  eval.optim.progress = FALSE, ## print/show progress of fitting/optimization.
                                   ...) {
   #
   ## 'Temporary' processing variables
   . <- NULL
   #
+  ## if method defined by letter case - upper
+  ## convert it automatically into lower
+  if (grepl("^[[:upper:]]+",method)) {
+    method <- tolower(method)
+  }
+  #
   ## controlling the optimization for NLOPTR
   ## (control of the PSO function see below)
-  contrl.list.nloptr <- list(maxeval = Nmax.evals,
-                             xtol_rel = tol.step)
+  contrl.list.nloptr <-
+    list(maxeval = Nmax.evals,
+         xtol_rel = tol.step,
+         print_level = switch( ## showing progress (iterations) of the optim.
+           2-eval.optim.progress,1,0
+         ))
   #
   ## Sequential (least-squares) quadratic programming
   ## (SQP) algorithm
@@ -352,6 +375,10 @@ optim_for_EPR_fitness <- function(method = "neldermead",
       data = data,
       ...
     ))
+    #
+    if (isTRUE(eval.optim.progress)) {
+      message(" The optimization/evaluation progress cannot be tracked for this method/function ! ")
+    }
   }
   #
   ##  Variant of Nelder-Mead that uses Nelder-Mead
@@ -377,8 +404,13 @@ optim_for_EPR_fitness <- function(method = "neldermead",
       lower = lower,
       upper = upper,
       data = data,
-      control = minpack.lm::nls.lm.control(ptol = tol.step,
-                                           maxiter = Nmax.evals),
+      control =
+        minpack.lm::nls.lm.control(
+          ptol = tol.step,
+          maxiter = Nmax.evals,
+          nprint = switch( ## showing progress (iterations) of the optim.
+            2-eval.optim.progress,1,0
+          )),
       ...
     ))
   }
@@ -395,6 +427,9 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     if (pswarm.type == "SPSO2007") {
       pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),
                                           floor(10+2*sqrt(length(x.0))), .)
+      if (pswarm.size >= 40) {
+        message(" Please, use the `pswarm.type = SPSO2011` for such high number of particles ! ")
+      }
     }
     if (pswarm.type == "SPSO2011") {
       pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),40, .)
@@ -416,9 +451,13 @@ optim_for_EPR_fitness <- function(method = "neldermead",
            d = pswarm.diameter, ## The diameter of the search space.
            k = 6, ## The exponent for calculating the number of informants.
            type = pswarm.type, ## which reference implementation of SPSO is followed.
-           ## Can take the value of “SPSO2007” or “SPSO2011”. Defaults to “SPSO2007”
-           vectorize = FALSE) ## Particles are processed in a vectorized manner,
+           ## Can take the value of “SPSO2007” or “SPSO2011”. Defaults to “SPSO2007”.
+           vectorize = FALSE, ## Particles are processed in a vectorized manner,
            ## more time efficient for cheap function evaluations.
+           trace = switch(2-eval.optim.progress,1,0) ## showing progress (iterations) of the optim.,
+           ## the frequency of tracing is set to `10`,
+           ## otherwise can be changed by `REPORT = ...` (20 or 50 or 100 or ...)
+      )
     #
     return(pso::psoptim(
       par = x.0,

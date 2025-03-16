@@ -109,12 +109,18 @@
 #'   within the output data frame, \strong{default}: \code{double.integ = "double_IntegSim"}.
 #'   If \code{double.integ = NULL}, only single integrals are calculated/returned (e.g. in the case of
 #'   single integrated spectral data).
-#' @param msg.optim.progress Logical. If TRUE (\strong{default}) a message in the R console displays the information
-#'   about the progress of optimization/fitting. In case when \code{msg.optim.progress = FALSE}, no message is displayed.
+#' @param msg.optim.progress Logical, whether to display message (in the R console) about progress of the \code{optim.method}
+#'   during the optimization/fitting procedure, e.g.
+#'   \code{"Intensities of simulated EPR spectral component(s) are currently being evaluated/optimized}
+#'   \code{by  NELDERMEAD  method  (4 Component(s))"} and at the end it shows the elapsed time.
+#'   \strong{Default}: \code{msg.optim.progress = TRUE}. If \code{FALSE}, no message
+#'   is displayed. This argument can be combined with the optional \code{eval.optim.progress}
+#'   (see below or described in the \code{\link{optim_for_EPR_fitness}}).
 #' @param output.area.stat Logical, whether to summarize all fitted EPR spectral components, in columns,
 #'   for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
 #'   (see \code{Details}).\strong{Default}: \code{output.area.stat = TRUE}.
-#' @param ... additional arguments specified (see also \code{\link{optim_for_EPR_fitness}}).
+#' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
+#'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}).
 #'
 #'
 #' @return Function provides data frame object, depending on the \code{output.area.stat} argument,
@@ -205,6 +211,12 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   min_RSS <- NULL
   N_evals <- NULL
   N_converg <- NULL
+  #
+  ## if method defined by letter case - upper
+  ## convert it automatically into lower
+  if (grepl("^[[:upper:]]+",optim.method)) {
+    optim.method <- tolower(optim.method)
+  }
   #
   ## Reading simulated EPR spectra from MATLAB or other simulation sources
   ## sim file paths
