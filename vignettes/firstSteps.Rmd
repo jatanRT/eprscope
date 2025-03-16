@@ -106,11 +106,11 @@ devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 
 # First Steps in ![](RcoreLogo.png){width="28" height="21"} Statistical Language
 
-In this section, only essential syntax and/or basic commands to run the `{eprscope}` functions will be described. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html).
+In this section, only essential syntax and/or basic commands to run the `{eprscope}` functions will be described. For details or more advanced programming experience, please refer to the resources listed in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). How to plot/make graphs will be tackled in the package higher versions. However, right now one can consult either the `r vignette("functionality")` or several examples in documentation of plotting functions.
 
 ## Variable/Function Names and Assignment
 
-Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting the line with the hash symbol `#` like already shown in the installation code above.
+Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by dot `.`, like stated in the examples below. Both assignment operators (`<-` and `=`) can be used in the ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting the line with the hash symbol `#` like already shown in the installation code above.
 
 ```{r names-assignments}
 
@@ -443,7 +443,7 @@ vec.B.G.c[1:12]
 
 ```
 
-In order to select/convert a data frame row into vector one has to, first of all, `unlist()` the row (because it possesses the form of data frame) and finally remove the names:
+In order to select/convert a data frame row into vector one has to, first of all, `unlist()` the row (because it possesses the form of data frame) and finally remove the names (if the named vector is not desired):
 
 ```{r exxample-01-df-row-vector}
 
@@ -547,7 +547,7 @@ vec.B.G.c |> round(digits = 2) |> mean()
 
 ```
 
-3.   ... TBC <!-- TODO -->
+3.  ... TBC <!-- TODO -->
 
 ... TBC <!-- TODO -->
 
@@ -677,15 +677,11 @@ triarylam.decay.dat$df
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of the CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. ...TBC <!-- TODO -->
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. ...TBC <!-- TODO -->
 
 ## Lists
 
 Blah
-
-## Plots
-
-As already mentioned in `vignette("functionality")` the EPR spectra and the related data can be mostly visualized by several options using the... packages
 
 ## Basic String Operations
 
