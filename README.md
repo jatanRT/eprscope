@@ -74,7 +74,8 @@ Kit](https://www.oracle.com/java/technologies/downloads/?er=221886)
 # install.packages(
 #   c("DT","vctrs","npreg","patchwork","kableExtra",
 #     "htmlwidgets","webshot2","tinytable","gsignal",
-#     "shiny","shinythemes"),
+#     "shiny","shinythemes","future","future.apply",
+#     "progressr","gganimate"),
 #   dependencies = TRUE
 # )
 #
@@ -319,6 +320,15 @@ quite straightforward diving into
   R](https://cran.r-project.org/other-docs.html)
 
 - [The Big Book of R](https://www.bigbookofr.com/)
+
+- [Learn R Programming Language (Geeks for
+  Geeks)](https://www.geeksforgeeks.org/r-tutorial/?ref=home-articlecards)
+
+- [R Packages and Related Links for Chemistry and
+  Physics](https://cran.r-project.org/web/views/ChemPhys.html)
+
+- [R Packages and Related Links for Optimization and Mathematical
+  Programming](https://cran.r-project.org/web/views/Optimization.html)
 
 - [Reproducible Research in R and Guides for the R-Cubed
   Courses](https://guides.rostools.org/)

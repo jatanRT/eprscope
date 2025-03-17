@@ -111,8 +111,8 @@
 #'   single integrated spectral data).
 #' @param msg.optim.progress Logical, whether to display message (in the R console) about progress of the \code{optim.method}
 #'   during the optimization/fitting procedure, e.g.
-#'   \code{"Intensities of simulated EPR spectral component(s) are currently being evaluated/optimized}
-#'   \code{by  NELDERMEAD  method  (4 Component(s))"} and at the end it shows the elapsed time.
+#'   \code{Intensities of simulated EPR spectral component(s) are currently being evaluated/optimized}
+#'   \code{by  NELDERMEAD  method  (4 Component(s))} and at the end it shows the elapsed time.
 #'   \strong{Default}: \code{msg.optim.progress = TRUE}. If \code{FALSE}, no message
 #'   is displayed. This argument can be combined with the optional \code{eval.optim.progress}
 #'   (see below or described in the \code{\link{optim_for_EPR_fitness}}).
