@@ -120,7 +120,7 @@
 #'   argument, is monitored/tracked in the R console. The \strong{default} value is set to \code{FALSE}
 #'   because higher number of evaluations/iterations might result in several tens or hundreds of rows
 #'   with the information, depending on the applied \code{method}. In the case of \code{{nloptr}} methods/functions
-#'   as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration
+#'   as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration per particle
 #'   shown for \code{pswarm}) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
 #'   Additionally, \code{pswarm} method shows the shrinking of the particle swarm diameter by the convergence.
 #'   For the \code{method = "levenmarq"} it shows the iteration/evaluation number, sum of residual squares (RSS)

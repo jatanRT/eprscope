@@ -260,7 +260,8 @@
 #'     optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49),
 #'     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,1.1e-2,45),
 #'     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.7e-2,53),
-#'     check.fit.plot = TRUE
+#'     check.fit.plot = TRUE,
+#'     eval.optim.progress = TRUE ## iterations, progress
 #'   )
 #' ## OUTPUTS:
 #' ## best fit parameters:
@@ -318,7 +319,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 Intensity.sim = "dIeprSim_over_dB",
                                 nu.GHz,
                                 B.unit = "G",
-                                nuclear.system.noA = NULL,
+                                nuclear.system.noA = NULL, ## no HFCCs, only nucleus and number
                                 baseline.correct = "constant", ## "linear" or "quadratic"
                                 lineG.content = 0.5,
                                 lineSpecs.form = "derivative",
@@ -838,8 +839,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ) {
       if (isTRUE(msg.show)) {
         if (time == "before") {
-          # cat("\n")
-          message("\r", # or replace by `cat`
+          cat("\n") # or comment if using `message`
+          cat("\r", # or replace by `message`
                   msg.main,
                   toupper(method.optim),
                   ";  method  ",x,
@@ -850,8 +851,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
           #
         } else if (time == "after") {
           #
-          # cat("\n")
-          message("\r", # or replace by `cat`
+          cat("\n") # or comment if using `message`
+          cat("\r", # or replace by `message`
                   "Done!"," (",
                   round((x / length(optim.method)),digits = 2) * 100,
                   " %)  ",

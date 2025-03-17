@@ -305,7 +305,8 @@ tempo.test.sim.fit.b <-
     optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49),
     optim.params.lower = c(2.0048,4.4,4.4,-1e-4,1.1e-2,45),
     optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.7e-2,53),
-    check.fit.plot = TRUE
+    check.fit.plot = TRUE,
+    eval.optim.progress = TRUE ## iterations, progress
   )
 ## OUTPUTS:
 ## best fit parameters:

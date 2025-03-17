@@ -412,8 +412,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   ## message + time, pointing to optimization start
   if (isTRUE(msg.optim.progress)) {
-    # cat("\n")
-    message("\r", # or replace by `cat`
+    cat("\n") # or comment if using `message`
+    cat("\r", # or replace by `message`
             msg.base,toupper(optim.method),"  method  ",
             "(",length(data.specs.orig.sim)," Component(s))","......","\n"
     )
@@ -535,8 +535,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   ## ...and the message, pointing to the optimization end
 
-    # cat("\n")
-    message("\r", # or replace by `cat`
+    cat("\n") # or comment if using "message"
+    cat("\r", # or replace by `message`
             "Done!"," elapsed time ",
             round(as.numeric(difftime(time1 = end.tm, time2 = start.tm, units = "secs")), 3), " s","\n"
     )
