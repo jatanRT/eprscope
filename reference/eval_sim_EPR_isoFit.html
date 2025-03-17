@@ -458,10 +458,19 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span>    optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.006</span>,<span class="fl">4.8</span>,<span class="fl">4.8</span>,<span class="fl">0</span>,<span class="fl">1.4e-2</span>,<span class="fl">49</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    optim.params.lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0048</span>,<span class="fl">4.4</span>,<span class="fl">4.4</span>,<span class="op">-</span><span class="fl">1e-4</span>,<span class="fl">1.1e-2</span>,<span class="fl">45</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    optim.params.upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0072</span>,<span class="fl">5.2</span>,<span class="fl">5.2</span>,<span class="fl">1e-4</span>,<span class="fl">1.7e-2</span>,<span class="fl">53</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>    check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    eval.optim.progress <span class="op">=</span> <span class="cn">TRUE</span> <span class="co">## iterations, progress</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are currently being optimized by  PSWARM;  method  1  of  1...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 7.359 s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   PSWARM ;  method   1   of   1 ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> S=14, K=6, p=0.359, w0=0.7213, w1=0.7213, c.p=1.193, c.g=1.193</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> v.max=NA, d=8.08, vectorize=FALSE, hybrid=off</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It 10: fitness=1.57e-07, swarm diam.=1.103</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It 20: fitness=4.927e-08, swarm diam.=2.084</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=3.039e-08, swarm diam.=1.056</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.978  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -497,10 +506,14 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span>                                            <span class="fl">49</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                      check.fit.plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>                    <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are currently being optimized by  LEVENMARQ;  method  1  of  2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (50 %)   elapsed time 0.294 s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> EPR simulation parameters are currently being optimized by  NELDERMEAD;  method  2  of  2......</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done! (100 %)   elapsed time 6.583 s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.335  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.147  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
