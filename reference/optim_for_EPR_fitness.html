@@ -172,7 +172,7 @@ to escape local optima. This type generally offers better performance on larger 
 than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
 in the <code>References</code>. <strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding
 to <code>"SPSO2007"</code>, that performs slightly better on smaller scales such as common simulations of EPR spectra
-with lower number of parameters, hyperfine coupling constants).</p></dd>
+with lower number of parameters like hyperfine coupling constants).</p></dd>
 
 
 <dt id="arg-eval-optim-progress">eval.optim.progress<a class="anchor" aria-label="anchor" href="#arg-eval-optim-progress"></a></dt>
@@ -204,10 +204,10 @@ and <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></co
   of iterations reached</code> (or integer code &gt; 0 indicating successful completion) or in the case
   of <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, it returns a vector with the values equal
   to sum of the residual squares at each iteration.</p></li>
-<li><p>A descriptive message/character string giving additional information about the optimization
+<li><p>A descriptive message/character string, giving the additional information about the optimization
   procedure/termination. <strong>By default</strong>, this is however <strong>"turned off"</strong>, for the sake of simplicity,
   because most of the information can be found in the previous convergence list element
-  or can be turned on by the <code>eval.optim.progress</code> argument.</p></li>
+  or can be activated by the <code>eval.optim.progress</code> argument.</p></li>
 </ol></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

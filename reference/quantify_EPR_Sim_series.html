@@ -226,7 +226,8 @@ to escape local optima. This type generally offers better performance on larger 
 than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
 in the <code>References</code> of the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>.
 <strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding to <code>"SPSO2007"</code>,
-that performs slightly better on smaller scales such as simulations of EPR spectra).</p></dd>
+that performs slightly better on smaller scales such as common simulations of EPR spectra
+with lower number of parameters like hyperfine coupling constants).</p></dd>
 
 
 <dt id="arg-single-integ">single.integ<a class="anchor" aria-label="anchor" href="#arg-single-integ"></a></dt>
@@ -254,7 +255,8 @@ is displayed. This argument can be combined with the optional <code>eval.optim.p
 <dt id="arg-output-area-stat">output.area.stat<a class="anchor" aria-label="anchor" href="#arg-output-area-stat"></a></dt>
 <dd><p>Logical, whether to summarize all fitted EPR spectral components, in columns,
 for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
-(see <code>Details</code>).<strong>Default</strong>: <code>output.area.stat = TRUE</code>.</p></dd>
+(see <code>Value</code>).<strong>Default</strong>: <code>output.area.stat = TRUE</code>. Otherwise, tidy/long format
+table is returned, including all EPR spectra and their corresponding integrals.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -274,8 +276,9 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   of evaluations/iterations (<code>N_evals</code>) and finally convergence information/number (<code>N_converg</code>,
   like already described in the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>). These variables are presented for each
   <code>var2nd.series</code> (e.g. time) point like example for one EPR spectral component:</p><table class="table table"><tr><td><strong>time_s</strong></td><td><strong>Area_Sim_A</strong></td><td><strong>Optim_CoeffInt_Sim_A</strong></td><td><strong>Optim_intercept</strong></td><td><strong>min_RSS</strong></td><td><strong>N_evals</strong></td><td><strong>N_converg</strong></td></tr><tr><td>6</td><td>0.020624473</td><td>0.052843937</td><td>5.508809e-10</td><td>2.289953e-07</td><td>198</td><td>4</td></tr><tr><td>21</td><td>0.020217930</td><td>0.051802287</td><td>5.401823e-10</td><td>2.438172e-07</td><td>177</td><td>4</td></tr><tr><td>36</td><td>0.018836579</td><td>0.048263010</td><td>5.029705e-10</td><td>2.662651e-07</td><td>201</td><td>4</td></tr></table></li>
-<li><p>Tidy/long table format of the original <code>data.spectra.series</code> with additional
-  columns/variables (best fitted simulated intensities) for all spectral components: A, B, C, ...etc.</p></li>
+<li><p>If <code>output.area.stat = FALSE</code> Tidy/long table format of the original <code>data.spectra.series</code>
+  with additional columns/variables (best fitted simulated intensities and their corresponding integrals)
+  for all spectral components: A, B, C, ...etc.</p></li>
 </ol></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -287,7 +290,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
   combination of the spectral intensities of components (simulated spectra) and optimizes
   the related multiplication coefficients. Additional analysis, where the positions of spectral
-  components (simulated spectra) are not fixed and can be optimized as well is under development.</p>
+  components (simulated spectra) are not fixed and can be optimized as well, is under development.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -317,14 +320,19 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## similar example with two components</span></span></span>
 <span class="r-in"><span><span class="co">## (simulated spectra) and tidy data frame</span></span></span>
-<span class="r-in"><span><span class="co">## output (not the summarized one)</span></span></span>
+<span class="r-in"><span><span class="co">## output (not the summarized one) with all spectra</span></span></span>
+<span class="r-in"><span><span class="co">## and their corresponding integrals, additionally,</span></span></span>
+<span class="r-in"><span><span class="co">## display of the iteration progress for each EPR</span></span></span>
+<span class="r-in"><span><span class="co">## spectrum within the series is activated</span></span></span>
 <span class="r-in"><span><span class="va">quant.data.sim.test.b</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">quantify_EPR_Sim_series</span><span class="op">(</span><span class="va">data.spectra.series</span>,</span></span>
 <span class="r-in"><span>     dir_ASC_sim <span class="op">=</span> <span class="st">"./"</span>,</span></span>
 <span class="r-in"><span>     optim.method <span class="op">=</span> <span class="st">"sbplx"</span>,</span></span>
 <span class="r-in"><span>     name.pattern.sim <span class="op">=</span> <span class="st">"DHMB0_1st_04_Sim[[:upper:]]"</span>,</span></span>
 <span class="r-in"><span>     optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>     output.area.stat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     output.area.stat <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>     eval.optim.progress <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>     <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
