@@ -124,7 +124,7 @@
 #'   in the \code{References} of the \code{\link{optim_for_EPR_fitness}}.
 #'   \strong{Default}: \code{pswarm.type = NULL} (actually corresponding to \code{"SPSO2007"},
 #'   that performs slightly better on smaller scales such as common simulations of EPR spectra
-#'   with lower number of parameters, hyperfine coupling constants).
+#'   with lower number of parameters like hyperfine coupling constants).
 #' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
 #'   fit + experimental spectrum (including residuals in the lower part of the plot,
 #'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
@@ -189,7 +189,7 @@
 #'   after the (final) \code{optim.method} procedure.}
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
 #'   on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
-#'   (refer to the \code{check.fit.plot} argument description).}
+#'   (please, refer to the \code{check.fit.plot} argument description).}
 #'   }
 #'   }
 #'

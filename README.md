@@ -316,6 +316,9 @@ quite straightforward diving into
 - [R to Python Data
   Wrangling](https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07)
 
+- [Chemometrics and Spectroscopy Using R (Bryan Hanson
+  Blog)](https://chemospec.org/)
+
 - [Official Contributed Documentation of
   R](https://cran.r-project.org/other-docs.html)
 

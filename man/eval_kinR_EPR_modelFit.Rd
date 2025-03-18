@@ -71,7 +71,7 @@ a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \c
 must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
 presented above, it applies only to one part/step of the mechanism.}
 
-\item{elementary.react}{Logical, if the model reaction should be considered as the elementary one,
+\item{elementary.react}{Logical, if the model reaction should be considered as elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,

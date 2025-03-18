@@ -123,7 +123,8 @@ to escape local optima. This type generally offers better performance on larger 
 than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
 in the \code{References} of the \code{\link{optim_for_EPR_fitness}}.
 \strong{Default}: \code{pswarm.type = NULL} (actually corresponding to \code{"SPSO2007"},
-that performs slightly better on smaller scales such as simulations of EPR spectra).}
+that performs slightly better on smaller scales such as common simulations of EPR spectra
+with lower number of parameters like hyperfine coupling constants).}
 
 \item{single.integ}{Character string, setting up the column/variable name related to single-integrated spectrum
 within the output data frame, \strong{default}: \code{single.integ = "single_IntegSim"}.}
@@ -143,7 +144,8 @@ is displayed. This argument can be combined with the optional \code{eval.optim.p
 
 \item{output.area.stat}{Logical, whether to summarize all fitted EPR spectral components, in columns,
 for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
-(see \code{Details}).\strong{Default}: \code{output.area.stat = TRUE}.}
+(see \code{Value}).\strong{Default}: \code{output.area.stat = TRUE}. Otherwise, tidy/long format
+table is returned, including all EPR spectra and their corresponding integrals.}
 
 \item{...}{additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}).}
@@ -169,8 +171,9 @@ Function provides data frame object, depending on the \code{output.area.stat} ar
   36 \tab 0.018836579 \tab 0.048263010 \tab 5.029705e-10 \tab 2.662651e-07 \tab 201 \tab 4 \cr
   }
 
-  \item Tidy/long table format of the original \code{data.spectra.series} with additional
-  columns/variables (best fitted simulated intensities) for all spectral components: A, B, C, ...etc.
+  \item If \code{output.area.stat = FALSE} Tidy/long table format of the original \code{data.spectra.series}
+  with additional columns/variables (best fitted simulated intensities and their corresponding integrals)
+  for all spectral components: A, B, C, ...etc.
   }
 }
 \description{
@@ -189,7 +192,7 @@ Analyzed EPR spectra may consists of several components (see also the \code{\lin
   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
   combination of the spectral intensities of components (simulated spectra) and optimizes
   the related multiplication coefficients. Additional analysis, where the positions of spectral
-  components (simulated spectra) are not fixed and can be optimized as well is under development.
+  components (simulated spectra) are not fixed and can be optimized as well, is under development.
 }
 \examples{
 \dontrun{
@@ -208,14 +211,19 @@ quant.data.sim.test.a <-
 #
 ## similar example with two components
 ## (simulated spectra) and tidy data frame
-## output (not the summarized one)
+## output (not the summarized one) with all spectra
+## and their corresponding integrals, additionally,
+## display of the iteration progress for each EPR
+## spectrum within the series is activated
 quant.data.sim.test.b <-
   quantify_EPR_Sim_series(data.spectra.series,
      dir_ASC_sim = "./",
      optim.method = "sbplx",
      name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]",
      optim.params.init = c(0,0.8,0.2),
-     output.area.stat = FALSE)
+     output.area.stat = FALSE,
+     eval.optim.progress = TRUE
+     )
 #
 }
 

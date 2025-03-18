@@ -18,7 +18,7 @@ Based on the acquisition EPR spectrum \code{origin}, in user interface, one can 
   by the \code{\link{readEPR_params_tabs}} functions. An EPR is immediately depicted in the interactive
   \code{{plotly}} format by \code{\link{plot_EPR_Specs2D_interact}}. The magnetic flux density \eqn{B}
   of such EPR spectrum can be changed from \code{mT} to \code{G} and to \code{g}-values. Moreover,
-  if the compound/radical structure is already known one can easily show its structure by entering
+  if the compound/radical structure is already known, one can display its structure by entering
   its corresponding \code{SMILES} code, using the \code{\link{draw_molecule_by_rcdk}}.
   Uploaded \code{ASCII} data (spectrum + parameters) are applied to interactively simulate
   the corresponding experimental spectrum by the \code{\link{eval_sim_EPR_iso}} and to visualize

@@ -115,7 +115,7 @@
 #'   than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
 #'   in the \code{References}. \strong{Default}: \code{pswarm.type = NULL} (actually corresponding
 #'   to \code{"SPSO2007"}, that performs slightly better on smaller scales such as common simulations of EPR spectra
-#'   with lower number of parameters, hyperfine coupling constants).
+#'   with lower number of parameters like hyperfine coupling constants).
 #' @param eval.optim.progress Logical. If \code{TRUE} a progress of the optimization/fitting, defined by the \code{method}
 #'   argument, is monitored/tracked in the R console. The \strong{default} value is set to \code{FALSE}
 #'   because higher number of evaluations/iterations might result in several tens or hundreds of rows
@@ -144,10 +144,10 @@
 #'   of \code{\link[minpack.lm]{nls.lm}}, it returns a vector with the values equal
 #'   to sum of the residual squares at each iteration.
 #'
-#'   \item A descriptive message/character string giving additional information about the optimization
+#'   \item A descriptive message/character string, giving the additional information about the optimization
 #'   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
 #'   because most of the information can be found in the previous convergence list element
-#'   or can be turned on by the \code{eval.optim.progress} argument.
+#'   or can be activated by the \code{eval.optim.progress} argument.
 #'   }
 #'
 #'
