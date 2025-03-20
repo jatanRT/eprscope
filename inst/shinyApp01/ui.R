@@ -72,7 +72,7 @@ ui <- fluidPage(
         ),
         selectInput(
           inputId = "Bunit",
-          label = shiny::HTML("Magnetic Flux Density (<i>B</i>) unit"),
+          label = shiny::HTML("Magnetic flux density (<i>B</i>) unit"),
           choices = c("G","mT"),
           selected = "G"
         ),
@@ -202,6 +202,7 @@ ui <- fluidPage(
             )
           )
         ),
+        uiOutput("Bslider"),
         shiny::tags$h4("Parameter Estimation"),
         numericInput(
           inputId = "giso",
@@ -210,9 +211,33 @@ ui <- fluidPage(
           min = 1,
           max = 10
         ),
+        checkboxInput(
+          inputId = "splitCond",
+          label = "Hyperfine splitting/coupling",
+          FALSE
+        ),
+        conditionalPanel(
+          condition = "input.splitCond == true",
+          shiny::tags$h5("System of interacting nuclei"),
+          textAreaInput(
+            inputId = "nuclearSys",
+            label = shiny::HTML("Enter interacting groups of equivalent nuclei, </br>
+                              like: `14N,1,45` &equiv; nucleus,number and A(MHz), </br>
+                              each group on separate line"),
+            rows = 6
+          ),
+          numericInput(
+            inputId = "aAconv",
+            label = shiny::HTML("<i>a</i> (mT) &rArr; <i>A</i> (MHz) conversion,
+                                enter <i>a</i> in mT"),
+            NULL
+          ),
+          textOutput("aAconverted")
+        ),
+        shiny::tags$h5("EPR Spectrum Line Form"),
         sliderInput(
           inputId = "Gcontent",
-          label = shiny::HTML("Gaussian (Gau) Line <i>form</i> content (<i>x</i>) </br>
+          label = shiny::HTML("Gaussian (Gau) line <i>form</i> content (<i>x</i>) </br>
                               in pseudo-Voigt <i>form</i> = [ <i>x</i> Gau + (1 - <i>x</i>) Lor ], </br>
                               where Lor = Lorentz <i>form</i>"),
           value = 0.5,
@@ -241,29 +266,6 @@ ui <- fluidPage(
           min = 0,
           max = 10,
           step = 0.01
-        ),
-        checkboxInput(
-          inputId = "splitCond",
-          label = "Hyperfine splitting/coupling",
-          FALSE
-        ),
-        conditionalPanel(
-          condition = "input.splitCond == true",
-          shiny::tags$h5("System of interacting nuclei"),
-          textAreaInput(
-            inputId = "nuclearSys",
-            label = shiny::HTML("Enter interacting groups of equivalent nuclei, </br>
-                              like: `14N,1,45` = `nucleus,number,A(MHz)`, </br>
-                              each group on separate line"),
-            rows = 6
-          ),
-          numericInput(
-            inputId = "aAconv",
-            label = shiny::HTML("<i>a</i> (mT) &rArr; <i>A</i> (MHz) conversion,
-                                enter <i>a</i> in mT"),
-            NULL
-          ),
-          textOutput("aAconverted")
         )
       ),
       #

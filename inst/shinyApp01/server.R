@@ -46,6 +46,21 @@ server <- function(input, output,session) {
     spectr.data
   })
   #
+  ## B-range/zoom for the EPR spectrum
+  output$Bslider <- renderUI({
+    df <- expr_data()
+    sliderInput(
+      inputId = "Brange",
+      label = shiny::HTML("Magnetic flux density (<i>B</i>) range"),
+      min = round(min(df[[paste0("B_",input$Bunit)]]),digits = 2),
+      max = round(max(df[[paste0("B_",input$Bunit)]]),digits = 2),
+      value = c(
+        round(min(df[[paste0("B_",input$Bunit)]]),digits = 2),
+        round(max(df[[paste0("B_",input$Bunit)]]),digits = 2)
+      )
+    )
+  })
+  #
   # -------------------- INTERACTIVE SPECTRUM ---------------------
   #
   output$plot <- plotly::renderPlotly({
@@ -376,6 +391,7 @@ server <- function(input, output,session) {
       Intensity.shift.ratio = overlay,
       line.color.expr = input$exprColor,
       line.color.sim = input$simColor,
+      Blim = input$Brange,
       output.df = TRUE
     )$plot +
       ggplot2::labs(
