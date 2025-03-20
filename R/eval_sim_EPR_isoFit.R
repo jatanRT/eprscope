@@ -29,6 +29,10 @@
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G}
+#'   corresponding to lower and upper visual limit of the selected \eqn{B}-region,
+#'   such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
+#'   \eqn{B}-range of both EPR spectra).
 #' @param data.spectr.expr Data frame object/table, containing the experimental spectral data the with magnetic flux density
 #'   (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.
 #' @param Intensity.expr Character string, pointing to column name of the experimental EPR intensity within
@@ -319,6 +323,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 Intensity.sim = "dIeprSim_over_dB",
                                 nu.GHz,
                                 B.unit = "G",
+                                Blim = NULL,
                                 nuclear.system.noA = NULL, ## no HFCCs, only nucleus and number
                                 baseline.correct = "constant", ## "linear" or "quadratic"
                                 lineG.content = 0.5,
@@ -1209,6 +1214,14 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                  bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
   )
   #
+  ## visual limits for plotting
+  Blim.long.data <- c(
+    min(data.sim.expr.long[[paste0("B_",B.unit)]]),
+    max(data.sim.expr.long[[paste0("B_",B.unit)]])
+  )
+  ## redefinition of the `Blim`
+  Blim <- Blim %>% `if`(is.null(Blim),Blim.long.data, .)
+  #
   if (isTRUE(check.fit.plot)){
     ## display both overlay spectra (upper part) and residuals
     ## (lower part) in 1 col. by `{patchwork}`
@@ -1226,6 +1239,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
            color = NULL,
            x = NULL,
            y = ylab) +
+      coord_cartesian(xlim = Blim) +
       plot_theme_In_ticks() +
       theme(legend.text = element_text(size = 13))
       #
@@ -1242,6 +1256,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                         bquote(Diff. ~ ~ italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
             )
           ) +
+        coord_cartesian(xlim = Blim) +
         plot_theme_In_ticks()
       #
       ## entire plot
@@ -1263,6 +1278,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       labs(color = NULL,
            x = bquote(italic(B)~~"("~.(B.unit)~")"),
            y = ylab) +
+      coord_cartesian(xlim = Blim) +
       plot_theme_NoY_ticks() +
       theme(legend.text = element_text(size = 13))
   }

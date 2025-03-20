@@ -48,11 +48,11 @@
 #'   \code{data.vat} object. \strong{Default}: \code{Current = "I_ua"} (current in \eqn{\text{µA}}).
 #' @param Current.unit Character string, pointing to \code{Current} quantity unit like \code{Current.unit = "uA"}
 #'   (microamps, \strong{default}), \code{Current.unit = "A"}, \code{Current.unit = "mA"} and \code{Current.unit = "nA"}.
-#' @param xlim Numeric vector of the \code{x}-quantity lower and upper limit, e.g. \code{xlim = c(-100,400)}
+#' @param xlim Numeric vector of the \code{x}-quantity lower and upper visual limit, e.g. \code{xlim = c(-100,400)}
 #'   (potential in "mV", in case of voltammetry) or \code{xlim = c(0,1000)} (time in seconds,
 #'   in case of chronoamperometry). \strong{Default}: \code{xlim = NULL} actually setting the entire \code{x}-range
 #'   from the original dataset.
-#' @param Ilim Numeric vector, characterizing the lower and upper limit of the current, e.g. \code{Ilim = c(-0.05,0.2)},
+#' @param Ilim Numeric vector, characterizing the lower and upper visualization limit of the current, e.g. \code{Ilim = c(-0.05,0.2)},
 #'   corresponding to current in milliamps. \strong{Default}: \code{Ilim = NULL} related to the entire current (\eqn{I}) range
 #'   from the original dataset.
 #' @param line.color Character string, pointing to line color of the voltammogram / chronoamperogram. All \code{{ggplot2}} compatible

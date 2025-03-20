@@ -10,6 +10,7 @@ eval_sim_EPR_isoFit(
   Intensity.sim = "dIeprSim_over_dB",
   nu.GHz,
   B.unit = "G",
+  Blim = NULL,
   nuclear.system.noA = NULL,
   baseline.correct = "constant",
   lineG.content = 0.5,
@@ -43,6 +44,11 @@ data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
 \item{B.unit}{Character string, denoting the magnetic flux density unit e.g. \code{B.unit = "G"}
 (gauss, \strong{default}) or \code{B.unit = "mT"}/\code{"T"} (millitesla/tesla).}
+
+\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G}
+corresponding to lower and upper visual limit of the selected \eqn{B}-region,
+such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
+\eqn{B}-range of both EPR spectra).}
 
 \item{nuclear.system.noA}{List or nested list \strong{without estimated hyperfine coupling constant values},
 such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values

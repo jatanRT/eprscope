@@ -50,7 +50,7 @@
 #'   \code{"Viridis"},\code{"YlGnBu"},\code{"YlOrRd"}. \strong{Default}: \code{scheme.color = "Viridis"}.
 #' @param contour.labels Logical, whether contours of intensity "hills" and "valleys" are projected
 #'   onto the \eqn{x,y}-plane. \strong{Default}: \code{contour.labels = FALSE}.
-#' @param xlim Numeric vector, pointing to lower and upper limit of the \eqn{x}-axis range.
+#' @param xlim Numeric vector, pointing to lower and upper visual limit of the \eqn{x}-axis range.
 #'   Assignment of \code{xlim = NULL} (\strong{default}) actually corresponds to the entire original
 #'   range (see also the \code{data.spectra.series} argument).
 #' @param xlab Character string \eqn{\equiv} title of the \eqn{x}-axis. Either simple, like

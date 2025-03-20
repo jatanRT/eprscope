@@ -72,7 +72,7 @@ may be a palette name string of the following list: \code{"Blackbody"},\code{"Bl
 \item{contour.labels}{Logical, whether contours of intensity "hills" and "valleys" are projected
 onto the \eqn{x,y}-plane. \strong{Default}: \code{contour.labels = FALSE}.}
 
-\item{xlim}{Numeric vector, pointing to lower and upper limit of the \eqn{x}-axis range.
+\item{xlim}{Numeric vector, pointing to lower and upper visual limit of the \eqn{x}-axis range.
 Assignment of \code{xlim = NULL} (\strong{default}) actually corresponds to the entire original
 range (see also the \code{data.spectra.series} argument).}
 

@@ -63,7 +63,7 @@
 #' @param Intensity Character string, pointing to \code{intensity column} name in the original \code{data.spectra}
 #'   if other than \code{dIepr_over_dB} name/label is used (e.g. for simulated or integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
-#' @param Ilim Numeric vector, corresponding to limits of the selected \code{y} / \code{Intensity}
+#' @param Ilim Numeric vector, corresponding to visualization limits of the selected \code{y} / \code{Intensity}
 #'   region, e.g. \code{Ilim = c(-2e-3,2e-3)}. \strong{Default}: \code{Ilim = NULL} (actually corresponding
 #'   to the entire Intensity range).
 #' @param lineSpecs.form Character string, describing either \code{"derivative"} (\strong{default})

@@ -29,6 +29,10 @@
 #' @param B.unit Character string, pointing to unit of magnetic flux density (coming from the original
 #'   datasets) which is to be presented on \eqn{B}-axis of the EPR spectrum.
 #'   Strings like \code{"G"} (`Gauss`) (\strong{default}) or \code{"mT"} (`millitesla`) can be used.
+#' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G}
+#'   corresponding to lower and upper visual limit of the selected \eqn{B}-region,
+#'   such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
+#'   \eqn{B}-range of both EPR spectra).
 #' @param Intensity.expr Character string, referring to intensity column name if other
 #'   than \code{dIepr_over_dB} name/label is used (e.g. for integrated spectra),
 #'   \strong{default}: \code{Intesity = "dIepr_over_dB"}.
@@ -109,9 +113,11 @@
 #' #
 #' ## comparison of both spectra
 #' ## by the simulated spectrum offset
+#' ## and narrower B-range
 #' present_EPR_Sim_Spec(
 #'   data.spectr.expr = data.spectrum.expr,
-#'   data.spectr.sim = data.spectrum.sim$df
+#'   data.spectr.sim = data.spectrum.sim$df,
+#'   Blim = c(3450,3550)
 #' ) + plot_theme_NoY_ticks(legend.text =
 #'            ggplot2::element_text(size = 13)
 #'            )
@@ -134,6 +140,7 @@
 present_EPR_Sim_Spec <- function(data.spectr.expr,
                                  data.spectr.sim,
                                  B.unit = "G",
+                                 Blim = NULL,
                                  Intensity.expr = "dIepr_over_dB",
                                  Intensity.sim = "dIeprSim_over_dB",
                                  Intensity.shift.ratio = 1.2, ## ca be also `NULL`
@@ -146,6 +153,7 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   #
   ## 'Temporary' processing variables
   B <- NULL
+  . <- NULL
   #
   # condition, having equal number of points/observations:
   if (nrow(data.spectr.expr) != nrow(data.spectr.sim)) {
@@ -209,6 +217,20 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
     #               .data[[Intensity.expr]],
     #               .data[[paste0("Norm_",Intensity.sim)]])
   #
+  ## for Blim check the min and max of both B variables (columns)
+  Bmin.sim <- min(both.spectr.data[[paste0("Bsim_", B.unit)]])
+  Bmin.expr <- min(both.spectr.data[[paste0("B_",B.unit)]])
+  Bmax.sim <- max(both.spectr.data[[paste0("Bsim_", B.unit)]])
+  Bmax.expr <- max(both.spectr.data[[paste0("B_",B.unit)]])
+  #
+  #                   |
+  #                  \/
+  B.min <- min(c(Bmin.expr,Bmin.sim))
+  B.max <- max(c(Bmax.expr,Bmax.sim))
+  #
+  ## definition/condition for the `Blim`
+  Blim <- Blim %>% `if`(is.null(Blim),c(B.min,B.max), .)
+  #
   ## B (x) label for the plot:
     xlab <- bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")")
   #
@@ -256,8 +278,8 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
       color = "",
       x = xlab,
       y = ylab
-    )
-
+    ) +
+    coord_cartesian(xlim = Blim)
   #
   ## if the entire table/table should be included
   if (isTRUE(output.df)) {

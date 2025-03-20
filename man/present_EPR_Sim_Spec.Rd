@@ -8,6 +8,7 @@ present_EPR_Sim_Spec(
   data.spectr.expr,
   data.spectr.sim,
   B.unit = "G",
+  Blim = NULL,
   Intensity.expr = "dIepr_over_dB",
   Intensity.sim = "dIeprSim_over_dB",
   Intensity.shift.ratio = 1.2,
@@ -34,6 +35,11 @@ or the \code{\link{eval_sim_EPR_iso}} is used to get the simulated spectrum data
 \item{B.unit}{Character string, pointing to unit of magnetic flux density (coming from the original
 datasets) which is to be presented on \eqn{B}-axis of the EPR spectrum.
 Strings like \code{"G"} (`Gauss`) (\strong{default}) or \code{"mT"} (`millitesla`) can be used.}
+
+\item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G}
+corresponding to lower and upper visual limit of the selected \eqn{B}-region,
+such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
+\eqn{B}-range of both EPR spectra).}
 
 \item{Intensity.expr}{Character string, referring to intensity column name if other
 than \code{dIepr_over_dB} name/label is used (e.g. for integrated spectra),
@@ -133,9 +139,11 @@ data.spectrum.sim <-
 #
 ## comparison of both spectra
 ## by the simulated spectrum offset
+## and narrower B-range
 present_EPR_Sim_Spec(
   data.spectr.expr = data.spectrum.expr,
-  data.spectr.sim = data.spectrum.sim$df
+  data.spectr.sim = data.spectrum.sim$df,
+  Blim = c(3450,3550)
 ) + plot_theme_NoY_ticks(legend.text =
            ggplot2::element_text(size = 13)
            )
