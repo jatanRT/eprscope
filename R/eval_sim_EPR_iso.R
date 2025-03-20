@@ -434,135 +434,70 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     #
     ## Intensity pattern function for nuclear spin quantum number (I)
     ## and number of nuclei (h)
-    intensity_pattern <- function(I,h){
-      if (I == 0.5){
-        ## binomial coeff. from the last row of Pascal triangle
-        intens_pattern_v <- sapply(0:h, function(i) choose(h,i))
-        return(intens_pattern_v)
-      }
-      ## Intensity pattern for I = 1 (e.g. 14N,D,6Li,...)
-      if (I == 1 & h == 0){
-        return(1)
-      }
-      if (I == 1 & h == 1){
-        return(c(1,1,1))
-      }
-      if (I == 1 & h == 2){
-        return(c(1,2,3,2,1))
-      }
-      if (I == 1 & h == 3){
-        return(c(1,3,6,7,6,3,1))
-      }
-      if (I == 1 & h == 4){
-        return(c(1,4,10,16,19,16,10,4,1))
-      }
-      if (I == 1 & h == 5){
-        return(c(1,5,15,30,45,51,45,30,15,5,1))
-      }
-      if (I == 1 & h == 6){
-        return(c(1,6,21,50,90,126,141,126,90,50,21,6,1))
-      }
-      if (I == 1 & h >= 7){
-        stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 1 nuclei are not defined.\n
-             This issue will be fixed later on, in higher versions !")
-      }
-      # will be fixed later on
-      # if (I == 1 & h == 7){
-      #   return(c(1,7,28,77,161,266,357,393,357,266,161,77,28,7,1))
-      # }
-      # if (I == 1 & h == 8){
-      #   return(c(1,8,36,112,266,504,784,1016,1107,1016,784,504,266,112,36,8,1))
-      # }
-      ## Intensity pattern for I = 3/2 (e.g. 11B, 35Cl, 37Cl...)
-      if (I == 1.5 & h == 0){
-        return(1)
-      }
-      if (I == 1.5 & h == 1){
-        return(c(1,1,1,1))
-      }
-      if (I == 1.5 & h == 2){
-        return(c(1,2,3,4,3,2,1))
-      }
-      if (I == 1.5 & h == 3){
-        return(c(1,3,6,10,12,12,10,6,3,1))
-      }
-      if (I == 1.5 & h == 4){
-        return(c(1,4,10,20,31,40,44,40,31,20,10,4,1))
-      }
-      if (I == 1.5 & h == 5){
-        return(c(1,5,15,35,65,101,135,155,
-                 155,135,101,65,35,15,5,1))
-      }
-      if (I == 1.5 & h == 6){
-        return(c(1,6,20,56,120,216,336,456,546,580,
-                 546,456,336,216,120,56,20,6,1))
-      }
-      if (I == 1.5 & h >= 7){
-        stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 3/2 nuclei are not defined.\n
-             This issue will be fixed later on, in higher versions !")
-      }
-      # will be fixed later on
-      ## There are no stable isotopes with I = 2 =>
-      ## Intensity pattern for I = 5/2 (e.g. 47Ti, 55Mn, 127I, 27Al, 99Ru, 101Ru...)
-      if (I == 2.5 & h == 0){
-        return(1)
-      }
-      if (I == 2.5 & h == 1){
-        return(c(1,1,1,1,1,1))
-      }
-      if (I == 2.5 & h == 2){
-        return(c(1,2,3,4,5,6,5,4,3,2,1))
-      }
-      if (I == 2.5 & h == 3){
-        return(c(1,3,6,10,15,21,25,27,27,25,21,15,10,6,3,1))
-      }
-      if (I == 2.5 & h == 4){
-        return(c(1,4,10,20,35,56,80,104,125,140,146,
-                 140,125,104,80,56,35,20,10,4,1))
-      }
-      if (I == 2.5 & h >= 5){
-        stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 5/2 nuclei are not defined.\n
-             This issue will be fixed later on, in higher versions !")
-      }
-      # will be fixed later, on
-      ## Intensity pattern for I = 3 (e.g. 10B)
-      if (I == 3 & h == 0){
-        return(1)
-      }
-      if (I == 3 & h == 1){
-        return(c(1,1,1,1,1,1,1))
-      }
-      if (I == 3 & h == 2){
-        return(c(1,2,3,4,5,6,7,6,5,4,3,2,1))
-      }
-      if (I == 3 & h == 3){
-        return(c(1,3,6,10,15,21,28,33,36,37,36,33,28,21,15,10,6,3,1))
-      }
-      if (I == 3 & h == 4){
-        return(c(1,4,10,20,35,56,84,116,149,180,206,224,231,
-                 224,206,180,149,116,84,56,35,20,10,4,1))
-      }
-      if (I == 3 & h >= 5){
-        stop(" The multimomial coefficients for such a high number\n
-             of equivalent I = 3 nuclei are not defined.\n
-             This issue will be fixed later on, in higher versions !")
-      }
+    intensity_pattern <- function(I,h) {
       #
+      ## including the spin quantum numbers
+      ## as names for the vector components (see below)
+      ## in order to be sure that the pattern corresponds
+      ## to the right mI
+      ## however, finally they will be removed
+      #
+      ## not total mI value range:
+      mI_values <- seq(-I ,I ,by = 1)
+      ## ...total:
+      mI_values_total <- seq(- (I * h), (I * h), by = 1)
+      mI_range_total <- length(mI_values_total)
+      #
+      ## initialize intensity multiplet pattern (with names):
+      intensity_M <- rep(0,mI_range_total)
+      names(intensity_M) <- mI_values_total
+      #
+      ## recursive function
+      ## (see e.g. https://www.geeksforgeeks.org/recursive-functions-in-r-programming/,
+      ## or https://data-flair.training/blogs/r-recursive-function/)
+      ## to handle combinatorics:
+      combinations_fn <- function(depth, remain, actual_Sum, actual_combo) {
+        if (depth > length(mI_values)) {
+          if (remain == 0) {
+            # calculate multinomial coefficient
+            coeff <- factorial(h) / prod(factorial(actual_combo))
+            # add to appropriate intensity `int`
+            int <- as.character(actual_Sum)
+            intensity_M[int] <<- intensity_M[int] + coeff
+            ## double arrow for loop (state maintaining)
+          }
+          return()
+        }
+        #
+        for (count in 0:min(remain, h)) {
+          new_combo <- actual_combo
+          new_combo[depth] <- count
+          combinations_fn(
+            depth + 1,
+            remain - count,
+            actual_Sum + (count * mI_values[depth]),
+            new_combo
+          )
+        }
+      }
+      # starting recursive calculation
+      combinations_fn(1, h, 0, rep(0,length(mI_values)))
+      #
+      return(intensity_M) ## together with names, UNNAME LATER !!
     }
     #
     ## intensity pattern list for all nuclei by the previous function
     intensity_pattern_nuclei <- Map(function(d,c)
-      {intensity_pattern(d,c)},
+      {unname(intensity_pattern(d,c))},
       spin_nuclear,
       N_nuclei
       )
     #
-    ## combinatorics if `natur.abund = TRUE` (`FALSE` included as well) =>
+    ## if `natur.abund = TRUE` (`FALSE` included as well) =>
     ## intensity mutiplication coefficients:
-    ## natur.abun^N_nuclei/sum(pattern intensities)
+    ## natur.abun^N_nuclei/sum(pattern intensities),
+    ## this is due to fact that probability for two or more
+    ## equivalent nuclei => p(Nuc) * p(Nuc) * ...
     combin_abund_coeff_int <-
       function(nucleus.abund,
                N_nuclei,

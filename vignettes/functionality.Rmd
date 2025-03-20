@@ -240,14 +240,17 @@ tmpd.plot.norm.02 <-
   plot_EPR_Specs(data.spectra = tmpd.data.norm.02) +
   ggplot2::ggtitle("Advanced Normalization")
 #
-# both spectra together by `{patchwork}` package
+# both spectra together by `{patchwork}` package,
+# see https://patchwork.data-imaginist.com/articles/guides/layout.html,
 # without y/Intensity label (`ggplot2::labs(y = NULL)`) 
 # because the EPR spectra will be displayed close 
 # to each other in two columns
 tmpd.plot.norm.0102 <-
   tmpd.plot.norm.01 +
   tmpd.plot.norm.02 +
-  ggplot2::labs(y = NULL)
+  patchwork::plot_layout(
+    axis_titles = "collect_y"
+  )
 #
 # preview of EPR spectra with different intensities
 tmpd.plot.norm.0102
