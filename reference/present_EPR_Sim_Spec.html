@@ -86,6 +86,7 @@
 <span>  <span class="va">data.spectr.expr</span>,</span>
 <span>  <span class="va">data.spectr.sim</span>,</span>
 <span>  B.unit <span class="op">=</span> <span class="st">"G"</span>,</span>
+<span>  Blim <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Intensity.expr <span class="op">=</span> <span class="st">"dIepr_over_dB"</span>,</span>
 <span>  Intensity.sim <span class="op">=</span> <span class="st">"dIeprSim_over_dB"</span>,</span>
 <span>  Intensity.shift.ratio <span class="op">=</span> <span class="fl">1.2</span>,</span>
@@ -121,6 +122,13 @@ or the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code> is used
 <dd><p>Character string, pointing to unit of magnetic flux density (coming from the original
 datasets) which is to be presented on \(B\)-axis of the EPR spectrum.
 Strings like <code>"G"</code> (`Gauss`) (<strong>default</strong>) or <code>"mT"</code> (`millitesla`) can be used.</p></dd>
+
+
+<dt id="arg-blim">Blim<a class="anchor" aria-label="anchor" href="#arg-blim"></a></dt>
+<dd><p>Numeric vector, magnetic flux density in <code>mT</code>/<code>G</code>
+corresponding to lower and upper visual limit of the selected \(B\)-region,
+such as <code>Blim = c(3495.4,3595.4)</code>. <strong>Default</strong>: <code>Blim = NULL</code> (corresponding to the entire
+\(B\)-range of both EPR spectra).</p></dd>
 
 
 <dt id="arg-intensity-expr">Intensity.expr<a class="anchor" aria-label="anchor" href="#arg-intensity-expr"></a></dt>
@@ -246,9 +254,11 @@ i.e. only graphical representation is shown.</p></dd>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## comparison of both spectra</span></span></span>
 <span class="r-in"><span><span class="co">## by the simulated spectrum offset</span></span></span>
+<span class="r-in"><span><span class="co">## and narrower B-range</span></span></span>
 <span class="r-in"><span><span class="fu">present_EPR_Sim_Spec</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data.spectr.expr <span class="op">=</span> <span class="va">data.spectrum.expr</span>,</span></span>
-<span class="r-in"><span>  data.spectr.sim <span class="op">=</span> <span class="va">data.spectrum.sim</span><span class="op">$</span><span class="va">df</span></span></span>
+<span class="r-in"><span>  data.spectr.sim <span class="op">=</span> <span class="va">data.spectrum.sim</span><span class="op">$</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>  Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3450</span>,<span class="fl">3550</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="plot_theme_NoY_ticks.html">plot_theme_NoY_ticks</a></span><span class="op">(</span>legend.text <span class="op">=</span></span></span>
 <span class="r-in"><span>           <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span></span>
 <span class="r-in"><span>           <span class="op">)</span></span></span>
