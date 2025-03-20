@@ -434,14 +434,17 @@ Figure 4.1: EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)<
 <span>  <span class="fu"><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs</a></span><span class="op">(</span>data.spectra <span class="op">=</span> <span class="va">tmpd.data.norm.02</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Advanced Normalization"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># both spectra together by `{patchwork}` package</span></span>
+<span><span class="co"># both spectra together by `{patchwork}` package,</span></span>
+<span><span class="co"># see https://patchwork.data-imaginist.com/articles/guides/layout.html,</span></span>
 <span><span class="co"># without y/Intensity label (`ggplot2::labs(y = NULL)`) </span></span>
 <span><span class="co"># because the EPR spectra will be displayed close </span></span>
 <span><span class="co"># to each other in two columns</span></span>
 <span><span class="va">tmpd.plot.norm.0102</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">tmpd.plot.norm.01</span> <span class="op">+</span></span>
 <span>  <span class="va">tmpd.plot.norm.02</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span></span>
+<span>    axis_titles <span class="op">=</span> <span class="st">"collect_y"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># preview of EPR spectra with different intensities</span></span>
 <span><span class="va">tmpd.plot.norm.0102</span></span></code></pre></div>
