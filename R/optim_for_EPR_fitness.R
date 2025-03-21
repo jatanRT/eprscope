@@ -159,7 +159,7 @@
 #' ## if an EPR spectrum consists of several
 #' ## components or several radical spectra partly overlay,
 #' ## following simple function, taking the linear
-#' ## combination of EPR simulated intensities (max. 6),
+#' ## combination of max. 6 EPR simulated intensities,
 #' ## can be applied in order to fit the sum of the individual
 #' ## simulations onto the experimental EPR spectrum
 #' ## envelope, the input parameters therefore correspond
