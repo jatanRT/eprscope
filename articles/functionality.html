@@ -434,16 +434,14 @@ Figure 4.1: EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)<
 <span>  <span class="fu"><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs</a></span><span class="op">(</span>data.spectra <span class="op">=</span> <span class="va">tmpd.data.norm.02</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Advanced Normalization"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># both spectra together by `{patchwork}` package,</span></span>
-<span><span class="co"># see https://patchwork.data-imaginist.com/articles/guides/layout.html,</span></span>
-<span><span class="co"># without y/Intensity label (`ggplot2::labs(y = NULL)`) </span></span>
-<span><span class="co"># because the EPR spectra will be displayed close </span></span>
-<span><span class="co"># to each other in two columns</span></span>
+<span><span class="co"># both spectra together side-by-side by `{patchwork}` package,</span></span>
+<span><span class="co"># see https://patchwork.data-imaginist.com/articles/guides/layout.html</span></span>
 <span><span class="va">tmpd.plot.norm.0102</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">tmpd.plot.norm.01</span> <span class="op">+</span></span>
 <span>  <span class="va">tmpd.plot.norm.02</span> <span class="op">+</span></span>
 <span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html" class="external-link">plot_layout</a></span><span class="op">(</span></span>
-<span>    axis_titles <span class="op">=</span> <span class="st">"collect_y"</span></span>
+<span>    ncol <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    axis_titles <span class="op">=</span> <span class="st">"collect"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># preview of EPR spectra with different intensities</span></span>
@@ -474,7 +472,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <h3 id="interactive-plots-by-plotly">
 <span class="header-section-number">4.2</span> Interactive Plots by <code>{plotly}</code><a class="anchor" aria-label="anchor" href="#interactive-plots-by-plotly"></a>
 </h3>
-<p>In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), the function <code><a href="../reference/plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact()</a></code> is applied (consult the corresponding examples in the function documentation). Additionally, it can be also used for a series of EPR spectra, in overlay mode, similarly to <code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code>. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during kinetic or variable temperature experiments, are provided by the <code><a href="../reference/plot_EPR_Specs3D_interact.html">plot_EPR_Specs3D_interact()</a></code> function.</p>
+<p>In order to explore the EPR spectrum in details (to read values, zoom or save the spectrum), functions like <code><a href="../reference/plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact()</a></code> or <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> are applied (consult the corresponding examples in the function documentation). Additionally, it can be also used for a series of EPR spectra, in overlay mode, similarly to <code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code>. Additional interactive 3D-plotting of EPR spectra, especially those recorded as time series, like during kinetic or variable temperature experiments, are provided by the <code><a href="../reference/plot_EPR_Specs3D_interact.html">plot_EPR_Specs3D_interact()</a></code> function.</p>
 <p><img src="epr_spectr_interactive.gif" width="654"></p>
 </div>
 </div>
@@ -508,7 +506,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span>    origin <span class="op">=</span> <span class="st">"winepr"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co"># B region (349.677, 350.457) mT, including </span></span>
-<span><span class="co"># the B mid-point, to calculate the g-value </span></span>
+<span><span class="co"># the B mid-point, to calculate the g-value, </span></span>
 <span><span class="co"># is obtained from the interactive plot above</span></span>
 <span><span class="va">tmpd.g.iso.spec</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/eval_gFactor_Spec.html">eval_gFactor_Spec</a></span><span class="op">(</span><span class="va">tmpd.data.norm.02</span>,</span>
@@ -521,8 +519,18 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span><span class="co"># value preview</span></span>
 <span><span class="va">tmpd.g.iso.spec</span></span>
 <span><span class="co">#&gt; [1] 2.00304</span></span></code></pre></div>
-<p>The above(from spectrum)-obtained <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value may be compared with that computed by Density Functional Theory (DFT) quantum chemical calculations of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>, namely by PBE0/EPR-II/CPCM-DMSO//B3LYP/6-31+G(d,p) (see also <a href="https://gaussian.com/dft/" class="external-link">Gaussian DFT Methods</a> and <a href="https://gaussian.com/basissets/" class="external-link">Basis Sets</a>). The extraction of <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value from the <em>Gaussian</em> (or from the <a href="https://www.orcasoftware.de/tutorials_orca/index.html" class="external-link">ORCA quantum chemical package</a>) output file is provided by the <code><a href="../reference/eval_gFactor_QCHcomp.html">eval_gFactor_QCHcomp()</a></code> function ➨</p>
+<p>Function <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> represents an alternative way how to figure out the <em>g</em>-value. Within a simple UI (<strong>u</strong>ser <strong>i</strong>nterface), based on <a href="https://shiny.posit.co/r/gallery/" class="external-link"><em>R</em> Shiny</a>, one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the <strong>“Microwave frequency (GHz)”</strong> is available (it automatically reads the right frequency by loading the “parameter” file, <code>.par</code> or <code>.dsc</code>/<code>.DSC</code>), by activating the <strong>“Show g-Values”</strong>, the EPR spectrum abscissa is automatically converted from <em>B</em> into <em>g</em> (see Figure <a href="#fig:g-value-shiny-app">5.1</a>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"TMPD_EPR_gVal_interact_App.png"</span>,dpi <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:g-value-shiny-app"></span>
+<img src="TMPD_EPR_gVal_interact_App.png" alt="Screenshot of the interactive Shiny app, showing how to display g-values for the $\small \ce{TMPD^{.+}}$ EPR spectrum." width="648"><p class="caption">
+Figure 5.1: Screenshot of the interactive Shiny app, showing how to display g-values for the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum.
+</p>
+</div>
+<p>The above (from the EPR spectrum)-obtained <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value may be compared with that computed by the Density Functional Theory (DFT) quantum chemical calculations of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>, namely by PBE0/EPR-II/CPCM-DMSO//B3LYP/6-31+G(d,p) (see also <a href="https://gaussian.com/dft/" class="external-link">Gaussian DFT Methods</a> and <a href="https://gaussian.com/basissets/" class="external-link">Basis Sets</a>). The extraction of <span class="math inline">\(g_{\mathrm{iso}}\)</span>-value from the <em>Gaussian</em> (or from the <a href="https://www.orcasoftware.de/tutorials_orca/index.html" class="external-link">ORCA quantum chemical package</a>) output file is provided by the “<code><a href="../reference/eval_gFactor_QCHcomp.html">eval_gFactor_QCHcomp()</a></code> function ➨</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># package built-in example file =&gt; </span></span>
 <span><span class="co"># "TMPDAradCatEPRa.inp.log.zip"</span></span>
@@ -553,8 +561,8 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <h3 id="linewidth-𝚫bpp-determination">
 <span class="header-section-number">5.2</span> Linewidth, 𝚫<em>B</em><sub>pp</sub> Determination<a class="anchor" aria-label="anchor" href="#linewidth-%F0%9D%9A%ABbpp-determination"></a>
 </h3>
-<p>The linewidth in <span class="math inline">\(\mathrm{m\small T}\)</span> can be determined from several spectral lines/regions from the interactive plot above and by the <code><a href="../reference/eval_DeltaXpp_Spec.html">eval_DeltaXpp_Spec()</a></code> function ➨</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>The linewidth in <span class="math inline">\(\mathrm{m\small T}\)</span> can be determined from several spectral lines/regions from the interactive plots above and by the <code><a href="../reference/eval_DeltaXpp_Spec.html">eval_DeltaXpp_Spec()</a></code> function ➨</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># calculate Delta Bpp from several regions</span></span>
 <span><span class="co"># =&gt; list of three selected elements/regions</span></span>
@@ -593,7 +601,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 \small A = \frac{a\,g\,\mu_{\mathrm{B}}}{h}
 \tag{5.2}
 \end{equation}\]</span></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># two visible distances or HFSCs (a in mT)</span></span>
 <span><span class="co"># from the interactive EPR spectrum above</span></span>
@@ -618,19 +626,19 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span><span class="co"># `A.guess.MHz` preview</span></span>
 <span><span class="va">A.guess.MHz</span></span>
 <span><span class="co">#&gt; [1] 19.62  5.47</span></span></code></pre></div>
-<p>According to literature <span class="citation">(<a href="#ref-GramppGpda2005">1</a>)</span> and the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> structure (see also Figure <a href="#fig:dft-tmpd-structure">5.1</a> with the DFT-optimized geometry), one can recognize three interacting groups of equivalent nuclei : <span class="math inline">\(\small 2\,\times\,\ce{^{14}N}\)</span>, <span class="math inline">\(\small 4\,\times\,\ce{^1H}\)</span> (aromatic protons) and <span class="math inline">\(\small 12\,\times\,\ce{^1H}\)</span> (methyl protons). DFT calculations may provide all <span class="math inline">\(\small A\)</span> (HFCCs) as shown below.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>According to literature <span class="citation">(<a href="#ref-GramppGpda2005">1</a>)</span> and the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> structure (see also Figure <a href="#fig:dft-tmpd-structure">5.2</a> with the DFT-optimized geometry), one can recognize three interacting groups of equivalent nuclei : <span class="math inline">\(\small 2\,\times\,\ce{^{14}N}\)</span>, <span class="math inline">\(\small 4\,\times\,\ce{^1H}\)</span> (aromatic protons) and <span class="math inline">\(\small 12\,\times\,\ce{^1H}\)</span> (methyl protons). DFT calculations may provide all <span class="math inline">\(\small A\)</span> (HFCCs) as shown below.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># loading built-in image</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"TMPD_EPR_DFT_radCat_ab.png"</span>,dpi <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:dft-tmpd-structure"></span>
 <img src="TMPD_EPR_DFT_radCat_ab.png" alt="DFT optimized structure of TMPD radical cation with atom numbering inherited from the Gaussian 16 output file." width="691"><p class="caption">
-Figure 5.1: DFT optimized structure of TMPD radical cation with atom numbering inherited from the Gaussian 16 output file.
+Figure 5.2: DFT optimized structure of TMPD radical cation with atom numbering inherited from the Gaussian 16 output file.
 </p>
 </div>
-<p>In order to compare the theoretical and experimental HFCCs, the function <code><a href="../reference/rearrange_aAiso_QCHorgau.html">rearrange_aAiso_QCHorgau()</a></code> extracts the <span class="math inline">\(\small A\)</span> values from the Gaussian or <a href="https://www.orcasoftware.de/tutorials_orca/index.html" class="external-link">ORCA</a> output files and calculates the mean values corresponding to selected groups of equivalent nuclei which are defined by the <code>nuclei.list.slct</code> argument. Therefore, according to numbering shown in Figure <a href="#fig:dft-tmpd-structure">5.1</a> ➨</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p>In order to compare the theoretical and experimental HFCCs, the function <code><a href="../reference/rearrange_aAiso_QCHorgau.html">rearrange_aAiso_QCHorgau()</a></code> extracts the <span class="math inline">\(\small A\)</span> values from the Gaussian or <a href="https://www.orcasoftware.de/tutorials_orca/index.html" class="external-link">ORCA</a> output files and calculates the mean values corresponding to selected groups of equivalent nuclei which are defined by the <code>nuclei.list.slct</code> argument. Therefore, according to numbering shown in Figure <a href="#fig:dft-tmpd-structure">5.2</a> ➨</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># The same package built-in example file </span></span>
 <span><span class="co"># (`TMPDAradCatEPRa.inp.log.zip`)</span></span>
@@ -714,12 +722,13 @@ aiso_mT_QCH
 <li><p>content of the Gaussian lineshape in the overall linear combination of both Gaussian and Lorenztian theoretical spectral forms (so called pseudo-Voigt lineshape) ➨ <code>lineG.content</code></p></li>
 <li><p>additional instrumental parameters like central field ➨ <code>Bcf</code>, sweep width ➨ <code>Bsw</code>, microwave frequency ➨ <code>mwGHz</code> and number of points (spectral resolution) ➨ <code>Npoints</code>.</p></li>
 </ul>
-<p>Required arguments of the <code><a href="../reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso()</a></code> function are presented after the arrows. The estimated linewidth <code>tmpd.delta.Bpp.mean</code> (<span class="math inline">\(\small 0.5\,\mathrm{G}\)</span>, see above) as well as the HFCCs, either directly taken from the spectrum (<code>A.guess.MHz</code>) or from the quantum chemical calculations (<code>symmetry.As.df</code>) and/or from the literature <span class="citation">(<a href="#ref-GramppGpda2005">1</a>)</span> can be used to simulate the EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> as follows ➨</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>Required arguments of the <code><a href="../reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso()</a></code> function are presented after the arrows. The estimated linewidth <code>tmpd.delta.Bpp.mean</code> (<span class="math inline">\(\small 0.5\,\mathrm{G}\)</span>, see above) as well as the HFCCs, either directly taken from the spectrum (<code>A.guess.MHz</code>) or from the quantum chemical calculations (<code>symmetry.As.df</code>) and/or from the literature <span class="citation">(<a href="#ref-GramppGpda2005">1</a>)</span>, can be used to simulate the EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> as follows ➨</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># isotropic simulation of the TMPD radical cation where</span></span>
 <span><span class="co"># the instrumental parameters are taken from </span></span>
 <span><span class="co"># the corresponding `.par` file: `tmpd.params.file` :</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span> <span class="co">## time (in s) reserved for the simulation processing</span></span>
 <span><span class="va">sim.tmpd.iso</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></span><span class="op">(</span></span>
 <span>    g.iso <span class="op">=</span> <span class="va">tmpd.g.iso.spec</span>,</span>
@@ -738,6 +747,9 @@ aiso_mT_QCH
 <span>    <span class="co"># pseudo-Voigt line shape with 0.5 G + 0.5 L:</span></span>
 <span>    lineG.content <span class="op">=</span> <span class="fl">0.5</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;   0.084   0.009   0.093</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
@@ -752,8 +764,8 @@ aiso_mT_QCH
 <span><span class="co">#&gt; 4 3439.32 343.932    9.7625349e-05</span></span>
 <span><span class="co">#&gt; 5 3439.37 343.937    9.8089217e-05</span></span>
 <span><span class="co">#&gt; 6 3439.42 343.942    9.8561824e-05</span></span></code></pre></div>
-<p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.2</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> .</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.3</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> . Such simulation of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum can be also performed by an interactive manner using the above-mentioned <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> . One can “play” with all the simulation parameters defined above and the simulated EPR spectrum is instantaneously updated and compared with the experimental one like depicted on Figure <a href="#fig:simulation-shiny-app">5.4</a>.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># intesinty of the simulated spectrum</span></span>
 <span><span class="co"># is automatically scalled onto </span></span>
@@ -761,14 +773,24 @@ aiso_mT_QCH
 <span><span class="fu"><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec</a></span><span class="op">(</span></span>
 <span>  data.spectr.expr <span class="op">=</span> <span class="va">tmpd.data.norm.02</span>,</span>
 <span>  data.spectr.sim <span class="op">=</span> <span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span>,</span>
-<span>  B.unit <span class="op">=</span> <span class="st">"mT"</span></span>
+<span>  B.unit <span class="op">=</span> <span class="st">"mT"</span>,</span>
+<span>  Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">345</span>,<span class="fl">355</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># `plot_theme_NoY_ticks` theme from `{eprscope}`</span></span>
 <span>  <span class="fu"><a href="../reference/plot_theme_NoY_ticks.html">plot_theme_NoY_ticks</a></span><span class="op">(</span>legend.text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <span style="display:block;" id="fig:tmpd-radcat-sim-expr-compar"></span>
 <img src="functionality_files/figure-html/tmpd-radcat-sim-expr-compar-1.png" alt="Comparison of simulated and experiental EPR spectrum of $\small \ce{TMPD^{.+}}$."><p class="caption">
-Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
+Figure 5.3: Comparison of simulated and experiental EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
+</p>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"TMPD_EPR_Sim_interact_App.png"</span>,dpi <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<span style="display:block;" id="fig:simulation-shiny-app"></span>
+<img src="TMPD_EPR_Sim_interact_App.png" alt="Screenshot of the Shiny app, showing an interactive simulation of the $\small \ce{TMPD^{.+}}$ EPR spectrum." width="651"><p class="caption">
+Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum.
 </p>
 </div>
 <p>Although the simulated <span class="math inline">\(\ce{TMPD^{.+}}\)</span> EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization function <code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> was used to get a more accurate simulated spectrum. The result may be found in <code>Examples</code> of the <code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code> function.</p>
@@ -779,7 +801,7 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 </h3>
 <p>Integration process in the analysis of EPR spectra is undoubtedly an important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also <code><a href="../reference/quantify_EPR_Abs.html">quantify_EPR_Abs()</a></code>). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Hence, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation, available from the <a href="https://github.com/cran/pracma" class="external-link">{pracma}</a> 📦 <code><a href="https://rdrr.io/pkg/pracma/man/trapz.html" class="external-link">pracma::cumtrapz()</a></code> <span class="citation">(<a href="#ref-Rpracma2023">10</a>–<a href="#ref-epperson2013intro">13</a>)</span>.</p>
 <p>The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of <span class="math inline">\(\small \langle 1-5\rangle\,\%\)</span> or even lower depending on the spectrum resolution <span class="citation">(<a href="#ref-LibreMath2023">11</a>, <a href="#ref-epperson2013intro">13</a>)</span>. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape ( see below an example of such shape). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. the <code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code> function). The big advantage of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled in the same manner like within the EPR spectrometer acquisitions/processing software (see also the <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function below). The integration of the EPR spectral data is essentially provided by the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> and its application to the experimental <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectrum is documented by the following scripts ➨</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># basic integration without baseline correction</span></span>
 <span><span class="co"># during the first integration.</span></span>
@@ -806,7 +828,7 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <span><span class="co">#&gt; 5: 3439.3701 -7.2531358e-07 343.93701 1.9566436e-06 3.9727197e-07</span></span>
 <span><span class="co">#&gt; 6: 3439.4199 -5.6317054e-07 343.94199 1.9245572e-06 4.9392357e-07</span></span></code></pre></div>
 <p>Both integrals, within the entire <span class="math inline">\(\small B\)</span>-range, can be visualized by the <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function from <code>Visualization and Graphics</code> family:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># both integrals are presented separately</span></span>
 <span><span class="co"># with their corresponding intensities automatically</span></span>
@@ -825,11 +847,11 @@ Figure 5.2: Comparison of simulated and experiental EPR spectrum of <span class=
 <div class="figure">
 <span style="display:block;" id="fig:tmpd-basic-epr-integ-visual"></span>
 <img src="functionality_files/figure-html/tmpd-basic-epr-integ-visual-1.png" alt="Single (`single_Integ`) and double (`sigmoid_Integ`) integrated EPR spectrum of $\small \ce{TMPD^{.+}}$."><p class="caption">
-Figure 5.3: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</code>) integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
+Figure 5.5: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</code>) integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
 </p>
 </div>
 <p>Obviously, the baseline of the single and double integrated <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum is somewhat distorted and must be corrected. To fix the baseline distortion, the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> function contains corresponding arguments which control the baseline approximation, under the complex peak, by a polynomial fit and provide its subtraction from the single integrated spectrum to evaluate the double/sigmoid integral more accurately ➨</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># correction of the TMPD^{.+} EPR spectrum single</span></span>
 <span><span class="co"># integral by the 3rd degree polynomial</span></span>
@@ -864,7 +886,7 @@ Figure 5.3: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</
 <div class="figure">
 <span style="display:block;" id="fig:tmpd-correct-epr-integ"></span>
 <img src="functionality_files/figure-html/tmpd-correct-epr-integ-1.png" alt="Corrected single and double integrated EPR spectrum of $\small \ce{TMPD^{.+}}$ (see also Figure \@ref(fig:tmpd-basic-epr-integ-visual))."><p class="caption">
-Figure 5.4: Corrected single and double integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> (see also Figure <a href="#fig:tmpd-basic-epr-integ-visual">5.3</a>).
+Figure 5.6: Corrected single and double integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> (see also Figure <a href="#fig:tmpd-basic-epr-integ-visual">5.5</a>).
 </p>
 </div>
 <p>Maximum value of the double/sigmoid integral 0.0024 can be used for the estimation of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> amount within the sample.</p>
