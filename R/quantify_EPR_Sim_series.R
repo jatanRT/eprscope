@@ -10,7 +10,7 @@
 #'   to simulated spectra). The related intensity multiplication coefficients
 #'   (please, refer to the \code{optim.params.init} argument) are optimized by methods gathered in the
 #'   \code{\link{optim_for_EPR_fitness}}. The goal is to fit the sum of the simulated components
-#'   onto each experimental spectrum within series. So far, the maximum number of components is set to 6.
+#'   onto each experimental spectrum within series. The maximum number of components is set to 10.
 #'
 #'
 #' @details
@@ -247,6 +247,20 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       }
     )
   #
+  ## count the number of radicals
+  if (length(data.specs.orig.sim) > 3 &
+      length(data.specs.orig.sim) <= 10) {
+        message(" Number of EPR simulation components is higher than 3 !!\n
+                Please, be aware of such a high number of corresponding radicals,\n
+                which must conform to chemical reality. Is the presence of all\n
+                components/radicals supported by any additional structural evidence ?\n
+                Do you have evidences by e.g. MS, NMR, IR, elemental analysis, ... ? ")
+  }
+  if (length(data.specs.orig.sim) > 10) {
+    stop(" Number of EPR simulation components is higher than 10 !!\n
+         This function is not defined for such a high number of components/radicals !!\n")
+  }
+  #
   ## checking number of points for experimental and simulated spectra
   ## experimental
   resolution.exp <- data.spectra.series %>%
@@ -290,7 +304,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   # ================== up to this point => everything OK ===================
   #
-  ## parameterize and sum of all simulated spectral components (max = 6 !)
+  ## parameterize and sum of all simulated spectral components (max = 10 !)
   ## `x0 \equiv par` depending on optimization method => AS a FITNESS FUNCTIONS
   ## THEY MUST BE DEFINED SEPARATELY !!
   fit_params_specs_par <- function(data,col.name.pattern,par){
@@ -301,29 +315,47 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     #
     ## create a sum for all columns/simulated spectra
     ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
-    if (ncol(data) == 1){
+    ## it does not work => must be defined explicitly
+    if (ncol(data) == 1) {
       summa <- par[1] + (par[2] * data[[1]])
-    }
-    if (ncol(data) == 2){
+    } else if (ncol(data) == 2) {
       summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]])
-    }
-    if (ncol(data) == 3){
+    } else if (ncol(data) == 3) {
       summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
         (par[4] * data[[3]])
-    }
-    if (ncol(data) == 4){
+    } else if (ncol(data) == 4) {
       summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
         (par[4] * data[[3]]) + (par[5] * data[[4]])
-    }
-    if (ncol(data) == 5){
+    } else if (ncol(data) == 5) {
       summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
         (par[4] * data[[3]]) + (par[5] * data[[4]]) +
         (par[6] * data[[5]])
-    }
-    if (ncol(data) == 6){
+    } else if (ncol(data) == 6) {
       summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
         (par[4] * data[[3]]) + (par[5] * data[[4]]) +
         (par[6] * data[[5]]) + (par[7] * data[[6]])
+    } else if (ncol(data) == 7) {
+      summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+        (par[4] * data[[3]]) + (par[5] * data[[4]]) +
+        (par[6] * data[[5]]) + (par[7] * data[[6]]) +
+        (par[8] * data[[7]])
+    } else if (ncol(data) == 8) {
+      summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+        (par[4] * data[[3]]) + (par[5] * data[[4]]) +
+        (par[6] * data[[5]]) + (par[7] * data[[6]]) +
+        (par[8] * data[[7]]) + (par[9] * data[[8]])
+    } else if (ncol(data) == 9) {
+      summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+        (par[4] * data[[3]]) + (par[5] * data[[4]]) +
+        (par[6] * data[[5]]) + (par[7] * data[[6]]) +
+        (par[8] * data[[7]]) + (par[9] * data[[8]]) +
+        (par[10] * data[[9]])
+    } else if (ncol(data) == 10) {
+      summa <- par[1] + (par[2] * data[[1]]) + (par[3] * data[[2]]) +
+        (par[4] * data[[3]]) + (par[5] * data[[4]]) +
+        (par[6] * data[[5]]) + (par[7] * data[[6]]) +
+        (par[8] * data[[7]]) + (par[9] * data[[8]]) +
+        (par[10] * data[[9]]) + (par[11] * data[[10]])
     }
     #
     return(summa)
@@ -336,29 +368,47 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     #
     ## create a sum for all columns/simulated spectra
     ## this cannot be done in any loop like `for`, `sapply` or `lapply` !!!
+    ## it does not work => must be defined explicitly
     if (ncol(data) == 1){
       summa <- x0[1] + (x0[2] * data[[1]])
-    }
-    if (ncol(data) == 2){
+    } else if (ncol(data) == 2){
       summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]])
-    }
-    if (ncol(data) == 3){
+    } else if (ncol(data) == 3){
       summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
         (x0[4] * data[[3]])
-    }
-    if (ncol(data) == 4){
+    } else if (ncol(data) == 4){
       summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
         (x0[4] * data[[3]]) + (x0[5] * data[[4]])
-    }
-    if (ncol(data) == 5){
+    } else if (ncol(data) == 5){
       summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
         (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
         (x0[6] * data[[5]])
-    }
-    if (ncol(data) == 6){
+    } else if (ncol(data) == 6){
       summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
         (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
         (x0[6] * data[[5]]) + (x0[7] * data[[6]])
+    } else if (ncol(data) == 7){
+      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+        (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
+        (x0[6] * data[[5]]) + (x0[7] * data[[6]]) +
+        (x0[8] * data[[7]])
+    } else if (ncol(data) == 8){
+      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+        (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
+        (x0[6] * data[[5]]) + (x0[7] * data[[6]]) +
+        (x0[8] * data[[7]]) + (x0[9] * data[[8]])
+    } else if (ncol(data) == 9){
+      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+        (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
+        (x0[6] * data[[5]]) + (x0[7] * data[[6]]) +
+        (x0[8] * data[[7]]) + (x0[9] * data[[8]]) +
+        (x0[10] * data[[9]])
+    } else if (ncol(data) == 10){
+      summa <- x0[1] + (x0[2] * data[[1]]) + (x0[3] * data[[2]]) +
+        (x0[4] * data[[3]]) + (x0[5] * data[[4]]) +
+        (x0[6] * data[[5]]) + (x0[7] * data[[6]]) +
+        (x0[8] * data[[7]]) + (x0[9] * data[[8]]) +
+        (x0[10] * data[[9]]) + (x0[11] * data[[10]])
     }
     #
     return(summa)

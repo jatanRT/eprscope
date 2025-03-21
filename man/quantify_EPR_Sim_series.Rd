@@ -181,7 +181,7 @@ Evaluating the linear combination of spectral intensities of components (loaded 
   to simulated spectra). The related intensity multiplication coefficients
   (please, refer to the \code{optim.params.init} argument) are optimized by methods gathered in the
   \code{\link{optim_for_EPR_fitness}}. The goal is to fit the sum of the simulated components
-  onto each experimental spectrum within series. So far, the maximum number of components is set to 6.
+  onto each experimental spectrum within series. The maximum number of components is set to 10.
 }
 \details{
 Analyzed EPR spectra may consists of several components (see also the \code{\link{eval_sim_EPR_iso_combo}}
