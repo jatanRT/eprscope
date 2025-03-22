@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,32 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.13" id="eprscope-0113">eprscope 0.1.13<a class="anchor" aria-label="anchor" href="#eprscope-0113"></a></h2>
+<div class="section level3">
+<h3 id="id_2025-0-1-13">2025-03-22<a class="anchor" aria-label="anchor" href="#id_2025-0-1-13"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-13">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-13"></a></h4>
+<ul><li><p>minimum sum of residual squares (<code>min.rss</code>), coming from the final list of <code>eval_sim_EPR_isoFit</code>, is now identical to that of calculated from the final data frame <code>df</code> of the column/spectrum <code>Residuals</code></p></li>
+<li><p>intensity (multiplet) pattern related to just one group of equivalent nuclei is properly displayed when running the <code>eval_sim_EPR_iso</code> + right now the function has no limitations, regarding the number of nuclei (within a group) or their corresponding spin quantum number <em>I</em> (calculation of multiplets, multinomial coefficients, was significantly updated using a recursive function)</p></li>
+<li><p>bibliography (<code>.bib</code>) template, when running the <code>create_qmdReport_proj</code>, now possesses the right name inherited from the <code>wd.subdir.name</code></p></li>
+<li><p>fixed bug in <code>plot_EPR_Specs</code> where the g-value scale was not properly displayed; now, if used either with <code>plot_theme_NoY_ticks</code> or <code>plot_theme_In_ticks</code>, the back-ticks on the opposite axis are shown as expected</p></li>
+<li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-13">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-13"></a></h4>
+<ul><li><p>the maximum number of components in <code>quantify_EPR_Sim_series</code> was increased from <code>6</code> to <code>10</code>; however one should be aware of such a high number of radicals when describing the EPR spectrum “envelope” (the sum of all components) because all the components/radicals must mirror the chemical reality of that mixture</p></li>
+<li><p>data frame output from the <code>eval_sim_EPR_isoFit</code> when <code>output.list.forFitSp = FALSE</code> was replaced by the plot/spectrum, depending on the <code>check.fit.plot</code> argument, in order to be ready for the new complex fitting function (currently under development); this is also the reason why the list of suggested packages in the <code>DESCRIPTION</code> has been updated</p></li>
+<li><p>code in several functions → cleaned up in order to be more readable</p></li>
+<li><p>right now, all functions based on optimization of EPR simulation parameters, like <code>optim_for_EPR_fitness</code>, <code>eval_simEPR_isoFit</code>, <code>quantify_EPR_sim_series</code>, possess an option to display messages and progress of the optimization/fitting procedure (including the elapsed time), within the R console, for better interactivity; <code>Examples</code> of those functions have been updated accordingly</p></li>
+<li><p>the <code>Blim</code> argument (defining the magnetic flux density, <em>B</em> region as a vector) was added/updated in several functions which return plots/spectra</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="new-functionsfilesvignettes-0-1-13">New Functions/Files/Vignettes<a class="anchor" aria-label="anchor" href="#new-functionsfilesvignettes-0-1-13"></a></h4>
+<ul><li>R Shiny application with simple user interface (UI): <code>plot_eval_ExpSim_app</code>, providing not only interactive visualization of an CW EPR spectrum, and its corresponding instrumental parameters but also the simulation in isotropic regime; all graphs/spectra and data frames/tables can be also exported to common formats like <code>.csv</code>, <code>.pdf</code>, <code>.png</code>, <code>.jpeg</code> and excel</li>
+</ul></div>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.12" id="eprscope-0112">eprscope 0.1.12<a class="anchor" aria-label="anchor" href="#eprscope-0112"></a></h2>
 <div class="section level3">
 <h3 id="id_2024-0-1-12">2024-12-05<a class="anchor" aria-label="anchor" href="#id_2024-0-1-12"></a></h3>
@@ -60,11 +86,11 @@
 <ul><li><p><code>README</code> documentation → fixed/updated, because it did not contain the information about the <em>JDK</em> installation as well as that about the essential R packages + couple of learning or tutorial resources and comments were added</p></li>
 <li><p>several fixes and/or updates in documentation (functions + vignettes)</p></li>
 <li><p>the default intensity multiplication coefficient (parameter) boundaries within the <code>eval_sim_EPR_isoFit</code> function are fixed and correctly set up + extended default boundaries for hyperfine coupling constants (<em>A</em>) added</p></li>
-<li><p>fixed visualization of an EPR spectrum fit within the <code>eval_sim_EPR_isoFit</code> + the initial simulation (see updates) also includes a baseline correction (it should also work for the consecutive <code>optim.method</code> (vector))</p></li>
+<li><p>fixed visualization of an EPR spectrum fit within the <code>eval_sim_EPR_isoFit</code> + the initial simulation (see updates) also includes a baseline correction (now it should also work for the consecutive <code>optim.method</code> (vector))</p></li>
 <li><p>increased decimal places of the magnetic flux density (<em>B</em>) and intensity by the reading of ASCII files, using the <code>read_EPR_Specs</code> and related functions</p></li>
 <li><p>fixed issue with the <code>origin</code> argument definition (regarding the spectrometer software labels/names) in reading functions</p></li>
 <li><p>initial <code>qvar</code>s for the <code>"(a=1)A + (r=1)R --&gt; [k1] B"</code> model reaction (see also updates) are now correctly set up</p></li>
-<li><p>the minimum sum of residual squares (RSS) value argument was renamed (<code>min.LSQ.sum</code> → <code>min.rss</code>) and unified in all relevant fitting functions</p></li>
+<li><p>the minimum sum of residual squares (RSS) value argument was renamed (<code>min.LSQ.sum</code> → <code>min.rss</code>) and unified for all relevant fitting functions</p></li>
 <li><p>tube diameter within the <code>quantify_EPR_Abs</code> is now correctly defined</p></li>
 <li><p>fixed issue with the integral scale within the <code>eval_integ_EPR_Spec</code></p></li>
 </ul></div>
@@ -77,7 +103,7 @@
 <li><p>number of letters in kinetic reaction schemes were decreased in order to be more readable + the last scheme (see also bug fixes above) as well as the time duration and resolution were simplified in order to better work with the numeric ODE integration (by the <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">deSolve::ode</a></code> function)</p></li>
 <li><p>option to select a method for the numeric ODE integration (argument <code>solve.ode.method</code>) was added to both key functions analyzing the radical kinetics</p></li>
 <li><p>added option to select a specific implementation of the <code>pswarm</code> (“particle swarm”) optimization algorithm/method, within the <code>optim_for_EPR_fitness</code> → either <code>“SPSO2007”</code> (for small particle spaces and swarm sizes) or <code>“SPSO2011”</code> (for larger ones) can be set up + internal function updated (not provided as a user option), the number of “informants” (related to particles) was slightly increased by the corresponding exponent, <em>k = 6</em> (see also documentation for the <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="external-link">pso::psoptim</a></code>)</p></li>
-<li><p>value/output list of the <code>eval_sim_EPR_isoFit</code> was extended to exclusively include vector of the optimized parameters (together with the <code>min.rss</code>) and data frame of the best EPR simulation fit in order to be ready for the new fitting function (currently under development)</p></li>
+<li><p>value/output list of the <code>eval_sim_EPR_isoFit</code> was extended to exclusively include vector of the optimized parameters (together with the <code>min.rss</code>) and data frame of the best EPR simulation fit in order to be ready for the new complex fitting function (currently under development)</p></li>
 <li><p>simple residual analysis (plots) added to the <code>eval_kinR_EPR_modelFit</code> output/value list, including the Q-Q (“quantile-quantile”) plot (to check weather residuals are normally distributed) as well as the Residual plot (residuals <em>vs</em> predicted/fitted <code>qvarR</code>s, e.g. concentration) in order to check the kinetic model fit and precision of the optimized kinetic parameters</p></li>
 </ul></div>
 <div class="section level4">
