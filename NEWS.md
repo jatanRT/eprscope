@@ -1,3 +1,64 @@
+# eprscope 0.1.13
+
+## 2025-03-22
+
+### Bug Fixes/Critical Updates
+
+* minimum sum of residual squares (`min.rss`), coming from the final list 
+  of `eval_sim_EPR_isoFit`, is now identical to that of calculated from the final 
+  data frame `df` of the column/spectrum `Residuals`
+  
+* intensity (multiplet) pattern related to just one group of equivalent nuclei
+  is properly displayed when running the `eval_sim_EPR_iso` + right now the 
+  function has no limitations, regarding the number of nuclei (within a group) 
+  or their corresponding spin quantum number *I* (calculation of multiplets,
+  multinomial coefficients, was significantly updated using a recursive function)
+  
+* bibliography (`.bib`) template, when running the `create_qmdReport_proj`,
+  now possesses the right name inherited from the `wd.subdir.name` 
+  
+* fixed bug in `plot_EPR_Specs` where the g-value scale was not properly 
+  displayed; now, if used either with `plot_theme_NoY_ticks`
+  or `plot_theme_In_ticks`, the back-ticks on the opposite axis are shown
+  as expected
+  
+* several fixes and/or updates in documentation (functions, including 
+  `Examples` + vignettes)   
+
+### Updates
+
+* the maximum number of components in `quantify_EPR_Sim_series` was increased 
+  from `6` to `10`; however one should be aware of such a high number
+  of radicals when describing the EPR spectrum "envelope" (the sum of all
+  components) because all the components/radicals must mirror the chemical
+  reality of that mixture
+  
+* data frame output from the `eval_sim_EPR_isoFit` 
+  when `output.list.forFitSp = FALSE` was replaced by the plot/spectrum, 
+  depending on the `check.fit.plot` argument, in order to be ready 
+  for the new complex fitting function (currently under development);
+  this is also the reason why the list of suggested packages
+  in the `DESCRIPTION` has been updated
+  
+* code in several functions &rarr; cleaned up in order to be more readable
+
+* right now, all functions based on optimization of EPR simulation parameters,
+  like `optim_for_EPR_fitness`, `eval_simEPR_isoFit`, `quantify_EPR_sim_series`,
+  possess an option to display messages and progress of the optimization/fitting
+  procedure (including the elapsed time), within the R console, for better
+  interactivity; `Examples` of those functions have been updated accordingly
+  
+* the `Blim` argument (defining the magnetic flux density, *B* region as a vector)
+  was added/updated in several functions which return plots/spectra   
+
+### New Functions/Files/Vignettes
+
+* R Shiny application with simple user interface (UI): `plot_eval_ExpSim_app`, 
+  providing not only interactive visualization of an CW EPR spectrum,
+  and its corresponding instrumental parameters but also the simulation
+  in isotropic regime; all graphs/spectra and data frames/tables can be also
+  exported to common formats like `.csv`, `.pdf`, `.png`, `.jpeg` and excel
+
 # eprscope 0.1.12
 
 ## 2024-12-05
@@ -16,7 +77,7 @@
 
 * fixed visualization of an EPR spectrum fit within the `eval_sim_EPR_isoFit` +
   the initial simulation (see updates) also includes a baseline correction 
-  (it should also work for the consecutive `optim.method` (vector))
+  (now it should also work for the consecutive `optim.method` (vector))
 
 * increased decimal places of the magnetic flux density (*B*) and intensity
   by the reading of ASCII files, using the `read_EPR_Specs` and related functions
@@ -28,7 +89,7 @@
   (see also updates) are now correctly set up
 
 * the minimum sum of residual squares (RSS) value argument was renamed 
-  (`min.LSQ.sum` &rarr; `min.rss`) and unified in all relevant 
+  (`min.LSQ.sum` &rarr; `min.rss`) and unified for all relevant 
   fitting functions
   
 * tube diameter within the `quantify_EPR_Abs` is now correctly defined  
@@ -73,7 +134,7 @@
 * value/output list of the `eval_sim_EPR_isoFit` was extended to exclusively 
   include vector of the optimized parameters (together with the `min.rss`)
   and data frame of the best EPR simulation fit in order to be ready for the new
-  fitting function (currently under development)
+  complex fitting function (currently under development)
   
 * simple residual analysis (plots) added to the `eval_kinR_EPR_modelFit` 
   output/value list, including the Q-Q ("quantile-quantile") plot 
