@@ -54,7 +54,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Interactive Application to Plot and Evaluate CW Isotropic EPR Spectra</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.13/R/plot_eval_ExpSim_app.R" class="external-link"><code>R/plot_eval_ExpSim_app.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/R/plot_eval_ExpSim_app.R" class="external-link"><code>R/plot_eval_ExpSim_app.R</code></a></small>
       <div class="d-none name"><code>plot_eval_ExpSim_app.Rd</code></div>
     </div>
 
@@ -72,7 +72,7 @@
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Based on the acquisition EPR spectrum <code>origin</code>, in user interface, one can load a spectrum
+    <p>Based on the acquisition EPR spectrum <code>origin</code>, in user interface one can load a spectrum
   and its instrumental/experimental parameters by the <code><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></code> as well as
   by the <code><a href="readEPR_params_tabs.html">readEPR_params_tabs</a></code> functions. An EPR is immediately depicted in the interactive
   <code>{plotly}</code> format by <code><a href="plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact</a></code>. The magnetic flux density \(B\)
@@ -80,7 +80,7 @@
   if the compound/radical structure is already known, one can display its structure by entering
   its corresponding <code>SMILES</code> code, using the <code><a href="draw_molecule_by_rcdk.html">draw_molecule_by_rcdk</a></code>.
   Uploaded <code>ASCII</code> data (spectrum + parameters) are applied to interactively simulate
-  the corresponding experimental spectrum by the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code> and to visualize
+  the corresponding experimental isotropic EPR spectrum by the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code> and to visualize
   it by the <code><a href="present_EPR_Sim_Spec.html">present_EPR_Sim_Spec</a></code>. Additionally, one can also print and download
   the corresponding data frame/table in several formats (<code>.csv</code>,<code>.pdf</code> or <code>.xls(x)</code>)
   and thus use the data not only in <code>R</code> environment but also in other programs.</p>

@@ -48,7 +48,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.13/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/jatanrt/eprscope/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -57,23 +57,24 @@
 <h3 id="id_2025-0-1-13">2025-03-22<a class="anchor" aria-label="anchor" href="#id_2025-0-1-13"></a></h3>
 <div class="section level4">
 <h4 id="bug-fixescritical-updates-0-1-13">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-13"></a></h4>
-<ul><li><p>minimum sum of residual squares (<code>min.rss</code>), coming from the final list of <code>eval_sim_EPR_isoFit</code>, is now identical to that of calculated from the final data frame <code>df</code> of the column/spectrum <code>Residuals</code></p></li>
-<li><p>intensity (multiplet) pattern related to just one group of equivalent nuclei is properly displayed when running the <code>eval_sim_EPR_iso</code> + right now the function has no limitations, regarding the number of nuclei (within a group) or their corresponding spin quantum number <em>I</em> (calculation of multiplets, multinomial coefficients, was significantly updated using a recursive function)</p></li>
+<ul><li><p>minimum sum of residual squares (<code>min.rss</code>), coming from the final list of <code>eval_sim_EPR_isoFit</code>, is now identical to that of the calculated from the final data frame <code>df</code> of the column/spectrum <code>Residuals</code></p></li>
+<li><p>intensity (multiplet) pattern related to just one group of equivalent nuclei is properly displayed when running the <code>eval_sim_EPR_iso</code> + right now the function has no limitations, regarding the number of nuclei (within a group) or their corresponding spin quantum number <em>I</em> → calculation of multiplets (multinomial coefficients) was significantly updated using a recursive function</p></li>
 <li><p>bibliography (<code>.bib</code>) template, when running the <code>create_qmdReport_proj</code>, now possesses the right name inherited from the <code>wd.subdir.name</code></p></li>
-<li><p>fixed bug in <code>plot_EPR_Specs</code> where the g-value scale was not properly displayed; now, if used either with <code>plot_theme_NoY_ticks</code> or <code>plot_theme_In_ticks</code>, the back-ticks on the opposite axis are shown as expected</p></li>
+<li><p>fixed bug in <code>plot_EPR_Specs</code> where the g-value scale was not properly displayed; now, if used either with the <code>plot_theme_NoY_ticks</code> or <code>plot_theme_In_ticks</code>, the back-ticks on the opposite axis are shown as expected</p></li>
 <li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="updates-0-1-13">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-13"></a></h4>
 <ul><li><p>the maximum number of components in <code>quantify_EPR_Sim_series</code> was increased from <code>6</code> to <code>10</code>; however one should be aware of such a high number of radicals when describing the EPR spectrum “envelope” (the sum of all components) because all the components/radicals must mirror the chemical reality of that mixture</p></li>
-<li><p>data frame output from the <code>eval_sim_EPR_isoFit</code> when <code>output.list.forFitSp = FALSE</code> was replaced by the plot/spectrum, depending on the <code>check.fit.plot</code> argument, in order to be ready for the new complex fitting function (currently under development); this is also the reason why the list of suggested packages in the <code>DESCRIPTION</code> has been updated</p></li>
+<li><p>data frame output from the <code>eval_sim_EPR_isoFit</code> when <code>output.list.forFitSp = TRUE</code> was replaced by the plot/spectrum, depending on the <code>check.fit.plot</code> argument, in order to be ready for the new complex fitting function (currently under development); this is also the reason why the list of suggested packages in the <code>DESCRIPTION</code> has been updated</p></li>
 <li><p>code in several functions → cleaned up in order to be more readable</p></li>
-<li><p>right now, all functions based on optimization of EPR simulation parameters, like <code>optim_for_EPR_fitness</code>, <code>eval_simEPR_isoFit</code>, <code>quantify_EPR_sim_series</code>, possess an option to display messages and progress of the optimization/fitting procedure (including the elapsed time), within the R console, for better interactivity; <code>Examples</code> of those functions have been updated accordingly</p></li>
+<li><p>right now, all functions based on optimization of EPR simulation parameters, like <code>optim_for_EPR_fitness</code>, <code>eval_simEPR_isoFit</code>, <code>quantify_EPR_sim_series</code>, possess an option to display messages and progress of the optimization/fitting procedure (including the elapsed time) within the R console, for better interactivity; <code>Examples</code> of those functions have been updated accordingly</p></li>
 <li><p>the <code>Blim</code> argument (defining the magnetic flux density, <em>B</em> region as a vector) was added/updated in several functions which return plots/spectra</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-functionsfilesvignettes-0-1-13">New Functions/Files/Vignettes<a class="anchor" aria-label="anchor" href="#new-functionsfilesvignettes-0-1-13"></a></h4>
-<ul><li>R Shiny application with simple user interface (UI): <code>plot_eval_ExpSim_app</code>, providing not only interactive visualization of an CW EPR spectrum, and its corresponding instrumental parameters but also the simulation in isotropic regime; all graphs/spectra and data frames/tables can be also exported to common formats like <code>.csv</code>, <code>.pdf</code>, <code>.png</code>, <code>.jpeg</code> and excel</li>
+<ul><li>
+<em>R</em> Shiny application with a simple user interface (UI): <code>plot_eval_ExpSim_app</code>, providing not only interactive visualization of a CW EPR spectrum (and its corresponding instrumental parameters), but also the simulation in isotropic regime; all graphs/spectra and data frames/tables can be also exported to common formats like <code>.csv</code>, <code>.pdf</code>, <code>.png</code>, <code>.jpeg</code> and excel</li>
 </ul></div>
 </div>
 </div>

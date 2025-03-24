@@ -82,7 +82,7 @@
             <h3 data-toc-skip class="subtitle">Processing and Analysis of the Wuster’s Blue EPR Spectrum</h3>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.13/vignettes/functionality.Rmd" class="external-link"><code>vignettes/functionality.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/vignettes/functionality.Rmd" class="external-link"><code>vignettes/functionality.Rmd</code></a></small>
       <div class="d-none name"><code>functionality.Rmd</code></div>
     </div>
 
@@ -519,7 +519,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span><span class="co"># value preview</span></span>
 <span><span class="va">tmpd.g.iso.spec</span></span>
 <span><span class="co">#&gt; [1] 2.00304</span></span></code></pre></div>
-<p>Function <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> represents an alternative way how to figure out the <em>g</em>-value. Within a simple UI (<strong>u</strong>ser <strong>i</strong>nterface), based on <a href="https://shiny.posit.co/r/gallery/" class="external-link"><em>R</em> Shiny</a>, one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the <strong>“Microwave frequency (GHz)”</strong> is available (it automatically reads the right frequency by loading the “parameter” file, <code>.par</code> or <code>.dsc</code>/<code>.DSC</code>), by activating the <strong>“Show g-Values”</strong>, the EPR spectrum abscissa is automatically converted from <em>B</em> into <em>g</em> (see Figure <a href="#fig:g-value-shiny-app">5.1</a>).</p>
+<p>Function <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> represents an alternative way how to figure out the <em>g</em>-value. Within a simple UI (<strong>u</strong>ser <strong>i</strong>nterface), based on <a href="https://shiny.posit.co/r/gallery/" class="external-link"><em>R</em> Shiny</a>, one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the <strong>“Microwave frequency (GHz)”</strong> is available (the function automatically reads the right frequency by loading the “parameter” file with <code>.par</code> or <code>.dsc</code>/ <code>.DSC</code> extensions), by activating the <strong>“Show g-Values”</strong>. Immediately after that, the EPR spectrum abscissa is automatically converted from <em>B</em> into <em>g</em> (see Figure <a href="#fig:g-value-shiny-app">5.1</a>).</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:g-value-shiny-app"></span>
 <img src="TMPD_EPR_gVal_interact_App.png" alt="Screenshot of the interactive Shiny app, showing how to display g-values for the $\small \ce{TMPD^{.+}}$ EPR spectrum." width="648"><p class="caption">
@@ -742,7 +742,7 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.085   0.007   0.092</span></span>
+<span><span class="co">#&gt;   0.080   0.013   0.093</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
@@ -786,8 +786,8 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 <p>Although the simulated <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization function <code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> was used to get a more accurate simulated spectrum. The result may be found in <code>Examples</code> of the <code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code> function.</p>
 </div>
 <div class="section level3" number="5.4">
-<h3 id="integrating-the-epr-spectrum">
-<span class="header-section-number">5.4</span> Integrating the EPR Spectrum<a class="anchor" aria-label="anchor" href="#integrating-the-epr-spectrum"></a>
+<h3 id="integration-of-the-epr-spectrum">
+<span class="header-section-number">5.4</span> Integration of the EPR Spectrum<a class="anchor" aria-label="anchor" href="#integration-of-the-epr-spectrum"></a>
 </h3>
 <p>Integration process in the analysis of EPR spectra is undoubtedly an important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also <code><a href="../reference/quantify_EPR_Abs.html">quantify_EPR_Abs()</a></code>). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Hence, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation, available from the <a href="https://github.com/cran/pracma" class="external-link">{pracma}</a> 📦 <code><a href="https://rdrr.io/pkg/pracma/man/trapz.html" class="external-link">pracma::cumtrapz()</a></code> <span class="citation">(<a href="#ref-Rpracma2023">10</a>–<a href="#ref-epperson2013intro">13</a>)</span>.</p>
 <p>The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of <span class="math inline">\(\small \langle 1-5\rangle\,\%\)</span> or even lower depending on the spectrum resolution <span class="citation">(<a href="#ref-LibreMath2023">11</a>, <a href="#ref-epperson2013intro">13</a>)</span>. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape ( see below an example of such shape). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. the <code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code> function). The big advantage of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled in the same manner like within the EPR spectrometer acquisitions/processing software (see also the <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function below). The integration of the EPR spectral data is essentially provided by the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> and its application to the experimental <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectrum is documented by the following scripts ➨</p>
