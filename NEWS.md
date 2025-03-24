@@ -5,25 +5,25 @@
 ### Bug Fixes/Critical Updates
 
 * minimum sum of residual squares (`min.rss`), coming from the final list 
-  of `eval_sim_EPR_isoFit`, is now identical to that of calculated from the final 
+  of `eval_sim_EPR_isoFit`, is now identical to that of the calculated from the final 
   data frame `df` of the column/spectrum `Residuals`
   
 * intensity (multiplet) pattern related to just one group of equivalent nuclei
   is properly displayed when running the `eval_sim_EPR_iso` + right now the 
   function has no limitations, regarding the number of nuclei (within a group) 
-  or their corresponding spin quantum number *I* (calculation of multiplets,
-  multinomial coefficients, was significantly updated using a recursive function)
+  or their corresponding spin quantum number *I* &rarr; calculation of multiplets
+  (multinomial coefficients) was significantly updated using a recursive function
   
 * bibliography (`.bib`) template, when running the `create_qmdReport_proj`,
   now possesses the right name inherited from the `wd.subdir.name` 
   
 * fixed bug in `plot_EPR_Specs` where the g-value scale was not properly 
-  displayed; now, if used either with `plot_theme_NoY_ticks`
+  displayed; now, if used either with the `plot_theme_NoY_ticks`
   or `plot_theme_In_ticks`, the back-ticks on the opposite axis are shown
   as expected
   
 * several fixes and/or updates in documentation (functions, including 
-  `Examples` + vignettes)   
+  `Examples` + vignettes) 
 
 ### Updates
 
@@ -34,7 +34,7 @@
   reality of that mixture
   
 * data frame output from the `eval_sim_EPR_isoFit` 
-  when `output.list.forFitSp = FALSE` was replaced by the plot/spectrum, 
+  when `output.list.forFitSp = TRUE` was replaced by the plot/spectrum, 
   depending on the `check.fit.plot` argument, in order to be ready 
   for the new complex fitting function (currently under development);
   this is also the reason why the list of suggested packages
@@ -45,7 +45,7 @@
 * right now, all functions based on optimization of EPR simulation parameters,
   like `optim_for_EPR_fitness`, `eval_simEPR_isoFit`, `quantify_EPR_sim_series`,
   possess an option to display messages and progress of the optimization/fitting
-  procedure (including the elapsed time), within the R console, for better
+  procedure (including the elapsed time) within the R console, for better
   interactivity; `Examples` of those functions have been updated accordingly
   
 * the `Blim` argument (defining the magnetic flux density, *B* region as a vector)
@@ -53,9 +53,9 @@
 
 ### New Functions/Files/Vignettes
 
-* R Shiny application with simple user interface (UI): `plot_eval_ExpSim_app`, 
-  providing not only interactive visualization of an CW EPR spectrum,
-  and its corresponding instrumental parameters but also the simulation
+* *R* Shiny application with a simple user interface (UI): `plot_eval_ExpSim_app`, 
+  providing not only interactive visualization of a CW EPR spectrum
+  (and its corresponding instrumental parameters), but also the simulation
   in isotropic regime; all graphs/spectra and data frames/tables can be also
   exported to common formats like `.csv`, `.pdf`, `.png`, `.jpeg` and excel
 

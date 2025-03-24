@@ -13,7 +13,7 @@ Launch this app in order to quickly check recorded EPR spectra with their instru
   functions from the package (see \code{Details}).
 }
 \details{
-Based on the acquisition EPR spectrum \code{origin}, in user interface, one can load a spectrum
+Based on the acquisition EPR spectrum \code{origin}, in user interface one can load a spectrum
   and its instrumental/experimental parameters by the \code{\link{readEPR_Exp_Specs}} as well as
   by the \code{\link{readEPR_params_tabs}} functions. An EPR is immediately depicted in the interactive
   \code{{plotly}} format by \code{\link{plot_EPR_Specs2D_interact}}. The magnetic flux density \eqn{B}
@@ -21,7 +21,7 @@ Based on the acquisition EPR spectrum \code{origin}, in user interface, one can 
   if the compound/radical structure is already known, one can display its structure by entering
   its corresponding \code{SMILES} code, using the \code{\link{draw_molecule_by_rcdk}}.
   Uploaded \code{ASCII} data (spectrum + parameters) are applied to interactively simulate
-  the corresponding experimental spectrum by the \code{\link{eval_sim_EPR_iso}} and to visualize
+  the corresponding experimental isotropic EPR spectrum by the \code{\link{eval_sim_EPR_iso}} and to visualize
   it by the \code{\link{present_EPR_Sim_Spec}}. Additionally, one can also print and download
   the corresponding data frame/table in several formats (\code{.csv},\code{.pdf} or \code{.xls(x)})
   and thus use the data not only in \code{R} environment but also in other programs.

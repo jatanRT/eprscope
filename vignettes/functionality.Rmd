@@ -327,7 +327,7 @@ tmpd.g.iso.spec
 
 ```
 
-Function `plot_eval_ExpSim_app()` represents an alternative way how to figure out the *g*-value. Within a simple UI (**u**ser **i**nterface), based on [*R* Shiny](https://shiny.posit.co/r/gallery/), one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the **"Microwave frequency (GHz)"** is available (it automatically reads the right frequency by loading the "parameter" file, `.par` or `.dsc`/`.DSC`), by activating the **"Show g-Values"**, the EPR spectrum abscissa is automatically converted from *B* into *g* (see Figure \@ref(fig:g-value-shiny-app)).
+Function `plot_eval_ExpSim_app()` represents an alternative way how to figure out the *g*-value. Within a simple UI (**u**ser **i**nterface), based on [*R* Shiny](https://shiny.posit.co/r/gallery/), one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the **"Microwave frequency (GHz)"** is available (the function automatically reads the right frequency by loading the "parameter" file with `.par` or `.dsc`/ `.DSC` extensions), by activating the **"Show g-Values"**. Immediately after that, the EPR spectrum abscissa is automatically converted from *B* into *g* (see Figure \@ref(fig:g-value-shiny-app)).
 
 ```{r g-value-shiny-app,echo=FALSE,fig.align='center',fig.cap="Screenshot of the interactive Shiny app, showing how to display g-values for the $\\small \\ce{TMPD^{.+}}$ EPR spectrum."}
 
@@ -552,7 +552,7 @@ knitr::include_graphics("TMPD_EPR_Sim_interact_App.png",dpi = 200)
 
 Although the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization function `eval_sim_EPR_isoFit()` was used to get a more accurate simulated spectrum. The result may be found in `Examples` of the `present_EPR_Sim_Spec()` function.
 
-## Integrating the EPR Spectrum
+## Integration of the EPR Spectrum
 
 Integration process in the analysis of EPR spectra is undoubtedly an important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also `quantify_EPR_Abs()`). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Hence, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation, available from the [{pracma}](https://github.com/cran/pracma) 📦 `pracma::cumtrapz()` [@Rpracma2023; @LibreMath2023; @Math24net2023; @epperson2013intro].
 
