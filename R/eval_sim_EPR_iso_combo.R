@@ -68,7 +68,7 @@
 #'   g.iso.vec = c(2.0059,2.0059),
 #'   nuclear.system = list(list("14N",1,48),
 #'                         list(list("14N",1,48),
-#'                              list("13C",1,18.5)
+#'                              list("13C",1,18.2)
 #'                             )
 #'                        ),
 #'   natur.abund.vec = c(FALSE,FALSE),
@@ -127,11 +127,10 @@
 #' ## see also at https://patchwork.data-imaginist.com/
 #' library(patchwork)
 #' (sim.hobmpo.spec$plot.sum +
-#'  ggplot2::coord_cartesian(xlim = c(3420,3560)) +
-#'  ggplot2::labs(x = NULL)
-#' ) / (sim.hobmpo.spec$plot.comps +
+#'  ggplot2::coord_cartesian(xlim = c(3420,3560))
+#' ) + (sim.hobmpo.spec$plot.comps +
 #'     ggplot2::coord_cartesian(xlim = c(3420,3560))
-#' )
+#' ) + patchwork::plot_layout(ncol = 1,axis_titles = "collect")
 #' #
 #' ## ...and the corresponding areas/integrals
 #' sim.hobmpo.spec$df.areas
