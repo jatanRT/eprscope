@@ -2,31 +2,31 @@
 ## more complex optimization/fitting based
 ## on augmented space of initial parameters
 #
-eval_sim_EPR_isoFitSp <- function(data.spectr.expr,
-                                  # Intensity.expr = "dIepr_over_dB", ## into `...`
-                                  # Intensity.sim = "dIeprSim_over_dB", ## into `...`
-                                  nu.GHz,
-                                  B.unit = "G",
-                                  # Blim = NULL, ## into `...`
-                                  nuclear.system.noA = NULL, ## no HFCCs, only nucleus and number
-                                  baseline.correct = "constant", ## "linear" or "quadratic"
-                                  lineG.content = 0.5,
-                                  lineG.content.dvary = NULL, ## or value
-                                  lineSpecs.form = "derivative",
-                                  optim.method = "neldermead", ## also two consecutive methods as vector
-                                  optim.params.init,
-                                  optim.params.init.dvary = NULL, ## or vector
-                                  # optim.params.lower = NULL, ## into `...`
-                                  # optim.params.upper = NULL, ## into `...`
-                                  Nmax.evals = 512,
-                                  Nmax.evals.dvary = 16, # new argument max. number of points in space
-                                  # tol.step = 5e-7, ## into `...`
-                                  # pswarm.size = NULL, ## into `...`
-                                  # pswarm.diameter = NULL, ## into `...`
-                                  # pswarm.type = NULL, ## into `...`
-                                  check.fit.plot = TRUE,
-                                  processing = "sequential", ## or "parallel"
-                                  ...) { ## additional arguments from `eval_sim_EPR_isoFit`
+eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
+                                      # Intensity.expr = "dIepr_over_dB", ## into `...`
+                                      # Intensity.sim = "dIeprSim_over_dB", ## into `...`
+                                      nu.GHz,
+                                      B.unit = "G",
+                                      # Blim = NULL, ## into `...`
+                                      nuclear.system.noA = NULL, ## no HFCCs, only nucleus and number
+                                      baseline.correct = "constant", ## "linear" or "quadratic"
+                                      lineG.content = 0.5,
+                                      lineG.content.dvary = NULL, ## or value
+                                      lineSpecs.form = "derivative",
+                                      optim.method = "neldermead", ## also two consecutive methods as vector
+                                      optim.params.init,
+                                      optim.params.init.dvary = NULL, ## or vector
+                                      # optim.params.lower = NULL, ## into `...`
+                                      # optim.params.upper = NULL, ## into `...`
+                                      Nmax.evals = 512,
+                                      Nmax.evals.dvary = 16, # new argument max. number of points in space
+                                      # tol.step = 5e-7, ## into `...`
+                                      # pswarm.size = NULL, ## into `...`
+                                      # pswarm.diameter = NULL, ## into `...`
+                                      # pswarm.type = NULL, ## into `...`
+                                      check.fit.plot = TRUE,
+                                      processing = "sequential", ## or "parallel"
+                                      ...) { ## additional arguments from `eval_sim_EPR_isoFit`
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -395,7 +395,7 @@ eval_sim_EPR_isoFitSp <- function(data.spectr.expr,
     ## to show the Evaluation within lower `minRSS`:
     geom_vline(
       xintercept = best.df.index,
-      color = "darkgreen",
+      color = "#129001",
       linewidth = 0.75
     ) +
     #
@@ -406,7 +406,7 @@ eval_sim_EPR_isoFitSp <- function(data.spectr.expr,
     ) + scale_color_manual(
       values = facet.plot.colors
     ) +
-    labs(caption = " &#006400; Parameters at minum sum of residual squares ") +
+    labs(caption = " &#129001; Parameters at minum sum of residual squares ") +
     plot_theme_Out_ticks(
       axis.title.size = 13,
       axis.text.size = 11
