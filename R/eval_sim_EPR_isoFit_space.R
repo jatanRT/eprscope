@@ -183,8 +183,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## progress will be shown by `{progressr}`
   general_progress_apply_Map_fn <-
     function(DlineG.content,Dinit.params.df,process) { ## process...TBC...
-      ## `DlineG.content` = `lineG.content.vary` actual from the main fun.
-      ## `Dinit.params.df` = `optim.params.init.vary.df` actual from the main fun.
+      ## `DlineG.content` = `lineG.content.vary`
+      ## `Dinit.params.df` = `optim.params.init.vary.df`
       ## `process` = `processing` actual from the main fun.
       #
       final.list <- c()
@@ -194,7 +194,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         ## progress bar definition
         pb <- progressr::progressor(along = 1:nrow(Dinit.params.df))
         #
-        future.apply::future_apply(
+        future.apply::future_lapply(
           1:nrow(Dinit.params.df), function(r) {
             final.list[[r]] <- vary_sim_iso_fit_fn( ## see the function definition above
               Gauss.content = lineG.content,
@@ -216,7 +216,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
           ## progress bar definition
           pb <- progressr::progressor(along = 1:length(DlineG.content))
           #
-          future.apply::future_apply(
+          future.apply::future_lapply(
             1:length(DlineG.content), function(c) {
               final.list[[c]] <- vary_sim_iso_fit_fn( ## see the function def. above
                 Gauss.content = DlineG.content[c],
@@ -390,8 +390,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ggplot(
       data = sim.fit.vary.list.params.df.long,
       aes(x = Evaluation,y = Value,color = Parameter)
-    ) + geom_point(size = 2) +
-    geom_line() +
+    ) + geom_point(size = 3) +
+    ## to show fit with confidence interval
+    ## except the minimum sum of residual squares
+    geom_smooth(data = subset(sim.fit.vary.list.params.df.long,Parameter != "minRSS")) +
+    # geom_line(linewidth = 0.2) +
     ## to show the Evaluation within lower `minRSS`:
     geom_vline(
       xintercept = best.df.index,
@@ -406,7 +409,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) + scale_color_manual(
       values = facet.plot.colors
     ) +
-    labs(caption = " &#129001; Parameters at minum sum of residual squares ") +
+    labs(caption = " \u{1F7E9} Parameters at minum sum of residual squares ") +
     plot_theme_Out_ticks(
       axis.title.size = 13,
       axis.text.size = 11
@@ -431,8 +434,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ggplot(
       data = optim.params.init.vary.df.long,
       aes(x = Init_Params_Set,y = Value,color = Parameter)
-    ) + geom_point(size = 2) +
-    geom_line() +
+    ) + geom_point(size = 3) +
+    # geom_line(linewidth = 0.2) +
     facet_wrap(
       ~Parameter,
       ncol = 2,
