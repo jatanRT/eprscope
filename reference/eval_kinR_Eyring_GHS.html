@@ -345,6 +345,13 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">## ∆S = (7.2 +- 1.1) J/(mol*K) &amp;</span></span></span>
 <span class="r-in"><span><span class="co">## ∆H = (118.80 +- 0.41) kJ/mol</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## brief model summary</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">df.model.HS</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sigma isConv      finTol logLik   AIC   BIC deviance df.residual  nobs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">000</span>265 TRUE   0.000<span style="text-decoration: underline;">000</span>397   125. -<span style="color: #BB0000;">243.</span> -<span style="color: #BB0000;">243.</span> 4.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span>           7     9</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the convergence measures</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $N.evals</span>
@@ -426,6 +433,14 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf</span></span></span>
 <span class="r-in"><span><span class="co">## ∆S = (11.33 +- 0.45) J/(mol*K) &amp;</span></span></span>
 <span class="r-in"><span><span class="co">## ∆H = (120.27 +- 0.15) kJ/mol</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## brief model summary</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">df.model.HS</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   r.squared adj.r.squared   sigma statistic  p.value    df logLik   AIC   BIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1.00          1.00 0.006<span style="text-decoration: underline;">07</span>   <span style="text-decoration: underline;">618</span>035. 1.42<span style="color: #949494;">e</span><span style="color: #BB0000;">-18</span>     1   34.3 -<span style="color: #BB0000;">62.6</span> -<span style="color: #BB0000;">62.0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## corresponding analysis of residuals</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">plot.ra</span></span></span>
