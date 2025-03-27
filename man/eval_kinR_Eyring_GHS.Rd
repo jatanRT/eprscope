@@ -205,6 +205,9 @@ activ.kinet.test01.data$df.coeffs.HS
 ## ∆S = (7.2 +- 1.1) J/(mol*K) &
 ## ∆H = (118.80 +- 0.41) kJ/mol
 #
+## brief model summary
+activ.kinet.test01.data$df.model.HS
+#
 ## preview of the convergence measures
 activ.kinet.test01.data$converg
 #
@@ -253,6 +256,9 @@ activ.kinet.test02.data$vec.HS.uncert
 ## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
 ## ∆S = (11.33 +- 0.45) J/(mol*K) &
 ## ∆H = (120.27 +- 0.15) kJ/mol
+#
+## brief model summary
+activ.kinet.test02.data$df.model.HS
 #
 ## corresponding analysis of residuals
 activ.kinet.test02.data$plot.ra
