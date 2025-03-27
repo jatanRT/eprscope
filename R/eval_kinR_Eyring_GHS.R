@@ -8,12 +8,12 @@
 #' @description
 #'   Finding the temperature-dependence of a rate constant (\eqn{k}) related to the elementary radical reaction, using the essential
 #'   transition state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
-#'   are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring expression
-#'   (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
-#'   refer to the \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
-#'   from sigmoid-integrals of the EPR spectra recorded at different temperatures. Finally, the activation Gibbs energy
-#'   (\eqn{\Delta^{\ddagger} G^o}) is calculated, using the optimized \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o},
-#'   for each temperature in the series.
+#'   are obtained either by the non-linear fit (see the general \code{\link[stats]{nls}} R function) or by the linear fit
+#'   (using the \code{\link[stats]{lm}}) of the Eyring expression (or its logarithmic linear form) on the original
+#'   \eqn{k} \emph{vs} \eqn{T} relation (please, refer to the \code{data.kvT} argument). The latter can be acquired
+#'   by the \code{\link{eval_kinR_EPR_modelFit}} from sigmoid-integrals of the EPR spectra recorded at different temperatures.
+#'   Finally, the activation Gibbs energy (\eqn{\Delta^{\ddagger} G^o}) is calculated, using the optimized \eqn{\Delta^{\ddagger} S^o}
+#'   and \eqn{\Delta^{\ddagger} H^o}, for each temperature in the series.
 #'
 #'
 #' @details
@@ -52,11 +52,20 @@
 #'   \eqn{\Delta^{active} S^o} and \eqn{\Delta^{active} H^o}, respectively) are optimized using the \code{fit.method}
 #'   (by the \code{\link[stats]{nls}} function). In the first approach, both latter are considered as temperature independent
 #'   within the selected temperature range. Often, the Eyring equation is not applied in the original form,
-#'   however in the linearized one. Nevertheless, the latter is not recommended as a model for fitting the experimental \eqn{k(T)}
-#'   (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}). The reason inherits in the misinterpretation
-#'   of the extrapolation to \eqn{T\rightarrow \infty} (or \eqn{1/T\rightarrow 0}) by which the \eqn{\Delta^{\ddagger} S^o}
-#'   is obtained and thus it is unreliable. Accordingly, \strong{the original exponential Eyring form is recommended}
-#'   as a model to fit the experimental \eqn{k(T)}.
+#'   however in the linear one,like
+#'   \deqn{ln(k\,/\,T) = - (\Delta^{\ddagger} H^o)\,/\,(R\,T) + (\Delta^{\ddagger} S^o\,/\,R) + ln(\kappa\,k_{\text{B}}\,/\,h)}
+#'   with the slope/coefficient \eqn{- (\Delta^{\ddagger} H^o)\,/\,R}
+#'   and the \eqn{(\Delta^{\ddagger} S^o\,/\,R) + ln(\kappa\,k_{\text{B}}\,/\,h)}
+#'   as intercept of the \eqn{ln(k\,/\,T)\,\,vs\,\,1/T} relation. Nevertheless, the latter is not recommended as a model for fitting
+#'   the experimental \eqn{k(T)} (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}).
+#'   The reason inherits in the misinterpretation of the extrapolation to \eqn{T\rightarrow \infty} (or \eqn{1/T\rightarrow 0})
+#'   by which the \eqn{\Delta^{\ddagger} S^o} is obtained and thus it is unreliable. Accordingly, \strong{the original exponential
+#'   Eyring form is recommended} as a model to fit the experimental \eqn{k(T)}. Contrary, it may happen that \eqn{k\,\,vs\,\,T}
+#'   can vary in several (\eqn{\approx 2-3}) orders of magnitude within the studied temperature range and therefore, it is necessary
+#'   to proportionally weight the \eqn{k} (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}). For the linear form,
+#'   weighting does not make a difference because the transformed \eqn{ln(k\,/\,T)} span over a narrow range of values.
+#'   Therefore, it is advisable to perform the original exponential fit as well as the linear one within the studied temperature range
+#'   and compare both outcomes (both methods are involved in this function, see the argument \code{fit.method}).
 #'   The \href{https://goldbook.iupac.org/terms/view/E02142}{\eqn{k}-unit depends on the molecularity of the reaction},
 #'   please also refer to the \code{rate.const.unit} argument. Therefore, the left hand site of the Eyring equation above
 #'   must be multiplied by the standard molar concentration \eqn{c^o = 1\,\text{mol}\,\text{dm}^{-3}}:
@@ -83,7 +92,7 @@
 #'   the energy barrier. Such effect will be less probable for high energy barriers, however e.g. for radical-radical
 #'   recombination, where the barriers are typically very low, the tunneling probability is high and TST may fail.
 #'   In addition, such reactions proceed relatively fast and therefore the TST (Eyring fit) can also strongly bias
-#'   the activation parameters. This type of reactions may also exhibit negative \eqn{k} \emph{vs} \eqn{T} dependence
+#'   the activation parameters. This type of reactions may also exhibit negative \eqn{k\,\,vs\,\,T} dependence
 #'   (see Wardlaw DM and Marcus RA (1986) in the \code{References}).
 #'   }
 #'
@@ -127,9 +136,9 @@
 #' @param transmiss.coeff Numeric value, corresponding to probability that the activated complex is transformed into products.
 #'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
 #' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
-#'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k} \emph{vs} \eqn{T}
-#'   dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
-#'   under its \code{algorithm} argument, are available: \code{"default"}
+#'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}
+#'   dependence. For this purpose, either \code{fit.method = "linear"} (using the \code{\link[stats]{lm}}) or non-linear methods
+#'   (available by the \code{\link[stats]{nls}} function) are applied. The latter includes \code{"default"}
 #'   (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
 #'   \code{"plinear"}, which is
 #'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
@@ -141,23 +150,30 @@
 #'   \describe{
 #'   \item{df}{Data frame, including the original \code{data.kvT} + the column of \eqn{\Delta^{\ddagger} G^o},
 #'   with the name of \code{DeltaG_active_kJ_per_mol}, as well as \code{fitted}/predicted values of the rate constant
-#'   and finally, the corresponding residuals.}
+#'   and finally, the corresponding residuals. If \code{fit.method = "linear"} additional columns like \code{reciprocal_T}
+#'   and \code{lnk_per_T} are available, corresponding to \eqn{1\,/\,T} and \eqn{ln(k\,/\,T)}, respectively.}
 #'   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
 #'   however with the resolution of 1024 points) and the corresponding \code{.fitted} \eqn{k}, according to
 #'   Eyring model.}
-#'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
+#'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
 #'   together with the Eyring equation.}
 #'   \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
 #'   two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T} from the Eyring fit.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
-#'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for both \eqn{\Delta^{\ddagger} H^o}
-#'   and \eqn{\Delta^{\ddagger} S^o}.}
-#'   \item{converg}{List, containing fitting/optimization characteristics like number of evaluations/iterations
+#'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
+#'   \item{df.model.HS}{Data frame object, contaning model characteristics.}
+#'   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
+#'   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
+#'   is performed by the error propagation, implemented
+#'   in \href{https://r-quantities.github.io/errors/articles/rjournal.html}{\code{{errors}} R package}, using the first
+#'   order Taylor series method.}
+#'   \item{converg}{If \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
+#'   characteristics like number of evaluations/iterations
 #'   (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
 #'   and finally, standard deviation of the residuals (\code{residual.sd}), which is defined as:
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
 #'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{residual.sd}, the better the Eyring-relation fit.}
+#'   Therefore, the smaller the \code{residual.sd}, the better the original Eyring-relation fit.}
 #'   }
 #'
 #'
@@ -173,7 +189,9 @@
 #'              T_oC = c(50,55,60,65,70,
 #'                       75,80,85,90)
 #' )
-#' activ.kinet.test.data <-
+#' #
+#' ## original "Eyring" model
+#' activ.kinet.test01.data <-
 #'   eval_kinR_Eyring_GHS(
 #'     data.kvT = kinet.test.data,
 #'     rate.const = "k_per_M_per_s",
@@ -184,24 +202,71 @@
 #' #
 #' ## preview of the original data
 #' ## + ∆G (activated) + fitted + residuals
-#' activ.kinet.test.data$df
+#' activ.kinet.test01.data$df
 #' #
 #' ## preview of the non-linear fit plot
-#' activ.kinet.test.data$plot
+#' activ.kinet.test01.data$plot
 #' #
 #' ## preview of the optimized (activated)
 #' ## ∆S and ∆H parameters
-#' activ.kinet.test.data$df.coeffs.HS
+#' activ.kinet.test01.data$df.coeffs.HS
 #' #
 #' ## compare values with those presented in
 #' ## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
-#' ## ∆S = (7.2 +- 1.1) kJ/mol*K & ∆H = (118.80 +- 0.41) kJ/mol
-#' #
-#' ## preview of the new `.fitted` data frame
-#' activ.kinet.test.data$df.fit
+#' ## ∆S = (7.2 +- 1.1) J/(mol*K) &
+#' ## ∆H = (118.80 +- 0.41) kJ/mol
 #' #
 #' ## preview of the convergence measures
-#' activ.kinet.test.data$converg
+#' activ.kinet.test01.data$converg
+#' #
+#' ## this was an untransformed dataset,
+#' ## when the k values span more than 2 orders
+#' ## of magnitude => a proportional weighting
+#' ## or linear logarithmic model might be applied
+#' #
+#' ## take the same above-defined dataset and assign
+#' ## it to a new variable
+#' kinet.test.data.new <-
+#'   data.frame(k_per_M_per_s =
+#'                c(9.54e-7,1.91e-6,3.76e-6,
+#'                  7.33e-6,1.38e-5,2.56e-5,
+#'                  4.71e-5,8.43e-5,1.47e-4),
+#'              T_oC = c(50,55,60,65,70,
+#'                       75,80,85,90)
+#' )
+#' #
+#' ## linear logarithmic Eyring model
+#' activ.kinet.test02.data <-
+#'   eval_kinR_Eyring_GHS(
+#'     data.kvT = kinet.test.data.new,
+#'     rate.const = "k_per_M_per_s",
+#'     rate.const.unit = "M^{-1}~s^{-1}",
+#'     Temp = "T_oC",
+#'     Temp.unit = "oC",
+#'     fit.method = "linear"
+#'   )
+#' #
+#' ## preview of the original data
+#' ## + ∆G (activated) + fitted + residuals +
+#' ## + additional variables of the linear model
+#' activ.kinet.test02.data$df
+#' #
+#' ## preview of the linear fit plot
+#' ## also with confidence interval (99,999999 %)
+#' activ.kinet.test02.data$plot
+#' #
+#' ## preview of the optimized (activated)
+#' ## ∆S and ∆H parameters together with
+#' ## their uncertainties
+#' activ.kinet.test02.data$vec.HS.uncert
+#' #
+#' ## compare values with those presented in
+#' ## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
+#' ## ∆S = (11.33 +- 0.45) J/(mol*K) &
+#' ## ∆H = (120.27 +- 0.15) kJ/mol
+#' #
+#' ## corresponding analysis of residuals
+#' activ.kinet.test02.data$plot.ra
 #'
 #'
 #' @export
@@ -209,7 +274,7 @@
 #'
 #'
 #' @importFrom broom tidy augment
-#' @importFrom ggplot2 geom_ribbon annotate
+#' @importFrom ggplot2 geom_ribbon annotate geom_smooth
 eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
                                  rate.const.unit = "s^{-1}",
@@ -217,20 +282,22 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
                                  fit.method = "default"){ ## "Gauss-Newton" +
-                                 ## "plinear" (Golub-Pereyra) and "port" (all from `nls`)
+                                 ## "plinear" (Golub-Pereyra) and "port" (all from `nls`) or "linear"
   #
   ## 'Temporary' processing variables
   T_K <- NULL
   DeltaG_active_kJ_per_mol <- NULL
   fitted <- NULL
   residuals <- NULL
+  reciprocal_T <- NULL
+  lnk_per_T <- NULL
   #
   ## ======================== TEMPERATURE + CONSTANTS ==========================
   #
   ## Pysical sonstants
-  Boltzmann <- constants::syms$k
-  gas.const <- constants::syms$r
-  Planck <- constants::syms$h
+  Boltzmann <- constants::syms$k ## uncertainty 0
+  gas.const <- constants::syms$r ## uncertainty 0 from codata `{constants}` package
+  Planck <- constants::syms$h ## uncertainty 0
   #
   ## check the units of k (rate.const)
   if (isFALSE(grepl("s-1|second|s\\^-1|s\\^{-1}|sec|per_sec_|per_s|per_second",rate.const.unit))) {
@@ -261,8 +328,9 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
   }
   #
-  ## =========================== ORIGINAL MODEL FIT ===========================
+  ## =========================== MODEL FIT ===========================
   #
+  ## --------------------------- ORIGINAL (EXPONENTIAL) ----------------------------
   ## formula for the original Eyring theory
   ## ("theory of absolute reaction rates" :-))
   ## rate.const = ((kappa * k_B * T) / h) * exp((DeltaS / R) - (DeltaH / RT))
@@ -276,15 +344,37 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       )
     )
   #
+  ## ------------------------- LINEAR --------------------------------
+  ## ln(rate.const/T) = - (DeltaH / RT) + (DeltaS / R) + ln((kappa * k_B) / h)
+  #
+  linear.Eyring.formula.HS <-
+    stats::as.formula(
+      paste0(
+        "log(",rate.const,"/T_K)","~", ## log = ln
+        "I(- 1/(eval(gas.const) * T_K))"
+      )
+    )
+  #
+  ## -----------------------------------------------------------------
+  #
   ## model to calculate H, S
-  origin.Eyring.model.HS <-
-    stats::nls(origin.Eyring.formula.HS,
-               data = data.kvT,
-               start = c(dS = 1,dH = 1),
-               algorithm = fit.method)
+  if (fit.method == "linear") {
+    Eyring.model.HS <-
+      stats::lm(linear.Eyring.formula.HS,
+                 data = data.kvT)
+  } else {
+    Eyring.model.HS <-
+      stats::nls(origin.Eyring.formula.HS,
+                 data = data.kvT,
+                 start = c(dS = 1,dH = 1),
+                 algorithm = fit.method)
+  }
   #
   ## parameters related to the model =>
-  df.dSH.coeffs <- broom::tidy(origin.Eyring.model.HS)
+  df.dSH.coeffs <- broom::tidy(Eyring.model.HS)
+  #
+  ## model summaries =>
+  df.dSH.model.summar <- broom::glance(Eyring.model.HS) ## add to final output list
   #
   ## new data for the fit with 1024 points =>
   new.fit.data <- data.frame(T_K = seq(
@@ -293,12 +383,41 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   )
   #
   new.fit.data <-
-    broom::augment(origin.Eyring.model.HS,
+    broom::augment(Eyring.model.HS,
                    newdata = new.fit.data)
   #
-  ## extraction of dS and dH =>
-  DeltaS_active <- df.dSH.coeffs$estimate[1]
-  DeltaH_active <- df.dSH.coeffs$estimate[2]
+  ## extraction of dS and dH depending on the model (with uncertainties)=>
+  if (fit.method == "linear") {
+    DeltaH_active <- df.dSH.coeffs$estimate[2]
+    Intercept <- df.dSH.coeffs$estimate[1]
+    DeltaS_active <- gas.const * (Intercept - log(transmiss.coeff * Boltzmann / Planck))
+    #
+    ## calculation of uncertainties by the error propagation implemented
+    ## in `{errors}` R package (first order Taylor series method, TSM)
+    ## see also https://r-quantities.github.io/errors/articles/rjournal.html:
+    DeltaH_active_with_un <-
+      errors::set_errors(DeltaH_active,df.dSH.coeffs$std.error[2]) ## J / mol
+    #
+    Intercept_with_un <- errors::set_errors(Intercept,df.dSH.coeffs$std.error[1])
+    gasConst_with_un <- errors::set_errors(gas.const,0)
+    transmissCoeff_with_un <- errors::set_errors(transmiss.coeff,0)
+    Boltzmann_with_un <- errors::set_errors(Boltzmann,0)
+    Planck_with_un <- errors::set_errors(Planck,0)
+    #
+    DeltaS_active_with_un <- ## J / (mol * K)
+      gasConst_with_un *
+      (Intercept_with_un - log(transmissCoeff_with_un * Boltzmann_with_un / Planck_with_un))
+    #
+  } else {
+    DeltaS_active <- df.dSH.coeffs$estimate[1]
+    DeltaH_active <- df.dSH.coeffs$estimate[2]
+    #
+    ## with uncertainties:
+    DeltaH_active_with_un <-
+      errors::set_errors(DeltaH_active,df.dSH.coeffs$std.error[2])
+    DeltaS_active_with_un <-
+      errors::set_errors(DeltaS_active,df.dSH.coeffs$std.error[1])
+  }
   #
   ## Add `DeltaG_active` column:
   data.kvT <- data.kvT %>%
@@ -309,8 +428,17 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## ================= SIMPLE RESIDUAL ANALYSIS/PLOTS ======================
   #
   ## add residuals and predicted/fitted values to `data.kvT`
-  data.kvT$fitted <- stats::fitted(origin.Eyring.model.HS)
-  data.kvT$residuals <- stats::residuals(origin.Eyring.model.HS)
+  if (fit.method == "linear") {
+    #
+    ## new columns for linear model
+    data.kvT$reciprocal_T <- 1 / data.kvT$T_K
+    data.kvT <- data.kvT %>%
+      dplyr::mutate(lnk_per_T = log(.data[[rate.const]] / .data$T_K))
+  } else {
+    data.kvT <- data.kvT
+  }
+  data.kvT$fitted <- stats::fitted(Eyring.model.HS)
+  data.kvT$residuals <- stats::residuals(Eyring.model.HS)
   #
   ## residual plot (`{ggplot2}`)
   plot.resids <-
@@ -322,7 +450,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     geom_point(size = 2.6,color = "darkblue") +
     geom_hline(yintercept = 0,color = "darkred") +
     labs(
-      x = bquote(italic(Eyring~~Fit)*","~~italic(k)),
+      x = bquote(italic(Eyring~~Fit)),
       y = bquote(italic(Residuals)),
       title = "Residual Plot"
     ) +
@@ -373,50 +501,108 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   #
   ## ===================== EYRING PLOT (GGPLOT2) ===========================
   #
-  plot_Eyring <-
-    ggplot() +
-    geom_point(data = data.kvT,
-               aes(x = T_K,
-                   y = .data[[rate.const]]),
-               color = "darkcyan",size = 3.2) +
-    geom_line(data = new.fit.data,
-              aes(x = T_K,
-                  y = .data[[".fitted"]]),
-              color = "magenta",
-              linewidth = 1.1) +
-    #{if(interv.cnfd)geom_ribbon(aes(ymin = lwr,ymax = upr),fill = "steelblue2",alpha = 0.2)} +
-    labs(title = "Eyring Fit",
-         caption = bquote(Delta^{active}*italic(H)^o ~ '=' ~ .(DeltaH_active*1e-3)~k*J~mol^-1~","
-                          ~Delta^{active}*italic(S)^o~ '=' ~ .(DeltaS_active)~~J~K^-1~mol^-1~","
-                          ~ kappa ~ '=' ~ .(transmiss.coeff) ~ "," ~ italic(c)^o ~ '=' ~ 1~~mol~dm^{-3}),
-         x = bquote(italic(T)~~"("~K~")"),
-         y = bquote(italic(k)~~~"("~.(eval(parse(text = rate.const.unit)))~")")
-    ) +
-    plot_theme_In_ticks() +
-    annotate(geom = "text",
-             x = 1.04 * min(data.kvT[["T_K"]]),
-             y = 0.8 * max(data.kvT[[rate.const]]),
-             parse = TRUE,
-             size = 4,
-             label = "italic(k)~(italic(c)^o)^{- sum(nu[i]^{active},i,)} ==
+  caption.string <-
+    bquote(
+      Delta^{active}*italic(H)^o ~ '=' ~ .(DeltaH_active*1e-3)~k*J~mol^-1~","
+      ~Delta^{active}*italic(S)^o~ '=' ~ .(DeltaS_active)~~J~K^-1~mol^-1~","
+      ~ kappa ~ '=' ~ .(transmiss.coeff) ~ "," ~ italic(c)^o ~ '=' ~ 1~~mol~dm^{-3}
+    )
+  #
+  if (fit.method == "linear") {
+    plot_Eyring <-
+      ggplot(
+        data = data.kvT,
+        aes(x = reciprocal_T, y = lnk_per_T)
+      ) +
+      geom_point(
+        color = "darkcyan",
+        size = 3.2
+      ) +
+      geom_smooth(
+        method = "lm",
+        se = TRUE,
+        color = "magenta",
+        fill = "darkgray",
+        linewidth = 1.1,
+        level = 0.99999999
+      ) +
+      labs(
+        title = "Linear Eyring Fit",
+        caption = caption.string,
+        x = bquote(italic(1 / T)~~"("~K^-1~")"),
+        y = bquote(italic(ln~"("~k/T~")")~~~~"("~p.d.u.~")")
+      ) +
+      annotate(
+        geom = "text",
+        x = 1.08 * min(data.kvT[["reciprocal_T"]]),
+        y = 1.02 * max(data.kvT[["lnk_per_T"]]),
+        parse = TRUE,
+        size = 4,
+        label = "ln(frac(italic(k)~(italic(c)^o)^{- sum(nu[i]^{active},i,)},italic(T))) ==
+                 - frac(Delta^{active}*italic(H)^o,italic(R)~italic(T)) +
+                 frac(Delta^{active}*italic(S)^o,italic(R)) +
+                 ln(frac(kappa~italic(k)[B],italic(h)))"
+      ) +
+      plot_theme_In_ticks() +
+      theme(plot.title = element_text(hjust = 0.5))
+    #
+  } else {
+    plot_Eyring <-
+      ggplot() +
+      geom_point(data = data.kvT,
+                 aes(x = T_K,
+                     y = .data[[rate.const]]),
+                 color = "darkcyan",size = 3.2) +
+      geom_line(data = new.fit.data,
+                aes(x = T_K,
+                    y = .data[[".fitted"]]),
+                color = "magenta",
+                linewidth = 1.1) +
+      #{if(interv.cnfd)geom_ribbon(aes(ymin = lwr,ymax = upr),fill = "steelblue2",alpha = 0.2)} +
+      labs(title = "Eyring Fit",
+           caption = caption.string,
+           x = bquote(italic(T)~~"("~K~")"),
+           y = bquote(italic(k)~~~"("~.(eval(parse(text = rate.const.unit)))~")")
+      ) +
+      plot_theme_In_ticks() +
+      annotate(geom = "text",
+               x = 1.04 * min(data.kvT[["T_K"]]),
+               y = 0.8 * max(data.kvT[[rate.const]]),
+               parse = TRUE,
+               size = 4,
+               label = "italic(k)~(italic(c)^o)^{- sum(nu[i]^{active},i,)} ==
                      frac(kappa~italic(k)[B]~italic(T),italic(h))~~
                      exp(scriptstyle(frac(Delta^{active}*italic(S)^o,italic(R))~~ -
                      ~~ frac(Delta^{active}*italic(H)^o,italic(R)~italic(T))))") +
-    theme(plot.title = element_text(hjust = 0.5))
+      theme(plot.title = element_text(hjust = 0.5))
+  }
   #
   ## ============================== RESULTS =====================================
   #
   ## Results as list
-  result <- list(df = data.kvT, ## including DeltaG, residuals and fitted
-                 df.fit = new.fit.data,
-                 plot = plot_Eyring,
-                 plot.ra = plot.ra,
-                 df.coeffs.HS = df.dSH.coeffs,
-                 converg = list(N.evals = origin.Eyring.model.HS[["convInfo"]]$finIter,
-                                message = origin.Eyring.model.HS[["convInfo"]]$stopMessage,
-                                residual.sd = summary(origin.Eyring.model.HS)$sigma
-                 )
+  #
+  result <- list(
+    df = data.kvT, ## including DeltaG, residuals and fitted (variables for linear)
+    df.fit = new.fit.data,
+    plot = plot_Eyring,
+    plot.ra = plot.ra,
+    df.coeffs.HS = df.dSH.coeffs,
+    df.model.HS = df.dSH.model.summar,
+    vec.HS.uncert = c(DeltaH_active_with_un,DeltaS_active_with_un) ## both in SI (J / (mol (K)) )
   )
+  #
+  if (fit.method == "linear") {
+    result <- result
+  } else {
+    result <- append(
+      result,
+      list(converg = list(N.evals = Eyring.model.HS[["convInfo"]]$finIter,
+                     message = Eyring.model.HS[["convInfo"]]$stopMessage,
+                     residual.sd = summary(Eyring.model.HS)$sigma
+      )),
+      after = length(result)
+    )
+  }
   #
   return(result)
   #

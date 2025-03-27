@@ -36,9 +36,9 @@ or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} s
 \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).}
 
 \item{fit.method}{Character string, corresponding to method applied to fit the theoretical Eyring relation
-(by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k} \emph{vs} \eqn{T}
-dependence. For this purpose, the \code{\link[stats]{nls}} function is used. Therefore, all the methods, defined
-under its \code{algorithm} argument, are available: \code{"default"}
+(by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}
+dependence. For this purpose, either \code{fit.method = "linear"} (using the \code{\link[stats]{lm}}) or non-linear methods
+(available by the \code{\link[stats]{nls}} function) are applied. The latter includes \code{"default"}
 (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
 \code{"plinear"}, which is
 \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
@@ -50,34 +50,41 @@ As a result of the Eyring-relation fit, list with the following components is av
   \describe{
   \item{df}{Data frame, including the original \code{data.kvT} + the column of \eqn{\Delta^{\ddagger} G^o},
   with the name of \code{DeltaG_active_kJ_per_mol}, as well as \code{fitted}/predicted values of the rate constant
-  and finally, the corresponding residuals.}
+  and finally, the corresponding residuals. If \code{fit.method = "linear"} additional columns like \code{reciprocal_T}
+  and \code{lnk_per_T} are available, corresponding to \eqn{1\,/\,T} and \eqn{ln(k\,/\,T)}, respectively.}
   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
   however with the resolution of 1024 points) and the corresponding \code{.fitted} \eqn{k}, according to
   Eyring model.}
-  \item{plot}{Static ggplot2-based object/list, showing graphical representation of the non-linear fit,
+  \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
   \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
   two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T} from the Eyring fit.}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
-  their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for both \eqn{\Delta^{\ddagger} H^o}
-  and \eqn{\Delta^{\ddagger} S^o}.}
-  \item{converg}{List, containing fitting/optimization characteristics like number of evaluations/iterations
+  their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
+  \item{df.model.HS}{Data frame object, contaning model characteristics.}
+  \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
+  together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
+  is performed by the error propagation, implemented
+  in \href{https://r-quantities.github.io/errors/articles/rjournal.html}{\code{{errors}} R package}, using the first
+  order Taylor series method.}
+  \item{converg}{If \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
+  characteristics like number of evaluations/iterations
   (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
   and finally, standard deviation of the residuals (\code{residual.sd}), which is defined as:
   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{residual.sd}, the better the Eyring-relation fit.}
+  Therefore, the smaller the \code{residual.sd}, the better the original Eyring-relation fit.}
   }
 }
 \description{
 Finding the temperature-dependence of a rate constant (\eqn{k}) related to the elementary radical reaction, using the essential
   transition state theory (TST). The activation parameters, such as \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o}
-  are obtained by the non-linear fit (see the general \code{\link[stats]{nls}} R function) of the Eyring expression
-  (its non-linear form, see \code{Details}) on the original \eqn{k} \emph{vs} \eqn{T} relation (please,
-  refer to the \code{data.kvT} argument). The latter can be acquired by the \code{\link{eval_kinR_EPR_modelFit}}
-  from sigmoid-integrals of the EPR spectra recorded at different temperatures. Finally, the activation Gibbs energy
-  (\eqn{\Delta^{\ddagger} G^o}) is calculated, using the optimized \eqn{\Delta^{\ddagger} S^o} and \eqn{\Delta^{\ddagger} H^o},
-  for each temperature in the series.
+  are obtained either by the non-linear fit (see the general \code{\link[stats]{nls}} R function) or by the linear fit
+  (using the \code{\link[stats]{lm}}) of the Eyring expression (or its logarithmic linear form) on the original
+  \eqn{k} \emph{vs} \eqn{T} relation (please, refer to the \code{data.kvT} argument). The latter can be acquired
+  by the \code{\link{eval_kinR_EPR_modelFit}} from sigmoid-integrals of the EPR spectra recorded at different temperatures.
+  Finally, the activation Gibbs energy (\eqn{\Delta^{\ddagger} G^o}) is calculated, using the optimized \eqn{\Delta^{\ddagger} S^o}
+  and \eqn{\Delta^{\ddagger} H^o}, for each temperature in the series.
 }
 \details{
 The basic assumption of the Transition State Theory (TST) is the existence of activated state/complex, formed
@@ -115,11 +122,20 @@ The basic assumption of the Transition State Theory (TST) is the existence of ac
   \eqn{\Delta^{active} S^o} and \eqn{\Delta^{active} H^o}, respectively) are optimized using the \code{fit.method}
   (by the \code{\link[stats]{nls}} function). In the first approach, both latter are considered as temperature independent
   within the selected temperature range. Often, the Eyring equation is not applied in the original form,
-  however in the linearized one. Nevertheless, the latter is not recommended as a model for fitting the experimental \eqn{k(T)}
-  (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}). The reason inherits in the misinterpretation
-  of the extrapolation to \eqn{T\rightarrow \infty} (or \eqn{1/T\rightarrow 0}) by which the \eqn{\Delta^{\ddagger} S^o}
-  is obtained and thus it is unreliable. Accordingly, \strong{the original exponential Eyring form is recommended}
-  as a model to fit the experimental \eqn{k(T)}.
+  however in the linear one,like
+  \deqn{ln(k\,/\,T) = - (\Delta^{\ddagger} H^o)\,/\,(R\,T) + (\Delta^{\ddagger} S^o\,/\,R) + ln(\kappa\,k_{\text{B}}\,/\,h)}
+  with the slope/coefficient \eqn{- (\Delta^{\ddagger} H^o)\,/\,R}
+  and the \eqn{(\Delta^{\ddagger} S^o\,/\,R) + ln(\kappa\,k_{\text{B}}\,/\,h)}
+  as intercept of the \eqn{ln(k\,/\,T)\,\,vs\,\,1/T} relation. Nevertheless, the latter is not recommended as a model for fitting
+  the experimental \eqn{k(T)} (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}).
+  The reason inherits in the misinterpretation of the extrapolation to \eqn{T\rightarrow \infty} (or \eqn{1/T\rightarrow 0})
+  by which the \eqn{\Delta^{\ddagger} S^o} is obtained and thus it is unreliable. Accordingly, \strong{the original exponential
+  Eyring form is recommended} as a model to fit the experimental \eqn{k(T)}. Contrary, it may happen that \eqn{k\,\,vs\,\,T}
+  can vary in several (\eqn{\approx 2-3}) orders of magnitude within the studied temperature range and therefore, it is necessary
+  to proportionally weight the \eqn{k} (see also Lente G, Fábián I, Poë AJ (2005) in the \code{References}). For the linear form,
+  weighting does not make a difference because the transformed \eqn{ln(k\,/\,T)} span over a narrow range of values.
+  Therefore, it is advisable to perform the original exponential fit as well as the linear one within the studied temperature range
+  and compare both outcomes (both methods are involved in this function, see the argument \code{fit.method}).
   The \href{https://goldbook.iupac.org/terms/view/E02142}{\eqn{k}-unit depends on the molecularity of the reaction},
   please also refer to the \code{rate.const.unit} argument. Therefore, the left hand site of the Eyring equation above
   must be multiplied by the standard molar concentration \eqn{c^o = 1\,\text{mol}\,\text{dm}^{-3}}:
@@ -146,7 +162,7 @@ The basic assumption of the Transition State Theory (TST) is the existence of ac
   the energy barrier. Such effect will be less probable for high energy barriers, however e.g. for radical-radical
   recombination, where the barriers are typically very low, the tunneling probability is high and TST may fail.
   In addition, such reactions proceed relatively fast and therefore the TST (Eyring fit) can also strongly bias
-  the activation parameters. This type of reactions may also exhibit negative \eqn{k} \emph{vs} \eqn{T} dependence
+  the activation parameters. This type of reactions may also exhibit negative \eqn{k\,\,vs\,\,T} dependence
   (see Wardlaw DM and Marcus RA (1986) in the \code{References}).
   }
 }
@@ -162,7 +178,9 @@ kinet.test.data <-
              T_oC = c(50,55,60,65,70,
                       75,80,85,90)
 )
-activ.kinet.test.data <-
+#
+## original "Eyring" model
+activ.kinet.test01.data <-
   eval_kinR_Eyring_GHS(
     data.kvT = kinet.test.data,
     rate.const = "k_per_M_per_s",
@@ -173,24 +191,71 @@ activ.kinet.test.data <-
 #
 ## preview of the original data
 ## + ∆G (activated) + fitted + residuals
-activ.kinet.test.data$df
+activ.kinet.test01.data$df
 #
 ## preview of the non-linear fit plot
-activ.kinet.test.data$plot
+activ.kinet.test01.data$plot
 #
 ## preview of the optimized (activated)
 ## ∆S and ∆H parameters
-activ.kinet.test.data$df.coeffs.HS
+activ.kinet.test01.data$df.coeffs.HS
 #
 ## compare values with those presented in
 ## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
-## ∆S = (7.2 +- 1.1) kJ/mol*K & ∆H = (118.80 +- 0.41) kJ/mol
-#
-## preview of the new `.fitted` data frame
-activ.kinet.test.data$df.fit
+## ∆S = (7.2 +- 1.1) J/(mol*K) &
+## ∆H = (118.80 +- 0.41) kJ/mol
 #
 ## preview of the convergence measures
-activ.kinet.test.data$converg
+activ.kinet.test01.data$converg
+#
+## this was an untransformed dataset,
+## when the k values span more than 2 orders
+## of magnitude => a proportional weighting
+## or linear logarithmic model might be applied
+#
+## take the same above-defined dataset and assign
+## it to a new variable
+kinet.test.data.new <-
+  data.frame(k_per_M_per_s =
+               c(9.54e-7,1.91e-6,3.76e-6,
+                 7.33e-6,1.38e-5,2.56e-5,
+                 4.71e-5,8.43e-5,1.47e-4),
+             T_oC = c(50,55,60,65,70,
+                      75,80,85,90)
+)
+#
+## linear logarithmic Eyring model
+activ.kinet.test02.data <-
+  eval_kinR_Eyring_GHS(
+    data.kvT = kinet.test.data.new,
+    rate.const = "k_per_M_per_s",
+    rate.const.unit = "M^{-1}~s^{-1}",
+    Temp = "T_oC",
+    Temp.unit = "oC",
+    fit.method = "linear"
+  )
+#
+## preview of the original data
+## + ∆G (activated) + fitted + residuals +
+## + additional variables of the linear model
+activ.kinet.test02.data$df
+#
+## preview of the linear fit plot
+## also with confidence interval (99,999999 \%)
+activ.kinet.test02.data$plot
+#
+## preview of the optimized (activated)
+## ∆S and ∆H parameters together with
+## their uncertainties
+activ.kinet.test02.data$vec.HS.uncert
+#
+## compare values with those presented in
+## https://www.rsc.org/suppdata/nj/b5/b501687h/b501687h.pdf
+## ∆S = (11.33 +- 0.45) J/(mol*K) &
+## ∆H = (120.27 +- 0.15) kJ/mol
+#
+## corresponding analysis of residuals
+activ.kinet.test02.data$plot.ra
 
 
 }
