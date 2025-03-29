@@ -207,7 +207,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
               print(final.list[[r]][["plot"]])
             }
             #
-            pb(sprintf("eval=%g",r)) ## apply progress bar
+            pb(sprintf("eval/iter=%g",r)) ## apply progress bar
           }
         )
       } else { ## if the `DlineG.content` is different from NULL
@@ -228,7 +228,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                 print(final.list[[c]][["plot"]])
               }
               #
-              pb(sprintf("eval=%g",c)) ## apply progress bar
+              pb(sprintf("eval/iter=%g",c)) ## apply progress bar
             }
           )
         } else { ## if both arguments can vary (use `Map`-based function)
@@ -247,7 +247,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                 print(final.list[[c]][["plot"]])
               }
               #
-              pb(sprintf("eval=%g",c)) ## apply progress bar
+              pb(sprintf("eval/iter=%g",c)) ## apply progress bar
             },
             as.numeric(1:length(DlineG.content)),
             as.numeric(1:nrow(Dinit.params.df))
@@ -393,7 +393,19 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) + geom_point(size = 3) +
     ## to show fit with confidence interval
     ## except the minimum sum of residual squares
-    geom_smooth(data = subset(sim.fit.vary.list.params.df.long,Parameter != "minRSS")) +
+    geom_smooth(
+      method = "loess", ## or "lm"
+      formula = y ~ x,
+      span = 1,
+      data = subset(
+        sim.fit.vary.list.params.df.long,
+        Parameter != "minRSS"
+      ),
+      color = "magenta",
+      se = TRUE,
+      fill = "darkgray",
+      linewidth = 1.1
+    ) +
     # geom_line(linewidth = 0.2) +
     ## to show the Evaluation within lower `minRSS`:
     geom_vline(
@@ -409,7 +421,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) + scale_color_manual(
       values = facet.plot.colors
     ) +
-    labs(caption = " \u{1F7E9} Parameters at minum sum of residual squares ") +
+    labs(caption = " \u2013 Parameters at minum sum of residual squares ") +
     plot_theme_Out_ticks(
       axis.title.size = 13,
       axis.text.size = 11
@@ -422,7 +434,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         size = 11
       ),
       strip.background = element_rect(fill = "#00205b"),
-      axis.title = element_text(face = "italic")
+      axis.title = element_text(face = "italic"),
+      plot.caption = element_text(color = "#129001",face = "bold")
     ) +
     ggtitle(
       label = "Space for the Optimized Set of EPR Simulation Parameters",
