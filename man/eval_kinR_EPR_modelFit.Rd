@@ -15,6 +15,7 @@ eval_kinR_EPR_modelFit(
   params.guess.lower = NULL,
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
+  ra.densScale.coeff = 2,
   solve.ode.method = "lsoda",
   time.frame.model = 2,
   time.correct = FALSE,
@@ -99,6 +100,10 @@ the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used (
 are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
 because it is based on the numeric solution of the ordinary differential equations
 and not on the common integration of rate equations.}
+
+\item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
+density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}

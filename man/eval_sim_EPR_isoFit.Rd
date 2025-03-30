@@ -19,6 +19,7 @@ eval_sim_EPR_isoFit(
   optim.params.init,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
+  ra.densScale.coeff = 100,
   Nmax.evals = 512,
   tol.step = 5e-07,
   pswarm.size = NULL,
@@ -121,6 +122,10 @@ the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic
 the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
 
+\item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
+density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.}
+
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
 \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
@@ -189,6 +194,11 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
+  \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
+  \strong{anal}ysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulated/fitted
+  EPR intensity (corresponding to \code{min.rss}). The second ggplot2 shows the \strong{hist}ogram
+  and the scaled probability \strong{dens}ity function for residuals together with the corresponding
+  mean value (vertical line).}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
@@ -324,6 +334,9 @@ tempo.test.sim.fit.b$best.fit.params
 ## and the residuals (differences between the
 ## experiment and the best fit)
 tempo.test.sim.fit.b$plot
+#
+## residual analysis density plot
+tempo.test.sim.fit.b$plots.residAnal$plot.ra.histDens
 #
 ## fitting of the aminoxyl EPR spectrum
 ## by the combination of the 1. "Levenberg-Marquardt"

@@ -11,6 +11,7 @@ eval_kinR_Eyring_GHS(
   Temp,
   Temp.unit = "K",
   transmiss.coeff = 1,
+  ra.densScale.coeff = 2,
   fit.method = "default"
 )
 }
@@ -34,6 +35,10 @@ or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} s
 
 \item{transmiss.coeff}{Numeric value, corresponding to probability that the activated complex is transformed into products.
 \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).}
+
+\item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
+density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.}
 
 \item{fit.method}{Character string, corresponding to method applied to fit the theoretical Eyring relation
 (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}

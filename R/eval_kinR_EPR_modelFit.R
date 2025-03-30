@@ -52,6 +52,9 @@
 #'   are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
 #'   because it is based on the numeric solution of the ordinary differential equations
 #'   and not on the common integration of rate equations.
+#' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
+#'   density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+#'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
 #' @param time.correct Logical, if time of recorded series of the EPR spectra needs to be corrected.
 #'   \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
 #'   (either by \code{\link{correct_time_Exp_Specs}} or by \code{\link{readEPR_Exp_Specs_kin}} with
@@ -197,6 +200,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    params.guess.lower = NULL,
                                    params.guess.upper = NULL,
                                    fit.kin.method = "diff-levenmarq",
+                                   ra.densScale.coeff = 2,
                                    solve.ode.method = "lsoda",
                                    time.frame.model = 2,
                                    time.correct = FALSE,
@@ -392,10 +396,10 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       bins = 40
     ) +
     geom_density(
-      aes(y = after_stat((count / max(count)) * 2)), ## relative density
+      aes(y = after_stat((count / max(count)) * ra.densScale.coeff)), ## relative scaled density
       # stat = "density",
-      color = "darkred",
-      fill = "darkred",
+      color = "darkorange",
+      fill = "darkorange",
       alpha = 0.32
     ) +
     geom_vline( ## showing mean value
@@ -407,7 +411,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       x = bquote(italic(Residuals)),
       y = bquote(italic(Counts)),
       title = "Histogram and Scaled Probability Density of Residuals",
-      caption = "\u2013 Residual mean value"
+      caption = "\u2013 Residuals mean value"
     ) +
     plot_theme_In_ticks(
       plot.caption = element_text(

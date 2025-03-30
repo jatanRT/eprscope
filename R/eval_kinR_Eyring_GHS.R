@@ -135,6 +135,9 @@
 #'   (column characterized by the \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
 #' @param transmiss.coeff Numeric value, corresponding to probability that the activated complex is transformed into products.
 #'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
+#' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
+#'   density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+#'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
 #' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
 #'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}
 #'   dependence. For this purpose, either \code{fit.method = "linear"} (using the \code{\link[stats]{lm}}) or non-linear methods
@@ -293,6 +296,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  Temp,
                                  Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
+                                 ra.densScale.coeff = 2, ## to scale visual appearence of density plot
                                  fit.method = "default"){ ## "Gauss-Newton" +
                                  ## "plinear" (Golub-Pereyra) and "port" (all from `nls`) or "linear"
   #
@@ -509,10 +513,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       bins = 40
     ) +
     geom_density(
-      aes(y = after_stat((count / max(count)) * 2)), ## relative density
+      aes(y = after_stat((count / max(count)) * ra.densScale.coeff)), ## relative scaled density
       # stat = "density",
-      color = "darkred",
-      fill = "darkred",
+      color = "darkorange",
+      fill = "darkorange",
       alpha = 0.32
     ) +
     geom_vline( ## showing mean value
@@ -524,7 +528,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       x = bquote(italic(Residuals)),
       y = bquote(italic(Counts)),
       title = "Histogram and Scaled Probability Density of Residuals",
-      caption = "\u2013 Residual mean value"
+      caption = "\u2013 Residuals mean value"
     ) +
     plot_theme_In_ticks(
       plot.caption = element_text(
