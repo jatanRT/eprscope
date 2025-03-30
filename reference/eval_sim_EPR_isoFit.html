@@ -103,6 +103,7 @@
 <span>  <span class="va">optim.params.init</span>,</span>
 <span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ra.densScale.coeff <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  Nmax.evals <span class="op">=</span> <span class="fl">512</span>,</span>
 <span>  tol.step <span class="op">=</span> <span class="fl">5e-07</span>,</span>
 <span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -226,6 +227,12 @@ the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.c
 <code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.125\,A_{\text{init}}\).</p></dd>
 
 
+<dt id="arg-ra-densscale-coeff">ra.densScale.coeff<a class="anchor" aria-label="anchor" href="#arg-ra-densscale-coeff"></a></dt>
+<dd><p>Numeric value. When plotting <strong>r</strong>esidual <strong>a</strong>nalysis probability
+density (see <code>Value</code> and <code>plots.residAnal</code>), this coefficient multiplies/re-scales
+the density in order to be visible with the histogram. <strong>Default</strong>: <code>ra.densScale.coeff = 100</code>.</p></dd>
+
+
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
 <dd><p>Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
@@ -310,6 +317,13 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if <code>check.fit.plot = FALSE</code>,
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.</p></dd>
+
+  <dt>plots.residAnal</dt>
+<dd><p>A list consisting of 2 plots: ggplot2 object (related to simple <strong>resid</strong>ual
+  <strong>anal</strong>ysis), with two main plots: Q-Q plot and residuals <em>vs</em> best simulated/fitted
+  EPR intensity (corresponding to <code>min.rss</code>). The second ggplot2 shows the <strong>hist</strong>ogram
+  and the scaled probability <strong>dens</strong>ity function for residuals together with the corresponding
+  mean value (vertical line).</p></dd>
 
   <dt>best.fit.params</dt>
 <dd><p>Vector of the best (final) fitting (optimized) parameters, for each corresponding
@@ -478,7 +492,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=3.039e-08, swarm diam.=1.056</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.651  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.866  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -494,6 +508,10 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## experiment and the best fit)</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">plot</span></span></span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## residual analysis density plot</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">plots.residAnal</span><span class="op">$</span><span class="va">plot.ra.histDens</span></span></span>
+<span class="r-plt img"><img src="eval_sim_EPR_isoFit-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## fitting of the aminoxyl EPR spectrum</span></span></span>
 <span class="r-in"><span><span class="co">## by the combination of the 1. "Levenberg-Marquardt"</span></span></span>
@@ -517,11 +535,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.3  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.316  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.689  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.052  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
