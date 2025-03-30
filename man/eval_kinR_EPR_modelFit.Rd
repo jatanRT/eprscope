@@ -139,8 +139,12 @@ List with the following components is available:
   related to the \code{qvarR} argument.}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
-  two main plots: Q-Q plot and residuals vs predicted \code{qvarR} from the kinetic model.}
+  \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
+  \strong{anal}ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted
+  from the kinetic model. The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity
+  function for residuals together with the corresponding mean value (vertical line). Residuals are defined
+  as a difference between the integrals/concentrations/\code{qvar} values from the experiment
+  and those evaluated by the model.}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -217,8 +221,9 @@ triaryl_model_kin_fit_01$N.converg
 ## showing the random pattern, which indicates that
 ## kinetic model provides a decent fit to the data +
 ## normal quantile (Q-Q) plot, indicating that residuals
-## are normally distributed
-triaryl_model_kin_fit_01$plot.ra
+## are normally distributed; third plot demonstrates
+## the probability density with the histogram of residuals
+triaryl_model_kin_fit_01$plots.residAnal
 #
 ## take the same experimental data and perform fit
 ## by first order kinetics where the `model.react`
@@ -239,6 +244,12 @@ triaryl_model_kin_fit_02$plot
 #
 ## coefficients/parameters table preview
 triaryl_model_kin_fit_02$df.coeffs
+#
+## simple residual analysis, indicating
+## the 1st order kinetics is less convenient
+## model than that of the 2nd order (based on
+## the decrease of EPR intensity/integral)
+triaryl_model_kin_fit_02$plots.residAnal$plot.ra
 
 
 }

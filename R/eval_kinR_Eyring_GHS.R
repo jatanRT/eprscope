@@ -157,8 +157,11 @@
 #'   Eyring model.}
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
 #'   together with the Eyring equation.}
-#'   \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
-#'   two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T} from the Eyring fit.}
+#'   \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
+#'   \strong{anal}ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T}
+#'   from the Eyring fit. The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity
+#'   function for residuals together with the corresponding mean value (vertical line). Residuals are defined
+#'   as a difference between the original \eqn{k} or \eqn{k\,/\,T} values and those predicted/fitted by the model.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
 #'   \item{df.model.HS}{Data frame object, contaning model characteristics.}
@@ -167,7 +170,7 @@
 #'   is performed by the error propagation, implemented
 #'   in \href{https://r-quantities.github.io/errors/articles/rjournal.html}{\code{{errors}} R package}, using the first
 #'   order Taylor series method.}
-#'   \item{converg}{If \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
+#'   \item{converg}{If the \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
 #'   characteristics like number of evaluations/iterations
 #'   (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
 #'   and finally, standard deviation of the residuals (\code{residual.sd}), which is defined as:
@@ -218,6 +221,9 @@
 #' #
 #' ## brief model summary
 #' activ.kinet.test01.data$df.model.HS
+#' #
+#' ## ...and the corresponding analysis of residuals
+#' activ.kinet.test01.data$plots.residAnal$plot.ra.histDens
 #' #
 #' ## preview of the convergence measures
 #' activ.kinet.test01.data$converg
@@ -272,7 +278,7 @@
 #' activ.kinet.test02.data$df.model.HS
 #' #
 #' ## corresponding analysis of residuals
-#' activ.kinet.test02.data$plot.ra
+#' activ.kinet.test02.data$plots.residAnal$plot.ra
 #'
 #'
 #' @export
@@ -280,7 +286,7 @@
 #'
 #'
 #' @importFrom broom tidy augment
-#' @importFrom ggplot2 geom_ribbon annotate geom_smooth
+#' @importFrom ggplot2 geom_ribbon annotate geom_smooth stat_smooth geom_density geom_vline
 eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
                                  rate.const.unit = "s^{-1}",
@@ -297,6 +303,9 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   residuals <- NULL
   reciprocal_T <- NULL
   lnk_per_T <- NULL
+  density <- NULL
+  count <- NULL
+
   #
   ## ======================== TEMPERATURE + CONSTANTS ==========================
   #
@@ -454,6 +463,14 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
            )
     ) +
     geom_point(size = 2.6,color = "darkblue") +
+    stat_smooth(
+      method = "lm",
+      formula = y ~ x,
+      # span = 1,
+      se = TRUE,
+      color = "darkviolet",
+      fill = "darkgray"
+    ) +
     geom_hline(yintercept = 0,color = "darkred") +
     labs(
       x = bquote(italic(Eyring~~Fit)),
@@ -469,8 +486,9 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
              sample = residuals
            )
     ) +
-    stat_qq(size = 2.6,color = "darkblue") +
-    stat_qq_line(color = "darkred") +
+    qqplotr::stat_qq_band(fill = "lightgray") +             ## )
+    qqplotr::stat_qq_line(color = "darkred") +              ## } plot confid. interval
+    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") + ## )
     labs(
       x = bquote(italic(Theoretical~~Quantiles)),
       y = bquote(italic(Sample~~Quantiles)),
@@ -478,32 +496,53 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     ) +
     plot_theme_In_ticks()
   #
-  ## optional histogram with density plot
-  # ggplot(data = data.kvT,
-  #   mapping = aes(
-  #          x = residuals,
-  #          after_stat(density)
-  #        )
-  # ) + geom_histogram(
-  #   fill = "darkblue",
-  #   alpha = 0.75,
-  #   bins = 42
-  # ) +
-  #   geom_density(
-  #     fill = "darkred",alpha = 0.42
-  #   ) +
-  #   labs(
-  #     x = bquote(italic(Residuals)),
-  #     y = bquote(italic(Density)),
-  #     title = "Histogram and Density of Residuals"
-  #   ) +
-  #   plot_theme_In_ticks()
+  ## histogram with density plot (into results)
+  plot.hist.dens <-
+    ggplot(data = data.kvT,
+           mapping = aes(
+             x = residuals
+           )
+    ) +
+    geom_histogram(
+      fill = "darkblue",
+      alpha = 0.75,
+      bins = 40
+    ) +
+    geom_density(
+      aes(y = after_stat((count / max(count)) * 2)), ## relative density
+      # stat = "density",
+      color = "darkred",
+      fill = "darkred",
+      alpha = 0.32
+    ) +
+    geom_vline( ## showing mean value
+        xintercept = mean(data.kvT$residuals),
+        color = "darkviolet",
+        linewidth = 0.75
+    ) +
+    labs(
+      x = bquote(italic(Residuals)),
+      y = bquote(italic(Counts)),
+      title = "Histogram and Scaled Probability Density of Residuals",
+      caption = "\u2013 Residual mean value"
+    ) +
+    plot_theme_In_ticks(
+      plot.caption = element_text(
+        color = "darkviolet",
+        face = "bold"
+      )
+    )
   #
-  ## patchwork combination all both plots:
+  ## patchwork combination the fist 2 plots:
   plot.ra <-
     patchwork::wrap_plots(plot.resids,
                           plot.qq,
                           ncol = 1)
+  #
+  ## the third plot (histogram-density) is plotted
+  ## individually, because of clear graphic outcomes,
+  ## otherwise all three graphs in one figure
+  ## would be hard to read
   #
   ## ===================== EYRING PLOT (GGPLOT2) ===========================
   #
@@ -526,6 +565,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       ) +
       geom_smooth(
         method = "lm",
+        formula = y ~ x,
         se = TRUE,
         color = "magenta",
         fill = "darkgray",
@@ -591,7 +631,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     df = data.kvT, ## including DeltaG, residuals and fitted (variables for linear)
     df.fit = new.fit.data,
     plot = plot_Eyring,
-    plot.ra = plot.ra,
+    plots.residAnal = list(
+      plot.ra = plot.ra,
+      plot.ra.histDens = plot.hist.dens
+    ),
     df.coeffs.HS = df.dSH.coeffs,
     df.model.HS = df.dSH.model.summar,
     vec.HS.uncert = c(DeltaH_active_with_un,DeltaS_active_with_un) ## both in SI (J / (mol (K)) )

@@ -87,7 +87,7 @@ Suggests:
     future.apply,
     npreg,
     patchwork,
-    gganimate,
+    qqplotr,
     openxlsx,
     webshot2,
     tinytable,

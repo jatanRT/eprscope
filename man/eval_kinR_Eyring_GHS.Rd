@@ -57,8 +57,11 @@ As a result of the Eyring-relation fit, list with the following components is av
   Eyring model.}
   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
-  \item{plot.ra}{GGplot2 object (related to simple \strong{r}esidual \strong{a}nalysis), including
-  two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T} from the Eyring fit.}
+  \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
+  \strong{anal}ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T}
+  from the Eyring fit. The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity
+  function for residuals together with the corresponding mean value (vertical line). Residuals are defined
+  as a difference between the original \eqn{k} or \eqn{k\,/\,T} values and those predicted/fitted by the model.}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, contaning model characteristics.}
@@ -67,7 +70,7 @@ As a result of the Eyring-relation fit, list with the following components is av
   is performed by the error propagation, implemented
   in \href{https://r-quantities.github.io/errors/articles/rjournal.html}{\code{{errors}} R package}, using the first
   order Taylor series method.}
-  \item{converg}{If \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
+  \item{converg}{If the \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
   characteristics like number of evaluations/iterations
   (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
   and finally, standard deviation of the residuals (\code{residual.sd}), which is defined as:
@@ -208,6 +211,9 @@ activ.kinet.test01.data$df.coeffs.HS
 ## brief model summary
 activ.kinet.test01.data$df.model.HS
 #
+## ...and the corresponding analysis of residuals
+activ.kinet.test01.data$plots.residAnal$plot.ra.histDens
+#
 ## preview of the convergence measures
 activ.kinet.test01.data$converg
 #
@@ -261,7 +267,7 @@ activ.kinet.test02.data$vec.HS.uncert
 activ.kinet.test02.data$df.model.HS
 #
 ## corresponding analysis of residuals
-activ.kinet.test02.data$plot.ra
+activ.kinet.test02.data$plots.residAnal$plot.ra
 
 
 }
