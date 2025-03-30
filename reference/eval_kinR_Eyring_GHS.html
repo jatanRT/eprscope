@@ -155,9 +155,12 @@ or <code>"port"</code>
 <dd><p>Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.</p></dd>
 
-  <dt>plot.ra</dt>
-<dd><p>GGplot2 object (related to simple <strong>r</strong>esidual <strong>a</strong>nalysis), including
-  two main plots: Q-Q plot and residuals vs predicted/fitted \(k\) <em>vs</em> \(T\) from the Eyring fit.</p></dd>
+  <dt>plots.residAnal</dt>
+<dd><p>A list consisting of 2 plots: ggplot2 object (related to simple <strong>resid</strong>ual
+  <strong>anal</strong>ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted \(k\) <em>vs</em> \(T\)
+  from the Eyring fit. The second ggplot2 shows the <strong>hist</strong>ogram and the scaled probability <strong>dens</strong>ity
+  function for residuals together with the corresponding mean value (vertical line). Residuals are defined
+  as a difference between the original \(k\) or \(k\,/\,T\) values and those predicted/fitted by the model.</p></dd>
 
   <dt>df.coeffs.HS</dt>
 <dd><p>Data frame object, containing the optimized (best fit) parameter values (<code>Estimates</code>),
@@ -174,7 +177,7 @@ or <code>"port"</code>
   order Taylor series method.</p></dd>
 
   <dt>converg</dt>
-<dd><p>If <code>fit.method</code> IS DIFFERENT FROM <code>"linear"</code> a list, containing fitting/optimization
+<dd><p>If the <code>fit.method</code> IS DIFFERENT FROM <code>"linear"</code> a list, containing fitting/optimization
   characteristics like number of evaluations/iterations
   (<code>N.evals</code>); character denoting the (un)successful convergence (<code>message</code>)
   and finally, standard deviation of the residuals (<code>residual.sd</code>), which is defined as:
@@ -352,6 +355,10 @@ or <code>"port"</code>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">000</span>265 TRUE   0.000<span style="text-decoration: underline;">000</span>397   125. -<span style="color: #BB0000;">243.</span> -<span style="color: #BB0000;">243.</span> 4.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span>           7     9</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## ...and the corresponding analysis of residuals</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">plots.residAnal</span><span class="op">$</span><span class="va">plot.ra.histDens</span></span></span>
+<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the convergence measures</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $N.evals</span>
@@ -419,8 +426,7 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">## preview of the linear fit plot</span></span></span>
 <span class="r-in"><span><span class="co">## also with confidence interval (99,999999 %)</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using formula = 'y ~ x'</span>
-<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the optimized (activated)</span></span></span>
 <span class="r-in"><span><span class="co">## ∆S and ∆H parameters together with</span></span></span>
@@ -443,8 +449,8 @@ or <code>"port"</code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## corresponding analysis of residuals</span></span></span>
-<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">plot.ra</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">plots.residAnal</span><span class="op">$</span><span class="va">plot.ra</span></span></span>
+<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -246,9 +246,13 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <dd><p>Plot object <em>Quantitative variable</em> <em>vs</em> <em>Time</em> with the experimental
   data and the corresponding fit.</p></dd>
 
-  <dt>plot.ra</dt>
-<dd><p>GGplot2 object (related to simple <strong>r</strong>esidual <strong>a</strong>nalysis), including
-  two main plots: Q-Q plot and residuals vs predicted <code>qvarR</code> from the kinetic model.</p></dd>
+  <dt>plots.residAnal</dt>
+<dd><p>A list consisting of 2 plots: ggplot2 object (related to simple <strong>resid</strong>ual
+  <strong>anal</strong>ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted
+  from the kinetic model. The second ggplot2 shows the <strong>hist</strong>ogram and the scaled probability <strong>dens</strong>ity
+  function for residuals together with the corresponding mean value (vertical line). Residuals are defined
+  as a difference between the integrals/concentrations/<code>qvar</code> values from the experiment
+  and those evaluated by the model.</p></dd>
 
   <dt>df.coeffs</dt>
 <dd><p>Data frame object containing the optimized (best fit) parameter values (<code>Estimates</code>),
@@ -359,9 +363,15 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span><span class="co">## showing the random pattern, which indicates that</span></span></span>
 <span class="r-in"><span><span class="co">## kinetic model provides a decent fit to the data +</span></span></span>
 <span class="r-in"><span><span class="co">## normal quantile (Q-Q) plot, indicating that residuals</span></span></span>
-<span class="r-in"><span><span class="co">## are normally distributed</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">plot.ra</span></span></span>
+<span class="r-in"><span><span class="co">## are normally distributed; third plot demonstrates</span></span></span>
+<span class="r-in"><span><span class="co">## the probability density with the histogram of residuals</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">plots.residAnal</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot.ra</span>
 <span class="r-plt img"><img src="eval_kinR_EPR_modelFit-2.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot.ra.histDens</span>
+<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-3.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## take the same experimental data and perform fit</span></span></span>
 <span class="r-in"><span><span class="co">## by first order kinetics where the `model.react`</span></span></span>
@@ -379,13 +389,20 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span>    origin <span class="op">=</span> <span class="st">"xenon"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## plot preview</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## coefficients/parameters table preview</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">df.coeffs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate    Std. Error   t value      Pr(&gt;|t|)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> qvar0R 0.01654454027 1.6924636e-04 97.754187 1.6868359e-99</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> k1     0.00096215125 1.8497324e-05 52.015701 3.5037066e-73</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## simple residual analysis, indicating</span></span></span>
+<span class="r-in"><span><span class="co">## the 1st order kinetics is less convenient</span></span></span>
+<span class="r-in"><span><span class="co">## model than that of the 2nd order (based on</span></span></span>
+<span class="r-in"><span><span class="co">## the decrease of EPR intensity/integral)</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">plots.residAnal</span><span class="op">$</span><span class="va">plot.ra</span></span></span>
+<span class="r-plt img"><img src="eval_kinR_EPR_modelFit-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
