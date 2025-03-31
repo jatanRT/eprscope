@@ -308,9 +308,9 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     future:::ClusterRegistry("stop")
   }
   #
-  ## ================ FINAL VARIABLES, DATA FRAMEs AND PLOTS ==================
+  ## ================ FINAL VARIABLES, DATA FRAMEs ANALYSIS AND PLOTS ==================
   #
-  ## ------------------ Lists and Data Frames ----------------
+  ## ---------------------------- Lists and Data Frames -------------------------------
   #
   ## select only list with parameters:
   sim.fit.vary.list.params <-
@@ -336,10 +336,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       names.start,
       names.baseline,
       names.A,
-      "minRSS"
+      "minRSS", ## minimum sum of residual squares
+      "raSD" ## standard deviation of residuals
     )
   #
-  ## add new "Evaluation column" =>
+  ## add new "Evaluation/Iteration" column =>
   sim.fit.vary.list.params.df$Evaluation <-
     1:nrow(sim.fit.vary.list.params.df)
   #
@@ -356,14 +357,18 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   # find index for the best fit (minRSS)
   # in order to extract the data frame:
-  best.df.index <-
+  best.df.index.minRSS <-
     which.min(sim.fit.vary.list.params.df$minRSS)
+  #
+  # find index for the best fit (raSD)
+  best.df.index.raSD <-
+    which.min(sim.fit.vary.list.params.df$raSD)
   #
   # the best params with minum RSS vector:
   best.params.from.space <-
     sim.fit.vary.list.params.df %>%
     dplyr::filter(minRSS == min(minRSS)) %>%
-    dplyr::select(- c(minRSS,Evaluation)) %>%
+    dplyr::select(- c(minRSS,Evaluation,raSD)) %>%
     unlist() %>% unname()
   #
   # initial data frame into long format in order to plot
@@ -379,7 +384,29 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       values_to = "Value"
     ) %>% dplyr::arrange(.data$Parameter)
   #
-  ## -------------------- PLOTS ----------------------
+  #
+  ## ------------------------ PARAMETER ANALYSIS -----------------------------
+  #
+  ## select only EPR simulation parameters without `minRSS` and `raSD`
+  sim.fit.final.epr.params.df <-
+    dplyr::select(!dplyr::all_of(c("minRSS","raSD")))
+  #
+  ## starting overall parameter fit list
+  linFit.final.epr.params <- list()
+  #
+  for (e in 1:(ncol(sim.fit.final.epr.params.df) - 1)) {
+    #
+    ## linear fit for each column
+    linFit.final.epr.params[[e]] <-
+      stats::lm(
+        formula = stats::as.formula(
+          paste0(names(sim.fit.final.epr.params.df)[e],"~","Evaluation")
+        ),
+        data = sim.fit.final.epr.params.df
+      )
+  }
+  #
+  ## ------------------------------ PLOTS ------------------------------------
   #
   ## color definitions
   facet.plot.colors <-
@@ -394,12 +421,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ## to show fit with confidence interval
     ## except the minimum sum of residual squares
     geom_smooth(
-      method = "loess", ## or "lm"
+      method = "lm", ## or "loess"
       formula = y ~ x,
-      span = 1,
+      # span = 1,
       data = subset(
         sim.fit.vary.list.params.df.long,
-        Parameter != "minRSS"
+        subset = !(Parameter %in% c("minRSS","raSD"))
       ),
       color = "magenta",
       se = TRUE,
@@ -409,7 +436,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     # geom_line(linewidth = 0.2) +
     ## to show the Evaluation within lower `minRSS`:
     geom_vline(
-      xintercept = best.df.index,
+      xintercept = best.df.index.minRSS,
       color = "#129001",
       linewidth = 0.75
     ) +
