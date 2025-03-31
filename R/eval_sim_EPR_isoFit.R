@@ -103,7 +103,7 @@
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.
 #' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-#'   density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+#'   density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
 #'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
@@ -165,11 +165,14 @@
 #'   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
 #'   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
-#'   \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
-#'   \strong{anal}ysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulated/fitted
-#'   EPR intensity (corresponding to \code{min.rss}). The second ggplot2 shows the \strong{hist}ogram
-#'   and the scaled probability \strong{dens}ity function for residuals together with the corresponding
-#'   mean value (vertical line).}
+#'   \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+#'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulation fit (\code{plot}).
+#'   The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity function for residuals
+#'   together with the corresponding mean value (vertical line), denoted as \code{hist.dens}.
+#'   Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation of residuals for the simulation fit defined as:
+#'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
+#'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
+#'   Therefore, the smaller the \code{sd}, the better the simulation fit.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
@@ -197,8 +200,8 @@
 #'   which will be applied for the more complex optimization/fitting (currently under development).
 #'   \describe{
 #'   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
-#'   to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares,
-#'   after the (final) \code{optim.method} procedure.}
+#'   to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares + standard deviation
+#'   of the residuals, after the (final) \code{optim.method} procedure.}
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
 #'   on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
 #'   (please, refer to the \code{check.fit.plot} argument description).}
@@ -286,8 +289,10 @@
 #' ## experiment and the best fit)
 #' tempo.test.sim.fit.b$plot
 #' #
-#' ## residual analysis density plot
-#' tempo.test.sim.fit.b$plots.residAnal$plot.ra.histDens
+#' ## residual analysis density plot together
+#' ## with standard deviation of residuals
+#' tempo.test.sim.fit.b$ra$hist.dens
+#' tempo.test.sim.fit.b$ra$sd
 #' #
 #' ## fitting of the aminoxyl EPR spectrum
 #' ## by the combination of the 1. "Levenberg-Marquardt"
@@ -1157,6 +1162,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       formula = y ~ x,
       # span = 1,
       se = TRUE,
+      level = 0.99999999,
       color = "darkviolet",
       fill = "darkgray"
     ) +
@@ -1175,9 +1181,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
              sample = Residuals
            )
     ) +
-    qqplotr::stat_qq_band(fill = "lightgray") +             ## )
-    qqplotr::stat_qq_line(color = "darkred") +              ## } plot confid. interval
-    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") + ## )
+    qqplotr::stat_qq_band(fill = "lightgray",conf = 0.99999999) +   ## )
+    qqplotr::stat_qq_line(color = "darkred") +                      ## } plot confid. interval
+    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") +         ## )
     labs(
       x = bquote(italic(Theoretical~~Quantiles)),
       y = bquote(italic(Sample~~Quantiles)),
@@ -1212,7 +1218,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     labs(
       x = bquote(italic(Residuals)),
       y = bquote(italic(Counts)),
-      title = "Histogram and Scaled Probability Density of Residuals",
+      title = "Histogram and Scaled Probability Density",
       caption = "\u2013 Residuals mean value"
     ) +
     plot_theme_In_ticks(
@@ -1227,6 +1233,11 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     patchwork::wrap_plots(plot.resids,
                           plot.qq,
                           ncol = 1)
+  #
+  ## standard deviation (sometimes as standard error)
+  ## of residuals for the model
+  ra.sd.model <-
+    sqrt(sum(data.sim.expr$Residuals^2)) / sqrt(nrow(data.sim.expr) - length(optim.params.init) - 1)
   #
   # ---------------- add initial simulation only if `check.fit.plot = TRUE` ------------------
   #
@@ -1448,11 +1459,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   # return list, vector, data frame ...
   if (isTRUE(output.list.forFitSp)) {
-    ## final optimized parameters (+ min.rss) from the last `optim.method`
+    ## final optimized parameters (+ min.rss + sd of residuals) from the last `optim.method`
     ## if `length(optim.method) > 0`
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
-      min.rss[[length(optim.method)]]
+      min.rss[[length(optim.method)]],
+      ra.sd.model
     )
     #
     ## final data frame ## MAYBE WILL BE ADDED LATER
@@ -1474,9 +1486,10 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## final list components (switching between `check.fit.plot` condition)
       result <- list(
         plot = plot.sim.expr,
-        plots.residAnal = list(
-          plot.ra = plot.ra,
-          plot.ra.histDens = plot.hist.dens
+        ra = list(
+          plot = plot.ra,
+          hist.dens = plot.hist.dens,
+          sd = ra.sd.model
         ),
         best.fit.params = best.fit.params,
         df = switch(2-check.fit.plot,

@@ -53,7 +53,7 @@
 #'   because it is based on the numeric solution of the ordinary differential equations
 #'   and not on the common integration of rate equations.
 #' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-#'   density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+#'   density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
 #'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
 #' @param time.correct Logical, if time of recorded series of the EPR spectra needs to be corrected.
 #'   \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
@@ -81,12 +81,15 @@
 #'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
-#'   \strong{anal}ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted
-#'   from the kinetic model. The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity
-#'   function for residuals together with the corresponding mean value (vertical line). Residuals are defined
-#'   as a difference between the integrals/concentrations/\code{qvar} values from the experiment
-#'   and those evaluated by the model.}
+#'   \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+#'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
+#'   from the kinetic model (\code{plot}). The second ggplot2 shows the \strong{hist}ogram and the scaled
+#'   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
+#'   denoted as \code{hist.dens}. Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation
+#'   of residuals for the model defined as:
+#'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
+#'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
+#'   Therefore, the smaller the \code{sd}, the better the kinetic model fit.}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -153,7 +156,11 @@
 #' ## normal quantile (Q-Q) plot, indicating that residuals
 #' ## are normally distributed; third plot demonstrates
 #' ## the probability density with the histogram of residuals
-#' triaryl_model_kin_fit_01$plots.residAnal
+#' triaryl_model_kin_fit_01$ra$plot
+#' triaryl_model_kin_fit_01$ra$hist.dens
+#' #
+#' ## standard deviation of residuals
+#' triaryl_model_kin_fit_01$ra$sd
 #' #
 #' ## take the same experimental data and perform fit
 #' ## by first order kinetics where the `model.react`
@@ -179,7 +186,10 @@
 #' ## the 1st order kinetics is less convenient
 #' ## model than that of the 2nd order (based on
 #' ## the decrease of EPR intensity/integral)
-#' triaryl_model_kin_fit_02$plots.residAnal$plot.ra
+#' triaryl_model_kin_fit_02$ra$plot
+#' #
+#' ## standard deviation of residuals
+#' triaryl_model_kin_fit_02$ra$sd
 #'
 #'
 #' @export
@@ -410,7 +420,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     labs(
       x = bquote(italic(Residuals)),
       y = bquote(italic(Counts)),
-      title = "Histogram and Scaled Probability Density of Residuals",
+      title = "Histogram and Scaled Probability Density",
       caption = "\u2013 Residuals mean value"
     ) +
     plot_theme_In_ticks(
@@ -425,6 +435,11 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     patchwork::wrap_plots(plot.resids,
                           plot.qq,
                           ncol = 1)
+  #
+  ## standard deviation (sometimes as standard error)
+  ## of residuals for the model
+  ra.sd.model <-
+    sqrt(residsq.react.kin.fit) / sqrt(nrow(new.predict.df) - length(params.guess) - 1)
   #
   ## ====================== EXPERIMENT-FIT PLOT ============================
   #
@@ -513,9 +528,10 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   fit.summary <- list(
     df = new.predict.df,
     plot = plot.fit,
-    plots.residAnal = list(
-      plot.ra = plot.ra,
-      plot.ra.histDens = plot.hist.dens
+    ra = list(
+      plot = plot.ra,
+      hist.dens = plot.hist.dens,
+      sd = ra.sd.model
     ),
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,

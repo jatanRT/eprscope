@@ -37,7 +37,7 @@ or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} s
 \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).}
 
 \item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
 the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.}
 
 \item{fit.method}{Character string, corresponding to method applied to fit the theoretical Eyring relation
@@ -62,11 +62,15 @@ As a result of the Eyring-relation fit, list with the following components is av
   Eyring model.}
   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
-  \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
-  \strong{anal}ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted \eqn{k} \emph{vs} \eqn{T}
-  from the Eyring fit. The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity
-  function for residuals together with the corresponding mean value (vertical line). Residuals are defined
-  as a difference between the original \eqn{k} or \eqn{k\,/\,T} values and those predicted/fitted by the model.}
+  \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+  \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
+  from the Eyring model (\code{plot}). The second ggplot2 shows the \strong{hist}ogram and the scaled
+  probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
+  denoted as \code{hist.dens}. Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation
+  of residuals for the model defined as:
+  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
+  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
+  Therefore, the smaller the \code{sd}, the better the Eyring fit.}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, contaning model characteristics.}
@@ -77,11 +81,7 @@ As a result of the Eyring-relation fit, list with the following components is av
   order Taylor series method.}
   \item{converg}{If the \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
   characteristics like number of evaluations/iterations
-  (\code{N.evals}); character denoting the (un)successful convergence (\code{message})
-  and finally, standard deviation of the residuals (\code{residual.sd}), which is defined as:
-  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{residual.sd}, the better the original Eyring-relation fit.}
+  (\code{N.evals})and  character denoting the (un)successful convergence (\code{message}).}
   }
 }
 \description{
@@ -217,7 +217,7 @@ activ.kinet.test01.data$df.coeffs.HS
 activ.kinet.test01.data$df.model.HS
 #
 ## ...and the corresponding analysis of residuals
-activ.kinet.test01.data$plots.residAnal$plot.ra.histDens
+activ.kinet.test01.data$ra$hist.dens
 #
 ## preview of the convergence measures
 activ.kinet.test01.data$converg
@@ -272,7 +272,10 @@ activ.kinet.test02.data$vec.HS.uncert
 activ.kinet.test02.data$df.model.HS
 #
 ## corresponding analysis of residuals
-activ.kinet.test02.data$plots.residAnal$plot.ra
+## with residual standard deviation
+activ.kinet.test02.data$ra$plot
+activ.kinet.test02.data$ra$sd
+
 
 
 }

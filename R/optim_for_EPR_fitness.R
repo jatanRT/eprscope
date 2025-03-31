@@ -122,7 +122,7 @@
 #'   with the information, depending on the applied \code{method}. In the case of \code{{nloptr}} methods/functions
 #'   as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration per particle
 #'   shown for \code{pswarm}) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
-#'   Additionally, \code{pswarm} method shows the shrinking of the particle swarm diameter by the convergence.
+#'   Additionally, \code{pswarm} method shows the possible shrinking of the particle swarm diameter by the convergence.
 #'   For the \code{method = "levenmarq"} it shows the iteration/evaluation number, sum of residual squares (RSS)
 #'   and the corresponding parameter (Par.) values. In the \code{\link{eval_sim_EPR_isoFit}}
 #'   and \code{\link{quantify_EPR_Sim_series}} this argument can be combined with the \code{msg.optim.progress}.

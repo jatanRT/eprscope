@@ -12,7 +12,7 @@
 #'
 #' @details
 #'   The confidence interval evaluation suggests that values/observations obey two-tailed Student's t-distribution,
-#'   which for number of observations \eqn{N > 30} approaches the normal \eqn{z}-distribution.
+#'   which for number of observations \eqn{N > 30} may approach the normal \eqn{z}-distribution.
 #'   Evaluation of the confidence interval and/or its limits can be well documented on \eqn{g}-factor series example:
 #'   \deqn{g = \overline{g}\pm (t_{(1-\alpha/2),df}\,s/\sqrt{N})}
 #'   where \eqn{\overline{g}} is the mean value and the \eqn{t_{(1-\alpha/2),df}} corresponds to the quantile

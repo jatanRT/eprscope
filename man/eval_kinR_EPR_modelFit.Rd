@@ -102,7 +102,7 @@ because it is based on the numeric solution of the ordinary differential equatio
 and not on the common integration of rate equations.}
 
 \item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
 the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
@@ -144,12 +144,15 @@ List with the following components is available:
   related to the \code{qvarR} argument.}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
-  \strong{anal}ysis), with two main plots: Q-Q plot and residuals vs predicted/fitted
-  from the kinetic model. The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity
-  function for residuals together with the corresponding mean value (vertical line). Residuals are defined
-  as a difference between the integrals/concentrations/\code{qvar} values from the experiment
-  and those evaluated by the model.}
+  \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+  \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
+  from the kinetic model (\code{plot}). The second ggplot2 shows the \strong{hist}ogram and the scaled
+  probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
+  denoted as \code{hist.dens}. Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation
+  of residuals for the model defined as:
+  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
+  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
+  Therefore, the smaller the \code{sd}, the better the kinetic model fit.}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -228,7 +231,11 @@ triaryl_model_kin_fit_01$N.converg
 ## normal quantile (Q-Q) plot, indicating that residuals
 ## are normally distributed; third plot demonstrates
 ## the probability density with the histogram of residuals
-triaryl_model_kin_fit_01$plots.residAnal
+triaryl_model_kin_fit_01$ra$plot
+triaryl_model_kin_fit_01$ra$hist.dens
+#
+## standard deviation of residuals
+triaryl_model_kin_fit_01$ra$sd
 #
 ## take the same experimental data and perform fit
 ## by first order kinetics where the `model.react`
@@ -254,7 +261,10 @@ triaryl_model_kin_fit_02$df.coeffs
 ## the 1st order kinetics is less convenient
 ## model than that of the 2nd order (based on
 ## the decrease of EPR intensity/integral)
-triaryl_model_kin_fit_02$plots.residAnal$plot.ra
+triaryl_model_kin_fit_02$ra$plot
+#
+## standard deviation of residuals
+triaryl_model_kin_fit_02$ra$sd
 
 
 }

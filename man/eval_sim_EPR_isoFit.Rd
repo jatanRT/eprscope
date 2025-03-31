@@ -123,7 +123,7 @@ the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline
 \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
 
 \item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-density (see \code{Value} and \code{plots.residAnal}), this coefficient multiplies/re-scales
+density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
 the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.}
 
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
@@ -194,11 +194,14 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
-  \item{plots.residAnal}{A list consisting of 2 plots: ggplot2 object (related to simple \strong{resid}ual
-  \strong{anal}ysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulated/fitted
-  EPR intensity (corresponding to \code{min.rss}). The second ggplot2 shows the \strong{hist}ogram
-  and the scaled probability \strong{dens}ity function for residuals together with the corresponding
-  mean value (vertical line).}
+  \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+  \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulation fit (\code{plot}).
+  The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity function for residuals
+  together with the corresponding mean value (vertical line), denoted as \code{hist.dens}.
+  Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation of residuals for the simulation fit defined as:
+  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
+  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
+  Therefore, the smaller the \code{sd}, the better the simulation fit.}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
@@ -226,8 +229,8 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   which will be applied for the more complex optimization/fitting (currently under development).
   \describe{
   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
-  to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares,
-  after the (final) \code{optim.method} procedure.}
+  to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares + standard deviation
+  of the residuals, after the (final) \code{optim.method} procedure.}
   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
   on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
   (please, refer to the \code{check.fit.plot} argument description).}
@@ -335,8 +338,10 @@ tempo.test.sim.fit.b$best.fit.params
 ## experiment and the best fit)
 tempo.test.sim.fit.b$plot
 #
-## residual analysis density plot
-tempo.test.sim.fit.b$plots.residAnal$plot.ra.histDens
+## residual analysis density plot together
+## with standard deviation of residuals
+tempo.test.sim.fit.b$ra$hist.dens
+tempo.test.sim.fit.b$ra$sd
 #
 ## fitting of the aminoxyl EPR spectrum
 ## by the combination of the 1. "Levenberg-Marquardt"
