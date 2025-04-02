@@ -73,12 +73,12 @@ If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR
   \item{degs.freedom}{Equivalent degrees of freedom used.}
   \item{fit}{List with elements to characterize the spline fit (Details see \code{fit} value
   in the \code{\link[npreg]{ss}} function documentation).}
-  \item{sigma}{Estimated standard deviation.}
-  \item{aic}{Akaike’s Information Criterion (if the \code{method = "AIC"}). A negative number that has
-  the largest modulus (deepest down in the negative territory) indicates the preferred model.}
-  \item{bic}{Bayesian Information Criterion (if the \code{method = "BIC"}). A negative number that has
-  the largest modulus (deepest down in the negative territory) indicates the preferred model.}
-  \item{log.likehood}{Likelihood logarithm, if the \code{method = "REML"/"ML"}. Log likelihood value
+  \item{ra.sd}{Standard deviation of residuals.}
+  \item{abic}{Numeric vector/value of Akaike’s Information Criterion (if the \code{method = "AIC"})
+  or Bayesian Information Criterion (if the \code{method = "BIC"}). These are negative numbers,
+  having the largest modulus (deepest down in the negative territory) and therefore, indicating
+  the preferred model (the lower, the better).}
+  \item{log.lik}{Likelihood logarithm, if the \code{method = "REML"/"ML"}. Log likelihood value
   is a measure of goodness of fit for any model. The higher the value, the better the model.}
   }
 }
@@ -145,7 +145,10 @@ triarylamine.1st.spec.smooth$plot
 triarylamine.1st.spec.smooth$rss
 #
 ## estimated standard deviation
-triarylamine.1st.spec.smooth$sigma
+triarylamine.1st.spec.smooth$ra.sd
+#
+## Bayesian information criterion (BIC)
+triarylamine.1st.spec.smooth$abic
 #
 ## smoothing of all EPR spectra in the series
 ## with default arguments using the data

@@ -81,15 +81,24 @@
 #'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+#'   \item{ra}{Residual analysis - a list consisting of 4 elements:
+#'   \enumerate{
+#'   \item Ggplot2 object (related to simple visual \strong{r}esidual
 #'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-#'   from the kinetic model (\code{plot}). The second ggplot2 shows the \strong{hist}ogram and the scaled
+#'   from the kinetic model (\code{plot}).
+#'
+#'   \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
 #'   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-#'   denoted as \code{hist.dens}. Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation
-#'   of residuals for the model defined as:
+#'   denoted as \code{hist.dens}.
+#'
+#'   \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
 #'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{sd}, the better the kinetic model fit.}
+#'   Therefore, the smaller the \code{sd}, the better the fit, comparing different kinetic models.
+#'
+#'   \item Numeric vector of Akaike and Bayesian information criteria (AIC & BIC) when comparing different
+#'   kinetic models. The lower the (negative) values, the better the fit.
+#'   }}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -162,6 +171,9 @@
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_01$ra$sd
 #' #
+#' ## Akaike and Bayesian Criteria (AIC & BIC)
+#' triaryl_model_kin_fit_01$ra$abic.vec
+#' #
 #' ## take the same experimental data and perform fit
 #' ## by first order kinetics where the `model.react`
 #' ## is considered as an elementary step
@@ -190,6 +202,9 @@
 #' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_02$ra$sd
+#' #
+#' ## Akaike and Bayesian Criteria (AIC & BIC)
+#' triaryl_model_kin_fit_02$ra$abic.vec
 #'
 #'
 #' @export
@@ -207,8 +222,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                      qvar0R = 1e-3,
                                      k1 = 1e-3
                                    ),
-                                   params.guess.lower = NULL,
-                                   params.guess.upper = NULL,
+                                   params.guess.lower = NULL, ## automatic by `nls.lm()` see below
+                                   params.guess.upper = NULL, ## automatic by `nls.lm()` see below
                                    fit.kin.method = "diff-levenmarq",
                                    ra.densScale.coeff = 2,
                                    solve.ode.method = "lsoda",
@@ -268,22 +283,13 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   #
   ## -------------------- DERIVATIVE FORM Fit by LEVENBERG-MARQUARDT ---------------------
   #
-  ## conditions/definitions/bounds for `lower` and `upper` +- 20 %
-  # params.guess.values <- unname(params.guess)
-  # params.guess.lower.def <- sapply(params.guess.values, function(p) p - (p * 0.2))
-  # params.guess.upper.def <- sapply(params.guess.values, function(p) p + (p * 0.2))
-  # params.guess.lower <- params.guess.lower %>%
-  #   `if`(is.null(params.guess.lower),params.guess.lower.def,.)
-  # params.guess.upper <- params.guess.upper %>%
-  #   `if`(is.null(params.guess.upper),params.guess.upper.def,.)
-  #
   ## Fit by solution of Ordinary Differential equations
   #
   if (fit.kin.method == "diff-levenmarq") {
       model.react.kin.fit <- minpack.lm::nls.lm(
       par = params.guess,
-      lower = params.guess.lower,
-      upper = params.guess.upper,
+      lower = params.guess.lower, ## `nls.lm()` defines automatically `-Inf` if `lower = NULL`
+      upper = params.guess.upper, ## `nls.lm()` defines automatically `-Inf` if `upper = NULL`
       fn = eval_kinR_ODE_model, ## funct. from this package (see docu. of `eval_kinR_ODE_model`)
       model.react = model.react,
       model.expr.diff = TRUE,
@@ -361,7 +367,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     ) +
     geom_point(size = 2.6,color = "darkblue") +
     stat_smooth(
-      method = "lm",
+      method = "lm", ## maybe "loess"
       formula = y ~ x,
       # span = 1,
       se = TRUE,
@@ -440,6 +446,39 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   ## of residuals for the model
   ra.sd.model <-
     sqrt(residsq.react.kin.fit) / sqrt(nrow(new.predict.df) - length(params.guess) - 1)
+  #
+  ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
+  #
+  ## see e.g. https://doi.org/10.1177/0049124104268644,
+  ## https://www.amazon.com/Model-Selection-Multimodel-Inference-Information-Theoretic/dp/0387953647,
+  ## https://www.jstor.org/stable/41413993,
+  ## https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118856406.app5,
+  ## https://rpubs.com/RRD27/ts7
+  #
+  ## in addition to `ra.sd.model` in order to "score" the fit to compare it with others
+  #
+  ## AIC = (-2 * LL) + 2 * k + ((2 * k * (k+1))/N - k -1) including correction for
+  ## small sample/observation ensemble
+  #
+  ## BIC = (-2 * LL) + k * log(N) ## log = ln
+  #
+  ## first of all calculate the log-likelihood, assuming the normal distribution
+  ## of errors (in the case of kinetics => more-less fulfilled)
+  #
+  ## -2 * LL => `negativ.2fold.logLike`
+  ## N + N * log(2 * pi) + N * log(RSS / N)
+  negativ.2fold.loglike <-
+    nrow(new.predict.df) *
+    (1 + log(2 * pi) + log(residsq.react.kin.fit / nrow(new.predict.df)))
+  #
+  ## ...=> both criteria:
+  A.ic <-
+    negativ.2fold.loglike + (2 * length(params.guess)) +
+    (2 * length(params.guess) * (length(params.guess) + 1) /
+       (nrow(new.predict.df) - length(params.guess) - 1))
+  #
+  B.ic <-
+    negativ.2fold.loglike + (log(nrow(new.predict.df)) * length(params.guess))
   #
   ## ====================== EXPERIMENT-FIT PLOT ============================
   #
@@ -531,7 +570,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     ra = list(
       plot = plot.ra,
       hist.dens = plot.hist.dens,
-      sd = ra.sd.model
+      sd = ra.sd.model,
+      abic.vec = c(A.ic,B.ic)
     ),
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,

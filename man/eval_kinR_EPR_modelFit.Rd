@@ -144,15 +144,24 @@ List with the following components is available:
   related to the \code{qvarR} argument.}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+  \item{ra}{Residual analysis - a list consisting of 4 elements:
+  \enumerate{
+  \item Ggplot2 object (related to simple visual \strong{r}esidual
   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-  from the kinetic model (\code{plot}). The second ggplot2 shows the \strong{hist}ogram and the scaled
+  from the kinetic model (\code{plot}).
+
+  \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as \code{hist.dens}. Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation
-  of residuals for the model defined as:
+  denoted as \code{hist.dens}.
+
+  \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{sd}, the better the kinetic model fit.}
+  Therefore, the smaller the \code{sd}, the better the fit, comparing different kinetic models.
+
+  \item Numeric vector of Akaike and Bayesian information criteria (AIC & BIC) when comparing different
+  kinetic models. The lower the (negative) values, the better the fit.
+  }}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -237,6 +246,9 @@ triaryl_model_kin_fit_01$ra$hist.dens
 ## standard deviation of residuals
 triaryl_model_kin_fit_01$ra$sd
 #
+## Akaike and Bayesian Criteria (AIC & BIC)
+triaryl_model_kin_fit_01$ra$abic.vec
+#
 ## take the same experimental data and perform fit
 ## by first order kinetics where the `model.react`
 ## is considered as an elementary step
@@ -265,6 +277,9 @@ triaryl_model_kin_fit_02$ra$plot
 #
 ## standard deviation of residuals
 triaryl_model_kin_fit_02$ra$sd
+#
+## Akaike and Bayesian Criteria (AIC & BIC)
+triaryl_model_kin_fit_02$ra$abic.vec
 
 
 }

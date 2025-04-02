@@ -62,18 +62,25 @@ As a result of the Eyring-relation fit, list with the following components is av
   Eyring model.}
   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
-  \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+  \item{ra}{Residual analysis - a list consisting of 3 elements:
+  \enumerate{
+  \item Ggplot2 object (related to simple visual \strong{r}esidual
   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-  from the Eyring model (\code{plot}). The second ggplot2 shows the \strong{hist}ogram and the scaled
+  from the Eyring model (\code{plot}).
+
+  \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as \code{hist.dens}. Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation
-  of residuals for the model defined as:
+  denoted as \code{hist.dens}.
+
+  \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{sd}, the better the Eyring fit.}
+  Therefore, the smaller the \code{sd}, the better the fit, comparing different Eyring models.
+  }}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
-  \item{df.model.HS}{Data frame object, contaning model characteristics.}
+  \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like AIC and BIC,
+  see also \link{eval_kinR_EPR_modelFit}).}
   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
   is performed by the error propagation, implemented

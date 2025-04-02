@@ -194,14 +194,20 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
-  \item{ra}{Residual analysis - a list consisting of: ggplot2 object (related to simple visual \strong{r}esidual
+  \item{ra}{Residual analysis - a list consisting of 3 elements:
+  \enumerate{
+  \item Ggplot2 object (related to simple visual \strong{r}esidual
   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulation fit (\code{plot}).
-  The second ggplot2 shows the \strong{hist}ogram and the scaled probability \strong{dens}ity function for residuals
-  together with the corresponding mean value (vertical line), denoted as \code{hist.dens}.
-  Final list component \code{sd} equals to \strong{s}tandard \strong{d}eviation of residuals for the simulation fit defined as:
+
+  \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
+  probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
+  denoted as \code{hist.dens}.
+
+  \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for for the simulation fit defined as:
   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{sd}, the better the simulation fit.}
+  Therefore, the smaller the \code{sd}, the better the simulation fit, comparing different "models".
+  }}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
