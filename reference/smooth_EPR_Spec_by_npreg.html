@@ -151,18 +151,16 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 <dd><p>List with elements to characterize the spline fit (Details see <code>fit</code> value
   in the <code><a href="https://rdrr.io/pkg/npreg/man/ss.html" class="external-link">ss</a></code> function documentation).</p></dd>
 
-  <dt>sigma</dt>
-<dd><p>Estimated standard deviation.</p></dd>
+  <dt>ra.sd</dt>
+<dd><p>Standard deviation of residuals.</p></dd>
 
-  <dt>aic</dt>
-<dd><p>Akaike’s Information Criterion (if the <code>method = "AIC"</code>). A negative number that has
-  the largest modulus (deepest down in the negative territory) indicates the preferred model.</p></dd>
+  <dt>abic</dt>
+<dd><p>Numeric vector/value of Akaike’s Information Criterion (if the <code>method = "AIC"</code>)
+  or Bayesian Information Criterion (if the <code>method = "BIC"</code>). These are negative numbers,
+  having the largest modulus (deepest down in the negative territory) and therefore, indicating
+  the preferred model (the lower, the better).</p></dd>
 
-  <dt>bic</dt>
-<dd><p>Bayesian Information Criterion (if the <code>method = "BIC"</code>). A negative number that has
-  the largest modulus (deepest down in the negative territory) indicates the preferred model.</p></dd>
-
-  <dt>log.likehood</dt>
+  <dt>log.lik</dt>
 <dd><p>Likelihood logarithm, if the <code>method = "REML"/"ML"</code>. Log likelihood value
   is a measure of goodness of fit for any model. The higher the value, the better the model.</p></dd>
 
@@ -253,8 +251,12 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.2912784e-07</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## estimated standard deviation</span></span></span>
-<span class="r-in"><span><span class="va">triarylamine.1st.spec.smooth</span><span class="op">$</span><span class="va">sigma</span></span></span>
+<span class="r-in"><span><span class="va">triarylamine.1st.spec.smooth</span><span class="op">$</span><span class="va">ra.sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.5366455e-05</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## Bayesian information criterion (BIC)</span></span></span>
+<span class="r-in"><span><span class="va">triarylamine.1st.spec.smooth</span><span class="op">$</span><span class="va">abic</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -45315.035</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## smoothing of all EPR spectra in the series</span></span></span>
 <span class="r-in"><span><span class="co">## with default arguments using the data</span></span></span>
