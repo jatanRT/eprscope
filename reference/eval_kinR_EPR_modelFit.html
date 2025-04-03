@@ -254,7 +254,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   data and the corresponding fit.</p></dd>
 
   <dt>ra</dt>
-<dd><p>Residual analysis - a list consisting of 4 elements:</p><ol><li><p>Ggplot2 object (related to simple visual <strong>r</strong>esidual
+<dd><p>Residual analysis - a list consisting of 3 elements:</p><ol><li><p>Ggplot2 object (related to simple visual <strong>r</strong>esidual
   <strong>a</strong>nalysis), with two main plots: Q-Q plot and residuals <em>vs</em> predicted/fitted
   from the kinetic model (<code>plot</code>).</p></li>
 <li><p>Ggplot2 object, showing the <strong>hist</strong>ogram and the scaled
@@ -264,8 +264,6 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   $$\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}$$
   where \(N\) is the number of observations and \(k_{\text{pars}}\) is the number of optimized parameters.
   Therefore, the smaller the <code>sd</code>, the better the fit, comparing different kinetic models.</p></li>
-<li><p>Numeric vector of Akaike and Bayesian information criteria (AIC &amp; BIC) when comparing different
-  kinetic models. The lower the (negative) values, the better the fit.</p></li>
 </ol></dd>
 
   <dt>df.coeffs</dt>
@@ -277,6 +275,10 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 
   <dt>min.rss</dt>
 <dd><p>Minimum sum of residual squares after <code>N.evals</code>.</p></dd>
+
+  <dt>abic</dt>
+<dd><p>Numeric vector of Akaike and Bayesian information criteria (AIC &amp; BIC) when comparing different
+  kinetic models. The lower the (negative) values, the better the fit.</p></dd>
 
   <dt>N.converg</dt>
 <dd><p>Vector, corresponding to residual sum of squares at each iteration/evaluation.</p></dd>
@@ -389,7 +391,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00011872565</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">abic.vec</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1522.8735 -1517.7869</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## take the same experimental data and perform fit</span></span></span>
@@ -428,7 +430,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00063538776</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">abic.vec</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1187.3895 -1182.3029</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
