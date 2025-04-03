@@ -132,7 +132,8 @@ Depending on \code{output.matrix.df}, function returns either interactive plot o
   or in 2D contour mode with the intensity scale mapped onto the color bar (\code{plot.type = "contour"}).
 }
 \description{
-Interactive plotting of EPR spectra or their integrals based on \href{https://plotly.com/r/}{plotly} package.
+\strong{When viewing the web page, please wait for the images to load.} Interactive plotting of EPR spectra
+  or their integrals based on \href{https://plotly.com/r/}{plotly} package.
   The aim of this function is to nicely visualize the series of EPR spectra (or their corresponding integrals),
   while checking out the EPR intensities upon e.g. kinetic (time series), variable temperature or simultaneous
   spectroelectrochemical experiments (potential series). For such purpose, the data frame input

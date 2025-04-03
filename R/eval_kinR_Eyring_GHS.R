@@ -173,7 +173,7 @@
 #'   \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
 #'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{sd}, the better the fit, comparing different Eyring models.
+#'   Therefore, the smaller the \code{sd}, the better the fit, comparing the Eyring models.
 #'   }}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
@@ -186,7 +186,7 @@
 #'   order Taylor series method.}
 #'   \item{converg}{If the \code{fit.method} IS DIFFERENT FROM \code{"linear"} a list, containing fitting/optimization
 #'   characteristics like number of evaluations/iterations
-#'   (\code{N.evals})and  character denoting the (un)successful convergence (\code{message}).}
+#'   (\code{N.evals}) and  character denoting the (un)successful convergence (\code{message}).}
 #'   }
 #'
 #'

@@ -81,7 +81,7 @@
 #'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{ra}{Residual analysis - a list consisting of 4 elements:
+#'   \item{ra}{Residual analysis - a list consisting of 3 elements:
 #'   \enumerate{
 #'   \item Ggplot2 object (related to simple visual \strong{r}esidual
 #'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
@@ -95,14 +95,13 @@
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
 #'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
 #'   Therefore, the smaller the \code{sd}, the better the fit, comparing different kinetic models.
-#'
-#'   \item Numeric vector of Akaike and Bayesian information criteria (AIC & BIC) when comparing different
-#'   kinetic models. The lower the (negative) values, the better the fit.
 #'   }}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
 #'   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
+#'   \item{abic}{Numeric vector of Akaike and Bayesian information criteria (AIC & BIC) when comparing different
+#'   kinetic models. The lower the (negative) values, the better the fit.}
 #'   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
 #'   }
 #'
@@ -172,7 +171,7 @@
 #' triaryl_model_kin_fit_01$ra$sd
 #' #
 #' ## Akaike and Bayesian Criteria (AIC & BIC)
-#' triaryl_model_kin_fit_01$ra$abic.vec
+#' triaryl_model_kin_fit_01$abic
 #' #
 #' ## take the same experimental data and perform fit
 #' ## by first order kinetics where the `model.react`
@@ -204,7 +203,7 @@
 #' triaryl_model_kin_fit_02$ra$sd
 #' #
 #' ## Akaike and Bayesian Criteria (AIC & BIC)
-#' triaryl_model_kin_fit_02$ra$abic.vec
+#' triaryl_model_kin_fit_02$abic
 #'
 #'
 #' @export
@@ -570,12 +569,12 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     ra = list(
       plot = plot.ra,
       hist.dens = plot.hist.dens,
-      sd = ra.sd.model,
-      abic.vec = c(A.ic,B.ic)
+      sd = ra.sd.model
     ),
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,
     min.rss = residsq.react.kin.fit,
+    abic = c(A.ic,B.ic),
     N.converg = converg.react.kin.fit
   )
   #
