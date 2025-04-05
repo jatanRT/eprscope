@@ -11,6 +11,10 @@
 #'   or \code{\link{smooth_EPR_Spec_by_npreg}}) ...TBC...
 #'
 #'
+#' @details
+#'   Additional details...
+#'
+#'
 #'
 #' @param data.fit Data frame object, usually containing variables/columns like \code{experiment},
 #'   \code{fit(ted)}/\code{predicted} as well as \code{residuals}/\code{errors}. If the latter is missing
@@ -21,14 +25,58 @@
 #'   \strong{Default}: \code{residuals = NULL}.
 #' @param k Numeric value identical to number of parameters used in your model/fit
 #'   (see e.g. \code{Examples} in the \code{\link{eval_kinR_EPR_modelFit}} where \code{k = 2}).
-#' @param rs.distro Character string, corresponding to ...TBC ...
+#' @param rs.prob.distro Character string, corresponding to proposed residuals/errors probability distribution.
+#'   If set to \strong{default} (\code{rs.prob.distro = "auto"}), it automatically decides which distribution
+#'   (Normal/Gaussian or Student's t-distribution) fits the best to residuals/errors based on the implemented
+#'   AIC and BIC calculations. This is particularly suitable for the situation when residual analysis detects
+#'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
+#'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
+#'   distributions like: \code{rs.prob.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
+#'   \code{"t-distribution"} (\code{"t-distro"}).
 #'
 #'
-#' @returns description
+#' @returns Function returns a list with the following components:
+#'   \describe{
+#'   \item{abic}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
+#'   \item{message}{Sentence (Message), describing the residuals/errors probability distribution,
+#'         that has been proposed for the AIC and BIC calculation (see also the \code{rs.prob.distro}
+#'         argument).}
+#'   }
 #'
 #'
 #' @examples
-#' # example code
+#' \dontrun{
+#' ## to decide which probability distribution fits
+#' ## the best to residuals/errors
+#' calc.abic.list.01 <-
+#'   eval_ABIC_forFit(
+#'     data.fit = triaryl_model_kin_fit_01$df,
+#'     residuals = "residuals",
+#'     k = 2,
+#'     rs.prob.distro = "auto"
+#'  )
+#' #
+#' ## AIC and BIC values
+#' calc.abic.list.01$abic
+#' #
+#' ## ...and the corresponding message
+#' calc.abic.list.01$message
+#' #
+#' ## calculation of AIC and BIC, taking into
+#' ## account the Student's t-distribution:
+#' calc.abic.list.01 <-
+#'   eval_ABIC_forFit(
+#'     data.fit = best.sim.fit.df,
+#'     residuals = "Errors",
+#'     k = 8,
+#'     rs.prob.distro = "t-distro"
+#'   )
+#' #
+#' ## for additional applications please,
+#' ## refer to the Examples in `eval_sim_EPR_isoFit()`
+#' ## or `eval_kinR_EPR_modelFit()`
+#' #
+#' }
 #'
 #'
 #'
@@ -36,27 +84,28 @@
 #'
 #'
 eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and experimental values
-                             residuals = NULL, # string for column
-                             k, # number of params for the model
-                             rs.distro = "auto") { ## or "t-","(S)student's", or "normal", or "automatic", "gauss"
+                             residuals = NULL, # string for column name
+                             k, # number of params for the model/fit
+                             rs.prob.distro = "auto") { ## or "t-","(S)student's",
+                             ## or "normal", or "automatic", "gauss"
   #
   ## 'Temporary' processing variables
   #
   #
-  ## if `rs.distro` defined by letter case - upper
+  ## if `rs.prob.distro` defined by letter case - upper
   ## convert it automatically into lower:
-  if (grepl("^[[:upper:]]+",rs.distro)) {
-    rs.distro <- tolower(rs.distro)
+  if (grepl("^[[:upper:]]+",rs.prob.distro)) {
+    rs.prob.distro <- tolower(rs.prob.distro)
   }
   #
-  ## vector string to check `rs.distro`
-  rs.distro.string.vec <- c("norm","t-","student","gauss","auto")
+  ## vector string to check `rs.prob.distro`
+  rs.prob.distro.string.vec <- c("norm","t-dist","student","gauss","auto")
   #
-  ## check the `rs.distro` type:
-  if (!any(grepl(paste(rs.distro.string.vec,collapse = "|"),rs.distro))) {
+  ## check the `rs.prob.distro` type:
+  if (!any(grepl(paste(rs.prob.distro.string.vec,collapse = "|"),rs.prob.distro))) {
     stop(' Please, provide the name for proposed distribution\n
          of errors/residuals, like "normal" or "gaussian" or "automatic",\n
-         "t-distribution"...etc, refer to the `rs.distro` argument !! ')
+         "t-distribution"...etc, refer to the `rs.prob.distro` argument !! ')
   }
   #
   ## check column of `data.fit` like "residuals":
@@ -98,6 +147,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   }
   #
   ## now optimize the previous function in order to get `nu`
+  ## and max. likelihood
   opt_logLik_t <-
     stats::optimize(
       log_likehood_t_fun,
@@ -111,7 +161,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   ## compare likelihoods, if the same => set automatically to "normal"
   ## t-distrobution reaches normal for N >= 30
   if (log_likehood_norm == log_likehood_t) {
-    rs.distro <- "normal"
+    rs.prob.distro <- "normal"
   }
   #
   ## =========================== CALCULATION OF AIC and BIC ==============================
@@ -133,10 +183,10 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   norm.string.vec <- c("norm","gauss")
   #
   ## strings for t-Distro (Student)
-  t.string.vec <- c("t-","student")
+  t.string.vec <- c("t-dist","student")
   #
-  if (any(grepl(paste(norm.string.vec,collapse = "|"),rs.distro)) ||
-      grepl("auto",rs.distro)) {
+  if (any(grepl(paste(norm.string.vec,collapse = "|"),rs.prob.distro)) ||
+      grepl("auto",rs.prob.distro)) {
     #
     norm.abic.vec <- stats::setNames(
       abic_fun(
@@ -145,8 +195,8 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     )
     #
   }
-  if (any(grepl(paste(t.string.vec,collapse = "|"),rs.distro)) ||
-      grepl("auto",rs.distro)) {
+  if (any(grepl(paste(t.string.vec,collapse = "|"),rs.prob.distro)) ||
+      grepl("auto",rs.prob.distro)) {
     #
     t.abic.vec <- stats::setNames(
       abic_fun(
@@ -158,7 +208,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   #
   ## ------------------------ AIC/BIC Vectors for Comparison -------------------------------
   #
-  if (grepl("auto",rs.distro)) {
+  if (grepl("auto",rs.prob.distro)) {
     #
     ## AIC vector for comparison
     a.ic.compar.vec <- stats::setNames(
@@ -182,7 +232,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     if (a.ic.min.idx != b.ic.min.idx) {
       stop('The indices for both AIC and BIC minimal values\n
            do not correspond. No decision can be made !!\n
-           Please, specify the `rs.distro` argument. No "automatic"\n
+           Please, specify the `rs.prob.distro` argument. No "automatic"\n
            can be used !! ')
     }
     #
@@ -205,18 +255,18 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   ## "root" message
   root.msg <- "Residuals/Errors of your Fit follow the "
   #
-  ## function to switch between different options of `rs.distro`
+  ## function to switch between different options of `rs.prob.distro`
   distro_results_switch <- function(distro) {
     if (grepl("norm",distro) || grepl("gauss",distro)) {
       return(1)
-    } else if (grepl("t-",distro) || grepl("student",distro)) {
+    } else if (grepl("t-dist",distro) || grepl("student",distro)) {
       return(0)
     }
   }
   #
   ## ======================== RESULTS =============================
   #
-  if (grepl("auto",rs.distro)) {
+  if (grepl("auto",rs.prob.distro)) {
     result.list <-
       list(
         abic = c(
@@ -229,11 +279,11 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     result.list <-
       list(
         abic = switch(
-          2 - distro_results_switch(distro = rs.distro),
+          2 - distro_results_switch(distro = rs.prob.distro),
           unname(norm.abic.vec),
           unname(t.abic.vec)
         ),
-        message = paste0(root.msg,abic_name_msg_fun(name = rs.distro))
+        message = paste0(root.msg,abic_name_msg_fun(name = rs.prob.distro))
       )
   }
   #
