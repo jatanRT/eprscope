@@ -6,14 +6,66 @@
 #'
 #'
 #' @description
-#'   When comparing different (simulation) fits for the same experimental data (see e.g.
-#'   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}
-#'   or \code{\link{smooth_EPR_Spec_by_npreg}}) ...TBC...
+#'   When comparing different (simulation) fits for the same experimental data (see
+#'   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}}
+#'   or \code{\link{smooth_EPR_Spec_by_npreg}}), the fits can be scored/ranked by different
+#'   metrics (e.g. minimum sum of residual squares or standard deviation of residuals), including
+#'   Akaike and Bayesian Information Criteria (\code{\link[stats]{AIC}} and BIC, respectively).
+#'   These are also applied for the best model selection in machine learning (refer to e.g.
+#'   \href{https://www.modernstatisticswithr.com/mlchapter.html}{Predictive Modelling and Machine Learning} or
+#'   \href{https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05}{Error Estimation and Model Selection}).
+#'   As described in details, both metrics depends on maximum logarithmic likelihood (based on residuals calculation)
+#'   to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}
 #'
 #'
 #' @details
-#'   Additional details...
+#'   Estimation of model errors that model/fit makes in respect to our (experimental) data becomes
+#'   one of the most consequential aspects of a statistical (machine learning) analysis. Often, different
+#'   modelling/fitting approaches are used, with the attempt to identify or select the best model/fit. Therefore,
+#'   for such purpose, one tries to minimize the errors/residuals more and more with each model. Or in other words,
+#'   there is an information loss when the model/fit approximates the reality and a good model minimizes
+#'   these losses. The evaluation of AIC and BIC actually approaches the problem from the other site,
+#'   because it uses the technique called maximum likelihood estimate (MLE). The idea is to maximize the chance
+#'   that each observation in the sample follows a pre-selected distribution with specific
+#'   set of parameters (corresponding to model/fit). For practical reasons a logarithmic likelihood
+#'   (or log-likelihood,\eqn{LL}) is used, and the formulae for both criteria read:
+#'   \deqn{AIC = -2\,LL + 2\,k + (2\,k\,(k + 1)\,/\,(N - k -1))}
+#'   and
+#'   \deqn{BIC = -2\,LL + k\,ln(N)}
+#'   where \eqn{k} and \eqn{N} correspond to number of parameters and number of observations, respectively.
+#'   The 3rd term in \eqn{AIC} definition is the correction for small sample/observation ensemble, which
+#'   for high number of observations becomes very small (and can be neglected). For example, for EPR simulation
+#'   fit with 2048 points and 8 parameters it equals to \eqn{16 \cdot 9\,/\,2039 \approx 0.0706}. However, for
+#'   radical kinetic measurements with 42 EPR spectra and 3 parameters,
+#'   the result is \eqn{6 \cdot 4\,/\,38 \approx 0.6316}.
+#'   The original calculation
 #'
+#'
+#'
+#' @references
+#'   Fabozzi FJ, Focardi FM, Rachev ST, Arshanapalli BG (2014). \emph{The Basics of Financial Econometrics:
+#'   Tools, Concepts, and Asset Management Applications (Appendix E)}, John Wiley and Sons, Inc. ISBN 978-1-118-57320-4,
+#'   \url{https://onlinelibrary.wiley.com/doi/book/10.1002/9781118856406}.
+#'
+#'   Soch J et al. (2024). StatProofBook/StatProofBook.github.io: \emph{The Book of Statistical Proofs (Version 2023).},
+#'   \url{https://statproofbook.github.io/}, \url{https://doi.org/10.5281/ZENODO.4305949}.
+#'
+#'   Burnham KP, Anderson DR (2004). "Multimodel Interference: Understanding AIC and BIC in Model Selection",
+#'   \emph{Sociol. Methods  Res.}, \strong{33}(2), 261-304, \url{https://doi.org/10.1177/0049124104268644}.
+#'
+#'   Thulin M (2025). \emp{Modern Statistics with R: From Wrangling and Exploring Data to Inference
+#'   and Predictive Modeling}, 2nd edition (Version 2.0.2), CRC Press and Taylor and Francis Group, LLC.
+#'   ISBN 978-1-032-51244-0, \url{https://www.modernstatisticswithr.com/}.
+#'
+#'   Zhang Y, Meng G (2023). "Simulation of an Adaptive Model Based on AIC and BIC ARIMA Predictions",
+#'   \emph{J. Phys.: Conf. Ser.}, \strong{2449}, 012027-7, \url{https://doi.org/10.1088/1742-6596/2449/1/012027}.
+#'
+#'   Svetunkov I (2022). \emph{Statistics for Business Analytics}, Version 2025,
+#'   \url{https://openforecast.org/sba/}.
+#'
+#'   Rossi R, Murari R, Gaudio P, Gelfusa M (2020). "Upgrading Model Selection Criteria with Goodness
+#'   of Fit Tests for Practical Applications", \emph{Entropy}, \strong{22}(4), 447-13,
+#'   \url{https://doi.org/10.3390/e22040447}.
 #'
 #'
 #' @param data.fit Data frame object, usually containing variables/columns like \code{experiment},
@@ -77,7 +129,6 @@
 #' ## or `eval_kinR_EPR_modelFit()`
 #' #
 #' }
-#'
 #'
 #'
 #' @export
@@ -168,8 +219,9 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   #
   abic_fun <- function(N.params = k,N.obs = Nobs,logLik) {
     #
-    ## ...also taking into account the correction for small `N.obs`
-    AIC <- (-2 * logLik) + (2 * k) +
+    ## ...also taking into account the correction for small `N.obs` (AIC),
+    ## where this third term can be neglected for higher `N.obs` (is very small)
+    AIC <- (-2 * logLik) + (2 * N.params) +
       ((2 * N.params * (N.params + 1)) / (N.obs - N.params - 1))
     #
     BIC <- (-2 * logLik) + (N.params * log(N.obs))
@@ -232,8 +284,8 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     if (a.ic.min.idx != b.ic.min.idx) {
       stop('The indices for both AIC and BIC minimal values\n
            do not correspond. No decision can be made !!\n
-           Please, specify the `rs.prob.distro` argument. No "automatic"\n
-           can be used !! ')
+           Please, specify the `rs.prob.distro` argument accordingly.\n
+           No "automatic" can be used !! ')
     }
     #
     ## take the name of that element
