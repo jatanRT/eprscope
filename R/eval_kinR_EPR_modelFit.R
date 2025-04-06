@@ -100,8 +100,10 @@
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
 #'   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
-#'   \item{abic}{Numeric vector of Akaike and Bayesian information criteria (AIC & BIC) when comparing different
-#'   kinetic models. The lower the (negative) values, the better the fit.}
+#'   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
+#'   and \code{message} denoting the probability distribution of residuals/errors, applied to evaluate
+#'   those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
+#'   the better the fit. Please, also consult the \code{\link{eval_ABIC_forFit}}.}
 #'   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
 #'   }
 #'
@@ -171,6 +173,8 @@
 #' triaryl_model_kin_fit_01$ra$sd
 #' #
 #' ## Akaike and Bayesian Criteria (AIC & BIC)
+#' ## information about the residuals +
+#' ## + probability distribution
 #' triaryl_model_kin_fit_01$abic
 #' #
 #' ## take the same experimental data and perform fit
@@ -202,7 +206,9 @@
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_02$ra$sd
 #' #
-#' ## Akaike and Bayesian Criteria (AIC & BIC)
+#' ## Akaike and Bayesian Criteria (AIC & BIC) +
+#' ## + information about the residuals
+#' ## probability distribution
 #' triaryl_model_kin_fit_02$abic
 #'
 #'
@@ -454,30 +460,28 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   ## https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118856406.app5,
   ## https://rpubs.com/RRD27/ts7
   #
-  ## in addition to `ra.sd.model` in order to "score" the fit to compare it with others
+  ## see also the function `eval_ABIC_forFit` automatic recognition
+  ## of residual/error distribution
+  AB.ic.list <-
+    eval_ABIC_forFit(
+      data.fit = new.predict.df,
+      residuals = "residuals",
+      k = length(params.guess) ## number of parameters
+    )
   #
-  ## AIC = (-2 * LL) + 2 * k + ((2 * k * (k+1))/N - k -1) including correction for
-  ## small sample/observation ensemble
-  #
-  ## BIC = (-2 * LL) + k * log(N) ## log = ln
-  #
-  ## first of all calculate the log-likelihood, assuming the normal distribution
-  ## of errors (in the case of kinetics => more-less fulfilled)
-  #
-  ## -2 * LL => `negativ.2fold.logLike`
-  ## N + N * log(2 * pi) + N * log(RSS / N)
-  negativ.2fold.loglike <-
-    nrow(new.predict.df) *
-    (1 + log(2 * pi) + log(residsq.react.kin.fit / nrow(new.predict.df)))
-  #
-  ## ...=> both criteria:
-  A.ic <-
-    negativ.2fold.loglike + (2 * length(params.guess)) +
-    (2 * length(params.guess) * (length(params.guess) + 1) /
-       (nrow(new.predict.df) - length(params.guess) - 1))
-  #
-  B.ic <-
-    negativ.2fold.loglike + (log(nrow(new.predict.df)) * length(params.guess))
+  ## THE FOLLOWING REPLACED BY `AB.ic.list` and `eval_ABIC_forFit`
+  # negativ.2fold.loglike <-
+  #   nrow(new.predict.df) *
+  #   (1 + log(2 * pi) + log(residsq.react.kin.fit / nrow(new.predict.df)))
+  # #
+  # ## ...=> both criteria:
+  # A.ic <-
+  #   negativ.2fold.loglike + (2 * length(params.guess)) +
+  #   (2 * length(params.guess) * (length(params.guess) + 1) /
+  #      (nrow(new.predict.df) - length(params.guess) - 1))
+  # #
+  # B.ic <-
+  #   negativ.2fold.loglike + (log(nrow(new.predict.df)) * length(params.guess))
   #
   ## ====================== EXPERIMENT-FIT PLOT ============================
   #
@@ -574,7 +578,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,
     min.rss = residsq.react.kin.fit,
-    abic = c(A.ic,B.ic),
+    abic = AB.ic.list, ## list
     N.converg = converg.react.kin.fit
   )
   #

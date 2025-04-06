@@ -80,7 +80,7 @@ As a result of the Eyring-relation fit, list with the following components is av
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like AIC and BIC,
-  see also \link{eval_kinR_EPR_modelFit}).}
+  see also \code{\link{eval_kinR_EPR_modelFit}} and \code{\link{eval_ABIC_forFit}}).}
   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
   is performed by the error propagation, implemented

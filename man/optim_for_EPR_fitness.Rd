@@ -287,6 +287,7 @@ Johnson SG (2023). “The NLopt nonlinear-optimization package.” \url{https://
 }
 \seealso{
 Other Simulations and Optimization: 
+\code{\link{eval_ABIC_forFit}()},
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},

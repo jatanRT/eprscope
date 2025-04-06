@@ -22,9 +22,9 @@
 #'   Estimation of model errors, that model/fit makes in respect to our (experimental) data, becomes
 #'   one of the most consequential aspects of a statistical (machine learning) analysis. Often, different
 #'   modelling/fitting approaches are used, with the attempt to identify or select the best model/fit. Therefore,
-#'   for such purpose, one tries to minimize the errors/residuals more and more with each model. Or in other words,
+#'   for such purpose, one tries to minimize the errors/residuals more and more with each model. Or to put it another way,
 #'   \strong{there is an information loss when the model/fit approximates the reality} and a good model minimizes
-#'   these losses. The evaluation of AIC and BIC actually approaches the problem from the other site,
+#'   those losses. The evaluation of AIC and BIC actually approaches the problem from the other site,
 #'   because it uses the technique called \strong{maximum likelihood estimate (MLE)}. The idea is to maximize the chance
 #'   that each observation in the sample follows a pre-selected distribution with specific
 #'   set of parameters (corresponding to a model/fit). For practical reasons a logarithmic likelihood
@@ -48,13 +48,13 @@
 #'   of the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution)
 #'   and of the \code{\link[stats:TDist]{stats::dt}} (for the Student's t-distribution), using the \code{log = TRUE}
 #'   option. For t-distribution the \code{df}/\eqn{\nu} parameter is unknown, therefore it is optimized
-#'   by the above-described \eqn{LL} as well as by the \code{\link[stats]{optimize}}. Both probability distributions
+#'   by the above-described \eqn{LL} as well as by the \code{\link[stats]{optimize}} function. Both probability distributions
 #'   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
 #'   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
 #'   Consequently, the function may automatically (see the argument \code{rs.prob.distro}) decide which distribution
 #'   fits the residuals/errors the best, based on the lower AIC, BIC values.
 #'   \strong{It is recommended to evaluate/apply both information criteria}. The AIC tends to favor a more complex model
-#'   (over a simpler one) and thus to "overfit" the data, whereas the BIC is in favor of simpler models because
+#'   (over a simpler one) and thus suggests to "overfit" the data, whereas the BIC is in favor of simpler models because
 #'   it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014)
 #'   and Zhang Y, Meng G (2023) in the \code{References}).
 #'
@@ -70,7 +70,7 @@
 #'   Burnham KP, Anderson DR (2004). "Multimodel Interference: Understanding AIC and BIC in Model Selection",
 #'   \emph{Sociol. Methods  Res.}, \strong{33}(2), 261-304, \url{https://doi.org/10.1177/0049124104268644}.
 #'
-#'   Thulin M (2025). \emp{Modern Statistics with R: From Wrangling and Exploring Data to Inference
+#'   Thulin M (2025). \emph{Modern Statistics with R: From Wrangling and Exploring Data to Inference
 #'   and Predictive Modeling}, 2nd edition (Version 2.0.2), CRC Press and Taylor and Francis Group, LLC.
 #'   ISBN 978-1-032-51244-0, \url{https://www.modernstatisticswithr.com/}.
 #'
@@ -111,7 +111,7 @@
 #'
 #' @returns Function returns a list with the following components:
 #'   \describe{
-#'   \item{abic}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
+#'   \item{abic.vec}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
 #'   \item{message}{Sentence (Message), describing the residuals/errors probability distribution,
 #'         that has been proposed for the AIC and BIC calculation (see also the \code{rs.prob.distro}
 #'         argument).}
@@ -343,7 +343,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   if (grepl("auto",rs.prob.distro)) {
     result.list <-
       list(
-        abic = c(
+        abic.vec = c(
           unname(a.ic.compar.vec[a.ic.min.idx]),
           unname(b.ic.compar.vec[b.ic.min.idx])
         ),
@@ -352,7 +352,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   } else {
     result.list <-
       list(
-        abic = switch(
+        abic.vec = switch(
           2 - distro_results_switch(distro = rs.prob.distro),
           unname(norm.abic.vec),
           unname(t.abic.vec)

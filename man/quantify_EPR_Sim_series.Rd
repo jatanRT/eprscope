@@ -231,6 +231,7 @@ quant.data.sim.test.b <-
 }
 \seealso{
 Other Simulations and Optimization: 
+\code{\link{eval_ABIC_forFit}()},
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},

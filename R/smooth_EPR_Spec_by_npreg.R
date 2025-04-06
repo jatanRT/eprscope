@@ -85,7 +85,7 @@
 #'   \item{abic}{Numeric vector/value of Akaike’s Information Criterion (if the \code{method = "AIC"})
 #'   or Bayesian Information Criterion (if the \code{method = "BIC"}). These are negative numbers,
 #'   having the largest modulus (deepest down in the negative territory) and therefore, indicating
-#'   the preferred model (the lower, the better).}
+#'   the preferred model (the lower, the better, see also \code{\link{eval_ABIC_forFit}}.}
 #'   \item{log.lik}{Likelihood logarithm, if the \code{method = "REML"/"ML"}. Log likelihood value
 #'   is a measure of goodness of fit for any model. The higher the value, the better the model.}
 #'   }

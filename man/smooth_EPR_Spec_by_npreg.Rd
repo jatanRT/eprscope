@@ -77,7 +77,7 @@ If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR
   \item{abic}{Numeric vector/value of Akaike’s Information Criterion (if the \code{method = "AIC"})
   or Bayesian Information Criterion (if the \code{method = "BIC"}). These are negative numbers,
   having the largest modulus (deepest down in the negative territory) and therefore, indicating
-  the preferred model (the lower, the better).}
+  the preferred model (the lower, the better, see also \code{\link{eval_ABIC_forFit}}.}
   \item{log.lik}{Likelihood logarithm, if the \code{method = "REML"/"ML"}. Log likelihood value
   is a measure of goodness of fit for any model. The higher the value, the better the model.}
   }
@@ -197,6 +197,7 @@ Berry LN, Helwig NE (2021). “Cross-Validation, Information Theory, or Maximum 
 }
 \seealso{
 Other Simulations and Optimization: 
+\code{\link{eval_ABIC_forFit}()},
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},

@@ -188,6 +188,10 @@
 #'   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
 #'   the best simulated spectrum intensity without the baseline fit.}
 #'   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
+#'   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
+#'   and \code{message} denoting the probability distribution of residuals/errors, applied to evaluate
+#'   those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
+#'   the better the fit. Please, also consult the \code{\link{eval_ABIC_forFit}}.}
 #'   \item{N.evals}{Number of iterations/function evaluations completed before termination.
 #'   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
 #'   equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)
@@ -205,9 +209,20 @@
 #'   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
 #'   which will be applied for the more complex optimization/fitting (currently under development).
 #'   \describe{
-#'   \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
-#'   to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares + standard deviation
-#'   of the residuals, after the (final) \code{optim.method} procedure.}
+#'   \item{params}{A vector, containing the following elements:
+#'   \enumerate{
+#'   \item The best fitting (optimized) parameters (related to the \code{optim.params.init} argument).
+#'
+#'   \item Minimum sum of residual squares (corresponding to previous item).
+#'
+#'   \item Standard deviation of residuals, after the (final) \code{optim.method} procedure.
+#'
+#'   \item Akaike Information Criterion/AIC metric (refer to \code{\link{eval_ABIC_forFit}}),
+#'   after the (final) \code{optim.method}.
+#'
+#'   \item Bayesian Information Criterion/BIC metric (refer to \code{\link{eval_ABIC_forFit}}),
+#'   after the (final) \code{optim.method}.
+#'   }}
 #'   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
 #'   on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
 #'   (please, refer to the \code{check.fit.plot} argument description).}
@@ -300,6 +315,11 @@
 #' tempo.test.sim.fit.b$ra$hist.dens
 #' tempo.test.sim.fit.b$ra$sd
 #' #
+#' ## Akaike and Bayesian Criteria (AIC & BIC)
+#' ## information about the residuals +
+#' ## + probability distribution
+#' tempo.test.sim.fit.b$abic
+#' #
 #' ## fitting of the aminoxyl EPR spectrum
 #' ## by the combination of the 1. "Levenberg-Marquardt"
 #' ## and 2. "Nelder-Mead" algorithms
@@ -333,6 +353,12 @@
 #' ## component is vector and the 2nd one is integer code
 #' ## as already stated above:
 #' tempo.test.sim.fit.c$N.converg
+#' #
+#' ## Akaike and Bayesian Criteria (AIC & BIC)
+#' ## information about the residuals +
+#' ## + probability distribution
+#' tempo.test.sim.fit.c$abic
+#'
 #'
 #'
 #' @export
@@ -1243,7 +1269,26 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## standard deviation (sometimes as standard error)
   ## of residuals for the model
   ra.sd.model <-
-    sqrt(sum(data.sim.expr$Residuals^2)) / sqrt(nrow(data.sim.expr) - length(optim.params.init) - 1)
+    sqrt(sum(data.sim.expr$Residuals^2)) /
+    sqrt(nrow(data.sim.expr) - length(optim.params.init) - 1)
+  #
+  ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
+  #
+  ## see e.g. https://doi.org/10.1177/0049124104268644,
+  ## https://www.amazon.com/Model-Selection-Multimodel-Inference-Information-Theoretic/dp/0387953647,
+  ## https://www.jstor.org/stable/41413993,
+  ## https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118856406.app5,
+  ## https://rpubs.com/RRD27/ts7
+  #
+  ## see also the function `eval_ABIC_forFit` automatic recognition
+  ## of residual/error distribution
+  AB.ic.list <-
+    eval_ABIC_forFit(
+      data.fit = data.sim.expr,
+      residuals = "Residuals",
+      k = length(optim.params.init) ## number of parameters
+    )
+  #
   #
   # ---------------- add initial simulation only if `check.fit.plot = TRUE` ------------------
   #
@@ -1470,7 +1515,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]],
-      ra.sd.model
+      ra.sd.model, ## residual sd
+      AB.ic.list$abic.vec[1], ## AIC
+      AB.ic.list$abic.vec[2] ## BIC
     )
     #
     ## final data frame ## MAYBE WILL BE ADDED LATER
@@ -1502,6 +1549,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     data.sim.expr.long,
                     data.sim.expr),
         min.rss = min.rss,
+        abic = AB.ic.list, ## list
         N.evals = N.evals,
         N.converg = N.converg
       )

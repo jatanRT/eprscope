@@ -163,8 +163,10 @@ List with the following components is available:
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
-  \item{abic}{Numeric vector of Akaike and Bayesian information criteria (AIC & BIC) when comparing different
-  kinetic models. The lower the (negative) values, the better the fit.}
+  \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
+  and \code{message} denoting the probability distribution of residuals/errors, applied to evaluate
+  those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
+  the better the fit. Please, also consult the \code{\link{eval_ABIC_forFit}}.}
   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
   }
 }
@@ -246,6 +248,8 @@ triaryl_model_kin_fit_01$ra$hist.dens
 triaryl_model_kin_fit_01$ra$sd
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
+## information about the residuals +
+## + probability distribution
 triaryl_model_kin_fit_01$abic
 #
 ## take the same experimental data and perform fit
@@ -277,7 +281,9 @@ triaryl_model_kin_fit_02$ra$plot
 ## standard deviation of residuals
 triaryl_model_kin_fit_02$ra$sd
 #
-## Akaike and Bayesian Criteria (AIC & BIC)
+## Akaike and Bayesian Criteria (AIC & BIC) +
+## + information about the residuals
+## probability distribution
 triaryl_model_kin_fit_02$abic
 
 

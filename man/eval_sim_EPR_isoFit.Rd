@@ -217,6 +217,10 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
   the best simulated spectrum intensity without the baseline fit.}
   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
+  \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
+  and \code{message} denoting the probability distribution of residuals/errors, applied to evaluate
+  those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
+  the better the fit. Please, also consult the \code{\link{eval_ABIC_forFit}}.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
   equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)
@@ -234,9 +238,20 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
   which will be applied for the more complex optimization/fitting (currently under development).
   \describe{
-  \item{params}{Vector, corresponding to the best fitting (optimized) parameters (related
-  to the \code{optim.params.init} argument, see also list above) + minimum sum of residual squares + standard deviation
-  of the residuals, after the (final) \code{optim.method} procedure.}
+  \item{params}{A vector, containing the following elements:
+  \enumerate{
+  \item The best fitting (optimized) parameters (related to the \code{optim.params.init} argument).
+
+  \item Minimum sum of residual squares (corresponding to previous item).
+
+  \item Standard deviation of residuals, after the (final) \code{optim.method} procedure.
+
+  \item Akaike Information Criterion/AIC metric (refer to \code{\link{eval_ABIC_forFit}}),
+  after the (final) \code{optim.method}.
+
+  \item Bayesian Information Criterion/BIC metric (refer to \code{\link{eval_ABIC_forFit}}),
+  after the (final) \code{optim.method}.
+  }}
   \item{plot}{Visualization of the experimental as well as the best fitted EPR simulated spectra depending
   on the \code{check.fit.plot}. It corresponds either to EPR spectra with residuals or to those with baseline correction,
   (please, refer to the \code{check.fit.plot} argument description).}
@@ -349,6 +364,11 @@ tempo.test.sim.fit.b$plot
 tempo.test.sim.fit.b$ra$hist.dens
 tempo.test.sim.fit.b$ra$sd
 #
+## Akaike and Bayesian Criteria (AIC & BIC)
+## information about the residuals +
+## + probability distribution
+tempo.test.sim.fit.b$abic
+#
 ## fitting of the aminoxyl EPR spectrum
 ## by the combination of the 1. "Levenberg-Marquardt"
 ## and 2. "Nelder-Mead" algorithms
@@ -382,11 +402,18 @@ tempo.test.sim.fit.c$best.fit.params
 ## component is vector and the 2nd one is integer code
 ## as already stated above:
 tempo.test.sim.fit.c$N.converg
+#
+## Akaike and Bayesian Criteria (AIC & BIC)
+## information about the residuals +
+## + probability distribution
+tempo.test.sim.fit.c$abic
+
 
 
 }
 \seealso{
 Other Simulations and Optimization: 
+\code{\link{eval_ABIC_forFit}()},
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{optim_for_EPR_fitness}()},
