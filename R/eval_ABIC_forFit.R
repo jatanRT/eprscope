@@ -19,27 +19,44 @@
 #'
 #'
 #' @details
-#'   Estimation of model errors that model/fit makes in respect to our (experimental) data becomes
+#'   Estimation of model errors, that model/fit makes in respect to our (experimental) data, becomes
 #'   one of the most consequential aspects of a statistical (machine learning) analysis. Often, different
 #'   modelling/fitting approaches are used, with the attempt to identify or select the best model/fit. Therefore,
 #'   for such purpose, one tries to minimize the errors/residuals more and more with each model. Or in other words,
-#'   there is an information loss when the model/fit approximates the reality and a good model minimizes
+#'   \strong{there is an information loss when the model/fit approximates the reality} and a good model minimizes
 #'   these losses. The evaluation of AIC and BIC actually approaches the problem from the other site,
-#'   because it uses the technique called maximum likelihood estimate (MLE). The idea is to maximize the chance
+#'   because it uses the technique called \strong{maximum likelihood estimate (MLE)}. The idea is to maximize the chance
 #'   that each observation in the sample follows a pre-selected distribution with specific
-#'   set of parameters (corresponding to model/fit). For practical reasons a logarithmic likelihood
+#'   set of parameters (corresponding to a model/fit). For practical reasons a logarithmic likelihood
 #'   (or log-likelihood,\eqn{LL}) is used, and the formulae for both criteria read:
 #'   \deqn{AIC = -2\,LL + 2\,k + (2\,k\,(k + 1)\,/\,(N - k -1))}
 #'   and
 #'   \deqn{BIC = -2\,LL + k\,ln(N)}
-#'   where \eqn{k} and \eqn{N} correspond to number of parameters and number of observations, respectively.
-#'   The 3rd term in \eqn{AIC} definition is the correction for small sample/observation ensemble, which
-#'   for high number of observations becomes very small (and can be neglected). For example, for EPR simulation
+#'   where \eqn{k} and \eqn{N} correspond to number of (model/fit) parameters and number of observations, respectively.
+#'   The 3rd term in the \eqn{AIC} definition represents the correction for small sample/observation ensemble, which
+#'   for high number of observations becomes very small (and can be neglected,
+#'   see e.g. Burnham and Anderson (2004) or Kumar (2023) in the \code{References}). For example, for EPR simulation
 #'   fit with 2048 points and 8 parameters it equals to \eqn{16 \cdot 9\,/\,2039 \approx 0.0706}. However, for
-#'   radical kinetic measurements with 42 EPR spectra and 3 parameters,
-#'   the result is \eqn{6 \cdot 4\,/\,38 \approx 0.6316}.
-#'   The original calculation
+#'   radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
+#'   in \eqn{6 \cdot 4\,/\,38 \approx 0.6316}.
 #'
+#'   \strong{The original MLE/\eqn{LL} calculation is based on the model. Nevertheless, such computation can be quite often
+#'   impractical or even impossible to perform.} To overcome this difficulty, the formulae for both criteria
+#'   use a \strong{standard assumption that the model and the data residuals/errors are identically distributed.}
+#'   Therefore, \strong{the residuals/errors are applied as a proxy for the MLE/\eqn{LL}} (see e.g. Rossi et al. (2020)
+#'   and Kumar (2023) in the \code{References}). Evaluation of the latter, in the actual function, proceeds through \code{sum}
+#'   of the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution)
+#'   and of the \code{\link[stats:TDist]{stats::dt}} (for the Student's t-distribution), using the \code{log = TRUE}
+#'   option. For t-distribution the \code{df}/\eqn{\nu} parameter is unknown, therefore it is optimized
+#'   by the above-described \eqn{LL} as well as by the \code{\link[stats]{optimize}}. Both probability distributions
+#'   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
+#'   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
+#'   Consequently, the function may automatically (see the argument \code{rs.prob.distro}) decide which distribution
+#'   fits the residuals/errors the best, based on the lower AIC, BIC values.
+#'   \strong{It is recommended to evaluate/apply both information criteria}. The AIC tends to favor a more complex model
+#'   (over a simpler one) and thus to "overfit" the data, whereas the BIC is in favor of simpler models because
+#'   it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014)
+#'   and Zhang Y, Meng G (2023) in the \code{References}).
 #'
 #'
 #' @references
@@ -66,6 +83,11 @@
 #'   Rossi R, Murari R, Gaudio P, Gelfusa M (2020). "Upgrading Model Selection Criteria with Goodness
 #'   of Fit Tests for Practical Applications", \emph{Entropy}, \strong{22}(4), 447-13,
 #'   \url{https://doi.org/10.3390/e22040447}.
+#'
+#'   Hyndman RJ (2013). "Facts and Fallacies of the AIC", \url{https://robjhyndman.com/hyndsight/aic/}.
+#'
+#'   Kumar A (2023). "AIC and BIC for Selecting Regression Models: Formula, Examples",
+#'   \url{https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments}.
 #'
 #'
 #' @param data.fit Data frame object, usually containing variables/columns like \code{experiment},
