@@ -240,6 +240,8 @@ There are several ways how to get help. If the users are already familiar with t
 
 -   [R CODER](https://r-coder.com/)
 
+-   [Modern Statistics with R](https://www.modernstatisticswithr.com/)
+
 -   [Why should I use R ? (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
 
 -   [R to Python Data Wrangling](https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07)
