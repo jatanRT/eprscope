@@ -2,6 +2,7 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -274,9 +275,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>           Estimate    Std. Error    t value       Pr(>|t|)
-#> qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149
-#> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
-#> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
+#> qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149
+#> k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19
+#> alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101
 ```
 
 ## Help, Questions and Contribution
@@ -309,6 +310,8 @@ quite straightforward diving into
 - [An Introduction to R](https://intro2r.com/)
 
 - [R CODER](https://r-coder.com/)
+
+- [Modern Statistics with R](https://www.modernstatisticswithr.com/)
 
 - [Why should I use R ?
   (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
