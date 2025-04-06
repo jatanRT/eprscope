@@ -277,8 +277,10 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <dd><p>Minimum sum of residual squares after <code>N.evals</code>.</p></dd>
 
   <dt>abic</dt>
-<dd><p>Numeric vector of Akaike and Bayesian information criteria (AIC &amp; BIC) when comparing different
-  kinetic models. The lower the (negative) values, the better the fit.</p></dd>
+<dd><p>A list consisting of Akaike and Bayesian information criteria (AIC &amp; BIC) vector (<code>abic.vec</code>)
+  and <code>message</code> denoting the probability distribution of residuals/errors, applied to evaluate
+  those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
+  the better the fit. Please, also consult the <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>.</p></dd>
 
   <dt>N.converg</dt>
 <dd><p>Vector, corresponding to residual sum of squares at each iteration/evaluation.</p></dd>
@@ -391,8 +393,15 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00011872565</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
+<span class="r-in"><span><span class="co">## information about the residuals +</span></span></span>
+<span class="r-in"><span><span class="co">## + probability distribution</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">abic</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1522.8735 -1517.7869</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1522.9038 -1517.8172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Residuals/Errors of your Fit follow the normal distribution."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## take the same experimental data and perform fit</span></span></span>
 <span class="r-in"><span><span class="co">## by first order kinetics where the `model.react`</span></span></span>
@@ -429,9 +438,16 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00063538776</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
+<span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC) +</span></span></span>
+<span class="r-in"><span><span class="co">## + information about the residuals</span></span></span>
+<span class="r-in"><span><span class="co">## probability distribution</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">abic</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1187.3895 -1182.3029</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1187.8203 -1182.7336</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Residuals/Errors of your Fit follow the normal distribution."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

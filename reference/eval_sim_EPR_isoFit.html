@@ -345,6 +345,12 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   <dt>min.rss</dt>
 <dd><p>Minimum sum of residual squares (vector) after the least-square procedure.</p></dd>
 
+  <dt>abic</dt>
+<dd><p>A list consisting of Akaike and Bayesian information criteria (AIC &amp; BIC) vector (<code>abic.vec</code>)
+  and <code>message</code> denoting the probability distribution of residuals/errors, applied to evaluate
+  those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
+  the better the fit. Please, also consult the <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>.</p></dd>
+
   <dt>N.evals</dt>
 <dd><p>Number of iterations/function evaluations completed before termination.
   If the <code>pswarm</code> optimization algorithm is included in <code>optim.method</code>, the <code>N.evals</code>
@@ -365,9 +371,14 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 </dl></li>
 <li><p>If <code>output.list.forFitSp = TRUE</code>, the function exclusively returns list with the two components,
   which will be applied for the more complex optimization/fitting (currently under development).</p><dl><dt>params</dt>
-<dd><p>Vector, corresponding to the best fitting (optimized) parameters (related
-  to the <code>optim.params.init</code> argument, see also list above) + minimum sum of residual squares + standard deviation
-  of the residuals, after the (final) <code>optim.method</code> procedure.</p></dd>
+<dd><p>A vector, containing the following elements:</p><ol><li><p>The best fitting (optimized) parameters (related to the <code>optim.params.init</code> argument).</p></li>
+<li><p>Minimum sum of residual squares (corresponding to previous item).</p></li>
+<li><p>Standard deviation of residuals, after the (final) <code>optim.method</code> procedure.</p></li>
+<li><p>Akaike Information Criterion/AIC metric (refer to <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>),
+  after the (final) <code>optim.method</code>.</p></li>
+<li><p>Bayesian Information Criterion/BIC metric (refer to <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>),
+  after the (final) <code>optim.method</code>.</p></li>
+</ol></dd>
 
   <dt>plot</dt>
 <dd><p>Visualization of the experimental as well as the best fitted EPR simulated spectra depending
@@ -389,6 +400,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Simulations and Optimization:
+<code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a>()</code>,
 <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a>()</code>,
 <code><a href="eval_sim_EPR_iso_combo.html">eval_sim_EPR_iso_combo</a>()</code>,
 <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a>()</code>,
@@ -497,7 +509,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=3.039e-08, swarm diam.=1.056</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.56  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.646  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -521,6 +533,17 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.2529105e-06</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
+<span class="r-in"><span><span class="co">## information about the residuals +</span></span></span>
+<span class="r-in"><span><span class="co">## + probability distribution</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">abic</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -33080.366 -33048.543</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Residuals/Errors of your Fit follow the Student's t-distribution."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## fitting of the aminoxyl EPR spectrum</span></span></span>
 <span class="r-in"><span><span class="co">## by the combination of the 1. "Levenberg-Marquardt"</span></span></span>
 <span class="r-in"><span><span class="co">## and 2. "Nelder-Mead" algorithms</span></span></span>
@@ -543,11 +566,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.277  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.292  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.573  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.685  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -576,6 +599,18 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
+<span class="r-in"><span><span class="co">## information about the residuals +</span></span></span>
+<span class="r-in"><span><span class="co">## + probability distribution</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">abic</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -27855.621 -27823.797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Residuals/Errors of your Fit follow the Student's t-distribution."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
