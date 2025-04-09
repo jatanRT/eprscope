@@ -2,7 +2,7 @@
 % Please edit documentation in R/rearrange_aAiso.R
 \name{rearrange_aAiso_QCHcomp}
 \alias{rearrange_aAiso_QCHcomp}
-\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical (QCH) Computations}
+\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from the Quantum Chemical (QCH) Computations}
 \usage{
 rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 }

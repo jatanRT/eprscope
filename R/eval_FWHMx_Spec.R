@@ -1,5 +1,5 @@
 #'
-#' Evaluating Full Width at Half-Maximum (FWHM) from Integrated EPR Spectrum
+#' Evaluating Full Width at Half-Maximum (FWHM) from the Integrated EPR Spectrum
 #'
 #'
 #' @family Evaluations

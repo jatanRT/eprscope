@@ -1,5 +1,5 @@
 #'
-#' Least-Squares Fitting of Isotropic EPR Spectra by Simulations
+#' Least-Square Fitting of Isotropic EPR Spectra by Simulations
 #'
 #'
 #' @family Simulations and Optimization

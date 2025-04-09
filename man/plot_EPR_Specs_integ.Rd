@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_Specs_integ.R
 \name{plot_EPR_Specs_integ}
 \alias{plot_EPR_Specs_integ}
-\title{Plotting Integrated Forms of EPR Spectra Acquired by \code{\link{eval_integ_EPR_Spec}}}
+\title{Plotting Integrated Forms of EPR Spectra Acquired by the \code{\link{eval_integ_EPR_Spec}}}
 \usage{
 plot_EPR_Specs_integ(
   data.spectra.integ,

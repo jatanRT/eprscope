@@ -1,5 +1,5 @@
 #'
-#'  ENDOR/Larmor Frequency of Specific Nucleus
+#'  ENDOR/Larmor Frequency of Specific Nuclei
 #'
 #'
 #' @family Evaluations

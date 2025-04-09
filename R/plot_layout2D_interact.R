@@ -1,5 +1,5 @@
 #
-#' Additional Layout for Interactive 2D Plots
+#' Additional Layout for the Interactive 2D Plots
 #'
 #'
 #' @family Visualizations and Graphics

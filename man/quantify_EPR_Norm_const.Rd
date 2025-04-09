@@ -2,7 +2,7 @@
 % Please edit documentation in R/quantify_EPR_Norm_const.R
 \name{quantify_EPR_Norm_const}
 \alias{quantify_EPR_Norm_const}
-\title{Normalization Constant Calculation for Quantitative EPR Analysis}
+\title{Normalization Constant Calculation for the Quantitative EPR Analysis}
 \usage{
 quantify_EPR_Norm_const(
   conv.time.ms,

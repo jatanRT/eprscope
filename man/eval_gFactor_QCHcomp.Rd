@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_gFactors.R
 \name{eval_gFactor_QCHcomp}
 \alias{eval_gFactor_QCHcomp}
-\title{Calculation of \eqn{g}-factor from Quantum Chemical Computational Output}
+\title{Calculation of \eqn{g}-factor from the Quantum Chemical Computational Output}
 \usage{
 eval_gFactor_QCHcomp(path_to_QCHoutput, mean = TRUE, origin = "gaussian")
 }

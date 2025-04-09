@@ -1,4 +1,4 @@
-#' Read Selected EPR Instrumental Parameters and Information
+#' Read the Selected EPR Instrumental Parameters and Information
 #'
 #'
 #' @family Data Reading

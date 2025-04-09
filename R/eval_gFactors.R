@@ -72,7 +72,7 @@ eval_gFactor <- function(nu.val,
 #
 #
 #
-#' Calculation of \eqn{g}-factor ("Position") from EPR Spectrum/Data
+#' Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data
 #'
 #'
 #' @family Evaluations
@@ -220,7 +220,7 @@ eval_gFactor_Spec <- function(data.spectr,
 #
 #
 #
-#' Calculation of \eqn{g}-factor from Quantum Chemical Computational Output
+#' Calculation of \eqn{g}-factor from the Quantum Chemical Computational Output
 #'
 #'
 #' @family Evaluations and Quantum Chemistry

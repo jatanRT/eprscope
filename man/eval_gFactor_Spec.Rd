@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_gFactors.R
 \name{eval_gFactor_Spec}
 \alias{eval_gFactor_Spec}
-\title{Calculation of \eqn{g}-factor ("Position") from EPR Spectrum/Data}
+\title{Calculation of \eqn{g}-factor ("Position") from the EPR Spectrum/Data}
 \usage{
 eval_gFactor_Spec(
   data.spectr,

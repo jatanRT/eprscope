@@ -16,7 +16,7 @@ as a difference between the experimental and fitted/predicted values.}
 on the \code{data.fit} argument (usually \code{residuals = "Residuals"} or \code{residuals = "errors"}).
 \strong{Default}: \code{residuals = NULL}.}
 
-\item{k}{Numeric value identical to number of parameters used in your model/fit
+\item{k}{Numeric value identical to number of parameters used for the model/fit
 (see e.g. \code{Examples} in the \code{\link{eval_kinR_EPR_modelFit}} where \code{k = 2}).}
 
 \item{rs.prob.distro}{Character string, corresponding to proposed residuals/errors probability distribution.

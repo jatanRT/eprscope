@@ -1,5 +1,5 @@
 #
-#' A Comparison of EPR Spectra Between Experimental and Simulated Form
+#' A Comparison of the Experimental and Simulated Forms of EPR Spectra
 #'
 #'
 #' @family Visualizations and Graphics

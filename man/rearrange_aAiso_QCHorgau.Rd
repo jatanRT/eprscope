@@ -2,7 +2,7 @@
 % Please edit documentation in R/rearrange_aAiso.R
 \name{rearrange_aAiso_QCHorgau}
 \alias{rearrange_aAiso_QCHorgau}
-\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Gaussian & ORCA Computations}
+\title{Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from the Gaussian & ORCA Computations}
 \usage{
 rearrange_aAiso_QCHorgau(
   path_to_QCHoutput,

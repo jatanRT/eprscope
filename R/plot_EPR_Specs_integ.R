@@ -1,5 +1,5 @@
 #'
-#' Plotting Integrated Forms of EPR Spectra Acquired by \code{\link{eval_integ_EPR_Spec}}
+#' Plotting Integrated Forms of EPR Spectra Acquired by the \code{\link{eval_integ_EPR_Spec}}
 #'
 #'
 #' @family Visualizations and Graphics

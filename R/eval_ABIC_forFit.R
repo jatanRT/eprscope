@@ -97,7 +97,7 @@
 #' @param residuals Character string, pointing to variable/column header with residuals/errors, depending
 #'   on the \code{data.fit} argument (usually \code{residuals = "Residuals"} or \code{residuals = "errors"}).
 #'   \strong{Default}: \code{residuals = NULL}.
-#' @param k Numeric value identical to number of parameters used in your model/fit
+#' @param k Numeric value identical to number of parameters used for the model/fit
 #'   (see e.g. \code{Examples} in the \code{\link{eval_kinR_EPR_modelFit}} where \code{k = 2}).
 #' @param rs.prob.distro Character string, corresponding to proposed residuals/errors probability distribution.
 #'   If set to \strong{default} (\code{rs.prob.distro = "auto"}), it automatically decides which distribution
@@ -176,7 +176,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   #
   ## check the `rs.prob.distro` type:
   if (!any(grepl(paste(rs.prob.distro.string.vec,collapse = "|"),rs.prob.distro))) {
-    stop(' Please, provide the name for proposed distribution\n
+    stop(' Please, provide the name for the proposed distribution\n
          of errors/residuals, like "normal" or "gaussian" or "automatic",\n
          "t-distribution"...etc, refer to the `rs.prob.distro` argument !! ')
   }
@@ -184,8 +184,8 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   ## check column of `data.fit` like "residuals":
   if (is.null(residuals)) {
     stop(' Does your data frame already contain a column header,\n
-         pointing to "residuals" ? If yes, please, provide it,\n
-         see the argument `residuals`. If it is not the case, \n
+         pointing to "residuals" ? If yes, please, provide it !\n
+         Refer to the argument `residuals`. If it is not the case, \n
          calculate the column of residuals within the `data.fit` !! ')
   } else {
     ## residual vector

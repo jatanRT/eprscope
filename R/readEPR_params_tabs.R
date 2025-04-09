@@ -1,5 +1,5 @@
 #
-#' Read EPR Instrumental Parameters and Information and Write them into Tables
+#' Read the EPR Instrumental Parameters and Information for Tabular Outputs
 #'
 #'
 #' @family Data Reading
@@ -9,7 +9,7 @@
 #'   Taking the instrumental parameters from the \code{.DSC/.dsc} or \code{.par} files, applied
 #'   to record the EPR Spectra, and transferring them into list of \code{Tables/Data Frames}.
 #'   They include either parameter values and their units or character/string information about the measurement,
-#'   see also the \code{\link{readEPR_param_slct}}.
+#'   see also the \code{\link{readEPR_param_slct}} function.
 #'
 #'
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})

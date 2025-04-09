@@ -1,5 +1,5 @@
 #
-#' Read EPR Simulation Parameters and Information from \emph{MATLAB} \code{.mat} File
+#' Reading EPR Simulation Parameters and Information from the \emph{MATLAB} \code{.mat} File
 #'
 #'
 #' @family Data Reading

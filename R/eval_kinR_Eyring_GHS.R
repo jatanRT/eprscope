@@ -1,5 +1,5 @@
 #'
-#' Reaction Activation Parameters Obtained by Essential Transition State Theory
+#' Reaction Activation Parameters Obtained by the Essential Transition State Theory
 #'
 #'
 #' @family Evaluations

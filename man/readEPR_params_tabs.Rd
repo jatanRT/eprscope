@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_tabs.R
 \name{readEPR_params_tabs}
 \alias{readEPR_params_tabs}
-\title{Read EPR Instrumental Parameters and Information and Write them into Tables}
+\title{Read the EPR Instrumental Parameters and Information for Tabular Outputs}
 \usage{
 readEPR_params_tabs(path_to_dsc_par, origin = "xenon", interact = NULL)
 }
@@ -34,7 +34,7 @@ List of data frames/tables containing:
 Taking the instrumental parameters from the \code{.DSC/.dsc} or \code{.par} files, applied
   to record the EPR Spectra, and transferring them into list of \code{Tables/Data Frames}.
   They include either parameter values and their units or character/string information about the measurement,
-  see also the \code{\link{readEPR_param_slct}}.
+  see also the \code{\link{readEPR_param_slct}} function.
 }
 \examples{
 ## loading built-in example file =>

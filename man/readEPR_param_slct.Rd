@@ -2,7 +2,7 @@
 % Please edit documentation in R/readEPR_params_slct.R
 \name{readEPR_param_slct}
 \alias{readEPR_param_slct}
-\title{Read Selected EPR Instrumental Parameters and Information}
+\title{Read the Selected EPR Instrumental Parameters and Information}
 \usage{
 readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 }

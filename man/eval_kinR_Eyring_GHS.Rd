@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_kinR_Eyring_GHS.R
 \name{eval_kinR_Eyring_GHS}
 \alias{eval_kinR_Eyring_GHS}
-\title{Reaction Activation Parameters Obtained by Essential Transition State Theory}
+\title{Reaction Activation Parameters Obtained by the Essential Transition State Theory}
 \usage{
 eval_kinR_Eyring_GHS(
   data.kvT,

@@ -1,5 +1,5 @@
 #'
-#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Quantum Chemical (QCH) Computations
+#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from the Quantum Chemical (QCH) Computations
 #'
 #'
 #' @family Evaluations and Quantum Chemistry
@@ -149,7 +149,7 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #
 #
 #
-#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from Gaussian & ORCA Computations
+#' Rearrangement of \eqn{A_{iso}}/\eqn{a_{iso}} from the Gaussian & ORCA Computations
 #'
 #'
 #' @family Evaluations and Quantum Chemistry

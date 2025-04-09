@@ -1,5 +1,5 @@
 #'
-#' Loading Built-In Data Files for Package Examples
+#' Loading the Built-In Data Files for Package Examples
 #'
 #'
 #' @description

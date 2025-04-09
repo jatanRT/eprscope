@@ -2,7 +2,7 @@
 % Please edit documentation in R/present_EPR_Sim_Spec.R
 \name{present_EPR_Sim_Spec}
 \alias{present_EPR_Sim_Spec}
-\title{A Comparison of EPR Spectra Between Experimental and Simulated Form}
+\title{A Comparison of the Experimental and Simulated Forms of EPR Spectra}
 \usage{
 present_EPR_Sim_Spec(
   data.spectr.expr,

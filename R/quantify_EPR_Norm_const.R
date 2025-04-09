@@ -1,5 +1,5 @@
 #
-#' Normalization Constant Calculation for Quantitative EPR Analysis
+#' Normalization Constant Calculation for the Quantitative EPR Analysis
 #'
 #'
 #' @family Evaluations and Quantification
