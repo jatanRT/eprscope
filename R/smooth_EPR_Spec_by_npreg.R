@@ -240,7 +240,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
       rss = smooth.epr.spec.list$pen.crit, ## (weighted) sum of residual squares
       degs.freedom = smooth.epr.spec.list$df, ## corresponding degrees of freedom
       fit = smooth.epr.spec.list$fit, ## list with fit characteristics
-      ra.sd = sqrt(smooth.epr.spec.list$sigma), ## estimated residual/error standard deviation.
+      ra.sd = smooth.epr.spec.list$sigma, ## estimated residual/error standard deviation.
       ## see https://bradleyboehmke.github.io/HOML/linear-regression.html
       ## Akaike's Information Criterion (if method is AIC)
       ## Bayesian Information Criterion (if method is BIC)
