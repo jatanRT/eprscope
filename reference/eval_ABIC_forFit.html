@@ -114,7 +114,8 @@ on the <code>data.fit</code> argument (usually <code>residuals = "Residuals"</co
 <dd><p>Character string, corresponding to proposed residuals/errors probability distribution.
 If set to <strong>default</strong> (<code>rs.prob.distro = "auto"</code>), it automatically decides which distribution
 (Normal/Gaussian or Student's t-distribution) fits the best to residuals/errors based on the implemented
-AIC and BIC calculations. This is particularly suitable for the situation when residual analysis detects
+AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see <code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>).
+This is particularly suitable for the situation when residual analysis detects
 heavier tails (see e.g. <code>Example</code> in <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>) and one is not quite
 sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
 distributions like: <code>rs.prob.distro = "normal"</code>, <code>"Gaussian"</code>, <code>"Student"</code> or
@@ -127,9 +128,9 @@ distributions like: <code>rs.prob.distro = "normal"</code>, <code>"Gaussian"</co
 <dd><p>A numeric vector containing the values of estimated AIC and BIC, respectively.</p></dd>
 
   <dt>message</dt>
-<dd><p>Sentence (Message), describing the residuals/errors probability distribution,
-        that has been proposed for the AIC and BIC calculation (see also the <code>rs.prob.distro</code>
-        argument).</p></dd>
+<dd><p>Sentence (message), describing the residuals/errors
+  probability distribution, which has been proposed for the AIC and BIC calculation (see also
+  the <code>rs.prob.distro</code> argument).</p></dd>
 
 
 </dl></div>
@@ -167,11 +168,11 @@ distributions like: <code>rs.prob.distro = "normal"</code>, <code>"Gaussian"</co
   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
   may appear, e.g. for EPR simulation fits (please, refer to the <code>Examples</code> in the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>).
   Consequently, the function may automatically (see the argument <code>rs.prob.distro</code>) decide which distribution
-  fits the residuals/errors the best, based on the lower AIC, BIC values.
-  <strong>It is recommended to evaluate/apply both information criteria</strong>. The AIC tends to favor a more complex model
-  (over a simpler one) and thus suggests to "overfit" the data, whereas the BIC is in favor of simpler models because
-  it possesses a stronger penalty (\(k\,ln(N)\)) for complex models than AIC (\(2\,k\),see e.g. Fabozzi et al. (2014)
-  and Zhang Y, Meng G (2023) in the <code>References</code>).</p>
+  fits the residuals/errors the best, based on the lower AIC, BIC values, additionally supported by the Shapiro-Wilk
+  Normality test (<code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>). <strong>It is recommended to evaluate/apply both information criteria</strong>.
+  The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
+  the BIC is in favor of simpler models because it possesses a stronger penalty (\(k\,ln(N)\)) for complex models
+  than AIC (\(2\,k\),see e.g. Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the <code>References</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -192,6 +193,8 @@ distributions like: <code>rs.prob.distro = "normal"</code>, <code>"Gaussian"</co
 <p>Rossi R, Murari R, Gaudio P, Gelfusa M (2020). "Upgrading Model Selection Criteria with Goodness
   of Fit Tests for Practical Applications", <em>Entropy</em>, <strong>22</strong>(4), 447-13,
   <a href="https://doi.org/10.3390/e22040447" class="external-link">https://doi.org/10.3390/e22040447</a>.</p>
+<p>Hyndman RJ, Athanasopoulos G (2021). <em>Forecasting: Principles and Practise</em>, 3rd edition,
+  O Texts, ISBN 978-0-987-50713-6, <a href="https://otexts.com/fpp3/" class="external-link">https://otexts.com/fpp3/</a>.</p>
 <p>Hyndman RJ (2013). "Facts and Fallacies of the AIC", <a href="https://robjhyndman.com/hyndsight/aic/" class="external-link">https://robjhyndman.com/hyndsight/aic/</a>.</p>
 <p>Kumar A (2023). "AIC and BIC for Selecting Regression Models: Formula, Examples",
   <a href="https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments" class="external-link">https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments</a>.</p>
@@ -221,7 +224,7 @@ distributions like: <code>rs.prob.distro = "normal"</code>, <code>"Gaussian"</co
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## AIC and BIC values</span></span></span>
-<span class="r-in"><span><span class="va">calc.abic.list.01</span><span class="op">$</span><span class="va">abic</span></span></span>
+<span class="r-in"><span><span class="va">calc.abic.list.01</span><span class="op">$</span><span class="va">abic.vec</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## ...and the corresponding message</span></span></span>
 <span class="r-in"><span><span class="va">calc.abic.list.01</span><span class="op">$</span><span class="va">message</span></span></span>
