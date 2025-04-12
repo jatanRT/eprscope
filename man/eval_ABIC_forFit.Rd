@@ -22,7 +22,8 @@ on the \code{data.fit} argument (usually \code{residuals = "Residuals"} or \code
 \item{rs.prob.distro}{Character string, corresponding to proposed residuals/errors probability distribution.
 If set to \strong{default} (\code{rs.prob.distro = "auto"}), it automatically decides which distribution
 (Normal/Gaussian or Student's t-distribution) fits the best to residuals/errors based on the implemented
-AIC and BIC calculations. This is particularly suitable for the situation when residual analysis detects
+AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see \code{\link[stats]{shapiro.test}}).
+This is particularly suitable for the situation when residual analysis detects
 heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
 distributions like: \code{rs.prob.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
@@ -32,9 +33,9 @@ distributions like: \code{rs.prob.distro = "normal"}, \code{"Gaussian"}, \code{"
 Function returns a list with the following components:
   \describe{
   \item{abic.vec}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
-  \item{message}{Sentence (Message), describing the residuals/errors probability distribution,
-        that has been proposed for the AIC and BIC calculation (see also the \code{rs.prob.distro}
-        argument).}
+  \item{message}{Sentence (message), describing the residuals/errors
+  probability distribution, which has been proposed for the AIC and BIC calculation (see also
+  the \code{rs.prob.distro} argument).}
   }
 }
 \description{
@@ -83,11 +84,11 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
   Consequently, the function may automatically (see the argument \code{rs.prob.distro}) decide which distribution
-  fits the residuals/errors the best, based on the lower AIC, BIC values.
-  \strong{It is recommended to evaluate/apply both information criteria}. The AIC tends to favor a more complex model
-  (over a simpler one) and thus suggests to "overfit" the data, whereas the BIC is in favor of simpler models because
-  it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014)
-  and Zhang Y, Meng G (2023) in the \code{References}).
+  fits the residuals/errors the best, based on the lower AIC, BIC values, additionally supported by the Shapiro-Wilk
+  Normality test (\code{\link[stats]{shapiro.test}}). \strong{It is recommended to evaluate/apply both information criteria}.
+  The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
+  the BIC is in favor of simpler models because it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models
+  than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the \code{References}).
 }
 \examples{
 \dontrun{
@@ -102,7 +103,7 @@ calc.abic.list.01 <-
  )
 #
 ## AIC and BIC values
-calc.abic.list.01$abic
+calc.abic.list.01$abic.vec
 #
 ## ...and the corresponding message
 calc.abic.list.01$message
@@ -149,6 +150,9 @@ Fabozzi FJ, Focardi FM, Rachev ST, Arshanapalli BG (2014). \emph{The Basics of F
   Rossi R, Murari R, Gaudio P, Gelfusa M (2020). "Upgrading Model Selection Criteria with Goodness
   of Fit Tests for Practical Applications", \emph{Entropy}, \strong{22}(4), 447-13,
   \url{https://doi.org/10.3390/e22040447}.
+
+  Hyndman RJ, Athanasopoulos G (2021). \emph{Forecasting: Principles and Practise}, 3rd edition,
+  O Texts, ISBN 978-0-987-50713-6, \url{https://otexts.com/fpp3/}.
 
   Hyndman RJ (2013). "Facts and Fallacies of the AIC", \url{https://robjhyndman.com/hyndsight/aic/}.
 

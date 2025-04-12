@@ -124,7 +124,8 @@ the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline
 
 \item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
 density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.}
+the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.
+In case of higher spectral resolution, a higher coeff. value may be applied.}
 
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
@@ -218,9 +219,9 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   the best simulated spectrum intensity without the baseline fit.}
   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
-  and \code{message} denoting the probability distribution of residuals/errors, applied to evaluate
+  and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
-  the better the fit. Please, also consult the \code{\link{eval_ABIC_forFit}}.}
+  the better the fit. Please, refer to the \code{\link{eval_ABIC_forFit}}.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
   equals to vector with the following elements: number of function evaluations, number of iterations (per one particle)

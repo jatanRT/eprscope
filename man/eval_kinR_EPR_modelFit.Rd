@@ -103,7 +103,8 @@ and not on the common integration of rate equations.}
 
 \item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
 density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.}
+the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
+In case of higher number of points/observation, a higher coeff. value may be applied.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
@@ -164,9 +165,9 @@ List with the following components is available:
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
-  and \code{message} denoting the probability distribution of residuals/errors, applied to evaluate
+  and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
-  the better the fit. Please, also consult the \code{\link{eval_ABIC_forFit}}.}
+  the better the fit. Please, refer to the \code{\link{eval_ABIC_forFit}}.}
   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
   }
 }

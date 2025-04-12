@@ -52,11 +52,11 @@
 #'   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
 #'   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
 #'   Consequently, the function may automatically (see the argument \code{rs.prob.distro}) decide which distribution
-#'   fits the residuals/errors the best, based on the lower AIC, BIC values.
-#'   \strong{It is recommended to evaluate/apply both information criteria}. The AIC tends to favor a more complex model
-#'   (over a simpler one) and thus suggests to "overfit" the data, whereas the BIC is in favor of simpler models because
-#'   it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014)
-#'   and Zhang Y, Meng G (2023) in the \code{References}).
+#'   fits the residuals/errors the best, based on the lower AIC, BIC values, additionally supported by the Shapiro-Wilk
+#'   Normality test (\code{\link[stats]{shapiro.test}}). \strong{It is recommended to evaluate/apply both information criteria}.
+#'   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
+#'   the BIC is in favor of simpler models because it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models
+#'   than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the \code{References}).
 #'
 #'
 #' @references
@@ -84,6 +84,9 @@
 #'   of Fit Tests for Practical Applications", \emph{Entropy}, \strong{22}(4), 447-13,
 #'   \url{https://doi.org/10.3390/e22040447}.
 #'
+#'   Hyndman RJ, Athanasopoulos G (2021). \emph{Forecasting: Principles and Practise}, 3rd edition,
+#'   O Texts, ISBN 978-0-987-50713-6, \url{https://otexts.com/fpp3/}.
+#'
 #'   Hyndman RJ (2013). "Facts and Fallacies of the AIC", \url{https://robjhyndman.com/hyndsight/aic/}.
 #'
 #'   Kumar A (2023). "AIC and BIC for Selecting Regression Models: Formula, Examples",
@@ -102,7 +105,8 @@
 #' @param rs.prob.distro Character string, corresponding to proposed residuals/errors probability distribution.
 #'   If set to \strong{default} (\code{rs.prob.distro = "auto"}), it automatically decides which distribution
 #'   (Normal/Gaussian or Student's t-distribution) fits the best to residuals/errors based on the implemented
-#'   AIC and BIC calculations. This is particularly suitable for the situation when residual analysis detects
+#'   AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see \code{\link[stats]{shapiro.test}}).
+#'   This is particularly suitable for the situation when residual analysis detects
 #'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 #'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
 #'   distributions like: \code{rs.prob.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
@@ -112,9 +116,9 @@
 #' @returns Function returns a list with the following components:
 #'   \describe{
 #'   \item{abic.vec}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
-#'   \item{message}{Sentence (Message), describing the residuals/errors probability distribution,
-#'         that has been proposed for the AIC and BIC calculation (see also the \code{rs.prob.distro}
-#'         argument).}
+#'   \item{message}{Sentence (message), describing the residuals/errors
+#'   probability distribution, which has been proposed for the AIC and BIC calculation (see also
+#'   the \code{rs.prob.distro} argument).}
 #'   }
 #'
 #'
@@ -131,7 +135,7 @@
 #'  )
 #' #
 #' ## AIC and BIC values
-#' calc.abic.list.01$abic
+#' calc.abic.list.01$abic.vec
 #' #
 #' ## ...and the corresponding message
 #' calc.abic.list.01$message
@@ -230,6 +234,8 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   #
   ## final logLik for t-Distro:
   log_likehood_t <- opt_logLik_t$objective
+  ## ...and the optimized df (degree of freedom parameter)
+  log_likehood_t_nu <- round(opt_logLik_t$maximum)
   #
   ## compare likelihoods, if the same => set automatically to "normal"
   ## t-distrobution reaches normal for N >= 30
@@ -265,7 +271,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     norm.abic.vec <- stats::setNames(
       abic_fun(
         logLik = log_likehood_norm
-      ), c("normaic,normbic")
+      ), c("normaic","normbic")
     )
     #
   }
@@ -316,18 +322,38 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     #
   }
   #
+  ## Shapiro-Wilk test for comparison
+  sw.test <- stats::shapiro.test(resids)$p.value
+  #
   ## function/conditions for relevant strings which will be print out
   abic_name_msg_fun <- function(name) {
     #
-    if (grepl("norm",name)) {
-      return("normal distribution.")
-    } else if (grepl("t",name)) {
-      return("Student's t-distribution.")
+    if (grepl("norm",name) & sw.test >= 0.075) {
+      return(
+        paste0(
+          "follow the normal distribution,",
+          " additionally confirmed by the Shapiro-Wilk test."
+        )
+      )
+    } else if (grepl("t",name) & sw.test <= 0.025) {
+      return(
+        paste0(
+          "follow the Student's ",
+          sprintf("t-distribution with %d degrees of freedom.",log_likehood_t_nu)
+        )
+      )
+    } else {
+      return(
+        paste0(
+          "cannot be described by ",
+          "the normal or t-distribution (based on the AIC/BIC and the Shapiro-Wilk test)."
+        )
+      )
     }
   }
   #
   ## "root" message
-  root.msg <- "Residuals/Errors of your Fit follow the "
+  root.msg <- "Residuals/Errors of the Fit "
   #
   ## function to switch between different options of `rs.prob.distro`
   distro_results_switch <- function(distro) {
@@ -347,8 +373,12 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
           unname(a.ic.compar.vec[a.ic.min.idx]),
           unname(b.ic.compar.vec[b.ic.min.idx])
         ),
-        message = paste0(root.msg,abic_name_msg_fun(name = a.ic.min.name))
+        message = strwrap(
+          paste0(root.msg,abic_name_msg_fun(name = a.ic.min.name)),
+          width = 50
+        )
       )
+    #
   } else {
     result.list <-
       list(
@@ -357,8 +387,12 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
           unname(norm.abic.vec),
           unname(t.abic.vec)
         ),
-        message = paste0(root.msg,abic_name_msg_fun(name = rs.prob.distro))
+        message = strwrap(
+          paste0(root.msg,abic_name_msg_fun(name = rs.prob.distro)),
+          width = 50
+        )
       )
+    #
   }
   #
   return(result.list)
