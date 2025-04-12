@@ -98,7 +98,7 @@ The integration results may be divided into following types, depending on the ab
   \item Numeric vector, corresponding to baseline uncorrected/corrected single integral
   in case of \code{sigmoid.integ = FALSE} + \code{output.vecs = TRUE}.
 
-  \item List of numeric vectors corresponding to:
+  \item List of numeric vectors (if \code{output.vecs = TRUE}) corresponding to:
     \describe{
     \item{single}{Corrected or uncorrected single integral (in case of derivative form),
     depending on the \code{correct.integ} argument.}

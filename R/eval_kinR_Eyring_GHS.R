@@ -138,6 +138,7 @@
 #' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
 #'   density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
 #'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
+#'   In case of higher number of points/observation, a higher coeff. value may be applied.
 #' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
 #'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}
 #'   dependence. For this purpose, either \code{fit.method = "linear"} (using the \code{\link[stats]{lm}}) or non-linear methods

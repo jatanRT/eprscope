@@ -126,7 +126,8 @@ Depending on \code{output.matrix.df}, function returns either interactive plot o
   \describe{
   \item{plot}{Interactive object plot (see below).}
   \item{df}{Associated data fame object in wide table format for subsequent processing by other graphing
-  software programs. It can be also quite easily transformed into the long/tidy format by the \code{\link[tidyr]{pivot_longer}}.}
+  software programs. It can be also quite easily transformed into the long/tidy format by
+  the \code{\link[tidyr]{pivot_longer}}.}
   }
   In both cases the interactive plot can be visualized either in 3D surface mode (\code{plot.type = "surface"})
   or in 2D contour mode with the intensity scale mapped onto the color bar (\code{plot.type = "contour"}).

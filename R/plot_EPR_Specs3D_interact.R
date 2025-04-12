@@ -89,7 +89,8 @@
 #'   \describe{
 #'   \item{plot}{Interactive object plot (see below).}
 #'   \item{df}{Associated data fame object in wide table format for subsequent processing by other graphing
-#'   software programs. It can be also quite easily transformed into the long/tidy format by the \code{\link[tidyr]{pivot_longer}}.}
+#'   software programs. It can be also quite easily transformed into the long/tidy format by
+#'   the \code{\link[tidyr]{pivot_longer}}.}
 #'   }
 #'   In both cases the interactive plot can be visualized either in 3D surface mode (\code{plot.type = "surface"})
 #'   or in 2D contour mode with the intensity scale mapped onto the color bar (\code{plot.type = "contour"}).
@@ -224,8 +225,9 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
       var2nd_select_df[seq(1, var2nd_select_len, by = 2), ]
     #
     message("There are more than 80 EPR spectra in the series.\n
-            In order to to speed-up the graph rendering the number\n
-            of spectra was reduced to 1/2 of the original one.")
+            In order to to speed-up the graph rendering, the number\n
+            of spectra was reduced to 1/2 of the original one\n
+            to create the plot.")
     #
   } else if (var2nd_select_len >= 160) {
     #
@@ -233,8 +235,9 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
       var2nd_select_df[seq(1, var2nd_select_len, by = 4), ]
     #
     message("There are more than 160 EPR spectra in the series.\n
-            In order to to speed-up the graph rendering the number\n
-            of spectra was reduced to 1/4 of the original one.")
+            In order to to speed-up the graph rendering, the number\n
+            of spectra was reduced to 1/4 of the original one\n
+            to create the plot.")
   } else {
     var2nd_select_df <- var2nd_select_df
   }
