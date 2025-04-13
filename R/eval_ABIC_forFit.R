@@ -331,29 +331,32 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     if (grepl("norm",name) & sw.test >= 0.075) {
       return(
         paste0(
-          "follow the normal distribution,",
-          " additionally confirmed by the Shapiro-Wilk test."
+          "the normal distribution of residuals,",
+          " additionally supported by the Shapiro-Wilk test."
         )
       )
     } else if (grepl("t",name) & sw.test <= 0.025) {
       return(
         paste0(
-          "follow the Student's ",
-          sprintf("t-distribution with %d degrees of freedom.",log_likehood_t_nu)
+          "the Student's t-distribution of residuals ",
+          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          " Additionally supported by the Shapiro-Wilk test."
         )
       )
-    } else {
+    } else if (grepl("norm",name)) {
+      return("the normal distribution of residuals. ")
+    } else if (grepl("t",name)) {
       return(
         paste0(
-          "cannot be described by ",
-          "the normal or t-distribution (based on the AIC/BIC and the Shapiro-Wilk test)."
+          "the Student's t-distribution of residuals ",
+          sprintf("with %d degrees of freedom.",log_likehood_t_nu)
         )
       )
     }
   }
   #
   ## "root" message
-  root.msg <- "Residuals/Errors of the Fit "
+  root.msg <- "Information criteria evaluated using "
   #
   ## function to switch between different options of `rs.prob.distro`
   distro_results_switch <- function(distro) {
@@ -375,7 +378,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
         ),
         message = strwrap(
           paste0(root.msg,abic_name_msg_fun(name = a.ic.min.name)),
-          width = 50
+          width = 45
         )
       )
     #
@@ -389,7 +392,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
         ),
         message = strwrap(
           paste0(root.msg,abic_name_msg_fun(name = rs.prob.distro)),
-          width = 50
+          width = 45
         )
       )
     #
