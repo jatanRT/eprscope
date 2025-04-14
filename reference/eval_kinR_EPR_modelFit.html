@@ -99,7 +99,6 @@
 <span>  params.guess.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  params.guess.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit.kin.method <span class="op">=</span> <span class="st">"diff-levenmarq"</span>,</span>
-<span>  ra.densScale.coeff <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  solve.ode.method <span class="op">=</span> <span class="st">"lsoda"</span>,</span>
 <span>  time.frame.model <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  time.correct <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -193,13 +192,6 @@ because it is based on the numeric solution of the ordinary differential equatio
 and not on the common integration of rate equations.</p></dd>
 
 
-<dt id="arg-ra-densscale-coeff">ra.densScale.coeff<a class="anchor" aria-label="anchor" href="#arg-ra-densscale-coeff"></a></dt>
-<dd><p>Numeric value. When plotting <strong>r</strong>esidual <strong>a</strong>nalysis probability
-density (see <code>Value</code> and <code>ra</code>/<code>hist.dens</code>), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. <strong>Default</strong>: <code>ra.densScale.coeff = 2</code>.
-In case of higher number of points/observation, a higher coeff. value may be applied.</p></dd>
-
-
 <dt id="arg-solve-ode-method">solve.ode.method<a class="anchor" aria-label="anchor" href="#arg-solve-ode-method"></a></dt>
 <dd><p>Character string, setting up the integrator (the <code>method</code> argument in <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>),
 applied to find the numeric solution of ODE. <strong>Default</strong>: <code>solve.ode.method = "lsoda"</code>
@@ -255,17 +247,9 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   data and the corresponding fit.</p></dd>
 
   <dt>ra</dt>
-<dd><p>Residual analysis - a list consisting of 3 elements:</p><ol><li><p>Ggplot2 object (related to simple visual <strong>r</strong>esidual
-  <strong>a</strong>nalysis), with two main plots: Q-Q plot and residuals <em>vs</em> predicted/fitted
-  from the kinetic model (<code>plot</code>).</p></li>
-<li><p>Ggplot2 object, showing the <strong>hist</strong>ogram and the scaled
-  probability <strong>dens</strong>ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as <code>hist.dens</code>.</p></li>
-<li><p><strong>S</strong>tandard <strong>d</strong>eviation (<code>sd</code>) of residuals for the model defined as:
-  $$\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}$$
-  where \(N\) is the number of observations and \(k_{\text{pars}}\) is the number of optimized parameters.
-  Therefore, the smaller the <code>sd</code>, the better the fit, comparing different kinetic models.</p></li>
-</ol></dd>
+<dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  <code>rqq.plot</code>, <code>histDens.plot</code>; original data frame (<code>df</code>) with residuals and their corresponding
+  standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
 
   <dt>df.coeffs</dt>
 <dd><p>Data frame object containing the optimized (best fit) parameter values (<code>Estimates</code>),
@@ -384,9 +368,9 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span><span class="co">## normal quantile (Q-Q) plot, indicating that residuals</span></span></span>
 <span class="r-in"><span><span class="co">## are normally distributed; third plot demonstrates</span></span></span>
 <span class="r-in"><span><span class="co">## the probability density with the histogram of residuals</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">rqq.plot</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_EPR_modelFit-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">hist.dens</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">histDens.plot</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_EPR_modelFit-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## standard deviation of residuals</span></span></span>
@@ -435,7 +419,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span><span class="co">## the 1st order kinetics is less convenient</span></span></span>
 <span class="r-in"><span><span class="co">## model than that of the 2nd order (based on</span></span></span>
 <span class="r-in"><span><span class="co">## the decrease of EPR intensity/integral)</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">rqq.plot</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_EPR_modelFit-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## standard deviation of residuals</span></span></span>

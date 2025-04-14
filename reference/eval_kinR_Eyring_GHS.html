@@ -86,7 +86,6 @@
 <span>  <span class="va">Temp</span>,</span>
 <span>  Temp.unit <span class="op">=</span> <span class="st">"K"</span>,</span>
 <span>  transmiss.coeff <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  ra.densScale.coeff <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  fit.method <span class="op">=</span> <span class="st">"default"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -127,19 +126,12 @@ or <code>Temp.unit = "oF"</code> (degree Fahrenheit). If other than <strong>defa
 <strong>Default</strong>: <code>transmiss.coeff = 1</code> (\(100\,\%\)).</p></dd>
 
 
-<dt id="arg-ra-densscale-coeff">ra.densScale.coeff<a class="anchor" aria-label="anchor" href="#arg-ra-densscale-coeff"></a></dt>
-<dd><p>Numeric value. When plotting <strong>r</strong>esidual <strong>a</strong>nalysis probability
-density (see <code>Value</code> and <code>ra</code>/<code>hist.dens</code>), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. <strong>Default</strong>: <code>ra.densScale.coeff = 2</code>.
-In case of higher number of points/observation, a higher coeff. value may be applied.</p></dd>
-
-
 <dt id="arg-fit-method">fit.method<a class="anchor" aria-label="anchor" href="#arg-fit-method"></a></dt>
 <dd><p>Character string, corresponding to method applied to fit the theoretical Eyring relation
 (by optimizing the activation parameters, see <code>Details</code>) to the experimental \(k\,\,vs\,\,T\)
-dependence. For this purpose, either <code>fit.method = "linear"</code> (using the <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></code>) or non-linear methods
-(available by the <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls</a></code> function) are applied. The latter includes <code>"default"</code>
-(corresponding to <a href="https://journal.r-project.org/articles/RJ-2023-091/" class="external-link">Gauss-Newton algorithm</a>),
+dependence. For this purpose, either <code>fit.method = "linear" ("lm")</code> (using the <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></code>)
+or non-linear methods (available by the <code><a href="https://rdrr.io/r/stats/nls.html" class="external-link">nls</a></code> function) are applied. The latter includes
+<code>"default"</code> (corresponding to <a href="https://journal.r-project.org/articles/RJ-2023-091/" class="external-link">Gauss-Newton algorithm</a>),
 <code>"plinear"</code>, which is
 <a href="https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/" class="external-link">Golub-Pereyra</a> algorithm
 or <code>"port"</code>
@@ -164,17 +156,9 @@ or <code>"port"</code>
   together with the Eyring equation.</p></dd>
 
   <dt>ra</dt>
-<dd><p>Residual analysis - a list consisting of 3 elements:</p><ol><li><p>Ggplot2 object (related to simple visual <strong>r</strong>esidual
-  <strong>a</strong>nalysis), with two main plots: Q-Q plot and residuals <em>vs</em> predicted/fitted
-  from the Eyring model (<code>plot</code>).</p></li>
-<li><p>Ggplot2 object, showing the <strong>hist</strong>ogram and the scaled
-  probability <strong>dens</strong>ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as <code>hist.dens</code>.</p></li>
-<li><p><strong>S</strong>tandard <strong>d</strong>eviation (<code>sd</code>) of residuals for the model defined as:
-  $$\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}$$
-  where \(N\) is the number of observations and \(k_{\text{pars}}\) is the number of optimized parameters.
-  Therefore, the smaller the <code>sd</code>, the better the fit, comparing the Eyring models.</p></li>
-</ol></dd>
+<dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  <code>rqq.plot</code>, <code>histDens.plot</code>; original data frame (<code>df</code>) with residuals and their corresponding
+  standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
 
   <dt>df.coeffs.HS</dt>
 <dd><p>Data frame object, containing the optimized (best fit) parameter values (<code>Estimates</code>),
@@ -367,7 +351,7 @@ or <code>"port"</code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">000</span>265 TRUE   0.000<span style="text-decoration: underline;">000</span>397   125. -<span style="color: #BB0000;">243.</span> -<span style="color: #BB0000;">243.</span> 4.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span>           7     9</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## ...and the corresponding analysis of residuals</span></span></span>
-<span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">hist.dens</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">histDens.plot</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_Eyring_GHS-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the convergence measures</span></span></span>
@@ -458,7 +442,7 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## corresponding analysis of residuals</span></span></span>
 <span class="r-in"><span><span class="co">## with residual standard deviation</span></span></span>
-<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">rqq.plot</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_Eyring_GHS-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0065568073</span>

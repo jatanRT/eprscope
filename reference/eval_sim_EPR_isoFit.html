@@ -103,12 +103,7 @@
 <span>  <span class="va">optim.params.init</span>,</span>
 <span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ra.densScale.coeff <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  Nmax.evals <span class="op">=</span> <span class="fl">512</span>,</span>
-<span>  tol.step <span class="op">=</span> <span class="fl">5e-07</span>,</span>
-<span>  pswarm.size <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  check.fit.plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  msg.optim.progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  output.list.forFitSp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -227,53 +222,12 @@ the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.c
 <code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.125\,A_{\text{init}}\).</p></dd>
 
 
-<dt id="arg-ra-densscale-coeff">ra.densScale.coeff<a class="anchor" aria-label="anchor" href="#arg-ra-densscale-coeff"></a></dt>
-<dd><p>Numeric value. When plotting <strong>r</strong>esidual <strong>a</strong>nalysis probability
-density (see <code>Value</code> and <code>ra</code>/<code>hist.dens</code>), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. <strong>Default</strong>: <code>ra.densScale.coeff = 100</code>.
-In case of higher spectral resolution, a higher coeff. value may be applied.</p></dd>
-
-
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
 <dd><p>Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
 <code>Nmax.evals = 1024</code>. Higher <code>Nmax.evals</code> may extremely extend the optimization
 time, therefore the <strong>default</strong> value reads <code>Nmax.evals = 512</code>. However, the <code>"pswarm"</code>
 method requires at least the default or even higher values.</p></dd>
-
-
-<dt id="arg-tol-step">tol.step<a class="anchor" aria-label="anchor" href="#arg-tol-step"></a></dt>
-<dd><p>Numeric value, describing the smallest optimization step (tolerance) to stop the optimization.
-<strong>Default</strong>: <code>tol.step = 5e-7</code>.</p></dd>
-
-
-<dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
-<dd><p>Numeric value, which equals to particle swarm size (i.e. number of particles),
-if <code>method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(x.0)))</code> (for <code>SPSO2007</code>, see the <code>pswarm.type</code>
-argument), e.g. to optimize 8 parameters, number of particles = 15. For the <code>SPSO2011</code>
-the default number of particles equals to <code>40</code>.</p></dd>
-
-
-<dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
-<dd><p>Numeric value, corresponding to diameter of the particle swarm search space
-(in case <code>method = "pswarm"</code>). The <strong>default</strong> value (<code>pswarm.diameter = NULL</code>)
-refers to the Euclidean distance, defined as:
-$$\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}$$</p></dd>
-
-
-<dt id="arg-pswarm-type">pswarm.type<a class="anchor" aria-label="anchor" href="#arg-pswarm-type"></a></dt>
-<dd><p>Character string, setting the type/version of particle swarm algorithm
-if <code>method = "pswarm"</code>. There are two types available: <code>pswarm.type = "SPSO2007"</code>
-and <code>pswarm.type = "SPSO2011"</code>. The latter introduced an adaptive random topology,
-which allows the swarm to dynamically adjust its communication structure.
-This helps in maintaining diversity in the swarm and improves the algorithm's ability
-to escape local optima. This type generally offers better performance on larger multidimensional spaces
-than the <code>pswarm.type = "SPSO2007"</code>, which uses a more static topology. Details may be found
-in the <code>References</code> of the <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>.
-<strong>Default</strong>: <code>pswarm.type = NULL</code> (actually corresponding to <code>"SPSO2007"</code>,
-that performs slightly better on smaller scales such as common simulations of EPR spectra
-with lower number of parameters like hyperfine coupling constants).</p></dd>
 
 
 <dt id="arg-check-fit-plot">check.fit.plot<a class="anchor" aria-label="anchor" href="#arg-check-fit-plot"></a></dt>
@@ -305,7 +259,8 @@ as stated in the <code>Description</code>, therefore, the <strong>default</stron
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>additional arguments specified, see also <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>,
-like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <strong>default</strong>).</p></dd>
+like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <strong>default</strong>), <code>pswarm.size</code>,
+<code>pswarm.diameter</code>, <code>pswarm.type</code>, <code>tol.step</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -320,16 +275,9 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.</p></dd>
 
   <dt>ra</dt>
-<dd><p>Residual analysis - a list consisting of 3 elements:</p><ol><li><p>Ggplot2 object (related to simple visual <strong>r</strong>esidual
-  <strong>a</strong>nalysis), with two main plots: Q-Q plot and residuals <em>vs</em> best simulation fit (<code>plot</code>).</p></li>
-<li><p>Ggplot2 object, showing the <strong>hist</strong>ogram and the scaled
-  probability <strong>dens</strong>ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as <code>hist.dens</code>.</p></li>
-<li><p><strong>S</strong>tandard <strong>d</strong>eviation (<code>sd</code>) of residuals for for the simulation fit defined as:
-  $$\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}$$
-  where \(N\) is the number of observations and \(k_{\text{pars}}\) is the number of optimized parameters.
-  Therefore, the smaller the <code>sd</code>, the better the simulation fit, comparing different "models".</p></li>
-</ol></dd>
+<dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  <code>rqq.plot</code>, <code>histDens.plot</code>; original data frame (<code>df</code>) with residuals and their corresponding
+  standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
 
   <dt>best.fit.params</dt>
 <dd><p>Vector of the best (final) fitting (optimized) parameters, for each corresponding
@@ -405,6 +353,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a>()</code>,
 <code><a href="eval_sim_EPR_iso_combo.html">eval_sim_EPR_iso_combo</a>()</code>,
 <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a>()</code>,
+<code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a>()</code>,
 <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a>()</code>,
 <code><a href="smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg</a>()</code></p></div>
     </div>
@@ -510,7 +459,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=3.039e-08, swarm diam.=1.056</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.446  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.238  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -529,7 +478,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## residual analysis density plot together</span></span></span>
 <span class="r-in"><span><span class="co">## with standard deviation of residuals</span></span></span>
-<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">hist.dens</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">histDens.plot</span></span></span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.2529105e-06</span>
@@ -570,11 +519,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.34  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.351  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.586  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.524  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
