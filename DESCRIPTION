@@ -96,7 +96,7 @@ Suggests:
     htmlwidgets,
     RColorBrewer,
     modelsummary,
-    posterdown,
+    nlstools,
     rmarkdown,
     bookdown,
     quarto,

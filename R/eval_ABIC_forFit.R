@@ -335,7 +335,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
           " additionally supported by the Shapiro-Wilk test."
         )
       )
-    } else if (grepl("t",name) & sw.test <= 0.025) {
+    } else if (grepl("t",name) & sw.test <= 0.01) {
       return(
         paste0(
           "the Student's t-distribution of residuals ",

@@ -15,7 +15,6 @@ eval_kinR_EPR_modelFit(
   params.guess.lower = NULL,
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
-  ra.densScale.coeff = 2,
   solve.ode.method = "lsoda",
   time.frame.model = 2,
   time.correct = FALSE,
@@ -101,11 +100,6 @@ are planned). It corresponds to differential Levenberg-Marquardt (see also \code
 because it is based on the numeric solution of the ordinary differential equations
 and not on the common integration of rate equations.}
 
-\item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
-In case of higher number of points/observation, a higher coeff. value may be applied.}
-
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
 (\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).}
@@ -145,21 +139,9 @@ List with the following components is available:
   related to the \code{qvarR} argument.}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{ra}{Residual analysis - a list consisting of 3 elements:
-  \enumerate{
-  \item Ggplot2 object (related to simple visual \strong{r}esidual
-  \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-  from the kinetic model (\code{plot}).
-
-  \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
-  probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as \code{hist.dens}.
-
-  \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
-  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{sd}, the better the fit, comparing different kinetic models.
-  }}
+  \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+  standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -242,8 +224,8 @@ triaryl_model_kin_fit_01$N.converg
 ## normal quantile (Q-Q) plot, indicating that residuals
 ## are normally distributed; third plot demonstrates
 ## the probability density with the histogram of residuals
-triaryl_model_kin_fit_01$ra$plot
-triaryl_model_kin_fit_01$ra$hist.dens
+triaryl_model_kin_fit_01$ra$rqq.plot
+triaryl_model_kin_fit_01$ra$histDens.plot
 #
 ## standard deviation of residuals
 triaryl_model_kin_fit_01$ra$sd
@@ -277,7 +259,7 @@ triaryl_model_kin_fit_02$df.coeffs
 ## the 1st order kinetics is less convenient
 ## model than that of the 2nd order (based on
 ## the decrease of EPR intensity/integral)
-triaryl_model_kin_fit_02$ra$plot
+triaryl_model_kin_fit_02$ra$rqq.plot
 #
 ## standard deviation of residuals
 triaryl_model_kin_fit_02$ra$sd

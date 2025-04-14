@@ -102,10 +102,6 @@
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.
-#' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-#'   density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-#'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.
-#'   In case of higher spectral resolution, a higher coeff. value may be applied.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
 #'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
@@ -145,20 +141,9 @@
 #'   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
 #'   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
-#'   \item{ra}{Residual analysis - a list consisting of 3 elements:
-#'   \enumerate{
-#'   \item Ggplot2 object (related to simple visual \strong{r}esidual
-#'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulation fit (\code{plot}).
-#'
-#'   \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
-#'   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-#'   denoted as \code{hist.dens}.
-#'
-#'   \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for for the simulation fit defined as:
-#'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-#'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{sd}, the better the simulation fit, comparing different "models".
-#'   }}
+#'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+#'   \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+#'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
@@ -292,7 +277,7 @@
 #' #
 #' ## residual analysis density plot together
 #' ## with standard deviation of residuals
-#' tempo.test.sim.fit.b$ra$hist.dens
+#' tempo.test.sim.fit.b$ra$histDens.plot
 #' tempo.test.sim.fit.b$ra$sd
 #' #
 #' ## Akaike and Bayesian Criteria (AIC & BIC)
@@ -360,7 +345,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 optim.params.init,
                                 optim.params.lower = NULL,
                                 optim.params.upper = NULL,
-                                ra.densScale.coeff = 100,
                                 Nmax.evals = 512,
                                 check.fit.plot = TRUE,
                                 msg.optim.progress = TRUE,
@@ -373,7 +357,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   Simulation_NoBasLin <- NULL
   Spectrum <- NULL
   Simulation <- NULL
-  count <- NULL
   #
   ## delete index column if present
   if (any(grepl("index", colnames(data.spectr.expr)))) {
@@ -1154,95 +1137,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## -------------------------- Residual Analysis (Plots) -----------------------------
   #
   ## CONSIDER DATA => `data.sim.expr`
-  plot.resids <-
-    ggplot(data.sim.expr,
-           mapping = aes(
-             x = Simulation,y = Residuals
-           )
-    ) +
-    geom_point(size = 2.6,color = "darkblue") +
-    stat_smooth(
-      method = "lm",
-      formula = y ~ x,
-      # span = 1,
-      se = TRUE,
-      level = 0.99999999,
-      color = "darkviolet",
-      fill = "darkgray"
-    ) +
-    geom_hline(yintercept = 0,color = "darkred") +
-    labs(
-      x = bquote(italic(Best~~Simulation~~Fit)),
-      y = bquote(italic(Residuals)),
-      title = "Residual Plot"
-    ) +
-    plot_theme_In_ticks()
   #
-  ## q-q plot (`{ggplot2}`)
-  plot.qq <-
-    ggplot(data.sim.expr,
-           mapping = aes(
-             sample = Residuals
-           )
-    ) +
-    qqplotr::stat_qq_band(fill = "lightgray",conf = 0.99999999) +   ## )
-    qqplotr::stat_qq_line(color = "darkred") +                      ## } plot confid. interval
-    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") +         ## )
-    labs(
-      x = bquote(italic(Theoretical~~Quantiles)),
-      y = bquote(italic(Sample~~Quantiles)),
-      title = "Normal Q-Q Plot of Residuals"
-    ) +
-    plot_theme_In_ticks()
-  #
-  ## histogram with density plot (into results)
-  plot.hist.dens <-
-    ggplot(data = data.sim.expr,
-           mapping = aes(
-             x = Residuals
-           )
-    ) +
-    geom_histogram(
-      fill = "darkblue",
-      alpha = 0.75,
-      bins = 40
-    ) +
-    geom_density(
-      aes(y = after_stat((count / max(count)) * ra.densScale.coeff)), ## scaled relative density
-      # stat = "density",
-      color = "darkorange",
-      fill = "darkorange",
-      alpha = 0.32
-    ) +
-    geom_vline( ## showing mean value
-      xintercept = mean(data.sim.expr$Residuals),
-      color = "darkviolet",
-      linewidth = 0.75
-    ) +
-    labs(
-      x = bquote(italic(Residuals)),
-      y = bquote(italic(Counts)),
-      title = "Histogram and Scaled Probability Density",
-      caption = "\u2013 Residuals mean value"
-    ) +
-    plot_theme_In_ticks(
-      plot.caption = element_text(
-        color = "darkviolet",
-        face = "bold"
-      )
+  resid.anal.simple.list <-
+    plot_eval_RA_forFit(
+      data.fit = data.sim.expr,
+      residuals = "Residuals",
+      fitted = "Simulation",
+      resid.xlab = "Simulation",
+      k = length(optim.params.init),
+      level.cnfd = 0.99999999
     )
-  #
-  ## patchwork combination for both plots:
-  plot.ra <-
-    patchwork::wrap_plots(plot.resids,
-                          plot.qq,
-                          ncol = 1)
-  #
-  ## standard deviation (sometimes as standard error)
-  ## of residuals for the model
-  ra.sd.model <-
-    sqrt(sum(data.sim.expr$Residuals^2)) /
-    sqrt(nrow(data.sim.expr) - length(optim.params.init) - 1)
   #
   ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
   #
@@ -1487,7 +1391,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]],
-      ra.sd.model, ## residual sd
+      resid.anal.simple.list$sd, ## residual sd
       AB.ic.list$abic.vec[1], ## AIC
       AB.ic.list$abic.vec[2] ## BIC
     )
@@ -1511,11 +1415,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## final list components (switching between `check.fit.plot` condition)
       result <- list(
         plot = plot.sim.expr,
-        ra = list(
-          plot = plot.ra,
-          hist.dens = plot.hist.dens,
-          sd = ra.sd.model
-        ),
+        ra = resid.anal.simple.list,
         best.fit.params = best.fit.params,
         df = switch(2-check.fit.plot,
                     data.sim.expr.long,

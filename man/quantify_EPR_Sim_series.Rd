@@ -236,6 +236,7 @@ Other Simulations and Optimization:
 \code{\link{eval_sim_EPR_isoFit}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{optim_for_EPR_fitness}()},
+\code{\link{plot_eval_RA_forFit}()},
 \code{\link{smooth_EPR_Spec_by_npreg}()}
 }
 \concept{Simulations and Optimization}

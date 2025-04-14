@@ -135,15 +135,11 @@
 #'   (column characterized by the \code{Temp} argument) are automatically converted into \code{"K"} (kelvins).
 #' @param transmiss.coeff Numeric value, corresponding to probability that the activated complex is transformed into products.
 #'   \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).
-#' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-#'   density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-#'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
-#'   In case of higher number of points/observation, a higher coeff. value may be applied.
 #' @param fit.method Character string, corresponding to method applied to fit the theoretical Eyring relation
 #'   (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}
-#'   dependence. For this purpose, either \code{fit.method = "linear"} (using the \code{\link[stats]{lm}}) or non-linear methods
-#'   (available by the \code{\link[stats]{nls}} function) are applied. The latter includes \code{"default"}
-#'   (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
+#'   dependence. For this purpose, either \code{fit.method = "linear" ("lm")} (using the \code{\link[stats]{lm}})
+#'   or non-linear methods (available by the \code{\link[stats]{nls}} function) are applied. The latter includes
+#'   \code{"default"} (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
 #'   \code{"plinear"}, which is
 #'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
 #'   or \code{"port"}
@@ -161,21 +157,9 @@
 #'   Eyring model.}
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
 #'   together with the Eyring equation.}
-#'   \item{ra}{Residual analysis - a list consisting of 3 elements:
-#'   \enumerate{
-#'   \item Ggplot2 object (related to simple visual \strong{r}esidual
-#'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-#'   from the Eyring model (\code{plot}).
-#'
-#'   \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
-#'   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-#'   denoted as \code{hist.dens}.
-#'
-#'   \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
-#'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-#'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{sd}, the better the fit, comparing the Eyring models.
-#'   }}
+#'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+#'   \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+#'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
 #'   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like AIC and BIC,
@@ -234,7 +218,7 @@
 #' activ.kinet.test01.data$df.model.HS
 #' #
 #' ## ...and the corresponding analysis of residuals
-#' activ.kinet.test01.data$ra$hist.dens
+#' activ.kinet.test01.data$ra$histDens.plot
 #' #
 #' ## preview of the convergence measures
 #' activ.kinet.test01.data$converg
@@ -290,7 +274,7 @@
 #' #
 #' ## corresponding analysis of residuals
 #' ## with residual standard deviation
-#' activ.kinet.test02.data$ra$plot
+#' activ.kinet.test02.data$ra$rqq.plot
 #' activ.kinet.test02.data$ra$sd
 #'
 #'
@@ -307,9 +291,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  Temp,
                                  Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
-                                 ra.densScale.coeff = 2, ## to scale visual appearence of density plot
                                  fit.method = "default"){ ## "Gauss-Newton" +
-                                 ## "plinear" (Golub-Pereyra) and "port" (all from `nls`) or "linear"
+                                 ## "plinear" (Golub-Pereyra) and "port" (all from `nls`) or "linear" ("lm")
   #
   ## 'Temporary' processing variables
   T_K <- NULL
@@ -318,8 +301,6 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   residuals <- NULL
   reciprocal_T <- NULL
   lnk_per_T <- NULL
-  density <- NULL
-  count <- NULL
 
   #
   ## ======================== TEMPERATURE + CONSTANTS ==========================
@@ -388,7 +369,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## -----------------------------------------------------------------
   #
   ## model to calculate H, S
-  if (fit.method == "linear") {
+  if (fit.method == "linear" || fit.method == "lm") {
     Eyring.model.HS <-
       stats::lm(linear.Eyring.formula.HS,
                  data = data.kvT)
@@ -417,7 +398,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                    newdata = new.fit.data)
   #
   ## extraction of dS and dH depending on the model (with uncertainties)=>
-  if (fit.method == "linear") {
+  if (fit.method == "linear" || fit.method == "lm") {
     DeltaH_active <- df.dSH.coeffs$estimate[2]
     Intercept <- df.dSH.coeffs$estimate[1]
     DeltaS_active <- gas.const * (Intercept - log(transmiss.coeff * Boltzmann / Planck))
@@ -458,7 +439,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## ================= SIMPLE RESIDUAL ANALYSIS/PLOTS ======================
   #
   ## add residuals and predicted/fitted values to `data.kvT`
-  if (fit.method == "linear") {
+  if (fit.method == "linear" || fit.method == "lm") {
     #
     ## new columns for linear model
     data.kvT$reciprocal_T <- 1 / data.kvT$T_K
@@ -470,89 +451,14 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   data.kvT$fitted <- stats::fitted(Eyring.model.HS)
   data.kvT$residuals <- stats::residuals(Eyring.model.HS)
   #
-  ## residual plot (`{ggplot2}`)
-  plot.resids <-
-    ggplot(data.kvT,
-           mapping = aes(
-             x = fitted,y = residuals
-           )
-    ) +
-    geom_point(size = 2.6,color = "darkblue") +
-    stat_smooth(
-      method = "lm",
-      formula = y ~ x,
-      # span = 1,
-      se = TRUE,
-      color = "darkviolet",
-      fill = "darkgray"
-    ) +
-    geom_hline(yintercept = 0,color = "darkred") +
-    labs(
-      x = bquote(italic(Eyring~~Fit)),
-      y = bquote(italic(Residuals)),
-      title = "Residual Plot"
-    ) +
-    plot_theme_In_ticks()
-  #
-  ## q-q plot (`{ggplot2}`)
-  plot.qq <-
-    ggplot(data.kvT,
-           mapping = aes(
-             sample = residuals
-           )
-    ) +
-    qqplotr::stat_qq_band(fill = "lightgray") +             ## )
-    qqplotr::stat_qq_line(color = "darkred") +              ## } plot confid. interval
-    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") + ## )
-    labs(
-      x = bquote(italic(Theoretical~~Quantiles)),
-      y = bquote(italic(Sample~~Quantiles)),
-      title = "Normal Q-Q Plot of Residuals"
-    ) +
-    plot_theme_In_ticks()
-  #
-  ## histogram with density plot (into results)
-  plot.hist.dens <-
-    ggplot(data = data.kvT,
-           mapping = aes(
-             x = residuals
-           )
-    ) +
-    geom_histogram(
-      fill = "darkblue",
-      alpha = 0.75,
-      bins = 40
-    ) +
-    geom_density(
-      aes(y = after_stat((count / max(count)) * ra.densScale.coeff)), ## relative scaled density
-      # stat = "density",
-      color = "darkorange",
-      fill = "darkorange",
-      alpha = 0.32
-    ) +
-    geom_vline( ## showing mean value
-        xintercept = mean(data.kvT$residuals),
-        color = "darkviolet",
-        linewidth = 0.75
-    ) +
-    labs(
-      x = bquote(italic(Residuals)),
-      y = bquote(italic(Counts)),
-      title = "Histogram and Scaled Probability Density",
-      caption = "\u2013 Residuals mean value"
-    ) +
-    plot_theme_In_ticks(
-      plot.caption = element_text(
-        color = "darkviolet",
-        face = "bold"
-      )
+  resid.anal.simple.list <-
+    plot_eval_RA_forFit(
+      data.fit = data.kvT,
+      residuals = "residuals",
+      fitted = "fitted",
+      resid.xlab = "Eyring Model Fit",
+      k = nrow(df.dSH.coeffs)
     )
-  #
-  ## patchwork combination the fist 2 plots:
-  plot.ra <-
-    patchwork::wrap_plots(plot.resids,
-                          plot.qq,
-                          ncol = 1)
   #
   ## the third plot (histogram-density) is plotted
   ## individually, because of clear graphic outcomes,
@@ -561,8 +467,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   #
   ## standard deviation (sometimes as standard error)
   ## of residuals for the model
-  ra.sd.model <-
-    sqrt(sum(data.kvT$residuals^2)) / sqrt(nrow(data.kvT) - nrow(df.dSH.coeffs) - 1)
+  # ra.sd.model <-
+  #   sqrt(sum(data.kvT$residuals^2)) / sqrt(nrow(data.kvT) - nrow(df.dSH.coeffs) - 1)
   ## OR ra.sd.model = summary(Eyring.model.HS)$sigma
   #
   ## ===================== EYRING PLOT (GGPLOT2) ===========================
@@ -574,7 +480,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       ~ kappa ~ '=' ~ .(transmiss.coeff) ~ "," ~ italic(c)^o ~ '=' ~ 1~~mol~dm^{-3}
     )
   #
-  if (fit.method == "linear") {
+  if (fit.method == "linear" || fit.method == "lm") {
     plot_Eyring <-
       ggplot(
         data = data.kvT,
@@ -652,17 +558,13 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     df = data.kvT, ## including DeltaG, residuals and fitted (variables for linear)
     df.fit = new.fit.data,
     plot = plot_Eyring,
-    ra = list(
-      plot = plot.ra,
-      hist.dens = plot.hist.dens,
-      sd = ra.sd.model
-    ),
+    ra = resid.anal.simple.list,
     df.coeffs.HS = df.dSH.coeffs,
     df.model.HS = df.dSH.model.summar,
     vec.HS.uncert = c(DeltaH_active_with_un,DeltaS_active_with_un) ## both in SI (J / (mol (K)) )
   )
   #
-  if (fit.method == "linear") {
+  if (fit.method == "linear" || fit.method == "lm") {
     result <- result
   } else {
     result <- append(

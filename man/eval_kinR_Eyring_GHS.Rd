@@ -11,7 +11,6 @@ eval_kinR_Eyring_GHS(
   Temp,
   Temp.unit = "K",
   transmiss.coeff = 1,
-  ra.densScale.coeff = 2,
   fit.method = "default"
 )
 }
@@ -36,16 +35,11 @@ or \code{Temp.unit = "oF"} (degree Fahrenheit). If other than \strong{default} s
 \item{transmiss.coeff}{Numeric value, corresponding to probability that the activated complex is transformed into products.
 \strong{Default}: \code{transmiss.coeff = 1} (\eqn{100\,\%}).}
 
-\item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
-In case of higher number of points/observation, a higher coeff. value may be applied.}
-
 \item{fit.method}{Character string, corresponding to method applied to fit the theoretical Eyring relation
 (by optimizing the activation parameters, see \code{Details}) to the experimental \eqn{k\,\,vs\,\,T}
-dependence. For this purpose, either \code{fit.method = "linear"} (using the \code{\link[stats]{lm}}) or non-linear methods
-(available by the \code{\link[stats]{nls}} function) are applied. The latter includes \code{"default"}
-(corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
+dependence. For this purpose, either \code{fit.method = "linear" ("lm")} (using the \code{\link[stats]{lm}})
+or non-linear methods (available by the \code{\link[stats]{nls}} function) are applied. The latter includes
+\code{"default"} (corresponding to \href{https://journal.r-project.org/articles/RJ-2023-091/}{Gauss-Newton algorithm}),
 \code{"plinear"}, which is
 \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
 or \code{"port"}
@@ -63,21 +57,9 @@ As a result of the Eyring-relation fit, list with the following components is av
   Eyring model.}
   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
-  \item{ra}{Residual analysis - a list consisting of 3 elements:
-  \enumerate{
-  \item Ggplot2 object (related to simple visual \strong{r}esidual
-  \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-  from the Eyring model (\code{plot}).
-
-  \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
-  probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as \code{hist.dens}.
-
-  \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
-  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{sd}, the better the fit, comparing the Eyring models.
-  }}
+  \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+  standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like AIC and BIC,
@@ -225,7 +207,7 @@ activ.kinet.test01.data$df.coeffs.HS
 activ.kinet.test01.data$df.model.HS
 #
 ## ...and the corresponding analysis of residuals
-activ.kinet.test01.data$ra$hist.dens
+activ.kinet.test01.data$ra$histDens.plot
 #
 ## preview of the convergence measures
 activ.kinet.test01.data$converg
@@ -281,7 +263,7 @@ activ.kinet.test02.data$df.model.HS
 #
 ## corresponding analysis of residuals
 ## with residual standard deviation
-activ.kinet.test02.data$ra$plot
+activ.kinet.test02.data$ra$rqq.plot
 activ.kinet.test02.data$ra$sd
 
 

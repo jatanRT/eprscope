@@ -52,10 +52,6 @@
 #'   are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
 #'   because it is based on the numeric solution of the ordinary differential equations
 #'   and not on the common integration of rate equations.
-#' @param ra.densScale.coeff Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-#'   density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-#'   the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 2}.
-#'   In case of higher number of points/observation, a higher coeff. value may be applied.
 #' @param time.correct Logical, if time of recorded series of the EPR spectra needs to be corrected.
 #'   \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
 #'   (either by \code{\link{correct_time_Exp_Specs}} or by \code{\link{readEPR_Exp_Specs_kin}} with
@@ -82,21 +78,9 @@
 #'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{ra}{Residual analysis - a list consisting of 3 elements:
-#'   \enumerate{
-#'   \item Ggplot2 object (related to simple visual \strong{r}esidual
-#'   \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} predicted/fitted
-#'   from the kinetic model (\code{plot}).
-#'
-#'   \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
-#'   probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-#'   denoted as \code{hist.dens}.
-#'
-#'   \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for the model defined as:
-#'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-#'   where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-#'   Therefore, the smaller the \code{sd}, the better the fit, comparing different kinetic models.
-#'   }}
+#'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+#'   \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+#'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
@@ -167,8 +151,8 @@
 #' ## normal quantile (Q-Q) plot, indicating that residuals
 #' ## are normally distributed; third plot demonstrates
 #' ## the probability density with the histogram of residuals
-#' triaryl_model_kin_fit_01$ra$plot
-#' triaryl_model_kin_fit_01$ra$hist.dens
+#' triaryl_model_kin_fit_01$ra$rqq.plot
+#' triaryl_model_kin_fit_01$ra$histDens.plot
 #' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_01$ra$sd
@@ -202,7 +186,7 @@
 #' ## the 1st order kinetics is less convenient
 #' ## model than that of the 2nd order (based on
 #' ## the decrease of EPR intensity/integral)
-#' triaryl_model_kin_fit_02$ra$plot
+#' triaryl_model_kin_fit_02$ra$rqq.plot
 #' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_02$ra$sd
@@ -231,7 +215,6 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    params.guess.lower = NULL, ## automatic by `nls.lm()` see below
                                    params.guess.upper = NULL, ## automatic by `nls.lm()` see below
                                    fit.kin.method = "diff-levenmarq",
-                                   ra.densScale.coeff = 2,
                                    solve.ode.method = "lsoda",
                                    time.frame.model = 2,
                                    time.correct = FALSE,
@@ -246,8 +229,6 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   p.d.u. <- NULL
   Concentration <- NULL
   residuals <- NULL
-  density <- NULL
-  count <- NULL
   #
   ## convert time if other than `s` appears
   if (time.unit == "min") {
@@ -364,94 +345,14 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   ## add residuals to `new.predict.df`
   new.predict.df$residuals <- stats::residuals(model.react.kin.fit)
   #
-  ## residual plot (`{ggplot2}`)
-  plot.resids <-
-    ggplot(new.predict.df,
-      mapping = aes(
-        x = fitted,y = residuals
-      )
-    ) +
-    geom_point(size = 2.6,color = "darkblue") +
-    stat_smooth(
-      method = "lm", ## maybe "loess"
-      formula = y ~ x,
-      # span = 1,
-      se = TRUE,
-      color = "darkviolet",
-      fill = "darkgray"
-    ) +
-    geom_hline(yintercept = 0,color = "darkred") +
-    labs(
-      x = bquote(italic(Kinetic~~Model~~Fit)*","~~italic(qvarR)),
-      y = bquote(italic(Residuals)),
-      title = "Residual Plot"
-    ) +
-    plot_theme_In_ticks()
-  #
-  ## q-q plot (`{ggplot2}`)
-  plot.qq <-
-    ggplot(new.predict.df,
-      mapping = aes(
-        sample = residuals
-      )
-    ) +
-    qqplotr::stat_qq_band(fill = "lightgray") +             ## )
-    qqplotr::stat_qq_line(color = "darkred") +              ## } plot confid. interval
-    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") + ## )
-    labs(
-      x = bquote(italic(Theoretical~~Quantiles)),
-      y = bquote(italic(Sample~~Quantiles)),
-      title = "Normal Q-Q Plot of Residuals"
-    ) +
-    plot_theme_In_ticks()
-  #
-  ## histogram with density plot (into results)
-  plot.hist.dens <-
-    ggplot(data = new.predict.df,
-           mapping = aes(
-             x = residuals
-           )
-    ) +
-    geom_histogram(
-      fill = "darkblue",
-      alpha = 0.75,
-      bins = 40
-    ) +
-    geom_density(
-      aes(y = after_stat((count / max(count)) * ra.densScale.coeff)), ## relative scaled density
-      # stat = "density",
-      color = "darkorange",
-      fill = "darkorange",
-      alpha = 0.32
-    ) +
-    geom_vline( ## showing mean value
-      xintercept = mean(new.predict.df$residuals),
-      color = "darkviolet",
-      linewidth = 0.75
-    ) +
-    labs(
-      x = bquote(italic(Residuals)),
-      y = bquote(italic(Counts)),
-      title = "Histogram and Scaled Probability Density",
-      caption = "\u2013 Residuals mean value"
-    ) +
-    plot_theme_In_ticks(
-      plot.caption = element_text(
-        color = "darkviolet",
-        face = "bold"
-      )
+  resid.anal.simple.list <-
+    plot_eval_RA_forFit(
+      data.fit = new.predict.df,
+      residuals = "residuals",
+      fitted = "fitted",
+      resid.xlab = "Kinetic Model Fit",
+      k = length(params.guess)
     )
-  #
-  ## patchwork combination all both plots:
-  plot.ra <-
-    patchwork::wrap_plots(plot.resids,
-                          plot.qq,
-                          ncol = 1)
-  #
-  ## standard deviation (sometimes as standard error)
-  ## of residuals for the model
-  ra.sd.model <-
-    sqrt(residsq.react.kin.fit) / sqrt(nrow(new.predict.df) - length(params.guess) - 1)
   #
   ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
   #
@@ -571,11 +472,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   fit.summary <- list(
     df = new.predict.df,
     plot = plot.fit,
-    ra = list(
-      plot = plot.ra,
-      hist.dens = plot.hist.dens,
-      sd = ra.sd.model
-    ),
+    ra = resid.anal.simple.list,
     df.coeffs = df.result,
     N.evals = iters.react.kin.fit,
     min.rss = residsq.react.kin.fit,

@@ -19,7 +19,6 @@ eval_sim_EPR_isoFit(
   optim.params.init,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
-  ra.densScale.coeff = 100,
   Nmax.evals = 512,
   check.fit.plot = TRUE,
   msg.optim.progress = TRUE,
@@ -118,11 +117,6 @@ the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic
 the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
 
-\item{ra.densScale.coeff}{Numeric value. When plotting \strong{r}esidual \strong{a}nalysis probability
-density (see \code{Value} and \code{ra}/\code{hist.dens}), this coefficient multiplies/re-scales
-the density in order to be visible with the histogram. \strong{Default}: \code{ra.densScale.coeff = 100}.
-In case of higher spectral resolution, a higher coeff. value may be applied.}
-
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
 \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
@@ -166,20 +160,9 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   fit + experimental spectrum, including residuals in the plot lower part. Whereas, if \code{check.fit.plot = FALSE},
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
-  \item{ra}{Residual analysis - a list consisting of 3 elements:
-  \enumerate{
-  \item Ggplot2 object (related to simple visual \strong{r}esidual
-  \strong{a}nalysis), with two main plots: Q-Q plot and residuals \emph{vs} best simulation fit (\code{plot}).
-
-  \item Ggplot2 object, showing the \strong{hist}ogram and the scaled
-  probability \strong{dens}ity function for residuals together with the corresponding mean value (vertical line),
-  denoted as \code{hist.dens}.
-
-  \item \strong{S}tandard \strong{d}eviation (\code{sd}) of residuals for for the simulation fit defined as:
-  \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k_{\text{pars}} - 1)}}
-  where \eqn{N} is the number of observations and \eqn{k_{\text{pars}}} is the number of optimized parameters.
-  Therefore, the smaller the \code{sd}, the better the simulation fit, comparing different "models".
-  }}
+  \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+  standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
@@ -333,7 +316,7 @@ tempo.test.sim.fit.b$plot
 #
 ## residual analysis density plot together
 ## with standard deviation of residuals
-tempo.test.sim.fit.b$ra$hist.dens
+tempo.test.sim.fit.b$ra$histDens.plot
 tempo.test.sim.fit.b$ra$sd
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
@@ -389,6 +372,7 @@ Other Simulations and Optimization:
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{optim_for_EPR_fitness}()},
+\code{\link{plot_eval_RA_forFit}()},
 \code{\link{quantify_EPR_Sim_series}()},
 \code{\link{smooth_EPR_Spec_by_npreg}()}
 }
