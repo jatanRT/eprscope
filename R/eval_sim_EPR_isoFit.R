@@ -111,28 +111,6 @@
 #'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
 #'   time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
 #'   method requires at least the default or even higher values.
-#' @param tol.step Numeric value, describing the smallest optimization step (tolerance) to stop the optimization.
-#'   \strong{Default}: \code{tol.step = 5e-7}.
-#' @param pswarm.size Numeric value, which equals to particle swarm size (i.e. number of particles),
-#'   if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))} (for \code{SPSO2007}, see the \code{pswarm.type}
-#'   argument), e.g. to optimize 8 parameters, number of particles = 15. For the \code{SPSO2011}
-#'   the default number of particles equals to \code{40}.
-#' @param pswarm.diameter Numeric value, corresponding to diameter of the particle swarm search space
-#'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
-#'   refers to the Euclidean distance, defined as:
-#'   \deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}
-#' @param pswarm.type Character string, setting the type/version of particle swarm algorithm
-#'   if \code{method = "pswarm"}. There are two types available: \code{pswarm.type = "SPSO2007"}
-#'   and \code{pswarm.type = "SPSO2011"}. The latter introduced an adaptive random topology,
-#'   which allows the swarm to dynamically adjust its communication structure.
-#'   This helps in maintaining diversity in the swarm and improves the algorithm's ability
-#'   to escape local optima. This type generally offers better performance on larger multidimensional spaces
-#'   than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
-#'   in the \code{References} of the \code{\link{optim_for_EPR_fitness}}.
-#'   \strong{Default}: \code{pswarm.type = NULL} (actually corresponding to \code{"SPSO2007"},
-#'   that performs slightly better on smaller scales such as common simulations of EPR spectra
-#'   with lower number of parameters like hyperfine coupling constants).
 #' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
 #'   fit + experimental spectrum (including residuals in the lower part of the plot,
 #'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
@@ -152,7 +130,8 @@
 #'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
 #'   as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
 #' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
-#'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}).
+#'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
+#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}
 #'
 #'
 #' @return Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
@@ -383,10 +362,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 optim.params.upper = NULL,
                                 ra.densScale.coeff = 100,
                                 Nmax.evals = 512,
-                                tol.step = 5e-7,
-                                pswarm.size = NULL,
-                                pswarm.diameter = NULL,
-                                pswarm.type = NULL,
                                 check.fit.plot = TRUE,
                                 msg.optim.progress = TRUE,
                                 output.list.forFitSp = FALSE,
@@ -864,10 +839,6 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                         baseline = baseline.correct,
                                         B.unit = B.unit,
                                         Nmax.evals = Nmax.evals,
-                                        tol.step = tol.step,
-                                        pswarm.size = pswarm.size,
-                                        pswarm.diameter = pswarm.diameter,
-                                        pswarm.type = pswarm.type,
                                         ...)
     #
     return(optim.list)
