@@ -58,9 +58,9 @@
 #'   can be provided by other packages}
 #'   (see e.g. \href{https://cran.r-project.org/web/packages/nlstools/vignettes/vignetteJSS.pdf}{\code{{nlstools}}})
 #'   \strong{or must be performed "manually", evaluating the numerical approximation of the gradient}
-#'   (please, refer to the \code{\link[numDeriv]{jacobian}}) as reported elsewhere (see Nguyen M (2020)
-#'   in the \code{References}). Consequently, the calculations of standardized and studentized residuals
-#'   are not involved in this general \code{plot_eval_RA_forFit} function. Nevertheless, users are advised
+#'   (please, refer to the \href{https://r-forge.r-universe.dev/numDeriv/doc/manual.html#jacobian}{jacobian})
+#'   as reported elsewhere (see Nguyen M (2020) in the \code{References}). Consequently, the calculations of standardized
+#'   and studentized residuals are not involved in this general \code{plot_eval_RA_forFit} function. Nevertheless, users are advised
 #'   to apply above-described options to obtain the desired residuals or diagnostic plots for a specific model/fit
 #'   (also refer to the \code{Value}/\code{df}).
 #'
@@ -95,7 +95,8 @@
 #'   \href{https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03\%3A_One-Way_ANOVA}{deviations}.
 #'   It can display a U-shape pattern above the diagonal line, which actually mirrors
 #'   the situation with the right skewed (or positively skewed, mean > median) PDF. Therefore, we find the extreme
-#'   values far from the peak on the high end more frequently than on the lower one. Contrary, if the Q-Q plot shows
+#'   values far from the peak on the high end more frequently than on the lower one (see e.g. \code{Example} in
+#'   \code{\link{eval_kinR_Eyring_GHS}}). Contrary, if the Q-Q plot shows
 #'   "hill" shape bellow the diagonal line, the opposite situation is observed and the extreme values (outliers) far from the peak
 #'   on the low end appear more frequently than on the higher one (PDF is left skewed, mean < median).
 #'   The Q-Q plot with so-called light tails, displays extreme values above and below residual minima and maxima,
@@ -179,26 +180,23 @@
 #'
 #'
 #' @returns A List, consisting of the following elements is returned:
-#'   \enumerate{
-#'   \item Original \code{data.fit} data frame object (\code{df}), if additional processing/analysis
+#'   \describe{
+#'   \item{df}{Original \code{data.fit} data frame object, if additional processing/analysis
 #'   is required (see the \code{Details} or to perform Residuals \emph{vs} Observation Order to verify
-#'   the assumption that the residuals are independent from one another).
-#'
-#'   \item Ggplot2 object (\code{rqq.plot}, related to visual \strong{r}esidual
+#'   the assumption that the residuals are independent from one another).}
+#'   \item{rqq.plot}{Ggplot2 object related to visual \strong{r}esidual
 #'   \strong{a}nalysis), with two main plots: Residuals \emph{vs} Predicted/Fitted Values from
 #'   the model/fit or simulation, and the Q-Q plot (Sample Quantiles \emph{vs} Theoretical Quantiles,
-#'   where the theoretical ones correspond to normal distribution).
-#'
-#'   \item Ggplot2 object (\code{histDens.plot}), showing the \strong{hist}ogram
+#'   where the theoretical ones correspond to normal distribution).}
+#'   \item{histDens.plot}{Ggplot2 object, showing the \strong{hist}ogram
 #'   and the scaled probability \strong{dens}ity function for residuals. The corresponding residuals
-#'   mean value and the median are identified by vertical lines.
-#'
-#'   \item \strong{S}tandard \strong{d}eviation of residuals (\code{sd} or residual standard error (RSE))
+#'   mean value and the median are identified by vertical lines.}
+#'   \item{sd}{\strong{S}tandard \strong{d}eviation of residuals (or residual standard error (RSE))
 #'   for the model/fit defined as:
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k - 1)}}
 #'   where \eqn{N} is the number of observations/points (see the \code{data.fit} argument) and \eqn{k}
 #'   is the number of optimized parameters (see the argument \code{k}). Therefore, the smaller
-#'   the \code{sd}, the better the fit, when comparing different models/fits.
+#'   the \code{sd}, the better the fit, when comparing different models/fits.}
 #'   }
 #'
 #'
