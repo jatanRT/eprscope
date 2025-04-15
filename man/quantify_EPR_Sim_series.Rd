@@ -18,10 +18,6 @@ quantify_EPR_Sim_series(
   optim.params.lower = NULL,
   optim.params.upper = NULL,
   Nmax.evals = 512,
-  tol.step = 5e-07,
-  pswarm.size = NULL,
-  pswarm.diameter = NULL,
-  pswarm.type = NULL,
   single.integ = "single_IntegSim",
   double.integ = "double_IntegSim",
   msg.optim.progress = TRUE,
@@ -96,36 +92,6 @@ The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm
 time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
 method requires at least the default or even higher values.}
 
-\item{tol.step}{Numeric, the smallest optimization step (relative change) between
-2 iterations to stop the optimization procedure. For the \code{optim.method = "pswarm"}
-(particle swarm optimization procedure) it actually corresponds to tolerance for restarting.
-Once the maximum distance between the "best" particle and all the others is less
-than \code{tol.step} * \code{pswarm.diameter}) the algorithm restarts.
-See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.}
-
-\item{pswarm.size}{Numeric value equal to particle swarm size (i.e. number of particles),
-if \code{optim.method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-corresponds to \code{floor(10+2*sqrt(length(optim.params.init)))} (for \code{SPSO2007},
-see the \code{pswarm.type} argument), e.g. to optimize 3 components, number of particles = 14.
-For the \code{SPSO2011} the default number of particles equals to \code{40}.}
-
-\item{pswarm.diameter}{Numeric value, corresponding to diameter of the particle swarm search space
-(in case when \code{optim.method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
-refers to the Euclidean distance, defined as:
-\deqn{\sqrt{\sum_k\,(\text{optim.params.upper}[k] - \text{optim.params.lower}[k])^2}}}
-
-\item{pswarm.type}{Character string, setting the type/version of particle swarm algorithm
-if \code{method = "pswarm"}. There are two types available: \code{pswarm.type = "SPSO2007"}
-and \code{pswarm.type = "SPSO2011"}. The latter introduced an adaptive random topology,
-which allows the swarm to dynamically adjust its communication structure.
-This helps in maintaining diversity in the swarm and improves the algorithm's ability
-to escape local optima. This type generally offers better performance on larger multidimensional spaces
-than the \code{pswarm.type = "SPSO2007"}, which uses a more static topology. Details may be found
-in the \code{References} of the \code{\link{optim_for_EPR_fitness}}.
-\strong{Default}: \code{pswarm.type = NULL} (actually corresponding to \code{"SPSO2007"},
-that performs slightly better on smaller scales such as common simulations of EPR spectra
-with lower number of parameters like hyperfine coupling constants).}
-
 \item{single.integ}{Character string, setting up the column/variable name related to single-integrated spectrum
 within the output data frame, \strong{default}: \code{single.integ = "single_IntegSim"}.}
 
@@ -148,7 +114,8 @@ for each time/temperature/...etc. point in row. Additional optimization measures
 table is returned, including all EPR spectra and their corresponding integrals.}
 
 \item{...}{additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
-like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}).}
+like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
+\code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}.}
 }
 \value{
 Function provides data frame object, depending on the \code{output.area.stat} argument,
