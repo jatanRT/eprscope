@@ -154,23 +154,32 @@ The CI level is controlled by the <code>level.cnfd</code> argument.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A List, consisting of the following elements is returned:</p><ol><li><p>Original <code>data.fit</code> data frame object (<code>df</code>), if additional processing/analysis
+    <p>A List, consisting of the following elements is returned:</p><dl><dt>df</dt>
+<dd><p>Original <code>data.fit</code> data frame object, if additional processing/analysis
   is required (see the <code>Details</code> or to perform Residuals <em>vs</em> Observation Order to verify
-  the assumption that the residuals are independent from one another).</p></li>
-<li><p>Ggplot2 object (<code>rqq.plot</code>, related to visual <strong>r</strong>esidual
+  the assumption that the residuals are independent from one another).</p></dd>
+
+  <dt>rqq.plot</dt>
+<dd><p>Ggplot2 object related to visual <strong>r</strong>esidual
   <strong>a</strong>nalysis), with two main plots: Residuals <em>vs</em> Predicted/Fitted Values from
   the model/fit or simulation, and the Q-Q plot (Sample Quantiles <em>vs</em> Theoretical Quantiles,
-  where the theoretical ones correspond to normal distribution).</p></li>
-<li><p>Ggplot2 object (<code>histDens.plot</code>), showing the <strong>hist</strong>ogram
+  where the theoretical ones correspond to normal distribution).</p></dd>
+
+  <dt>histDens.plot</dt>
+<dd><p>Ggplot2 object, showing the <strong>hist</strong>ogram
   and the scaled probability <strong>dens</strong>ity function for residuals. The corresponding residuals
-  mean value and the median are identified by vertical lines.</p></li>
-<li><p><strong>S</strong>tandard <strong>d</strong>eviation of residuals (<code>sd</code> or residual standard error (RSE))
+  mean value and the median are identified by vertical lines.</p></dd>
+
+  <dt>sd</dt>
+<dd><p><strong>S</strong>tandard <strong>d</strong>eviation of residuals (or residual standard error (RSE))
   for the model/fit defined as:
   $$\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k - 1)}$$
   where \(N\) is the number of observations/points (see the <code>data.fit</code> argument) and \(k\)
   is the number of optimized parameters (see the argument <code>k</code>). Therefore, the smaller
-  the <code>sd</code>, the better the fit, when comparing different models/fits.</p></li>
-</ol></div>
+  the <code>sd</code>, the better the fit, when comparing different models/fits.</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Analysis of residuals is a powerful statistical technique to check whether the model/fit has adequately
@@ -211,9 +220,9 @@ The CI level is controlled by the <code>level.cnfd</code> argument.</p></dd>
   can be provided by other packages</strong>
   (see e.g. <a href="https://cran.r-project.org/web/packages/nlstools/vignettes/vignetteJSS.pdf" class="external-link"><code>{nlstools}</code></a>)
   <strong>or must be performed "manually", evaluating the numerical approximation of the gradient</strong>
-  (please, refer to the <code>jacobian</code>) as reported elsewhere (see Nguyen M (2020)
-  in the <code>References</code>). Consequently, the calculations of standardized and studentized residuals
-  are not involved in this general <code>plot_eval_RA_forFit</code> function. Nevertheless, users are advised
+  (please, refer to the <a href="https://r-forge.r-universe.dev/numDeriv/doc/manual.html#jacobian" class="external-link">jacobian</a>)
+  as reported elsewhere (see Nguyen M (2020) in the <code>References</code>). Consequently, the calculations of standardized
+  and studentized residuals are not involved in this general <code>plot_eval_RA_forFit</code> function. Nevertheless, users are advised
   to apply above-described options to obtain the desired residuals or diagnostic plots for a specific model/fit
   (also refer to the <code>Value</code>/<code>df</code>).</p>
 <p><strong>Considerations to support or exclude model/fit based on the residual plot.</strong> If the residuals exhibit
@@ -246,7 +255,8 @@ The CI level is controlled by the <code>level.cnfd</code> argument.</p></dd>
   <a href="https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03%3A_One-Way_ANOVA" class="external-link">deviations</a>.
   It can display a U-shape pattern above the diagonal line, which actually mirrors
   the situation with the right skewed (or positively skewed, mean &gt; median) PDF. Therefore, we find the extreme
-  values far from the peak on the high end more frequently than on the lower one. Contrary, if the Q-Q plot shows
+  values far from the peak on the high end more frequently than on the lower one (see e.g. <code>Example</code> in
+  <code><a href="eval_kinR_Eyring_GHS.html">eval_kinR_Eyring_GHS</a></code>). Contrary, if the Q-Q plot shows
   "hill" shape bellow the diagonal line, the opposite situation is observed and the extreme values (outliers) far from the peak
   on the low end appear more frequently than on the higher one (PDF is left skewed, mean &lt; median).
   The Q-Q plot with so-called light tails, displays extreme values above and below residual minima and maxima,
