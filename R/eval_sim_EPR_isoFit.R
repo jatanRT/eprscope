@@ -275,8 +275,8 @@
 #' ## experiment and the best fit)
 #' tempo.test.sim.fit.b$plot
 #' #
-#' ## residual analysis density plot together
-#' ## with standard deviation of residuals
+#' ## simple residual density plot
+#' ## together with standard deviation
 #' tempo.test.sim.fit.b$ra$histDens.plot
 #' tempo.test.sim.fit.b$ra$sd
 #' #

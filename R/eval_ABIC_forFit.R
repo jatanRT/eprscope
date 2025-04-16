@@ -328,14 +328,14 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   ## function/conditions for relevant strings which will be print out
   abic_name_msg_fun <- function(name) {
     #
-    if (grepl("norm",name) & sw.test >= 0.075) {
+    if (grepl("norm",name) & sw.test > 0.075) {
       return(
         paste0(
           "the normal distribution of residuals,",
           " additionally supported by the Shapiro-Wilk test."
         )
       )
-    } else if (grepl("t",name) & sw.test <= 0.01) {
+    } else if (grepl("t",name) & sw.test < 0.01) {
       return(
         paste0(
           "the Student's t-distribution of residuals ",

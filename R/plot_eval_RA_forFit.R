@@ -67,11 +67,11 @@
 #'   \strong{Considerations to support or exclude model/fit based on the residual plot.} If the residuals exhibit
 #'   no clear pattern, like they are randomly scattered around the \code{0} with no systematic increase or decrease
 #'   in variance, we may trust our fit with the optimized parameters. Such pattern is \strong{homoscedastic}.
-#'   However, if one recognizes curved ((inverted-)U-shape, see e.g. \code{Examples}
+#'   However, if one recognizes curved ((inverted-)U shape, see e.g. \code{Examples}
 #'   in the \code{\link{eval_kinR_EPR_modelFit}}), wave or systematic increase (so called "fanning")
 #'   or decrease ("funelling"), the model/fit is untrustworthy and one would probably search for a different (better) one.
 #'   In particular, the curved pattern in the residual plot may indicate that a model does a poor job of fitting
-#'   and likely we need additional parameter(s) to describe our data properly. In the case if residuals suffer
+#'   and likely, we need additional parameter(s) to describe our data properly. In the case if residuals suffer
 #'   from unequal variance at different levels of the fitted values, the residuals are referred
 #'   to as \strong{heteroscedastic}.
 #'
@@ -81,7 +81,7 @@
 #'   the data points below which a certain portion of the data fall or in other words, they divide the distribution
 #'   into equal portions. For instance, for a 0.5 quantile (or the 2nd quartile), half of the data lie below this
 #'   point and half of them above. This quantile is also referred to as \strong{median}. Similarly, the 0.25 quantile
-#'   (or the 1st quartile) would mean that \eqn{25\,\%} of the data fall below this point. The Q-Q plot is actually
+#'   (or the 1st quartile) would mean, that \eqn{25\,\%} of the data fall below this point. The Q-Q plot is actually
 #'   presenting the quantiles from our sample related to the theoretical ones calculated for the normal distribution.
 #'   If the points follow the diagonal line (or are not far from this line), we may assume a normal
 #'   distribution. Additionally, this assumption can be also supported either by the Shapiro-Wilk
@@ -92,30 +92,30 @@
 #'   curve with the maximum at the \strong{mean} (for residuals \eqn{= 0}, median = mean). Thus, the PDF basically
 #'   corresponds to histogram with "extremely" high number of bins, having "extremely" small widths.
 #'   A Q-Q plot may exhibit several basic
-#'   \href{https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03\%3A_One-Way_ANOVA}{deviations}.
-#'   It can display a U-shape pattern above the diagonal line, which actually mirrors
+#'   \href{https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03\%3A_One-Way_ANOVA/3.04\%3A_ANOVA_model_diagnostics_including_QQ-plots}{deviations}.
+#'   It can display a U-shaped pattern, which actually mirrors
 #'   the situation with the right skewed (or positively skewed, mean > median) PDF. Therefore, we find the extreme
 #'   values far from the peak on the high end more frequently than on the lower one (see e.g. \code{Example} in
 #'   \code{\link{eval_kinR_Eyring_GHS}}). Contrary, if the Q-Q plot shows
-#'   "hill" shape bellow the diagonal line, the opposite situation is observed and the extreme values (outliers) far from the peak
+#'   "hill" shape, the opposite situation is observed and the extreme values (outliers) far from the peak
 #'   on the low end appear more frequently than on the higher one (PDF is left skewed, mean < median).
 #'   The Q-Q plot with so-called light tails, displays extreme values above and below residual minima and maxima,
-#'   respectively. This pattern is relatively harmless and one can proceed with methods that assume normality safely.
-#'   However, the heavy-tailed Q-Q plot with extreme residuals below and above minima and maxima, respectively,
-#'   is somewhat problematic for normal distributions of residuals with outliers on both sides.
+#'   respectively. This pattern is relatively harmless and one can proceed with methods that assume normality.
+#'   However, the heavy-tailed Q-Q plot with extreme residuals below and above minima and maxima of the diagonal line,
+#'   respectively, is somewhat problematic for normal distributions of residuals with outliers on both sides.
 #'   On the other hand, such kind of normality violation can be successfully described by Student's t-distribution
 #'   with lower degrees of freedom (see e.g. \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}
 #'   as well as \code{\link{eval_ABIC_forFit}}). Nevertheless, if the residuals, in the latter case,
 #'   do not exhibit heteroscedasticity, such model/fit is not necessarily untrustworthy.
 #'   In a very extreme case the heavy-tailed Q-Q plot may be transformed into situation where only a couple
-#'   of points around the "middle" quantile can be found on the diagonal line. This is reflected
-#'   by the bimodal behavior in the PDF and it might be the sign of value clustering.
+#'   of points around the "middle" quantile can be found on the diagonal line and the remaining points are represented
+#'   by the noticeable S-curve. This is reflected as bimodal behavior in the PDF and it might be the sign of value clustering.
 #'
 #'   All the above-mentioned violations of the residuals (normal) distribution can disfavor our considered model/fit.
 #'   However, one has to perform different diagnostic methods and tests to analyze the residuals in order to compare
 #'   several models/fits and select the "best" one. Even in such case, this should be a compromise between
-#'   the fit accuracy (fitting the data as well as possible) and the parsimony
-#'   (using a simple and replicable model/fit, Kabacoff RI (2022) in the \code{References}).
+#'   the fit accuracy (fitting the data as well as possible, including the physico-chemical reality of the system)
+#'   and the parsimony (using a simple and replicable model/fit, Kabacoff RI (2022) in the \code{References}).
 #'
 #'
 #' @references
@@ -205,17 +205,15 @@
 #' ## application example for an EPR simulation fit
 #' list.test <-
 #'   plot_eval_RA_forFit(
-#'     data.fit = sim.fit.tmpd.df,
+#'     data.fit = data.sim.expr,
 #'     residuals = "Residuals",
 #'     fitted = "Simulation",
-#'     k = 8, ## number of optimized sim. parameters
 #'     resid.xlab = "Simulation",
-#'     plot.densScale.coeff = 500,
+#'     k = length(optim.params.init),
 #'     level.cnfd = 0.99999999
-#'    )
+#'  )
 #' #
-#' ## residual plot with normal
-#' ## and studentized residuals
+#' ## residual and the normal Q-Q plot
 #' list.test$rqq.plot
 #' #
 #' ## histogram and probability density
@@ -224,7 +222,7 @@
 #' ## standard deviation of residuals
 #' list.test$sd
 #' #
-#' ## from the data quickly create the residuals vs
+#' ## from the data, quickly create the residuals vs
 #' ## observation order plot (assuming, there
 #' ## is no index column in the data frame)
 #' dataframe <- list.test$df
