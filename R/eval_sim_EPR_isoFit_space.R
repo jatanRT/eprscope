@@ -19,7 +19,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # optim.params.lower = NULL, ## into `...`
                                       # optim.params.upper = NULL, ## into `...`
                                       Nmax.evals = 512,
-                                      Nmax.evals.dvary = 16, # new argument max. number of points in space
+                                      Nmax.points.space = 16, # new argument max. number of points in space
                                       # tol.step = 5e-7, ## into `...`
                                       # pswarm.size = NULL, ## into `...`
                                       # pswarm.diameter = NULL, ## into `...`
@@ -36,7 +36,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   if (is.null(lineG.content.dvary) &
       is.null(optim.params.init.dvary)) {
     stop(" Both `dvary` arguments have `NULL` assignment !! Please, define at least\n
-         one of them, corresponding to initial variations, in the form of  +- difference.\n
+         one of them, corresponding to initial variations, in the form of  (+-) difference.\n
          See description of the `lineG.content.dvary` and/or `optim.params.init.dvary` argument(s) !! ")
   }
   #
@@ -72,20 +72,22 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   if (!is.null(lineG.content.dvary)) {
     lineG.content.vary <-
       seq(
-        lineG.content-lineG.content.dvary,
-        lineG.content+lineG.content.dvary,
-        length.out = Nmax.evals.dvary
+        lineG.content - lineG.content.dvary,
+        lineG.content + lineG.content.dvary,
+        length.out = Nmax.points.space
       )
   }
   ## sequence for the `optim.params.init`
-  optim.params.init.vary.list <- c()
-  for (j in 1:length(optim.params.init)) {
-    optim.params.init.vary.list[[j]] <-
-      seq(
-        optim.params.init[j] - optim.params.init.dvary[j],
-        optim.params.init[j] + optim.params.init.dvary[j],
-        length.out = Nmax.evals.dvary
-      )
+  if (!is.null(optim.params.init.dvary)) {
+    optim.params.init.vary.list <- c()
+    for (j in 1:length(optim.params.init)) {
+      optim.params.init.vary.list[[j]] <-
+        seq(
+          optim.params.init[j] - optim.params.init.dvary[j],
+          optim.params.init[j] + optim.params.init.dvary[j],
+          length.out = Nmax.points.space
+        )
+    }
   }
   #
   ## names depending on baseline correction and number of As
@@ -117,12 +119,24 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## now create general fitting/optimization function
   ## but before check the conditions and define the actual =>
   ## (taking into account, users can make mistakes :-))
-  msg.optim.progress <-
-    msg.optim.progress %>% `if`(isTRUE(msg.optim.progress), FALSE, .)
-  output.list.forFitSp <-
-    output.list.forFitSp %>% `if`(isFALSE(output.list.forFitSp), TRUE, .)
-  eval.optim.progress <-
-    eval.optim.progress %>% `if`(isTRUE(eval.optim.progress), FALSE, .)
+  if (exists(msg.optim.progress)) {
+    msg.optim.progress <-
+      msg.optim.progress %>% `if`(isTRUE(msg.optim.progress), FALSE, .)
+  } else {
+    msg.optim.progress <- FALSE
+  }
+  if (exists(output.list.forFitSp)) {
+    output.list.forFitSp <-
+      output.list.forFitSp %>% `if`(isFALSE(output.list.forFitSp), TRUE, .)
+  } else {
+    output.list.forFitSp <- TRUE
+  }
+  if (exists(eval.optim.progress)) {
+    eval.optim.progress <-
+      eval.optim.progress %>% `if`(isTRUE(eval.optim.progress), FALSE, .)
+  } else {
+    eval.optim.progress <- FALSE
+  }
   #
   vary_sim_iso_fit_fn <- function(Gauss.content,optim.params.init.var) {
     #
@@ -138,10 +152,10 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       optim.params.init = optim.params.init.var,
       Nmax.evals = Nmax.evals,
       check.fit.plot = check.fit.plot,
-      msg.optim.progress = FALSE,
-      eval.optim.progress = FALSE,
-      output.list.forFitSp = TRUE,
-      #... ## additional arguments from `eval_sim_EPR_isoFit`
+      msg.optim.progress = msg.optim.progress, ## must be FALSE
+      eval.optim.progress = eval.optim.progress, ## must be FALSE
+      output.list.forFitSp = output.list.forFitSp, ## must be TRUE
+      ... ## additional arguments from `eval_sim_EPR_isoFit`
     )
     #
     return(listfit)
@@ -337,7 +351,9 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       names.baseline,
       names.A,
       "minRSS", ## minimum sum of residual squares
-      "raSD" ## standard deviation of residuals
+      "raSD", ## standard deviation of residuals
+      "AIC", ## Akaike information criterium
+      "BIC" ## Bayesian information criterium
     )
   #
   ## add new "Evaluation/Iteration" column =>
@@ -364,11 +380,21 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   best.df.index.raSD <-
     which.min(sim.fit.vary.list.params.df$raSD)
   #
+  # find index for the best fit (AIC)
+  best.df.index.AIC <-
+    which.min(sim.fit.vary.list.params.df$AIC)
+  #
+  # find index for the best fit (BIC)
+  best.df.index.BIC <-
+    which.min(sim.fit.vary.list.params.df$BIC)
+  #
   # the best params with minum RSS vector:
   best.params.from.space <-
     sim.fit.vary.list.params.df %>%
     dplyr::filter(minRSS == min(minRSS)) %>%
-    dplyr::select(- c(minRSS,Evaluation,raSD)) %>%
+    dplyr::select(!dplyr::all_of(
+      c("minRSS","Evaluation","raSD","AIC","BIC")
+    )) %>%
     unlist() %>% unname()
   #
   # initial data frame into long format in order to plot
@@ -385,26 +411,26 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) %>% dplyr::arrange(.data$Parameter)
   #
   #
-  ## ------------------------ PARAMETER ANALYSIS -----------------------------
+  ## ------------------------ PARAMETER ANALYSIS (LATER) -----------------------------
   #
   ## select only EPR simulation parameters without `minRSS` and `raSD`
-  sim.fit.final.epr.params.df <-
-    dplyr::select(!dplyr::all_of(c("minRSS","raSD")))
-  #
-  ## starting overall parameter fit list
-  linFit.final.epr.params <- list()
-  #
-  for (e in 1:(ncol(sim.fit.final.epr.params.df) - 1)) {
-    #
-    ## linear fit for each column
-    linFit.final.epr.params[[e]] <-
-      stats::lm(
-        formula = stats::as.formula(
-          paste0(names(sim.fit.final.epr.params.df)[e],"~","Evaluation")
-        ),
-        data = sim.fit.final.epr.params.df
-      )
-  }
+  # sim.fit.final.epr.params.df <-
+  #   dplyr::select(!dplyr::all_of(c("minRSS","raSD")))
+  # #
+  # ## starting overall parameter fit list
+  # linFit.final.epr.params <- list()
+  # #
+  # for (e in 1:(ncol(sim.fit.final.epr.params.df) - 1)) {
+  #   #
+  #   ## linear fit for each column
+  #   linFit.final.epr.params[[e]] <-
+  #     stats::lm(
+  #       formula = stats::as.formula(
+  #         paste0(names(sim.fit.final.epr.params.df)[e],"~","Evaluation")
+  #       ),
+  #       data = sim.fit.final.epr.params.df
+  #     )
+  # }
   #
   ## ------------------------------ PLOTS ------------------------------------
   #
