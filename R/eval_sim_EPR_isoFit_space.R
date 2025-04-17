@@ -447,16 +447,17 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ## to show fit with confidence interval
     ## except the minimum sum of residual squares
     geom_smooth(
-      method = "lm", ## or "loess"
+      method = "loess", ## or "lm"
       formula = y ~ x,
-      # span = 1,
+      span = 1,
       data = subset(
         sim.fit.vary.list.params.df.long,
-        subset = !(Parameter %in% c("minRSS","raSD"))
+        subset = !(Parameter %in% c("minRSS","raSD","AIC","BIC"))
       ),
       color = "magenta",
       se = TRUE,
       fill = "darkgray",
+      level = 0.95,
       linewidth = 1.1
     ) +
     # geom_line(linewidth = 0.2) +
