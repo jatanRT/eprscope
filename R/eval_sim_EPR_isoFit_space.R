@@ -1,5 +1,5 @@
 #
-## more complex optimization/fitting based
+### more complex optimization/fitting based
 ## on augmented space of initial parameters
 #
 eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
@@ -19,7 +19,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # optim.params.lower = NULL, ## into `...`
                                       # optim.params.upper = NULL, ## into `...`
                                       Nmax.evals = 256,
-                                      Nmax.points.space = 16, # new argument max. number of points in space
+                                      N.points.space = 16, # new argument max. number of points in space
                                       # tol.step = 5e-7, ## into `...`
                                       # pswarm.size = NULL, ## into `...`
                                       # pswarm.diameter = NULL, ## into `...`
@@ -48,12 +48,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## checking the number `Nmax.evals`
   if (Nmax.evals > 1024) {
     message(" The max. number of least square function evaluations\n
-            for each point in the  `Nmax.points.space` > 1024. \n
+            for each point in the  `N.points.space` > 1024. \n
             Please, be aware of long computational time. ")
   }
   #
   ## Checking the high number of space points
-  if (Nmax.points.space > 64) {
+  if (N.points.space > 64) {
     message(
       "The number of points in the initial parameter hyperspace\n
       is higher than 64. Please, be aware of long computational time."
@@ -98,7 +98,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       seq(
         lineG.content - lineG.content.dvary,
         lineG.content + lineG.content.dvary,
-        length.out = Nmax.points.space
+        length.out = N.points.space
       )
   }
   ## sequence for the `optim.params.init`
@@ -109,7 +109,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         seq(
           optim.params.init[j] - optim.params.init.dvary[j],
           optim.params.init[j] + optim.params.init.dvary[j],
-          length.out = Nmax.points.space
+          length.out = N.points.space
         )
     }
   }
@@ -170,7 +170,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     eval.optim.progress <- FALSE
   }
   #
-  vary_sim_iso_fit_fn <- function(Gauss.content,optim.params.init.var) {
+  vary_sim_iso_fit_fn <- function(Gauss.content,optim.params.init.var,...) {
     #
     listfit <- eval_sim_EPR_isoFit(
       data.spectr.expr = data.spectr.expr,
@@ -186,8 +186,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       check.fit.plot = check.fit.plot,
       msg.optim.progress = msg.optim.progress, ## must be FALSE
       eval.optim.progress = eval.optim.progress, ## must be FALSE
-      output.list.forFitSp = output.list.forFitSp# , ## must be TRUE
-      #... ## additional arguments from `eval_sim_EPR_isoFit`
+      output.list.forFitSp = output.list.forFitSp, ## must be TRUE
+      ... ## additional arguments from `eval_sim_EPR_isoFit`
     )
     #
     return(listfit)
@@ -198,12 +198,15 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## ------------------------- PROGRESS BAR SETUP -------------------------
   #
-  ## setup the progress bar
-  progressr::handlers(global = TRUE,append = TRUE)
+  ## setup the progress bar, this is required
+  ## in order to synchronize the time, see
+  ## https://progressr.futureverse.org/
+  progressr::handlers("debug") ## !!! IMPORTANT
+  # progressr::handlers("debug")
   # progressr::handlers("progress")
   progressr::handlers(list(
     progressr::handler_progress(
-      format = " [:bar] :percent :current/:total of Evals. ",
+      format = " [:bar] :percent ",
       width = 104
     )
   ))
@@ -263,7 +266,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     #
     progressr::with_progress({
       ## progress bar definition
-      p <- progressr::progressor(steps = Nmax.points.space)
+      p <- progressr::progressor(along = 0:nrow(optim.params.init.vary.df))
       #
       sim.fit.vary.list <-
         future.apply::future_lapply(
@@ -276,7 +279,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
               ## original from the main function's defaults
               optim.params.init.var = unname(unlist(optim.params.init.vary.df[r,]))
             )
-          }
+          },
+          future.seed = NULL
         )
     })
   } else { ## if the `lineG.content.vary` is different from NULL
@@ -284,7 +288,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       #
       progressr::with_progress({
         ## progress bar definition
-        p <- progressr::progressor(steps = Nmax.points.space)
+        p <- progressr::progressor(along = 0:length(lineG.content.vary))
         #
         sim.fit.vary.list <-
           future.apply::future_lapply(
@@ -297,14 +301,15 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                 optim.params.init.var = optim.params.init
                 ## original from the main function's defaults
               )
-            }
+            },
+            future.seed = NULL
           )
       })
     } else { ## if both arguments can vary (use `Map`-based function)
       #
       progressr::with_progress({
         ## progress bar definition
-        p <- progressr::progressor(steps = Nmax.points.space)
+        p <- progressr::progressor(along = 0:length(lineG.content.vary))
         #
         sim.fit.vary.list <-
           future.apply::future_Map(
@@ -318,7 +323,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
               )
             },
             as.numeric(1:length(lineG.content.vary)),
-            as.numeric(1:nrow(optim.params.init.vary.df))
+            as.numeric(1:nrow(optim.params.init.vary.df)),
+            future.seed = NULL
           )
       })
     }
@@ -340,7 +346,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     future::plan("sequential")
     #
     ## ...+ shutdown the cluster
-    future:::ClusterRegistry("stop")
+    future:::clusterRegistry$stopCluster()
   }
   #
   ## =========== FINAL VARIABLES, ANIMATIONS, DATA FRAMEs ANALYSIS AND PLOTS ============
