@@ -18,7 +18,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       optim.params.init.dvary = NULL, ## or vector
                                       # optim.params.lower = NULL, ## into `...`
                                       # optim.params.upper = NULL, ## into `...`
-                                      Nmax.evals = 512,
+                                      Nmax.evals = 256,
                                       Nmax.points.space = 16, # new argument max. number of points in space
                                       # tol.step = 5e-7, ## into `...`
                                       # pswarm.size = NULL, ## into `...`
@@ -26,18 +26,38 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # pswarm.type = NULL, ## into `...`
                                       check.fit.plot = TRUE,
                                       processing = "sequential", ## or "parallel"
+                                      animation = "AnimatedFit_of_simEPR_params", ## or NULL
+                                      ## will be saved in working directory
                                       ...) { ## additional arguments from `eval_sim_EPR_isoFit`
   #
   ## 'Temporary' processing variables
   . <- NULL
   #
+  ## ================ CHECKING VARIABLES and FUNCTIONS ===============
+  #
   ## check the condition for `dvary` arguments
   ## both cannot be NULL !!
   if (is.null(lineG.content.dvary) &
       is.null(optim.params.init.dvary)) {
-    stop(" Both `dvary` arguments have `NULL` assignment !! Please, define at least\n
-         one of them, corresponding to initial variations, in the form of  (+-) difference.\n
-         See description of the `lineG.content.dvary` and/or `optim.params.init.dvary` argument(s) !! ")
+    stop(" Both `dvary` arguments have `NULL` assignment !!
+         Please, define at least one of them, corresponding to initial\n
+         variations, in the form of  (+-) difference. See description \n
+         of the `lineG.content.dvary` and/or `optim.params.init.dvary` argument(s) !! ")
+  }
+  #
+  ## checking the number `Nmax.evals`
+  if (Nmax.evals > 1024) {
+    message(" The max. number of least square function evaluations\n
+            for each point in the  `Nmax.points.space` > 1024. \n
+            Please, be aware of long computational time. ")
+  }
+  #
+  ## Checking the high number of space points
+  if (Nmax.points.space > 64) {
+    message(
+      "The number of points in the initial parameter hyperspace\n
+      is higher than 64. Please, be aware of long computational time."
+    )
   }
   #
   ## UPPER CASE -> convert automatically into lower
@@ -45,9 +65,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     processing <- tolower(processing)
   }
   #
-  ## check `processing`
-  if (processing != "parallel" || processing != "sequential") {
-    stop(" The `processing` argument must be defined as 'parallel' or as 'sequential' !! ")
+  ## check `processing` (user can make mistakes:-)
+  if (grepl("par",processing)) {
+    processing <- processing %>% `if`(processing != "parallel","parallel", .)
+  } else if (grepl("seq",processing)) {
+    processing <- processing %>% `if`(processing != "sequential","sequential", .)
   }
   #
   ## condition to switch among three values
@@ -61,6 +83,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       return(2)
     }
   }
+  #
+  ## ================ CREATING SEQUENCES OF PARAMETERS =================
   #
   ## what is the length of the list (how many nuclear groups)
   N_nucle_us_i <- length(nuclear.system.noA)
@@ -90,6 +114,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     }
   }
   #
+  ## ===================== CREATING INITIAL DATAFRAME ======================
+  #
   ## names depending on baseline correction and number of As
   names.start <- c(
     "g",
@@ -116,22 +142,28 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   optim.params.init.vary.df <-
     as.data.frame(optim.params.init.vary.list)
   #
+  # delete the corresponding list (not required anymore)
+  rm(optim.params.init.vary.list)
+  #
+  ## ===============  SETUP FOR THE MAIN OPTIM FUN. ====================
+  ## =================== `vary_sim_iso_fit_fn` =========================
+  #
   ## now create general fitting/optimization function
   ## but before check the conditions and define the actual =>
   ## (taking into account, users can make mistakes :-))
-  if (exists(msg.optim.progress)) {
+  if (exists("msg.optim.progress")) {
     msg.optim.progress <-
       msg.optim.progress %>% `if`(isTRUE(msg.optim.progress), FALSE, .)
   } else {
     msg.optim.progress <- FALSE
   }
-  if (exists(output.list.forFitSp)) {
+  if (exists("output.list.forFitSp")) {
     output.list.forFitSp <-
       output.list.forFitSp %>% `if`(isFALSE(output.list.forFitSp), TRUE, .)
   } else {
     output.list.forFitSp <- TRUE
   }
-  if (exists(eval.optim.progress)) {
+  if (exists("eval.optim.progress")) {
     eval.optim.progress <-
       eval.optim.progress %>% `if`(isTRUE(eval.optim.progress), FALSE, .)
   } else {
@@ -154,17 +186,29 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       check.fit.plot = check.fit.plot,
       msg.optim.progress = msg.optim.progress, ## must be FALSE
       eval.optim.progress = eval.optim.progress, ## must be FALSE
-      output.list.forFitSp = output.list.forFitSp, ## must be TRUE
-      ... ## additional arguments from `eval_sim_EPR_isoFit`
+      output.list.forFitSp = output.list.forFitSp# , ## must be TRUE
+      #... ## additional arguments from `eval_sim_EPR_isoFit`
     )
     #
     return(listfit)
     #
   }
   #
+  ## ================ OPTIMIZATION LOOPS / SEQUENCES SETUP ===================
+  #
+  ## ------------------------- PROGRESS BAR SETUP -------------------------
+  #
   ## setup the progress bar
-  progressr::handlers(global = TRUE)
-  progressr::handlers("prgogress","beepr")
+  progressr::handlers(global = TRUE,append = TRUE)
+  # progressr::handlers("progress")
+  progressr::handlers(list(
+    progressr::handler_progress(
+      format = " [:bar] :percent :current/:total of Evals. ",
+      width = 104
+    )
+  ))
+  #
+  ## ------------------------ PARALLEL PROCESS CONDITION ---------------------
   #
   ## setup the hardware resources (automatically,
   ## approx 50 % of the cores available)
@@ -178,10 +222,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     applied.cores <- NULL
     if (total.cores <= 2) {
       applied.cores <- 1
-      stop(
+      processing <- "sequential"
+      message(
         'Due to the limited hardware resources of your system\n
         NO PARALLEL COMPUTATION (no speed-up) CAN BE APPLIED to obtain\n
-        the fit of EPR spectrum. Please, set up `processing = "sequential"` !! '
+        the fit of EPR spectrum. Processing automatically \n
+        switched to "sequential" !! '
       )
     } else if (total.cores > 2) {
       ## round values up to nearest integer:
@@ -189,89 +235,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     }
   }
   #
-  ## =================== PROCESSING FUNCTION ====================
-  #
-  ## creating function for processing (by `{future}`
-  ## and `{future.apply}`), this is in general and does
-  ## not depend whether the processing is `parallel` or `sequential`
-  ## progress will be shown by `{progressr}`
-  general_progress_apply_Map_fn <-
-    function(DlineG.content,Dinit.params.df,process) { ## process...TBC...
-      ## `DlineG.content` = `lineG.content.vary`
-      ## `Dinit.params.df` = `optim.params.init.vary.df`
-      ## `process` = `processing` actual from the main fun.
-      #
-      final.list <- c()
-      #
-      if (is.null(DlineG.content)) {
-        #
-        ## progress bar definition
-        pb <- progressr::progressor(along = 1:nrow(Dinit.params.df))
-        #
-        future.apply::future_lapply(
-          1:nrow(Dinit.params.df), function(r) {
-            final.list[[r]] <- vary_sim_iso_fit_fn( ## see the function definition above
-              Gauss.content = lineG.content,
-              ## original from the main function's defaults
-              optim.params.init.var = unname(unlist(Dinit.params.df[r,]))
-            )
-            #
-            if (process == "sequential") {
-              ## print plot during processing ONLY works IN SEQUENTIAL PROCESSING
-              print(final.list[[r]][["plot"]])
-            }
-            #
-            pb(sprintf("eval/iter=%g",r)) ## apply progress bar
-          }
-        )
-      } else { ## if the `DlineG.content` is different from NULL
-        if (is.null(Dinit.params.df)) {
-          #
-          ## progress bar definition
-          pb <- progressr::progressor(along = 1:length(DlineG.content))
-          #
-          future.apply::future_lapply(
-            1:length(DlineG.content), function(c) {
-              final.list[[c]] <- vary_sim_iso_fit_fn( ## see the function def. above
-                Gauss.content = DlineG.content[c],
-                optim.params.init.var = optim.params.init
-                ## original from the main function's defaults
-              )
-              #
-              if (process == "sequential") {
-                print(final.list[[c]][["plot"]])
-              }
-              #
-              pb(sprintf("eval/iter=%g",c)) ## apply progress bar
-            }
-          )
-        } else { ## if both arguments can vary (use `Map`-based function)
-          #
-          ## progress bar definition
-          pb <- progressr::progressor(along = 1:length(DlineG.content))
-          #
-          future.apply::future_Map(
-            function(c,r) {
-              final.list[[c]] <- vary_sim_iso_fit_fn(
-                Gauss.content = DlineG.content[c],
-                optim.params.init.var = unname(unlist(Dinit.params.df[r,]))
-              )
-              #
-              if (process == "sequential") {
-                print(final.list[[c]][["plot"]])
-              }
-              #
-              pb(sprintf("eval/iter=%g",c)) ## apply progress bar
-            },
-            as.numeric(1:length(DlineG.content)),
-            as.numeric(1:nrow(Dinit.params.df))
-          )
-        }
-      }
-      return(final.list)
-    }
-  #
-  ## ================ PROCEDURE (PARALLEL OR SEQUENTIAL) ==============
+  ## ================ OWN PROCEDURE (PARALLEL OR SEQUENTIAL) ==============
   #
   ## main message for the processing:
   msg.main <- "EPR simulation parameters are currently being explored by  "
@@ -281,9 +245,9 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ##  ---------- procedure START --------------
   if (processing == "sequential") {
-    future::plan(sequential)
+    future::plan("sequential")
   } else {
-    future::plan(multisession,workers = applied.cores,gc = FALSE)
+    future::plan("multisession",workers = applied.cores,gc = FALSE)
     ## definition of the `applied.cores` see above
     ## and maybe automatic run of the "garbage collector"
     ## (gc = TRUE,memory cleaning)
@@ -295,19 +259,76 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## start time
   start.tm <- Sys.time()
   #
-  ## processing
-  sim.fit.vary.list <-
-    general_progress_apply_Map_fn(
-      DlineG.content = lineG.content.vary,
-      Dinit.params.df = optim.params.init.vary.df,
-      process = processing
-    )
+  if (is.null(lineG.content.dvary)) {
+    #
+    progressr::with_progress({
+      ## progress bar definition
+      p <- progressr::progressor(steps = Nmax.points.space)
+      #
+      sim.fit.vary.list <-
+        future.apply::future_lapply(
+          1:nrow(optim.params.init.vary.df), function(r) {
+            #
+            p() ## progressbar
+            #
+            vary_sim_iso_fit_fn( ## see the function definition above
+              Gauss.content = lineG.content,
+              ## original from the main function's defaults
+              optim.params.init.var = unname(unlist(optim.params.init.vary.df[r,]))
+            )
+          }
+        )
+    })
+  } else { ## if the `lineG.content.vary` is different from NULL
+    if (is.null(optim.params.init.dvary)) {
+      #
+      progressr::with_progress({
+        ## progress bar definition
+        p <- progressr::progressor(steps = Nmax.points.space)
+        #
+        sim.fit.vary.list <-
+          future.apply::future_lapply(
+            1:length(lineG.content.vary), function(c) {
+              #
+              p() ## progressbarr
+              #
+              vary_sim_iso_fit_fn( ## see the function def. above
+                Gauss.content = lineG.content.vary[c],
+                optim.params.init.var = optim.params.init
+                ## original from the main function's defaults
+              )
+            }
+          )
+      })
+    } else { ## if both arguments can vary (use `Map`-based function)
+      #
+      progressr::with_progress({
+        ## progress bar definition
+        p <- progressr::progressor(steps = Nmax.points.space)
+        #
+        sim.fit.vary.list <-
+          future.apply::future_Map(
+            function(c,r) {
+              #
+              p() ## progressbar
+              #
+              vary_sim_iso_fit_fn(
+                Gauss.content = lineG.content.vary[c],
+                optim.params.init.var = unname(unlist(optim.params.init.vary.df[r,]))
+              )
+            },
+            as.numeric(1:length(lineG.content.vary)),
+            as.numeric(1:nrow(optim.params.init.vary.df))
+          )
+      })
+    }
+  }
   ## end time
   end.tm <- Sys.time()
   #
   ## "closing" message
   cat("\n")
-  cat("r","Done!",
+  cat("\r","Done!",
       " elapsed time ",
       round(as.numeric(
         difftime(time1 = end.tm, time2 = start.tm, units = "secs")
@@ -316,15 +337,15 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## ------------ Procedure END -------------
   if (processing == "parallel") {
-    future::plan(sequential)
+    future::plan("sequential")
     #
     ## ...+ shutdown the cluster
     future:::ClusterRegistry("stop")
   }
   #
-  ## ================ FINAL VARIABLES, DATA FRAMEs ANALYSIS AND PLOTS ==================
+  ## =========== FINAL VARIABLES, ANIMATIONS, DATA FRAMEs ANALYSIS AND PLOTS ============
   #
-  ## ---------------------------- Lists and Data Frames -------------------------------
+  ## ---------------------------- FINAL LISTS  -------------------------------
   #
   ## select only list with parameters:
   sim.fit.vary.list.params <-
@@ -340,8 +361,44 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       FUN = function(l) {sim.fit.vary.list[[l]][["plot"]]}
     )
   #
-  ## from the previous list create data frame list
-  ## where each row corresponds
+  ## ------------------------ ANIMATION ------------------------------
+  #
+  ## from the plots create an animation depending
+  ## on `check.fit.plot`
+  if (!is.null(animation)) {
+    if (isTRUE(check.fit.plot)) {
+      animation::saveGIF({
+        for (p in seq(sim.fit.vary.list.plots)) {
+          print(
+            sim.fit.vary.list.plots[[p]] +
+              patchwork::plot_annotation(title = paste0("Evaluation ",p))
+          )
+        }},
+        interval = 0.32,
+        movie.name = paste0(animation,".gif"),
+        ani.width = 640,
+        ani.height = 640
+      )
+    } else {
+      animation::saveGIF({
+        for (p in seq(sim.fit.vary.list.plots)) {
+          print(
+            sim.fit.vary.list.plots[[p]] +
+              ggtitle(label = paste0("Evaluation ",p))
+          )
+        }},
+        interval = 0.32,
+        movie.name = paste0(animation,".gif"),
+        ani.width = 640,
+        ani.height = 640
+      )
+    }
+  }
+  #
+  ## ------------------------ DATA FRAMES AND VARIABLES --------------------------
+  #
+  ## from the main previous list (of optimized params.)
+  ## create data frame list where each row corresponds
   ## to the best fitted parameter set:
   sim.fit.vary.list.params.df <-
     as.data.frame(do.call(rbind,sim.fit.vary.list.params))
@@ -350,8 +407,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       names.start,
       names.baseline,
       names.A,
-      "minRSS", ## minimum sum of residual squares
-      "raSD", ## standard deviation of residuals
+      "RSS", ## minimum sum of residual squares
+      "residualSD", ## standard deviation of residuals
       "AIC", ## Akaike information criterium
       "BIC" ## Bayesian information criterium
     )
@@ -371,29 +428,29 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       values_to = "Value"
     ) %>% dplyr::arrange(.data$Parameter)
   #
-  # find index for the best fit (minRSS)
-  # in order to extract the data frame:
+  ## find index for the best fit (minRSS)
+  ## in order to extract the data frame:
   best.df.index.minRSS <-
-    which.min(sim.fit.vary.list.params.df$minRSS)
+    which.min(sim.fit.vary.list.params.df$RSS)
   #
-  # find index for the best fit (raSD)
-  best.df.index.raSD <-
-    which.min(sim.fit.vary.list.params.df$raSD)
+  ## find index for the best fit (raSD)
+  # best.df.index.raSD <-
+  #   which.min(sim.fit.vary.list.params.df$raSD)
   #
-  # find index for the best fit (AIC)
-  best.df.index.AIC <-
-    which.min(sim.fit.vary.list.params.df$AIC)
+  ## find index for the best fit (AIC)
+  # best.df.index.AIC <-
+  #   which.min(sim.fit.vary.list.params.df$AIC)
   #
-  # find index for the best fit (BIC)
-  best.df.index.BIC <-
-    which.min(sim.fit.vary.list.params.df$BIC)
+  ## find index for the best fit (BIC)
+  # best.df.index.BIC <-
+  #   which.min(sim.fit.vary.list.params.df$BIC)
   #
   # the best params with minum RSS vector:
   best.params.from.space <-
     sim.fit.vary.list.params.df %>%
-    dplyr::filter(minRSS == min(minRSS)) %>%
+    dplyr::filter(RSS == min(RSS)) %>%
     dplyr::select(!dplyr::all_of(
-      c("minRSS","Evaluation","raSD","AIC","BIC")
+      c("RSS","Evaluation","residualSD","AIC","BIC")
     )) %>%
     unlist() %>% unname()
   #
@@ -410,6 +467,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       values_to = "Value"
     ) %>% dplyr::arrange(.data$Parameter)
   #
+  ## the main list as well as the params. list
+  ## are not required anymore,
+  rm(
+    sim.fit.vary.list,
+    sim.fit.vary.list.params
+  )
   #
   ## ------------------------ PARAMETER ANALYSIS (LATER) -----------------------------
   #
@@ -436,14 +499,14 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## color definitions
   facet.plot.colors <-
-    grDevices::colorRampPalette(colors = c("blue","darkorange","darkviolet"))(ncol(sim.fit.vary.list.params.df) - 1)
+    grDevices::colorRampPalette(colors = c("blue","darkred","darkviolet","darkorange"))(ncol(sim.fit.vary.list.params.df) - 1)
   #
   ## Plot with optimized parameter space
   plot.facet.optim.space <-
     ggplot(
       data = sim.fit.vary.list.params.df.long,
       aes(x = Evaluation,y = Value,color = Parameter)
-    ) + geom_point(size = 3) +
+    ) + geom_point(size = 2.6) +
     ## to show fit with confidence interval
     ## except the minimum sum of residual squares
     geom_smooth(
@@ -452,7 +515,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       span = 1,
       data = subset(
         sim.fit.vary.list.params.df.long,
-        subset = !(Parameter %in% c("minRSS","raSD","AIC","BIC"))
+        subset = !(Parameter %in% c("RSS","residualSD","AIC","BIC"))
       ),
       color = "magenta",
       se = TRUE,
@@ -477,22 +540,22 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) +
     labs(caption = " \u2013 Parameters at minum sum of residual squares ") +
     plot_theme_Out_ticks(
-      axis.title.size = 13,
-      axis.text.size = 11
+      axis.title.size = 14,
+      axis.text.size = 12
     ) +
     theme(
       legend.position = "none",
       strip.text = element_text(
         color = "white",
         face = "bold.italic",
-        size = 11
+        size = 12
       ),
       strip.background = element_rect(fill = "#00205b"),
       axis.title = element_text(face = "italic"),
-      plot.caption = element_text(color = "#129001",face = "bold")
+      plot.caption = element_text(color = "#129001",face = "bold",size = 12)
     ) +
     ggtitle(
-      label = "Space for the Optimized Set of EPR Simulation Parameters",
+      label = "Space for the Set of Optimized EPR Simulation Parameters",
       subtitle = ""
     )
   #
@@ -501,7 +564,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ggplot(
       data = optim.params.init.vary.df.long,
       aes(x = Init_Params_Set,y = Value,color = Parameter)
-    ) + geom_point(size = 3) +
+    ) + geom_point(size = 2.6) +
     # geom_line(linewidth = 0.2) +
     facet_wrap(
       ~Parameter,
@@ -512,22 +575,22 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       values = facet.plot.colors
     ) +
     plot_theme_Out_ticks(
-      axis.title.size = 13,
-      axis.text.size = 11
+      axis.title.size = 14,
+      axis.text.size = 12
     ) +
     theme(
       legend.position = "none",
       strip.text = element_text(
         color = "white",
         face = "bold.italic",
-        size = 11
+        size = 12
       ),
       axis.title.x = element_blank(),
       strip.background = element_rect(fill = "#00205b"),
       axis.title = element_text(face = "italic"),
     ) +
     ggtitle(
-      label = "Space for the Initial Set of EPR Simulation Fitting Parameters",
+      label = "Space for the Set of Initial EPR Simulation Fitting Parameters",
       subtitle = ""
     )
   #
@@ -535,7 +598,14 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   result.list.all <-
     list(
-
+      init.space.df = optim.params.init.vary.df,
+      optim.space.df = sim.fit.vary.list.params.df,
+      init.space.plot = plot.facet.init.space,
+      optim.space.plot = plot.facet.optim.space,
+      best.fit.params = best.params.from.space,
+      optim.EPRspec.plots = sim.fit.vary.list.plots
     )
+  #
+  return(result.list.all)
   #
 }
