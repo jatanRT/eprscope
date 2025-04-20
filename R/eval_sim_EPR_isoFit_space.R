@@ -1,5 +1,4 @@
-#
-### more complex optimization/fitting based
+## more complex optimization/fitting based
 ## on augmented space of initial parameters
 #
 eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
@@ -32,6 +31,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## 'Temporary' processing variables
   . <- NULL
+  Evaluation <- NULL
   #
   ## ================ CHECKING VARIABLES and FUNCTIONS ===============
   #
@@ -39,22 +39,21 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## both cannot be NULL !!
   if (is.null(lineG.content.dvary) &
       is.null(optim.params.init.dvary)) {
-    stop(" Both `dvary` arguments have `NULL` assignment !!
-         Please, define at least one of them, corresponding to initial\n
-         variations, in the form of  (+-) difference. See description \n
-         of the `lineG.content.dvary` and/or `optim.params.init.dvary` argument(s) !! ")
+    message(" Both `dvary` arguments have `NULL` assignment !!
+            The fitting procedure will be just repeated for the initial\n
+            set of parameters `N.points.space`-times !! ")
   }
   #
   ## checking the number `Nmax.evals`
   if (Nmax.evals > 1024) {
-    message(" The max. number of least square function evaluations\n
+    warning(" The max. number of least square function evaluations\n
             for each point in the  `N.points.space` > 1024. \n
             Please, be aware of long computational time. ")
   }
   #
   ## Checking the high number of space points
   if (N.points.space > 64) {
-    message(
+    warning(
       "The number of points in the initial parameter hyperspace\n
       is higher than 64. Please, be aware of long computational time."
     )
@@ -100,10 +99,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         lineG.content + lineG.content.dvary,
         length.out = N.points.space
       )
+  } else {
+    lineG.content.vary <- rep(lineG.content,N.points.space)
   }
   ## sequence for the `optim.params.init`
+  optim.params.init.vary.list <- c()
   if (!is.null(optim.params.init.dvary)) {
-    optim.params.init.vary.list <- c()
     for (j in 1:length(optim.params.init)) {
       optim.params.init.vary.list[[j]] <-
         seq(
@@ -111,6 +112,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
           optim.params.init[j] + optim.params.init.dvary[j],
           length.out = N.points.space
         )
+    }
+  } else {
+    for (j in 1:length(optim.params.init)) {
+      optim.params.init.vary.list[[j]] <-
+        rep(optim.params.init[j],N.points.space)
     }
   }
   #
@@ -226,11 +232,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     if (total.cores <= 2) {
       applied.cores <- 1
       processing <- "sequential"
-      message(
+      warning(
         'Due to the limited hardware resources of your system\n
         NO PARALLEL COMPUTATION (no speed-up) CAN BE APPLIED to obtain\n
         the fit of EPR spectrum. Processing automatically \n
-        switched to "sequential" !! '
+        SWITCHED to "SEQUENTIAL" !! '
       )
     } else if (total.cores > 2) {
       ## round values up to nearest integer:
@@ -262,73 +268,26 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## start time
   start.tm <- Sys.time()
   #
-  if (is.null(lineG.content.dvary)) {
+  progressr::with_progress({
+    ## progress bar definition
+    p <- progressr::progressor(along = 0:length(lineG.content.vary))
     #
-    progressr::with_progress({
-      ## progress bar definition
-      p <- progressr::progressor(along = 0:nrow(optim.params.init.vary.df))
-      #
-      sim.fit.vary.list <-
-        future.apply::future_lapply(
-          1:nrow(optim.params.init.vary.df), function(r) {
-            #
-            p() ## progressbar
-            #
-            vary_sim_iso_fit_fn( ## see the function definition above
-              Gauss.content = lineG.content,
-              ## original from the main function's defaults
-              optim.params.init.var = unname(unlist(optim.params.init.vary.df[r,]))
-            )
-          },
-          future.seed = NULL
-        )
-    })
-  } else { ## if the `lineG.content.vary` is different from NULL
-    if (is.null(optim.params.init.dvary)) {
-      #
-      progressr::with_progress({
-        ## progress bar definition
-        p <- progressr::progressor(along = 0:length(lineG.content.vary))
-        #
-        sim.fit.vary.list <-
-          future.apply::future_lapply(
-            1:length(lineG.content.vary), function(c) {
-              #
-              p() ## progressbarr
-              #
-              vary_sim_iso_fit_fn( ## see the function def. above
-                Gauss.content = lineG.content.vary[c],
-                optim.params.init.var = optim.params.init
-                ## original from the main function's defaults
-              )
-            },
-            future.seed = NULL
+    sim.fit.vary.list <-
+      future.apply::future_Map(
+        function(c,r) {
+          #
+          p() ## progressbar
+          #
+          vary_sim_iso_fit_fn(
+            Gauss.content = lineG.content.vary[c],
+            optim.params.init.var = unname(unlist(optim.params.init.vary.df[r,]))
           )
-      })
-    } else { ## if both arguments can vary (use `Map`-based function)
-      #
-      progressr::with_progress({
-        ## progress bar definition
-        p <- progressr::progressor(along = 0:length(lineG.content.vary))
-        #
-        sim.fit.vary.list <-
-          future.apply::future_Map(
-            function(c,r) {
-              #
-              p() ## progressbar
-              #
-              vary_sim_iso_fit_fn(
-                Gauss.content = lineG.content.vary[c],
-                optim.params.init.var = unname(unlist(optim.params.init.vary.df[r,]))
-              )
-            },
-            as.numeric(1:length(lineG.content.vary)),
-            as.numeric(1:nrow(optim.params.init.vary.df)),
-            future.seed = NULL
-          )
-      })
-    }
-  }
+        },
+        as.numeric(1:length(lineG.content.vary)),
+        as.numeric(1:nrow(optim.params.init.vary.df)),
+        future.seed = NULL
+      )
+  })
   ## end time
   end.tm <- Sys.time()
   #
@@ -439,6 +398,10 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   best.df.index.minRSS <-
     which.min(sim.fit.vary.list.params.df$RSS)
   #
+  ## best lineG.content
+  best.lineGcont <-
+    lineG.content.vary[best.df.index.minRSS]
+  #
   ## find index for the best fit (raSD)
   # best.df.index.raSD <-
   #   which.min(sim.fit.vary.list.params.df$raSD)
@@ -529,12 +492,30 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       level = 0.95,
       linewidth = 1.1
     ) +
+    ## the following `geom_smooth` in order to show progress
+    ## of the RSS minimization/optimization criteria
+    geom_smooth(
+      method = "loess", ## or "lm"
+      formula = y ~ x,
+      span = 0.5,
+      data = subset(
+        sim.fit.vary.list.params.df.long,
+        subset = Parameter %in% c("RSS","residualSD","AIC","BIC")
+      ),
+      color = "deepskyblue",
+      ## also  "cyan" 2,3, "royalblue", "green2", "greenyellow"
+      ## "darkturquoise"
+      se = TRUE,
+      fill = "darkgray",
+      level = 0.95,
+      linewidth = 1.1
+    ) +
     # geom_line(linewidth = 0.2) +
     ## to show the Evaluation within lower `minRSS`:
     geom_vline(
       xintercept = best.df.index.minRSS,
       color = "#129001",
-      linewidth = 0.75
+      linewidth = 1
     ) +
     #
     facet_wrap(
@@ -609,6 +590,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       init.space.plot = plot.facet.init.space,
       optim.space.plot = plot.facet.optim.space,
       best.fit.params = best.params.from.space,
+      best.lineG.content = best.lineGcont,
       optim.EPRspec.plots = sim.fit.vary.list.plots
     )
   #
