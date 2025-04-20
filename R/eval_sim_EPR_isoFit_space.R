@@ -1,6 +1,64 @@
-## more complex optimization/fitting based
-## on augmented space of initial parameters
-#
+
+#'
+#' Explore the Hyperspace of Initial EPR Simulation Parameters (Searching for the Best Fit)
+#'
+#'
+#' @family Simulations and Optimization
+#'
+#'
+#' @description
+#'   A short description...
+#'
+#'
+#' @note
+#'   Blah monitor hardware resources...windows task manager,linux terminal top/htop (system monitor),
+#'   mac top or htop (terminal after installation) or  activity monitor
+#'
+#'
+#' @inheritParams eval_sim_EPR_isoFit
+#' @param lineG.content.dvary Numeric value, corresponding to initial \strong{var}iation of \code{lineG.content},
+#'   (Gaussian EPR line content in the simulated EPR spectrum) provided as \eqn{\pm} \strong{d}ifference
+#'   of the central \code{lineG.content} value. For example, if \code{lineG.content = 0.42}
+#'   and \code{lineG.content.dvary = 0.2}, the parameter will be varied within the range of \eqn{0.42\pm 0.2},
+#'   which will be divided into \code{N.points.space} points (like already shown for the example
+#'   in the \code{N.points.space} argument description). \strong{Default}: \code{lineG.content.dvary = NULL},
+#'   actually pointing to constant \code{lineG.value} throughout the space (optimization/fitting procedures).
+#' @param optim.params.init.dvary
+#' @param N.points.space Numeric value, identical to number of points by which the initial parameter-hyperspace
+#'   (see the \code{lineG.content.dvary} and/or \code{optim.params.init.dvary} and their corresponding
+#'   \code{lineG.content} as well as \code{optimi.params.init} arguments)
+#'   is divided, in order to find the best optimized parameters for EPR simulation fit of the isotropic
+#'   experimental spectrum. \strong{Default}: \code{N.points.space = 16}, e.g. if \code{lineG.content = 0.42}
+#'   and \code{lineG.content.dvary = 0.2}, the initial corresponding vector looks like
+#'   \code{c(0.220,0.247,0.273,0.300,0.327,...,0.567,0.593,0.62)}, where the length of this vector is equal
+#'   to \code{N.points.space = 16} (refer to the above-described arguments of EPR simulation parameters).
+#' @param processing Character string, corresponding to \code{"sequential"} (\strong{default} traditional
+#'   computing method), or \code{"parallel"} processing/evaluation of EPR spectrum fit (optimization of parameters).
+#'   The latter dramatically speeds up the execution time for all points (see the \code{N.points.space}
+#'   argument) of the initial parameter-hyperspace, by dividing all the loops/iterations/evaluations
+#'   into smaller sub-tasks, which are processed simultaneously. When selecting
+#'   \href{https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html}{parallel processing},
+#'   the function/script automatically detects the number of your CPU cores and selects half of them
+#'   (e.g. for 4 cores in total, 2 cores are selected) for the computation. Otherwise, if the hardware resources
+#'   are limited (2 cores in total), the \code{processing = "parallel"} automatically switches
+#'   to \code{"sequential"} one.
+#' @param animation Character string, pointing to name of the animated \code{.gif} file, returned
+#'   after processing and stored in the working directory (see the \code{Value}). If the animation
+#'   is not desirable, put \code{animation = NULL}. Otherwise, an arbitrary file name can be chosen.
+#'   \strong{Default}: \code{animation = "Fitting_of_sim_EPR"}.
+#' @param ... additional arguments specified, see also the \code{\link{eval_sim_EPR_isoFit}},
+#'   like \code{tol.step}, \code{pswarm} arguments (if \code{optim.method = "pswarm"}), \code{Blim}
+#'
+#'
+#' @returns
+#'
+#'
+#' @examples
+#'
+#'
+#' @export
+#'
+#'
 eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # Intensity.expr = "dIepr_over_dB", ## into `...`
                                       # Intensity.sim = "dIeprSim_over_dB", ## into `...`
@@ -25,7 +83,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # pswarm.type = NULL, ## into `...`
                                       check.fit.plot = TRUE,
                                       processing = "sequential", ## or "parallel"
-                                      animation = "AnimatedFit_of_simEPR_params", ## or NULL
+                                      animation = "Fitting_of_sim_EPR", ## or NULL
                                       ## will be saved in working directory
                                       ...) { ## additional arguments from `eval_sim_EPR_isoFit`
   #
@@ -502,9 +560,9 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         sim.fit.vary.list.params.df.long,
         subset = Parameter %in% c("RSS","residualSD","AIC","BIC")
       ),
-      color = "deepskyblue",
+      color = "dodgerblue4",
       ## also  "cyan" 2,3, "royalblue", "green2", "greenyellow"
-      ## "darkturquoise"
+      ## "darkturquoise", "deepskyblue",
       se = TRUE,
       fill = "darkgray",
       level = 0.95,
