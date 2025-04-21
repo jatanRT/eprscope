@@ -412,7 +412,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## "general" function for optimization because it depends
   ## on only method (`method`) and function (`fun`)
   ## and initial params (`x.0`)
-  optim_fn <- function(fun,method,data){
+  optim_fn <- function(fun,method,data,...){
     optim.list <-
       optim_for_EPR_fitness(x.0 = optim.params.init,
           method = method,

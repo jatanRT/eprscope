@@ -28,7 +28,7 @@ the \href{https://brandewinder.com/2022/03/31/breaking-down-Nelder-Mead/}{"Nelde
 \item{x.0}{Numeric vector with the initial values to be optimized in order to fit onto the experimental data.}
 
 \item{fn}{Objective function that is to be minimized. Usually it is the function calculating the sum of residual squares,
-in which a more general parameterized one can be implemented (see \code{Details} and \code{Examples}).}
+where a more general parameterized one can be implemented in (see \code{Details} and \code{Examples}).}
 
 \item{lower, upper}{lower and upper bound constraints.}
 

@@ -42,7 +42,7 @@ Before the installation, please make sure that you have already followed instruc
 #   c("DT","vctrs","npreg","patchwork","kableExtra",
 #     "htmlwidgets","webshot2","tinytable","gsignal",
 #     "shiny","shinythemes","future","future.apply",
-#     "progressr","qqplotr"),
+#     "progressr","qqplotr","animation"),
 #   dependencies = TRUE
 # )
 #

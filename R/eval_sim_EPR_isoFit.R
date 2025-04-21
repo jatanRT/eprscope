@@ -10,13 +10,10 @@
 #'   of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
 #'   (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
 #'   (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on the \code{lineSpecs.form} argument);
-#'   spectral baseline (see the \code{baseline.correct}) and finally the intensity (multiplication coefficient)
+#'   spectral baseline (see the \code{baseline.correct} argument) and finally the intensity (multiplication coefficient)
 #'   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
 #'   The \code{lineG.content} corresponding parameter is the only one,
-#'   which needs to be varied "manually". In order to control the optimization/fitting process,
-#'   by the similar way like in \href{https://easyspin.org/easyspin/documentation/userguide_fitting.html}{EasySpin},
-#'   a \href{https://shiny.posit.co/}{Shiny app}
-#'   and/or \href{https://gganimate.com/}{{gganimate}} visualization is under development.
+#'   which needs to be varied "manually".
 #'
 #'
 #' @note
@@ -32,7 +29,7 @@
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G}
 #'   corresponding to lower and upper visual limit of the selected \eqn{B}-region,
 #'   such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
-#'   \eqn{B}-range of both EPR spectra).
+#'   \eqn{B}-range of EPR spectrum).
 #' @param data.spectr.expr Data frame object/table, containing the experimental spectral data the with magnetic flux density
 #'   (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.
 #' @param Intensity.expr Character string, pointing to column name of the experimental EPR intensity within
@@ -124,7 +121,7 @@
 #'   1. optimized parameters from the best fit (together with the minimum sum of residual squares)
 #'   and 2. Plot of the experimental as well as simulated EPR spectrum depending on \code{check.fit.plot} (see \code{Value}).
 #'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
-#'   as stated in the \code{Description}, therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
+#'   therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
 #' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 #'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
 #'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}
@@ -809,7 +806,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## because it depends on method (`method`), function (`fun`)
   ## and initial params (`x.0`), define it accordingly
-  optim_fn <- function(fun,method,x.0){
+  optim_fn <- function(fun,method,x.0,...){
     optim.list <- optim_for_EPR_fitness(x.0 = x.0,
                                         fn = fun,
                                         method = method,

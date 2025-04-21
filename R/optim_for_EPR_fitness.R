@@ -83,7 +83,7 @@
 #'   the \href{https://brandewinder.com/2022/03/31/breaking-down-Nelder-Mead/}{"Nelder-Mead" simplex method}.
 #' @param x.0 Numeric vector with the initial values to be optimized in order to fit onto the experimental data.
 #' @param fn Objective function that is to be minimized. Usually it is the function calculating the sum of residual squares,
-#'   in which a more general parameterized one can be implemented (see \code{Details} and \code{Examples}).
+#'   where a more general parameterized one can be implemented in (see \code{Details} and \code{Examples}).
 #' @param data Data frame object, containing columns/variables (e.g. intensity of an EPR spectrum),
 #'   required to undergo a fitting/optimization process.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.

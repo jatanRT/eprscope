@@ -73,10 +73,12 @@ Imports:
     pso
 Suggests: 
     DT,
+    osfr,
     shiny,
     progressr,
     future,
-    osfr,
+    numDeriv,
+    animation,
     gsignal,
     usethis,
     vctrs,

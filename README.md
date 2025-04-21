@@ -76,7 +76,7 @@ Kit](https://www.oracle.com/java/technologies/downloads/?er=221886)
 #   c("DT","vctrs","npreg","patchwork","kableExtra",
 #     "htmlwidgets","webshot2","tinytable","gsignal",
 #     "shiny","shinythemes","future","future.apply",
-#     "progressr","qqplotr"),
+#     "progressr","qqplotr","animation"),
 #   dependencies = TRUE
 # )
 #
