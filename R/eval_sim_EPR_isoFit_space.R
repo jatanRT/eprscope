@@ -11,8 +11,11 @@
 #'
 #'
 #' @note
-#'   Blah monitor hardware resources...windows task manager,linux terminal top/htop (system monitor),
-#'   mac top or htop (terminal after installation) or  activity monitor
+#'   In order to monitor and compare load of the hardware resources when running \code{processing = "parallel"}
+#'   and \code{"sequential"}, one might use the following applications depending on the operating system (OS).
+#'   For \emph{Windows}: \code{task manager} GUI (graphical user interface), for \emph{Linux}:
+#'   terminal applications like \code{top}/\code{htop} or \code{system monitor} GUI and for \code{MacOS}
+#'   terminal applications like \code{top}/\code{htop} or \code{activity monitor} GUI.
 #'
 #'
 #' @inheritParams eval_sim_EPR_isoFit
@@ -23,7 +26,26 @@
 #'   which will be divided into \code{N.points.space} points (like already shown for the example
 #'   in the \code{N.points.space} argument description). \strong{Default}: \code{lineG.content.dvary = NULL},
 #'   actually pointing to constant \code{lineG.value} throughout the space (optimization/fitting procedures).
-#' @param optim.params.init.dvary
+#' @param optim.params.init.dvary Numeric vector with initial \strong{var}iations of the corresponding
+#'   \code{optim.params.init} elements in the form of \strong{d}ifferences from the central \code{optim.params.init}
+#'   values. For example, for the aminoxyl radical we may assume \code{optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49)}
+#'   (see the \code{optim.params.init} parameter definition). The \code{optim.params.init.dvary} could be defined
+#'   as follows: \code{c(0.002,2.0,2.0,0,1e-2,3.2)}, meaning that \eqn{g = 2.006\pm 0.002},
+#'   \eqn{\Delta B_{\text{pp}}^{\text{G}} = 4.8\pm 2.0\,\text{G}},
+#'   \eqn{\Delta B_{\text{pp}}^{\text{L}} = 4.8\pm 2.0\,\text{G}}, constant baseline \eqn{0\pm 0}, ...etc.
+#'   We may fix one or more initial parameters by putting the corresponding \code{optim.params.init.dvary}
+#'   element to \code{0}. If the entire \code{optim.params.init} argument is to be fixed => put
+#'   \code{optim.params.init.dvary = NULL} (\strong{default}). In all cases, the related \code{optim.params.init}
+#'   space will be created as a matrix or data frame (see also the \code{Value}/\code{init.space.df}) with
+#'   variables/columns corresponding to individual parameters, and observations/rows corresponding
+#'   to each \code{N.points.space}, dividing the parameter variation range (e.g \eqn{g = 2.006\pm 0.002})
+#'   into smaller spaces. Therefore, the fitting process will be performed (by the \code{\link{eval_sim_EPR_isoFit}})
+#'   for each row of the initial data frame (\code{init.space.df}) together with the initial \code{lineG.content}
+#'   variation vector (see the description of \code{N.points.space} and \code{lineG.content.dvary} arguments).
+#'   In case for the \code{optim.params.init.dvary = NULL}, the fitting procedure is just repeated
+#'   \code{N.points.space}-times, with the same parameter set. Such processing might be useful to determine
+#'   the uncertainty of each optimized EPR simulation parameter by the \code{\link{eval_interval_cnfd_tVec}}
+#'   for each column of the \code{optim.space.df} (see the \code{Value}).
 #' @param N.points.space Numeric value, identical to number of points by which the initial parameter-hyperspace
 #'   (see the \code{lineG.content.dvary} and/or \code{optim.params.init.dvary} and their corresponding
 #'   \code{lineG.content} as well as \code{optimi.params.init} arguments)
@@ -31,7 +53,7 @@
 #'   experimental spectrum. \strong{Default}: \code{N.points.space = 16}, e.g. if \code{lineG.content = 0.42}
 #'   and \code{lineG.content.dvary = 0.2}, the initial corresponding vector looks like
 #'   \code{c(0.220,0.247,0.273,0.300,0.327,...,0.567,0.593,0.62)}, where the length of this vector is equal
-#'   to \code{N.points.space = 16} (refer to the above-described arguments of EPR simulation parameters).
+#'   to \code{N.points.space = 16}.
 #' @param processing Character string, corresponding to \code{"sequential"} (\strong{default} traditional
 #'   computing method), or \code{"parallel"} processing/evaluation of EPR spectrum fit (optimization of parameters).
 #'   The latter dramatically speeds up the execution time for all points (see the \code{N.points.space}
@@ -50,10 +72,31 @@
 #'   like \code{tol.step}, \code{pswarm} arguments (if \code{optim.method = "pswarm"}), \code{Blim}
 #'
 #'
-#' @returns
+#' @returns If the \code{animation} argument is different from \code{NULL}, the function will return a \code{.gif}
+#'   animation of the fitting procedure progress, showing the EPR spectra at each evaluation,
+#'   based on the \code{check.fit.plot} argument. The \code{animation} file will be stored in the working directory
+#'   of your project. Additionally, a message, appeared in the R console, informs that the animation file was created.
+#'   Regardless of the \code{.gif} animation a list with the following elements will be provided:
+#'   \describe{
+#'   \item{init.space.df}{A data frame object representing hyperspace of the initial EPR simulation fitting parameters
+#'   corresponding to \code{optim.params.init} and \code{optim.params.init.dvary}. Each variable/column corresponds
+#'   to EPR simulation parameter to be optimized and each observation/row is related to one \code{N.points.space},
+#'   dividing the range for each parameter defined by the \code{optim.params.init.dvary}. The fitting/optimization
+#'   is performed for each row of the \code{init.space.df}.}
+#'   \item{optim.space.df}{Data frame object similar to \code{init.space.df}, however with optimized EPR simulation
+#'   parameters (after the fitting procedure). In addition, the \code{optim.space.df} contains the following metrics
+#'   of the optimization/fitting as variables/columns: sum of residual squares \code{RSS},
+#'   standard deviation of residuals \code{residualSD}, Akaike information criterion \code{AIC} and Bayesian information
+#'   criterion \code{BIC}. These four parameters are actually related to optimization/fitting path
+#'   (see the \code{optim.space.plot} below).}
+#'   \item{init.space.plot}{Blah.}
+#'   }
 #'
 #'
 #' @examples
+#' \dontrun{
+#'
+#' }
 #'
 #'
 #' @export
@@ -288,7 +331,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     total.cores <- parallel::detectCores(logical = FALSE)
     applied.cores <- NULL
     if (total.cores <= 2) {
-      applied.cores <- 1
+      applied.cores <- 1 ## (just to be sure:-))
       processing <- "sequential"
       warning(
         'Due to the limited hardware resources of your system\n
