@@ -97,7 +97,7 @@
 #'   table is returned, including all EPR spectra and their corresponding integrals.
 #' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 #'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
-#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}.
+#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step} + \code{optim.method} depended additional arguments.
 #'
 #'
 #' @return Function provides data frame object, depending on the \code{output.area.stat} argument,
@@ -412,7 +412,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## "general" function for optimization because it depends
   ## on only method (`method`) and function (`fun`)
   ## and initial params (`x.0`)
-  optim_fn <- function(fun,method,data,...){
+  optim_fn <- function(fun,method,data){
     optim.list <-
       optim_for_EPR_fitness(x.0 = optim.params.init,
           method = method,

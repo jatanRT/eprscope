@@ -115,7 +115,7 @@ table is returned, including all EPR spectra and their corresponding integrals.}
 
 \item{...}{additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
-\code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}.}
+\code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step} + \code{optim.method} depended additional arguments.}
 }
 \value{
 Function provides data frame object, depending on the \code{output.area.stat} argument,

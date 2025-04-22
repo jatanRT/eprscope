@@ -124,7 +124,7 @@
 #'   therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
 #' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 #'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
-#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}
+#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step} + \code{optim.method} depended additional arguments.
 #'
 #'
 #' @return Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
@@ -806,7 +806,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## because it depends on method (`method`), function (`fun`)
   ## and initial params (`x.0`), define it accordingly
-  optim_fn <- function(fun,method,x.0,...){
+  optim_fn <- function(fun,method,x.0){
     optim.list <- optim_for_EPR_fitness(x.0 = x.0,
                                         fn = fun,
                                         method = method,

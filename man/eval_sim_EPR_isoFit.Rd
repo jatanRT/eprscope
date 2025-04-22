@@ -146,7 +146,7 @@ therefore, the \strong{default} value reads \code{output.list.final = FALSE}.}
 
 \item{...}{additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
-\code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step}}
+\code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step} + \code{optim.method} depended additional arguments.}
 }
 \value{
 Optimization/Fitting procedure results in vector or data frame or list depending on the \code{check.fit.plot}
