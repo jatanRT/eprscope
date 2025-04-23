@@ -13,7 +13,8 @@
 #'   spectral baseline (see the \code{baseline.correct} argument) and finally the intensity (multiplication coefficient)
 #'   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
 #'   The \code{lineG.content} corresponding parameter is the only one,
-#'   which needs to be varied "manually".
+#'   which needs to be varied "manually". For an augmented version of this function
+#'   (including \code{lineG.content} variations), please refer to the \code{\link{eval_sim_EPR_isoFit_space}}.
 #'
 #'
 #' @note
@@ -120,7 +121,7 @@
 #' @param output.list.forFitSp Logical. If \code{TRUE}, \code{list} with the following components will be exclusively returned:
 #'   1. optimized parameters from the best fit (together with the minimum sum of residual squares)
 #'   and 2. Plot of the experimental as well as simulated EPR spectrum depending on \code{check.fit.plot} (see \code{Value}).
-#'   Such output will be applied for the more complex optimization/fitting (which is currently under development),
+#'   Such output is applied for the \code{\link{eval_sim_EPR_isoFit_space}},
 #'   therefore, the \strong{default} value reads \code{output.list.final = FALSE}.
 #' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 #'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
@@ -169,7 +170,7 @@
 #'   }
 #'
 #'   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
-#'   which will be applied for the more complex optimization/fitting (currently under development).
+#'   which is to be applied for the \code{\link{eval_sim_EPR_isoFit_space}}.
 #'   \describe{
 #'   \item{params}{A vector, containing the following elements:
 #'   \enumerate{

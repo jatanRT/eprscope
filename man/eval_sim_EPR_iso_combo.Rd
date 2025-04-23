@@ -201,6 +201,7 @@ Other Simulations and Optimization:
 \code{\link{eval_ABIC_forFit}()},
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
+\code{\link{eval_sim_EPR_isoFit_space}()},
 \code{\link{optim_for_EPR_fitness}()},
 \code{\link{plot_eval_RA_forFit}()},
 \code{\link{quantify_EPR_Sim_series}()},

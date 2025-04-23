@@ -74,9 +74,9 @@ Imports:
 Suggests: 
     DT,
     osfr,
+    future,
     progressr,
     patchwork,
-    future,
     numDeriv,
     animation,
     gsignal,

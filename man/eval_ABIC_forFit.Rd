@@ -163,6 +163,7 @@ Fabozzi FJ, Focardi FM, Rachev ST, Arshanapalli BG (2014). \emph{The Basics of F
 Other Simulations and Optimization: 
 \code{\link{eval_sim_EPR_iso}()},
 \code{\link{eval_sim_EPR_isoFit}()},
+\code{\link{eval_sim_EPR_isoFit_space}()},
 \code{\link{eval_sim_EPR_iso_combo}()},
 \code{\link{optim_for_EPR_fitness}()},
 \code{\link{plot_eval_RA_forFit}()},

@@ -12,7 +12,7 @@
 #'   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument \code{N.points.space})
 #'   where each of these points corresponds to starting values (see arguments \code{optim.params.init} +
 #'   \code{optim.params.init.dvary} as well as \code{lineG.content} + \code{lineG.content.dvary}), which are optimized
-#'   by default or customized \code{\link{eval_sim_EPR_isoFit}} setup. Because such procedure is computationally highly demanding,
+#'   by the \code{\link{eval_sim_EPR_isoFit}} setup. Because such procedure is computationally highly demanding,
 #'   the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
 #'   \href{https://future.apply.futureverse.org/}{\code{{future.apply}}} package
 #'   (see also the \code{\link[future.apply]{future_Map}} function). It enables relatively seamless application
@@ -35,6 +35,10 @@
 #'
 #'
 #' @inheritParams eval_sim_EPR_isoFit
+#' @param optim.method Character string (vector), setting the optimization method(s) gathered within
+#'   the \code{\link{optim_for_EPR_fitness}}. \strong{Default}: \code{optim.method = "neldermead"}. Additionally,
+#'   several consecutive methods can be defined like \code{optim.method = c("levenmarq","neldermead")}, where
+#'   the best fit parameters from the previous method are used as input for the next one.
 #' @param lineG.content.dvary Numeric value, corresponding to initial \strong{var}iation of \code{lineG.content},
 #'   (Gaussian EPR line content in the simulated EPR spectrum) provided as \eqn{\pm} \strong{d}ifference
 #'   of the central \code{lineG.content} value. For example, if \code{lineG.content = 0.42}
@@ -166,7 +170,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom ggplot2 ggtitle
 eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # Intensity.expr = "dIepr_over_dB", ## into `...`
                                       # Intensity.sim = "dIeprSim_over_dB", ## into `...`
@@ -198,6 +202,10 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## 'Temporary' processing variables
   . <- NULL
   Evaluation <- NULL
+  Init_Params_Set <- NULL
+  Parameter <- NULL
+  RSS <- NULL
+  Value <- NULL
   #
   ## ================ CHECKING VARIABLES and FUNCTIONS ===============
   #
@@ -499,7 +507,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     future::plan("sequential")
     #
     ## ...+ shutdown the cluster
-    future:::clusterRegistry$stopCluster()
+    # future:::clusterRegistry$stopCluster()
   }
   #
   ## =========== FINAL VARIABLES, ANIMATIONS, DATA FRAMEs ANALYSIS AND PLOTS ============
@@ -543,7 +551,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         for (p in seq(sim.fit.vary.list.plots)) {
           print(
             sim.fit.vary.list.plots[[p]] +
-              ggtitle(label = paste0("Evaluation ",p))
+              ggplot2::ggtitle(label = paste0("Evaluation ",p))
           )
         }},
         interval = 0.32,
@@ -735,7 +743,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       axis.title = element_text(face = "italic"),
       plot.caption = element_text(color = "#129001",face = "bold",size = 12)
     ) +
-    ggtitle(
+    ggplot2::ggtitle(
       label = "Space for the Set of Optimized EPR Simulation Parameters",
       subtitle = ""
     )
@@ -770,7 +778,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       strip.background = element_rect(fill = "#00205b"),
       axis.title = element_text(face = "italic"),
     ) +
-    ggtitle(
+    ggplot2::ggtitle(
       label = "Space for the Set of Initial EPR Simulation Fitting Parameters",
       subtitle = ""
     )
