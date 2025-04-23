@@ -129,7 +129,38 @@
 #'
 #' @examples
 #' \dontrun{
-#'
+#'  ## run parallel processing to fit the EPR spectrum
+#'  ## of the TMPD radical cation (+ zoom the spectrum
+#'  ## output by `Blim`), animation
+#'  ## "Fitting_of_sim_EPR.gif" stored in the working dir.
+#'  listfit <-
+#'    eval_sim_EPR_isoFit_space(
+#'    data.spectr.expr = data.tmpd.spec,
+#'    nu.GHz = data.tmpd.params.values[1,2],
+#'    nuclear.system.noA = list(
+#'      list("14N", 2), # 2 x 14N
+#'      list("1H", 4), # 4 x 1H
+#'      list("1H", 12) # 12 x 1H
+#'    ),
+#'    optim.params.init = c(
+#'      2.0030, 0.4, 0.4, 0,
+#'      2.5e5, 20.0, 5.5, 19
+#'    ),
+#'    optim.params.init.dvary =
+#'    c(0.0002,0.1,0.1,0,
+#'      2e4,2,1,2), ## or NULL
+#'    # Nmax.evals = 256,
+#'    # N.points.space = 16,
+#'    lineG.content = 0.3,
+#'    lineG.content.dvary = 0.15, ## or NULL
+#'    # optim.method = "neldermead",
+#'    processing = "parallel" , ## or "sequential"
+#'    Blim = c(3455,3545)
+#'  )
+#'  #
+#'  ## optimization/fitting progress
+#'  ## (main graphical output)
+#'  listfit$optim.space.plot
 #' }
 #'
 #'
