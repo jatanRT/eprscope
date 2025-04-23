@@ -81,7 +81,6 @@
 #' @export
 #'
 #'
-#' @importFrom stats qt sd
 #' @importFrom errors set_errors
 eval_interval_cnfd_tVec <- function(data.vec.col,
                                     level.cnfd = 0.95,

@@ -51,7 +51,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.table,
-    stats,
     ggplot2,
     plotly,
     dplyr,
@@ -70,12 +69,13 @@ Imports:
     rlang,
     pracma,
     knitr,
-    pso
+    pso,
+    shiny
 Suggests: 
     DT,
     osfr,
-    shiny,
     progressr,
+    patchwork,
     future,
     numDeriv,
     animation,
@@ -88,7 +88,6 @@ Suggests:
     esquisse,
     future.apply,
     npreg,
-    patchwork,
     qqplotr,
     openxlsx,
     webshot2,

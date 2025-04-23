@@ -207,7 +207,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
       stats::dnorm(
         resids,
         mean = mean(resids),
-        sd = (sd(resids) * sqrt((Nobs - 1)/Nobs)),
+        sd = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
         ## because the MaxLikelihood uses `/n` and sd `/n-1`
         log = TRUE
       )
