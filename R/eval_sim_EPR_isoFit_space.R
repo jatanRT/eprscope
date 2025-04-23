@@ -631,7 +631,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## color definitions
   facet.plot.colors <-
-    grDevices::colorRampPalette(colors = c("blue","darkred","darkviolet","darkorange"))(ncol(sim.fit.vary.list.params.df) - 1)
+    grDevices::colorRampPalette(colors = c("dodgerblue4","darkorange","darkviolet","darkred"))(ncol(sim.fit.vary.list.params.df) - 1)
   #
   ## Plot with optimized parameter space
   plot.facet.optim.space <-
@@ -665,7 +665,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         sim.fit.vary.list.params.df.long,
         subset = Parameter %in% c("RSS","residualSD","AIC","BIC")
       ),
-      color = "dodgerblue4",
+      color = "blue2",
       ## also  "cyan" 2,3, "royalblue", "green2", "greenyellow"
       ## "darkturquoise", "deepskyblue",
       se = TRUE,
@@ -678,7 +678,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     geom_vline(
       xintercept = best.df.index.minRSS,
       color = "#129001",
-      linewidth = 1
+      linewidth = 1.1
     ) +
     #
     facet_wrap(
