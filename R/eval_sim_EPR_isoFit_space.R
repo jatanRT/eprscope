@@ -277,25 +277,53 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     eval.optim.progress <- FALSE
   }
   #
-  vary_sim_iso_fit_fn <- function(Gauss.content,optim.params.init.var,...) {
+  ## CENTRAL FITTING FUNCTION (Working with ellipsis)
+  ## -----------------------
+  argumns <- list(...)
+  #
+  vary_sim_iso_fit_fn <- function(Gauss.content,optim.params.init.var) {
     #
-    listfit <- eval_sim_EPR_isoFit(
-      data.spectr.expr = data.spectr.expr,
-      nu.GHz = nu.GHz,
-      B.unit = B.unit,
-      nuclear.system.noA = nuclear.system.noA,
-      baseline.correct = baseline.correct,
-      lineG.content = Gauss.content,
-      lineSpecs.form = lineSpecs.form,
-      optim.method = optim.method,
-      optim.params.init = optim.params.init.var,
-      Nmax.evals = Nmax.evals,
-      check.fit.plot = check.fit.plot,
-      msg.optim.progress = msg.optim.progress, ## must be FALSE
-      eval.optim.progress = eval.optim.progress, ## must be FALSE
-      output.list.forFitSp = output.list.forFitSp, ## must be TRUE
-      ... ## additional arguments from `eval_sim_EPR_isoFit`
+    inner_optim_fn <- function(lineG.content = Gauss.content,
+                               optim.params.init = optim.params.init.var,
+                               ...) {
+    #
+      eval_sim_EPR_isoFit(
+        data.spectr.expr = data.spectr.expr,
+        nu.GHz = nu.GHz,
+        B.unit = B.unit,
+        nuclear.system.noA = nuclear.system.noA,
+        baseline.correct = baseline.correct,
+        lineG.content = lineG.content,
+        lineSpecs.form = lineSpecs.form,
+        optim.method = optim.method,
+        optim.params.init = optim.params.init,
+        Nmax.evals = Nmax.evals,
+        check.fit.plot = check.fit.plot,
+        msg.optim.progress = msg.optim.progress, ## must be FALSE
+        eval.optim.progress = eval.optim.progress, ## must be FALSE
+        output.list.forFitSp = output.list.forFitSp, ## must be TRUE
+        ...## additional arguments from `eval_sim_EPR_isoFit`
+      )
+    #
+    }
+    #
+    vectr.check <- c(
+      "Intensity.expr",
+      "Intensity.sim",
+      "Blim",
+      "optim.params.lower",
+      "optim.params.upper",
+      "tol.step",
+      "pswarm.size",
+      "pswarm.diameter",
+      "pswarm.type"
     )
+    #
+    if (any(vectr.check %in% names(argumns))) {
+      listfit <- do.call(inner_optim_fn,argumns)
+    } else {
+      listfit <- inner_optim_fn()
+    }
     #
     return(listfit)
     #
