@@ -7,7 +7,22 @@
 #'
 #'
 #' @description
-#'   A short description...
+#'   This is an augmented version of the \code{\link{eval_sim_EPR_isoFit}}, providing a broader range of the initial simulation
+#'   parameters in order to find a more reliable simulation fit of an experimental isotropic EPR spectrum. The parameter space
+#'   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument \code{N.points.space})
+#'   where each of these points corresponds to starting values (see arguments \code{optim.params.init} +
+#'   \code{optim.params.init.dvary} as well as \code{lineG.content} + \code{lineG.content.dvary}), which are optimized
+#'   by default or customized \code{\link{eval_sim_EPR_isoFit}} setup. Because such procedure is computationally highly demanding,
+#'   the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
+#'   \href{https://future.apply.futureverse.org/}{\code{{future.apply}}} package
+#'   (see also the \code{\link[future.apply]{future_Map}} function). It enables relatively seamless application
+#'   of \href{https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html}{parallel computing}
+#'   (please, also refer to the \code{processing} argument),
+#'   regardless of the operating system (OS) to dramatically speed-up the entire searching for the best fit.
+#'   In addition to graphical outputs, function also provides an animated representation
+#'   (using the \href{https://yihui.org/animation/}{\code{{animation}}} package) of the procedure progress
+#'   by showing the evaluated EPR spectra.
+#'
 #'
 #'
 #' @note
@@ -16,6 +31,7 @@
 #'   For \emph{Windows}: \code{task manager} GUI (graphical user interface), for \emph{Linux}:
 #'   terminal applications like \code{top}/\code{htop} or \code{system monitor} GUI and for \code{MacOS}
 #'   terminal applications like \code{top}/\code{htop} or \code{activity monitor} GUI.
+#'
 #'
 #'
 #' @inheritParams eval_sim_EPR_isoFit
@@ -52,31 +68,32 @@
 #'   is divided, in order to find the best optimized parameters for EPR simulation fit of the isotropic
 #'   experimental spectrum. \strong{Default}: \code{N.points.space = 16}, e.g. if \code{lineG.content = 0.42}
 #'   and \code{lineG.content.dvary = 0.2}, the initial corresponding vector looks like
-#'   \code{c(0.220,0.247,0.273,0.300,0.327,...,0.567,0.593,0.62)}, where the length of this vector is equal
+#'   \code{c(0.220,0.247,0.273,0.300,0.327,...,0.567,0.593,0.620)}, where the length of this vector is equal
 #'   to \code{N.points.space = 16}.
 #' @param processing Character string, corresponding to \code{"sequential"} (\strong{default} traditional
 #'   computing method), or \code{"parallel"} processing/evaluation of EPR spectrum fit (optimization of parameters).
 #'   The latter dramatically speeds up the execution time for all points (see the \code{N.points.space}
 #'   argument) of the initial parameter-hyperspace, by dividing all the loops/iterations/evaluations
 #'   into smaller sub-tasks, which are processed simultaneously. When selecting
-#'   \href{https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html}{parallel processing},
-#'   the function/script automatically detects the number of your CPU cores and selects half of them
+#'   \href{https://grantmcdermott.com/ds4e/parallel.html}{parallel processing},
+#'   the function/script automatically detects the number of CPU cores of your machine and selects half of them
 #'   (e.g. for 4 cores in total, 2 cores are selected) for the computation. Otherwise, if the hardware resources
 #'   are limited (2 cores in total), the \code{processing = "parallel"} automatically switches
-#'   to \code{"sequential"} one.
+#'   to \code{"sequential"} mode.
 #' @param animation Character string, pointing to name of the animated \code{.gif} file, returned
 #'   after processing and stored in the working directory (see the \code{Value}). If the animation
 #'   is not desirable, put \code{animation = NULL}. Otherwise, an arbitrary file name can be chosen.
 #'   \strong{Default}: \code{animation = "Fitting_of_sim_EPR"}.
 #' @param ... additional arguments specified, see also the \code{\link{eval_sim_EPR_isoFit}},
-#'   like \code{tol.step}, \code{pswarm} arguments (if \code{optim.method = "pswarm"}), \code{Blim}
+#'   like \code{tol.step}, \code{pswarm} arguments (if \code{optim.method = "pswarm"}), \code{Blim},
+#'   \code{Intensity.expr} or \code{Intensity.sim}.
 #'
 #'
 #' @returns If the \code{animation} argument is different from \code{NULL}, the function will return a \code{.gif}
 #'   animation of the fitting procedure progress, showing the EPR spectra at each evaluation,
 #'   based on the \code{check.fit.plot} argument. The \code{animation} file will be stored in the working directory
 #'   of your project. Additionally, a message, appeared in the R console, informs that the animation file was created.
-#'   Regardless of the \code{.gif} animation a list with the following elements will be provided:
+#'   Regardless of the \code{.gif} animation a list with the following elements is provided:
 #'   \describe{
 #'   \item{init.space.df}{A data frame object representing hyperspace of the initial EPR simulation fitting parameters
 #'   corresponding to \code{optim.params.init} and \code{optim.params.init.dvary}. Each variable/column corresponds
@@ -85,11 +102,28 @@
 #'   is performed for each row of the \code{init.space.df}.}
 #'   \item{optim.space.df}{Data frame object similar to \code{init.space.df}, however with optimized EPR simulation
 #'   parameters (after the fitting procedure). In addition, the \code{optim.space.df} contains the following metrics
-#'   of the optimization/fitting as variables/columns: sum of residual squares \code{RSS},
+#'   of the optimization/fitting as variables/columns: sum of the residual squares \code{RSS},
 #'   standard deviation of residuals \code{residualSD}, Akaike information criterion \code{AIC} and Bayesian information
 #'   criterion \code{BIC}. These four parameters are actually related to optimization/fitting path
 #'   (see the \code{optim.space.plot} below).}
-#'   \item{init.space.plot}{Blah.}
+#'   \item{init.space.plot}{A \code{ggplot2} object, corresponding to graphical representation of the \code{init.space.df}
+#'   created by the \code{\link[ggplot2]{facet_wrap}}.}
+#'   \item{optim.space.plot}{A \code{ggplot2} object, corresponding to graphical representation of the \code{optim.space.df}
+#'   created by the \code{\link[ggplot2]{facet_wrap}}. One can also easily recognize the best fit/optimized parameter set,
+#'   because the \code{Evaluation} with those parameters is highlighted by the green line. Additionally, each optimized parameter
+#'   \emph{vs} evaluation relation is fitted by the \code{\link[stats]{loess}} function implemented
+#'   in the \code{\link[ggplot2]{geom_smooth}} in order to show the trend and the \eqn{95\,\%} confidence interval
+#'   of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{AIC} and \code{BIC},
+#'   as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
+#'   \item{best.fit.params}{Vector of the best final fitting (optimized) parameters (in the \code{optim.space.plot} distinguished
+#'   by the green line) and related to the \code{optim.params.init} argument.}
+#'   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
+#'   If \code{lineG.content.dvary = NULL}  it corresponds to the original/initial value (\code{lineG.content}).
+#'   Otherwise, a value from the corresponding vector, defined by the \code{lineG.content} + \code{lineG.content.dvary}
+#'   + \code{N.points.space}, and related to the \code{RSS} minimum is returned.}
+#'   \item{optim.EPRspec.plots}{List of individual EPR spectra, depending on the \code{check.fit.plot} argument and corresponding to
+#'   each \code{Evaluation} (refer also to the \code{optim.space.plot}). These are the actual spectra by which the animation
+#'   was created.}
 #'   }
 #'
 #'
