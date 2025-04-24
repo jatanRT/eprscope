@@ -73,7 +73,7 @@ test_that("The parameters determined from the expr. EPR spectrum
       )
   }
   ## ... and the mean value
-  mean.A.iso.expr <- round(mean(A.iso.expr), 2) ## the mean value is 52.349 MHz
+  mean.A.iso.expr <- round(mean(A.iso.expr), 2) ## the mean value is 52.32 MHz
   #
   ## To simulate that EPR spectrum also the line width is required =>
   DeltaB.expr <- c() ## in mT
@@ -106,7 +106,7 @@ test_that("The parameters determined from the expr. EPR spectrum
         mean.DeltaB.expr,
         mean.DeltaB.expr,
         0,
-        1e-4,
+        1e-2,
         mean.A.iso.expr
       ),
       check.fit.plot = FALSE,

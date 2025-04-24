@@ -39,7 +39,7 @@ If \code{instrum.params = NULL} then parameters must be provided by the \code{pa
 as well as by \code{origin} arguments.}
 
 \item{B.unit}{Character string, pointing to unit of magnetic flux density which is to be presented
-on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
+on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss), \code{"mT"} (millitesla) or \code{"T"} (tesla),
 \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !}
 

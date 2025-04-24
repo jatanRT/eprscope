@@ -53,7 +53,7 @@ were recorded by the "WinEpr" (\code{origin = "winepr"}) or by the "Xenon".
 the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).}
 
 \item{B.unit}{Character string, pointing to unit of magnetic flux density which is to be presented
-on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
+on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss), \code{"mT"} (millitesla) or \code{"T"} (tesla),
 \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !}
 
@@ -171,6 +171,15 @@ sim.simple.a <-
   )
 ## simulation preview:
 sim.simple.a$plot
+#
+## check the g_{iso}-value
+## of the previous spectrum
+eval_gFactor_Spec(
+  sim.simple.a$df,
+  nu.GHz = 9.8943,
+  Intensity = "dIeprSim_over_dB",
+  B = "Bsim_G"
+ )
 #
 ## simulation of luteolin radical anion with
 ## the following four hyperfine coupling constants

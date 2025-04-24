@@ -98,7 +98,7 @@
 #'   \strong{Default}: \code{origin = NULL} in case no file is used to extract
 #'   the parameters (i.e. exactly if \code{path_to_dsc_par = NULL}).
 #' @param B.unit Character string, pointing to unit of magnetic flux density which is to be presented
-#'   on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss) or \code{"mT"} (millitesla),
+#'   on \eqn{B}-axis of the EPR spectrum, like \code{"G"} (Gauss), \code{"mT"} (millitesla) or \code{"T"} (tesla),
 #'   \strong{default}: \code{B.unit = "G"}. THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS
 #'   like \code{cf} and \code{sw} within the \code{instrum.params} AS WELL AS within THOSE IN \code{lineGL.DeltaB} !
 #' @param nuclear.system List, containing the information about groups of equivalent nuclei
@@ -169,6 +169,15 @@
 #'   )
 #' ## simulation preview:
 #' sim.simple.a$plot
+#' #
+#' ## check the g_{iso}-value
+#' ## of the previous spectrum
+#' eval_gFactor_Spec(
+#'   sim.simple.a$df,
+#'   nu.GHz = 9.8943,
+#'   Intensity = "dIeprSim_over_dB",
+#'   B = "Bsim_G"
+#'  )
 #' #
 #' ## simulation of luteolin radical anion with
 #' ## the following four hyperfine coupling constants
@@ -616,6 +625,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   ## EPR Wertz and Bolton https://onlinelibrary.wiley.com/doi/book/10.1002/0470084987
   deriv_line_form <- function(B,
                               B.0,
+                              Bunit = B.unit,
                               g.x = lineG.content,
                               l.y = (1 - lineG.content),
                               gDeltaBpp = lineGL.DeltaB[[1]],
@@ -643,11 +653,22 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                  (1 + 4/3 * ((B - B.0)/lDeltaBpp)^2)^(-2))
     }
     #
+    ## in order to unify intensity range for all `B units`
+    ## base for "G"
+    if (Bunit == "G") {
+      intens_deriv <- intens_deriv
+    } else if (Bunit == "mT") {
+      intens_deriv <- intens_deriv / 100 ## (Area 10 x 10 :-))
+    } else if (Bunit == "T") {
+      intens_deriv <- intens_deriv / 1e+8 ## (Area 1e+4 x 1e+4 :-))
+    }
+    #
     return(intens_deriv)
   }
   ## integral form of the spectral line
   integ_line_form <- function(B,
                               B.0,
+                              Bunit = B.unit,
                               g.x = lineG.content,
                               l.y = (1 - lineG.content),
                               gDeltaB = lineGL.DeltaB[[1]],
@@ -675,6 +696,16 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                                exp(-2 * ((B - B.0) / gGamma.deltaB)^2)) +
         l.y * ((2 / (pi * sqrt(3))) * (1 / lGamma.deltaB) *
                  (1 + (4/3) * ((B - B.0) / lGamma.deltaB)^2)^(-1))
+    }
+    #
+    ## in order to unify intensity range for all `B units`
+    ## base for "G"
+    if (Bunit == "G") {
+      intens_integ <- intens_integ
+    } else if (Bunit == "mT") {
+      intens_integ <- intens_integ / 100 ## (Area 10 x 10 :-))
+    } else if (Bunit == "T") {
+      intens_integ <- intens_integ / 1e+8 ## (Area 1e+4 x 1e+4 :-))
     }
     #
     return(intens_integ)
@@ -869,7 +900,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   #
   ## Reducing columns in the final data frame
   B.g.sim.df <- B.g.sim.df %>%
-    dplyr::select(dplyr::all_of(c("B_G","B_mT",Intensity.sim)))
+    dplyr::select(dplyr::all_of(c("B_G","B_mT","B_T",Intensity.sim)))
     # dplyr::select(.data$B_G,.data$B_mT,.data[[Intensity.sim]])
   ## Plotting the EPR spectrum
   ## y-axis label depending on derivative or integrated line form
@@ -975,7 +1006,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## B within the final data frame should be renamed to "Bsim_..."
     ## in order to be consistent with other `sim` functions
     B.g.sim.df <- B.g.sim.df %>%
-      dplyr::rename_with(~ c("Bsim_G","Bsim_mT"),dplyr::all_of(c("B_G","B_mT")))
+      dplyr::rename_with(~ c("Bsim_G","Bsim_mT","Bsim_T"),dplyr::all_of(c("B_G","B_mT","B_T")))
     #
     return(list(plot = spectrum.sim.plot,df = B.g.sim.df))
     #
