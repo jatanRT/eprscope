@@ -4,7 +4,7 @@
 #'
 #' @description
 #'   Creating files and folders for the basic \href{https://quarto.org/}{Quarto} project having
-#'   the structure shown in \code{Details} and corresponding to reproducible report in EPR.
+#'   the structure shown in \code{Details} and corresponding to reproducible report with processing and analysis of EPR data.
 #'   The main \code{.qmd} ("quarto markdown") file, \code{wd.subdir.name.qmd}, is editable
 #'   (so do the additional files as well) and used for rendering. The latter can be done directly within
 #'   the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating

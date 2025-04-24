@@ -202,7 +202,7 @@ This is an augmented version of the \code{\link{eval_sim_EPR_isoFit}}, providing
   \code{optim.params.init.dvary} as well as \code{lineG.content} + \code{lineG.content.dvary}), which are optimized
   by the \code{\link{eval_sim_EPR_isoFit}} setup. Because such procedure is computationally highly demanding,
   the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
-  \href{https://future.apply.futureverse.org/}{\code{{future.apply}}} package
+  the \href{https://future.apply.futureverse.org/}{\code{{future.apply}}} package
   (see also the \code{\link[future.apply]{future_Map}} function). It enables relatively seamless application
   of \href{https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html}{parallel computing}
   (please, also refer to the \code{processing} argument),

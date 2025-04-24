@@ -550,7 +550,41 @@ knitr::include_graphics("TMPD_EPR_Sim_interact_App.png",dpi = 200)
 
 ```
 
-Although the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization function `eval_sim_EPR_isoFit()` was used to get a more accurate simulated spectrum. The result may be found in `Examples` of the `present_EPR_Sim_Spec()` function.
+Even though the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like `eval_sim_EPR_isoFit()` and/or `eval_sim_EPR_isoFit_space()` can be applied to get a more accurate simulated spectrum. Particularly, the latter can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the $\small \ce{TMPD^{.+}}$ one described in the following example.
+
+```{r tmpd-isoFit-space, eval=FALSE,echo=TRUE}
+
+# runnig parallel processing 
+# to fit the EPR spectrum of the TMPD 
+# radical cation + zoom the spectrum output 
+# by `Blim` argument, refer to the documentation 
+# of `eval-sim_EPR_isoFit_space`
+tmpd.epr.iso.fit <- 
+  eval_sim_EPR_isoFit_space(
+    data.spectr.expr = tmpd.data.norm.01,
+    nu.GHz = tmpd.params$params[1,2],
+    nuclear.system.noA = list(
+      list("14N", 2), # 2 x 14N
+      list("1H", 4), # 4 x 1H
+      list("1H", 12) # 12 x 1H
+    ),
+    optim.params.init = c(
+      2.0030, 0.4, 0.4, 0, 
+      1.25e4, 20.0, 5.5, 19
+    ),
+    optim.params.init.dvary = 
+      c(0.0002,0.1,0.1,0,
+        2e3,2,1,2), # or NULL
+    # Nmax.evals = 256,
+    # N.points.space = 16,
+    lineG.content = 0.3,
+    lineG.content.dvary = 0.15,# or NULL
+    # optim.method = "neldermead",
+    processing = "parallel",# or "sequential"
+    Blim = c(3455,3545)
+  )
+#
+```
 
 ## Integration of the EPR Spectrum
 

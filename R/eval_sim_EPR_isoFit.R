@@ -14,7 +14,7 @@
 #'   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". For an augmented version of this function
-#'   (including \code{lineG.content} variations), please refer to the \code{\link{eval_sim_EPR_isoFit_space}}.
+#'   (including automatic \code{lineG.content} variations), please refer to the \code{\link{eval_sim_EPR_isoFit_space}}.
 #'
 #'
 #' @note
