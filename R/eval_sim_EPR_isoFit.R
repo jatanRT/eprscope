@@ -23,7 +23,12 @@
 #'   EPR spectrum by one of the interactive or static plot functions (e.g. \code{\link{plot_EPR_Specs}}
 #'   or \code{\link{plot_EPR_Specs2D_interact}}) as well as by the \code{\link{eval_sim_EPR_iso}}. Accordingly,
 #'   \strong{the initial intensity multiplication constant} can be estimated as the ratio
-#'   \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
+#'   \strong{max(\code{expr} intensity)/max(\code{sim} intensity) * 0.25}. The coefficient \code{0.25(1/4)} is
+#'   introduced in order to be sure that both of the experimental and initially simulated EPR spectra
+#'   in the graphical output (see the \code{Value}) are clearly visible if \code{check.fit.plot = TRUE}.
+#'   Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
+#'   any intensity multiplication coefficient, close to experimental EPR intensity, can be applied as a starting
+#'   point to evaluate the fit.
 #'
 #'
 #' @inheritParams eval_gFactor_Spec
@@ -88,7 +93,7 @@
 #'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
 #'   \eqn{0.8\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{- 0.001},
-#'   intensity multiplication initial constant \eqn{= 0.8\,\text{init}}, baseline initial slope \eqn{- 5} (in case
+#'   intensity multiplication initial constant \eqn{= 0.75\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.
@@ -96,7 +101,7 @@
 #'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
 #'   \eqn{1.2\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{+ 0.001},
-#'   intensity multiplication initial constant \eqn{= 1.2\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
+#'   intensity multiplication initial constant \eqn{= 1.25\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 #'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.
@@ -739,33 +744,40 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   limits.params1a <- optim.params.init[1] - 0.001
   limits.params1b <- optim.params.init[1] + 0.001
   ## linewidths
-  limits.params2 <- optim.params.init[2] * 0.2
-  limits.params3 <- optim.params.init[3] * 0.2
+  # limits.params2 <- optim.params.init[2] * 0.2
+  # limits.params3 <- optim.params.init[3] * 0.2
   ## constant
   limits.params4a <- optim.params.init[4] - 0.001
   limits.params4b <- optim.params.init[4] + 0.001
   ## intensity multiplication coeff.
-  limits.params5 <- optim.params.init[5] * 0.2
+  # limits.params5 <- optim.params.init[5] * 0.2
   #
-  lower.limits <- c(limits.params1a,
-                    optim.params.init[2] - limits.params2,
-                    optim.params.init[3] - limits.params3,
-                    limits.params4a,
-                    optim.params.init[5] - limits.params5)
-  lower.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
-                         c(lower.limits,-5,-5),
-                         c(lower.limits,-5),
-                         lower.limits
-                         )
-  upper.limits <- c(limits.params1b,
-                    optim.params.init[2] + limits.params2,
-                    optim.params.init[3] + limits.params3,
-                    limits.params4b,
-                    optim.params.init[5] + limits.params5)
-  upper.limits <- switch(3-baseline.cond.fn(baseline.correct = baseline.correct),
-                         c(upper.limits,5,5),
-                         c(upper.limits,5),
-                         upper.limits
+  lower.limits <- c(
+    limits.params1a, ## g
+    0.8 * optim.params.init[2], ## Delta BG
+    0.8 * optim.params.init[3], ## Delta BL
+    limits.params4a, ## baseline constant
+    0.75 * optim.params.init[5] ## intensity multiple
+  )
+  lower.limits <- switch(
+    3-baseline.cond.fn(baseline.correct = baseline.correct),
+    c(lower.limits,-5,-5),
+    c(lower.limits,-5),
+    lower.limits
+  )
+  upper.limits <- c(
+    limits.params1b,
+    1.2 * optim.params.init[2],
+    1.2 * optim.params.init[3],
+    limits.params4b,
+    1.25 * optim.params.init[5]
+  )
+  upper.limits <- switch(
+    3-baseline.cond.fn(baseline.correct = baseline.correct),
+    c(upper.limits,5,5),
+    c(upper.limits,5),
+    upper.limits
+
   )
   #
   if (is.null(nuclear.system.noA)){
@@ -777,20 +789,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     A.upper.limits <- c()
     if (baseline.correct == "constant") {
       for (a in 6:(5+length(nuclear.system.noA))) {
-        A.lower.limits[a-5] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
-        A.upper.limits[a-5] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
+        A.lower.limits[a-5] <- 0.875 * optim.params.init[a]
+        A.upper.limits[a-5] <- 1.125 * optim.params.init[a]
       }
     }
     if (baseline.correct == "linear") {
       for (a in 7:(6+length(nuclear.system.noA))) {
-        A.lower.limits[a-6] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
-        A.upper.limits[a-6] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
+        A.lower.limits[a-6] <- 0.875 * optim.params.init[a]
+        A.upper.limits[a-6] <- 1.125 * optim.params.init[a]
       }
     }
     if (baseline.correct == "quadratic") {
       for (a in 8:(7+length(nuclear.system.noA))) {
-        A.lower.limits[a-7] <- optim.params.init[a] - (optim.params.init[a] * 0.125)
-        A.upper.limits[a-7] <- optim.params.init[a] + (optim.params.init[a] * 0.125)
+        A.lower.limits[a-7] <- 0.875 * optim.params.init[a]
+        A.upper.limits[a-7] <- 1.125 * optim.params.init[a]
       }
     }
     #
@@ -1267,7 +1279,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     y = .data[[Intensity.expr]],
                     color = .data$Spectrum),
                 linewidth = 0.75) +
-      scale_color_manual(values = c("darkcyan","magenta","#5D5DFF"), #674EA7 #7F6000 #351C75 #4C4CFF
+      scale_color_manual(values = c("darkcyan","magenta","blue2"), #4C4CFF
                          labels = c("Experiment\n",
                                     "Best\nSimulation Fit\n",
                                     "Initial\nSimulation")

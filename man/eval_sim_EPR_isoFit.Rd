@@ -103,7 +103,7 @@ is \code{list} with the elements/vectors from each method, in order to see the p
 with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
 \eqn{0.8\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{- 0.001},
-intensity multiplication initial constant \eqn{= 0.8\,\text{init}}, baseline initial slope \eqn{- 5} (in case
+intensity multiplication initial constant \eqn{= 0.75\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
 \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.}
@@ -112,7 +112,7 @@ the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline
 with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
 \eqn{1.2\,\Delta B_{\text{L,init}}}, baseline intercept initial constant \eqn{+ 0.001},
-intensity multiplication initial constant \eqn{= 1.2\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
+intensity multiplication initial constant \eqn{= 1.25\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
 \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
@@ -230,7 +230,12 @@ In order to guess the intensity multiplication constant (please, refer to the \c
   EPR spectrum by one of the interactive or static plot functions (e.g. \code{\link{plot_EPR_Specs}}
   or \code{\link{plot_EPR_Specs2D_interact}}) as well as by the \code{\link{eval_sim_EPR_iso}}. Accordingly,
   \strong{the initial intensity multiplication constant} can be estimated as the ratio
-  \strong{max(\code{expr} intensity)/max(\code{sim} intensity)}.
+  \strong{max(\code{expr} intensity)/max(\code{sim} intensity) * 0.25}. The coefficient \code{0.25(1/4)} is
+  introduced in order to be sure that both of the experimental and initially simulated EPR spectra
+  in the graphical output (see the \code{Value}) are clearly visible if \code{check.fit.plot = TRUE}.
+  Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
+  any intensity multiplication coefficient, close to experimental EPR intensity, can be applied as a starting
+  point to evaluate the fit.
 }
 \examples{
 ## loading built-in example dataset which is simple
