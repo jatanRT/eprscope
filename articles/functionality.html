@@ -742,7 +742,7 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.091   0.005   0.096</span></span>
+<span><span class="co">#&gt;   0.086   0.009   0.093</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
@@ -823,13 +823,17 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 <p>Animation corresponds to the following optimization of EPR simulation parameters:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">tmpd.epr.iso.fit</span><span class="op">$</span><span class="va">optim.space.plot</span></span></code></pre></div>
+<span><span class="va">tmpd.epr.iso.fit</span><span class="op">$</span><span class="va">optim.space.plot</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># the best `lineG.content` parameter:</span></span>
+<span><span class="va">tmpd.epr.iso.fit</span><span class="op">$</span><span class="va">best.lineG.content</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:tmpd-isoFit-space-params-plot"></span>
-<img src="TMPD_fitting_of_sim_EPR_plot.png" alt="Progress of the EPR simulation parameter optimization for the $\small \ce{TMPD^{.+}}$ experimental spectrum, corresponding to above-depicted animation." width="492"><p class="caption">
+<img src="TMPD_fitting_of_sim_EPR_plot.png" alt="Progress of the EPR simulation parameter optimization for the $\small \ce{TMPD^{.+}}$ experimental spectrum, corresponding to above-depicted animation." width="98%"><p class="caption">
 Figure 5.5: Progress of the EPR simulation parameter optimization for the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> experimental spectrum, corresponding to above-depicted animation.
 </p>
 </div>
+<p>Gaussian-line content, corresponding to RSS minimum: 0.27</p>
 </div>
 <div class="section level3" number="5.4">
 <h3 id="integration-of-the-epr-spectrum">
