@@ -597,14 +597,19 @@ Animation corresponds to the following optimization of EPR simulation parameters
 ```{r tmpd-isoFit-space-pars-plot, eval=FALSE,echo=TRUE}
 
 tmpd.epr.iso.fit$optim.space.plot
+#
+# the best `lineG.content` parameter:
+tmpd.epr.iso.fit$best.lineG.content
 
 ```
 
-```{r tmpd-isoFit-space-params-plot,echo=FALSE,fig.align='center',fig.cap="Progress of the EPR simulation parameter optimization for the $\\small \\ce{TMPD^{.+}}$ experimental spectrum, corresponding to above-depicted animation."}
+```{r tmpd-isoFit-space-params-plot,echo=FALSE,fig.align='center',out.width="98%",fig.cap="Progress of the EPR simulation parameter optimization for the $\\small \\ce{TMPD^{.+}}$ experimental spectrum, corresponding to above-depicted animation."}
 
 knitr::include_graphics("TMPD_fitting_of_sim_EPR_plot.png",dpi = 200)
 
 ```
+
+Gaussian-line content, corresponding to RSS minimum: 0.27
 
 ## Integration of the EPR Spectrum
 
