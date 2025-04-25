@@ -26,9 +26,9 @@ There are two possibilities:
     those changes. Additional labels like those mentioned below (see
     "`2. Create a new Issue` ") may be used, as well.
 -   Fork the repository and clone it onto your desired workstation/computer.
--   Afterwards, create a new branch with the name like "`br_…` " where the
+-   Afterwards, create a new branch with the name like "`suggestion/br_…` " where the
     ellipsis stands for 2-3 short words separated by underscore "`_` " to describe
-    the issue in short.
+    the suggestion/issue in short.
 -   Make your changes, please follow the current code/documentation style and/or
     consult the [`{tidyverse}` styleguide](https://style.tidyverse.org/index.html)
     as well as that of the [`{roxygen2}`](https://r-pkgs.org/man.html).

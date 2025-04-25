@@ -550,7 +550,7 @@ knitr::include_graphics("TMPD_EPR_Sim_interact_App.png",dpi = 200)
 
 ```
 
-Even though the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like `eval_sim_EPR_isoFit()` and/or `eval_sim_EPR_isoFit_space()` can be applied to get a more accurate simulated spectrum. Particularly, the latter can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the $\small \ce{TMPD^{.+}}$ one described in the following example.
+Even though the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like `eval_sim_EPR_isoFit()` and/or `eval_sim_EPR_isoFit_space()` can be applied to get a more accurate simulated spectrum. Particularly, the latter can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the $\small \ce{TMPD^{.+}}$ one, described in the following example.
 
 ```{r tmpd-isoFit-space, eval=FALSE,echo=TRUE}
 
@@ -575,8 +575,10 @@ tmpd.epr.iso.fit <-
     optim.params.init.dvary = 
       c(0.0002,0.1,0.1,0,
         2e3,2,1,2), # or NULL
-    # Nmax.evals = 256,
+    # Nmax.evals = 256, 
+    # default number of evaluations:
     # N.points.space = 16,
+    # total number of iterations: 256 x 16 = 4096
     lineG.content = 0.3,
     lineG.content.dvary = 0.15,# or NULL
     # optim.method = "neldermead",
@@ -584,6 +586,24 @@ tmpd.epr.iso.fit <-
     Blim = c(3455,3545)
   )
 #
+```
+
+Such processing (with the elapsed time of $\approx 220\,\mathrm{s}$ on 10-years old 4-core-CPU workstation) will not only return the above-defined list (`tmpd.epr.iso.fit` , see also documentation of the `eval_sim_EPR_isoFit_space()`), however also an animation, showing the progress of simulated EPR spectrum fit at each `Evaluation` :
+
+![](TMPD_fitting_of_sim_EPR.gif){width="640"}
+
+Animation corresponds to the following optimization of EPR simulation parameters:
+
+```{r tmpd-isoFit-space-pars-plot, eval=FALSE,echo=TRUE}
+
+tmpd.epr.iso.fit$optim.space.plot
+
+```
+
+```{r tmpd-isoFit-space-params-plot,echo=FALSE,fig.align='center',fig.cap="Progress of the EPR simulation parameter optimization for the $\\small \\ce{TMPD^{.+}}$ experimental spectrum, corresponding to above-depicted animation."}
+
+knitr::include_graphics("TMPD_fitting_of_sim_EPR_plot.png",dpi = 200)
+
 ```
 
 ## Integration of the EPR Spectrum

@@ -727,7 +727,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) + scale_color_manual(
       values = facet.plot.colors
     ) +
-    labs(caption = " \u2013 Parameters at minum RSS (sum of residual squares) ") +
+    labs(caption = " \u2013 Parameters at minimum RSS (sum of residual squares) ") +
     plot_theme_Out_ticks(
       axis.title.size = 14,
       axis.text.size = 12

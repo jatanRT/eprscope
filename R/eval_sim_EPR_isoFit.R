@@ -24,10 +24,10 @@
 #'   or \code{\link{plot_EPR_Specs2D_interact}}) as well as by the \code{\link{eval_sim_EPR_iso}}. Accordingly,
 #'   \strong{the initial intensity multiplication constant} can be estimated as the ratio
 #'   \strong{max(\code{expr} intensity)/max(\code{sim} intensity) * 0.25}. The coefficient \code{0.25(1/4)} is
-#'   introduced in order to be sure that both of the experimental and initially simulated EPR spectra
-#'   in the graphical output (see the \code{Value}) are clearly visible if \code{check.fit.plot = TRUE}.
+#'   introduced in order to be sure that both of the experimental and initially simulated EPR spectra,
+#'   in the graphical output (see the \code{Value}), are clearly visible if \code{check.fit.plot = TRUE}.
 #'   Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
-#'   any intensity multiplication coefficient, close to experimental EPR intensity, can be applied as a starting
+#'   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
 #'   point to evaluate the fit.
 #'
 #'
