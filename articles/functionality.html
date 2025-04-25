@@ -742,7 +742,7 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.093   0.007   0.101</span></span>
+<span><span class="co">#&gt;   0.091   0.005   0.096</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
@@ -783,7 +783,7 @@ Figure 5.3: Comparison of simulated and experiental EPR spectrum of <span class=
 Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum.
 </p>
 </div>
-<p>Even though the simulated <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like <code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> and/or <code><a href="../reference/eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space()</a></code> can be applied to get a more accurate simulated spectrum. Particularly, the latter can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> one described in the following example.</p>
+<p>Even though the simulated <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like <code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> and/or <code><a href="../reference/eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space()</a></code> can be applied to get a more accurate simulated spectrum. Particularly, the latter can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> one, described in the following example.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># runnig parallel processing </span></span>
@@ -807,8 +807,10 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 <span>    optim.params.init.dvary <span class="op">=</span> </span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0002</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0</span>,</span>
 <span>        <span class="fl">2e3</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="co"># or NULL</span></span>
-<span>    <span class="co"># Nmax.evals = 256,</span></span>
+<span>    <span class="co"># Nmax.evals = 256, </span></span>
+<span>    <span class="co"># default number of evaluations:</span></span>
 <span>    <span class="co"># N.points.space = 16,</span></span>
+<span>    <span class="co"># total number of iterations: 256 x 16 = 4096</span></span>
 <span>    lineG.content <span class="op">=</span> <span class="fl">0.3</span>,</span>
 <span>    lineG.content.dvary <span class="op">=</span> <span class="fl">0.15</span>,<span class="co"># or NULL</span></span>
 <span>    <span class="co"># optim.method = "neldermead",</span></span>
@@ -816,6 +818,18 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 <span>    Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3455</span>,<span class="fl">3545</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span></code></pre></div>
+<p>Such processing (with the elapsed time of <span class="math inline">\(\approx 220\,\mathrm{s}\)</span> on 10-years old 4-core-CPU workstation) will not only return the above-defined list (<code>tmpd.epr.iso.fit</code> , see also documentation of the <code><a href="../reference/eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space()</a></code>), however also an animation, showing the progress of simulated EPR spectrum fit at each <code>Evaluation</code> :</p>
+<p><img src="TMPD_fitting_of_sim_EPR.gif" width="640"></p>
+<p>Animation corresponds to the following optimization of EPR simulation parameters:</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">tmpd.epr.iso.fit</span><span class="op">$</span><span class="va">optim.space.plot</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:tmpd-isoFit-space-params-plot"></span>
+<img src="TMPD_fitting_of_sim_EPR_plot.png" alt="Progress of the EPR simulation parameter optimization for the $\small \ce{TMPD^{.+}}$ experimental spectrum, corresponding to above-depicted animation." width="492"><p class="caption">
+Figure 5.5: Progress of the EPR simulation parameter optimization for the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> experimental spectrum, corresponding to above-depicted animation.
+</p>
+</div>
 </div>
 <div class="section level3" number="5.4">
 <h3 id="integration-of-the-epr-spectrum">
@@ -823,7 +837,7 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 </h3>
 <p>Integration process in the analysis of EPR spectra is undoubtedly an important operation because it mirrors the amount of paramagnetic centers/radicals within the sample (see also <code><a href="../reference/quantify_EPR_Abs.html">quantify_EPR_Abs()</a></code>). However, it is heavily dependent on the initial form of the EPR spectrum, i.e. whether it is present either in derivative (usually in CW EPR) or already integrated (usually in 1D pulsed EPR) form/shape. Hence, the spectrum has to be integrated either twice or only once, respectively. The core-function used for the integration is based on the cumulative trapezoidal approximation, available from the <a href="https://github.com/cran/pracma" class="external-link">{pracma}</a> 📦 <code><a href="https://rdrr.io/pkg/pracma/man/trapz.html" class="external-link">pracma::cumtrapz()</a></code> <span class="citation">(<a href="#ref-Rpracma2023">10</a>–<a href="#ref-epperson2013intro">13</a>)</span>.</p>
 <p>The relative error of the cumulative trapezoidal integration is minimal, usually falling into the range of <span class="math inline">\(\small \langle 1-5\rangle\,\%\)</span> or even lower depending on the spectrum resolution <span class="citation">(<a href="#ref-LibreMath2023">11</a>, <a href="#ref-epperson2013intro">13</a>)</span>. If the initial EPR spectrum displays low signal-to-noise ratio, the integral required for the quantitative analysis looses its sigmoid-shape ( see below an example of such shape). Therefore, in such case, the best option is to simulate the EPR spectrum and to evaluate the integral from that spectrum (see e.g. the <code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code> function). The big advantage of this method consists in graphical representation of the corresponding integrals, i.e. the integration process may be visually controlled in the same manner like within the EPR spectrometer acquisitions/processing software (see also the <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function below). The integration of the EPR spectral data is essentially provided by the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> and its application to the experimental <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> spectrum is documented by the following scripts ➨</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># basic integration without baseline correction</span></span>
 <span><span class="co"># during the first integration.</span></span>
@@ -850,7 +864,7 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 <span><span class="co">#&gt; 5: 3439.3701 -7.2531358e-07 343.93701 1.9566436e-06 3.9727197e-07</span></span>
 <span><span class="co">#&gt; 6: 3439.4199 -5.6317054e-07 343.94199 1.9245572e-06 4.9392357e-07</span></span></code></pre></div>
 <p>Both integrals, within the entire <span class="math inline">\(\small B\)</span>-range, can be visualized by the <code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code> function from <code>Visualization and Graphics</code> family:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># both integrals are presented separately</span></span>
 <span><span class="co"># with their corresponding intensities automatically</span></span>
@@ -869,11 +883,11 @@ Figure 5.4: Screenshot of the Shiny app, showing an interactive simulation of th
 <div class="figure">
 <span style="display:block;" id="fig:tmpd-basic-epr-integ-visual"></span>
 <img src="functionality_files/figure-html/tmpd-basic-epr-integ-visual-1.png" alt="Single (`single_Integ`) and double (`sigmoid_Integ`) integrated EPR spectrum of $\small \ce{TMPD^{.+}}$."><p class="caption">
-Figure 5.5: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</code>) integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
+Figure 5.6: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</code>) integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span>.
 </p>
 </div>
 <p>Obviously, the baseline of the single and double integrated <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum is somewhat distorted and must be corrected. To fix the baseline distortion, the <code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code> function contains corresponding arguments which control the baseline approximation, under the complex peak, by a polynomial fit and provide its subtraction from the single integrated spectrum to evaluate the double/sigmoid integral more accurately ➨</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># correction of the TMPD^{.+} EPR spectrum single</span></span>
 <span><span class="co"># integral by the 3rd degree polynomial</span></span>
@@ -908,7 +922,7 @@ Figure 5.5: Single (<code>single_Integ</code>) and double (<code>sigmoid_Integ</
 <div class="figure">
 <span style="display:block;" id="fig:tmpd-correct-epr-integ"></span>
 <img src="functionality_files/figure-html/tmpd-correct-epr-integ-1.png" alt="Corrected single and double integrated EPR spectrum of $\small \ce{TMPD^{.+}}$ (see also Figure \@ref(fig:tmpd-basic-epr-integ-visual))."><p class="caption">
-Figure 5.6: Corrected single and double integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> (see also Figure <a href="#fig:tmpd-basic-epr-integ-visual">5.5</a>).
+Figure 5.7: Corrected single and double integrated EPR spectrum of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> (see also Figure <a href="#fig:tmpd-basic-epr-integ-visual">5.6</a>).
 </p>
 </div>
 <p>Maximum value of the double/sigmoid integral 0.0024 can be used for the estimation of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> amount within the sample.</p>

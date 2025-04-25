@@ -199,7 +199,7 @@ is <code>list</code> with the elements/vectors from each method, in order to see
 with the lower bound constraints. <strong>Default</strong>: <code>optim.params.lower = NULL</code> which actually
 equals to \(g_{\text{init}} - 0.001\), \(0.8\,\Delta B_{\text{G,init}}\),
 \(0.8\,\Delta B_{\text{L,init}}\), baseline intercept initial constant \(- 0.001\),
-intensity multiplication initial constant \(= 0.8\,\text{init}\), baseline initial slope \(- 5\) (in case
+intensity multiplication initial constant \(= 0.75\,\text{init}\), baseline initial slope \(- 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(- 5\) (in case the <code>baseline.correct</code> is set to
 <code>"quadratic"</code>). Lower limits of all hyperfine coupling constant (HFCCs) are set to \(0.875\,A_{\text{init}}\).</p></dd>
@@ -210,7 +210,7 @@ the baseline initial quadratic coefficient \(- 5\) (in case the <code>baseline.c
 with the upper bound constraints. <strong>Default</strong>: <code>optim.params.upper = NULL</code> which actually
 equals to \(g_{\text{init}} + 0.001\), \(1.2\,\Delta B_{\text{G,init}}\),
 \(1.2\,\Delta B_{\text{L,init}}\), baseline intercept initial constant \(+ 0.001\),
-intensity multiplication initial constant \(= 1.2\,\text{init}\), baseline initial slope \(+ 5\) (in case
+intensity multiplication initial constant \(= 1.25\,\text{init}\), baseline initial slope \(+ 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.correct</code> is set to
 <code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.125\,A_{\text{init}}\).</p></dd>
@@ -338,7 +338,12 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   EPR spectrum by one of the interactive or static plot functions (e.g. <code><a href="plot_EPR_Specs.html">plot_EPR_Specs</a></code>
   or <code><a href="plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact</a></code>) as well as by the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>. Accordingly,
   <strong>the initial intensity multiplication constant</strong> can be estimated as the ratio
-  <strong>max(<code>expr</code> intensity)/max(<code>sim</code> intensity)</strong>.</p>
+  <strong>max(<code>expr</code> intensity)/max(<code>sim</code> intensity) * 0.25</strong>. The coefficient <code>0.25(1/4)</code> is
+  introduced in order to be sure that both of the experimental and initially simulated EPR spectra,
+  in the graphical output (see the <code>Value</code>), are clearly visible if <code>check.fit.plot = TRUE</code>.
+  Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
+  any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
+  point to evaluate the fit.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -387,8 +392,8 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0059322e+00  5.3765569e+00  5.3285529e+00 -1.6723037e-04  1.8080632e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  4.8213858e-08  5.1335870e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0059448e+00  5.4974114e+00  5.1862704e+00 -9.4929049e-05  1.8070618e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  2.7243216e-08  5.1351972e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## spectrum plot with experimental spectrum,</span></span></span>
@@ -401,7 +406,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">min.rss</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.55772e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.3805427e-07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## number of evaluations / iterations:</span></span></span>
@@ -422,12 +427,12 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          B_G     Experiment     Simulation     Residuals Simulation_NoBasLin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;          &lt;num&gt;          &lt;num&gt;         &lt;num&gt;               &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.7000 -1.7738564e-06 -6.5413032e-06 4.7674468e-06       6.7460593e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.9005  1.2209461e-07 -6.5316343e-06 6.6537289e-06       6.7497010e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.1009 -1.8403788e-07 -6.5219169e-06 6.3378790e-06       6.8018248e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.3014 -7.1641412e-08 -6.5122477e-06 6.4406063e-06       6.8057410e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.5019 -1.7361444e-06 -6.5025300e-06 4.7663856e-06       6.8581425e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -6.4928605e-06 5.9775488e-06       6.8623368e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3332.7000 -1.7738564e-06 -4.1290221e-06 2.3551657e-06       6.5629077e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3332.9005  1.2209461e-07 -4.1235480e-06 4.2456426e-06       6.5756338e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3333.1009 -1.8403788e-07 -4.1180464e-06 3.9340085e-06       6.6158641e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3333.3014 -7.1641412e-08 -4.1125720e-06 4.0409306e-06       6.6288572e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3333.5019 -1.7361444e-06 -4.1070702e-06 2.3709258e-06       6.6693576e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3333.7023 -5.1531169e-07 -4.1015956e-06 3.5862839e-06       6.6826214e-09</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## similar EPR spectrum simulation fit with "particle swarm"</span></span></span>
 <span class="r-in"><span><span class="co">## optimization algorithm and `check.fit.plot = TRUE` option</span></span></span>
@@ -454,7 +459,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=3.039e-08, swarm diam.=1.056</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.944  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.57  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -514,21 +519,21 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.307  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.482  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.182  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.748  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0060000e+00  5.7600000e+00  5.7600000e+00 -9.6564591e-10  8.4000000e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0060000e+00  5.7600000e+00  5.7600000e+00 -8.8971218e-10  6.4310899e-03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  4.9000000e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0069962e+00  4.7457426e+00  3.8400000e+00 -6.0710550e-10  8.4000000e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.3445202e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0069998e+00  4.8418985e+00  3.8400033e+00 -2.6089911e-09  8.7499994e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.3612495e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## compare the results with the example in the `readMAT_params_file`,</span></span></span>
@@ -542,7 +547,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## as already stated above:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">N.converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.6573191e-06 1.5747107e-06 1.5676320e-06 1.5676320e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.6573191e-06 1.5727024e-06 1.5529724e-06 1.5518805e-06 1.5518805e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
@@ -553,7 +558,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## + probability distribution</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -27855.621 -27823.797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -27866.006 -27834.183</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"    </span>
