@@ -159,13 +159,13 @@ The CI level is controlled by the <code>level.cnfd</code> argument.</p></dd>
   is required (see the <code>Details</code> or to perform Residuals <em>vs</em> Observation Order to verify
   the assumption that the residuals are independent from one another).</p></dd>
 
-  <dt>rqq.plot</dt>
+  <dt>plot.rqq</dt>
 <dd><p>Ggplot2 object related to visual <strong>r</strong>esidual
   <strong>a</strong>nalysis), with two main plots: Residuals <em>vs</em> Predicted/Fitted Values from
   the model/fit or simulation, and the Q-Q plot (Sample Quantiles <em>vs</em> Theoretical Quantiles,
   where the theoretical ones correspond to normal distribution).</p></dd>
 
-  <dt>histDens.plot</dt>
+  <dt>plot.histDens</dt>
 <dd><p>Ggplot2 object, showing the <strong>hist</strong>ogram
   and the scaled probability <strong>dens</strong>ity function for residuals. The corresponding residuals
   mean value and the median are identified by vertical lines.</p></dd>
@@ -332,10 +332,10 @@ The CI level is controlled by the <code>level.cnfd</code> argument.</p></dd>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## residual and the normal Q-Q plot</span></span></span>
-<span class="r-in"><span><span class="va">list.test</span><span class="op">$</span><span class="va">rqq.plot</span></span></span>
+<span class="r-in"><span><span class="va">list.test</span><span class="op">$</span><span class="va">plot.rqq</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## histogram and probability density</span></span></span>
-<span class="r-in"><span><span class="va">list.test</span><span class="op">$</span><span class="va">histDens.plot</span></span></span>
+<span class="r-in"><span><span class="va">list.test</span><span class="op">$</span><span class="va">plot.histDens</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## standard deviation of residuals</span></span></span>
 <span class="r-in"><span><span class="va">list.test</span><span class="op">$</span><span class="va">sd</span></span></span>

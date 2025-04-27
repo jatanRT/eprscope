@@ -212,8 +212,8 @@ up the <code>separate.plots = TRUE</code>.</p></dd>
   where \(N_{\text{A}}\) stands for the Avogadro's number and \(F\) for the Faraday's constants.
   Both are obtained by the <code>constans::syms$na</code> and the <code>constants::syms$f</code>, respectively,
   using the <a href="https://r-quantities.github.io/constants/" class="external-link">constants</a> package
-  (see <code><a href="https://rdrr.io/pkg/constants/man/syms.html" class="external-link">syms</a></code>). If both numbers match (\(N_{\text{R}} = N_{\text{e}}\)),
-  it reveals the presence of one-electron oxidation/reduction, while different numbers may point
+  (see <code><a href="https://rdrr.io/pkg/constants/man/syms.html" class="external-link">syms</a></code>). If both numbers are close (\(N_{\text{R}} \approx N_{\text{e}}\)),
+  it reveals the presence of one-electron oxidation/reduction, while totally different numbers may point
   to a more complex mechanism (such as comproportionation, follow-up reactions, multiple electron transfer).</p>
     </div>
     <div class="section level2">
