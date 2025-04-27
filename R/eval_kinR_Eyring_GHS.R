@@ -158,7 +158,7 @@
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
 #'   together with the Eyring equation.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-#'   \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+#'   \code{plot.rqq}, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
 #'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
@@ -218,7 +218,7 @@
 #' activ.kinet.test01.data$df.model.HS
 #' #
 #' ## ...and the corresponding analysis of residuals
-#' activ.kinet.test01.data$ra$histDens.plot
+#' activ.kinet.test01.data$ra$plot.histDens
 #' #
 #' ## preview of the convergence measures
 #' activ.kinet.test01.data$converg
@@ -274,7 +274,7 @@
 #' #
 #' ## corresponding analysis of residuals
 #' ## with residual standard deviation
-#' activ.kinet.test02.data$ra$rqq.plot
+#' activ.kinet.test02.data$ra$plot.rqq
 #' activ.kinet.test02.data$ra$sd
 #'
 #'

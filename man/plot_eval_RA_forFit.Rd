@@ -57,11 +57,11 @@ A List, consisting of the following elements is returned:
   \item{df}{Original \code{data.fit} data frame object, if additional processing/analysis
   is required (see the \code{Details} or to perform Residuals \emph{vs} Observation Order to verify
   the assumption that the residuals are independent from one another).}
-  \item{rqq.plot}{Ggplot2 object related to visual \strong{r}esidual
+  \item{plot.rqq}{Ggplot2 object related to visual \strong{r}esidual
   \strong{a}nalysis), with two main plots: Residuals \emph{vs} Predicted/Fitted Values from
   the model/fit or simulation, and the Q-Q plot (Sample Quantiles \emph{vs} Theoretical Quantiles,
   where the theoretical ones correspond to normal distribution).}
-  \item{histDens.plot}{Ggplot2 object, showing the \strong{hist}ogram
+  \item{plot.histDens}{Ggplot2 object, showing the \strong{hist}ogram
   and the scaled probability \strong{dens}ity function for residuals. The corresponding residuals
   mean value and the median are identified by vertical lines.}
   \item{sd}{\strong{S}tandard \strong{d}eviation of residuals (or residual standard error (RSE))
@@ -197,10 +197,10 @@ list.test <-
  )
 #
 ## residual and the normal Q-Q plot
-list.test$rqq.plot
+list.test$plot.rqq
 #
 ## histogram and probability density
-list.test$histDens.plot
+list.test$plot.histDens
 #
 ## standard deviation of residuals
 list.test$sd

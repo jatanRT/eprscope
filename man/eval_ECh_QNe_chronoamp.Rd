@@ -111,8 +111,8 @@ When quantitative EPR is carried out along with electrochemistry simultaneously,
   where \eqn{N_{\text{A}}} stands for the Avogadro's number and \eqn{F} for the Faraday's constants.
   Both are obtained by the \code{constans::syms$na} and the \code{constants::syms$f}, respectively,
   using the \href{https://r-quantities.github.io/constants/}{constants} package
-  (see \code{\link[constants]{syms}}). If both numbers match (\eqn{N_{\text{R}} = N_{\text{e}}}),
-  it reveals the presence of one-electron oxidation/reduction, while different numbers may point
+  (see \code{\link[constants]{syms}}). If both numbers are close (\eqn{N_{\text{R}} \approx N_{\text{e}}}),
+  it reveals the presence of one-electron oxidation/reduction, while totally different numbers may point
   to a more complex mechanism (such as comproportionation, follow-up reactions, multiple electron transfer).
 }
 \examples{

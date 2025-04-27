@@ -596,7 +596,7 @@ Animation corresponds to the following optimization of EPR simulation parameters
 
 ```{r tmpd-isoFit-space-pars-plot, eval=FALSE,echo=TRUE}
 
-tmpd.epr.iso.fit$optim.space.plot
+tmpd.epr.iso.fit$plot.optim.space
 #
 # the best `lineG.content` parameter:
 tmpd.epr.iso.fit$best.lineG.content

@@ -79,7 +79,7 @@
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-#'   \code{rqq.plot}, \code{histDens.plot}; original data frame (\code{df}) with residuals and their corresponding
+#'   \code{plot.rqq}, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
 #'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
@@ -151,8 +151,8 @@
 #' ## normal quantile (Q-Q) plot, indicating that residuals
 #' ## are normally distributed; third plot demonstrates
 #' ## the probability density with the histogram of residuals
-#' triaryl_model_kin_fit_01$ra$rqq.plot
-#' triaryl_model_kin_fit_01$ra$histDens.plot
+#' triaryl_model_kin_fit_01$ra$plot.rqq
+#' triaryl_model_kin_fit_01$ra$plot.histDens
 #' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_01$ra$sd
@@ -186,7 +186,7 @@
 #' ## the 1st order kinetics is less convenient
 #' ## model than that of the 2nd order (based on
 #' ## the decrease of EPR intensity/integral)
-#' triaryl_model_kin_fit_02$ra$rqq.plot
+#' triaryl_model_kin_fit_02$ra$plot.rqq
 #' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_02$ra$sd
