@@ -2,7 +2,6 @@ eprscope
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -55,57 +54,101 @@ between or employ any other additional software.
 
 ## Installation
 
-Before the installation, please make sure that you have already followed
-instructions for the [{nloptr} package
-installation](https://astamm.github.io/nloptr/) depending on your
-operating system (OS). This package is required for the proper running
-of the `{eprscope}` optimization/fitting functions. Additionally, the
-function `draw_molecule_by_rcdk()` depends on the [JDK Development
-Kit](https://www.oracle.com/java/technologies/downloads/?er=221886)
-(*JAVA*), which must be installed on your desired OS as well.
+Prior to own `{eprscope}` 📦 installation a minimal system setup is
+required and summarized into the following steps:
+
+1.  Installation of *JDK Development Kit* where the corresponding
+    package, suitable for your operating system, can be downloaded from
+    the [official *Oracle*
+    website](https://www.oracle.com/java/technologies/downloads/?er=221886)
+    (this is needed in order to properly run the
+    `draw_molecule_by_rcdk()` function).
+
+2.  Please, follow the instructions for the [the R installation
+    procedure](https://cran.rstudio.com/).
+
+3.  Download and install [*RStudio
+    IDE*](https://posit.co/download/rstudio-desktop/) (Integrated
+    Development Environment). Alternatively, one may also try the
+    corresponding [cloud version](https://docs.posit.co/cloud/) without
+    the need for an
+    <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+    installation. Any other
+    <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+    compatible environment like [VS
+    Code](https://code.visualstudio.com/) or
+    [Positron](https://positron.posit.co/) may be installed as well.
+
+4.  Download and install the latest release of [*Rtools* (WINDOWS
+    only)](https://cran.r-project.org/bin/windows/Rtools/) or on
+    *macOS/Linux* [follow the instructions to install
+    *CMake*](https://astamm.github.io/nloptr/). Alternatively, on
+    *macOS*, *CMake* can be set up via the [Homebrew](https://brew.sh/)
+    repository (see also
+    <https://formulae.brew.sh/formula/cmake#default>). This step is
+    required to use the `{nloptr}` 📦 for the fitting of isotropic EPR
+    spectra.
+
+5.  In the
+    <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+    *Console* (lower left panel within the *RStudio IDE*) run the
+    following code in order to install essential
+    <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+    packages for data science with all their dependencies ➨
+
+    ``` r
+
+    # run code in the R console
+    #
+    # after the initial R environment setup it's always 
+    # good to install essential collection of packages for data science 
+    # with all their dependencies:
+    install.packages("tidyverse",dependencies = TRUE)
+    install.packages(
+      c("DT","vctrs","npreg","patchwork","kableExtra",
+        "htmlwidgets","webshot2","tinytable","gsignal",
+        "shinythemes","future","future.apply",
+        "progressr","qqplotr","animation"),
+      dependencies = TRUE
+    )
+    ```
+
+**There are two main options how to install the `{eprscope}`** 📦 **via
+the**
+<img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
+***Console*** ➨
 
 ``` r
 
-# run code in the R console
-#
-# after the initial R environment setup (see below) it's always 
-# good to install essential collection of packages for data science 
-# with all their dependencies:
-# install.packages("tidyverse",dependencies = TRUE)
-# install.packages(
-#   c("DT","vctrs","npreg","patchwork","kableExtra",
-#     "htmlwidgets","webshot2","tinytable","gsignal",
-#     "shinythemes","future","future.apply",
-#     "progressr","qqplotr","animation"),
-#   dependencies = TRUE
-# )
-#
-# package can be installed using the following command =>
+# from the GitHub repository:
 if (!require(devtools)) {install.packages("devtools")}
 devtools::install_github("jatanRT/eprscope")
-#
-# alternatively, install package together with all the vignettes/articles:
-# if (!require(devtools)) {install.packages("devtools")}
-# devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 ```
 
-Completely new
-<img src="https://www.r-project.org/Rlogo.png" width="16" height="16"/>
-users or people who haven’t already installed the *R* environment,
-please consult these steps, prior to own `{eprscope}` installation ➨
+or
 
-1.  [the R installation procedure](https://cran.rstudio.com/)
+``` r
 
-2.  [installation of the Rstudio
-    IDE](https://posit.co/download/rstudio-desktop/) (alternatively, you
-    may try its [cloud version](https://docs.posit.co/cloud/) without
-    the need for an
-    <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-    installation)
+# from the R-Universe (https://r-universe.dev/search)
+# and CRAN (https://cran.r-project.org/) repositories:
+install.packages(
+  "eprscope",
+  repos = c(
+    "https://jatanrt.r-universe.dev",
+    "https://cloud.r-project.org"
+  )
+)
+```
 
-3.  [the latest R tools
-    release](https://cran.r-project.org/bin/windows/Rtools/) **ONLY for
-    WINDOWS OS**
+If one wants to install the entire 📦 including all the documentation
+vignettes/articles ➨
+
+``` r
+
+# alternatively, install package together with all the vignettes/articles:
+if (!require(devtools)) {install.packages("devtools")}
+devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
+```
 
 Additionally, **the open-source scientific and technical publishing
 system** [Quarto](https://quarto.org/) together with the
@@ -116,7 +159,8 @@ found in the `create_qmdReport_proj()` documentation).
 
 ## Updates
 
-To update the `{eprscope}` 📦, just run the following code in the R
+To update the `{eprscope}` 📦, just run the following code in the
+<img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
 console ➨
 
 ``` r
@@ -275,9 +319,9 @@ triarylamine_rc_decay_model$plot
 # of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>           Estimate    Std. Error    t value       Pr(>|t|)
-#> qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149
-#> k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19
-#> alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101
+#> qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149
+#> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
+#> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
 ```
 
 ## Help, Questions and Contribution
