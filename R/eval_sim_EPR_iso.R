@@ -13,7 +13,7 @@
 #'   (see also \code{References}). The actual function helps to analyze the hyperfine structure (HFS)
 #'   of the isotropic EPR spectra by simulations. For such purpose, properties like nuclear \eqn{g}-value,
 #'   spin quantum number as well as natural abundance of the isotopes, related to interacting nuclei,
-#'   must be known and are collected in the \code{\link{isotopes_ds}}. EPR spectra can be simulated
+#'   must be known and are collected from the \code{\link{isotopes_ds}}. EPR spectra can be simulated
 #'   for the derivative as well as for the integrated line forms (see the argument \code{lineSpec.form}).
 #'
 #'

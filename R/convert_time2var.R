@@ -6,11 +6,11 @@
 #'
 #'
 #' @description
-#'   Conversion of time (\eqn{t}) into variable (\eqn{var}) which is linearly changed on time.
+#'   Conversion of time (\eqn{t}) into variable (\eqn{var}), linearly changing in time.
 #'
 #'
 #' @details
-#'  The linear time change of \eqn{var} can be expressed like
+#'  The linear relationship between \eqn{var} and time (\eqn{t}) can be expressed like
 #'  \deqn{var = var0 + rate~ t}
 #'  This is especially suitable for time conversion of EPR time series experiments
 #'  (see e.g. \code{\link{readEPR_Exp_Specs_kin}}) simultaneously performed either during
@@ -20,7 +20,7 @@
 #'  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
 #'  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
 #'  where the \eqn{t_{\text{switch}}}, corresponding to \eqn{var_{\text{switch}}}, are the quantities
-#'  at the turning point( see also \code{var.switch} argument).
+#'  at the turning point( see also the \code{var.switch} argument).
 #'
 #'
 #'
@@ -42,7 +42,7 @@
 #'
 #'
 #' @return Numeric value or vector of the variable such as electrochemical potential or temperature,
-#'   linearly changing on time.
+#'   linearly changing in time.
 #'
 #'
 #' @examples

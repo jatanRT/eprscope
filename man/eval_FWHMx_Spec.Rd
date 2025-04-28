@@ -30,7 +30,7 @@ e.g. \code{xlim = c(3495.4,3595.4)} (\emph{B} in \code{G}) or \code{xlim = c(2.0
 }
 \value{
 Numeric value of the FWHM, directly from EPR spectrum, depending on the \code{x} variable =>
-  either in \code{mT}/\code{G} or unitless in case if \emph{g}-factor is presented on abscissa.
+  either in \code{mT}/\code{G}/\code{T} or unitless in case if \emph{g}-factor is presented on abscissa.
 }
 \description{
 Finding the full width at half-maximum (FWHM) height of the EPR integrated spectrum/intensity.
@@ -38,7 +38,7 @@ Finding the full width at half-maximum (FWHM) height of the EPR integrated spect
   If this is not the case, the derivative EPR spectrum (with the intensity \code{dIepr_over_dB})
   can be integrated by the \code{\link{eval_integ_EPR_Spec}}. The FWHM is evaluated as a difference
   between the points (\eqn{x > x_{\text{max}}} and \eqn{x < x_{\text{max}}}) having the intensity
-  closest to the intensity maximum/2 corresponding to one individual EPR line/peak defined
+  closest to the intensity maximum/2, corresponding to one individual EPR line/peak defined
   by the \code{xlim} argument.
 }
 \examples{

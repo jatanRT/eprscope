@@ -12,7 +12,7 @@
 #'   the local intensity maxima and/or minima by fitting the experimental EPR spectral parts/points using the shortened
 #'   \href{https://www.radfordmathematics.com/functions/quadratic-functions-parabola/vertex-form/vertex-form-finding-equation-parabola.html}{vertex form of a parabola}.
 #'   The parabola vertices actually represent the maxima or minima. Visualization of the peak picking is provided
-#'   by the \code{\link{plot_EPR_Specs}} together with the \code{geom_text} function (see \code{\link[ggplot2]{geom_label}}).
+#'   by the \code{\link{plot_EPR_Specs}} together with the \code{geom_text} function (see the \code{\link[ggplot2]{geom_label}}).
 #'
 #' @inheritParams plot_EPR_Specs
 #' @param data.spectr Data frame object/table, containing \code{x}-values and the \code{Intensity}

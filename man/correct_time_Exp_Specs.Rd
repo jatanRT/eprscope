@@ -47,7 +47,8 @@ for the individual scan. These parameters can be obtained by the \code{\link{rea
 or other functions which can read the instrumental parameter files.
 }
 \examples{
-## 12 s recorded by spectrometer, 6 accumulations by the sweep time of 6 s
+## 12 s recorded by spectrometer, 6 accumulations
+## by the sweep time of 6 s
 correct_time_Exp_Specs(12,Nscans = 6,6)
 
 

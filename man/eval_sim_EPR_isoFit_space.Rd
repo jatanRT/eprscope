@@ -195,7 +195,7 @@ If the \code{animation} argument is different from \code{NULL}, the function wil
   }
 }
 \description{
-This is an augmented version of the \code{\link{eval_sim_EPR_isoFit}}, providing a broader range of the initial simulation
+This is an extended version of the \code{\link{eval_sim_EPR_isoFit}}, providing a broader range of the initial simulation
   parameters in order to find a more reliable simulation fit of an experimental isotropic EPR spectrum. The parameter space
   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument \code{N.points.space})
   where each of these points corresponds to starting values (see arguments \code{optim.params.init} +
@@ -213,7 +213,7 @@ This is an augmented version of the \code{\link{eval_sim_EPR_isoFit}}, providing
 }
 \note{
 In order to monitor and compare load of the hardware resources when running \code{processing = "parallel"}
-  and \code{"sequential"}, one might use the following applications depending on the operating system (OS).
+  and \code{"sequential"}, one might use the following applications depending on the OS.
   For \emph{Windows}: \code{task manager} GUI (graphical user interface), for \emph{Linux}:
   terminal applications like \code{top}/\code{htop} or \code{system monitor} GUI and for \code{MacOS}
   terminal applications like \code{top}/\code{htop} or \code{activity monitor} GUI.

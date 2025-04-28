@@ -106,7 +106,7 @@ List of Data Frames (or long table \code{tidy} format) corresponding
   is automatically calculated during the processing and it is included in the data frame list/database as well.
 }
 \description{
-Loads the EPR spectra from several/multiple \code{text} files (including the instrumental
+Loading the EPR spectra from several/multiple \code{text} files (including the instrumental
   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. Finally, the data are transformed
   either into a list of data frames or into a \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}.
   According to experimental quantity (e.g. temperature, microwave power, recording time...etc),

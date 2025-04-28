@@ -7,8 +7,8 @@
 #'
 #' @description
 #'   When comparing different (simulation) fits for the same experimental data (see
-#'   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}}
-#'   or \code{\link{smooth_EPR_Spec_by_npreg}}), the fits can be scored/ranked by different
+#'   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}},
+#'   \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), they can be scored/ranked by different
 #'   metrics (e.g. minimum sum of residual squares or standard deviation of residuals), including
 #'   Akaike and Bayesian Information Criteria (\code{\link[stats]{AIC}} and BIC, respectively).
 #'   These are also applied for the best model selection in machine learning (refer to e.g.

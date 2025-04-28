@@ -7,7 +7,7 @@
 #'
 #' @description Calculation of the mean value and its confidence limits (according to Student's t-distribution),
 #'  corresponding to data frame column or vector, characterizing dispersion of the individual
-#'  values such as double integrals in quantitative EPR analysis, g-values or linewidths.
+#'  values such as double integrals in quantitative EPR analysis, g-values or linewidths,...etc.
 #'
 #'
 #' @details

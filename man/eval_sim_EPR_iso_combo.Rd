@@ -108,7 +108,7 @@ List of the following data frames and plots in case of
 \description{
 This is an extension of the "basic" EPR simulation provided by the \code{\link{eval_sim_EPR_iso}} function,
   where one can combine several simulated EPR spectra (components), even with (partial) overlay,
-  into one spectrum corresponding to sum of all components. Such processing might be useful for the simulation
+  into one spectrum corresponding to sum of all those components. Such processing might be useful for the simulation
   of EPR spectra with satellites, especially of those consisted of naturally occurring
   isotopes, like the one presented in \code{Examples}.
 }

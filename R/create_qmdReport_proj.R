@@ -1,5 +1,5 @@
 #'
-#' Basic Quarto Reproducible Project File/Folder Structure for the EPR Reports
+#' Basic Quarto Reproducible Project File/Folder Structure for EPR Reports
 #'
 #'
 #' @description
@@ -35,7 +35,7 @@
 #'   \code{orcid:} and affiliations \code{name:} and \code{url:}, directly within the main \code{.qmd} file.
 #'   The \code{.bib} file is already pre-populated by one example, actually corresponding to \code{{eprscope}}
 #'   package citation. The \code{.bib} reference/citation database/file can be extended and organized
-#'   by the online service called \href{https://www.citedrive.com/en/docs/}{CiteDrive}, which can be also used
+#'   by the online service called \href{https://www.citedrive.com/en/docs/}{CiteDrive}, which can be also applied
 #'   as a web clipper for your references/citations,
 #'   please refer to the \href{https://www.citedrive.com/en/docs/collect/browser-extension/}{available browser extensions}.
 #'
@@ -118,7 +118,7 @@
 #'   \href{https://quarto.org/docs/authoring/markdown-basics.html}{text}, code (besides R, also other
 #'   programming languages like \emph{Python}, \emph{Julia} or \emph{Observable} can be used as well) and outputs
 #'   (usually, figures and/or tables). Upon rendering, they are nicely combined into shareable above-listed
-#'   report formats stored under the \code{_output}. Among them, the \code{.html} output possesses
+#'   formats stored under the \code{_output}. Among them, the \code{.html} output possesses
 #'   a distinctive position, because it preserves the structure of interactive EPR spectra or tables
 #'   (see e.g. \code{\link{plot_EPR_Specs3D_interact}} or \code{\link{readEPR_params_tabs}}).
 #'   File-Folder structure, presented above, is flexible and customizable to meet the user's needs,
@@ -183,7 +183,7 @@
 #'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version (history of changes) control.
 #'
 #'
-#' @return File-folder structure ("tree") for the basic Quarto reproducible report in R, which may be used
+#' @return File-folder structure ("tree") for the basic Quarto reproducible report with R, which may be used
 #'   for data processing and analysis in Electron Paramagnetic Resonance (EPR).
 #'
 #'

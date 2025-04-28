@@ -20,10 +20,10 @@ Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
   into hyperfine coupling ones (HFCCs, \eqn{A} values in \code{MHz}).
 }
 \details{
-Conversion done according to following relation:
+Conversion performed according to the following relation:
   \deqn{A = (a\,g\,\mu_{\text{B}}) / h}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
-  Both latter are obtained by \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
+  Both latter are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
   using the \href{https://r-quantities.github.io/constants/}{constants} package (see \code{\link[constants]{syms}}).
   Conversion is suitable for the EPR simulations and/or ENDOR.
 }

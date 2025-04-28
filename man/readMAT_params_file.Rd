@@ -24,7 +24,7 @@ Unless the \code{str.var} and/or \code{field.var} are not specified, the output 
 }
 \description{
 Function is based on the \code{\link[R.matlab]{readMat}} and provides the reading of a \code{.mat}
-  simulation file content from EasySpin MATLAB, including structures/variables and fields.
+  simulation file content from \emph{EasySpin} MATLAB, including structures/variables and fields.
   It can be also used to read and store simulated EPR spectrum in the form of R data frame (see \code{Examples}).
 }
 \examples{
