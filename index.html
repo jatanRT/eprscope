@@ -91,43 +91,62 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Before the installation, please make sure that you have already followed instructions for the <a href="https://astamm.github.io/nloptr/" class="external-link">{nloptr} package installation</a> depending on your operating system (OS). This package is required for the proper running of the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> optimization/fitting functions. Additionally, the function <code><a href="reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code> depends on the <a href="https://www.oracle.com/java/technologies/downloads/?er=221886" class="external-link">JDK Development Kit</a> (<em>JAVA</em>), which must be installed on your desired OS as well.</p>
+<p>Prior to own <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦 installation a minimal system setup is required and summarized into the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Installation of <em>JDK Development Kit</em> where the corresponding package, suitable for your operating system, can be downloaded from the <a href="https://www.oracle.com/java/technologies/downloads/?er=221886" class="external-link">official <em>Oracle</em> website</a> (this is needed in order to properly run the <code><a href="reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code> function).</p></li>
+<li><p>Please, follow the instructions for the <a href="https://cran.rstudio.com/" class="external-link">the R installation procedure</a>.</p></li>
+<li><p>Download and install <a href="https://posit.co/download/rstudio-desktop/" class="external-link"><em>RStudio IDE</em></a> (Integrated Development Environment). Alternatively, one may also try the corresponding <a href="https://docs.posit.co/cloud/" class="external-link">cloud version</a> without the need for an <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> installation. Any other <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> compatible environment like <a href="https://code.visualstudio.com/" class="external-link">VS Code</a> or <a href="https://positron.posit.co/" class="external-link">Positron</a> may be installed as well.</p></li>
+<li><p>Download and install the latest release of <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link"><em>Rtools</em> (WINDOWS only)</a> or on <em>macOS/Linux</em> <a href="https://astamm.github.io/nloptr/" class="external-link">follow the instructions to install <em>CMake</em></a>. Alternatively, on <em>macOS</em>, <em>CMake</em> can be set up via the <a href="https://brew.sh/" class="external-link">Homebrew</a> repository (see also <a href="https://formulae.brew.sh/formula/cmake#default" class="external-link uri">https://formulae.brew.sh/formula/cmake#default</a>). This step is required to use the <a href="https://github.com/astamm/nloptr" class="external-link">nloptr</a> 📦 for the fitting of isotropic EPR spectra.</p></li>
+<li>
+<p>In the <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"><em>Console</em> (lower left panel within the <em>RStudio IDE</em>) run the following code in order to install essential <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> packages for data science with all their dependencies ➨</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># run code in the R console</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># after the initial R environment setup (see below) it's always </span></span>
+<span><span class="co"># after the initial R environment setup it's always </span></span>
 <span><span class="co"># good to install essential collection of packages for data science </span></span>
 <span><span class="co"># with all their dependencies:</span></span>
-<span><span class="co"># install.packages("tidyverse",dependencies = TRUE)</span></span>
-<span><span class="co"># install.packages(</span></span>
-<span><span class="co">#   c("DT","vctrs","npreg","patchwork","kableExtra",</span></span>
-<span><span class="co">#     "htmlwidgets","webshot2","tinytable","gsignal",</span></span>
-<span><span class="co">#     "shinythemes","future","future.apply",</span></span>
-<span><span class="co">#     "progressr","qqplotr","animation"),</span></span>
-<span><span class="co">#   dependencies = TRUE</span></span>
-<span><span class="co"># )</span></span>
-<span><span class="co">#</span></span>
-<span><span class="co"># package can be installed using the following command =&gt;</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">}</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
-<span><span class="co">#</span></span>
-<span><span class="co"># alternatively, install package together with all the vignettes/articles:</span></span>
-<span><span class="co"># if (!require(devtools)) {install.packages("devtools")}</span></span>
-<span><span class="co"># devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)</span></span></code></pre></div>
-<p>Completely new <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> users or people who haven’t already installed the <em>R</em> environment, please consult these steps, prior to own <a href="https://jatanrt.github.io/eprscope/">eprscope</a> installation ➨</p>
-<ol style="list-style-type: decimal">
-<li><p><a href="https://cran.rstudio.com/" class="external-link">the R installation procedure</a></p></li>
-<li><p><a href="https://posit.co/download/rstudio-desktop/" class="external-link">installation of the Rstudio IDE</a> (alternatively, you may try its <a href="https://docs.posit.co/cloud/" class="external-link">cloud version</a> without the need for an <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> installation)</p></li>
-<li><p><a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">the latest R tools release</a> <strong>ONLY for WINDOWS OS</strong></p></li>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span>,dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DT"</span>,<span class="st">"vctrs"</span>,<span class="st">"npreg"</span>,<span class="st">"patchwork"</span>,<span class="st">"kableExtra"</span>,</span>
+<span>    <span class="st">"htmlwidgets"</span>,<span class="st">"webshot2"</span>,<span class="st">"tinytable"</span>,<span class="st">"gsignal"</span>,</span>
+<span>    <span class="st">"shinythemes"</span>,<span class="st">"future"</span>,<span class="st">"future.apply"</span>,</span>
+<span>    <span class="st">"progressr"</span>,<span class="st">"qqplotr"</span>,<span class="st">"animation"</span><span class="op">)</span>,</span>
+<span>  dependencies <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</li>
 </ol>
+<p><strong>There are two main options how to install the <a href="https://jatanrt.github.io/eprscope/">eprscope</a></strong> 📦 <strong>via the</strong> <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"><strong><em>Console</em></strong> ➨</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># from the GitHub repository:</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span></code></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># from the R-Universe (https://r-universe.dev/search)</span></span>
+<span><span class="co"># and CRAN (https://cran.r-project.org/) repositories:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>  <span class="st">"eprscope"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"https://jatanrt.r-universe.dev"</span>,</span>
+<span>    <span class="st">"https://cloud.r-project.org"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>If one wants to install the entire 📦 including all the documentation vignettes/articles ➨</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># alternatively, install package together with all the vignettes/articles:</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span>,build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Additionally, <strong>the open-source scientific and technical publishing system</strong> <a href="https://quarto.org/" class="external-link">Quarto</a> together with the <a href="https://pandoc.org/" class="external-link">Pandoc</a>, <strong>a document converter system</strong>, may be required for sharing the results coming from <a href="https://jatanrt.github.io/eprscope/">eprscope</a> in desired formats like <code>pdf</code> , <code>html</code> , <code>docx</code> , <code>pptx</code> or <code>tex</code> (details may be found in the <code><a href="reference/create_qmdReport_proj.html">create_qmdReport_proj()</a></code> documentation).</p>
 </div>
 <div class="section level2">
 <h2 id="updates">Updates<a class="anchor" aria-label="anchor" href="#updates"></a>
 </h2>
-<p>To update the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦, just run the following code in the R console ➨</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>To update the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦, just run the following code in the <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> console ➨</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
@@ -141,7 +160,7 @@
 <div class="section level3">
 <h3 id="reading-files-with-instrumental-parameters">Reading Files with Instrumental Parameters<a class="anchor" aria-label="anchor" href="#reading-files-with-instrumental-parameters"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># loading the package/library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jatanrt.github.io/eprscope/">eprscope</a></span><span class="op">)</span></span>
@@ -165,7 +184,7 @@
 <div class="section level3">
 <h3 id="depict-molecular-structures">Depict Molecular Structures<a class="anchor" aria-label="anchor" href="#depict-molecular-structures"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Pphenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:</span></span>
 <span><span class="co"># "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"</span></span>
@@ -180,7 +199,7 @@
 <div class="section level3">
 <h3 id="simulation-of-isotropic-epr-spectra">Simulation of Isotropic EPR Spectra<a class="anchor" aria-label="anchor" href="#simulation-of-isotropic-epr-spectra"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># simulation of the phenalenyl (perinaphthenyl or PNT) radical,</span></span>
 <span><span class="co"># see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,</span></span>
@@ -206,7 +225,7 @@
 <div class="section level3">
 <h3 id="interactive-r-shiny-application-to-visualize-and-simulate-cw-isotropic-epr-spectra">Interactive R Shiny Application to Visualize and Simulate CW Isotropic EPR Spectra<a class="anchor" aria-label="anchor" href="#interactive-r-shiny-application-to-visualize-and-simulate-cw-isotropic-epr-spectra"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># just run the following command in R console</span></span>
 <span><span class="fu"><a href="reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -219,7 +238,7 @@
 <div class="section level3">
 <h3 id="radical-kinetic-model-fitted-onto-the-experimental-data">Radical Kinetic Model Fitted onto the Experimental Data<a class="anchor" aria-label="anchor" href="#radical-kinetic-model-fitted-onto-the-experimental-data"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># decay of a triarylamine radical cation right after </span></span>
 <span><span class="co"># its generation by electrochemical potentiostatic oxidation </span></span>
@@ -271,16 +290,16 @@
 <span><span class="co"># graph preview</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">plot</span></span></code></pre></div>
 <p><img src="reference/figures/README-kinetic-model-fit-1.png"><!-- --></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#</span></span>
 <span><span class="co"># data frame/table, showing the obtained kinetic parameters</span></span>
 <span><span class="co"># by the non-linear fit and numeric solution</span></span>
 <span><span class="co"># of the Ordinary Differential Equations</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">df.coeffs</span></span>
 <span><span class="co">#&gt;           Estimate    Std. Error    t value       Pr(&gt;|t|)</span></span>
-<span><span class="co">#&gt; qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149</span></span>
-<span><span class="co">#&gt; k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19</span></span>
-<span><span class="co">#&gt; alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101</span></span></code></pre></div>
+<span><span class="co">#&gt; qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149</span></span>
+<span><span class="co">#&gt; k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19</span></span>
+<span><span class="co">#&gt; alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
