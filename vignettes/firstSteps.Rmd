@@ -1,5 +1,5 @@
 ---
-title: "First Steps"
+title: "First Steps in R Statistical Language"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
@@ -41,74 +41,9 @@ library(htmlwidgets)
 library(plotly)
 ```
 
-# Installation Details
+This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting and operation with strings will be added in the upcoming package versions.
 
-Prior to own `{eprscope}` 📦 installation a minimal system setup is required and can be summarized into the following steps:
-
-1.  Installation of *JDK Development Kit* where the corresponding package, suitable for your operating system, can be downloaded from the [official *Oracle* website](https://www.oracle.com/java/technologies/downloads/?er=221886).
-
-2.  Please, follow the instructions for the [base ![](RcoreLogo.png){width="16" height="12"} installation and setup](https://cran.r-project.org/).
-
-3.  Download and install [*RStudio IDE*](https://posit.co/download/rstudio-desktop/) (Integrated Development Environment).
-
-4.  Download and install the latest release of [*Rtools* (WINDOWS only)](https://cran.r-project.org/bin/windows/Rtools/) or on *macOS/Linux* [follow the instructions to install *CMake*](https://astamm.github.io/nloptr/). Alternatively, on *macOS*, *CMake* can be set up through the [Homebrew](https://brew.sh/) repository (see also <https://formulae.brew.sh/formula/cmake#default>). This step is required to use the `{nloptr}` 📦 for the fitting of EPR spectra.
-
-5.  In the ![](RcoreLogo.png){width="16" height="12"} *Console* (lower left panel within the *RStudio IDE*) run the following code in order to install essential ![](RcoreLogo.png){width="16" height="12"} packages for data science with all their dependencies ➨
-
-    ```{r essential-r-packages,eval = FALSE,echo = TRUE}
-
-    install.packages("tidyverse",dependencies = TRUE)
-    #
-    # additional packages required by the `{eprscope}`:
-    install.packages(
-      c("DT","vctrs","npreg","patchwork","kableExtra",
-        "htmlwidgets","webshot2","tinytable","gsignal",
-        "shiny","shinythemes"),
-      dependencies = TRUE
-    )
-
-    ```
-
-There are two options how to install the `{eprscope}` 📦 via the ![](RcoreLogo.png){width="16" height="12"} *Console* ➨
-
-```{r install-eprscope-01-opt,eval = FALSE,echo = TRUE}
-
-# from the GitHub repository:
-if (!require(devtools)) {install.packages("devtools")}
-devtools::install_github("jatanRT/eprscope")
-
-```
-
-or
-
-```{r install-eprscope-02-opt,eval = FALSE,echo = TRUE}
-
-# from the R-Universe (https://r-universe.dev/search)
-# and CRAN (https://cran.r-project.org/) repositories:
-install.packages(
-  "eprscope",
-  repos = c(
-    "https://jatanrt.r-universe.dev",
-    "https://cloud.r-project.org"
-  )
-)
-
-```
-
-If one wants to install the entire 📦 including the documentation vignettes/articles ➨
-
-```{r install-eprscope-03-opt,eval = FALSE,echo = TRUE}
-
-if (!require(devtools)) {install.packages("devtools")}
-devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
-
-```
-
-# First Steps in ![](RcoreLogo.png){width="28" height="21"} Statistical Language
-
-In this section, only essential syntax and/or basic commands to run the `{eprscope}` functions will be described. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html).
-
-## Variable/Function Names and Assignment
+# Variable/Function Names and Assignment
 
 Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting the line with the hash symbol `#` like already shown in the installation code above.
 
@@ -125,7 +60,7 @@ tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 
 The `file` within the parentheses represents an **argument of the function** `load_data_example()` and **its assignment must be solely provided by the `=` operator.** If several arguments are defined, they have to be separated by `,` ("comma").
 
-## Functions and Packages
+# Functions and Packages
 
 Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console or *Rstudio* IDE. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` has to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading the collection of essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
 
@@ -139,7 +74,7 @@ Sometimes a function/dataset/object from a certain 📦 is called via "special" 
 
 [^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several $\LaTeX$ packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
 
-## Vectors and Matrices
+# Vectors and Matrices {#vectors_mats}
 
 In order to hold multiple data values of the same type (e.g. numeric, character or logical) the ![](RcoreLogo.png){width="16" height="12"} language uses the vector object, which is created by the `c(...)` command/function (the "c" stands for "combine" or "concatenate") like:
 
@@ -369,7 +304,7 @@ isFALSE(det(A) == 0)
 
 ```
 
-## Data Frames and the Pipe Operator
+# Data Frames and the Pipe Operator
 
 Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is an 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct a data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
 
@@ -502,7 +437,7 @@ head(df.example.01)
 
 ```
 
-A data frame can be also created, by definition (see above), using the equally long vectors (refer to the vector definition at the beginning of this vignette), like:
+A data frame can be also created, by definition (see above), using the equally long vectors (refer to the vector definitions in Section \@ref(vectors_mats) and at beginning of the vignette), like:
 
 ```{r create-df-from-vectors}
 
@@ -526,7 +461,7 @@ In order to understand where does these operators come from and why they are use
 
 For the simple cases, both `%>%` and `|>` (the latter also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
 
-1.  The native pipe operator `|>` is automatically loaded, starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦, while the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore they must be loaded before its use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **!**
+1.  The native pipe operator `|>` is automatically loaded when starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦. Whereas, the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore these packages must be loaded before its use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **!**
 2.  The `|>` requires parentheses for the right-hand side functions, whereas the `{magrittr}` operator does not:
 
 ```{r pipe-oterator-parentheses}
@@ -547,7 +482,7 @@ vec.B.G.c |> round(digits = 2) |> mean()
 
 ```
 
-3.   ... TBC <!-- TODO -->
+3.  ... TBC <!-- TODO -->
 
 ... TBC <!-- TODO -->
 
@@ -679,15 +614,7 @@ triarylam.decay.dat$df
 
 Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of the CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. ...TBC <!-- TODO -->
 
-## Lists
-
-Blah
-
-## Plots
-
-As already mentioned in `vignette("functionality")` the EPR spectra and the related data can be mostly visualized by several options using the... packages
-
-## Basic String Operations
+# Lists
 
 Blah
 
