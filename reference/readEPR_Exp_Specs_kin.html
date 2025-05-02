@@ -71,10 +71,7 @@
 <span>  time.unit <span class="op">=</span> <span class="st">"s"</span>,</span>
 <span>  time.delta.slice.s <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"index"</span>, <span class="st">"B_G"</span>, <span class="st">"time_s"</span>, <span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span>
-<span>  x.id <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  x.unit <span class="op">=</span> <span class="st">"G"</span>,</span>
-<span>  Intensity.id <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  time.series.id <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  convertB.unit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  qValue <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  norm.vec.add <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -118,31 +115,13 @@ corresponding to <code>1 s</code>).</p></dd>
 <dd><p>Character/String vector inherited from <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></code>, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, <code>Quantity_Unit</code> like <code>"B_G"</code>, <code>"RF_MHz"</code>, <code>"Bsim_mT"</code> (e.g. pointing
-to simulated EPR spectrum \(x\)-axis)...etc, <strong>default</strong>: <code>col.names = c("index","B_G","dIepr_over_dB")</code>.</p></dd>
-
-
-<dt id="arg-x-id">x.id<a class="anchor" aria-label="anchor" href="#arg-x-id"></a></dt>
-<dd><p>Numeric index related to <code>col.names</code> vector pointing to independent variable, which corresponds
-to \(x\)-axis in the spectra or other plots. <strong>Default</strong>: <code>x.id = 2</code> (for <em>Xenon</em>).</p></dd>
+to simulated EPR spectrum \(x\)-axis)...etc,
+<strong>default</strong>: <code>col.names = c("index","B_G","time_s","dIepr_over_dB")</code> (for <code>origin = "xenon"</code>).</p></dd>
 
 
 <dt id="arg-x-unit">x.unit<a class="anchor" aria-label="anchor" href="#arg-x-unit"></a></dt>
 <dd><p>Character string, corresponding to original <code>x</code> variable/column unit, such as <code>"G"</code>,
 <code>"mT"</code> or <code>"MHz"</code>.</p></dd>
-
-
-<dt id="arg-intensity-id">Intensity.id<a class="anchor" aria-label="anchor" href="#arg-intensity-id"></a></dt>
-<dd><p>Numeric index related to <code>col.names</code> vector, pointing to <code>general</code> intensity,
-like derivative intensity (<code>dIepr_over_dB</code>), integral one (e.g. <code>single_Integ</code>), double or sigmoid
-integral (e.g. <code>Area</code>)...etc. This corresponds to column/vector which should be presented like
-\(y\)-axis in the EPR spectra or other plots. <strong>Default</strong>: <code>Intensity.id = 3</code> (for <em>Xenon</em>).</p></dd>
-
-
-<dt id="arg-time-series-id">time.series.id<a class="anchor" aria-label="anchor" href="#arg-time-series-id"></a></dt>
-<dd><p>Numeric index related to <code>col.names</code> pointing to <code>time</code> column for time series
-EPR spectra changing upon time. If data contains simple relationship like \(Area\) vs \(time\)
-use <code>x</code> and <code>x.unit</code> parameters/arguments instead. This parameter/argument is dedicated
-to kinetic-like experiments. <strong>Default</strong>: <code>time.series.id = 3</code>.</p></dd>
 
 
 <dt id="arg-convertb-unit">convertB.unit<a class="anchor" aria-label="anchor" href="#arg-convertb-unit"></a></dt>
@@ -268,7 +247,7 @@ and <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html"
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer></div>
