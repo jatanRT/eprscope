@@ -11,10 +11,7 @@ readEPR_Exp_Specs_kin(
   time.unit = "s",
   time.delta.slice.s = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
-  x.id = 2,
   x.unit = "G",
-  Intensity.id = 4,
-  time.series.id = 3,
   convertB.unit = TRUE,
   qValue = NULL,
   norm.vec.add = NULL,
@@ -43,23 +40,11 @@ corresponding to \code{1 s}).}
 \item{col.names}{Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
 column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.}
-
-\item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
-to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).}
+to simulated EPR spectrum \eqn{x}-axis)...etc,
+\strong{default}: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")} (for \code{origin = "xenon"}).}
 
 \item{x.unit}{Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
-
-\item{Intensity.id}{Numeric index related to \code{col.names} vector, pointing to \code{general} intensity,
-like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
-integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
-\eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).}
-
-\item{time.series.id}{Numeric index related to \code{col.names} pointing to \code{time} column for time series
-EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
-use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
-to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable

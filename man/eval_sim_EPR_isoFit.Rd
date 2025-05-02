@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_sim_EPR_isoFit.R
 \name{eval_sim_EPR_isoFit}
 \alias{eval_sim_EPR_isoFit}
-\title{Least-Square Fitting of Isotropic EPR Spectra by Simulations}
+\title{Least-Squares Fitting of Isotropic EPR Spectra by Simulations}
 \usage{
 eval_sim_EPR_isoFit(
   data.spectr.expr,
@@ -309,6 +309,10 @@ tempo.test.sim.fit.b <-
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
+#
+## check and compare the previous value
+## by residual analysis (`ra`)
+sum((tempo.test.sim.fit.b$ra$df$Residuals)^2)
 #
 ## number of evaluations / iterations:
 tempo.test.sim.fit.b$N.evals

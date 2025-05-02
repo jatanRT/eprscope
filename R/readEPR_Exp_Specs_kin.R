@@ -26,11 +26,8 @@
 #' @param col.names Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G","dIepr_over_dB")}.
-#' @param time.series.id Numeric index related to \code{col.names} pointing to \code{time} column for time series
-#'   EPR spectra changing upon time. If data contains simple relationship like \eqn{Area} vs \eqn{time}
-#'   use \code{x} and \code{x.unit} parameters/arguments instead. This parameter/argument is dedicated
-#'   to kinetic-like experiments. \strong{Default}: \code{time.series.id = 3}.
+#'   to simulated EPR spectrum \eqn{x}-axis)...etc,
+#'   \strong{default}: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")} (for \code{origin = "xenon"}).
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
 #'   In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
 #'   \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
@@ -103,10 +100,7 @@ readEPR_Exp_Specs_kin <- function(name.root,
                                     "time_s",
                                     "dIepr_over_dB"
                                   ),
-                                  x.id = 2,
                                   x.unit = "G",
-                                  Intensity.id = 4,
-                                  time.series.id = 3,
                                   convertB.unit = TRUE,
                                   qValue = NULL,
                                   norm.vec.add = NULL,
@@ -126,29 +120,32 @@ readEPR_Exp_Specs_kin <- function(name.root,
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech",
                          "magnetTech","MAGNETTECH","magnetech",
-                         "Magnetech","MAGNETECH")
+                         "Magnetech","MAGNETECH","MagneTech")
   ## previous strings also with single "t"/"T" excepting mistakes :-)
+  #
+  ## general condition to read `.id`s and co...
+  origin.cond.all <- function(origin){
+    if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+      return(0)
+    }
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      return(1)
+    }
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      return(2)
+    }
+  }
   #
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
-    #
-    ## condition for switching between xenon and magnettech
-    xen.magnet.cond <- function(origin){
-      if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
-        return(0)
-      }
-      if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
-        return(1)
-      }
-    }
     #
     ## path to `asc` file
     path.to.asc <- file.path(
       dir_ASC,
       paste0(name.root,
-             switch(2-xen.magnet.cond(origin = origin),
-                    ".csv",
-                    ".txt"
+             switch(3-origin.cond.all(origin = origin),
+                    ".txt",
+                    ".csv"
                     )
              ) ## `txt` for xenon & `csv` for magnettech
     )
@@ -190,6 +187,66 @@ readEPR_Exp_Specs_kin <- function(name.root,
   #
   ## ================= Reading Data & Processing ==================
   #
+  ## ------ conditions and definitions for `.id`s ------------
+  ## `x.id`
+  if (exists("x.id")) {
+    x.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      x.id %>% `if`(x.id != 2, 2, .), ## check xenon
+      x.id, ## magnettech
+      x.id %>% `if`(x.id != 1, 1, .) ## check winepr
+    )
+  } else {
+    x.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      2,
+      stop("Column for `x`/`B` is not defined ! \n
+             Please, specify the `x.id` of the column/variable,\n
+             or create it to proceed !! "),
+      1
+    )
+  }
+  ## `Intensity.id`
+  if (exists("Intensity.id")) {
+    Intensity.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      Intensity.id %>% `if`(Intensity.id != 4, 4, .), ## check xenon
+      Intensity.id, ## magnettech
+      Intensity.id %>% `if`(Intensity.id != 3, 3, .) ## check winepr
+    )
+  } else {
+    Intensity.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      4,
+      stop("Column for `Intensity` is not defined ! \n
+             Please, specify the `Intensity.id` of the column/variable,\n
+             or create it to proceed !! "),
+      3
+    )
+  }
+  ## `time.series.id`
+  if (exists("time.series.id")) {
+    time.series.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      time.series.id %>%
+        `if`(time.series.id != 3 || is.null(time.series.id), 3, .),
+      time.series.id,
+      time.series.id %>%
+        `if`(time.series.id != 2 || is.null(time.series.id), 2, .)
+    )
+  } else {
+    time.series.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      3,
+      stop("Time series column is not defined ! \n
+             Please, specify the `time.series.id` of the column/variable,\n
+             or create it to proceed !! "),
+      2
+    )
+  }
+  #
+  ## ----------------------------------------------------
+  #
   ## `Intensity` variable string
   IntensityString <- col.names[Intensity.id]
   #
@@ -208,7 +265,8 @@ readEPR_Exp_Specs_kin <- function(name.root,
     origin = origin,
     ...
   ) %>%
-    dplyr::filter(.data[[IntensityString]] != 0) ## only non-zero intens. selected
+    dplyr::filter(.data[[IntensityString]] != 0)
+    ## because only non-zero intens. selected
   #
   ## recalculate  the time
   ## time var for `data.spectra.time`
@@ -227,7 +285,9 @@ readEPR_Exp_Specs_kin <- function(name.root,
   ## Re-definition for `time.delta.slice.s`
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))){
     ## ASSUMING USER CAN MAKE MISTAKES :-)
-    time.delta.slice.s <- time.delta.slice.s %>% `if`(is.null(time.delta.slice.s),1, .)
+    time.delta.slice.s <-
+      time.delta.slice.s %>%
+      `if`(is.null(time.delta.slice.s),1, .)
     #
     ## `time` if spectra are recorded as `slices` series
     if (grepl("s",time.unit) & !is.null(time.delta.slice.s)) {

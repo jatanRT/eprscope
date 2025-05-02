@@ -1,5 +1,5 @@
 #'
-#' Least-Square Fitting of Isotropic EPR Spectra by Simulations
+#' Least-Squares Fitting of Isotropic EPR Spectra by Simulations
 #'
 #'
 #' @family Simulations and Optimization
@@ -270,6 +270,10 @@
 #' ## OUTPUTS:
 #' ## minimum sum of residual squares:
 #' tempo.test.sim.fit.b$min.rss
+#' #
+#' ## check and compare the previous value
+#' ## by residual analysis (`ra`)
+#' sum((tempo.test.sim.fit.b$ra$df$Residuals)^2)
 #' #
 #' ## number of evaluations / iterations:
 #' tempo.test.sim.fit.b$N.evals

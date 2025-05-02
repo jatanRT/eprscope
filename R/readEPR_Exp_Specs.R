@@ -278,7 +278,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech",
                          "magnetTech","MAGNETTECH","magnetech",
-                         "Magnetech","MAGNETECH")
+                         "Magnetech","MAGNETECH","MagneTech")
   ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## basic `fread` parameters to read the spectral data
@@ -419,7 +419,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       } else {
         if (is.null(time.series.id)) {
           stop("Time series column is not defined ! \n
-             Please, specify the `id` of the column/variable,\n
+             Please, specify the `time.series.id` of the column/variable,\n
              or create it to proceed !! ")
         } else {
           x.id <- x.id
@@ -537,8 +537,6 @@ readEPR_Exp_Specs <- function(path_to_ASC,
       dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
         norm.multiply.qValue * norm.multiply.const)
   }
-  #
-  ## TO BE COMPLETED !! for `winepr` system and time.series => convert `Slice` into time
   #
   return(spectra.data)
   #
