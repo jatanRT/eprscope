@@ -9,9 +9,7 @@ readEPR_Exp_Specs_multif(
   dir_ASC,
   dir_dsc_par,
   col.names = c("index", "B_G", "dIepr_over_dB"),
-  x.id = 2,
   x.unit = "G",
-  Intensity.id = 3,
   convertB.unit = TRUE,
   qValues = NULL,
   norm.list.add = NULL,
@@ -42,18 +40,10 @@ A safe rule of thumb is to use column names including the physical quantity nota
 to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
 referring to column names coming from \emph{Xenon} software.}
 
-\item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
-to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).}
-
 \item{x.unit}{Character string pointing to unit of quantity (coming from the original ASCII data, see also
 \code{col.names} argument) which is to be presented on \eqn{x}-axis of the EPR spectrum.
 Units like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \code{x.unit = "G"}.}
-
-\item{Intensity.id}{Numeric index related to \code{col.names} vector, pointing to \code{general} intensity,
-like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
-integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
-\eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
@@ -123,9 +113,7 @@ readEPR_Exp_Specs_multif(name.pattern = "^.*_sample_VT_",
                          col.names = c("index",
                                        "RF_MHz",
                                        "Intensity"),
-                         x.id = 2,
                          x.unit = "MHz",
-                         Intensity.id = 3,
                          names = c("210","220","230","240"),
                          tidy = TRUE,
                          var2nd.series = "Temperature_K")
@@ -139,9 +127,7 @@ readEPR_Exp_Specs_multif("^Sample_VT_",
                          file.path(".","ASCII_data_dir"),
                          file.path(".","DSC_data_dir"),
                          col.names = c("B_G","dIepr_over_dB"),
-                         x.id = 1,
                          x.unit = "G",
-                         Intensity.id = 2,
                          names = c("210","220","230","240"),
                          qValues = c(3400,3501,3600,2800),
                          norm.list.add = rep(list(c(10,7)),times = 4),

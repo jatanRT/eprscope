@@ -136,8 +136,8 @@ readEPR_Exp_Specs_kin <- function(name.root,
     }
   }
   #
-  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
-      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+  if (origin.cond.all(origin = origin) == 2 ||
+      origin.cond.all(origin = origin) == 1) {
     #
     ## path to `asc` file
     path.to.asc <- file.path(
@@ -164,7 +164,7 @@ readEPR_Exp_Specs_kin <- function(name.root,
                          origin = origin
     )
   }
-  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+  if (origin.cond.all(origin = origin) == 0) {
     ## path to asc
     path.to.asc <- file.path(
       dir_ASC,
@@ -283,7 +283,7 @@ readEPR_Exp_Specs_kin <- function(name.root,
     colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
   }
   ## Re-definition for `time.delta.slice.s`
-  if (any(grepl(paste(winepr.string,collapse = "|"),origin))){
+  if (origin.cond.all(origin = origin) == 0){
     ## ASSUMING USER CAN MAKE MISTAKES :-)
     time.delta.slice.s <-
       time.delta.slice.s %>%

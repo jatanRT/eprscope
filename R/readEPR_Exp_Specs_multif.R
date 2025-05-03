@@ -70,9 +70,7 @@
 #'                          col.names = c("index",
 #'                                        "RF_MHz",
 #'                                        "Intensity"),
-#'                          x.id = 2,
 #'                          x.unit = "MHz",
-#'                          Intensity.id = 3,
 #'                          names = c("210","220","230","240"),
 #'                          tidy = TRUE,
 #'                          var2nd.series = "Temperature_K")
@@ -86,9 +84,7 @@
 #'                          file.path(".","ASCII_data_dir"),
 #'                          file.path(".","DSC_data_dir"),
 #'                          col.names = c("B_G","dIepr_over_dB"),
-#'                          x.id = 1,
 #'                          x.unit = "G",
-#'                          Intensity.id = 2,
 #'                          names = c("210","220","230","240"),
 #'                          qValues = c(3400,3501,3600,2800),
 #'                          norm.list.add = rep(list(c(10,7)),times = 4),
@@ -121,9 +117,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
                                        "B_G",
                                        "dIepr_over_dB"
                                      ),
-                                     x.id = 2,
                                      x.unit = "G",
-                                     Intensity.id = 3,
                                      convertB.unit = TRUE,
                                      qValues = NULL,
                                      norm.list.add = NULL,
@@ -144,7 +138,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   xenon.string <- c("xenon","Xenon","XENON")
   magnettech.string <- c("magnettech","Magnettech","MagnetTech",
                          "magnetTech","MAGNETTECH","magnetech",
-                         "Magnetech","MAGNETECH")
+                         "Magnetech","MAGNETECH","MagneTech")
   ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## =========================== FILES AND PARAMETERS ==============================
@@ -168,9 +162,22 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     full.names = TRUE
   )
   #
+  ## general condition to read `.id`s and co...
+  origin.cond.all <- function(origin){
+    if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+      return(0)
+    }
+    if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+      return(1)
+    }
+    if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
+      return(2)
+    }
+  }
+  #
   ## xenon or magnettech
-  if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
-      any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+  if (origin.cond.all(origin = origin) == 2 ||
+      origin.cond.all(origin = origin) == 1) {
     ## to obtain `QValues` (from all `.DSC`/`.dsc` files) run the following
     qValues.from.files <- sapply(
       files.params,
@@ -181,7 +188,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     mwfq.string <- "MWFQ"
   }
   ## winepr
-  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+  if (origin.cond.all(origin = origin) == 0) {
     ## to define `QValues` run the following
     qValues.from.files <- qValues %>% `if`(is.null(qValues),
                                            rep(1,times = length(names)), .)
@@ -201,7 +208,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     }
   )
   ## winepr
-  if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
+  if (origin.cond.all(origin = origin) == 0) {
     ## conversion from "GHz" to "Hz"
     mwfreq.from.files <- mwfreq.from.files * 1e9
   }
@@ -217,6 +224,35 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   ## to `qValue` + new column with `g`-factors
   ## in order to check whether there is some spectral position
   ## shift/drift
+  #
+  ## ------ conditions and definitions for `.id`s ------------
+  ## ---------- in order to simplify the function ------------
+  ## `x.id`
+  if (exists("x.id")) {
+    x.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      x.id %>% `if`(x.id != 2, 2, .), ## check xenon
+      x.id %>% `if`(x.id != 1, 1, .), ## magnettech
+      x.id %>% `if`(x.id != 1, 1, .) ## check winepr
+    )
+  } else {
+    x.id <- switch(
+      3 - origin.cond.all(origin = origin),2,1,1
+    )
+  }
+  ## `Intensity.id`
+  if (exists("Intensity.id")) {
+    Intensity.id <- switch(
+      3 - origin.cond.all(origin = origin),
+      Intensity.id %>% `if`(Intensity.id != 3, 3, .), ## check xenon
+      Intensity.id %>% `if`(Intensity.id != 2, 2, .), ## magnettech
+      Intensity.id %>% `if`(Intensity.id != 2, 2, .) ## check winepr
+    )
+  } else {
+    Intensity.id <- switch(
+      3 - origin.cond.all(origin = origin),3,2,2
+    )
+  }
   #
   ## However prior to the operation above `x`/`B` has to be defined
   xString <- col.names[x.id]
