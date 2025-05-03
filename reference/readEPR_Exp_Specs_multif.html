@@ -75,9 +75,7 @@
 <span>  <span class="va">dir_ASC</span>,</span>
 <span>  <span class="va">dir_dsc_par</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"index"</span>, <span class="st">"B_G"</span>, <span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span>
-<span>  x.id <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  x.unit <span class="op">=</span> <span class="st">"G"</span>,</span>
-<span>  Intensity.id <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  convertB.unit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  qValues <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  norm.list.add <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -120,23 +118,11 @@ to simulated EPR spectrum \(x\)-axis)...etc, <strong>default</strong>: <code>col
 referring to column names coming from <em>Xenon</em> software.</p></dd>
 
 
-<dt id="arg-x-id">x.id<a class="anchor" aria-label="anchor" href="#arg-x-id"></a></dt>
-<dd><p>Numeric index related to <code>col.names</code> vector pointing to independent variable, which corresponds
-to \(x\)-axis in the spectra or other plots. <strong>Default</strong>: <code>x.id = 2</code> (for <em>Xenon</em>).</p></dd>
-
-
 <dt id="arg-x-unit">x.unit<a class="anchor" aria-label="anchor" href="#arg-x-unit"></a></dt>
 <dd><p>Character string pointing to unit of quantity (coming from the original ASCII data, see also
 <code>col.names</code> argument) which is to be presented on \(x\)-axis of the EPR spectrum.
 Units like <code>"G"</code> ("Gauss"), <code>"mT"</code> ("millitesla"), <code>"MHz"</code> ("megahertz" in case of ENDOR spectra)
 or <code>"Unitless"</code> in case of \(g\)-values can be used. <strong>Default</strong>: <code>x.unit = "G"</code>.</p></dd>
-
-
-<dt id="arg-intensity-id">Intensity.id<a class="anchor" aria-label="anchor" href="#arg-intensity-id"></a></dt>
-<dd><p>Numeric index related to <code>col.names</code> vector, pointing to <code>general</code> intensity,
-like derivative intensity (<code>dIepr_over_dB</code>), integral one (e.g. <code>single_Integ</code>), double or sigmoid
-integral (e.g. <code>Area</code>)...etc. This corresponds to column/vector which should be presented like
-\(y\)-axis in the EPR spectra or other plots. <strong>Default</strong>: <code>Intensity.id = 3</code> (for <em>Xenon</em>).</p></dd>
 
 
 <dt id="arg-convertb-unit">convertB.unit<a class="anchor" aria-label="anchor" href="#arg-convertb-unit"></a></dt>
@@ -228,9 +214,7 @@ and <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html"
 <span class="r-in"><span>                         col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"index"</span>,</span></span>
 <span class="r-in"><span>                                       <span class="st">"RF_MHz"</span>,</span></span>
 <span class="r-in"><span>                                       <span class="st">"Intensity"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                         x.id <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>                         x.unit <span class="op">=</span> <span class="st">"MHz"</span>,</span></span>
-<span class="r-in"><span>                         Intensity.id <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>                         names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"210"</span>,<span class="st">"220"</span>,<span class="st">"230"</span>,<span class="st">"240"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         tidy <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                         var2nd.series <span class="op">=</span> <span class="st">"Temperature_K"</span><span class="op">)</span></span></span>
@@ -244,9 +228,7 @@ and <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html"
 <span class="r-in"><span>                         <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">"ASCII_data_dir"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"."</span>,<span class="st">"DSC_data_dir"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B_G"</span>,<span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                         x.id <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                         x.unit <span class="op">=</span> <span class="st">"G"</span>,</span></span>
-<span class="r-in"><span>                         Intensity.id <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>                         names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"210"</span>,<span class="st">"220"</span>,<span class="st">"230"</span>,<span class="st">"240"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         qValues <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3400</span>,<span class="fl">3501</span>,<span class="fl">3600</span>,<span class="fl">2800</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                         norm.list.add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span>,times <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span></span>
