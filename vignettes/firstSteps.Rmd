@@ -1,5 +1,5 @@
 ---
-title: "First Steps in R Statistical Language"
+title: "First Steps with R Statistical Language"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
@@ -482,19 +482,35 @@ vec.B.G.c |> round(digits = 2) |> mean()
 
 ```
 
-3.  ... TBC <!-- TODO -->
+3.  Pipe operators differ in placeholders (like `.` or `_` ) call, where one doesn't need to repeat the argument of a function (see also below ):
 
-... TBC <!-- TODO -->
+```{r pipe-operator-placeholder}
 
-... keyboard shortcut: `ctrl(cmd)` + `shift` + `m` ... settings for the pipe operator within the Rstudio `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the checkbox "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
+# recreate and add B in mT, i.e. `B_mT` column
+df.example.01 |> 
+  _$B_mT <- df.example.01$B_G * 0.1
+#
+## plot simple epr spectrum
+df.example.01 %>% {
+  plot(
+    .$B_mT,
+    .$dIepr_over_dB,
+    type = "l", # l = "line"
+    xlab = "B (mT)",
+    ylab = "dIepr / dB (p.d.u.)"
+  )
+}
+```
+
+where `_` works with `|>` and the `.` placeholder is to be used with "magrittr" pipe `%>%` . However, one could also apply the "dot" placeholder with the native pipe operator with a few tricks [@velasquez2022].
+
+The pipe operator has its own keyboard shortcut: `ctrl(cmd)` + `shift` + `m` depending on the settings. Within the Rstudio go to `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the check box "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
 
 ```{r rstudio-pipe-setup,echo = FALSE,out.width = "91%",fig.cap = "Pipe operator setup with the Rstudio Options."}
 
 knitr::include_graphics("Rstudio_pipe_setup_a.png",dpi = 200)
 
 ```
-
-... TBC <!-- TODO -->
 
 Due to the above-mentioned reasons (mainly due to the compatibility) the `{eprscope}` primarily uses the `{magrittr}` type operator, even though the native one can be applied as well, keeping in mind its limitations. If the `{tidyverse}` 📦 bundle is already installed and loaded, we may perform the above-described data frame operations by the included packages (mainly by [{dplyr}](https://dplyr.tidyverse.org/index.html)) as shown below.
 
@@ -528,7 +544,7 @@ Create a new column by the `dplyr::mutate()` function:
 
 # create a new `B_mT` column:
 df.example.02 <- df.example.01 %>% 
-  dplyr::mutate(B_mT = B_G * 0.1)
+  dplyr::mutate(B_T = B_G * 1e-4)
 #
 # preview:
 head(df.example.02)
@@ -612,7 +628,7 @@ triarylam.decay.dat$df
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. ...TBC <!-- TODO -->
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column.
 
 # Lists
 
