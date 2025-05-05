@@ -628,7 +628,25 @@ triarylam.decay.dat$df
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column.
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
+
+```{r messy-data-pivot-wider}
+
+triarylam.decay.dat.wide <- 
+  triarylam.decay.dat$df %>% 
+  select(-index) %>%
+  tidyr::pivot_wider(
+    names_from = time_s,
+    names_prefix = "time_s_",
+    values_from = dIepr_over_dB
+  )
+#
+# preview
+head(triarylam.decay.dat.wide)
+
+```
+
+Such dataset
 
 # Lists
 
