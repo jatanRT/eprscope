@@ -273,7 +273,7 @@ mat.01.t
 
 ```
 
-Inverse matrix ($A^{-1}$) can be obtained by the `solve()` (`{base}` package) function, where $A^{-1}\,A = A\,A^{-1}\,=\mathrm{1}$ (identity matrix):
+Inverse matrix ($\small A^{-1}$) can be obtained by the `solve()` (`{base}` package) function, where $\small A^{-1}\,A = A\,A^{-1}\,=\mathrm{1}$ (identity matrix):
 
 ```{r inverse-matrix}
 
@@ -585,7 +585,9 @@ df.example.04
 
 ```
 
-Last example, using the `{dplyr}` and the pipe operator, will show the processing and analysis of EPR time series (kinetics). In the first step, the "kinetic" must be loaded from the `.zip` file :
+## Tidy and Messy Data
+
+Last example of data handling (see below), using the `{dplyr}` and the pipe operator, will show the processing and analysis of EPR time series (kinetics). In the first step, the "kinetic" must be loaded from the `.zip` file :
 
 ```{r load-kinetic-data}
 
@@ -628,7 +630,7 @@ triarylam.decay.dat$df
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. If the data frame would possess the form of **"messy" data**, each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. Tidy data provides a standardized way how to link the stracture of a dataset (the physical layout) with its semantics (meaning). If the data frame would possess the form of **"messy" data** (any other data form different from "tidy"), each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
 
 ```{r messy-data-pivot-wider}
 
@@ -646,7 +648,168 @@ head(triarylam.decay.dat.wide)
 
 ```
 
-Such dataset
+Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] $\Rightarrow$ we have to filter/select the strings:
+
+[^3]: Instead of names like `time_s_...` with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be names/strings, not the values.
+
+```{r messy-data-anal-plot-01}
+
+# 1. Which times between 100-300 s ?
+time.vec <- triarylam.decay.dat$time
+time.span <- 
+  time.vec[time.vec > 200 & time.vec < 300]
+#
+# 2. Create the string vector 
+# of the corresponding column names.
+# This is to be performed by loop.
+time.string.vec <- 
+  sapply(time.span, function(s) paste0("time_s_",s))
+#
+# 3. Add magetic flux density column names
+# like `B_mT` and `B_G`
+time.string.vec <- c("B_G","B_mT",time.string.vec)
+#
+# 4. Data frame and preview
+triarylam.decay.filter.df.wide <-
+  triarylam.decay.dat.wide |>
+  dplyr::select(dplyr::all_of(time.string.vec)) 
+#
+triarylam.decay.filter.df.wide
+
+```
+
+Plotting all those spectra at once is only possible by the "individual" `ggplot2::geom_line()` functions, like:
+
+```{r messy-data-anal-plot-02}
+
+triarylam.decay.filter.df.wide |>
+  ggplot(aes(x = B_G)) +
+  geom_line(aes(y = time_s_214,color = "214")) +
+  geom_line(aes(y = time_s_229,color = "229")) +
+  geom_line(aes(y = time_s_244,color = "244")) +
+  geom_line(aes(y = time_s_259,color = "259")) +
+  geom_line(aes(y = time_s_274,color = "274")) +
+  geom_line(aes(y = time_s_288,color = "288")) +
+  labs(
+    color = "Time (s)", 
+    x = "B (G)",
+    y = "dIepr / dB (p.d.u.)"
+  ) +
+  plot_theme_In_ticks()
+
+```
+
+Apparently, working with the "messy" data (particularly using the [`{tidyverse}`](https://www.tidyverse.org/packages/) and [`{ggplot2}`](https://ggplot2.tidyverse.org/) bundles) is quite complicated, even though we may transform the `triarylam.decay.filter.df.wide` back to "tidy" or long table format by `tidyr::pivot_longer()` :
+
+```{r messy-data-anal-plot-03}
+
+triarylam.decay.dat.filter.long <-
+  triarylam.decay.filter.df.wide %>%
+  tidyr::pivot_longer(
+    # the following columns are not included 
+    # in transformation:
+    !dplyr::all_of(c("B_G","B_mT")),
+    # transformation:
+    names_to = "time_s",
+    values_to = "dIepr_over_dB"
+  ) %>%
+  arrange(time_s)
+#
+# tidy data frame (long) form preview
+triarylam.decay.dat.filter.long
+
+```
+
+The corresponding EPR spectra can be visualized easier than before:
+
+```{r messy-data-anal-plot-03}
+
+triarylam.decay.dat.filter.long |>
+  ggplot(aes(x = B_G,y = dIepr_over_dB)) +
+  geom_line(aes(color = time_s),linewidth = 0.75) +
+  labs(
+    color = NULL,
+    x = "B (G)",
+    y = "dIepr / dB (p.d.u.)"
+  ) +
+  plot_theme_In_ticks()
+
+```
+
+By using the original "tidy" data frame (`triarylam.decay.dat$df`) one can therefore nicely perform the filtering and plotting, literally in one "bigger" step (together with the application of pipe operator):
+
+```{r tidy-data-anal-plot}
+
+triarylam.decay.dat$df |>
+  # filtering/time span:
+  dplyr::filter(between(time_s,200,300)) |>
+  # next step required for the discrete spectra visualization:
+  mutate(time_s = as.factor(time_s)) |>
+  # own plot:
+  ggplot(aes(x = B_G,y = dIepr_over_dB)) +
+  geom_line(aes(color = time_s),linewidth = 0.75) +
+  labs(
+    color = plot_labels_xyz(Time,s),
+    x = plot_labels_xyz(B,G),
+    y = plot_labels_xyz(d*italic(I)[EPR]~"/"~d*italic(B),p.d.u.)
+  ) +
+  plot_theme_In_ticks()
+
+```
+
+Such tidy data makes it easy for an analyst or a computer to repeatedly extract needed variables because it provides a standard and consistent way of structuring a dataset [@tidyWickham2014]. Finally, this data structure also helps us, relatively easily, to integrate the entire series of EPR spectra in order to figure out the basic information about kinetics of triaryalmine radical decay:
+
+```{r tidy-triarylam-integ-kinet}
+
+triarylam.decay.integs.01 <- 
+  triarylam.decay.dat$df |>
+    # group Intensity vs B for each time point:
+    group_by(time_s) |>
+    # for each time point create double integral (column):
+    mutate(
+      double_Integ =
+        eval_integ_EPR_Spec(
+          dplyr::pick(B_G,dIepr_over_dB),
+          correct.integ = TRUE,
+          BpeaKlim = c(3473.5,3502.5),
+          poly.degree = 5,
+          sigmoid.integ = TRUE,
+          output.vecs = TRUE
+        )$sigmoid
+    ) |>
+    # summarize the sigmoid integral max. value
+    dplyr::summarize(Area = max(double_Integ))
+#
+# data frame preview
+head(triarylam.decay.integs.01)
+
+```
+
+Assuming the radical ($\small \mathrm{R}$) recombination, forming a dimer ($\small \mathrm{D}$):
+
+\begin{equation}
+ \small 2\,\ce{R} ->[k_1] D
+ (\#eq:dimer)
+ \end{equation}
+
+one can try to fit the *Area (Double Integral) vs time* relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant $\small k_1$:
+
+```{r kinetics-fit-01}
+
+dimer.kinetics.01 <- 
+  eval_kinR_EPR_modelFit(
+    data.qt.expr = triarylam.decay.integs.01,
+    model.react = "(r=2)R --> [k1] B",
+    params.guess = c(qvar0R = 0.02, k1 = 0.01)
+  )
+#
+# plot preview
+dimer.kinetics.01$plot
+#
+# parameters
+dimer.kinetics.01$df.coeff
+
+```
 
 # Lists
 
