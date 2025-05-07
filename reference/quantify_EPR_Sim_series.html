@@ -74,11 +74,13 @@
 <span>  <span class="va">data.spectra.series</span>,</span>
 <span>  <span class="va">dir_ASC_sim</span>,</span>
 <span>  <span class="va">name.pattern.sim</span>,</span>
-<span>  sim.origin <span class="op">=</span> <span class="st">"easyspin"</span>,</span>
+<span>  origin.sim <span class="op">=</span> <span class="st">"easyspin"</span>,</span>
 <span>  var2nd.series <span class="op">=</span> <span class="st">"time_s"</span>,</span>
 <span>  B.unit <span class="op">=</span> <span class="st">"G"</span>,</span>
+<span>  col.names.sim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Bsim_G"</span>, <span class="st">"dIeprSim_over_dB"</span><span class="op">)</span>,</span>
+<span>  x.sim.id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  Intensity.sim.id <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  Intensity.expr <span class="op">=</span> <span class="st">"dIepr_over_dB"</span>,</span>
-<span>  Intensity.sim <span class="op">=</span> <span class="st">"dIeprSim_over_dB"</span>,</span>
 <span>  optim.method <span class="op">=</span> <span class="st">"sbplx"</span>,</span>
 <span>  <span class="va">optim.params.init</span>,</span>
 <span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -124,7 +126,7 @@ at the beginning of the file name. One may also consult
 how to <a href="https://r4ds.hadley.nz/regexps" class="external-link">use regular expressions in R</a>.</p></dd>
 
 
-<dt id="arg-sim-origin">sim.origin<a class="anchor" aria-label="anchor" href="#arg-sim-origin"></a></dt>
+<dt id="arg-origin-sim">origin.sim<a class="anchor" aria-label="anchor" href="#arg-origin-sim"></a></dt>
 <dd><p>Character string, referring to "origin" of the simulated ASCII data.
 There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</code> (<strong>default</strong>),
 <code>"xenon"</code>, <code>"simfonia"</code> as well as universal <code>"csv"</code>.</p></dd>
@@ -144,15 +146,28 @@ like <code>"G"</code> (Gauss) or <code>"mT"</code> (millitesla), <strong>default
 THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS/DATAFRAMES.</p></dd>
 
 
+<dt id="arg-col-names-sim">col.names.sim<a class="anchor" aria-label="anchor" href="#arg-col-names-sim"></a></dt>
+<dd><p>Character string vector, pointing to column names/headers of the original ASCII data
+series (refer also to the <code><a href="readEPR_Sim_Spec.html">readEPR_Sim_Spec</a></code> function).
+<strong>Default</strong>: <code>col.names.sim = c("Bsim_G","dIeprSim_over_dB")</code>,
+corresponding to the <code>origin.sim = "easyspin"</code>.</p></dd>
+
+
+<dt id="arg-x-sim-id">x.sim.id<a class="anchor" aria-label="anchor" href="#arg-x-sim-id"></a></dt>
+<dd><p>Numeric index related to the <code>col.names.sim</code> vector pointing to independent variable (like "B" or "Bsim"
+- magnetic flux density), which corresponds to \(x\)-axis in the simulated spectra (refer also to the original ASCII data
+of the simulated spectrum). <strong>Default</strong>: <code>x.sim.id = 1</code> (see also default of the <code>col.names.sim</code>).</p></dd>
+
+
+<dt id="arg-intensity-sim-id">Intensity.sim.id<a class="anchor" aria-label="anchor" href="#arg-intensity-sim-id"></a></dt>
+<dd><p>Numeric index related to the <code>col.names.sim</code> vector pointing to simulated EPR intensity
+column name/header in the original ASCII data.
+<strong>Default</strong>: <code>x.sim.id = 2</code> (see also default of the <code>col.names.sim</code>).</p></dd>
+
+
 <dt id="arg-intensity-expr">Intensity.expr<a class="anchor" aria-label="anchor" href="#arg-intensity-expr"></a></dt>
 <dd><p>Character string, pointing to column name of the experimental EPR intensity within
 the original <code>data.spectra.series</code>. <strong>Default</strong>: <code>dIepr_over_dB</code>.</p></dd>
-
-
-<dt id="arg-intensity-sim">Intensity.sim<a class="anchor" aria-label="anchor" href="#arg-intensity-sim"></a></dt>
-<dd><p>Character string pointing to column name of the simulated EPR intensity within the related
-data frames (check the simulated spectral data for all components).
-<strong>Default</strong>: <code>Intensity.sim = "dIeprSim_over_dB"</code>.</p></dd>
 
 
 <dt id="arg-optim-method">optim.method<a class="anchor" aria-label="anchor" href="#arg-optim-method"></a></dt>

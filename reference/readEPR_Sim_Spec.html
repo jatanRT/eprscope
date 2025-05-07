@@ -70,8 +70,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">readEPR_Sim_Spec</span><span class="op">(</span></span>
 <span>  <span class="va">path_to_ASC</span>,</span>
 <span>  B.unit <span class="op">=</span> <span class="st">"G"</span>,</span>
-<span>  Intensity.sim <span class="op">=</span> <span class="st">"dIeprSim_over_dB"</span>,</span>
-<span>  sim.origin <span class="op">=</span> <span class="st">"easyspin"</span></span>
+<span>  col.names.sim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Bsim_G"</span>, <span class="st">"dIeprSim_over_dB"</span><span class="op">)</span>,</span>
+<span>  x.sim.id <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  Intensity.sim.id <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  origin.sim <span class="op">=</span> <span class="st">"easyspin"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -91,13 +93,27 @@ which is to be presented on the \(B\)-axis of an EPR spectrum,
 like <code>"G"</code> ("Gauss"), <code>"mT"</code> ("millitesla"). <strong>Default</strong>: <code>B.unit = "G"</code>.</p></dd>
 
 
-<dt id="arg-intensity-sim">Intensity.sim<a class="anchor" aria-label="anchor" href="#arg-intensity-sim"></a></dt>
-<dd><p>Character string, pointing to intensity data frame column name, corresponding
-to simulated EPR spectrum. If used together with the quantification of radicals,
-this argument must be equal to that of the <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></code>.</p></dd>
+<dt id="arg-col-names-sim">col.names.sim<a class="anchor" aria-label="anchor" href="#arg-col-names-sim"></a></dt>
+<dd><p>Character string vector, pointing to column names/headers of the original ASCII data
+(refer also to the <code>path_to_ASC</code> argument and description).
+<strong>Default</strong>: <code>col.names.sim = c("Bsim_G","dIeprSim_over_dB")</code>,
+corresponding to the <code>origin.sim = "easyspin"</code>.</p></dd>
 
 
-<dt id="arg-sim-origin">sim.origin<a class="anchor" aria-label="anchor" href="#arg-sim-origin"></a></dt>
+<dt id="arg-x-sim-id">x.sim.id<a class="anchor" aria-label="anchor" href="#arg-x-sim-id"></a></dt>
+<dd><p>Numeric index related to the <code>col.names.sim</code> vector pointing to independent variable (like "B" or "Bsim"
+- magnetic flux density), which corresponds to \(x\)-axis in the simulated spectra (refer also to the original ASCII data
+<code>path_to_ASC</code> of the simulated spectrum). <strong>Default</strong>: <code>x.sim.id = 1</code> (see also default of the <code>col.names.sim</code>).</p></dd>
+
+
+<dt id="arg-intensity-sim-id">Intensity.sim.id<a class="anchor" aria-label="anchor" href="#arg-intensity-sim-id"></a></dt>
+<dd><p>Numeric index related to the <code>col.names.sim</code> vector pointing to simulated EPR intensity
+column name/header in the original ASCII data (refer also to the <code>path_to_ASC</code> argument and description).
+If used together with the quantification of radicals, this argument must be equal to that
+of the <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></code>. <strong>Default</strong>: <code>x.sim.id = 2</code> (see also default of the <code>col.names.sim</code>).</p></dd>
+
+
+<dt id="arg-origin-sim">origin.sim<a class="anchor" aria-label="anchor" href="#arg-origin-sim"></a></dt>
 <dd><p>Character string, referring to the "origin" of a simulated spectrum ASCII data.
 There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</code> (<strong>default</strong>),
 <code>"xenon"</code>, <code>"simfonia"</code> as well as universal <code>"csv"</code>.</p></dd>
@@ -105,8 +121,8 @@ There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</cod
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Data frame, consisting of magnetic flux density (<code>Bsim_mT</code> or <code>Bsim_G</code>) and intensity
-  variable/column (depending on the <code>Intensity.sim</code> argument), corresponding to simulated EPR spectrum.</p>
+    <p>Data frame, consisting of magnetic flux density and intensity variable/column
+  (depending on the <code>col.names.sim</code> and <code>.id</code> arguments), corresponding to simulated EPR spectrum.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -128,11 +144,14 @@ There are four possibilities \(\Rightarrow\) <code>sim.orimgin = "easyspin"</cod
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">readEPR_Sim_Spec</span><span class="op">(</span>path_to_ASC <span class="op">=</span></span></span>
 <span class="r-in"><span>                  <span class="st">"./Simulations/TEMPO_simulation.txt"</span>,</span></span>
-<span class="r-in"><span>                 sim.origin <span class="op">=</span> <span class="st">"xenon"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                 origin.sim <span class="op">=</span> <span class="st">"xenon"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="fu">readEPR_Sim_Spec</span><span class="op">(</span><span class="st">"Cu_complex_simulation.txt"</span>,</span></span>
 <span class="r-in"><span>                 B.unit <span class="op">=</span> <span class="st">"mT"</span>,</span></span>
-<span class="r-in"><span>                 sim.origin <span class="op">=</span> <span class="st">"easyspin"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                 col.names.sim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Bsim_G"</span>,<span class="st">"dIeprSim_over_dB"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 x.sim.id <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>                 Intensity.sim.id <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>                 origin.sim <span class="op">=</span> <span class="st">"easyspin"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
