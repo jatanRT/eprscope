@@ -126,10 +126,13 @@ server <- function(input, output,session) {
       origin = input$origin
     )$params
   },
-  extensions = "Buttons",
+  extensions = c("Buttons","Scroller"),
   options = list(
     dom = "Bfrtip",
-    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+    deferRender = TRUE,
+    scrollY = 320,
+    scroller = TRUE
   )
   )
   output$tab2 <- DT::renderDT({
@@ -420,14 +423,15 @@ server <- function(input, output,session) {
       output.df = TRUE
     )$df
   },
-  extensions = "Buttons",
+  extensions = "Scroller",
   options = list(
-    dom = "Bfrtip",
-    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
-  )
+    deferRender = TRUE,
+    scrollY = 420,
+    scroller = TRUE
+    )
   )
   #
-  ## -------------- save plot -----------------
+  ## -------------- save plot (Sim) -----------------
   output$simPlotsave <- downloadHandler(
     filename = function() { paste(input$figfilename,input$figformat,sep = ".") },
     content = function(file) {
@@ -441,6 +445,33 @@ server <- function(input, output,session) {
       #
       graphics::plot(expr_sim_plot())
       dev.off()
+    }
+  )
+  #
+  ## ------------- save table (Sim) -----------------
+  output$simTablesave <- downloadHandler(
+    filename = function() { paste(input$tabfilename,input$tabformat,sep = ".") },
+    content = function(file) {
+      if (input$tabformat == "csv") {
+        utils::write.csv(
+          present_EPR_Sim_Spec(
+            data.spectr.expr = expr_data(),
+            data.spectr.sim = sim_data(),
+            output.df = TRUE
+          )$df,
+          file = file,
+          row.names = FALSE
+        )
+      } else if (input$tabformat == "xlsx") {
+        openxlsx::write.xlsx(
+          present_EPR_Sim_Spec(
+            data.spectr.expr = expr_data(),
+            data.spectr.sim = sim_data(),
+            output.df = TRUE
+          )$df,
+          file = file
+        )
+      }
     }
   )
   #
