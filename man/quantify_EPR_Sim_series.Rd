@@ -8,11 +8,13 @@ quantify_EPR_Sim_series(
   data.spectra.series,
   dir_ASC_sim,
   name.pattern.sim,
-  sim.origin = "easyspin",
+  origin.sim = "easyspin",
   var2nd.series = "time_s",
   B.unit = "G",
+  col.names.sim = c("Bsim_G", "dIeprSim_over_dB"),
+  x.sim.id = 1,
+  Intensity.sim.id = 2,
   Intensity.expr = "dIepr_over_dB",
-  Intensity.sim = "dIeprSim_over_dB",
   optim.method = "sbplx",
   optim.params.init,
   optim.params.lower = NULL,
@@ -48,7 +50,7 @@ or \code{name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]"} (for the file names \
 at the beginning of the file name. One may also consult
 how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}.}
 
-\item{sim.origin}{Character string, referring to "origin" of the simulated ASCII data.
+\item{origin.sim}{Character string, referring to "origin" of the simulated ASCII data.
 There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
 \code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.}
 
@@ -62,12 +64,21 @@ Data must be available in tidy/long table format.
 like \code{"G"} (Gauss) or \code{"mT"} (millitesla), \strong{default}: \code{B.unit = "G"}.
 THE UNIT MUST BE SHARED ACROSS ALL RELEVANT B-ARGUMENTS/DATAFRAMES.}
 
+\item{col.names.sim}{Character string vector, pointing to column names/headers of the original ASCII data
+series (refer also to the \code{\link{readEPR_Sim_Spec}} function).
+\strong{Default}: \code{col.names.sim = c("Bsim_G","dIeprSim_over_dB")},
+corresponding to the \code{origin.sim = "easyspin"}.}
+
+\item{x.sim.id}{Numeric index related to the \code{col.names.sim} vector pointing to independent variable (like "B" or "Bsim"
+- magnetic flux density), which corresponds to \eqn{x}-axis in the simulated spectra (refer also to the original ASCII data
+of the simulated spectrum). \strong{Default}: \code{x.sim.id = 1} (see also default of the \code{col.names.sim}).}
+
+\item{Intensity.sim.id}{Numeric index related to the \code{col.names.sim} vector pointing to simulated EPR intensity
+column name/header in the original ASCII data.
+\strong{Default}: \code{x.sim.id = 2} (see also default of the \code{col.names.sim}).}
+
 \item{Intensity.expr}{Character string, pointing to column name of the experimental EPR intensity within
 the original \code{data.spectra.series}. \strong{Default}: \code{dIepr_over_dB}.}
-
-\item{Intensity.sim}{Character string pointing to column name of the simulated EPR intensity within the related
-data frames (check the simulated spectral data for all components).
-\strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
 \item{optim.method}{Character string, pointing to applied optimization method/algorithm.
 One may choose \strong{one} from those listed in \code{\link{optim_for_EPR_fitness}}, \strong{default}:

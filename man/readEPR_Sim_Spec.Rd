@@ -7,8 +7,10 @@
 readEPR_Sim_Spec(
   path_to_ASC,
   B.unit = "G",
-  Intensity.sim = "dIeprSim_over_dB",
-  sim.origin = "easyspin"
+  col.names.sim = c("Bsim_G", "dIeprSim_over_dB"),
+  x.sim.id = 1,
+  Intensity.sim.id = 2,
+  origin.sim = "easyspin"
 )
 }
 \arguments{
@@ -20,17 +22,27 @@ Path can be alternatively defined by the \code{\link[base]{file.path}} function.
 which is to be presented on the \eqn{B}-axis of an EPR spectrum,
 like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"). \strong{Default}: \code{B.unit = "G"}.}
 
-\item{Intensity.sim}{Character string, pointing to intensity data frame column name, corresponding
-to simulated EPR spectrum. If used together with the quantification of radicals,
-this argument must be equal to that of the \code{\link{quantify_EPR_Sim_series}}.}
+\item{col.names.sim}{Character string vector, pointing to column names/headers of the original ASCII data
+(refer also to the \code{path_to_ASC} argument and description).
+\strong{Default}: \code{col.names.sim = c("Bsim_G","dIeprSim_over_dB")},
+corresponding to the \code{origin.sim = "easyspin"}.}
 
-\item{sim.origin}{Character string, referring to the "origin" of a simulated spectrum ASCII data.
+\item{x.sim.id}{Numeric index related to the \code{col.names.sim} vector pointing to independent variable (like "B" or "Bsim"
+- magnetic flux density), which corresponds to \eqn{x}-axis in the simulated spectra (refer also to the original ASCII data
+\code{path_to_ASC} of the simulated spectrum). \strong{Default}: \code{x.sim.id = 1} (see also default of the \code{col.names.sim}).}
+
+\item{Intensity.sim.id}{Numeric index related to the \code{col.names.sim} vector pointing to simulated EPR intensity
+column name/header in the original ASCII data (refer also to the \code{path_to_ASC} argument and description).
+If used together with the quantification of radicals, this argument must be equal to that
+of the \code{\link{quantify_EPR_Sim_series}}. \strong{Default}: \code{x.sim.id = 2} (see also default of the \code{col.names.sim}).}
+
+\item{origin.sim}{Character string, referring to the "origin" of a simulated spectrum ASCII data.
 There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
 \code{"xenon"}, \code{"simfonia"} as well as universal \code{"csv"}.}
 }
 \value{
-Data frame, consisting of magnetic flux density (\code{Bsim_mT} or \code{Bsim_G}) and intensity
-  variable/column (depending on the \code{Intensity.sim} argument), corresponding to simulated EPR spectrum.
+Data frame, consisting of magnetic flux density and intensity variable/column
+  (depending on the \code{col.names.sim} and \code{.id} arguments), corresponding to simulated EPR spectrum.
 }
 \description{
 Loading the ASCII data like \code{.txt},\code{.asc} or \code{.csv}, related to simulated EPR spectrum from different
@@ -42,11 +54,14 @@ Loading the ASCII data like \code{.txt},\code{.asc} or \code{.csv}, related to s
 \dontrun{
 readEPR_Sim_Spec(path_to_ASC =
                   "./Simulations/TEMPO_simulation.txt",
-                 sim.origin = "xenon")
+                 origin.sim = "xenon")
 #
 readEPR_Sim_Spec("Cu_complex_simulation.txt",
                  B.unit = "mT",
-                 sim.origin = "easyspin")
+                 col.names.sim = c("Bsim_G","dIeprSim_over_dB"),
+                 x.sim.id = 1,
+                 Intensity.sim.id = 2,
+                 origin.sim = "easyspin")
 }
 
 
