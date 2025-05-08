@@ -41,11 +41,11 @@ library(htmlwidgets)
 library(plotly)
 ```
 
-This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting and operation with strings will be added in the upcoming package versions.
+This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting (several plots will be already presented) and operation with strings will be added in the upcoming package versions.
 
 # Variable/Function Names and Assignment
 
-Any name, even the complex one (see vide infra), can be applied to assign the variables/functions. It is common to use complex names with the parts separated either by underscore `..._...` or by point, like stated in the examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting the line with the hash symbol `#` like already shown in the installation code above.
+Any name, even the complex one (see vide infra), can be applied to assign the variable/function. It is common to use complex names with the parts separated either by underscore `..._...` or by dot, like stated in the examples below. Both assignment operators (`<-` and `=`) can be used in ![](RcoreLogo.png){width="16" height="12"} language. However, the application of the first one is preferred, due to the fact that the `=` is a pure assignment operator and it does not necessarily initialize a variable in the namespace (e.g. as arguments in a function, see below). Whereas, the `<-` always creates a variable [@assignR2018; @assignRb; @RPeters2020; @wickham2019]. In order to improve the code readability, comments might be included, starting the line with the hash symbol `#` like shown in the following code chunks.
 
 ```{r names-assignments}
 
@@ -55,6 +55,7 @@ Q_value <- 3500
 # loading package built-in example file/data => "TMPD_specelchem_accu_b.asc",
 # which corresponds to the EPR spectrum of Wuster's blue:
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+# where `file` is the argument of `load_data_example` function
 
 ```
 
@@ -74,7 +75,7 @@ Sometimes a function/dataset/object from a certain 📦 is called via "special" 
 
 [^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several $\LaTeX$ packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
 
-# Vectors and Matrices {#vectors_mats}
+# Vectors and Matrices {#vectors-mats}
 
 In order to hold multiple data values of the same type (e.g. numeric, character or logical) the ![](RcoreLogo.png){width="16" height="12"} language uses the vector object, which is created by the `c(...)` command/function (the "c" stands for "combine" or "concatenate") like:
 
@@ -304,7 +305,7 @@ isFALSE(det(A) == 0)
 
 ```
 
-# Data Frames and the Pipe Operator
+# Data Frames and the Pipe Operator {#data-frames}
 
 Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is an 2-dimensional scheme), but unlike the matrices it can take different data types in lists (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct a data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
 
@@ -437,7 +438,7 @@ head(df.example.01)
 
 ```
 
-A data frame can be also created, by definition (see above), using the equally long vectors (refer to the vector definitions in Section \@ref(vectors_mats) and at beginning of the vignette), like:
+A data frame can be also created, by definition (see above), using the equally long vectors (refer to the vector definitions in Section \@ref(vectors-mats) and at beginning of the vignette), like:
 
 ```{r create-df-from-vectors}
 
@@ -504,7 +505,7 @@ df.example.01 %>% {
 
 where `_` works with `|>` and the `.` placeholder is to be used with "magrittr" pipe `%>%` . However, one could also apply the "dot" placeholder with the native pipe operator with a few tricks [@velasquez2022].
 
-The pipe operator has its own keyboard shortcut: `ctrl(cmd)` + `shift` + `m` depending on the settings. Within the Rstudio go to `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the check box "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in \@ref(fig:rstudio-pipe-setup).
+The pipe operator has its own keyboard shortcut: `ctrl(cmd)` + `shift` + `m` depending on the settings. Within the Rstudio go to `Tools` ➝ `Global Options...` ➝ `Code` (left-hand panel) and finally activate or deactivate the check box "**Use native pipe operator, \|\> (requires R 4.1+)**" like depicted in Figure \@ref(fig:rstudio-pipe-setup).
 
 ```{r rstudio-pipe-setup,echo = FALSE,out.width = "91%",fig.cap = "Pipe operator setup with the Rstudio Options."}
 
@@ -630,15 +631,18 @@ triarylam.decay.dat$df
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. Tidy data provides a standardized way how to link the stracture of a dataset (the physical layout) with its semantics (meaning). If the data frame would possess the form of **"messy" data** (any other data form different from "tidy"), each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
+Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. Tidy data provides a standardized way how to link the structure of a dataset (the physical layout) with its semantics (meaning). If the data frame would possess the form of **"messy" data** (any other data form different from "tidy"), each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
 
 ```{r messy-data-pivot-wider}
 
 triarylam.decay.dat.wide <- 
   triarylam.decay.dat$df %>% 
+  # remove `index` column
+  # in order to work with `pivot_wider`:
   select(-index) %>%
   tidyr::pivot_wider(
     names_from = time_s,
+    # define column headers:
     names_prefix = "time_s_",
     values_from = dIepr_over_dB
   )
@@ -648,14 +652,14 @@ head(triarylam.decay.dat.wide)
 
 ```
 
-Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] $\Rightarrow$ we have to filter/select the strings:
+Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] $\Rightarrow$ we have to filter/select the strings:
 
 [^3]: Instead of names like `time_s_...` with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be names/strings, not the values.
 
 ```{r messy-data-anal-plot-01}
 
 # 1. Which times between 100-300 s ?
-time.vec <- triarylam.decay.dat$time
+time.vec <- triarylam.decay.dat$time # this is vector
 time.span <- 
   time.vec[time.vec > 200 & time.vec < 300]
 #
@@ -757,7 +761,7 @@ triarylam.decay.dat$df |>
 
 ```
 
-Such tidy data makes it easy for an analyst or a computer to repeatedly extract needed variables because it provides a standard and consistent way of structuring a dataset [@tidyWickham2014]. Finally, this data structure also helps us, relatively easily, to integrate the entire series of EPR spectra in order to figure out the basic information about kinetics of triaryalmine radical decay:
+Such tidy data makes it easy for an analyst or a computer to repeatedly extract needed variables because it provides a standard and consistent way of structuring a dataset [@tidyWickham2014]. Finally, this data structure also helps us, relatively easily, to (double-)integrate the entire series of EPR spectra in order to figure out the basic information about the kinetics of triaryalmine radical decay:
 
 ```{r tidy-triarylam-integ-kinet}
 
@@ -770,10 +774,15 @@ triarylam.decay.integs.01 <-
       double_Integ =
         eval_integ_EPR_Spec(
           dplyr::pick(B_G,dIepr_over_dB),
+          # correct integral baseline:
           correct.integ = TRUE,
+          # ...in the range of the peak:
           BpeaKlim = c(3473.5,3502.5),
+          # ...by the 5th order plynomial:
           poly.degree = 5,
+          # provide double integrals:
           sigmoid.integ = TRUE,
+          # ...in the vector form:
           output.vecs = TRUE
         )$sigmoid
     ) |>
@@ -792,9 +801,11 @@ Assuming the radical ($\small \mathrm{R}$) recombination, forming a dimer ($\sma
  (\#eq:dimer)
  \end{equation}
 
-one can try to fit the *Area (Double Integral) vs time* relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant $\small k_1$:
+one can try to fit the *Area (Double Integral) vs time* relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant $\small k_1$ [^4]:
 
-```{r kinetics-fit-01}
+[^4]: Because the double integral is directly proportional to the concentration of radicals $\ce{R}$ for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: $[k_1] = (\mathrm{p.d.u.})^{-1}\, \mathrm{s}^{-1}$.
+
+```{r kinetics-fit-01,warning=FALSE,message=FALSE}
 
 dimer.kinetics.01 <- 
   eval_kinR_EPR_modelFit(
@@ -813,6 +824,35 @@ dimer.kinetics.01$df.coeff
 
 # Lists
 
-Blah
+List is a generic object similar to vector (see Section \@ref(vectors-mats)), however instead of bearing homogeneous data types, it may contain heterogeneous ones. This is due to the fact that sometimes we may want to link different types of information together, while preserving their origin. Therefore, the lists elements/components can possess the form of numeric values, vectors, matrices, functions, data frames/tables, strings...etc. As an example, let's check out the previous `dimer.kinetics.01` variable:
+
+```{r check-dimer-kinetics-01}
+
+class(dimer.kinetics.01)
+#
+# alternatively, the data type can be also
+# checked by the following functions
+typeof(dimer.kinetics.01)
+#
+# or 
+is.list(dimer.kinetics.01) # is it a list ?
+
+```
+
+The `dimer.kinetics.01` consists of the following elements:
+
+```{r elements-dimer-kinetics-01}
+
+# How many components ?
+length(dimer.kinetics.01)
+#
+# What are their names ?
+names(dimer.kinetics.01)
+
+```
+
+They are described in details in documentation of the `eval_kinR_EPR_modelFit()` function and in summary correspond to data frames (`df` + `df.coeffs`), plot object (`plot` , which is also a list) , additional lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) and numeric vector (`N.converg`). Many ![](RcoreLogo.png){width="16" height="16"} package functions return value(s) in the form of list(s).
+
+As shown above (see Section \@ref(data-frames)), to select/view a specific data frame column one can use two types of operators: `$` (dollar sign) and `[]` or `[[]]` (square brackets). The same applies for lists as it was depicted in several code snippets/code chunks above, using the `$` operator. For example to ...TBC... TODO !!
 
 # References
