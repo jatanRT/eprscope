@@ -308,30 +308,30 @@ ui <- fluidPage(
             "Table (Data Frame) of Expr. & Sim. Spectrum",
             style = h3.style.string
           ),
-          DT::DTOutput("simTab")
-        ),
-        shiny::br(), ## blank line
-        fluidRow(
-          column(width = 4,
-                 selectInput(
-                   inputId = "tabformat",
-                   label = "Table/Data Frame save format",
-                   choices = c("csv","xlsx"),
-                   selected = "csv"
-                 )),
-          column(width = 4,
-                 textInput(
-                   inputId = "tabfilename",
-                   label = "File name to save table/data frame",
-                   NULL
-                 )),
-          column(width = 4,
-                 shiny::br(), ## blank line
-                 downloadButton(
-                   outputId = "simTablesave",
-                   label = "Save table/data frame",
-                   icon = shiny::icon("floppy-disk")
-                 ))
+          DT::DTOutput("simTab"),
+          shiny::br(), ## blank line
+          fluidRow(
+            column(width = 4,
+                   selectInput(
+                     inputId = "tabformat",
+                     label = "Table/Data Frame save format",
+                     choices = c("csv","xlsx"),
+                     selected = "csv"
+                   )),
+            column(width = 4,
+                   textInput(
+                     inputId = "tabfilename",
+                     label = "File name to save table/data frame",
+                     NULL
+                   )),
+            column(width = 4,
+                   shiny::br(), ## blank line
+                   downloadButton(
+                     outputId = "simTablesave",
+                     label = "Save table/data frame",
+                     icon = shiny::icon("floppy-disk")
+                   ))
+          )
         ),
         shiny::tags$footer(
           shiny::icon("r-project"),
