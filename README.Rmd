@@ -292,7 +292,7 @@ There are several ways how to get help. If the users are already familiar with t
 
 -   [Quarto - An Open Source Scientific and Technical Publishing System](https://quarto.org/docs/get-started/hello/rstudio.html)
 
--   [R for Non-Programmers: A Guide for Social Scientists](https://bookdown.org/daniel_dauber_io/r4np_book/)
+-   [R for Non-Programmers: A Guide for Social Scientists](https://r4np.com/)
 
 -   YouTube Video Tutorials ➨
 
