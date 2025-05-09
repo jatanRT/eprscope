@@ -742,7 +742,7 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.091   0.003   0.094</span></span>
+<span><span class="co">#&gt;   0.086   0.003   0.090</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
@@ -757,7 +757,7 @@ aiso_mT_QCH
 <span><span class="co">#&gt; 4 3439.32 343.932 0.343932    9.7625349e-07</span></span>
 <span><span class="co">#&gt; 5 3439.37 343.937 0.343937    9.8089217e-07</span></span>
 <span><span class="co">#&gt; 6 3439.42 343.942 0.343942    9.8561824e-07</span></span></code></pre></div>
-<p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code>presentEPR_Sim_Spec()</code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.3</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> . Such simulation of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum can be also performed by an interactive manner using the above-mentioned <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> . One can “play” with all the simulation parameters defined above and the simulated EPR spectrum is instantaneously updated and compared with the experimental one like depicted on Figure <a href="#fig:simulation-shiny-app">5.4</a>.</p>
+<p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.3</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> . Such simulation of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum can be also performed by an interactive manner using the above-mentioned <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> . One can “play” with all the simulation parameters defined above and the simulated EPR spectrum is instantaneously updated and compared with the experimental one like depicted on Figure <a href="#fig:simulation-shiny-app">5.4</a>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># intesinty of the simulated spectrum</span></span>
