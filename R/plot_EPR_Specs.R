@@ -315,7 +315,8 @@ plot_EPR_Specs <- function(data.spectra,
   if (x.unit == "MHz") {
     x.label <- bquote(italic(nu)[RF] ~ "(" ~ .(x.unit) ~ ")")
   }
-  if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x)) & (x.unit == "unitless" || x.unit == "Unitless")) {
+  if (any(grepl(paste(slct.vec.x.g,collapse = "|"), x)) &
+      (x.unit == "unitless" || x.unit == "Unitless")) {
     x.label <- bquote(italic(g))
   }
   x.plot.limits <- c(x.start, x.end)
@@ -351,7 +352,9 @@ plot_EPR_Specs <- function(data.spectra,
     panel.border = element_rect(color = border.line.color,
                                 fill = NA,
                                 linewidth = border.line.width,
-                                linetype = border.line.type)
+                                linetype = border.line.type),
+    plot.title = element_text(margin = margin(b = -4)),
+    plot.subtitle = element_text(margin = margin(t = 8,b = -6))
   ) ## theme in order to have ticks inside the graph
   #
   theme.Nogrid <- theme(
@@ -415,9 +418,9 @@ plot_EPR_Specs <- function(data.spectra,
         scale_color_manual(values = line.colors) +
         labs(color = legend.title, x = x.label, y = y.label)
     } else {
-      if (is.null(legend.title)){
+      if (is.null(legend.title)) {
         stop(" The `legend.title` is not specified. Please, define ! ")
-      } else{
+      } else {
         if (!is.null(var2nd.series.slct.by)){
           ## OVERLAY SELECT PLOT
           ## `var2nd.series` definition
@@ -453,15 +456,14 @@ plot_EPR_Specs <- function(data.spectra,
               labs(color = legend.title, x = x.label, y = y.label)
           }
           if (length(line.colors) == 1){
-            if (line.colors != "magma" || line.colors != "A" || line.colors != "inferno" ||
-                line.colors != "B" || line.colors != "plasma" || line.colors != "C" ||
-                line.colors != "viridis" || line.colors != "D" || line.colors != "cividis" ||
-                line.colors != "E" || line.colors != "rocket" || line.colors != "F" ||
-                line.colors != "mako" || line.colors != "G" || line.colors != "turbo" ||
-                line.colors != "H") {
+            #
+            linecolorvec <- c("magma","A","inferno","B","plasma","C","viridis",
+                              "D","cividis","E","rocket","F","mako","G","turbo","H")
+            #
+            if (!any(grepl(paste(linecolorvec,collapse = "|"),line.colors,fixed = TRUE))) {
               line.colors <- "F"
               message(' The argument `line.colors` was automatically set to "F"/"rocket" !\n
-                      You may set your custom colors accordingly.\n
+                      You may set your DISCRETE custom colors accordingly.\n
                       Please, refer to the `line.colors` argument definition !')
             }
             plot.vector.colors <- line.colors
@@ -473,6 +475,16 @@ plot_EPR_Specs <- function(data.spectra,
           }
          #
         } else {
+          if (length(line.colors) == 1) {
+            line.colors <- grDevices::hcl.colors(4,palette = "Roma")
+            message(' The argument `line.colors` was automatically set to "Roma"\n
+                      ( by the `grDevices::hcl.colors()`) ! You may set your\n
+                      CONTINUOUS custom colors accordingly. Please, refer\n
+                      to the `line.colors` argument definition !')
+          }
+          if (length(line.colors) > 1) {
+            line.colors <- line.colors
+          }
           simplePlot <- ggplot(data.spectra) +
             geom_line(aes(x = .data[[x]],
                           y = .data[[Intensity]],
