@@ -526,7 +526,7 @@ head(sim.tmpd.iso$df)
 
 ```
 
-Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the `presentEPR_Sim_Spec()` function (Figure \@ref(fig:tmpd-radcat-sim-expr-compar)), which is essentially based on `{ggplot2}` package and therefore can be combined with the [additional {ggplot2} functions](https://ggplot2.tidyverse.org/reference/index.html) . Such simulation of the $\small \ce{TMPD^{.+}}$ EPR spectrum can be also performed by an interactive manner using the above-mentioned `plot_eval_ExpSim_app()` . One can "play" with all the simulation parameters defined above and the simulated EPR spectrum is instantaneously updated and compared with the experimental one like depicted on Figure \@ref(fig:simulation-shiny-app).
+Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the `present_EPR_Sim_Spec()` function (Figure \@ref(fig:tmpd-radcat-sim-expr-compar)), which is essentially based on `{ggplot2}` package and therefore can be combined with the [additional {ggplot2} functions](https://ggplot2.tidyverse.org/reference/index.html) . Such simulation of the $\small \ce{TMPD^{.+}}$ EPR spectrum can be also performed by an interactive manner using the above-mentioned `plot_eval_ExpSim_app()` . One can "play" with all the simulation parameters defined above and the simulated EPR spectrum is instantaneously updated and compared with the experimental one like depicted on Figure \@ref(fig:simulation-shiny-app).
 
 ```{r tmpd-radcat-sim-expr-compar, fig.cap="Comparison of simulated and experiental EPR spectrum of $\\small \\ce{TMPD^{.+}}$."}
 

@@ -224,7 +224,11 @@ triarylamine_rc_decay_data <-
 # with "k1" rate constant and the corresponding partial
 # rection order "alpha". "qvar0R" refers to the initial
 # "quantitative variable" (such as concentration, double integral
-# or number of radicals) of the triarylamine radical cation "R".
+# or number of radicals) of the triarylamine radical cation "R",
+# for a quick evaluation or comparison with other kinetic data
+# "qvarR" corresponds to "Area" (double integral in p.d.u. units) 
+# and therefore the unit => [k1] = (p.d.u.)^{-1} * s^{-1}
+# where the p.d.u. stands for "procedure defined unit"
 triarylamine_rc_decay_model <-
   eval_kinR_EPR_modelFit(
     data.qt.expr = triarylamine_rc_decay_data,
