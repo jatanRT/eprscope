@@ -248,15 +248,15 @@ triarylamine_rc_decay_model <-
 triarylamine_rc_decay_model$plot
 #
 # data frame/table, showing the obtained kinetic parameters
-# by the non-linear fit and numeric solution
-# of the Ordinary Differential Equations
+# (and their basic statistical measures) by the non-linear 
+# fit and numeric solution of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 
 ```
 
 ## Help, Questions and Contribution
 
-There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} knowledge resources, particularly for students. **In case you are completely new to *R***, there are couple of great tutorials enabling a quite straightforward diving into ![](https://www.r-project.org/Rlogo.png){width="16" height="16"}. **Please, refer to e.g.**
+There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} knowledge resources (see also the "First Steps with R Language" vignette/article), particularly for students. **In case you are completely new to *R***, there are couple of great tutorials enabling a quite straightforward diving into ![](https://www.r-project.org/Rlogo.png){width="16" height="16"}. **Please, refer to e.g.**
 
 -   [R for Data Science (2e)](https://r4ds.hadley.nz/)
 
