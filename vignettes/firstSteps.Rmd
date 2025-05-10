@@ -1,5 +1,5 @@
 ---
-title: "First Steps with R Statistical Language"
+title: "First Steps with R Language"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
@@ -41,7 +41,7 @@ library(htmlwidgets)
 library(plotly)
 ```
 
-This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting (several plots will be already presented) and operation with strings will be added in the upcoming package versions.
+This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting (several plots will be already presented) and operations with strings will be added in the upcoming package versions.
 
 # Variable/Function Names and Assignment
 
@@ -55,7 +55,7 @@ Q_value <- 3500
 # loading package built-in example file/data => "TMPD_specelchem_accu_b.asc",
 # which corresponds to the EPR spectrum of Wuster's blue:
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
-# where `file` is the argument of `load_data_example` function
+# where `file` is the argument of the `load_data_example` function
 
 ```
 
@@ -63,7 +63,7 @@ The `file` within the parentheses represents an **argument of the function** `lo
 
 # Functions and Packages
 
-Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console or *Rstudio* IDE. Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` has to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading the collection of essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
+Packages are fundamental units of shareable code. They may bundle functions, sample code, datasets, documentation and tests [@GfG2023; @wickham2023]. By default, during the ![](RcoreLogo.png){width="16" height="12"} installation, only a couple of packages are set up (e.g. `{base}` , `{datasets}` , `{graphics}` , `{grdevices}` , `{stats}` , `{utils}` ). These are also immediately available, once you start the ![](RcoreLogo.png){width="16" height="12"} console or *Rstudio* IDE (Integrated Development Invironment). Additional packages must by installed and loaded explicitly in order to be utilized. To load such packages, the function `library()` has to be executed. It actually refers to the (default) place (folder) where the 📦 is stored on your computer, such as loading the collection of essential data science packages ([{tidyverse}](https://www.tidyverse.org/), already mentioned above):
 
 ```{r loading-tidyverse}
 
@@ -194,7 +194,7 @@ identical(vec.g.iso.a,vec.g.iso.b) # Are these vectors identical ?
 
 ```
 
-Previous examples show how the vectors can be created by `loops` , however in to order to calculate the *g*~iso~-values, one can just simply apply the `eval_gFactor()` function on the entire `B.central.vec` like:
+Previous examples show, how the vectors can be created by `loops` . However in to order to calculate the *g*~iso~-values, one can just simply apply the `eval_gFactor()` function on the entire `B.central.vec` like:
 
 ```{r simple-g-iso}
 
@@ -353,7 +353,9 @@ str(df.example.01)
 
 ```
 
-We can immediately recognize that all three columns are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows/observations) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represents an operator to select the column (variable) of a data frame, namely:
+## Operations with Columns and Rows
+
+We can immediately recognize that all three columns of `df.example.01` are **num**eric and the dimension (which can be also figured out by the `dim()` function) reads 2401 (rows/observations) $\small \times$ 3 (variables/columns). The dollar sign `$` in front of each column vector represents an operator to select the column (variable) of a data frame, namely:
 
 ```{r df-example-01-select-col-a}
 
@@ -379,9 +381,9 @@ vec.B.G.c[1:12]
 
 ```
 
-In order to select/convert a data frame row into vector one has to, first of all, `unlist()` the row (because it possesses the form of data frame) and finally remove the names (if the named vector is not desired):
+In order to select/convert a data frame row into vector, one has to, first of all, `unlist()` the row (because it possesses the form of data frame) and finally remove the names (if the named vector is not desired):
 
-```{r exxample-01-df-row-vector}
+```{r example-01-df-row-vector}
 
 # first row of data frame:
 df.example.01[1, ]
@@ -453,6 +455,32 @@ normalization.df <- data.frame(
 normalization.df
 
 ```
+
+## Basic Statistical Measures of Data Frame Columns
+
+The basic statistical measures of a data frame (and its columns) are available by the `summary()` command/function:
+
+```{r basic-stat-metrics-01}
+
+summary(df.example.01)
+
+```
+
+Additionally, for each column one can also obtain (by using a loop `sapply()` ) the [sample variance](https://www.r-tutor.com/elementary-statistics/numerical-measures/variance) and the [standard deviation](https://www.r-tutor.com/elementary-statistics/numerical-measures/standard-deviation):
+
+```{r basic-stat-metrics-02}
+
+# variance (var) for each column 
+sapply(df.example.01, FUN = var)
+#
+# standard deviation (sd) for each column
+sapply(df.example.01, FUN = sd)
+
+# where sd(x) = sqrt(var(x))
+
+```
+
+## Pipe Operator
 
 **Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png){width="16" height="12"} **Programming Language**
 
@@ -543,7 +571,7 @@ Create a new column by the `dplyr::mutate()` function:
 
 ```{r mutate-df-pipe-operator}
 
-# create a new `B_mT` column:
+# create a new `B_T` column:
 df.example.02 <- df.example.01 %>% 
   dplyr::mutate(B_T = B_G * 1e-4)
 #
@@ -586,7 +614,7 @@ df.example.04
 
 ```
 
-## Tidy and Messy Data
+## Tidy and Messy Data {#sec-tidy-and-messy-data}
 
 Last example of data handling (see below), using the `{dplyr}` and the pipe operator, will show the processing and analysis of EPR time series (kinetics). In the first step, the "kinetic" must be loaded from the `.zip` file :
 
@@ -658,10 +686,10 @@ Even at the first sight, such data structure might look more organized, they are
 
 ```{r messy-data-anal-plot-01}
 
-# 1. Which times between 100-300 s ?
+# 1. Which "times" between 100-300 s ?
 time.vec <- triarylam.decay.dat$time # this is vector
 time.span <- 
-  time.vec[time.vec > 200 & time.vec < 300]
+  time.vec[time.vec > 200 & time.vec < 300] # filtering
 #
 # 2. Create the string vector 
 # of the corresponding column names.
@@ -687,18 +715,22 @@ Plotting all those spectra at once is only possible by the "individual" `ggplot2
 ```{r messy-data-anal-plot-02}
 
 triarylam.decay.filter.df.wide |>
+  # plot base:
   ggplot(aes(x = B_G)) +
+  # individual lines:
   geom_line(aes(y = time_s_214,color = "214")) +
   geom_line(aes(y = time_s_229,color = "229")) +
   geom_line(aes(y = time_s_244,color = "244")) +
   geom_line(aes(y = time_s_259,color = "259")) +
   geom_line(aes(y = time_s_274,color = "274")) +
   geom_line(aes(y = time_s_288,color = "288")) +
+  # labels:
   labs(
     color = "Time (s)", 
     x = "B (G)",
     y = "dIepr / dB (p.d.u.)"
   ) +
+  # plot theme:
   plot_theme_In_ticks()
 
 ```
@@ -724,9 +756,9 @@ triarylam.decay.dat.filter.long
 
 ```
 
-The corresponding EPR spectra can be visualized easier than before:
+The corresponding EPR spectra can be visualized easier than before, applying the `color` argument :
 
-```{r messy-data-anal-plot-03}
+```{r messy-data-anal-plot-04}
 
 triarylam.decay.dat.filter.long |>
   ggplot(aes(x = B_G,y = dIepr_over_dB)) +
@@ -747,7 +779,8 @@ By using the original "tidy" data frame (`triarylam.decay.dat$df`) one can there
 triarylam.decay.dat$df |>
   # filtering/time span:
   dplyr::filter(between(time_s,200,300)) |>
-  # next step required for the discrete spectra visualization:
+  # next step required for the discrete spectra visualization
+  # (otherwise, continuous will be displayed)
   mutate(time_s = as.factor(time_s)) |>
   # own plot:
   ggplot(aes(x = B_G,y = dIepr_over_dB)) +
@@ -760,6 +793,8 @@ triarylam.decay.dat$df |>
   plot_theme_In_ticks()
 
 ```
+
+### Processing and Analysis of Kinetic Data
 
 Such tidy data makes it easy for an analyst or a computer to repeatedly extract needed variables because it provides a standard and consistent way of structuring a dataset [@tidyWickham2014]. Finally, this data structure also helps us, relatively easily, to (double-)integrate the entire series of EPR spectra in order to figure out the basic information about the kinetics of triaryalmine radical decay:
 
@@ -774,7 +809,7 @@ triarylam.decay.integs.01 <-
       double_Integ =
         eval_integ_EPR_Spec(
           dplyr::pick(B_G,dIepr_over_dB),
-          # correct integral baseline:
+          # correct the single integral baseline:
           correct.integ = TRUE,
           # ...in the range of the peak:
           BpeaKlim = c(3473.5,3502.5),
@@ -801,7 +836,7 @@ Assuming the radical ($\small \mathrm{R}$) recombination, forming a dimer ($\sma
  (\#eq:dimer)
  \end{equation}
 
-one can try to fit the *Area (Double Integral) vs time* relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant $\small k_1$ [^4]:
+one can try to fit the latter *Area (Double Integral) vs time* relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant $\small k_1$ [^4]:
 
 [^4]: Because the double integral is directly proportional to the concentration of radicals $\ce{R}$ for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: $[k_1] = (\mathrm{p.d.u.})^{-1}\, \mathrm{s}^{-1}$.
 
@@ -811,16 +846,39 @@ dimer.kinetics.01 <-
   eval_kinR_EPR_modelFit(
     data.qt.expr = triarylam.decay.integs.01,
     model.react = "(r=2)R --> [k1] B",
+    # named vector of initial kinetic parameters:
     params.guess = c(qvar0R = 0.02, k1 = 0.01)
   )
 #
 # plot preview
 dimer.kinetics.01$plot
 #
-# parameters
+# kinetic parameters with statistical measures
 dimer.kinetics.01$df.coeff
 
 ```
+
+Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit:
+
+```{r kinetics-fit-01-residuals}
+
+dimer.kinetics.01$ra$plot.rqq
+
+```
+
+However, it is evident that the variance (and the standard deviation) of residuals is slightly higher along the fitted/predicted values in comparison to residual/error values:
+
+```{r residual-variance}
+
+# residual sample variance
+var(dimer.kinetics.01$ra$df$residuals)
+#
+# residuals sd
+dimer.kinetics.01$ra$sd
+
+```
+
+This is likely due to the noisy baseline in the EPR spectra as shown in the Section \@ref(sec-tidy-and-messy-data) and the subsequent integration. However, by the simulation and fitting of the simulated spectra onto the experimental ones, we can obtain much better results as shown by the `Examples` in the `eval_kinR_EPR_modelFit()` function documentation.
 
 # Lists
 
@@ -834,7 +892,7 @@ class(dimer.kinetics.01)
 # checked by the following functions
 typeof(dimer.kinetics.01)
 #
-# or 
+# ...or 
 is.list(dimer.kinetics.01) # is it a list ?
 
 ```
@@ -853,6 +911,99 @@ names(dimer.kinetics.01)
 
 They are described in details in documentation of the `eval_kinR_EPR_modelFit()` function and in summary correspond to data frames (`df` + `df.coeffs`), plot object (`plot` , which is also a list) , additional lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) and numeric vector (`N.converg`). Many ![](RcoreLogo.png){width="16" height="16"} package functions return value(s) in the form of list(s).
 
-As shown above (see Section \@ref(data-frames)), to select/view a specific data frame column one can use two types of operators: `$` (dollar sign) and `[]` or `[[]]` (square brackets). The same applies for lists as it was depicted in several code snippets/code chunks above, using the `$` operator. For example to ...TBC... TODO !!
+As shown above (see Section \@ref(data-frames)), to select/view a specific data frame column one can use two types of operators: `$` (dollar sign) and `[]` or `[[]]` (square brackets). The same applies for the lists as it was depicted in several code snippets/code chunks above, using the `$` operator. For example to show/select the vector, corresponding to residual sum of squares at each iteration/evaluation (for the kinetic model fit), we apply:
+
+```{r select-list-elements-01}
+
+# select the element by `$` operator
+dimer.kinetics.01$N.converg
+#
+# ...or select the same by 
+# double-square brackets
+dimer.kinetics.01[["N.converg"]]
+
+```
+
+To **select the** `N.converg` **component by the** `$` **operator, we do not have to remember its name**. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put `$` operator just behind the list variable, all list elements appear in a popup window in order to select the desired one[^5].
+
+[^5]: The same actually applies also for data frames and columns.
+
+In addition to double-square brackets, one may also choose single ones. However, this does not select the "pure" list element and instead, it shows the element together with its name (actually corresponding to list, similarly to data frames with single-square bracket selection) like:
+
+```{r select-list-element-02}
+
+dimer.kinetics.01["N.converg"]
+
+# What does the previous command/variable correspond to ?
+class(dimer.kinetics.01["N.converg"])
+```
+
+If we want to choose an element form `N.converg` (e.g. the last residual square sum), we can actually apply the following commands:
+
+```{r select-list-elemnet-03}
+
+# the last residual square sum
+dimer.kinetics.01$N.converg[length(dimer.kinetics.01$N.converg)]
+#
+# ...or by
+dimer.kinetics.01[["N.converg"]][length(dimer.kinetics.01$N.converg)]
+#
+# compare the previous one with residual analysis (`$ra`)
+# of the `dimer.kinetics.01`
+identical(
+  dimer.kinetics.01[["N.converg"]][length(dimer.kinetics.01$N.converg)],
+  sum((dimer.kinetics.01$ra$df$residuals)^2)
+)
+
+
+```
+
+In terms of previous definitions and list selections, creation of list is quite straightforward. As an example we may define system of nuclei, interacting with unpaired electron to simulate the $\small \ce{TMPD^{.+}}$ EPR spectrum, having the structure already depicted in `vignette("functionality")` :
+
+```{r epr-list-sim-example-tmpd}
+
+# the following nested list, without names, 
+# is a combination of strings and numbers
+nuclei.system <- list(
+  list("14N",2,19.77), # A(2 x 14N) = 19.77 MHz
+  list("1H",4,5.47), # A(4 x 1H) = 5.47 MHz
+  list("1H",12,19.43) # A(12 x 1H) = 19.43 MHz
+)
+#
+# preview of the `14N` nuclei
+nuclei.system[[1]]
+#
+# ...and their coupling constants A(2 x 14N)
+nuclei.system[[1]][[3]]
+
+```
+
+...with the simulation:
+
+```{r epr-spec-sim-example-tmpd}
+
+# simulation also returns a list
+tmpd.sim.list <-
+  eval_sim_EPR_iso(
+    g.iso = 2.00304,
+    instrum.params = c(
+      Bcf = 3499.17,
+      Bsw = 120,
+      Npoints = 2401,
+      mwGHz = 9.814155
+    ),
+    # previously defined system:
+    nuclear.system = nuclei.system,
+    lineG.content = 0.64,
+    lineGL.DeltaB = list(0.46,0.46)
+  )
+#
+# ...consisting of data frame
+tmpd.sim.list$df
+#
+# ...and the spectrum/plot
+tmpd.sim.list$plot
+
+```
 
 # References
