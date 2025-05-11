@@ -42,7 +42,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,13 +133,13 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># creating a vector of EPR intensity </span></span>
-<span><span class="co"># normalization constant names:</span></span>
+<span><span class="co"># normalization constant names</span></span>
 <span><span class="va">str.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NumberOfScans"</span>,<span class="st">"Concentration"</span>,<span class="st">"QValue"</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># ...and their corresponding values:</span></span>
+<span><span class="co"># ...and their corresponding values</span></span>
 <span><span class="va">value.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>,<span class="fl">1e-3</span>,<span class="fl">3500</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of both vectors:</span></span>
+<span><span class="co"># preview of both vectors</span></span>
 <span><span class="va">str.norm</span></span>
 <span><span class="co">#&gt; [1] "NumberOfScans" "Concentration" "QValue"</span></span>
 <span><span class="va">value.norm</span></span>
@@ -148,7 +148,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># combination/concatenation of both</span></span>
-<span><span class="co"># vectors created above:</span></span>
+<span><span class="co"># vectors created above</span></span>
 <span><span class="va">comb.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">str.norm</span>,<span class="va">value.norm</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># preview</span></span>
@@ -158,21 +158,21 @@
 <p>To avoid such behavior one has to define a <code>list</code> as shown below. The length of a vector can be figured out by the <code><a href="https://rdrr.io/r/base/length.html" class="external-link">length()</a></code> function, counting the number of vector components:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># dermine the vector length (`comb.norm`):</span></span>
+<span><span class="co"># dermine the vector length (`comb.norm`)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">comb.norm</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 6</span></span></code></pre></div>
 <p>Performing operations on individual elements requires indexing (vectors in <img src="RcoreLogo.png" width="16" height="12"> are 1 based indexing unlike the normal <em>C</em> or <em>Python</em>), which is quite simple and demonstrated by the following examples:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># select the third element:</span></span>
+<span><span class="co"># select the third element</span></span>
 <span><span class="va">comb.norm</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "QValue"</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># select the last element:</span></span>
+<span><span class="co"># select the last element</span></span>
 <span><span class="va">comb.norm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">comb.norm</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "3500"</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># remove the second and the fifth  element:</span></span>
+<span><span class="co"># remove the second and the fifth  element</span></span>
 <span><span class="va">comb.norm</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "NumberOfScans" "QValue"        "24"            "3500"</span></span>
 <span><span class="co">#</span></span>
@@ -181,11 +181,11 @@
 <span><span class="va">comb.norm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] "NumberOfScans" "QValue"        "24"            "3500"</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># replace the fourth element:</span></span>
+<span><span class="co"># replace the fourth element</span></span>
 <span><span class="va">comb.norm</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># or "50"</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># the actual `comb.norm` vector</span></span>
-<span><span class="co"># (with replacement of the 4th element):</span></span>
+<span><span class="co"># (with replacement of the 4th element)</span></span>
 <span><span class="va">comb.norm</span></span>
 <span><span class="co">#&gt; [1] "NumberOfScans" "Concentration" "QValue"        "50"           </span></span>
 <span><span class="co">#&gt; [5] "0.001"         "3500"</span></span></code></pre></div>
@@ -193,33 +193,33 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># create vector of 10 numeric values,</span></span>
-<span><span class="co"># repeating `0.1` 10-times:</span></span>
+<span><span class="co"># repeating `0.1` 10-times</span></span>
 <span><span class="va">vec.01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>,times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># vector of B_{central} (magnetic flux density) </span></span>
-<span><span class="co"># in Gauss to calculate the g_{iso} values:</span></span>
+<span><span class="co"># in Gauss to calculate the g_{iso} values</span></span>
 <span><span class="va">B.central.vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="fl">3485.22</span>,<span class="fl">3490.47</span>,<span class="fl">3491.78</span>,<span class="fl">3488.35</span>,<span class="fl">3492.55</span>,</span>
 <span>  <span class="fl">3489.21</span>,<span class="fl">3491.99</span>,<span class="fl">3491.47</span>,<span class="fl">3492.50</span>,<span class="fl">3490.23</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># addition (+ preview):</span></span>
+<span><span class="co"># addition (+ preview)</span></span>
 <span><span class="va">add.vec</span> <span class="op">&lt;-</span> <span class="va">vec.01</span> <span class="op">+</span> <span class="va">B.central.vec</span></span>
 <span><span class="va">add.vec</span></span>
 <span><span class="co">#&gt;  [1] 3485.32 3490.57 3491.88 3488.45 3492.65 3489.31 3492.09 3491.57 3492.60</span></span>
 <span><span class="co">#&gt; [10] 3490.33</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># multiplication (+ preview, values in mT): </span></span>
+<span><span class="co"># multiplication (+ preview, values in mT) </span></span>
 <span><span class="va">multiple.vec</span> <span class="op">&lt;-</span> <span class="va">vec.01</span> <span class="op">*</span> <span class="va">B.central.vec</span></span>
 <span><span class="va">multiple.vec</span></span>
 <span><span class="co">#&gt;  [1] 348.522 349.047 349.178 348.835 349.255 348.921 349.199 349.147 349.250</span></span>
 <span><span class="co">#&gt; [10] 349.023</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># microwave frequency to calculate the g_{iso}:</span></span>
+<span><span class="co"># microwave frequency to calculate the g_{iso}</span></span>
 <span><span class="va">nu.GHz</span> <span class="op">&lt;-</span> <span class="fl">9.892546</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># operation (calculate g_{iso}) in a loop, iteration</span></span>
-<span><span class="co"># through all elements (i) of the `B.central.vec`:</span></span>
+<span><span class="co"># through all elements (i) of the `B.central.vec`</span></span>
 <span><span class="va">vec.g.iso.a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
 <span>  <span class="va">B.central.vec</span>, <span class="op">{</span><span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> </span>
 <span>    <span class="fu"><a href="../reference/eval_gFactor.html">eval_gFactor</a></span><span class="op">(</span></span>
@@ -229,7 +229,7 @@
 <span>    <span class="op">)</span><span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># such operation is an equivalent </span></span>
-<span><span class="co"># (simplification of) to `for` loop:</span></span>
+<span><span class="co"># (simplification of) to `for` loop</span></span>
 <span><span class="va">vec.g.iso.b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">B.central.vec</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">vec.g.iso.b</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eval_gFactor.html">eval_gFactor</a></span><span class="op">(</span></span>
@@ -238,7 +238,7 @@
 <span>    B.unit <span class="op">=</span> <span class="st">"G"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co"># preview (comparison):</span></span>
+<span><span class="co"># preview (comparison)</span></span>
 <span><span class="va">vec.g.iso.a</span></span>
 <span><span class="co">#&gt;  [1] 2.02799 2.02494 2.02418 2.02617 2.02374 2.02567 2.02406 2.02436 2.02377</span></span>
 <span><span class="co">#&gt; [10] 2.02508</span></span>
@@ -252,31 +252,31 @@
 <span>  B.val <span class="op">=</span> <span class="va">B.central.vec</span>,</span>
 <span>  B.unit <span class="op">=</span> <span class="st">"G"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">vec.g.iso.c</span></span>
 <span><span class="co">#&gt;  [1] 2.02799 2.02494 2.02418 2.02617 2.02374 2.02567 2.02406 2.02436 2.02377</span></span>
 <span><span class="co">#&gt; [10] 2.02508</span></span></code></pre></div>
 <p>Matrices can be created from vectors as demonstrated by the following example:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># define vector (sequence) of hypothetical g-values:</span></span>
+<span><span class="co"># define vector (sequence) of hypothetical g-values</span></span>
 <span><span class="va">mat.01.vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2.001</span>,<span class="fl">2.009</span>,length.out <span class="op">=</span> <span class="fl">9</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># create 3 x 3 matrix with `mat.01.vec` </span></span>
-<span><span class="co"># elements arranged in rows:</span></span>
+<span><span class="co"># elements arranged in rows</span></span>
 <span><span class="va">mat.01</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">mat.01.vec</span>,<span class="fl">3</span>,<span class="fl">3</span>,byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">mat.01</span></span>
 <span><span class="co">#&gt;       [,1]  [,2]  [,3]</span></span>
 <span><span class="co">#&gt; [1,] 2.001 2.002 2.003</span></span>
 <span><span class="co">#&gt; [2,] 2.004 2.005 2.006</span></span>
 <span><span class="co">#&gt; [3,] 2.007 2.008 2.009</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># 3 x 3 diagonal identity matrix:</span></span>
+<span><span class="co"># 3 x 3 diagonal identity matrix</span></span>
 <span><span class="va">mat.02</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">3</span>,ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">mat.02</span></span>
 <span><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
 <span><span class="co">#&gt; [1,]    1    0    0</span></span>
@@ -284,11 +284,11 @@
 <span><span class="co">#&gt; [3,]    0    0    1</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># create matrix from the vectors </span></span>
-<span><span class="co"># bound into columns (see the next operation):</span></span>
+<span><span class="co"># bound into columns (see the next operation)</span></span>
 <span><span class="va">mat.02.vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0033</span>,<span class="fl">2.0034</span><span class="op">)</span></span>
 <span><span class="va">mat.03.vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0035</span>,<span class="fl">2.0036</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># ...and the corresponding matrix:</span></span>
+<span><span class="co"># ...and the corresponding matrix</span></span>
 <span><span class="va">mat.03</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span> <span class="co"># "c" for column</span></span>
 <span>  <span class="va">mat.02.vec</span>,</span>
 <span>  <span class="va">mat.03.vec</span>,</span>
@@ -298,7 +298,7 @@
 <span><span class="co"># using vectors bound into rows</span></span>
 <span><span class="co"># by the `rbind()` function</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of `mat.03`:</span></span>
+<span><span class="co"># preview of `mat.03`</span></span>
 <span><span class="va">mat.03</span></span>
 <span><span class="co">#&gt;        [,1]   [,2]</span></span>
 <span><span class="co">#&gt; [1,] 2.0033 2.0035</span></span>
@@ -307,12 +307,12 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># select element in the 2nd row</span></span>
-<span><span class="co"># and the 3rd column within `mat.01`:</span></span>
+<span><span class="co"># and the 3rd column within `mat.01`</span></span>
 <span><span class="va">mat.01</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] 2.006</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># subset 2 x 2 matrix from</span></span>
-<span><span class="co"># the `mat.01`:</span></span>
+<span><span class="co"># the `mat.01`</span></span>
 <span><span class="va">mat.01</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
 <span><span class="co">#&gt;       [,1]  [,2]</span></span>
 <span><span class="co">#&gt; [1,] 2.001 2.002</span></span>
@@ -320,10 +320,10 @@
 <p>Transpose the <code>mat.01</code> matrix:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># `mat.01` transposition:</span></span>
+<span><span class="co"># `mat.01` transposition</span></span>
 <span><span class="va">mat.01.t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mat.01</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">mat.01.t</span></span>
 <span><span class="co">#&gt;       [,1]  [,2]  [,3]</span></span>
 <span><span class="co">#&gt; [1,] 2.001 2.004 2.007</span></span>
@@ -332,13 +332,13 @@
 <p>Inverse matrix (<span class="math inline">\(\small A^{-1}\)</span>) can be obtained by the <code><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve()</a></code> (<code>{base}</code> package) function, where <span class="math inline">\(\small A^{-1}\,A = A\,A^{-1}\,=\mathrm{1}\)</span> (identity matrix):</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># a 3 x 3 matrix of magnetic flux density:</span></span>
+<span><span class="co"># a 3 x 3 matrix of magnetic flux density</span></span>
 <span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">B.central.vec</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span>,<span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># inverse matrix:</span></span>
+<span><span class="co"># inverse matrix</span></span>
 <span><span class="va">A_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">A_1</span></span>
 <span><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
 <span><span class="co">#&gt; [1,] -0.16467456 -0.01321007  0.17785669</span></span>
@@ -346,7 +346,7 @@
 <span><span class="co">#&gt; [3,]  0.17519223 -0.21461436  0.03967075</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># check if A_1 * A = 1 (identity matrix),</span></span>
-<span><span class="co"># by matrix multiplication (A_1 %*% A):</span></span>
+<span><span class="co"># by matrix multiplication (A_1 %*% A)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fl">3</span>,ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, <span class="co"># identity matrix</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">A_1</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">A</span>,digits <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> <span class="co"># rounding to 8 decim. places</span></span>
@@ -355,7 +355,7 @@
 <p>The inverse matrix calculation requires following condition:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># determinat of A matrix must be different from 0:</span></span>
+<span><span class="co"># determinat of A matrix must be different from 0</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isFALSE</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
@@ -367,7 +367,7 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># read the EPR spectrum from the already </span></span>
-<span><span class="co"># defined path `tmpd.data.file`:</span></span>
+<span><span class="co"># defined path `tmpd.data.file`</span></span>
 <span><span class="va">df.example.01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></span><span class="op">(</span></span>
 <span>  <span class="va">tmpd.data.file</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B_G"</span>,<span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span>
@@ -389,11 +389,11 @@
 <p>The previous data frame consists of the following columns/variables represented by their headers:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># headers for 2D schemes like matrices or data frames:</span></span>
+<span><span class="co"># headers for 2D schemes like matrices or data frames</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "B_G"           "dIepr_over_dB" "B_mT"</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># ...or in general:</span></span>
+<span><span class="co"># ...or in general</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "B_G"           "dIepr_over_dB" "B_mT"</span></span></code></pre></div>
 <p>These column names are referred to the following vectors:</p>
@@ -418,10 +418,10 @@
 <p>From the previous output we can immediately recognize that all three columns of <code>df.example.01</code> are <strong>num</strong>eric and the dimension (which can be also figured out by the <code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code> function) reads 2401 (rows/observations) <span class="math inline">\(\small \times\)</span> 3 (variables/columns). The dollar sign <code>$</code> in front of each column vector represents an operator to select the column (variable) of a data frame, namely:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># vector of magnetic flux density in G:</span></span>
+<span><span class="co"># vector of magnetic flux density in Gauss</span></span>
 <span><span class="va">vec.B.G.a</span> <span class="op">&lt;-</span> <span class="va">df.example.01</span><span class="op">$</span><span class="va">B_G</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of the first 12 values:</span></span>
+<span><span class="co"># preview of the first 12 values</span></span>
 <span><span class="va">vec.B.G.a</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span></span>
 <span><span class="co">#&gt;  [1] 3439.1699 3439.2200 3439.2700 3439.3201 3439.3701 3439.4199 3439.4700</span></span>
 <span><span class="co">#&gt;  [8] 3439.5200 3439.5701 3439.6201 3439.6699 3439.7200</span></span></code></pre></div>
@@ -432,7 +432,7 @@
 <span><span class="co"># or</span></span>
 <span><span class="va">vec.B.G.c</span> <span class="op">&lt;-</span> <span class="va">df.example.01</span><span class="op">[[</span><span class="st">"B_G"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of the first 12 values:</span></span>
+<span><span class="co"># preview of the first 12 values</span></span>
 <span><span class="va">vec.B.G.b</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">]</span></span>
 <span><span class="co">#&gt;  [1] 3439.1699 3439.2200 3439.2700 3439.3201 3439.3701 3439.4199 3439.4700</span></span>
 <span><span class="co">#&gt;  [8] 3439.5200 3439.5701 3439.6201 3439.6699 3439.7200</span></span>
@@ -442,21 +442,21 @@
 <p>In order to select/convert a data frame row into vector, one has to, first of all, <code><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist()</a></code> the row (because it possesses the form of a data frame) and finally remove the names (if the named vector is not desired):</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># first row of data frame:</span></span>
+<span><span class="co"># first row of data frame</span></span>
 <span><span class="va">df.example.01</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;          B_G dIepr_over_dB      B_mT</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;         &lt;num&gt;     &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 3439.1699    -56.047362 343.91699</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># convert the row data frame </span></span>
-<span><span class="co"># into the vector:</span></span>
+<span><span class="co"># into the vector</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 3439.169922  -56.047362  343.916992</span></span></code></pre></div>
 <p>Selection/Subset by single square brackets results in data frame structure, even with one row or column/variable, which is kind of similar to matrices, as already depicted above. An alternative way would be the usage of <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code> function from the <code>{base}</code> 📦. Both ways are documented by the following code:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># select the first column,</span></span>
-<span><span class="co"># resulting in data frame:</span></span>
+<span><span class="co"># resulting in data frame</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          B_G</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;</span></span>
@@ -468,13 +468,13 @@
 <span><span class="co">#&gt; 6: 3439.4199</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># select the 4th row of the original</span></span>
-<span><span class="co"># data frame and extract the `B_mT` value:</span></span>
+<span><span class="co"># data frame and extract the `B_mT` value</span></span>
 <span><span class="va">df.example.01</span><span class="op">[</span><span class="fl">4</span>, <span class="op">]</span><span class="op">[[</span><span class="st">"B_mT"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] 343.93201</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># select and/or subset data frame</span></span>
 <span><span class="co"># with magnetic flux density `B_G` &lt;= `Bcf`,</span></span>
-<span><span class="co"># which is the central field (or `median(B_G)`):</span></span>
+<span><span class="co"># which is the central field (or `median(B_G)`)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">[</span><span class="va">df.example.01</span><span class="op">$</span><span class="va">B_G</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">$</span><span class="va">B_G</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          B_G dIepr_over_dB      B_mT</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;         &lt;num&gt;     &lt;num&gt;</span></span>
@@ -485,7 +485,7 @@
 <span><span class="co">#&gt; 5: 3439.3701 -92.620223214 343.93701</span></span>
 <span><span class="co">#&gt; 6: 3439.4199 -71.915075893 343.94199</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># the same with `subset()`:</span></span>
+<span><span class="co"># the same with `subset()`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">df.example.01</span>,<span class="va">B_G</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">B_G</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          B_G dIepr_over_dB      B_mT</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;         &lt;num&gt;     &lt;num&gt;</span></span>
@@ -498,7 +498,7 @@
 <p>To create or delete a column/variable one may use:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># create g-value column (`g_Val`):</span></span>
+<span><span class="co"># create g-value column (`g_Val`)</span></span>
 <span><span class="va">df.example.01</span><span class="op">$</span><span class="va">g_Val</span> <span class="op">&lt;-</span> <span class="co"># or `df.example.01[["g_Val"]] &lt;-`</span></span>
 <span>  <span class="fu"><a href="../reference/eval_gFactor.html">eval_gFactor</a></span><span class="op">(</span></span>
 <span>    nu.val <span class="op">=</span> <span class="va">nu.GHz</span>,</span>
@@ -506,7 +506,7 @@
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># ...right after that, delete</span></span>
-<span><span class="co"># the `B_mT` column/variable:</span></span>
+<span><span class="co"># the `B_mT` column/variable</span></span>
 <span><span class="va">df.example.01</span><span class="op">$</span><span class="va">B_mT</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># ...the same operation can be done</span></span>
@@ -527,13 +527,13 @@
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># create a data frame by the `data.frame()` base </span></span>
-<span><span class="co"># function using the vectors already defined above:</span></span>
+<span><span class="co"># function using the vectors already defined above</span></span>
 <span><span class="va">normalization.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  norm_names <span class="op">=</span> <span class="va">str.norm</span>,</span>
 <span>  norm_values <span class="op">=</span> <span class="va">value.norm</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">normalization.df</span></span>
 <span><span class="co">#&gt;      norm_names norm_values</span></span>
 <span><span class="co">#&gt; 1 NumberOfScans     2.4e+01</span></span>
@@ -541,10 +541,10 @@
 <span><span class="co">#&gt; 3        QValue     3.5e+03</span></span></code></pre></div>
 </div>
 <div class="section level3" number="4.2">
-<h3 id="basic-statistical-measures-of-data-frame-columns">
-<span class="header-section-number">4.2</span> Basic Statistical Measures of Data Frame Columns<a class="anchor" aria-label="anchor" href="#basic-statistical-measures-of-data-frame-columns"></a>
+<h3 id="descriptive-statistics-of-data-frames">
+<span class="header-section-number">4.2</span> Descriptive Statistics of Data Frames<a class="anchor" aria-label="anchor" href="#descriptive-statistics-of-data-frames"></a>
 </h3>
-<p>The basic statistical measures of a data frame (and its columns) are available by the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> command/function:</p>
+<p>The basic statistical measures of a data frame (its columns) are available by the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> command/function:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">df.example.01</span><span class="op">)</span></span>
@@ -555,7 +555,7 @@
 <span><span class="co">#&gt;  Mean   :3499.2   Mean   :     0.00   Mean   :2.0201  </span></span>
 <span><span class="co">#&gt;  3rd Qu.:3529.2   3rd Qu.:   777.53   3rd Qu.:2.0374  </span></span>
 <span><span class="co">#&gt;  Max.   :3559.2   Max.   : 43423.41   Max.   :2.0551</span></span></code></pre></div>
-<p>Additionally, for each column one can also obtain (by using a loop <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply()</a></code> ) the <a href="https://www.r-tutor.com/elementary-statistics/numerical-measures/variance" class="external-link">sample variance</a> and the <a href="https://www.r-tutor.com/elementary-statistics/numerical-measures/standard-deviation" class="external-link">standard deviation</a>:</p>
+<p>Additionally, for each column one can also obtain measures of dispersion (by using a loop <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply()</a></code> ) ➨ the <a href="https://www.r-tutor.com/elementary-statistics/numerical-measures/variance" class="external-link">sample variance</a> and the <a href="https://www.r-tutor.com/elementary-statistics/numerical-measures/standard-deviation" class="external-link">standard deviation</a>:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># variance (var) for each column </span></span>
@@ -586,7 +586,7 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># take the `vec.B.G.b(c)` vector from above,</span></span>
 <span><span class="co"># round it (for 2 decimal places) </span></span>
-<span><span class="co"># and find the mean value:</span></span>
+<span><span class="co"># and find the mean value</span></span>
 <span><span class="va">vec.B.G.b</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">mean</span></span>
 <span><span class="co">#&gt; [1] 3499.17</span></span>
 <span><span class="co">#</span></span>
@@ -596,7 +596,7 @@
 <span><span class="co"># vec.B.G.c |&gt; round(digits = 2) |&gt; mean</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># therefore, parenthesis must be included</span></span>
-<span><span class="co"># in the `mean` function call, like:</span></span>
+<span><span class="co"># in the `mean` function call, like</span></span>
 <span><span class="va">vec.B.G.c</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 3499.17</span></span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
@@ -633,21 +633,21 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># selecting column (`B_G`) from data </span></span>
-<span><span class="co"># frame by pipe and `$` operators:</span></span>
+<span><span class="co"># frame by pipe and `$` operators</span></span>
 <span><span class="va">vec.B.G.d</span> <span class="op">&lt;-</span> <span class="va">df.example.01</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">.</span><span class="op">$</span><span class="va">B_G</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of the first 10 values:</span></span>
+<span><span class="co"># preview of the first 10 values</span></span>
 <span><span class="va">vec.B.G.d</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
 <span><span class="co">#&gt;  [1] 3439.1699 3439.2200 3439.2700 3439.3201 3439.3701 3439.4199 3439.4700</span></span>
 <span><span class="co">#&gt;  [8] 3439.5200 3439.5701 3439.6201</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># ...similar operation by the `{dplyr}`</span></span>
 <span><span class="co"># `select()` function where the output</span></span>
-<span><span class="co"># corresponds to data frame, therefore:</span></span>
+<span><span class="co"># corresponds to data frame, therefore</span></span>
 <span><span class="va">vec.B.G.e</span> <span class="op">&lt;-</span> <span class="va">df.example.01</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">B_G</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">unlist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">as.vector</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of the first 10 values:</span></span>
+<span><span class="co"># preview of the first 10 values</span></span>
 <span><span class="va">vec.B.G.e</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
 <span><span class="co">#&gt;  [1] 3439.1699 3439.2200 3439.2700 3439.3201 3439.3701 3439.4199 3439.4700</span></span>
 <span><span class="co">#&gt;  [8] 3439.5200 3439.5701 3439.6201</span></span></code></pre></div>
@@ -655,11 +655,11 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <p>Create a new column by the <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code> function:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># create a new `B_T` column:</span></span>
+<span><span class="co"># create a new `B_T` column</span></span>
 <span><span class="va">df.example.02</span> <span class="op">&lt;-</span> <span class="va">df.example.01</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>B_T <span class="op">=</span> <span class="va">B_G</span> <span class="op">*</span> <span class="fl">1e-4</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df.example.02</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          B_G dIepr_over_dB   g_Val      B_mT        B_T</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;         &lt;num&gt;   &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
@@ -673,7 +673,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># filter the `B_G`/`B_mT` </span></span>
-<span><span class="co"># values &lt;= central field:</span></span>
+<span><span class="co"># values &lt;= central field</span></span>
 <span><span class="va">df.example.03</span> <span class="op">&lt;-</span> <span class="va">df.example.02</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">B_G</span> <span class="op">&lt;=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">B_G</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
@@ -694,7 +694,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt; 1201: 3499.1699 -1.9964416e+04 2.01991 349.91699 0.34991699</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># find the `B_mT` corresponding</span></span>
-<span><span class="co"># to the maximum of `dIepr_over_dB` intensity:</span></span>
+<span><span class="co"># to the maximum of `dIepr_over_dB` intensity</span></span>
 <span><span class="va">df.example.02</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dIepr_over_dB</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">dIepr_over_dB</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">B_mT</span><span class="op">)</span></span>
@@ -707,7 +707,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span>  <span class="co"># rename syntax: "new name = old name":</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>g_Fac <span class="op">=</span> <span class="va">g_Val</span><span class="op">)</span> </span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="va">df.example.04</span></span>
 <span><span class="co">#&gt;          B_G dIepr_over_dB   g_Fac      B_mT        B_T</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;         &lt;num&gt;   &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span></span>
@@ -728,19 +728,19 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span></span>
 <span><span class="co"># loading the package built-in example file/data </span></span>
 <span><span class="co"># kinetics -&gt; "Triarylamine_radCat_decay_series",</span></span>
-<span><span class="co"># file with instrumental parameters:</span></span>
+<span><span class="co"># file with instrumental parameters</span></span>
 <span><span class="va">triarylam.decay.series.dsc.path</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/load_data_example.html">load_data_example</a></span><span class="op">(</span></span>
 <span>    file <span class="op">=</span> <span class="st">"Triarylamine_radCat_decay_series.DSC"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># ascii table in the form of `.zip`:</span></span>
+<span><span class="co"># ascii table in the form of `.zip`</span></span>
 <span><span class="va">triarylam.decay.series.asc.path</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/load_data_example.html">load_data_example</a></span><span class="op">(</span></span>
 <span>    file <span class="op">=</span> <span class="st">"Triarylamine_radCat_decay_series.zip"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># unzip the data:</span></span>
+<span><span class="co"># unzip the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span></span>
 <span>  <span class="va">triarylam.decay.series.asc.path</span>,</span>
 <span>  exdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -749,14 +749,14 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># reading the data and correcting</span></span>
-<span><span class="co"># the recording time for each CW EPR spectrum:</span></span>
+<span><span class="co"># the recording time for each CW EPR spectrum</span></span>
 <span><span class="va">triarylam.decay.dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span></span>
 <span>  name.root <span class="op">=</span> <span class="st">"Triarylamine_radCat_decay_series"</span>,</span>
 <span>  dir_ASC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  dir_dsc_par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,package <span class="op">=</span> <span class="st">"eprscope"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview:</span></span>
+<span><span class="co"># preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triarylam.decay.dat</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    index       B_G time_s  dIepr_over_dB      B_mT</span></span>
 <span><span class="co">#&gt;    &lt;int&gt;     &lt;num&gt;  &lt;num&gt;          &lt;num&gt;     &lt;num&gt;</span></span>
@@ -799,7 +799,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt; <span style="color: #949494;">#   time_s_318 &lt;dbl&gt;, time_s_333 &lt;dbl&gt;, time_s_348 &lt;dbl&gt;, time_s_363 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   time_s_378 &lt;dbl&gt;, time_s_392 &lt;dbl&gt;, time_s_407 &lt;dbl&gt;, time_s_422 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   time_s_437 &lt;dbl&gt;, time_s_452 &lt;dbl&gt;, time_s_467 &lt;dbl&gt;, time_s_482 &lt;dbl&gt;, …</span></span></span></code></pre></div>
-<p>Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to <code>triarylam.decay.dat$df</code> . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity <code>dIepr_over_dB</code> . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of <span class="math inline">\(\small (200-300)\,\mathrm{s}\)</span>, we must now the names of the corresponding columns<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Instead of names like &lt;code&gt;time_s_...&lt;/code&gt; with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be names/strings, not the values.&lt;/p&gt;"><sup>3</sup></a> <span class="math inline">\(\Rightarrow\)</span> we have to filter/select the strings:</p>
+<p>Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to <code>triarylam.decay.dat$df</code> . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity <code>dIepr_over_dB</code> . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of <span class="math inline">\(\small (200-300)\,\mathrm{s}\)</span>, we must now the names of the corresponding columns<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Instead of names like &lt;code&gt;time_s_...&lt;/code&gt; with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be names/strings, not the values.&lt;/p&gt;"><sup>3</sup></a> ➨ we have to filter/select the strings:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># 1. Which "times" between 100-300 s ?</span></span>
@@ -991,12 +991,12 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt;           Estimate   Std. Error   t value      Pr(&gt;|t|)</span></span>
 <span><span class="co">#&gt; qvar0R 0.019251201 0.0003640483 52.880897 7.3508015e-74</span></span>
 <span><span class="co">#&gt; k1     0.020585085 0.0009419355 21.854029 1.8581164e-39</span></span></code></pre></div>
-<p>Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit (refer also to the <code><a href="../reference/plot_eval_RA_forFit.html">plot_eval_RA_forFit()</a></code> function documentation):</p>
+<p>Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit (please, refer also to the <code><a href="../reference/plot_eval_RA_forFit.html">plot_eval_RA_forFit()</a></code> function documentation):</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.rqq</span></span></code></pre></div>
 <p><img src="firstSteps_files/figure-html/kinetics-fit-01-residuals-1.png"><!-- --></p>
-<p>However, it is evident that the variance (and the standard deviation) of residuals is slightly higher along the fitted/predicted values in comparison to the original residuals/errors:</p>
+<p>However, it is evident that its despersion ➨ variance and the standard deviation of residuals are slightly high along the fitted/predicted values:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># residual sample variance</span></span>
@@ -1053,7 +1053,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="va">dimer.kinetics.01</span><span class="op">[[</span><span class="st">"N.converg"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] 0.00109349827 0.00018752167 0.00015530650 0.00015518458 0.00015518455</span></span>
 <span><span class="co">#&gt; [6] 0.00015518455</span></span></code></pre></div>
-<p>To <strong>select the</strong> <code>N.converg</code> <strong>component by the</strong> <code>$</code> <strong>operator, we do not have to remember its name</strong>. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put <code>$</code> operator just behind the list variable name, all list elements appear in a popup window in order to select the desired one<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The same actually applies also for data frames and columns.&lt;/p&gt;"><sup>5</sup></a>.</p>
+<p>To <strong>select the</strong> <code>N.converg</code> <strong>component by the</strong> <code>$</code> <strong>operator, we do not have to remember its name</strong>. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put <code>$</code> operator just behind the list variable name, all list elements appear in a popup window in order to select the desired one<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The same actually applies for data frames and columns.&lt;/p&gt;"><sup>5</sup></a>.</p>
 <p>In addition to double-square brackets, one may also choose single ones. However, this does not select the “pure” list element and instead, it shows the element together with its name (actually corresponding to list, similarly to data frames with single-square bracket selection) like:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>

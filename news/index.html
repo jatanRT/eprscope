@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,15 +53,45 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.14" id="eprscope-0114">eprscope 0.1.14<a class="anchor" aria-label="anchor" href="#eprscope-0114"></a></h2>
+<div class="section level3">
+<h3 id="id_2025-0-1-14">2025-05-11<a class="anchor" aria-label="anchor" href="#id_2025-0-1-14"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-14">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-14"></a></h4>
+<ul><li><p>the entire data frame/table of interactively simulated EPR spectrum within the <code>shinyApp01</code> (see also the <code>plot_eval_ExpSim_app</code>) can be seamlessly exported either to <code>.csv</code> or to <code>.xlsx</code> formats, where in the previous version only several observations/rows (not the entire data frame) were exported</p></li>
+<li><p>fixed bug in the <code>plot_EPR_Specs</code> where the plot title was not displayed properly (showing a large space between the panel and the title); now, if the user forgets to define the <code>line.colors</code> argument, showing the EPR spectral series (e.g. kinetics), it automatically switches to predefined color vector and the corresponding <code>message</code> is displayed for both the <strong>discrete</strong> as well as for the <strong>continuous</strong> color schemes</p></li>
+<li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
+<li><p>if the <code>B.unit</code> argument, within the <code>eval_sim_EPR_iso</code> equals to different units like <code>B.unit = "G"</code>, <code>B.unit = "mT"</code> or <code>B.unit = "T"</code>, the intensity scale for the pseudo-Voigt line-shape was different, now it is normalized/standardized to that, corresponding to <code>B.unit = "G"</code>, this is especially important for the <code>eval_sim_EPR_isoFit</code> where the initial multiplication intensity coefficient guesses should be comparable (regardless of the <code>B.unit</code>)</p></li>
+<li><p>simulated EPR spectra from different sources can be read by the <code>readEPR_Sim_Spec</code>, taking into account original ASCII data files with several columns (not only two); therefore, now the <code>.csv</code> output of the simulated spectrum corresponding data frame from the shiny <code>plot_eval_ExpSim_app</code> can be combined with the <code>quantify_EPR_Sim_series</code> to quantify rather noisy EPR spectral series and consequently to evaluate the radical kinetics</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-14">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-14"></a></h4>
+<ul><li><p>simplified (several arguments removed) general automatic reading (for the <em>Xenon</em>, <em>WinEpr</em> and <em>Magnetech</em> instrument acquisition toolboxes) for ASCII data/EPR spectral series by the <code>readEPR_Exp_Specs_kin</code> as well as by the <code>readEPR_Exp_Specs_multif</code> functions; additional arguments reduction/simplification in the <code>quantify_EPR_Sim_series</code> and <code>eval_sim_EPR_isoFit</code> functions</p></li>
+<li><p>simplified code for the initial optimization parameter boundaries in the <code>eval_sim_EPR_isoFit</code></p></li>
+<li><p>package dependencies updated according to new functions/features (see below)</p></li>
+<li><p><code>README</code> updated by detailed description of package pre-installation setup + R learning resource(s) added</p></li>
+<li><p>linear logarithmic model added to the <code>eval_kinR_Eyring_GHS</code> (TST theory)</p></li>
+<li><p>the <code>functionality</code> vignette/article updated according to the new functions/features (see below)</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="new-functionsfilesvignettes-0-1-14">New Functions/Files/Vignettes<a class="anchor" aria-label="anchor" href="#new-functionsfilesvignettes-0-1-14"></a></h4>
+<ul><li><p>when comparing several models/fits (of the same experimental data) a new general ranking function by Akaike and Bayesian information criteria (AIC and BIC) was created: <code>eval_ABIC_forFit</code>, which has been also implemented in the <code>eval_kinR_EPR_modelFit</code>, <code>eval_kinR_Eyring_GHS</code>, <code>eval_sim_EPR_isoFit</code> as well as in the new <code>eval_sim_EPR_isoFit_space</code> (see below) functions</p></li>
+<li><p>for the same purpose (i.e. for comparison of several models/fits and looking for the best one), the new <code>plot_eval_RA_forFit</code> was created, serving as a general diagnostic tool for models/fits based on simple <strong>R</strong>esidual <strong>A</strong>nalysis or analysis of residuals, which correspond to difference between the experimental and predicted values by the model/fit: <em>r (or ε)</em> = <em>y</em><sub>i</sub> - <em>ŷ</em><sub>i</sub>; the function returns several visual diagnostics (plots) together with the standard deviation (sd) of residuals/errors (<em>r</em>/<em>ε</em>); similarly as for the <code>eval_ABIC_forFit</code>, it has been already implemented in the <code>eval_kinR_EPR_modelFit</code>, <code>eval_kinR_Eyring_GHS</code>, <code>eval_sim_EPR_isoFit</code> as well as in the new <code>eval_sim_EPR_isoFit_space</code> (see below)</p></li>
+<li><p>the new <code>eval_sim_EPR_isoFit_space</code> function extends the <code>eval_sim_EPR_isoFit</code>, in order to explore broader range of the initial EPR simulation parameters and to estimate the uncertainties related to optimized ones; additionally, by using the parallel computation, the entire evaluation/iteration process is faster than by using the common sequential method; function returns a <code>.gif</code> animation as well as several plots and data frames in order to show the detailed progress of the fit (corresponding to scanning of the initial parameter hyperspace)</p></li>
+<li><p>in order to demonstrate the essential syntax of R programming/statistical language, applied in the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> package, the new <code>firstStep</code> vignette/article was created</p></li>
+</ul></div>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.13" id="eprscope-0113">eprscope 0.1.13<a class="anchor" aria-label="anchor" href="#eprscope-0113"></a></h2>
 <div class="section level3">
 <h3 id="id_2025-0-1-13">2025-03-22<a class="anchor" aria-label="anchor" href="#id_2025-0-1-13"></a></h3>
 <div class="section level4">
 <h4 id="bug-fixescritical-updates-0-1-13">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-13"></a></h4>
 <ul><li><p>minimum sum of residual squares (<code>min.rss</code>), coming from the final list of <code>eval_sim_EPR_isoFit</code>, is now identical to that of the calculated from the final data frame <code>df</code> of the column/spectrum <code>Residuals</code></p></li>
-<li><p>intensity (multiplet) pattern related to just one group of equivalent nuclei is properly displayed when running the <code>eval_sim_EPR_iso</code> + right now the function has no limitations, regarding the number of nuclei (within a group) or their corresponding spin quantum number <em>I</em> → calculation of multiplets (multinomial coefficients) was significantly updated using a recursive function</p></li>
+<li><p>intensity (multiplet) pattern related to just one group of equivalent nuclei is displayed properly when running the <code>eval_sim_EPR_iso</code> + right now the function has no limitations, regarding the number of nuclei (within a group) or their corresponding spin quantum number <em>I</em> → calculation of multiplets (multinomial coefficients) was significantly updated using a recursive function</p></li>
 <li><p>bibliography (<code>.bib</code>) template, when running the <code>create_qmdReport_proj</code>, now possesses the right name inherited from the <code>wd.subdir.name</code></p></li>
-<li><p>fixed bug in <code>plot_EPR_Specs</code> where the g-value scale was not properly displayed; now, if used either with the <code>plot_theme_NoY_ticks</code> or <code>plot_theme_In_ticks</code>, the back-ticks on the opposite axis are shown as expected</p></li>
+<li><p>fixed bug in <code>plot_EPR_Specs</code> where the g-value scale was not displayed properly; now, if used either with the <code>plot_theme_NoY_ticks</code> or <code>plot_theme_In_ticks</code>, the back-ticks on the opposite axis are shown as expected</p></li>
 <li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
 </ul></div>
 <div class="section level4">
