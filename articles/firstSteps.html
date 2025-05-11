@@ -82,7 +82,7 @@
       <h1>First Steps with R Language</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.14/vignettes/firstSteps.Rmd" class="external-link"><code>vignettes/firstSteps.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/vignettes/firstSteps.Rmd" class="external-link"><code>vignettes/firstSteps.Rmd</code></a></small>
       <div class="d-none name"><code>firstSteps.Rmd</code></div>
     </div>
 
@@ -799,7 +799,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt; <span style="color: #949494;">#   time_s_318 &lt;dbl&gt;, time_s_333 &lt;dbl&gt;, time_s_348 &lt;dbl&gt;, time_s_363 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   time_s_378 &lt;dbl&gt;, time_s_392 &lt;dbl&gt;, time_s_407 &lt;dbl&gt;, time_s_422 &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   time_s_437 &lt;dbl&gt;, time_s_452 &lt;dbl&gt;, time_s_467 &lt;dbl&gt;, time_s_482 &lt;dbl&gt;, …</span></span></span></code></pre></div>
-<p>Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to <code>triarylam.decay.dat$df</code> . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity <code>dIepr_over_dB</code> . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of <span class="math inline">\(\small (200-300)\,\mathrm{s}\)</span>, we must now the names of the corresponding columns<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Instead of names like &lt;code&gt;time_s_...&lt;/code&gt; with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be names/strings, not the values.&lt;/p&gt;"><sup>3</sup></a> ➨ we have to filter/select the strings:</p>
+<p>Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to <code>triarylam.decay.dat$df</code> . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity <code>dIepr_over_dB</code> . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of <span class="math inline">\(\small (200-300)\,\mathrm{s}\)</span>, we must now the names of the corresponding columns<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Instead of names like &lt;code&gt;time_s_...&lt;/code&gt; with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be expressed by names/strings, not by values.&lt;/p&gt;"><sup>3</sup></a> ➨ we have to filter/select the strings:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># 1. Which "times" between 100-300 s ?</span></span>
@@ -969,7 +969,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 \small 2\,\ce{R -&gt;[k_1] D}
 \tag{4.1}
 \end{equation}\]</span></p>
-<p>one can try to fit the latter <em>Area (Double Integral) vs time</em> relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant <span class="math inline">\(\small k_1\)</span> <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Because the double integral is directly proportional to the concentration of radicals &lt;span class="math inline"&gt;\(\ce{R}\)&lt;/span&gt; for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: &lt;span class="math inline"&gt;\([k_1] = (\mathrm{p.d.u.})^{-1}\, \mathrm{s}^{-1}\)&lt;/span&gt;.&lt;/p&gt;'><sup>4</sup></a>:</p>
+<p>one can try to fit the latter <em>Area (Double Integral) vs time</em> relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant <span class="math inline">\(\small k_1\)</span> <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Because the double integral is directly proportional to the concentration of radicals &lt;span class="math inline"&gt;\(\mathrm{R}\)&lt;/span&gt; for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: &lt;span class="math inline"&gt;\([k_1] = (\mathrm{p.d.u.})^{-1}\, \mathrm{s}^{-1}\)&lt;/span&gt;.&lt;/p&gt;'><sup>4</sup></a>:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">dimer.kinetics.01</span> <span class="op">&lt;-</span> </span>
@@ -996,7 +996,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.rqq</span></span></code></pre></div>
 <p><img src="firstSteps_files/figure-html/kinetics-fit-01-residuals-1.png"><!-- --></p>
-<p>However, it is evident that its despersion ➨ variance and the standard deviation of residuals are slightly high along the fitted/predicted values:</p>
+<p>However, it is evident that its dispersion ➨ variance and the standard deviation of residuals are slightly high along the fitted/predicted values:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># residual sample variance</span></span>
@@ -1053,7 +1053,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="va">dimer.kinetics.01</span><span class="op">[[</span><span class="st">"N.converg"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt; [1] 0.00109349827 0.00018752167 0.00015530650 0.00015518458 0.00015518455</span></span>
 <span><span class="co">#&gt; [6] 0.00015518455</span></span></code></pre></div>
-<p>To <strong>select the</strong> <code>N.converg</code> <strong>component by the</strong> <code>$</code> <strong>operator, we do not have to remember its name</strong>. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put <code>$</code> operator just behind the list variable name, all list elements appear in a popup window in order to select the desired one<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The same actually applies for data frames and columns.&lt;/p&gt;"><sup>5</sup></a>.</p>
+<p>To <strong>select the</strong> <code>N.converg</code> <strong>component by the</strong> <code>$</code> <strong>operator, we do not have to remember its name</strong>. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put <code>$</code> operator just behind the list variable name, all list elements appear in a popup window in order to select the desired one<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The same actually applies for data frames and their columns.&lt;/p&gt;"><sup>5</sup></a>.</p>
 <p>In addition to double-square brackets, one may also choose single ones. However, this does not select the “pure” list element and instead, it shows the element together with its name (actually corresponding to list, similarly to data frames with single-square bracket selection) like:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>

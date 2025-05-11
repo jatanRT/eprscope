@@ -83,7 +83,7 @@
             <h3 data-toc-skip class="subtitle">Processing and Analysis of the Wuster’s Blue EPR Spectrum</h3>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.14/vignettes/functionality.Rmd" class="external-link"><code>vignettes/functionality.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/vignettes/functionality.Rmd" class="external-link"><code>vignettes/functionality.Rmd</code></a></small>
       <div class="d-none name"><code>functionality.Rmd</code></div>
     </div>
 
@@ -403,7 +403,7 @@
 <h2 id="visualizations-of-spectral-data">
 <span class="header-section-number">4</span> Visualizations of Spectral Data<a class="anchor" aria-label="anchor" href="#visualizations-of-spectral-data"></a>
 </h2>
-<p>All the data related to EPR spectroscopy can be visualized by the <a href="https://ggplot2.tidyverse.org/" class="external-link">{ggplot2}</a> 📦 and its <a href="https://exts.ggplot2.tidyverse.org/gallery/" class="external-link">extensions</a> as well as by the interactive <a href="https://plotly.com/r/" class="external-link">{plotly}</a> graphing library. While the first library/package (based on the “Grammar of Graphics”<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;&lt;em&gt;The Grammar of Graphics&lt;/em&gt; is a concept how the graphs/plots are built. It is based on the fact that graphs may consist of several components/layers (e.g. like data layer, geometry layer, aesthetic layer…etc) similarly to processing of a bitmap-image in a photo-editor. The term “&lt;em&gt;grammar&lt;/em&gt;” corresponds to the structure of a sentence in language and thus it may represent a structure of the graph/plot in R programming language.&lt;/p&gt;"><sup>2</sup></a> , see also <span class="citation">(<a href="#ref-WilkinsonGG2005">8</a>)</span>) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, it includes tools like zooming, panning, data/values hovering and <a href="https://plotly.com/r/configuration-options/" class="external-link">much more</a>. Combination of both approaches actually represents literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.</p>
+<p>All the data related to EPR spectroscopy can be visualized by the <a href="https://ggplot2.tidyverse.org/" class="external-link">{ggplot2}</a> 📦 and its <a href="https://exts.ggplot2.tidyverse.org/gallery/" class="external-link">extensions</a> as well as by the interactive <a href="https://plotly.com/r/" class="external-link">{plotly}</a> graphing library. While the first library/package (based on the “Grammar of Graphics”<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;&lt;em&gt;The Grammar of Graphics&lt;/em&gt; is a concept how the graphs/plots are built. It is based on the fact that graphs may consist of several components/layers (e.g. like data layer, geometry layer, aesthetic layer…etc) similarly to processing of a bitmap-image in a photo-editor. The term “&lt;em&gt;grammar&lt;/em&gt;” corresponds to the structure of a sentence in language and thus it may represent a structure of graph/plot in the R programming language.&lt;/p&gt;"><sup>2</sup></a> , see also <span class="citation">(<a href="#ref-WilkinsonGG2005">8</a>)</span>) is one of the most comprehensive system for data visualization, the second one represents a valuable alternative to processing/acquisition software at EPR spectrometers. Namely, it includes tools like zooming, panning, data/values hovering and <a href="https://plotly.com/r/configuration-options/" class="external-link">much more</a>. Combination of both approaches actually represents literally endless possibilities how to visualize the data in electron paramagnetic resonance spectroscopy.</p>
 <div class="section level3" number="4.1">
 <h3 id="static-plots-by-ggplot2-and-patchwork">
 <span class="header-section-number">4.1</span> Static Plots by <code>{ggplot2}</code> and <code>{patchwork}</code><a class="anchor" aria-label="anchor" href="#static-plots-by-ggplot2-and-patchwork"></a>
@@ -636,7 +636,7 @@ Figure 5.2: DFT optimized structure of TMPD radical cation with atom numbering i
 <code class="sourceCode R"><span></span>
 <span><span class="co"># The same package built-in example file </span></span>
 <span><span class="co"># (`TMPDAradCatEPRa.inp.log.zip`)</span></span>
-<span><span class="co"># as for the extraction of g-value is used (see above).</span></span>
+<span><span class="co"># as for the extraction of g-values is (see above).</span></span>
 <span><span class="va">symmetry.As.df</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/rearrange_aAiso_QCHorgau.html">rearrange_aAiso_QCHorgau</a></span><span class="op">(</span><span class="va">gauss.tmpd.output</span>,</span>
 <span>    N.nuclei <span class="op">=</span> <span class="fl">28</span>,</span>
@@ -722,7 +722,7 @@ aiso_mT_QCH
 <span><span class="co"># isotropic simulation of the TMPD radical cation where</span></span>
 <span><span class="co"># the instrumental parameters are taken from </span></span>
 <span><span class="co"># the corresponding `.par` file: `tmpd.params.file` :</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span> <span class="co">## time (in s) reserved for the simulation processing</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span> <span class="co"># time (in s) reserved for the simulation processing</span></span>
 <span><span class="va">sim.tmpd.iso</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></span><span class="op">(</span></span>
 <span>    g.iso <span class="op">=</span> <span class="va">tmpd.g.iso.spec</span>,</span>
@@ -743,13 +743,13 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.087   0.004   0.091</span></span>
+<span><span class="co">#&gt;   0.086   0.003   0.089</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
 <span><span class="co"># spectrum data frame.</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># preview of the data frame</span></span>
+<span><span class="co"># data frame preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Bsim_G Bsim_mT   Bsim_T dIeprSim_over_dB</span></span>
 <span><span class="co">#&gt; 1 3439.17 343.917 0.343917    9.6281321e-07</span></span>
