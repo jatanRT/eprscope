@@ -1,3 +1,97 @@
+# eprscope 0.1.14
+
+## 2025-05-11
+
+### Bug Fixes/Critical Updates
+
+* the entire data frame/table of interactively simulated EPR spectrum within
+  the `shinyApp01` (see also the `plot_eval_ExpSim_app`) can be seamlessly
+  exported either to `.csv` or to `.xlsx` formats, where in the previous
+  version only several observations/rows (not the entire data frame)
+  were exported
+
+* fixed bug in the `plot_EPR_Specs` where the plot title was not displayed
+  properly (showing a large space between the panel and the title); now,
+  if the user forgets to define the `line.colors` argument, showing the EPR
+  spectral series (e.g. kinetics), it automatically switches to predefined
+  color vector and the corresponding `message` is displayed for both
+  the **discrete** as well as for the **continuous** color schemes
+
+* several fixes and/or updates in documentation (functions, including
+  `Examples` + vignettes)
+
+* if the `B.unit` argument, within the `eval_sim_EPR_iso` equals
+  to different units like `B.unit = "G"`, `B.unit = "mT"` or `B.unit = "T"`,
+  the intensity scale for the pseudo-Voigt line-shape was different,
+  now it is normalized/standardized to that, corresponding to `B.unit = "G"`,
+  this is especially important for the `eval_sim_EPR_isoFit` where
+  the initial multiplication intensity coefficient guesses should be comparable
+  (regardless of the `B.unit`)
+
+* simulated EPR spectra from different sources can be read
+  by the `readEPR_Sim_Spec`, taking into account original ASCII data files
+  with several columns (not only two); therefore, now the `.csv` output
+  of the simulated spectrum corresponding data frame from the shiny
+  `plot_eval_ExpSim_app` can be combined with the `quantify_EPR_Sim_series`
+  to quantify rather noisy EPR spectral series and consequently to evaluate
+  the radical kinetics
+
+### Updates
+
+* simplified (several arguments removed) general automatic
+  reading (for the *Xenon*, *WinEpr* and *Magnetech* instrument acquisition
+  toolboxes) for ASCII data/EPR spectral series by the `readEPR_Exp_Specs_kin`
+  as well as by the `readEPR_Exp_Specs_multif` functions;
+  additional arguments reduction/simplification in the `quantify_EPR_Sim_series`
+  and `eval_sim_EPR_isoFit` functions
+
+* simplified code for the initial optimization parameter boundaries
+  in the `eval_sim_EPR_isoFit`
+
+* package dependencies updated according to new functions/features (see below)
+
+* `README` updated by detailed description of package pre-installation setup +
+  R learning resource(s) added
+
+* linear logarithmic model added to the `eval_kinR_Eyring_GHS` (TST theory)
+
+* the `functionality` vignette/article updated according to the new
+  functions/features (see below)
+
+### New Functions/Files/Vignettes
+
+* when comparing several models/fits (of the same experimental data)
+  a new general ranking function by Akaike and Bayesian information criteria
+  (AIC and BIC) was created: `eval_ABIC_forFit`, which has been also
+  implemented in the `eval_kinR_EPR_modelFit`, `eval_kinR_Eyring_GHS`,
+  `eval_sim_EPR_isoFit` as well as in the new `eval_sim_EPR_isoFit_space`
+  (see below) functions
+
+* for the same purpose (i.e. for comparison of several models/fits
+  and looking for the best one), the new `plot_eval_RA_forFit` was created,
+  serving as a general diagnostic tool for models/fits based on simple
+  **R**esidual **A**nalysis or analysis of residuals, which correspond
+  to difference between the experimental and predicted values
+  by the model/fit: *r (or ε)* = *y*<sub>i</sub> -  *ŷ*<sub>i</sub>;
+  the function returns several visual diagnostics (plots) together with
+  the standard deviation (sd) of residuals/errors (*r*/*ε*);
+  similarly as for the `eval_ABIC_forFit`, it has been already implemented
+  in the `eval_kinR_EPR_modelFit`, `eval_kinR_Eyring_GHS`, `eval_sim_EPR_isoFit`
+  as well as in the new `eval_sim_EPR_isoFit_space` (see below)
+
+* the new `eval_sim_EPR_isoFit_space` function extends the `eval_sim_EPR_isoFit`,
+  in order to explore broader range of the initial EPR simulation parameters
+  and to estimate the uncertainties related to optimized ones;
+  additionally, by using the parallel computation, the entire evaluation/iteration
+  process is faster than by using the common sequential method; function returns
+  a `.gif` animation as well as several plots and data frames in order to show
+  the detailed progress of the fit (corresponding to scanning of the initial
+  parameter hyperspace)
+
+* in order to demonstrate the essential syntax of R programming/statistical language,
+  applied in the `{eprscope}` package, the new `firstStep` vignette/article
+  was created
+
 # eprscope 0.1.13
 
 ## 2025-03-22
@@ -9,7 +103,7 @@
   data frame `df` of the column/spectrum `Residuals`
   
 * intensity (multiplet) pattern related to just one group of equivalent nuclei
-  is properly displayed when running the `eval_sim_EPR_iso` + right now the 
+  is displayed properly when running the `eval_sim_EPR_iso` + right now the 
   function has no limitations, regarding the number of nuclei (within a group) 
   or their corresponding spin quantum number *I* &rarr; calculation of multiplets
   (multinomial coefficients) was significantly updated using a recursive function
@@ -17,8 +111,8 @@
 * bibliography (`.bib`) template, when running the `create_qmdReport_proj`,
   now possesses the right name inherited from the `wd.subdir.name` 
   
-* fixed bug in `plot_EPR_Specs` where the g-value scale was not properly 
-  displayed; now, if used either with the `plot_theme_NoY_ticks`
+* fixed bug in `plot_EPR_Specs` where the g-value scale was not 
+  displayed properly; now, if used either with the `plot_theme_NoY_ticks`
   or `plot_theme_In_ticks`, the back-ticks on the opposite axis are shown
   as expected
   

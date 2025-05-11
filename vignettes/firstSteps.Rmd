@@ -82,13 +82,13 @@ In order to hold multiple data values of the same type (e.g. numeric, character 
 ```{r creating-vector}
 
 # creating a vector of EPR intensity 
-# normalization constant names:
+# normalization constant names
 str.norm <- c("NumberOfScans","Concentration","QValue")
 #
-# ...and their corresponding values:
+# ...and their corresponding values
 value.norm <- c(24,1e-3,3500)
 #
-# preview of both vectors:
+# preview of both vectors
 str.norm
 value.norm
 
@@ -99,7 +99,7 @@ The combination of different types automatically turns the vector components int
 ```{r creating-vector-combination}
 
 # combination/concatenation of both
-# vectors created above:
+# vectors created above
 comb.norm <- c(str.norm,value.norm)
 #
 # preview
@@ -111,7 +111,7 @@ To avoid such behavior one has to define a `list` as shown below. The length of 
 
 ```{r vector-length}
 
-# dermine the vector length (`comb.norm`):
+# dermine the vector length (`comb.norm`)
 length(comb.norm)
 
 ```
@@ -120,24 +120,24 @@ Performing operations on individual elements requires indexing (vectors in ![](R
 
 ```{r vector-element-operations}
 
-# select the third element:
+# select the third element
 comb.norm[3]
 #
-# select the last element:
+# select the last element
 comb.norm[length(comb.norm)]
 #
-# remove the second and the fifth  element:
+# remove the second and the fifth  element
 comb.norm[-c(2,5)]
 #
 # ...or the same selection 
 # by logical operations:
 comb.norm[c(TRUE,FALSE,TRUE,TRUE,FALSE,TRUE)]
 #
-# replace the fourth element:
+# replace the fourth element
 comb.norm[4] <- 50 # or "50"
 #
 # the actual `comb.norm` vector
-# (with replacement of the 4th element):
+# (with replacement of the 4th element)
 comb.norm
 
 ```
@@ -147,29 +147,29 @@ The basic arithmetic operations on vectors are also performed element-wise:
 ```{r vector-basic-operations}
 
 # create vector of 10 numeric values,
-# repeating `0.1` 10-times:
+# repeating `0.1` 10-times
 vec.01 <- rep(0.1,times = 10)
 #
 # vector of B_{central} (magnetic flux density) 
-# in Gauss to calculate the g_{iso} values:
+# in Gauss to calculate the g_{iso} values
 B.central.vec <- c(
   3485.22,3490.47,3491.78,3488.35,3492.55,
   3489.21,3491.99,3491.47,3492.50,3490.23
 )
 #
-# addition (+ preview):
+# addition (+ preview)
 add.vec <- vec.01 + B.central.vec
 add.vec
 #
-# multiplication (+ preview, values in mT): 
+# multiplication (+ preview, values in mT) 
 multiple.vec <- vec.01 * B.central.vec
 multiple.vec
 #
-# microwave frequency to calculate the g_{iso}:
+# microwave frequency to calculate the g_{iso}
 nu.GHz <- 9.892546
 #
 # operation (calculate g_{iso}) in a loop, iteration
-# through all elements (i) of the `B.central.vec`:
+# through all elements (i) of the `B.central.vec`
 vec.g.iso.a <- sapply(
   B.central.vec, {function(i) 
     eval_gFactor(
@@ -179,7 +179,7 @@ vec.g.iso.a <- sapply(
     )}
 )
 # such operation is an equivalent 
-# (simplification of) to `for` loop:
+# (simplification of) to `for` loop
 vec.g.iso.b <- c()
 for (i in seq(B.central.vec)) {
   vec.g.iso.b[i] <- eval_gFactor(
@@ -188,7 +188,7 @@ for (i in seq(B.central.vec)) {
     B.unit = "G"
   )
 }
-# preview (comparison):
+# preview (comparison)
 vec.g.iso.a
 identical(vec.g.iso.a,vec.g.iso.b) # Are these vectors identical ?
 
@@ -203,7 +203,7 @@ vec.g.iso.c <- eval_gFactor(
   B.val = B.central.vec,
   B.unit = "G"
 )
-# preview:
+# preview
 vec.g.iso.c
 
 ```
@@ -212,28 +212,28 @@ Matrices can be created from vectors as demonstrated by the following example:
 
 ```{r creation-of-matrices}
 
-# define vector (sequence) of hypothetical g-values:
+# define vector (sequence) of hypothetical g-values
 mat.01.vec <- seq(2.001,2.009,length.out = 9)
 #
 # create 3 x 3 matrix with `mat.01.vec` 
-# elements arranged in rows:
+# elements arranged in rows
 mat.01 <- matrix(mat.01.vec,3,3,byrow = TRUE)
 #
-# preview:
+# preview
 mat.01
 #
-# 3 x 3 diagonal identity matrix:
+# 3 x 3 diagonal identity matrix
 mat.02 <- diag(nrow = 3,ncol = 3)
 #
-# preview:
+# preview
 mat.02
 #
 # create matrix from the vectors 
-# bound into columns (see the next operation):
+# bound into columns (see the next operation)
 mat.02.vec <- c(2.0033,2.0034)
 mat.03.vec <- c(2.0035,2.0036)
 #
-# ...and the corresponding matrix:
+# ...and the corresponding matrix
 mat.03 <- cbind( # "c" for column
   mat.02.vec,
   mat.03.vec,
@@ -243,7 +243,7 @@ mat.03 <- cbind( # "c" for column
 # using vectors bound into rows
 # by the `rbind()` function
 #
-# preview of `mat.03`:
+# preview of `mat.03`
 mat.03
 
 ```
@@ -253,11 +253,11 @@ Selection of elements is similar to that of vectors with additional second dimen
 ```{r selections-in-matrices}
 
 # select element in the 2nd row
-# and the 3rd column within `mat.01`:
+# and the 3rd column within `mat.01`
 mat.01[2,3]
 #
 # subset 2 x 2 matrix from
-# the `mat.01`:
+# the `mat.01`
 mat.01[1:2,1:2]
 
 ```
@@ -266,10 +266,10 @@ Transpose the `mat.01` matrix:
 
 ```{r matrix-transposition}
 
-# `mat.01` transposition:
+# `mat.01` transposition
 mat.01.t <- t(mat.01)
 #
-# preview:
+# preview
 mat.01.t
 
 ```
@@ -278,17 +278,17 @@ Inverse matrix ($\small A^{-1}$) can be obtained by the `solve()` (`{base}` pack
 
 ```{r inverse-matrix}
 
-# a 3 x 3 matrix of magnetic flux density:
+# a 3 x 3 matrix of magnetic flux density
 A <- matrix(B.central.vec[1:9],3,3)
 #
-# inverse matrix:
+# inverse matrix
 A_1 <- solve(A)
 #
-# preview:
+# preview
 A_1
 #
 # check if A_1 * A = 1 (identity matrix),
-# by matrix multiplication (A_1 %*% A):
+# by matrix multiplication (A_1 %*% A)
 identical(
   diag(nrow = 3,ncol = 3), # identity matrix
   round(A_1 %*% A,digits = 8) # rounding to 8 decim. places
@@ -300,7 +300,7 @@ The inverse matrix calculation requires following condition:
 
 ```{r determinant}
 
-# determinat of A matrix must be different from 0:
+# determinat of A matrix must be different from 0
 isFALSE(det(A) == 0)
 
 ```
@@ -312,7 +312,7 @@ Data frame is one of most important structures/objects in ![](RcoreLogo.png){wid
 ```{r create-df-example-01}
 
 # read the EPR spectrum from the already 
-# defined path `tmpd.data.file`:
+# defined path `tmpd.data.file`
 df.example.01 <- readEPR_Exp_Specs(
   tmpd.data.file,
   col.names = c("B_G","dIepr_over_dB"),
@@ -330,10 +330,10 @@ The previous data frame consists of the following columns/variables represented 
 
 ```{r df-example-01-headers}
 
-# headers for 2D schemes like matrices or data frames:
+# headers for 2D schemes like matrices or data frames
 colnames(df.example.01)
 #
-# ...or in general:
+# ...or in general
 names(df.example.01)
 
 ```
@@ -360,10 +360,10 @@ From the previous output we can immediately recognize that all three columns of 
 
 ```{r df-example-01-select-col-a}
 
-# vector of magnetic flux density in G:
+# vector of magnetic flux density in Gauss
 vec.B.G.a <- df.example.01$B_G
 #
-# preview of the first 12 values:
+# preview of the first 12 values
 vec.B.G.a[1:12]
 
 ```
@@ -376,7 +376,7 @@ vec.B.G.b <- df.example.01[[1]]
 # or
 vec.B.G.c <- df.example.01[["B_G"]]
 #
-# preview of the first 12 values:
+# preview of the first 12 values
 vec.B.G.b[1:12]
 vec.B.G.c[1:12]
 
@@ -386,11 +386,11 @@ In order to select/convert a data frame row into vector, one has to, first of al
 
 ```{r example-01-df-row-vector}
 
-# first row of data frame:
+# first row of data frame
 df.example.01[1, ]
 #
 # convert the row data frame 
-# into the vector:
+# into the vector
 unname(unlist(df.example.01[1, ]))
 
 ```
@@ -400,19 +400,19 @@ Selection/Subset by single square brackets results in data frame structure, even
 ```{r example-01-select-fiter-df}
 
 # select the first column,
-# resulting in data frame:
+# resulting in data frame
 head(df.example.01[ ,1])
 #
 # select the 4th row of the original
-# data frame and extract the `B_mT` value:
+# data frame and extract the `B_mT` value
 df.example.01[4, ][["B_mT"]]
 #
 # select and/or subset data frame
 # with magnetic flux density `B_G` <= `Bcf`,
-# which is the central field (or `median(B_G)`):
+# which is the central field (or `median(B_G)`)
 head(df.example.01[df.example.01$B_G <= median(df.example.01$B_G), ])
 #
-# the same with `subset()`:
+# the same with `subset()`
 head(subset(df.example.01,B_G <= median(B_G)))
 
 ```
@@ -421,7 +421,7 @@ To create or delete a column/variable one may use:
 
 ```{r example-01-creat-del-col}
 
-# create g-value column (`g_Val`):
+# create g-value column (`g_Val`)
 df.example.01$g_Val <- # or `df.example.01[["g_Val"]] <-`
   eval_gFactor(
     nu.val = nu.GHz,
@@ -429,7 +429,7 @@ df.example.01$g_Val <- # or `df.example.01[["g_Val"]] <-`
   )
 #
 # ...right after that, delete
-# the `B_mT` column/variable:
+# the `B_mT` column/variable
 df.example.01$B_mT <- NULL
 #
 # ...the same operation can be done
@@ -446,20 +446,20 @@ A data frame can be also created, by the definition (see above), using the equal
 ```{r create-df-from-vectors}
 
 # create a data frame by the `data.frame()` base 
-# function using the vectors already defined above:
+# function using the vectors already defined above
 normalization.df <- data.frame(
   norm_names = str.norm,
   norm_values = value.norm
 )
 #
-# preview:
+# preview
 normalization.df
 
 ```
 
-## Basic Statistical Measures of Data Frame Columns
+## Descriptive Statistics of Data Frames
 
-The basic statistical measures of a data frame (and its columns) are available by the `summary()` command/function:
+The basic statistical measures of a data frame (its columns) are available by the `summary()` command/function:
 
 ```{r basic-stat-metrics-01}
 
@@ -467,7 +467,7 @@ summary(df.example.01)
 
 ```
 
-Additionally, for each column one can also obtain (by using a loop `sapply()` ) the [sample variance](https://www.r-tutor.com/elementary-statistics/numerical-measures/variance) and the [standard deviation](https://www.r-tutor.com/elementary-statistics/numerical-measures/standard-deviation):
+Additionally, for each column one can also obtain measures of dispersion (by using a loop `sapply()` ) ➨ the [sample variance](https://www.r-tutor.com/elementary-statistics/numerical-measures/variance) and the [standard deviation](https://www.r-tutor.com/elementary-statistics/numerical-measures/standard-deviation):
 
 ```{r basic-stat-metrics-02}
 
@@ -498,7 +498,7 @@ For the simple cases, both `%>%` and `|>` (the latter also known as a native pip
 
 # take the `vec.B.G.b(c)` vector from above,
 # round it (for 2 decimal places) 
-# and find the mean value:
+# and find the mean value
 vec.B.G.b %>% round(digits = 2) %>% mean
 #
 # however, the same operations for native
@@ -507,7 +507,7 @@ vec.B.G.b %>% round(digits = 2) %>% mean
 # vec.B.G.c |> round(digits = 2) |> mean
 #
 # therefore, parenthesis must be included
-# in the `mean` function call, like:
+# in the `mean` function call, like
 vec.B.G.c |> round(digits = 2) |> mean()
 
 ```
@@ -550,19 +550,19 @@ Create a vector from the column of a data frame:
 ```{r vector-df-pipe-operator}
 
 # selecting column (`B_G`) from data 
-# frame by pipe and `$` operators:
+# frame by pipe and `$` operators
 vec.B.G.d <- df.example.01 %>% .$B_G
 #
-# preview of the first 10 values:
+# preview of the first 10 values
 vec.B.G.d[1:10]
 #
 # ...similar operation by the `{dplyr}`
 # `select()` function where the output
-# corresponds to data frame, therefore:
+# corresponds to data frame, therefore
 vec.B.G.e <- df.example.01 %>% 
   dplyr::select(B_G) %>% unlist %>% as.vector
 #
-# preview of the first 10 values:
+# preview of the first 10 values
 vec.B.G.e[1:10]
 
 ```
@@ -573,11 +573,11 @@ Create a new column by the `dplyr::mutate()` function:
 
 ```{r mutate-df-pipe-operator}
 
-# create a new `B_T` column:
+# create a new `B_T` column
 df.example.02 <- df.example.01 %>% 
   dplyr::mutate(B_T = B_G * 1e-4)
 #
-# preview:
+# preview
 head(df.example.02)
 
 ```
@@ -587,7 +587,7 @@ Basic filtering by the `dplyr::filter()` , where either `|>` or `%>%` can be app
 ```{r filter-df-pipe-operator}
 
 # filter the `B_G`/`B_mT` 
-# values <= central field:
+# values <= central field
 df.example.03 <- df.example.02 |> 
   dplyr::filter(B_G <= median(B_G))
 #
@@ -595,7 +595,7 @@ df.example.03 <- df.example.02 |>
 df.example.03
 #
 # find the `B_mT` corresponding
-# to the maximum of `dIepr_over_dB` intensity:
+# to the maximum of `dIepr_over_dB` intensity
 df.example.02 %>% 
   dplyr::filter(dIepr_over_dB == max(dIepr_over_dB)) %>% 
   dplyr::pull(B_mT)
@@ -611,7 +611,7 @@ df.example.04 <- df.example.03 %>%
   # rename syntax: "new name = old name":
   dplyr::rename(g_Fac = g_Val) 
 #
-# preview:
+# preview
 df.example.04
 
 ```
@@ -624,19 +624,19 @@ Last example of data handling (see below), using the `{dplyr}` and the pipe oper
 
 # loading the package built-in example file/data 
 # kinetics -> "Triarylamine_radCat_decay_series",
-# file with instrumental parameters:
+# file with instrumental parameters
 triarylam.decay.series.dsc.path <-
   load_data_example(
     file = "Triarylamine_radCat_decay_series.DSC"
   )
 #
-# ascii table in the form of `.zip`:
+# ascii table in the form of `.zip`
 triarylam.decay.series.asc.path <-
   load_data_example(
     file = "Triarylamine_radCat_decay_series.zip"
   )
 #
-# unzip the data:
+# unzip the data
 unzip(
   triarylam.decay.series.asc.path,
   exdir = tempdir()
@@ -649,14 +649,14 @@ Finally, the data is transformed into the data frame by the `readEPR_Exp_Specs_k
 ```{r triarylamine-kinet-df-read}
 
 # reading the data and correcting
-# the recording time for each CW EPR spectrum:
+# the recording time for each CW EPR spectrum
 triarylam.decay.dat <- readEPR_Exp_Specs_kin(
   name.root = "Triarylamine_radCat_decay_series",
   dir_ASC = tempdir(),
   dir_dsc_par = system.file("extdata",package = "eprscope")
 )
 #
-# preview:
+# preview
 head(triarylam.decay.dat$df)
 
 ```
@@ -682,7 +682,7 @@ head(triarylam.decay.dat.wide)
 
 ```
 
-Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] $\Rightarrow$ we have to filter/select the strings:
+Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] ➨ we have to filter/select the strings:
 
 [^3]: Instead of names like `time_s_...` with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be names/strings, not the values.
 
@@ -861,7 +861,7 @@ dimer.kinetics.01$df.coeff
 
 ```
 
-Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit (refer also to the `plot_eval_RA_forFit()` function documentation):
+Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit (please, refer also to the `plot_eval_RA_forFit()` function documentation):
 
 ```{r kinetics-fit-01-residuals}
 
@@ -869,7 +869,7 @@ dimer.kinetics.01$ra$plot.rqq
 
 ```
 
-However, it is evident that the variance (and the standard deviation) of residuals is slightly higher along the fitted/predicted values in comparison to the original residuals/errors:
+However, it is evident that its despersion ➨ variance and the standard deviation of residuals are slightly high along the fitted/predicted values:
 
 ```{r residual-variance}
 
@@ -929,7 +929,7 @@ dimer.kinetics.01[["N.converg"]]
 
 To **select the** `N.converg` **component by the** `$` **operator, we do not have to remember its name**. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put `$` operator just behind the list variable name, all list elements appear in a popup window in order to select the desired one[^5].
 
-[^5]: The same actually applies also for data frames and columns.
+[^5]: The same actually applies for data frames and columns.
 
 In addition to double-square brackets, one may also choose single ones. However, this does not select the "pure" list element and instead, it shows the element together with its name (actually corresponding to list, similarly to data frames with single-square bracket selection) like:
 
