@@ -24,8 +24,10 @@
 #'   Uploaded \code{ASCII} data (spectrum + parameters) are applied to interactively simulate
 #'   the corresponding experimental isotropic EPR spectrum by the \code{\link{eval_sim_EPR_iso}} and to visualize
 #'   it by the \code{\link{present_EPR_Sim_Spec}}. Additionally, one can also print and download
-#'   the corresponding data frame/table in several formats (\code{.csv},\code{.pdf} or \code{.xls(x)})
-#'   and thus use the data not only in \code{R} environment but also in other programs.
+#'   the corresponding data frame/table in several formats (\code{.csv},\code{.pdf} or \code{.xlsx})
+#'   and thus use the data not only in \code{R} environment but also in other software tools.
+#'   All instantaneously presented EPR spectra (either after loading the ASCII data or after simulation)
+#'   can be also exported in formats like \code{.png}, \code{.jpeg} as well as \code{.pdf}.
 #'
 #'
 #' @examples
