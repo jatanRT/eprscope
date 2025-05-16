@@ -481,7 +481,38 @@ sapply(df.example.01, FUN = sd)
 
 ```
 
-## Pipe Operator
+In order to figure out whether there is a relationship between the variables/columns of a data frame, we may use two characteristic measures: [covariance](https://www.r-tutor.com/elementary-statistics/numerical-measures/covariance) and [correlation](https://www.r-tutor.com/elementary-statistics/numerical-measures/correlation-coefficient). Both check to which extend those variables vary linearly. In the first case, the covariance indicates the direction of the linear relationship:
+
+```{r covar-stat-metrics}
+
+# covariance for the entire data frame
+cov(df.example.01)
+#
+# it returns the `ncol(df.example.01) x ncol(df.example.01)`
+# (or in this case 3 x 3) matrix
+
+```
+
+For example, it can be immediately recognized that there is an negative relationship between `g_Val` and `B_G` (they are indirectly/inversely proportional), as it is already expected from $\small g = h\,\nu\,/\,\mu_{\mathrm{B}}\,B$ . Additionally, each of the `var` *vs* `var` pair (such as `B_G` *vs* `B_G`) corresponds to variance (compare it with output of the previous code chunk). If the covariance $\small \approx 0$, there is no relationship between the variables. However, the main problem of the **cov**ariance is, that it is not delimited and depends on the unit of measures. Therefore, to solve this issue a **cor**relation is defined as a ratio between the covariance and the product of the individual standard deviations of variables/columns, which in addition to direction, provides the strength of the relationship:
+
+```{r cor-stat-metrics}
+
+# correlation for the entire data frame
+cor(df.example.01)
+#
+# the same result we may obtain by
+cov2cor(cov(df.example.01))
+#
+# check also the definition of correlation
+# by the variance and the standard deviation for `B_G`
+unname(sapply(df.example.01, FUN = var)["B_G"]) / 
+  unname(sapply(df.example.01, FUN = sd)["B_G"])^2
+
+```
+
+Consequently, the correlation standardizes the covariance results and thus it is comparable across different units as well as different datasets. If the `cor()` returns $\small \pm 1$, it implies a perfect positive or negative relationship, respectively. Of course, the diagonal elements `var` *vs* `var` (e. g. `g_Val` *vs* `g_Val`) always correspond to $\small 1$. Similarly as for the covariance, the $\small 0$ indicates no correlation between variables. The default correlation is calculated by the *Pearson* method, however additional methods like *Kendall* or *Spearman* are available as well (please, refer to the `stats::cor()` function documentation).
+
+## The Pipe Operator
 
 **Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png){width="16" height="12"} **Programming Language**
 
