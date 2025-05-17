@@ -1001,7 +1001,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     81 0.018<span style="text-decoration: underline;">0</span></span></span></code></pre></div>
 <p>Assuming the radical (<span class="math inline">\(\small \mathrm{R}\)</span>) recombination, forming a dimer (<span class="math inline">\(\small \mathrm{D}\)</span>):</p>
 <p><span class="math display" id="eq:dimer">\[\begin{equation}
-\small 2\,\ce{R -&gt;[k_1] D}
+\small 2\,\ce{R -&gt;[$k_1$] D}
 \tag{4.1}
 \end{equation}\]</span></p>
 <p>one can try to fit the latter <em>Area (Double Integral) vs time</em> relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant <span class="math inline">\(\small k_1\)</span> <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Because the double integral is directly proportional to the concentration of radicals &lt;span class="math inline"&gt;\(\mathrm{R}\)&lt;/span&gt; for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: &lt;span class="math inline"&gt;\([k_1] = (\mathrm{p.d.u.})^{-1}\, \mathrm{s}^{-1}\)&lt;/span&gt;.&lt;/p&gt;'><sup>4</sup></a>:</p>
@@ -1041,7 +1041,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co"># residuals sd</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span>
 <span><span class="co">#&gt; [1] 0.0012648481</span></span></code></pre></div>
-<p>This is likely due to the noisy baseline in the EPR spectra as shown in the Section <a href="#sec-tidy-and-messy-data">4.4</a> and the subsequent integration. However, by the simulation and fitting of the simulated spectra onto the experimental ones, we can obtain much better results as shown by <code>Examples</code> in the <code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code> function documentation.</p>
+<p>This is likely due to the noisy baseline in the EPR spectra as shown in the Section <a href="#sec-tidy-and-messy-data">4.4</a> and the subsequent integration. However, by the simulation and fitting of each simulated spectrum onto the experimental one in the entire kinetic series, we can obtain much better results as shown by <code>Examples</code> in the <code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code> function documentation.</p>
 </div>
 </div>
 </div>
