@@ -95,8 +95,8 @@ ui <- fluidPage(
           inputId = "qValue",
           label = shiny::HTML("<i>Q</i> Value (sensitivity factor)"),
           value = 1,
-          min = 800,
-          max = 4200
+          min = 400,
+          max = 16000
         ),
         checkboxInput(
           inputId = "normVec",
@@ -253,7 +253,7 @@ ui <- fluidPage(
                               <i>B</i> units (see `Spectrum Preview`)"),
           value = 0.5,
           min = 0,
-          max = 5,
+          max = 7.5,
           step = 0.01
         ),
         ## the Delta Bpp to be updated within the server (assign NULL if 0):
@@ -264,7 +264,7 @@ ui <- fluidPage(
                               <i>B</i> units (see `Spectrum Preview`)"),
           value = 0.5,
           min = 0,
-          max = 5,
+          max = 7.5,
           step = 0.01
         )
       ),
