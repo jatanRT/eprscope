@@ -865,7 +865,7 @@ head(triarylam.decay.integs.01)
 Assuming the radical ($\small \mathrm{R}$) recombination, forming a dimer ($\small \mathrm{D}$):
 
 \begin{equation}
- \small 2\,\ce{R ->[k_1] D}
+ \small 2\,\ce{R ->[$k_1$] D}
  (\#eq:dimer)
  \end{equation}
 
@@ -912,7 +912,7 @@ dimer.kinetics.01$ra$sd
 
 ```
 
-This is likely due to the noisy baseline in the EPR spectra as shown in the Section \@ref(sec-tidy-and-messy-data) and the subsequent integration. However, by the simulation and fitting of the simulated spectra onto the experimental ones, we can obtain much better results as shown by `Examples` in the `eval_kinR_EPR_modelFit()` function documentation.
+This is likely due to the noisy baseline in the EPR spectra as shown in the Section \@ref(sec-tidy-and-messy-data) and the subsequent integration. However, by the simulation and fitting of each simulated spectrum onto the experimental one in the entire kinetic series, we can obtain much better results as shown by `Examples` in the `eval_kinR_EPR_modelFit()` function documentation.
 
 # Lists
 

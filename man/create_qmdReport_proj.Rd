@@ -172,11 +172,14 @@ In order to support reproducible research workflow (see \code{References}) in EP
   programming languages like \emph{Python}, \emph{Julia} or \emph{Observable} can be used as well) and outputs
   (usually, figures and/or tables). Upon rendering, they are nicely combined into shareable above-listed
   formats stored under the \code{_output}. Among them, the \code{.html} output possesses
-  a distinctive position, because it preserves the structure of interactive EPR spectra or tables
+  a distinctive position, because it preserves the structure of the interactive EPR spectra or tables
   (see e.g. \code{\link{plot_EPR_Specs3D_interact}} or \code{\link{readEPR_params_tabs}}).
   File-Folder structure, presented above, is flexible and customizable to meet the user's needs,
   right after its creation by the actual function. For such purpose, please consult
-  the \href{https://quarto.org/docs/guide/}{Quarto documentation} as well.
+  the \href{https://quarto.org/docs/guide/}{Quarto documentation} as well. Additionally, if somebody wants
+  to use templates for ACS/Elsevier/PLOS/Nature-manuscripts, please refer
+  to the \href{https://quarto.org/docs/extensions/listing-journals.html}{Quarto Jornal Articles Extenstion}
+  for details of the installation and usage.
 }
 \examples{
 \dontrun{
