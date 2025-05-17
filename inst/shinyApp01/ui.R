@@ -208,8 +208,8 @@ ui <- fluidPage(
           inputId = "giso",
           label = shiny::HTML("Enter <i>g</i>(iso)"),
           value = 2.002319,
-          min = 1,
-          max = 10
+          min = 0.5,
+          max = 7.5
         ),
         checkboxInput(
           inputId = "splitCond",
@@ -253,7 +253,7 @@ ui <- fluidPage(
                               <i>B</i> units (see `Spectrum Preview`)"),
           value = 0.5,
           min = 0,
-          max = 10,
+          max = 5,
           step = 0.01
         ),
         ## the Delta Bpp to be updated within the server (assign NULL if 0):
@@ -264,7 +264,7 @@ ui <- fluidPage(
                               <i>B</i> units (see `Spectrum Preview`)"),
           value = 0.5,
           min = 0,
-          max = 10,
+          max = 5,
           step = 0.01
         )
       ),
