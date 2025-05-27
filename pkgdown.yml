@@ -1,12 +1,12 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   datasets: datasets.html
   firstSteps: firstSteps.html
   functionality: functionality.html
   introduction: introduction.html
-last_built: 2025-05-17T11:14Z
+last_built: 2025-05-27T11:58Z
 urls:
   reference: https://jatanrt.github.io/eprscope/reference
   article: https://jatanrt.github.io/eprscope/articles
