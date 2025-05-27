@@ -31,7 +31,7 @@
 #'   and in solutions of low viscosities (Gerson F, Huber W (2003), see \code{References}).
 #'
 #'   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined
-#'   by the \code{instrum.params} argument or can be directly acquired from the parameter file using
+#'   by the \code{instrum.params} argument or can be directly acquired from the parameter file, using
 #'   the \code{path_to_dsc_par} argument. Position of the spectrum (within the desired \eqn{B}-region)
 #'   as well as those of HFS-lines are evaluated by the resonance condition (see also the \code{\link{eval_gFactor}})
 #'   and by the Breit-Rabi analytical expression for energy levels of the interacting nuclei.
@@ -136,7 +136,7 @@
 #'   If \code{lineG.content = 1} (\strong{default}) it corresponds to "pure" \emph{Gaussian} line form
 #'   and if \code{lineG.content = 0} it corresponds to \emph{Lorentzian} one. The value from (0,1)
 #'   (e.g. \code{lineG.content = 0.5}) represents the linear combination (for the example above
-#'   with the coefficients 0.5 and 0.5) of both line forms => so called \emph{pseudo-Voigt}.
+#'   with the coefficients 0.5 and 0.5) of both line forms ➨ so called \emph{pseudo-Voigt}.
 #' @param Intensity.sim Character string, pointing to column of simulated EPR intensity within the related output
 #'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive \code{plotly} graph

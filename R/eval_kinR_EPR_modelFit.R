@@ -13,8 +13,8 @@
 #'    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
 #'    Because the radical concentration is directly proportional to the EPR spectrum (double)
 #'    integral (see the \code{\link{quantify_EPR_Abs}}), for a quick evaluation and/or comparison of different
-#'    kinetic data, it is possible to obtain the rate constants (\eqn{k}) by the integrals/areas \emph{vs} time fit.
-#'    Therefore, the unit of \eqn{k} is expressed in terms of \eqn{\text{s}^{-1}} as well as in units of integrals/areas,
+#'    kinetic data, it is possible to obtain the rate constants \eqn{k} by the integrals/areas \emph{vs} time fit.
+#'    Therefore, the unit of \eqn{k} might be expressed in terms of \eqn{\text{s}^{-1}} as well as in units of integrals/areas,
 #'    e.g. \code{procedure defined unit} (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
 #'    depending on the order of reaction (see the \code{params.guess} argument).
 #'

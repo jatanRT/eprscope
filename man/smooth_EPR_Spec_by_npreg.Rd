@@ -84,7 +84,7 @@ If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR
 }
 \description{
 Smoothing of the EPR spectra by non-parametric fitting a smoothing spline, \code{\link[npreg]{ss}}
-  from \href{https://cran.r-project.org/web/packages/npreg/npreg.pdf}{npreg} package, onto the experimental
+  from the \href{https://cran.r-project.org/web/packages/npreg/npreg.pdf}{npreg} package, onto the experimental
   EPR spectrum/spectra.
 }
 \details{

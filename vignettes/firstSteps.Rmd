@@ -73,7 +73,7 @@ library(tidyverse)
 
 Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` , see also the massage after `{tidyverse}` loading, above)[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
 
-[^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several $\LaTeX$ packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
+[^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several *L~[A]{.smallcaps}~TeX* packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
 
 # Vectors and Matrices {#vectors-mats}
 
@@ -871,7 +871,7 @@ Assuming the radical ($\small \mathrm{R}$) recombination, forming a dimer ($\sma
 
 one can try to fit the latter *Area (Double Integral) vs time* relation, by the above-mentioned kinetic model, to estimate the kinetic rate constant $\small k_1$ [^4]:
 
-[^4]: Because the double integral is directly proportional to the concentration of radicals $\mathrm{R}$ for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: $[k_1] = (\mathrm{p.d.u.})^{-1}\, \mathrm{s}^{-1}$.
+[^4]: Because the double integral is directly proportional to the concentration of radicals R for a quick preview (or comparison with other kinetic data) we can use such estimation based on integrals/areas. Consequently, the unit of the rate constant (corresponding to radical recombination) will be expressed in: [*k*~1~] = (p.d.u.)^-1^ s^-1^.
 
 ```{r kinetics-fit-01,warning=FALSE,message=FALSE}
 
@@ -984,11 +984,7 @@ dimer.kinetics.01[["N.converg"]][length(dimer.kinetics.01$N.converg)]
 #
 # compare the previous one with residual analysis (`$ra`)
 # of the `dimer.kinetics.01`
-identical(
-  dimer.kinetics.01[["N.converg"]][length(dimer.kinetics.01$N.converg)],
-  sum((dimer.kinetics.01$ra$df$residuals)^2)
-)
-
+sum((dimer.kinetics.01$ra$df$residuals)^2)
 
 ```
 
@@ -1040,4 +1036,4 @@ tmpd.sim.list$plot
 
 ```
 
-# References
+# References {.unnumbered}

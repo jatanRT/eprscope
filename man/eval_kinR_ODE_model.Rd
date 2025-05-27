@@ -154,8 +154,8 @@ If the function \strong{is not used for fitting} of the experimental and process
 Theoretical quantitative kinetic profiles (such as concentration/amount/integral intensity)
   as well as comparison with the experimental data for various predefined model reactions involving
   radical(s) (labeled as "R"). Profiles are evaluated by the numeric solution of rate equations
-  by the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
-  \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).
+  by using the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
+  the \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).
   This function is inspired by the
   \href{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}{R-bloggers
   article}.
@@ -180,7 +180,7 @@ According to IUPAC (2019), see also the \code{References}, the rate of a chemica
   rate and the concentration of reactants/products. These coefficients are called \strong{partial reaction orders}
   or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If the kinetic equation,
   for the reaction, corresponds to its stoichiometry, the reaction is described as the elementary
-  one. In EPR Spectroscopy the number of radicals is directly proportional to (double) integral
+  one. In EPR spectroscopy, the number of radicals is directly proportional to (double) integral
   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, for a quick evaluation
   or and/or comparison of different kinetic data, one can also obtain the rate constant
   from the area/integral \emph{vs} time fit onto the experimental EPR spectral time series outputs
@@ -190,7 +190,7 @@ According to IUPAC (2019), see also the \code{References}, the rate of a chemica
   However, in such case the unit of \eqn{k} must be expressed accordingly (see the \code{kin.params} argument).
   Quantitative kinetic profiles (such as that \eqn{\text{d}c_{\text{R}}/\text{d}t}
   or \eqn{\text{d}(qvar)_{\text{R}}/\text{d}t} described above) are not evaluated
-  by common integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
+  by common "analytical" integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
   Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
   Therefore, higher number of models might be available than for integrated
   differential equations, because for complex mechanisms it's quite often highly demanding to obtain

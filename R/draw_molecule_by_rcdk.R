@@ -7,9 +7,7 @@
 #'
 #' @description
 #'   Drawing a molecular structure based on \href{https://cdk-r.github.io/cdkr/index.html}{rcdk} package
-#'   and using SMILES or SDF input data. This function is inspired by the
-#'   \href{https://riveradelgado.com/post/2021/04/18/chemistry-in-r/}{Edgardo Rivera-Delgado article}.
-#'
+#'   by using SMILES or SDF input data.
 #'
 #'
 #' @param molecule Character input string => either SMILES strings (in case
@@ -92,6 +90,7 @@
 #' @importFrom graphics rasterImage text par
 #' @importFrom stringr str_detect regex
 ## function to plot molecules inspired by https://riveradelgado.com/post/2021/04/18/chemistry-in-r/,
+## the web page is not available anymore
 ## which is not available in `rcdk`
 draw_molecule_by_rcdk <- function(molecule,
                                   type = "smiles", ## or "sdf"

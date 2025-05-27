@@ -588,7 +588,7 @@ tmpd.epr.iso.fit <-
 #
 ```
 
-Such processing (with the elapsed time of $\approx 220\,\mathrm{s}$ on 10-years old 4-core-CPU workstation) will not only return the above-defined list (`tmpd.epr.iso.fit` , see also documentation of the `eval_sim_EPR_isoFit_space()`), however also an animation, showing the progress of simulated EPR spectrum fit at each `Evaluation` :
+Such processing (with the elapsed time of $\approx 220\,\mathrm{s}$ on 10-years old 4-core-CPU workstation/running on two cores) will not only return the above-defined list (`tmpd.epr.iso.fit` , see also documentation of the `eval_sim_EPR_isoFit_space()`), however also an animation, showing the progress of simulated EPR spectrum fit at each `Evaluation` :
 
 ![](TMPD_fitting_of_sim_EPR.gif){width="640"}
 
