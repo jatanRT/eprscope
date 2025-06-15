@@ -31,13 +31,15 @@ mw.freq.GHz <- aminoxyl.rad.data.params.a %>%
   dplyr::filter(Parameter == "Frequency") %>%
   dplyr::pull(Value)
 ## central field in mT
-B.cf.mT <- aminoxyl.rad.data.params.a %>%
+B.cf.G <- aminoxyl.rad.data.params.a %>%
   dplyr::filter(Parameter == "Central Field") %>%
   dplyr::pull(Value)
+B.cf.mT <- B.cf.G * 0.1
 ## sweep width in mT
-B.sw.mT <- aminoxyl.rad.data.params.a %>%
+B.sw.G <- aminoxyl.rad.data.params.a %>%
   dplyr::filter(Parameter == "Sweep Width") %>%
   dplyr::pull(Value)
+B.sw.mT <- B.sw.G * 0.1
 ## number of points
 No.points <- aminoxyl.rad.data.params.a %>%
   dplyr::filter(Parameter == "Number of Points") %>%

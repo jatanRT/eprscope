@@ -41,7 +41,7 @@ library(htmlwidgets)
 library(plotly)
 ```
 
-This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting (several plots will be already presented) and operations with strings will be added in the upcoming package versions.
+This article/vignette deals with essential syntax and/or basic commands to run the `{eprscope}` functions. For details or more advanced programming experience, please refer to the resources in [*README* file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections, discussing the basics of plotting (several plots are already presented) and operations with strings will be added in the upcoming package versions.
 
 # Variable/Function Names and Assignment
 

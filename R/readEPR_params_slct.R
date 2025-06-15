@@ -10,10 +10,11 @@
 #'  or \code{WinEpr} software, respectively).
 #'
 #'
-#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including the instrumental
-#'   parameters provided by the EPR machine. File path can be also defined by the \code{\link[base]{file.path}} function.
-#' @param string Character (vector) string (appeared at the line beginning) within the \code{.DSC/.dsc} or \code{.par} file
-#'   corresponding to instrumental parameter or information.
+#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including
+#'   the instrumental parameters provided by the EPR machine. File path can be also defined
+#'   by the \code{\link[base]{file.path}} function.
+#' @param string Character (vector) string (appeared at the line beginning) within
+#'   the \code{.DSC/.dsc} or \code{.par} file corresponding to instrumental parameter or information.
 #'  Following \strong{strings are defined for all three main acquisition softwares described-above}
 #'   (\strong{in parenthesis for the "winepr" origin}):
 #'  \tabular{ll}{
@@ -22,7 +23,9 @@
 #'    "CMNT" ("JCO") \tab comment (in order to describe the measurement) \cr
 #'    "DATE" ("JDA") \tab date (when the EPR spectrum was recorded) \cr
 #'    "TIME" ("JTM") \tab time (when the EPR spectrum was recorded) \cr
-#'    "SAMP" \tab name/decsript. of the sample, not available in "magnettech" \code{.dsc} \cr
+#'    "SAMP" \tab name/description of the sample, not available in "magnettech" \code{.dsc} \cr
+#'    "TITL" ("JEX") \tab experiment title \cr
+#'    "YNAM" ("JEY") \tab name/title for the second variable/dimension of the experiment \cr
 #'    "B0MF" \tab modulation frequency in \code{Hz} \cr
 #'    "MWFQ" ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
 #'    "QValue" \tab recorded quality-Factor (required for intensity normalization) \code{unitless} \cr
@@ -31,7 +34,15 @@
 #'    "STMP" ("TE")  \tab temperature in \code{K} \cr
 #'    "B0MA" ("RMA") \tab modulation amplitude in \code{T} (\code{G}) \cr
 #'    "AVGS" ("JSD") \tab number of accumulations for each spectrum \cr
-#'    "A1RS" ("RES") \tab number of points/resolution \cr
+#'    "XPTS"/"A1RS" ("RES"/"SSX") \tab number of points/resolution \cr
+#'    "XUNI" ("JUN"/"XXUN") \tab spectrum abscissa unit \cr
+#'    "YUNI" ("XYUN") \tab unit corresponding to second variable (e.g. time) in spectral series \cr
+#'    "XMIN" ("GST"/"XXLB") \tab actual \emph{x}/\emph{B} starting point (especially
+#'    if teslameter in ON state) \cr
+#'    "YPTS"/"A2RS" ("REY"/"SSY") \tab \emph{y}-resolution, corresponding to second
+#'    variable (e.g. time) in spectral series \cr
+#'    "XWID" ("GSI"/"XXWI") \tab actual \emph{x}/\emph{B} width (entire range, especially
+#'    if teslameter in ON state) \cr
 #'    "MWPW" ("MP") \tab microwave power in \code{W} (\code{mW}) \cr
 #'    "SPTP" ("RCT") \tab conversion time in \code{s} (\code{ms}) \cr
 #'    "RCTC" ("RTC") \tab time constant in \code{s} (ms),
@@ -44,7 +55,8 @@
 #' @param origin Character string, corresponding to software used to acquire EPR spectra.
 #'   The files are slightly different depending on whether
 #'   they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
-#'   (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).
+#'   (\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422],
+#'   \code{origin = "magnettech"}).
 #'
 #'
 #' @return Numeric or character string (e.g. date or comment), corresponding to selected instrumental parameter(s)
@@ -106,40 +118,35 @@ readEPR_param_slct <- function(path_to_dsc_par,
   #
   #
   ## origin strings vectors to define "origin" conditions =>
-  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  winepr.string <- c(
+    "winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR",
+    "SPC/PAR","spc/par","Spc/Par"
+  )
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
-                         "magnetTech","MAGNETTECH","magnetech",
-                         "Magnetech","MAGNETECH")
+  magnettech.string <- c(
+    "magnettech","Magnettech","MagnetTech",
+    "magnetTech","MAGNETTECH","magnetech",
+    "Magnetech","MAGNETECH"
+  )
   ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## conditions to couple `string` with origin
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
     ## `winepr` vector check for `xenon`
-    we.vector.check <- c("JON","JCO","JDA","JTM","MF",
-                         "HCF","HSW","TE","RMA","JSD",
-                         "RES","MP","RCT","RTC","RRG")
-    ## following condition cannot be done by collapse
-    if (any(we.vector.check[1] == string) ||
-        any(we.vector.check[2] == string) ||
-        any(we.vector.check[3] == string) ||
-        any(we.vector.check[4] == string) ||
-        any(we.vector.check[5] == string) ||
-        any(we.vector.check[6] == string) ||
-        any(we.vector.check[7] == string) ||
-        any(we.vector.check[8] == string) ||
-        any(we.vector.check[10] == string) ||
-        any(we.vector.check[11] == string) ||
-        any(we.vector.check[12] == string) ||
-        any(we.vector.check[13] == string) ||
-        any(we.vector.check[14] == string) ||
-        any(we.vector.check[15] == string)) {
-    # if (any(grepl("JON|JCO|JDA|JTM|MF|HCF|HSW|TE|RMA|JSD|RES|MP|RCT|RTC|RRG",
-    #               useBytes = TRUE,
-    #               string))) {
-      stop(" The `string` (components) is (are) restricted to WinEPR.\n
-           Please, provide `string(s)` for Xenon/Magnettech (refer to `string` argument) !! ")
+    we.vector.check <- c(
+      "JON","JCO","JDA","JTM","MF",
+      "HCF","HSW","TE","RMA","JSD",
+      "RES","MP","RCT","RTC","RRG",
+      "GST","GSI","JEX","JUN","SSY",
+      "JEY","XXLB","REY","XXWI","XYLB",
+      "XYWI","XXUN"
+    )
+   #
+    if (any(grepl(paste(we.vector.check,collapse = "|"),string))) {
+      stop(" The `string` component(s) is (are) restricted to WinEPR.\n
+           Please, provide `string(s)` for Xenon/Magnettech,\n
+           refer to the `string` argument !! ")
     }
   }
   if (any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
@@ -147,163 +154,151 @@ readEPR_param_slct <- function(path_to_dsc_par,
         any(string == "RCAG") ||
         any(string == "ConvFact") ||
         any(string == "SAMP")) {
-      stop(" The `string` (components) is (are) not available for Magnettech !!")
+      stop(" The `string` component(s) is (are) not available for Magnettech !!")
     }
   }
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     #
     ## `xenon` vector check for `winepr`
-    xen.vector.check <- c("OPER","CMNT","DATE","TIME","SAMP",
-                             "B0MF","MWFQ","QValue","A1CT","A1SW",
-                             "STMP","B0MA","AVGS","A1RS","MWPW",
-                             "SPTP","RCTC","RCAG","ConvFact")
+    xen.vector.check <- c(
+      "OPER","CMNT","DATE","TIME","SAMP",
+      "B0MF","MWFQ","QValue","A1CT","A1SW",
+      "STMP","B0MA","AVGS","A1RS","MWPW",
+      "SPTP","RCTC","RCAG","ConvFact",
+      "XPTS","XMIN","XWID","YPTS","YMIN",
+      "YWID","TITL","IRNAM","XNAM","XUNI",
+      "YNAM","YUNI","A2RS"
+    )
     #
-    if (any(xen.vector.check[1] == string) ||
-        any(xen.vector.check[2] == string) ||
-        any(xen.vector.check[3] == string) ||
-        any(xen.vector.check[4] == string) ||
-        any(xen.vector.check[5] == string) ||
-        any(xen.vector.check[6] == string) ||
-        any(xen.vector.check[7] == string) ||
-        any(xen.vector.check[8] == string) ||
-        any(xen.vector.check[10] == string) ||
-        any(xen.vector.check[11] == string) ||
-        any(xen.vector.check[12] == string) ||
-        any(xen.vector.check[13] == string) ||
-        any(xen.vector.check[14] == string) ||
-        any(xen.vector.check[15] == string) ||
-        any(xen.vector.check[16] == string) ||
-        any(xen.vector.check[17] == string) ||
-        any(xen.vector.check[18] == string) ||
-        any(xen.vector.check[19] == string)) {
+    if (any(grepl(paste(xen.vector.check,collapse = "|"),string))) {
       stop(" The WinEPR system does not provide defined string(s).\n
-           Please, refer to `string` argument for the available strings/parameters !! ")
+           Please, refer to the `string` argument for the available\n
+           strings/parameters !! ")
     }
   }
   #
   ## path corresponds to file (`.DSC` or `.dsc`) from which the params. are read
   ## string is the selected 'string' pattern such as "QValue" or "MWFQ"
   ## if `string` = vector => iterate/read over all components
-  if (length(string) > 1){
-    sel.str.line <- lapply(
-      string,
-      function(s) grep(paste0("^",s), readLines(path_to_dsc_par), value = TRUE)
-    )
-  } else {
-    sel.str.line <- grep(paste0("^",string), readLines(path_to_dsc_par), value = TRUE)
-  }
+  sel.str.line <- lapply(
+    string,
+    function(s) {
+      grep(
+        paste0("^",s),
+        readLines(path_to_dsc_par),
+        value = TRUE
+      )
+    }
+  )
   #
   ## such line is then separated (split) into two ('n = 2') string parts
   ## by 'str_split' comming from 'stringr' pckg.
-  if (length(string) > 1) {
-    sel.str.split <- lapply(
-      sel.str.line,
-      function(l) unlist(stringr::str_split(l, "[[:space:]]+", n = 2))
-    )
-  } else {
-    sel.str.split <- stringr::str_split(sel.str.line, "[[:space:]]+", n = 2)
-    ## the result is list, therefore select the second list element ('[[1]][2]'),
-    ## therefore unlist the `sel.str.split`
-    sel.str.split <- unlist(sel.str.split)
-  }
+  sel.str.split <- lapply(
+    sel.str.line,
+    function(l) {
+      unlist(stringr::str_split(l,"[[:space:]]+",n = 2))
+    }
+  )
   #
   ## function to convert string vector into named list if the vector
   ## contains combined numbers and characters
-  if (length(string) > 1){
-    str_vec_conversion <- function(string.vec,names.vec){
-      #
-      ## check if each of these components can be converted
-      ## into numeric value + suppress warnings
-      suppressWarnings( check.char <- sapply(string.vec, function(l) is.na(as.double(l))) )
-      #
-      ## if the component cannot be converted into numeric then convert
-      ## it into character, if one of the components <=> "NA" => suppress warnings
-      suppressWarnings(
-        result <- Map(
-          function(i,j) {
-            ifelse(isTRUE(i),as.character(j),as.double(j))
-          },
-          check.char,
-          string.vec
-        )
+  str_vec_conversion <- function(string.vec,names.vec){
+    #
+    ## check if each of these components can be converted
+    ## into numeric value + suppress warnings
+    suppressWarnings(
+      check.char <- sapply(
+        string.vec,
+        function(l) is.na(as.double(l))
       )
-      #
-      ## rename the list + suppress warnings
-      suppressWarnings(
-        names(result) <- names.vec
-        )
-      #
-      return(result)
+    )
+    #
+    ## if the component cannot be converted into numeric
+    ## then convert it into character, if one of the components
+    ## <=> "NA" => suppress warnings
+    suppressWarnings(
+      result <- Map(
+        function(i,j) {
+          ifelse(isTRUE(i),as.character(j),as.double(j))
+        },
+        check.char,
+        string.vec
+      )
+    )
+    #
+    ## rename the list + suppress warnings
+    suppressWarnings(
+      names(result) <- names.vec
+      )
+    #
+    ## condition for the length of `names.vec` / `string.vec`,
+    ## however, first of all check the length of both vectors
+    if (length(string.vec) != length(names.vec)) {
+      stop(" Vector of strings/parameters must be of the same length\n
+           like the vector of their corresponding names !! ")
+    } else {
+      if (length(string.vec) > 1) {
+        return(result)
+      } else {
+        return(unname(result[[1]]))
+      }
     }
+    #
   }
   #
-  ## XENON + MAGNETTECH
+  ## --------------------- XENON + MAGNETTECH ---------------------
+  #
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
-    if (any(grepl("OPER|CMNT|DATE|TIME",string))) {
-      if (length(string) > 1) {
-        param.slct <- sapply(sel.str.split, function(v) as.character(v[2])) ## select 2nd value in list comp.
-        #
-        ## apply the above-defined function
-        param.slct <- str_vec_conversion(string.vec = param.slct,names.vec = string)
-        #
-      } else {
-        param.slct <- as.character(sel.str.split[2])
-      }
-    } else if (any(grepl("SAMP",string)) &
-        any(grepl(paste(magnettech.string,collapse = "|"),origin))){
+    #
+    if (any(grepl("SAMP",string)) &
+        any(grepl(paste(xenon.string,collapse = "|"),origin))) {
       #
-      ## the `magnettech` parameter file does not contain the "SAMP" character string =>
+      param.slct <-
+        sapply(sel.str.split, function(v) as.character(v[2]))
+      #
+      ## apply the above-defined function
+      param.slct <-
+        str_vec_conversion(string.vec = param.slct,names.vec = string)
+      #
+    } else if (any(grepl("SAMP",string)) &
+               any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
+      #
+      ## the `magnettech` parameter file does not contain
+      ## the "SAMP" character string =>
       stop(" The required string is not available in `.dsc` file ! ")
-    } else if (any(grepl("SAMP",string)) & any(grepl(paste(xenon.string,collapse = "|"),origin))){
-      if (length(string) > 1) {
-        param.slct <- sapply(sel.str.split, function(v) as.character(v[2]))
-        #
-        ## apply the above-defined function
-        param.slct <- str_vec_conversion(string.vec = param.slct,names.vec = string)
-        #
-      } else {
-        param.slct <- as.character(sel.str.split[2])
-      }
       #
     } else {
-      if (length(string) > 1) {
-        param.slct <- lapply(sel.str.split, function(v) as.double(v[2]))
-        #
-        ## rename
-        names(param.slct) <- string
-        #
-      } else {
-        param.slct <- as.double(sel.str.split[2])
-      }
-     #
+      #
+      param.slct <-
+        sapply(sel.str.split, function(v) as.character(v[2]))
+      #
+      ## apply the above-defined function
+      param.slct <-
+        str_vec_conversion(
+          string.vec = param.slct,
+          names.vec = string
+        )
     }
   }
   #
-  ## WINEPR
+  ## ------------------------- WINEPR ----------------------------
+  #
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
-    if (any(grepl("JON|JCO|JDA|JTM",string))) {
-      if (length(string) > 1) {
-        param.slct <- sapply(sel.str.split, function(v) as.character(v[2]))
-        #
-        ## apply the above-defined function
-        param.slct <- str_vec_conversion(string.vec = param.slct,names.vec = string)
-      } else {
-        param.slct <- as.character(sel.str.split[2])
-      }
-      #
-    } else {
-      if (length(string) > 1) {
-        param.slct <- lapply(sel.str.split, function(v) as.double(v[2]))
-        #
-        ## rename
-        names(param.slct) <- string
-      } else {
-        param.slct <- as.double(sel.str.split[2])
-      }
-     #
-    }
+    #
+    param.slct <-
+      sapply(sel.str.split, function(v) as.character(v[2]))
+    #
+    ## apply the above-defined function
+    param.slct <-
+      str_vec_conversion(
+        string.vec = param.slct,
+        names.vec = string
+      )
+    #
   }
+  #
+  ## ======================== RESULT =========================
   #
   return(param.slct)
   #
@@ -321,8 +316,8 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #' @description
 #'  Function takes selected instrumental parameters relevant to \strong{time series ("kinetic")}
 #'  experiment from the \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum, obtained from the "Xenon",
-#'  "WinEpr" or "Magnettech" software. These parameters are required for time correction of the CW (continuous wave) EPR
-#'  spectra, see the \code{\link{correct_time_Exp_Specs}}.
+#'  "WinEpr" or "Magnettech" software. These parameters are required for time correction
+#'  of the CW (continuous wave) EPR spectra, see the \code{\link{correct_time_Exp_Specs}}.
 #'
 #'
 #' @inheritParams readEPR_param_slct
@@ -353,11 +348,16 @@ readEPR_param_slct <- function(path_to_dsc_par,
 readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
   #
   ## origin strings vectors to define "origin" conditions =>
-  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  winepr.string <- c(
+    "winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR",
+    "SPC/PAR","spc/par","Spc/Par"
+  )
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
-                         "magnetTech","MAGNETTECH","magnetech",
-                         "Magnetech","MAGNETECH")
+  magnettech.string <- c(
+    "magnettech","Magnettech","MagnetTech",
+    "magnetTech","MAGNETTECH","magnetech",
+    "Magnetech","MAGNETECH"
+  )
   ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
   ## condition for switching between xenon and magnettech
@@ -375,41 +375,61 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
   if (any(grepl(paste(xenon.string,collapse = "|"),origin)) ||
       any(grepl(paste(magnettech.string,collapse = "|"),origin))) {
     #
-    resol <- readEPR_param_slct(path_to_dsc_par,
-                                string = "A1RS",
-                                origin = origin
+    resol <- readEPR_param_slct(
+      path_to_dsc_par,
+      string = "XPTS",
+      origin = origin
     )
-    convTime <- readEPR_param_slct(path_to_dsc_par,
-                                   string = "SPTP",
-                                   origin = origin
+    #
+    convTime <- readEPR_param_slct(
+      path_to_dsc_par,
+      string = "SPTP",
+      origin = origin
     )
-    NScans <- readEPR_param_slct(path_to_dsc_par,
-                                 string = switch(2-xen.magnet.cond(origin = origin),
-                                                 "AVGS",
-                                                 "NbScansToDo"),
-                                 origin = origin
+    #
+    NScans <- readEPR_param_slct(
+      path_to_dsc_par,
+      string =
+        switch(
+          2-xen.magnet.cond(origin = origin),
+          "AVGS",
+          "NbScansToDo"
+        ),
+      origin = origin
     )
-    ## for kinetic measurements "AVGS" doesn't work, therefore select "NbScansToDo" for Xenon
+    ## for kinetic measurements "AVGS" doesn't work,
+    ## therefore select "NbScansToDo" for Xenon
   }
   ## winepr
   if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
     #
-    resol <- readEPR_param_slct(path_to_dsc_par,
-                                string = "RES",
-                                origin = origin
+    resol <- readEPR_param_slct(
+      path_to_dsc_par,
+      string = "RES",
+      origin = origin
     )
-    convTime <- readEPR_param_slct(path_to_dsc_par,
-                                   string = "RCT",
-                                   origin = origin
+    #
+    convTime <- readEPR_param_slct(
+      path_to_dsc_par,
+      string = "RCT",
+      origin = origin
     )
-    NScans <- readEPR_param_slct(path_to_dsc_par,
-                                 string = "JSD",
-                                 origin = origin
+    #
+    NScans <- readEPR_param_slct(
+      path_to_dsc_par,
+      string = "JSD",
+      origin = origin
     )
   }
   sweeptime <- resol * convTime
   #
-  return(list(Nscans = NScans, swTime = sweeptime, Npoints = resol))
+  return(
+    list(
+      Nscans = NScans,
+      swTime = sweeptime,
+      Npoints = resol
+    )
+  )
   #
 }
 #
@@ -463,10 +483,18 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
   ## reading the table and extracting values form table
   params.df <- readEPR_params_tabs(path_to_dsc_par,origin = origin)$params
   #
-  Bm.mT <- params.df %>%
+  ## modulation amplitude unit
+  Bm.unit <- params.df %>%
+    dplyr::filter(.data$Parameter == "Modulation Amplitude") %>%
+    dplyr::pull(dplyr::all_of(c("Unit")))
+  #
+  ## modulation amplitude value and conversion depending on unit
+  Bm <- params.df %>%
     dplyr::filter(.data$Parameter == "Modulation Amplitude") %>%
     dplyr::pull(dplyr::all_of(c("Value")))
-  Bm.mT <- round(Bm.mT,digits = 3)
+  ## conversion + rounding
+  Bm.mT <- convert_B(Bm,B.unit = Bm.unit,B.2unit = "mT") %>%
+    round(digits = 3)
   #
   P.mW <- params.df %>%
     dplyr::filter(.data$Parameter == "Power") %>%
@@ -485,7 +513,13 @@ readEPR_params_slct_quant <- function(path_to_dsc_par,
   ## not required anymore =>
   rm(params.df)
   #
-  named.params.list <- list(BmmT = Bm.mT,PmW = P.mW,TK = Temp.K,mwGHz = nu.GHz)
+  named.params.list <- list(
+    BmmT = Bm.mT,
+    PmW = P.mW,
+    TK = Temp.K,
+    mwGHz = nu.GHz
+  )
+  #
   return(named.params.list)
 }
 #
@@ -554,15 +588,30 @@ readEPR_params_slct_sim <- function(path_to_dsc_par,
   ## reading the table and extracting values form table
   params.df <- readEPR_params_tabs(path_to_dsc_par,origin = origin)$params
   #
+  ## central field unit
+  B.CF.unit <- params.df %>%
+    dplyr::filter(.data$Parameter == "Central Field") %>%
+    dplyr::pull(dplyr::all_of(c("Unit")))
+  #
+  ## central field value
   B.CF <- params.df %>%
     dplyr::filter(.data$Parameter == "Central Field") %>%
-    dplyr::pull(dplyr::all_of(c("Value"))) %>% convert_B(B.unit = "mT",B.2unit = B.unit)
-  B.CF <- round(B.CF,digits = 3)
+    dplyr::pull(dplyr::all_of(c("Value")))
+  ## conversion + rounding
+  B.CF <- convert_B(B.CF,B.unit = B.CF.unit,B.2unit = B.unit) %>%
+    round(digits = 3)
   #
+  ## sweep width unit
+  B.SW.unit <- params.df %>%
+    dplyr::filter(.data$Parameter == "Sweep Width") %>%
+    dplyr::pull(dplyr::all_of(c("Unit")))
+  #
+  ## sweep width value
   B.SW <- params.df %>%
     dplyr::filter(.data$Parameter == "Sweep Width") %>%
-    dplyr::pull(dplyr::all_of(c("Value"))) %>% convert_B(B.unit = "mT",B.2unit = B.unit)
-  B.SW <- round(B.SW,digits = 3)
+    dplyr::pull(dplyr::all_of(c("Value")))
+  B.SW <- convert_B(B.SW,B.unit = B.SW.unit,B.2unit = B.unit) %>%
+    round(digits = 3)
   #
   Npoints <- params.df %>%
     dplyr::filter(.data$Parameter == "Number of Points") %>%
@@ -576,7 +625,12 @@ readEPR_params_slct_sim <- function(path_to_dsc_par,
   ## not required anymore =>
   rm(params.df)
   #
-  named.params.list <- list(Bcf = B.CF,Bsw = B.SW,Npoints = Npoints,mwGHz = nu.GHz)
+  named.params.list <- list(
+    Bcf = B.CF,
+    Bsw = B.SW,
+    Npoints = Npoints,
+    mwGHz = nu.GHz
+  )
   ## `B` quantities are returned in `B.unit` values
   #
   return(named.params.list)

@@ -7,11 +7,12 @@
 readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 }
 \arguments{
-\item{path_to_dsc_par}{Character string, path to \code{.DSC/.dsc} or \code{.par} file including the instrumental
-parameters provided by the EPR machine. File path can be also defined by the \code{\link[base]{file.path}} function.}
+\item{path_to_dsc_par}{Character string, path to \code{.DSC/.dsc} or \code{.par} file including
+the instrumental parameters provided by the EPR machine. File path can be also defined
+by the \code{\link[base]{file.path}} function.}
 
-\item{string}{Character (vector) string (appeared at the line beginning) within the \code{.DSC/.dsc} or \code{.par} file
- corresponding to instrumental parameter or information.
+\item{string}{Character (vector) string (appeared at the line beginning) within
+ the \code{.DSC/.dsc} or \code{.par} file corresponding to instrumental parameter or information.
 Following \strong{strings are defined for all three main acquisition softwares described-above}
  (\strong{in parenthesis for the "winepr" origin}):
 \tabular{ll}{
@@ -20,7 +21,9 @@ Following \strong{strings are defined for all three main acquisition softwares d
   "CMNT" ("JCO") \tab comment (in order to describe the measurement) \cr
   "DATE" ("JDA") \tab date (when the EPR spectrum was recorded) \cr
   "TIME" ("JTM") \tab time (when the EPR spectrum was recorded) \cr
-  "SAMP" \tab name/decsript. of the sample, not available in "magnettech" \code{.dsc} \cr
+  "SAMP" \tab name/description of the sample, not available in "magnettech" \code{.dsc} \cr
+  "TITL" ("JEX") \tab experiment title \cr
+  "YNAM" ("JEY") \tab name/title for the second variable/dimension of the experiment \cr
   "B0MF" \tab modulation frequency in \code{Hz} \cr
   "MWFQ" ("MF") \tab microwave frequency in \code{Hz} (\code{GHz}) \cr
   "QValue" \tab recorded quality-Factor (required for intensity normalization) \code{unitless} \cr
@@ -29,7 +32,15 @@ Following \strong{strings are defined for all three main acquisition softwares d
   "STMP" ("TE")  \tab temperature in \code{K} \cr
   "B0MA" ("RMA") \tab modulation amplitude in \code{T} (\code{G}) \cr
   "AVGS" ("JSD") \tab number of accumulations for each spectrum \cr
-  "A1RS" ("RES") \tab number of points/resolution \cr
+  "XPTS"/"A1RS" ("RES"/"SSX") \tab number of points/resolution \cr
+  "XUNI" ("JUN"/"XXUN") \tab spectrum abscissa unit \cr
+  "YUNI" ("XYUN") \tab unit corresponding to second variable (e.g. time) in spectral series \cr
+  "XMIN" ("GST"/"XXLB") \tab actual \emph{x}/\emph{B} starting point (especially
+  if teslameter in ON state) \cr
+  "YPTS"/"A2RS" ("REY"/"SSY") \tab \emph{y}-resolution, corresponding to second
+  variable (e.g. time) in spectral series \cr
+  "XWID" ("GSI"/"XXWI") \tab actual \emph{x}/\emph{B} width (entire range, especially
+  if teslameter in ON state) \cr
   "MWPW" ("MP") \tab microwave power in \code{W} (\code{mW}) \cr
   "SPTP" ("RCT") \tab conversion time in \code{s} (\code{ms}) \cr
   "RCTC" ("RTC") \tab time constant in \code{s} (ms),
@@ -43,7 +54,8 @@ Following \strong{strings are defined for all three main acquisition softwares d
 \item{origin}{Character string, corresponding to software used to acquire EPR spectra.
 The files are slightly different depending on whether
 they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
-(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422],
+\code{origin = "magnettech"}).}
 }
 \value{
 Numeric or character string (e.g. date or comment), corresponding to selected instrumental parameter(s)

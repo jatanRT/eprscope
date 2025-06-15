@@ -98,7 +98,7 @@ Additionally, **the open-source scientific and technical publishing system** [Qu
 
 ## Updates
 
-To update the `{eprscope}` 📦, just run the following code in the ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} console ➨
+To update the `{eprscope}` 📦, just run the following code (the same as for the installation) in the ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} console ➨
 
 ```{r update,eval=FALSE,echo=TRUE}
 

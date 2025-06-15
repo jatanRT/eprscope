@@ -14,7 +14,8 @@ to \code{.DSC/.dsc} or \code{.par} (depending on OS, see the \code{origin} argum
 \item{origin}{Character string, corresponding to software used to acquire EPR spectra.
 The files are slightly different depending on whether
 they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
-(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422],
+\code{origin = "magnettech"}).}
 
 \item{B.unit}{Character string, pointing to unit of magnetic flux density which is the output
 "unit", \code{"G"} ("Gauss") or \code{"mT"} ("millitesla"), for \code{"sweep width"}

@@ -85,9 +85,11 @@ aminoxyl.sim.fitSpec <-
                       field.var = "fitSpec")
 #
 ## for the newer EasySpin version (> 6.0.0),
-## the "fitSpec" is replaced by the simple "fit",
-## all additional parameters (array) are stored under
-## the "pfit_full" variable
+## the "fitSpec" is replaced by the simple "fit"
+## or "fitraw", corresponding to scaled and raw intensity
+## of the simulated EPR spectrum, please refer also
+## to the EasySpin documentantion:
+## https://easyspin.org/easyspin/documentation/esfit.html
 #
 ## preview of the first 6 values
 aminoxyl.sim.fitSpec[1:6]

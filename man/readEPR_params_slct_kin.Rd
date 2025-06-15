@@ -13,7 +13,8 @@ parameters provided by the EPR machine.}
 \item{origin}{Character string, corresponding to software used to acquire EPR spectra.
 The files are slightly different depending on whether
 they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"
-(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422], \code{origin = "magnettech"}).}
+(\strong{default}: \code{origin = "xenon"}) or by the "Magnettech" (ESR5000 [11-0422],
+\code{origin = "magnettech"}).}
 }
 \value{
 List containing:
@@ -27,8 +28,8 @@ List containing:
 \description{
 Function takes selected instrumental parameters relevant to \strong{time series ("kinetic")}
  experiment from the \code{.DSC/.dsc} or \code{.par} file of an EPR Spectrum, obtained from the "Xenon",
- "WinEpr" or "Magnettech" software. These parameters are required for time correction of the CW (continuous wave) EPR
- spectra, see the \code{\link{correct_time_Exp_Specs}}.
+ "WinEpr" or "Magnettech" software. These parameters are required for time correction
+ of the CW (continuous wave) EPR spectra, see the \code{\link{correct_time_Exp_Specs}}.
 }
 \examples{
 ## loading `.DSC` (`Xenon`) parameter file example

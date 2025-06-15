@@ -160,7 +160,8 @@ found in the `create_qmdReport_proj()` documentation).
 
 ## Updates
 
-To update the `{eprscope}` 📦, just run the following code in the
+To update the `{eprscope}` 📦, just run the following code (the same as
+for the installation) in the
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
 console ➨
 
