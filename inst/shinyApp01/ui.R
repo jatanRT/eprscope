@@ -32,16 +32,6 @@ ui <- fluidPage(
            )),
     column(width = 4,
            fileInput(
-             inputId = "ASCIIfile",
-             NULL,
-             buttonLabel = shiny::div(
-               shiny::icon("file-waveform"),
-               "Upload spectrum data"
-             ),
-             accept = c(".asc",".txt",".csv")
-           )),
-    column(width = 4,
-           fileInput(
              inputId = "ParamsFile",
              NULL,
              buttonLabel = shiny::div(
@@ -49,6 +39,16 @@ ui <- fluidPage(
                "Upload params. file"
              ),
              accept = c(".dsc",".par")
+           )),
+    column(width = 4,
+           fileInput(
+             inputId = "ASCIIfile",
+             NULL,
+             buttonLabel = shiny::div(
+               shiny::icon("file-waveform"),
+               "Upload spectrum data"
+             ),
+             accept = c(".asc",".txt",".csv")
            ))),
   tabsetPanel(
     tabPanel(

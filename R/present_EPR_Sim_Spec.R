@@ -283,6 +283,16 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   #
   ## if the entire table/table should be included
   if (isTRUE(output.df)) {
+    #
+    ## filter `both.spectr.data` accoring to `Blim`
+    both.spectr.data <- both.spectr.data %>%
+      dplyr::filter(
+        dplyr::between(
+          .data[[paste0("B_",B.unit)]],
+          Blim[1],Blim[2]
+        )
+      )
+    #
     SimPlotPlusTable <- list(plot = simulation.plot,
                              df = both.spectr.data)
   } else {

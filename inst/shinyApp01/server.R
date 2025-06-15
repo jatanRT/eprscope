@@ -6,6 +6,7 @@ library(shinythemes)
 library(DT)
 library(dplyr)
 library(magrittr)
+library(ggplot2)
 #
 server <- function(input, output,session) {
   #
@@ -311,40 +312,52 @@ server <- function(input, output,session) {
       ## separate description into several lines
       if (length(char.title) <= 3){
         char.title <- paste(unname(char.title), collapse = ", ")
-        char.title.title <- paste("EPR Spectrum Simulation with ",char.title,sep = "\n")
+        char.title.title <-
+          paste("EPR Spectrum Simulation with ",char.title,sep = "\n")
       }
       if (length(char.title) > 3){
         ## first line variable =>
         char.title1L <- paste(unname(char.title[1:3]), collapse = ", ") ## 1st Line
       }
       if (length(char.title) > 3 & length(char.title) <= 6){
-        char.title2L <- paste(unname(char.title[4:length(char.title)]), collapse = ", ") ## 2nd Line
-        char.title.title <- paste("EPR Spectrum Simulation with ",
-                                  char.title1L,
-                                  char.title2L,
-                                  sep = "\n")
+        char.title2L <-
+          paste(unname(char.title[4:length(char.title)]), collapse = ", ") ## 2nd Line
+        char.title.title <- paste(
+          "EPR Spectrum Simulation with ",
+          char.title1L,
+          char.title2L,
+          sep = "\n"
+        )
       }
       if (length(char.title) > 6){
         ## second line variable =>
-        char.title2L <- paste(unname(char.title[4:6]), collapse = ", ") ## 2nd Line
+        char.title2L <-
+          paste(unname(char.title[4:6]), collapse = ", ") ## 2nd Line
       }
       if (length(char.title) > 6 & length(char.title) <= 9){
-        char.title3L <- paste(unname(char.title[7:length(char.title)]), collapse = ", ") ## 3rd Line
-        char.title.title <- paste("EPR Spectrum Simulation with ",
-                                  char.title1L,
-                                  char.title2L,
-                                  char.title3L,
-                                  sep = "\n")
+        char.title3L <-
+          paste(unname(char.title[7:length(char.title)]), collapse = ", ") ## 3rd Line
+        char.title.title <- paste(
+          "EPR Spectrum Simulation with ",
+          char.title1L,
+          char.title2L,
+          char.title3L,
+          sep = "\n"
+        )
       }
       if (length(char.title) > 9 & length(char.title) <= 12){
-        char.title3L <- paste(unname(char.title[7:9]), collapse = ", ") ## 3rd Line
-        char.title4L <- paste(unname(char.title[10:length(char.title)]), collapse = ", ") ## 4th Line
-        char.title.title <- paste("EPR Spectrum Simulation with ",
-                                  char.title1L,
-                                  char.title2L,
-                                  char.title3L,
-                                  char.title4L,
-                                  sep = "\n")
+        char.title3L <-
+          paste(unname(char.title[7:9]), collapse = ", ") ## 3rd Line
+        char.title4L <-
+          paste(unname(char.title[10:length(char.title)]), collapse = ", ") ## 4th Line
+        char.title.title <- paste(
+          "EPR Spectrum Simulation with ",
+          char.title1L,
+          char.title2L,
+          char.title3L,
+          char.title4L,
+          sep = "\n"
+        )
       }
       if (length(char.title) > 12){
         char.title.title <- paste("EPR Spectrum Simulation with ",
@@ -352,7 +365,8 @@ server <- function(input, output,session) {
                                   sep = "\n")
       }
     } else {
-      char.title.title <- paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
+      char.title.title <-
+        paste("EPR Spectrum Simulation of ",char.title,sep = "\n")
     }
     #
     ## caption
@@ -395,6 +409,7 @@ server <- function(input, output,session) {
       line.color.expr = input$exprColor,
       line.color.sim = input$simColor,
       Blim = input$Brange,
+      B.unit = input$Bunit,
       output.df = TRUE
     )$plot +
       ggplot2::labs(
@@ -420,6 +435,8 @@ server <- function(input, output,session) {
     present_EPR_Sim_Spec(
       data.spectr.expr = expr_data(),
       data.spectr.sim = sim_data(),
+      Blim = input$Brange,
+      B.unit = input$Bunit,
       output.df = TRUE
     )$df
   },
@@ -433,14 +450,28 @@ server <- function(input, output,session) {
   #
   ## -------------- save plot (Sim) -----------------
   output$simPlotsave <- downloadHandler(
-    filename = function() { paste(input$figfilename,input$figformat,sep = ".") },
+    filename = function() {
+      paste(input$figfilename,input$figformat,sep = ".")
+    },
     content = function(file) {
       if (input$figformat == "png") {
-        grDevices::png(file,width = 7,height = 5,units = "in",res = 300)
+        grDevices::png(
+          file,
+          width = 7,
+          height = 5,
+          units = "in",
+          res = 300
+        )
       } else if (input$figformat == "pdf") {
         grDevices::pdf(file,width = 7,height = 5)
       } else if (input$figformat == "jpeg") {
-        grDevices::jpeg(file,width = 7,height = 5,units = "in",res = 300)
+        grDevices::jpeg(
+          file,
+          width = 7,
+          height = 5,
+          units = "in",
+          res = 300
+        )
       }
       #
       graphics::plot(expr_sim_plot())
@@ -450,7 +481,9 @@ server <- function(input, output,session) {
   #
   ## ------------- save table (Sim) -----------------
   output$simTablesave <- downloadHandler(
-    filename = function() { paste(input$tabfilename,input$tabformat,sep = ".") },
+    filename = function() {
+      paste(input$tabfilename,input$tabformat,sep = ".")
+    },
     content = function(file) {
       if (input$tabformat == "csv") {
         utils::write.csv(
