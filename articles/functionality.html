@@ -144,16 +144,20 @@
 <span><span class="co"># the output `tmpd.params` is a list consisting</span></span>
 <span><span class="co"># of the "info" data frame (contaning characters)</span></span>
 <span><span class="va">tmpd.params</span><span class="op">$</span><span class="va">info</span> <span class="co"># or `tmpd.params[["info"]]`</span></span>
-<span><span class="co">#&gt;        Parameter</span></span>
-<span><span class="co">#&gt; 1       Operator</span></span>
-<span><span class="co">#&gt; 2           Date</span></span>
-<span><span class="co">#&gt; 3 Recording Time</span></span>
-<span><span class="co">#&gt; 4        Comment</span></span>
+<span><span class="co">#&gt;                 Parameter</span></span>
+<span><span class="co">#&gt; 1                Operator</span></span>
+<span><span class="co">#&gt; 2                    Date</span></span>
+<span><span class="co">#&gt; 3          Recording Time</span></span>
+<span><span class="co">#&gt; 4                 Comment</span></span>
+<span><span class="co">#&gt; 5        Experiment Title</span></span>
+<span><span class="co">#&gt; 6 X Var. (e.g. B/RF) Unit</span></span>
 <span><span class="co">#&gt;                                                         Information</span></span>
 <span><span class="co">#&gt; 1                                                           Tarabek</span></span>
 <span><span class="co">#&gt; 2                                                        08/01/2011</span></span>
 <span><span class="co">#&gt; 3                                                             15:15</span></span>
-<span><span class="co">#&gt; 4 Q=3500, 1mM solut. tetramethyl phenylene diamine, accu 20 spectra</span></span></code></pre></div>
+<span><span class="co">#&gt; 4 Q=3500, 1mM solut. tetramethyl phenylene diamine, accu 20 spectra</span></span>
+<span><span class="co">#&gt; 5                                                       field-sweep</span></span>
+<span><span class="co">#&gt; 6                                                                 G</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># and the second data frame is the "params",</span></span>
@@ -161,9 +165,9 @@
 <span><span class="va">tmpd.params</span><span class="op">$</span><span class="va">params</span> <span class="co"># or `tmpd.params[["params"]]`</span></span>
 <span><span class="co">#&gt;               Parameter        Value     Unit</span></span>
 <span><span class="co">#&gt; 1             Frequency     9.814155      GHz</span></span>
-<span><span class="co">#&gt; 2         Central Field   349.917000       mT</span></span>
-<span><span class="co">#&gt; 3           Sweep Width    12.000000       mT</span></span>
-<span><span class="co">#&gt; 4  Modulation Amplitude     0.050000       mT</span></span>
+<span><span class="co">#&gt; 2         Central Field  3499.170000        G</span></span>
+<span><span class="co">#&gt; 3           Sweep Width   120.000000        G</span></span>
+<span><span class="co">#&gt; 4  Modulation Amplitude     0.500000        G</span></span>
 <span><span class="co">#&gt; 5       Number of Scans    20.000000 Unitless</span></span>
 <span><span class="co">#&gt; 6      Number of Points  2401.000000 Unitless</span></span>
 <span><span class="co">#&gt; 7                 Power     5.024000       mW</span></span>
@@ -743,7 +747,7 @@ aiso_mT_QCH
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.089   0.003   0.092</span></span>
+<span><span class="co">#&gt;   0.092   0.002   0.094</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>

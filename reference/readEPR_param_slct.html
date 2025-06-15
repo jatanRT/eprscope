@@ -73,15 +73,19 @@
 
 
 <dl><dt id="arg-path-to-dsc-par">path_to_dsc_par<a class="anchor" aria-label="anchor" href="#arg-path-to-dsc-par"></a></dt>
-<dd><p>Character string, path to <code>.DSC/.dsc</code> or <code>.par</code> file including the instrumental
-parameters provided by the EPR machine. File path can be also defined by the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code> function.</p></dd>
+<dd><p>Character string, path to <code>.DSC/.dsc</code> or <code>.par</code> file including
+the instrumental parameters provided by the EPR machine. File path can be also defined
+by the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code> function.</p></dd>
 
 
 <dt id="arg-string">string<a class="anchor" aria-label="anchor" href="#arg-string"></a></dt>
-<dd><p>Character (vector) string (appeared at the line beginning) within the <code>.DSC/.dsc</code> or <code>.par</code> file
- corresponding to instrumental parameter or information.
+<dd><p>Character (vector) string (appeared at the line beginning) within
+ the <code>.DSC/.dsc</code> or <code>.par</code> file corresponding to instrumental parameter or information.
 Following <strong>strings are defined for all three main acquisition softwares described-above</strong>
- (<strong>in parenthesis for the "winepr" origin</strong>):</p><table class="table table"><tr><td><strong>String</strong></td><td><strong>Instrumental Parameter</strong></td></tr><tr><td>"OPER" ("JON")</td><td>operator (of the EPR instrument)</td></tr><tr><td>"CMNT" ("JCO")</td><td>comment (in order to describe the measurement)</td></tr><tr><td>"DATE" ("JDA")</td><td>date (when the EPR spectrum was recorded)</td></tr><tr><td>"TIME" ("JTM")</td><td>time (when the EPR spectrum was recorded)</td></tr><tr><td>"SAMP"</td><td>name/decsript. of the sample, not available in "magnettech" <code>.dsc</code></td></tr><tr><td>"B0MF"</td><td>modulation frequency in <code>Hz</code></td></tr><tr><td>"MWFQ" ("MF")</td><td>microwave frequency in <code>Hz</code> (<code>GHz</code>)</td></tr><tr><td>"QValue"</td><td>recorded quality-Factor (required for intensity normalization) <code>unitless</code></td></tr><tr><td>"A1CT" ("HCF")</td><td>central field (B) in <code>T</code> (<code>G</code>)</td></tr><tr><td>"A1SW" ("HSW")</td><td>sweep width in <code>T</code> (<code>G</code>)</td></tr><tr><td>"STMP" ("TE")</td><td>temperature in <code>K</code></td></tr><tr><td>"B0MA" ("RMA")</td><td>modulation amplitude in <code>T</code> (<code>G</code>)</td></tr><tr><td>"AVGS" ("JSD")</td><td>number of accumulations for each spectrum</td></tr><tr><td>"A1RS" ("RES")</td><td>number of points/resolution</td></tr><tr><td>"MWPW" ("MP")</td><td>microwave power in <code>W</code> (<code>mW</code>)</td></tr><tr><td>"SPTP" ("RCT")</td><td>conversion time in <code>s</code> (<code>ms</code>)</td></tr><tr><td>"RCTC" ("RTC")</td><td>time constant in <code>s</code> (ms),
+ (<strong>in parenthesis for the "winepr" origin</strong>):</p><table class="table table"><tr><td><strong>String</strong></td><td><strong>Instrumental Parameter</strong></td></tr><tr><td>"OPER" ("JON")</td><td>operator (of the EPR instrument)</td></tr><tr><td>"CMNT" ("JCO")</td><td>comment (in order to describe the measurement)</td></tr><tr><td>"DATE" ("JDA")</td><td>date (when the EPR spectrum was recorded)</td></tr><tr><td>"TIME" ("JTM")</td><td>time (when the EPR spectrum was recorded)</td></tr><tr><td>"SAMP"</td><td>name/description of the sample, not available in "magnettech" <code>.dsc</code></td></tr><tr><td>"TITL" ("JEX")</td><td>experiment title</td></tr><tr><td>"YNAM" ("JEY")</td><td>name/title for the second variable/dimension of the experiment</td></tr><tr><td>"B0MF"</td><td>modulation frequency in <code>Hz</code></td></tr><tr><td>"MWFQ" ("MF")</td><td>microwave frequency in <code>Hz</code> (<code>GHz</code>)</td></tr><tr><td>"QValue"</td><td>recorded quality-Factor (required for intensity normalization) <code>unitless</code></td></tr><tr><td>"A1CT" ("HCF")</td><td>central field (B) in <code>T</code> (<code>G</code>)</td></tr><tr><td>"A1SW" ("HSW")</td><td>sweep width in <code>T</code> (<code>G</code>)</td></tr><tr><td>"STMP" ("TE")</td><td>temperature in <code>K</code></td></tr><tr><td>"B0MA" ("RMA")</td><td>modulation amplitude in <code>T</code> (<code>G</code>)</td></tr><tr><td>"AVGS" ("JSD")</td><td>number of accumulations for each spectrum</td></tr><tr><td>"XPTS"/"A1RS" ("RES"/"SSX")</td><td>number of points/resolution</td></tr><tr><td>"XUNI" ("JUN"/"XXUN")</td><td>spectrum abscissa unit</td></tr><tr><td>"YUNI" ("XYUN")</td><td>unit corresponding to second variable (e.g. time) in spectral series</td></tr><tr><td>"XMIN" ("GST"/"XXLB")</td><td>actual <em>x</em>/<em>B</em> starting point (especially
+  if teslameter in ON state)</td></tr><tr><td>"YPTS"/"A2RS" ("REY"/"SSY")</td><td><em>y</em>-resolution, corresponding to second
+  variable (e.g. time) in spectral series</td></tr><tr><td>"XWID" ("GSI"/"XXWI")</td><td>actual <em>x</em>/<em>B</em> width (entire range, especially
+  if teslameter in ON state)</td></tr><tr><td>"MWPW" ("MP")</td><td>microwave power in <code>W</code> (<code>mW</code>)</td></tr><tr><td>"SPTP" ("RCT")</td><td>conversion time in <code>s</code> (<code>ms</code>)</td></tr><tr><td>"RCTC" ("RTC")</td><td>time constant in <code>s</code> (ms),
   not available in "magnettech" <code>.dsc</code></td></tr><tr><td>"RCAG" ("RRG")</td><td>signal receiver gain in <code>dB</code> (unitless),
   not available in "magnettech" <code>.dsc</code></td></tr><tr><td>"ConvFact"</td><td>conversion factor/instr. calibration constant for quantitative
   analysis <code>unitless</code>, not available in "magnettech" <code>.dsc</code></td></tr></table></dd>
@@ -91,7 +95,8 @@ Following <strong>strings are defined for all three main acquisition softwares d
 <dd><p>Character string, corresponding to software used to acquire EPR spectra.
 The files are slightly different depending on whether
 they were recorded by the "WinEpr",<code>origin = "winepr"</code>, "Xenon"
-(<strong>default</strong>: <code>origin = "xenon"</code>) or by the "Magnettech" (ESR5000 [11-0422], <code>origin = "magnettech"</code>).</p></dd>
+(<strong>default</strong>: <code>origin = "xenon"</code>) or by the "Magnettech" (ESR5000 [11-0422],
+<code>origin = "magnettech"</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
