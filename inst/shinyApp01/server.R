@@ -490,6 +490,8 @@ server <- function(input, output,session) {
           present_EPR_Sim_Spec(
             data.spectr.expr = expr_data(),
             data.spectr.sim = sim_data(),
+            Blim = input$Brange,
+            B.unit = input$Bunit,
             output.df = TRUE
           )$df,
           file = file,
@@ -500,6 +502,8 @@ server <- function(input, output,session) {
           present_EPR_Sim_Spec(
             data.spectr.expr = expr_data(),
             data.spectr.sim = sim_data(),
+            Blim = input$Brange,
+            B.unit = input$Bunit,
             output.df = TRUE
           )$df,
           file = file
