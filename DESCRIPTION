@@ -8,14 +8,14 @@ Authors@R: person("Ján", "Tarábek",
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0116-3824"))
 Description: Processing, analysis and plottting of 
-             Electron Paramagnetic Resonance (EPR) spectra in chemistry. 
+             electron paramagnetic resonance (EPR) spectra in chemistry. 
              Even though the package is mainly focused
              on continuous wave (CW) EPR/ENDOR, many functions 
-             may be also used for the integrated forms of 1D 
-             PULSED EPR spectra. It is able to find the most 
+             may be also used for the integrated form of the 1D pulsed 
+             EPR spectra. It involves finding of the most 
              important spectral characteristics like g-factor, 
-             linewidth, maximum of derivative or integral intensities 
-             and single/double integrals. This is especially 
+             linewidth, maximum of derivative or integral intensities, 
+             single/double integrals and splittings. This is especially 
              important in spectral (time) series consisting of many 
              EPR spectra like during variable temperature experiments, 
              electrochemical or photochemical radical generation 
@@ -25,27 +25,26 @@ Description: Processing, analysis and plottting of
              can be found in the analyte/sample. 
              The goal is to evaluate rate constants, 
              considering different kinetic models, to describe 
-             the radical reactions. The key feature of the package 
-             resides in processing of the universal ASCII text 
-             formats (such as '.txt', '.csv' or '.asc') 
-             from scratch. No proprietary formats are used 
-             (except the MATLAB EasySpin outputs) and in such respect 
-             the package is in accordance with the FAIR data 
-             principles. Upon 'reading' (also providing automatic 
-             procedures for the most common EPR spectrometers)
-             the spectral data are transformed into the universal
-             R 'data frame' format. Subsequently, the EPR spectra 
-             can be visualized and are fully consistent either with 
-             the 'ggplot2' package or with the interactive 
-             formats based on 'plotly'. Additionally, simulations 
-             and fitting of the isotropic EPR spectra
-             are also included in the package. Advanced simulation 
-             parameters provided by the MATLAB-EasySpin toolbox 
-             and results from the quantum chemical calculations 
-             like g-factor and hyperfine splitting/coupling 
-             constants (a/A) can be compared and summarized 
-             in table-format in order to analyze the EPR spectra 
-             by the most effective way.
+             the radical reactions. Following the reading of EPR data 
+             from the instrument (also providing automatic 
+             procedures for the most common EPR spectrometers),
+             data are transformed into the universal
+             R 'data frame' format and thus might be additionally 
+             processed and analyzed by the R 'tidyverse' bundle. 
+             Subsequently, the EPR spectra can be visualized 
+             and are fully consistent either with the 'ggplot2' package 
+             or with the interactive formats based on 'plotly'. 
+             Additionally, simulations and fitting of the isotropic 
+             EPR spectra are included as well. Advanced simulation 
+             parameters from the MATLAB-EasySpin toolbox 
+             and results from the quantum chemical 
+             calculations (e.g. DFT), like g-factor and hyperfine 
+             splitting/coupling constants (a/A), can be compared 
+             with the experiment and summarized in a table-like format 
+             in order to analyze the EPR spectra by the most effective way.
+             Finally, all outcomes may be summarized in a quarto '.qmd'
+             document rendered/converted into different formats 
+             (e.g. '.pdf','.docx','.html').
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
