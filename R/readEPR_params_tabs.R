@@ -6,15 +6,16 @@
 #'
 #'
 #' @description
-#'   Taking the instrumental parameters from the \code{.DSC/.dsc} or \code{.par} files, applied
+#'   Extraction of the instrumental parameters from the \code{.DSC/.dsc} or \code{.par} files, applied
 #'   to record the EPR Spectra, and transferring them into list of \code{Tables/Data Frames}.
 #'   They include either parameter values and their units or character/string information about the measurement,
 #'   see also the \code{\link{readEPR_param_slct}} function.
 #'
 #'
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC/.dsc} or \code{.par} (depending on \code{origin} parameter)
-#'   \code{text} files, including instrumental parameters and provided by the EPR machine.
+#'   to \code{.DSC/.dsc} or \code{.par} (either related to \code{origin = "xenon"}/\code{origin = "magnettech"}
+#'   or to \code{origin = "winepr"}, respectively) \code{text} files, including instrumental parameters of the recorded
+#'   spectra and provided by the EPR machine.
 #' @param origin Character string, corresponding to software used to acquire EPR spectra.
 #'   The files are slightly different depending on whether
 #'   they were recorded by the "WinEpr",\code{origin = "winepr"}, "Xenon"

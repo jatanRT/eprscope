@@ -1,13 +1,13 @@
 #
-#' Reading the Experimental ASCII or Binary EPR Spectra/Data.
+#' Reading of the Experimental ASCII or Binary EPR Spectra/Data.
 #'
 #'
 #' @family Data Reading
 #'
 #'
 #' @description Based on the \code{\link[data.table]{fread}} or \code{\link[base]{readBin}} R functions,
-#'   the experimental EPR/ENDOR spectra or other original (pre-processed) data from the EPR spectrometers
-#'   are transformed into data frames (tables). The function can read several data formats
+#'   the experimental EPR/ENDOR spectra (referred to as 1D- or 2D-Experiments) or other original (pre-processed)
+#'   data from the EPR spectrometers are transformed into data frames (tables). The function can read several data formats
 #'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} as well as \code{.spc}. The latter two extensions,
 #'   corresponding to binary files, require information (instrumental parameters of the acquired spectra/data)
 #'   provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively (see the \code{path_to_dsc_par}
@@ -18,36 +18,40 @@
 #'
 #' @details
 #'   Right after the instrumental or pre-processed data/files are transformed into data frames, they can be easily handled
-#'   by the actual or other R packages, e.g. \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards.
+#'   by the actual or additional R packages, e.g. by \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards.
 #'   Spectral intensities are normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
 #'   These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
 #'   quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
-#'   the Q-value can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
+#'   it can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
 #'   is calculated by the following expression (depending on the \code{qValue} and/or \code{norm.vec.add}):
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
 #'   or
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue) \, \prod_{k} 1/(norm.vec.add[k])}
 #'   where \eqn{k} is iterating through all components of the \code{norm.vec.add}.
 #'   The structure of the files depends on the origin/software used to acquire the EPR spectra.
-#'   This is mirrored mainly by the \code{origin} and \code{data.structure} arguments. Default arguments
+#'   This is mainly mirrored by the \code{origin} and \code{data.structure} arguments. Default arguments
 #'   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
 #'   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
-#'   any arbitrary string e.g. \code{origin = "csv"} (see also the \code{origin} argument). For the latter,
+#'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument). For the latter,
 #'   all arguments must be set accordingly, as already demonstrated in \code{Examples}.
-#'   When reading the binary spectrometer files like \code{.DTA} (\code{origin = "xenon"})
-#'   or \code{.spc} (\code{origin = "winepr"}) any 2D-experiments (e.g. time/temperature/microwave power series)
-#'   can be loaded regardless of the experiment type, whereas the \code{}
-#'   Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series.id} argument.
-#'   In such case the ASCII data table also contains additional column either with recorded
-#'   time (see also \code{\link{correct_time_Exp_Specs}}) or with slice number for each spectrum.
+#'   When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)
+#'   can be loaded. For such purpose, the reading/loading of the data
+#'   must be activated by the \code{var2nd.series.id} argument (which is \code{NULL} by default to load the 1D-experiments),
+#'   pointing to \code{col.names} element index in order to define relevant column of the returned data frame.
+#'   For example, if the second variable series corresponds to time (in seconds) column:
+#'   \code{col.names = c("index","B_G","time_s","dIepr_over_dB")}, the \code{id} must be defined as \code{var2nd.series.id = 3}.
 #'
 #'
 #' @inheritParams data.table::fread
-#' @param path_to_file Character string, path to ASCII file/table (e.g. in \code{.txt}, \code{.csv}
-#'   or \code{.asc} format) with the spectral data (\eqn{Intensity} vs \eqn{B}, Field) including additional
-#'   \code{index} and/or \code{time} variables). The path can be also defined by the \code{\link[base]{file.path}} function.
-#' @param path_to_dsc_par description TBC !!
+#' @param path_to_file Character string, path to any spectrometer/instrumental file, having one the following extensions:
+#'   \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc} including the 1D- (e.g. \eqn{Intensity} vs \eqn{B}, Field)
+#'   or 2D-experimental (e.g. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
+#'   by the \code{\link[base]{file.path}} function.
+#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
+#'   to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
+#'   ASCII \code{text} file, including instrumental parameters of the recorded spectra (corresponding to the previous argument)
+#'   and provided by the EPR machine. \strong{Default}: \code{path_to_dsc_par = NULL}. Previous assignment inherits ...TBC...TODO !!
 #' @param path_to_ygf description TBC !!
 #' @param col.names Character string vector, inherited from the \code{\link[data.table]{fread}}, corresponding to
 #'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
