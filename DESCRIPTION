@@ -9,7 +9,7 @@ Authors@R: person("Ján", "Tarábek",
            comment = c(ORCID = "0000-0003-0116-3824"))
 Description: Processing, analysis and plottting of 
              electron paramagnetic resonance (EPR) spectra in chemistry. 
-             Even though the package is mainly focused
+             Even though mainly focused
              on continuous wave (CW) EPR/ENDOR, many functions 
              may be also used for the integrated form of the 1D pulsed 
              EPR spectra. It involves finding of the most 

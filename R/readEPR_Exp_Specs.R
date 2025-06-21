@@ -17,8 +17,8 @@
 #'
 #'
 #' @details
-#'   Right after the instrumental or pre-processed data/files are transformed into data frames, they can be easily handled
-#'   by the actual or additional R packages, e.g. by \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards.
+#'   Right after the instrumental or pre-processed data/files are transformed into data frames,
+#'   they can be easily handled by the actual or additional R packages, e.g. by \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards.
 #'   Spectral intensities are normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
 #'   These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
@@ -33,34 +33,41 @@
 #'   This is mainly mirrored by the \code{origin} and \code{data.structure} arguments. Default arguments
 #'   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
 #'   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
-#'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument). For the latter,
-#'   all arguments must be set accordingly, as already demonstrated in \code{Examples}.
+#'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument).
+#'   For the latter, all arguments must be set accordingly, as already demonstrated in \code{Examples}.
 #'   When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)
 #'   can be loaded. For such purpose, the reading/loading of the data
-#'   must be activated by the \code{var2nd.series.id} argument (which is \code{NULL} by default to load the 1D-experiments),
-#'   pointing to \code{col.names} element index in order to define relevant column of the returned data frame.
-#'   For example, if the second variable series corresponds to time (in seconds) column:
-#'   \code{col.names = c("index","B_G","time_s","dIepr_over_dB")}, the \code{id} must be defined as \code{var2nd.series.id = 3}.
+#'   must be activated by the \code{var2nd.series.id} argument (which is \code{NULL} by default
+#'   to load the 1D-experiments), pointing to \code{col.names} element index in order to define relevant
+#'   column of the returned data frame. For example, if the second variable series corresponds
+#'   to time (in seconds) column: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")},
+#'   the \code{id} must be defined as \code{var2nd.series.id = 3}.
 #'
 #'
 #' @inheritParams data.table::fread
-#' @param path_to_file Character string, path to any spectrometer/instrumental file, having one the following extensions:
-#'   \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc} including the 1D- (e.g. \eqn{Intensity} vs \eqn{B}, Field)
-#'   or 2D-experimental (e.g. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
+#' @param path_to_file Character string, path to any spectrometer/instrumental file,
+#'   having one the following extensions: \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc},
+#'   including the 1D- (e.g. \eqn{Intensity} vs \eqn{B}, Field) or 2D-experimental
+#'   (e.g. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
 #'   by the \code{\link[base]{file.path}} function.
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
-#'   ASCII \code{text} file, including instrumental parameters of the recorded spectra (corresponding to the previous argument)
-#'   and provided by the EPR machine. \strong{Default}: \code{path_to_dsc_par = NULL}. Previous assignment inherits ...TBC...TODO !!
-#' @param path_to_ygf description TBC !!
-#' @param col.names Character string vector, inherited from the \code{\link[data.table]{fread}}, corresponding to
-#'   column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
+#'   ASCII \code{text} file, including instrumental parameters of the recorded spectra
+#'   (corresponding to the previous argument) and provided by the EPR machine.
+#'   \strong{Default}: \code{path_to_dsc_par = NULL}. Previous assignment actually means that the argument
+#'   automatically inherits the \code{path_to_file}, however with the appropriate extension
+#'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
+#'   file name like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
+#'   to provide/define the right file path.
+#' @param path_to_ygf description TBC !! TODO !!
+#' @param col.names Character string vector, corresponding to table column/variable names/headers.
+#'   A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#'   For spectral time series \code{col.names} must include \code{"T(t)ime"} or \code{"S(s)lice"} character
-#'   string in order to identify the corresponding time column/variable in the original ASCII file.
-#'   The default (for the original \code{\link[data.table]{fread}}) is to use the header column
-#'   if present or detected. If not, the name is denoted as \code{"V"} followed by the column number.
+#'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+#'   For spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
+#'   in order to identify the corresponding quantity for the series in the original file (please refer also
+#'   to the \code{var2nd.series.id}). Additional \code{\link[data.table]{fread}} documentation might be helpful
+#'   to read the ASCII text files.
 #' @param x.id Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
 #'   to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).
 #' @param x.unit Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
