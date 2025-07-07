@@ -18,9 +18,9 @@
 #'
 #' @details
 #'   Right after the instrumental or pre-processed data/files are transformed into data frames,
-#'   they can be easily handled by the actual or additional R packages, e.g. by \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards.
-#'   Spectral intensities are normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
-#'   These are defined by the two arguments:
+#'   they can be easily handled by the actual or additional R packages, e.g. by \href{https://dplyr.tidyverse.org/}{dplyr}),
+#'   afterwards. Spectral intensities are normalized by the common experimental parameters like Q-factor, concentration,
+#'   weight...etc. These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
 #'   quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
 #'   it can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
@@ -28,19 +28,21 @@
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
 #'   or
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue) \, \prod_{k} 1/(norm.vec.add[k])}
-#'   where \eqn{k} is iterating through all components of the \code{norm.vec.add}.
-#'   The structure of the files depends on the origin/software used to acquire the EPR spectra.
+#'   or
+#'   \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
+#'   where the \eqn{k} is iterating through all components of the \code{norm.vec.add}.
+#'   The structure of files depends on the origin/software used to acquire the EPR spectra.
 #'   This is mainly mirrored by the \code{origin} and \code{data.structure} arguments. Default arguments
 #'   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
 #'   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
 #'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument).
 #'   For the latter, all arguments must be set accordingly, as already demonstrated in \code{Examples}.
 #'   When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)
-#'   can be loaded. For such purpose, the reading/loading of the data
+#'   can be loaded as well. For such purpose, the reading/loading of the data
 #'   must be activated by the \code{var2nd.series.id} argument (which is \code{NULL} by default
 #'   to load the 1D-experiments), pointing to \code{col.names} element index in order to define relevant
 #'   column of the returned data frame. For example, if the second variable series corresponds
-#'   to time (in seconds) column: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")},
+#'   to time (in seconds) column: e.g. \code{col.names = c("index","B_G","time_s","dIepr_over_dB")},
 #'   the \code{id} must be defined as \code{var2nd.series.id = 3}.
 #'
 #'
@@ -54,46 +56,56 @@
 #'   to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
 #'   ASCII \code{text} file, including instrumental parameters of the recorded spectra
 #'   (corresponding to the previous argument) and provided by the EPR machine.
-#'   \strong{Default}: \code{path_to_dsc_par = NULL}. Previous assignment actually means that the argument
+#'   \strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
 #'   automatically inherits the \code{path_to_file}, however with the appropriate extension
 #'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
 #'   file name like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
 #'   to provide/define the right file path.
-#' @param path_to_ygf description TBC !! TODO !!
-#' @param col.names Character string vector, corresponding to table column/variable names/headers.
-#'   A safe rule of thumb is to use column names incl. physical quantity notation
+#' @param path_to_ygf Character string, path (also provided by \code{\link[base]{file.path}})
+#'   to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
+#'   independent variable in the spectral series like time, temperature, microwave power, ...etc (different from magnetic
+#'   flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
+#'   for 2D experiments). The latter assignment actually means that the argument automatically inherits
+#'   the \code{path_to_file}, however with the appropriate extension \code{.YGF}. In other words, the function is looking
+#'   for the same file name like in \code{path_to_file} in the working directory. If the file does not exist, the function
+#'   automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
+#'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
+#'   \code{path_to_dsc_par} description).
+#' @param col.names Character string vector, corresponding to desired column/variable names/headers of the returned
+#'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #'   For spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
 #'   in order to identify the corresponding quantity for the series in the original file (please refer also
 #'   to the \code{var2nd.series.id}). Additional \code{\link[data.table]{fread}} documentation might be helpful
 #'   to read the ASCII text files.
-#' @param x.id Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
-#'   to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).
+#' @param x.id Numeric index related to \code{col.names} vector, pointing to the independent variable, which corresponds
+#'   to \eqn{x}-axis in the spectra or other plots (e.g. \eqn{B} or \eqn{\nu_{\text{RF}}}).
+#'   \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).
 #' @param x.unit Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
 #'   \code{"mT"} or \code{"MHz"}.
-#' @param Intensity.id Numeric index related to \code{col.names} vector, pointing to \code{general} intensity,
+#' @param Intensity.id Numeric index related to \code{col.names} vector, pointing to general intensity of EPR spectrum,
 #'   like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
-#'   integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
+#'   integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented on the
 #'   \eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).
-#' @param var2nd.series.id Numeric index related to \code{col.names} vector and pointing to \code{time} column for time series
-#'   EPR spectra. If data contains simple relation like \eqn{Area} vs \eqn{time},
-#'   use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}). This argument is dedicated
-#'   to kinetic-like experiments. \strong{Default}: \code{var2nd.series.id = NULL} (see also the \code{data.structure}
-#'   argument).
+#' @param var2nd.series.id Numeric index related to \code{col.names} vector and pointing to column
+#'   for the EPR spectral series variable like time, temperature or microwave power. If data contains simple relation
+#'   like \eqn{Area} vs \eqn{time}, use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}).
+#'   This argument is dedicated to kinetic-like experiments. \strong{Default}: \code{var2nd.series.id = NULL}
+#'   (see also the \code{data.structure} argument).
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 #'   conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
 #'   \eqn{B} in \code{mT}/\code{G} is created.
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by the spectrometer,
 #'   in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
 #'   \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.
-#' @param norm.vec.add Numeric vector. Additional normalization constant in the form of vector, including
+#' @param norm.vec.add Numeric vector. Additional normalization constants in the form of vector, including
 #'   all (in addition to \code{qValue}) normalization(s) like concentration, powder sample
 #'   weight, number of scans, ...etc. (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 #'   \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
 #'   the Q-factor/value might be also included in the \code{norm.vec.add}.
-#' @param origin Character string, corresponding to \strong{origin} of the ASCII data, like from the
-#'   most common spectrometers (from which the data are loaded automatically using the default parameters).
+#' @param origin Character string, corresponding to \strong{origin} of the data and related to EPR acquisition software
+#'   at the spectrometer (from which the data are loaded automatically using the default parameters).
 #'   Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 #'   \tabular{rl}{
 #'   \strong{String} \tab \strong{Description} \cr
@@ -120,45 +132,81 @@
 #'   or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
 #'   intensities (like integrated spectral form) in \code{procedure defined unit}
 #'   (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
-#'   which is normalized by the above-described parameters
-#'   and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
-#'   are displayed as well.
+#'   which is normalized by the above-described parameters/function arguments.
+#'   For 2D experiments (spectral series) an additional column with the 2nd independent variable (like time, temperature
+#'   or microwave power, ...etc. ) is created. The actual data frame is return
+#'   in the \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}.
 #'
 #'
 #' @examples
-#' ## simple EPR spectrum acquired by "xenon"
+#' ## simple ASCII EPR spectrum acquired by "xenon"
 #' ## and with `B` conversion "G" <=> "mT"
 #' ## Loading the data
-#' aminoxyl.data.path <-
+#' aminoxyl.ascii.data.path <-
 #'   load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data.01 <-
-#'   readEPR_Exp_Specs(aminoxyl.data.path,
-#'                     qValue = 2100)
+#'   readEPR_Exp_Specs(
+#'     aminoxyl.ascii.data.path,
+#'     qValue = 2100
+#'   )
 #' ## preview
 #' head(aminoxyl.data.01)
 #' #
+#' ## the same EPR spectrum, reading from
+#' ## the original binary file
+#' ## Loading the data
+#' aminoxyl.bin.data.path <-
+#'   load_data_example(file = "Aminoxyl_radical_a.DTA")
+#' aminoxyl.data.02 <-
+#'   readEPR_Exp_Specs(
+#'     aminoxyl.bin.data.path,
+#'     qValue = 2100
+#'   )
+#' ## preview
+#' head(aminoxyl.data.02)
+#' #
 #' # simple EPR spectrum acquired by "xenon"
 #' ## and without `B` conversion "G" <=> "mT"
-#' aminoxyl.data.02 <-
-#'   readEPR_Exp_Specs(aminoxyl.data.path,
+#' aminoxyl.data.03 <-
+#'   readEPR_Exp_Specs(aminoxyl.bin.data.path,
 #'                     convertB.unit = FALSE,
 #'                     qValue = 2100)
 #' ## preview
-#' head(aminoxyl.data.02)
+#' head(aminoxyl.data.03)
 #' #
 #' ## the simple spectrum acquired by "winepr"
 #' ## (and 20 scans) on a 1 mM sample concentration:
 #' ## Loading the data
-#' TMPD.data.path <-
+#' TMPD.ascii.data.path <-
 #'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
-#' TMPD.data <-
-#'   readEPR_Exp_Specs(TMPD.data.path,
-#'                     col.names = c("B_G","dIepr_over_dB"),
-#'                     qValue = 3500,
-#'                     norm.vec.add = c(20,0.001),
-#'                     origin = "winepr")
+#' TMPD.data.01 <-
+#'   readEPR_Exp_Specs(
+#'     TMPD.ascii.data.path,
+#'     col.names = c("B_G","dIepr_over_dB"),
+#'     qValue = 3500,
+#'     norm.vec.add = c(20,0.001),
+#'     origin = "winepr"
+#'   )
 #' ## preview
-#' head(TMPD.data)
+#' head(TMPD.data.01)
+#' #
+#' ## the same EPR spectrum, reading from
+#' ## the original binary file
+#' ## Loading the data
+#' TMPD.bin.data.path <-
+#'   load_data_example(file = "TMPD_specelchem_accu_b.spc")
+#' TMPD.data.02 <-
+#'   readEPR_Exp_Specs(
+#'     TMPD.bin.data.path,
+#'     col.names = c("B_G","dIepr_over_dB"),
+#'     qValue = 3500,
+#'     norm.vec.add = c(20,0.001),
+#'     origin = "winepr"
+#'   )
+#' ## preview
+#' head(TMPD.data.02)
+#' #
+#' ## TODO below !!!
 #' #
 #' ## the ENDOR spectrum recorded by "xenon"
 #' ## and 8 accumulation sweeps

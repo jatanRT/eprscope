@@ -7,7 +7,7 @@
 #'
 #' @description Loading the EPR spectra from several/multiple \code{text} files (including the instrumental
 #'   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. Finally, the data are transformed
-#'   either into a list of data frames or into a \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}.
+#'   either into a list of data frames or into a \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}.
 #'   According to experimental quantity (e.g. temperature, microwave power, recording time...etc),
 #'   \code{names} and \code{var2nd.series} (in the case of \code{tidy = TRUE}) arguments have to be specified.
 #'
