@@ -8,8 +8,9 @@
 #' @description Based on the \code{\link[data.table]{fread}} or \code{\link[base]{readBin}} R functions,
 #'   the experimental EPR/ENDOR spectra (referred to as 1D- or 2D-Experiments) or other original (pre-processed)
 #'   data from the EPR spectrometers are transformed into data frames (tables). The function can read several data formats
-#'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} as well as \code{.spc}. The latter two extensions,
-#'   corresponding to binary files, require information (instrumental parameters of the acquired spectra/data)
+#'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} as well as \code{.spc} with the latter two extensions,
+#'   corresponding to binary files (function automatically recognizes which type of data, ASCII or binary, are loaded).
+#'   Reading of such data require information (instrumental parameters of the acquired spectra/data)
 #'   provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively (see the \code{path_to_dsc_par}
 #'   as well as \code{path_to_ygf} arguments description). Because the original file structure depends
 #'   on the EPR spectrometer acquisition software or data processing, the \code{origin} argument is necessary
@@ -46,7 +47,6 @@
 #'   the \code{id} must be defined as \code{var2nd.series.id = 3}.
 #'
 #'
-#' @inheritParams data.table::fread
 #' @param path_to_file Character string, path to any spectrometer/instrumental file,
 #'   having one the following extensions: \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc},
 #'   including the 1D- (e.g. \eqn{Intensity} vs \eqn{B}, Field) or 2D-experimental
@@ -71,9 +71,20 @@
 #'   automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
 #'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
 #'   \code{path_to_dsc_par} description).
+#' @param sep Character string. The separator between columns/variables in the original ASCII text file.
+#'   \strong{Default}: \code{sep = "auto"}, pointing to automatic recognition of the separator. If required, additional
+#'   separators like \code{sep = "\t"} ("tab") or \code{sep = "\s+"} ("more whitespace") can be applied as well.
+#'   Use \code{sep = NULL} or {sep = ""} to specify no separator. For any details, please consult
+#'   the \code{\link[data.table]{fread}} documentation.
+#' @param skip Numeric value, referring to the number of rows, at the beginning of ASCII text file, to be skipped
+#'   (not included by loading into the data frame). \strong{Default}: \code{skip = 1}, corresponding to skip the first
+#'   row in the \code{origin = "Xenon"} text file.
+#' @param header Logical. Does the first data line, in the original ASCII file, contain column names? Defaults according
+#'   to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column
+#'   names are given a default name. \strong{Default}: \code{header = FALSE}.
 #' @param col.names Character string vector, corresponding to desired column/variable names/headers of the returned
 #'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
-#'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+#'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #'   For spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
 #'   in order to identify the corresponding quantity for the series in the original file (please refer also
@@ -92,7 +103,7 @@
 #'   for the EPR spectral series variable like time, temperature or microwave power. If data contains simple relation
 #'   like \eqn{Area} vs \eqn{time}, use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}).
 #'   This argument is dedicated to kinetic-like experiments. \strong{Default}: \code{var2nd.series.id = NULL}
-#'   (see also the \code{data.structure} argument).
+#'   (for 1D experiments), see also the \code{data.structure} argument.
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 #'   conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
 #'   \eqn{B} in \code{mT}/\code{G} is created.
@@ -152,8 +163,8 @@
 #' ## preview
 #' head(aminoxyl.data.01)
 #' #
-#' ## the same EPR spectrum, reading from
-#' ## the original binary file
+#' ## the same EPR spectrum data, reading from
+#' ## the original `.DTA` binary (+ `.DSC` text) file(s)
 #' ## Loading the data
 #' aminoxyl.bin.data.path <-
 #'   load_data_example(file = "Aminoxyl_radical_a.DTA")
@@ -190,14 +201,14 @@
 #' ## preview
 #' head(TMPD.data.01)
 #' #
-#' ## the same EPR spectrum, reading from
-#' ## the original binary file
+#' ## the same EPR spectrum data, reading from
+#' ## the original `.spc` binary (+ `.par` text) file(s)
 #' ## Loading the data
 #' TMPD.bin.data.path <-
 #'   load_data_example(file = "TMPD_specelchem_accu_b.spc")
 #' TMPD.data.02 <-
 #'   readEPR_Exp_Specs(
-#'     TMPD.bin.data.path,
+#'     path_to_file = TMPD.bin.data.path,
 #'     col.names = c("B_G","dIepr_over_dB"),
 #'     qValue = 3500,
 #'     norm.vec.add = c(20,0.001),
@@ -206,35 +217,52 @@
 #' ## preview
 #' head(TMPD.data.02)
 #' #
-#' ## TODO below !!!
-#' #
 #' ## the ENDOR spectrum recorded by "xenon"
-#' ## and 8 accumulation sweeps
+#' ## and 8 accumulation sweeps (ASCII data)
 #' ## loading the data
-#' PNT.ENDOR.data.path <-
+#' PNT.ENDOR.ascii.data.path <-
 #'   load_data_example(file = "PNT_ENDOR_a.txt")
-#' PNT.ENDOR.data <-
-#'   readEPR_Exp_Specs(PNT.ENDOR.data.path,
-#'                     col.names = c("index",
-#'                                   "RF_MHz",
-#'                                   "dIepr_over_dB"),
-#'                     x.unit = "MHz",
-#'                     norm.vec.add = 8)
+#' PNT.ENDOR.data.01 <-
+#'   readEPR_Exp_Specs(
+#'     PNT.ENDOR.ascii.data.path,
+#'     col.names = c("index",
+#'                   "RF_MHz",
+#'                   "dIepr_over_dB"),
+#'     x.unit = "MHz",
+#'     norm.vec.add = 8
+#'   )
 #' ## preview
-#' head(PNT.ENDOR.data)
+#' head(PNT.ENDOR.data.01)
 #' #
-#' ## reading the (pre-processed) data file
-#' ## (data.structure = "mixed") from (by) the "Xenon" software
-#' ## corresponding to kinetics with `Area` and `time`
-#' ## columns/variables , these two have to be selected
-#' ## from several others + normalize `Area`
-#' ## against the `qValue` (first of all load the path
-#' ## of package example file)
+#' ## previous ENDOR spectrum data, reading from
+#' ## the original `.DTA` binary (+ `.DSC` text) file(s)
+#' ## Loading the data
+#' PNT.ENDOR.bin.data.path <-
+#'   load_data_example(file = "PNT_ENDOR_a.DTA")
+#' PNT.ENDOR.data.02 <-
+#'   readEPR_Exp_Specs(
+#'     PNT.ENDOR.bin.data.path,
+#'     col.names = c("index",
+#'                   "RF_MHz",
+#'                   "dIepr_over_dB"),
+#'     x.unit = "MHz",
+#'     norm.vec.add = 8
+#'   )
+#' ## preview
+#' head(PNT.ENDOR.data.02)
+#' #
+#' ## reading the (pre-processed) ASCII
+#' ## data file (data.structure = "others") from (by)
+#' ## the "Xenon" software corresponding to kinetics with
+#' ## `Area` and `time` columns/variables , these
+#' ## two have to be selected from several
+#' ## others + normalize `Area` by the `qValue`
+#' ## (first of all load the path of package example file)
 #' triarylamine.rc.decay.path <-
 #'   load_data_example("Triarylamine_radCat_decay_a.txt")
 #' ## data
 #' triarylamine.rc.decay.data <-
-#'   readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,
+#'   readEPR_Exp_Specs(path_to_file = triarylamine.rc.decay.path,
 #'                     header = TRUE,
 #'                     fill = TRUE,
 #'                     select = c(3,7),
@@ -258,36 +286,76 @@
 #'         files = c("AcridineDeriv_Irrad_365nm.csv"),
 #'         exdir = tempdir())
 #' ## reading "magnettech"
-#' acridineRad.data <-
+#' acridineRad.data.01 <-
 #'   readEPR_Exp_Specs(acridineRad.data,
 #'                     col.names = c("B_mT","dIepr_over_dB"),
 #'                     x.unit = "mT",
+#'                     qValue = 1829
 #'                     origin = "magnettech")
 #' ## preview
-#' head(acridineRad.data)
+#' head(acridineRad.data.01)
+#' #
+#' ## previous acridine EPR spectrum data, reading from
+#' ## the original `.DTA` binary (+ `.dsc` text) file(s)
+#' ## Loading the data
+#' acridineRad.bin.data.path <-
+#'   load_data_example("AcridineDeriv_Irrad_365nm.DTA")
+#' acridineRad.data.02 <-
+#'   readEPR_Exp_Specs(
+#'     path_to_file = acridineRad.bin.data.path,
+#'     origin = "magnetech",
+#'     qValue = 1829
+#'   )
+#' #
+#' ## preview
+#' head(acridine.data.02)
+#' #
+#' ## EPR time series (2D Experiment) acquired
+#' ## by the "Winepr"/"WinEpr", reading the original
+#' ## `.spc` binary (+ `.par` text) file(s)
+#' ## Loading the data
+#' TMPD.se.bin.data.2D.path <-
+#'   load_data_example("TMPD_specelchem_CV_b.spc")
+#' TMPD.se.data.2D <-
+#'   readEPR_Exp_Specs(
+#'     path_to_file = TMPD.se.bin.data.2D.path,
+#'     col.names = c(
+#'       "B_G",
+#'       "Slice",
+#'       "dIepr_over_dB"
+#'     ),
+#'     var2nd.series.id = 2,
+#'     origin = "winepr"
+#'   )
+#' #
+#' ## preview
+#' head(TMPD.se.data.2D)
+#' #
+#' ## EPR time series (2D experiment) acquired
+#' ## by the "Xenon", reading the original
+#' ## `.DTA` binary (+ `.DSC` text) file(s)
+#' ## Loading the data
+#' triarylamine.rc.decay.series.path <-
+#'   load_data_example("Triarylamine_radCat_decay_series.DTA")
+#' triarylamine.rc.decay.series.data <-
+#'   readEPR_Exp_Specs(
+#'     path_to_file = triarylamine.rc.decay.series.path,
+#'     col.names = c(
+#'       "index",
+#'       "B_G",
+#'       "time_s",
+#'       "dIepr_over_dB"
+#'     ),
+#'     var2nd.series.id = 3,
+#'     qValue = 1700
+#'   )
+#' #
+#' ## preview
+#' head(triarylamine.rc.decay.series.data)
 #' #
 #' \dontrun{
-#' ## EPR time series acquired by "Winepr"/"WinEpr"
-#' readEPR_Exp_Specs(path_to_ASC,
-#'                   col.names = c("B_G",
-#'                                 "Slice",
-#'                                 "dIepr_over_dB"),
-#'                   origin = "Winepr")
-#' #
-#' ## example for "xenon" time series experiment
-#' ## (evolution of EPR spectra in time, e.g. in case of
-#' ## EPR spectroelectrochemistry or photochemistry):
-#' ## together with `B` conversion "G" <=> mT
-#' ## and intensity normalized against `qValue`
-#' readEPR_Exp_Specs(path_to_ASC,
-#'                   col.names = c("index",
-#'                                 "B_G",
-#'                                 "time_s",
-#'                                 "dIepr_over_dB"),
-#'                   qValue = 2800)
-#' #
-#' ## read `.csv` file which is an output from online
-#' ## converter:
+#' ## read the `.csv` file which is an output
+#' ## from the online converter:
 #' ## https://www.spectra.tools/bin/controller.pl?body=Xepr2gfac
 #' readEPR_Exp_Specs("data.csv",
 #'                   skip = 0,
@@ -390,8 +458,9 @@ readEPR_Exp_Specs <- function(path_to_file,
   var2nd.series.cond <- isFALSE(is.null(var2nd.series.id))
   if (isTRUE(var2nd.series.cond) & length(col.names) <= 2){
     stop(" It doesn't look that your column names already include\n
-         the column name correspondig to the 2nd variable series (e.g. time).\n
-         Please, refer to the `col.names` and `var2nd.series.id` arguments !!")
+         the name correspondig to the 2nd variable series (e.g. time).\n
+         Please, refer to the description of `col.names`\n
+         and `var2nd.series.id` arguments !!")
   }
   #
   ## string to stop the reading if `data structure == "mixed"`

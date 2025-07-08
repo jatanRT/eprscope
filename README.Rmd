@@ -208,7 +208,7 @@ triarylamine_rc_decay_txt <-
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
   readEPR_Exp_Specs(
-    path_to_ASC = triarylamine_rc_decay_txt,
+    path_to_file = triarylamine_rc_decay_txt,
     header = TRUE,
     fill = TRUE,
     select = c(3, 7),
