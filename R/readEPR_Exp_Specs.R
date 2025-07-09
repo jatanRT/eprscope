@@ -67,7 +67,7 @@
 #'   flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
 #'   for 2D experiments). The latter assignment actually means that the argument automatically inherits
 #'   the \code{path_to_file}, however with the appropriate extension \code{.YGF}. In other words, the function is looking
-#'   for the same file name like in \code{path_to_file} in the working directory. If the file does not exist, the function
+#'   for the same file name like in \code{path_to_file} in the working directory. If the file does not exist, it
 #'   automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
 #'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
 #'   \code{path_to_dsc_par} description).
@@ -78,7 +78,7 @@
 #'   the \code{\link[data.table]{fread}} documentation.
 #' @param skip Numeric value, referring to the number of rows, at the beginning of ASCII text file, to be skipped
 #'   (not included by loading into the data frame). \strong{Default}: \code{skip = 1}, corresponding to skip the first
-#'   row in the \code{origin = "Xenon"} text file.
+#'   line in the \code{origin = "Xenon"} text file.
 #' @param header Logical. Does the first data line, in the original ASCII file, contain column names? Defaults according
 #'   to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column
 #'   names are given a default name. \strong{Default}: \code{header = FALSE}.
@@ -86,10 +86,10 @@
 #'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-#'   For spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
+#'   For the spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
 #'   in order to identify the corresponding quantity for the series in the original file (please refer also
-#'   to the \code{var2nd.series.id}). Additional \code{\link[data.table]{fread}} documentation might be helpful
-#'   to read the ASCII text files.
+#'   to the \code{var2nd.series.id} and \code{Details}). Additional \code{\link[data.table]{fread}} documentation might
+#'   be helpful to read the ASCII text files.
 #' @param x.id Numeric index related to \code{col.names} vector, pointing to the independent variable, which corresponds
 #'   to \eqn{x}-axis in the spectra or other plots (e.g. \eqn{B} or \eqn{\nu_{\text{RF}}}).
 #'   \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).
@@ -100,7 +100,7 @@
 #'   integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented on the
 #'   \eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).
 #' @param var2nd.series.id Numeric index related to \code{col.names} vector and pointing to column
-#'   for the EPR spectral series variable like time, temperature or microwave power. If data contains simple relation
+#'   for the EPR spectral 2D-series variable like time, temperature or microwave power. If data contains simple relation
 #'   like \eqn{Area} vs \eqn{time}, use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}).
 #'   This argument is dedicated to kinetic-like experiments. \strong{Default}: \code{var2nd.series.id = NULL}
 #'   (for 1D experiments), see also the \code{data.structure} argument.
@@ -129,7 +129,7 @@
 #'   }
 #' @param data.structure Character string, referring to structure of the ASCII data. Common spectral data files
 #'   with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
-#'   time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
+#'   time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For the more complex
 #'   ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
 #'   see \code{Examples}, or any other data) put \code{data.structure = "others"}. \strong{In such case, all the arguments for}
 #'   the \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
@@ -145,7 +145,7 @@
 #'   (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
 #'   which is normalized by the above-described parameters/function arguments.
 #'   For 2D experiments (spectral series) an additional column with the 2nd independent variable (like time, temperature
-#'   or microwave power, ...etc. ) is created. The actual data frame is return
+#'   or microwave power, ...etc. ) is created. In such case the actual data frame is return
 #'   in the \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}.
 #'
 #'
