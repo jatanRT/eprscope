@@ -111,10 +111,9 @@ where the <code>.DSC</code>/<code>.dsc</code> or <code>.par</code> files,includi
 
 
 <dt id="arg-col-names">col.names<a class="anchor" aria-label="anchor" href="#arg-col-names"></a></dt>
-<dd><p>Character string vector, inherited from <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></code>, corresponding to
-column/variable names <strong>for individual file</strong> (see also <code><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></code>).
-A safe rule of thumb is to use column names including the physical quantity notation with its units,
-<code>Quantity_Unit</code> like <code>"B_G"</code>, <code>"RF_MHz"</code>, <code>"Bsim_mT"</code> (e.g. pointing
+<dd><p>Character string vector, corresponding to column/variable names <strong>for individual file</strong>
+(see also <code><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></code>). A safe rule of thumb is to use column names including the physical
+quantity notation with its units, <code>Quantity_Unit</code> like <code>"B_G"</code>, <code>"RF_MHz"</code>, <code>"Bsim_mT"</code> (e.g. pointing
 to simulated EPR spectrum \(x\)-axis)...etc, <strong>default</strong>: <code>col.names = c("index","B_G",dIepr_over_dB)</code>
 referring to column names coming from <em>Xenon</em> software.</p></dd>
 
@@ -133,16 +132,17 @@ conversion between <code>G</code> and <code>mT</code> should be performed. If de
 
 
 <dt id="arg-qvalues">qValues<a class="anchor" aria-label="anchor" href="#arg-qvalues"></a></dt>
-<dd><p>Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either loaded from
-instrumental parameters (<code>.DSC</code> or <code>.par</code>), therefore <code>qValues = NULL</code> (<strong>default</strong>),
-or in case of the <code>origin = "winepr"</code>, they have to be provided by the spectrometer operator.</p></dd>
+<dd><p>Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either automatically loaded
+from the instrumental parameter files (<code>.DSC</code> or <code>.par</code>) or specified by the user.
+Therefore, <code>qValues = NULL</code> (<strong>default</strong>), actually corresponding to vector with all elements equal to <code>1</code>.
+In case of the <code>origin = "winepr"</code>, the elements of <code>qValues</code> have to be provided by the spectrometer operator.</p></dd>
 
 
 <dt id="arg-norm-list-add">norm.list.add<a class="anchor" aria-label="anchor" href="#arg-norm-list-add"></a></dt>
 <dd><p>Numeric list of vectors. Additional normalization constants in the form of vectors involving
 all (i.e. in addition to <code>qValue</code>) normalization(s) like e.g. concentration, powder sample
 weight, number of scans, ...etc (e.g. <code>norm.list.add = list(c(2000,0.5,2),c(1500,1,3))</code>). <strong>Default</strong>:
-<code>norm.list.add = NULL</code>.</p></dd>
+<code>norm.list.add = NULL</code>, corresponding to values of <code>1</code>.</p></dd>
 
 
 <dt id="arg-names">names<a class="anchor" aria-label="anchor" href="#arg-names"></a></dt>
