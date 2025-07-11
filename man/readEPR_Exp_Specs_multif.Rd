@@ -33,10 +33,9 @@ the \code{ASCII} files are stored.}
 \item{dir_dsc_par}{Path (defined by \code{\link[base]{file.path}} or by character string) to directory
 where the \code{.DSC}/\code{.dsc} or \code{.par} files,including instrumental parameters, are stored.}
 
-\item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
-column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
-A safe rule of thumb is to use column names including the physical quantity notation with its units,
-\code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+\item{col.names}{Character string vector, corresponding to column/variable names \strong{for individual file}
+(see also \code{\link{readEPR_Exp_Specs}}). A safe rule of thumb is to use column names including the physical
+quantity notation with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
 referring to column names coming from \emph{Xenon} software.}
 
@@ -49,14 +48,15 @@ or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \c
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
 \eqn{B} in \code{mT}/\code{G} is created.}
 
-\item{qValues}{Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either loaded from
-instrumental parameters (\code{.DSC} or \code{.par}), therefore \code{qValues = NULL} (\strong{default}),
-or in case of the \code{origin = "winepr"}, they have to be provided by the spectrometer operator.}
+\item{qValues}{Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either automatically loaded
+from the instrumental parameter files (\code{.DSC} or \code{.par}) or specified by the user.
+Therefore, \code{qValues = NULL} (\strong{default}), actually corresponding to vector with all elements equal to \code{1}.
+In case of the \code{origin = "winepr"}, the elements of \code{qValues} have to be provided by the spectrometer operator.}
 
 \item{norm.list.add}{Numeric list of vectors. Additional normalization constants in the form of vectors involving
 all (i.e. in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
-\code{norm.list.add = NULL}.}
+\code{norm.list.add = NULL}, corresponding to values of \code{1}.}
 
 \item{names}{Character string vector, corresponding either to values of \strong{additional quantity}
 (e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
