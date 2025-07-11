@@ -307,7 +307,7 @@ isFALSE(det(A) == 0)
 
 # Data Frames and the Pipe Operator {#data-frames}
 
-Data frame is one of most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is a 2-dimensional scheme), but unlike the matrices it can take different data types in list (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct a data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
+Data frame represents one of the most important structures/objects in ![](RcoreLogo.png){width="16" height="12"} statistical language to store the tabular data/dataset. It is similar to matrix (because it is a 2-dimensional scheme), but unlike the matrices it can take different data types in list (vide infra) of vectors with the equal lengths, corresponding **to columns/variables**. The second dimension is defined by the **rows/observations**, consisting of vector elements with equal indices (from all columns). As an example we may construct a data frame directly by the `readEPR_Exp_Specs()` function from `{eprscope}` 📦:
 
 ```{r create-df-example-01}
 
