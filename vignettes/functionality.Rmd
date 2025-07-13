@@ -79,7 +79,19 @@ This function belongs to the package family/section `Visualizations and Graphics
 
 # Reading Files and Writing Data Frames
 
-The `{eprscope}` reads different file formats ( `.asc`, `.txt`, `.csv` , TODO !!! ) and converts them into data frames/tables or lists/vectors (when reading the *EasySpin* *Matlab* files). Therefore, to read the instrumental data files, recorded EPR spectra must be first converted into the ASCII format at the spectrometer. If the conversion option is not available, one can also try a free online converter by *Leland B. Gee* [@xepr2gfac2023]. To process the EPR spectral data, it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format). The information including in these files is required to e.g. normalize the Intensity (like $\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in the derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
+The `{eprscope}` can handle different original file formats:
+
+1.  `.asc`, `.txt`, `.csv` , `.DTA` and `.spc` to read spectra from the EPR instrument/spectrometer, where the latter two correspond to binary file formats (the remaining three are ASCII text-based formats), which also require presence of the following files in order to load those spectra
+
+2.  `.DSC`/`.dsc`, `.par`, an ASCII text, containing information about the experiment, by gathering all the instrumental parameters applied to set up the EPR measurement
+
+3.  `.mat` coming from *Maltab* to gather all the parameters and variables related to simulated EPR spectrum returned from the [*EasySpin*](https://easyspin.org/) *toolbox*
+
+4.  `.out`, `.log` ASCII text outputs returned either form [*Gaussian*](https://gaussian.com/gaussian16/) or [*Orca*](https://www.faccts.de/docs/orca/6.1/tutorials/spec/EPR.html) quantum chemical packages, containing the computed EPR parameters such as hyperfine coupling/splitting constants (*A*/*a*, see below) and g-values
+
+Several above-listes data formats are used as examples to demonstrate the functionality of package and these are summarized in the [Package Datasets](https://jatanrt.github.io/eprscope/articles/datasets.html) vignette.
+
+and converts them into data frames/tables or lists/vectors (when reading the *EasySpin* *Matlab* files). Therefore, to read the instrumental data files, recorded EPR spectra must be first converted into the ASCII format at the spectrometer. If the conversion option is not available, one can also try a free online converter by *Leland B. Gee* [@xepr2gfac2023]. To process the EPR spectral data, it is important not only to read the files with *Intensity vs. B* (usually in `.asc`, `.txt`, `.csv` format) but also associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format). The information including in these files is required to e.g. normalize the Intensity (like $\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in the derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for simulations of the EPR spectra and to evaluate the kinetic parameters of the radical reactions.
 
 Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in a list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
 
