@@ -49,12 +49,15 @@
 #' @param optim.params.init.dvary Numeric vector with initial \strong{var}iations of the corresponding
 #'   \code{optim.params.init} elements in the form of \strong{d}ifferences from the central \code{optim.params.init}
 #'   values. For example, for the aminoxyl radical we may assume \code{optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49)}
-#'   (see the \code{optim.params.init} parameter definition). The \code{optim.params.init.dvary} could be defined
+#'   (see the \code{optim.params.init} argument definition). Thus, the \code{optim.params.init.dvary} could be defined
 #'   as follows: \code{c(0.002,2.0,2.0,0,1e-2,3.2)}, meaning that \eqn{g = 2.006\pm 0.002},
 #'   \eqn{\Delta B_{\text{pp}}^{\text{G}} = 4.8\pm 2.0\,\text{G}},
 #'   \eqn{\Delta B_{\text{pp}}^{\text{L}} = 4.8\pm 2.0\,\text{G}}, constant baseline \eqn{0\pm 0}, ...etc.
-#'   We may fix one or more initial parameters by putting the corresponding \code{optim.params.init.dvary}
-#'   element to \code{0}. If the entire \code{optim.params.init} argument is to be fixed => put
+#'   The user may "fix" one or more initial parameter values by putting the corresponding \code{optim.params.init.dvary}
+#'   element to \code{0}. However, this does not fix that (those) parameter(s) in a true sense. Rather, the \strong{initial}
+#'   parameter \strong{value remains constant} over the whole space (however, it will be optimized within
+#'   the default bound constraints anyway, see the \code{\link{eval_sim_EPR_isoFit}} documentation).
+#'   If the entire \code{optim.params.init} argument is to be "fixed" => put
 #'   \code{optim.params.init.dvary = NULL} (\strong{default}). In all cases, the related \code{optim.params.init}
 #'   space will be created as a matrix or data frame (see also the \code{Value}/\code{init.space.df}) with
 #'   variables/columns corresponding to individual parameters, and observations/rows corresponding
@@ -62,13 +65,13 @@
 #'   into smaller spaces. Therefore, the fitting process will be performed (by the \code{\link{eval_sim_EPR_isoFit}})
 #'   for each row of the initial data frame (\code{init.space.df}) together with the initial \code{lineG.content}
 #'   variation vector (see the description of \code{N.points.space} and \code{lineG.content.dvary} arguments).
-#'   In case for the \code{optim.params.init.dvary = NULL}, the fitting procedure is just repeated
+#'   For the \code{optim.params.init.dvary = NULL}, the fitting procedure is just repeated
 #'   \code{N.points.space}-times, with the same parameter set. Such processing might be useful to determine
 #'   the uncertainty of each optimized EPR simulation parameter by the \code{\link{eval_interval_cnfd_tVec}}
 #'   for each column of the \code{optim.space.df} (see the \code{Value}).
 #' @param N.points.space Numeric value, identical to number of points by which the initial parameter-hyperspace
 #'   (see the \code{lineG.content.dvary} and/or \code{optim.params.init.dvary} and their corresponding
-#'   \code{lineG.content} as well as \code{optimi.params.init} arguments)
+#'   \code{lineG.content} as well as \code{optim.params.init} arguments)
 #'   is divided, in order to find the best optimized parameters for EPR simulation fit of the isotropic
 #'   experimental spectrum. \strong{Default}: \code{N.points.space = 16}, e.g. if \code{lineG.content = 0.42}
 #'   and \code{lineG.content.dvary = 0.2}, the initial corresponding vector looks like

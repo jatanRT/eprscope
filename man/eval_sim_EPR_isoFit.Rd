@@ -236,6 +236,11 @@ In order to guess the intensity multiplication constant (please, refer to the \c
   Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
   point to evaluate the fit.
+
+  In order to fix one or more simulation parameter(s) during the fitting procedure, the corresponding \code{optim.parms.lower}
+  as well as the \code{optim.params.upper} vector element(s) must be equal to that of the \code{optim.params.init}.
+  Please, refer to the \code{Examples} below (simulation fit of the aminoxyl radical EPR spectrum with bound constraints
+  and fixed A(1 x 14N)).
 }
 \examples{
 ## loading built-in example dataset which is simple
@@ -292,17 +297,18 @@ head(tempo.test.sim.fit.a$df)
 #
 ## similar EPR spectrum simulation fit with "particle swarm"
 ## optimization algorithm and `check.fit.plot = TRUE` option
-## as well as user defined bound constraints:
+## as well as user defined bound constraints, including
+## fixed A(1 x 14N) = 52.6 MHz:
 tempo.test.sim.fit.b <-
   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
     nu.GHz = 9.806769,
-    lineG.content = 0.4,
+    lineG.content = 0.75,
     optim.method = "pswarm",
     nuclear.system.noA = list("14N",1),
     baseline.correct = "constant",
-    optim.params.init = c(2.006,4.8,4.8,0,1.4e-2,49),
-    optim.params.lower = c(2.0048,4.4,4.4,-1e-4,1.1e-2,45),
-    optim.params.upper = c(2.0072,5.2,5.2,1e-4,1.7e-2,53),
+    optim.params.init = c(2.0062,4.8,4.8,0,8e-3,52.68),
+    optim.params.lower = c(2.0048,4.6,4.6,-1e-4,5e-3,52.68),
+    optim.params.upper = c(2.0068,5.0,5.0,1e-4,1.5e-2,52.68),
     check.fit.plot = TRUE,
     eval.optim.progress = TRUE ## iterations, progress
   )
