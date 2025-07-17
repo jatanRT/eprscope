@@ -52,7 +52,7 @@ Prior to own `{eprscope}` 📦 installation a minimal system setup is required a
       c("DT","vctrs","npreg","patchwork","kableExtra",
         "htmlwidgets","webshot2","tinytable","gsignal",
         "shinythemes","future","future.apply",
-        "progressr","qqplotr","animation"),
+        "progressr","qqplotr","animation","openxlsx"),
       dependencies = TRUE
     )
 
