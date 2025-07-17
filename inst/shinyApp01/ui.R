@@ -290,7 +290,7 @@ ui <- fluidPage(
           column(width = 4,
                  textInput(
                    inputId = "figfilename",
-                   label = "File name to save plot/spectrum",
+                   label = "Filename to save plot/spectrum",
                    NULL
                  )),
           column(width = 4,
@@ -298,6 +298,33 @@ ui <- fluidPage(
                  downloadButton(
                    outputId = "simPlotsave",
                    label = "Save plot/spectrum",
+                   icon = shiny::icon("floppy-disk")
+                 ))
+        ),
+        shiny::tags$h3(
+          shiny::icon("laptop-code"),
+          "Export Code Snippet for Additional EPR Simulation Fit",
+          style = h3.style.string
+        ),
+        fluidRow(
+          column(width = 4,
+                 selectInput(
+                   inputId = "codeformat",
+                   label = "Code save format",
+                   choices = c("R","txt"),
+                   selected = "R"
+                 )),
+          column(width = 4,
+                 textInput(
+                   inputId = "codefilename",
+                   label = "Filename to save code",
+                   NULL
+                 )),
+          column(width = 4,
+                 shiny::br(), ## blank line
+                 downloadButton(
+                   outputId = "codesave",
+                   label = "Save code snippet",
                    icon = shiny::icon("floppy-disk")
                  ))
         ),
@@ -321,7 +348,7 @@ ui <- fluidPage(
             column(width = 4,
                    textInput(
                      inputId = "tabfilename",
-                     label = "File name to save table/data frame",
+                     label = "Filename to save table/data frame",
                      NULL
                    )),
             column(width = 4,

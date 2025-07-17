@@ -7,6 +7,7 @@ library(DT)
 library(dplyr)
 library(magrittr)
 library(ggplot2)
+library(openxlsx)
 #
 server <- function(input, output,session) {
   #
@@ -252,6 +253,35 @@ server <- function(input, output,session) {
     }
   })
   #
+  ## required 'nuclear' list interaction (Entire Characteristics)
+  nucleiCharacter <- reactive({ ## `reactiveValues()` does NOT WORK
+    #
+    interact.nuclei <- list()
+    #
+    if (isTRUE(input$splitCond)) {
+      nested_list <- any(sapply(nucs_list(), is.list))
+      if (isFALSE(nested_list)){
+        nucs_list_gr <- list(nucs_list())
+      } else {
+        nucs_list_gr <- nucs_list()
+      }
+      ## extract list components and convert them into vectors
+      interact.nuclei$nucle_us_i <- sapply(
+        1:length(nucs_list_gr),
+        function(e) nucs_list_gr[[e]][[1]]
+      )
+      interact.nuclei$N_nuclei <- sapply(
+        1:length(nucs_list_gr),
+        function(e) nucs_list_gr[[e]][[2]]
+      )
+      interact.nuclei$A_iso_MHz <- sapply(
+        1:length(nucs_list_gr),
+        function(e) nucs_list_gr[[e]][[3]]
+      )
+    }
+    return(interact.nuclei)
+  })
+  #
   ## simulated spectrum data frame:
   sim_data <- reactive({
     sim.spec.df <-
@@ -277,36 +307,15 @@ server <- function(input, output,session) {
   ## function for experimental and simulated spectrum plot:
   expr_sim_plot <- reactive({
     ## ----- title and caption for the plot ------
-    if (isTRUE(input$splitCond)) {
-      nested_list <- any(sapply(nucs_list(), is.list))
-      if (isFALSE(nested_list)){
-        nucs_list_gr <- list(nucs_list())
-      } else {
-        nucs_list_gr <- nucs_list()
-      }
-      ## extract list components and convert them into vectors
-      nucle_us_i <- sapply(
-        1:length(nucs_list_gr),
-        function(e) nucs_list_gr[[e]][[1]]
-      )
-      N_nuclei <- sapply(
-        1:length(nucs_list_gr),
-        function(e) nucs_list_gr[[e]][[2]]
-      )
-      A_iso_MHz <- sapply(
-        1:length(nucs_list_gr),
-        function(e) nucs_list_gr[[e]][[3]]
-      )
-    }
     #
     char.title <-
       switch(2-isFALSE(input$splitCond),
              "Non-Interacting Paramagnetic Center/Radical",
              mapply(function(x,y,z)
                paste0("A(",x," x ",y,") = ",z," MHz"),
-               N_nuclei,
-               nucle_us_i,
-               A_iso_MHz))
+               nucleiCharacter()[["N_nuclei"]],
+               nucleiCharacter()[["nucle_us_i"]],
+               nucleiCharacter()[["A_iso_MHz"]]))
     #
     if (isTRUE(input$splitCond)){
       ## separate description into several lines
@@ -476,6 +485,101 @@ server <- function(input, output,session) {
       #
       graphics::plot(expr_sim_plot())
       dev.off()
+    }
+  )
+  #
+  ## --------- save code for additional fit ----------
+  text_sim_code <- reactive({
+    #
+    ## system of nuclei - text:
+    nucs.system.text.vec <-
+      mapply(
+        function(m,n)
+          paste0("list('",n,"',",m,")"),
+        nucleiCharacter()[["N_nuclei"]],
+        nucleiCharacter()[["nucle_us_i"]]
+      )
+    #
+    ## write list text:
+    list.nucs.text <- paste0(
+      "list(",paste(nucs.system.text.vec,collapse = ","),")"
+    )
+    #
+    ## write own text:
+    R.text.code.for.sim <-
+      paste0(
+        "# \n",
+        "epr.spectrum.data <- \n",
+        "  readEPR_Exp_Specs( \n",
+        "    '<path to file>', # define the path to EPR spectrum data \n",
+        "    col.names = ",
+        switch(
+          3 - origin.cond(orig = input$origin),
+          "c('index','B_G', 'dIepr_over_dB')",
+          "c('B_G', 'dIepr_over_dB')",
+          "c('B_mT','dIepr_over_dB')"
+        ),", \n",
+        "    x.unit = ",
+        switch(
+          3 - origin.cond(orig = input$origin),
+          "'G'",
+          "'G'",
+          "'mT'"
+        ),", \n",
+        "    qValue = ",input$qValue,", \n",
+        "    norm.vec.add = c(",paste(norm_vec$val,collapse = ","),"), \n",
+        "    origin = '",input$origin,"' \n",
+        "  ) \n",
+        "# \n",
+        "# arguments of the `eval_sim_EPR_isoFit()` may be varied (refer to documentation) \n",
+        "epr.spectrum.sim.fit <- \n",
+        "  eval_sim_EPR_isoFit( \n",
+        "    data.spectr.expr = epr.spectrum.data, \n",
+        "    nu.GHz = ",input$MWnuGHz,", \n",
+        "    B.unit = '",input$Bunit,"', \n",
+        "    lineG.content = ",input$Gcontent,", \n",
+        "    optim.method = c('pswarm','levenmarq'), \n",
+        "    nuclear.system.noA = ",
+        switch(2 - isFALSE(input$splitCond),"NULL, \n",
+               paste0(list.nucs.text,", \n")),
+        "    baseline.correct = 'constant', \n",
+        "    Nmax.evals = 1024, \n",
+        "    optim.params.init = c(",input$giso,",",DeltaBGpp$val,
+        ",",DeltaBLpp$val,",","0",",",
+        round(
+          (max(expr_data()[["dIepr_over_dB"]]) /
+             max(sim_data()[["dIeprSim_over_dB"]])) * 0.32,
+          digits = 7
+        ),
+        switch(
+          2 - isFALSE(input$splitCond),
+          "), \n",
+          paste0(",",paste(nucleiCharacter()[["A_iso_MHz"]],collapse = ","),"), \n")
+        ),
+        "    msg.optim.progress = TRUE, \n",
+        "    eval.optim.progress = TRUE \n",
+        "  ) \n",
+        "# \n",
+        "# \n",
+        "# \n",
+        "# \n"
+      )
+    return(R.text.code.for.sim)
+  })
+  #
+  output$codesave <- downloadHandler(
+    filename = function() {
+      paste(input$codefilename,input$codeformat,sep = ".")
+    },
+    content = function(file) {
+      if (input$codeformat == "R" || input$codeformat == "txt") {
+        writeLines(
+          text_sim_code(),
+          con = file,
+          sep = "",
+          useBytes = TRUE
+        )
+      }
     }
   )
   #
