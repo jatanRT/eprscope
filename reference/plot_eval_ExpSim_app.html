@@ -73,20 +73,27 @@
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Based on the acquisition EPR spectrum <code>origin</code>, in graphical user interface one can load a spectrum
+    <p>Based on the acquisition EPR spectrum <code>origin</code>, in graphical user interface, one can load a spectrum
   and its instrumental/experimental parameters by the <code><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></code> as well as
-  by the <code><a href="readEPR_params_tabs.html">readEPR_params_tabs</a></code> functions. An EPR is immediately depicted in the interactive
+  by the <code><a href="readEPR_params_tabs.html">readEPR_params_tabs</a></code> functions. The spectrum is immediately depicted in the interactive
   <code>{plotly}</code> format by <code><a href="plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact</a></code>. The magnetic flux density \(B\)
-  of such EPR spectrum can be changed from <code>mT</code> to <code>G</code> and to <code>g</code>-values. Moreover,
-  if the compound/radical structure is already known, one can display its structure by entering
+  of such EPR spectrum can be converted from <code>mT</code> to <code>G</code> (or vice versa) and to <code>g</code>-values.
+  Moreover, if the compound/radical structure is already known, one can display its structure by entering
   its corresponding <code>SMILES</code> code, using the <code><a href="draw_molecule_by_rcdk.html">draw_molecule_by_rcdk</a></code>.
-  Uploaded <code>ASCII</code> data (spectrum + parameters) are applied to interactively simulate
+  Uploaded data (spectrum + parameters) are applied to interactively simulate
   the corresponding experimental isotropic EPR spectrum by the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code> and to visualize
   it by the <code><a href="present_EPR_Sim_Spec.html">present_EPR_Sim_Spec</a></code>. Additionally, one can also print and download
   the corresponding data frame/table in several formats (<code>.csv</code>,<code>.pdf</code> or <code>.xlsx</code>)
-  and thus use the data not only in <code>R</code> environment but also in other software tools.
-  All instantaneously presented EPR spectra (either after loading the ASCII data or after simulation)
-  can be also exported in formats like <code>.png</code>, <code>.jpeg</code> as well as <code>.pdf</code>.</p>
+  and thus use the data not only in the <code>R</code> environment but also in other software tools.
+  All instantaneously presented EPR spectra can be also exported in common formats like
+  <code>.png</code>, <code>.jpeg</code> as well as <code>.pdf</code>.</p>
+<p>The result of the isotropic simulation (with the actual parameters)
+  can be additionally exported as an <code>.R</code> code snippet to eventually fit the simulated spectrum
+  (optimize simulation parameters) onto the experimental one by the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>.
+  If saved in the working directory, the isotropic simulation fit can be performed right after closing the shiny app
+  in order to fine tune the simulation parameters and thus to speed up the analysis of the EPR spectrum.</p>
+<p>When running the shiny application within the web browser, the user may also print/save the entire "dashboard"
+  in the <code>.pdf</code> format to share/present results with colleagues/students.</p>
     </div>
 
     <div class="section level2">
