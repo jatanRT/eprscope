@@ -537,6 +537,7 @@ server <- function(input, output,session) {
         "    data.spectr.expr = epr.spectrum.data, \n",
         "    nu.GHz = ",input$MWnuGHz,", \n",
         "    B.unit = '",input$Bunit,"', \n",
+        "    Blim = c(",paste(input$Brange,collapse = ","),"), \n",
         "    lineG.content = ",input$Gcontent,", \n",
         "    optim.method = c('pswarm','levenmarq'), \n",
         "    nuclear.system.noA = ",

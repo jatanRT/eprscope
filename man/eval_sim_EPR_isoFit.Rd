@@ -27,7 +27,7 @@ eval_sim_EPR_isoFit(
 )
 }
 \arguments{
-\item{data.spectr.expr}{Data frame object/table, containing the experimental spectral data the with magnetic flux density
+\item{data.spectr.expr}{Data frame object/table, containing the experimental spectral data with the magnetic flux density
 (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.}
 
 \item{Intensity.expr}{Character string, pointing to column name of the experimental EPR intensity within
@@ -44,7 +44,14 @@ data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G}
 corresponding to lower and upper visual limit of the selected \eqn{B}-region,
 such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
-\eqn{B}-range of EPR spectrum).}
+\eqn{B}-range of EPR spectrum). \strong{This does not correspond to simulation fit data region !}.
+If narrower \eqn{B}-region (in comparison to the original one) is required to fit the EPR spectrum,
+the filtering has to be done prior to own fitting procedure. For example, if the original data frame
+(\code{df.spectr.orgin} within 200 G), of the experimental EPR spectrum, should be fitted within
+the region of \code{B = c(3450,3550)} (100 G), following operation must be performed:
+\code{df.spectr.actuall <- df.spectr.origin |> dplyr::filter(dplyr::between(B_G,3450,3550))},
+where the \code{df.spectr.actuall} serves as an input (represented by the \code{data.spectr.expr}
+argument) for the function.}
 
 \item{nuclear.system.noA}{List or nested list \strong{without estimated hyperfine coupling constant values},
 such as \code{list("14N",1)} or \code{list(list("14N", 2),list("1H", 4),list("1H", 12))}. The \eqn{A}-values
@@ -172,6 +179,13 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
   the best simulated spectrum intensity without the baseline fit.}
   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
+  \item{cov.df}{Covariance matrix of a data frame, consisting of EPR experimental, simulated (best fit) and the residual
+  intensities as columns/variables.}
+  \item{cor.df}{Correlation matrix of a data frame, consisting of EPR experimental, simulated (best fit) and residual
+  intensities as columns/variables. A higher positive correlation (between the experiment and the best fit), with
+  the value close to \code{1}, indicates that simulation best fit nicely follows the experimental spectrum. Contrary,
+  no clear correlation between the residuals and the experimental/fitted EPR intensities must be visible. Therefore,
+  such correlation should be close to \code{0}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
   and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
@@ -325,6 +339,9 @@ tempo.test.sim.fit.b$N.evals
 #
 ## best fit parameters:
 tempo.test.sim.fit.b$best.fit.params
+#
+## correlation matrix:
+tempo.test.sim.fit.b$cor.df
 #
 ## quick simulation check by plotting the both
 ## simulated and the experimental EPR spectra

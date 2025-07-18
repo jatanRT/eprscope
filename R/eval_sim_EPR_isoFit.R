@@ -41,8 +41,15 @@
 #' @param Blim Numeric vector, magnetic flux density in \code{mT}/\code{G}
 #'   corresponding to lower and upper visual limit of the selected \eqn{B}-region,
 #'   such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
-#'   \eqn{B}-range of EPR spectrum).
-#' @param data.spectr.expr Data frame object/table, containing the experimental spectral data the with magnetic flux density
+#'   \eqn{B}-range of EPR spectrum). \strong{This does not correspond to simulation fit data region !}.
+#'   If narrower \eqn{B}-region (in comparison to the original one) is required to fit the EPR spectrum,
+#'   the filtering has to be done prior to own fitting procedure. For example, if the original data frame
+#'   (\code{df.spectr.orgin} within 200 G), of the experimental EPR spectrum, should be fitted within
+#'   the region of \code{B = c(3450,3550)} (100 G), following operation must be performed:
+#'   \code{df.spectr.actuall <- df.spectr.origin |> dplyr::filter(dplyr::between(B_G,3450,3550))},
+#'   where the \code{df.spectr.actuall} serves as an input (represented by the \code{data.spectr.expr}
+#'   argument) for the function.
+#' @param data.spectr.expr Data frame object/table, containing the experimental spectral data with the magnetic flux density
 #'   (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.
 #' @param Intensity.expr Character string, pointing to column name of the experimental EPR intensity within
 #'   the original \code{data.spectr.expr}. \strong{Default}: \code{dIepr_over_dB}.
@@ -162,6 +169,13 @@
 #'   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
 #'   the best simulated spectrum intensity without the baseline fit.}
 #'   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
+#'   \item{cov.df}{Covariance matrix of a data frame, consisting of EPR experimental, simulated (best fit) and the residual
+#'   intensities as columns/variables.}
+#'   \item{cor.df}{Correlation matrix of a data frame, consisting of EPR experimental, simulated (best fit) and residual
+#'   intensities as columns/variables. A higher positive correlation (between the experiment and the best fit), with
+#'   the value close to \code{1}, indicates that simulation best fit nicely follows the experimental spectrum. Contrary,
+#'   no clear correlation between the residuals and the experimental/fitted EPR intensities must be visible. Therefore,
+#'   such correlation should be close to \code{0}.}
 #'   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
 #'   and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
 #'   those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
@@ -287,6 +301,9 @@
 #' #
 #' ## best fit parameters:
 #' tempo.test.sim.fit.b$best.fit.params
+#' #
+#' ## correlation matrix:
+#' tempo.test.sim.fit.b$cor.df
 #' #
 #' ## quick simulation check by plotting the both
 #' ## simulated and the experimental EPR spectra
@@ -1175,6 +1192,23 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       level.cnfd = 0.99999999
     )
   #
+  ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
+  ## the 'Experiment,Simulation,Residuals' data frame
+  df.for.cov.cor <-
+    resid.anal.simple.list$df %>%
+    dplyr::select(
+      dplyr::all_of(
+        c(
+          "Experiment",
+          "Simulation",
+          "Residuals"
+        )
+      )
+    )
+  #
+  df.cov <- stats::cov(df.for.cov.cor)
+  df.cor <- stats::cor(df.for.cov.cor)
+  #
   ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
   #
   ## see e.g. https://doi.org/10.1177/0049124104268644,
@@ -1449,6 +1483,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                     data.sim.expr),
         min.rss = min.rss,
         abic = AB.ic.list, ## list
+        cov.df = df.cov, ## covariance of "Experiment,Simulation,Residuals" data frame
+        cor.df = df.cor, ## correlation of "Experiment,Simulation,Residuals" data frame
         N.evals = N.evals,
         N.converg = N.converg
       )

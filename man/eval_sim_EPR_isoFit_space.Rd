@@ -25,7 +25,7 @@ eval_sim_EPR_isoFit_space(
 )
 }
 \arguments{
-\item{data.spectr.expr}{Data frame object/table, containing the experimental spectral data the with magnetic flux density
+\item{data.spectr.expr}{Data frame object/table, containing the experimental spectral data with the magnetic flux density
 (\code{"B_mT"} or \code{"B_G"}) and the intensity (see the \code{Intensity.expr} argument) columns.}
 
 \item{nu.GHz}{Numeric value, microwave frequency in \code{GHz}.}
