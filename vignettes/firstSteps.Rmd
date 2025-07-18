@@ -719,7 +719,7 @@ Even at the first sight, such data structure might look more organized, they are
 
 ```{r messy-data-anal-plot-01}
 
-# 1. Which "times" between 100-300 s ?
+# 1. Which "times" between 200-300 s ?
 time.vec <- triarylam.decay.dat$time # this is vector
 time.span <- 
   time.vec[time.vec > 200 & time.vec < 300] # filtering
@@ -829,7 +829,7 @@ triarylam.decay.dat$df |>
 
 ### Processing and Analysis of Kinetic Data
 
-Such tidy data makes it easy for an analyst or a computer to repeatedly extract needed variables because it provides a standard and consistent way of structuring a dataset [@tidyWickham2014]. Finally, this data structure also helps us, relatively easily, to (double-)integrate the entire series of EPR spectra in order to figure out the basic information about the kinetics of triaryalmine radical decay:
+Such tidy data makes it easy for an analyst or a computer to repeatedly extract required variables because it provides a standard and consistent way of structuring a dataset [@tidyWickham2014]. Finally, this data structure also helps us, relatively easily, to (double-)integrate the entire series of EPR spectra in order to figure out the basic information about the kinetics of triaryalmine radical decay:
 
 ```{r tidy-triarylam-integ-kinet}
 
@@ -857,7 +857,7 @@ triarylam.decay.integs.01 <-
     # summarize the sigmoid integral max. values
     dplyr::summarize(Area = max(double_Integ))
 #
-# data frame preview
+# returned data frame preview
 head(triarylam.decay.integs.01)
 
 ```

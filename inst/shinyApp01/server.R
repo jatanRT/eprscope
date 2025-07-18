@@ -254,7 +254,7 @@ server <- function(input, output,session) {
   })
   #
   ## required 'nuclear' list interaction (Entire Characteristics)
-  nucleiCharacter <- reactive({ ## `reactiveValues()` does NOT WORK
+  nucleiCharacter <- reactive({ ## `reactiveValues()` does NOT WORK !!
     #
     interact.nuclei <- list()
     #
@@ -548,7 +548,7 @@ server <- function(input, output,session) {
         ",",DeltaBLpp$val,",","0",",",
         round(
           (max(expr_data()[["dIepr_over_dB"]]) /
-             max(sim_data()[["dIeprSim_over_dB"]])) * 0.32,
+             max(sim_data()[["dIeprSim_over_dB"]])) * 0.54,
           digits = 7
         ),
         switch(
@@ -576,8 +576,8 @@ server <- function(input, output,session) {
         writeLines(
           text_sim_code(),
           con = file,
-          sep = "",
-          useBytes = TRUE
+          sep = "" #,
+          # useBytes = TRUE
         )
       }
     }
