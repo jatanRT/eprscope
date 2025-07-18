@@ -837,7 +837,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <p>Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to <code>triarylam.decay.dat$df</code> . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity <code>dIepr_over_dB</code> . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of <span class="math inline">\(\small (200-300)\,\mathrm{s}\)</span>, we must now the names of the corresponding columns<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Instead of names like &lt;code&gt;time_s_...&lt;/code&gt; with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be expressed by names/strings, not by values.&lt;/p&gt;"><sup>3</sup></a> ➨ we have to filter/select the strings:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># 1. Which "times" between 100-300 s ?</span></span>
+<span><span class="co"># 1. Which "times" between 200-300 s ?</span></span>
 <span><span class="va">time.vec</span> <span class="op">&lt;-</span> <span class="va">triarylam.decay.dat</span><span class="op">$</span><span class="va">time</span> <span class="co"># this is vector</span></span>
 <span><span class="va">time.span</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">time.vec</span><span class="op">[</span><span class="va">time.vec</span> <span class="op">&gt;</span> <span class="fl">200</span> <span class="op">&amp;</span> <span class="va">time.vec</span> <span class="op">&lt;</span> <span class="fl">300</span><span class="op">]</span> <span class="co"># filtering</span></span>
@@ -961,7 +961,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <h4 id="processing-and-analysis-of-kinetic-data">
 <span class="header-section-number">4.4.1</span> Processing and Analysis of Kinetic Data<a class="anchor" aria-label="anchor" href="#processing-and-analysis-of-kinetic-data"></a>
 </h4>
-<p>Such tidy data makes it easy for an analyst or a computer to repeatedly extract needed variables because it provides a standard and consistent way of structuring a dataset <span class="citation">(<a href="#ref-tidyWickham2014">11</a>)</span>. Finally, this data structure also helps us, relatively easily, to (double-)integrate the entire series of EPR spectra in order to figure out the basic information about the kinetics of triaryalmine radical decay:</p>
+<p>Such tidy data makes it easy for an analyst or a computer to repeatedly extract required variables because it provides a standard and consistent way of structuring a dataset <span class="citation">(<a href="#ref-tidyWickham2014">11</a>)</span>. Finally, this data structure also helps us, relatively easily, to (double-)integrate the entire series of EPR spectra in order to figure out the basic information about the kinetics of triaryalmine radical decay:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">triarylam.decay.integs.01</span> <span class="op">&lt;-</span> </span>
@@ -988,7 +988,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span>    <span class="co"># summarize the sigmoid integral max. values</span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>Area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">double_Integ</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
-<span><span class="co"># data frame preview</span></span>
+<span><span class="co"># returned data frame preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triarylam.decay.integs.01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   time_s   Area</span></span>
