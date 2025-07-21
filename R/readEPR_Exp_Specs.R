@@ -59,16 +59,16 @@
 #'   \strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
 #'   automatically inherits the \code{path_to_file}, however with the appropriate extension
 #'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
-#'   file name like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
+#'   filename like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
 #'   to provide/define the right file path.
 #' @param path_to_ygf Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
 #'   independent variable in the spectral series like time, temperature, microwave power, ...etc (different from magnetic
 #'   flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
-#'   for 2D experiments). The latter assignment actually means that the argument automatically inherits
-#'   the \code{path_to_file}, however with the appropriate extension \code{.YGF}. In other words, the function is looking
-#'   for the same file name like in \code{path_to_file} in the working directory. If the file does not exist, it
-#'   automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
+#'   for 2D experiments). \strong{Default}: \code{path_to_ygf = NULL}. The latter assignment actually means that
+#'   the argument automatically inherits the \code{path_to_file}, however with the appropriate extension \code{.YGF}.
+#'   In other words, the function is looking for the same file name like in \code{path_to_file} in the working directory.
+#'   If the file does not exist, it automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
 #'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
 #'   \code{path_to_dsc_par} description).
 #' @param sep Character string. The separator between columns/variables in the original ASCII text file.
