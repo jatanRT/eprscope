@@ -169,6 +169,26 @@ or <code>"port"</code>
 <dd><p>Data frame object, containing model characteristics (including information criteria like AIC and BIC,
   see also <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code> and <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>).</p></dd>
 
+  <dt>cov.df</dt>
+<dd><p>Covariance <code>matrix</code> of a data frame, consisting of rate constant (\(k\) or \(ln\,(k)\,/\,T\),
+  depending on the <code>fit.method</code> argument),
+  <code>fitted</code> (Eyring fit) and the corresponding residuals as columns/variables. Covariance between
+  the experiment (\(k\) <em>vs</em> \(T\) or \(ln\,(k)\,/\,T\) <em>vs</em> \(1\,/\,T\)) and "Eyring" should be positive
+  and strong for a decent fit. Contrary, the <code>cov</code> between the Eyring fit and residuals should be ideally close to <code>0</code>,
+  indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized".
+  Therefore, for such a purpose, the correlation is defined as shown below.</p></dd>
+
+  <dt>cor.df</dt>
+<dd><p>Correlation <code>matrix</code> of a data frame, consisting of rate constant (\(k\) or \(ln\,(k)\,/\,T\),
+  depending on the <code>fit.method</code> argument),
+  <code>fitted</code> (Eyring fit) and the corresponding residuals as columns/variables.
+  Such matrix can be additionally nicely visualized by a correlation <code>plot</code> created
+  by the <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code> function. A higher positive correlation
+  (between the \(k\) <em>vs</em> \(T\) or \(ln\,(k)\,/\,T\) <em>vs</em> \(1\,/\,T\) and the Eyring fit),
+  with the value close to <code>1</code>, indicates that the Eyring fit nicely follows the \(k\)-temperature dependence.
+  Contrary, no clear correlation between the residuals and the experiment and/or "Eyring" must be visible.
+  Therefore, such correlation should be ideally close to <code>0</code>.</p></dd>
+
   <dt>vec.HS.uncert</dt>
 <dd><p>Numeric vector, consisting of \(\Delta^{\ddagger} S^o\) as well as \(\Delta^{\ddagger} H^o\),
   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
@@ -355,6 +375,12 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.histDens</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_Eyring_GHS-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## graphical representation the correlation matrix</span></span></span>
+<span class="r-in"><span><span class="co">## corresponding to Eyring fit</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">cor.df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">corrplot</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span>addCoef.col <span class="op">=</span> <span class="st">"#c2c2c2"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the convergence measures</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $N.evals</span>
@@ -419,7 +445,7 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">## preview of the linear fit plot</span></span></span>
 <span class="r-in"><span><span class="co">## also with confidence interval (99,999999 %)</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the optimized (activated)</span></span></span>
 <span class="r-in"><span><span class="co">## ∆S and ∆H parameters together with</span></span></span>
@@ -444,7 +470,7 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">## corresponding analysis of residuals</span></span></span>
 <span class="r-in"><span><span class="co">## with residual standard deviation</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.rqq</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_Eyring_GHS-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0065568073</span>
 <span class="r-in"><span></span></span>

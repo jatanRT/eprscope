@@ -106,12 +106,12 @@
 <span><span class="co">#</span></span>
 <span><span class="co"># after the initial R environment setup it's always </span></span>
 <span><span class="co"># good to install essential collection of packages for data science </span></span>
-<span><span class="co"># with all their dependencies:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span>,dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># ...+ additional required packages with dependencies</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DT"</span>,<span class="st">"vctrs"</span>,<span class="st">"npreg"</span>,<span class="st">"patchwork"</span>,<span class="st">"kableExtra"</span>,</span>
 <span>    <span class="st">"htmlwidgets"</span>,<span class="st">"webshot2"</span>,<span class="st">"tinytable"</span>,<span class="st">"gsignal"</span>,</span>
-<span>    <span class="st">"shinythemes"</span>,<span class="st">"future"</span>,<span class="st">"future.apply"</span>,</span>
+<span>    <span class="st">"shinythemes"</span>,<span class="st">"future"</span>,<span class="st">"future.apply"</span>,<span class="st">"corrplot"</span>,</span>
 <span>    <span class="st">"progressr"</span>,<span class="st">"qqplotr"</span>,<span class="st">"animation"</span>,<span class="st">"openxlsx"</span><span class="op">)</span>,</span>
 <span>  dependencies <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -281,6 +281,7 @@
 <span>  <span class="fu"><a href="reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></span><span class="op">(</span></span>
 <span>    data.qt.expr <span class="op">=</span> <span class="va">triarylamine_rc_decay_data</span>,</span>
 <span>    model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span>
+<span>    qvarR <span class="op">=</span> <span class="st">"Area"</span>,</span>
 <span>    elementary.react <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    params.guess <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>      qvar0R <span class="op">=</span> <span class="fl">0.019</span>,</span>
@@ -304,7 +305,13 @@
 <span><span class="co">#&gt;           Estimate    Std. Error    t value       Pr(&gt;|t|)</span></span>
 <span><span class="co">#&gt; qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149</span></span>
 <span><span class="co">#&gt; k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19</span></span>
-<span><span class="co">#&gt; alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101</span></span></code></pre></div>
+<span><span class="co">#&gt; alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101</span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># graphical representation of the correlation matrix,</span></span>
+<span><span class="co"># corresponding to kinetic model fit</span></span>
+<span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">cor.df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">corrplot</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span>addCoef.col <span class="op">=</span> <span class="st">"#c2c2c2"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-kinetic-model-fit-2.png"><!-- --></p>
 </div>
 </div>
 <div class="section level2">

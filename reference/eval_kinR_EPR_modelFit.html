@@ -256,6 +256,24 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <dd><p>Data frame object containing the optimized (best fit) parameter values (<code>Estimates</code>),
   their corresponding <code>standard errors</code>, <code>t-</code> as well as <code>p-values</code>.</p></dd>
 
+  <dt>cov.coeffs</dt>
+<dd><p>Covariance <code>matrix</code>, consisting of fitted/optimized kinetic parameters/coefficients
+  (see also <code>df.coeffs</code> above). The corresponding variances (diagonal elements) should be small,
+  indicating that the estimates possess a lower uncertainties.
+  The off-diagonal elements show how the two coefficient estimates change together. For a decent model they should be
+  as close to <code>0</code> as possible. Large values indicate
+  <a href="https://www.geeksforgeeks.org/machine-learning/how-to-test-for-multicollinearity-in-r/" class="external-link">multicollinearity</a>
+  with positive sign suggesting the coefficient are overestimated, and with a negative one, indicating that one coefficient
+  is overestimated, while the other one is underestimated.</p></dd>
+
+  <dt>cor.coeffs</dt>
+<dd><p>Correlation <code>matrix</code> of fitted/optimized kinetic parameters/coefficients
+  (see also <code>df.coeffs</code> above). Such matrix can be additionally nicely visualized
+  by a correlation <code>plot</code> created by the <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code> function.
+  The off-diagonal elements should be as small as possible
+  (ideally close to <code>0</code>) in order to exclude the multicollinearity (see the <code>cov.coeffs</code>) and trust the optimized
+  kinetic parameters.</p></dd>
+
   <dt>N.evals</dt>
 <dd><p>Total number of evaluations/iterations before the best fit is found.</p></dd>
 
@@ -267,6 +285,23 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   and <code>message</code>, denoting the probability distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
   the better the fit. Please, refer to the <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>.</p></dd>
+
+  <dt>cov.df</dt>
+<dd><p>Covariance <code>matrix</code> of a data frame, consisting of <code>qvarR</code> (e.g. double integral/Area - experiment),
+  <code>fitted</code> (kinetic model fit) and the corresponding residuals as columns/variables. Covariance between
+  the experiment and kinetic model should be positive and strong for a decent fit. Contrary, the <code>cov</code> between
+  the kinetic model fit and residuals should be ideally close to <code>0</code>, indicating no systematic relationship.
+  However, the covariance is scale-depended and must be "normalized". Therefore, for such a purpose, the correlation
+  is defined as shown below.</p></dd>
+
+  <dt>cor.df</dt>
+<dd><p>Correlation <code>matrix</code> of a data frame, consisting of <code>qvarR</code> (e.g. double integral/Area - experiment),
+  <code>fitted</code> (kinetic model fit) and the corresponding residuals as columns/variables.
+  Such matrix can be additionally nicely visualized by a correlation <code>plot</code> created
+  by the <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code> function. A higher positive correlation
+  (between the integrals and the kinetic model fit), with the value close to <code>1</code>, indicates that the kinetic model
+  fit nicely follows the integral(s) <em>vs</em> time relation. Contrary, no clear correlation between the residuals
+  and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to <code>0</code>.</p></dd>
 
   <dt>N.converg</dt>
 <dd><p>Vector, corresponding to residual sum of squares at each iteration/evaluation.</p></dd>

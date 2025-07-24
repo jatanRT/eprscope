@@ -1068,12 +1068,13 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span></span>
 <span><span class="co"># How many components ?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 8</span></span>
+<span><span class="co">#&gt; [1] 12</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># What are their names ?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "df"        "plot"      "ra"        "df.coeffs" "N.evals"   "min.rss"  </span></span>
-<span><span class="co">#&gt; [7] "abic"      "N.converg"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "df"         "plot"       "ra"         "df.coeffs"  "cov.coeffs"</span></span>
+<span><span class="co">#&gt;  [6] "cor.coeffs" "N.evals"    "min.rss"    "abic"       "cov.df"    </span></span>
+<span><span class="co">#&gt; [11] "cor.df"     "N.converg"</span></span></code></pre></div>
 <p>They are described in details in documentation of the <code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code> function and in summary correspond to data frames (<code>df</code> + <code>df.coeffs</code>), plot object (<code>plot</code> , which is also a list) , additional lists (<code>ra</code> + <code>abic</code>), numeric values (<code>N.evals</code> + <code>min.rss</code>) and numeric vector (<code>N.converg</code>). Many <img src="RcoreLogo.png" width="16" height="16"> package functions return value(s) in the form of list(s).</p>
 <p>As shown above (see Section <a href="#data-frames">4</a>), to select/view a specific data frame column, one can use two types of operators: <code>$</code> (dollar sign) and <code>[]</code> or <code>[[]]</code> (square brackets). The same applies for the lists as it was depicted in several code snippets/code chunks above, using the <code>$</code> operator. For example to show/select the vector, corresponding to residual sum of squares at each iteration/evaluation (for the kinetic model fit), we apply:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
