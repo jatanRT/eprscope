@@ -64,6 +64,22 @@ As a result of the Eyring-relation fit, list with the following components is av
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like AIC and BIC,
   see also \code{\link{eval_kinR_EPR_modelFit}} and \code{\link{eval_ABIC_forFit}}).}
+  \item{cov.df}{Covariance \code{matrix} of a data frame, consisting of rate constant (\eqn{k} or \eqn{ln\,(k)\,/\,T},
+  depending on the \code{fit.method} argument),
+  \code{fitted} (Eyring fit) and the corresponding residuals as columns/variables. Covariance between
+  the experiment (\eqn{k} \emph{vs} \eqn{T} or \eqn{ln\,(k)\,/\,T} \emph{vs} \eqn{1\,/\,T}) and "Eyring" should be positive
+  and strong for a decent fit. Contrary, the \code{cov} between the Eyring fit and residuals should be ideally close to \code{0},
+  indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized".
+  Therefore, for such a purpose, the correlation is defined as shown below.}
+  \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of rate constant (\eqn{k} or \eqn{ln\,(k)\,/\,T},
+  depending on the \code{fit.method} argument),
+  \code{fitted} (Eyring fit) and the corresponding residuals as columns/variables.
+  Such matrix can be additionally nicely visualized by a correlation \code{plot} created
+  by the \code{\link[corrplot]{corrplot}} function. A higher positive correlation
+  (between the \eqn{k} \emph{vs} \eqn{T} or \eqn{ln\,(k)\,/\,T} \emph{vs} \eqn{1\,/\,T} and the Eyring fit),
+  with the value close to \code{1}, indicates that the Eyring fit nicely follows the \eqn{k}-temperature dependence.
+  Contrary, no clear correlation between the residuals and the experiment and/or "Eyring" must be visible.
+  Therefore, such correlation should be ideally close to \code{0}.}
   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
   is performed by the error propagation, implemented
@@ -208,6 +224,11 @@ activ.kinet.test01.data$df.model.HS
 #
 ## ...and the corresponding analysis of residuals
 activ.kinet.test01.data$ra$plot.histDens
+#
+## graphical representation the correlation matrix
+## corresponding to Eyring fit
+activ.kinet.test01.data$cor.df \%>\%
+  corrplot::corrplot(addCoef.col = "#c2c2c2")
 #
 ## preview of the convergence measures
 activ.kinet.test01.data$converg

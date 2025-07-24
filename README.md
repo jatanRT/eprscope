@@ -103,12 +103,12 @@ required and summarized into the following steps:
     #
     # after the initial R environment setup it's always 
     # good to install essential collection of packages for data science 
-    # with all their dependencies:
     install.packages("tidyverse",dependencies = TRUE)
+    # ...+ additional required packages with dependencies
     install.packages(
       c("DT","vctrs","npreg","patchwork","kableExtra",
         "htmlwidgets","webshot2","tinytable","gsignal",
-        "shinythemes","future","future.apply",
+        "shinythemes","future","future.apply","corrplot",
         "progressr","qqplotr","animation","openxlsx"),
       dependencies = TRUE
     )
@@ -301,6 +301,7 @@ triarylamine_rc_decay_model <-
   eval_kinR_EPR_modelFit(
     data.qt.expr = triarylamine_rc_decay_data,
     model.react = "(r=2)R --> [k1] B",
+    qvarR = "Area",
     elementary.react = FALSE,
     params.guess = c(
       qvar0R = 0.019,
@@ -328,7 +329,14 @@ triarylamine_rc_decay_model$df.coeffs
 #> qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149
 #> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
 #> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
+#
+# graphical representation of the correlation matrix,
+# corresponding to kinetic model fit
+triarylamine_rc_decay_model$cor.df %>% 
+  corrplot::corrplot(addCoef.col = "#c2c2c2")
 ```
+
+![](man/figures/README-kinetic-model-fit-2.png)<!-- -->
 
 ## Help, Questions and Contribution
 

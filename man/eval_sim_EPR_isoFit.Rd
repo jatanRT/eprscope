@@ -179,13 +179,18 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   spectrum, intensity of the best simulated one (including the baseline fit), residual intensity and finally,
   the best simulated spectrum intensity without the baseline fit.}
   \item{min.rss}{Minimum sum of residual squares (vector) after the least-square procedure.}
-  \item{cov.df}{Covariance matrix of a data frame, consisting of EPR experimental, simulated (best fit) and the residual
-  intensities as columns/variables.}
-  \item{cor.df}{Correlation matrix of a data frame, consisting of EPR experimental, simulated (best fit) and residual
-  intensities as columns/variables. A higher positive correlation (between the experiment and the best fit), with
-  the value close to \code{1}, indicates that simulation best fit nicely follows the experimental spectrum. Contrary,
-  no clear correlation between the residuals and the experimental/fitted EPR intensities must be visible. Therefore,
-  such correlation should be close to \code{0}.}
+  \item{cov.df}{Covariance \code{matrix} of a data frame, consisting of EPR experimental, simulated (best fit) and the residual
+  intensities as columns/variables. Covariance between the experiment and simulation should be positive and strong
+  for a decent fit. Contrary, the \code{cov} between the simulation and residuals should be ideally close to \code{0},
+  indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized". Therefore,
+  for such a purpose, the correlation is defined as shown below.}
+  \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of EPR experimental,
+  simulated (best fit) and residual intensities as columns/variables. Such matrix can be additionally nicely visualized
+  by a correlation \code{plot} created by the \code{\link[corrplot]{corrplot}} function.
+  A higher positive correlation (between the experiment
+  and the best fit), with the value close to \code{1}, indicates that simulation best fit nicely follows
+  the experimental spectrum. Contrary, no clear correlation between the residuals and the experimental/fitted
+  EPR intensities must be visible. Therefore, such correlation should be ideally close to \code{0}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
   and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
@@ -254,7 +259,10 @@ In order to guess the intensity multiplication constant (please, refer to the \c
   In order to fix one or more simulation parameter(s) during the fitting procedure, the corresponding \code{optim.parms.lower}
   as well as the \code{optim.params.upper} vector element(s) must be equal to that of the \code{optim.params.init}.
   Please, refer to the \code{Examples} below (simulation fit of the aminoxyl radical EPR spectrum with bound constraints
-  and fixed A(1 x 14N)).
+  and fixed A(1 x 14N)). A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
+  may return an \code{.R} script/code snippet for the \strong{initial} simulation \strong{fit} and therefore
+  the user does not have to write (or remember) the code required to run the \code{eval_sim_EPR_isoFit}. Rather, she/he can
+  instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.
 }
 \examples{
 ## loading built-in example dataset which is simple
@@ -340,8 +348,12 @@ tempo.test.sim.fit.b$N.evals
 ## best fit parameters:
 tempo.test.sim.fit.b$best.fit.params
 #
-## correlation matrix:
+## correlation matrix of the EPR simulation fit:
 tempo.test.sim.fit.b$cor.df
+#
+## visualization of the previous matrix:
+tempo.test.sim.fit.b$cor.df \%>\%
+  corrplot::corrplot(addCoef.col = "#c2c2c2")
 #
 ## quick simulation check by plotting the both
 ## simulated and the experimental EPR spectra

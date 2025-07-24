@@ -164,6 +164,22 @@
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
 #'   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like AIC and BIC,
 #'   see also \code{\link{eval_kinR_EPR_modelFit}} and \code{\link{eval_ABIC_forFit}}).}
+#'   \item{cov.df}{Covariance \code{matrix} of a data frame, consisting of rate constant (\eqn{k} or \eqn{ln\,(k)\,/\,T},
+#'   depending on the \code{fit.method} argument),
+#'   \code{fitted} (Eyring fit) and the corresponding residuals as columns/variables. Covariance between
+#'   the experiment (\eqn{k} \emph{vs} \eqn{T} or \eqn{ln\,(k)\,/\,T} \emph{vs} \eqn{1\,/\,T}) and "Eyring" should be positive
+#'   and strong for a decent fit. Contrary, the \code{cov} between the Eyring fit and residuals should be ideally close to \code{0},
+#'   indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized".
+#'   Therefore, for such a purpose, the correlation is defined as shown below.}
+#'   \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of rate constant (\eqn{k} or \eqn{ln\,(k)\,/\,T},
+#'   depending on the \code{fit.method} argument),
+#'   \code{fitted} (Eyring fit) and the corresponding residuals as columns/variables.
+#'   Such matrix can be additionally nicely visualized by a correlation \code{plot} created
+#'   by the \code{\link[corrplot]{corrplot}} function. A higher positive correlation
+#'   (between the \eqn{k} \emph{vs} \eqn{T} or \eqn{ln\,(k)\,/\,T} \emph{vs} \eqn{1\,/\,T} and the Eyring fit),
+#'   with the value close to \code{1}, indicates that the Eyring fit nicely follows the \eqn{k}-temperature dependence.
+#'   Contrary, no clear correlation between the residuals and the experiment and/or "Eyring" must be visible.
+#'   Therefore, such correlation should be ideally close to \code{0}.}
 #'   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
 #'   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
 #'   is performed by the error propagation, implemented
@@ -219,6 +235,11 @@
 #' #
 #' ## ...and the corresponding analysis of residuals
 #' activ.kinet.test01.data$ra$plot.histDens
+#' #
+#' ## graphical representation the correlation matrix
+#' ## corresponding to Eyring fit
+#' activ.kinet.test01.data$cor.df %>%
+#'   corrplot::corrplot(addCoef.col = "#c2c2c2")
 #' #
 #' ## preview of the convergence measures
 #' activ.kinet.test01.data$converg
@@ -460,6 +481,32 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
       k = nrow(df.dSH.coeffs)
     )
   #
+  ## condition for method
+  method.cond.for.cov.cor <- function(method = fit.method){
+    if (method == "linear" || method == "lm") {
+      return(0)
+    } else {
+      return(1)
+    }
+  }
+  #
+  ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
+  ## the 'experiment,fitted,residuals' data frame
+  df.for.cov.cor <-
+    resid.anal.simple.list$df %>%
+    dplyr::select(
+      dplyr::all_of(
+        c(
+          switch(2 - method.cond.for.cov.cor(),rate.const,"lnk_per_T"),
+          "fitted",
+          "residuals"
+        )
+      )
+    )
+  #
+  df.cov <- stats::cov(df.for.cov.cor)
+  df.cor <- stats::cor(df.for.cov.cor)
+  #
   ## the third plot (histogram-density) is plotted
   ## individually, because of clear graphic outcomes,
   ## otherwise all three graphs in one figure
@@ -561,6 +608,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     ra = resid.anal.simple.list,
     df.coeffs.HS = df.dSH.coeffs,
     df.model.HS = df.dSH.model.summar,
+    ## covariance of "qvarR,fitted,residuals" data frame:
+    cov.df = df.cov,
+    ## correlation of "qvarR,fitted,residuals" data frame:
+    cor.df = df.cor,
     vec.HS.uncert = c(DeltaH_active_with_un,DeltaS_active_with_un) ## both in SI (J / (mol (K)) )
   )
   #

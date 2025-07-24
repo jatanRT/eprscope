@@ -144,12 +144,39 @@ List with the following components is available:
   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
+  \item{cov.coeffs}{Covariance \code{matrix}, consisting of fitted/optimized kinetic parameters/coefficients
+  (see also \code{df.coeffs} above). The corresponding variances (diagonal elements) should be small,
+  indicating that the estimates possess a lower uncertainties.
+  The off-diagonal elements show how the two coefficient estimates change together. For a decent model they should be
+  as close to \code{0} as possible. Large values indicate
+  \href{https://www.geeksforgeeks.org/machine-learning/how-to-test-for-multicollinearity-in-r/}{multicollinearity}
+  with positive sign suggesting the coefficient are overestimated, and with a negative one, indicating that one coefficient
+  is overestimated, while the other one is underestimated.}
+  \item{cor.coeffs}{Correlation \code{matrix} of fitted/optimized kinetic parameters/coefficients
+  (see also \code{df.coeffs} above). Such matrix can be additionally nicely visualized
+  by a correlation \code{plot} created by the \code{\link[corrplot]{corrplot}} function.
+  The off-diagonal elements should be as small as possible
+  (ideally close to \code{0}) in order to exclude the multicollinearity (see the \code{cov.coeffs}) and trust the optimized
+  kinetic parameters.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
   and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
   the better the fit. Please, refer to the \code{\link{eval_ABIC_forFit}}.}
+  \item{cov.df}{Covariance \code{matrix} of a data frame, consisting of \code{qvarR} (e.g. double integral/Area - experiment),
+  \code{fitted} (kinetic model fit) and the corresponding residuals as columns/variables. Covariance between
+  the experiment and kinetic model should be positive and strong for a decent fit. Contrary, the \code{cov} between
+  the kinetic model fit and residuals should be ideally close to \code{0}, indicating no systematic relationship.
+  However, the covariance is scale-depended and must be "normalized". Therefore, for such a purpose, the correlation
+  is defined as shown below.}
+  \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of \code{qvarR} (e.g. double integral/Area - experiment),
+  \code{fitted} (kinetic model fit) and the corresponding residuals as columns/variables.
+  Such matrix can be additionally nicely visualized by a correlation \code{plot} created
+  by the \code{\link[corrplot]{corrplot}} function. A higher positive correlation
+  (between the integrals and the kinetic model fit), with the value close to \code{1}, indicates that the kinetic model
+  fit nicely follows the integral(s) \emph{vs} time relation. Contrary, no clear correlation between the residuals
+  and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to \code{0}.}
   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
   }
 }

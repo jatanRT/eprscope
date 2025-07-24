@@ -46,12 +46,12 @@ Prior to own `{eprscope}` 📦 installation a minimal system setup is required a
     #
     # after the initial R environment setup it's always 
     # good to install essential collection of packages for data science 
-    # with all their dependencies:
     install.packages("tidyverse",dependencies = TRUE)
+    # ...+ additional required packages with dependencies
     install.packages(
       c("DT","vctrs","npreg","patchwork","kableExtra",
         "htmlwidgets","webshot2","tinytable","gsignal",
-        "shinythemes","future","future.apply",
+        "shinythemes","future","future.apply","corrplot",
         "progressr","qqplotr","animation","openxlsx"),
       dependencies = TRUE
     )
@@ -233,6 +233,7 @@ triarylamine_rc_decay_model <-
   eval_kinR_EPR_modelFit(
     data.qt.expr = triarylamine_rc_decay_data,
     model.react = "(r=2)R --> [k1] B",
+    qvarR = "Area",
     elementary.react = FALSE,
     params.guess = c(
       qvar0R = 0.019,
@@ -251,6 +252,11 @@ triarylamine_rc_decay_model$plot
 # (and their basic statistical measures) by the non-linear 
 # fit and numeric solution of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
+#
+# graphical representation of the correlation matrix,
+# corresponding to kinetic model fit
+triarylamine_rc_decay_model$cor.df %>% 
+  corrplot::corrplot(addCoef.col = "#c2c2c2")
 
 ```
 

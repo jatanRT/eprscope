@@ -83,7 +83,7 @@ Suggests:
     usethis,
     vctrs,
     R.utils,
-    report,
+    corrplot,
     tibble,
     esquisse,
     future.apply,
