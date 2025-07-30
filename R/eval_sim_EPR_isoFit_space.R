@@ -12,8 +12,8 @@
 #'   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument \code{N.points.space})
 #'   where each of these points corresponds to starting values (see arguments \code{optim.params.init} +
 #'   \code{optim.params.init.dvary} as well as \code{lineG.content} + \code{lineG.content.dvary}), which are optimized
-#'   by the \code{\link{eval_sim_EPR_isoFit}} setup. Because such procedure is computationally highly demanding,
-#'   the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
+#'   by the \strong{default} \code{\link{eval_sim_EPR_isoFit}} \strong{setup}. Because such procedure is computationally
+#'   highly demanding, the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
 #'   the \href{https://future.apply.futureverse.org/}{\code{{future.apply}}} package
 #'   (see also the \code{\link[future.apply]{future_Map}} function). It enables relatively seamless application
 #'   of \href{https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html}{parallel computing}
@@ -56,14 +56,18 @@
 #'   The user may "fix" one or more initial parameter values by putting the corresponding \code{optim.params.init.dvary}
 #'   element to \code{0}. However, this does not fix that (those) parameter(s) in a true sense. Rather, the \strong{initial}
 #'   parameter \strong{value remains constant} over the whole space (however, it will be optimized within
-#'   the default bound constraints anyway, see the \code{\link{eval_sim_EPR_isoFit}} documentation).
+#'   the default bound constraints anyway, see the \code{\link{eval_sim_EPR_isoFit}} documentation). If one really wants
+#'   to fix one or more parameters (which won't be optimized) an optional \code{optim.params.fix.id} (see also description
+#'   of the \code{...} argument) should be used together with \code{0} of the corresponding \code{optim.params.init.dvary}
+#'   element. For example, to fix the g-Value (i.e. it won't be optimized) of the above-described aminoxyl, one must add
+#'   \code{optim.params.fix.id = 1} and \code{optim.params.init.dvary = c(0,2.0,2.0,0,1e-2,3.2)}.
 #'   If the entire \code{optim.params.init} argument is to be "fixed" => put
 #'   \code{optim.params.init.dvary = NULL} (\strong{default}). In all cases, the related \code{optim.params.init}
 #'   space will be created as a matrix or data frame (see also the \code{Value}/\code{init.space.df}) with
 #'   variables/columns corresponding to individual parameters, and observations/rows corresponding
 #'   to each \code{N.points.space}, dividing the parameter variation range (e.g \eqn{g = 2.006\pm 0.002})
-#'   into smaller spaces. Therefore, the fitting process will be performed (by the \code{\link{eval_sim_EPR_isoFit}})
-#'   for each row of the initial data frame (\code{init.space.df}) together with the initial \code{lineG.content}
+#'   into smaller spaces. Therefore, the fitting process will be performed (by the default \code{\link{eval_sim_EPR_isoFit}}
+#'   configuration) for each row of the initial data frame (\code{init.space.df}) together with the initial \code{lineG.content}
 #'   variation vector (see the description of \code{N.points.space} and \code{lineG.content.dvary} arguments).
 #'   For the \code{optim.params.init.dvary = NULL}, the fitting procedure is just repeated
 #'   \code{N.points.space}-times, with the same parameter set. Such processing might be useful to determine
@@ -93,7 +97,7 @@
 #'   \strong{Default}: \code{animation = "Fitting_of_sim_EPR"}.
 #' @param ... additional arguments specified, see also the \code{\link{eval_sim_EPR_isoFit}},
 #'   like \code{tol.step}, \code{pswarm} arguments (if \code{optim.method = "pswarm"}), \code{Blim},
-#'   \code{Intensity.expr} or \code{Intensity.sim}.
+#'   \code{Intensity.expr} or \code{Intensity.sim} and \code{optim.params.fix.id}.
 #'
 #'
 #' @returns If the \code{animation} argument is different from \code{NULL}, the function will return a \code{.gif}
@@ -187,9 +191,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       lineSpecs.form = "derivative",
                                       optim.method = "neldermead", ## also two consecutive methods as vector
                                       optim.params.init,
+                                      # optim.params.fix.id = NULL, ## into `...`
                                       optim.params.init.dvary = NULL, ## or vector
-                                      # optim.params.lower = NULL, ## into `...`
-                                      # optim.params.upper = NULL, ## into `...`
                                       Nmax.evals = 256,
                                       N.points.space = 16, # new argument max. number of points in space
                                       # tol.step = 5e-7, ## into `...`
@@ -352,6 +355,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   } else {
     eval.optim.progress <- FALSE
   }
+  if (exists("optim.params.lower") || exists("optim.params.upper")) {
+    stop(" The `optim.params.lower/upper` arguments cannot be used\n
+         with this function. Instead, default parameter boundaries\n
+         are applied (see also `eval_sim_EPR_isoFit` documentation) !!")
+  }
   #
   ## CENTRAL FITTING FUNCTION (Working with ellipsis)
   ## -----------------------
@@ -387,8 +395,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       "Intensity.expr",
       "Intensity.sim",
       "Blim",
-      "optim.params.lower",
-      "optim.params.upper",
+      "optim.params.fix.id",
       "tol.step",
       "pswarm.size",
       "pswarm.diameter",

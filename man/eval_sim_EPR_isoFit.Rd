@@ -17,6 +17,7 @@ eval_sim_EPR_isoFit(
   lineSpecs.form = "derivative",
   optim.method = "neldermead",
   optim.params.init,
+  optim.params.fix.id = NULL,
   optim.params.lower = NULL,
   optim.params.upper = NULL,
   Nmax.evals = 512,
@@ -86,7 +87,7 @@ is \code{list} with the elements/vectors from each method, in order to see the p
 
   \item \strong{L}orentzian linewidth
 
-  \item baseline constant (intercept)
+  \item baseline constant (intercept or offset)
 
   \item intensity multiplication constant
 
@@ -106,6 +107,14 @@ is \code{list} with the elements/vectors from each method, in order to see the p
   DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}. If the lineshape is expected to be pure
   \strong{L}orentzian or pure \strong{G}aussian then put the corresponding vector element to \code{0}.}
 
+\item{optim.params.fix.id}{Numeric value/vector of index/indices of the \code{optim.params.init}, corresponding
+to optimization/simulation parameter(s) to be fixed. For example, if the g-Value and the (intensity) multiplication
+constant should not be optimized (its value should be fixed during the procedure), the argument must be defined
+as follows: \code{optim.params.fix.id = c(1,5)} (see also the \code{optim.params.init} description
+for the simulation/optimized parameters order). \strong{Default}: \code{optim.params.fix.id = NULL}, indicating
+that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
+boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}).}
+
 \item{optim.params.lower}{Numeric vector (with the same element order like \code{optim.params.init})
 with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
@@ -113,7 +122,7 @@ equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
 intensity multiplication initial constant \eqn{= 0.75\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
-\code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.}
+\code{"quadratic"}). Default lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.}
 
 \item{optim.params.upper}{Numeric vector (with the same element order like \code{optim.params.init})
 with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
@@ -122,7 +131,7 @@ equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
 intensity multiplication initial constant \eqn{= 1.25\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
-\code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
+\code{"quadratic"}). Default upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.}
 
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
 The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
@@ -256,13 +265,18 @@ In order to guess the intensity multiplication constant (please, refer to the \c
   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
   point to evaluate the fit.
 
-  In order to fix one or more simulation parameter(s) during the fitting procedure, the corresponding \code{optim.parms.lower}
-  as well as the \code{optim.params.upper} vector element(s) must be equal to that of the \code{optim.params.init}.
-  Please, refer to the \code{Examples} below (simulation fit of the aminoxyl radical EPR spectrum with bound constraints
-  and fixed A(1 x 14N)). A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
+  To fix one or more simulation parameter(s) (i.e. parameters which are not optimized) during
+  the fitting procedure, the corresponding \code{optim.parms.lower} as well as the \code{optim.params.upper} vector
+  element(s) must be equal to that of the \code{optim.params.init}. Please, refer to the \code{Examples} below
+  (simulation fit of the aminoxyl radical EPR spectrum with bound constraints and fixed A(1 x 14N)).
+  An alternative selection of a non-optimized/fixed simulation parameter, to fit the simulated EPR spectrum
+  on the experimental one, can be also done by using the \code{optim.params.fix.id} argument, which can be also applied
+  to fix the simulation parameters when searching for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}.
+
+  A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
   may return an \code{.R} script/code snippet for the \strong{initial} simulation \strong{fit} and therefore
-  the user does not have to write (or remember) the code required to run the \code{eval_sim_EPR_isoFit}. Rather, she/he can
-  instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.
+  the user does not have to write (or remember) the code required to run the \code{eval_sim_EPR_isoFit}.
+  Rather, she/he can instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.
 }
 \examples{
 ## loading built-in example dataset which is simple

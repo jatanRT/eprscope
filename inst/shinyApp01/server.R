@@ -557,6 +557,7 @@ server <- function(input, output,session) {
           "), \n",
           paste0(",",paste(nucleiCharacter()[["A_iso_MHz"]],collapse = ","),"), \n")
         ),
+        "    optim.params.fix.id = NULL, \n",
         "    msg.optim.progress = TRUE, \n",
         "    eval.optim.progress = TRUE \n",
         "  ) \n",

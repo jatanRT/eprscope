@@ -30,13 +30,18 @@
 #'   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
 #'   point to evaluate the fit.
 #'
-#'   In order to fix one or more simulation parameter(s) during the fitting procedure, the corresponding \code{optim.parms.lower}
-#'   as well as the \code{optim.params.upper} vector element(s) must be equal to that of the \code{optim.params.init}.
-#'   Please, refer to the \code{Examples} below (simulation fit of the aminoxyl radical EPR spectrum with bound constraints
-#'   and fixed A(1 x 14N)). A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
+#'   To fix one or more simulation parameter(s) (i.e. parameters which are not optimized) during
+#'   the fitting procedure, the corresponding \code{optim.parms.lower} as well as the \code{optim.params.upper} vector
+#'   element(s) must be equal to that of the \code{optim.params.init}. Please, refer to the \code{Examples} below
+#'   (simulation fit of the aminoxyl radical EPR spectrum with bound constraints and fixed A(1 x 14N)).
+#'   An alternative selection of a non-optimized/fixed simulation parameter, to fit the simulated EPR spectrum
+#'   on the experimental one, can be also done by using the \code{optim.params.fix.id} argument, which can be also applied
+#'   to fix the simulation parameters when searching for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}.
+#'
+#'   A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
 #'   may return an \code{.R} script/code snippet for the \strong{initial} simulation \strong{fit} and therefore
-#'   the user does not have to write (or remember) the code required to run the \code{eval_sim_EPR_isoFit}. Rather, she/he can
-#'   instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.
+#'   the user does not have to write (or remember) the code required to run the \code{eval_sim_EPR_isoFit}.
+#'   Rather, she/he can instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.
 #'
 #'
 #'
@@ -86,7 +91,7 @@
 #'
 #'   \item \strong{L}orentzian linewidth
 #'
-#'   \item baseline constant (intercept)
+#'   \item baseline constant (intercept or offset)
 #'
 #'   \item intensity multiplication constant
 #'
@@ -105,6 +110,13 @@
 #'   }
 #'   DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}. If the lineshape is expected to be pure
 #'   \strong{L}orentzian or pure \strong{G}aussian then put the corresponding vector element to \code{0}.
+#' @param optim.params.fix.id Numeric value/vector of index/indices of the \code{optim.params.init}, corresponding
+#'   to optimization/simulation parameter(s) to be fixed. For example, if the g-Value and the (intensity) multiplication
+#'   constant should not be optimized (its value should be fixed during the procedure), the argument must be defined
+#'   as follows: \code{optim.params.fix.id = c(1,5)} (see also the \code{optim.params.init} description
+#'   for the simulation/optimized parameters order). \strong{Default}: \code{optim.params.fix.id = NULL}, indicating
+#'   that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
+#'   boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}).
 #' @param optim.params.lower Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
@@ -112,7 +124,7 @@
 #'   intensity multiplication initial constant \eqn{= 0.75\,\text{init}}, baseline initial slope \eqn{- 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{- 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Default lower limits of all hyperfine coupling constant (HFCCs) are set to \eqn{0.875\,A_{\text{init}}}.
 #' @param optim.params.upper Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} + 0.001}, \eqn{1.2\,\Delta B_{\text{G,init}}},
@@ -120,7 +132,7 @@
 #'   intensity multiplication initial constant \eqn{= 1.25\,\text{init}}, baseline initial slope \eqn{+ 5} (in case
 #'   the \code{baseline.correct} is set either to \code{"linear"} or \code{"quadratic"}) and finally,
 #'   the baseline initial quadratic coefficient \eqn{+ 5} (in case the \code{baseline.correct} is set to
-#'   \code{"quadratic"}). Upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.
+#'   \code{"quadratic"}). Default upper limits of all HFCCs are set to \eqn{1.125\,A_{\text{init}}}.
 #' @param Nmax.evals Numeric value, maximum number of function evaluations and/or iterations.
 #'   The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
 #'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
@@ -392,6 +404,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 lineSpecs.form = "derivative",
                                 optim.method = "neldermead", ## also two consecutive methods as vector
                                 optim.params.init,
+                                optim.params.fix.id = NULL, ## related to `optim.params.init`
                                 optim.params.lower = NULL,
                                 optim.params.upper = NULL,
                                 Nmax.evals = 512,
@@ -457,6 +470,21 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   if (lineG.content == 0 & optim.params.init[3] == 0){
     stop(" Spectral lineshape is defined as pure Lorentzian. Therefore,the corresponding\n
          linewidth (`optim.params.init[3]`) must be DIFFERENT FROM `0` ! ")
+  }
+  ## conditions for parameter guesses (initial parameters)
+  if (!is.null(optim.params.fix.id) &
+      !is.null(optim.params.lower) &
+      !is.null(optim.params.upper)) {
+    stop(" All three `optim.params.fix.id/lower/upper` cannot be simultaneously defined !!\n
+         In order to fix one or more simulation parameters during the optimization/fit,\n
+         either use `optim.params.fix.id` or both `optim.params.lower/upper` !! ")
+  }
+  #
+  if (length(optim.params.init) == length(optim.params.fix.id)){
+    stop(" The vector `optim.params.init` has the same length like `optim.params.fix.id` !!\n
+         If all optimization/simulation parameters are fixed, the entire fitting procedure\n
+         cannot be performed, because none of the `optim.params.init.` are optimized !!\n
+         Please, check out the relevant function arguments.")
   }
   #
   ## Define the length of `nuclear.system.noA` similarly as in simple simulation
@@ -615,16 +643,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
     }
-    if (baseline == "constant") {
+    if (baseline == "constant" || baseline == "Constant") {
       ## Intensity = a + b*Intensity
       data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]])
     }
-    if (baseline == "linear") {
+    if (baseline == "linear" || baseline == "Linear") {
       ## Intensity = a + b*Intensity + c*B (B = "magnetic flux density")
       data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]]) +
         (par[6] * sim.fit.df[[paste0("Bsim_",B.unit)]])
     }
-    if (baseline == "quadratic") {
+    if (baseline == "quadratic" || baseline == "Quadratic") {
       ## Intensity = a + b*Intensity + c*B + d*B^2
       data[[Intensity.sim]] <- par[4] + (par[5] * sim.fit.df[[Intensity.sim]]) +
         (par[6] * sim.fit.df[[paste0("Bsim_",B.unit)]]) +
@@ -763,16 +791,16 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
       #
     }
-    if (baseline == "constant") {
+    if (baseline == "constant" || baseline == "Constant") {
       ## Intensity = a + b*Intensity
       data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]])
     }
-    if (baseline == "linear") {
+    if (baseline == "linear" || baseline == "Linear") {
       ## Intensity = a + b*Intensity + c*B (B = "magnetic flux density")
       data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]]) +
         (x0[6] * sim.fit.df[[paste0("Bsim_",B.unit)]])
     }
-    if (baseline == "quadratic") {
+    if (baseline == "quadratic" || baseline == "Quadratic") {
       ## Intensity = a + b*Intensity + c*B + d*B^2
       data[[Intensity.sim]] <- x0[4] + (x0[5] * sim.fit.df[[Intensity.sim]]) +
         (x0[6] * sim.fit.df[[paste0("Bsim_",B.unit)]]) +
@@ -785,45 +813,121 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   # ====================== PARAMETER GUESSES =======================
   #
+  ## intial parameter boundaries also including condition
+  ## if one or more parameter have to be fixed
+  #
   ## initial parameter guesses for the optimization and definition
   ## g values
-  limits.params1a <- optim.params.init[1] - 0.001
-  limits.params1b <- optim.params.init[1] + 0.001
+  if (any(grepl(1,optim.params.fix.id))) {
+    limits.params1a <- optim.params.init[1]
+    limits.params1b <- optim.params.init[1]
+  } else {
+    limits.params1a <- optim.params.init[1] - 0.001
+    limits.params1b <- optim.params.init[1] + 0.001
+  }
   ## linewidths
-  # limits.params2 <- optim.params.init[2] * 0.2
-  # limits.params3 <- optim.params.init[3] * 0.2
-  ## constant
-  limits.params4a <- optim.params.init[4] - 0.001
-  limits.params4b <- optim.params.init[4] + 0.001
+  if (any(grepl(2,optim.params.fix.id))) {
+    limits.params2a <- optim.params.init[2]
+    limits.params2b <- optim.params.init[2]
+  } else {
+    limits.params2a <- 0.8 * optim.params.init[2]
+    limits.params2b <- 1.2 * optim.params.init[2]
+  }
+  if (any(grepl(3,optim.params.fix.id))) {
+    limits.params3a <- optim.params.init[3]
+    limits.params3b <- optim.params.init[3]
+  } else {
+    limits.params3a <- 0.8 * optim.params.init[3]
+    limits.params3b <- 1.2 * optim.params.init[3]
+  }
+  ## constant/offset
+  if (any(grepl(4,optim.params.fix.id))) {
+    limits.params4a <- optim.params.init[4]
+    limits.params4b <- optim.params.init[4]
+  } else {
+    limits.params4a <- optim.params.init[4] - 0.001
+    limits.params4b <- optim.params.init[4] + 0.001
+  }
   ## intensity multiplication coeff.
-  # limits.params5 <- optim.params.init[5] * 0.2
+  if (any(grepl(5,optim.params.fix.id))) {
+    limits.params5a <- optim.params.init[5]
+    limits.params5b <- optim.params.init[5]
+  } else {
+    limits.params5a <- 0.75 * optim.params.init[5]
+    limits.params5b <- 1.25 * optim.params.init[5]
+  }
   #
   lower.limits <- c(
-    limits.params1a, ## g
-    0.8 * optim.params.init[2], ## Delta BG
-    0.8 * optim.params.init[3], ## Delta BL
-    limits.params4a, ## baseline constant
-    0.75 * optim.params.init[5] ## intensity multiple
+    limits.params1a, ## g lower
+    limits.params2a, ## Delta BG lower
+    limits.params3a, ## Delta BL lower
+    limits.params4a, ## baseline constant/offset lower
+    limits.params5a ## intensity multiple lower
   )
+  ## condition/fixes for linear and/or quadratic baseline
+  if (baseline.correct == "linear" || baseline.correct == "Linear" ||
+      baseline.correct == "quadratic" || baseline.correct == "Quadratic") {
+    limit.lq.fix.cond.01 <- any(grepl(6,optim.params.fix.id))
+    limit.lq.fix.cond.02 <- any(grepl(7,optim.params.fix.id))
+  }
+
+  #
   lower.limits <- switch(
-    3-baseline.cond.fn(baseline.correct = baseline.correct),
-    c(lower.limits,-5,-5),
-    c(lower.limits,-5),
+    3 - baseline.cond.fn(baseline.correct = baseline.correct),
+    c(
+      lower.limits,
+      switch(
+        2 - limit.lq.fix.cond.01,
+        optim.params.fix.id[6],
+        -5
+      ),
+      switch(
+        2 - limit.lq.fix.cond.02,
+        optim.params.fix.id[7],
+        -5
+      )
+    ),
+    c(
+      lower.limits,
+      switch(
+        2 - limit.lq.fix.cond.01,
+        optim.params.fix.id[6],
+        -5
+      )
+    ),
     lower.limits
   )
   upper.limits <- c(
-    limits.params1b,
-    1.2 * optim.params.init[2],
-    1.2 * optim.params.init[3],
-    limits.params4b,
-    1.25 * optim.params.init[5]
+    limits.params1b, ## g upper
+    limits.params2b, ## Delta BG upper
+    limits.params3b, ## Delta BL upper
+    limits.params4b, ## baseline constant/offset upper
+    limits.params5b ## intensity multiple upper
   )
   upper.limits <- switch(
-    3-baseline.cond.fn(baseline.correct = baseline.correct),
-    c(upper.limits,5,5),
-    c(upper.limits,5),
+    3 - baseline.cond.fn(baseline.correct = baseline.correct),
+    c(
+      upper.limits,
+      switch(
+        2 - limit.lq.fix.cond.01,
+        optim.params.fix.id[6],
+        5
+      ),
+      switch(
+        2 - limit.lq.fix.cond.02,
+        optim.params.fix.id[7],
+        5
+      )
+    ),
+    c(
+      upper.limits,
+      switch(
+        2 - limit.lq.fix.cond.01,
+        optim.params.fix.id[6],
+        5
+      )
+    ),
     upper.limits
-
   )
   #
   if (is.null(nuclear.system.noA)){
@@ -831,30 +935,42 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     upper.limits <- upper.limits
   } else {
     ## individual optimization limits for As
-    A.lower.limits <- c()
-    A.upper.limits <- c()
-    if (baseline.correct == "constant") {
+    ## + first of all => function for A - limits
+    A.limits.fun <- function(id){
+      if (any(grepl(id,optim.params.fix.id))) {
+        A.lower.limits <- optim.params.init[id]
+        A.upper.limits <- optim.params.init[id]
+      } else {
+        A.lower.limits <- 0.875 * optim.params.init[id]
+        A.upper.limits <- 1.125 * optim.params.init[id]
+      }
+      return(list(lower = A.lower.limits,upper = A.upper.limits))
+    }
+    #
+    A.low.bounds <- c() ## initialize vectors
+    A.up.bounds <- c()
+    if (baseline.correct == "constant" || baseline.correct == "Constant") {
       for (a in 6:(5+length(nuclear.system.noA))) {
-        A.lower.limits[a-5] <- 0.875 * optim.params.init[a]
-        A.upper.limits[a-5] <- 1.125 * optim.params.init[a]
+        A.low.bounds[a - 5] <- A.limits.fun(id = a)$lower
+        A.up.bounds[a - 5] <- A.limits.fun(id = a)$upper
       }
     }
-    if (baseline.correct == "linear") {
+    if (baseline.correct == "linear" || baseline.correct == "Linear") {
       for (a in 7:(6+length(nuclear.system.noA))) {
-        A.lower.limits[a-6] <- 0.875 * optim.params.init[a]
-        A.upper.limits[a-6] <- 1.125 * optim.params.init[a]
+        A.low.bounds[a - 6] <- A.limits.fun(id = a)$lower
+        A.up.bounds[a - 6] <- A.limits.fun(id = a)$upper
       }
     }
-    if (baseline.correct == "quadratic") {
+    if (baseline.correct == "quadratic" || baseline.correct == "Quadratic") {
       for (a in 8:(7+length(nuclear.system.noA))) {
-        A.lower.limits[a-7] <- 0.875 * optim.params.init[a]
-        A.upper.limits[a-7] <- 1.125 * optim.params.init[a]
+        A.low.bounds[a - 7] <- A.limits.fun(id = a)$lower
+        A.up.bounds[a - 7] <- A.limits.fun(id = a)$upper
       }
     }
     #
     ## actual `limits`
-    lower.limits <- c(lower.limits,A.lower.limits)
-    upper.limits <- c(upper.limits,A.upper.limits)
+    lower.limits <- c(lower.limits,A.low.bounds)
+    upper.limits <- c(upper.limits,A.up.bounds)
   }
   optim.params.lower <- optim.params.lower %>%
     `if`(is.null(optim.params.lower), lower.limits, .)
@@ -935,6 +1051,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
     }
   #
+  ## ALL METHODS ITERATIONS:
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
