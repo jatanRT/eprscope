@@ -4,8 +4,8 @@
   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument N.points.space)
   where each of these points corresponds to starting values (see arguments optim.params.init +
   optim.params.init.dvary as well as lineG.content + lineG.content.dvary), which are optimized
-  by the eval_sim_EPR_isoFit setup. Because such procedure is computationally highly demanding,
-  the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
+  by the default eval_sim_EPR_isoFit setup. Because such procedure is computationally
+  highly demanding, the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
   the {future.apply} package
   (see also the future_Map function). It enables relatively seamless application
   of parallel computing
@@ -18,8 +18,8 @@
   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument N.points.space)
   where each of these points corresponds to starting values (see arguments optim.params.init +
   optim.params.init.dvary as well as lineG.content + lineG.content.dvary), which are optimized
-  by the eval_sim_EPR_isoFit setup. Because such procedure is computationally highly demanding,
-  the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
+  by the default eval_sim_EPR_isoFit setup. Because such procedure is computationally
+  highly demanding, the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
   the {future.apply} package
   (see also the future_Map function). It enables relatively seamless application
   of parallel computing
@@ -87,8 +87,8 @@
   (represented by data frame/matrix and/or vector(s)) is divided into several points (see the argument <code>N.points.space</code>)
   where each of these points corresponds to starting values (see arguments <code>optim.params.init</code> +
   <code>optim.params.init.dvary</code> as well as <code>lineG.content</code> + <code>lineG.content.dvary</code>), which are optimized
-  by the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code> setup. Because such procedure is computationally highly demanding,
-  the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
+  by the <strong>default</strong> <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code> <strong>setup</strong>. Because such procedure is computationally
+  highly demanding, the central loop, to iterate/evaluate parameters and the corresponding EPR spectra, uses
   the <a href="https://future.apply.futureverse.org/" class="external-link"><code>{future.apply}</code></a> package
   (see also the <code><a href="https://future.apply.futureverse.org/reference/future_mapply.html" class="external-link">future_Map</a></code> function). It enables relatively seamless application
   of <a href="https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html" class="external-link">parallel computing</a>
@@ -188,7 +188,7 @@ the best fit parameters from the previous method are used as input for the next 
   elements are immutable</strong></p><ol><li><p>g-value (g-factor)</p></li>
 <li><p><strong>G</strong>aussian linewidth</p></li>
 <li><p><strong>L</strong>orentzian linewidth</p></li>
-<li><p>baseline constant (intercept)</p></li>
+<li><p>baseline constant (intercept or offset)</p></li>
 <li><p>intensity multiplication constant</p></li>
 <li><p>baseline slope (only if <code>baseline.correct = "linear"</code> or <code>baseline.correct = "quadratic"</code>),
   if <code>baseline.correct = "constant"</code> it corresponds to the <strong>first HFCC</strong> (\(A_1\))</p></li>
@@ -214,14 +214,18 @@ as follows: <code>c(0.002,2.0,2.0,0,1e-2,3.2)</code>, meaning that \(g = 2.006\p
 The user may "fix" one or more initial parameter values by putting the corresponding <code>optim.params.init.dvary</code>
 element to <code>0</code>. However, this does not fix that (those) parameter(s) in a true sense. Rather, the <strong>initial</strong>
 parameter <strong>value remains constant</strong> over the whole space (however, it will be optimized within
-the default bound constraints anyway, see the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code> documentation).
+the default bound constraints anyway, see the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code> documentation). If one really wants
+to fix one or more parameters (which won't be optimized) an optional <code>optim.params.fix.id</code> (see also description
+of the <code>...</code> argument) should be used together with <code>0</code> of the corresponding <code>optim.params.init.dvary</code>
+element. For example, to fix the g-Value (i.e. it won't be optimized) of the above-described aminoxyl, one must add
+<code>optim.params.fix.id = 1</code> and <code>optim.params.init.dvary = c(0,2.0,2.0,0,1e-2,3.2)</code>.
 If the entire <code>optim.params.init</code> argument is to be "fixed" =&gt; put
 <code>optim.params.init.dvary = NULL</code> (<strong>default</strong>). In all cases, the related <code>optim.params.init</code>
 space will be created as a matrix or data frame (see also the <code>Value</code>/<code>init.space.df</code>) with
 variables/columns corresponding to individual parameters, and observations/rows corresponding
 to each <code>N.points.space</code>, dividing the parameter variation range (e.g \(g = 2.006\pm 0.002\))
-into smaller spaces. Therefore, the fitting process will be performed (by the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>)
-for each row of the initial data frame (<code>init.space.df</code>) together with the initial <code>lineG.content</code>
+into smaller spaces. Therefore, the fitting process will be performed (by the default <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>
+configuration) for each row of the initial data frame (<code>init.space.df</code>) together with the initial <code>lineG.content</code>
 variation vector (see the description of <code>N.points.space</code> and <code>lineG.content.dvary</code> arguments).
 For the <code>optim.params.init.dvary = NULL</code>, the fitting procedure is just repeated
 <code>N.points.space</code>-times, with the same parameter set. Such processing might be useful to determine
@@ -280,7 +284,7 @@ is not desirable, put <code>animation = NULL</code>. Otherwise, an arbitrary fil
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>additional arguments specified, see also the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>,
 like <code>tol.step</code>, <code>pswarm</code> arguments (if <code>optim.method = "pswarm"</code>), <code>Blim</code>,
-<code>Intensity.expr</code> or <code>Intensity.sim</code>.</p></dd>
+<code>Intensity.expr</code> or <code>Intensity.sim</code> and <code>optim.params.fix.id</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

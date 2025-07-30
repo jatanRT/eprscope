@@ -96,6 +96,7 @@
 <span>  lineSpecs.form <span class="op">=</span> <span class="st">"derivative"</span>,</span>
 <span>  optim.method <span class="op">=</span> <span class="st">"neldermead"</span>,</span>
 <span>  <span class="va">optim.params.init</span>,</span>
+<span>  optim.params.fix.id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Nmax.evals <span class="op">=</span> <span class="fl">512</span>,</span>
@@ -187,7 +188,7 @@ is <code>list</code> with the elements/vectors from each method, in order to see
   elements are immutable</strong></p><ol><li><p>g-value (g-factor)</p></li>
 <li><p><strong>G</strong>aussian linewidth</p></li>
 <li><p><strong>L</strong>orentzian linewidth</p></li>
-<li><p>baseline constant (intercept)</p></li>
+<li><p>baseline constant (intercept or offset)</p></li>
 <li><p>intensity multiplication constant</p></li>
 <li><p>baseline slope (only if <code>baseline.correct = "linear"</code> or <code>baseline.correct = "quadratic"</code>),
   if <code>baseline.correct = "constant"</code> it corresponds to the <strong>first HFCC</strong> (\(A_1\))</p></li>
@@ -202,6 +203,16 @@ is <code>list</code> with the elements/vectors from each method, in order to see
   <strong>L</strong>orentzian or pure <strong>G</strong>aussian then put the corresponding vector element to <code>0</code>.</p></dd>
 
 
+<dt id="arg-optim-params-fix-id">optim.params.fix.id<a class="anchor" aria-label="anchor" href="#arg-optim-params-fix-id"></a></dt>
+<dd><p>Numeric value/vector of index/indices of the <code>optim.params.init</code>, corresponding
+to optimization/simulation parameter(s) to be fixed. For example, if the g-Value and the (intensity) multiplication
+constant should not be optimized (its value should be fixed during the procedure), the argument must be defined
+as follows: <code>optim.params.fix.id = c(1,5)</code> (see also the <code>optim.params.init</code> description
+for the simulation/optimized parameters order). <strong>Default</strong>: <code>optim.params.fix.id = NULL</code>, indicating
+that none of the <code>optim.params.init</code> is fixed, i.e. all parameters are optimized within their default/defined
+boundaries (see the <code>optim.params.lower</code> and the <code>optim.params.upper</code>).</p></dd>
+
+
 <dt id="arg-optim-params-lower">optim.params.lower<a class="anchor" aria-label="anchor" href="#arg-optim-params-lower"></a></dt>
 <dd><p>Numeric vector (with the same element order like <code>optim.params.init</code>)
 with the lower bound constraints. <strong>Default</strong>: <code>optim.params.lower = NULL</code> which actually
@@ -210,7 +221,7 @@ equals to \(g_{\text{init}} - 0.001\), \(0.8\,\Delta B_{\text{G,init}}\),
 intensity multiplication initial constant \(= 0.75\,\text{init}\), baseline initial slope \(- 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(- 5\) (in case the <code>baseline.correct</code> is set to
-<code>"quadratic"</code>). Lower limits of all hyperfine coupling constant (HFCCs) are set to \(0.875\,A_{\text{init}}\).</p></dd>
+<code>"quadratic"</code>). Default lower limits of all hyperfine coupling constant (HFCCs) are set to \(0.875\,A_{\text{init}}\).</p></dd>
 
 
 <dt id="arg-optim-params-upper">optim.params.upper<a class="anchor" aria-label="anchor" href="#arg-optim-params-upper"></a></dt>
@@ -221,7 +232,7 @@ equals to \(g_{\text{init}} + 0.001\), \(1.2\,\Delta B_{\text{G,init}}\),
 intensity multiplication initial constant \(= 1.25\,\text{init}\), baseline initial slope \(+ 5\) (in case
 the <code>baseline.correct</code> is set either to <code>"linear"</code> or <code>"quadratic"</code>) and finally,
 the baseline initial quadratic coefficient \(+ 5\) (in case the <code>baseline.correct</code> is set to
-<code>"quadratic"</code>). Upper limits of all HFCCs are set to \(1.125\,A_{\text{init}}\).</p></dd>
+<code>"quadratic"</code>). Default upper limits of all HFCCs are set to \(1.125\,A_{\text{init}}\).</p></dd>
 
 
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
@@ -368,13 +379,17 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
   point to evaluate the fit.</p>
-<p>In order to fix one or more simulation parameter(s) during the fitting procedure, the corresponding <code>optim.parms.lower</code>
-  as well as the <code>optim.params.upper</code> vector element(s) must be equal to that of the <code>optim.params.init</code>.
-  Please, refer to the <code>Examples</code> below (simulation fit of the aminoxyl radical EPR spectrum with bound constraints
-  and fixed A(1 x 14N)). A simple EPR spectrum analysis by interactive simulation using the <code><a href="plot_eval_ExpSim_app.html">plot_eval_ExpSim_app</a></code>
+<p>To fix one or more simulation parameter(s) (i.e. parameters which are not optimized) during
+  the fitting procedure, the corresponding <code>optim.parms.lower</code> as well as the <code>optim.params.upper</code> vector
+  element(s) must be equal to that of the <code>optim.params.init</code>. Please, refer to the <code>Examples</code> below
+  (simulation fit of the aminoxyl radical EPR spectrum with bound constraints and fixed A(1 x 14N)).
+  An alternative selection of a non-optimized/fixed simulation parameter, to fit the simulated EPR spectrum
+  on the experimental one, can be also done by using the <code>optim.params.fix.id</code> argument, which can be also applied
+  to fix the simulation parameters when searching for the best fit by the <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space</a></code>.</p>
+<p>A simple EPR spectrum analysis by interactive simulation using the <code><a href="plot_eval_ExpSim_app.html">plot_eval_ExpSim_app</a></code>
   may return an <code>.R</code> script/code snippet for the <strong>initial</strong> simulation <strong>fit</strong> and therefore
-  the user does not have to write (or remember) the code required to run the <code>eval_sim_EPR_isoFit</code>. Rather, she/he can
-  instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.</p>
+  the user does not have to write (or remember) the code required to run the <code>eval_sim_EPR_isoFit</code>.
+  Rather, she/he can instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -491,7 +506,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.512e-08, swarm diam.=0.02264</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.363  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.352  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -581,11 +596,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.449  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.447  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.979  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  7.033  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
