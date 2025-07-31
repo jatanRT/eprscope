@@ -109,7 +109,7 @@ is \code{list} with the elements/vectors from each method, in order to see the p
 
 \item{optim.params.fix.id}{Numeric value/vector of index/indices of the \code{optim.params.init}, corresponding
 to optimization/simulation parameter(s) to be fixed. For example, if the g-Value and the (intensity) multiplication
-constant should not be optimized (its value should be fixed during the procedure), the argument must be defined
+constant should not be optimized (their values should be fixed during the procedure), the argument must be defined
 as follows: \code{optim.params.fix.id = c(1,5)} (see also the \code{optim.params.init} description
 for the simulation/optimized parameters order). \strong{Default}: \code{optim.params.fix.id = NULL}, indicating
 that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
@@ -265,13 +265,15 @@ In order to guess the intensity multiplication constant (please, refer to the \c
   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
   point to evaluate the fit.
 
-  To fix one or more simulation parameter(s) (i.e. parameters which are not optimized) during
+  To fix one or more simulation parameter(s) (i.e. parameter(s) which is/are not optimized) during
   the fitting procedure, the corresponding \code{optim.parms.lower} as well as the \code{optim.params.upper} vector
-  element(s) must be equal to that of the \code{optim.params.init}. Please, refer to the \code{Examples} below
-  (simulation fit of the aminoxyl radical EPR spectrum with bound constraints and fixed A(1 x 14N)).
-  An alternative selection of a non-optimized/fixed simulation parameter, to fit the simulated EPR spectrum
-  on the experimental one, can be also done by using the \code{optim.params.fix.id} argument, which can be also applied
-  to fix the simulation parameters when searching for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}.
+  element(s) must equal to that of the \code{optim.params.init}. Please, refer to the \code{Examples} below
+  for the simulation fit of aminoxyl radical EPR spectrum with bound constraints and fixed A(1 x 14N).
+  An alternative selection of a non-optimized/fixed simulation parameter can be also done by using
+  the \code{optim.params.fix.id} argument, which can be also applied to fix the simulation parameters when searching
+  for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}. Therefore, the latter function argument just selects
+  an element of the \code{optim.params.init} (by its corresponding index) and accordingly, the selected simulation
+  parameter value will be not optimized.
 
   A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
   may return an \code{.R} script/code snippet for the \strong{initial} simulation \strong{fit} and therefore
