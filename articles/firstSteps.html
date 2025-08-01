@@ -995,10 +995,10 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      6 0.018<span style="text-decoration: underline;">6</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     21 0.019<span style="text-decoration: underline;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     36 0.018<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     36 0.019<span style="text-decoration: underline;">4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     51 0.020<span style="text-decoration: underline;">4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     66 0.021<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     81 0.018<span style="text-decoration: underline;">0</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     66 0.021<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     81 0.019<span style="text-decoration: underline;">5</span></span></span></code></pre></div>
 <p>Assuming the radical (<span class="math inline">\(\small \mathrm{R}\)</span>) recombination, forming a dimer (<span class="math inline">\(\small \mathrm{D}\)</span>):</p>
 <p><span class="math display" id="eq:dimer">\[\begin{equation}
 \small 2\,\ce{R -&gt;[$k_1$] D}
@@ -1023,9 +1023,9 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span><span class="co">#</span></span>
 <span><span class="co"># kinetic parameters with statistical measures</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">df.coeff</span></span>
-<span><span class="co">#&gt;           Estimate   Std. Error   t value      Pr(&gt;|t|)</span></span>
-<span><span class="co">#&gt; qvar0R 0.019251201 0.0003640483 52.880897 7.3508015e-74</span></span>
-<span><span class="co">#&gt; k1     0.020585085 0.0009419355 21.854029 1.8581164e-39</span></span></code></pre></div>
+<span><span class="co">#&gt;           Estimate    Std. Error   t value      Pr(&gt;|t|)</span></span>
+<span><span class="co">#&gt; qvar0R 0.019632415 0.00038462151 51.043466 2.0857741e-72</span></span>
+<span><span class="co">#&gt; k1     0.019214877 0.00093830049 20.478383 3.4983998e-37</span></span></code></pre></div>
 <p>Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit (please, refer also to the <code><a href="../reference/plot_eval_RA_forFit.html">plot_eval_RA_forFit()</a></code> function documentation):</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -1036,11 +1036,11 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span></span>
 <span><span class="co"># residual sample variance</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">df</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.5674959e-06</span></span>
+<span><span class="co">#&gt; [1] 1.7942713e-06</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># residuals sd</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span>
-<span><span class="co">#&gt; [1] 0.0012648481</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.0013532749</span></span></code></pre></div>
 <p>This is likely due to the noisy baseline in the EPR spectra as shown in the Section <a href="#sec-tidy-and-messy-data">4.4</a> and the subsequent integration. However, by the simulation and fitting of each simulated spectrum onto the experimental one in the entire kinetic series, we can obtain much better results as shown by <code>Examples</code> in the <code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code> function documentation.</p>
 </div>
 </div>
@@ -1081,22 +1081,22 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span></span>
 <span><span class="co"># select the element by `$` operator</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">N.converg</span></span>
-<span><span class="co">#&gt; [1] 0.00109349827 0.00018752167 0.00015530650 0.00015518458 0.00015518455</span></span>
-<span><span class="co">#&gt; [6] 0.00015518455</span></span>
+<span><span class="co">#&gt; [1] 0.00086936985 0.00019847996 0.00017771000 0.00017764128 0.00017764123</span></span>
+<span><span class="co">#&gt; [6] 0.00017764123</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># ...or select the same by </span></span>
 <span><span class="co"># double-square brackets</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">[[</span><span class="st">"N.converg"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.00109349827 0.00018752167 0.00015530650 0.00015518458 0.00015518455</span></span>
-<span><span class="co">#&gt; [6] 0.00015518455</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.00086936985 0.00019847996 0.00017771000 0.00017764128 0.00017764123</span></span>
+<span><span class="co">#&gt; [6] 0.00017764123</span></span></code></pre></div>
 <p>To <strong>select the</strong> <code>N.converg</code> <strong>component by the</strong> <code>$</code> <strong>operator, we do not have to remember its name</strong>. In most of the IDEs, by writing the commands/scripts, there is an automatic code completion. So, once you start to put <code>$</code> operator just behind the list variable name, all list elements appear in a popup window in order to select the desired one<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;The same actually applies for data frames and their columns.&lt;/p&gt;"><sup>5</sup></a>.</p>
 <p>In addition to double-square brackets, one may also choose single ones. However, this does not select the “pure” list element and instead, it shows the element together with its name (actually corresponding to list, similarly to data frames with single-square bracket selection) like:</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">[</span><span class="st">"N.converg"</span><span class="op">]</span></span>
 <span><span class="co">#&gt; $N.converg</span></span>
-<span><span class="co">#&gt; [1] 0.00109349827 0.00018752167 0.00015530650 0.00015518458 0.00015518455</span></span>
-<span><span class="co">#&gt; [6] 0.00015518455</span></span>
+<span><span class="co">#&gt; [1] 0.00086936985 0.00019847996 0.00017771000 0.00017764128 0.00017764123</span></span>
+<span><span class="co">#&gt; [6] 0.00017764123</span></span>
 <span></span>
 <span><span class="co"># What does the previous command/variable correspond to ?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">[</span><span class="st">"N.converg"</span><span class="op">]</span><span class="op">)</span></span>
@@ -1106,16 +1106,16 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <code class="sourceCode R"><span></span>
 <span><span class="co"># the last residual square sum</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">N.converg</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">N.converg</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.00015518455</span></span>
+<span><span class="co">#&gt; [1] 0.00017764123</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># ...or by</span></span>
 <span><span class="va">dimer.kinetics.01</span><span class="op">[[</span><span class="st">"N.converg"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">N.converg</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.00015518455</span></span>
+<span><span class="co">#&gt; [1] 0.00017764123</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># compare the previous one with residual analysis (`$ra`)</span></span>
 <span><span class="co"># of the `dimer.kinetics.01`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">df</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.00015518455</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.00017764123</span></span></code></pre></div>
 <p>In terms of the previous definitions and list selections, creation of list is quite straightforward. As an example we may define system of nuclei, interacting with unpaired electron to simulate the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum, having the structure already depicted in <code><a href="../articles/functionality.html">vignette("functionality")</a></code> :</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
