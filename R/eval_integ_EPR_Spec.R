@@ -308,6 +308,17 @@ eval_integ_EPR_Spec <- function(data.spectr,
     }
   }
   #
+  ## function to switch/select integrals based on `B.unit`
+  fn_switch_integ <- function(u = B.unit,B,I){
+    result <-
+      switch(3 - fn_units(unit = u),
+             pracma::cumtrapz(x = B, y = I)[, 1] * 1e+4,
+             pracma::cumtrapz(x = B, y = I)[, 1] * 10,
+             pracma::cumtrapz(x = B, y = I)[, 1]
+      )
+    return(result)
+  }
+  #
   ## primary data for integration
   data.spectr <- data.spectr %>%
     dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
@@ -316,13 +327,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
     #
     ## integration depending on `B` unit
     data.spectr <- data.spectr %>%
-      dplyr::mutate(single_Integ =
-          switch(3-fn_units(unit = B.unit),
-                 pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1] * 1e+4,
-                 pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1] * 10,
-                 pracma::cumtrapz(.data[[B]], .data[[Intensity]])[, 1]
-      )
-    )
+      dplyr::mutate(single_Integ = fn_switch_integ(B = .data[[B]],I = .data[[Intensity]]))
     # integral with proper scaling (from `0`)
     data.spectr <- data.spectr %>%
       dplyr::mutate(single_Integ = abs(min(.data$single_Integ) - .data$single_Integ))
@@ -331,11 +336,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
       data.spectr <- data.spectr
     } else {
       data.spectr$sigmoid_Integ <-
-        switch(3-fn_units(unit = B.unit),
-               pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1] * 1e+4,
-               pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1] * 10,
-               pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ)[, 1]
-      )
+        fn_switch_integ(B = data.spectr[[B]],I = data.spectr$single_Integ)
       # scaling integral
       data.spectr <- data.spectr %>%
         dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
@@ -351,11 +352,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
                         abs(min(.data[[Intensity]]) - .data[[Intensity]]))
     } else {
       data.spectr$sigmoid_Integ <-
-        switch(3-fn_units(unit = B.unit),
-               pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1] * 1e+4,
-               pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1] * 10,
-               pracma::cumtrapz(data.spectr[[B]],data.spectr[[Intensity]])[, 1]
-      )
+        fn_switch_integ(B = data.spectr[[B]],I = data.spectr[[Intensity]])
       # scaling integral
       data.spectr <- data.spectr %>%
         dplyr::mutate(sigmoid_Integ = abs(min(.data$sigmoid_Integ) - .data$sigmoid_Integ))
@@ -385,7 +382,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           ## by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
           integ.baseline.fit <-
             stats::lm(
-              single_Integ ~ stats::poly(get(B), degree = poly.degree),
+              single_Integ ~ stats::poly(get(B), degree = poly.degree,raw = TRUE),
               data = data.NoPeak
           )
           #
@@ -414,11 +411,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           } else {
             ## uncorrected double integral is `overwritten`
             data.spectr$sigmoid_Integ <-
-              switch(3-fn_units(unit = B.unit),
-                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 1e+4,
-                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 10,
-                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1]
-             )
+              fn_switch_integ(B = data.spectr[[B]],I = data.spectr$single_Integ_correct)
           }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
@@ -426,7 +419,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           ## Polynomial baseline fit:
           integ.baseline.fit <-
             stats::lm(
-              get(Intensity) ~ stats::poly(get(B), degree = poly.degree),
+              get(Intensity) ~ stats::poly(get(B), degree = poly.degree,raw = TRUE),
               data = data.NoPeak
           )
           #
@@ -454,11 +447,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
               )
           } else {
             data.spectr$sigmoid_Integ <-
-              switch(3-fn_units(unit = B.unit),
-                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 1e+4,
-                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1] * 10,
-                     pracma::cumtrapz(data.spectr[[B]],data.spectr$single_Integ_correct)[, 1]
-            )
+              fn_switch_integ(B = data.spectr[[B]],I = data.spectr$single_Integ_correct)
           }
         }
         ## ----------- finally re-scale the integrals => from 0 to max -----------

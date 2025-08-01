@@ -447,7 +447,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## + optimization
   #
   ## base message to display the progres of the intensity optimization:
-  msg.base <- "Intensities of simulated EPR spectral component(s) are currently\nbeing evaluated/optimized by  "
+  msg.base <-
+    "Intensities of simulated EPR spectral component(s) are currently\nbeing evaluated/optimized by  "
   #
   ## message + time, pointing to optimization start
   if (isTRUE(msg.optim.progress)) {
@@ -573,11 +574,16 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   end.tm <- Sys.time() # stop watch time, after :-)
   #
   ## ...and the message, pointing to the optimization end
-
     cat("\n") # or comment if using "message"
     cat("\r", # or replace by `message`
             "Done!"," elapsed time ",
-            round(as.numeric(difftime(time1 = end.tm, time2 = start.tm, units = "secs")), 3), " s","\n"
+            round(
+              as.numeric(difftime(
+                time1 = end.tm,
+                time2 = start.tm,
+                units = "secs"
+              )), 3
+            ), " s","\n"
     )
   }
   #
@@ -707,6 +713,17 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     }
   }
   #
+  ## function to switch/select integrals based on `B.unit`
+  fn_switch_integ <- function(u = B.unit,B,I){
+    result <-
+      switch(3 - fn_units(unit = u),
+             pracma::cumtrapz(x = B, y = I)[, 1] * 1e+4,
+             pracma::cumtrapz(x = B, y = I)[, 1] * 10,
+             pracma::cumtrapz(x = B, y = I)[, 1]
+      )
+    return(result)
+  }
+  #
   ## data substitution/renaming
   result_df_base <- data.specs.sim
   #
@@ -714,14 +731,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     result_df_base <- result_df_base %>%
       dplyr::group_by(.data[[var2nd.series]]) %>%
       dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
-                    switch(3-fn_units(unit = B.unit),
-                           pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
-                                     .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1] * 1e+4,
-                           pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
-                                     .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1] * 10,
-                           pracma::cumtrapz(.data[[paste0("B_", B.unit)]],
-                                     .data[[paste0(Intensity.sim,"_",LETTERS[d])]])[,1]
-      )
+                      fn_switch_integ(
+                        B = .data[[paste0("B_", B.unit)]],
+                        I = .data[[paste0(Intensity.sim,"_",LETTERS[d])]]
+                      )
     )
   }
   if (length(data.specs.orig.sim) > 1){
@@ -729,14 +742,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     result_df_base <- result_df_base %>%
       dplyr::group_by(.data[[var2nd.series]]) %>%
       dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
-                    switch(3-fn_units(unit = B.unit),
-                           pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                            .data[[paste0(Intensity.sim,"_aLL")]])[,1] * 1e+4,
-                           pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                            .data[[paste0(Intensity.sim,"_aLL")]])[,1] * 10,
-                           pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                            .data[[paste0(Intensity.sim,"_aLL")]])[,1]
-      )
+                      fn_switch_integ(
+                        B = .data[[paste0("B_",B.unit)]],
+                        I = .data[[paste0(Intensity.sim,"_aLL")]]
+                      )
     )
   }
   #
@@ -744,7 +753,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   rm(data.specs.sim)
   #
   #
-  ## ----------------------- AREAS AND RUSULTS ------------------------
+  ## ----------------------- AREAS AND RESULTS ------------------------
   #
   if (isFALSE(output.area.stat)){
     if (is.null(double.integ)){
@@ -758,14 +767,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
         result_df <- result_df %>%
           dplyr::group_by(.data[[var2nd.series]]) %>%
           dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
-                        switch(3-fn_units(unit = B.unit),
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                          .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 1e+4,
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                          .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 10,
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                          .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]
-          )
+                          fn_switch_integ(
+                            B = .data[[paste0("B_",B.unit)]],
+                            I = .data[[paste0(single.integ,"_",LETTERS[d])]]
+                          )
         )
       }
       #
@@ -773,14 +778,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
         result_df <- result_df %>%
           dplyr::group_by(.data[[var2nd.series]]) %>%
           dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
-                          switch(3-fn_units(unit = B.unit),
-                                 pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                  .data[[paste0(single.integ,"_aLL")]])[,1] * 1e+4,
-                                 pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                  .data[[paste0(single.integ,"_aLL")]])[,1] * 10,
-                                 pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                  .data[[paste0(single.integ,"_aLL")]])[,1]
-          )
+                          fn_switch_integ(
+                            B = .data[[paste0("B_",B.unit)]],
+                            I = .data[[paste0(single.integ,"_aLL")]]
+                          )
         )
       }
     }
@@ -815,14 +816,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       for (d in seq(data.specs.orig.sim)){
         result_df[[d]] <- result_df_base %>%
           dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
-                        switch(3-fn_units(unit = B.unit),
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 1e+4,
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1] * 10,
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                            .data[[paste0(single.integ,"_",LETTERS[d])]])[,1]
-            )
+                          fn_switch_integ(
+                            B = .data[[paste0("B_",B.unit)]],
+                            I = .data[[paste0(single.integ,"_",LETTERS[d])]]
+                          )
           ) %>%
           dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                              max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
@@ -838,14 +835,10 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       if (length(data.specs.orig.sim) > 1){
         result_df_Sim_aLL <- result_df_base %>%
           dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
-                        switch(3-fn_units(unit = B.unit),
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                .data[[paste0(single.integ,"_aLL")]])[,1] * 1e+4,
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                .data[[paste0(single.integ,"_aLL")]])[,1] * 10,
-                               pracma::cumtrapz(.data[[paste0("B_",B.unit)]],
-                                                .data[[paste0(single.integ,"_aLL")]])[,1]
-            )
+                          fn_switch_integ(
+                            B = .data[[paste0("B_",B.unit)]],
+                            I = .data[[paste0(single.integ,"_aLL")]]
+                          )
           ) %>%
           dplyr::summarize(Area_Sim_aLL = max(.data[[paste0(double.integ,"_aLL")]])) %>%
           dplyr::select(!dplyr::all_of(c(var2nd.series)))

@@ -115,7 +115,9 @@ Integrals <- NULL
 #
 ## B and y range to present integrated spectrum and baseline correction
 ## 1st entire y region
-data.B.region <- data.B.region <- c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
+data.B.region <-
+  data.B.region <-
+    c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
 #
 ## condition to present intensity region (which has the max integral ?)
 max.integs.vec <- sapply(slct.integs, function(m) max(data.spectra.integ[[m]]))
