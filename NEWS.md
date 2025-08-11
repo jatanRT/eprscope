@@ -1,3 +1,62 @@
+# eprscope 0.1.15
+
+## 2025-08-11
+
+### Bug Fixes/Critical Updates
+
+* reading of spectrometer binary files (`.DTA` and `.spc`) is currently 
+  under development (follow the commits at 
+  [feat/read_binar_spectrs](https://github.com/jatanRT/eprscope/tree/feat/read_binar_spectrs))
+  
+* functions to read instrumental spectrometer parameters: 
+  `readEPR_params_slct_...`, `readEPR_param_slct` and `readEPR_params_tabs` 
+  were completely updated in order to be ready for reading of binary 
+  spectrometer files
+  
+* several fixes and/or updates in documentation (functions, including
+  `Examples` + vignettes)
+  
+* magnetic flux density *B*-unit conversion (G &harr; mT) + *B*-range 
+  of the interactive/exported data frame of simulated and experimental
+  EPR spectrum in the `shinyApp01`/`plot_eval_ExpSim_app` are working
+  properly right now
+  
+* fixed bug in simultaneous reading of multiple files 
+  (see the `readEPR_Exp_Specs_multif`)  where due to missing *Q* values
+  (sensitivity factors) the EPR intensity was not correctly normalized 
+  and therefore `NA` values appeared
+  
+* if user wants to fix the value of a simulation parameter 
+  (see the `optim.params.init` argument), during the optimization/fitting
+  procedure by the `eval_sim_EPR_isoFit` function (i.e. the value will
+  be not optimized by the least-squares method), one can easily point
+  to index of the `optim.params.init` vector by the `optim.params.fix.id`
+  argument to keep the corresponding simulation parameter constant during
+  the fitting/optimization + this was additionally implemented
+  in the `eval_sim_EPR_isoFit_space` function (please, refer
+  to the function documentation)
+  
+### Updates
+
+* an option to export parameters of the interactively simulated
+  EPR spectrum as an initial `.R` script/code snippet was added
+  to `shinyApp01`/`plot_eval_ExpSim_app` in order to be ready
+  for the `eval_sim_EPR_isoFit` function, therefore user does not
+  have to write the code &rarr; this may speed up the analysis
+  of the EPR spectrum
+  
+* right now the covariance/correlation matrices can be returned as list
+  components/values by several fitting/optimization functions
+  like `eval_sim_EPR_isoFit`, `eval_kinR_EPR_modelFit`
+  and `eval_kinR_Eyring_GHS` + these matrices can be very nicely
+  visualized by 
+  the [corrplot](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) 
+  package and the corresponding `corrplot` function (see examples
+  in documentation of the above-mentioned functions)
+
+* `eval_integ_EPR_Spec` and `quantify_EPR_Sim_series` code cleaning &rarr;
+  simplified EPR spectrum integration code based on *B*-unit
+
 # eprscope 0.1.14
 
 ## 2025-05-11
