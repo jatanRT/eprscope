@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,27 @@
       <small>Source: <a href="https://github.com/jatanrt/eprscope/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.15" id="eprscope-0115">eprscope 0.1.15<a class="anchor" aria-label="anchor" href="#eprscope-0115"></a></h2>
+<div class="section level3">
+<h3 id="id_2025-0-1-15">2025-08-11<a class="anchor" aria-label="anchor" href="#id_2025-0-1-15"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-15">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-15"></a></h4>
+<ul><li><p>reading of spectrometer binary files (<code>.DTA</code> and <code>.spc</code>) is currently under development (follow the commits at <a href="https://github.com/jatanRT/eprscope/tree/feat/read_binar_spectrs" class="external-link">feat/read_binar_spectrs</a>)</p></li>
+<li><p>functions to read instrumental spectrometer parameters: <code>readEPR_params_slct_...</code>, <code>readEPR_param_slct</code> and <code>readEPR_params_tabs</code> were completely updated in order to be ready for reading of binary spectrometer files</p></li>
+<li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
+<li><p>magnetic flux density <em>B</em>-unit conversion (G ↔︎ mT) + <em>B</em>-range of the interactive/exported data frame of simulated and experimental EPR spectrum in the <code>shinyApp01</code>/<code>plot_eval_ExpSim_app</code> are working properly right now</p></li>
+<li><p>fixed bug in simultaneous reading of multiple files (see the <code>readEPR_Exp_Specs_multif</code>) where due to missing <em>Q</em> values (sensitivity factors) the EPR intensity was not correctly normalized and therefore <code>NA</code> values appeared</p></li>
+<li><p>if user wants to fix the value of a simulation parameter (see the <code>optim.params.init</code> argument), during the optimization/fitting procedure by the <code>eval_sim_EPR_isoFit</code> function (i.e. the value will be not optimized by the least-squares method), one can easily point to index of the <code>optim.params.init</code> vector by the <code>optim.params.fix.id</code> argument to keep the corresponding simulation parameter constant during the fitting/optimization + this was additionally implemented in the <code>eval_sim_EPR_isoFit_space</code> function (please, refer to the function documentation)</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-15">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-15"></a></h4>
+<ul><li><p>an option to export parameters of the interactively simulated EPR spectrum as an initial <code>.R</code> script/code snippet was added to <code>shinyApp01</code>/<code>plot_eval_ExpSim_app</code> in order to be ready for the <code>eval_sim_EPR_isoFit</code> function, therefore user does not have to write the code → this may speed up the analysis of the EPR spectrum</p></li>
+<li><p>right now the covariance/correlation matrices can be returned as list components/values by several fitting/optimization functions like <code>eval_sim_EPR_isoFit</code>, <code>eval_kinR_EPR_modelFit</code> and <code>eval_kinR_Eyring_GHS</code> + these matrices can be very nicely visualized by the <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html" class="external-link">corrplot</a> package and the corresponding <code>corrplot</code> function (see examples in documentation of the above-mentioned functions)</p></li>
+<li><p><code>eval_integ_EPR_Spec</code> and <code>quantify_EPR_Sim_series</code> code cleaning → simplified EPR spectrum integration code based on <em>B</em>-unit</p></li>
+</ul></div>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.14" id="eprscope-0114">eprscope 0.1.14<a class="anchor" aria-label="anchor" href="#eprscope-0114"></a></h2>
 <div class="section level3">
