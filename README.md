@@ -106,7 +106,7 @@ required and summarized into the following steps:
     install.packages("tidyverse",dependencies = TRUE)
     # ...+ additional required packages with dependencies
     install.packages(
-      c("DT","vctrs","npreg","patchwork","kableExtra",
+      c("DT","bookdown","npreg","patchwork","kableExtra",
         "htmlwidgets","webshot2","tinytable","gsignal",
         "shinythemes","future","future.apply","corrplot",
         "progressr","qqplotr","animation","openxlsx"),

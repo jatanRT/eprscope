@@ -34,7 +34,6 @@ options(
 ```{r setup, include=FALSE}
 
 library(eprscope)
-library(icons)
 library(knitr)
 library(htmlwidgets)
 library(DT)

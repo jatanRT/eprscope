@@ -713,7 +713,7 @@ head(triarylam.decay.dat.wide)
 
 ```
 
-Even at the first sight, such data structure might look more organized, they are not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] ➨ we have to filter/select the strings:
+Even at the first sight, such data structure might look more organized, it is not. Especially, the high number of columns makes it a little bit cluttered in comparison to `triarylam.decay.dat$df` . Additionally, all those columns actually represent only one variable, which is the derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot and/or analyze the EPR spectra at different times we would need a different strategies how to do it. For example, to filter/select and plot spectra in the time span of $\small (200-300)\,\mathrm{s}$, we must now the names of the corresponding columns[^3] ➨ we have to filter/select the strings:
 
 [^3]: Instead of names like `time_s_...` with times in seconds, we might use just numbers. However, in such case it is actually not clear what those values do correspond to. Additionally, column headers must be expressed by names/strings, not by values.
 
@@ -900,7 +900,7 @@ dimer.kinetics.01$ra$plot.rqq
 
 ```
 
-However, it is evident that its dispersion ➨ variance and the standard deviation of residuals are slightly high along the fitted/predicted values:
+However, it is evident that its dispersion ➨ variance and the standard deviation of residuals are slightly high along the time-axis (see the kinetic model fit) :
 
 ```{r residual-variance}
 
@@ -943,7 +943,7 @@ names(dimer.kinetics.01)
 
 ```
 
-They are described in details in documentation of the `eval_kinR_EPR_modelFit()` function and in summary correspond to data frames (`df` + `df.coeffs`), plot object (`plot` , which is also a list) , additional lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) and numeric vector (`N.converg`). Many ![](RcoreLogo.png){width="16" height="16"} package functions return value(s) in the form of list(s).
+They are described in details in documentation of the `eval_kinR_EPR_modelFit()` function and in summary correspond to data frames (`df` + `df.coeffs`), plot object (`plot` , which is also a list) , additional lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) , matrices ( `cov.coeffs` , `cor.coeffs` , `cov.df` , `cor.df`) and numeric vector (`N.converg`). Many ![](RcoreLogo.png){width="16" height="16"} package functions return value(s) in the form of list(s).
 
 As shown above (see Section \@ref(data-frames)), to select/view a specific data frame column, one can use two types of operators: `$` (dollar sign) and `[]` or `[[]]` (square brackets). The same applies for the lists as it was depicted in several code snippets/code chunks above, using the `$` operator. For example to show/select the vector, corresponding to residual sum of squares at each iteration/evaluation (for the kinetic model fit), we apply:
 
