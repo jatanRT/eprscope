@@ -282,7 +282,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 
   <dt>abic</dt>
 <dd><p>A list consisting of Akaike and Bayesian information criteria (AIC &amp; BIC) vector (<code>abic.vec</code>)
-  and <code>message</code>, denoting the probability distribution of residuals/errors, applied to evaluate
+  and <code>message</code>, denoting the distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
   the better the fit. Please, refer to the <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>.</p></dd>
 
@@ -414,8 +414,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00011872565</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
-<span class="r-in"><span><span class="co">## information about the residuals +</span></span></span>
-<span class="r-in"><span><span class="co">## + probability distribution</span></span></span>
+<span class="r-in"><span><span class="co">##  + information about the residuals distribution</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1522.9038 -1517.8172</span>
@@ -463,8 +462,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00063538776</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC) +</span></span></span>
-<span class="r-in"><span><span class="co">## + information about the residuals</span></span></span>
-<span class="r-in"><span><span class="co">## probability distribution</span></span></span>
+<span class="r-in"><span><span class="co">## + information about the residuals distribution</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1187.8203 -1182.7336</span>
