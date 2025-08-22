@@ -43,7 +43,7 @@ data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 (gauss, \strong{default}) or \code{B.unit = "mT"}/\code{"T"} (millitesla/tesla).}
 
 \item{Blim}{Numeric vector, magnetic flux density in \code{mT}/\code{G}
-corresponding to lower and upper visual limit of the selected \eqn{B}-region,
+corresponding to lower and upper \strong{visual limit} of the selected \eqn{B}-region,
 such as \code{Blim = c(3495.4,3595.4)}. \strong{Default}: \code{Blim = NULL} (corresponding to the entire
 \eqn{B}-range of EPR spectrum). \strong{This does not correspond to simulation fit data region !}.
 If narrower \eqn{B}-region (in comparison to the original one) is required to fit the EPR spectrum,
@@ -201,7 +201,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   the experimental spectrum. Contrary, no clear correlation between the residuals and the experimental/fitted
   EPR intensities must be visible. Therefore, such correlation should be ideally close to \code{0}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
-  and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
+  and \code{message}, denoting the residuals/errors distribution, applied to evaluate
   those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
   the better the fit. Please, refer to the \code{\link{eval_ABIC_forFit}}.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
@@ -384,8 +384,7 @@ tempo.test.sim.fit.b$ra$plot.histDens
 tempo.test.sim.fit.b$ra$sd
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
-## information about the residuals +
-## + probability distribution
+## + information about the residuals distribution
 tempo.test.sim.fit.b$abic
 #
 ## fitting of the aminoxyl EPR spectrum
@@ -423,8 +422,7 @@ tempo.test.sim.fit.c$best.fit.params
 tempo.test.sim.fit.c$N.converg
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
-## information about the residuals +
-## + probability distribution
+## + information about the residuals distribution
 tempo.test.sim.fit.c$abic
 
 

@@ -4,7 +4,7 @@
 \alias{eval_ABIC_forFit}
 \title{General Ranking of Models/Fits Using the AIC and BIC Metrics}
 \usage{
-eval_ABIC_forFit(data.fit, residuals = NULL, k, rs.prob.distro = "auto")
+eval_ABIC_forFit(data.fit, residuals = NULL, k, residuals.distro = "auto")
 }
 \arguments{
 \item{data.fit}{Data frame object, usually containing variables/columns like \code{experiment},
@@ -19,30 +19,32 @@ on the \code{data.fit} argument (usually \code{residuals = "Residuals"} or \code
 \item{k}{Numeric value identical to number of parameters used for the model/fit
 (see e.g. \code{Examples} in the \code{\link{eval_kinR_EPR_modelFit}} where \code{k = 2}).}
 
-\item{rs.prob.distro}{Character string, corresponding to proposed residuals/errors probability distribution.
-If set to \strong{default} (\code{rs.prob.distro = "auto"}), it automatically decides which distribution
-(Normal/Gaussian or Student's t-distribution) fits the best to residuals/errors based on the implemented
+\item{residuals.distro}{Character string, corresponding to proposed probability distribution that describes
+the residuals/errors appearance. If set to \strong{default} (\code{residuals.distro = "auto"}),
+it automatically decides which distribution (Normal/Gaussian, Student's t-distribution or Cauchy) fits
+the best to residuals/errors based on the implemented
 AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see \code{\link[stats]{shapiro.test}}).
 This is particularly suitable for the situation when residual analysis detects
 heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
-distributions like: \code{rs.prob.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
-\code{"t-distribution"} (\code{"t-distro"}).}
+distributions like: \code{residuals.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
+\code{"t-distribution"} (\code{"t-distro"}) as well as \code{"(C)cauchy"}.}
 }
 \value{
 Function returns a list with the following components:
   \describe{
   \item{abic.vec}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
-  \item{message}{Sentence (message), describing the residuals/errors
-  probability distribution, which has been proposed for the AIC and BIC calculation (see also
-  the \code{rs.prob.distro} argument).}
+  \item{message}{Sentence (message), describing the residuals/errors appearance by the
+  probability distribution which has been proposed for the AIC and BIC calculation (see also
+  the \code{residuals.distro} argument). Such information is additionally supported by the Shapiro-Wilk test,
+  whether the distribution is normal or not.}
   }
 }
 \description{
 When comparing different (simulation) fits for the same experimental data (see
   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}},
   \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), they can be scored/ranked by different
-  metrics (e.g. minimum sum of residual squares or standard deviation of residuals), including
+  metrics (e.g. by the minimum sum of residual squares or standard deviation of residuals), including
   Akaike and Bayesian Information Criteria (\code{\link[stats]{AIC}} and BIC, respectively).
   These are also applied for the best model selection in machine learning (refer to e.g.
   \href{https://www.modernstatisticswithr.com/mlchapter.html}{Predictive Modelling and Machine Learning} or
@@ -56,7 +58,7 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   modelling/fitting approaches are used, with the attempt to identify or select the best model/fit. Therefore,
   for such purpose, one tries to minimize the errors/residuals more and more with each model. Or to put it another way,
   \strong{there is an information loss when the model/fit approximates the reality} and a good model minimizes
-  those losses. The evaluation of AIC and BIC actually approaches the problem from the other site,
+  those losses. The evaluation of AIC and BIC actually approaches the problem from the other side,
   because it uses the technique called \strong{maximum likelihood estimate (MLE)}. The idea is to maximize the chance
   that each observation in the sample follows a pre-selected distribution with specific
   set of parameters (corresponding to a model/fit). For practical reasons a logarithmic likelihood
@@ -77,15 +79,18 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   use a \strong{standard assumption that the model and the data residuals/errors are identically distributed.}
   Therefore, \strong{the residuals/errors are applied as a proxy for the MLE/\eqn{LL}} (see e.g. Rossi et al. (2020)
   and Kumar (2023) in the \code{References}). Evaluation of the latter, in the actual function, proceeds through \code{sum}
-  of the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution)
-  and of the \code{\link[stats:TDist]{stats::dt}} (for the Student's t-distribution), using the \code{log = TRUE}
-  option. For t-distribution the \code{df}/\eqn{\nu} parameter is unknown, therefore it is optimized
-  by the above-described \eqn{LL} as well as by the \code{\link[stats]{optimize}} function. Both probability distributions
+  of three main probability distributions for residuals (additional distributions might be added in the newer package versions):
+  1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
+  (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
+  using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu}
+  parameter is unknown, therefore it is optimized by the above-described \eqn{LL}
+  as well as by the \code{\link[stats]{optimize}} function.s All probability distributions
   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
-  Consequently, the function may automatically (see the argument \code{rs.prob.distro}) decide which distribution
-  fits the residuals/errors the best, based on the lower AIC, BIC values, additionally supported by the Shapiro-Wilk
-  Normality test (\code{\link[stats]{shapiro.test}}). \strong{It is recommended to evaluate/apply both information criteria}.
+  Consequently, the function may automatically (see the argument \code{residuals.distro}) decide which distribution
+  fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
+  normality test (\code{\link[stats]{shapiro.test}}), providing the information whether the residuals distribution is normal
+  (or not at all). \strong{It is recommended to evaluate/apply both information criteria}.
   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
   the BIC is in favor of simpler models because it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models
   than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the \code{References}).
@@ -99,7 +104,7 @@ calc.abic.list.01 <-
     data.fit = triaryl_model_kin_fit_01$df,
     residuals = "residuals",
     k = 2,
-    rs.prob.distro = "auto"
+    residuals.distro = "auto"
  )
 #
 ## AIC and BIC values
@@ -115,7 +120,7 @@ calc.abic.list.01 <-
     data.fit = best.sim.fit.df,
     residuals = "Errors",
     k = 8,
-    rs.prob.distro = "t-distro"
+    residuals.distro = "t-distro"
   )
 #
 ## for additional applications please,

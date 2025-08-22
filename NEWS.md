@@ -43,7 +43,7 @@
   to `shinyApp01`/`plot_eval_ExpSim_app` in order to be ready
   for the `eval_sim_EPR_isoFit` function, therefore user does not
   have to write the code &rarr; this may speed up the analysis
-  of the EPR spectrum
+  of an EPR spectrum
   
 * right now the covariance/correlation matrices can be returned as list
   components/values by several fitting/optimization functions

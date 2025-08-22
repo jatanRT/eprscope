@@ -475,7 +475,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   }
   #
   cat("\n")
-  cat("\r",msg.main,toupper(processing),"  processing ......","\n")
+  cat("\r",msg.main,toupper(processing),"  processing ...","\n")
   #
   ## start time
   start.tm <- Sys.time()

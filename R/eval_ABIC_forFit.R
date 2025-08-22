@@ -9,7 +9,7 @@
 #'   When comparing different (simulation) fits for the same experimental data (see
 #'   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}},
 #'   \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), they can be scored/ranked by different
-#'   metrics (e.g. minimum sum of residual squares or standard deviation of residuals), including
+#'   metrics (e.g. by the minimum sum of residual squares or standard deviation of residuals), including
 #'   Akaike and Bayesian Information Criteria (\code{\link[stats]{AIC}} and BIC, respectively).
 #'   These are also applied for the best model selection in machine learning (refer to e.g.
 #'   \href{https://www.modernstatisticswithr.com/mlchapter.html}{Predictive Modelling and Machine Learning} or
@@ -24,7 +24,7 @@
 #'   modelling/fitting approaches are used, with the attempt to identify or select the best model/fit. Therefore,
 #'   for such purpose, one tries to minimize the errors/residuals more and more with each model. Or to put it another way,
 #'   \strong{there is an information loss when the model/fit approximates the reality} and a good model minimizes
-#'   those losses. The evaluation of AIC and BIC actually approaches the problem from the other site,
+#'   those losses. The evaluation of AIC and BIC actually approaches the problem from the other side,
 #'   because it uses the technique called \strong{maximum likelihood estimate (MLE)}. The idea is to maximize the chance
 #'   that each observation in the sample follows a pre-selected distribution with specific
 #'   set of parameters (corresponding to a model/fit). For practical reasons a logarithmic likelihood
@@ -45,15 +45,18 @@
 #'   use a \strong{standard assumption that the model and the data residuals/errors are identically distributed.}
 #'   Therefore, \strong{the residuals/errors are applied as a proxy for the MLE/\eqn{LL}} (see e.g. Rossi et al. (2020)
 #'   and Kumar (2023) in the \code{References}). Evaluation of the latter, in the actual function, proceeds through \code{sum}
-#'   of the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution)
-#'   and of the \code{\link[stats:TDist]{stats::dt}} (for the Student's t-distribution), using the \code{log = TRUE}
-#'   option. For t-distribution the \code{df}/\eqn{\nu} parameter is unknown, therefore it is optimized
-#'   by the above-described \eqn{LL} as well as by the \code{\link[stats]{optimize}} function. Both probability distributions
+#'   of three main probability distributions for residuals (additional distributions might be added in the newer package versions):
+#'   1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
+#'   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
+#'   using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu}
+#'   parameter is unknown, therefore it is optimized by the above-described \eqn{LL}
+#'   as well as by the \code{\link[stats]{optimize}} function.s All probability distributions
 #'   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
 #'   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
-#'   Consequently, the function may automatically (see the argument \code{rs.prob.distro}) decide which distribution
-#'   fits the residuals/errors the best, based on the lower AIC, BIC values, additionally supported by the Shapiro-Wilk
-#'   Normality test (\code{\link[stats]{shapiro.test}}). \strong{It is recommended to evaluate/apply both information criteria}.
+#'   Consequently, the function may automatically (see the argument \code{residuals.distro}) decide which distribution
+#'   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
+#'   normality test (\code{\link[stats]{shapiro.test}}), providing the information whether the residuals distribution is normal
+#'   (or not at all). \strong{It is recommended to evaluate/apply both information criteria}.
 #'   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
 #'   the BIC is in favor of simpler models because it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models
 #'   than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the \code{References}).
@@ -102,23 +105,25 @@
 #'   \strong{Default}: \code{residuals = NULL}.
 #' @param k Numeric value identical to number of parameters used for the model/fit
 #'   (see e.g. \code{Examples} in the \code{\link{eval_kinR_EPR_modelFit}} where \code{k = 2}).
-#' @param rs.prob.distro Character string, corresponding to proposed residuals/errors probability distribution.
-#'   If set to \strong{default} (\code{rs.prob.distro = "auto"}), it automatically decides which distribution
-#'   (Normal/Gaussian or Student's t-distribution) fits the best to residuals/errors based on the implemented
+#' @param residuals.distro Character string, corresponding to proposed probability distribution that describes
+#'   the residuals/errors appearance. If set to \strong{default} (\code{residuals.distro = "auto"}),
+#'   it automatically decides which distribution (Normal/Gaussian, Student's t-distribution or Cauchy) fits
+#'   the best to residuals/errors based on the implemented
 #'   AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see \code{\link[stats]{shapiro.test}}).
 #'   This is particularly suitable for the situation when residual analysis detects
 #'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 #'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
-#'   distributions like: \code{rs.prob.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
-#'   \code{"t-distribution"} (\code{"t-distro"}).
+#'   distributions like: \code{residuals.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
+#'   \code{"t-distribution"} (\code{"t-distro"}) as well as \code{"(C)cauchy"}.
 #'
 #'
 #' @returns Function returns a list with the following components:
 #'   \describe{
 #'   \item{abic.vec}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
-#'   \item{message}{Sentence (message), describing the residuals/errors
-#'   probability distribution, which has been proposed for the AIC and BIC calculation (see also
-#'   the \code{rs.prob.distro} argument).}
+#'   \item{message}{Sentence (message), describing the residuals/errors appearance by the
+#'   probability distribution which has been proposed for the AIC and BIC calculation (see also
+#'   the \code{residuals.distro} argument). Such information is additionally supported by the Shapiro-Wilk test,
+#'   whether the distribution is normal or not.}
 #'   }
 #'
 #'
@@ -131,7 +136,7 @@
 #'     data.fit = triaryl_model_kin_fit_01$df,
 #'     residuals = "residuals",
 #'     k = 2,
-#'     rs.prob.distro = "auto"
+#'     residuals.distro = "auto"
 #'  )
 #' #
 #' ## AIC and BIC values
@@ -147,7 +152,7 @@
 #'     data.fit = best.sim.fit.df,
 #'     residuals = "Errors",
 #'     k = 8,
-#'     rs.prob.distro = "t-distro"
+#'     residuals.distro = "t-distro"
 #'   )
 #' #
 #' ## for additional applications please,
@@ -163,26 +168,26 @@
 eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and experimental values
                              residuals = NULL, # string for column name
                              k, # number of params for the model/fit
-                             rs.prob.distro = "auto") { ## or "t-","(S)student's",
+                             residuals.distro = "auto") { ## or "t-","(S)student's",
                              ## or "normal", or "automatic", "gauss"
   #
   ## 'Temporary' processing variables
   #
   #
-  ## if `rs.prob.distro` defined by letter case - upper
+  ## if `residuals.distro` defined by letter case - upper
   ## convert it automatically into lower:
-  if (grepl("^[[:upper:]]+",rs.prob.distro)) {
-    rs.prob.distro <- tolower(rs.prob.distro)
+  if (grepl("^[[:upper:]]+",residuals.distro)) {
+    residuals.distro <- tolower(residuals.distro)
   }
   #
-  ## vector string to check `rs.prob.distro`
-  rs.prob.distro.string.vec <- c("norm","t-dist","student","gauss","auto")
+  ## vector string to check `residuals.distro`
+  residuals.distro.string.vec <- c("norm","t-dist","student","gauss","auto","cauchy")
   #
-  ## check the `rs.prob.distro` type:
-  if (!any(grepl(paste(rs.prob.distro.string.vec,collapse = "|"),rs.prob.distro))) {
+  ## check the `residuals.distro` type:
+  if (!any(grepl(paste(residuals.distro.string.vec,collapse = "|"),residuals.distro))) {
     stop(' Please, provide the name for the proposed distribution\n
          of errors/residuals, like "normal" or "gaussian" or "automatic",\n
-         "t-distribution"...etc, refer to the `rs.prob.distro` argument !! ')
+         "t-distribution","cauchy"...etc, refer to the `residuals.distro` argument !! ')
   }
   #
   ## check column of `data.fit` like "residuals":
@@ -208,7 +213,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
         resids,
         mean = mean(resids),
         sd = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
-        ## because the MaxLikelihood uses `/n` and sd `/n-1`
+        ## because the MaxLikelihood uses `/n` and not sd `/n-1`
         log = TRUE
       )
     )
@@ -237,10 +242,24 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   ## ...and the optimized df (degree of freedom parameter)
   log_likehood_t_nu <- round(opt_logLik_t$maximum)
   #
+  ## ----------------------- Cauchy distro (`dcauchy()`) --------------------------
+  #
+  log_likehood_cauchy <-
+    sum(
+      stats::dcauchy(
+        resids,
+        location = mean(resids),
+        scale = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
+        ## because the MaxLikelihood uses `/n` and not sd `/n-1`
+        log = TRUE
+      )
+    )
+  #
+  #
   ## compare likelihoods, if the same => set automatically to "normal"
-  ## t-distrobution reaches normal for N >= 30
+  ## t-distribution reaches normal for N >= 30
   if (log_likehood_norm == log_likehood_t) {
-    rs.prob.distro <- "normal"
+    residuals.distro <- "normal"
   }
   #
   ## =========================== CALCULATION OF AIC and BIC ==============================
@@ -265,8 +284,11 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   ## strings for t-Distro (Student)
   t.string.vec <- c("t-dist","student")
   #
-  if (any(grepl(paste(norm.string.vec,collapse = "|"),rs.prob.distro)) ||
-      grepl("auto",rs.prob.distro)) {
+  ## string for cauchy
+  cauchy.string.vec <- c("cauch")
+  #
+  if (any(grepl(paste(norm.string.vec,collapse = "|"),residuals.distro)) ||
+      grepl("auto",residuals.distro)) {
     #
     norm.abic.vec <- stats::setNames(
       abic_fun(
@@ -275,8 +297,8 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     )
     #
   }
-  if (any(grepl(paste(t.string.vec,collapse = "|"),rs.prob.distro)) ||
-      grepl("auto",rs.prob.distro)) {
+  if (any(grepl(paste(t.string.vec,collapse = "|"),residuals.distro)) ||
+      grepl("auto",residuals.distro)) {
     #
     t.abic.vec <- stats::setNames(
       abic_fun(
@@ -285,23 +307,35 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     )
     #
   }
+  if (any(grepl(paste(cauchy.string.vec,collapse = "|"),residuals.distro)) ||
+      grepl("auto",residuals.distro)) {
+    #
+    cauch.abic.vec <- stats::setNames(
+      abic_fun(
+        logLik = log_likehood_cauchy
+      ), c("cauchaic","cauchbic")
+    )
+    #
+  }
   #
   ## ------------------------ AIC/BIC Vectors for Comparison -------------------------------
   #
-  if (grepl("auto",rs.prob.distro)) {
+  if (grepl("auto",residuals.distro)) {
     #
     ## AIC vector for comparison
     a.ic.compar.vec <- stats::setNames(
       c(unname(norm.abic.vec[1]),
-        unname(t.abic.vec[1])
-      ),c("normaic","taic")
+        unname(t.abic.vec[1]),
+        unname(cauch.abic.vec[1])
+      ),c("normaic","taic","cauchaic")
     )
     #
     ## BIC vector for comparison
     b.ic.compar.vec <- stats::setNames(
       c(unname(norm.abic.vec[2]),
-        unname(t.abic.vec[2])
-      ),c("normbic","tbic")
+        unname(t.abic.vec[2]),
+        unname(cauch.abic.vec[2])
+      ),c("normbic","tbic","cauchbic")
     )
     #
     ## find the index with the lowest AIC and BIC
@@ -312,11 +346,11 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     if (a.ic.min.idx != b.ic.min.idx) {
       stop('The indices for both AIC and BIC minimal values\n
            do not correspond. No decision can be made !!\n
-           Please, specify the `rs.prob.distro` argument accordingly.\n
+           Please, specify the `residuals.distro` argument accordingly.\n
            No "automatic" can be used !! ')
     }
     #
-    ## take the name of that element
+    ## take the names of that elements
     a.ic.min.name <- names(a.ic.compar.vec)[a.ic.min.idx]
     b.ic.min.name <- names(b.ic.compar.vec)[b.ic.min.idx]
     #
@@ -343,6 +377,13 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
           " Additionally supported by the Shapiro-Wilk test."
         )
       )
+    } else if (grepl("cauch",name) & sw.test < 0.01) {
+      return(
+        paste0(
+          "the Cauchy distribution of residuals, ",
+          " additionally supported by the Shapiro-Wilk test."
+        )
+      )
     } else if (grepl("norm",name)) {
       return("the normal distribution of residuals. ")
     } else if (grepl("t",name)) {
@@ -352,24 +393,28 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
           sprintf("with %d degrees of freedom.",log_likehood_t_nu)
         )
       )
+    } else if (grepl("cauch",name)) {
+      return("the Cauchy distribution of residuals. ")
     }
   }
   #
   ## "root" message
   root.msg <- "Information criteria evaluated using "
   #
-  ## function to switch between different options of `rs.prob.distro`
+  ## function to switch between different options of `residuals.distro`
   distro_results_switch <- function(distro) {
     if (grepl("norm",distro) || grepl("gauss",distro)) {
       return(1)
     } else if (grepl("t-dist",distro) || grepl("student",distro)) {
       return(0)
+    } else if (grepl("cauch",distro)) {
+      return(2)
     }
   }
   #
   ## ======================== RESULTS =============================
   #
-  if (grepl("auto",rs.prob.distro)) {
+  if (grepl("auto",residuals.distro)) {
     result.list <-
       list(
         abic.vec = c(
@@ -386,12 +431,13 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     result.list <-
       list(
         abic.vec = switch(
-          2 - distro_results_switch(distro = rs.prob.distro),
+          3 - distro_results_switch(distro = residuals.distro),
+          unname(cauch.abic.vec),
           unname(norm.abic.vec),
           unname(t.abic.vec)
         ),
         message = strwrap(
-          paste0(root.msg,abic_name_msg_fun(name = rs.prob.distro)),
+          paste0(root.msg,abic_name_msg_fun(name = residuals.distro)),
           width = 45
         )
       )

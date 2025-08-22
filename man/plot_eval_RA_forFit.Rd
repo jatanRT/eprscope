@@ -79,7 +79,7 @@ Three visual diagnostic tools (based on the \href{https://ggplot2.tidyverse.org/
   different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated Values relation.
   For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
   variance over all predicted/fitted values. 2. \emph{Sample Quantiles vs Theoretical Quantiles} (Q-Q plot)
-  shows, whether the "appearence" of residuals can be described by the normal probability distribution.
+  shows, whether the appearance of residuals can be described by the normal probability distribution.
   3. The latter is combined with a more detailed information about the distribution of residuals
   by the \strong{histogram} (\code{\link[ggplot2]{geom_histogram}}) as well as by the \strong{probability density}
   (\code{\link[ggplot2]{geom_density}}including the residuals mean value, and median which in ideal case equal to \code{0}).

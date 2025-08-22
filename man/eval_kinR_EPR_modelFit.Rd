@@ -161,7 +161,7 @@ List with the following components is available:
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
-  and \code{message}, denoting the probability distribution of residuals/errors, applied to evaluate
+  and \code{message}, denoting the distribution of residuals/errors, applied to evaluate
   those criteria. To be used when comparing different kinetic models. The lower the (negative) values,
   the better the fit. Please, refer to the \code{\link{eval_ABIC_forFit}}.}
   \item{cov.df}{Covariance \code{matrix} of a data frame, consisting of \code{qvarR} (e.g. double integral/Area - experiment),
@@ -258,8 +258,7 @@ triaryl_model_kin_fit_01$ra$plot.histDens
 triaryl_model_kin_fit_01$ra$sd
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
-## information about the residuals +
-## + probability distribution
+##  + information about the residuals distribution
 triaryl_model_kin_fit_01$abic
 #
 ## take the same experimental data and perform fit
@@ -292,8 +291,7 @@ triaryl_model_kin_fit_02$ra$plot.rqq
 triaryl_model_kin_fit_02$ra$sd
 #
 ## Akaike and Bayesian Criteria (AIC & BIC) +
-## + information about the residuals
-## probability distribution
+## + information about the residuals distribution
 triaryl_model_kin_fit_02$abic
 
 
