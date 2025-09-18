@@ -9,10 +9,11 @@
   Alternatively, the rendering can be also performed
   in the terminal
   or R console. The .pdf format requires
-  one of the \(\LaTeX\) distributions: {tinytex} (R package),
-  \(\TeX\) Live or \(Mik\TeX\).
-  The complete, above-described, R-environmental setup is also available
-  at Posit Cloud.'><title>Basic Quarto Reproducible Project File/Folder Structure for EPR Reports — create_qmdReport_proj • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Basic Quarto Reproducible Project File/Folder Structure for EPR Reports — create_qmdReport_proj"><meta property="og:description" content='Creating files and folders for the basic Quarto project having
+  one of the \(L_{A}TeX\) distributions: {tinytex} (R package),
+  \(TeX\) Live or \(MikTeX\).
+  The complete, above-described R-environmental setup is also available
+  at Posit Cloud or at CoCalc,
+  which a is platform for collaborative calculations and data science.'><title>Basic Quarto Reproducible Project File/Folder Structure for EPR Reports — create_qmdReport_proj • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Basic Quarto Reproducible Project File/Folder Structure for EPR Reports — create_qmdReport_proj"><meta property="og:description" content='Creating files and folders for the basic Quarto project having
   the structure shown in Details and corresponding to reproducible report with processing and analysis of EPR data.
   The main .qmd ("quarto markdown") file, wd.subdir.name.qmd, is editable
   (so do the additional files as well) and used for rendering. The latter can be done directly within
@@ -22,10 +23,11 @@
   Alternatively, the rendering can be also performed
   in the terminal
   or R console. The .pdf format requires
-  one of the \(\LaTeX\) distributions: {tinytex} (R package),
-  \(\TeX\) Live or \(Mik\TeX\).
-  The complete, above-described, R-environmental setup is also available
-  at Posit Cloud.'><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
+  one of the \(L_{A}TeX\) distributions: {tinytex} (R package),
+  \(TeX\) Live or \(MikTeX\).
+  The complete, above-described R-environmental setup is also available
+  at Posit Cloud or at CoCalc,
+  which a is platform for collaborative calculations and data science.'><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
 </script><!--
 <script>
   (function () {
@@ -90,10 +92,11 @@
   Alternatively, the rendering can be also performed
   in the <a href="https://quarto.org/docs/computations/r.html" class="external-link">terminal</a>
   or <a href="https://quarto-dev.github.io/quarto-r/" class="external-link">R console</a>. The <code>.pdf</code> format requires
-  one of the \(\LaTeX\) distributions: <a href="https://yihui.org/tinytex/" class="external-link"><code>{tinytex}</code></a> (R package),
-  <a href="https://tug.org/texlive/" class="external-link">\(\TeX\) Live</a> or <a href="https://miktex.org/" class="external-link">\(Mik\TeX\)</a>.
-  The complete, above-described, R-environmental setup is also available
-  at <a href="https://posit.cloud/" class="external-link">Posit Cloud</a>.</p>
+  one of the \(L_{A}TeX\) distributions: <a href="https://yihui.org/tinytex/" class="external-link"><code>{tinytex}</code></a> (R package),
+  <a href="https://tug.org/texlive/" class="external-link">\(TeX\) Live</a> or <a href="https://miktex.org/" class="external-link">\(MikTeX\)</a>.
+  The complete, above-described R-environmental setup is also available
+  at <a href="https://posit.cloud/" class="external-link">Posit Cloud</a> or at <a href="https://cocalc.com/features" class="external-link">CoCalc</a>,
+  which a is platform for collaborative calculations and data science.</p>
     </div>
 
     <div class="section level2">
@@ -155,11 +158,11 @@ is not the preferred IDE of your choice, set <code>Rproj.init = FALSE</code>.</p
 becomes (initiated by the <code><a href="https://usethis.r-lib.org/reference/use_git.html" class="external-link">use_git</a></code>) version-controlled,
 using the <a href="https://git-scm.com/book/en/v2/Getting-Started-What-is-Git" class="external-link">git system</a>. PLEASE, FOLLOW
 THE R CONSOLE PROMPT and select whether to commit your changes immediately or later.
-<strong>Default</strong>: <code>git.init = FALSE</code>. This is meant to be an option either for novice users
+<strong>Default</strong>: <code>git.init = FALSE</code>. The latter is meant to be an option either for novice users
 or for those who do not want track changes within the repository by the <code>git</code>. Instead, they prefer
 cloud storage services like
 <a href="https://nextcloud.com/" class="external-link">nexcloud</a>/<a href="https://owncloud.com/" class="external-link">owncloud</a>/
-<a href="https://osf.io/" class="external-link">Open Science Framework</a>...etc., supporting version (history of changes) control.</p></dd>
+<a href="https://osf.io/" class="external-link">Open Science Framework</a>...etc., supporting version control (history of changes).</p></dd>
 
 </dl></div>
     <div class="section level2">
