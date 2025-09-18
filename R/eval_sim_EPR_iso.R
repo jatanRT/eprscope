@@ -44,8 +44,8 @@
 #'   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
 #'   is defined individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
 #'   The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
-#'   taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups,
-#'   as well as their natural abundance (if \code{natur.abund = TRUE}).
+#'   taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups (please, also
+#'   refer to the \code{\link{plot_eval_EPRtheo_mltiplet}}), as well as their natural abundance (if \code{natur.abund = TRUE}).
 #'
 #'
 #'
@@ -226,7 +226,42 @@
 #'   Intensity.sim = "single_Integ",
 #'   plot.sim.interact = TRUE
 #'  )
-#'
+#' #
+#' ## simulation of methyl-viologen radical cation (MV*+)
+#' ## as reported in following papers:
+#' ## https://doi.org/10.1039/C5CP04259C (PCCP 2015)
+#' ## https://doi.org/10.1021/ja00297a006 (JACS 1985)
+#' ## https://doi.org/10.1021/j150668a021 (JPC 1984)
+#' ## https://doi.org/10.1016/0022-2364(80)90258-9
+#' ## (J MAGN RESON 1969)
+#' ## additionally, showing time (in seconds) spent
+#' ## for the computation/simulation (by the `system.time()`)
+#' system.time(
+#'   methylViol.rad.cat.sim <-
+#'     eval_sim_EPR_iso(
+#'       g.iso = 2.0023,
+#'       instrum.params = c(
+#'         Bcf = 3400,
+#'         Bsw = 60,
+#'         Npoints = 2048,
+#'         mwGHz = 9.53
+#'       ),
+#'       nuclear.system = list(
+#'         list("14N",2,11.85), # 4.23 G
+#'         list("1H",6,11.18), # 3.99 G
+#'         list("1H",4,4.46), # 1.59 G
+#'         list("1H",4,3.78) # 1.35 G
+#'       ),
+#'       lineG.content = 0.5,
+#'       lineGL.DeltaB = list(0.2,0.2)
+#'     )
+#'  )
+#' #
+#' ## simulated spectrum of MV*+
+#' methylViol.rad.cat.sim$plot +
+#'   ggplot2::coord_cartesian(
+#'     xlim = c(3373,3427)
+#'   )
 #'
 #'
 #' @export
@@ -741,6 +776,13 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   }
   #
   ## ======= CALCULATING ENERGIES/Bs, INTENSITY PATTERNS + EPR SPECTRA for ALL e-N INTERACTIONS =========
+  #
+  ## condition for intensity character string
+  ## expecting user may be wrong:-)
+  if (lineSpecs.form == "integrated" || lineSpecs.form == "absorption"){
+    Intensity.sim <- Intensity.sim %>%
+      `if`(Intensity.sim == "dIeprSim_over_dB","Intensity_Sim", .)
+  }
   #
   if (is.null(nuclear.system)){
     ## Simulated derivative EPR spectrum if `nuclear.system = NULL` (single line, no HF structure)
