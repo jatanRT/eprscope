@@ -13,10 +13,11 @@
 #'   Alternatively, the rendering can be also performed
 #'   in the \href{https://quarto.org/docs/computations/r.html}{terminal}
 #'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires
-#'   one of the \eqn{\LaTeX} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
-#'   \href{https://tug.org/texlive/}{\eqn{\TeX} Live} or \href{https://miktex.org/}{\eqn{Mik\TeX}}.
-#'   The complete, above-described, R-environmental setup is also available
-#'   at \href{https://posit.cloud/}{Posit Cloud}.
+#'   one of the \eqn{L_{A}TeX} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
+#'   \href{https://tug.org/texlive/}{\eqn{TeX} Live} or \href{https://miktex.org/}{\eqn{MikTeX}}.
+#'   The complete, above-described R-environmental setup is also available
+#'   at \href{https://posit.cloud/}{Posit Cloud} or at \href{https://cocalc.com/features}{CoCalc},
+#'   which a is platform for collaborative calculations and data science.
 #'
 #'
 #' @details
@@ -179,11 +180,11 @@
 #'   becomes (initiated by the \code{\link[usethis]{use_git}}) version-controlled,
 #'   using the \href{https://git-scm.com/book/en/v2/Getting-Started-What-is-Git}{git system}. PLEASE, FOLLOW
 #'   THE R CONSOLE PROMPT and select whether to commit your changes immediately or later.
-#'   \strong{Default}: \code{git.init = FALSE}. This is meant to be an option either for novice users
+#'   \strong{Default}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
 #'   or for those who do not want track changes within the repository by the \code{git}. Instead, they prefer
 #'   cloud storage services like
 #'   \href{https://nextcloud.com/}{nexcloud}/\href{https://owncloud.com/}{owncloud}/
-#'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version (history of changes) control.
+#'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version control (history of changes).
 #'
 #'
 #' @return File-folder structure ("tree") for the basic Quarto reproducible report with R, which may be used
