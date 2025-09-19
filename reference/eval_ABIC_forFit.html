@@ -116,7 +116,8 @@ on the <code>data.fit</code> argument (usually <code>residuals = "Residuals"</co
 the residuals/errors appearance. If set to <strong>default</strong> (<code>residuals.distro = "auto"</code>),
 it automatically decides which distribution (Normal/Gaussian, Student's t-distribution or Cauchy) fits
 the best to residuals/errors based on the implemented
-AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see <code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>).
+AIC and BIC calculations. Additionally, the fit can be supported by the Shapiro-Wilk
+(see <code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>) and/or Kolmogorov-Smirnov (see <code><a href="https://rdrr.io/r/stats/ks.test.html" class="external-link">ks.test</a></code>) tests.
 This is particularly suitable for the situation when residual analysis detects
 heavier tails (see e.g. <code>Example</code> in <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>) and one is not quite
 sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
@@ -132,8 +133,16 @@ distributions like: <code>residuals.distro = "normal"</code>, <code>"Gaussian"</
   <dt>message</dt>
 <dd><p>Sentence (message), describing the residuals/errors appearance by the
   probability distribution which has been proposed for the AIC and BIC calculation (see also
-  the <code>residuals.distro</code> argument). Such information is additionally supported by the Shapiro-Wilk test,
-  whether the distribution is normal or not.</p></dd>
+  the <code>residuals.distro</code> argument). Such information is additionally supported by the Shapiro-Wilk
+  and/or by the Kolmogorov-Smirnov tests, whether the residuals distribution can be considered as a normal or not.
+  These tests are based on the corresponding p-values. However, in order to "clearly" support the lowest AIC/BIC,
+  depending on residuals distribution, a slightly "broader", than the commonly applied "sharp"/"rigid"
+  \(p = 0.05\) threshold, is applied. If \(p &lt; 0.01\), there is a stronger evidence against the null-hypothesis
+  that the residuals are normally distributed. Therefore, we cannot support the normal distribution,
+  however may support the other ones (Student's or Cauchy). Contrary, if \(p &gt; 0.05\), we may support
+  the null-hypothesis that the residuals are normally distributed. Consequently, there is less evidence
+  for other distributions like Student's or Cauchy. If the \(p\) is from the (0.01,0.05) interval no support
+  by the above-mentioned normality tests is provided.</p></dd>
 
 
 </dl></div>
@@ -163,18 +172,21 @@ distributions like: <code>residuals.distro = "normal"</code>, <code>"Gaussian"</
   impractical or even impossible to perform.</strong> To overcome this difficulty, the formulae for both criteria
   use a <strong>standard assumption that the model and the data residuals/errors are identically distributed.</strong>
   Therefore, <strong>the residuals/errors are applied as a proxy for the MLE/\(LL\)</strong> (see e.g. Rossi et al. (2020)
-  and Kumar (2023) in the <code>References</code>). Evaluation of the latter, in the actual function, proceeds through <code>sum</code>
-  of three main probability distributions for residuals (additional distributions might be added in the newer package versions):
+  and Kumar (2023) in the <code>References</code>). Evaluation of the latter, in the actual function, proceeds via <code>sum</code>
+  of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
   1. the <code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">stats::dnorm</a></code> (for the normal/Gaussian distribution); 2. the <code><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">stats::dt</a></code>
   (for the Student's t-distribution) and 3. the <code><a href="https://rdrr.io/r/stats/Cauchy.html" class="external-link">stats::dcauchy</a></code>,
   using the <code>log = TRUE</code> option. For t-distribution the <code>df</code>/\(\nu\)
   parameter is unknown, therefore it is optimized by the above-described \(LL\)
-  as well as by the <code><a href="https://rdrr.io/r/stats/optimize.html" class="external-link">optimize</a></code> function.s All probability distributions
-  are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
-  may appear, e.g. for EPR simulation fits (please, refer to the <code>Examples</code> in the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>).
+  as well as by the <code><a href="https://rdrr.io/r/stats/optimize.html" class="external-link">optimize</a></code> functions. Even though the Student's distribution approaches the normal
+  one at <code>df &gt; 29</code>, sometimes the heavy tails of residuals for high number of observations can be modeled
+  by t-distribution with lower <code>df</code>. All probability distributions are included in the function because not always
+  the residuals/errors follow the normal one. Particularly, if heavier tails
+  appear, e.g. for EPR simulation fits (please, refer to the <code>Examples</code> in the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>).
   Consequently, the function may automatically (see the argument <code>residuals.distro</code>) decide which distribution
   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
-  normality test (<code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>), providing the information whether the residuals distribution is normal
+  (<code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>) as well as by the Kolmogorov-Smirnov (<code><a href="https://rdrr.io/r/stats/ks.test.html" class="external-link">ks.test</a></code>) tests,
+  providing the information whether the residuals distribution is normal
   (or not at all). <strong>It is recommended to evaluate/apply both information criteria</strong>.
   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
   the BIC is in favor of simpler models because it possesses a stronger penalty (\(k\,ln(N)\)) for complex models
