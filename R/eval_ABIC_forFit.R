@@ -44,18 +44,21 @@
 #'   impractical or even impossible to perform.} To overcome this difficulty, the formulae for both criteria
 #'   use a \strong{standard assumption that the model and the data residuals/errors are identically distributed.}
 #'   Therefore, \strong{the residuals/errors are applied as a proxy for the MLE/\eqn{LL}} (see e.g. Rossi et al. (2020)
-#'   and Kumar (2023) in the \code{References}). Evaluation of the latter, in the actual function, proceeds through \code{sum}
-#'   of three main probability distributions for residuals (additional distributions might be added in the newer package versions):
+#'   and Kumar (2023) in the \code{References}). Evaluation of the latter, in the actual function, proceeds via \code{sum}
+#'   of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
 #'   1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
 #'   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
 #'   using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu}
 #'   parameter is unknown, therefore it is optimized by the above-described \eqn{LL}
-#'   as well as by the \code{\link[stats]{optimize}} function.s All probability distributions
-#'   are included in the function because not always the residuals/errors follow the normal one. Sometimes, heavier tails
-#'   may appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
+#'   as well as by the \code{\link[stats]{optimize}} functions. Even though the Student's distribution approaches the normal
+#'   one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations can be modeled
+#'   by t-distribution with lower \code{df}. All probability distributions are included in the function because not always
+#'   the residuals/errors follow the normal one. Particularly, if heavier tails
+#'   appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
 #'   Consequently, the function may automatically (see the argument \code{residuals.distro}) decide which distribution
 #'   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
-#'   normality test (\code{\link[stats]{shapiro.test}}), providing the information whether the residuals distribution is normal
+#'   (\code{\link[stats]{shapiro.test}}) as well as by the Kolmogorov-Smirnov (\code{\link[stats]{ks.test}}) tests,
+#'   providing the information whether the residuals distribution is normal
 #'   (or not at all). \strong{It is recommended to evaluate/apply both information criteria}.
 #'   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
 #'   the BIC is in favor of simpler models because it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models
@@ -109,7 +112,8 @@
 #'   the residuals/errors appearance. If set to \strong{default} (\code{residuals.distro = "auto"}),
 #'   it automatically decides which distribution (Normal/Gaussian, Student's t-distribution or Cauchy) fits
 #'   the best to residuals/errors based on the implemented
-#'   AIC and BIC calculations, additionally supported by the Shapiro-Wilk test (see \code{\link[stats]{shapiro.test}}).
+#'   AIC and BIC calculations. Additionally, the fit can be supported by the Shapiro-Wilk
+#'   (see \code{\link[stats]{shapiro.test}}) and/or Kolmogorov-Smirnov (see \code{\link[stats]{ks.test}}) tests.
 #'   This is particularly suitable for the situation when residual analysis detects
 #'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 #'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
@@ -122,8 +126,16 @@
 #'   \item{abic.vec}{A numeric vector containing the values of estimated AIC and BIC, respectively.}
 #'   \item{message}{Sentence (message), describing the residuals/errors appearance by the
 #'   probability distribution which has been proposed for the AIC and BIC calculation (see also
-#'   the \code{residuals.distro} argument). Such information is additionally supported by the Shapiro-Wilk test,
-#'   whether the distribution is normal or not.}
+#'   the \code{residuals.distro} argument). Such information is additionally supported by the Shapiro-Wilk
+#'   and/or by the Kolmogorov-Smirnov tests, whether the residuals distribution can be considered as a normal or not.
+#'   These tests are based on the corresponding p-values. However, in order to "clearly" support the lowest AIC/BIC,
+#'   depending on residuals distribution, a slightly "broader", than the commonly applied "sharp"/"rigid"
+#'   \eqn{p = 0.05} threshold, is applied. If \eqn{p < 0.01}, there is a stronger evidence against the null-hypothesis
+#'   that the residuals are normally distributed. Therefore, we cannot support the normal distribution,
+#'   however may support the other ones (Student's or Cauchy). Contrary, if \eqn{p > 0.05}, we may support
+#'   the null-hypothesis that the residuals are normally distributed. Consequently, there is less evidence
+#'   for other distributions like Student's or Cauchy. If the \eqn{p} is from the (0.01,0.05) interval no support
+#'   by the above-mentioned normality tests is provided.}
 #'   }
 #'
 #'
@@ -356,16 +368,54 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     #
   }
   #
-  ## Shapiro-Wilk test for comparison
+  ## Shapiro-Wilk and Kolmogorov-Smirnov tests for comparison
   sw.test <- stats::shapiro.test(resids)$p.value
+  ks.test <- stats::ks.test(
+    resids,
+    "pnorm",
+    mean = mean(resids),
+    sd = stats::sd(resids)
+  )$p.value
   #
-  ## function/conditions for relevant strings which will be print out
+  ## function/conditions for relevant strings which will be printed out
   abic_name_msg_fun <- function(name) {
     #
-    if (grepl("norm",name) & sw.test > 0.075) {
+    if (grepl("norm",name) & sw.test > 0.05 & ks.test > 0.05) {
       return(
         paste0(
           "the normal distribution of residuals,",
+          " additionally supported by the Shapiro-Wilk",
+          " as well as by the Kolmogorov-Smirnov tests."
+        )
+      )
+    } else if (grepl("t",name) & sw.test < 0.01 & ks.test < 0.01) {
+      return(
+        paste0(
+          "the Student's t-distribution of residuals ",
+          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          " Additionally supported by the Shapiro-Wilk",
+          " as well as by the Kolmogorov-Smirnov tests."
+        )
+      )
+    } else if (grepl("cauch",name) & sw.test < 0.01 & ks.test < 0.01) {
+      return(
+        paste0(
+          "the Cauchy distribution of residuals, ",
+          " additionally supported by the Shapiro-Wilk test",
+          " as well as by the Kolmogorov-Smirnov tests."
+        )
+      )
+    } else if (grepl("norm",name) & sw.test > 0.05) {
+      return(
+        paste0(
+          "the normal distribution of residuals,",
+          " additionally supported by the Shapiro-Wilk test."
+        )
+      )
+    } else if (grepl("cauch",name) & sw.test < 0.01) {
+      return(
+        paste0(
+          "the Cauchy distribution of residuals, ",
           " additionally supported by the Shapiro-Wilk test."
         )
       )
@@ -377,24 +427,53 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
           " Additionally supported by the Shapiro-Wilk test."
         )
       )
-    } else if (grepl("cauch",name) & sw.test < 0.01) {
+    } else if (grepl("norm",name) & ks.test > 0.05) {
+      return(
+        paste0(
+          "the normal distribution of residuals,",
+          " additionally supported by the Kolmogorov-Smirnov test."
+        )
+      )
+    } else if (grepl("cauch",name) & ks.test < 0.01) {
       return(
         paste0(
           "the Cauchy distribution of residuals, ",
-          " additionally supported by the Shapiro-Wilk test."
+          " additionally supported by the Kolmogorov-Smirnov test."
+        )
+      )
+    } else if (grepl("t",name) & ks.test < 0.01) {
+      return(
+        paste0(
+          "the Student's t-distribution of residuals ",
+          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          " Additionally supported by the Kolmogorov-Smirnov test."
         )
       )
     } else if (grepl("norm",name)) {
-      return("the normal distribution of residuals. ")
+      return(
+        paste0(
+          "the normal distribution of residuals. ",
+          " No clear support by the Shapiro-Wilk and/or",
+          " by the Kolmogorov-Smirnov tests. p.value in <0.01,0.05>."
+        )
+      )
     } else if (grepl("t",name)) {
       return(
         paste0(
           "the Student's t-distribution of residuals ",
-          sprintf("with %d degrees of freedom.",log_likehood_t_nu)
+          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          " No clear support by the Shapiro-Wilk and/or",
+          " by the Kolmogorov-Smirnov tests. p.value in <0.01,0.05>."
         )
       )
     } else if (grepl("cauch",name)) {
-      return("the Cauchy distribution of residuals. ")
+      return(
+        paste0(
+          "the Cauchy distribution of residuals. ",
+          " No clear support by the Shapiro-Wilk and/or",
+          " by the Kolmogorov-Smirnov tests. p.value in <0.01,0.05>."
+        )
+      )
     }
   }
   #
