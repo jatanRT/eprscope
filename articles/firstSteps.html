@@ -977,7 +977,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span>          correct.integ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          <span class="co"># ...in the range of the peak:</span></span>
 <span>          BpeaKlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3473.5</span>,<span class="fl">3502.5</span><span class="op">)</span>,</span>
-<span>          <span class="co"># ...by the 5th order plynomial:</span></span>
+<span>          <span class="co"># ...by the 5th order polynomial:</span></span>
 <span>          poly.degree <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>          <span class="co"># provide double integrals:</span></span>
 <span>          sigmoid.integ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -1029,7 +1029,7 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <p>Obviously, according to statistical measures of non-linear regression/fitting parameters, the second-order kinetic model is suitable for description of triarylamine radical cation decay. This is also supported by the analysis of residuals/errors of the model/fit (please, refer also to the <code><a href="../reference/plot_eval_RA_forFit.html">plot_eval_RA_forFit()</a></code> function documentation):</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.rqq</span></span></code></pre></div>
+<span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="fu">plot.rqq</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="firstSteps_files/figure-html/kinetics-fit-01-residuals-1.png"><!-- --></p>
 <p>However, it is evident that its dispersion ➨ variance and the standard deviation of residuals are slightly high along the time-axis (see the kinetic model fit) :</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">

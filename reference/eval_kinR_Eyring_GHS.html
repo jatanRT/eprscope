@@ -158,7 +158,7 @@ or <code>"port"</code>
 
   <dt>ra</dt>
 <dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-  <code>plot.rqq</code>, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
+  <code>plot.rqq()</code> function, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
   standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
 
   <dt>df.coeffs.HS</dt>
@@ -381,7 +381,7 @@ or <code>"port"</code>
 <span class="r-in"><span>  <span class="fu">corrplot</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span>addCoef.col <span class="op">=</span> <span class="st">"#c2c2c2"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_Eyring_GHS-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## preview of the convergence measures</span></span></span>
+<span class="r-in"><span><span class="co">## preview of the convergence</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test01.data</span><span class="op">$</span><span class="va">converg</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $N.evals</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 46</span>
@@ -443,7 +443,7 @@ or <code>"port"</code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9 -14.709284 -1.0609755e-02</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the linear fit plot</span></span></span>
-<span class="r-in"><span><span class="co">## also with confidence interval (99,999999 %)</span></span></span>
+<span class="r-in"><span><span class="co">## also with confidence interval (99 %)</span></span></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">plot</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_Eyring_GHS-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
@@ -469,7 +469,7 @@ or <code>"port"</code>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## corresponding analysis of residuals</span></span></span>
 <span class="r-in"><span><span class="co">## with residual standard deviation</span></span></span>
-<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.rqq</span></span></span>
+<span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="fu">plot.rqq</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_Eyring_GHS-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">activ.kinet.test02.data</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.0065568073</span>

@@ -289,7 +289,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 
   <dt>ra</dt>
 <dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-  <code>plot.rqq</code>, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
+  <code>plot.rqq()</code> function, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
   standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
 
   <dt>best.fit.params</dt>
@@ -343,7 +343,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   <code>1</code>: maximum number of function evaluations reached, <code>2</code>: maximum number of iterations reached,
   <code>3</code>: maximum number of restarts reached, <code>4</code>: maximum number of iterations without improvement reached.
   For all the other remaining methods (coming from <code>{nloptr}</code> package), the integers have to be positive
-  to indicate the successful convergence.</p></dd>
+  to indicate successful convergence.</p></dd>
 
 
 </dl></li>
@@ -509,7 +509,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.512e-08, swarm diam.=0.02264</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.94  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.026  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -577,6 +577,23 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Kolmogorov-Smirnov tests."                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## residual &amp; Q-Q plots for the proposed normal</span></span></span>
+<span class="r-in"><span><span class="co">## distribution of residuals and confidence level 99%</span></span></span>
+<span class="r-in"><span><span class="co">## (default: 95%/0.95)</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="fu">plot.rqq</span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
+<span class="r-plt img"><img src="eval_sim_EPR_isoFit-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## residual &amp; Q-Q plots for the proposed Student's</span></span></span>
+<span class="r-in"><span><span class="co">## distribution of residuals with degrees of freedom</span></span></span>
+<span class="r-in"><span><span class="co">## df = 6 (see the "$message" right above)</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="fu">plot.rqq</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  residuals.distro <span class="op">=</span> <span class="st">"t"</span>,</span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fl">6</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
+<span class="r-plt img"><img src="eval_sim_EPR_isoFit-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## fitting of the aminoxyl EPR spectrum</span></span></span>
 <span class="r-in"><span><span class="co">## by the combination of the 1. "Levenberg-Marquardt"</span></span></span>
 <span class="r-in"><span><span class="co">## and 2. "Nelder-Mead" algorithms</span></span></span>
@@ -599,11 +616,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.859  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.75  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  13.146  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  11.722  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
