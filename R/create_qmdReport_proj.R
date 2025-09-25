@@ -227,9 +227,17 @@ create_qmdReport_proj <- function(title = "Project Report",
   #
   if (isTRUE(Rproj.init)){
     #
-    invisible(
-      suppressMessages(usethis::create_project(path = subdir_path,open = FALSE,rstudio = TRUE))
-    )
+    if (requireNamespace(package = "usethis",quietly = TRUE)) {
+      invisible(
+        suppressMessages(
+          usethis::create_project(path = subdir_path,open = FALSE,rstudio = TRUE)
+        )
+      )
+    } else {
+      stop("Please install the `usethis` package\n
+           to automatically create an R project\n
+           by the `create_project()` function ! ")
+    }
     invisible(
       ## at the beginning this is not required:
       file.remove(file.path(main_dir,wd.subdir.name,".gitignore"))

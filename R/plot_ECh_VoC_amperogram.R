@@ -130,6 +130,7 @@
 #'
 #'
 #' @importFrom ggplot2 geom_path
+#' @importFrom plotly ggplotly layout toRGB
 plot_ECh_VoC_amperogram <- function(data.vat,
                                     x = "E_V", ## can be "time_s", "time_min" or "time_ms" as well
                                     x.unit = "V", ## can be "mV" or "s" or "min" or "ms" as well
@@ -299,10 +300,22 @@ plot_ECh_VoC_amperogram <- function(data.vat,
     ## plot theme OUT-TICKS
     theme_out_ticks <- theme(
       axis.ticks.length = unit(6, "pt"),
-      axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-      axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
-      axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-      axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+      axis.text.x = element_text(
+        margin = margin(6, 6, 4, 6, unit = "pt"),
+        size = axis.text.size
+      ),
+      axis.text.y = element_text(
+        margin = margin(4, 6, 6, 0, unit = "pt"),
+        size = axis.text.size
+      ),
+      axis.title.y = element_text(
+        margin = margin(2, 8, 2, 6, unit = "pt"),
+        size = axis.title.size
+      ),
+      axis.title.x = element_text(
+        margin = margin(2, 6, 2, 6, unit = "pt"),
+        size = axis.title.size
+      ),
       panel.border = element_rect(
         color = border.line.color,
         linewidth = border.line.width,
@@ -314,10 +327,22 @@ plot_ECh_VoC_amperogram <- function(data.vat,
     ## plot theme IN-TICKS
     theme_in_ticks <- theme(
       axis.ticks.length = unit(-6, "pt"),
-      axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-      axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
-      axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-      axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+      axis.text.x = element_text(
+        margin = margin(6, 6, 4, 6, unit = "pt"),
+        size = axis.text.size
+      ),
+      axis.text.y = element_text(
+        margin = margin(4, 6, 6, 0, unit = "pt"),
+        size = axis.text.size
+      ),
+      axis.title.y = element_text(
+        margin = margin(2, 8, 2, 6, unit = "pt"),
+        size = axis.title.size
+      ),
+      axis.title.x = element_text(
+        margin = margin(2, 6, 2, 6, unit = "pt"),
+        size = axis.title.size
+      ),
       panel.border = element_rect(
         color = border.line.color,
         linewidth = border.line.width,
@@ -462,8 +487,8 @@ plot_ECh_VoC_amperogram <- function(data.vat,
   ## Conditions for interactive/static plots
   if (isTRUE(plot.interact)){
     plot.iv.it.interact <-
-      plotly::ggplotly(basic.voltammogram) %>%
-        plotly::layout(
+      ggplotly(basic.voltammogram) %>%
+        layout(
           plot_bgcolor = "#e5ecf6",
           xaxis = list(
             title = list(
@@ -485,7 +510,7 @@ plot_ECh_VoC_amperogram <- function(data.vat,
             ),
             tickfont = list(size = axis.text.size),
             gridcolor = "#ffff",
-            linecolor = plotly::toRGB("black"),
+            linecolor = toRGB("black"),
             linewidth = 1.2, showline = TRUE, mirror = TRUE
           )
         )

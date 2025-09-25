@@ -108,7 +108,7 @@
 #' @export
 #'
 #'
-#' @importFrom rlang quo_name :=
+#' @importFrom rlang :=
 readEPR_Exp_Specs_multif <- function(name.pattern,
                                      dir_ASC,
                                      dir_dsc_par,
@@ -356,10 +356,10 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
         spectra.datab.from.files <-
           switch(2-cond.var2nd.factor,
                  spectra.datab.from.files %>%
-                   dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                   dplyr::mutate(!!quo_name(var2nd.series) :=
                                    as.factor(as.numeric(.data[[var2nd.series]]))),
                  spectra.datab.from.files %>%
-                   dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+                   dplyr::mutate(!!quo_name(var2nd.series) :=
                                    as.numeric(.data[[var2nd.series]])) %>%
                    dplyr::arrange(.data[[var2nd.series]])
           )

@@ -266,6 +266,7 @@
 #'
 #' @importFrom nloptr slsqp neldermead cobyla sbplx lbfgs crs2lm
 #' @importFrom minpack.lm nls.lm.control
+#' @importFrom pso psoptim
 optim_for_EPR_fitness <- function(method = "neldermead",
                                   x.0,
                                   fn,
@@ -301,7 +302,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ## Sequential (least-squares) quadratic programming
   ## (SQP) algorithm
   if (method == "slsqp") {
-    return(nloptr::slsqp(
+    return(slsqp(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -317,7 +318,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ## algorithm for derivative-free optimization with nonlinear
   ## inequality and equality constraints
   if (method == "cobyla"){
-    return(nloptr::cobyla(
+    return(cobyla(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -333,7 +334,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ## quasi-Newton optimization methods. It is well suited for optimization problems
   ## with a large number of variables.
   if (method == "lbfgs"){
-    return(nloptr::lbfgs(
+    return(lbfgs(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -348,7 +349,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   #
   ## "Nelder-Mead" simplex method
   if (method == "neldermead") {
-    return(nloptr::neldermead(
+    return(neldermead(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -363,7 +364,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ## The Controlled Random Search (CRS) algorithm (and in particular,
   ## the CRS2 variant) with the `local mutation' modification.
   if (method == "crs2lm") {
-    return(nloptr::crs2lm(
+    return(crs2lm(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -384,7 +385,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   ##  Variant of Nelder-Mead that uses Nelder-Mead
   ## on a sequence of subspaces.
   if (method == "sbplx") {
-    return(nloptr::sbplx(
+    return(sbplx(
       x0 = x.0,
       fn = fn,
       lower = lower,
@@ -398,14 +399,14 @@ optim_for_EPR_fitness <- function(method = "neldermead",
   #
   ## Levenberg-Marquardt algorithm
   if (method == "levenmarq"){
-    return(minpack.lm::nls.lm(
+    return(nls.lm(
       par = x.0,
       fn = fn, ## !! NOT SQUARES BUT ONLY THE DIFFERENCE !!
       lower = lower,
       upper = upper,
       data = data,
       control =
-        minpack.lm::nls.lm.control(
+        nls.lm.control(
           ptol = tol.step,
           maxiter = Nmax.evals,
           nprint = switch( ## showing progress (iterations) of the optim.
@@ -459,7 +460,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
            ## otherwise can be changed by `REPORT = ...` (20 or 50 or 100 or ...)
       )
     #
-    return(pso::psoptim(
+    return(psoptim(
       par = x.0,
       fn = fn,
       lower = lower,

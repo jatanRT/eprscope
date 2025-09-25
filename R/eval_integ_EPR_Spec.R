@@ -266,6 +266,7 @@
 #'
 #'
 #' @importFrom pracma cumtrapz
+#' @importFrom broom augment
 eval_integ_EPR_Spec <- function(data.spectr,
                                 B = "B_G",
                                 B.unit = "G",
@@ -312,9 +313,9 @@ eval_integ_EPR_Spec <- function(data.spectr,
   fn_switch_integ <- function(u = B.unit,B,I){
     result <-
       switch(3 - fn_units(unit = u),
-             pracma::cumtrapz(x = B, y = I)[, 1] * 1e+4,
-             pracma::cumtrapz(x = B, y = I)[, 1] * 10,
-             pracma::cumtrapz(x = B, y = I)[, 1]
+             cumtrapz(x = B, y = I)[, 1] * 1e+4,
+             cumtrapz(x = B, y = I)[, 1] * 10,
+             cumtrapz(x = B, y = I)[, 1]
       )
     return(result)
   }
@@ -387,7 +388,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           )
           #
           ## apply fit to data.spectr
-          data.spectr <- broom::augment(integ.baseline.fit, newdata = data.spectr) %>%
+          data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
             ## remove the .resid colum (which is not required),
             dplyr::select(!dplyr::all_of(c(".resid"))) %>%
             ## rename column with fit
@@ -424,7 +425,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           )
           #
           ## apply fit to data.spectr
-          data.spectr <- broom::augment(integ.baseline.fit, newdata = data.spectr) %>%
+          data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
             ## remove the .resid colum (which is not required),
             dplyr::select(!dplyr::all_of(c(".resid"))) %>%
             ## rename column with fit

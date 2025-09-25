@@ -170,7 +170,6 @@
 #' @export
 #'
 #'
-#' @importFrom tidyr pivot_longer
 #' @importFrom dplyr arrange matches across
 quantify_EPR_Sim_series <- function(data.spectra.series,
                                     dir_ASC_sim,
@@ -279,7 +278,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     for (d in seq(data.specs.orig.sim)) {
       data.specs.sim <- data.specs.sim %>%
         dplyr::group_by(.data[[var2nd.series]]) %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim,"_",LETTERS[d])) :=
+        dplyr::mutate(!!quo_name(paste0(Intensity.sim,"_",LETTERS[d])) :=
                         data.specs.orig.sim[[d]][[Intensity.sim]])
     }
     #
@@ -622,11 +621,11 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   ## with properly arranged var2nd.series
   data.specs.sim.modif[[1]] <-
     data.specs.sim.modif[[1]] %>%
-    tidyr::pivot_longer(!dplyr::all_of(c(paste0("Bsim_", B.unit))),
+    pivot_longer(!dplyr::all_of(c(paste0("Bsim_", B.unit))),
       names_to = var2nd.series,
       values_to = paste0(Intensity.sim, "_", LETTERS[1])
     ) %>%
-    dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+    dplyr::mutate(!!quo_name(var2nd.series) :=
       as.double(as.character(.data[[var2nd.series]]))) %>%
     dplyr::arrange(.data[[var2nd.series]])
   #
@@ -649,7 +648,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     #
     for (d in 2:length(data.specs.orig.sim)) {
       data.specs.sim.modif[[d]] <-
-        mapply(function(w) w*data.specs.orig.sim[[d]][[Intensity.sim]],
+        mapply(function(w) w * data.specs.orig.sim[[d]][[Intensity.sim]],
                optim.list.x0n.df[[d]])
       #
       ## matrix transformed into data frame
@@ -672,11 +671,11 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       ## transformation from wide table to long table with properly arranged time
       data.specs.sim.modif[[d]] <-
         data.specs.sim.modif[[d]] %>%
-        tidyr::pivot_longer(!dplyr::all_of(c(paste0("Bsim_", B.unit))),
+        pivot_longer(!dplyr::all_of(c(paste0("Bsim_", B.unit))),
           names_to = var2nd.series,
           values_to = paste0(Intensity.sim, "_", LETTERS[d])
         ) %>%
-        dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+        dplyr::mutate(!!quo_name(var2nd.series) :=
           as.double(as.character(.data[[var2nd.series]]))) %>%
         dplyr::arrange(.data[[var2nd.series]])
       #
@@ -695,7 +694,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   if (length(data.specs.orig.sim) > 1){
     data.specs.sim <- data.specs.sim %>%
       dplyr::group_by(.data[[var2nd.series]]) %>%
-      dplyr::mutate(!!rlang::quo_name(paste0(Intensity.sim, "_aLL")) :=
+      dplyr::mutate(!!quo_name(paste0(Intensity.sim, "_aLL")) :=
         rowSums(dplyr::across(dplyr::matches("Sim.*_[[:upper:]]$"))))
   }
   #
@@ -717,9 +716,9 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   fn_switch_integ <- function(u = B.unit,B,I){
     result <-
       switch(3 - fn_units(unit = u),
-             pracma::cumtrapz(x = B, y = I)[, 1] * 1e+4,
-             pracma::cumtrapz(x = B, y = I)[, 1] * 10,
-             pracma::cumtrapz(x = B, y = I)[, 1]
+             cumtrapz(x = B, y = I)[, 1] * 1e+4,
+             cumtrapz(x = B, y = I)[, 1] * 10,
+             cumtrapz(x = B, y = I)[, 1]
       )
     return(result)
   }
@@ -730,7 +729,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   for (d in seq(data.specs.orig.sim)) {
     result_df_base <- result_df_base %>%
       dplyr::group_by(.data[[var2nd.series]]) %>%
-      dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_",LETTERS[d])) :=
+      dplyr::mutate(!!quo_name(paste0(single.integ,"_",LETTERS[d])) :=
                       fn_switch_integ(
                         B = .data[[paste0("B_", B.unit)]],
                         I = .data[[paste0(Intensity.sim,"_",LETTERS[d])]]
@@ -741,7 +740,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     ## single integration of the overall spectrum/signal
     result_df_base <- result_df_base %>%
       dplyr::group_by(.data[[var2nd.series]]) %>%
-      dplyr::mutate(!!rlang::quo_name(paste0(single.integ,"_aLL")) :=
+      dplyr::mutate(!!quo_name(paste0(single.integ,"_aLL")) :=
                       fn_switch_integ(
                         B = .data[[paste0("B_",B.unit)]],
                         I = .data[[paste0(Intensity.sim,"_aLL")]]
@@ -766,7 +765,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       for(d in seq(data.specs.orig.sim)){
         result_df <- result_df %>%
           dplyr::group_by(.data[[var2nd.series]]) %>%
-          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+          dplyr::mutate(!!quo_name(paste0(double.integ,"_",LETTERS[d])) :=
                           fn_switch_integ(
                             B = .data[[paste0("B_",B.unit)]],
                             I = .data[[paste0(single.integ,"_",LETTERS[d])]]
@@ -777,7 +776,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       if (length(data.specs.orig.sim) > 1){
         result_df <- result_df %>%
           dplyr::group_by(.data[[var2nd.series]]) %>%
-          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+          dplyr::mutate(!!quo_name(paste0(double.integ,"_aLL")) :=
                           fn_switch_integ(
                             B = .data[[paste0("B_",B.unit)]],
                             I = .data[[paste0(single.integ,"_aLL")]]
@@ -792,9 +791,9 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       result_df <- c()
       for(d in seq(data.specs.orig.sim)){
         result_df[[d]] <- result_df_base %>%
-          dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
+          dplyr::summarize(!!quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                       max(.data[[paste0(single.integ,"_",LETTERS[d])]])) %>%
-          dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
+          dplyr::mutate(!!quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
                           optim.list.x0n.df[[d]])
       }
       #
@@ -815,15 +814,15 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       #
       for (d in seq(data.specs.orig.sim)){
         result_df[[d]] <- result_df_base %>%
-          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_",LETTERS[d])) :=
+          dplyr::mutate(!!quo_name(paste0(double.integ,"_",LETTERS[d])) :=
                           fn_switch_integ(
                             B = .data[[paste0("B_",B.unit)]],
                             I = .data[[paste0(single.integ,"_",LETTERS[d])]]
                           )
           ) %>%
-          dplyr::summarize(!!rlang::quo_name(paste0("Area_Sim_",LETTERS[d])) :=
+          dplyr::summarize(!!quo_name(paste0("Area_Sim_",LETTERS[d])) :=
                              max(.data[[paste0(double.integ,"_",LETTERS[d])]])) %>%
-          dplyr::mutate(!!rlang::quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
+          dplyr::mutate(!!quo_name(paste0("Optim_coeffInt_Sim_",LETTERS[d])) :=
                           optim.list.x0n.df[[d]]
           )
       }
@@ -834,7 +833,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       #
       if (length(data.specs.orig.sim) > 1){
         result_df_Sim_aLL <- result_df_base %>%
-          dplyr::mutate(!!rlang::quo_name(paste0(double.integ,"_aLL")) :=
+          dplyr::mutate(!!quo_name(paste0(double.integ,"_aLL")) :=
                           fn_switch_integ(
                             B = .data[[paste0("B_",B.unit)]],
                             I = .data[[paste0(single.integ,"_aLL")]]

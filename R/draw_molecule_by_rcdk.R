@@ -87,7 +87,6 @@
 #'
 #'
 #' @importFrom rcdk get.depictor view.image.2d load.molecules  parse.smiles
-#' @importFrom graphics rasterImage text par
 #' @importFrom stringr str_detect regex
 ## function to plot molecules inspired by https://riveradelgado.com/post/2021/04/18/chemistry-in-r/,
 ## the web page is not available anymore
@@ -110,7 +109,7 @@ draw_molecule_by_rcdk <- function(molecule,
   ## ... other arguments for get.depictor()
   ##
   # Image aesthetics `depictor`
-  dep <- rcdk::get.depictor(
+  dep <- get.depictor(
     width = 600,
     height = 400,
     zoom = 6,
@@ -123,17 +122,17 @@ draw_molecule_by_rcdk <- function(molecule,
   )
   #
   ## load molecular types
-  if (stringr::str_detect(type,stringr::regex("SMILES",ignore_case = TRUE))){
+  if (str_detect(type,regex("SMILES",ignore_case = TRUE))){
     #
-    molekel <- rcdk::parse.smiles(molecule)
+    molekel <- parse.smiles(molecule)
   }
-  if (stringr::str_detect(type,stringr::regex("SDF",ignore_case = TRUE))){
+  if (str_detect(type,regex("SDF",ignore_case = TRUE))){
     #
     ## create a similar as in the previous case
-    molekel <- rcdk::load.molecules(molfiles = molecule)
+    molekel <- load.molecules(molfiles = molecule)
   }
   #
-  molecule_sdf <- rcdk::view.image.2d(molekel[[1]],depictor = dep)
+  molecule_sdf <- view.image.2d(molekel[[1]],depictor = dep)
   #
   ## Remove extra margins around the molecule
   graphics::par(mar = c(0,0,0,0))

@@ -140,6 +140,7 @@
 #' @export
 #'
 #' @importFrom ggplot2 geom_text
+#' @importFrom gsignal findpeaks
 eval_peakPick_Spec <- function(data.spectr,
                                x = "B_mT",
                                x.unit = "mT", ## or "G" or "T" or "MHz" or "unitless" (g)
@@ -217,7 +218,7 @@ eval_peakPick_Spec <- function(data.spectr,
           round(0.5 / (data.spectr[[x]][2] - data.spectr[[x]][1])), .)
   #
   peaks.list <-
-    gsignal::findpeaks(
+    findpeaks(
       data = data.spectr[[Intensity]],
       MinPeakHeight = min.peak.height,
       MinPeakDistance = min.peak.dist,
@@ -236,8 +237,8 @@ eval_peakPick_Spec <- function(data.spectr,
   ## depending on positive/negative conditions
   peaks.df.base <-
     data.frame(xvar = round(peaks.x.vec,digits = 4)) %>%
-    dplyr::mutate(!!rlang::quo_name(Intensity) := peaks.values.vec) %>%
-    dplyr::rename(!!rlang::quo_name(x) := xvar)
+    dplyr::mutate(!!quo_name(Intensity) := peaks.values.vec) %>%
+    dplyr::rename(!!quo_name(x) := xvar)
   #
   if (grepl("deriv|Deriv",lineSpecs.form)){
     if (is.null(only.peak.pn)){
@@ -297,7 +298,7 @@ eval_peakPick_Spec <- function(data.spectr,
       size = peak.text.size,
       angle = peak.text.angle,
       nudge_y = max(data.spectr[[Intensity]]) * 0.075,
-      nudge_x = median(data.spectr[[x]] * 2.5e-4),
+      nudge_x = stats::median(data.spectr[[x]] * 2.5e-4),
       check_overlap = peak.text.overlap,
       color = peak.color
     )

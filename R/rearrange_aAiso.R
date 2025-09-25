@@ -68,19 +68,19 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
   #
   ## Conditions/Extraction for column names:
   ## use stringr::str_subset(...) or X[grepl(...)] or stringr::str_extract or grep(...,value = T)
-  A.str <- stringr::str_subset(col.names,
+  A.str <- str_subset(col.names,
                                regex("mhz|megahertz",
                                      ignore_case = T))
-  a.str <- stringr::str_subset(col.names,
+  a.str <- str_subset(col.names,
                                regex("gauss|G|Gauss"))
-  atomic.num.str <- stringr::str_subset(col.names,
+  atomic.num.str <- str_subset(col.names,
                                         regex("No|Num|num|no|no_|num_|NUM|Num_|NUM_|NO|NO_|No_"))
-  nucl.str <- stringr::str_subset(col.names,
+  nucl.str <- str_subset(col.names,
                                   regex("nuc|Nuc_atom|nucleus_|NUC|NUC_|ATOM|atom",
                                         ignore_case = T))
   #
   ## Read the data:
-  data.Aa.comput <- data.table::fread(path_to_ASC,
+  data.Aa.comput <- fread(path_to_ASC,
                                       sep = "auto", header = F, skip = 1,
                                       col.names = col.names
   ) %>%
@@ -111,10 +111,10 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
     how.many.nucs <- length(nuclei.list.slct[[k]])
     #
     ## Extract atomic/nuclear label:
-    mark.nucs <- stringr::str_extract(sal[[nucl.str]][1], "[[:alpha:]]+")
+    mark.nucs <- str_extract(sal[[nucl.str]][1], "[[:alpha:]]+")
     #
     ## Extract isotope number:
-    nucleo.nucs <- stringr::str_extract(sal[[nucl.str]][1], "[[:digit:]]+")
+    nucleo.nucs <- str_extract(sal[[nucl.str]][1], "[[:digit:]]+")
     #
     ## Extract atomic/nuclear numbers and collapse it into one string:
     num.nucs.str <- paste(sal[[atomic.num.str]], collapse = ",")
@@ -250,7 +250,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     #
     ## each line of `qchfile.select.A` is a long string therefore,
     ## it must be split into individual pieces
-    qchfile.select.A <- stringr::str_split(qchfile.select.A, pattern = "\\s+")
+    qchfile.select.A <- str_split(qchfile.select.A, pattern = "\\s+")
     #
     ## create a data frame, the first row line is the header,
     table.select.A <- data.frame("No" = character(), "Nucleus" = character(),
@@ -305,12 +305,12 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
       function(x) qchfile.select[nuclei.lines][[x]]
     )
     ## splitting the strings
-    nuclei.qchfile.select <- stringr::str_split(nuclei.qchfile.select, pattern = "\\s+")
+    nuclei.qchfile.select <- str_split(nuclei.qchfile.select, pattern = "\\s+")
     ## separate atomic/nucleus number (`n`) and atomic/nucleus label (`L`) + isotope (`I`)
     nuclei.qchfile.select.n <- sapply(
       seq(nuclei.qchfile.select),
       function(n) {
-        stringr::str_extract(
+        str_extract(
           nuclei.qchfile.select[[n]][2],
           "[[:digit:]]+"
         )
@@ -319,7 +319,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     nuclei.qchfile.select.L <- sapply(
       seq(nuclei.qchfile.select),
       function(L) {
-        stringr::str_extract(
+        str_extract(
           nuclei.qchfile.select[[L]][2],
           "[[:alpha:]]+"
         )
@@ -345,7 +345,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     A.qchfile.select <- lapply(seq(No_nuclei_atoms),
                                function(y) qchfile.select[A.lines][[y]])
     ## splitting the strings
-    A.qchfile.select <- stringr::str_split(A.qchfile.select, pattern = "\\s+")
+    A.qchfile.select <- str_split(A.qchfile.select, pattern = "\\s+")
     ## select the A iso values by [[i]][6] for i-th list/line element
     A.qchfile.select.iso <- sapply(
       seq(A.qchfile.select),
@@ -389,10 +389,10 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     how.many.nucs <- length(nuclei.list.slct[[k]])
     #
     ## Extract atomic/nuclear label:
-    mark.nucs <- stringr::str_extract(sal$Nucleus[1], "[[:alpha:]]+")
+    mark.nucs <- str_extract(sal$Nucleus[1], "[[:alpha:]]+")
     #
     ## Extract isotope number:
-    nucleo.nucs <- stringr::str_extract(sal$Nucleus[1], "[[:digit:]]+")
+    nucleo.nucs <- str_extract(sal$Nucleus[1], "[[:digit:]]+")
     #
     ## Extract atomic/nuclear numbers and collapse it into one string:
     num.nucs.str <- paste(sal$No, collapse = ",")

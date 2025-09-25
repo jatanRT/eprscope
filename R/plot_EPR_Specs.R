@@ -256,7 +256,7 @@
 #'
 #'
 #' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
-#'   scale_color_manual scale_x_reverse element_blank element_text element_rect dup_axis unit margin theme_bw
+#'   scale_color_manual scale_x_reverse waiver element_blank element_text element_rect dup_axis unit margin theme_bw
 #'   theme_light theme_gray theme_minimal theme_classic theme_linedraw scale_color_gradientn theme scale_color_viridis_d
 plot_EPR_Specs <- function(data.spectra,
                            x = "B_mT",
@@ -334,10 +334,22 @@ plot_EPR_Specs <- function(data.spectra,
   ## Themes for the spectra, whether the ticks are displayed or not:
   theme.ticks <- theme(
     axis.ticks.length = unit(6, "pt"),
-    axis.text.x = element_text(margin = margin(4, 6, 6, 6, unit = "pt"), size = axis.text.size),
-    axis.text.y = element_text(margin = margin(6, 6, 6, 0, unit = "pt"), size = axis.text.size),
-    axis.title.y = element_text(margin = margin(2, 4, 2, 6, unit = "pt"), size = axis.title.size),
-    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.text.x = element_text(
+      margin = margin(4, 6, 6, 6, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.text.y = element_text(
+      margin = margin(6, 6, 6, 0, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.title.y = element_text(
+      margin = margin(2, 4, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
+    axis.title.x = element_text(
+      margin = margin(2, 6, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
     panel.border = element_rect(color = border.line.color,
                                 fill = NA,
                                 linewidth = border.line.width,
@@ -345,10 +357,20 @@ plot_EPR_Specs <- function(data.spectra,
   ) ## theme in order to have ticks outside the graph
   theme.Noticks <- theme(
     axis.ticks.length = unit(-6, "pt"),
-    axis.text.x = element_text(margin = margin(6, 6, 6, 6, unit = "pt"), size = axis.text.size),
-    axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-    axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.text.x = element_text(
+      margin = margin(6, 6, 6, 6, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_text(
+      margin = margin(2, 8, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
+    axis.title.x = element_text(
+      margin = margin(2, 6, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
     panel.border = element_rect(color = border.line.color,
                                 fill = NA,
                                 linewidth = border.line.width,
@@ -362,14 +384,15 @@ plot_EPR_Specs <- function(data.spectra,
     panel.grid.minor = element_blank()
   ) ## theme with no grid
   ## x ticks of the upper axis also inside the graph:
-  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL))
+  axis_x_duplicate <-
+    scale_x_continuous(sec.axis = dup_axis(name = "", labels = NULL))
   #
   ## Basic simple plot:
   if (is.null(legend.title) & is.null(var2nd.series.slct.by)){
     if (!is.null(var2nd.series)){
       stop(" Either the `var2nd.series` must be `NULL` \n
            or define the `legend.title` (+ `var2nd.series.slct.by`) ! ")
-    } else{
+    } else {
       simplePlot <- ggplot(data.spectra) +
         geom_line(aes(x = .data[[x]], y = .data[[Intensity]]),
                   linewidth = line.width,
@@ -384,7 +407,7 @@ plot_EPR_Specs <- function(data.spectra,
   if (!is.null(legend.title)){
     #
     ## legend definition
-    legend.strings <- stringr::str_split(legend.title,pattern = "[[:space:]]+")
+    legend.strings <- str_split(legend.title,pattern = "[[:space:]]+")
     legend.strings <- unlist(legend.strings)
     if (length(legend.strings) == 1){
       legend.title <- bquote(italic(.(legend.strings[1])))
@@ -393,7 +416,8 @@ plot_EPR_Specs <- function(data.spectra,
       if (any(grepl("\\(",legend.strings))){
         legend.title <- bquote(italic(.(legend.strings[1]))~~.(legend.strings[2]))
       } else{
-        legend.title <- bquote(atop(italic(.(legend.strings[1])), # `atop()` is an equivalent of "\n"
+        # `atop()` is an equivalent of "\n"
+        legend.title <- bquote(atop(italic(.(legend.strings[1])),
                                     italic(.(legend.strings[2]))))
       }
     }
@@ -433,9 +457,12 @@ plot_EPR_Specs <- function(data.spectra,
           #
           ## filtering the `var2nd.series.slct.by` plots
           data.spectra <- data.spectra %>%
-            dplyr::filter(.data[[var2nd.series]] %in% var2nd.series.keys[seq(1,var2nd.series.len,
-                                                                             by = var2nd.series.slct.by)]) %>%
-            dplyr::mutate(!!rlang::quo_name(var2nd.series) := as.factor(.data[[var2nd.series]]))
+            dplyr::filter(.data[[var2nd.series]] %in% var2nd.series.keys[
+              seq(1,var2nd.series.len,
+                  by = var2nd.series.slct.by)
+            ]) %>%
+            dplyr::mutate(!!quo_name(var2nd.series) :=
+                            as.factor(.data[[var2nd.series]]))
           #
           ## simple plot without color
           simplePlot.nocolor <- ggplot(data.spectra) +
@@ -449,7 +476,9 @@ plot_EPR_Specs <- function(data.spectra,
           ## colors definition for the plot
           if (length(line.colors) > 1){
             plot.vector.colors <-
-              grDevices::colorRampPalette(colors = line.colors)(var2nd.series.len/var2nd.series.slct.by)
+              grDevices::colorRampPalette(colors = line.colors)(
+                var2nd.series.len/var2nd.series.slct.by
+              )
             #
             simplePlot <- simplePlot.nocolor +
               scale_color_manual(values = plot.vector.colors) +
@@ -457,8 +486,10 @@ plot_EPR_Specs <- function(data.spectra,
           }
           if (length(line.colors) == 1){
             #
-            linecolorvec <- c("magma","A","inferno","B","plasma","C","viridis",
-                              "D","cividis","E","rocket","F","mako","G","turbo","H")
+            linecolorvec <- c(
+              "magma","A","inferno","B","plasma","C","viridis","D",
+              "cividis","E","rocket","F","mako","G","turbo","H"
+            )
             #
             if (!any(grepl(paste(linecolorvec,collapse = "|"),line.colors,fixed = TRUE))) {
               line.colors <- "F"
@@ -657,7 +688,7 @@ plot_EPR_Specs <- function(data.spectra,
         scale_x_continuous(
           transform = "reverse",
           limits = c(x.end,x.start),
-          sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),ggplot2::waiver())
+          sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),waiver())
         )
     } else {
      p.fin <- p +
@@ -673,7 +704,7 @@ plot_EPR_Specs <- function(data.spectra,
         scale_x_continuous(
           transform = "reverse",
           limits = c(x.end,x.start),
-          sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),ggplot2::waiver())
+          sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),waiver())
         )
     } else {
       p.fin <- p + coord_cartesian(xlim = x.plot.limits,ylim = Ilim)

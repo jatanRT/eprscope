@@ -207,7 +207,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
       ## `var2nd.series` factorization
       if (!is.factor(var2nd.series)) {
         data.spectra <- data.spectra %>%
-          dplyr::mutate(!!rlang::quo_name(var2nd.series) :=
+          dplyr::mutate(!!quo_name(var2nd.series) :=
                           as.factor(.data[[var2nd.series]]))
       } else {
         data.spectra <- data.spectra
@@ -253,7 +253,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
       legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
       #
       final_plot <- ggplotly(simplePlot) %>%
-        plotly::layout(
+        layout(
           plot_bgcolor = bg.color,
           xaxis = list(
             title = list(
@@ -262,7 +262,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             ),
             tickfont = list(size = axis.text.size),
             gridcolor = grid.color,
-            linecolor = plotly::toRGB(border.line.color),
+            linecolor = toRGB(border.line.color),
             linewidth = border.line.width, showline = TRUE, mirror = TRUE
           ),
           yaxis = list(
@@ -272,7 +272,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             ),
             tickfont = list(size = axis.text.size),
             gridcolor = grid.color,
-            linecolor = plotly::toRGB(border.line.color),
+            linecolor = toRGB(border.line.color),
             linewidth = border.line.width, showline = TRUE, mirror = TRUE
           ),
           legend = list(title = list(
@@ -283,7 +283,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
     }
   } else {
     final_plot <- ggplotly(simplePlot) %>%
-      plotly::layout(
+      layout(
         plot_bgcolor = bg.color,
         xaxis = list(
           title = list(
@@ -292,7 +292,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           ),
           tickfont = list(size = axis.text.size),
           gridcolor = grid.color,
-          linecolor = plotly::toRGB(border.line.color),
+          linecolor = toRGB(border.line.color),
           linewidth = border.line.width, showline = TRUE, mirror = TRUE
         ),
         yaxis = list(
@@ -302,7 +302,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           ),
           tickfont = list(size = axis.text.size),
           gridcolor = grid.color,
-          linecolor = plotly::toRGB(border.line.color),
+          linecolor = toRGB(border.line.color),
           linewidth = border.line.width, showline = TRUE, mirror = TRUE
         )
       )

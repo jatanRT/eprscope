@@ -138,7 +138,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom tidyr pivot_wider
 eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
                                    instrum.params =c(Bcf = 3500,
                                                      Bsw = 200,
@@ -199,7 +199,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
     Map(function(u,v)
     {
       df.systems[[u]] <- df.systems[[u]] %>%
-        dplyr::mutate(!!rlang::quo_name(Intensity.sim) :=
+        dplyr::mutate(!!quo_name(Intensity.sim) :=
                         v * .data[[Intensity.sim]])
     },
     seq(df.systems),
@@ -260,12 +260,12 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   #
   df.systems.weighted.wide <-
     df.systems.weighted.long %>%
-    tidyr::pivot_wider(
+    pivot_wider(
       names_from = dplyr::all_of(c("Sim_Components")),
       values_from = dplyr::all_of(c(Intensity.sim))
     ) %>%
     dplyr::mutate(
-      !!rlang::quo_name(paste0(Intensity.sim,"_Sum")) :=
+      !!quo_name(paste0(Intensity.sim,"_Sum")) :=
         rowSums(dplyr::across(dplyr::matches("^[[:upper:]]$")))
     )
   #

@@ -51,7 +51,6 @@
 #' @export
 #'
 #'
-#' @importFrom knitr pandoc_to is_latex_output
 plot_EPR_present_interact <- function(p,
                                       size.width = 7,
                                       size.height = 5,

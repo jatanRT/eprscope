@@ -604,16 +604,20 @@ server <- function(input, output,session) {
           row.names = FALSE
         )
       } else if (input$tabformat == "xlsx") {
-        openxlsx::write.xlsx(
-          present_EPR_Sim_Spec(
-            data.spectr.expr = expr_data(),
-            data.spectr.sim = sim_data(),
-            Blim = input$Brange,
-            B.unit = input$Bunit,
-            output.df = TRUE
-          )$df,
-          file = file
-        )
+        if (requireNamespace("openxlsx", quietly = TRUE)) {
+          openxlsx::write.xlsx(
+            present_EPR_Sim_Spec(
+              data.spectr.expr = expr_data(),
+              data.spectr.sim = sim_data(),
+              Blim = input$Brange,
+              B.unit = input$Bunit,
+              output.df = TRUE
+            )$df,
+            file = file
+          )
+        } else {
+          stop(" The `{openxlsx}` package is required to export table in `.xlsx` format !! ")
+        }
       }
     }
   )

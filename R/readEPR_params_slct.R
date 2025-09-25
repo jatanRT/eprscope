@@ -196,7 +196,7 @@ readEPR_param_slct <- function(path_to_dsc_par,
   sel.str.split <- lapply(
     sel.str.line,
     function(l) {
-      unlist(stringr::str_split(l,"[[:space:]]+",n = 2))
+      unlist(str_split(l,"[[:space:]]+",n = 2))
     }
   )
   #

@@ -150,7 +150,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom patchwork wrap_plots
 eval_ECh_QNe_chronoamp <- function(data.at,
                                    ## time can be "time_min","time_ms","time_us" ,"time_ns" as well
                                    time = "time_s",
@@ -282,7 +282,7 @@ eval_ECh_QNe_chronoamp <- function(data.at,
         #
         ## entire plot
         complete.plot <-
-          patchwork::wrap_plots(plot.Q.vs.E,
+          wrap_plots(plot.Q.vs.E,
                                 plot.Ne.vs.E,
                                 nrow = 1)
       } else {
@@ -323,7 +323,7 @@ eval_ECh_QNe_chronoamp <- function(data.at,
         #
         ## entire plot
         complete.plot <-
-          patchwork::wrap_plots(plot.Q.vs.t,
+          wrap_plots(plot.Q.vs.t,
                                 plot.Ne.vs.t,
                                 nrow = 1)
       } else {

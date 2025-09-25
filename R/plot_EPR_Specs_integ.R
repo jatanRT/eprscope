@@ -88,7 +88,7 @@
 #' @export
 #'
 #'
-#' @importFrom ggplot2 facet_wrap
+#' @importFrom ggplot2 facet_wrap unit
 plot_EPR_Specs_integ <- function(data.spectra.integ,
                                  B = "B_G",
                                  B.unit = "G",
@@ -143,7 +143,7 @@ data.spectra.integ.new <- data.spectra.integ %>%
   ## select only `B` and `integrals`
   dplyr::select(c(.data[[B]], dplyr::matches("integ"))) %>%
   ## long table format
-  tidyr::pivot_longer(!dplyr::all_of(c(B)),
+  pivot_longer(!dplyr::all_of(c(B)),
     names_to = "Integrals",
     values_to = "Intensity"
   ) %>%
@@ -211,7 +211,7 @@ if (isFALSE(separate.integs)) {
       theme(
         strip.background = element_rect(fill = "#363636"),
         strip.text = element_text(size = 13, color = "white", face = "bold"),
-        panel.spacing = ggplot2::unit(10, "pt")
+        panel.spacing = unit(10, "pt")
       )
   }
 }

@@ -75,7 +75,7 @@ y.col.string <- col.names.sim[Intensity.sim.id]
 ## Conditions depending on "origin"
 if (origin.sim == "easyspin"|| origin.sim == "Easyspin" ||
     origin.sim == "EasySpin" || origin.sim == "EASYSPIN") {
-  spectrum.data <- data.table::fread(
+  spectrum.data <- fread(
     file = path_to_ASC,
     sep = "auto",
     col.names = col.names.sim
@@ -83,7 +83,7 @@ if (origin.sim == "easyspin"|| origin.sim == "Easyspin" ||
 }
 if (origin.sim == "xenon" || origin.sim == "Xenon" ||
     origin.sim == "XENON") {
-  spectrum.data <- data.table::fread(
+  spectrum.data <- fread(
     file = path_to_ASC,
     sep = "auto",
     header = FALSE,
@@ -97,13 +97,13 @@ if (origin.sim == "simfonia" || origin.sim == "Simfonia" ||
   ## they have to be differentiated by the corresponding pattern
   simf.data.file <- readLines(path_to_ASC)
   simf.data.pattern.read.01 <-
-    unlist(stringr::str_split(simf.data.file[5],
+    unlist(str_split(simf.data.file[5],
                               pattern = "[[:space:]]+",
                               n = 5
     )
   )
   simf.data.pattern.read.02 <-
-    unlist(stringr::str_split(simf.data.file[6],
+    unlist(str_split(simf.data.file[6],
                               pattern = "---"
     )
   )
@@ -117,7 +117,7 @@ if (origin.sim == "simfonia" || origin.sim == "Simfonia" ||
   #
   if (isTRUE(simf.data.condition.01) & isTRUE(simf.data.condition.02)) {
     ## reading simfonia '.txt'
-    spectrum.data <- data.table::fread(
+    spectrum.data <- fread(
       file = path_to_ASC,
       sep = "auto",
       header = FALSE,
@@ -126,7 +126,7 @@ if (origin.sim == "simfonia" || origin.sim == "Simfonia" ||
     )
   } else {
     ## reading simfonia '.asc'
-    spectrum.data <- data.table::fread(
+    spectrum.data <- fread(
       file = path_to_ASC,
       sep = "auto",
       header = TRUE,
@@ -137,7 +137,7 @@ if (origin.sim == "simfonia" || origin.sim == "Simfonia" ||
 }
 #
 if (origin.sim == "csv") {
-  spectrum.data <- data.table::fread(
+  spectrum.data <- fread(
     file = path_to_ASC,
     sep = "auto",
     header = TRUE,

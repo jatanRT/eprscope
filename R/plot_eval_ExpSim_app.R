@@ -107,6 +107,7 @@
 #' @export
 #'
 #'
+#' @importFrom shiny runApp
 plot_eval_ExpSim_app <- function() {
   #
   appDir <-
@@ -121,6 +122,6 @@ plot_eval_ExpSim_app <- function() {
     )
   }
   #
-  shiny::runApp(appDir, display.mode = "normal")
+  runApp(appDir, display.mode = "normal")
   #
 }

@@ -143,7 +143,8 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom vctrs vec_as_names
+#' @importFrom plotly plot_ly colorbar
 plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       x = "B_mT",
                                       Intensity = "dIepr_over_dB",
@@ -276,7 +277,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ## 3. join all columns into matrix
   Intensity_matrix <-
   as.matrix(dplyr::bind_cols(intensity.list,
-    .name_repair = ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE)
+    .name_repair = ~ vec_as_names(..., repair = "unique", quiet = TRUE)
   ))
 ## transpose matrix in order to present 3D spectra properly
 Intensity_matrix <- t(Intensity_matrix)
@@ -291,7 +292,7 @@ Intensity_matrix <- t(Intensity_matrix)
   ## own 3D plot (different types "surface","contour","")
   if (plot.type == "surface" || plot.type == "Surface") {
     if (isTRUE(contour.labels)) {
-      base_plot <- plotly::plot_ly(
+      base_plot <- plot_ly(
         x = ~ X_select_df[[x]],
         y = ~ var2nd_select_df[[var2nd.series]],
         z = ~ Intensity_matrix,
@@ -307,7 +308,7 @@ Intensity_matrix <- t(Intensity_matrix)
         )
       )
     } else {
-      base_plot <- plotly::plot_ly(
+      base_plot <- plot_ly(
         x = ~ X_select_df[[x]],
         y = ~ var2nd_select_df[[var2nd.series]],
         z = ~ Intensity_matrix,
@@ -316,7 +317,7 @@ Intensity_matrix <- t(Intensity_matrix)
       )
     }
     final_plot <- base_plot %>%
-      plotly::layout(
+      layout(
         scene = list(
           xaxis = list(
             title = list(
@@ -354,7 +355,7 @@ Intensity_matrix <- t(Intensity_matrix)
           )
         )
       ) %>%
-      plotly::colorbar(
+      colorbar(
         title = list(
           text = zlab,
           font = list(size = axis.title.size)
@@ -365,7 +366,7 @@ Intensity_matrix <- t(Intensity_matrix)
   }
   #
   if (plot.type == "contour" || plot.type == "Contour") {
-    base_plot <- plotly::plot_ly(
+    base_plot <- plot_ly(
       x = ~ X_select_df[[x]],
       y = ~ var2nd_select_df[[var2nd.series]],
       z = ~ Intensity_matrix,
@@ -377,7 +378,7 @@ Intensity_matrix <- t(Intensity_matrix)
       )
     )
     final_plot <- base_plot %>%
-      plotly::layout(
+      layout(
         xaxis = list(
           title = list(
             text = xlab,
@@ -395,7 +396,7 @@ Intensity_matrix <- t(Intensity_matrix)
           tickfont = list(size = axis.text.size)
         )
       ) %>%
-      plotly::colorbar(
+      colorbar(
         title = list(
           text = zlab,
           font = list(size = axis.title.size)

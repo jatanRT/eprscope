@@ -169,7 +169,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom npreg ss
 smooth_EPR_Spec_by_npreg <- function(data.spectr,
                                      B = "B_mT",
                                      B.unit = "mT",
@@ -185,7 +185,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
   #
   ## smooth EPR spectrum data
   smooth.epr.spec.list <-
-    npreg::ss(x = data.spectr[[B]],
+    ss(x = data.spectr[[B]],
               y = data.spectr[[Intensity]],
               method = method,
               ...)

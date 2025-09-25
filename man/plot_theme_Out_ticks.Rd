@@ -46,7 +46,7 @@ Custom \code{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing ou
 \description{
 Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs
   of graph (such as EPR spectrum, kinetic profiles...etc)
-  visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic
+  visuals/non-data components of the actual plot. The theme can be mainly applied for the basic
   \code{ggplot2} components like \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders,
   grid and axis ticks pointing \strong{outside of the plot panel}. For details of \code{ggplot2} theme elements please,
   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
@@ -69,8 +69,11 @@ ggplot2::ggplot(data = tmpd.data.file,
        ggplot2::aes(x = B_G,y = dIepr_over_dB)
        ) +
   ggplot2::geom_line(linewidth = 0.75,color = "darkgreen") +
-  ggplot2::xlab("B (G)") +
-  ggplot2::ylab("dIepr / dB  (p.d.u.)") +
+  ggplot2::labs(
+    x = "B (G)",
+    y = "dIepr / dB  (p.d.u.)",
+    title = "EPR Spectrum"
+  ) +
   plot_theme_Out_ticks()
 
 

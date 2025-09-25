@@ -103,7 +103,6 @@
 #' @export
 #'
 #'
-#' @importFrom plotly layout toRGB
 plot_layout2D_interact <- function(p,
                                    data = NULL,
                                    xlab = "<i>B</i> (mT)",
@@ -133,7 +132,7 @@ plot_layout2D_interact <- function(p,
                                    border.line.width = 1.4,
                                    border.line.color = "black") {
   #
-  Plotly_layout_0 <- plotly::layout(
+  Plotly_layout_0 <- layout(
     p,
     data,
     plot_bgcolor = bg.color,
@@ -155,7 +154,7 @@ plot_layout2D_interact <- function(p,
       gridcolor = grid.color,
       gridwidth = grid.line.width,
       griddash = grid.line.type,
-      linecolor = plotly::toRGB(border.line.color),
+      linecolor = toRGB(border.line.color),
       linewidth = border.line.width, showline = TRUE, mirror = TRUE
     ),
     yaxis = list(
@@ -176,7 +175,7 @@ plot_layout2D_interact <- function(p,
       gridcolor = grid.color,
       gridwidth = grid.line.width,
       griddash = grid.line.type,
-      linecolor = plotly::toRGB(border.line.color),
+      linecolor = toRGB(border.line.color),
       linewidth = border.line.width, showline = TRUE, mirror = TRUE
     )
   )
@@ -184,7 +183,7 @@ plot_layout2D_interact <- function(p,
     Plotly_layout <- Plotly_layout_0
   } else {
     Plotly_layout <- Plotly_layout_0 %>%
-      plotly::layout(legend = list(title = list(
+      layout(legend = list(title = list(
         text = legend.title,
         font = list(
           family = legend.title.family,

@@ -259,7 +259,7 @@ eval_gFactor_Spec <- function(data.spectr,
 #'
 #' @export
 #'
-#'
+#' @importFrom stringr str_split
 eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
                                  mean = TRUE,
                                  origin = "gaussian") {
@@ -274,9 +274,7 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
     qchfile.select.g <- qchfile[start.read.line + 1]
     #
     ## character line split into string elements
-    qchfile.select.g <- stringr::str_split(qchfile.select.g,
-                                           pattern = "[[:space:]]+"
-    )
+    qchfile.select.g <- str_split(qchfile.select.g,pattern = "[[:space:]]+")
     #
     ## select only number strings
     ## `str_split` results in list therefore it has to be unlisted
@@ -298,9 +296,7 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
     qchfile.select.g <- qchfile[start.read.line]
     #
     ## character line split into string elements
-    qchfile.select.g <- stringr::str_split(qchfile.select.g,
-                                           pattern = "[[:space:]]+"
-    )
+    qchfile.select.g <- str_split(qchfile.select.g,pattern = "[[:space:]]+")
     #
     ## select only number strings
     qchfile.select.g <- unlist(qchfile.select.g) ## `str_split` results in list

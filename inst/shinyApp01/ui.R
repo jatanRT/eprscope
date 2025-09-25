@@ -6,7 +6,7 @@ library(shinythemes)
 library(DT)
 #
 ui <- fluidPage(
-  theme = shinytheme("cerulean"),
+  theme = shinythemes::shinytheme("cerulean"),
   #
   ## visual style:
   shiny::tags$h2(

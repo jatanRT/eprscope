@@ -235,7 +235,7 @@
 #'
 #'
 #' @importFrom data.table fread
-#' @importFrom rlang .data quo_name :=
+#' @importFrom rlang .data
 #' @importFrom stats na.omit
 readEPR_Exp_Specs <- function(path_to_ASC,
                               sep = "auto",
@@ -467,14 +467,14 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (any(grepl(paste(winepr.string,collapse = "|"),origin)) &
       !is.null(time.series.id)) {
     spectrum.data.origin <-
-      data.table::fread(file = path_to_ASC,
-                        sep = sep,
-                        header = header,
-                        skip = skip,
-                        col.names = col.names,
-                        fill = T,
-                        blank.lines.skip = T,
-                        na.strings = c("Intensity","X [G]","Y []")) %>%
+      fread(file = path_to_ASC,
+                   sep = sep,
+                   header = header,
+                   skip = skip,
+                   col.names = col.names,
+                   fill = T,
+                   blank.lines.skip = T,
+                   na.strings = c("Intensity","X [G]","Y []")) %>%
       ## filter out all rows containing "Slice|slice" in "B|Field" column
       dplyr::filter(!grepl("Slice|slice", .data[[grep(pattern = "BG|B_G|B-G|Field",
                                                 col.names,value = TRUE)]])) %>%
@@ -485,12 +485,12 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   } else {
     ## basic data frame by general function (`fread`) incl. the above defined parameters
     spectrum.data.origin <-
-      data.table::fread(file = path_to_ASC,
-                        sep = sep,
-                        header = header,
-                        skip = skip,
-                        col.names = col.names,
-                        ...
+      fread(file = path_to_ASC,
+            sep = sep,
+            header = header,
+            skip = skip,
+            col.names = col.names,
+            ...
       )
   }
   #
@@ -516,17 +516,17 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   if (x.unit == "G" || x.unit == "mT") {
     if (isTRUE(convertB.unit)){
       spectra.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(paste0(xString.init,
+        dplyr::mutate(!!quo_name(paste0(xString.init,
                                                switch(2-isTRUE(G.unit.cond),"mT","G"))) :=
                         .data[[xString]] * switch(2 - isTRUE(G.unit.cond),
                                1 / 10,
                                10
                         )) %>%
-        dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+        dplyr::mutate(!!quo_name(IntensityString) := .data[[IntensityString]] *
                         norm.multiply.qValue * norm.multiply.const)
     } else{
       spectra.data <- spectrum.data.origin %>%
-        dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+        dplyr::mutate(!!quo_name(IntensityString) := .data[[IntensityString]] *
                         norm.multiply.qValue * norm.multiply.const)
     }
   }
@@ -534,7 +534,7 @@ readEPR_Exp_Specs <- function(path_to_ASC,
   ## or Intensity vs power relationship
   if (x.unit != "G" & x.unit != "mT") {
     spectra.data <- spectrum.data.origin %>%
-      dplyr::mutate(!!rlang::quo_name(IntensityString) := .data[[IntensityString]] *
+      dplyr::mutate(!!quo_name(IntensityString) := .data[[IntensityString]] *
         norm.multiply.qValue * norm.multiply.const)
   }
   #

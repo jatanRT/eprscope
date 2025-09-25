@@ -178,6 +178,9 @@
 #' @export
 #'
 #' @importFrom ggplot2 ggtitle
+#' @importFrom progressr handlers handler_progress with_progress progressor
+#' @importFrom future plan
+#' @importFrom future.apply future_Map
 eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       # Intensity.expr = "dIepr_over_dB", ## into `...`
                                       # Intensity.sim = "dIeprSim_over_dB", ## into `...`
@@ -419,11 +422,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## setup the progress bar, this is required
   ## in order to synchronize the time, see
   ## https://progressr.futureverse.org/
-  progressr::handlers("debug") ## !!! IMPORTANT
+  handlers("debug") ## !!! IMPORTANT
   # progressr::handlers("debug")
   # progressr::handlers("progress")
-  progressr::handlers(list(
-    progressr::handler_progress(
+  handlers(list(
+    handler_progress(
       format = " [:bar] :percent ",
       width = 104
     )
@@ -466,9 +469,9 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ##  ---------- procedure START --------------
   if (processing == "sequential") {
-    future::plan("sequential")
+    plan("sequential")
   } else {
-    future::plan("multisession",workers = applied.cores,gc = FALSE)
+    plan("multisession",workers = applied.cores,gc = FALSE)
     ## definition of the `applied.cores` see above
     ## and maybe automatic run of the "garbage collector"
     ## (gc = TRUE,memory cleaning)
@@ -480,12 +483,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## start time
   start.tm <- Sys.time()
   #
-  progressr::with_progress({
+ with_progress({
     ## progress bar definition
-    p <- progressr::progressor(along = 0:length(lineG.content.vary))
+    p <- progressor(along = 0:length(lineG.content.vary))
     #
     sim.fit.vary.list <-
-      future.apply::future_Map(
+      future_Map(
         function(c,r) {
           #
           p() ## progressbar
@@ -514,7 +517,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## ------------ Procedure END -------------
   if (processing == "parallel") {
-    future::plan("sequential")
+    plan("sequential")
     #
     ## ...+ shutdown the cluster
     # future:::clusterRegistry$stopCluster()
@@ -544,18 +547,22 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## on `check.fit.plot`
   if (!is.null(animation)) {
     if (isTRUE(check.fit.plot)) {
-      animation::saveGIF({
-        for (p in seq(sim.fit.vary.list.plots)) {
-          print(
-            sim.fit.vary.list.plots[[p]] +
-              patchwork::plot_annotation(title = paste0("Evaluation ",p))
-          )
-        }},
-        interval = 0.32,
-        movie.name = paste0(animation,".gif"),
-        ani.width = 640,
-        ani.height = 640
-      )
+      if (requireNamespace("animation", quietly = TRUE)) {
+        animation::saveGIF({
+          for (p in seq(sim.fit.vary.list.plots)) {
+            print(
+              sim.fit.vary.list.plots[[p]] +
+                patchwork::plot_annotation(title = paste0("Evaluation ",p))
+            )
+          }},
+          interval = 0.32,
+          movie.name = paste0(animation,".gif"),
+          ani.width = 640,
+          ani.height = 640
+        )
+      } else {
+        stop(" To create the `.gif` animation, package `{animation}` is required ! ")
+      }
     } else {
       animation::saveGIF({
         for (p in seq(sim.fit.vary.list.plots)) {
@@ -599,7 +606,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## `facet_grid()` to visualize individual parameter changes:
   sim.fit.vary.list.params.df.long <-
     sim.fit.vary.list.params.df %>%
-    tidyr::pivot_longer(
+    pivot_longer(
       !dplyr::all_of(c("Evaluation")),
       names_to = "Parameter",
       values_to = "Value"
@@ -642,7 +649,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     dplyr::mutate(
       Init_Params_Set = 1:nrow(optim.params.init.vary.df)
     ) %>%
-    tidyr::pivot_longer(
+    pivot_longer(
       !dplyr::all_of(c("Init_Params_Set")),
       names_to = "Parameter",
       values_to = "Value"
@@ -680,7 +687,9 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## color definitions
   facet.plot.colors <-
-    grDevices::colorRampPalette(colors = c("dodgerblue4","darkorange","darkviolet","darkred"))(ncol(sim.fit.vary.list.params.df) - 1)
+    grDevices::colorRampPalette(
+      colors = c("dodgerblue4","darkorange","darkviolet","darkred")
+    )(ncol(sim.fit.vary.list.params.df) - 1)
   #
   ## Plot with optimized parameter space
   plot.facet.optim.space <-
@@ -700,7 +709,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       ),
       color = "magenta",
       se = TRUE,
-      fill = "darkgray",
+      fill = "blue",
+      alpha = 0.16,
       level = 0.95,
       linewidth = 1.1
     ) +
@@ -714,11 +724,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         sim.fit.vary.list.params.df.long,
         subset = Parameter %in% c("RSS","residualSD","AIC","BIC")
       ),
-      color = "blue2",
+      color = "blue3",
       ## also  "cyan" 2,3, "royalblue", "green2", "greenyellow"
       ## "darkturquoise", "deepskyblue",
       se = TRUE,
-      fill = "darkgray",
+      fill = "blue",
+      alpha = 0.16,
       level = 0.95,
       linewidth = 1.1
     ) +

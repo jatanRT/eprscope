@@ -71,7 +71,7 @@
 #'
 #' @export
 #'
-#'
+#' @importFrom DT datatable
 readEPR_params_tabs <- function(path_to_dsc_par,
                                 origin = "xenon",
                                 interact = NULL) {
@@ -559,11 +559,11 @@ readEPR_params_tabs <- function(path_to_dsc_par,
     return(tab.list)
   } else {
     if (interact == "params"){
-      params.values <- DT::datatable(tab.list$params)
+      params.values <- datatable(tab.list$params)
       return(params.values)
     }
     if (interact == "info"){
-      info.character <- DT::datatable(tab.list$info)
+      info.character <- datatable(tab.list$info)
       return(info.character)
     }
     #

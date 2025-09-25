@@ -9,43 +9,41 @@ Authors@R: person("Ján", "Tarábek",
            comment = c(ORCID = "0000-0003-0116-3824"))
 Description: Processing, analysis and plottting of 
              Electron Paramagnetic Resonance (EPR) spectra in chemistry. 
-             Even though the package is mainly focused
-             on continuous wave (CW) EPR/ENDOR, many functions 
-             may be also used for the integrated forms of 1D 
-             PULSED EPR spectra. It is able to find the most 
-             important spectral characteristics like g-factor, 
-             linewidth, maximum of derivative or integral intensities 
-             and single/double integrals. This is especially 
-             important in spectral (time) series consisting of many 
-             EPR spectra like during variable temperature experiments, 
-             electrochemical or photochemical radical generation 
-             and/or decay. Package also enables processing of 
-             data/spectra for the analytical (quantitative) purposes. 
-             Namely, how many radicals or paramagnetic centers 
-             can be found in the analyte/sample. 
-             The goal is to evaluate rate constants, 
-             considering different kinetic models, to describe 
-             the radical reactions. The key feature of the package 
-             resides in processing of the universal ASCII text 
-             formats (such as '.txt', '.csv' or '.asc') 
-             from scratch. No proprietary formats are used 
-             (except the MATLAB EasySpin outputs) and in such respect 
-             the package is in accordance with the FAIR data 
-             principles. Upon 'reading' (also providing automatic 
+             Even though the main emphasis is on continuous wave (CW) 
+             EPR/ENDOR, many functions may be also used 
+             for the integrated forms of 1D PULSED EPR spectra. 
+             The primary goal is to find the most important spectral 
+             characteristics like g-factor, linewidth, maximum 
+             of derivative or integral intensities and single/double 
+             integrals. This is especially important in spectral (time) 
+             series consisting of many EPR spectra like during variable 
+             temperature experiments, electrochemical or photochemical 
+             radical generation and/or decay. Therefore, processing of 
+             data/spectra for the analytical (quantitative) purposes
+             belongs to the package core. The aim is to evaluate rate 
+             constants, considering different kinetic models, 
+             to describe the radical reactions. One of the key features 
+             is processing of the universal ASCII text 
+             format (such as '.txt', '.csv', '.asc','.dsc','.par') 
+             from scratch (except the MATLAB EasySpin outputs '.mat').
+             Upon 'reading' (also providing automatic 
              procedures for the most common EPR spectrometers)
              the spectral data are transformed into the universal
              R 'data frame' format. Subsequently, the EPR spectra 
              can be visualized and are fully consistent either with 
              the 'ggplot2' package or with the interactive 
-             formats based on 'plotly'. Additionally, simulations 
+             formats based on 'plotly'. Simulations 
              and fitting of the isotropic EPR spectra
-             are also included in the package. Advanced simulation 
-             parameters provided by the MATLAB-EasySpin toolbox 
-             and results from the quantum chemical calculations 
-             like g-factor and hyperfine splitting/coupling 
-             constants (a/A) can be compared and summarized 
-             in table-format in order to analyze the EPR spectra 
-             by the most effective way.
+             can be performed as well. In addition, the advanced 
+             simulation parameters provided by the MATLAB-EasySpin 
+             toolbox and results from the quantum chemical 
+             calculations like g-factor and hyperfine 
+             splitting/coupling constants (a/A) can be compared 
+             and summarized in table-format in order to analyze 
+             the EPR spectra by the most effective way. 
+             Reproducible reports of the entire data processing 
+             and analysis can be created by the quarto 
+             publishing system. 
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -55,6 +53,7 @@ Imports:
     plotly,
     dplyr,
     tidyr,
+    vctrs,
     broom,
     minpack.lm,
     stringr,
@@ -63,40 +62,36 @@ Imports:
     nloptr,
     errors,
     rcdk,
-    graphics,
     R.matlab,
     magrittr,
+    patchwork,
     rlang,
     pracma,
-    knitr,
-    pso,
-    shiny
-Suggests: 
-    DT,
-    osfr,
-    future,
-    progressr,
-    patchwork,
-    numDeriv,
-    animation,
     gsignal,
+    DT,
+    pso,
+    MASS,
+    shiny,
+    progressr,
+    future,
+    future.apply,
+    npreg
+Suggests: 
+    knitr,
+    htmlwidgets,
+    webshot2,
+    numDeriv,
+    shinythemes,
+    animation,
     usethis,
-    vctrs,
     R.utils,
     corrplot,
     tibble,
     esquisse,
-    future.apply,
-    npreg,
-    qqplotr,
     openxlsx,
-    webshot2,
     tinytable,
-    shinythemes,
     kableExtra,
-    htmlwidgets,
     RColorBrewer,
-    modelsummary,
     nlstools,
     rmarkdown,
     bookdown,

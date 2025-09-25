@@ -112,10 +112,10 @@ readMAT_params_file <- function(path_to_MAT,
                                 field.var = NULL) {
   if (is.null(str.var)){
     ## list
-    data.params <- R.matlab::readMat(path_to_MAT)
+    data.params <- readMat(path_to_MAT)
     return(data.params)
   } else{
-    data.params <- R.matlab::readMat(path_to_MAT)
+    data.params <- readMat(path_to_MAT)
     if (is.null(field.var)) {
       params <- data.params[[str.var]]
       ## dimension (required fro additional processing) of `params`

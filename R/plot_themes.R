@@ -87,10 +87,22 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
   ## theme parts:
   theme_bas <- theme(
     axis.ticks.length = unit(-6, "pt"),
-    axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-    axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
-    axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.text.x = element_text(
+      margin = margin(6, 6, 4, 6, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.text.y = element_text(
+      margin = margin(4, 6, 6, 0, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.title.y = element_text(
+      margin = margin(2, 8, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
+    axis.title.x = element_text(
+      margin = margin(2, 6, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
     panel.border = element_rect(color = border.line.color,
                                 linetype = border.line.type,
                                 linewidth = border.line.width,
@@ -101,11 +113,14 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
   )
   #
   ## no-grid theme part
-  theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  theme_Nogrid <-
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   #
   ## duplicate axis with in-ticks
-  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
-  axis_y_duplicate <- scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  axis_x_duplicate <-
+    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  axis_y_duplicate <-
+    scale_y_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
   ## theme:
   if (isTRUE(bg.transparent)) {
@@ -144,7 +159,7 @@ plot_theme_In_ticks <- function(axis.text.size = 14,
 #' @description
 #'   Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order
 #'   to meet the needs of graph (such as EPR spectrum, kinetic profiles...etc)
-#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic \code{ggplot2} components like
+#'   visuals/non-data components of the actual plot. The theme can be mainly applied for the basic \code{ggplot2} components like
 #'   \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders, grid and \strong{x-axis ticks} pointing
 #'   \strong{inside the plot panel}. The \strong{y-axis ticks} are \strong{skipped} (see also \code{\link{plot_EPR_Specs}}).
 #'   For details of \code{ggplot2} theme elements please,
@@ -240,10 +255,20 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
   ## theme parts:
   theme_bas <- theme(
     axis.ticks.length = unit(-6, "pt"),
-    axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-    axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-    axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.text.x = element_text(
+      margin = margin(6, 6, 4, 6, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_text(
+      margin = margin(2, 8, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
+    axis.title.x = element_text(
+      margin = margin(2, 6, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
     panel.border = element_rect(color = border.line.color,
                                 linetype = border.line.type,
                                 linewidth = border.line.width,
@@ -254,10 +279,12 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
   )
   #
   ## no-grid theme part
-  theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  theme_Nogrid <-
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   #
   ## duplicate axis with in-ticks
-  axis_x_duplicate <- scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
+  axis_x_duplicate <-
+    scale_x_continuous(sec.axis = dup_axis(name = "",labels = NULL))
   #
   ## theme:
   if (isTRUE(bg.transparent)) {
@@ -296,7 +323,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' @description
 #'   Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs
 #'   of graph (such as EPR spectrum, kinetic profiles...etc)
-#'   visuals/non-data components of the actual graph/plot. The theme can be mainly applied for the basic
+#'   visuals/non-data components of the actual plot. The theme can be mainly applied for the basic
 #'   \code{ggplot2} components like \code{ggplot() + geom_...() + ...} and consists of highlighted panel borders,
 #'   grid and axis ticks pointing \strong{outside of the plot panel}. For details of \code{ggplot2} theme elements please,
 #'   refer to \href{https://ggplot2.tidyverse.org/reference/theme.html}{Modify Components of a Theme}
@@ -326,8 +353,11 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #'        ggplot2::aes(x = B_G,y = dIepr_over_dB)
 #'        ) +
 #'   ggplot2::geom_line(linewidth = 0.75,color = "darkgreen") +
-#'   ggplot2::xlab("B (G)") +
-#'   ggplot2::ylab("dIepr / dB  (p.d.u.)") +
+#'   ggplot2::labs(
+#'     x = "B (G)",
+#'     y = "dIepr / dB  (p.d.u.)",
+#'     title = "EPR Spectrum"
+#'   ) +
 #'   plot_theme_Out_ticks()
 #'
 #'
@@ -345,20 +375,33 @@ plot_theme_Out_ticks <- function(axis.text.size = 14,
   ## theme parts:
   theme_bas <- theme(
     axis.ticks.length = unit(6, "pt"),
-    axis.text.x = element_text(margin = margin(6, 6, 4, 6, unit = "pt"), size = axis.text.size),
-    axis.text.y = element_text(margin = margin(4, 6, 6, 0, unit = "pt"), size = axis.text.size),
-    axis.title.y = element_text(margin = margin(2, 8, 2, 6, unit = "pt"), size = axis.title.size),
-    axis.title.x = element_text(margin = margin(2, 6, 2, 6, unit = "pt"), size = axis.title.size),
+    axis.text.x = element_text(
+      margin = margin(6, 6, 4, 6, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.text.y = element_text(
+      margin = margin(6, 6, 4, 6, unit = "pt"),
+      size = axis.text.size
+    ),
+    axis.title.y = element_text(
+      margin = margin(2, 8, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
+    axis.title.x = element_text(
+      margin = margin(2, 6, 2, 6, unit = "pt"),
+      size = axis.title.size
+    ),
     panel.border = element_rect(color = border.line.color,
                                 linetype = border.line.type,
                                 linewidth = border.line.width,
                                 fill = NA),
-    plot.title = element_text(margin = margin(b = -4)),
-    plot.subtitle = element_text(margin = margin(t = 8,b = -6)),
+    plot.title = element_text(margin = margin(b = 8)),
+    plot.subtitle = element_text(margin = margin(t = -4,b = 8)),
     ...
   )
   #
-  theme_Nogrid <- theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  theme_Nogrid <-
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   #
   ## theme:
   if (isTRUE(bg.transparent)) {
