@@ -177,7 +177,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-  \code{plot.rqq}, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
+  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
@@ -215,7 +215,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   \code{1}: maximum number of function evaluations reached, \code{2}: maximum number of iterations reached,
   \code{3}: maximum number of restarts reached, \code{4}: maximum number of iterations without improvement reached.
   For all the other remaining methods (coming from \code{{nloptr}} package), the integers have to be positive
-  to indicate the successful convergence.}
+  to indicate successful convergence.}
   }
 
   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
@@ -386,6 +386,19 @@ tempo.test.sim.fit.b$ra$sd
 ## Akaike and Bayesian Criteria (AIC & BIC)
 ## + information about the residuals distribution
 tempo.test.sim.fit.b$abic
+#
+## residual & Q-Q plots for the proposed normal
+## distribution of residuals and confidence level 99\%
+## (default: 95\%/0.95)
+tempo.test.sim.fit.b$ra$plot.rqq(confidence = 0.99)
+#
+## residual & Q-Q plots for the proposed Student's
+## distribution of residuals with degrees of freedom
+## df = 6 (see the "$message" right above)
+tempo.test.sim.fit.b$ra$plot.rqq(
+  residuals.distro = "t",
+  df = 6
+)
 #
 ## fitting of the aminoxyl EPR spectrum
 ## by the combination of the 1. "Levenberg-Marquardt"

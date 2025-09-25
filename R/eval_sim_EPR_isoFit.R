@@ -175,7 +175,7 @@
 #'   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-#'   \code{plot.rqq}, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
+#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
 #'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
@@ -213,7 +213,7 @@
 #'   \code{1}: maximum number of function evaluations reached, \code{2}: maximum number of iterations reached,
 #'   \code{3}: maximum number of restarts reached, \code{4}: maximum number of iterations without improvement reached.
 #'   For all the other remaining methods (coming from \code{{nloptr}} package), the integers have to be positive
-#'   to indicate the successful convergence.}
+#'   to indicate successful convergence.}
 #'   }
 #'
 #'   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
@@ -347,6 +347,19 @@
 #' ## + information about the residuals distribution
 #' tempo.test.sim.fit.b$abic
 #' #
+#' ## residual & Q-Q plots for the proposed normal
+#' ## distribution of residuals and confidence level 99%
+#' ## (default: 95%/0.95)
+#' tempo.test.sim.fit.b$ra$plot.rqq(confidence = 0.99)
+#' #
+#' ## residual & Q-Q plots for the proposed Student's
+#' ## distribution of residuals with degrees of freedom
+#' ## df = 6 (see the "$message" right above)
+#' tempo.test.sim.fit.b$ra$plot.rqq(
+#'   residuals.distro = "t",
+#'   df = 6
+#' )
+#' #
 #' ## fitting of the aminoxyl EPR spectrum
 #' ## by the combination of the 1. "Levenberg-Marquardt"
 #' ## and 2. "Nelder-Mead" algorithms
@@ -390,7 +403,6 @@
 #' @export
 #'
 #'
-#' @importFrom stats median
 #' @importFrom dplyr rowwise
 eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 Intensity.expr = "dIepr_over_dB",
@@ -862,7 +874,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     limits.params2a, ## Delta BG lower
     limits.params3a, ## Delta BL lower
     limits.params4a, ## baseline constant/offset lower
-    limits.params5a ## intensity multiple lower
+    limits.params5a ## intensity multiplication lower
   )
   ## condition/fixes for linear and/or quadratic baseline
   if (baseline.correct == "linear" || baseline.correct == "Linear" ||
@@ -902,7 +914,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     limits.params2b, ## Delta BG upper
     limits.params3b, ## Delta BL upper
     limits.params4b, ## baseline constant/offset upper
-    limits.params5b ## intensity multiple upper
+    limits.params5b ## intensity multiplication upper
   )
   upper.limits <- switch(
     3 - baseline.cond.fn(baseline.correct = baseline.correct),
@@ -1009,10 +1021,10 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   optim.params.init.list[[1]] <- optim.params.init
   #
   ## essential message pointing to calculation by the actual method,
-  ## corresponding to progress of `optim.method` in loop
+  ## corresponding to progress of `optim.method` in the loop
   msg.base <- "EPR simulation parameters are currently being optimized by  "
   #
-  # function to print message before/after individual optimization method
+  # function to print message before/after the individual optimization method
   fun.msg.method.time <-
     function(
         msg.show = msg.optim.progress,
@@ -1051,7 +1063,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
     }
   #
-  ## ALL METHODS ITERATIONS:
+  ## --------- ALL METHODS ITERATIONS (LOOP): ----------
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
@@ -1316,9 +1328,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       data.fit = data.sim.expr,
       residuals = "Residuals",
       fitted = "Simulation",
-      resid.xlab = "Simulation",
-      k = length(optim.params.init),
-      level.cnfd = 0.99999999
+      resid.xlab = "Simulated EPR Intensity",
+      k = length(optim.params.init)
     )
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
@@ -1490,7 +1501,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       #
       ## entire plot
       plot.sim.expr <-
-        patchwork::wrap_plots(plot.sim.expr.upper,
+        wrap_plots(plot.sim.expr.upper,
                               plot.sim.expr.lower,
                               ncol = 1)
       #

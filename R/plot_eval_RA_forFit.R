@@ -7,15 +7,15 @@
 #'
 #' @description
 #'   Three visual diagnostic tools (based on the \href{https://ggplot2.tidyverse.org/}{\code{{ggplot2}}}
-#'   and the \href{https://aloy.github.io/qqplotr/}{\code{{qqplotr}}} packages) and one metric (standard
-#'   deviation of residuals) are applied to evaluate the accuracy and appropriateness as well as to compare
+#'   package) and one metric (standard deviation of residuals) are applied to evaluate the appropriateness as well as to compare
 #'   different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated Values relation.
 #'   For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
-#'   variance over all predicted/fitted values. 2. \emph{Sample Quantiles vs Theoretical Quantiles} (Q-Q plot)
-#'   shows, whether the appearance of residuals can be described by the normal probability distribution.
-#'   3. The latter is combined with a more detailed information about the distribution of residuals
-#'   by the \strong{histogram} (\code{\link[ggplot2]{geom_histogram}}) as well as by the \strong{probability density}
-#'   (\code{\link[ggplot2]{geom_density}}including the residuals mean value, and median which in ideal case equal to \code{0}).
+#'   variance over all predicted/fitted values. 2. \emph{Sample Quantiles (Residuals) vs Theoretical Quantiles} (Q-Q plot)
+#'   shows, whether the appearance of residuals can be described by the three probability distributions:
+#'   \code{c("norm","t","cauchy")} (i.e. Normal or Student's t or Cauchy, see also the \code{\link{eval_ABIC_forFit}} function).
+#'   3. The latter is combined with a more detailed information about the distribution of residuals by the \strong{histogram}
+#'   (\code{\link[ggplot2]{geom_histogram}}) as well as by the \strong{probability density} (\code{\link[ggplot2]{geom_density}},
+#'   including the residuals \code{mean} value, and \code{median} which in ideal case equal to \code{0}).
 #'
 #'
 #' @details
@@ -34,13 +34,13 @@
 #'   In addition to the original "raw" residuals defined above, one may come across other types,
 #'   like \href{https://bookdown.org/mike/data_analysis/generalized-linear-models.html}{"Pearson" (or "scaled")},
 #'   \strong{"standardized" or "studentized"}. \strong{The latter two are helpful to identify outliers},
-#'   which are data points that are significantly different from the rest of the data
+#'   which are the data points that are significantly different from the rest of the data
 #'   (though, they can be also identified by the Q-Q plot and histogram-probability density).
 #'   For such reason the "raw" residuals (\eqn{e_i}) are divided by their standard
 #'   deviation (\eqn{sd} see the \code{Value} below), including the the effect of leverage.
 #'   Thus, the formula for standardized residual reads: \eqn{r_i = e_i\,/\,(sd\,\sqrt{1 - h_{ii}})},
 #'   where the \eqn{h_{ii}} stands for the diagonal element of the "leverage" \eqn{\hat{H}} matrix
-#'   (see e.g. last three \code{References}). The simple explanation of the leverage phenomenon is following
+#'   (see e.g. \code{References} 11-13). The simple explanation of the leverage phenomenon is following
 #'   (see e.g. Speegle D, Clair B (2021) or The Pennsylvania State University (2018) in the \code{References}).
 #'   The fit or the regression line goes through the center of mass of the (experimental) data (\eqn{x},\eqn{y}).
 #'   Lets assume two points \eqn{A} and \eqn{B}, where the \eqn{A} \eqn{x}-coordinate is close to the mean value
@@ -61,8 +61,8 @@
 #'   (please, refer to the \href{https://r-forge.r-universe.dev/numDeriv/doc/manual.html#jacobian}{jacobian})
 #'   as reported elsewhere (see Nguyen M (2020) in the \code{References}). Consequently, the calculations of standardized
 #'   and studentized residuals are not involved in this general \code{plot_eval_RA_forFit} function. Nevertheless, users are advised
-#'   to apply above-described options to obtain the desired residuals or diagnostic plots for a specific model/fit
-#'   (also refer to the \code{Value}/\code{df}).
+#'   to apply above-described options to obtain these specialized residuals or diagnostic plots for a specific model/fit
+#'   (also refer to the \code{Value}/\code{df}) if needed.
 #'
 #'   \strong{Considerations to support or exclude model/fit based on the residual plot.} If the residuals exhibit
 #'   no clear pattern, like they are randomly scattered around the \code{0} with no systematic increase or decrease
@@ -73,21 +73,27 @@
 #'   In particular, the curved pattern in the residual plot may indicate that a model does a poor job of fitting
 #'   and likely, we need additional parameter(s) to describe our data properly. In the case if residuals suffer
 #'   from unequal variance at different levels of the fitted values, the residuals are referred
-#'   to as \strong{heteroscedastic}.
+#'   to as \strong{heteroscedastic}. In order to predict pattern of the residual plot, the corresponding relationship
+#'   is fitted by the \code{loess} (default) or \code{lm}/\code{glm} function (see the \code{resid.method.smooth} argument) where
+#'   the confidence level band of the fitted/regression line can be controlled by the \code{level.cnfd} argument
+#'   or by the \code{Value} output function \code{plot.rqq()} (and its \code{confidence} argument).
 #'
 #'   \strong{Considerations to support or exclude model/fit based on the Q-Q plot, histogram and probability density.}
 #'   If the residuals are assumed to be normally distributed, one can use a normal Q-Q (Quantile-Quantile) plot
 #'   to check this assumption or its violation. Quantiles are often referred to as "percentiles". These are actually
-#'   the data points below which a certain portion of the data fall or in other words, they divide the distribution
-#'   into equal portions. For instance, for a 0.5 quantile (or the 2nd quartile), half of the data lie below this
-#'   point and half of them above. This quantile is also referred to as \strong{median}. Similarly, the 0.25 quantile
-#'   (or the 1st quartile) would mean, that \eqn{25\,\%} of the data fall below this point. The Q-Q plot is actually
-#'   presenting the quantiles from our sample related to the theoretical ones calculated for the normal distribution.
-#'   If the points follow the diagonal line (or are not far from this line), we may assume a normal
-#'   distribution. Additionally, this assumption can be also supported either by the Shapiro-Wilk
-#'   (\code{\link[stats]{shapiro.test}}) or by the Kolmogorov-Smirnov (\code{\link[stats]{ks.test}}) tests in the base R.
-#'   Deviations from the diagonal line are also nicely reflected in the histogram and probability density
-#'   function/graph (PDF, providing the chances that the value of a random continuous variable will
+#'   the data points, dividing the distribution into equal portions. For instance, for a 0.5 quantile (or the 2nd quartile),
+#'   half of the data lie below this point and half of them above. This quantile is also referred to as \strong{median}.
+#'   Similarly, the 0.25 quantile (or the 1st quartile) would mean, that \eqn{25\,\%} of the data fall below this point.
+#'   Thus, the Q-Q plot presents quantiles from our sample (corresponding to residuals) related to the theoretical
+#'   ones calculated for a specific distribution. For such purpose the \code{plot_eval_RA_forFit} function supports
+#'   three residual distributions: the normal one, Student's t (including degrees of freedom, \code{df}) as well as the Cauchy one.
+#'   If the points follow the diagonal line (or are not far from this line), we may describe our residuals by the specific
+#'   distribution. Additionally, e.g. for normal "distro", the Q-Q plot can be also supported by the Shapiro-Wilk
+#'   (\code{\link[stats]{shapiro.test}}) and/or by the Kolmogorov-Smirnov (\code{\link[stats]{ks.test}}) which are both included
+#'   in the \code{\link{eval_ABIC_forFit}}. Therefore, the latter nicely works in combination with the actual function
+#'   to get residuals characteristics (distribution) and consequently, to decide which model/fit is the best.
+#'   Deviations from the diagonal/fitted line are also reflected in the histogram and probability density function/graph
+#'   (PDF, providing the chances that the value of a random continuous variable will
 #'   occur within a specific range of values). For the normal symmetric distribution it is represented by the bell-shaped
 #'   curve with the maximum at the \strong{mean} (for residuals \eqn{= 0}, median = mean). Thus, the PDF basically
 #'   corresponds to histogram with "extremely" high number of bins, having "extremely" small widths.
@@ -99,17 +105,20 @@
 #'   \code{\link{eval_kinR_Eyring_GHS}}). Contrary, if the Q-Q plot shows
 #'   "hill" shape, the opposite situation is observed and the extreme values (outliers) far from the peak
 #'   on the low end appear more frequently than on the higher one (PDF is left skewed, mean < median).
-#'   The Q-Q plot with so-called light tails, displays extreme values above and below residual minima and maxima,
-#'   respectively. This pattern is relatively harmless and one can proceed with methods that assume normality.
-#'   However, the heavy-tailed Q-Q plot with extreme residuals below and above minima and maxima of the diagonal line,
-#'   respectively, is somewhat problematic for normal distributions of residuals with outliers on both sides.
+#'   Often, the heavy-tailed Q-Q plot with extreme residuals below and above minima and maxima of the diagonal line,
+#'   respectively, may appear and is somewhat problematic for e.g. normal distributions of residuals with outliers on both sides.
 #'   On the other hand, such kind of normality violation can be successfully described by Student's t-distribution
-#'   with lower degrees of freedom (see e.g. \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}
-#'   as well as \code{\link{eval_ABIC_forFit}}). Nevertheless, if the residuals, in the latter case,
+#'   with lower degrees of freedom (see e.g. \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}.
+#'   Nevertheless, if the residuals, in the latter case,
 #'   do not exhibit heteroscedasticity, such model/fit is not necessarily untrustworthy.
 #'   In a very extreme case the heavy-tailed Q-Q plot may be transformed into situation where only a couple
 #'   of points around the "middle" quantile can be found on the diagonal line and the remaining points are represented
-#'   by the noticeable S-curve. This is reflected as bimodal behavior in the PDF and it might be the sign of value clustering.
+#'   by the noticeable S-curve. This is reflected as bimodal behavior in the PDF and it might be the sign of a value clustering.
+#'   The Q-Q plot (with "pointwise" confidence bands for the diagonal/fitted line, obtained by the \code{\link[MASS]{rlm}})
+#'   in the actual function was built in the similar way like for the \href{https://github.com/aloy/qqplotr/}{\code{{qqplotr}}}
+#'   package. The "pointwise" bands are based on the normal confidence intervals.
+#'   The confidence level of those bands can be controlled by the \code{level.cnfd} argument
+#'   or by the \code{Value} output function \code{plot.rqq()} (and its \code{confidence} argument).
 #'
 #'   All the above-mentioned violations of the residuals (normal) distribution can disfavor our considered model/fit.
 #'   However, one has to perform different diagnostic methods and tests to analyze the residuals in order to compare
@@ -153,9 +162,14 @@
 #'   Nguyen M (2020). "A Guide on Data Analysis", \url{https://bookdown.org/mike/data_analysis/}.
 #'
 #'   Gray JB, Woodal WH (1994). "The Maximum Size of Standardized and Internally Studentized Residuals in Regression Analysis",
-#'   \emph{Am. Stat.}, \strong{48}(2), 111-113, \url{https://www.jstor.org/stable/2684258}
+#'   \emph{Am. Stat.}, \strong{48}(2), 111-113, \url{https://www.jstor.org/stable/2684258}.
 #'
 #'   Frost J (2025). "Statistics by Jim: Making Statistics Intuitive", \url{https://statisticsbyjim.com/}.
+#'
+#'   Kross S (2016). "A Q-Q Plot Dissection Kit", \url{https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html}.
+#'
+#'   Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should we prefer it ?",
+#'   \url{https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it}.
 #'
 #'
 #' @inheritParams eval_ABIC_forFit
@@ -172,10 +186,7 @@
 #'   (Residuals \emph{vs} Fitted/Predicted values). \strong{Default}: \code{resid.xlab = NULL}, actually
 #'   corresponding to \code{"Fitted or Simulated Values"}. Customized labels like \code{"Kinetic Model Fit (qvar)"}
 #'   or \code{"Quantity (unit)"} can be applied as well.
-#' @param se Logical ("standard error", \strong{default}: \code{se = TRUE}), whether to display the confidence
-#'   interval (CI) around the smooth (inherited from the \code{\link[ggplot2]{geom_smooth}}).
-#'   The CI level is controlled by the \code{level.cnfd} argument.
-#' @param level.cnfd Numeric value, identical with the level of applied confidence interval
+#' @param level.cnfd Numeric value, identical with level of the applied confidence interval
 #'   (see also the \code{se} argument). \strong{Default}: \code{level.cnfd = 0.95}.
 #'
 #'
@@ -184,10 +195,20 @@
 #'   \item{df}{Original \code{data.fit} data frame object, if additional processing/analysis
 #'   is required (see the \code{Details} or to perform Residuals \emph{vs} Observation Order to verify
 #'   the assumption that the residuals are independent from one another).}
-#'   \item{plot.rqq}{Ggplot2 object related to visual \strong{r}esidual
-#'   \strong{a}nalysis), with two main plots: Residuals \emph{vs} Predicted/Fitted Values from
-#'   the model/fit or simulation, and the Q-Q plot (Sample Quantiles \emph{vs} Theoretical Quantiles,
-#'   where the theoretical ones correspond to normal distribution).}
+#'   \item{plot.rqq()}{Function, related to visual \strong{r}esidual
+#'   \strong{a}nalysis), returning two main plots: Residuals \emph{vs} Predicted/Fitted Values from
+#'   the model/fit or simulation, and the Q-Q plot: Sample Quantiles \emph{vs} Theoretical Quantiles,
+#'   where the theoretical ones correspond to a specific distribution (normal/Student's/Cauchy).
+#'   Therefore, function has the following arguments:
+#'   \enumerate{
+#'   \item \code{residuals.distro = c("norm","t","cauchy")} (\strong{default}: \code{residuals.distro = "norm"})
+#'
+#'   \item \code{confidence = level.cnfd} (\strong{default}: \code{confidence = level.cnfd = 0.95})
+#'
+#'   \item \code{...} additional arguments/parameters for the distro/distribution like \code{df} (degrees of freedom)
+#'   for the Student's t one.
+#'    }
+#'   }
 #'   \item{plot.histDens}{Ggplot2 object, showing the \strong{hist}ogram
 #'   and the scaled probability \strong{dens}ity function for residuals. The corresponding residuals
 #'   mean value and the median are identified by vertical lines.}
@@ -210,11 +231,15 @@
 #'     fitted = "Simulation",
 #'     resid.xlab = "Simulation",
 #'     k = length(optim.params.init),
-#'     level.cnfd = 0.99999999
+#'     level.cnfd = 0.99
 #'  )
 #' #
 #' ## residual and the normal Q-Q plot
-#' list.test$plot.rqq
+#' list.test$plot.rqq()
+#' #
+#' ## residual and Q-Q plot for the Student's t distro
+#' ## with 4 degrees of freedom
+#' list.test$plot.rqq(residuals.distro = "t",df = 4)
 #' #
 #' ## histogram and probability density
 #' list.test$plot.histDens
@@ -223,7 +248,7 @@
 #' list.test$sd
 #' #
 #' ## from the data, quickly create the residuals vs
-#' ## observation order plot (assuming, there
+#' ## observation order plot (assuming there
 #' ## is no index column in the data frame)
 #' dataframe <- list.test$df
 #' dataframe[["index"]] <- 1:nrow(dataframe)
@@ -234,7 +259,7 @@
 #'   ylab = "Residuals"
 #' )
 #' #
-#' ## for additional applications, please,
+#' ## for additional examples, please,
 #' ## refer to the `eval_sim_EPR_isoFit`
 #' ## or `eval_kinR_EPR_modelFit`
 #' #
@@ -244,15 +269,16 @@
 #' @export
 #'
 #' @importFrom ggplot2 annotate ggplot_build
+#' @importFrom MASS rlm
 plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted and experimental values
                                 residuals = NULL, # string for column name
                                 fitted = NULL, ## string for column name like "fitted", "predicted", "Simulation"
                                 resid.method.smooth = "loess", # or "lm" for residuals, # the same like `geom_smooth`/`stat_smooth`
                                 resid.xlab = NULL, ## label for x axis # character strings like "Kinetic Model Fit"
                                 ## also like `parse(text = resid.xlab)[[1]]`
-                                se = TRUE, ## the same like `geom_smooth` or `stat_smooth` for residual plot and q-q plot
                                 k, # number of parameters
-                                level.cnfd = 0.950) { ## confidence level, or 0.99999999 (for simulations)
+                                level.cnfd = 0.950 ## confidence level, or 0.999...etc.
+) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -288,7 +314,7 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     fm <- y ~ x
   }
   #
-  ## xlabel (residual plot) definition
+  ## ------------ xlabel (residual plot) definition ----------------
   resid.xlab <-
     resid.xlab %>% `if`(is.null(resid.xlab),"Fitted or Simulated Values", .)
   #
@@ -309,50 +335,187 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     )
   }
   #
-  ## residual plot (`{ggplot2}`)
-  plot.resids <-
-    ggplot(data = data.fit,
-           mapping = aes(
-             x = .data[[fitted]],
-             y = .data[[residuals]] ## based on condition
-           )
-    ) +
-    geom_point(size = 2.6,color = "darkblue") +
-    stat_smooth(
-      method = resid.method.smooth, ## see definitions above
-      formula = fm,
-      span = 1,
-      se = se,
-      level = level.cnfd,
-      color = "darkviolet",
-      fill = "darkgray"
-    ) +
-    geom_hline(yintercept = 0,color = "darkred") +
-    labs(
-      x = xlabel,
-      y = bquote(italic(Residuals)),
-      title = "Residual Plot"
-    ) +
-    plot_theme_In_ticks()
+  ## =========================== PLOTS ===============================
   #
-  ## q-q plot (`{qqplotr}`)
-  plot.qq <-
-    ggplot(data.fit,
-           mapping = aes(
-             sample = .data[[residuals]]
-           )
-    ) +
-    {if(se)qqplotr::stat_qq_band(fill = "lightgray",conf = level.cnfd)} +   ## )
-    qqplotr::stat_qq_line(color = "darkred") +                              ## } plot confid. interval
-    qqplotr::stat_qq_point(size = 2.6,color = "darkblue") +                 ## )
-    labs(
-      x = bquote(italic(Theoretical~~Quantiles)),
-      y = bquote(italic(Sample~~Quantiles)),
-      title = "The Normal Q-Q Plot of Residuals"
-    ) +
-    plot_theme_In_ticks()
+  ##  -------------- Complex function for q-q plot with confidence bands -------------
+  ## ------------------ Pointwise Confidence Bands for the Q-Q -------------------
+  ## ------ also the residual plot (`plot.resids`) included to vary confidence -------
   #
-  ## histogram with density plot (into results)
+  ## qq-plot built from scratch, inspired by:
+  ## `{qqplotr}`: https://github.com/aloy/qqplotr/blob/master/R/stat_qq_band.R ,
+  ## https://github.com/aloy/qqplotr/blob/master/R/stat_qq_line.R
+  ## as well as by:
+  ## https://slowkow.com/notes/ggplot2-qqplot/ and
+  ## https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it
+  #
+  ## sorted residuals
+  resids.sorted <- sort(data.fit[[residuals]])
+  #
+  ## `ppoints` function/variable/vector
+  ## returns a vector of points equally spaced between 0 and 1
+  ## (or unequally-spaced if weights are provided); probabilities
+  ## suitable to produce a quantile-quantile (QQ) plot.
+  pp <- stats::ppoints(Nobs)
+  #
+  ##  ------------ function q-q plot with residuals + residual plot ----------------
+  #
+  plots.qq.resid <- function(residuals.distro = c("norm","t","cauchy"),
+                             confidence = level.cnfd, ## vary conf. also for the residual plot
+                             ...){ ## additional params. like df (Student's)
+    #
+    ## 'Temporary' processing variables
+    theoretical <- NULL
+    low_band <- NULL
+    up_band <- NULL
+    #
+    ## condition for confidence (not specified in % !!)
+    if (confidence > 1) {
+      stop("Confidence (level) must be specified as a fraction:\n
+           e.g. 0.95, corresponding to 95%, NOT IN '%'!! ")
+    }
+    #
+    ## alpha for `level.cnfd`
+    alpha.cnfd <- 1 - confidence
+    #
+    ## z-critical value for `alpha.cnfd` to create confidence bands
+    z_crit <- stats::qnorm(1 - alpha.cnfd/2)
+    #
+    ## redefinition of `residuals.distro`
+    residuals.distro <-
+      residuals.distro %>% `if`(length(residuals.distro) > 1,"norm", .)
+    #
+    ## condition for student's t dgrees of freedom
+    if (residuals.distro == "t") {
+      ## check the degrees of freedom for the Student't t-distro
+      df <- list(...)[["df"]]
+      if (is.null(df)) {
+        stop(" Please specify the degrees of freedom (df) for the t/Student's\n
+           distribution !! See the definition of `...` argument\n
+           in the `plot.rqq()` function within the output list !! ")
+      } else {
+        degree.free <- df ## for the graph title
+      }
+    }
+    #
+    ## theoretical quantiles + probability density fun. (pdf)
+    theor.quantiles <- do.call(
+      paste0("q",residuals.distro),
+      list(pp,...)
+    )
+    pdf.values <- do.call(
+      paste0("d",residuals.distro),
+      list(theor.quantiles,...)
+    )
+    #
+    ## Fitting of the q-q plot line
+    ## the thing, why the following fit is not performed by `stats:lm()`,
+    ## is that the `MASS::rlm()` is more robust against outliers ('havier tails'),
+    ## this is also the reason why it is implemented in the `{car}`
+    ## package `qqPlot()` function
+    fitlm <- rlm(resids.sorted ~ theor.quantiles,maxit = 50)
+    intercpt <- stats::coef(fitlm)[1]
+    slop <- stats::coef(fitlm)[2]
+    #
+    # Calculate confidence bands using the fitted line parameters
+    SE <- (slop / pdf.values) * sqrt(pp * (1 - pp) / Nobs)
+    fitted.values <- intercpt + slop * theor.quantiles
+    upper_band <- fitted.values + (z_crit * SE)
+    lower_band <- fitted.values - (z_crit * SE)
+    #
+    ## data frame for the q-q plot pointwise
+    df.qqPlot <- data.frame(
+      theoretical = theor.quantiles,
+      sample = resids.sorted,
+      fitted = fitted.values,
+      low_band = lower_band,
+      up_band = upper_band
+    )
+    #
+    ## title function
+    distro.title.fun <- function(distro = residuals.distro){
+      if (distro == "norm"){
+        return("Normal")
+      }
+      if (distro == "t"){
+        return(paste0("Student's t (df = ",degree.free, ")"))
+      }
+      if (distro == "cauchy"){
+        return("Cauchy")
+      }
+    }
+    #
+    ## ------------------ own q-q plot --------------------
+    plot.qq.final <-
+      ggplot(
+        df.qqPlot,
+        aes(x = theoretical, y = sample)
+      ) +
+      geom_ribbon(
+        aes(ymin = low_band,ymax = up_band),
+        fill = "blue",
+        alpha = 0.16
+      ) +
+      geom_line(
+        aes(y = fitted),
+        color = "darkorange",
+        linewidth = 1.1
+      ) +
+      geom_point(size = 2.6,color = "darkblue") +
+      labs(
+        x = bquote(italic(Theoretical~~Quantiles)),
+        y = bquote(italic(Residuals)),
+        title = paste0(
+          "Q-Q Plot with ",
+          confidence * 100,
+          "% Confidence Bands"
+        ),
+        subtitle = paste0("Distribution: ", distro.title.fun()),
+        caption = "Residuals = Sample Quantiles"
+      ) +
+      plot_theme_In_ticks()
+    #
+    ## ------------------ residual plot -----------------
+    plot.resids <-
+      ggplot(data = data.fit,
+             mapping = aes(
+               x = .data[[fitted]],
+               y = .data[[residuals]] ## based on condition
+             )
+      ) +
+      geom_point(size = 2.6,color = "darkblue") +
+      stat_smooth(
+        method = resid.method.smooth, ## see definitions above
+        formula = fm,
+        span = 1,
+        se = TRUE,
+        level = confidence,
+        color = "darkviolet",
+        linewidth = 1.1,
+        fill = "blue",
+        alpha = 0.16
+      ) +
+      geom_hline(yintercept = 0,color = "darkorange",linewidth = 1.1) +
+      labs(
+        x = xlabel,
+        y = bquote(italic(Residuals)),
+        title = "Residual Plot"
+      ) +
+      plot_theme_In_ticks()
+    #
+    ## combination of qq and residual plot
+    plot.ra <-
+      wrap_plots( ## `{patchwork}`
+        plot.resids,
+        plot.qq.final,
+        ncol = 1
+      ) # +
+    # patchwork::plot_layout(axis_titles = "collect",heights = c(0.75,0.75))
+    #
+    return(plot.ra)
+    #
+  }
+  #
+  ## ---------- histogram with density plot (into results) -------------
   ## must be done step-by-step, in order to scale density
   ## and annotate, see below
   plot.hist.dens.01 <-
@@ -372,7 +535,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     geom_density(
       ## relative scaled density:
       aes(y = after_stat(
-        (count / max(count)) * 0.82 * max(ggplot_build(plot.hist.dens.01)$data[[1]]$count)
+        (count / max(count)) * 0.82 * ## coefficient selected to nicely see both histogram + pdf
+          max(ggplot_build(plot.hist.dens.01)$data[[1]]$count)
         ## see `annotation` below
       )
       ),
@@ -422,18 +586,10 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       # )
     )
   #
-  ## patchwork combination of both plots:
-  plot.ra <-
-    patchwork::wrap_plots(
-      plot.resids,
-      plot.qq,
-      ncol = 1
-    )
-  #
   ## results
   result.list <- list(
     df = data.fit,
-    plot.rqq = plot.ra,
+    plot.rqq = plots.qq.resid,
     plot.histDens = plot.hist.dens.03,
     sd = ra.sd.model
   )

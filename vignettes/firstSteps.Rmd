@@ -846,7 +846,7 @@ triarylam.decay.integs.01 <-
           correct.integ = TRUE,
           # ...in the range of the peak:
           BpeaKlim = c(3473.5,3502.5),
-          # ...by the 5th order plynomial:
+          # ...by the 5th order polynomial:
           poly.degree = 5,
           # provide double integrals:
           sigmoid.integ = TRUE,
@@ -896,7 +896,7 @@ Obviously, according to statistical measures of non-linear regression/fitting pa
 
 ```{r kinetics-fit-01-residuals}
 
-dimer.kinetics.01$ra$plot.rqq
+dimer.kinetics.01$ra$plot.rqq()
 
 ```
 

@@ -298,6 +298,8 @@
 #'
 #' @importFrom deSolve ode
 #' @importFrom ggplot2 geom_point
+#' @importFrom stringr str_extract
+#' @importFrom tidyr pivot_longer
 eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1 or 2
                                 model.expr.diff = FALSE, ## must TRUE for fit, otherwise `FALSE`
                                 elementary.react = TRUE, ## can be `FALSE` or `TRUE`
@@ -387,15 +389,15 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   ## expression => extracting the `(r=...)` or `(a=...)` string from `model.react`
   stoichiom_coeff <- function(expression, coeff = "r") {
     if (coeff == "r") {
-      rabc.string <- stringr::str_extract(expression, pattern = "\\(r=[[:digit:]]\\)")
+      rabc.string <- str_extract(expression, pattern = "\\(r=[[:digit:]]\\)")
     }
     if (coeff == "a") {
-      rabc.string <- stringr::str_extract(expression, pattern = "\\(a=[[:digit:]]\\)")
+      rabc.string <- str_extract(expression, pattern = "\\(a=[[:digit:]]\\)")
     }
     if (coeff == "b"){
-      rabc.string <- stringr::str_extract(expression, pattern = "\\(b=[[:digit:]]\\)")
+      rabc.string <- str_extract(expression, pattern = "\\(b=[[:digit:]]\\)")
     }
-    model.react.rabc <- stringr::str_extract(rabc.string, pattern = "[[:digit:]]")
+    model.react.rabc <- str_extract(rabc.string, pattern = "[[:digit:]]")
     model.react.rabc <- as.numeric(model.react.rabc)
     #
     return(model.react.rabc)
@@ -456,7 +458,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     if (pro.cond) {alpha <- kin.params["alpha"]}
     #
     ## solving `ordinary diff. equation(s)`
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = stoichiom_coeff(model.react),
@@ -515,7 +517,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     if (pro.cond) {alpha <- kin.params["alpha"]}
     #
     ## solving `ordinary diff. equation(s)
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
@@ -593,7 +595,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     }
     #
     ## solving `ordinary diff. equation(s)`
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
@@ -659,7 +661,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     }
     #
     ## solving `ordinary diff. equation(s)`
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react),
@@ -723,7 +725,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     }
     #
     ## solving `ordinary diff. equation(s)`
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
@@ -789,7 +791,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     }
     #
     ## solving `ordinary diff. equation(s)`
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
@@ -852,7 +854,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     }
     #
     ## solving `ordinary diff. equation(s)`
-    result <- deSolve::ode(
+    result <- ode(
       y = qvar0,
       times = t,
       stoichio.coeff = c(stoichiom_coeff(model.react,coeff = "a"),
@@ -878,7 +880,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     result.df <- result.df %>%
       dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
       ## add `qvar.expr`
-      dplyr::mutate(!!rlang::quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
+      dplyr::mutate(!!quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
   }
   if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
     ## difference
@@ -912,7 +914,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     if (isFALSE(model.expr.diff)) {
       ## data frame for plotting
       result.df.plot <- result.df %>%
-        tidyr::pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
+        pivot_longer(!time, names_to = "Species", values_to = "qvar") %>%
         dplyr::arrange(time)
       #
       ## BASE PLOT

@@ -158,7 +158,7 @@
 #'   \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
 #'   together with the Eyring equation.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-#'   \code{plot.rqq}, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
+#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
 #'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
@@ -241,7 +241,7 @@
 #' activ.kinet.test01.data$cor.df %>%
 #'   corrplot::corrplot(addCoef.col = "#c2c2c2")
 #' #
-#' ## preview of the convergence measures
+#' ## preview of the convergence
 #' activ.kinet.test01.data$converg
 #' #
 #' ## this was an untransformed dataset,
@@ -277,7 +277,7 @@
 #' activ.kinet.test02.data$df
 #' #
 #' ## preview of the linear fit plot
-#' ## also with confidence interval (99,999999 %)
+#' ## also with confidence interval (99 %)
 #' activ.kinet.test02.data$plot
 #' #
 #' ## preview of the optimized (activated)
@@ -295,7 +295,7 @@
 #' #
 #' ## corresponding analysis of residuals
 #' ## with residual standard deviation
-#' activ.kinet.test02.data$ra$plot.rqq
+#' activ.kinet.test02.data$ra$plot.rqq()
 #' activ.kinet.test02.data$ra$sd
 #'
 #'
@@ -304,8 +304,9 @@
 #'
 #'
 #'
-#' @importFrom broom tidy augment
+#' @importFrom broom tidy glance
 #' @importFrom ggplot2 geom_ribbon annotate geom_smooth stat_smooth geom_density geom_vline
+#' @importFrom rlang quo_name
 eval_kinR_Eyring_GHS <- function(data.kvT,
                                  rate.const,
                                  rate.const.unit = "s^{-1}",
@@ -341,7 +342,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## checking whether the temperature is in K or oC or oF
   if (Temp.unit == "oC"){
     data.kvT <- data.kvT %>%
-      dplyr::mutate(!!rlang::quo_name(Temp) := .data[[Temp]] + 273.15)
+      dplyr::mutate(!!quo_name(Temp) := .data[[Temp]] + 273.15)
     #
     ## rename column, afterwards
     colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
@@ -355,7 +356,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     #
   } else if (Temp.unit == "oF") { ## Fahrenheit
     data.kvT <- data.kvT %>%
-      dplyr::mutate(!!rlang::quo_name(Temp) := ((.data[[Temp]] - 32) * (5/9)) + 273.15)
+      dplyr::mutate(!!quo_name(Temp) := ((.data[[Temp]] - 32) * (5/9)) + 273.15)
     ## rename column afterwards
     colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
   }
@@ -403,10 +404,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   }
   #
   ## parameters related to the model =>
-  df.dSH.coeffs <- broom::tidy(Eyring.model.HS)
+  df.dSH.coeffs <- tidy(Eyring.model.HS)
   #
   ## model summaries =>
-  df.dSH.model.summar <- broom::glance(Eyring.model.HS) ## add to final output list
+  df.dSH.model.summar <- glance(Eyring.model.HS) ## add to final output list
   #
   ## new data for the fit with 1024 points =>
   new.fit.data <- data.frame(T_K = seq(
@@ -415,8 +416,8 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   )
   #
   new.fit.data <-
-    broom::augment(Eyring.model.HS,
-                   newdata = new.fit.data)
+    augment(Eyring.model.HS,
+            newdata = new.fit.data)
   #
   ## extraction of dS and dH depending on the model (with uncertainties)=>
   if (fit.method == "linear" || fit.method == "lm") {
@@ -428,13 +429,13 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     ## in `{errors}` R package (first order Taylor series method, TSM)
     ## see also https://r-quantities.github.io/errors/articles/rjournal.html:
     DeltaH_active_with_un <-
-      errors::set_errors(DeltaH_active,df.dSH.coeffs$std.error[2]) ## J / mol
+      set_errors(DeltaH_active,df.dSH.coeffs$std.error[2]) ## J / mol
     #
-    Intercept_with_un <- errors::set_errors(Intercept,df.dSH.coeffs$std.error[1])
-    gasConst_with_un <- errors::set_errors(gas.const,0)
-    transmissCoeff_with_un <- errors::set_errors(transmiss.coeff,0)
-    Boltzmann_with_un <- errors::set_errors(Boltzmann,0)
-    Planck_with_un <- errors::set_errors(Planck,0)
+    Intercept_with_un <- set_errors(Intercept,df.dSH.coeffs$std.error[1])
+    gasConst_with_un <- set_errors(gas.const,0)
+    transmissCoeff_with_un <- set_errors(transmiss.coeff,0)
+    Boltzmann_with_un <- set_errors(Boltzmann,0)
+    Planck_with_un <- set_errors(Planck,0)
     #
     DeltaS_active_with_un <- ## J / (mol * K)
       gasConst_with_un *
@@ -446,9 +447,9 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     #
     ## with uncertainties:
     DeltaH_active_with_un <-
-      errors::set_errors(DeltaH_active,df.dSH.coeffs$std.error[2])
+      set_errors(DeltaH_active,df.dSH.coeffs$std.error[2])
     DeltaS_active_with_un <-
-      errors::set_errors(DeltaS_active,df.dSH.coeffs$std.error[1])
+      set_errors(DeltaS_active,df.dSH.coeffs$std.error[1])
   }
   #
   ## Add `DeltaG_active` column:
@@ -542,9 +543,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
         formula = y ~ x,
         se = TRUE,
         color = "magenta",
-        fill = "darkgray",
+        fill = "blue",
+        alpha = 0.16,
         linewidth = 1.1,
-        level = 0.99999999
+        level = 0.99
       ) +
       labs(
         title = "Linear Eyring Fit",

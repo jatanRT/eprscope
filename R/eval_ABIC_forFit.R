@@ -117,7 +117,7 @@
 #'   This is particularly suitable for the situation when residual analysis detects
 #'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 #'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
-#'   distributions like: \code{residuals.distro = "normal"}, \code{"Gaussian"}, \code{"Student"} or
+#'   distributions like: \code{residuals.distro = "N(n)ormal"}, \code{"G(g)aussian"}, \code{"S(s)tudent"} or
 #'   \code{"t-distribution"} (\code{"t-distro"}) as well as \code{"(C)cauchy"}.
 #'
 #'
@@ -128,14 +128,14 @@
 #'   probability distribution which has been proposed for the AIC and BIC calculation (see also
 #'   the \code{residuals.distro} argument). Such information is additionally supported by the Shapiro-Wilk
 #'   and/or by the Kolmogorov-Smirnov tests, whether the residuals distribution can be considered as a normal or not.
-#'   These tests are based on the corresponding p-values. However, in order to "clearly" support the lowest AIC/BIC,
+#'   These tests are based on the corresponding p-values. However, in order to clearly support the lowest AIC/BIC,
 #'   depending on residuals distribution, a slightly "broader", than the commonly applied "sharp"/"rigid"
 #'   \eqn{p = 0.05} threshold, is applied. If \eqn{p < 0.01}, there is a stronger evidence against the null-hypothesis
-#'   that the residuals are normally distributed. Therefore, we cannot support the normal distribution,
-#'   however may support the other ones (Student's or Cauchy). Contrary, if \eqn{p > 0.05}, we may support
+#'   that the residuals are normally distributed. Therefore, we can only weakly support the normal distribution,
+#'   however may prefer the other ones (Student's or Cauchy). Contrary, if \eqn{p > 0.05}, we may support
 #'   the null-hypothesis that the residuals are normally distributed. Consequently, there is less evidence
-#'   for other distributions like Student's or Cauchy. If the \eqn{p} is from the (0.01,0.05) interval no support
-#'   by the above-mentioned normality tests is provided.}
+#'   for other distributions like Student's or Cauchy. If the \eqn{p} is from the "gray" (0.01,0.05) zone/interval
+#'   no support by the above-mentioned normality tests is provided.}
 #'   }
 #'
 #'
