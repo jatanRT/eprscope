@@ -143,7 +143,6 @@
 #'
 #' @export
 #'
-#' @importFrom vctrs vec_as_names
 #' @importFrom plotly plot_ly colorbar
 plot_EPR_Specs3D_interact <- function(data.spectra.series,
                                       x = "B_mT",
@@ -275,10 +274,32 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   }
 )
   ## 3. join all columns into matrix
+  #
+  ## without `{vctrs}` package
   Intensity_matrix <-
-  as.matrix(dplyr::bind_cols(intensity.list,
-    .name_repair = ~ vec_as_names(..., repair = "unique", quiet = TRUE)
-  ))
+    suppressMessages(
+      as.matrix(
+        dplyr::bind_cols(
+          intensity.list,
+          .name_repair = "unique"
+        )
+      )
+    )
+  #
+  ## with `{vctrs}` package
+  # if (requireNamespace(package = "vctrs",quietly = TRUE)) {
+  #   Intensity_matrix <-
+  #     as.matrix(
+  #       dplyr::bind_cols(
+  #         intensity.list,
+  #         .name_repair = ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE)
+  #       )
+  #     )
+  # } else {
+  #   stop(" To create the Intensity matrix for 3D visualization\n
+  #        the `{vctrs}` package must be available. Install ! ")
+  # }
+#
 ## transpose matrix in order to present 3D spectra properly
 Intensity_matrix <- t(Intensity_matrix)
   #

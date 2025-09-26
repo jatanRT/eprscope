@@ -1075,14 +1075,14 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    baseline,
                                    B.unit,
                                    par){
-        with(data,data[[Intensity.expr]] -
+        data[[Intensity.expr]] -
                  fit_sim_params_par(data,
                                     nucs.system,
                                     Intensity.sim,
                                     lineG.content,
                                     baseline,
                                     B.unit,
-                                    par))
+                                    par)
       }
       #
       # message + time before optimization
@@ -1110,14 +1110,14 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    baseline,
                                    B.unit,
                                    par){
-        with(data,sum((data[[Intensity.expr]] -
+        sum((data[[Intensity.expr]] -
                          fit_sim_params_par(data,
                                             nucs.system,
                                             Intensity.sim,
                                             lineG.content,
                                             baseline,
                                             B.unit,
-                                            par))^2))
+                                            par))^2)
       }
       #
       # message + time before optimization
@@ -1146,14 +1146,14 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    baseline,
                                    B.unit,
                                    x0){
-        with(data,sum((data[[Intensity.expr]] -
+        sum((data[[Intensity.expr]] -
                          fit_sim_params_x0(data,
                                            nucs.system,
                                            Intensity.sim,
                                            lineG.content,
                                            baseline,
                                            B.unit,
-                                           x0))^2))
+                                           x0))^2)
       }
       #
       # message + time before optimization
