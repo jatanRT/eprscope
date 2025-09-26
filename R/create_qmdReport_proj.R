@@ -13,8 +13,8 @@
 #'   Alternatively, the rendering can be also performed
 #'   in the \href{https://quarto.org/docs/computations/r.html}{terminal}
 #'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires
-#'   one of the \eqn{L_{A}TeX} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
-#'   \href{https://tug.org/texlive/}{\eqn{TeX} Live} or \href{https://miktex.org/}{\eqn{MikTeX}}.
+#'   one of the \eqn{L^{A}T_{E}X} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
+#'   \href{https://tug.org/texlive/}{\eqn{T_{E}X} Live} or \href{https://miktex.org/}{\eqn{MikT_{E}X}}.
 #'   The complete, above-described R-environmental setup is also available
 #'   at \href{https://posit.cloud/}{Posit Cloud} or at \href{https://cocalc.com/features}{CoCalc},
 #'   which a is platform for collaborative calculations and data science.
@@ -51,7 +51,7 @@
 #'   \verb{    }| \cr
 #'   \verb{    }| \cr
 #'   \verb{    }|----- \code{header.tex}...file to set up the \code{.qmd} (\code{.tex}) \cr
-#'   \verb{    }|\verb{            } ==> \code{.pdf} conversion, usually containing additional \eqn{LaTeX} \cr
+#'   \verb{    }|\verb{            } ==> \code{.pdf} conversion, usually containing additional \eqn{L^{A}T_{E}X} \cr
 #'   \verb{    }|\verb{            } packages and visual setup for the \code{.pdf} output \cr
 #'   \verb{    }| \cr
 #'   \verb{    }| \cr
@@ -80,21 +80,21 @@
 #'   \verb{    }|\verb{    }|----- \code{EPR_RAW} \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
-#'   \verb{    }|\verb{    }|\verb{    }|-----...folder dedicated for all raw files from EPR spectrometer, \cr
+#'   \verb{    }|\verb{    }|\verb{    }|-----...folder intended for all raw files from EPR spectrometer, \cr
 #'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.dsc/.DSC/.par}, \code{.DTA}, \code{.YGF} \cr
 #'   \verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|----- \code{EPR_ASCII} \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
-#'   \verb{    }|\verb{    }|\verb{    }|-----...folder dedicated to all additional text files from EPR spectrometer, \cr
+#'   \verb{    }|\verb{    }|\verb{    }|-----...folder intended for all additional text files from EPR spectrometer, \cr
 #'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.txt}, \code{.csv}, \code{.asc} \cr
 #'   \verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|----- \code{EasySpin_Simulations} \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
-#'   \verb{    }|\verb{    }|\verb{    }|-----...folder dedicated for output files from the \code{EasySpin}(-MATLAB), \cr
+#'   \verb{    }|\verb{    }|\verb{    }|-----...folder intended for output files from the \code{EasySpin}(-MATLAB), \cr
 #'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.mat} or \code{.txt} corresponding to EPR simulated spectral data \cr
 #'   \verb{    }| \cr
 #'   \verb{    }| \cr
@@ -107,7 +107,7 @@
 #'   \verb{    } \verb{    }|----- \code{Tables} \cr
 #'   \verb{    } \verb{    }| \cr
 #'   \verb{    } \verb{    }| \cr
-#'   \verb{    } \verb{    }|-----...+ \code{.html},\code{.pdf},\code{.docx} formats and supporting files \cr
+#'   \verb{    } \verb{    }|-----...+ \code{.html},\code{.pdf},\code{.docx} formats and supporting files/folders \cr
 #'   \verb{    } \verb{    } \verb{    } of the report, these are created by rendering the main \cr
 #'   \verb{    } \verb{    } \verb{    } \code{wd.subdir.name.qmd} file (they are not present after \cr
 #'   \verb{    } \verb{    } \verb{    } the project is created) \cr

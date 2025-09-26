@@ -50,31 +50,56 @@ ecosystem that combines data processing, analysis and great scientific
 visualizations together with the extensive publishing capabilities by
 [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
 [Quarto](https://quarto.org/). Everything at one place (see the [RStudio
-IDE](https://docs.posit.co/ide/user/)) without the need to switch
+IDE](https://docs.posit.co/ide/user/) or
+[Positron](https://positron.posit.co/)) without the need to switch
 between or employ any other additional software.
 
 ## Installation
 
-Prior to own `{eprscope}` 📦 installation a minimal system setup is
-required and summarized into the following steps:
+**Prior to own** `{eprscope}` 📦 **installation a minimal system setup
+is required** and summarized into the following steps:
 
 1.  Installation of *JDK Development Kit* where the corresponding
     package, suitable for your operating system, can be downloaded from
     the [official *Oracle*
     website](https://www.oracle.com/java/technologies/downloads/?er=221886)
     (this is needed in order to properly run the
-    `draw_molecule_by_rcdk()` function).
+    `draw_molecule_by_rcdk()` function). A second option would be the
+    installation of the latest GPL-licensed
+    [*OpenJDK*](https://jdk.java.net/) package. *WINDOWS* users may
+    follow instructions at the official site of [British Columbia
+    Institute of
+    Technology](https://kb.bcit.ca/faculty-staff/download-and-install-openjdk-on-windows10-3395/).
+    On *macOS,* this package is available via Homebrew repository (see
+    below) by `brew install openjdk` and finally, by verifying the
+    installation: `java –version`. *Linux* (ubuntu) users are advised to
+    check out the repositories (+ update, if needed): `sudo apt update`.
+    Then search for the `openjdk` by the following command:
+    `apt search openjdk` (it should return list with the newest/stable
+    version like `openjdk-XX-jdk`, “XX” stands for the highest number),
+    and finally install it by `sudo apt install openjdk-XX-jdk -y`.
+    After successful installation one may check the version
+    (`java -version`) .
 
 2.  Please, follow the instructions for the [the R installation
-    procedure](https://cran.rstudio.com/).
+    procedure](https://cran.rstudio.com/). *Linux* and *macOS* users may
+    also update where the
+    <img src="https://www.r-project.org/Rlogo.png" width="16" height="12" />
+    expects to find various *Java* files by `sudo R CMD javareconf`,
+    afterwards. If one gets an error about `jni.h` not being found, then
+    try:
+    `sudo R CMD javareconf JAVA_HOME=/usr/lib/jvm/java-XX-openjdk-amd64/`
+    (find your path for the *Java* files).
 
 3.  Download and install [*RStudio
     IDE*](https://posit.co/download/rstudio-desktop/) (Integrated
     Development Environment). Alternatively, one may also try the
-    corresponding [cloud version](https://docs.posit.co/cloud/) without
-    the need for an
+    corresponding cloud version without the need for an
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-    installation. Any other
+    installation either available at [Posit
+    Cloud](https://docs.posit.co/cloud/get_started/) or at [CoCalc
+    (Collaborative Calculation and Data
+    Science)](https://cocalc.com/features). Any other
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
     compatible environment like [VS
     Code](https://code.visualstudio.com/) or
@@ -384,6 +409,9 @@ quite straightforward diving into
 - [Official Contributed Documentation of
   R](https://cran.r-project.org/other-docs.html)
 
+- [An Introduction to Statistical
+  Learning](https://www.statlearning.com/)
+
 - [The Big Book of R](https://www.bigbookofr.com/)
 
 - [Learn R Programming Language (Geeks for
@@ -429,6 +457,14 @@ quite straightforward diving into
 
   - [Reproducible Research with
     R](https://www.youtube.com/watch?v=mg95lLyCpQA)
+
+  - [MarinStatsLectures-R Programming &
+    Statistics](https://www.youtube.com/@marinstatlectures)
+
+  - [Jeremy Balka’s statistics
+    channel](https://www.youtube.com/@jbstatistics)
+
+  - [StatQuest with Josh Starmer](https://www.youtube.com/@statquest)
 
   - [R for Ecology](https://www.youtube.com/@RforEcology/videos)
 
