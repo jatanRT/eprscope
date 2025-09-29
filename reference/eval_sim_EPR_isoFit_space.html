@@ -367,34 +367,68 @@ like <code>tol.step</code>, <code>pswarm</code> arguments (if <code>optim.method
 <span class="r-in"><span> <span class="co">## of the TMPD radical cation (+ zoom the spectrum</span></span></span>
 <span class="r-in"><span> <span class="co">## output by `Blim`), animation</span></span></span>
 <span class="r-in"><span> <span class="co">## "Fitting_of_sim_EPR.gif" stored in the working dir.</span></span></span>
-<span class="r-in"><span> <span class="va">listfit</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span> <span class="va">listfit01</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>   <span class="fu">eval_sim_EPR_isoFit_space</span><span class="op">(</span></span></span>
-<span class="r-in"><span>   data.spectr.expr <span class="op">=</span> <span class="va">data.tmpd.spec</span>,</span></span>
-<span class="r-in"><span>   nu.GHz <span class="op">=</span> <span class="va">data.tmpd.params.values</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>   nuclear.system.noA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"14N"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="co"># 2 x 14N</span></span></span>
-<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="co"># 4 x 1H</span></span></span>
-<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">12</span><span class="op">)</span> <span class="co"># 12 x 1H</span></span></span>
-<span class="r-in"><span>   <span class="op">)</span>,</span></span>
-<span class="r-in"><span>   optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>     <span class="fl">2.0030</span>, <span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>     <span class="fl">2.5e5</span>, <span class="fl">20.0</span>, <span class="fl">5.5</span>, <span class="fl">19</span></span></span>
-<span class="r-in"><span>   <span class="op">)</span>,</span></span>
-<span class="r-in"><span>   optim.params.init.dvary <span class="op">=</span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0002</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0</span>,</span></span>
-<span class="r-in"><span>     <span class="fl">2e4</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="co">## or NULL</span></span></span>
-<span class="r-in"><span>   <span class="co"># Nmax.evals = 256,</span></span></span>
-<span class="r-in"><span>   <span class="co"># N.points.space = 16,</span></span></span>
-<span class="r-in"><span>   lineG.content <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
-<span class="r-in"><span>   lineG.content.dvary <span class="op">=</span> <span class="fl">0.15</span>, <span class="co">## or NULL</span></span></span>
-<span class="r-in"><span>   <span class="co"># optim.method = "neldermead",</span></span></span>
-<span class="r-in"><span>   processing <span class="op">=</span> <span class="st">"parallel"</span> , <span class="co">## or "sequential"</span></span></span>
-<span class="r-in"><span>   Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3455</span>,<span class="fl">3545</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     data.spectr.expr <span class="op">=</span> <span class="va">data.tmpd.spec</span>,</span></span>
+<span class="r-in"><span>     nu.GHz <span class="op">=</span> <span class="va">data.tmpd.params.values</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>     nuclear.system.noA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>       <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"14N"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="co"># 2 x 14N</span></span></span>
+<span class="r-in"><span>       <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="co"># 4 x 1H</span></span></span>
+<span class="r-in"><span>       <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">12</span><span class="op">)</span> <span class="co"># 12 x 1H</span></span></span>
+<span class="r-in"><span>     <span class="op">)</span>,</span></span>
+<span class="r-in"><span>     optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>       <span class="fl">2.0030</span>, <span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>       <span class="fl">2.5e5</span>, <span class="fl">20.0</span>, <span class="fl">5.5</span>, <span class="fl">19</span></span></span>
+<span class="r-in"><span>     <span class="op">)</span>,</span></span>
+<span class="r-in"><span>     optim.params.init.dvary <span class="op">=</span></span></span>
+<span class="r-in"><span>     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0002</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0</span>,</span></span>
+<span class="r-in"><span>       <span class="fl">2e4</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="co">## or NULL</span></span></span>
+<span class="r-in"><span>     <span class="co"># Nmax.evals = 256,</span></span></span>
+<span class="r-in"><span>     <span class="co"># N.points.space = 16, # total number of iters. 4096</span></span></span>
+<span class="r-in"><span>     lineG.content <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
+<span class="r-in"><span>     lineG.content.dvary <span class="op">=</span> <span class="fl">0.15</span>, <span class="co">## or NULL</span></span></span>
+<span class="r-in"><span>     <span class="co"># optim.method = "neldermead",</span></span></span>
+<span class="r-in"><span>     processing <span class="op">=</span> <span class="st">"parallel"</span> , <span class="co">## or "sequential"</span></span></span>
+<span class="r-in"><span>     Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3455</span>,<span class="fl">3545</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="co">#</span></span></span>
 <span class="r-in"><span> <span class="co">## optimization/fitting progress</span></span></span>
 <span class="r-in"><span> <span class="co">## (main graphical output)</span></span></span>
-<span class="r-in"><span> <span class="va">listfit</span><span class="op">$</span><span class="va">plot.optim.space</span></span></span>
+<span class="r-in"><span> <span class="va">listfit01</span><span class="op">$</span><span class="va">plot.optim.space</span></span></span>
+<span class="r-in"><span> <span class="co">#</span></span></span>
+<span class="r-in"><span> <span class="co">## run the similar processing and evaluation</span></span></span>
+<span class="r-in"><span> <span class="co">## like before, but now with the fixed g-value</span></span></span>
+<span class="r-in"><span> <span class="co">## (will be not optimized) and with 24 `N.points.space`</span></span></span>
+<span class="r-in"><span> <span class="va">listFit02</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>    <span class="fu">eval_sim_EPR_isoFit_space</span><span class="op">(</span></span></span>
+<span class="r-in"><span>      data.spectr.expr <span class="op">=</span> <span class="va">data.tmpd.spec</span>,</span></span>
+<span class="r-in"><span>      nu.GHz <span class="op">=</span> <span class="va">data.tmpd.params.values</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>      nuclear.system.noA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"14N"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="co"># 2 x 14N</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="co"># 4 x 1H</span></span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">12</span><span class="op">)</span> <span class="co"># 12 x 1H</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span>,</span></span>
+<span class="r-in"><span>      optim.params.init <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        <span class="fl">2.00305</span>, <span class="fl">0.4</span>, <span class="fl">0.4</span>, <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>        <span class="fl">1.25e4</span>, <span class="fl">20.0</span>, <span class="fl">5.5</span>, <span class="fl">19</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span>,</span></span>
+<span class="r-in"><span>      optim.params.init.dvary <span class="op">=</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0</span>, <span class="co"># `.dvary` for g-value = 0</span></span></span>
+<span class="r-in"><span>        <span class="fl">2e3</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="co"># Nmax.evals = 256,</span></span></span>
+<span class="r-in"><span>      N.points.space <span class="op">=</span> <span class="fl">24</span>, <span class="co"># total number of iters. 6144</span></span></span>
+<span class="r-in"><span>      lineG.content <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
+<span class="r-in"><span>      lineG.content.dvary <span class="op">=</span> <span class="fl">0.15</span>,</span></span>
+<span class="r-in"><span>      processing <span class="op">=</span> <span class="st">"parallel"</span> ,</span></span>
+<span class="r-in"><span>      optim.params.fix.id <span class="op">=</span> <span class="fl">1</span>, <span class="co"># fix g-value</span></span></span>
+<span class="r-in"><span>      Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3455</span>,<span class="fl">3545</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co">#</span></span></span>
+<span class="r-in"><span>  <span class="co">## space (plot) for initial parameters:</span></span></span>
+<span class="r-in"><span>  <span class="va">listFit02</span><span class="op">$</span><span class="va">plot.init.space</span></span></span>
+<span class="r-in"><span>  <span class="co">#</span></span></span>
+<span class="r-in"><span>  <span class="co">## space (plot) for optimized parameters</span></span></span>
+<span class="r-in"><span>  <span class="va">listFit02</span><span class="op">$</span><span class="va">plot.optim.space</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
