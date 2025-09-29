@@ -436,6 +436,19 @@ server <- function(input, output,session) {
   #
   ## experimental and simulated spectrum output
   output$simPlot <- renderPlot({
+    #
+    ## validate input before plotting
+    ## that it will not show the error
+    if (isTRUE(input$splitCond)) {
+      shiny::validate(
+        shiny::need(
+          input$nuclearSys,
+          "Please, specify the group(s) of equivalent nuclei, interacting\n
+           with the unpaired electron. Refer to the `System of interacting nuclei` ! "
+        )
+      )
+    }
+    #
     expr_sim_plot()
   })
   #
@@ -616,7 +629,8 @@ server <- function(input, output,session) {
             file = file
           )
         } else {
-          stop(" The `{openxlsx}` package is required to export table in `.xlsx` format !! ")
+          stop(" The `{openxlsx}` package is required\n
+               to export table in `.xlsx` format !! ")
         }
       }
     }
