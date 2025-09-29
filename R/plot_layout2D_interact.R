@@ -66,7 +66,7 @@
 #'   (\strong{default}), "dot", "dash", "longdash", "dashdot", "longdashdot" can be used, as well.
 #'
 #'
-#' @return List of the interactive plot object properties/parts, which can be used in connection with
+#' @return List of the interactive plot object properties/parts, which can be used in the combination with
 #'   \code{\link{plot_EPR_Specs2D_interact}} or \code{\link[plotly]{plot_ly}}.
 #'
 #'

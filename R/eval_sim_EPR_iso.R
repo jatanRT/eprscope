@@ -30,7 +30,7 @@
 #'   by the above-mentioned linewidth. Many organic radicals exhibit such EPR spectra at room temperature
 #'   and in solutions of low viscosities (Gerson F, Huber W (2003), see \code{References}).
 #'
-#'   In the first step the \eqn{B}-region (magnetic flux density) and the resolution must be defined
+#'   In the first step the \eqn{B}-region (magnetic flux density) and the resolution is defined
 #'   by the \code{instrum.params} argument or can be directly acquired from the parameter file, using
 #'   the \code{path_to_dsc_par} argument. Position of the spectrum (within the desired \eqn{B}-region)
 #'   as well as those of HFS-lines are evaluated by the resonance condition (see also the \code{\link{eval_gFactor}})
@@ -42,7 +42,7 @@
 #'   Weil JA, Bolton JR (2007) and Stoll S (2024)).  The linear coefficients
 #'   are defined by the \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
 #'   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
-#'   is defined individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
+#'   is speified individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
 #'   The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
 #'   taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups (please, also
 #'   refer to the \code{\link{plot_eval_EPRtheo_mltiplet}}), as well as their natural abundance (if \code{natur.abund = TRUE}).
@@ -927,7 +927,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       Sim_Intensity[[2]] <-
         intensities(
           data.frame.sim = B.g.sim.df,
-          B.values.breit.rabi = near_B_for_m_spin_values[[length(nuclear.system)]][[paste0("B_", B.unit)]],
+          B.values.breit.rabi =
+            near_B_for_m_spin_values[[length(nuclear.system)]][[paste0("B_", B.unit)]],
           intensity.pattern = abund_nuclearN,
           line.form = lineSpecs.form
         )
@@ -1048,7 +1049,10 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
     ## B within the final data frame should be renamed to "Bsim_..."
     ## in order to be consistent with other `sim` functions
     B.g.sim.df <- B.g.sim.df %>%
-      dplyr::rename_with(~ c("Bsim_G","Bsim_mT","Bsim_T"),dplyr::all_of(c("B_G","B_mT","B_T")))
+      dplyr::rename_with(
+        ~ c("Bsim_G","Bsim_mT","Bsim_T"),
+        dplyr::all_of(c("B_G","B_mT","B_T"))
+      )
     #
     return(list(plot = spectrum.sim.plot,df = B.g.sim.df))
     #

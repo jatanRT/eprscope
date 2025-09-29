@@ -144,34 +144,68 @@
 #'  ## of the TMPD radical cation (+ zoom the spectrum
 #'  ## output by `Blim`), animation
 #'  ## "Fitting_of_sim_EPR.gif" stored in the working dir.
-#'  listfit <-
+#'  listfit01 <-
 #'    eval_sim_EPR_isoFit_space(
-#'    data.spectr.expr = data.tmpd.spec,
-#'    nu.GHz = data.tmpd.params.values[1,2],
-#'    nuclear.system.noA = list(
-#'      list("14N", 2), # 2 x 14N
-#'      list("1H", 4), # 4 x 1H
-#'      list("1H", 12) # 12 x 1H
-#'    ),
-#'    optim.params.init = c(
-#'      2.0030, 0.4, 0.4, 0,
-#'      2.5e5, 20.0, 5.5, 19
-#'    ),
-#'    optim.params.init.dvary =
-#'    c(0.0002,0.1,0.1,0,
-#'      2e4,2,1,2), ## or NULL
-#'    # Nmax.evals = 256,
-#'    # N.points.space = 16,
-#'    lineG.content = 0.3,
-#'    lineG.content.dvary = 0.15, ## or NULL
-#'    # optim.method = "neldermead",
-#'    processing = "parallel" , ## or "sequential"
-#'    Blim = c(3455,3545)
+#'      data.spectr.expr = data.tmpd.spec,
+#'      nu.GHz = data.tmpd.params.values[1,2],
+#'      nuclear.system.noA = list(
+#'        list("14N", 2), # 2 x 14N
+#'        list("1H", 4), # 4 x 1H
+#'        list("1H", 12) # 12 x 1H
+#'      ),
+#'      optim.params.init = c(
+#'        2.0030, 0.4, 0.4, 0,
+#'        2.5e5, 20.0, 5.5, 19
+#'      ),
+#'      optim.params.init.dvary =
+#'      c(0.0002,0.1,0.1,0,
+#'        2e4,2,1,2), ## or NULL
+#'      # Nmax.evals = 256,
+#'      # N.points.space = 16, # total number of iters. 4096
+#'      lineG.content = 0.3,
+#'      lineG.content.dvary = 0.15, ## or NULL
+#'      # optim.method = "neldermead",
+#'      processing = "parallel" , ## or "sequential"
+#'      Blim = c(3455,3545)
 #'  )
 #'  #
 #'  ## optimization/fitting progress
 #'  ## (main graphical output)
-#'  listfit$plot.optim.space
+#'  listfit01$plot.optim.space
+#'  #
+#'  ## run the similar processing and evaluation
+#'  ## like before, but now with the fixed g-value
+#'  ## (will be not optimized) and with 24 `N.points.space`
+#'  listFit02 <-
+#'     eval_sim_EPR_isoFit_space(
+#'       data.spectr.expr = data.tmpd.spec,
+#'       nu.GHz = data.tmpd.params.values[1,2],
+#'       nuclear.system.noA = list(
+#'         list("14N", 2), # 2 x 14N
+#'         list("1H", 4), # 4 x 1H
+#'         list("1H", 12) # 12 x 1H
+#'       ),
+#'       optim.params.init = c(
+#'         2.00305, 0.4, 0.4, 0,
+#'         1.25e4, 20.0, 5.5, 19
+#'       ),
+#'       optim.params.init.dvary =
+#'       c(0,0.1,0.1,0, # `.dvary` for g-value = 0
+#'         2e3,2,1,2),
+#'       # Nmax.evals = 256,
+#'       N.points.space = 24, # total number of iters. 6144
+#'       lineG.content = 0.3,
+#'       lineG.content.dvary = 0.15,
+#'       processing = "parallel" ,
+#'       optim.params.fix.id = 1, # fix g-value
+#'       Blim = c(3455,3545)
+#'     )
+#'   #
+#'   ## space (plot) for initial parameters:
+#'   listFit02$plot.init.space
+#'   #
+#'   ## space (plot) for optimized parameters
+#'   listFit02$plot.optim.space
 #' }
 #'
 #'

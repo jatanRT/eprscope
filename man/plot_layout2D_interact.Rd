@@ -138,7 +138,7 @@ are listed on \href{https://www.w3.org/TR/css-color-3/}{CSS Color Module Homepag
 \strong{Default}: \code{border.line.color = "black"}.}
 }
 \value{
-List of the interactive plot object properties/parts, which can be used in connection with
+List of the interactive plot object properties/parts, which can be used in the combination with
   \code{\link{plot_EPR_Specs2D_interact}} or \code{\link[plotly]{plot_ly}}.
 }
 \description{

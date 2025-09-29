@@ -85,9 +85,9 @@ is required** and summarized into the following steps:
     procedure](https://cran.rstudio.com/). *Linux* and *macOS* users may
     also update where the
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="12" />
-    expects to find various *Java* files by `sudo R CMD javareconf`,
-    afterwards. If one gets an error about `jni.h` not being found, then
-    try:
+    expects to find various *Java* files by `sudo R CMD javareconf` (in
+    terminal, not in the R console), afterwards. If one gets an error
+    about `jni.h` not being found, then try:
     `sudo R CMD javareconf JAVA_HOME=/usr/lib/jvm/java-XX-openjdk-amd64/`
     (find your path for the *Java* files).
 
@@ -411,6 +411,8 @@ quite straightforward diving into
 
 - [An Introduction to Statistical
   Learning](https://www.statlearning.com/)
+
+- [R for the Rest of Us](https://book.rfortherestofus.com/)
 
 - [The Big Book of R](https://www.bigbookofr.com/)
 
