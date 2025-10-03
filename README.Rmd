@@ -141,7 +141,7 @@ tmpd.params.dt
 
 ```{r molecule-drawing,warning=FALSE, message=FALSE}
 
-# Pphenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
+# Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"
 draw_molecule_by_rcdk(
   molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",

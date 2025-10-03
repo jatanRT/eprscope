@@ -75,25 +75,26 @@
 #'   the sum results in \code{-1}, however for the mono-molecular one, the sum results in \code{0}.
 #'
 #'   While the transition state theory (TST) is a helpful tool to get information about the mechanism
-#'   of an elementary reaction, it has some limitations, particularly for radical reactions. Couple of them are listed below.
+#'   of an elementary reaction, it has some limitations, particularly for radical reactions.
+#'   Couple of them are listed below.
 #'   \enumerate{
 #'   \item One should be very careful if applied to elementary steps in a multistep reaction kinetics (like
-#'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the intermediate (e.g. in the consecutive
-#'   reaction mechanism) possesses a short life-time, the TST probably fails.
+#'   consecutive reactions, example shown in \code{\link{eval_kinR_ODE_model}}). If the intermediate
+#'   (e.g. in the consecutive reaction mechanism) possesses a short life-time, the TST probably fails.
 #'
 #'   \item For very fast reactions the assumed equilibrium between the reactants and the AC won't be reached.
 #'   Therefore, the spin trapping reactions, which \eqn{k}s may actually fall into the order
-#'   of \eqn{10^9\,\text{dm}^3\,\text{mol}^{-1}\,\text{s}^{-1}} (or oven higher, see Kemp TJ (1999) in the \code{References})
-#'   should be taken with extreme caution in terms of TST.
+#'   of \eqn{10^9\,\text{dm}^3\,\text{mol}^{-1}\,\text{s}^{-1}} (or oven higher, see Kemp TJ (1999)
+#'   in the \code{References}) should be taken with extreme caution in terms of TST.
 #'
 #'   \item Formation of AC in TST is based on classical mechanics, that is molecules/atoms will only collide,
 #'   having enough energy (to form the AC), otherwise reaction does not occur. Whereas, taking into account the quantum
 #'   mechanical principle, molecules/atoms with any finite energy may (with a certain probability) tunnel across
-#'   the energy barrier. Such effect will be less probable for high energy barriers, however e.g. for radical-radical
-#'   recombination, where the barriers are typically very low, the tunneling probability is high and TST may fail.
-#'   In addition, such reactions proceed relatively fast and therefore the TST (Eyring fit) can also strongly bias
-#'   the activation parameters. This type of reactions may also exhibit negative \eqn{k\,\,vs\,\,T} dependence
-#'   (see Wardlaw DM and Marcus RA (1986) in the \code{References}).
+#'   the energy barrier. For reactions like radical-radical recombination, where the barriers are typically very low,
+#'   the tunneling probability is low (when there's essentially "no barrier", there's nothing to tunnel through).
+#'   In addition, such reactions can proceed relatively fast and therefore the TST (Eyring fit) can also strongly bias
+#'   the activation parameters. However, for radical reactions, involving the H-atom transfer or abstraction
+#'   the tunneling can be important.
 #'   }
 #'
 #'

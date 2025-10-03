@@ -239,9 +239,8 @@
 #' #
 #' ## finally, the following function is to be minimized:
 #' min_residuals_ps <- function(data,col.name.pattern,par){
-#'   with(data,sum((data[[Intensity.expr]] -
+#'   sum((data[[Intensity.expr]] -
 #'     fit_params_specs_par(data,col.name.pattern,par))^2)
-#'     )
 #'   }
 #' #
 #' ## therefore, the final `optimization` list may look like
