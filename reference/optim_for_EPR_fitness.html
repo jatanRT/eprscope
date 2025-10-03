@@ -352,9 +352,8 @@ and <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></co
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## finally, the following function is to be minimized:</span></span></span>
 <span class="r-in"><span><span class="va">min_residuals_ps</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,<span class="va">col.name.pattern</span>,<span class="va">par</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">data</span>,<span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="va">Intensity.expr</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="va">Intensity.expr</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span></span></span>
 <span class="r-in"><span>    <span class="fu">fit_params_specs_par</span><span class="op">(</span><span class="va">data</span>,<span class="va">col.name.pattern</span>,<span class="va">par</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## therefore, the final `optimization` list may look like</span></span></span>
