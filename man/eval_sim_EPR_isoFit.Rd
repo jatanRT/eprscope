@@ -113,7 +113,9 @@ constant should not be optimized (their values should be fixed during the proced
 as follows: \code{optim.params.fix.id = c(1,5)} (see also the \code{optim.params.init} description
 for the simulation/optimized parameters order). \strong{Default}: \code{optim.params.fix.id = NULL}, indicating
 that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
-boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}).}
+boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}). Alternatively, the parameter value(s)
+can be also fixed by assigning the \code{optim.params.init} + \code{optim.params.lower} + \code{optim.params.upper}
+to equal value as demonstrated in the \code{Examples}.}
 
 \item{optim.params.lower}{Numeric vector (with the same element order like \code{optim.params.init})
 with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
@@ -273,7 +275,7 @@ In order to guess the intensity multiplication constant (please, refer to the \c
   the \code{optim.params.fix.id} argument, which can be also applied to fix the simulation parameters when searching
   for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}. Therefore, the latter function argument just selects
   an element of the \code{optim.params.init} (by its corresponding index) and accordingly, the selected simulation
-  parameter value will be not optimized.
+  parameter value won't be optimized.
 
   A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
   may return an \code{.R} script/code snippet for the \strong{initial} simulation \strong{fit} and therefore

@@ -476,8 +476,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   }
   if (optim.method == "pswarm"){
     min_residuals_ps <- function(data,col.name.pattern,par){
-      with(data,sum((data[[Intensity.expr]] -
-                       fit_params_specs_par(data,col.name.pattern,par))^2))
+      sum((data[[Intensity.expr]] -
+                       fit_params_specs_par(data,col.name.pattern,par))^2)
     }
     #
     optimization.list <-
@@ -490,8 +490,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       optim.method == "crs2lm" || optim.method == "sbplx" ||
       optim.method == "cobyla" || optim.method == "lbfgs"){
     min_residuals_nl <- function(data,col.name.pattern,x0){
-      with(data,sum((data[[Intensity.expr]] -
-                       fit_params_specs_x0(data,col.name.pattern,x0))^2))
+      sum((data[[Intensity.expr]] -
+                       fit_params_specs_x0(data,col.name.pattern,x0))^2)
     }
     #
     optimization.list <-

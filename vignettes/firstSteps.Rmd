@@ -71,7 +71,7 @@ library(tidyverse)
 
 ```
 
-Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` , see also the massage after `{tidyverse}` loading, above)[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
+Sometimes a function/dataset/object from a certain 📦 is called via "special" syntax like `package::function()`. The double colon `::` actually points to selection from the package `NAMESPACE` in order to prevent collisions when functions/datasets/objects from different packages possess the same name (e.g. `stats::filter()` and `dplyr::filter()` , see also the message after `{tidyverse}` loading, above)[^1]. However, in most cases, one does not need to call each function like this and it is enough if `library(package)` command is executed at the beginning of the entire ![](RcoreLogo.png){width="16" height="12"} script (which is also the case for the `{eprscope}` 📦).
 
 [^1]: On the rare occasions you may also come across the triple colon `:::` which calls the "hidden" objects from the package (e.g. installation of several *L~[A]{.smallcaps}~TeX* packages under the ![](RcoreLogo.png){width="16" height="12"} `tinytex` distribution: `tinytex:::install_yihui_pkgs()` , see also <https://yihui.org/tinytex/>)
 
@@ -107,7 +107,7 @@ comb.norm
 
 ```
 
-To avoid such behavior one has to define a `list` as shown below. The length of a vector can be figured out by the `length()` function, counting the number of vector components:
+To avoid such a behavior one has to define a `list` as shown below. The length of a vector can be figured out by the `length()` function, counting the number of vector components:
 
 ```{r vector-length}
 
@@ -137,7 +137,7 @@ comb.norm[c(TRUE,FALSE,TRUE,TRUE,FALSE,TRUE)]
 comb.norm[4] <- 50 # or "50"
 #
 # the actual `comb.norm` vector
-# (with replacement of the 4th element)
+# (with the replaced 4th element)
 comb.norm
 
 ```
@@ -194,7 +194,7 @@ identical(vec.g.iso.a,vec.g.iso.b) # Are these vectors identical ?
 
 ```
 
-Previous examples show, how the vectors can be created by `loops` . However in to order to calculate the *g*~iso~-values, one can just simply use the `eval_gFactor()` function on the entire `B.central.vec` like:
+Previous examples show, how the vectors can be created by `loops` . However, in to order to calculate the *g*~iso~-values, one can just simply use the `eval_gFactor()` function on the entire `B.central.vec` like:
 
 ```{r simple-g-iso}
 
@@ -346,7 +346,7 @@ These column names are referred to the following vectors:
 
 3.  Magnetic flux density $\small B$ in millitesla (`B_mT`)
 
-One can preview the **str**ucture of data frame by the `str()` function from the `{utils}` 📦:
+One can preview the **str**ucture of a data frame by the `str()` function from the `{utils}` 📦:
 
 ```{r df-example-01-structure}
 
@@ -481,7 +481,7 @@ sapply(df.example.01, FUN = sd)
 
 ```
 
-In order to figure out whether there is a relationship between the variables/columns of a data frame, we may use two characteristic measures: [covariance](https://www.r-tutor.com/elementary-statistics/numerical-measures/covariance) and [correlation](https://www.r-tutor.com/elementary-statistics/numerical-measures/correlation-coefficient). Both check to which extend those variables vary linearly. In the first case, the covariance indicates the direction of the linear relationship:
+In order to figure out whether there is a relationship between the variables/columns of a data frame, we may use two characteristic measures: [covariance](https://www.r-tutor.com/elementary-statistics/numerical-measures/covariance) and [correlation](https://www.r-tutor.com/elementary-statistics/numerical-measures/correlation-coefficient). Both can check to which extend those variables vary linearly. In the first case, the covariance indicates the direction of the linear relationship:
 
 ```{r covar-stat-metrics}
 
@@ -489,11 +489,11 @@ In order to figure out whether there is a relationship between the variables/col
 cov(df.example.01)
 #
 # it returns the `ncol(df.example.01) x ncol(df.example.01)`
-# (or in this case 3 x 3) matrix
+# (3 x 3) matrix
 
 ```
 
-For example, it can be immediately recognized that there is an negative relationship between `g_Val` and `B_G` (they are indirectly/inversely proportional), as it is already expected from $\small g = h\,\nu\,/\,\mu_{\mathrm{B}}\,B$ . Additionally, each of the `var` *vs* `var` pair (such as `B_G` *vs* `B_G`) corresponds to variance (compare it with output of the previous code chunk). If the covariance $\small \approx 0$, there is no relationship between the variables. However, the main problem of the **cov**ariance is, that it is not delimited and depends on the unit of measures. Therefore, to solve this issue a **cor**relation is defined as a ratio between the covariance and the product of the individual standard deviations of variables/columns, which in addition to direction, provides the strength of the relationship:
+For example, it can be immediately recognized that there is a negative relationship between `g_Val` and `B_G` (they are indirectly/inversely proportional), as it is already expected from $\small g = h\,\nu\,/\,\mu_{\mathrm{B}}\,B$ . Additionally, each of the `var` *vs* `var` pair (such as `B_G` *vs* `B_G`) corresponds to variance (compare it with output of the previous code chunk). If the covariance $\small \approx 0$, there is no relationship between the variables. However, the main problem of the **cov**ariance is, that it is not delimited and depends on the unit of measures. Therefore, to solve this issue a **cor**relation is defined as a ratio between the covariance and the product of the individual standard deviations of variables/columns, which in addition to direction, provides the strength of the relationship:
 
 ```{r cor-stat-metrics}
 
@@ -518,11 +518,11 @@ Consequently, the correlation standardizes the covariance results and thus it is
 
 In order to understand where does these operators come from and why they are used, we may start with a brief historical background [@dataCamp2022pipe]. The basic principle can be actually found in mathematics. If two functions (e.g. $\small f : B \rightarrow C$ and $\small g : A\rightarrow B$) are linked together into an operational chain, the output from one ($\small g$) serves as the input for the other ($\small f$), resulting in $\small f(g(x))$, where $\small x\equiv A$, $\small g(x)\equiv B$ and $\small f(g(x))\equiv C$. Broad range of pipe applications actually started in 2013-2014 by development of the [{magrittr}](https://magrittr.tidyverse.org/) and [{dplyr}](https://dplyr.tidyverse.org/) packages in order to express sequences of operations in a readable and concise way. **For beginners in programming, one might imagine the "pipe" as a command (or narrator), saying: "...and then..." where in the background it takes the result on its left-hand side and passes it as a first argument to the function on its right-hand side** (see examples below)**. This allows users to avoid creation of intermediate variables, makes the code easier to follow and finally also reduces the likelihood of a bug appearence.** The pipe operator is also well known in other programming languages (e.g. in *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may possess a different syntax in comparison to ![](RcoreLogo.png){width="16" height="12"} [^2].
 
-[^2]: One may come across symbols like `.` , `>>` , `|>` or `|`
+[^2]: One may come across symbols like `.` , `>>` , `|>` , `&` or `|`
 
 For the simple cases, both `%>%` and `|>` (the latter also known as a native pipe operator) behave identically. However, they differ in the origin as well as in a couple of situations:
 
-1.  The native pipe operator `|>` is automatically loaded when starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦. Whereas, the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore these packages must be loaded before their use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **!**
+1.  The native pipe operator `|>` is automatically loaded when starting the ![](RcoreLogo.png){width="16" height="12"} console/*Rstudio* IDE and does not require any additional 📦. Whereas, the `%>%` is included in the `{magrittr}` (or `{tidyverse}` bundle) and therefore these packages must be loaded before its use. **However, please notice that the native `|>` can only be used with the ![](RcoreLogo.png){width="16" height="12"} version** $\small > 4.1$ **!**
 2.  The `|>` requires parentheses for the right-hand side functions, whereas the `{magrittr}` operator does not:
 
 ```{r pipe-oterator-parentheses}
@@ -543,7 +543,7 @@ vec.B.G.c |> round(digits = 2) |> mean()
 
 ```
 
-3.  Pipe operators differ in placeholders (like `.` or `_` ) call, where one doesn't need to repeat the argument of a function (see also below ):
+3.  Pipe operators differ in placeholders (like `.` or `_` ) call, where one doesn't have to repeat the argument of a function (see also below ):
 
 ```{r pipe-operator-placeholder}
 
@@ -880,7 +880,7 @@ dimer.kinetics.01 <-
     # previous data frame:
     data.qt.expr = triarylam.decay.integs.01,
     model.react = "(r=2)R --> [k1] B",
-    # named vector of initial kinetic parameters:
+    # named vector of the initial kinetic parameters:
     params.guess = c(qvar0R = 0.02, k1 = 0.01)
   )
 #
@@ -931,7 +931,7 @@ is.list(dimer.kinetics.01) # is it a list ?
 
 ```
 
-The `dimer.kinetics.01` consists of the following elements:
+The `dimer.kinetics.01` consists of the following components:
 
 ```{r elements-dimer-kinetics-01}
 

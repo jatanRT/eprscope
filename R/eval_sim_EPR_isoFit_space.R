@@ -21,7 +21,7 @@
 #'   regardless of the operating system (OS) to dramatically speed-up the entire searching for the best fit.
 #'   In addition to graphical outputs, function also provides an animated representation
 #'   (using the \href{https://yihui.org/animation/}{\code{{animation}}} package) of the procedure progress
-#'   by showing the evaluated EPR spectra.
+#'   by showing the evaluated EPR spectra at each point.
 #'
 #'
 #'
@@ -60,8 +60,8 @@
 #'   to fix one or more parameters (which won't be optimized) an optional \code{optim.params.fix.id} (see also description
 #'   of the \code{...} argument) should be used together with \code{0} of the corresponding \code{optim.params.init.dvary}
 #'   element. For example, to fix the g-Value (i.e. it won't be optimized) of the above-described aminoxyl, one must add
-#'   \code{optim.params.fix.id = 1} and \code{optim.params.init.dvary = c(0,2.0,2.0,0,1e-2,3.2)}.
-#'   If the entire \code{optim.params.init} argument is to be "fixed" => put
+#'   \code{optim.params.fix.id = 1} and \code{optim.params.init.dvary = c(0,2.0,2.0,0,1e-2,3.2)}, like already demostrated
+#'   in the \code{Examples}. If the entire \code{optim.params.init} argument is to be "fixed" => put
 #'   \code{optim.params.init.dvary = NULL} (\strong{default}). In all cases, the related \code{optim.params.init}
 #'   space will be created as a matrix or data frame (see also the \code{Value}/\code{init.space.df}) with
 #'   variables/columns corresponding to individual parameters, and observations/rows corresponding
@@ -71,8 +71,8 @@
 #'   variation vector (see the description of \code{N.points.space} and \code{lineG.content.dvary} arguments).
 #'   For the \code{optim.params.init.dvary = NULL}, the fitting procedure is just repeated
 #'   \code{N.points.space}-times, with the same parameter set. Such processing might be useful to determine
-#'   the uncertainty of each optimized EPR simulation parameter by the \code{\link{eval_interval_cnfd_tVec}}
-#'   for each column of the \code{optim.space.df} (see the \code{Value}).
+#'   the uncertainty (represented by the confidence interval) of each optimized EPR simulation parameter
+#'   by the \code{\link{eval_interval_cnfd_tVec}} for each column of the \code{optim.space.df} (see the \code{Value}).
 #' @param N.points.space Numeric value, identical to number of points by which the initial parameter-hyperspace
 #'   (see the \code{lineG.content.dvary} and/or \code{optim.params.init.dvary} and their corresponding
 #'   \code{lineG.content} as well as \code{optim.params.init} arguments)
@@ -175,7 +175,7 @@
 #'  #
 #'  ## run the similar processing and evaluation
 #'  ## like before, but now with the fixed g-value
-#'  ## (will be not optimized) and with 24 `N.points.space`
+#'  ## (won't be optimized) and with 24 `N.points.space`
 #'  listFit02 <-
 #'     eval_sim_EPR_isoFit_space(
 #'       data.spectr.expr = data.tmpd.spec,
@@ -472,8 +472,8 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## approx 50 % of the cores available)
   if (processing == "parallel") {
     #
-    ## Detect the operating system (condition definition)
-    os.cond <- .Platform$OS.type == "unix" # (unix as base os)
+    ## Detect the operating system (condition definition) => NOT REQUIRED ANYMORE
+    # os.cond <- .Platform$OS.type == "unix" # (unix as base os)
     #
     # Define, how many cores will be used for "parallelization"
     total.cores <- parallel::detectCores(logical = FALSE)

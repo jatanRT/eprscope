@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'  Providing more accurate time for EPR spectral line/spectrum appearance. It assumes
+#'  Providing more accurate time for EPR spectral line/spectrum appearance. It is assumed
 #'  that the middle \eqn{B} (or \eqn{g}, \eqn{\nu_{\text{MHz}}}...etc.) of the EPR spectrum
 #'  is set as the CF (\code{central field}) for the spectrum sweep.
 #'
