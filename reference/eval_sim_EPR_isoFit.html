@@ -210,7 +210,9 @@ constant should not be optimized (their values should be fixed during the proced
 as follows: <code>optim.params.fix.id = c(1,5)</code> (see also the <code>optim.params.init</code> description
 for the simulation/optimized parameters order). <strong>Default</strong>: <code>optim.params.fix.id = NULL</code>, indicating
 that none of the <code>optim.params.init</code> is fixed, i.e. all parameters are optimized within their default/defined
-boundaries (see the <code>optim.params.lower</code> and the <code>optim.params.upper</code>).</p></dd>
+boundaries (see the <code>optim.params.lower</code> and the <code>optim.params.upper</code>). Alternatively, the parameter value(s)
+can be also fixed by assigning the <code>optim.params.init</code> + <code>optim.params.lower</code> + <code>optim.params.upper</code>
+to equal value as demonstrated in the <code>Examples</code>.</p></dd>
 
 
 <dt id="arg-optim-params-lower">optim.params.lower<a class="anchor" aria-label="anchor" href="#arg-optim-params-lower"></a></dt>
@@ -387,7 +389,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   the <code>optim.params.fix.id</code> argument, which can be also applied to fix the simulation parameters when searching
   for the best fit by the <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space</a></code>. Therefore, the latter function argument just selects
   an element of the <code>optim.params.init</code> (by its corresponding index) and accordingly, the selected simulation
-  parameter value will be not optimized.</p>
+  parameter value won't be optimized.</p>
 <p>A simple EPR spectrum analysis by interactive simulation using the <code><a href="plot_eval_ExpSim_app.html">plot_eval_ExpSim_app</a></code>
   may return an <code>.R</code> script/code snippet for the <strong>initial</strong> simulation <strong>fit</strong> and therefore
   the user does not have to write (or remember) the code required to run the <code>eval_sim_EPR_isoFit</code>.
@@ -509,7 +511,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.512e-08, swarm diam.=0.02264</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  11.604  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.064  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -616,11 +618,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.754  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.756  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  9.858  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  9.953  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
