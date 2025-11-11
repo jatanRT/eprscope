@@ -17,7 +17,7 @@
 #'   from file name which might not necessarily appear at the beginning of the file name. One might also consult
 #'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}. THE SAME NAME AND \code{name.pattern}
 #'   MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES.
-#' @param dir_ASC Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
+#' @param dir_asc_bin Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
 #'   the \code{ASCII} files are stored.
 #' @param dir_dsc_par Path (defined by \code{\link[base]{file.path}} or by character string) to directory
 #'   where the \code{.DSC}/\code{.dsc} or \code{.par} files,including instrumental parameters, are stored.
@@ -110,7 +110,7 @@
 #'
 #' @importFrom rlang quo_name :=
 readEPR_Exp_Specs_multif <- function(name.pattern,
-                                     dir_ASC,
+                                     dir_asc_bin,
                                      dir_dsc_par,
                                      col.names = c(
                                        "index",
@@ -134,35 +134,19 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   index <- NULL
   #
   ## origin strings vectors to define "origin" conditions =>
-  winepr.string <- c("winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR")
+  winepr.string <- c(
+    "winepr","Winepr","WinEpr","WINEPR","WinEPR","winEPR",
+    "SPC/PAR","spc/par","Spc/Par"
+  )
   xenon.string <- c("xenon","Xenon","XENON")
-  magnettech.string <- c("magnettech","Magnettech","MagnetTech",
-                         "magnetTech","MAGNETTECH","magnetech",
-                         "Magnetech","MAGNETECH","MagneTech")
+  magnettech.string <- c(
+    "magnettech","Magnettech","MagnetTech",
+    "magnetTech","MAGNETTECH","magnetech",
+    "Magnetech","MAGNETECH"
+  )
   ## previous strings also with single "t"/"T" excepting mistakes :-)
   #
-  ## =========================== FILES AND PARAMETERS ==============================
-  #
-  ## file name pattern which has to be the same for `txt`+`DSC`/`.dsc`
-  ## or `.asc` and `.par`
-  file.name.pattern.asc <- paste0(name.pattern,".*\\.(txt|asc|csv)$")
-  file.name.pattern.params <- paste0(name.pattern,".*\\.(DSC|dsc|par)$")
-  #
-  ## path to all `asc` files
-  files.asc <- list.files(
-    path = dir_ASC,
-    pattern = file.name.pattern.asc,
-    full.names = TRUE
-  )
-  #
-  ## path to `.DSC`/`.dsc`  or  `.par`  files
-  files.params <- list.files(
-    path = dir_dsc_par,
-    pattern = file.name.pattern.params,
-    full.names = TRUE
-  )
-  #
-  ## general condition to read `.id`s and co...
+  ## general condition to read `.id`s and co...(origin condition)
   origin.cond.all <- function(origin){
     if (any(grepl(paste(winepr.string,collapse = "|"),origin))) {
       return(0)
@@ -174,6 +158,43 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
       return(2)
     }
   }
+  #
+  ## =========================== FILES AND PARAMETERS ==============================
+  #
+  ## file name pattern which has to be the same for binary/ascii +`DSC`/`.dsc`/`.par`
+  file.name.pattern <- paste0(name.pattern,".*\\.(txt|asc|csv|DTA|spc)$")
+  file.name.pattern.params <- paste0(name.pattern,".*\\.(DSC|dsc|par)$")
+  #
+  ## path to all ascii or binary files
+  files.specs <- list.files(
+    path = dir_asc_bin,
+    pattern = file.name.pattern,
+    full.names = TRUE
+  )
+  #
+  ## checking the path string, whether it points to ASCII or BINARY
+  ## + checking the corresponding origin
+  ascii.cond <- any(grepl(".*\\.(txt|asc|csv)$",files.specs))
+  binary.cond <- any(grepl(".*\\.(DTA|spc)$",files.specs))
+  if (any(grepl(".*\\.DTA$",files.specs))) {
+    if (origin.cond.all(origin = origin) != 2 ||
+        origin.cond.all(origin = origin) != 1) {
+      stop(" Reading of the '.DTA' file requires\n
+           origin = 'xenon' or origin = 'magnettech' !! ")
+    }
+  }
+  if (any(grepl(".*\\.spc$",files.specs))) {
+    if (origin.cond.all(origin = origin) != 0) {
+      stop(" Reading of the '.spc' file requires origin = 'winepr'!! ")
+    }
+  }
+  #
+  ## path to `.DSC`/`.dsc`  or  `.par`  files
+  files.params <- list.files(
+    path = dir_dsc_par,
+    pattern = file.name.pattern.params,
+    full.names = TRUE
+  )
   #
   ## xenon or magnettech
   if (origin.cond.all(origin = origin) == 2 ||
@@ -260,8 +281,9 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   if (x.unit == "G" || x.unit == "mT"){
     spectra.datab.from.files <-
       Map(
-        function(r, s, t, u) {
-          readEPR_Exp_Specs(r,
+        function(p, r, s, t, u) {
+          readEPR_Exp_Specs(path_to_file = p,
+                            path_to_dsc_par = r,
                             col.names = col.names,
                             x.id = x.id,
                             x.unit = x.unit,
@@ -279,7 +301,8 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
               B.unit = x.unit
             ))
         },
-        files.asc,
+        files.specs,
+        switch(2 - binary.cond,files.params,NULL),
         qValues.from.files,
         norm.list.add,
         mwfreq.from.files
@@ -287,8 +310,9 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   } else {
     spectra.datab.from.files <-
       Map(
-        function(r, s, t) {
-          readEPR_Exp_Specs(r,
+        function(p, r, s, t) {
+          readEPR_Exp_Specs(path_to_file = p,
+                            path_to_dsc_par = r,
                             col.names = col.names,
                             x.id = x.id,
                             x.unit = x.unit,
@@ -301,6 +325,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
           )
         },
         files.asc,
+        switch(2 - binary.cond,files.params,NULL),
         qValues.from.files,
         norm.list.add
       )
@@ -317,11 +342,13 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     #
   } else {
     if (is.null(var2nd.series)) {
-      stop(" 'var2nd.series' string is not specified. Please, define! ")
+      stop(" The 'var2nd.series' string argument is not specified.\n
+           Please, define the corresponding column name for the tidy data ! ")
     } else {
       #
-      ## condition whether the `names` contains numeric values
-      names.num.cond <- ifelse(any(grepl("[[:digit:]]+",names)),TRUE,FALSE)
+      ## condition whether the `names` contains only numeric values
+      ## i.e. no characters ("alpha")
+      names.num.cond <- ifelse(any(!grepl("[[:alpha:]]",names)),TRUE,FALSE)
       #
       ## apply `bind_rows` to merge all spectral data from the list
       spectra.datab.from.files <-

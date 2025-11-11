@@ -472,7 +472,7 @@ readEPR_Exp_Specs <- function(path_to_file,
       Additional arguments must be set up, accordingly ! "
   #
   ## checking the path string, whether it points to ASCII or BINARY
-  ## + chicking the corresponding origin
+  ## + checking the corresponding origin
   ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
   binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
   if (grepl(".*\\.DTA$",path_to_file)) {
