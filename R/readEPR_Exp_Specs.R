@@ -23,7 +23,7 @@
 #'   afterwards. Spectral intensities are normalized by the common experimental parameters like Q-factor, concentration,
 #'   weight...etc. These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
-#'   quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
+#'   quantities represented by the vector. If \code{qValue = NULL} (it actually equals to \code{1}),
 #'   it can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
 #'   is calculated by the following expression (depending on the \code{qValue} and/or \code{norm.vec.add}):
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
@@ -37,7 +37,7 @@
 #'   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
 #'   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
 #'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument).
-#'   For the latter, all arguments must be set accordingly, as already demonstrated in \code{Examples}.
+#'   For the latter, all arguments must be defined accordingly, as already demonstrated in \code{Examples}.
 #'   When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)
 #'   can be loaded as well. For such purpose, the reading/loading of the data
 #'   must be activated by the \code{var2nd.series.id} argument (which is \code{NULL} by default
@@ -54,8 +54,7 @@
 #'   by the \code{\link[base]{file.path}} function.
 #' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
-#'   ASCII \code{text} file, including instrumental parameters of the recorded spectra
-#'   (corresponding to the previous argument) and provided by the EPR machine.
+#'   ASCII \code{text} file, including instrumental parameters of the recorded spectra provided by the EPR machine.
 #'   \strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
 #'   automatically inherits the \code{path_to_file}, however with the appropriate extension
 #'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
@@ -73,22 +72,22 @@
 #'   \code{path_to_dsc_par} description).
 #' @param sep Character string. The separator between columns/variables in the original ASCII text file.
 #'   \strong{Default}: \code{sep = "auto"}, pointing to automatic recognition of the separator. If required, additional
-#'   separators like \code{sep = "\t"} ("tab") or \code{sep = "\s+"} ("more whitespace") can be applied as well.
+#'   separators like \code{sep = "\t"} ("tab") or \code{sep = "\s+"} ("more white space") can be applied as well.
 #'   Use \code{sep = NULL} or {sep = ""} to specify no separator. For any details, please consult
 #'   the \code{\link[data.table]{fread}} documentation.
 #' @param skip Numeric value, referring to the number of rows, at the beginning of ASCII text file, to be skipped
 #'   (not included by loading into the data frame). \strong{Default}: \code{skip = 1}, corresponding to skip the first
 #'   line in the \code{origin = "Xenon"} text file.
 #' @param header Logical. Does the first data line, in the original ASCII file, contain column names? Defaults according
-#'   to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column
-#'   names are given a default name. \strong{Default}: \code{header = FALSE}.
+#'   to whether every non-empty field on the first data line is character type. If so, or TRUE is supplied, any empty column
+#'   names are given by a default name. \strong{Default}: \code{header = FALSE}.
 #' @param col.names Character string vector, corresponding to desired column/variable names/headers of the returned
 #'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
 #'   For the spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
 #'   in order to identify the corresponding quantity for the series in the original file (please refer also
-#'   to the \code{var2nd.series.id} and \code{Details}). Additional \code{\link[data.table]{fread}} documentation might
+#'   to the \code{var2nd.series.id} and \code{Details}). Additional \code{\link[data.table]{fread}} documentation may
 #'   be helpful to read the ASCII text files.
 #' @param x.id Numeric index related to \code{col.names} vector, pointing to the independent variable, which corresponds
 #'   to \eqn{x}-axis in the spectra or other plots (e.g. \eqn{B} or \eqn{\nu_{\text{RF}}}).
@@ -106,7 +105,7 @@
 #'   (for 1D experiments), see also the \code{data.structure} argument.
 #' @param convertB.unit Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 #'   conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
-#'   \eqn{B} in \code{mT}/\code{G} is created.
+#'   \eqn{B} in \code{mT}/\code{G} is created, accordingly.
 #' @param qValue Numeric, Q value (quality factor, number) displayed at specific \code{dB} by the spectrometer,
 #'   in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
 #'   \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.
@@ -125,10 +124,10 @@
 #'   "magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 #'   "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 #'   data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
-#'   \strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
+#'   \strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{must be configured accordingly}. \cr
 #'   }
 #' @param data.structure Character string, referring to structure of the ASCII data. Common spectral data files
-#'   with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
+#'   with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including spectral
 #'   time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For the more complex
 #'   ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
 #'   see \code{Examples}, or any other data) put \code{data.structure = "others"}. \strong{In such case, all the arguments for}
@@ -458,9 +457,8 @@ readEPR_Exp_Specs <- function(path_to_file,
   var2nd.series.cond <- isFALSE(is.null(var2nd.series.id))
   if (isTRUE(var2nd.series.cond) & length(col.names) <= 2){
     stop(" It doesn't look that your column names already include\n
-         the name correspondig to the 2nd variable series (e.g. time).\n
-         Please, refer to the description of `col.names`\n
-         and `var2nd.series.id` arguments !!")
+         the column name correspondig to the 2nd variable series (e.g. time).\n
+         Please, refer to the `col.names` and `var2nd.series.id` arguments !!")
   }
   #
   ## string to stop the reading if `data structure == "mixed"`
@@ -475,16 +473,16 @@ readEPR_Exp_Specs <- function(path_to_file,
   ## + checking the corresponding origin
   ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
   binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
-  if (grepl(".*\\.DTA$",path_to_file)) {
-    if (origin.cond.all(origin = origin) != 2 ||
-        origin.cond.all(origin = origin) != 1) {
-      stop(" Reading of the '.DTA' file requires\n
-           origin = 'xenon' or origin = 'magnettech' !! ")
+  if (grepl(".*\\.spc$",path_to_file)) {
+    if (origin.cond.all(origin = origin) == 2 ||
+        origin.cond.all(origin = origin) == 1) {
+      stop(" Reading of the '.spc' file requires origin = 'winepr' !! ")
     }
   }
-  if (grepl(".*\\.spc$",path_to_file)) {
-    if (origin.cond.all(origin = origin) != 0) {
-      stop(" Reading of the '.spc' file requires origin = 'winepr'!! ")
+  if (grepl(".*\\.DTA$",path_to_file)) {
+    if (origin.cond.all(origin = origin) == 0) {
+      stop(" Reading of the '.DTA' file requires\n
+           origin = 'xenon' or origin = 'magnettech' !! ")
     }
   }
   #
@@ -492,8 +490,10 @@ readEPR_Exp_Specs <- function(path_to_file,
   #
   if (isTRUE(binary.cond)) {
     #
-    ## binary file length (to read the highest possible `n`)
-    bin.file.length <- readBin(path_to_file,what = "raw",n = 1e+10) %>% length()
+    ## binary file length (to read the highest possible `n`, the max. could be like 2e+10,
+    ## however to read faster - lower the limit to 1e+8, which should be more than enough
+    ## for the series of 5000 EPR spectra with the resolution of 5000 points !!)
+    bin.file.length <- readBin(path_to_file,what = "raw",n = 1e+8) %>% length()
     #
     ## function to process loaded binary of time(2nd variable)-series experiments:
     process.bin.series.fn <-
@@ -645,9 +645,9 @@ readEPR_Exp_Specs <- function(path_to_file,
           path_to_ygf <-
             path_to_ygf %>% `if`(is.null(path_to_ygf), path.to.ygf, .)
           #
-          ## load the binary `.YGF` file
+          ## load the binary `.YGF` file (the max. length = 1e+4 spectra in the series)
           bin.ygf.file.length <-
-            readBin(path_to_ygf,what = "raw",n = 1e+10) %>% length()
+            readBin(path_to_ygf,what = "raw",n = 1e+4) %>% length()
           #
           spectr.Yvec <- readBin(
             path_to_ygf,
@@ -660,7 +660,7 @@ readEPR_Exp_Specs <- function(path_to_file,
         }
       }
       #
-      ## definitions EPR spectrum abscissa with help of `.DSC`
+      ## definitions EPR spectrum abscissa with help of `.DSC` file
       spectr.Xparams <- readEPR_param_slct(
         path_to_dsc_par = path_to_dsc_par,
         string = c("XPTS","XMIN","XWID","XUNI"),
@@ -692,7 +692,6 @@ readEPR_Exp_Specs <- function(path_to_file,
       if (isTRUE(var2nd.series.cond)) {
         #
         ## redefinition of `.id`s corresp. to `col.names`
-        ## expecting mistakes :-)
         x.id <- x.id %>% `if`(x.id != 2, 2, .)
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 4, 4, .)
@@ -724,7 +723,6 @@ readEPR_Exp_Specs <- function(path_to_file,
       } else {
         #
         ## redefinition of `.id`s corresp. to `col.names`
-        ## expecting mistakes :-)
         x.id <- x.id %>% `if`(x.id != 2, 2, .)
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 3, 3, .)
@@ -834,7 +832,6 @@ readEPR_Exp_Specs <- function(path_to_file,
       if (isTRUE(var2nd.series.cond)) {
         #
         ## redefinition of `.id`s corresp. to `col.names`
-        ## expecting mistakes :-)
         x.id <- x.id %>% `if`(x.id != 1, 1, .)
         Intensity.id <- Intensity.id %>%
           `if`(Intensity.id != 3, 3, .)
@@ -867,8 +864,7 @@ readEPR_Exp_Specs <- function(path_to_file,
         #
       } else {
         #
-        ## redefinition of `.id`s corresp. to `col.names`
-        ## expeccting mistakes :-)
+        ## ## redefinition of `.id`s corresp. to `col.names`
         x.id <- x.id %>% `if`(x.id != 1, 1, .)
         Intensity.id <- Intensity.id %>% `if`(Intensity.id != 2, 2, .)
         var2nd.series.id <- var2nd.series.id %>%
@@ -1189,6 +1185,15 @@ readEPR_Exp_Specs <- function(path_to_file,
           norm.multiply.qValue * norm.multiply.const
       )
   }
+  #
+  ## filter out the `0` intensity-variable values
+  ## in the corresponding column, this is due to the fact
+  ## that on can break (especially) the time series experiments
+  ## with lower number of spectra/intensity-variable values than
+  ## already planned for the measurements, however
+  ## the spectrometer software writes all of them
+  spectra.data <- spectra.data %>%
+    dplyr::filter(.data[[IntensityString]] != 0)
   #
   return(spectra.data)
   #
