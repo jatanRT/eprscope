@@ -5,7 +5,7 @@
 #' @family Data Reading
 #'
 #'
-#' @description Loading the EPR spectra from several/multiple \code{text} files (including the instrumental
+#' @description Loading the EPR spectra from several/multiple files (including the instrumental
 #'   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. Finally, the data are transformed
 #'   either into a list of data frames or into a \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}.
 #'   According to experimental quantity (e.g. temperature, microwave power, recording time...etc),
@@ -18,7 +18,7 @@
 #'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}. THE SAME NAME AND \code{name.pattern}
 #'   MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES.
 #' @param dir_asc_bin Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
-#'   the \code{ASCII} files are stored.
+#'   the \code{ASCII} or \code{binary} (\code{.DTA} or \code{.spc}) files are stored.
 #' @param dir_dsc_par Path (defined by \code{\link[base]{file.path}} or by character string) to directory
 #'   where the \code{.DSC}/\code{.dsc} or \code{.par} files,including instrumental parameters, are stored.
 #' @param col.names Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
@@ -27,7 +27,7 @@
 #'   \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 #'   to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
 #'   referring to column names coming from \emph{Xenon} software.
-#' @param x.unit Character string pointing to unit of quantity (coming from the original ASCII data, see also
+#' @param x.unit Character string pointing to unit of quantity (coming from the original data, see also
 #'   \code{col.names} argument) which is to be presented on \eqn{x}-axis of the EPR spectrum.
 #'   Units like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
 #'   or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \code{x.unit = "G"}.
@@ -176,16 +176,16 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   ## + checking the corresponding origin
   ascii.cond <- any(grepl(".*\\.(txt|asc|csv)$",files.specs))
   binary.cond <- any(grepl(".*\\.(DTA|spc)$",files.specs))
-  if (any(grepl(".*\\.DTA$",files.specs))) {
-    if (origin.cond.all(origin = origin) != 2 ||
-        origin.cond.all(origin = origin) != 1) {
-      stop(" Reading of the '.DTA' file requires\n
-           origin = 'xenon' or origin = 'magnettech' !! ")
+  if (any(grepl(".*\\.spc$",files.specs))) {
+    if (origin.cond.all(origin = origin) == 2 ||
+        origin.cond.all(origin = origin) == 1) {
+      stop(" Reading of the '.spc' file requires origin = 'winepr' !! ")
     }
   }
-  if (any(grepl(".*\\.spc$",files.specs))) {
-    if (origin.cond.all(origin = origin) != 0) {
-      stop(" Reading of the '.spc' file requires origin = 'winepr'!! ")
+  if (any(grepl(".*\\.DTA$",files.specs))) {
+    if (origin.cond.all(origin = origin) == 0) {
+      stop(" Reading of the '.DTA' file requires\n
+           origin = 'xenon' or origin = 'magnettech' !! ")
     }
   }
   #
@@ -253,12 +253,16 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     x.id <- switch(
       3 - origin.cond.all(origin = origin),
       x.id %>% `if`(x.id != 2, 2, .), ## check xenon
-      x.id %>% `if`(x.id != 1, 1, .), ## magnettech
+      x.id %>% `if`(x.id != 1 || x.id != 2,
+                    switch(2 - binary.cond, 2, 1), .), ## magnettech
       x.id %>% `if`(x.id != 1, 1, .) ## check winepr
     )
   } else {
     x.id <- switch(
-      3 - origin.cond.all(origin = origin),2,1,1
+      3 - origin.cond.all(origin = origin),
+      2,
+      switch(2 - binary.cond, 2, 1),
+      1
     )
   }
   ## `Intensity.id`
@@ -266,12 +270,16 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     Intensity.id <- switch(
       3 - origin.cond.all(origin = origin),
       Intensity.id %>% `if`(Intensity.id != 3, 3, .), ## check xenon
-      Intensity.id %>% `if`(Intensity.id != 2, 2, .), ## magnettech
+      Intensity.id %>% `if`(Intensity.id != 2 || Intensity.id != 3,
+                            switch(2 - binary.cond, 3, 2), .), ## magnettech
       Intensity.id %>% `if`(Intensity.id != 2, 2, .) ## check winepr
     )
   } else {
     Intensity.id <- switch(
-      3 - origin.cond.all(origin = origin),3,2,2
+      3 - origin.cond.all(origin = origin),
+      3,
+      switch(2 - binary.cond, 3, 2),
+      2
     )
   }
   #

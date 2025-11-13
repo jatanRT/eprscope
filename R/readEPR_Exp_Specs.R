@@ -1186,6 +1186,10 @@ readEPR_Exp_Specs <- function(path_to_file,
       )
   }
   #
+  ## in order to be sure that data from ASCII as well as from BIN
+  ## (`.DTA` + `.spc`) have the same structure
+  spectra.data <- as.data.frame(spectra.data)
+  #
   ## filter out the `0` intensity-variable values
   ## in the corresponding column, this is due to the fact
   ## that on can break (especially) the time series experiments

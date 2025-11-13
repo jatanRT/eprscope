@@ -6,8 +6,9 @@
 #'
 #'
 #' @description Reading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
-#'  experiment in "Xenon" acquisition/processing software). Function (based on \code{\link{readEPR_Exp_Specs}}) includes
-#'  automatic time correction for CW EPR \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
+#'  experiment in "Xenon" acquisition/processing software). Function is based on the \code{\link{readEPR_Exp_Specs}}
+#'  and includes automatic time correction for CW EPR \code{time.series} experiments
+#'  (see also the \code{\link{correct_time_Exp_Specs}} description and documentation).
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
@@ -180,21 +181,21 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   }
   #
   ## checking the path string, whether it points to ASCII or BINARY
-  ## + chicking the corresponding origin
-  ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
-  binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
-  if (grepl(".*\\.DTA$",path_to_file)) {
-    if (origin.cond.all(origin = origin) != 2 ||
-        origin.cond.all(origin = origin) != 1) {
-      stop(" Reading of the '.DTA' file requires\n
-           origin = 'xenon' or origin = 'magnettech' !! ")
-    }
-  }
-  if (grepl(".*\\.spc$",path_to_file)) {
-    if (origin.cond.all(origin = origin) != 0) {
-      stop(" Reading of the '.spc' file requires origin = 'winepr'!! ")
-    }
-  }
+  ## + checking the corresponding origin
+  # ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
+  # binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
+  # if (grepl(".*\\.spc$",path_to_file)) {
+  #   if (origin.cond.all(origin = origin) == 2 ||
+  #       origin.cond.all(origin = origin) == 1) {
+  #     stop(" Reading of the '.spc' file requires origin = 'winepr' !! ")
+  #   }
+  # }
+  # if (grepl(".*\\.DTA$",path_to_file)) {
+  #   if (origin.cond.all(origin = origin) == 0) {
+  #     stop(" Reading of the '.DTA' file requires\n
+  #          origin = 'xenon' or origin = 'magnettech' !! ")
+  #   }
+  # }
   #
   if (origin.cond.all(origin = origin) == 2 ||
       origin.cond.all(origin = origin) == 1) {
@@ -267,7 +268,8 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     x.id <- switch(
       3 - origin.cond.all(origin = origin),
       x.id %>% `if`(x.id != 2, 2, .), ## check xenon
-      switch(2 - binary.cond,2,x.id), ## magnettech
+      x.id %>% `if`(x.id != 1 || x.id != 2,
+                    switch(2 - binary.cond, 2, 1), .), ## magnettech
       x.id %>% `if`(x.id != 1, 1, .) ## check winepr
     )
   } else {
@@ -289,7 +291,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     Intensity.id <- switch(
       3 - origin.cond.all(origin = origin),
       Intensity.id %>% `if`(Intensity.id != 4, 4, .), ## check xenon
-      switch(2 - binary.cond,4,Intensity.id), ## magnettech
+      switch(2 - binary.cond, 4, Intensity.id), ## magnettech
       Intensity.id %>% `if`(Intensity.id != 3, 3, .) ## check winepr
     )
   } else {
@@ -337,9 +339,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       qValue = qValue.obtain,
       origin = origin,
       ...
-   ) %>%
-     dplyr::filter(.data[[IntensityString]] != 0)
-     ## because only non-zero intens. selected
+   )
   #
   ## recalculate  the time
   ## time var for `data.spectra.time`
