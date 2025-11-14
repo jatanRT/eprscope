@@ -8,13 +8,13 @@
 #' @description Based on the \code{\link[data.table]{fread}} or \code{\link[base]{readBin}} R functions,
 #'   the experimental EPR/ENDOR spectra (referred to as 1D- or 2D-Experiments) or other original (pre-processed)
 #'   data from the EPR spectrometers are transformed into data frames (tables). The function can read several data formats
-#'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} as well as \code{.spc} with the latter two extensions,
-#'   corresponding to binary files (function automatically recognizes which type of data, ASCII or binary, are loaded).
-#'   Reading of such data require information (instrumental parameters of the acquired spectra/data)
-#'   provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively (see the \code{path_to_dsc_par}
-#'   as well as \code{path_to_ygf} arguments description). Because the original file structure depends
-#'   on the EPR spectrometer acquisition software or data processing, the \code{origin} argument is necessary
-#'   to specify the data/file source. Default function arguments are related to \code{origin ="xenon"}.
+#'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA}, \code{.spc} as well as \code{.YGF}
+#'   with the latter two extensions, corresponding to binary files (function automatically recognizes which type of data,
+#'   ASCII or binary, are loaded).Reading of such data require information (instrumental parameters
+#'   of the acquired spectra/data) provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively
+#'   (see the \code{path_to_dsc_par} as well as \code{path_to_ygf} arguments description). Because the original
+#'   file structure depends on the EPR spectrometer acquisition software or data processing, the \code{origin} argument
+#'   is necessary to specify the data/file source. Default function arguments are related to \code{origin ="xenon"}.
 #'
 #'
 #' @details
@@ -58,7 +58,7 @@
 #'   \strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
 #'   automatically inherits the \code{path_to_file}, however with the appropriate extension
 #'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
-#'   filename like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
+#'   filename like the \code{path_to_file} in the working directory. If the file does not exist, it will ask
 #'   to provide/define the right file path.
 #' @param path_to_ygf Character string, path (also provided by \code{\link[base]{file.path}})
 #'   to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
@@ -66,10 +66,14 @@
 #'   flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
 #'   for 2D experiments). \strong{Default}: \code{path_to_ygf = NULL}. The latter assignment actually means that
 #'   the argument automatically inherits the \code{path_to_file}, however with the appropriate extension \code{.YGF}.
-#'   In other words, the function is looking for the same file name like in \code{path_to_file} in the working directory.
+#'   In other words, the function is looking for the same file name like the \code{path_to_file} in the working directory.
 #'   If the file does not exist, it automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
 #'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
-#'   \code{path_to_dsc_par} description).
+#'   \code{path_to_dsc_par} description). In order to read individual \code{.YGF} files just apply
+#'   the \code{\link[base]{readBin}} function with following arguments \code{con = path_to_file} ,\code{what = "numeric"},
+#'   \code{size = 8}, \code{n = file_length / 8}, \code{signed = TRUE}, \code{endian = "big"/"little"},
+#'   the latter depending on origin xenon/magnettech, respectively. The \code{file_length} can be calculated by
+#'   \code{readBin(con = path_to_file,what = "raw",n = 1e+4) %>% length()}.
 #' @param sep Character string. The separator between columns/variables in the original ASCII text file.
 #'   \strong{Default}: \code{sep = "auto"}, pointing to automatic recognition of the separator. If required, additional
 #'   separators like \code{sep = "\t"} ("tab") or \code{sep = "\s+"} ("more white space") can be applied as well.

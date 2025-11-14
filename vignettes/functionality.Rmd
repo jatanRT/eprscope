@@ -81,17 +81,17 @@ This function belongs to the package family/section `Visualizations and Graphics
 
 The `{eprscope}` can handle different original file formats:
 
-1.  `.asc`, `.txt`, `.csv` , `.DTA` and `.spc` to read spectra from the EPR instrument/spectrometer, where the latter two correspond to binary file formats (the remaining three are ASCII text-based formats), which also require presence of the following files in order to load those spectra
+1.  `.asc`, `.txt`, `.csv` , `.DTA` and `.spc` to read spectra from the EPR instrument/spectrometer, where the latter two correspond to binary file formats (the remaining three are ASCII text-based formats), which also require presence of the following files in order to load those spectra. For the series of EPR spectra (2D-Experiments), the 📦 can also read/handle the binary `.YGF` files, containing information about the second dimension/variable like time, temperature, microwave power, ...etc.
 
 2.  `.DSC`/`.dsc`, `.par`, an ASCII text, containing information about the experiment, by gathering all the instrumental parameters applied to set up the EPR measurement
 
-3.  `.mat` coming from *Maltab* to gather all the parameters and variables related to simulated EPR spectrum returned from the [*EasySpin*](https://easyspin.org/) *toolbox*
+3.  `.mat` coming from *Maltab* to collect all the parameters and variables related to simulated EPR spectrum returned from the [*EasySpin*](https://easyspin.org/) *toolbox*
 
 4.  `.out`, `.log` ASCII text outputs returned either form [*Gaussian*](https://gaussian.com/gaussian16/) or [*Orca*](https://www.faccts.de/docs/orca/6.1/tutorials/spec/EPR.html) quantum chemical packages, containing the computed EPR parameters such as hyperfine coupling/splitting constants (*A*/*a*, see below) and g-values.
 
 Several above-listed data formats are used as examples to demonstrate the functionality of package and these are summarized in the [Package Datasets](https://jatanrt.github.io/eprscope/articles/datasets.html) vignette.
 
-The original EPR spectra are saved as a combination of binaries (`.DTA` or `.spc`) and ASCII text (`.DSC` / `.dsc` or `.par`). So, for each spectrum (or series of spectra) there are two files, having the same name and different extension. In order to return the EPR spectrum/spectra as ASCII tables (`.txt` ,`.asc` or `.csv`), the original "binary" spectra must be converted by the user. Usually, such conversion is directly available at the spectrometer (you may follow the `File` ➝ `Export ASCII`) within the acquisition/processing software or one can also try a free online converter by *Leland B. Gee* [@xepr2gfac2023] (see also the last example in the `readEPR_Exp_Specs()` documentation). The structure of both binary as well as ASCII texts depends on the spectrometer acquisition/processing software and therefore the key functions to read those spectra/files contain the `origin` argument (vide infra or refer to the documentation of e.g. `readEPR_Exp_Specs()` or `readEPR_param_slct()`). As stated above, to read the binary files or to process the EPR data, the associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format) are quite important. The information included in those files is required to e.g. normalize the Intensity (like $\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in the derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for the simulations of EPR spectra and to evaluate the kinetic parameters of the radical reactions.
+The original EPR spectra are saved as a combination of binaries (`.DTA` or `.spc`) and ASCII text (`.DSC` / `.dsc` or `.par`). So, for each spectrum (or series of spectra) there are two files, having the same name and different extension. In order to return the EPR spectrum/spectra as ASCII tables (`.txt` ,`.asc` or `.csv`), the original "binary" spectra must be converted by the user. Usually, such conversion is directly available at the spectrometer (you may follow the `File` ➝ `Export ASCII`) within the acquisition/processing software or one can also try a free online converter by *Leland B. Gee* [@xepr2gfac2023] (see also the last example in the `readEPR_Exp_Specs()` documentation). The structure of both binary as well as ASCII texts depends on the spectrometer acquisition/processing software and therefore the key functions to read those spectra/files contain the `origin` argument (see vide infra or refer to the documentation of e.g. `readEPR_Exp_Specs()` or `readEPR_param_slct()`). As stated above, to read the binary files or to process the EPR data, the associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format) are quite important. The information included in those files is required to e.g. normalize the Intensity (like $\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in the derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for the simulations of EPR spectra and to evaluate the kinetic parameters of the radical reactions.
 
 Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in a list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
 
@@ -127,8 +127,9 @@ While the EPR intensity can be automatically normalized upon spectrum recording 
 
 ```{r spectral-data-read-norm-basic}
 
-# loading package built-in example file => "TMPD_specelchem_accu_b.asc"
-tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+# loading package built-in example binary 
+# `.spc` file => "TMPD_specelchem_accu_b.spc"
+tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.spc")
 
 # intensity is normalized by the Q value (sensitivity factor)
 # and the number of scans (`Nscans`). From the previous 
@@ -137,6 +138,7 @@ tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 # in the 5th row and the 2nd column)
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
   path_to_file = tmpd.data.file,
+  path_to_dsc_par = tmpd.params.file,
   col.names = c("B_G", "dIepr_over_dB"),
   qValue = 3500,
   norm.vec.add = tmpd.params$params[5,2],
@@ -148,7 +150,7 @@ head(tmpd.data.norm.01)
 
 ```
 
-An arbitrary character string may be chosen for the column name (see `col.names` argument)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit", as already shown above, in the case of magnetic flux density $\small B$. The name for the intensity column reads `dIepr_over_dB` (without units) because it reflects the derivative mode $\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B$ in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function `readEPR_Exp_Specs()` can automatically convert $\small B$ values by the argument `convertB.unit=TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is, that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like $\small \Delta B$, $g$ or hyperfine splitting constants $a$. Additionally, if the `Intensity` has to be normalized by other instrumental parameters, like *conversion time* and *receiver gain* (automatically performed within "Xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
+An arbitrary character string may be chosen for the column name (see `col.names` argument)[^1]. However, a safe rule of thumb is to use notation like "quantity_unit", as already shown above, in the case of magnetic flux density $\small B$. The name for the intensity column reads `dIepr_over_dB` (without units) because it reflects the derivative mode $\small \mathrm{d}I_{\mathrm{EPR}}/\mathrm{d}B$ in CW (continuous wave) EPR. Other intensity related column names can be used as well. The above described function `readEPR_Exp_Specs()` can automatically convert $\small B$ values by the argument `convertB.unit = TRUE` (or `FALSE`) depending on the original units "G" or "mT". The reason is, that both units are quite often used to display the EPR spectra as well as to calculate the additional related quantities like $\small \Delta B$, $g$ or hyperfine splitting constants $a$. Additionally, if the `Intensity` has to be normalized by other instrumental parameters, like *conversion time* and *receiver gain* (automatically performed within "Xenon" software)*,* one should use the `quantify_EPR_Norm_const()` function from the `Evaluations and Quantification` family ➨
 
 [^1]: For such reason, there are arguments `x.id` and `Intensity.id` , pointing to original table column indices, in order to properly pick up the corresponding variables.
 
@@ -184,7 +186,8 @@ adv.norm.constant <- quantify_EPR_Norm_const(
 # therefore, the reading of the experimental
 # data file =>
 tmpd.data.norm.02 <- readEPR_Exp_Specs(
-  path_to_ASC = tmpd.data.file,
+  path_to_file = tmpd.data.file,
+  path_to_dsc_par = tmpd.params.file,
   col.names = c("B_G", "dIepr_over_dB"),
   qValue = 3500,
   norm.vec.add = adv.norm.constant,
@@ -226,7 +229,7 @@ All the data related to EPR spectroscopy can be visualized by the [{ggplot2}](ht
 
 ## Static Plots by `{ggplot2}` and `{patchwork}`
 
-The `plot_EPR_Specs()` is the essential function for plotting of the individual EPR spectra as well as those within series (e.g. time series $\equiv$ kinetic measurements). Now, by means of this function and by the [{patchwork}](https://patchwork.data-imaginist.com/) 📦 , we can compare the EPR spectra with the basic and "advanced" normalization ➨
+The `plot_EPR_Specs()` is the essential function for plotting of the individual EPR spectra as well as of those within series (e.g. time series $\equiv$ kinetic measurements). Now, by means of this function and by the [{patchwork}](https://patchwork.data-imaginist.com/) 📦 , we can compare the EPR spectra with the basic and "advanced" normalization ➨
 
 ```{r spectral-data-norm01-visual,fig.cap="EPR spectrum of $\\small \\ce{TMPD^{.+}}$ in $\\small 0.3\\,\\mathrm{M}~\\ce{TBAPF6}/\\ce{DMSO}$ after potentiostatic oxidative electrolysis at $\\small 0.308\\,\\mathrm{V}$ vs Ag-quasiref. Intensity normalized by number of scans, 'Nscans', and by sensitivity Q-factor, 'qValue'."}
 
@@ -252,7 +255,7 @@ tmpd.plot.norm.02 <-
   plot_EPR_Specs(data.spectra = tmpd.data.norm.02) +
   ggplot2::ggtitle("Advanced Normalization")
 #
-# both spectra together side-by-side by `{patchwork}` package,
+# both spectra together side-by-side by `{patchwork}` 📦,
 # see https://patchwork.data-imaginist.com/articles/guides/layout.html
 tmpd.plot.norm.0102 <-
   tmpd.plot.norm.01 +
