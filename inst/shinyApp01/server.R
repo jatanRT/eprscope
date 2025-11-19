@@ -7,6 +7,7 @@ library(DT)
 library(dplyr)
 library(magrittr)
 library(ggplot2)
+library(openxlsx)
 #
 server <- function(input, output,session) {
   #
@@ -20,25 +21,43 @@ server <- function(input, output,session) {
     }
   })
   #
+  ## conditions to read either ASCII or binary files
+  ## from EPR spectrometer
+  ascii.cond <- reactiveValues(val = NULL)
+  observe({
+    if (grepl(".*\\.(txt|asc|csv)$",input$SpectrumFile$datapath)) {
+      ascii.cond$val <- 1
+    }
+    if (grepl(".*\\.(DTA|spc)$",input$SpectrumFile$datapath)) {
+      ascii.cond$val <- 0
+    }
+  })
+  #
   ## Load experimental spectrum data frame
   expr_data <- reactive({
     #
-    shiny::req(input$ASCIIfile)
+    shiny::req(input$ParamsFile)
+    shiny::req(input$SpectrumFile)
     #
     spectr.data <-
       readEPR_Exp_Specs(
-        path_to_ASC = input$ASCIIfile$datapath,
+        path_to_file = input$SpectrumFile$datapath,
+        path_to_dsc_par = switch(2 - ascii.cond,NULL,input$ParamsFile$datapath),
         col.names = switch(
-          3-origin.cond(orig = input$origin),
+          3 - origin.cond(orig = input$origin),
           c("index","B_G", "dIepr_over_dB"),
           c("B_G", "dIepr_over_dB"),
-          c("B_mT","dIepr_over_dB")
+          switch(
+            2 - ascii.cond,
+            c("B_mT","dIepr_over_dB"),
+            c("index","B_G", "dIepr_over_dB")
+          )
         ),
         x.unit = switch(
-          3-origin.cond(orig = input$origin),
+          3 - origin.cond(orig = input$origin),
           "G",
           "G",
-          "mT"
+          switch(2 - ascii.cond,"mT","G")
         ),
         qValue = input$qValue,
         origin = input$origin,
@@ -47,7 +66,7 @@ server <- function(input, output,session) {
     spectr.data
   })
   #
-  ## B-range/zoom for the EPR spectrum
+  ## B-range/zoom for the EPR spectrum simulation
   output$Bslider <- renderUI({
     df <- expr_data()
     sliderInput(
@@ -86,13 +105,13 @@ server <- function(input, output,session) {
         value = readEPR_param_slct(
           path_to_dsc_par = input$ParamsFile$datapath,
           string = switch(
-            3-origin.cond(orig = input$origin),
+            3 - origin.cond(orig = input$origin),
             "MWFQ",
             "MF",
             "MWFQ"
           ),
           origin = input$origin
-        ) * switch(3-origin.cond(orig = input$origin),1e-9,1,1e-9)
+        ) * switch(3 - origin.cond(orig = input$origin),1e-9,1,1e-9)
       )
     }
     #
@@ -247,9 +266,39 @@ server <- function(input, output,session) {
       for (i in 1:length(nucs.string.list.02)) {
         nucs.list.final[[i]] <-
           lapply(nucs.string.list.02[[i]],convert_str2list)
+          ## `convert_str2list()` see function definition in `global`
       }
       return(nucs.list.final)
     }
+  })
+  #
+  ## required 'nuclear' list interaction (Entire Characteristics)
+  nucleiCharacter <- reactive({ ## `reactiveValues()` does NOT WORK !!
+    #
+    interact.nuclei <- list()
+    #
+    if (isTRUE(input$splitCond)) {
+      nested_list <- any(sapply(nucs_list(), is.list))
+      if (isFALSE(nested_list)){
+        nucs_list_gr <- list(nucs_list())
+      } else {
+        nucs_list_gr <- nucs_list()
+      }
+      ## extract list components and convert them into vectors
+      interact.nuclei$nucle_us_i <- sapply(
+        1:length(nucs_list_gr),
+        function(e) nucs_list_gr[[e]][[1]]
+      )
+      interact.nuclei$N_nuclei <- sapply(
+        1:length(nucs_list_gr),
+        function(e) nucs_list_gr[[e]][[2]]
+      )
+      interact.nuclei$A_iso_MHz <- sapply(
+        1:length(nucs_list_gr),
+        function(e) nucs_list_gr[[e]][[3]]
+      )
+    }
+    return(interact.nuclei)
   })
   #
   ## simulated spectrum data frame:
@@ -277,36 +326,15 @@ server <- function(input, output,session) {
   ## function for experimental and simulated spectrum plot:
   expr_sim_plot <- reactive({
     ## ----- title and caption for the plot ------
-    if (isTRUE(input$splitCond)) {
-      nested_list <- any(sapply(nucs_list(), is.list))
-      if (isFALSE(nested_list)){
-        nucs_list_gr <- list(nucs_list())
-      } else {
-        nucs_list_gr <- nucs_list()
-      }
-      ## extract list components and convert them into vectors
-      nucle_us_i <- sapply(
-        1:length(nucs_list_gr),
-        function(e) nucs_list_gr[[e]][[1]]
-      )
-      N_nuclei <- sapply(
-        1:length(nucs_list_gr),
-        function(e) nucs_list_gr[[e]][[2]]
-      )
-      A_iso_MHz <- sapply(
-        1:length(nucs_list_gr),
-        function(e) nucs_list_gr[[e]][[3]]
-      )
-    }
     #
     char.title <-
       switch(2-isFALSE(input$splitCond),
              "Non-Interacting Paramagnetic Center/Radical",
              mapply(function(x,y,z)
                paste0("A(",x," x ",y,") = ",z," MHz"),
-               N_nuclei,
-               nucle_us_i,
-               A_iso_MHz))
+               nucleiCharacter()[["N_nuclei"]],
+               nucleiCharacter()[["nucle_us_i"]],
+               nucleiCharacter()[["A_iso_MHz"]]))
     #
     if (isTRUE(input$splitCond)){
       ## separate description into several lines
@@ -427,6 +455,19 @@ server <- function(input, output,session) {
   #
   ## experimental and simulated spectrum output
   output$simPlot <- renderPlot({
+    #
+    ## validate input before plotting
+    ## that it will not show the error
+    if (isTRUE(input$splitCond)) {
+      shiny::validate(
+        shiny::need(
+          input$nuclearSys,
+          "Please, specify the group(s) of equivalent nuclei, interacting\n
+           with the unpaired electron. Refer to the `System of interacting nuclei` ! "
+        )
+      )
+    }
+    #
     expr_sim_plot()
   })
   #
@@ -479,6 +520,107 @@ server <- function(input, output,session) {
     }
   )
   #
+  ## --------- save code for additional fit ----------
+  text_sim_code <- reactive({
+    #
+    ## system of nuclei - text:
+    nucs.system.text.vec <-
+      mapply(
+        function(m,n)
+          paste0("list('",n,"',",m,")"),
+        nucleiCharacter()[["N_nuclei"]],
+        nucleiCharacter()[["nucle_us_i"]]
+      )
+    #
+    ## write list text:
+    list.nucs.text <- paste0(
+      "list(",paste(nucs.system.text.vec,collapse = ","),")"
+    )
+    #
+    ## write own text:
+    R.text.code.for.sim <-
+      paste0(
+        "# \n",
+        "epr.spectrum.data <- \n",
+        "  readEPR_Exp_Specs( \n",
+        "    path_to_file = '<path to file>', # define the path to EPR spectrum data \n",
+        "    col.names = ",
+        switch(
+          3 - origin.cond(orig = input$origin),
+          "c('index','B_G', 'dIepr_over_dB')",
+          "c('B_G', 'dIepr_over_dB')",
+          switch(
+            2 - ascii.cond,
+            "c('B_mT','dIepr_over_dB')",
+            "c('index','B_G', 'dIepr_over_dB')"
+          )
+        ),", \n",
+        "    x.unit = ",
+        switch(
+          3 - origin.cond(orig = input$origin),
+          "'G'",
+          "'G'",
+          switch(2 - ascii.cond,"'mT'","'G'")
+        ),", \n",
+        "    qValue = ",input$qValue,", \n",
+        "    norm.vec.add = c(",paste(norm_vec$val,collapse = ","),"), \n",
+        "    origin = '",input$origin,"' \n",
+        "  ) \n",
+        "# \n",
+        "# arguments of the `eval_sim_EPR_isoFit()` may be varied accordingly (please, refer to documentation) \n",
+        "epr.spectrum.sim.fit <- \n",
+        "  eval_sim_EPR_isoFit( \n",
+        "    data.spectr.expr = epr.spectrum.data, \n",
+        "    nu.GHz = ",input$MWnuGHz,", \n",
+        "    B.unit = '",input$Bunit,"', \n",
+        "    Blim = c(",paste(input$Brange,collapse = ","),"), \n",
+        "    lineG.content = ",input$Gcontent,", \n",
+        "    optim.method = c('pswarm','levenmarq'), \n",
+        "    nuclear.system.noA = ",
+        switch(2 - isFALSE(input$splitCond),"NULL, \n",
+               paste0(list.nucs.text,", \n")),
+        "    baseline.correct = 'constant', \n",
+        "    Nmax.evals = 1024, \n",
+        "    optim.params.init = c(",input$giso,",",DeltaBGpp$val,
+        ",",DeltaBLpp$val,",","0",",",
+        round(
+          (max(expr_data()[["dIepr_over_dB"]]) /
+             max(sim_data()[["dIeprSim_over_dB"]])) * 0.54,
+          digits = 7
+        ),
+        switch(
+          2 - isFALSE(input$splitCond),
+          "), \n",
+          paste0(",",paste(nucleiCharacter()[["A_iso_MHz"]],collapse = ","),"), \n")
+        ),
+        "    optim.params.fix.id = NULL, \n",
+        "    msg.optim.progress = TRUE, \n",
+        "    eval.optim.progress = TRUE \n",
+        "  ) \n",
+        "# \n",
+        "# \n",
+        "# \n",
+        "# \n"
+      )
+    return(R.text.code.for.sim)
+  })
+  #
+  output$codesave <- downloadHandler(
+    filename = function() {
+      paste(input$codefilename,input$codeformat,sep = ".")
+    },
+    content = function(file) {
+      if (input$codeformat == "R" || input$codeformat == "txt") {
+        writeLines(
+          text_sim_code(),
+          con = file,
+          sep = "" #,
+          # useBytes = TRUE
+        )
+      }
+    }
+  )
+  #
   ## ------------- save table (Sim) -----------------
   output$simTablesave <- downloadHandler(
     filename = function() {
@@ -498,16 +640,21 @@ server <- function(input, output,session) {
           row.names = FALSE
         )
       } else if (input$tabformat == "xlsx") {
-        openxlsx::write.xlsx(
-          present_EPR_Sim_Spec(
-            data.spectr.expr = expr_data(),
-            data.spectr.sim = sim_data(),
-            Blim = input$Brange,
-            B.unit = input$Bunit,
-            output.df = TRUE
-          )$df,
-          file = file
-        )
+        if (requireNamespace("openxlsx", quietly = TRUE)) {
+          openxlsx::write.xlsx(
+            present_EPR_Sim_Spec(
+              data.spectr.expr = expr_data(),
+              data.spectr.sim = sim_data(),
+              Blim = input$Brange,
+              B.unit = input$Bunit,
+              output.df = TRUE
+            )$df,
+            file = file
+          )
+        } else {
+          stop(" The `{openxlsx}` package is required\n
+               to export table in `.xlsx` format !! ")
+        }
       }
     }
   )

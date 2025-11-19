@@ -6,7 +6,7 @@ library(shinythemes)
 library(DT)
 #
 ui <- fluidPage(
-  theme = shinytheme("cerulean"),
+  theme = shinythemes::shinytheme("cerulean"),
   #
   ## visual style:
   shiny::tags$h2(
@@ -36,25 +36,25 @@ ui <- fluidPage(
              NULL,
              buttonLabel = shiny::div(
                shiny::icon("file-invoice"),
-               "Upload params. file"
+               "Upload params. file (req!)"
              ),
              accept = c(".dsc",".par")
            )),
     column(width = 4,
            fileInput(
-             inputId = "ASCIIfile",
+             inputId = "SpectrumFile",
              NULL,
              buttonLabel = shiny::div(
                shiny::icon("file-waveform"),
                "Upload spectrum data"
              ),
-             accept = c(".asc",".txt",".csv")
+             accept = c(".asc",".txt",".csv",".dta",".spc")
            ))),
   tabsetPanel(
     tabPanel(
       title = "Spectrum Preview",
       #
-      #  --------------------- SIDEBAR --------------------------
+      #  --------------------- SIDEBAR SPECTRUM --------------------------
       #
       sidebarPanel(
         ## Inputs UI
@@ -132,7 +132,7 @@ ui <- fluidPage(
           rows = 4
         )
       ),
-      # ------------------- MAIN ------------------------
+      # ------------------- MAIN SPECTRUM ------------------------
       mainPanel(
         # plot
         shiny::tags$h3(
@@ -167,7 +167,7 @@ ui <- fluidPage(
     tabPanel(
       title = "Simulation",
       #
-      ##  --------------------- SIDEBAR --------------------------
+      ##  --------------------- SIDEBAR SIMULATION --------------------------
       #
       sidebarPanel(
         ## INPUTS UI
@@ -202,7 +202,7 @@ ui <- fluidPage(
             )
           )
         ),
-        uiOutput("Bslider"),
+        uiOutput("Bslider"), ## range for the simulated spectrum
         shiny::tags$h4("Parameter Estimation"),
         numericInput(
           inputId = "giso",
@@ -269,7 +269,7 @@ ui <- fluidPage(
         )
       ),
       #
-      ## ----------------------- MAIN -----------------------------
+      ## ----------------------- MAIN SIMULATION -----------------------------
       #
       mainPanel(
         # plot
@@ -290,7 +290,7 @@ ui <- fluidPage(
           column(width = 4,
                  textInput(
                    inputId = "figfilename",
-                   label = "File name to save plot/spectrum",
+                   label = "Filename to save plot/spectrum",
                    NULL
                  )),
           column(width = 4,
@@ -298,6 +298,33 @@ ui <- fluidPage(
                  downloadButton(
                    outputId = "simPlotsave",
                    label = "Save plot/spectrum",
+                   icon = shiny::icon("floppy-disk")
+                 ))
+        ),
+        shiny::tags$h3(
+          shiny::icon("laptop-code"),
+          "Export Code Snippet for Additional EPR Simulation Fit",
+          style = h3.style.string
+        ),
+        fluidRow(
+          column(width = 4,
+                 selectInput(
+                   inputId = "codeformat",
+                   label = "Code save format",
+                   choices = c("R","txt"),
+                   selected = "R"
+                 )),
+          column(width = 4,
+                 textInput(
+                   inputId = "codefilename",
+                   label = "Filename to save code",
+                   NULL
+                 )),
+          column(width = 4,
+                 shiny::br(), ## blank line
+                 downloadButton(
+                   outputId = "codesave",
+                   label = "Save code snippet",
                    icon = shiny::icon("floppy-disk")
                  ))
         ),
@@ -321,7 +348,7 @@ ui <- fluidPage(
             column(width = 4,
                    textInput(
                      inputId = "tabfilename",
-                     label = "File name to save table/data frame",
+                     label = "Filename to save table/data frame",
                      NULL
                    )),
             column(width = 4,
