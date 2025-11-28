@@ -70,7 +70,7 @@
 #'   If the file does not exist, it automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
 #'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
 #'   \code{path_to_dsc_par} description). In order to read individual \code{.YGF} files just apply
-#'   the \code{\link[base]{readBin}} function with following arguments \code{con = path_to_file} ,\code{what = "numeric"},
+#'   the \code{\link[base]{readBin}} function with the following arguments \code{con = path_to_file} ,\code{what = "numeric"},
 #'   \code{size = 8}, \code{n = file_length / 8}, \code{signed = TRUE}, \code{endian = "big"/"little"},
 #'   the latter depending on origin xenon/magnettech, respectively. The \code{file_length} can be calculated by
 #'   \code{readBin(con = path_to_file,what = "raw",n = 1e+4) %>% length()}.
@@ -355,6 +355,33 @@
 #' #
 #' ## preview
 #' head(triarylamine.rc.decay.series.data)
+#' #
+#' ## reading of the individual `.YGF` file (Xenon)
+#' ## into vector
+#' tam.rc.decay.series.ygf.path <-
+#'   load_data_example("Triarylamine_radCat_decay_series.YGF")
+#' #
+#' ## file length
+#' tam.rc.decay.series.ygf.len <-
+#'   readBin(
+#'     con = tam.rc.decay.series.ygf.path,
+#'     what = "raw",
+#'     n = 1e+4
+#'   ) %>% length()
+#' #
+#' ## `.YGF` file reading
+#' tam.rc.decay.series.ygf <-
+#'   readBin(
+#'     con = tam.rc.decay.series.ygf.path,
+#'     what = "numeric",
+#'     size = 8, ## Xenon
+#'     n = tam.rc.decay.series.ygf.len / 8, ## Xenon
+#'     signed = TRUE,
+#'     endian = "big" ## Xenon
+#'   )
+#' #
+#' ## preview of the first 10 values (time in s)
+#' tam.rc.decay.series.ygf[1:10]
 #' #
 #' \dontrun{
 #' ## read the `.csv` file which is an output
