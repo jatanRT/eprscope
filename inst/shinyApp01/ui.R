@@ -223,7 +223,7 @@ ui <- fluidPage(
             inputId = "nuclearSys",
             label = shiny::HTML("Enter interacting groups of equivalent nuclei, </br>
                               like: `14N,1,45` &equiv; nucleus,number and A(MHz), </br>
-                              each group on separate line"),
+                              each group on a separate line"),
             rows = 6
           ),
           numericInput(
@@ -367,7 +367,7 @@ ui <- fluidPage(
         )
       )
     )
-    #
+    ## here, just go ahead by the `tabpanel` for Simulation Fit
   )
 )
 #

@@ -57,7 +57,7 @@ server <- function(input, output,session) {
           3 - origin.cond(orig = input$origin),
           "G",
           "G",
-          switch(2 - ascii.cond,"mT","G")
+          switch(2 - ascii.cond,"mT","G") ## `.csv` file with "mT", while binary with "G"
         ),
         qValue = input$qValue,
         origin = input$origin,
