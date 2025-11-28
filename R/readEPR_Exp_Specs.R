@@ -9,8 +9,8 @@
 #'   the experimental EPR/ENDOR spectra (referred to as 1D- or 2D-Experiments) or other original (pre-processed)
 #'   data from the EPR spectrometers are transformed into data frames (tables). The function can read several data formats
 #'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA}, \code{.spc} as well as \code{.YGF}
-#'   with the latter two extensions, corresponding to binary files (function automatically recognizes which type of data,
-#'   ASCII or binary, are loaded).Reading of such data require information (instrumental parameters
+#'   with the latter three extensions, corresponding to binary files (function automatically recognizes which type of data,
+#'   ASCII or binary, are loaded). Reading of such data require information (instrumental parameters
 #'   of the acquired spectra/data) provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively
 #'   (see the \code{path_to_dsc_par} as well as \code{path_to_ygf} arguments description). Because the original
 #'   file structure depends on the EPR spectrometer acquisition software or data processing, the \code{origin} argument
@@ -35,7 +35,7 @@
 #'   The structure of files depends on the origin/software used to acquire the EPR spectra.
 #'   This is mainly mirrored by the \code{origin} and \code{data.structure} arguments. Default arguments
 #'   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
-#'   \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
+#'   \code{origins} can be configured like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
 #'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument).
 #'   For the latter, all arguments must be defined accordingly, as already demonstrated in \code{Examples}.
 #'   When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)

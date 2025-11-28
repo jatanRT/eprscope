@@ -130,6 +130,21 @@
 #'   var2nd.series = "time_s",
 #'   origin = "magnettech"
 #' )
+#' #
+#' ## time series coming from `Magnettech` as individual EPR spectra
+#' ## (represented by ASCII files `.csv`) recorded at different
+#' ## time in seconds -> see `names` argument
+#' readEPR_Exp_Specs_multif(
+#'   name.pattern = "Kinetics_EPR_Spectra_",
+#'   dir_asc_bin = "./Input_EPR_Data",
+#'   dir_dsc_par = "./Input_EPR_Data",
+#'   col.names = c("B_mT","dIepr_over_dB"),
+#'   x.unit = "mT",
+#'   names = c("20","40","60","80","100","120"),
+#'   tidy = TRUE,
+#'   var2nd.series = "time_s",
+#'   origin = "magnettech"
+#' )
 #' }
 #'
 #'
