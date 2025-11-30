@@ -25,21 +25,12 @@
 #'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
 #'   filename like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
 #'   to provide/define the right file path.
-#' @param path_to_ygf Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
-#'   independent variable in the spectral time series, see also the \code{var2nd.series.id} argument description.
-#'   \strong{Default}: \code{path_to_ygf = NULL}. The latter assignment actually means that
-#'   the argument automatically inherits the \code{path_to_file}, however with the appropriate extension \code{.YGF}.
-#'   In other words, the function is looking for the same file name like in \code{path_to_file} in the working directory.
-#'   If the file does not exist, it automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
-#'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
-#'   \code{path_to_dsc_par} description).
 #' @param time.unit Character string, specifying the \code{"s"},\code{"min"}, \code{"h"}
 #'   or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 #'   \strong{Default}: \code{time.unit = "s"}
-#' @param time.delta.slice.s Numeric, time interval in seconds between \code{slices},
+#' @param time.delta.slice Numeric, time interval in \code{time.unit} between \code{slices},
 #'   in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
-#'   corresponding to \code{1 s}).
+#'   corresponding to \code{1 time.unit}).
 #' @param col.names Character string vector, corresponding to desired column/variable names/headers of the returned
 #'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
@@ -123,7 +114,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
                                   path_to_dsc_par = NULL,
                                   path_to_ygf = NULL,
                                   time.unit = "s",
-                                  time.delta.slice.s = NULL,
+                                  time.delta.slice = NULL,
                                   col.names = c(
                                     "index",
                                     "B_G",
@@ -345,29 +336,46 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   ## time var for `data.spectra.time`
   times <- data.spectra.time[[timeString]]
   #
+  if (origin.cond.all(origin = origin) == 0){
+    ## Re-definition for `time.delta.slice`
+    ## ASSUMING USER CAN MAKE MISTAKES :-)
+    time.delta.slice <-
+      time.delta.slice %>%
+      `if`(is.null(time.delta.slice),1, .)
+  }
+  #
+  if (time.unit == "s") {
+    times <- times
+    #
+    if (origin.cond.all(origin = origin) == 0){
+      time.delta.slice <- time.delta.slice
+    }
+  }
   if (time.unit == "min") {
     times <- times * 60
     ## rename column
     colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
+    #
+    ## time interval
+    if (origin.cond.all(origin = origin) == 0){
+      time.delta.slice <- time.delta.slice * 60
+    }
   }
   if (time.unit == "h") {
     times <- times * 3600
     ## rename column
     colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
-  }
-  ## Re-definition for `time.delta.slice.s`
-  if (origin.cond.all(origin = origin) == 0){
-    ## ASSUMING USER CAN MAKE MISTAKES :-)
-    time.delta.slice.s <-
-      time.delta.slice.s %>%
-      `if`(is.null(time.delta.slice.s),1, .)
     #
-    ## `time` if spectra are recorded as `slices` series
-    if (grepl("s",time.unit) & !is.null(time.delta.slice.s)) {
-      times <- times * time.delta.slice.s
-    } else {
-      stop(" `time.unit` must be either 's' or `unitless` !! ")
+    ## time interval
+    if (origin.cond.all(origin = origin) == 0){
+      time.delta.slice <- time.delta.slice * 3600
     }
+  }
+  ## Re-definition for `time.delta.slice`
+  if (origin.cond.all(origin = origin) == 0){
+    #
+    times <- times * time.delta.slice.s
+    #
   }
   #
   data.spectra.time[[timeString]] <-
