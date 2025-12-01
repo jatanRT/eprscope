@@ -104,47 +104,70 @@ Loading the EPR spectra from several/multiple \code{text} files (including the i
 }
 \examples{
 \dontrun{
-## multiple ENDOR spectra at different temperatures recorded by `Xenon` software
-## read and transformed into `longtable`, ready to plot the overlay
+## multiple ENDOR spectra at different temperatures recorded
+## by `Xenon` software read and transformed into `longtable`,
+## ready to plot the overlay
 ## EPR spectra => `var2nd.series.factor = FALSE` (default).
-readEPR_Exp_Specs_multif(name.pattern = "^.*_sample_VT_",
-                         file.path(".","ASCII_data_dir"),
-                         file.path(".","DSC_data_dir"),
-                         col.names = c("index",
-                                       "RF_MHz",
-                                       "Intensity"),
-                         x.unit = "MHz",
-                         names = c("210","220","230","240"),
-                         tidy = TRUE,
-                         var2nd.series = "Temperature_K")
+readEPR_Exp_Specs_multif(
+  name.pattern = "^.*_sample_VT_",
+  file.path(".","ASCII_data_dir"),
+  file.path(".","DSC_data_dir"),
+  col.names = c("index",
+                "RF_MHz",
+                "Intensity"),
+  x.unit = "MHz",
+  names = c("210","220","230","240"),
+  tidy = TRUE,
+  var2nd.series = "Temperature_K"
+  )
 #
 ## multiple EPR spectra recorded at different temperatures
 ## by `WinEPR` software, experiments performed with a powder
 ## sample (m = 10 mg) and each spectrum acquired
 ## as 7 accumulations, the resulting database
 ## corresponds to list of data frames
-readEPR_Exp_Specs_multif("^Sample_VT_",
-                         file.path(".","ASCII_data_dir"),
-                         file.path(".","DSC_data_dir"),
-                         col.names = c("B_G","dIepr_over_dB"),
-                         x.unit = "G",
-                         names = c("210","220","230","240"),
-                         qValues = c(3400,3501,3600,2800),
-                         norm.list.add = rep(list(c(10,7)),times = 4),
-                         origin = "winepr")
+readEPR_Exp_Specs_multif(
+  "^Sample_VT_",
+  file.path(".","ASCII_data_dir"),
+  file.path(".","DSC_data_dir"),
+  col.names = c("B_G","dIepr_over_dB"),
+  x.unit = "G",
+  names = c("210","220","230","240"),
+  qValues = c(3400,3501,3600,2800),
+  norm.list.add = rep(list(c(10,7)),times = 4),
+  origin = "winepr"
+  )
 #
-## multiple `Xenon` EPR spectra related to one powder sample (m = 8 mg)
-## where several instrumental parameters are changed
-## at once, the file names (files are stored in the actual directory)
-## start with the "R5228_AV_powder_", function returns all spectral data
-## in `tidy` (long) table format
-readEPR_Exp_Specs_multif(name.pattern = "R5228_AV_powder_",
-                         dir_ASC = ".",
-                         dir_dsc_par = ".",
-                         names = c("a","b","c","d"),
-                         tidy = TRUE,
-                         var2nd.series = "sample",
-                         norm.list.add = rep(list(8),4))
+## multiple `Xenon` EPR spectra related to one powder
+## sample (m = 8 mg) where several instrumental parameters
+## are changed at once, the file names (files are stored
+## in the actual directory) start with the "R5228_AV_powder_",
+## function returns all spectral data in `tidy` (long) table
+## format
+readEPR_Exp_Specs_multif(
+  name.pattern = "R5228_AV_powder_",
+  dir_ASC = ".",
+  dir_dsc_par = ".",
+  names = c("a","b","c","d"),
+  tidy = TRUE,
+  var2nd.series = "sample",
+  norm.list.add = rep(list(8),4)
+  )
+#
+## multiple `Magnettech` EPR spectra (in `.csv` ASCII format)
+## recorded at different times
+readEPR_Exp_Specs_multif(
+  name.pattern = "Kinetics_Magnettech_",
+  dir_ASC = ".",
+  dir_dsc_par = ".",
+  col.names = c("B_mT","dIepr_over_dB"),
+  x.unit = "mT",
+  names = c("20","30","40","50","60"), ## in seconds
+  tidy = TRUE,
+  var2nd.series = "time_s",
+  qValues = c(1829,1922.325,1891.25,1835,1850.327),
+  origin = "magnetech"
+)
 }
 
 

@@ -524,7 +524,7 @@ server <- function(input, output,session) {
         "# \n",
         "epr.spectrum.data <- \n",
         "  readEPR_Exp_Specs( \n",
-        "    '<path to file>', # define the path to EPR spectrum data \n",
+        "    file.choose(), # select the path to EPR spectrum data by file explorer \n",
         "    col.names = ",
         switch(
           3 - origin.cond(orig = input$origin),
