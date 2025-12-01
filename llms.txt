@@ -1,0 +1,742 @@
+# eprscope
+
+## Overview ![](reference/figures/logo_new.png)
+
+The key objective of this open source
+![](https://www.r-project.org/Rlogo.png) package is to bring handy
+functions corresponding to “everyday” data processing/analysis in the
+EPR ([Electron Paramagnetic
+Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)))
+spectroscopy mainly in chemistry. Similar
+![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png)
+tools like [cwepr](https://www.cwepr.de/index) and the [related
+projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The
+[eprscope](https://jatanrt.github.io/eprscope/), as the first complex
+![](https://www.r-project.org/Rlogo.png)**package** 📦 for EPR,
+**doesn’t want to replace the latter nor the excellent and standard EPR
+simulation/processing** [EasySpin Toolbox](https://www.easyspin.org/)
+for [MATLAB](https://www.mathworks.com/products/matlab.html) and its
+additional frameworks like
+[SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR
+Scripts by Emilien
+Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/).
+Rather, **it may be considered like a complementary** 📦 **or toolbox
+with practical functions which have to be otherwise performed by several
+proprietary tools**. For instance, like acquisition/processing software,
+supplied by the EPR spectrometer manufacturers (see
+e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html))
+as well as several other software platforms like the *MS Office* and/or
+*Orgin/SigmaPlot/Igor* which are often applied in the EPR
+processing/analysis workflow. Therefore, the
+[eprscope](https://jatanrt.github.io/eprscope/) tries to reduce such
+many steps/programs if the above-mentioned software combination would be
+adopted. In order to achieve the goal it uses superior power of the open
+source ![](https://www.r-project.org/Rlogo.png) ecosystem that combines
+data processing, analysis and great scientific visualizations together
+with the extensive publishing capabilities by
+[Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
+[Quarto](https://quarto.org/). Everything at one place (see the [RStudio
+IDE](https://docs.posit.co/ide/user/) or
+[Positron](https://positron.posit.co/)) without the need to switch
+between or employ any other additional software.
+
+## Installation
+
+**Prior to own** [eprscope](https://jatanrt.github.io/eprscope/) 📦
+**installation a minimal system setup is required** and summarized into
+the following steps:
+
+1.  Installation of *JDK Development Kit* where the corresponding
+    package, suitable for your operating system, can be downloaded from
+    the [official *Oracle*
+    website](https://www.oracle.com/java/technologies/downloads/?er=221886)
+    (this is needed in order to properly run the
+    [`draw_molecule_by_rcdk()`](https://jatanrt.github.io/eprscope/reference/draw_molecule_by_rcdk.md)
+    function). A second option would be the installation of the latest
+    GPL-licensed [*OpenJDK*](https://jdk.java.net/) package. *WINDOWS*
+    users may follow instructions at the official site of [British
+    Columbia Institute of
+    Technology](https://kb.bcit.ca/faculty-staff/download-and-install-openjdk-on-windows10-3395/).
+    On *macOS,* this package is available via Homebrew repository (see
+    below) by `brew install openjdk` and finally, by verifying the
+    installation: `java –version`. *Linux* (ubuntu) users are advised to
+    check out the repositories (+ update, if needed): `sudo apt update`.
+    Then search for the `openjdk` by the following command:
+    `apt search openjdk` (it should return list with the newest/stable
+    version like `openjdk-XX-jdk`, “XX” stands for the highest number),
+    and finally install it by `sudo apt install openjdk-XX-jdk -y`.
+    After successful installation one may check the version
+    (`java -version`) .
+
+2.  Please, follow the instructions for the [the R installation
+    procedure](https://cran.rstudio.com/). *Linux* and *macOS* users may
+    also update where the ![](https://www.r-project.org/Rlogo.png)
+    expects to find various *Java* files by `sudo R CMD javareconf` (in
+    terminal, not in the R console), afterwards. If one gets an error
+    about `jni.h` not being found, then try:
+    `sudo R CMD javareconf JAVA_HOME=/usr/lib/jvm/java-XX-openjdk-amd64/`
+    (find your path for the *Java* files).
+
+3.  Download and install [*RStudio
+    IDE*](https://posit.co/download/rstudio-desktop/) (Integrated
+    Development Environment). Alternatively, one may also try the
+    corresponding cloud version without the need for an
+    ![](https://www.r-project.org/Rlogo.png) installation either
+    available at [Posit Cloud](https://docs.posit.co/cloud/get_started/)
+    or at [CoCalc (Collaborative Calculation and Data
+    Science)](https://cocalc.com/features). Any other
+    ![](https://www.r-project.org/Rlogo.png) compatible environment like
+    [VS Code](https://code.visualstudio.com/) or
+    [Positron](https://positron.posit.co/) may be installed as well.
+
+4.  Download and install the latest release of [*Rtools* (WINDOWS
+    only)](https://cran.r-project.org/bin/windows/Rtools/) or on
+    *macOS/Linux* [follow the instructions to install
+    *CMake*](https://astamm.github.io/nloptr/). Alternatively, on
+    *macOS*, *CMake* can be set up via the [Homebrew](https://brew.sh/)
+    repository (see also
+    <https://formulae.brew.sh/formula/cmake#default>). This step is
+    required to use the [nloptr](https://github.com/astamm/nloptr) 📦
+    for the fitting of isotropic EPR spectra.
+
+5.  In the ![](https://www.r-project.org/Rlogo.png)*Console* (lower left
+    panel within the *RStudio IDE*) run the following code in order to
+    install essential ![](https://www.r-project.org/Rlogo.png) packages
+    for data science with all their dependencies ➨
+
+    ``` r
+
+    # run code in the R console
+    #
+    # after the initial R environment setup it's always 
+    # good to install essential collection of packages for data science 
+    install.packages("tidyverse",dependencies = TRUE)
+    # ...+ additional required packages with dependencies
+    install.packages(
+      c("bookdown","kableExtra","tinytable",
+        "corrplot","animation","openxlsx","knitr",
+        "shinythemes","numDeriv","htmlwidgets",
+        "esquisse","nlstools","webshot2"),
+      dependencies = TRUE
+    )
+    ```
+
+**There are two main options how to install the
+[eprscope](https://jatanrt.github.io/eprscope/)** 📦 **via the**
+![](https://www.r-project.org/Rlogo.png)***Console*** ➨
+
+``` r
+
+# from the GitHub repository:
+if (!require(devtools)) {install.packages("devtools")}
+devtools::install_github("jatanRT/eprscope")
+```
+
+or
+
+``` r
+
+# from the R-Universe (https://r-universe.dev/search)
+# and CRAN (https://cran.r-project.org/) repositories:
+install.packages(
+  "eprscope",
+  repos = c(
+    "https://jatanrt.r-universe.dev",
+    "https://cloud.r-project.org"
+  )
+)
+```
+
+If one wants to install the entire 📦 including all the documentation
+vignettes/articles ➨
+
+``` r
+
+# alternatively, install package together with all the vignettes/articles:
+if (!require(devtools)) {install.packages("devtools")}
+devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
+```
+
+Additionally, **the open-source scientific and technical publishing
+system** [Quarto](https://quarto.org/) together with the
+[Pandoc](https://pandoc.org/), **a document converter system**, may be
+required for sharing the results coming from
+[eprscope](https://jatanrt.github.io/eprscope/) in desired formats like
+`pdf` , `html` , `docx` , `pptx` or `tex` (details may be found in the
+[`create_qmdReport_proj()`](https://jatanrt.github.io/eprscope/reference/create_qmdReport_proj.md)
+documentation).
+
+## Updates
+
+To update the [eprscope](https://jatanrt.github.io/eprscope/) 📦, just
+run the following code (the same as for the installation) in the
+![](https://www.r-project.org/Rlogo.png) console ➨
+
+``` r
+
+devtools::install_github("jatanRT/eprscope")
+#
+# update package together with vignettes/articles:
+# devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
+```
+
+## Usage
+
+In this section, couple of examples are shown in order to briefly
+demonstrate the package functionality. More detailed description can be
+found within the articles/vignettes or documentation examples.
+
+### Reading Files with Instrumental Parameters
+
+``` r
+
+# loading the package/library
+library(eprscope)
+#
+# loading the built-in example file => "TMPD_specelchem_accu_b.par"
+tmpd.params.file <-
+  load_data_example(file = "TMPD_specelchem_accu_b.par")
+#
+# parameters into interactive table (data frame)
+tmpd.params.dt <-
+  readEPR_params_tabs(
+    path_to_dsc_par = tmpd.params.file,
+    origin = "winepr",
+    interact = "params"
+  )
+#
+# table preview
+tmpd.params.dt
+```
+
+![](reference/figures/README-parameter-reading-1.png)
+
+### Depict Molecular Structures
+
+``` r
+
+# Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
+# "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"
+draw_molecule_by_rcdk(
+  molecule = "C1([C.]23)=CC=CC2=CC=CC3=CC=C1",
+  mol.label = "Phenalenyl",
+  mol.label.color = "black",
+  mol.label.xy.posit = c(8.8, 1.2)
+)
+```
+
+![](reference/figures/README-molecule-drawing-1.png)
+
+### Simulation of Isotropic EPR Spectra
+
+``` r
+
+# simulation of the phenalenyl (perinaphthenyl or PNT) radical,
+# see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,
+# the additional experimental/instrumental parameters are not shown,
+# they possess their default values => see corresponding documentation
+# of the `eval_sim_EPR_iso()` function.
+simulation.iso <-
+  eval_sim_EPR_iso(
+    g.iso = 2.0027,
+    B.unit = "G",
+    nuclear.system = list(
+      list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
+      list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
+    ),
+    lineGL.DeltaB = list(0.24, NULL) # linewidth in G
+  )
+#
+# simulated spectrum preview, in the region from 3470 G to 3522 G
+simulation.iso$plot + 
+  ggplot2::coord_cartesian(xlim = c(3470, 3522))
+```
+
+![](reference/figures/README-spectra-simulation-1.png)
+
+### Interactive R Shiny Application to Visualize and Simulate CW Isotropic EPR Spectra
+
+``` r
+
+# just run the following command in R console
+plot_eval_ExpSim_app()
+```
+
+### ![](reference/figures/plot_eval_ExpSim_app_view_b.png)
+
+### Radical Kinetic Model Fitted onto the Experimental Data
+
+``` r
+
+# decay of a triarylamine radical cation right after 
+# its generation by electrochemical potentiostatic oxidation 
+# in TBAPF6/CH3CN, double integrals (Areas) vs time were 
+# obtained by data pre-processing within the continuous 
+# wave (CW) EPR spectrometer acquisition/processing software.
+#
+# loading the built-in example file with the instrumental parameters
+triarylamine_rc_decay_dsc <-
+  load_data_example(file = "Triarylamine_radCat_decay_a.DSC")
+#
+# loading the built-in example file with "Area" vs "time" data frame
+triarylamine_rc_decay_txt <-
+  load_data_example(file = "Triarylamine_radCat_decay_a.txt")
+triarylamine_rc_decay_data <-
+  readEPR_Exp_Specs(
+    path_to_ASC = triarylamine_rc_decay_txt,
+    header = TRUE,
+    fill = TRUE,
+    select = c(3, 7),
+    col.names = c("time_s", "Area"),
+    x.unit = "s",
+    x.id = 1,
+    Intensity.id = 2,
+    qValue = 1700,
+    data.structure = "others"
+  ) %>% na.omit()
+#
+# fitting the experimental decay by 2R --> B kinetic model
+# with "k1" rate constant and the corresponding partial
+# rection order "alpha". "qvar0R" refers to the initial
+# "quantitative variable" (such as concentration, double integral
+# or number of radicals) of the triarylamine radical cation "R",
+# for a quick evaluation or comparison with other kinetic data
+# "qvarR" corresponds to "Area" (double integral in p.d.u. units) 
+# and therefore the unit => [k1] = (p.d.u.)^{-1} * s^{-1}
+# where the p.d.u. stands for "procedure defined unit"
+triarylamine_rc_decay_model <-
+  eval_kinR_EPR_modelFit(
+    data.qt.expr = triarylamine_rc_decay_data,
+    model.react = "(r=2)R --> [k1] B",
+    qvarR = "Area",
+    elementary.react = FALSE,
+    params.guess = c(
+      qvar0R = 0.019,
+      k1 = 0.04,
+      alpha = 1.9
+    ),
+    time.correct = TRUE,
+    path_to_dsc_par = triarylamine_rc_decay_dsc,
+    origin = "xenon"
+  )
+#
+# graph preview
+triarylamine_rc_decay_model$plot
+```
+
+![](reference/figures/README-kinetic-model-fit-1.png)
+
+``` r
+#
+# data frame/table, showing the obtained kinetic parameters
+# (and their basic statistical measures) by the non-linear 
+# fit and numeric solution of the Ordinary Differential Equations
+triarylamine_rc_decay_model$df.coeffs
+#>           Estimate    Std. Error    t value       Pr(>|t|)
+#> qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149
+#> k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19
+#> alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101
+#
+# graphical representation of the correlation matrix,
+# corresponding to kinetic model fit
+triarylamine_rc_decay_model$cor.df %>% 
+  corrplot::corrplot(addCoef.col = "#c2c2c2")
+```
+
+![](reference/figures/README-kinetic-model-fit-2.png)
+
+## Help, Questions and Contribution
+
+There are several ways how to get help. If the users are already
+familiar with the [R statistical language](https://www.r-project.org/)
+please, follow either the individual package function documentation or
+the corresponding articles/vignettes. These might be also considered as
+a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png)
+knowledge resources (see also the “First Steps with R Language”
+vignette/article), particularly for students. **In case you are
+completely new to *R***, there are couple of great tutorials enabling a
+quite straightforward diving into
+![](https://www.r-project.org/Rlogo.png). **Please, refer to e.g.**
+
+- [R for Data Science (2e)](https://r4ds.hadley.nz/)
+
+- [ggplot2: Elegant Graphics for Data Analysis
+  (3e)](https://ggplot2-book.org/)
+
+- [Advanced R](https://adv-r.hadley.nz/)
+
+- [POSIT Homepage](https://posit.co/)
+
+- [R Crash Course](https://colauttilab.github.io/RCrashCourse/)
+
+- [Statology R Guides](https://www.statology.org/r-guides/)
+
+- [An Introduction to R](https://intro2r.com/)
+
+- [R CODER](https://r-coder.com/)
+
+- [Modern Statistics with R](https://www.modernstatisticswithr.com/)
+
+- [Why should I use R ?
+  (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
+
+- [R to Python Data
+  Wrangling](https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07)
+
+- [Chemometrics and Spectroscopy Using R (Bryan Hanson
+  Blog)](https://chemospec.org/)
+
+- [Official Contributed Documentation of
+  R](https://cran.r-project.org/other-docs.html)
+
+- [An Introduction to Statistical
+  Learning](https://www.statlearning.com/)
+
+- [R for the Rest of Us](https://book.rfortherestofus.com/)
+
+- [The Big Book of R](https://www.bigbookofr.com/)
+
+- [Learn R Programming Language (Geeks for
+  Geeks)](https://www.geeksforgeeks.org/r-tutorial/?ref=home-articlecards)
+
+- [R Packages and Related Links for Chemistry and
+  Physics](https://cran.r-project.org/web/views/ChemPhys.html)
+
+- [R Packages and Related Links for Optimization and Mathematical
+  Programming](https://cran.r-project.org/web/views/Optimization.html)
+
+- [Reproducible Research in R and Guides for the R-Cubed
+  Courses](https://guides.rostools.org/)
+
+- [Quarto - An Open Source Scientific and Technical Publishing
+  System](https://quarto.org/docs/get-started/hello/rstudio.html)
+
+- [R for Non-Programmers: A Guide for Social
+  Scientists](https://r4np.com/)
+
+- YouTube Video Tutorials ➨
+
+  - [Introduction to R Programming for Excel
+    Users](https://www.youtube.com/watch?v=Ekp2mfxQSzw)
+
+  - [Bioinformatics and R
+    Programming](https://www.youtube.com/@LiquidBrain)
+
+  - [R Programming 101](https://www.youtube.com/@RProgramming101)
+
+  - [Equitable Equations](https://www.youtube.com/@EquitableEquations)
+
+  - [R Programming Full Course
+    2023](https://www.youtube.com/watch?v=Q5g6lYUn6Q4)
+
+  - [Plotting Anything with
+    ggplot2](https://www.youtube.com/watch?v=h29g21z0a68)
+
+  - [Riffomonas Project](https://www.youtube.com/@Riffomonas)
+
+  - [Introduction to R for
+    Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
+
+  - [Reproducible Research with
+    R](https://www.youtube.com/watch?v=mg95lLyCpQA)
+
+  - [MarinStatsLectures-R Programming &
+    Statistics](https://www.youtube.com/@marinstatlectures)
+
+  - [Jeremy Balka’s statistics
+    channel](https://www.youtube.com/@jbstatistics)
+
+  - [StatQuest with Josh Starmer](https://www.youtube.com/@statquest)
+
+  - [R for Ecology](https://www.youtube.com/@RforEcology/videos)
+
+  - [R
+    Quarto](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df)
+
+Even though the **EPR spectroscopy** is a quite complex field there are
+some introductory on-line materials which may help to start with this
+special magnetic resonance method ➨
+
+- [EasySpin
+  Documentation](https://easyspin.org/easyspin/documentation/) +
+  [EasySpin Academy - YouTube (Video
+  Series)](https://www.youtube.com/playlist?list=PLHgZIxCMfgeIPWRCGMBs5T3Mb0TwLpAy2)
+
+- [EPR LibreTexts in
+  Chemistry](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))
+
+- [NMR Spectroscopy of Organic Compounds (Lesson
+  10)](https://nmr.group.uochb.cz/en/nmr-organic-compounds)
+
+- [Bruker EPR
+  Instruments](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments.html)
+
+- [EPR Everywhere -
+  Webpage](https://researchoutreach.org/articles/electron-paramagnetic-resonance-epr-everywhere/)
+
+- [EPR Everywhere -
+  Article](https://link.springer.com/article/10.1007/s00723-020-01304-z?fromPaywallRec=true)
+
+- [Basic Concepts of
+  EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
+
+Any additional questions, comments, remarks or issues can be addressed
+through several discussion channels like 📧 e-mail
+<jantar40@protonmail.com> or github
+![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png)
+issues on the github source page (see the [contributing
+guide](https://jatanrt.github.io/eprscope/CONTRIBUTING.md)). In the
+future, there will be also a specialized [Discord](https://discord.com/)
+community channel to discuss the
+[eprscope](https://jatanrt.github.io/eprscope/) related topics. If
+somebody is able and interested in the package development, please refer
+to [contributing
+guide](https://jatanrt.github.io/eprscope/CONTRIBUTING.md).
+
+## Acknowledgements
+
+I would like to express a deep gratitude to my colleagues from the [NMR
+Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of
+Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially,
+[Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X)
+![](https://orcid.org/assets/vectors/orcid.logo.icon.svg), [Dr. Ondřej
+Socha](https://orcid.org/0000-0002-7218-9119)
+![](https://orcid.org/assets/vectors/orcid.logo.icon.svg) and
+[Dr. Martin Dračínský](https://orcid.org/0000-0002-4495-0070)
+![](https://orcid.org/assets/vectors/orcid.logo.icon.svg). Without the
+fruitful environment within the NMR Spectroscopy team it wouldn’t be
+possible to develop such a project like this. Also, I’d like to give a
+special thanks to my brother [Dr. Peter
+Tarábek](https://orcid.org/0000-0002-7181-7136)
+![](https://orcid.org/assets/vectors/orcid.logo.icon.svg) for his
+valuable comments and remarks.
+
+# Package index
+
+## Built-In Datasets
+
+- [`isotopes_ds`](https://jatanrt.github.io/eprscope/reference/isotopes_ds.md)
+  : Nuclear Isotope Data Frame (Dataset) with ENDOR Frequencies
+- [`solvents_ds`](https://jatanrt.github.io/eprscope/reference/solvents_ds.md)
+  : Solvent Properties Data Frame (Dataset) for EPR/ENDOR
+
+## Conversions and Corrections
+
+- [`convert_A_MHz_2a()`](https://jatanrt.github.io/eprscope/reference/convert_A_MHz_2a.md)
+  : Convert Coupling Constants into Splitting Ones.
+- [`convert_B()`](https://jatanrt.github.io/eprscope/reference/convert_B.md)
+  : Conversion of Magnetic Flux Density
+- [`convert_a_mT_2A()`](https://jatanrt.github.io/eprscope/reference/convert_a_mT_2A.md)
+  : Convert Splitting Constants into Coupling Ones.
+- [`convert_time2var()`](https://jatanrt.github.io/eprscope/reference/convert_time2var.md)
+  : Convert Time \\t\\ into Variable Linearly Depending on \\t\\.
+- [`correct_time_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/correct_time_Exp_Specs.md)
+  : Time Correction for the Experimental CW EPR Time Series.
+
+## Data Reading
+
+- [`readEPR_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
+  : Read the Experimental ASCII or other Text-Based EPR Data.
+
+- [`readEPR_Exp_Specs_kin()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs_kin.md)
+  : Read and Process Spectral Data of Time Dependent CW EPR Experiments
+
+- [`readEPR_Exp_Specs_multif()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs_multif.md)
+  : Load Several/Multiple EPR Data/Spectra Files Simultaneously
+
+- [`readEPR_Sim_Spec()`](https://jatanrt.github.io/eprscope/reference/readEPR_Sim_Spec.md)
+  : Read the ASCII Data of a Simulated EPR Spectrum
+
+- [`readEPR_param_slct()`](https://jatanrt.github.io/eprscope/reference/readEPR_param_slct.md)
+  : Read the Selected EPR Instrumental Parameters and Information
+
+- [`readEPR_params_slct_kin()`](https://jatanrt.github.io/eprscope/reference/readEPR_params_slct_kin.md)
+  : Read the Selected Instrumental Parameters of EPR Time Series
+  Experiment
+
+- [`readEPR_params_slct_quant()`](https://jatanrt.github.io/eprscope/reference/readEPR_params_slct_quant.md)
+  : Read the Selected Instrumental Parameters Relevant to EPR
+  Quantitative Analysis
+
+- [`readEPR_params_slct_sim()`](https://jatanrt.github.io/eprscope/reference/readEPR_params_slct_sim.md)
+  : Read the Selected Instrumental Parameters Required for EPR
+  Simulations
+
+- [`readEPR_params_tabs()`](https://jatanrt.github.io/eprscope/reference/readEPR_params_tabs.md)
+  : Read the EPR Instrumental Parameters and Information for Tabular
+  Outputs
+
+- [`readEPR_solvent_props()`](https://jatanrt.github.io/eprscope/reference/readEPR_solvent_props.md)
+  :
+
+  Reading Solvent Properties from the `solvents_ds` Dataset
+
+- [`readMAT_params_file()`](https://jatanrt.github.io/eprscope/reference/readMAT_params_file.md)
+  :
+
+  Reading EPR Simulation Parameters and Information from the *MATLAB*
+  `.mat` File
+
+## EPR Spectroelectrochemistry
+
+- [`eval_ECh_QNe_chronoamp()`](https://jatanrt.github.io/eprscope/reference/eval_ECh_QNe_chronoamp.md)
+  : Transferred Charge and Number of Electrons from Chronoamperogram
+- [`plot_ECh_VoC_amperogram()`](https://jatanrt.github.io/eprscope/reference/plot_ECh_VoC_amperogram.md)
+  : Plot Voltammogram or Chronoamperogram from the
+  (Spectro)Electrochemical Experiment
+
+## Evaluations
+
+- [`eval_DeltaXpp_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_DeltaXpp_Spec.md)
+  : Calculation of EPR/ENDOR Spectrum Linewidth ( e.g. \\\Delta
+  B\_{pp}\\)
+- [`eval_FWHMx_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_FWHMx_Spec.md)
+  : Evaluating Full Width at Half-Maximum (FWHM) from the Integrated EPR
+  Spectrum
+- [`eval_extremeX_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_extremeX_Spec.md)
+  : Find Intensity Extremes within the EPR/ENDOR Spectrum
+- [`eval_gFactor()`](https://jatanrt.github.io/eprscope/reference/eval_gFactor.md)
+  : Basic Calculation of \\g\\-Factor
+- [`eval_gFactor_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_gFactor_Spec.md)
+  : Calculation of \\g\\-factor ("Position") from the EPR Spectrum/Data
+- [`eval_interval_cnfd_tVec()`](https://jatanrt.github.io/eprscope/reference/eval_interval_cnfd_tVec.md)
+  : Confidence Interval of a Vector or Data Frame Column
+- [`eval_kinR_Eyring_GHS()`](https://jatanrt.github.io/eprscope/reference/eval_kinR_Eyring_GHS.md)
+  : Reaction Activation Parameters Obtained by the Essential Transition
+  State Theory
+- [`eval_nu_ENDOR()`](https://jatanrt.github.io/eprscope/reference/eval_nu_ENDOR.md)
+  : ENDOR/Larmor Frequency of Specific Nuclei
+- [`eval_peakPick_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_peakPick_Spec.md)
+  : Peak Picking of EPR/ENDOR Spectra
+
+## Evaluations and Quantum Chemistry
+
+- [`eval_gFactor_QCHcomp()`](https://jatanrt.github.io/eprscope/reference/eval_gFactor_QCHcomp.md)
+  : Calculation of \\g\\-factor from the Quantum Chemical Computational
+  Output
+- [`rearrange_aAiso_QCHcomp()`](https://jatanrt.github.io/eprscope/reference/rearrange_aAiso_QCHcomp.md)
+  : Rearrangement of \\A\_{iso}\\/\\a\_{iso}\\ from the Quantum Chemical
+  (QCH) Computations
+- [`rearrange_aAiso_QCHorgau()`](https://jatanrt.github.io/eprscope/reference/rearrange_aAiso_QCHorgau.md)
+  : Rearrangement of \\A\_{iso}\\/\\a\_{iso}\\ from the Gaussian & ORCA
+  Computations
+
+## Evaluations and Quantification
+
+- [`eval_integ_EPR_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_integ_EPR_Spec.md)
+  : Integration of EPR Spectrum/Data for Quantitative Analysis
+- [`eval_kinR_EPR_modelFit()`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)
+  : Radical Kinetic Models Fitted onto Experimental Data
+- [`eval_kinR_ODE_model()`](https://jatanrt.github.io/eprscope/reference/eval_kinR_ODE_model.md)
+  : Quantitative EPR Kinetic Model Profiles by Numeric Solution of the
+  ODE.
+- [`quantify_EPR_Abs()`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Abs.md)
+  : Absolute Quantification of Radicals/Spins
+- [`quantify_EPR_Norm_const()`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Norm_const.md)
+  : Normalization Constant Calculation for the Quantitative EPR Analysis
+
+## Shiny Interactive Applications
+
+- [`plot_eval_ExpSim_app()`](https://jatanrt.github.io/eprscope/reference/plot_eval_ExpSim_app.md)
+  : Interactive Application to Plot and Evaluate CW Isotropic EPR
+  Spectra
+
+## Simulations and Optimization
+
+- [`eval_ABIC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md)
+  : General Ranking of Models/Fits Using the AIC and BIC Metrics
+- [`eval_sim_EPR_iso()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md)
+  : Simulation of Isotropic EPR Spectra
+- [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
+  : Least-Squares Fitting of Isotropic EPR Spectra by Simulations
+- [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md)
+  : Explore the Hyperspace of Initial EPR Simulation Parameters
+  (Searching for the Best Fit)
+- [`eval_sim_EPR_iso_combo()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso_combo.md)
+  : Simulation of Isotropic EPR Spectra Consisting of Several Components
+- [`optim_for_EPR_fitness()`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md)
+  : General Function for Non-Linear Optimization/Fitting of EPR
+  Parameters/Data
+- [`plot_eval_EPRtheo_mltiplet()`](https://jatanrt.github.io/eprscope/reference/plot_eval_EPRtheo_mltiplet.md)
+  : EPR Intensity Multiplet Prediction for Interactions of Electron with
+  Selected Nucleus/Nuclei
+- [`plot_eval_RA_forFit()`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)
+  : General Diagnostics for Models/Fits by Simple Residual Analysis
+- [`quantify_EPR_Sim_series()`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Sim_series.md)
+  : Quantify EPR Simulated Spectral Components in the Experimental
+  Series
+- [`smooth_EPR_Spec_by_npreg()`](https://jatanrt.github.io/eprscope/reference/smooth_EPR_Spec_by_npreg.md)
+  : Smoothing and Fitting of an EPR Spectrum by Splines
+
+## Visualizations and Graphics
+
+- [`draw_molecule_by_rcdk()`](https://jatanrt.github.io/eprscope/reference/draw_molecule_by_rcdk.md)
+  :
+
+  Draw Molecule by `{rcdk}` Defined by SMILES or SDF
+
+- [`plot_EPR_Specs()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs.md)
+  : Essential Plotting of EPR/ENDOR Spectrum/Spectra
+
+- [`plot_EPR_Specs2D_interact()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs2D_interact.md)
+  : Interactive Plot (incl. Zooming, Data Reading...etc) of EPR Spectra
+
+- [`plot_EPR_Specs3D_interact()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs3D_interact.md)
+  : Interactive 3D Surface and 2D Contour Plots for the Series of EPR
+  Spectra
+
+- [`plot_EPR_Specs_integ()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs_integ.md)
+  :
+
+  Plotting Integrated Forms of EPR Spectra Acquired by the
+  `eval_integ_EPR_Spec`
+
+- [`plot_EPR_present_interact()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_present_interact.md)
+  :
+
+  Present/Save Interactive Plot for Publication in `.html`,`.pdf` or
+  `.docx`
+
+- [`plot_labels_xyz()`](https://jatanrt.github.io/eprscope/reference/plot_labels_xyz.md)
+  : Labels for Various Plots (Spectroscopy, EPR, Voltammetry,...etc)
+
+- [`plot_layout2D_interact()`](https://jatanrt.github.io/eprscope/reference/plot_layout2D_interact.md)
+  : Additional Layout for the Interactive 2D Plots
+
+- [`plot_theme_In_ticks()`](https://jatanrt.github.io/eprscope/reference/plot_theme_In_ticks.md)
+  :
+
+  Custom `ggplot2` Theme with Axis Ticks Oriented Inside the Panel
+
+- [`plot_theme_NoY_ticks()`](https://jatanrt.github.io/eprscope/reference/plot_theme_NoY_ticks.md)
+  :
+
+  Custom `ggplot2` Theme without `Y` Axis Ticks
+
+- [`plot_theme_Out_ticks()`](https://jatanrt.github.io/eprscope/reference/plot_theme_Out_ticks.md)
+  :
+
+  Custom `ggplot2` Theme with Axis Ticks Oriented Outside the Panel
+
+- [`present_EPR_Sim_Spec()`](https://jatanrt.github.io/eprscope/reference/present_EPR_Sim_Spec.md)
+  : A Comparison of the Experimental and Simulated Forms of EPR Spectra
+
+## Non-Categorized
+
+- [`create_qmdReport_proj()`](https://jatanrt.github.io/eprscope/reference/create_qmdReport_proj.md)
+  : Basic Quarto Reproducible Project File/Folder Structure for EPR
+  Reports
+- [`load_data_example()`](https://jatanrt.github.io/eprscope/reference/load_data_example.md)
+  : Loading the Built-In Data Files for Package Examples
+
+# Articles
+
+### All vignettes
+
+- [Package
+  Datasets](https://jatanrt.github.io/eprscope/articles/datasets.md):
+- [First Steps with R
+  Language](https://jatanrt.github.io/eprscope/articles/firstSteps.md):
+- [Basic
+  Functionality](https://jatanrt.github.io/eprscope/articles/functionality.md):
+- [Introduction](https://jatanrt.github.io/eprscope/articles/introduction.md):
