@@ -8,7 +8,11 @@
 #' @description Reading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
 #'  experiment in "Xenon" acquisition/processing software). Function is based on the \code{\link{readEPR_Exp_Specs}}
 #'  and includes automatic time correction for CW EPR \code{time.series} experiments
-#'  (see also the \code{\link{correct_time_Exp_Specs}} description and documentation).
+#'  (see also the \code{\link{correct_time_Exp_Specs}} description and documentation). If the time series EPR spectra
+#'  are stored individually (one file per one spectrum, e.g. for \code{origin = "Magnettech"}, ESR5000 [11-0422]),
+#'  such time series needs to be loaded by \code{\link{readEPR_Exp_Specs_multif}}. For \code{origin = "WinEpr"}
+#'  the \code{time_s} column usually possesses the form of spectrum slices, i.e. an integer number (0,1,2,...) is assigned
+#'  to each recorded spectrum.
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
@@ -16,15 +20,6 @@
 #'   having one the following extensions: \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc},
 #'   including the 2D-experimental (i.e. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
 #'   by the \code{\link[base]{file.path}} function.
-#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
-#'   to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
-#'   ASCII \code{text} file, including instrumental parameters of the recorded spectra
-#'   (corresponding to the previous argument) and provided by the EPR machine.
-#'   \strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
-#'   automatically inherits the \code{path_to_file}, however with the appropriate extension
-#'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
-#'   filename like in \code{path_to_file} in the working directory. If the file does not exist, it will ask
-#'   to provide/define the right file path.
 #' @param time.unit Character string, specifying the \code{"s"},\code{"min"}, \code{"h"}
 #'   or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 #'   \strong{Default}: \code{time.unit = "s"}
@@ -34,9 +29,9 @@
 #' @param col.names Character string vector, corresponding to desired column/variable names/headers of the returned
 #'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
 #'   with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
-#'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
-#'   (if \code{orgin = "xenon"}). For the spectral 2D-time series \code{col.names} must include character string
-#'   (such as \code{"time_s"}) in order to identify the time at which the EPR spectra were recorded.
+#'   to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")}
+#'   (if \code{orgin = "xenon"}). For the \strong{spectral 2D-time series} \code{col.names} \strong{must include character string}
+#'   (\strong{such as} \code{"time_s"}) \strong{in order to identify the time at which the EPR spectra were recorded}.
 #' @param var2nd.series.id Numeric index related to \code{col.names} vector and pointing to column
 #'   for the EPR spectral 2D- time series variable. \strong{Default}: \code{var2nd.series.id = 3}
 #'   (for "Xenon" time series experiment, corresponding to "time" column).
@@ -48,7 +43,7 @@
 #'
 #' @return List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
 #'    time vector (\code{time}). For the \code{origon = "winepr"} "time" slices/indices must be already converted
-#'    into time domain by \code{time.delta.slice.s} (see arguments and examples).
+#'    into time domain by \code{time.delta.slice} (see arguments and examples).
 #'
 #'
 #' @examples
@@ -92,14 +87,15 @@
 #'   load_ddata_example("TMPD_specelchem_CV_b.par")
 #' tmpd.se.cv.b.dat <-
 #'   readEPR_Exp_Specs_kin(
-#'     tmpd.se.cv.b.bin.path,
-#'     tmpd.se.cv.b.par.path,
+#'     path_to_file = tmpd.se.cv.b.bin.path,
+#'     path_to_dsc_par = tmpd.se.cv.b.par.path,
 #'     col.names = c(
 #'       "B_G",
 #'       "Slice",
 #'       "dIepr_over_dB"
 #'      ),
 #'   var2nd.series.id = 2,
+#'   time.delta.slice = 18,
 #'   origin = "winepr"
 #'   )
 #' #
@@ -244,6 +240,11 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     }
     #
     ## Qvalue definition
+    if (is.null(qValue) || is.na(qValue)) {
+      warning("Sensitivity factor or Q-Value WAS NOT DEFINED !!\n
+              It is automatically switched to `1`, unless you won't define\n
+              the `qValue` argument !! ")
+    }
     qValue.obtain <- qValue %>% `if`(is.null(qValue), 1, .)
   }
   #
@@ -344,7 +345,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       `if`(is.null(time.delta.slice),1, .)
   }
   #
-  if (time.unit == "s") {
+  if (time.unit == "s" || time.unit == "unitless" || time.unit == "Unitless") {
     times <- times
     #
     if (origin.cond.all(origin = origin) == 0){
