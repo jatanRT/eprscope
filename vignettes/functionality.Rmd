@@ -81,19 +81,19 @@ This function belongs to the package family/section `Visualizations and Graphics
 
 The `{eprscope}` can handle different original file formats:
 
-1.  `.asc`, `.txt`, `.csv` , `.DTA` and `.spc` to read spectra from the EPR instrument/spectrometer, where the latter two correspond to binary file formats (the remaining three are ASCII text-based formats), which also require presence of the following files in order to load those spectra. For the series of EPR spectra (2D-Experiments), the 📦 can also read/handle the binary `.YGF` files, containing information about the second dimension/variable like time, temperature, microwave power, ...etc.
+1.  `.asc`, `.txt`, `.csv` , `.DTA` and `.spc` to read spectra from the EPR instrument/spectrometer, where the latter two correspond to binary file formats (the remaining three are ASCII text-based formats), which also require presence of the following files (see 2. below) in order to load those spectra. For the series of EPR spectra (2D-Experiments), the 📦 can also read/handle the binary `.YGF` files, containing information about the second dimension/variable like time, temperature, microwave power, ...etc.
 
 2.  `.DSC`/`.dsc`, `.par`, an ASCII text, containing information about the experiment, by gathering all the instrumental parameters applied to set up the EPR measurement
 
 3.  `.mat` coming from *Maltab* to collect all the parameters and variables related to simulated EPR spectrum returned from the [*EasySpin*](https://easyspin.org/) *toolbox*
 
-4.  `.out`, `.log` ASCII text outputs returned either form [*Gaussian*](https://gaussian.com/gaussian16/) or [*Orca*](https://www.faccts.de/docs/orca/6.1/tutorials/spec/EPR.html) quantum chemical packages, containing the computed EPR parameters such as hyperfine coupling/splitting constants (*A*/*a*, see below) and g-values.
+4.  `.out`, `.log` ASCII text outputs returned either form [*Gaussian*](https://gaussian.com/gaussian16/) or from [*Orca*](https://www.faccts.de/docs/orca/6.1/tutorials/spec/EPR.html) quantum chemical packages, containing the computed EPR parameters such as hyperfine coupling/splitting constants (*A*/*a*, see below) and g-values.
 
 Several above-listed data formats are used as examples to demonstrate the functionality of package and these are summarized in the [Package Datasets](https://jatanrt.github.io/eprscope/articles/datasets.html) vignette.
 
 The original EPR spectra are saved as a combination of binaries (`.DTA` or `.spc`) and ASCII text (`.DSC` / `.dsc` or `.par`). So, for each spectrum (or series of spectra) there are two files, having the same name and different extension. In order to return the EPR spectrum/spectra as ASCII tables (`.txt` ,`.asc` or `.csv`), the original "binary" spectra must be converted by the user. Usually, such conversion is directly available at the spectrometer (you may follow the `File` ➝ `Export ASCII`) within the acquisition/processing software or one can also try a free online converter by *Leland B. Gee* [@xepr2gfac2023] (see also the last example in the `readEPR_Exp_Specs()` documentation). The structure of both binary as well as ASCII texts depends on the spectrometer acquisition/processing software and therefore the key functions to read those spectra/files contain the `origin` argument (see vide infra or refer to the documentation of e.g. `readEPR_Exp_Specs()` or `readEPR_param_slct()`). As stated above, to read the binary files or to process the EPR data, the associated files like those containing the instrumental parameters used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par` format) are quite important. The information included in those files is required to e.g. normalize the Intensity (like $\small \mathrm{d}I_{\mathrm{EPR}}~/~\mathrm{d}B$ in the derivative spectral form) or to evaluate the $g$-factor (position of the spectrum) as well as for the simulations of EPR spectra and to evaluate the kinetic parameters of the radical reactions.
 
-Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par` files (corresponding to acquisition software "xenon"/"magnetech" or "winepr", respectively) is provided by several functions for different purposes e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in a list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
+Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par` files (corresponding to acquisition software "xenon"/"magnettech" or "winepr", respectively) is provided by several functions for different purposes e.g. for kinetic measurements or simulations. The general function `readEPR_params_tabs()` summarizes all important parameters in a list of data frames and can be converted into individual interactive tables by [{DT}](https://rstudio.github.io/DT/) package ➨
 
 ```{r instrum-params-read-df-info}
 
@@ -603,7 +603,7 @@ tmpd.epr.iso.fit <-
 #
 ```
 
-Such processing (with the elapsed time of $\approx 220\,\mathrm{s}$ on 10-years old 4-core-CPU workstation/running on two cores) will not only return the above-defined list (`tmpd.epr.iso.fit` , see also documentation of the `eval_sim_EPR_isoFit_space()`), however also an animation, showing the progress of simulated EPR spectrum fit at each `Evaluation` :
+Such processing (with the elapsed time of $\approx 220\,\mathrm{s}$ on 10-years old 4-core-CPU/16GB-RAM workstation/running on two cores) will not only return the above-defined list (`tmpd.epr.iso.fit` , see also documentation of the `eval_sim_EPR_isoFit_space()`), however also an animation, showing the progress of simulated EPR spectrum fit at each `Evaluation` :
 
 ![](TMPD_fitting_of_sim_EPR.gif){width="640"}
 
