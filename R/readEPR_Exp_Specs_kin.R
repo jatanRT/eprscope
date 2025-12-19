@@ -12,7 +12,8 @@
 #'  are stored individually (one file per one spectrum, e.g. for \code{origin = "Magnettech"}, ESR5000 [11-0422]),
 #'  such time series needs to be loaded by \code{\link{readEPR_Exp_Specs_multif}}. For \code{origin = "WinEpr"}
 #'  the \code{time_s} column usually possesses the form of spectrum slices, i.e. an integer number (0,1,2,...) is assigned
-#'  to each recorded spectrum.
+#'  to each recorded spectrum. Therefore, for a radical kinetic analysis it has to be converted to \code{time_s}
+#'  (see the argument \code{time.delta.slice}).
 #'
 #'
 #' @inheritParams readEPR_Exp_Specs
@@ -24,7 +25,7 @@
 #'   or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
 #'   \strong{Default}: \code{time.unit = "s"}
 #' @param time.delta.slice Numeric, time interval in \code{time.unit} between \code{slices},
-#'   in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
+#'   in the case of \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
 #'   corresponding to \code{1 time.unit}).
 #' @param col.names Character string vector, corresponding to desired column/variable names/headers of the returned
 #'   data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
@@ -41,7 +42,7 @@
 #' @param ... additional arguments specified, see also the \code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'
-#' @return List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
+#' @return List of EPR spectrum time series data in tidy long table format (\code{df}) + corrected
 #'    time vector (\code{time}). For the \code{origon = "winepr"} "time" slices/indices must be already converted
 #'    into time domain by \code{time.delta.slice} (see arguments and examples).
 #'
@@ -184,6 +185,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   #   }
   # }
   #
+  # ------------------------- XENON & MAGNETTECH -----------------------------
   if (origin.cond.all(origin = origin) == 2 ||
       origin.cond.all(origin = origin) == 1) {
     #
@@ -195,7 +197,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       path_to_file
     )
     #
-    ## check the existence of this previous file in the working dir.
+    ## check the existence of this previous file in the current working dir.
     if (!file.exists(path.to.dsc)) {
       stop(" Please provide the file path for the `.DSC`/`.dsc` file,\n
              refer to definition of the `path_to_dsc_par` argument !! ")
@@ -220,6 +222,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
               the `qValue` argument !! ")
     }
   }
+  #  ------------------------ WINEPR --------------------------
   if (origin.cond.all(origin = origin) == 0) {
     #
     ## expecting that the `.par` file is in the same folder
@@ -230,7 +233,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       path_to_file
     )
     #
-    ## check the existence of this previous file in the working dir.
+    ## check the existence of this previous file in the current working dir.
     if (!file.exists(path.to.par)) {
       stop(" Please provide the file path for the `.par` file,\n
              refer to definition of the `path_to_dsc_par` argument !! ")
@@ -248,7 +251,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     qValue.obtain <- qValue %>% `if`(is.null(qValue), 1, .)
   }
   #
-  ## 'Kinetic' instrum. params
+  ## ------------------ 'Kinetic' instrum. params --------------------
   instrument.params.kinet <-
     readEPR_params_slct_kin(path_to_dsc_par, origin = origin)
   #
@@ -305,7 +308,9 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     3 - origin.cond.all(origin = origin),
     var2nd.series.id %>%
       `if`(var2nd.series.id != 3 || is.null(var2nd.series.id), 3, .),
-    switch(2 - binary.cond,3,var2nd.series.id),
+    stop(" For the recorded EPR spectral series on `Magnettech`\n
+             please use the `readEPR_Exp_Specs_multif` function, instead.\n
+             Spectra are saved/stored individually on such machine !! "),
     var2nd.series.id %>%
       `if`(var2nd.series.id != 2 || is.null(var2nd.series.id), 2, .)
   )

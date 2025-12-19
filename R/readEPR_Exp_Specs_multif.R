@@ -134,17 +134,36 @@
 #' ## time series coming from `Magnettech` as individual EPR spectra
 #' ## (represented by ASCII files `.csv`) recorded at different
 #' ## time in seconds -> see `names` argument
-#' readEPR_Exp_Specs_multif(
-#'   name.pattern = "Kinetics_EPR_Spectra_",
-#'   dir_asc_bin = "./Input_EPR_Data",
-#'   dir_dsc_par = "./Input_EPR_Data",
-#'   col.names = c("B_mT","dIepr_over_dB"),
-#'   x.unit = "mT",
-#'   names = c("20","40","60","80","100","120"),
-#'   tidy = TRUE,
-#'   var2nd.series = "time_s",
-#'   origin = "magnettech"
-#' )
+#' data.time.series.mngtech <-
+#'   readEPR_Exp_Specs_multif(
+#'     name.pattern = "Kinetics_EPR_Spectra_",
+#'     dir_asc_bin = "./Input_EPR_Data",
+#'     dir_dsc_par = "./Input_EPR_Data",
+#'     col.names = c("B_mT","dIepr_over_dB"),
+#'     x.unit = "mT",
+#'     names = as.character(c(1:12)), # total number of spectra: 12
+#'     tidy = TRUE,
+#'     var2nd.series = "Slice",
+#'     origin = "magnettech"
+#'   )
+#' #
+#' ## convert the `Slice` column (of the previous data) into `time_s`,
+#' ## using the `dplyr` package, time interval between recording
+#' ## of the two consecutive Slices/EPR spectra corresponds to 32 s:
+#' data.time.series.mngtech <-
+#'   data.time.series.mngtech %>%
+#'     mutate(time_s = (Slice - 1) * 32) # 32 s time interval
+#' ## correct time, if the middle of an individual spectrum
+#' ## appears at the sweep time half
+#' data.time.series.mngtech$time_s <-
+#'   correct_time_Exp_Specs(
+#'     time.s = data.time.series.mngtech$time_s,
+#'     # how many accumulations per individual EPR spectrum ? :
+#'     Nscans = 1,
+#'     # experimental sweep time (for one EPR spectrum) in seconds:
+#'     sweep.time.s = 26
+#'    )
+#' #
 #' }
 #'
 #'

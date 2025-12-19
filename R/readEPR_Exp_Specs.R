@@ -10,7 +10,7 @@
 #'   data from the EPR spectrometers are transformed into data frames (tables). The function can read several data formats
 #'   such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA}, \code{.spc} as well as \code{.YGF}
 #'   with the latter three extensions, corresponding to binary files (function automatically recognizes which type of data,
-#'   ASCII or binary, are loaded). Reading of such data require information (instrumental parameters
+#'   ASCII or binary, are loaded). Reading of such data requires information (instrumental parameters
 #'   of the acquired spectra/data) provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively
 #'   (see the \code{path_to_dsc_par} as well as \code{path_to_ygf} arguments description). Because the original
 #'   file structure depends on the EPR spectrometer acquisition software or data processing, the \code{origin} argument
@@ -439,6 +439,11 @@ readEPR_Exp_Specs <- function(path_to_file,
   norm.multiply.const <- prod(sapply(norm.vec.add, function(n) 1 / n))
   norm.multiply.qValue <- 1 / qValue
   #
+  ## conditions for the `qValue` & `norm.vec.add`
+  if (qValue == 0 || any(norm.vec.add == 0)) {
+    stop(" `qValue` or additional normalization vector (`norm.vec.add`) cannot be '0' !! ")
+  }
+  #
   ## Ellipsis argument list definition => JUST A NOTE
   # args <- list(...)
   #
@@ -634,6 +639,13 @@ readEPR_Exp_Specs <- function(path_to_file,
                see `Examples` in the documentation !! ")
         }
         #
+        # condition for magnetech ESR5000 [11-0422]
+        if (xen.magnet.cond(origin = origin) == 1) {
+          stop(" For the recorded EPR spectral series on `Magnettech`\n
+               please use the `readEPR_Exp_Specs_multif` function, instead.\n
+               Spectra are saved/stored individually on such machine !! ")
+        }
+        #
         ##  ------------------- COMMENT ---------------------------------|
         ## first of all one must look for the `.YGF` file                |
         ## which is essential to read the time/2nd var. series binaries, |
@@ -720,6 +732,7 @@ readEPR_Exp_Specs <- function(path_to_file,
         endian = switch(2 - xen.magnet.cond(origin = origin),"little","big")
       )
       #
+      # Columns (+ data frame) re-definition
       if (isTRUE(var2nd.series.cond)) {
         #
         ## redefinition of `.id`s corresp. to `col.names`
@@ -1062,15 +1075,9 @@ readEPR_Exp_Specs <- function(path_to_file,
           var2nd.series.id <- var2nd.series.id %>%
             `if`(!is.null(var2nd.series.id), NULL, .)
         } else {
-          if (is.null(var2nd.series.id)) {
-            stop("Time series column in the ASCII is not defined ! \n
-             Please, specify the `var2nd.series.id` of the column/variable,\n
-             or create it to proceed !! ")
-          } else {
-            x.id <- x.id
-            Intensity.id <- Intensity.id
-            var2nd.series.id <- var2nd.series.id
-          }
+          stop(" For the recorded EPR spectral series on `Magnettech`\n
+             please use the `readEPR_Exp_Specs_multif` function, instead.\n
+             Spectra are saved/stored individually on such machine !! ")
         }
       } else {
         if (!is.null(var2nd.series.id)) {
