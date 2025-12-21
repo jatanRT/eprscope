@@ -39,12 +39,12 @@
 #'   any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument).
 #'   For the latter, all arguments must be defined accordingly, as already demonstrated in \code{Examples}.
 #'   When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)
-#'   can be loaded as well. For such purpose, the reading/loading of the data
-#'   must be activated by the \code{var2nd.series.id} argument (which is \code{NULL} by default
-#'   to load the 1D-experiments), pointing to \code{col.names} element index in order to define relevant
-#'   column of the returned data frame. For example, if the second variable series corresponds
-#'   to time (in seconds) column: e.g. \code{col.names = c("index","B_G","time_s","dIepr_over_dB")},
-#'   the \code{id} must be defined as \code{var2nd.series.id = 3}.
+#'   can be loaded as well. This must be activated by the \code{var2nd.series.id} argument
+#'   (which is \code{NULL} by default to load the 1D-experiments), pointing to \code{col.names} element
+#'   index in order to define relevant column of the returned data frame. For example, if the second
+#'   variable series corresponds to time (in seconds) column:
+#'   e.g. \code{col.names = c("index","B_G","time_s","dIepr_over_dB")}, the \code{id}
+#'   must be defined as \code{var2nd.series.id = 3}.
 #'
 #'
 #' @param path_to_file Character string, path to any spectrometer/instrumental file,
