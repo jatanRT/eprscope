@@ -9,7 +9,7 @@ library(magrittr)
 library(ggplot2)
 library(openxlsx)
 #
-server <- function(input, output,session) {
+server <- function(input, output, session) {
   #
   ## redefinition of `norm.vec.add`
   norm_vec <- reactiveValues(val = NULL)
@@ -543,7 +543,8 @@ server <- function(input, output,session) {
         "# \n",
         "epr.spectrum.data <- \n",
         "  readEPR_Exp_Specs( \n",
-        "    path_to_file = '<path to file>', # define the path to EPR spectrum data \n",
+        "    path_to_file = file.choose(), # select the path to EPR spectrum data by file explorer \n",
+        "    path_to_dsc_par = NULL, \n",
         "    col.names = ",
         switch(
           3 - origin.cond(orig = input$origin),
