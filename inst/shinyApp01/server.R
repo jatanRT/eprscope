@@ -9,7 +9,7 @@ library(magrittr)
 library(ggplot2)
 library(openxlsx)
 #
-server <- function(input, output,session) {
+server <- function(input, output, session) {
   #
   ## redefinition of `norm.vec.add`
   norm_vec <- reactiveValues(val = NULL)
@@ -21,25 +21,43 @@ server <- function(input, output,session) {
     }
   })
   #
+  ## conditions to read either ASCII or binary files
+  ## from EPR spectrometer
+  ascii.cond <- reactiveValues(val = NULL)
+  observe({
+    if (grepl(".*\\.(txt|asc|csv)$",input$SpectrumFile$datapath)) {
+      ascii.cond$val <- 1
+    }
+    if (grepl(".*\\.(DTA|spc)$",input$SpectrumFile$datapath)) {
+      ascii.cond$val <- 0
+    }
+  })
+  #
   ## Load experimental spectrum data frame
   expr_data <- reactive({
     #
-    shiny::req(input$ASCIIfile)
+    shiny::req(input$ParamsFile)
+    shiny::req(input$SpectrumFile)
     #
     spectr.data <-
       readEPR_Exp_Specs(
-        path_to_ASC = input$ASCIIfile$datapath,
+        path_to_file = input$SpectrumFile$datapath,
+        path_to_dsc_par = switch(2 - ascii.cond,NULL,input$ParamsFile$datapath),
         col.names = switch(
-          3-origin.cond(orig = input$origin),
+          3 - origin.cond(orig = input$origin),
           c("index","B_G", "dIepr_over_dB"),
           c("B_G", "dIepr_over_dB"),
-          c("B_mT","dIepr_over_dB")
+          switch(
+            2 - ascii.cond,
+            c("B_mT","dIepr_over_dB"),
+            c("index","B_G", "dIepr_over_dB")
+          )
         ),
         x.unit = switch(
-          3-origin.cond(orig = input$origin),
+          3 - origin.cond(orig = input$origin),
           "G",
           "G",
-          "mT"
+          switch(2 - ascii.cond,"mT","G") ## `.csv` file with "mT", while binary with "G"
         ),
         qValue = input$qValue,
         origin = input$origin,
@@ -48,7 +66,7 @@ server <- function(input, output,session) {
     spectr.data
   })
   #
-  ## B-range/zoom for the EPR spectrum
+  ## B-range/zoom for the EPR spectrum simulation
   output$Bslider <- renderUI({
     df <- expr_data()
     sliderInput(
@@ -87,13 +105,13 @@ server <- function(input, output,session) {
         value = readEPR_param_slct(
           path_to_dsc_par = input$ParamsFile$datapath,
           string = switch(
-            3-origin.cond(orig = input$origin),
+            3 - origin.cond(orig = input$origin),
             "MWFQ",
             "MF",
             "MWFQ"
           ),
           origin = input$origin
-        ) * switch(3-origin.cond(orig = input$origin),1e-9,1,1e-9)
+        ) * switch(3 - origin.cond(orig = input$origin),1e-9,1,1e-9)
       )
     }
     #
@@ -248,6 +266,7 @@ server <- function(input, output,session) {
       for (i in 1:length(nucs.string.list.02)) {
         nucs.list.final[[i]] <-
           lapply(nucs.string.list.02[[i]],convert_str2list)
+          ## `convert_str2list()` see function definition in `global`
       }
       return(nucs.list.final)
     }
@@ -524,27 +543,32 @@ server <- function(input, output,session) {
         "# \n",
         "epr.spectrum.data <- \n",
         "  readEPR_Exp_Specs( \n",
-        "    file.choose(), # select the path to EPR spectrum data by file explorer \n",
+        "    path_to_file = file.choose(), # select the path to EPR spectrum data by file explorer \n",
+        "    path_to_dsc_par = NULL, \n",
         "    col.names = ",
         switch(
           3 - origin.cond(orig = input$origin),
           "c('index','B_G', 'dIepr_over_dB')",
           "c('B_G', 'dIepr_over_dB')",
-          "c('B_mT','dIepr_over_dB')"
+          switch(
+            2 - ascii.cond,
+            "c('B_mT','dIepr_over_dB')",
+            "c('index','B_G', 'dIepr_over_dB')"
+          )
         ),", \n",
         "    x.unit = ",
         switch(
           3 - origin.cond(orig = input$origin),
           "'G'",
           "'G'",
-          "'mT'"
+          switch(2 - ascii.cond,"'mT'","'G'")
         ),", \n",
         "    qValue = ",input$qValue,", \n",
         "    norm.vec.add = c(",paste(norm_vec$val,collapse = ","),"), \n",
         "    origin = '",input$origin,"' \n",
         "  ) \n",
         "# \n",
-        "# arguments of the `eval_sim_EPR_isoFit()` may be varied (refer to documentation) \n",
+        "# arguments of the `eval_sim_EPR_isoFit()` may be varied accordingly (please, refer to documentation) \n",
         "epr.spectrum.sim.fit <- \n",
         "  eval_sim_EPR_isoFit( \n",
         "    data.spectr.expr = epr.spectrum.data, \n",

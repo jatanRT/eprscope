@@ -124,7 +124,7 @@ eval_gFactor <- function(nu.val,
 #' data.file.path <-
 #'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' data.epr <-
-#'   readEPR_Exp_Specs(path_to_ASC = data.file.path,
+#'   readEPR_Exp_Specs(path_to_file = data.file.path,
 #'                     col.names = c("B_G",
 #'                                   "dIepr_over_dB"),
 #'                     qValue = 3500,

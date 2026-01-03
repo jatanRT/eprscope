@@ -1,7 +1,7 @@
 Package: eprscope
 Type: Package
 Title: Processing and Analysis of Electron Paramagnetic Resonance Data and Spectra in Chemistry 
-Version: 0.1.15
+Version: 0.1.16
 Authors@R: person("Ján", "Tarábek",
            email = c("jan.tarabek@uochb.cas.cz",
            "jantar40@protonmail.com"), 
@@ -22,20 +22,17 @@ Description: Processing, analysis and plottting of
              data/spectra for the analytical (quantitative) purposes
              belongs to the package core. The aim is to evaluate rate 
              constants, considering different kinetic models, 
-             to describe the radical reactions. One of the key features 
-             is processing of the universal ASCII text 
-             format (such as '.txt', '.csv', '.asc','.dsc','.par') 
-             from scratch (except the MATLAB EasySpin outputs '.mat').
-             Upon 'reading' (also providing automatic 
-             procedures for the most common EPR spectrometers)
-             the spectral data are transformed into the universal
-             R 'data frame' format. Subsequently, the EPR spectra 
-             can be visualized and are fully consistent either with 
-             the 'ggplot2' package or with the interactive 
-             formats based on 'plotly'. Simulations 
-             and fitting of the isotropic EPR spectra
+             to describe the radical reactions. Following the 'reading' 
+             of EPR spectral data (also providing automatic 
+             procedures for the most common spectrometers/acquisition 
+             softwares) a transformation into the universal
+             R 'data frame' format is supported. Subsequently, 
+             all the EPR spectra can be visualized and are fully 
+             consistent either with the 'ggplot2' package 
+             or with the interactive formats based on 'plotly'. 
+             Simulations and fitting of the isotropic EPR spectra
              can be performed as well. In addition, the advanced 
-             simulation parameters provided by the MATLAB-EasySpin 
+             simulation parameters figured out by the MATLAB-EasySpin 
              toolbox and results from the quantum chemical 
              calculations like g-factor and hyperfine 
              splitting/coupling constants (a/A) can be compared 
@@ -43,7 +40,8 @@ Description: Processing, analysis and plottting of
              the EPR spectra by the most effective way. 
              Reproducible reports of the entire data processing 
              and analysis can be created by the quarto 
-             publishing system. 
+             publishing system, resulting in various formats
+             like '.pdf','.docx','.html'. 
 License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true

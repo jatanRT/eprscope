@@ -1,3 +1,65 @@
+# eprscope 0.1.16
+
+## Date
+
+### Bug Fixes/Critical Updates
+
+* right now the reading of EPR spectrometer binary files (`.DTA`, `.YGF` & `.spc`) 
+  is fully supported throughout the package, however it requires the presence 
+  of `.DSC`/`.dsc` and `.par` files (with instrumental parameters), respectively,
+  please refer to documentation and examples of the main reading functions
+  like `readEPR_Exp_Specs`, `readEPR_Exp_Specs_kin` and `readEPR_Exp_Specs_multif`
+  
+* package dependencies were updated in order to clearly distinguish between
+  the required packages (`Imports`) and the 'suggested' ones, see also
+  the "Installation" section in the `README` file as well as `DESCRIPTION`
+  
+* fixed bug, where the column header for the simulated intensity 
+  of the integrated EPR spectrum was defined as "dIepr_over_dB",
+  which actually corresponds to derivative EPR intensity, therefore
+  it was replaced by the "Intensity_Sim"
+  
+* several fixes and/or updates in documentation (functions, including
+  `Examples` + vignettes)  
+  
+* now, reading of multiple files, using the `readEPR_Exp_Specs_multif`,
+  can differentiate between the true "numeric" values and those containing 
+  "alpha" (character string) in the `names` argument elements,
+  which was not possible by now and induced errors
+  
+* the `qq-plot` returned by the `plot_eval_RA_forFit` doesn't require
+  the `{qqplotr}` anymore, rather it was built completely from scratch, similarly 
+  like in the [`{qqplotr}` package](https://github.com/aloy/qqplotr/tree/master/R),
+  and right now acts as a function, having the parameters/arguments like residuals
+  distribution, confidence level as well as degrees of freedom in the case
+  of Student's t-distribution (see documentation of the `plot_eval_RA_forFit`)
+  
+* fixed bug in the `shinyApp01` (`plot_eval_ExpSim_app`), where the main
+  simulation panel/plot displays an error when no interacting nuclei were specified
+  in the corresponding input panel, the actual message is shown to ask
+  for the system of interacting nuclei to be defined by the user
+
+### Updates
+
+* *Cauchy* distribution and *Kolmogorov-Smirnov* test were added 
+  to the `eval_ABIC_forFit` in order to be more flexible and reliable
+  to estimate the residuals distribution in the combination
+  with the `plot_evbal_RA_forFit` function
+  
+* code in several functions &rarr; cleaned up in order to be more readable  
+  
+### New Functions/Files/Vignettes
+
+* due to the extended reading of spectrometer binaries, several corresponding
+  `.DTA` (+ `.YGF`) as well as `.spc` files were added to demonstrate and test
+  the main reading functions (please, refer to the `Package Datasets` vignette/article)
+  
+* there is a new function `plot_eval_EPRtheo_mltiplet` (including the corresponding 
+  test for that function) which can be applied to quickly check the expected 
+  EPR intensity pattern (without considering a hyperfine coupling) for a group 
+  of equivalent nuclei (e.g. 2 x <sup>14</sup>N) in order to predict intensities 
+  of simulated isotropic EPR spectra
+
 # eprscope 0.1.15
 
 ## 2025-08-11
@@ -586,3 +648,4 @@
 
 * First tagging after main updates in `quantify_EPR_sim` function. Additionally, the main reading functions, 
   `readEPR_...` have been completely rewritten.
+  

@@ -36,25 +36,25 @@ ui <- fluidPage(
              NULL,
              buttonLabel = shiny::div(
                shiny::icon("file-invoice"),
-               "Upload params. file"
+               "Upload params. file (req!)"
              ),
              accept = c(".dsc",".par")
            )),
     column(width = 4,
            fileInput(
-             inputId = "ASCIIfile",
+             inputId = "SpectrumFile",
              NULL,
              buttonLabel = shiny::div(
                shiny::icon("file-waveform"),
                "Upload spectrum data"
              ),
-             accept = c(".asc",".txt",".csv")
+             accept = c(".asc",".txt",".csv",".dta",".spc")
            ))),
   tabsetPanel(
     tabPanel(
       title = "Spectrum Preview",
       #
-      #  --------------------- SIDEBAR --------------------------
+      #  --------------------- SIDEBAR SPECTRUM --------------------------
       #
       sidebarPanel(
         ## Inputs UI
@@ -132,7 +132,7 @@ ui <- fluidPage(
           rows = 4
         )
       ),
-      # ------------------- MAIN ------------------------
+      # ------------------- MAIN SPECTRUM ------------------------
       mainPanel(
         # plot
         shiny::tags$h3(
@@ -167,7 +167,7 @@ ui <- fluidPage(
     tabPanel(
       title = "Simulation",
       #
-      ##  --------------------- SIDEBAR --------------------------
+      ##  --------------------- SIDEBAR SIMULATION --------------------------
       #
       sidebarPanel(
         ## INPUTS UI
@@ -202,7 +202,7 @@ ui <- fluidPage(
             )
           )
         ),
-        uiOutput("Bslider"),
+        uiOutput("Bslider"), ## range for the simulated spectrum
         shiny::tags$h4("Parameter Estimation"),
         numericInput(
           inputId = "giso",
@@ -223,7 +223,7 @@ ui <- fluidPage(
             inputId = "nuclearSys",
             label = shiny::HTML("Enter interacting groups of equivalent nuclei, </br>
                               like: `14N,1,45` &equiv; nucleus,number and A(MHz), </br>
-                              each group on separate line"),
+                              each group on a separate line"),
             rows = 6
           ),
           numericInput(
@@ -269,7 +269,7 @@ ui <- fluidPage(
         )
       ),
       #
-      ## ----------------------- MAIN -----------------------------
+      ## ----------------------- MAIN SIMULATION -----------------------------
       #
       mainPanel(
         # plot
@@ -367,7 +367,7 @@ ui <- fluidPage(
         )
       )
     )
-    #
+    ## here, just go ahead by the `tabpanel` for Simulation Fit
   )
 )
 #

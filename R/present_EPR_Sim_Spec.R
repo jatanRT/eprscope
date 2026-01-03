@@ -81,7 +81,7 @@
 #'   load_data_example(file =
 #'     "TMPD_specelchem_accu_b.asc")
 #' data.spectrum.expr <-
-#'   readEPR_Exp_Specs(path_to_ASC =
+#'   readEPR_Exp_Specs(path_to_file =
 #'              data.file.path,
 #'     col.names = c("B_G",
 #'     "dIepr_over_dB"),

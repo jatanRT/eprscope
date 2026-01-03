@@ -5,14 +5,14 @@
 #'
 #'
 #' @description
-#'  Taking selected instrumental parameters or information
+#'  Extracting selected instrumental parameters or information
 #'  from the \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
 #'  or \code{WinEpr} software, respectively).
 #'
 #'
-#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} or \code{.par} file including
-#'   the instrumental parameters provided by the EPR machine. File path can be also defined
-#'   by the \code{\link[base]{file.path}} function.
+#' @param path_to_dsc_par Character string, path to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"})
+#'   or \code{.par} (\code{orogin = "winepr"}) file, including the instrumental parameters of the recorded spectra
+#'   and provided by the EPR machine. File path can be also defined by the \code{\link[base]{file.path}} function.
 #' @param string Character (vector) string (appeared at the line beginning) within
 #'   the \code{.DSC/.dsc} or \code{.par} file corresponding to instrumental parameter or information.
 #'  Following \strong{strings are defined for all three main acquisition softwares described-above}
