@@ -3,8 +3,8 @@
 Theoretical quantitative kinetic profiles (such as
 concentration/amount/integral intensity) as well as comparison with the
 experimental data for various predefined model reactions involving
-radical(s) (labeled as "R"). Profiles are evaluated by the numeric
-solution of rate equations by using the **O**rdinary **D**ifferential
+radical(s) (labeled as "R"). Profiles are evaluated by numeric solution
+of the rate equations, using the **O**rdinary **D**ifferential
 **E**quations (ODE from the [desolve R
 package](https://desolve.r-forge.r-project.org/index.html)). This
 function is inspired by the [R-bloggers
@@ -54,7 +54,7 @@ eval_kinR_ODE_model(
   | \\(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\\                                             | `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    |
   | \\(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\\                                                  | `"(a=1)A + (r=1)R --> [k1] B"`                         |
 
-  Couple of examples are also given in `Details`. The function is
+  Couple of examples are also given in the `Details`. The function is
   relatively flexible and enables later addition of any other reaction
   schemes describing the EPR time series experiments (YOU MAY ASK
   DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient
@@ -64,8 +64,8 @@ eval_kinR_ODE_model(
   not fixed and can be skipped for the sake of simplicity. If
   `elementary.react = FALSE` (the model reaction is not considered as an
   elementary one), a possible non-integer partial coefficients (e.g.
-  `alpha`,`beta` or `gamma`) must be included in `kin.params` (see also
-  `kin.params` description). For the consecutive model reaction
+  `alpha`,`beta` or `gamma`) must be included in the `kin.params` (see
+  also `kin.params` description). For the consecutive model reaction
   presented above, it applies only to one part/step of the mechanism.
 
 - model.expr.diff:
@@ -80,14 +80,14 @@ eval_kinR_ODE_model(
 
 - elementary.react:
 
-  Logical, if the model reaction should be considered as elementary one,
-  i.e. the stoichiometric coefficients equal to the partial reaction
-  orders. Such reaction proceeds without identifiable intermediate
-  species forming. **Default**: `elementary.react = TRUE`. If
-  `elementary.react = FALSE`, i.e. the `model.react` cannot be
-  considered like an elementary one, one must include the parameterized
-  reaction orders \\\alpha\\, \\\beta\\ or \\\gamma\\ in the
-  `kin.params`, e.g
+  Logical, if the model reaction should be considered as an elementary
+  one, i.e. the stoichiometric coefficients equal to the partial
+  reaction orders. Such reaction proceeds without identifiable
+  intermediate species forming. **Default**: `elementary.react = TRUE`.
+  If `elementary.react = FALSE`, i.e. the `model.react` cannot be
+  considered like an elementary one, the user must include the
+  parameterized reaction orders \\\alpha\\, \\\beta\\ or \\\gamma\\ in
+  the `kin.params`, e.g
   `kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)`. For the
   consecutive model reaction presented above, it applies only to one
   part/step of the mechanism.
@@ -97,15 +97,15 @@ eval_kinR_ODE_model(
   Named numeric vector, containing rate constants as well as initial
   radical or other reactant/product concentration/integral
   intensities/areas...etc. Therefore, a general `qvar` (**q**uantitative
-  **var**iable) is defined which may actually reflect all
+  **var**iable) is defined which may actually reflect all the
   above-mentioned quantities. **Default**:
   `kin.params = c(k1 = 0.001,qvar0R = 0.02)`. The initial values are
   denoted as `qvar0X` (e.g. qvar0R for radical or qvar0A for the
   reactant `A`). The components of `kin.params` depend on `model.react`
   as well as on the `elementary.react`. If `elementary.react = FALSE`
   additional parameters like partial reaction orders (`alpha` and/or
-  `beta` and/or `gamma`) must be defined within the `kin.params`, like
-  summarized in the following table:
+  `beta` and/or `gamma`) must be defined within the `kin.params` (see
+  the examples below in the following table):
 
   |                                                        |                                                                                  |
   |--------------------------------------------------------|----------------------------------------------------------------------------------|
@@ -131,24 +131,28 @@ eval_kinR_ODE_model(
 - time.unit:
 
   Character string, corresponding to time unit like `"s"` (**default**),
-  `"min"` or `"h"`.
+  `"min"` (minutes), `"h"` (hours) or `"ms"` (milliseconds).
 
 - time.interval.model:
 
   Numeric vector, including two values: starting and final
-  time/termination of the model reaction (e.g. `c(0,1800)` in seconds,
-  **default**).
+  time/termination of the model reaction in `time.unit` (e.g.
+  `c(0,1800)` in seconds, **default**).
 
 - time.frame.model:
 
   Numeric value, corresponding to interval time resolution, i.e. the
-  smallest time difference between two consecutive points. The number of
-  points is thus defined by the `time.interval.model` argument:
-  \$\$((Interval\[2\] - Interval\[1\])\\/\\Frame) + 1\$\$ This argument
-  is required to numerically solve the kinetic differential equations by
-  the [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html). For the default
+  smallest time difference between two consecutive points in
+  `time.unit`. Therefore, the number of points is defined by the
+  `time.interval.model` argument: \$\$((Interval\[2\] -
+  Interval\[1\])\\/\\Frame) + 1\$\$ where the \\Interval\[2\]\\,
+  \\Interval\[1\]\\ equal to the 2nd and the 1st element of the
+  `time.interval.model`, respectively; and the \\Frame\\ corresponds to
+  `time.frame.model`. This argument is required to numerically solve the
+  kinetic differential equations by the
+  [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html). For the default
   interval mentioned above, the **default** value reads
-  `time.frame.model = 2` (in seconds).
+  `time.frame.model = 2` (in `time.unit`).
 
 - solve.ode.method:
 
@@ -156,13 +160,13 @@ eval_kinR_ODE_model(
   [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html)), applied to find
   the numeric solution of ODE. **Default**: `solve.ode.method = "lsoda"`
   ([`lsoda`](https://rdrr.io/pkg/deSolve/man/lsoda.html), additional
-  methods, see the `ode` link above).
+  methods, see link for the `ode` function above).
 
 - data.qt.expr:
 
   A data frame object, containing the concentrations/integral
-  intensities/areas under the EPR spectra calculated using the
-  **experimental data** as well as time column. These two essential
+  intensities/areas under the EPR spectra (calculated using the
+  **experimental data**) as well as time column. These two essential
   column headers are described by the character strings like those below
   `time.expr` and `qvar.expr`. The `data.qt.expr` MUST BE USED ONLY IN
   SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED IN THE KINETIC
@@ -210,7 +214,7 @@ processed data, the result is `list` consisting of:
 Applying function **for the fitting** procedure requires
 `model.expr.diff = TRUE` and therefore the result is represented by the
 difference between the integral intensities/areas, calculated using the
-experimental data and those generated by the model.
+experimental data and those generated by the kinetic model.
 
 ## Details
 
@@ -230,18 +234,18 @@ second) is function of temperature (\\T\\), pressure (\\p\\) as well as
 that of concentration of reactants/products. For the reaction example
 shown above it applies (for radical \\\text{R}\\):
 \$\$\text{d}c\_{\text{R}}/\text{d}t = -
-r\\k(T,p)\\c\_{\text{A}}^{\alpha}\\c\_{\text{R}}^{\beta}\$\$ This is
-called rate law, where \\k\\ is the rate constant and its pressure
-dependence is usually small and therefore can be ignored, in the first
-approach. Coefficients \\\alpha\\ and \\\beta\\, in general, correspond
-to fitting parameters, coming from experimental relation of the reaction
-rate and the concentration of reactants/products. These coefficients are
-called **partial reaction orders** or `PROs` and their **sum**
-represents **total order of the reaction**. If the kinetic equation, for
-the reaction, corresponds to its stoichiometry, the reaction is
-described as the elementary one. In EPR spectroscopy, the number of
-radicals is directly proportional to (double) integral of the radical
-EPR spectrum (see also
+r\\k(T,p)\\c\_{\text{A}}^{\alpha}\\c\_{\text{R}}^{\beta}\$\$ where \\k\\
+is the rate constant and its pressure dependence is usually small and
+therefore can be ignored, in the first approach. The coefficients
+\\\alpha\\ and \\\beta\\, in general, correspond to fitting parameters,
+coming from experimental relation of the reaction rate and the
+concentration of reactants/products. These coefficients are called
+**partial reaction orders** or `PROs` and their **sum** represents
+**total order of the reaction**. If the kinetic equation, for the
+reaction, corresponds to its stoichiometry, the reaction is described as
+the elementary one. In EPR spectroscopy, the number of radicals is
+directly proportional to (double) integral of the radical EPR spectrum
+(see also
 [`quantify_EPR_Abs`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Abs.md)).
 Therefore, for a quick evaluation or and/or comparison of different
 kinetic data, one can also obtain the rate constant from the
@@ -251,20 +255,20 @@ series outputs (see also the
 Accordingly, the "R" concentration (or number of radicals/V) can be
 replaced by the corresponding integral. For such a purpose a more
 general **q**uantitative **var**iable (\\qvar\\) is defined. However, in
-such case the unit of \\k\\ must be expressed accordingly (see the
+such case, the unit of \\k\\ must be expressed accordingly (see the
 `kin.params` argument). Quantitative kinetic profiles (such as that
 \\\text{d}c\_{\text{R}}/\text{d}t\\ or
 \\\text{d}(qvar)\_{\text{R}}/\text{d}t\\ described above) are not
-evaluated by common "analytical" integration of the kinetic
+evaluated by the common "analytical" integration of the kinetic
 equations/rate laws, however by numeric solution of the Ordinary
 Differential Equations, [ODE in `{desolve}` R
 package](https://desolve.r-forge.r-project.org/index.html). Therefore,
-higher number of models might be available than for integrated
-differential equations, because for complex mechanisms it's quite often
-highly demanding to obtain the analytical solution by common
-integration. **Several kinetic models for radical reactions** in EPR
-spectroscopy **are predefined and summarized** below (see also the
-`model.react` function argument).
+higher number of models might be available than for analytical
+equations, because for complex mechanisms it's quite often highly
+demanding to obtain the analytical solution by common integration.
+**Several kinetic models for radical reactions** in EPR spectroscopy
+**are predefined and summarized** below (see also the `model.react`
+function argument).
 
 |                                                        |                                                                                                                                                                                                         |
 |--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -274,7 +278,7 @@ spectroscopy **are predefined and summarized** below (see also the
 | `"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B"` | Consecutive reactions, e.g. considering comproportionation (for `(a=2)` and `(r=2)`) + follow-up reversible dimerization (`(b=1)`).                                                                     |
 | `"(r=1)R <==> [k1] [k2] (b=1)B"`                       | Basic reversible radical quenching, e.g. rev. \\\pi-\pi\\ dimerization for `(r=2)` and `(b=1)`.                                                                                                         |
 | `"(a=1)A <==> [k1] [k2] (r=1)R"`                       | Basic reversible radical formation, e.g. from rev. comproportionation of conjugated thiophene oligomers (\\\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}\\, for `(a=2)` and `(r=2)`). |
-| `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    | Radical formation by chemical reaction like oxidation, reduction or spin trapping (if `A` refers to transient radical, which is not visible within the common EPR time scale).                          |
+| `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    | Radical formation by chemical reaction like oxidation, reduction or spin trapping (if the `A` refers to transient radical, which is not visible within the common EPR time scale).                      |
 | `"(a=1)A + (r=1)R --> [k1] B"`                         | General radical quenching by chemical reaction.                                                                                                                                                         |
 
 ## References

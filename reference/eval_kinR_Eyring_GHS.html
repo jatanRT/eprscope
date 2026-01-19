@@ -166,14 +166,14 @@ or <code>"port"</code>
   their corresponding <code>standard errors</code>, <code>t-</code> as well as <code>p-values</code> for the corresponding Eyring model.</p></dd>
 
   <dt>df.model.HS</dt>
-<dd><p>Data frame object, containing model characteristics (including information criteria like AIC and BIC,
+<dd><p>Data frame object, containing model characteristics (including information criteria like the AIC and BIC,
   see also <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code> and <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>).</p></dd>
 
   <dt>cov.df</dt>
 <dd><p>Covariance <code>matrix</code> of a data frame, consisting of rate constant (\(k\) or \(ln\,(k)\,/\,T\),
   depending on the <code>fit.method</code> argument),
   <code>fitted</code> (Eyring fit) and the corresponding residuals as columns/variables. Covariance between
-  the experiment (\(k\) <em>vs</em> \(T\) or \(ln\,(k)\,/\,T\) <em>vs</em> \(1\,/\,T\)) and "Eyring" should be positive
+  the experiment (\(k\) <em>vs</em> \(T\) or \(ln\,(k)\,/\,T\) <em>vs</em> \(1\,/\,T\)) and the "Eyring" should be positive
   and strong for a decent fit. Contrary, the <code>cov</code> between the Eyring fit and residuals should be ideally close to <code>0</code>,
   indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized".
   Therefore, for such a purpose, the correlation is defined as shown below.</p></dd>
@@ -186,7 +186,7 @@ or <code>"port"</code>
   by the <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code> function. A higher positive correlation
   (between the \(k\) <em>vs</em> \(T\) or \(ln\,(k)\,/\,T\) <em>vs</em> \(1\,/\,T\) and the Eyring fit),
   with the value close to <code>1</code>, indicates that the Eyring fit nicely follows the \(k\)-temperature dependence.
-  Contrary, no clear correlation between the residuals and the experiment and/or "Eyring" must be visible.
+  Contrary, no clear correlation between the residuals and the experiment and/or the "Eyring" must be visible.
   Therefore, such correlation should be ideally close to <code>0</code>.</p></dd>
 
   <dt>vec.HS.uncert</dt>

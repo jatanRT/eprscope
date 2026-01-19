@@ -131,7 +131,7 @@ components is available:
 - df.model.HS:
 
   Data frame object, containing model characteristics (including
-  information criteria like AIC and BIC, see also
+  information criteria like the AIC and BIC, see also
   [`eval_kinR_EPR_modelFit`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)
   and
   [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md)).
@@ -142,9 +142,9 @@ components is available:
   (\\k\\ or \\ln\\(k)\\/\\T\\, depending on the `fit.method` argument),
   `fitted` (Eyring fit) and the corresponding residuals as
   columns/variables. Covariance between the experiment (\\k\\ *vs* \\T\\
-  or \\ln\\(k)\\/\\T\\ *vs* \\1\\/\\T\\) and "Eyring" should be positive
-  and strong for a decent fit. Contrary, the `cov` between the Eyring
-  fit and residuals should be ideally close to `0`, indicating no
+  or \\ln\\(k)\\/\\T\\ *vs* \\1\\/\\T\\) and the "Eyring" should be
+  positive and strong for a decent fit. Contrary, the `cov` between the
+  Eyring fit and residuals should be ideally close to `0`, indicating no
   systematic relationship. However, the covariance is scale-depended and
   must be "normalized". Therefore, for such a purpose, the correlation
   is defined as shown below.
@@ -161,7 +161,7 @@ components is available:
   \\ln\\(k)\\/\\T\\ *vs* \\1\\/\\T\\ and the Eyring fit), with the value
   close to `1`, indicates that the Eyring fit nicely follows the
   \\k\\-temperature dependence. Contrary, no clear correlation between
-  the residuals and the experiment and/or "Eyring" must be visible.
+  the residuals and the experiment and/or the "Eyring" must be visible.
   Therefore, such correlation should be ideally close to `0`.
 
 - vec.HS.uncert:

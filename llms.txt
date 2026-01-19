@@ -673,7 +673,8 @@ valuable comments and remarks.
 - [`draw_molecule_by_rcdk()`](https://jatanrt.github.io/eprscope/reference/draw_molecule_by_rcdk.md)
   :
 
-  Draw Molecule by `{rcdk}` Defined by SMILES or SDF
+  Draw Molecule by [rcdk](https://github.com/CDK-R/cdkr) Defined by
+  SMILES or SDF
 
 - [`plot_EPR_Specs()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs.md)
   : Essential Plotting of EPR/ENDOR Spectrum/Spectra

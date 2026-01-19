@@ -1,13 +1,13 @@
 # Radical Kinetic Models Fitted onto Experimental Data
 
 Fitting of the integrals/areas/concentration/...etc. *vs* time relation
-(either from experiment or from integration of the EPR spectral time
+(either from experiment or by integration of the EPR spectral time
 series) in order to find the kinetic parameters (like rate constant,
 \\k\\ as well as (partial) reaction order(s)) of proposed radical
 reaction. Reaction model is taken from the
 [`eval_kinR_ODE_model`](https://jatanrt.github.io/eprscope/reference/eval_kinR_ODE_model.md),
 while the optimization/fitting is provided by the differential
-Levenberg-Marquardt optimization method,
+Levenberg-Marquardt method,
 [`nls.lm`](https://rdrr.io/pkg/minpack.lm/man/nls.lm.html). Because the
 radical concentration is directly proportional to the EPR spectrum
 (double) integral (see the
@@ -15,7 +15,7 @@ radical concentration is directly proportional to the EPR spectrum
 for a quick evaluation and/or comparison of different kinetic data, it
 is possible to obtain the rate constants \\k\\ by the integrals/areas
 *vs* time fit. Therefore, the unit of \\k\\ might be expressed in terms
-of \\\text{s}^{-1}\\ as well as in units of integrals/areas, e.g.
+of \\\text{s}^{-1}\\ including units of integrals/areas, e.g.
 `procedure defined unit` (see
 [p.d.u.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/)),
 depending on the order of reaction (see the `params.guess` argument).
@@ -56,7 +56,7 @@ eval_kinR_EPR_modelFit(
 - time.unit:
 
   Character string, corresponding to time unit like `"s"` (**default**),
-  `"min"` or `"h"`.
+  `"min"` (minutes), `"h"` (hours) or `"ms"` (milliseconds).
 
 - time:
 
@@ -92,7 +92,7 @@ eval_kinR_EPR_modelFit(
   | \\(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\\                                             | `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    |
   | \\(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\\                                                  | `"(a=1)A + (r=1)R --> [k1] B"`                         |
 
-  Couple of examples are also given in `Details`. The function is
+  Couple of examples are also given in the `Details`. The function is
   relatively flexible and enables later addition of any other reaction
   schemes describing the EPR time series experiments (YOU MAY ASK
   DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient
@@ -102,20 +102,20 @@ eval_kinR_EPR_modelFit(
   not fixed and can be skipped for the sake of simplicity. If
   `elementary.react = FALSE` (the model reaction is not considered as an
   elementary one), a possible non-integer partial coefficients (e.g.
-  `alpha`,`beta` or `gamma`) must be included in `kin.params` (see also
-  `kin.params` description). For the consecutive model reaction
+  `alpha`,`beta` or `gamma`) must be included in the `kin.params` (see
+  also `kin.params` description). For the consecutive model reaction
   presented above, it applies only to one part/step of the mechanism.
 
 - elementary.react:
 
-  Logical, if the model reaction should be considered as elementary one,
-  i.e. the stoichiometric coefficients equal to the partial reaction
-  orders. Such reaction proceeds without identifiable intermediate
-  species forming. **Default**: `elementary.react = TRUE`. If
-  `elementary.react = FALSE`, i.e. the `model.react` cannot be
-  considered like an elementary one, one must include the parameterized
-  reaction orders \\\alpha\\, \\\beta\\ or \\\gamma\\ in the
-  `kin.params`, e.g
+  Logical, if the model reaction should be considered as an elementary
+  one, i.e. the stoichiometric coefficients equal to the partial
+  reaction orders. Such reaction proceeds without identifiable
+  intermediate species forming. **Default**: `elementary.react = TRUE`.
+  If `elementary.react = FALSE`, i.e. the `model.react` cannot be
+  considered like an elementary one, the user must include the
+  parameterized reaction orders \\\alpha\\, \\\beta\\ or \\\gamma\\ in
+  the `kin.params`, e.g
   `kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)`. For the
   consecutive model reaction presented above, it applies only to one
   part/step of the mechanism.
@@ -160,18 +160,22 @@ eval_kinR_EPR_modelFit(
   [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html)), applied to find
   the numeric solution of ODE. **Default**: `solve.ode.method = "lsoda"`
   ([`lsoda`](https://rdrr.io/pkg/deSolve/man/lsoda.html), additional
-  methods, see the `ode` link above).
+  methods, see link for the `ode` function above).
 
 - time.frame.model:
 
   Numeric value, corresponding to interval time resolution, i.e. the
-  smallest time difference between two consecutive points. The number of
-  points is thus defined by the `time.interval.model` argument:
-  \$\$((Interval\[2\] - Interval\[1\])\\/\\Frame) + 1\$\$ This argument
-  is required to numerically solve the kinetic differential equations by
-  the [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html). For the default
+  smallest time difference between two consecutive points in
+  `time.unit`. Therefore, the number of points is defined by the
+  `time.interval.model` argument: \$\$((Interval\[2\] -
+  Interval\[1\])\\/\\Frame) + 1\$\$ where the \\Interval\[2\]\\,
+  \\Interval\[1\]\\ equal to the 2nd and the 1st element of the
+  `time.interval.model`, respectively; and the \\Frame\\ corresponds to
+  `time.frame.model`. This argument is required to numerically solve the
+  kinetic differential equations by the
+  [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html). For the default
   interval mentioned above, the **default** value reads
-  `time.frame.model = 2` (in seconds).
+  `time.frame.model = 2` (in `time.unit`).
 
 - time.correct:
 
@@ -228,11 +232,27 @@ List with the following components is available:
 
 - ra:
 
-  Simple residual analysis - a list consisting of 4 elements: diagnostic
+  Simple residual analysis - a list consisting of 5 elements: diagnostic
   plots `plot.rqq()` function, `plot.histDens`; original data frame
   (`df`) with residuals and their corresponding standard deviation
   (`sd`). For details, please refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
+  The last element (`plot.acf`) is a diagnostic graph of the
+  **a**uto**c**orrelation **f**unction
+  [`acf`](https://rdrr.io/r/stats/acf.html) (please, also refer to the
+  `References`). This can be considered as a primary "lie detector" test
+  for the time series/kinetic models and it is defined as a correlation
+  of residuals with its own past and future values vs their
+  corresponding lag. For a decent model, the ACF values (except the
+  first one \\\equiv\\ perfect self-correlation) usually lie within the
+  \\95\\\\\\ confidence band (the light blue area within the `plot.acf`)
+  for all lags. Hence, there is no obvious periodical or whatsoever
+  pattern and only a "white noise" is observed (a small and random ACF
+  distribution within the confidence band). If the user cannot be sure
+  about a lag exceeding the confidence band, please perform the
+  Ljung-Box test [`Box.test`](https://rdrr.io/r/stats/box.test.html) and
+  look for the `p.value`, whether the autocorrelation is less (\>\>
+  0.05) or highly probable (\<\< 0.05).
 
 - df.coeffs:
 
@@ -246,23 +266,26 @@ List with the following components is available:
   parameters/coefficients (see also `df.coeffs` above). The
   corresponding variances (diagonal elements) should be small,
   indicating that the estimates possess a lower uncertainties. The
-  off-diagonal elements show how the two coefficient estimates change
+  off-diagonal elements show, how the two coefficient estimates change
   together. For a decent model they should be as close to `0` as
-  possible. Large values indicate
+  possible. Large values may indicate
   [multicollinearity](https://www.geeksforgeeks.org/machine-learning/how-to-test-for-multicollinearity-in-r/)
   with positive sign suggesting the coefficient are overestimated, and
-  with a negative one, indicating that one coefficient is overestimated,
-  while the other one is underestimated.
+  with a negative one, indicating that one coefficient is over-, while
+  the other one is underestimated.
 
 - cor.coeffs:
 
   Correlation `matrix` of fitted/optimized kinetic
-  parameters/coefficients (see also `df.coeffs` above). Such matrix can
-  be additionally nicely visualized by a correlation `plot` created by
-  the [`corrplot`](https://rdrr.io/pkg/corrplot/man/corrplot.html)
-  function. The off-diagonal elements should be as small as possible
-  (ideally close to `0`) in order to exclude the multicollinearity (see
-  the `cov.coeffs`) and trust the optimized kinetic parameters.
+  parameters/coefficients (see also `df.coeffs` and `cov.coeffs` above).
+  Such matrix can be additionally nicely visualized by a correlation
+  `plot` created by the
+  [`corrplot`](https://rdrr.io/pkg/corrplot/man/corrplot.html) function.
+  The off-diagonal elements should be as small as possible (ideally
+  close to `0`) in order to exclude the multicollinearity (see the
+  `cov.coeffs`) and to trust the output with the optimized kinetic
+  parameters. Larger `cor.ceoffs` (typically \> (0.7,0.8)) indicate
+  potential multicollinearity.
 
 - N.evals:
 
@@ -321,6 +344,18 @@ Gavin HP (2024). “The Levenberg-Marquardt algorithm for nonlinear least
 squares curve-fitting problems.” *Department of civil and environmental
 engineering, Duke University*,
 <https://people.duke.edu/~hpgavin/ce281/lm.pdf>.
+
+Hyndman RJ, Athanasopoulos G (2021). *Forecasting: Principles and
+Practice*, 3rd edition. OTexts: Melbourne, Australia,
+<https://otexts.com/fpp3/>.
+
+geeksforgeeks (2025). "How to Test the Autocorrelation of the Residuals
+in R?",
+<https://www.geeksforgeeks.org/machine-learning/how-to-test-the-autocorrelation-of-the-residuals-in-r/>.
+
+Hanck C, Arnold M, Gerber A, Schmelzer M (2025). *Introduction to
+Econometrics with R*. University of Duisburg-Essen,
+<https://www.econometrics-with-r.org/>.
 
 ## See also
 
@@ -416,6 +451,10 @@ triaryl_model_kin_fit_01$ra$plot.rqq()
 triaryl_model_kin_fit_01$ra$plot.histDens
 
 #
+## autocorrelation (ACF) of residuals vs lag
+triaryl_model_kin_fit_01$ra$plot.acf
+
+#
 ## standard deviation of residuals
 triaryl_model_kin_fit_01$ra$sd
 #> [1] 0.00011872565
@@ -462,6 +501,10 @@ triaryl_model_kin_fit_02$df.coeffs
 ## model than that of the 2nd order (based on
 ## the decrease of EPR intensity/integral)
 triaryl_model_kin_fit_02$ra$plot.rqq()
+
+#
+## autocorrelation (ACF) of residuals vs lag
+triaryl_model_kin_fit_02$ra$plot.acf
 
 #
 ## standard deviation of residuals
