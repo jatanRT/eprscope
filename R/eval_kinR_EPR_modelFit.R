@@ -7,14 +7,14 @@
 #'
 #' @description
 #'    Fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
-#'    or from integration of the EPR spectral time series) in order to find the kinetic parameters
+#'    or by integration of the EPR spectral time series) in order to find the kinetic parameters
 #'    (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
 #'    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
-#'    is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
+#'    is provided by the differential Levenberg-Marquardt method, \code{\link[minpack.lm]{nls.lm}}.
 #'    Because the radical concentration is directly proportional to the EPR spectrum (double)
 #'    integral (see the \code{\link{quantify_EPR_Abs}}), for a quick evaluation and/or comparison of different
 #'    kinetic data, it is possible to obtain the rate constants \eqn{k} by the integrals/areas \emph{vs} time fit.
-#'    Therefore, the unit of \eqn{k} might be expressed in terms of \eqn{\text{s}^{-1}} as well as in units of integrals/areas,
+#'    Therefore, the unit of \eqn{k} might be expressed in terms of \eqn{\text{s}^{-1}} including units of integrals/areas,
 #'    e.g. \code{procedure defined unit} (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
 #'    depending on the order of reaction (see the \code{params.guess} argument).
 #'
@@ -25,6 +25,15 @@
 #'  Gavin HP (2024). “The Levenberg-Marquardt algorithm for nonlinear least squares curve-fitting problems.”
 #'  \emph{Department of civil and environmental engineering, Duke University},
 #'  \url{https://people.duke.edu/~hpgavin/ce281/lm.pdf}.
+#'
+#'  Hyndman RJ, Athanasopoulos G (2021). \emph{Forecasting: Principles and Practice}, 3rd edition.
+#'  OTexts: Melbourne, Australia, \url{https://otexts.com/fpp3/}.
+#'
+#'  geeksforgeeks (2025). "How to Test the Autocorrelation of the Residuals in R?",
+#'  \url{https://www.geeksforgeeks.org/machine-learning/how-to-test-the-autocorrelation-of-the-residuals-in-r/}.
+#'
+#'  Hanck C, Arnold M, Gerber A, Schmelzer M (2025). \emph{Introduction to Econometrics with R}.
+#'  University of Duisburg-Essen, \url{https://www.econometrics-with-r.org/}.
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
@@ -78,25 +87,36 @@
 #'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+#'   \item{ra}{Simple residual analysis - a list consisting of 5 elements: diagnostic plots
 #'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-#'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+#'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+#'   The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
+#'   \code{\link[stats]{acf}} (please, also refer to the \code{References}). This can be considered as a primary
+#'   "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals
+#'   with its own past and future values vs their corresponding lag. For a decent model, the ACF values
+#'   (except the first one \eqn{\equiv} perfect self-correlation) usually lie within
+#'   the \eqn{95\,\%} confidence band (the light blue area within the \code{plot.acf}) for all lags.
+#'   Hence, there is no obvious periodical or whatsoever pattern and only a "white noise" is observed (a small and random
+#'   ACF distribution within the confidence band). If the user cannot be sure about a lag exceeding the confidence band,
+#'   please perform the Ljung-Box test \code{\link[stats]{Box.test}} and look for the \code{p.value}, whether
+#'   the autocorrelation is less (>> 0.05) or highly probable (<< 0.05).}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{cov.coeffs}{Covariance \code{matrix}, consisting of fitted/optimized kinetic parameters/coefficients
 #'   (see also \code{df.coeffs} above). The corresponding variances (diagonal elements) should be small,
 #'   indicating that the estimates possess a lower uncertainties.
-#'   The off-diagonal elements show how the two coefficient estimates change together. For a decent model they should be
-#'   as close to \code{0} as possible. Large values indicate
+#'   The off-diagonal elements show, how the two coefficient estimates change together. For a decent model they should be
+#'   as close to \code{0} as possible. Large values may indicate
 #'   \href{https://www.geeksforgeeks.org/machine-learning/how-to-test-for-multicollinearity-in-r/}{multicollinearity}
 #'   with positive sign suggesting the coefficient are overestimated, and with a negative one, indicating that one coefficient
-#'   is overestimated, while the other one is underestimated.}
+#'   is over-, while the other one is underestimated.}
 #'   \item{cor.coeffs}{Correlation \code{matrix} of fitted/optimized kinetic parameters/coefficients
-#'   (see also \code{df.coeffs} above). Such matrix can be additionally nicely visualized
+#'   (see also \code{df.coeffs} and \code{cov.coeffs} above). Such matrix can be additionally nicely visualized
 #'   by a correlation \code{plot} created by the \code{\link[corrplot]{corrplot}} function.
 #'   The off-diagonal elements should be as small as possible
-#'   (ideally close to \code{0}) in order to exclude the multicollinearity (see the \code{cov.coeffs}) and trust the optimized
-#'   kinetic parameters.}
+#'   (ideally close to \code{0}) in order to exclude the multicollinearity (see the \code{cov.coeffs}) and to trust
+#'   the output with the optimized kinetic parameters. Larger \code{cor.ceoffs} (typically > (0.7,0.8)) indicate
+#'   potential multicollinearity.}
 #'   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
 #'   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
 #'   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
@@ -181,6 +201,9 @@
 #' triaryl_model_kin_fit_01$ra$plot.rqq()
 #' triaryl_model_kin_fit_01$ra$plot.histDens
 #' #
+#' ## autocorrelation (ACF) of residuals vs lag
+#' triaryl_model_kin_fit_01$ra$plot.acf
+#' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_01$ra$sd
 #' #
@@ -214,6 +237,9 @@
 #' ## the decrease of EPR intensity/integral)
 #' triaryl_model_kin_fit_02$ra$plot.rqq()
 #' #
+#' ## autocorrelation (ACF) of residuals vs lag
+#' triaryl_model_kin_fit_02$ra$plot.acf
+#' #
 #' ## standard deviation of residuals
 #' triaryl_model_kin_fit_02$ra$sd
 #' #
@@ -226,9 +252,9 @@
 #'
 #'
 #' @importFrom minpack.lm nls.lm
-#' @importFrom ggplot2 guide_legend stat_qq stat_qq_line geom_histogram geom_hline after_stat
+#' @importFrom ggplot2 guide_legend geom_histogram geom_hline after_stat geom_segment
 eval_kinR_EPR_modelFit <- function(data.qt.expr,
-                                   time.unit = "s",
+                                   time.unit = "s", ## in addition, time in "ms","h","min"
                                    time = "time_s",
                                    qvarR = "Area",
                                    model.react = "(r=1)R --> [k1] B",
@@ -254,18 +280,38 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   p.d.u. <- NULL
   Concentration <- NULL
   residuals <- NULL
+  lag <- NULL
+  ACF <- NULL
   #
   ## convert time if other than `s` appears
+  if (time.unit == "ms") {
+    data.qt.expr[[time]] <- data.qt.expr[[time]] * 0.001
+    time.frame.model <- time.frame.model * 0.001
+  }
   if (time.unit == "min") {
     data.qt.expr[[time]] <- data.qt.expr[[time]] * 60
-    ## rename `time`
-    colnames(data.qt.expr)[colnames(data.qt.expr) == time] <- "time_s"
+    time.frame.model <- time.frame.model * 60
   }
   if (time.unit == "h") {
     data.qt.expr[[time]] <- data.qt.expr[[time]] * 3600
+    time.frame.model <- time.frame.model * 3600
+  }
+  ## right after that rename the 'time' column accordingly
+  if (time.unit != "s") {
     ## rename `time`
     colnames(data.qt.expr)[colnames(data.qt.expr) == time] <- "time_s"
+    #
+    ## `time.frame.model` defined in `time.unit`
+    message(" Please, be aware of the `time.frame.argument` value,\n
+            defined in `time.unit`, which is automatically converted\n
+            into seconds (including the entire `time` variable) !! ")
   }
+  #
+  ## check/re-define the `time` variable
+  ## because the `time` is already converted into "s" +
+  ## + to be sure that following operations proceed without
+  ## an error
+  time <- time %>% `if`(time != "time_s", "time_s", .)
   #
   ## corrected time for CW EPR experiment
   if (isTRUE(time.correct)) {
@@ -289,7 +335,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     data.qt.expr[[time]] <- data.qt.expr[[time]]
   }
   #
-  ## `timeLim.model` definition guess fro 0 to 20% over
+  ## `timeLim.model` definition guess from 0 to 20% over
   ## (an arbitrary value to increase the number of points) the time max
   timeLim.model <- c(0,1.2 * max(data.qt.expr[[time]]))
   #
@@ -300,9 +346,9 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   if (fit.kin.method == "diff-levenmarq") {
       model.react.kin.fit <- nls.lm(
       par = params.guess,
-      lower = params.guess.lower, ## `nls.lm()` defines automatically `-Inf` if `lower = NULL`
-      upper = params.guess.upper, ## `nls.lm()` defines automatically `-Inf` if `upper = NULL`
-      fn = eval_kinR_ODE_model, ## funct. from this package (see docu. of `eval_kinR_ODE_model`)
+      lower = params.guess.lower, ## `nls.lm()` -> automatically `-Inf` if `lower = NULL`
+      upper = params.guess.upper, ## `nls.lm()` -> automatically `+Inf` if `upper = NULL`
+      fn = eval_kinR_ODE_model, ## fn. from this package (see docu. of `eval_kinR_ODE_model`)
       model.react = model.react,
       model.expr.diff = TRUE,
       elementary.react = elementary.react,
@@ -369,7 +415,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     dplyr::select(dplyr::all_of(c(time,qvarR))) %>%
     dplyr::mutate(fitted = model.expr.time$df[["R"]])
   #
-  ## ================== SIMPLE RESIDUAL ANALYSIS/PLOTS ===================
+  ## ============ RESIDUAL ANALYSIS/PLOTS (INCL. AUTOCORRELATION/ACF) =============
   #
   ## add residuals to `new.predict.df`
   new.predict.df$residuals <- stats::residuals(model.react.kin.fit)
@@ -395,6 +441,52 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   #
   df.cov <- stats::cov(df.for.cov.cor)
   df.cor <- stats::cor(df.for.cov.cor)
+  #
+  ## -------------------- Crating the ACF vs. LAG graph ----------------------
+  ## -------------------------- of the residuals ------------------------------
+  #
+  resids.vec <- new.predict.df$residuals # must be sorted by time (ascending)
+  #
+  ## calculating the autocorrelation function (ACF) time series
+  ## diagnostic and the corresponding data frame
+  resids.acf.list <- stats::acf(resids.vec,plot = FALSE)
+  resids.acf.df <- data.frame(
+    ACF = resids.acf.list$acf,
+    lag = resids.acf.list$lag
+  )
+  #
+  ## calculate the point-wise 95% confidence band
+  z_crit <- stats::qnorm(1 - 0.05/2)
+  acf.95.limit <- z_crit / sqrt(length(resids.vec))
+  #
+  ## finally create a plot + output list
+  resids.acf.plot <-
+    ggplot(data = resids.acf.df) +
+    geom_segment(
+      aes(x = lag,xend = lag,y = 0,yend = ACF),
+      color = "darkblue",
+      linewidth = 0.75
+    ) +
+    geom_hline(yintercept = 0,color = "darkorange",linewidth = 1.1) +
+    annotate(
+      geom = "rect",
+      xmin = -Inf,
+      xmax = +Inf,
+      ymin = -acf.95.limit,
+      ymax = acf.95.limit,
+      fill = "blue",
+      alpha = 0.16
+    ) +
+    labs(
+      title = "ACF of Residuals for the Kinetic Model Fit",
+      caption = expression("ACF" %==% "Autocorrelation Function"),
+      x = bquote(italic(Lag)),
+      y = bquote(italic(ACF))
+    ) +
+    plot_theme_In_ticks()
+  #
+  ## ... and the ACF graph list added to final `ra` list (see `fit.summary` below)
+  resids.acf.list.out <- list(plot.acf = resids.acf.plot)
   #
   ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
   #
@@ -514,7 +606,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   fit.summary <- list(
     df = new.predict.df,
     plot = plot.fit,
-    ra = resid.anal.simple.list,
+    ra = append(resid.anal.simple.list,resids.acf.list.out),
     df.coeffs = df.result,
     cov.coeffs = coeff.cov,
     cor.coeffs = coeff.cor,

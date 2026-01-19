@@ -8,8 +8,8 @@
 #' @description
 #'   Theoretical quantitative kinetic profiles (such as concentration/amount/integral intensity)
 #'   as well as comparison with the experimental data for various predefined model reactions involving
-#'   radical(s) (labeled as "R"). Profiles are evaluated by the numeric solution of rate equations
-#'   by using the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
+#'   radical(s) (labeled as "R"). Profiles are evaluated by numeric solution of the rate equations,
+#'   using the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
 #'   the \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).
 #'   This function is inspired by the
 #'   \href{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}{R-bloggers
@@ -30,8 +30,8 @@
 #'   pressure (\eqn{p}) as well as that of concentration of reactants/products.
 #'   For the reaction example shown above it applies (for radical \eqn{\text{R}}):
 #'   \deqn{\text{d}c_{\text{R}}/\text{d}t = - r\,k(T,p)\,c_{\text{A}}^{\alpha}\,c_{\text{R}}^{\beta}}
-#'   This is called rate law, where \eqn{k} is the rate constant and its pressure dependence is usually
-#'   small and therefore can be ignored, in the first approach. Coefficients \eqn{\alpha} and \eqn{\beta},
+#'   where \eqn{k} is the rate constant and its pressure dependence is usually
+#'   small and therefore can be ignored, in the first approach. The coefficients \eqn{\alpha} and \eqn{\beta},
 #'   in general, correspond to fitting parameters, coming from experimental relation of the reaction
 #'   rate and the concentration of reactants/products. These coefficients are called \strong{partial reaction orders}
 #'   or \code{PROs} and their \strong{sum} represents \strong{total order of the reaction}. If the kinetic equation,
@@ -43,14 +43,14 @@
 #'   (see also the \code{\link{eval_kinR_EPR_modelFit}}).
 #'   Accordingly, the "R" concentration (or number of radicals/V) can be replaced by the corresponding integral.
 #'   For such a purpose a more general \strong{q}uantitative \strong{var}iable (\eqn{qvar}) is defined.
-#'   However, in such case the unit of \eqn{k} must be expressed accordingly (see the \code{kin.params} argument).
+#'   However, in such case, the unit of \eqn{k} must be expressed accordingly (see the \code{kin.params} argument).
 #'   Quantitative kinetic profiles (such as that \eqn{\text{d}c_{\text{R}}/\text{d}t}
 #'   or \eqn{\text{d}(qvar)_{\text{R}}/\text{d}t} described above) are not evaluated
-#'   by common "analytical" integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
+#'   by the common "analytical" integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
 #'   Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
-#'   Therefore, higher number of models might be available than for integrated
-#'   differential equations, because for complex mechanisms it's quite often highly demanding to obtain
-#'   the analytical solution by common integration. \strong{Several kinetic models for radical reactions} in EPR spectroscopy
+#'   Therefore, higher number of models might be available than for analytical equations, because for complex mechanisms 
+#'   it's quite often highly demanding to obtain the analytical solution by common integration. 
+#'   \strong{Several kinetic models for radical reactions} in EPR spectroscopy
 #'   \strong{are predefined and summarized} below (see also the \code{model.react} function argument).
 #'   \tabular{ll}{
 #'   \strong{model.react} \tab \strong{Short Description} \cr
@@ -66,7 +66,7 @@
 #'   e.g. from rev. comproportionation of conjugated thiophene oligomers
 #'   (\eqn{\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}}, for \code{(a=2)} and \code{(r=2)}). \cr
 #'   \code{"(a=1)A + (b=1)B --> [k1] (r=1)R"} \tab Radical formation by chemical reaction like oxidation,
-#'   reduction or spin trapping (if \code{A} refers to transient radical, which is not visible within
+#'   reduction or spin trapping (if the \code{A} refers to transient radical, which is not visible within
 #'   the common EPR time scale). \cr
 #'   \code{"(a=1)A + (r=1)R --> [k1] B"} \tab General radical quenching by chemical reaction. \cr
 #'   }
@@ -109,7 +109,7 @@
 #'    \eqn{(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab
 #'    \code{"(a=1)A + (r=1)R --> [k1] B"} \cr
 #'   }
-#'   Couple of examples are also given in \code{Details}. The function is relatively flexible and enables
+#'   Couple of examples are also given in the \code{Details}. The function is relatively flexible and enables
 #'   later addition of any other reaction schemes describing the EPR time series experiments
 #'   (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 #'   or \code{(a=1)}) can be varied within the \code{model.react} character string.
@@ -117,28 +117,28 @@
 #'   string is not fixed and can be skipped for the sake of simplicity.
 #'   If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 #'   a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
-#'   must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
+#'   must be included in the \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
 #'   presented above, it applies only to one part/step of the mechanism.
 #' @param model.expr.diff Logical, difference between the integral intensities/areas under the EPR spectra calculated
 #'   using the experimental data and those generated by the model. By \strong{default} the argument
 #'   is \strong{FALSE} and it is ONLY ACTIVATED (\code{model.expr.diff = TRUE}) IN THE CASE WHEN THE KINETIC MODEL
 #'   FITTING PROCEDURE (see also \code{\link{eval_kinR_EPR_modelFit}} or examples below) IS PERFORMED.
-#' @param elementary.react Logical, if the model reaction should be considered as elementary one,
+#' @param elementary.react Logical, if the model reaction should be considered as an elementary one,
 #'   i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 #'   identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 #'   If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
-#'   one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
+#'   the user must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
 #'   the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}. For the consecutive
 #'   model reaction presented above, it applies only to one part/step of the mechanism.
 #' @param kin.params Named numeric vector, containing rate constants as well as initial radical
 #'   or other reactant/product concentration/integral intensities/areas...etc. Therefore, a general
 #'   \code{qvar} (\strong{q}uantitative \strong{var}iable) is defined which may actually reflect
-#'   all above-mentioned quantities. \strong{Default}: \code{kin.params = c(k1 = 0.001,qvar0R = 0.02)}.
+#'   all the above-mentioned quantities. \strong{Default}: \code{kin.params = c(k1 = 0.001,qvar0R = 0.02)}.
 #'   The initial values are denoted as \code{qvar0X} (e.g. qvar0R for radical or qvar0A for the reactant \code{A}).
 #'   The components of \code{kin.params} depend on \code{model.react} as well as on the \code{elementary.react}.
 #'   If \code{elementary.react = FALSE} additional parameters like partial reaction orders (\code{alpha}
-#'   and/or \code{beta} and/or \code{gamma}) must be defined within the \code{kin.params}, like summarized
-#'   in the following table:
+#'   and/or \code{beta} and/or \code{gamma}) must be defined within the \code{kin.params} (see the examples below
+#'   in the following table):
 #'   \tabular{ll}{
 #'   \strong{model.react} \tab \strong{Essential kin.params components} \cr
 #'   \code{"(r=1)R --> [k1] B"} \tab \code{k1}, \code{qvar0R}, (\code{alpha}) \cr
@@ -162,19 +162,22 @@
 #'   reads: \eqn{\text{s}^{-1}\,(\text{p.d.u.})^{-1}},
 #'   where \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.} stands for the procedure defined units.
 #' @param time.unit Character string, corresponding to time unit like \code{"s"} (\strong{default}),
-#'   \code{"min"} or \code{"h"}.
+#'   \code{"min"} (minutes), \code{"h"} (hours) or \code{"ms"} (milliseconds).
 #' @param time.interval.model Numeric vector, including two values: starting and final time/termination
-#'   of the model reaction (e.g. \code{c(0,1800)} in seconds, \strong{default}).
+#'   of the model reaction in \code{time.unit} (e.g. \code{c(0,1800)} in seconds, \strong{default}).
 #' @param time.frame.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-#'   between two consecutive points. The number of points is thus defined by the \code{time.interval.model} argument:
+#'   between two consecutive points in \code{time.unit}. Therefore, the number of points is defined 
+#'   by the \code{time.interval.model} argument:
 #'   \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
-#'   This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-#'   For the default interval mentioned above, the \strong{default} value reads \code{time.frame.model = 2} (in seconds).
+#'   where the \eqn{Interval[2]}, \eqn{Interval[1]} equal to the 2nd and the 1st element of the \code{time.interval.model},
+#'   respectively; and the \eqn{Frame} corresponds to \code{time.frame.model}. This argument is required to numerically 
+#'   solve the kinetic differential equations by the \code{\link[deSolve]{ode}}. For the default interval mentioned 
+#'   above, the \strong{default} value reads \code{time.frame.model = 2} (in \code{time.unit}).
 #' @param solve.ode.method Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 #'   applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
-#'   (\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).
+#'   (\code{\link[deSolve]{lsoda}}, additional methods, see link for the \code{ode} function above).
 #' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under
-#'   the EPR spectra calculated using the \strong{experimental data} as well as time column. These two essential
+#'   the EPR spectra (calculated using the \strong{experimental data}) as well as time column. These two essential
 #'   column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
 #'   The \code{data.qt.expr} MUST BE USED ONLY IN SUCH CASE WHEN THE EXPERIMENTAL TIME HAS TO BE INCLUDED
 #'   IN THE KINETIC MODEL (e.g. also for THE FITTING of EXPERIMENTAL DATA BY THE KINETIC MODEL).
@@ -203,7 +206,7 @@
 #'   Applying function \strong{for the fitting} procedure
 #'   requires \code{model.expr.diff = TRUE} and therefore the result is represented by the difference between
 #'   the integral intensities/areas, calculated using the experimental data
-#'   and those generated by the model.
+#'   and those generated by the kinetic model.
 #'
 #'
 #' @examples
@@ -301,13 +304,13 @@
 #' @importFrom stringr str_extract
 #' @importFrom tidyr pivot_longer
 eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1 or 2
-                                model.expr.diff = FALSE, ## must TRUE for fit, otherwise `FALSE`
+                                model.expr.diff = FALSE, ## must be TRUE for the fit, otherwise `FALSE`
                                 elementary.react = TRUE, ## can be `FALSE` or `TRUE`
                                 kin.params = c(
                                   k1 = 0.001,
                                   qvar0R = 0.02
                                 ),  ## add. "alpha", "beta", "gamma" for general partial react. orders
-                                time.unit = "s", ## also "min" and "h" can be defined
+                                time.unit = "s", ## also "ms" or "min" or "h" can be defined
                                 time.interval.model = c(0,1800), ## also provided for expr.
                                 time.frame.model = 2, # time resolution in s
                                 solve.ode.method = "lsoda", # numeric integrator method
@@ -325,14 +328,14 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     ## looking for parameterized partial reaction orders
     if (any(grepl("alpha|beta|gamma",names(kin.params)))){
       stop(" The model reaction is considered as an elementary one.\n
-           Parameterized partial reaction orders ('alpha','beta',...)\n
-           must not be included in `kin.params` ! ")
+           Parameterized partial reaction orders like 'alpha','beta',...etc.\n
+           SHOULDN'T BE INCLUDED in the `kin.params` ! ")
     }
   } else {
     if (!any(grepl("alpha|beta|gamma",names(kin.params)))){
-      stop(" The model reaction is not elementary !\n
-           Please, define parametrized partial reaction\n
-           order (such as 'alpha = 1.5') in `kin.params` ! ")
+      stop(" The model reaction is not considered as an elementary one !\n
+           Please, define the parametrized partial reaction\n
+           order(s) (such as 'alpha = 1.5') in the `kin.params` ! ")
     }
   }
   #
@@ -340,8 +343,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   if (!is.null(data.qt.expr)) {
     if (is.null(time.expr) || is.null(qvar.expr)) {
       stop(" Time of the experimental data series (`time.expr`)\n
-           or the corresponding quantitative variable (`qvar.expr`)\n
-           is not specified. Please, define ! ")
+           and/or the corresponding quantitative variable (`qvar.expr`)\n
+           are not specified. Please, define ! ")
     } else {
       time.expr.vec <- data.qt.expr[[time.expr]]
       start.time <- min(time.expr.vec)
@@ -351,8 +354,9 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
   #
   ## time definition for the spectral series
   if (is.null(time.interval.model)){
-    stop(" Please define the hypothetical time interval for the model reaction ! ")
-  } else{
+    stop(" Please define the hypothetical time interval\n
+         `time.interval.model` for the model reaction ! ")
+  } else {
     if (!is.null(data.qt.expr)){
       start.time <- min(time.expr.vec)
       final.time <- max(time.expr.vec)
@@ -361,13 +365,19 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
       final.time <- time.interval.model[2]
     }
     ## time resolution for different spans
-    ## due point limitations of `ODE` solution
+    ## due to the point limitations of the `ODE` solution
     t <- seq(start.time, final.time, by = time.frame.model)
     #
-    if (final.time > 259200){
-      if (time.unit == "s"){
-        stop(" Hypothetical time interval for the model reaction > 3 days.\n
-               Please, define the `time.unit` in minutes or in hours ! ")
+    if (time.unit == "s") {
+      if (final.time > 256000) { 
+        stop(" The hypothetical time interval for the model reaction >= 3 days.\n
+               Please, consider the `time.unit` defined in minutes or hours ! ")
+      }
+    }
+    if (time.unit == "ms") {
+      if (final.time > 12800) {
+        stop(" The hypothetical time interval for the model reaction > 12 s.\n
+               Please, consider the `time.unit` defined in seconds or minutes ! ")
       }
     }
   }
@@ -375,8 +385,8 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     t <- t
   } else {
     if (is.null(time.expr)){
-      stop(" Time vector/column in the original `data.qt.expr`,\n
-           to compare the experiment with the kinetic model, must be defined ! ")
+      stop(" Time vector/column, in order to compare the experiment\n
+           with the kinetic model (in the original `data.qt.expr`) must be defined ! ")
     } else{
       ## time to combine  model + experiment for better "resolution"
       t <- c(t, time.expr.vec)
