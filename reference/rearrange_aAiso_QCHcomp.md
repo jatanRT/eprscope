@@ -1,9 +1,9 @@
 # Rearrangement of \\A\_{iso}\\/\\a\_{iso}\\ from the Quantum Chemical (QCH) Computations
 
 Providing table, based on Gaussian/ORCA/...etc. output text files in
-order to summarize the mean \\A\_{iso}\\/\\a\_{iso}\\ values of groups
-with equivalent nuclei, according to proposed molecular
-structure/symmetry.
+order to summarize the mean \\A\_{iso}\\/\\a\_{iso}\\ values (including
+the sign) of groups with equivalent nuclei, according to proposed
+molecular structure/symmetry.
 
 ## Usage
 
@@ -15,7 +15,7 @@ rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 
 - path_to_ASC:
 
-  Character string, pointing to path of ASCII file (`txt`,`csv`...etc,
+  Character string, pointing to path of ASCII file (`txt`,`csv`,...etc,
   it may be also provided by the
   [`file.path`](https://rdrr.io/r/base/file.path.html) function). The
   file must include characteristic \\A\_{iso}\\ or \\a\_{iso}\\ values.
@@ -37,8 +37,9 @@ rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
 
 ## Value
 
-Data frame/Table of \\A\_{iso}\\/\\a\_{iso}\\ mean values corresponding
-to groups of equivalent nuclei within the structure/symmetry.
+Data frame/Table of \\A\_{iso}\\/\\a\_{iso}\\ mean values (including the
+\\\pm\\ signs) corresponding to groups of equivalent nuclei within the
+structure/symmetry.
 
 ## Details
 
@@ -47,8 +48,8 @@ The \\A\_{iso}\\/\\a\_{iso}\\ values are computed for each atom/nucleus
 with the characteristic `isotopic number/value`), such an entire table
 can be copied e.g. from **Gaussian** output (after
 `'Isotropic Fermi Contact Couplings'` line) or can be constructed from
-**ORCA** (or any other) output, example for such a file structure (from
-**Gaussian**):
+**ORCA** (or any other) output. Example for a required file/table
+structure (e.g. for **Gaussian**):
 
 |             |                  |               |           |               |
 |-------------|------------------|---------------|-----------|---------------|
@@ -58,10 +59,9 @@ can be copied e.g. from **Gaussian** output (after
 | 28          | H(1)             | 16.34971      | 5.83398   | 5.45368       |
 
 The input table/data frame, like the previous one, must include
-following columns: atomic/nucleus number, atom/nucleus notation,
-hyperfine coupling constant in `MHz` and finally hyperfine splitting
-constant in `G`. These columns/variables are essential for the
-evaluation.
+following columns: atomic/nucleus number, atom/nucleus label, hyperfine
+coupling constant in `MHz` and finally hyperfine splitting constant in
+`G`. These columns/variables are essential for the evaluation.
 
 ## See also
 

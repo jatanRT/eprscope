@@ -716,11 +716,11 @@ kableExtra::kbl(symmetry.As.df) %>%
 )
 ```
 
-| NuclearGroup                                  | Aiso_MHz_QCH | aiso_mT_QCH |
-|:----------------------------------------------|-------------:|------------:|
-| 12 x 1H (17,18,19,20,21,22,23,24,25,26,27,28) |        20.25 |        0.72 |
-| 2 x 14N (7,8)                                 |        17.52 |        0.63 |
-| 4 x 1H (13,14,15,16)                          |         5.24 |        0.19 |
+| NuclearGroup                                  | Aiso_MHz | aiso_mT |
+|:----------------------------------------------|---------:|--------:|
+| 12 x 1H (17,18,19,20,21,22,23,24,25,26,27,28) |    20.25 |    0.72 |
+| 2 x 14N (7,8)                                 |    17.52 |    0.63 |
+| 4 x 1H (13,14,15,16)                          |    -5.24 |   -0.19 |
 
 The previous analysis reveals that the highest HF-coupling/splitting
 constants are related to the interaction of unpaired electron with the
@@ -779,7 +779,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.101   0.001   0.102
+#>   0.101   0.000   0.101
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 

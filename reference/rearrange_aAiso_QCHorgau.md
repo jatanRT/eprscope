@@ -1,9 +1,9 @@
 # Rearrangement of \\A\_{iso}\\/\\a\_{iso}\\ from the Gaussian & ORCA Computations
 
 Providing table, specifically from `Gaussian` or `ORCA` output text
-files to summarize the \\A\_{iso}\\/\\a\_{iso}\\ mean values of groups
-with equivalent nuclei, according to proposed molecular
-structure/symmetry (see also the
+files to summarize the \\A\_{iso}\\/\\a\_{iso}\\ mean values (including
+the sign) of groups with equivalent nuclei, according to proposed
+molecular structure/symmetry (see also the
 [`rearrange_aAiso_QCHcomp`](https://jatanrt.github.io/eprscope/reference/rearrange_aAiso_QCHcomp.md)).
 
 ## Usage
@@ -41,9 +41,9 @@ rearrange_aAiso_QCHorgau(
 
 - origin:
 
-  Character string, pointing to origin of DFT EPR calculation parameters
-  \<=\> which software package was used. Only two values are available
-  =\> `"gaussian"` (**default**) or `"orca"`.
+  Character string, pointing to origin of (DFT) EPR calculation
+  parameters \<=\> which software package was used. Only two values are
+  available =\> `"gaussian"` (**default**) or `"orca"`.
 
 - output.text.origin:
 
@@ -60,9 +60,10 @@ rearrange_aAiso_QCHorgau(
 
 ## Value
 
-Data frame/Table of \\A\_{iso}\\/\\a\_{iso}\\ mean values, corresponding
-to groups of proposed equivalent nuclei within the structure/symmetry
-constructed directly from *Gaussian* or *ORCA* output text files.
+Data frame/Table of \\A\_{iso}\\/\\a\_{iso}\\ mean values (including the
+\\\pm\\ signs), corresponding to groups of proposed equivalent nuclei
+within the structure/symmetry constructed directly from *Gaussian* or
+*ORCA* output text files.
 
 ## See also
 
@@ -90,12 +91,18 @@ symmetry.As.df <-
      )
 #
 ## preview
-symmetry.As.df
-#> # A tibble: 3 × 3
-#>   NuclearGroup                                  Aiso_MHz_QCH aiso_mT_QCH
-#>   <chr>                                                <dbl>       <dbl>
-#> 1 12 x 1H (17,18,19,20,21,22,23,24,25,26,27,28)        20.25        0.72
-#> 2 2 x 14N (7,8)                                        17.52        0.63
-#> 3 4 x 1H (13,14,15,16)                                  5.24        0.19
+knitr::kable(
+  symmetry.As.df,
+  caption = "DFT computed hyperfine couplings(Aiso)/splittings(aiso) for the TMPD radical cation."
+)
+#> 
+#> 
+#> Table: DFT computed hyperfine couplings(Aiso)/splittings(aiso) for the TMPD radical cation.
+#> 
+#> |NuclearGroup                                  | Aiso_MHz| aiso_mT|
+#> |:---------------------------------------------|--------:|-------:|
+#> |12 x 1H (17,18,19,20,21,22,23,24,25,26,27,28) |    20.25|    0.72|
+#> |2 x 14N (7,8)                                 |    17.52|    0.63|
+#> |4 x 1H (13,14,15,16)                          |    -5.24|   -0.19|
 
 ```
