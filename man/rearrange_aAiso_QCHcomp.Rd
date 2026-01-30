@@ -17,7 +17,12 @@ with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn
 
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
-correspond to indices of proposed equivalent nuclei in the ASCII text file.}
+correspond to indices of proposed equivalent nuclei in the ASCII text file. In order to figure out the indices
+of the atoms/nuclei to be selected, user may try to open the output file (e.g. \code{.log}, \code{.out}, \code{.txt})
+by any text/code editor like \href{https://www.sublimetext.com/}{Sublimetext},
+\href{https://zed.dev/}{Zed} or \href{https://notepad-plus-plus.org/}{Notepad++} or use
+GUI molecular editors like \href{https://two.avogadro.cc/}{Avogadro2}, \href{https://jmol.sourceforge.net/}{Jmol}
+or \href{https://sites.google.com/site/allouchear/Home/gabedit}{Gabedit}.}
 }
 \value{
 Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the \eqn{\pm} signs) corresponding

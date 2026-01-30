@@ -38,7 +38,12 @@
 #'   with element label (nucleus characterization) and \eqn{A} in MHz as well as \eqn{a} in Gauss.
 #' @param nuclei.list.slct List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 #'   e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
-#'   correspond to indices of proposed equivalent nuclei in the ASCII text file.
+#'   correspond to indices of proposed equivalent nuclei in the ASCII text file. In order to figure out the indices
+#'   of the atoms/nuclei to be selected, user may try to open the output file (e.g. \code{.log}, \code{.out}, \code{.txt})
+#'   by any text/code editor like \href{https://www.sublimetext.com/}{Sublimetext},
+#'   \href{https://zed.dev/}{Zed} or \href{https://notepad-plus-plus.org/}{Notepad++} or use
+#'   GUI molecular editors like \href{https://two.avogadro.cc/}{Avogadro2}, \href{https://jmol.sourceforge.net/}{Jmol}
+#'   or \href{https://sites.google.com/site/allouchear/Home/gabedit}{Gabedit}.
 #'
 #'
 #' @return Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the \eqn{\pm} signs) corresponding
@@ -179,14 +184,13 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @description
-#'   Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize
-#'   the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with equivalent nuclei,
+#'   Providing table, specifically from \code{Gaussian} (version > G.09) or \code{ORCA} (version > 6.0) output text
+#'   files to summarize the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with equivalent nuclei,
 #'   according to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
 #' @param path_to_QCHoutput Character string, corresponding to path of \code{Gaussian} or \code{ORCA} output text files.
-#' @param N.nuclei Numeric value that equals to number of atoms/nuclei within the calculated structure.
 #' @param origin Character string, pointing to origin of (DFT) EPR calculation parameters <=> which
 #'   software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 #'   or \code{"orca"}.
@@ -210,7 +214,6 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #' gauss.file <- unzip(gauss.file.path)
 #' symmetry.As.df <-
 #'   rearrange_aAiso_QCHorgau(gauss.file,
-#'     N.nuclei = 28,
 #'     nuclei.list.slct =
 #'     list(c(7, 8), ## 2 x 14N
 #'          c(13, 14, 15, 16), ## 4 x 1H (aromatic)
@@ -231,7 +234,6 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
-                                     N.nuclei,
                                      nuclei.list.slct,
                                      origin = "gaussian",
                                      output.text.origin = FALSE,
@@ -243,12 +245,35 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
   ## read output files from Gaussian or ORCA + define number (how many) of atoms/nuclei
   ## either of all (the entire molecule) or relevant (in case of ORCA)
   qchfile <- readLines(path_to_QCHoutput)
-  No_nuclei_atoms <- N.nuclei
+  #
+  ## function to check the number of atoms/nulei
+  N.nuclei.fn.extract <-
+    function(line.indicator,file.text.out = qchfile,orig = origin) {
+    #
+    Nnuclei.indicator.line <- line.indicator
+    Nnuclei.check.line.num <- grep(Nnuclei.indicator.line,file.text.out)
+    if (any(grepl("Gauss|GAUSS|gauss",orig))) {
+      Nnuclei.check.line <- file.text.out[Nnuclei.check.line.num[1]] %>%
+        str_split(pattern = "\\s+") %>% unlist()
+      Nnuclei.check <- Nnuclei.check.line[3] %>% as.numeric()
+    }
+    if (any(grepl("ORCA|orca|Orca",orig))) {
+      Nnuclei.check.line <- file.text.out[Nnuclei.check.line.num + 4] %>%
+        str_split(pattern = "\\s+") %>% unlist()
+      Nnuclei.check <- Nnuclei.check.line[length(Nnuclei.check.line)] %>%
+        as.numeric()
+    }
+    #
+    return(Nnuclei.check)
+  }
   #
   ## ============================ READING `qchfiles` ==============================
   #
   ## Processing of output file depending on the origin
   if (any(grepl("Gauss|GAUSS|gauss",origin))) {
+    #
+    ## first of all checking the number of atoms/nuclei
+    No_nuclei_atoms <- N.nuclei.fn.extract(line.indicator = "NAtoms")
     #
     ## number of atoms + 1
     ## because it also reads the header therefore,
@@ -270,7 +295,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     if (isTRUE(output.text.origin)) {
       fileConn <- ifelse(
         is.null(output.text.path),
-        stop(" Please define `.txt` file path to be saved ! "),
+        stop(" Please define the `.txt` file path to be saved ! "),
         file(output.text.path)
       )
       writeLines(qchfile.select.A, fileConn)
@@ -314,6 +339,11 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## in the case of `ORCA` this indicator tells that this is the last part
     ## of `qchfile` with EPR parameters (`ORCA`) has different output file
     ## structure in comparison to `Gaussian`
+    #
+    ## checking the entire number of atoms/nuclei
+    No_nuclei_atoms <-
+      N.nuclei.fn.extract(line.indicator = "ORCA PROPERTY CALCULATIONS")
+    #
     main.indicator.line <- "ELECTRIC AND MAGNETIC HYPERFINE STRUCTURE"
     start.reading.line <- grep(main.indicator.line, qchfile)
     ## Select only part of `qchfile` with EPR params. with all lines down,
@@ -324,7 +354,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     if (isTRUE(output.text.origin)) {
       fileConn <- ifelse(
         is.null(output.text.path),
-        stop(" Please define `.txt` file path to be saved ! "),
+        stop(" Please define the `.txt` file path to be saved ! "),
         file(output.text.path)
       )
       writeLines(qchfile.select, fileConn)
@@ -333,15 +363,13 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## Reading the lines with relevant information
     ## (Atoms + A HF couplings) Atoms/Nuclei
     nucleus.indicator <- "Nucleus"
-    nuclei.lines <- grep(nucleus.indicator, qchfile.select)
+    nuclei.lines.slct <- grep(nucleus.indicator, qchfile.select)
     ## reading only for selected number of atoms
     nuclei.qchfile.select <- lapply(
-      seq(No_nuclei_atoms),
-      function(x) qchfile.select[nuclei.lines][[x]]
-    )
-    ## splitting the strings
-    nuclei.qchfile.select <-
-      str_split(nuclei.qchfile.select, pattern = "\\s+")
+      seq(nuclei.lines.slct),
+      function(x) qchfile.select[nuclei.lines.slct][x]
+    ) %>% str_split(pattern = "\\s+") ## finally splitting the strings
+    #
     ## separate atomic/nucleus number (`n`)
     ## and atomic/nucleus label (`L`) + isotope (`I`)
     nuclei.qchfile.select.n <- sapply(
@@ -364,7 +392,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     )
     nuclei.qchfile.select.I <- sapply(
       seq(nuclei.qchfile.select),
-      function(I) nuclei.qchfile.select[[I]][6]
+      function(I) nuclei.qchfile.select[[I]][8]
     )
     ## combine last two vectors into one like `H(1)` in order to be consistent
     ## with the Gaussian output
@@ -374,23 +402,36 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
       nuclei.qchfile.select.I
     )
     #
+    ## g-value(iso) to calculate a(mT)
+    Dgval.indicator.line <- "Delta-g"
+    Dgval.line.num <- grep(Dgval.indicator.line, qchfile)
+    Dgval.line <- qchfile[Dgval.line.num] %>%
+      str_split(pattern = "\\s+") %>% unlist()
+    Dgval.check <- Dgval.line[length(Dgval.line)] %>%
+      str_extract("[-+]?[0-9]*\\.[0-9]+") %>% as.numeric()
+    ge.iso <- abs(constants::syms$gem)
+    gval.iso.final <- round(ge.iso + Dgval.check,digits = 5)
+    #
     ## A values
     A.indicator <- "A\\(iso\\)" ## there are parenthesis,
     ## therefore one should escape the backslashes
     A.lines <- grep(A.indicator, qchfile.select)
+    #
+    ## the first `A.lines` element is just for the info/summary
+    ## therefore remove it
+    A.lines <- A.lines[-1]
     ## reading only for selected number of atoms
     A.qchfile.select <- lapply(
-      seq(No_nuclei_atoms),
+      seq(nuclei.lines.slct),
       function(y) qchfile.select[A.lines][[y]]
-    )
-    ## splitting the strings
-    A.qchfile.select <- str_split(A.qchfile.select, pattern = "\\s+")
-    ## select the A iso values by [[i]][6] for i-th list/line element
+    ) %>% str_split(pattern = "\\s+") ## finally splitting the strings
+    #
+    ## select the A iso values by [[i]][7] for i-th list/line element
     A.qchfile.select.iso <- sapply(
       seq(A.qchfile.select),
       function(i) {
         str_extract(
-          A.qchfile.select[[i]][6],
+          A.qchfile.select[[i]][7],
           "[-+]?[0-9]*\\.[0-9]+" ## also must select the sign
         )
       }
@@ -401,7 +442,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     A.qchfile.select.iso.mhz <-
       round(as.numeric(A.qchfile.select.iso),digits = 3)
     A.qchfile.select.iso.gauss <-
-      convert_A_MHz_2a(as.numeric(A.qchfile.select.iso)) * 10
+      convert_A_MHz_2a(as.numeric(A.qchfile.select.iso),gval.iso.final) * 10
     #
     table.select.A <- data.frame(
       "No" = nuclei.qchfile.select.n,

@@ -18,7 +18,6 @@ test_that("Hyperfine Coupling(A)/Splitting(a) Constants, for the TMPD Radical Ca
   symmetry.aAs.df <-
     rearrange_aAiso_QCHorgau(
       gauss.file,
-      N.nuclei = 28,
       nuclei.list.slct = nucs.slct
     )
   #

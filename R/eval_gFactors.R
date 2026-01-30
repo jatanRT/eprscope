@@ -267,48 +267,73 @@ eval_gFactor_QCHcomp <- function(path_to_QCHoutput,
   ## reading the output files from GAUSSIAN or ORCA
   qchfile <- readLines(path_to_QCHoutput)
   #
+  ## function to extract Dg from Gaussian or ORCA
+  fn.extract.Delta.g <-
+    function(
+        line.indicator,
+        file.text.out = qchfile,
+        orig = origin,
+        vec.Dg.slct ## vector to select indices
+      ) {
+      #
+      ## condition for origin
+      orig.fn.cond <- function(orig) {
+        if (grepl("Gauss|GAUSS|gauss",orig)) {
+          return(1)
+        }
+        if (grepl("ORCA|orca|Orca",orig)) {
+          return(0)
+        }
+      }
+      #
+      gval.indicator <- line.indicator ## string
+      start.read.line <- grep(gval.indicator,file.text.out)
+      #
+      qchfile.select.g <- switch(
+        2 - orig.fn.cond(orig),
+        file.text.out[start.read.line + 1],
+        file.text.out[start.read.line]
+      )
+      #
+      ## character line split into string elements
+      qchfile.select.g <-
+        str_split(qchfile.select.g,pattern = "[[:space:]]+") %>%
+        unlist()
+      ## select only number strings
+      ## `str_split` results in list therefore it has to be unlisted
+      #
+      vector.string.dg <- c(
+        qchfile.select.g[vec.Dg.slct[1]],
+        qchfile.select.g[vec.Dg.slct[2]],
+        qchfile.select.g[vec.Dg.slct[3]]
+      )
+      #
+      ## numeric values (in `Gaussian` they are already presented in ppm)
+      vector.dg <- switch(
+        2 - orig.fn.cond(orig),
+        as.numeric(as.character(vector.string.dg)),
+        as.numeric(as.character(vector.string.dg)) * 1e6
+      )
+      #
+      return(vector.dg)
+   }
+  #
   ## g-Value indicator based on `origin`
   if (any(grepl("Gauss|GAUSS|gauss",origin))) {
-    gval.indicator <- "g shifts relative"
-    start.read.line <- grep(gval.indicator, qchfile)
-    qchfile.select.g <- qchfile[start.read.line + 1]
     #
-    ## character line split into string elements
-    qchfile.select.g <- str_split(qchfile.select.g,pattern = "[[:space:]]+")
-    #
-    ## select only number strings
-    ## `str_split` results in list therefore it has to be unlisted
-    qchfile.select.g <- unlist(qchfile.select.g)
-    #
-    vector.string.dg <- c(
-      qchfile.select.g[3],
-      qchfile.select.g[5],
-      qchfile.select.g[7]
+    vector.dg <- fn.extract.Delta.g(
+      line.indicator = "g shifts relative",
+      vec.Dg.slct = c(3,5,7)
     )
     #
-    #
-    ## numeric values (in `Gaussian` they are already presented in ppm)
-    vector.dg <- as.numeric(as.character(vector.string.dg))
   }
   if (any(grepl("ORCA|orca|Orca",origin))) {
-    gval.indicator <- "Delta-g"
-    start.read.line <- grep(gval.indicator, qchfile)
-    qchfile.select.g <- qchfile[start.read.line]
     #
-    ## character line split into string elements
-    qchfile.select.g <- str_split(qchfile.select.g,pattern = "[[:space:]]+")
-    #
-    ## select only number strings
-    qchfile.select.g <- unlist(qchfile.select.g) ## `str_split` results in list
-    #
-    vector.string.dg <- c(
-      qchfile.select.g[3],
-      qchfile.select.g[4],
-      qchfile.select.g[5]
+    vector.dg <- fn.extract.Delta.g(
+      line.indicator = "Delta-g",
+      vec.Dg.slct = c(3,4,5)
     )
     #
-    ## numeric values (in `ORCA` they are in form 1e-6)
-    vector.dg <- as.numeric(as.character(vector.string.dg)) * 1e6
   }
   #
   ## Delete `qchfile` => it is not required anymore

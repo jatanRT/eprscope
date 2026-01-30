@@ -454,7 +454,6 @@ In order to compare the theoretical and experimental HFCCs, the function `rearra
 # as for the extraction of g-values is (see above).
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.tmpd.output,
-    N.nuclei = 28,
     nuclei.list.slct =
       list(
         c(7, 8), # 2 x 14N
