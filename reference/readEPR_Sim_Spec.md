@@ -5,7 +5,7 @@ simulated EPR spectrum from different sources like "EasySpin"
 (*Matlab*), "Xenon" (EPR spectrometer), "SimFonia" (WinEPR system) or
 "csv" (comma separated values, universal format or MS Excel). Finally,
 they are automatically converted into data frames by the
-[`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html).
+[`fread`](https://rdrr.io/pkg/data.table/man/fread.html).
 
 ## Usage
 

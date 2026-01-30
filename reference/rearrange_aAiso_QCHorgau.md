@@ -1,9 +1,10 @@
 # Rearrangement of \\A\_{iso}\\/\\a\_{iso}\\ from the Gaussian & ORCA Computations
 
-Providing table, specifically from `Gaussian` or `ORCA` output text
-files to summarize the \\A\_{iso}\\/\\a\_{iso}\\ mean values (including
-the sign) of groups with equivalent nuclei, according to proposed
-molecular structure/symmetry (see also the
+Providing table, specifically from `Gaussian` (version \> G.09) or
+`ORCA` (version \> 6.0) output text files to summarize the
+\\A\_{iso}\\/\\a\_{iso}\\ mean values (including the sign) of groups
+with equivalent nuclei, according to proposed molecular
+structure/symmetry (see also the
 [`rearrange_aAiso_QCHcomp`](https://jatanrt.github.io/eprscope/reference/rearrange_aAiso_QCHcomp.md)).
 
 ## Usage
@@ -11,7 +12,6 @@ molecular structure/symmetry (see also the
 ``` r
 rearrange_aAiso_QCHorgau(
   path_to_QCHoutput,
-  N.nuclei,
   nuclei.list.slct,
   origin = "gaussian",
   output.text.origin = FALSE,
@@ -26,18 +26,20 @@ rearrange_aAiso_QCHorgau(
   Character string, corresponding to path of `Gaussian` or `ORCA` output
   text files.
 
-- N.nuclei:
-
-  Numeric value that equals to number of atoms/nuclei within the
-  calculated structure.
-
 - nuclei.list.slct:
 
   List of numeric values for the rearrangement of selected atoms/nuclei
   according to symmetry, e.g.
   `nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))`
   where the numbers correspond to indices of proposed equivalent nuclei
-  in the ASCII text file.
+  in the ASCII text file. In order to figure out the indices of the
+  atoms/nuclei to be selected, user may try to open the output file
+  (e.g. `.log`, `.out`, `.txt`) by any text/code editor like
+  [Sublimetext](https://www.sublimetext.com/), [Zed](https://zed.dev/)
+  or [Notepad++](https://notepad-plus-plus.org/) or use GUI molecular
+  editors like [Avogadro2](https://two.avogadro.cc/),
+  [Jmol](https://jmol.sourceforge.net/) or
+  [Gabedit](https://sites.google.com/site/allouchear/Home/gabedit).
 
 - origin:
 
@@ -80,7 +82,6 @@ gauss.file.path <-
 gauss.file <- unzip(gauss.file.path)
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.file,
-    N.nuclei = 28,
     nuclei.list.slct =
     list(c(7, 8), ## 2 x 14N
          c(13, 14, 15, 16), ## 4 x 1H (aromatic)

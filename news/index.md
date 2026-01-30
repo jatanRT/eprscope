@@ -520,7 +520,7 @@
   `readEPR_Exp_Specs_kin` as well as `readEPR_Exp_Specs_multif` were
   simplified and now contain the option to take additional arguments
   from the essential
-  [`data.table::fread()`](https://rdatatable.gitlab.io/data.table/reference/fread.html)
+  [`data.table::fread()`](https://rdrr.io/pkg/data.table/man/fread.html)
   which are not predefined in those functions in order to be more
   flexible upon reading
 

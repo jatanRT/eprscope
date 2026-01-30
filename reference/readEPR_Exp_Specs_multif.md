@@ -146,8 +146,7 @@ readEPR_Exp_Specs_multif(
 
   additional arguments specified, see
   also[`readEPR_Exp_Specs`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
-  and
-  [`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html).
+  and [`fread`](https://rdrr.io/pkg/data.table/man/fread.html).
 
 ## Value
 

@@ -1,10 +1,10 @@
 # Read the Experimental ASCII or other Text-Based EPR Data.
 
 This function is based on the
-[`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html)
-with the purpose to read the experimental EPR/ENDOR spectra or other
-original (pre-processed) data, from the EPR spectrometers, in tabular
-ASCII format (such as `.txt`, `.csv` or `.asc`). Default argument values
+[`fread`](https://rdrr.io/pkg/data.table/man/fread.html) with the
+purpose to read the experimental EPR/ENDOR spectra or other original
+(pre-processed) data, from the EPR spectrometers, in tabular ASCII
+format (such as `.txt`, `.csv` or `.asc`). Default argument values
 correspond to data reading from *Xenon* files (see the argument
 `origin`).
 
@@ -67,7 +67,7 @@ readEPR_Exp_Specs(
 - col.names:
 
   Character string vector, inherited from the
-  [`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html),
+  [`fread`](https://rdrr.io/pkg/data.table/man/fread.html),
   corresponding to column/variable names. A safe rule of thumb is to use
   column names incl. physical quantity notation with its unit,
   `Quantity_Unit` like `"B_G"`, `"RF_MHz"`, `"Bsim_mT"` (e.g. pointing
@@ -76,9 +76,9 @@ readEPR_Exp_Specs(
   `col.names` must include `"T(t)ime"` or `"S(s)lice"` character string
   in order to identify the corresponding time column/variable in the
   original ASCII file. The default (for the original
-  [`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html))
-  is to use the header column if present or detected. If not, the name
-  is denoted as `"V"` followed by the column number.
+  [`fread`](https://rdrr.io/pkg/data.table/man/fread.html)) is to use
+  the header column if present or detected. If not, the name is denoted
+  as `"V"` followed by the column number.
 
 - x.id:
 
@@ -164,8 +164,7 @@ readEPR_Exp_Specs(
 - ...:
 
   additional arguments specified (see also the
-  [`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html)
-  function).
+  [`fread`](https://rdrr.io/pkg/data.table/man/fread.html) function).
 
 ## Value
 

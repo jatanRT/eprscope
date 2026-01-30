@@ -33,7 +33,14 @@ rearrange_aAiso_QCHcomp(path_to_ASC, col.names, nuclei.list.slct)
   according to symmetry, e.g.
   `nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))`
   where the numbers correspond to indices of proposed equivalent nuclei
-  in the ASCII text file.
+  in the ASCII text file. In order to figure out the indices of the
+  atoms/nuclei to be selected, user may try to open the output file
+  (e.g. `.log`, `.out`, `.txt`) by any text/code editor like
+  [Sublimetext](https://www.sublimetext.com/), [Zed](https://zed.dev/)
+  or [Notepad++](https://notepad-plus-plus.org/) or use GUI molecular
+  editors like [Avogadro2](https://two.avogadro.cc/),
+  [Jmol](https://jmol.sourceforge.net/) or
+  [Gabedit](https://sites.google.com/site/allouchear/Home/gabedit).
 
 ## Value
 

@@ -62,7 +62,7 @@ readEPR_Exp_Specs_kin(
 - col.names:
 
   Character/String vector inherited from
-  [`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html),
+  [`fread`](https://rdrr.io/pkg/data.table/man/fread.html),
   corresponding to column/variable names. A safe rule of thumb is to use
   column names incl. physical quantity notation with its units,
   `Quantity_Unit` like `"B_G"`, `"RF_MHz"`, `"Bsim_mT"` (e.g. pointing
@@ -117,8 +117,7 @@ readEPR_Exp_Specs_kin(
 
   additional arguments specified, see also the
   [`readEPR_Exp_Specs`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
-  and
-  [`fread`](https://rdatatable.gitlab.io/data.table/reference/fread.html).
+  and [`fread`](https://rdrr.io/pkg/data.table/man/fread.html).
 
 ## Value
 

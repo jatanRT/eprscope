@@ -692,7 +692,6 @@ Therefore, according to numbering shown in Figure
 # as for the extraction of g-values is (see above).
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.tmpd.output,
-    N.nuclei = 28,
     nuclei.list.slct =
       list(
         c(7, 8), # 2 x 14N
@@ -779,7 +778,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.101   0.000   0.101
+#>   0.102   0.000   0.102
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
