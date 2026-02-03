@@ -42,9 +42,10 @@ Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the \eqn{
   from \emph{Gaussian} or \emph{ORCA} output text files.
 }
 \description{
-Providing table, specifically from \code{Gaussian} (version > G.09) or \code{ORCA} (version > 6.0) output text
-  files to summarize the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with equivalent nuclei,
-  according to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
+Providing table, specifically from \code{Gaussian} (version \eqn{\geq} G.09) or \code{ORCA} (version \eqn{\geq} 5.0)
+  output text files to summarize the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with
+  equivalent nuclei, according to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
+  For each group, a mean \eqn{A/a} value is returned.
 }
 \examples{
 ## built-in file and path

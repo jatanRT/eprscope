@@ -184,9 +184,10 @@ rearrange_aAiso_QCHcomp <- function(path_to_ASC,
 #'
 #'
 #' @description
-#'   Providing table, specifically from \code{Gaussian} (version > G.09) or \code{ORCA} (version > 6.0) output text
-#'   files to summarize the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with equivalent nuclei,
-#'   according to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
+#'   Providing table, specifically from \code{Gaussian} (version \eqn{\geq} G.09) or \code{ORCA} (version \eqn{\geq} 5.0)
+#'   output text files to summarize the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with
+#'   equivalent nuclei, according to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
+#'   For each group, a mean \eqn{A/a} value is returned.
 #'
 #'
 #' @inheritParams rearrange_aAiso_QCHcomp
@@ -265,7 +266,13 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     }
     #
     return(Nnuclei.check)
-  }
+    }
+  #
+  ## warning/stop string if index/indices > total number of atoms/nuclei
+  stop.check.indices <-
+    " One or more indices of the selected atoms/nuclei\n
+           is/are higher than the total number of atoms/nuclei.\n
+           Please, check your optimized radical structure ! "
   #
   ## ============================ READING `qchfiles` ==============================
   #
@@ -279,6 +286,13 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## because it also reads the header therefore,
     ## there must be an additional line
     No_nuclei_atoms_mod <- No_nuclei_atoms + 1
+    #
+    ## checking if the atoms/nuclei indices are higher
+    ## than the total number
+    nuclei_indices <- unlist(nuclei.list.slct)
+    if (any(nuclei_indices > No_nuclei_atoms)) {
+      stop(stop.check.indices)
+    }
     #
     ## indicator (String) to select specific lines (indices) from `qchfile`
     indicator.line <- "Fermi Contact"
@@ -340,9 +354,33 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     ## of `qchfile` with EPR parameters (`ORCA`) has different output file
     ## structure in comparison to `Gaussian`
     #
+    ## checking the ORCA version
+    version.line <- grep("Program Version",qchfile)
+    version.line.strings <- qchfile[version.line] %>%
+      str_split("\\s+") %>% unlist() ## as vector
+    version.line.string.vec <- version.line.strings[4] %>%
+      str_split("\\.") %>% unlist() ## as vector
+    version.num <- as.numeric(version.line.string.vec[1])
+    ## condition
+    orca.vers.fn <- function(version) {
+      if (version == 5) {
+        return(0)
+      }
+      if (version == 6) {
+        return(1)
+      }
+    }
+    #
     ## checking the entire number of atoms/nuclei
     No_nuclei_atoms <-
       N.nuclei.fn.extract(line.indicator = "ORCA PROPERTY CALCULATIONS")
+    #
+    ## checking if the atoms/nuclei indices are higher
+    ## than the total number
+    nuclei_indices <- unlist(nuclei.list.slct)
+    if (any(nuclei_indices > No_nuclei_atoms)) {
+      stop(stop.check.indices)
+    }
     #
     main.indicator.line <- "ELECTRIC AND MAGNETIC HYPERFINE STRUCTURE"
     start.reading.line <- grep(main.indicator.line, qchfile)
@@ -376,7 +414,8 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
       seq(nuclei.qchfile.select),
       function(n) {
         str_extract(
-          nuclei.qchfile.select[[n]][3],
+          ## index dependent on ORCA version
+          nuclei.qchfile.select[[n]][switch(2 - orca.vers.fn(version = version.num),3,2)],
           "[[:digit:]]+"
         )
       }
@@ -385,14 +424,17 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
       seq(nuclei.qchfile.select),
       function(L) {
         str_extract(
-          nuclei.qchfile.select[[L]][3],
+          ## index dependent on ORCA version
+          nuclei.qchfile.select[[L]][switch(2 - orca.vers.fn(version = version.num),3,2)],
           "[[:alpha:]]+"
         )
       }
     )
     nuclei.qchfile.select.I <- sapply(
       seq(nuclei.qchfile.select),
-      function(I) nuclei.qchfile.select[[I]][8]
+      function(I) {
+        nuclei.qchfile.select[[I]][switch(2 - orca.vers.fn(version = version.num),8,5)]
+      }
     )
     ## combine last two vectors into one like `H(1)` in order to be consistent
     ## with the Gaussian output
@@ -431,7 +473,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
       seq(A.qchfile.select),
       function(i) {
         str_extract(
-          A.qchfile.select[[i]][7],
+          A.qchfile.select[[i]][switch(2 - orca.vers.fn(version = version.num),7,6)],
           "[-+]?[0-9]*\\.[0-9]+" ## also must select the sign
         )
       }
