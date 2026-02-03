@@ -1,11 +1,12 @@
 # Rearrangement of \\A\_{iso}\\/\\a\_{iso}\\ from the Gaussian & ORCA Computations
 
-Providing table, specifically from `Gaussian` (version \> G.09) or
-`ORCA` (version \> 6.0) output text files to summarize the
+Providing table, specifically from `Gaussian` (version \\\geq\\ G.09) or
+`ORCA` (version \\\geq\\ 5.0) output text files to summarize the
 \\A\_{iso}\\/\\a\_{iso}\\ mean values (including the sign) of groups
 with equivalent nuclei, according to proposed molecular
 structure/symmetry (see also the
 [`rearrange_aAiso_QCHcomp`](https://jatanrt.github.io/eprscope/reference/rearrange_aAiso_QCHcomp.md)).
+For each group, a mean \\A/a\\ value is returned.
 
 ## Usage
 
