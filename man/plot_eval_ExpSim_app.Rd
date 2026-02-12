@@ -9,13 +9,13 @@ plot_eval_ExpSim_app()
 \description{
 Launch this app in order to quickly check recorded individual EPR spectra with their instrumental parameters.
   Additionally, you may try to interactively simulate the isotropic continuous wave (CW) EPR spectra
-  using the simple graphical user interface based on the \href{https://shiny.posit.co/}{R Shiny} and several
+  using the simple graphical user interface (GUI) based on the \href{https://shiny.posit.co/}{R Shiny} and several
   functions from the package (see \code{Details}).
 }
 \details{
 Based on the acquisition EPR spectrum \code{origin}, by using the graphical user interface, one can load a spectrum
   and its instrumental/experimental parameters by the \code{\link{readEPR_Exp_Specs}} as well as
-  by the \code{\link{readEPR_params_tabs}} functions. Such spectrum is immediately depicted in the interactive
+  by the \code{\link{readEPR_params_tabs}} functions, respectively. Such spectrum is immediately depicted in the interactive
   \code{{plotly}} format by \code{\link{plot_EPR_Specs2D_interact}}. The magnetic flux density \eqn{B}
   of the EPR spectrum can be converted from \code{mT} to \code{G} (or vice versa) and to \code{g}-values.
   Moreover, if the compound/radical structure is already known, one can display its structure by entering

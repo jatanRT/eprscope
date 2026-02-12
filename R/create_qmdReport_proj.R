@@ -129,6 +129,34 @@
 #'   to the \href{https://quarto.org/docs/extensions/listing-journals.html}{Quarto Jornal Articles Extenstion}
 #'   for details of the installation and usage.
 #'
+#'   Users, applying a \code{git} version control of the project/report, may synchronize their entire directory
+#'   (as well as the corresponding changes) with the free remote services like \href{https://github.com/}{Github}
+#'   or \href{https://about.gitlab.com/}{Gitlab}. If you've already set up your service account, create either \code{public}
+#'   or \code{private} repository (WITHOUT \code{.gitignore}, \code{README} and \code{License} !!) via desired web browser.
+#'   Afterwards, on your desktop/workstation, populate the file/folder structure, by the actual function (refer also
+#'   to the \code{Examples}), however DON'T FORGET to put \code{git.init} argument to \code{TRUE}! In the (IDE) \code{terminal}
+#'   (NOT IN THE R CONSOLE) set the path to your project (if it is not already set, check by \code{pwd}) and execute
+#'   the following commands step-by-step:
+#'   \enumerate{
+#'   \item \code{git remote add origin https://<service>/<user>/<remote repo name>.git}, where the \code{url} address
+#'   can be copied by the clicking on the \code{< > Code} button, when viewing the repository via the web browser.
+#'
+#'   \item \code{git branch -M main}, which renames the local \code{master} branch in order to match the remote name,
+#'   depending on the applied service. Please check the remote main/master branch name and adjust accordingly.
+#'
+#'   \item \code{git push -u origin main}. Before executing this command, please make sure that you've already created
+#'   a "Personal Access Token" (PAT) in your service account via the web browser, because it will be required upon
+#'   the command execution.
+#'   Refer to the
+#'   \href{https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens}{Github}
+#'   or \href{https://docs.gitlab.com/user/profile/personal_access_tokens/}{Gitlab} documentation.
+#'   }
+#'   The strength of the local git - remote Github repositories synchronization lies
+#'   in the
+#'   \href{https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content}{seamless connection/integration}
+#'   of your \code{Zenodo} and \code{Github} accounts in order to archive and point to the entire data
+#'   (\code{DOI} is automatically created) for a publication.
+#'
 #'
 #'
 #' @references
@@ -151,6 +179,10 @@
 #'  Allaire JJ, Teague C, Scheidegger C, Xie Y, Dervieux C (2024). \emph{Quarto}.
 #'  \url{https://doi.org/10.5281/zenodo.5960048}, v1.5, \url{https://github.com/quarto-dev/quarto-cli}.
 #'
+#'  Vanderhaeghe F (2022). "Set up Zenodo - Github Integration. How to configure Zenodo to publish each new release of a GitHub repository?",
+#'  \url{https://tutorials.inbo.be/tutorials/git_zenodo/}.
+#'
+#'
 #'
 #'
 #' @param title Character string, corresponding to title of the report like the \strong{default} one:
@@ -158,11 +190,12 @@
 #'   \code{.pdf}, \code{.html} and \code{.docx}.
 #' @param path_to_wd Character string, setting up the path for \strong{w}orking \strong{d}irectory,
 #'   i.e. the parent one, where the project with \code{wd.subdir.name} will be stored (see also \code{Details}).
+#'   This usually corresponds to a workstation directory/repository where all your projects "live".
 #'   Alternatively, the \code{\link[base]{file.path}} can be used to set the path.
 #'   \strong{Default}: \code{path_to_wd = "."}, referring to actual directory.
 #' @param wd.subdir.name Character string, pointing to \code{subdirectory} (name, see also \code{path_to_wd}),
-#'   under which the entire report project is stored. \strong{This actually corresponds to main project directory}.
-#'   \strong{Default}: \code{wd.subdir.name = "Project_Report"}.
+#'   under which the entire report project is stored in \code{path_to_wd}.
+#'   \strong{This actually corresponds to main project directory}. \strong{Default}: \code{wd.subdir.name = "Project_Report"}.
 #' @param citation.style Character string, referring to citation style used for \code{References} and citations
 #'   in the main \code{.qmd} document, which inherits the name from \code{wd.subdir.name}. This file
 #'   is automatically created under the \code{subdirectory}. The argument must be added in the form
@@ -183,12 +216,15 @@
 #'   \strong{Default}: \code{git.init = FALSE}. The latter is meant to be an option either for novice users
 #'   or for those who do not want track changes within the repository by the \code{git}. Instead, they prefer
 #'   cloud storage services like
-#'   \href{https://nextcloud.com/}{nexcloud}/\href{https://owncloud.com/}{owncloud}/
-#'   \href{https://osf.io/}{Open Science Framework}...etc., supporting version control (history of changes).
+#'   \href{https://nextcloud.com/}{Nexcloud}/\href{https://owncloud.com/}{Owncloud},
+#'   \href{https://osf.io/}{Open Science Framework}, \href{https://www.about.google/drive/}{Google Drive}...etc.,
+#'   supporting version control (history of changes). For those, who want to track changes by the \code{git} and synchronize
+#'   them with a remote repository like \href{https://github.com/}{Github} or \href{https://about.gitlab.com/}{Gitlab},
+#'   there is a short instruction summary in \code{Details}.
 #'
 #'
-#' @return File-folder structure ("tree") for the basic Quarto reproducible report with R, which may be used
-#'   for data processing and analysis in Electron Paramagnetic Resonance (EPR).
+#' @return File-folder structure ("tree") for the basic \href{https://quarto.org/docs/guide/}{Quarto report with R},
+#'   which may be used for the reproducible data processing and analysis in Electron Paramagnetic Resonance (EPR) studies.
 #'
 #'
 #' @examples
@@ -198,13 +234,29 @@
 #' create_qmdReport_proj()
 #' #
 #' ## creating report with the specified citation style (ACS)
-#' ## and with versioning controlled by the `git` within
-#' ## the RStudio (Rproj.init = TRUE)
+#' ## and with versioning, controlled by the `git` within
+#' ## the `RStudio` (Rproj.init = TRUE)
 #' create_qmdReport_proj(
 #'   citation.style =
 #'     "https://www.zotero.org/styles/american-chemical-society",
 #'   git.init = TRUE
 #' )
+#' #
+#' ## the following command will create "My_Lovely_EPR_Project"
+#' ## subdirectory/repository under the "Projects" (dir) entitled
+#' ## "EPR Studies on N-Centered Organic Radicals" using
+#' ## the `Positron` IDE (i.e. without `Rproj` initialization)
+#' create_qmdReport_proj(
+#'   path_to_wd = "/home/Username/Projects",
+#'   wd.subdir.name = "My_Lovely_EPR_Project",
+#'   title = "EPR Studies on N-Centered Organic Radicals",
+#'   Rproj.init = FALSE
+#' )
+#' #
+#' ## afterwards, the `README.md` file can be generated by rendering
+#' ## the corresponding `.Rmd`, in the newly populated repo,
+#' ## which is automatically created upon executing
+#' ## the previous command
 #' }
 #'
 #'
