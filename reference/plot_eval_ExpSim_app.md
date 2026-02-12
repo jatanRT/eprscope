@@ -3,7 +3,7 @@
 Launch this app in order to quickly check recorded individual EPR
 spectra with their instrumental parameters. Additionally, you may try to
 interactively simulate the isotropic continuous wave (CW) EPR spectra
-using the simple graphical user interface based on the [R
+using the simple graphical user interface (GUI) based on the [R
 Shiny](https://shiny.posit.co/) and several functions from the package
 (see `Details`).
 
@@ -21,8 +21,8 @@ instrumental/experimental parameters by the
 [`readEPR_Exp_Specs`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
 as well as by the
 [`readEPR_params_tabs`](https://jatanrt.github.io/eprscope/reference/readEPR_params_tabs.md)
-functions. Such spectrum is immediately depicted in the interactive
-`{plotly}` format by
+functions, respectively. Such spectrum is immediately depicted in the
+interactive `{plotly}` format by
 [`plot_EPR_Specs2D_interact`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs2D_interact.md).
 The magnetic flux density \\B\\ of the EPR spectrum can be converted
 from `mT` to `G` (or vice versa) and to `g`-values. Moreover, if the

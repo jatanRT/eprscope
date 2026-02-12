@@ -45,17 +45,18 @@ create_qmdReport_proj(
 
   Character string, setting up the path for **w**orking **d**irectory,
   i.e. the parent one, where the project with `wd.subdir.name` will be
-  stored (see also `Details`). Alternatively, the
-  [`file.path`](https://rdrr.io/r/base/file.path.html) can be used to
-  set the path. **Default**: `path_to_wd = "."`, referring to actual
+  stored (see also `Details`). This usually corresponds to a workstation
+  directory/repository where all your projects "live". Alternatively,
+  the [`file.path`](https://rdrr.io/r/base/file.path.html) can be used
+  to set the path. **Default**: `path_to_wd = "."`, referring to actual
   directory.
 
 - wd.subdir.name:
 
   Character string, pointing to `subdirectory` (name, see also
-  `path_to_wd`), under which the entire report project is stored. **This
-  actually corresponds to main project directory**. **Default**:
-  `wd.subdir.name = "Project_Report"`.
+  `path_to_wd`), under which the entire report project is stored in
+  `path_to_wd`. **This actually corresponds to main project directory**.
+  **Default**: `wd.subdir.name = "Project_Report"`.
 
 - citation.style:
 
@@ -93,15 +94,20 @@ create_qmdReport_proj(
   latter is meant to be an option either for novice users or for those
   who do not want track changes within the repository by the `git`.
   Instead, they prefer cloud storage services like
-  [nexcloud](https://nextcloud.com/)/[owncloud](https://owncloud.com/)/
-  [Open Science Framework](https://osf.io/)...etc., supporting version
-  control (history of changes).
+  [Nexcloud](https://nextcloud.com/)/[Owncloud](https://owncloud.com/),
+  [Open Science Framework](https://osf.io/), [Google
+  Drive](https://www.about.google/drive/)...etc., supporting version
+  control (history of changes). For those, who want to track changes by
+  the `git` and synchronize them with a remote repository like
+  [Github](https://github.com/) or [Gitlab](https://about.gitlab.com/),
+  there is a short instruction summary in `Details`.
 
 ## Value
 
-File-folder structure ("tree") for the basic Quarto reproducible report
-with R, which may be used for data processing and analysis in Electron
-Paramagnetic Resonance (EPR).
+File-folder structure ("tree") for the basic [Quarto report with
+R](https://quarto.org/docs/guide/), which may be used for the
+reproducible data processing and analysis in Electron Paramagnetic
+Resonance (EPR) studies.
 
 ## Details
 
@@ -235,6 +241,43 @@ Articles
 Extenstion](https://quarto.org/docs/extensions/listing-journals.html)
 for details of the installation and usage.
 
+Users, applying a `git` version control of the project/report, may
+synchronize their entire directory (as well as the corresponding
+changes) with the free remote services like
+[Github](https://github.com/) or [Gitlab](https://about.gitlab.com/). If
+you've already set up your service account, create either `public` or
+`private` repository (WITHOUT `.gitignore`, `README` and `License` !!)
+via desired web browser. Afterwards, on your desktop/workstation,
+populate the file/folder structure, by the actual function (refer also
+to the `Examples`), however DON'T FORGET to put `git.init` argument to
+`TRUE`! In the (IDE) `terminal` (NOT IN THE R CONSOLE) set the path to
+your project (if it is not already set, check by `pwd`) and execute the
+following commands step-by-step:
+
+1.  `git remote add origin https://<service>/<user>/<remote repo name>.git`,
+    where the `url` address can be copied by the clicking on the
+    `< > Code` button, when viewing the repository via the web browser.
+
+2.  `git branch -M main`, which renames the local `master` branch in
+    order to match the remote name, depending on the applied service.
+    Please check the remote main/master branch name and adjust
+    accordingly.
+
+3.  `git push -u origin main`. Before executing this command, please
+    make sure that you've already created a "Personal Access Token"
+    (PAT) in your service account via the web browser, because it will
+    be required upon the command execution. Refer to the
+    [Github](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+    or
+    [Gitlab](https://docs.gitlab.com/user/profile/personal_access_tokens/)
+    documentation.
+
+The strength of the local git - remote Github repositories
+synchronization lies in the [seamless
+connection/integration](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content)
+of your `Zenodo` and `Github` accounts in order to archive and point to
+the entire data (`DOI` is automatically created) for a publication.
+
 ## References
 
 Alston JM, Rick JA (2021). “A Beginner's Guide to Conducting
@@ -262,6 +305,10 @@ Allaire JJ, Teague C, Scheidegger C, Xie Y, Dervieux C (2024). *Quarto*.
 <https://doi.org/10.5281/zenodo.5960048>, v1.5,
 <https://github.com/quarto-dev/quarto-cli>.
 
+Vanderhaeghe F (2022). "Set up Zenodo - Github Integration. How to
+configure Zenodo to publish each new release of a GitHub repository?",
+<https://tutorials.inbo.be/tutorials/git_zenodo/>.
+
 ## Examples
 
 ``` r
@@ -271,13 +318,29 @@ if (FALSE) { # \dontrun{
 create_qmdReport_proj()
 #
 ## creating report with the specified citation style (ACS)
-## and with versioning controlled by the `git` within
-## the RStudio (Rproj.init = TRUE)
+## and with versioning, controlled by the `git` within
+## the `RStudio` (Rproj.init = TRUE)
 create_qmdReport_proj(
   citation.style =
     "https://www.zotero.org/styles/american-chemical-society",
   git.init = TRUE
 )
+#
+## the following command will create "My_Lovely_EPR_Project"
+## subdirectory/repository under the "Projects" (dir) entitled
+## "EPR Studies on N-Centered Organic Radicals" using
+## the `Positron` IDE (i.e. without `Rproj` initialization)
+create_qmdReport_proj(
+  path_to_wd = "/home/Username/Projects",
+  wd.subdir.name = "My_Lovely_EPR_Project",
+  title = "EPR Studies on N-Centered Organic Radicals",
+  Rproj.init = FALSE
+)
+#
+## afterwards, the `README.md` file can be generated by rendering
+## the corresponding `.Rmd`, in the newly populated repo,
+## which is automatically created upon executing
+## the previous command
 } # }
 
 ```

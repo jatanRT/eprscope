@@ -124,14 +124,15 @@
 <dt id="arg-path-to-wd">path_to_wd<a class="anchor" aria-label="anchor" href="#arg-path-to-wd"></a></dt>
 <dd><p>Character string, setting up the path for <strong>w</strong>orking <strong>d</strong>irectory,
 i.e. the parent one, where the project with <code>wd.subdir.name</code> will be stored (see also <code>Details</code>).
+This usually corresponds to a workstation directory/repository where all your projects "live".
 Alternatively, the <code><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></code> can be used to set the path.
 <strong>Default</strong>: <code>path_to_wd = "."</code>, referring to actual directory.</p></dd>
 
 
 <dt id="arg-wd-subdir-name">wd.subdir.name<a class="anchor" aria-label="anchor" href="#arg-wd-subdir-name"></a></dt>
 <dd><p>Character string, pointing to <code>subdirectory</code> (name, see also <code>path_to_wd</code>),
-under which the entire report project is stored. <strong>This actually corresponds to main project directory</strong>.
-<strong>Default</strong>: <code>wd.subdir.name = "Project_Report"</code>.</p></dd>
+under which the entire report project is stored in <code>path_to_wd</code>.
+<strong>This actually corresponds to main project directory</strong>. <strong>Default</strong>: <code>wd.subdir.name = "Project_Report"</code>.</p></dd>
 
 
 <dt id="arg-citation-style">citation.style<a class="anchor" aria-label="anchor" href="#arg-citation-style"></a></dt>
@@ -161,14 +162,17 @@ THE R CONSOLE PROMPT and select whether to commit your changes immediately or la
 <strong>Default</strong>: <code>git.init = FALSE</code>. The latter is meant to be an option either for novice users
 or for those who do not want track changes within the repository by the <code>git</code>. Instead, they prefer
 cloud storage services like
-<a href="https://nextcloud.com/" class="external-link">nexcloud</a>/<a href="https://owncloud.com/" class="external-link">owncloud</a>/
-<a href="https://osf.io/" class="external-link">Open Science Framework</a>...etc., supporting version control (history of changes).</p></dd>
+<a href="https://nextcloud.com/" class="external-link">Nexcloud</a>/<a href="https://owncloud.com/" class="external-link">Owncloud</a>,
+<a href="https://osf.io/" class="external-link">Open Science Framework</a>, <a href="https://www.about.google/drive/" class="external-link">Google Drive</a>...etc.,
+supporting version control (history of changes). For those, who want to track changes by the <code>git</code> and synchronize
+them with a remote repository like <a href="https://github.com/" class="external-link">Github</a> or <a href="https://about.gitlab.com/" class="external-link">Gitlab</a>,
+there is a short instruction summary in <code>Details</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>File-folder structure ("tree") for the basic Quarto reproducible report with R, which may be used
-  for data processing and analysis in Electron Paramagnetic Resonance (EPR).</p>
+    <p>File-folder structure ("tree") for the basic <a href="https://quarto.org/docs/guide/" class="external-link">Quarto report with R</a>,
+  which may be used for the reproducible data processing and analysis in Electron Paramagnetic Resonance (EPR) studies.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -210,6 +214,28 @@ cloud storage services like
   to use templates for ACS/Elsevier/PLOS/Nature-manuscripts, please refer
   to the <a href="https://quarto.org/docs/extensions/listing-journals.html" class="external-link">Quarto Jornal Articles Extenstion</a>
   for details of the installation and usage.</p>
+<p>Users, applying a <code>git</code> version control of the project/report, may synchronize their entire directory
+  (as well as the corresponding changes) with the free remote services like <a href="https://github.com/" class="external-link">Github</a>
+  or <a href="https://about.gitlab.com/" class="external-link">Gitlab</a>. If you've already set up your service account, create either <code>public</code>
+  or <code>private</code> repository (WITHOUT <code>.gitignore</code>, <code>README</code> and <code>License</code> !!) via desired web browser.
+  Afterwards, on your desktop/workstation, populate the file/folder structure, by the actual function (refer also
+  to the <code>Examples</code>), however DON'T FORGET to put <code>git.init</code> argument to <code>TRUE</code>! In the (IDE) <code>terminal</code>
+  (NOT IN THE R CONSOLE) set the path to your project (if it is not already set, check by <code>pwd</code>) and execute
+  the following commands step-by-step:</p><ol><li><p><code>git remote add origin https://&lt;service&gt;/&lt;user&gt;/&lt;remote repo name&gt;.git</code>, where the <code>url</code> address
+  can be copied by the clicking on the <code>&lt; &gt; Code</code> button, when viewing the repository via the web browser.</p></li>
+<li><p><code>git branch -M main</code>, which renames the local <code>master</code> branch in order to match the remote name,
+  depending on the applied service. Please check the remote main/master branch name and adjust accordingly.</p></li>
+<li><p><code>git push -u origin main</code>. Before executing this command, please make sure that you've already created
+  a "Personal Access Token" (PAT) in your service account via the web browser, because it will be required upon
+  the command execution.
+  Refer to the
+  <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" class="external-link">Github</a>
+  or <a href="https://docs.gitlab.com/user/profile/personal_access_tokens/" class="external-link">Gitlab</a> documentation.</p></li>
+</ol><p>The strength of the local git - remote Github repositories synchronization lies
+  in the
+  <a href="https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content" class="external-link">seamless connection/integration</a>
+  of your <code>Zenodo</code> and <code>Github</code> accounts in order to archive and point to the entire data
+  (<code>DOI</code> is automatically created) for a publication.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -228,6 +254,8 @@ cloud storage services like
  <a href="https://www.ncbi.nlm.nih.gov/books/NBK547546/" class="external-link">https://www.ncbi.nlm.nih.gov/books/NBK547546/</a>, National Academies Press (US).</p>
 <p>Allaire JJ, Teague C, Scheidegger C, Xie Y, Dervieux C (2024). <em>Quarto</em>.
  <a href="https://doi.org/10.5281/zenodo.5960048" class="external-link">https://doi.org/10.5281/zenodo.5960048</a>, v1.5, <a href="https://github.com/quarto-dev/quarto-cli" class="external-link">https://github.com/quarto-dev/quarto-cli</a>.</p>
+<p>Vanderhaeghe F (2022). "Set up Zenodo - Github Integration. How to configure Zenodo to publish each new release of a GitHub repository?",
+ <a href="https://tutorials.inbo.be/tutorials/git_zenodo/" class="external-link">https://tutorials.inbo.be/tutorials/git_zenodo/</a>.</p>
     </div>
 
     <div class="section level2">
@@ -238,13 +266,29 @@ cloud storage services like
 <span class="r-in"><span><span class="fu">create_qmdReport_proj</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## creating report with the specified citation style (ACS)</span></span></span>
-<span class="r-in"><span><span class="co">## and with versioning controlled by the `git` within</span></span></span>
-<span class="r-in"><span><span class="co">## the RStudio (Rproj.init = TRUE)</span></span></span>
+<span class="r-in"><span><span class="co">## and with versioning, controlled by the `git` within</span></span></span>
+<span class="r-in"><span><span class="co">## the `RStudio` (Rproj.init = TRUE)</span></span></span>
 <span class="r-in"><span><span class="fu">create_qmdReport_proj</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  citation.style <span class="op">=</span></span></span>
 <span class="r-in"><span>    <span class="st">"https://www.zotero.org/styles/american-chemical-society"</span>,</span></span>
 <span class="r-in"><span>  git.init <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## the following command will create "My_Lovely_EPR_Project"</span></span></span>
+<span class="r-in"><span><span class="co">## subdirectory/repository under the "Projects" (dir) entitled</span></span></span>
+<span class="r-in"><span><span class="co">## "EPR Studies on N-Centered Organic Radicals" using</span></span></span>
+<span class="r-in"><span><span class="co">## the `Positron` IDE (i.e. without `Rproj` initialization)</span></span></span>
+<span class="r-in"><span><span class="fu">create_qmdReport_proj</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path_to_wd <span class="op">=</span> <span class="st">"/home/Username/Projects"</span>,</span></span>
+<span class="r-in"><span>  wd.subdir.name <span class="op">=</span> <span class="st">"My_Lovely_EPR_Project"</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"EPR Studies on N-Centered Organic Radicals"</span>,</span></span>
+<span class="r-in"><span>  Rproj.init <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## afterwards, the `README.md` file can be generated by rendering</span></span></span>
+<span class="r-in"><span><span class="co">## the corresponding `.Rmd`, in the newly populated repo,</span></span></span>
+<span class="r-in"><span><span class="co">## which is automatically created upon executing</span></span></span>
+<span class="r-in"><span><span class="co">## the previous command</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
