@@ -124,12 +124,13 @@ readEPR_Exp_Specs(
 
 - norm.vec.add:
 
-  Numeric vector. Additional normalization constant in the form of
-  vector, including all (in addition to `qValue`) normalization(s) like
-  concentration, powder sample weight, number of scans, ...etc. (e.g.
-  `norm.vec.add = c(2000,0.5,2)`). **Default**: `norm.vec.add = NULL`,
-  which actually corresponds to value `1`. If `qValue = NULL`, the
-  Q-factor/value might be also included in the `norm.vec.add`.
+  Numeric vector. Additional (division) normalization constant(s) in the
+  form of vector, including all (in addition to `qValue`)
+  normalization(s) like concentration, powder sample weight, number of
+  scans, ...etc. (e.g. `norm.vec.add = c(2000,0.5,2)`). **Default**:
+  `norm.vec.add = NULL`, which actually corresponds to value(s) `1`. If
+  `qValue = NULL`, the Q-factor/value might be also included in the
+  `norm.vec.add`.
 
 - origin:
 

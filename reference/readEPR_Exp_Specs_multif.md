@@ -91,8 +91,8 @@ readEPR_Exp_Specs_multif(
 
 - norm.list.add:
 
-  Numeric list of vectors. Additional normalization constants in the
-  form of vectors involving all (i.e. in addition to `qValue`)
+  Numeric list of vectors. Additional (division) normalization constants
+  in the form of vectors, involving all (i.e. in addition to `qValue`)
   normalization(s) like e.g. concentration, powder sample weight, number
   of scans, ...etc (e.g.
   `norm.list.add = list(c(2000,0.5,2),c(1500,1,3))`). **Default**:

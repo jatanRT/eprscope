@@ -14,9 +14,13 @@ console](https://quarto-dev.github.io/quarto-r/). The `.pdf` format
 requires one of the \\L^{A}T\_{E}X\\ distributions:
 [`{tinytex}`](https://yihui.org/tinytex/) (R package), [\\T\_{E}X\\
 Live](https://tug.org/texlive/) or
-[\\MikT\_{E}X\\](https://miktex.org/). The complete, above-described
-R-environmental setup is also available at [Posit
-Cloud](https://posit.cloud/) or at
+[\\MikT\_{E}X\\](https://miktex.org/). Instead of \\L^{A}T\_{E}X\\, the
+[Quarto](https://quarto.org/) can be also used in combination with the
+[Typst markup language](https://typst.app/) (written in
+[Rust](https://rust-lang.org/)). Please, refer to the [Typst-Quarto
+documentation](https://quarto.org/docs/output-formats/typst.html). The
+complete, above-described R-environmental setup is also available at
+[Posit Cloud](https://posit.cloud/) or at
 [CoCalc](https://cocalc.com/features), which a is platform for
 collaborative calculations and data science.
 
@@ -276,7 +280,10 @@ The strength of the local git - remote Github repositories
 synchronization lies in the [seamless
 connection/integration](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content)
 of your `Zenodo` and `Github` accounts in order to archive and point to
-the entire data (`DOI` is automatically created) for a publication.
+the entire data (`DOI` is automatically created) for a publication. The
+users may refer to the [Github
+repository](https://github.com/jatanRT/EPR_Photo_BODIPY_TEMPO_new2025)
+example in order to demonstrate such Github-Zenodo connection.
 
 ## References
 

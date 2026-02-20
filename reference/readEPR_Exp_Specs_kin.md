@@ -91,11 +91,11 @@ readEPR_Exp_Specs_kin(
 
 - norm.vec.add:
 
-  Numeric vector, additional normalization constant in the form of
-  vector, involving all (in addition to `qValue`) normalization(s) such
-  as concentration, powder sample weight, number of scans, ...etc (e.g.
-  `norm.vec.add = c(2000,0.5,2)`). **Default**: `norm.vec.add = NULL`
-  (actually corresponding to value `1`).
+  Numeric vector, additional (division) normalization constant(s) in the
+  form of vector, involving all (in addition to `qValue`)
+  normalization(s) such as concentration, powder sample weight, number
+  of scans, ...etc (e.g. `norm.vec.add = c(2000,0.5,2)`). **Default**:
+  `norm.vec.add = NULL` (actually corresponding to value(s) `1`).
 
 - origin:
 
