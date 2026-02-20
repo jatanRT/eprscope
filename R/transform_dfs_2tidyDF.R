@@ -17,13 +17,13 @@
 #'   The number of data frame variables is not limited, however for the series of \eqn{\geq 10-12}
 #'   objects/spectra, the graph may look cluttered, depending on complexity of EPR spectra.
 #' @param df.names Character string vector (in the form of e.g. \code{c("Spectr_01","Spectr_02")}
-#'   or \code{c("283 K","273 K","263 K","253 K")}), describing the individual data frames/plots in the returned
+#'   or \code{c("283 K","273 K","263 K")}), describing the individual data frames/plots in the returned
 #'   tidy/long table and corresponding to series of plots/spectra (be aware of the data frames order).
 #' @param which.coly.norm Character string, pointing to name of the column (in all data frame
 #'   objects) to be normalized, by the \code{norm.vec} vector. This column actually corresponds to quantity/variable
 #'   presented on graph as \emph{y}-axis. \strong{Default}: \code{which.coly.norm = "dIepr_over_dB"} (that is the
 #'   derivative intensity in CW EPR spectra).
-#' @param norm.vec Numeric vector, consisting of normalization (division) constants (see also
+#' @param norm.vec Numeric vector, consisting of (division) normalization constants (see also
 #'   the \code{which.coly.norm} argument) for each of the data frame objects/variables defined by the ellipsis
 #'   \code{...} argument. \strong{Default}: \code{norm.vec = rep(1, times = length(df.names))}, i.e. all normalization
 #'   constants equal to \code{1}. If needed, the vector may be redefined (please, be aware of the data frames order).
@@ -53,7 +53,7 @@
 #' ## preview
 #' head(tmpd.data.df)
 #' #
-#' ## second, do the same fo rthe  aminoxyl data
+#' ## second, do the same for the  aminoxyl data
 #' aminoxyl.data.path <-
 #'   load_data_example(file = "Aminoxyl_radical_a.txt")
 #' aminoxyl.data.df <-
@@ -65,7 +65,7 @@
 #' ## preview
 #' aminoxyl.data.df %>% head()
 #' #
-#' ## ...own transformation
+#' ## ...and the own transformation
 #' spectra.data.tidy.df <-
 #'   transform_dfs_2tidyDF(
 #'     tmpd.data.df,
@@ -102,12 +102,11 @@
 #' @export
 #'
 #'
-transform_dfs_2tidyDF <- function(
-    ..., ## all data frame variable names separated by `,`
-    df.names, ## character vector string `c("a","b","c","d")`
-    which.coly.norm = "dIepr_over_dB", ## char. string of column name to be normalized
-    norm.vec = rep(1,times = length(df.names)),
-    var2nd.series = "Spectrum"
+transform_dfs_2tidyDF <- function(..., ## all data frame variable names separated by `,`
+                                  df.names, ## character vector string `c("a","b","c","d")`
+                                  which.coly.norm = "dIepr_over_dB", ## char. string of column name to be normalized
+                                  norm.vec = rep(1,times = length(df.names)),
+                                  var2nd.series = "Spectrum"
   ) {
   #
   ## list arguments and their names

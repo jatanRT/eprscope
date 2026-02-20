@@ -53,7 +53,7 @@ from the instrumental parameter files (\code{.DSC} or \code{.par}) or specified 
 Therefore, \code{qValues = NULL} (\strong{default}), actually corresponding to vector with all elements equal to \code{1}.
 In case of the \code{origin = "winepr"}, the elements of \code{qValues} have to be provided by the spectrometer operator.}
 
-\item{norm.list.add}{Numeric list of vectors. Additional normalization constants in the form of vectors involving
+\item{norm.list.add}{Numeric list of vectors. Additional (division) normalization constants in the form of vectors, involving
 all (i.e. in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
 \code{norm.list.add = NULL}, corresponding to values of \code{1}.}

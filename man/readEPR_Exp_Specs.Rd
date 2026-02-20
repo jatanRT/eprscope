@@ -67,10 +67,10 @@ conversion between \code{G} and \code{mT} should be performed. If default is cho
 in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
 \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.}
 
-\item{norm.vec.add}{Numeric vector. Additional normalization constant in the form of vector, including
+\item{norm.vec.add}{Numeric vector. Additional (division) normalization constant(s) in the form of vector, including
 all (in addition to \code{qValue}) normalization(s) like concentration, powder sample
 weight, number of scans, ...etc. (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
-\code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
+\code{norm.vec.add = NULL}, which actually corresponds to value(s) \code{1}. If \code{qValue = NULL},
 the Q-factor/value might be also included in the \code{norm.vec.add}.}
 
 \item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the

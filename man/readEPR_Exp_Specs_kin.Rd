@@ -55,10 +55,10 @@ In case of "Xenon" software the parameter is included in \code{.DSC} file, there
 \code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
 by the "Winepr" software, the Q value must be defined like \code{qValue = 3400}.}
 
-\item{norm.vec.add}{Numeric vector, additional normalization constant in the form of vector, involving
+\item{norm.vec.add}{Numeric vector, additional (division) normalization constant(s) in the form of vector, involving
 all (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
-\code{norm.vec.add = NULL} (actually corresponding to value \code{1}).}
+\code{norm.vec.add = NULL} (actually corresponding to value(s) \code{1}).}
 
 \item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the
 most common spectrometers (from which the data are loaded automatically using the default parameters).

@@ -390,8 +390,10 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       df <- list(...)[["df"]]
       if (is.null(df)) {
         stop(" Please specify the degrees of freedom (df) for the t/Student's\n
-           distribution !! See the definition of `...` argument\n
-           in the `plot.rqq()` function within the output list !! ")
+             distribution !! See the definition of `...` argument\n
+             in the `plot.rqq()` function within the output list !! \n
+             To figure out the `df`, please run `list$abic` for your\n
+             specific fit output `list`.")
       } else {
         degree.free <- df ## for the graph title
       }

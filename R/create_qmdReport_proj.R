@@ -15,6 +15,9 @@
 #'   or \href{https://quarto-dev.github.io/quarto-r/}{R console}. The \code{.pdf} format requires
 #'   one of the \eqn{L^{A}T_{E}X} distributions: \href{https://yihui.org/tinytex/}{\code{{tinytex}}} (R package),
 #'   \href{https://tug.org/texlive/}{\eqn{T_{E}X} Live} or \href{https://miktex.org/}{\eqn{MikT_{E}X}}.
+#'   Instead of \eqn{L^{A}T_{E}X}, the \href{https://quarto.org/}{Quarto} can be also used
+#'   in combination with the \href{https://typst.app/}{Typst markup language} (written in \href{https://rust-lang.org/}{Rust}).
+#'   Please, refer to the \href{https://quarto.org/docs/output-formats/typst.html}{Typst-Quarto documentation}.
 #'   The complete, above-described R-environmental setup is also available
 #'   at \href{https://posit.cloud/}{Posit Cloud} or at \href{https://cocalc.com/features}{CoCalc},
 #'   which a is platform for collaborative calculations and data science.
@@ -155,7 +158,9 @@
 #'   in the
 #'   \href{https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content}{seamless connection/integration}
 #'   of your \code{Zenodo} and \code{Github} accounts in order to archive and point to the entire data
-#'   (\code{DOI} is automatically created) for a publication.
+#'   (\code{DOI} is automatically created) for a publication. The users may refer
+#'   to the \href{https://github.com/jatanRT/EPR_Photo_BODIPY_TEMPO_new2025}{Github repository} example
+#'   in order to demonstrate such Github-Zenodo connection.
 #'
 #'
 #'
