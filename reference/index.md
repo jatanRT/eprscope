@@ -216,3 +216,6 @@
   Reports
 - [`load_data_example()`](https://jatanrt.github.io/eprscope/reference/load_data_example.md)
   : Loading the Built-In Data Files for Package Examples
+- [`transform_dfs_2tidyDF()`](https://jatanrt.github.io/eprscope/reference/transform_dfs_2tidyDF.md)
+  : Transformation of Several Data Frame Objects/Variables into one Tidy
+  (Long Table) Form
