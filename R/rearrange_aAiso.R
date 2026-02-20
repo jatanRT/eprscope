@@ -386,7 +386,7 @@ rearrange_aAiso_QCHorgau <- function(path_to_QCHoutput,
     start.reading.line <- grep(main.indicator.line, qchfile)
     ## Select only part of `qchfile` with EPR params. with all lines down,
     ## therefore =>
-    qchfile.select <- qchfile[-(1:(start.reading.line - 1))]
+    qchfile.select <- qchfile[-(1:(start.reading.line[1] - 1))]
     #
     ## output original orca data file in-between:-) =>
     if (isTRUE(output.text.origin)) {
