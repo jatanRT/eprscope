@@ -29,7 +29,7 @@ the EPR spectra calculated using the experimental data as well as time column. T
 columns are described by character strings like those below (see arguments \code{time} and \code{qvarR}).}
 
 \item{time.unit}{Character string, corresponding to time unit like \code{"s"} (\strong{default}),
-\code{"min"} or \code{"h"}.}
+\code{"min"} (minutes), \code{"h"} (hours) or \code{"ms"} (milliseconds).}
 
 \item{time}{Character string, pointing to \code{time} column/variable name in the original
 \code{data.qt.expr} data frame. \strong{Default}: \code{time = "time_s"}.}
@@ -60,7 +60,7 @@ may vary, see below).
  \eqn{(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}} \tab
  \code{"(a=1)A + (r=1)R --> [k1] B"} \cr
 }
-Couple of examples are also given in \code{Details}. The function is relatively flexible and enables
+Couple of examples are also given in the \code{Details}. The function is relatively flexible and enables
 later addition of any other reaction schemes describing the EPR time series experiments
 (YOU MAY ASK DEVELOPER(S) via forum/help-channels). The stoichiometric coefficient (such as \code{(r=1)}
 or \code{(a=1)}) can be varied within the \code{model.react} character string.
@@ -68,14 +68,14 @@ Defined/Allowed values are integers, e.g. 1,2,3...etc. The space character withi
 string is not fixed and can be skipped for the sake of simplicity.
 If \code{elementary.react = FALSE} (the model reaction is not considered as an elementary one),
 a possible non-integer partial coefficients (e.g. \code{alpha},\code{beta} or \code{gamma})
-must be included in \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
+must be included in the \code{kin.params} (see also \code{kin.params} description). For the consecutive model reaction
 presented above, it applies only to one part/step of the mechanism.}
 
-\item{elementary.react}{Logical, if the model reaction should be considered as elementary one,
+\item{elementary.react}{Logical, if the model reaction should be considered as an elementary one,
 i.e. the stoichiometric coefficients equal to the partial reaction orders. Such reaction proceeds without
 identifiable intermediate species forming. \strong{Default}: \code{elementary.react = TRUE}.
 If \code{elementary.react = FALSE}, i.e. the \code{model.react} cannot be considered like an elementary one,
-one must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
+the user must include the parameterized reaction orders \eqn{\alpha}, \eqn{\beta} or \eqn{\gamma} in
 the \code{kin.params}, e.g \code{kin.params = c(k1 = 0.01, qvar0A = 0.05, alpha = 1.5)}. For the consecutive
 model reaction presented above, it applies only to one part/step of the mechanism.}
 
@@ -102,13 +102,16 @@ and not on the common integration of rate equations.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
-(\code{\link[deSolve]{lsoda}}, additional methods, see the \code{ode} link above).}
+(\code{\link[deSolve]{lsoda}}, additional methods, see link for the \code{ode} function above).}
 
 \item{time.frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points. The number of points is thus defined by the \code{time.interval.model} argument:
+between two consecutive points in \code{time.unit}. Therefore, the number of points is defined 
+by the \code{time.interval.model} argument:
 \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
-This argument is required to numerically solve the kinetic differential equations by the \code{\link[deSolve]{ode}}.
-For the default interval mentioned above, the \strong{default} value reads \code{time.frame.model = 2} (in seconds).}
+where the \eqn{Interval[2]}, \eqn{Interval[1]} equal to the 2nd and the 1st element of the \code{time.interval.model},
+respectively; and the \eqn{Frame} corresponds to \code{time.frame.model}. This argument is required to numerically 
+solve the kinetic differential equations by the \code{\link[deSolve]{ode}}. For the default interval mentioned 
+above, the \strong{default} value reads \code{time.frame.model = 2} (in \code{time.unit}).}
 
 \item{time.correct}{Logical, if time of recorded series of the EPR spectra needs to be corrected.
 \strong{Default}: \code{time.correc = FALSE}, which actually assumes that time correction was done
@@ -139,25 +142,36 @@ List with the following components is available:
   related to the \code{qvarR} argument.}
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
-  \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
+  \item{ra}{Simple residual analysis - a list consisting of 5 elements: diagnostic plots
   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-  standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+  standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+  The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
+  \code{\link[stats]{acf}} (please, also refer to the \code{References}). This can be considered as a primary
+  "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals
+  with its own past and future values vs their corresponding lag. For a decent model, the ACF values
+  (except the first one \eqn{\equiv} perfect self-correlation) usually lie within
+  the \eqn{95\,\%} confidence band (the light blue area within the \code{plot.acf}) for all lags.
+  Hence, there is no obvious periodical or whatsoever pattern and only a "white noise" is observed (a small and random
+  ACF distribution within the confidence band). If the user cannot be sure about a lag exceeding the confidence band,
+  please perform the Ljung-Box test \code{\link[stats]{Box.test}} and look for the \code{p.value}, whether
+  the autocorrelation is less (>> 0.05) or highly probable (<< 0.05).}
   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
   \item{cov.coeffs}{Covariance \code{matrix}, consisting of fitted/optimized kinetic parameters/coefficients
   (see also \code{df.coeffs} above). The corresponding variances (diagonal elements) should be small,
   indicating that the estimates possess a lower uncertainties.
-  The off-diagonal elements show how the two coefficient estimates change together. For a decent model they should be
-  as close to \code{0} as possible. Large values indicate
+  The off-diagonal elements show, how the two coefficient estimates change together. For a decent model they should be
+  as close to \code{0} as possible. Large values may indicate
   \href{https://www.geeksforgeeks.org/machine-learning/how-to-test-for-multicollinearity-in-r/}{multicollinearity}
   with positive sign suggesting the coefficient are overestimated, and with a negative one, indicating that one coefficient
-  is overestimated, while the other one is underestimated.}
+  is over-, while the other one is underestimated.}
   \item{cor.coeffs}{Correlation \code{matrix} of fitted/optimized kinetic parameters/coefficients
-  (see also \code{df.coeffs} above). Such matrix can be additionally nicely visualized
+  (see also \code{df.coeffs} and \code{cov.coeffs} above). Such matrix can be additionally nicely visualized
   by a correlation \code{plot} created by the \code{\link[corrplot]{corrplot}} function.
   The off-diagonal elements should be as small as possible
-  (ideally close to \code{0}) in order to exclude the multicollinearity (see the \code{cov.coeffs}) and trust the optimized
-  kinetic parameters.}
+  (ideally close to \code{0}) in order to exclude the multicollinearity (see the \code{cov.coeffs}) and to trust
+  the output with the optimized kinetic parameters. Larger \code{cor.ceoffs} (typically > (0.7,0.8)) indicate
+  potential multicollinearity.}
   \item{N.evals}{Total number of evaluations/iterations before the best fit is found.}
   \item{min.rss}{Minimum sum of residual squares after \code{N.evals}.}
   \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
@@ -182,14 +196,14 @@ List with the following components is available:
 }
 \description{
 Fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
-   or from integration of the EPR spectral time series) in order to find the kinetic parameters
+   or by integration of the EPR spectral time series) in order to find the kinetic parameters
    (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
-   is provided by the differential Levenberg-Marquardt optimization method, \code{\link[minpack.lm]{nls.lm}}.
+   is provided by the differential Levenberg-Marquardt method, \code{\link[minpack.lm]{nls.lm}}.
    Because the radical concentration is directly proportional to the EPR spectrum (double)
    integral (see the \code{\link{quantify_EPR_Abs}}), for a quick evaluation and/or comparison of different
    kinetic data, it is possible to obtain the rate constants \eqn{k} by the integrals/areas \emph{vs} time fit.
-   Therefore, the unit of \eqn{k} might be expressed in terms of \eqn{\text{s}^{-1}} as well as in units of integrals/areas,
+   Therefore, the unit of \eqn{k} might be expressed in terms of \eqn{\text{s}^{-1}} including units of integrals/areas,
    e.g. \code{procedure defined unit} (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
    depending on the order of reaction (see the \code{params.guess} argument).
 }
@@ -254,6 +268,9 @@ triaryl_model_kin_fit_01$N.converg
 triaryl_model_kin_fit_01$ra$plot.rqq()
 triaryl_model_kin_fit_01$ra$plot.histDens
 #
+## autocorrelation (ACF) of residuals vs lag
+triaryl_model_kin_fit_01$ra$plot.acf
+#
 ## standard deviation of residuals
 triaryl_model_kin_fit_01$ra$sd
 #
@@ -287,6 +304,9 @@ triaryl_model_kin_fit_02$df.coeffs
 ## the decrease of EPR intensity/integral)
 triaryl_model_kin_fit_02$ra$plot.rqq()
 #
+## autocorrelation (ACF) of residuals vs lag
+triaryl_model_kin_fit_02$ra$plot.acf
+#
 ## standard deviation of residuals
 triaryl_model_kin_fit_02$ra$sd
 #
@@ -302,6 +322,15 @@ Mullen KM, Elzhov TV, Spiess A, Bolker B (2023). “minpack.lm.” \url{https://
  Gavin HP (2024). “The Levenberg-Marquardt algorithm for nonlinear least squares curve-fitting problems.”
  \emph{Department of civil and environmental engineering, Duke University},
  \url{https://people.duke.edu/~hpgavin/ce281/lm.pdf}.
+
+ Hyndman RJ, Athanasopoulos G (2021). \emph{Forecasting: Principles and Practice}, 3rd edition.
+ OTexts: Melbourne, Australia, \url{https://otexts.com/fpp3/}.
+
+ geeksforgeeks (2025). "How to Test the Autocorrelation of the Residuals in R?",
+ \url{https://www.geeksforgeeks.org/machine-learning/how-to-test-the-autocorrelation-of-the-residuals-in-r/}.
+
+ Hanck C, Arnold M, Gerber A, Schmelzer M (2025). \emph{Introduction to Econometrics with R}.
+ University of Duisburg-Essen, \url{https://www.econometrics-with-r.org/}.
 }
 \seealso{
 Other Evaluations and Quantification: 

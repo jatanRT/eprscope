@@ -155,7 +155,7 @@ sim.tempo.13c$df[1000:1005,]
 sim.tempo.13c$df.areas
 #
 ## Simulation of BMPO spin trap *OH radical
-## adduct consisting of two diasteromers (A,B),
+## adduct consisting of two diastereomers (A,B),
 ## see at https://doi.org/10.1016/S0891-5849(01)00619-0
 sim.hobmpo.spec <-
   eval_sim_EPR_iso_combo(
@@ -163,12 +163,12 @@ sim.hobmpo.spec <-
     nuclear.system = list(
       list(
         list("14N",1,38.06),# 13.6 G )
-        list("1H",1,34.52), # 12.3 G  > DIASTEROMER A, 81.6 \%
+        list("1H",1,34.52), # 12.3 G  > DIASTEREOMER A, 81.6 \%
         list("1H",1,1.85)   # 0.70 G )
       ),
       list(
         list("14N",1,37.8),# 13.5 G )
-        list("1H",1,42.96),# 15.3 G  > DIASTEROMER B, 18.4 \%
+        list("1H",1,42.96),# 15.3 G  > DIASTEREOMER B, 18.4 \%
         list("1H",1,1.74)  # 0.60 G )
       )
     ),

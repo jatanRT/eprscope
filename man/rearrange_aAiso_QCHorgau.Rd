@@ -6,7 +6,6 @@
 \usage{
 rearrange_aAiso_QCHorgau(
   path_to_QCHoutput,
-  N.nuclei,
   nuclei.list.slct,
   origin = "gaussian",
   output.text.origin = FALSE,
@@ -16,13 +15,16 @@ rearrange_aAiso_QCHorgau(
 \arguments{
 \item{path_to_QCHoutput}{Character string, corresponding to path of \code{Gaussian} or \code{ORCA} output text files.}
 
-\item{N.nuclei}{Numeric value that equals to number of atoms/nuclei within the calculated structure.}
-
 \item{nuclei.list.slct}{List of numeric values for the rearrangement of selected atoms/nuclei according to symmetry,
 e.g. \code{nuclei.list.slct <- list(3,c(21,22),c(20,23),c(24,25),c(27,26))} where the numbers
-correspond to indices of proposed equivalent nuclei in the ASCII text file.}
+correspond to indices of proposed equivalent nuclei in the ASCII text file. In order to figure out the indices
+of the atoms/nuclei to be selected, user may try to open the output file (e.g. \code{.log}, \code{.out}, \code{.txt})
+by any text/code editor like \href{https://www.sublimetext.com/}{Sublimetext},
+\href{https://zed.dev/}{Zed} or \href{https://notepad-plus-plus.org/}{Notepad++} or use
+GUI molecular editors like \href{https://two.avogadro.cc/}{Avogadro2}, \href{https://jmol.sourceforge.net/}{Jmol}
+or \href{https://sites.google.com/site/allouchear/Home/gabedit}{Gabedit}.}
 
-\item{origin}{Character string, pointing to origin of DFT EPR calculation parameters <=> which
+\item{origin}{Character string, pointing to origin of (DFT) EPR calculation parameters <=> which
 software package was used. Only two values are available => \code{"gaussian"} (\strong{default})
 or \code{"orca"}.}
 
@@ -35,14 +37,15 @@ the extracted \eqn{A_{iso}}/\eqn{a_{iso}} values from the original output file d
 by the \code{path_to_QCHoutput}. See also the previous argument.}
 }
 \value{
-Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values, corresponding to groups
-  of proposed equivalent nuclei within the structure/symmetry constructed directly
+Data frame/Table of \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the \eqn{\pm} signs),
+  corresponding to groups of proposed equivalent nuclei within the structure/symmetry constructed directly
   from \emph{Gaussian} or \emph{ORCA} output text files.
 }
 \description{
-Providing table, specifically from \code{Gaussian} or \code{ORCA} output text files to summarize
-  the \eqn{A_{iso}}/\eqn{a_{iso}} mean values of groups with equivalent nuclei, according
-  to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
+Providing table, specifically from \code{Gaussian} (version \eqn{\geq} G.09) or \code{ORCA} (version \eqn{\geq} 5.0)
+  output text files to summarize the \eqn{A_{iso}}/\eqn{a_{iso}} mean values (including the sign) of groups with
+  equivalent nuclei, according to proposed molecular structure/symmetry (see also the \code{\link{rearrange_aAiso_QCHcomp}}).
+  For each group, a mean \eqn{A/a} value is returned.
 }
 \examples{
 ## built-in file and path
@@ -51,7 +54,6 @@ gauss.file.path <-
 gauss.file <- unzip(gauss.file.path)
 symmetry.As.df <-
   rearrange_aAiso_QCHorgau(gauss.file,
-    N.nuclei = 28,
     nuclei.list.slct =
     list(c(7, 8), ## 2 x 14N
          c(13, 14, 15, 16), ## 4 x 1H (aromatic)
@@ -62,7 +64,10 @@ symmetry.As.df <-
      )
 #
 ## preview
-symmetry.As.df
+knitr::kable(
+  symmetry.As.df,
+  caption = "DFT computed hyperfine couplings(Aiso)/splittings(aiso) for the TMPD radical cation."
+)
 
 
 }
