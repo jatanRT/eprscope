@@ -109,20 +109,16 @@ The EPR spectrum is fitted by splines which, by default, correspond to cubic Ber
 triarylamine.decay.series.dsc.path <-
 load_data_example(file =
         "Triarylamine_radCat_decay_series.DSC")
-triarylamine.decay.series.asc.path <-
+triarylamine.decay.series.bin.path <-
 load_data_example(file =
-        "Triarylamine_radCat_decay_series.zip")
-unzip(triarylamine.decay.series.asc.path,
-      exdir = tempdir()
-      )
+        "Triarylamine_radCat_decay_series.DTA")
 ## loading the kinetics:
 triarylamine.decay.series.data <-
-  readEPR_Exp_Specs_kin(name.root =
-    "Triarylamine_radCat_decay_series",
-    dir_ASC = tempdir(),
-    dir_dsc_par =
-      system.file("extdata",
-                  package = "eprscope")
+  readEPR_Exp_Specs_kin(
+    path_to_file =
+      triarylamine.decay.series.bin.path,
+    path_to_dsc_par =
+      triarylamine.decay.series.dsc.path
    )
 #
 ## select the first spectrum

@@ -135,20 +135,18 @@
 #' triarylamine.decay.series.dsc.path <-
 #' load_data_example(file =
 #'         "Triarylamine_radCat_decay_series.DSC")
-#' triarylamine.decay.series.asc.path <-
+#' triarylamine.decay.series.bin.path <-
 #' load_data_example(file =
-#'         "Triarylamine_radCat_decay_series.zip")
-#' unzip(triarylamine.decay.series.asc.path,
-#'       exdir = tempdir()
-#'       )
+#'         "Triarylamine_radCat_decay_series.DTA")
+#' triarylamine.decay.series.ygf.path <-
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.YGF")
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
-#'   readEPR_Exp_Specs_kin(name.root =
-#'     "Triarylamine_radCat_decay_series",
-#'     dir_ASC = tempdir(),
-#'     dir_dsc_par =
-#'       system.file("extdata",
-#'                   package = "eprscope")
+#'   readEPR_Exp_Specs_kin(
+#'     path_to_file = triarylamine.decay.series.bin.path,
+#'     path_to_dsc_par = triarylamine.decay.series.dsc.path,
+#'     path_to_ygf = triarylamine.decay.series.ygf.path
 #'    )
 #' #
 #' ## select the first spectrum
@@ -164,7 +162,7 @@
 #' ## data frame preview
 #' head(triarylamine.decay.data1st.integ01)
 #' #
-#' ## integration (including baseline correction)
+#' ## integration (2nd integ.,including baseline correction)
 #' ## of the 1st spectrum from the series
 #' triarylamine.decay.data1st.integ02 <-
 #'   eval_integ_EPR_Spec(triarylamine.decay.series.data1st,
@@ -226,8 +224,9 @@
 #'                         output.vecs = TRUE)$sigmoid
 #'                        ) %>%
 #'   dplyr::summarize(Area = max(sigmoid_Integ))
-#' ## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,
-#' ## the `Blim = NULL` and `dplyr::between()` must be set !!!
+#' ## in such case `Blim` range is not defined by
+#' ## the `eval_integ_EPR_Spec`, however the `Blim = NULL`
+#' ## as well as the `dplyr::between()` must be set !!!
 #' #
 #' ## preview of the final data frame
 #' head(triarylamine.decay.data.integs)

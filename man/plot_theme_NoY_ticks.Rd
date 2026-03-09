@@ -58,7 +58,7 @@ Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order
 \examples{
 #' ## loading the aminoxyl radical CW EPR spectrum:
 aminoxyl.data.path <-
-  load_data_example(file = "Aminoxyl_radical_a.txt")
+  load_data_example(file = "Aminoxyl_radical_a.DTA")
 aminoxyl.data <-
   readEPR_Exp_Specs(aminoxyl.data.path,
                     qValue = 2100)

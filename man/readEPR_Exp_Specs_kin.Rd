@@ -2,66 +2,76 @@
 % Please edit documentation in R/readEPR_Exp_Specs_kin.R
 \name{readEPR_Exp_Specs_kin}
 \alias{readEPR_Exp_Specs_kin}
-\title{Read and Process Spectral Data of Time Dependent CW EPR Experiments}
+\title{Read and Process CW EPR Time Series Experiments}
 \usage{
 readEPR_Exp_Specs_kin(
-  name.root,
-  dir_ASC,
-  dir_dsc_par,
+  path_to_file,
+  path_to_dsc_par = NULL,
+  path_to_ygf = NULL,
   time.unit = "s",
-  time.delta.slice.s = NULL,
+  time.delta.slice = NULL,
   col.names = c("index", "B_G", "time_s", "dIepr_over_dB"),
   x.unit = "G",
-  convertB.unit = TRUE,
-  qValue = NULL,
-  norm.vec.add = NULL,
+  var2nd.series.id = 3,
   origin = "xenon",
+  qValue = NULL,
   ...
 )
 }
 \arguments{
-\item{name.root}{Character string, corresponding to entire \strong{file name without extension}.}
+\item{path_to_file}{Character string, path to any spectrometer/instrumental file,
+having one the following extensions: \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc},
+including the 2D-experimental (i.e. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
+by the \code{\link[base]{file.path}} function.}
 
-\item{dir_ASC}{Character string, path (can be also defined by the \code{\link[base]{file.path}})
-to directory where the \code{ASCII} spectral data is stored.}
+\item{path_to_dsc_par}{Character string, path (can be also provided by the \code{\link[base]{file.path}})
+to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
+ASCII \code{text} file, including instrumental parameters of the recorded spectra provided by the EPR machine.
+\strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
+automatically inherits the \code{path_to_file}, however with the appropriate extension
+(\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
+filename like the \code{path_to_file} in the working directory. If the file does not exist, it will ask
+to provide/define the right file path.}
 
-\item{dir_dsc_par}{Character string, path (can be also defined by the \code{\link[base]{file.path}})
-to directory where the \code{.DSC}/\code{.dsc} or \code{.par} parameter file is stored
-(in order to calculate \eqn{g}-value and/or normalize intensities).}
+\item{path_to_ygf}{Character string, path (can be also provided by the \code{\link[base]{file.path}})
+to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
+independent variable in the spectral series like time, temperature, microwave power, ...etc (different from magnetic
+flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
+for 2D experiments). \strong{Default}: \code{path_to_ygf = NULL}. The latter assignment actually means that
+the argument automatically inherits the \code{path_to_file}, however with the appropriate extension \code{.YGF}.
+In other words, the function is looking for the same file name like the \code{path_to_file} in the working directory.
+If the file does not exist, it automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
+(\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
+\code{path_to_dsc_par} description). In order to read individual \code{.YGF} files just apply
+the \code{\link[base]{readBin}} function with the following arguments \code{con = path_to_file} ,\code{what = "numeric"},
+\code{size = 8}, \code{n = file_length / 8}, \code{signed = TRUE}, \code{endian = "big"}/\code{endian = "little"},
+the latter depending on the origin xenon/magnettech, respectively. The \code{file_length} can be calculated by
+\code{readBin(con = path_to_file,what = "raw",n = 1e+4) \%>\% length()}.}
 
 \item{time.unit}{Character string, specifying the \code{"s"},\code{"min"}, \code{"h"}
-or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
+or \code{time.unit = "unitless"} (if \code{time.delta.slice} is different from \code{NULL}).
 \strong{Default}: \code{time.unit = "s"}}
 
-\item{time.delta.slice.s}{Numeric, time interval in seconds between \code{slices},
-in the case if \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
-corresponding to \code{1 s}).}
+\item{time.delta.slice}{Numeric, time interval in \code{time.unit} between \code{slices},
+in the case of \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
+corresponding to \code{1 time.unit}).}
 
-\item{col.names}{Character/String vector inherited from \code{\link[data.table]{fread}}, corresponding to
-column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
-with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum \eqn{x}-axis)...etc,
-\strong{default}: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")} (for \code{origin = "xenon"}).}
+\item{col.names}{Character string vector, corresponding to desired column/variable names/headers of the returned
+data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
+with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
+to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G","time_s","dIepr_over_dB")}
+(if \code{orgin = "xenon"}). For the \strong{spectral 2D-time series} \code{col.names} \strong{must include character string}
+(\strong{such as} \code{"time_s"}) \strong{in order to identify the time at which the EPR spectra were recorded}.}
 
 \item{x.unit}{Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
-\item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
-conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
-\eqn{B} in \code{mT}/\code{G} is created.}
+\item{var2nd.series.id}{Numeric index related to \code{col.names} vector and pointing to column
+for the EPR spectral 2D- time series variable. \strong{Default}: \code{var2nd.series.id = 3}
+(for "Xenon" time series experiment, corresponding to "time" column).}
 
-\item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by spectrometer.
-In case of "Xenon" software the parameter is included in \code{.DSC} file, therefore \strong{default}:
-\code{qValue = NULL} (actually corresponding to value \code{1}). If EPR spectra were acquired
-by the "Winepr" software, the Q value must be defined like \code{qValue = 3400}.}
-
-\item{norm.vec.add}{Numeric vector, additional normalization constant in the form of vector, involving
-all (in addition to \code{qValue}) normalization(s) such as concentration, powder sample
-weight, number of scans, ...etc (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
-\code{norm.vec.add = NULL} (actually corresponding to value \code{1}).}
-
-\item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the
-most common spectrometers (from which the data are loaded automatically using the default parameters).
+\item{origin}{Character string, corresponding to \strong{origin} of the data and related to EPR acquisition software
+at the spectrometer (from which the data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
@@ -70,39 +80,52 @@ Options are summarized in the following table (any other specific \code{origin} 
 "magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
-\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
+\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{must be configured accordingly}. \cr
 }}
+
+\item{qValue}{Numeric, Q value (quality or sensitivity factor number) displayed at specific \code{dB} by the spectrometer,
+in case of \emph{Xenon} or \emph{new Magnettech} software it is returned automatically, however in the case of \emph{WinEPR},
+it must be provided by the user. \strong{default}: \code{qValue = NULL}, actually corresponding to value \code{1}.}
 
 \item{...}{additional arguments specified, see also the \code{\link{readEPR_Exp_Specs}}
 and \code{\link[data.table]{fread}}.}
 }
 \value{
-List of EPR spectrum data (including time) in tidy long table format (\code{df}) + corrected
+List of EPR spectrum time series data in tidy long table format (\code{df}) + corrected
    time vector (\code{time}). For the \code{origon = "winepr"} "time" slices/indices must be already converted
-   into time domain by \code{time.delta.slice.s} (see arguments and examples).
+   into time domain by \code{time.delta.slice} (see arguments and examples).
 }
 \description{
 Reading the continuous wave (CW) EPR time series spectral data (recorded by e.g. \code{2D_Field_Delay}
- experiment in "Xenon" acquisition/processing software). Function (based on \code{\link{readEPR_Exp_Specs}}) includes
- automatic time correction for CW EPR \code{time.series} experiments (see also \code{\link{correct_time_Exp_Specs}}).
+ experiment in "Xenon" acquisition/processing software). Function is based on the \code{\link{readEPR_Exp_Specs}}
+ and includes automatic time correction for CW EPR \code{time.series} experiments
+ (see also the \code{\link{correct_time_Exp_Specs}} description and documentation). If the time series EPR spectra
+ are stored individually (one file per one spectrum, e.g. for \code{origin = "Magnettech"}, ESR5000 [11-0422]),
+ such time series needs to be loaded by \code{\link{readEPR_Exp_Specs_multif}}. For \code{origin = "WinEpr"}
+ the \code{time_s} column usually possesses the form of spectrum slices, i.e. an integer number (0,1,2,...) is assigned
+ to each recorded spectrum. Therefore, for a radical kinetic analysis it has to be converted to \code{time_s}
+ (see the argument \code{time.delta.slice}).
 }
 \examples{
 ## loading the built-in package example to demonstrate
 ## the reading of time series EPR spectra/kinetics:
 triarylam.decay.series.dsc.path <-
-  load_data_example(file = "Triarylamine_radCat_decay_series.DSC")
-triarylam.decay.series.asc.path <-
-  load_data_example(file = "Triarylamine_radCat_decay_series.zip")
-unzip(triarylam.decay.series.asc.path,exdir = tempdir())
+  load_data_example(file =
+    "Triarylamine_radCat_decay_series.DSC")
+triarylam.decay.series.ygf.path <-
+  load_data_example(file =
+    "Triarylamine_radCat_decay_series.YGF")
+triarylam.decay.series.dta.path <-
+  load_data_example(file =
+    "Triarylamine_radCat_decay_series.DTA")
 #
 ## loading the kinetics:
 triarylam.decay.series.data <-
-  readEPR_Exp_Specs_kin(name.root = "Triarylamine_radCat_decay_series",
-                        dir_ASC = tempdir(),
-                        dir_dsc_par =
-                          system.file("extdata",
-                                      package = "eprscope")
-                       )
+  readEPR_Exp_Specs_kin(
+    path_to_file = triarylam.decay.series.dta.path,
+    path_to_dsc_par = triarylam.decay.series.dsc.path,
+    path_to_ygf = triarylam.decay.series.ygf.path
+ )
 #
 ## data preview
 head(triarylam.decay.series.data$df)
@@ -111,21 +134,28 @@ head(triarylam.decay.series.data$df)
 ## (the uncorrected one actually starts from `0`)
 triarylam.decay.series.data$time
 #
-\dontrun{
-## reading by the "WinEPR" software
-readEPR_Exp_Specs_kin("Sample_spectra_irradiation",
-                      file.path(".","ASCII_data_dir"),
-                      file.path(".","dsc_data_dir"),
-                      time.unit = "s",
-                      time.delta.slice.s = 24.1,
-                      col.names = c("B_G",
-                                    "Slice",
-                                    "Intensity"),
-                      x.unit = "G",
-                      qValue = 2900,
-                      origin = "winepr")
-
-}
+## reading the EPR time series
+## returned by the "WinEPR" software
+tmpd.se.cv.b.bin.path <-
+  load_data_example("TMPD_specelchem_CV_b.spc")
+tmpd.se.cv.b.par.path <-
+  load_data_example("TMPD_specelchem_CV_b.par")
+tmpd.se.cv.b.dat <-
+  readEPR_Exp_Specs_kin(
+    path_to_file = tmpd.se.cv.b.bin.path,
+    path_to_dsc_par = tmpd.se.cv.b.par.path,
+    col.names = c(
+      "B_G",
+      "Slice",
+      "dIepr_over_dB"
+     ),
+  var2nd.series.id = 2,
+  time.delta.slice = 18,
+  origin = "winepr"
+  )
+#
+## data preview
+head(tmpd.se.cv.b.dat)
 
 
 }

@@ -7,9 +7,9 @@
 readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 }
 \arguments{
-\item{path_to_dsc_par}{Character string, path to \code{.DSC/.dsc} or \code{.par} file including
-the instrumental parameters provided by the EPR machine. File path can be also defined
-by the \code{\link[base]{file.path}} function.}
+\item{path_to_dsc_par}{Character string, path to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"})
+or \code{.par} (\code{orogin = "winepr"}) file, including the instrumental parameters of the recorded spectra
+and provided by the EPR machine. File path can be also defined by the \code{\link[base]{file.path}} function.}
 
 \item{string}{Character (vector) string (appeared at the line beginning) within
  the \code{.DSC/.dsc} or \code{.par} file corresponding to instrumental parameter or information.
@@ -63,7 +63,7 @@ Numeric or character string (e.g. date or comment), corresponding to selected in
   either character and/or numeric values, is returned with the names corresponding to \code{string}.
 }
 \description{
-Taking selected instrumental parameters or information
+Extracting selected instrumental parameters or information
  from the \code{.DSC/.dsc} or \code{.par} file of an EPR spectrum (written by the \code{Xenon}/\code{Magnettech}
  or \code{WinEpr} software, respectively).
 }

@@ -89,7 +89,8 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
     c(min(data.spectr.integ[[x]]), max(data.spectr.integ[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim), data.x.region, .)
   #
-  # ===== This is not required, however it's better to select a narrow region at the beginning =====
+  # ===== This is not required, however it's better =====
+  # ===== to select a narrow region at the beginning =====
   #
   ## see also `which.min` function below
   ## Selecting `x region`
@@ -105,7 +106,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       tol = max(.data[[Intensity]]) / 4
     ))
   #
-  # ==================================================================================
+  # ====================================================================
   #
   ## calculate `x.max` corresponding to max(Intensity)
   x.max <- data.spectr.integ %>%
@@ -122,12 +123,17 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       ## filter x values
       x.init.low <- xs.init %>%
         dplyr::filter(.data[[x]] < x.max)
-      ## intensity condition by `which.min` and results in indices (res. one line df)
-      ## => it is just like dplyr filtering, therefore
+      ## intensity condition by `which.min` and results
+      ## in indices (res. one line df) => it is just like
+      ## dplyr filtering, therefore
       Intens.cond.left <-
-        which.min(abs(x.init.low[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
+        which.min(
+          abs(x.init.low[[Intensity]] -
+                (max(data.spectr.integ[[Intensity]]) / 2))
+        )
       Intens.cond.left <-
-        x.init.low[Intens.cond.left,] %>% dplyr::pull(.data[[Intensity]])
+        x.init.low[Intens.cond.left,] %>%
+        dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.low <- x.init.low %>%
         dplyr::filter(.data[[Intensity]] == Intens.cond.left) %>%
@@ -137,12 +143,17 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       ## filter x values
       x.init.high <- xs.init %>%
         dplyr::filter(.data[[x]] > x.max)
-      ## intensity condition by `which.min` and results in indices (res. one line df)
-      ## => it is just like dplyr filtering, therefore
+      ## intensity condition by `which.min` and results
+      ## in indices (res. one line df) => it is just like
+      ## dplyr filtering, therefore
       Intens.cond.right <-
-        which.min(abs(x.init.high[[Intensity]] - (max(data.spectr.integ[[Intensity]]) / 2)))
+        which.min(
+          abs(x.init.high[[Intensity]] -
+                (max(data.spectr.integ[[Intensity]]) / 2))
+        )
       Intens.cond.right <-
-        x.init.high[Intens.cond.right,] %>% dplyr::pull(.data[[Intensity]])
+        x.init.high[Intens.cond.right,] %>%
+        dplyr::pull(.data[[Intensity]])
       ## finding x
       x.init.high <- x.init.high %>%
         dplyr::filter(.data[[Intensity]] == Intens.cond.right) %>%

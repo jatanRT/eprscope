@@ -52,7 +52,7 @@
 #'   including the 1D- (e.g. \eqn{Intensity} vs \eqn{B}, Field) or 2D-experimental
 #'   (e.g. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
 #'   by the \code{\link[base]{file.path}} function.
-#' @param path_to_dsc_par Character string, path (also provided by \code{\link[base]{file.path}})
+#' @param path_to_dsc_par Character string, path (can be also provided by the \code{\link[base]{file.path}})
 #'   to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
 #'   ASCII \code{text} file, including instrumental parameters of the recorded spectra provided by the EPR machine.
 #'   \strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
@@ -60,7 +60,7 @@
 #'   (\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
 #'   filename like the \code{path_to_file} in the working directory. If the file does not exist, it will ask
 #'   to provide/define the right file path.
-#' @param path_to_ygf Character string, path (also provided by \code{\link[base]{file.path}})
+#' @param path_to_ygf Character string, path (can be also provided by the \code{\link[base]{file.path}})
 #'   to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
 #'   independent variable in the spectral series like time, temperature, microwave power, ...etc (different from magnetic
 #'   flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
@@ -71,13 +71,13 @@
 #'   (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
 #'   \code{path_to_dsc_par} description). In order to read individual \code{.YGF} files just apply
 #'   the \code{\link[base]{readBin}} function with the following arguments \code{con = path_to_file} ,\code{what = "numeric"},
-#'   \code{size = 8}, \code{n = file_length / 8}, \code{signed = TRUE}, \code{endian = "big"/"little"},
-#'   the latter depending on origin xenon/magnettech, respectively. The \code{file_length} can be calculated by
-#'   \code{readBin(con = path_to_file,what = "raw",n = 1e+4) %>% length()}.
+#'   \code{size = 8}, \code{n = file_length / 8}, \code{signed = TRUE}, \code{endian = "big"}/\code{endian = "little"},
+#'   the latter depending on the origin xenon/magnettech, respectively. The \code{file_length} can be calculated by
+#'   \code{readBin(con = path_to_file,what = "raw",n = 1e+4) \%>\% length()}.
 #' @param sep Character string. The separator between columns/variables in the original ASCII text file.
 #'   \strong{Default}: \code{sep = "auto"}, pointing to automatic recognition of the separator. If required, additional
 #'   separators like \code{sep = "\t"} ("tab") or \code{sep = "\s+"} ("more white space") can be applied as well.
-#'   Use \code{sep = NULL} or {sep = ""} to specify no separator. For any details, please consult
+#'   Use \code{sep = NULL} or \code{sep = ""} to specify no separator. For any details, please consult
 #'   the \code{\link[data.table]{fread}} documentation.
 #' @param skip Numeric value, referring to the number of rows, at the beginning of ASCII text file, to be skipped
 #'   (not included by loading into the data frame). \strong{Default}: \code{skip = 1}, corresponding to skip the first
@@ -293,7 +293,7 @@
 #'   readEPR_Exp_Specs(acridineRad.data,
 #'                     col.names = c("B_mT","dIepr_over_dB"),
 #'                     x.unit = "mT",
-#'                     qValue = 1829
+#'                     qValue = 1829,
 #'                     origin = "magnettech")
 #' ## preview
 #' head(acridineRad.data.01)
@@ -311,7 +311,7 @@
 #'   )
 #' #
 #' ## preview
-#' head(acridine.data.02)
+#' head(acridineRad.data.02)
 #' #
 #' ## EPR time series (2D Experiment) acquired
 #' ## by the "Winepr"/"WinEpr", reading the original

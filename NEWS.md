@@ -1,14 +1,15 @@
 # eprscope 0.1.16
 
-## Date
+## 2026-03-X
 
 ### Bug Fixes/Critical Updates
 
 * right now the reading of EPR spectrometer binary files (`.DTA`, `.YGF` & `.spc`) 
   is fully supported throughout the package, however it requires the presence 
-  of `.DSC`/`.dsc` and `.par` files (with instrumental parameters), respectively,
-  please refer to documentation and examples of the main reading functions
-  like `readEPR_Exp_Specs`, `readEPR_Exp_Specs_kin` and `readEPR_Exp_Specs_multif`
+  of `.DSC`/`.dsc` and `.par` files (with instrumental parameters), respectively;
+  please refer to the documentation and examples of the main reading functions
+  like `readEPR_Exp_Specs`, `readEPR_Exp_Specs_kin` and `readEPR_Exp_Specs_multif`,
+  as well as to `Basic Functionality` vignette/article
   
 * package dependencies were updated in order to clearly distinguish between
   the required packages (`Imports`) and the 'suggested' ones, see also
@@ -27,6 +28,12 @@
   "alpha" (character string) in the `names` argument elements,
   which was not possible by now and induced errors
   
+* fixed bug in the `rearrange_aAiso_QCHorgau` function where by reading 
+  of the `ORCA` files, the hyperfine couplings/splittings (A/a) could 
+  not be extracted and `NA` "values" occurred + removed the `N.nuclei` argument,
+  which is now directly obtained from the corresponding text outputs
+  (`Gaussian` as well as `ORCA`)
+  
 * the `qq-plot` returned by the `plot_eval_RA_forFit` doesn't require
   the `{qqplotr}` anymore, rather it was built completely from scratch, similarly 
   like in the [`{qqplotr}` package](https://github.com/aloy/qqplotr/tree/master/R),
@@ -44,7 +51,13 @@
 * *Cauchy* distribution and *Kolmogorov-Smirnov* test were added 
   to the `eval_ABIC_forFit` in order to be more flexible and reliable
   to estimate the residuals distribution in the combination
-  with the `plot_evbal_RA_forFit` function
+  with the `plot_eval_RA_forFit` function
+  
+* autocorrelation of residuals diagnostics was added to EPR time series/kinetics
+  (please, refer to the `eval_kinR_EPR_modelFit`) in order to trust or exclude
+  the kinetic model fit (based on residuals lag) of the EPR time series experiment 
+  (*quantitative variable*, `qvar` *vs* time) + now, the `time.unit` argument 
+  has an additional option to analyze faster radical kinetics (in "ms"/milliseconds)
   
 * code in several functions &rarr; cleaned up in order to be more readable  
   
@@ -59,6 +72,11 @@
   EPR intensity pattern (without considering a hyperfine coupling) for a group 
   of equivalent nuclei (e.g. 2 x <sup>14</sup>N) in order to predict intensities 
   of simulated isotropic EPR spectra
+  
+* in order to transform several data frame objects/variables into the one (having
+  a tidy form) in the R (local/Global) environment, a new function
+  `transform_dfs_2tidyDF` was created; such function can be really handy if one wants
+  to quickly compare several plots/EPR spectra in one interactive/static panel graph
 
 # eprscope 0.1.15
 

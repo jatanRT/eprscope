@@ -176,15 +176,18 @@
 #' #
 #' ## loading the built-in CW ENDOR spectrum
 #' ## of perinaphthenyl (PNT)
-#' pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
+#' pnt.bin.file.path <- load_data_example("PNT_ENDOR_a.DTA")
+#' pnt.pars.file.path <- load_data_example("PNT_ENDOR_a.DSC")
 #' ## read the PNT CW ENDOR data without intensity
 #' ## normalization
 #' pnt.endor.data <-
-#'   readEPR_Exp_Specs(pnt.file.path,
-#'                     col.names = c("index",
-#'                                   "RF_MHz",
-#'                                   "dIepr_over_dB"),
-#'                     x.unit = "MHz")
+#'   readEPR_Exp_Specs(
+#'     path_to_file = pnt.bin.file.path,
+#'     path_to_dsc_par = pnt.pars.file.path,
+#'     col.names = c("index",
+#'                   "RF_MHz",
+#'                   "dIepr_over_dB"),
+#'     x.unit = "MHz")
 #' ## plotting the previous ENDOR data spectrum
 #' ## in derivative form with `darkred` linecolor
 #' ## and 1.2 mm linewidth:
@@ -199,21 +202,17 @@
 #' triarylamine.decay.series.dsc.path <-
 #' load_data_example(file =
 #'         "Triarylamine_radCat_decay_series.DSC")
-#' triarylamine.decay.series.asc.path <-
+#' triarylamine.decay.series.bin.path <-
 #' load_data_example(file =
-#'         "Triarylamine_radCat_decay_series.zip")
-#' unzip(triarylamine.decay.series.asc.path,
-#'       exdir = tempdir()
-#'       )
+#'         "Triarylamine_radCat_decay_series.DTA")
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
-#'   readEPR_Exp_Specs_kin(name.root =
-#'     "Triarylamine_radCat_decay_series",
-#'   dir_ASC = tempdir(),
-#'   dir_dsc_par =
-#'     system.file("extdata",
-#'                 package = "eprscope")
-#' )
+#'   readEPR_Exp_Specs_kin(
+#'     path_to_file =
+#'       triarylamine.decay.series.bin.path,
+#'     path_to_dsc_par =
+#'       triarylamine.decay.series.dsc.path
+#'    )
 #' #
 #' ## plot with the CONTINUOUS COLORSCALE (see argument
 #' ## `line.colors` and color definitions `1.`):
@@ -325,7 +324,8 @@ plot_EPR_Specs <- function(data.spectra,
   g.factor.cond <- any(grepl(paste(slct.vec.x.g,collapse = "|"), x))
   #
   if (grepl("deriv|Deriv",lineSpecs.form)) {
-    y.label <- bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
+    y.label <-
+      bquote("d" ~ italic(I)[EPR] ~ "/" ~ "d" ~ italic(B) ~ ~"(" ~ p.d.u. ~ ")")
   }
   if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
     y.label <- bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")

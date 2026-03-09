@@ -120,18 +120,25 @@ data.B.region <-
     c(min(data.spectra.integ[[B]]), max(data.spectra.integ[[B]]))
 #
 ## condition to present intensity region (which has the max integral ?)
-max.integs.vec <- sapply(slct.integs, function(m) max(data.spectra.integ[[m]]))
+max.integs.vec <- sapply(
+  slct.integs,
+  function(m){max(data.spectra.integ[[m]])}
+)
 max.integs.df <- data.frame(
   "slct_Integrals" = slct.integs,
   "max_Integral" = max.integs.vec
 )
 max.integ <- max.integs.df %>%
-  dplyr::filter(.data[["max_Integral"]] == max(.data[["max_Integral"]])) %>%
+  dplyr::filter(
+    .data[["max_Integral"]] == max(.data[["max_Integral"]])
+  ) %>%
   dplyr::pull(.data[["slct_Integrals"]])
 ## therefore
 data.y.region <- c(
-  min(data.spectra.integ[[max.integ]]) - max(data.spectra.integ[[max.integ]]) / 10,
-  max(data.spectra.integ[[max.integ]]) + max(data.spectra.integ[[max.integ]]) / 10
+  min(data.spectra.integ[[max.integ]]) -
+    max(data.spectra.integ[[max.integ]]) / 10,
+  max(data.spectra.integ[[max.integ]]) +
+    max(data.spectra.integ[[max.integ]]) / 10
 )
 ## B & y range condition
 Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
@@ -155,9 +162,9 @@ data.spectra.integ.new <- data.spectra.integ %>%
       value = TRUE
     )
   )) %>%
-  ## arrange `Integrals` (in order to group it) according to factors
+  ## arrange `Integrals` (in order to group it)
+  ## according to factors
   dplyr::arrange(Integrals)
-
 #
 ## plot themes
 plot_themes <- plot_theme_In_ticks(
@@ -173,14 +180,25 @@ plot_themes <- plot_theme_In_ticks(
 if (isFALSE(separate.integs)) {
   plot.integs <- data.spectra.integ.new %>%
     dplyr::filter(Integrals %in% slct.integs) %>%
-    ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
+    ggplot(
+      aes(
+        x = .data[[B]],
+        y = .data$Intensity,
+        color = .data$Integrals
+      )
+    ) +
     geom_line(linewidth = line.width,
               linetype = line.type) +
     coord_cartesian(xlim = Blim, ylim = ylim) +
     labs(
       x = bquote(italic(B) ~ "(" ~ .(B.unit) ~ ")"),
       y = bquote(italic(Intensity) ~ "(" ~ p.d.u. ~ ")"),
-      color = bquote(atop(italic(Integrated), EPR ~ ~ italic(Spectra)))
+      color = bquote(
+        atop(
+          italic(Integrated),
+          EPR ~ ~ italic(Spectra)
+        )
+      )
     ) +
     plot_themes
    #
@@ -190,7 +208,13 @@ if (isFALSE(separate.integs)) {
   } else {
     plot.integs <- data.spectra.integ.new %>%
       dplyr::filter(Integrals %in% slct.integs) %>%
-      ggplot(aes(x = .data[[B]], y = .data$Intensity, color = .data$Integrals)) +
+      ggplot(
+        aes(
+          x = .data[[B]],
+          y = .data$Intensity,
+          color = .data$Integrals
+        )
+      ) +
       geom_line(linewidth = line.width,
                 linetype = line.type,
                 show.legend = FALSE) +
@@ -210,7 +234,11 @@ if (isFALSE(separate.integs)) {
       ) +
       theme(
         strip.background = element_rect(fill = "#363636"),
-        strip.text = element_text(size = 13, color = "white", face = "bold"),
+        strip.text = element_text(
+          size = 13,
+          color = "white",
+          face = "bold"
+        ),
         panel.spacing = unit(10, "pt")
       )
   }
@@ -223,7 +251,10 @@ rm(data.spectra.integ, max.integs.df)
 if (isFALSE(output.df)) {
   results.integ <- plot.integs
 } else {
-  results.integ <- list(plot = plot.integs, df = data.spectra.integ.new)
+  results.integ <- list(
+    plot = plot.integs,
+    df = data.spectra.integ.new
+  )
 }
 #
 return(results.integ)

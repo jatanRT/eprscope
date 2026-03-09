@@ -153,7 +153,7 @@ tmpd.data.file.path <-
   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 ## reading data:
 tmpd.data.file <-
-  readEPR_Exp_Specs(path_to_ASC = tmpd.data.file.path,
+  readEPR_Exp_Specs(path_to_file = tmpd.data.file.path,
                     col.names = c("B_G",
                                   "dIepr_over_dB"),
                     qValue = 3500,

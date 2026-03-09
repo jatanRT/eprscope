@@ -100,7 +100,7 @@
 #' #
 #' ## loading the built-in CW ENDOR spectrum
 #' ## of perinaphthenyl (PNT)
-#' pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
+#' pnt.file.path <- load_data_example("PNT_ENDOR_a.DTA")
 #' ## read the PNT CW ENDOR data without intensity
 #' ## normalization
 #' pnt.endor.data <-
@@ -174,7 +174,8 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
     xlabel <- "<i>g</i>"
   }
   ## g-factor condition =>
-  g.factor.cond <- ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
+  g.factor.cond <-
+    ifelse(any(grepl(paste(slct.vec.x.g,collapse = "|"), x)),TRUE,FALSE)
   #
   if (grepl("deriv|Deriv",lineSpecs.form)) {
     ylabel <- "d <i>I</i><sub>EPR</sub> / d <i>B</i>  (p.d.u.)"
@@ -194,9 +195,10 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
       ## vector colors condition & def.
       if (length(line.colors) == 1) {
         line.colors <- c(line.colors,"darkorange","blue")
-        message(" Because the `var2nd.series` is not NULL, `line.colors` has been converted\n
-                into color vector ! You may set your custom colors accordingly !\n
-                Please, consult the `line.colors` argument definition !")
+        message(" Because the `var2nd.series` is not NULL, `line.colors`\n
+                has been converted into color vector ! You may set your custom\n
+                colors accordingly. Please, consult the `line.colors` \n
+                argument definition !")
       } else {
         line.colors <- line.colors
       }
@@ -250,7 +252,8 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
       stop(" `legend.title` is not specified. Please, define ! ")
     } else{
       ## Legend title
-      legend.title.size <- legend.title.size %>% `if`(is.null(legend.title.size),13, .)
+      legend.title.size <-
+        legend.title.size %>% `if`(is.null(legend.title.size),13, .)
       #
       final_plot <- ggplotly(simplePlot) %>%
         layout(
@@ -263,7 +266,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             tickfont = list(size = axis.text.size),
             gridcolor = grid.color,
             linecolor = toRGB(border.line.color),
-            linewidth = border.line.width, showline = TRUE, mirror = TRUE
+            linewidth = border.line.width,
+            showline = TRUE,
+            mirror = TRUE
           ),
           yaxis = list(
             title = list(
@@ -273,7 +278,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             tickfont = list(size = axis.text.size),
             gridcolor = grid.color,
             linecolor = toRGB(border.line.color),
-            linewidth = border.line.width, showline = TRUE, mirror = TRUE
+            linewidth = border.line.width,
+            showline = TRUE,
+            mirror = TRUE
           ),
           legend = list(title = list(
             text = legend.title,
@@ -293,7 +300,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           tickfont = list(size = axis.text.size),
           gridcolor = grid.color,
           linecolor = toRGB(border.line.color),
-          linewidth = border.line.width, showline = TRUE, mirror = TRUE
+          linewidth = border.line.width,
+          showline = TRUE,
+          mirror = TRUE
         ),
         yaxis = list(
           title = list(
@@ -303,7 +312,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           tickfont = list(size = axis.text.size),
           gridcolor = grid.color,
           linecolor = toRGB(border.line.color),
-          linewidth = border.line.width, showline = TRUE, mirror = TRUE
+          linewidth = border.line.width,
+          showline = TRUE,
+          mirror = TRUE
         )
       )
   }

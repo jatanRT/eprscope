@@ -91,8 +91,8 @@ test_that(" Do the TMPD^+* (2D - WinEPR time series) data frames (ASCII + Bin) h
   ## comparison
   str.compar <-
     identical(
-      str(data.2D.winepr.asc),
-      str(data.2D.winepr.bin)
+      str(TMPD.2Data.ascii),
+      str(TMPD.2Data.binary)
     )
   #
   expect_true(str.compar)
@@ -100,16 +100,16 @@ test_that(" Do the TMPD^+* (2D - WinEPR time series) data frames (ASCII + Bin) h
 #
 ## load binary magnettech file
 acrid.data.magnettech.bin.file <-
-  load_file_example(file = "AcridineDeriv_Irrad_365nm.DTA")
+  load_data_example(file = "AcridineDeriv_Irrad_365nm.DTA")
 #
 ## load the corresponding parameters
 acrid.data.magnettech.params.file <-
-  load_file_example(file = "AcridineDeriv_Irrad_365nm.dsc")
+  load_data_example(file = "AcridineDeriv_Irrad_365nm.dsc")
 #
 test_that(" The column names/headers of loaded Xenon & Magnettech files do math ! ",{
   #
   acrid.data.magnettech <-
-    readEPR_Expe_Specs(
+    readEPR_Exp_Specs(
       path_to_file = acrid.data.magnettech.bin.file,
       path_to_dsc_par = acrid.data.magnettech.params.file,
       qValue = 1829,

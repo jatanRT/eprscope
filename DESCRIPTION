@@ -30,13 +30,13 @@ Description: Processing, analysis and plottting of
              all the EPR spectra can be visualized and are fully 
              consistent either with the 'ggplot2' package 
              or with the interactive formats based on 'plotly'. 
-             Simulations and fitting of the isotropic EPR spectra
-             can be performed as well. In addition, the advanced 
-             simulation parameters figured out by the MATLAB-EasySpin 
+             Package also covers simulations and fitting of the isotropic 
+             (solution) EPR spectra. In addition, the advanced 
+             simulation parameters obtained by the MATLAB-EasySpin 
              toolbox and results from the quantum chemical 
              calculations like g-factor and hyperfine 
              splitting/coupling constants (a/A) can be compared 
-             and summarized in table-format in order to analyze 
+             and summarized in table-form in order to analyze 
              the EPR spectra by the most effective way. 
              Reproducible reports of the entire data processing 
              and analysis can be created by the quarto 

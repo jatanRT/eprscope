@@ -314,7 +314,7 @@ Data frame represents one of the most important structures/objects in ![](RcoreL
 # read the EPR spectrum from the already 
 # defined path `tmpd.data.file`
 df.example.01 <- readEPR_Exp_Specs(
-  tmpd.data.file,
+  path_to_file = tmpd.data.file,
   col.names = c("B_G","dIepr_over_dB"),
   qValue = Q_value, # defined above
   # instrumental EPR origin:
@@ -623,7 +623,7 @@ df.example.03 <- df.example.02 |>
   dplyr::filter(B_G <= median(B_G))
 #
 # preview
-df.example.03
+head(df.example.03)
 #
 # find the `B_mT` corresponding
 # to the maximum of `dIepr_over_dB` intensity
@@ -649,7 +649,7 @@ df.example.04
 
 ## Tidy and Messy Data {#sec-tidy-and-messy-data}
 
-Last example of data handling (see below), using the `{dplyr}` and the pipe operator, will show the processing and analysis of EPR time series (kinetics). In the first step, the "kinetic" data must be loaded from the `.zip` file :
+Last example of data handling (see below), using the `{dplyr}` and the pipe operator, will show the processing and analysis of EPR time series (kinetics). In the first step, the "kinetic" data must be loaded:
 
 ```{r load-kinetic-data}
 
@@ -661,17 +661,11 @@ triarylam.decay.series.dsc.path <-
     file = "Triarylamine_radCat_decay_series.DSC"
   )
 #
-# ascii table in the form of `.zip`
-triarylam.decay.series.asc.path <-
+# table in binary form of `.DTA` file
+triarylam.decay.series.bin.path <-
   load_data_example(
-    file = "Triarylamine_radCat_decay_series.zip"
+    file = "Triarylamine_radCat_decay_series.DTA"
   )
-#
-# unzip the data
-unzip(
-  triarylam.decay.series.asc.path,
-  exdir = tempdir()
-)
 
 ```
 
@@ -682,17 +676,19 @@ Finally, the data is transformed into the data frame by the `readEPR_Exp_Specs_k
 # reading the data and correcting
 # the recording time for each CW EPR spectrum
 triarylam.decay.dat <- readEPR_Exp_Specs_kin(
-  name.root = "Triarylamine_radCat_decay_series",
-  dir_ASC = tempdir(),
-  dir_dsc_par = system.file("extdata",package = "eprscope")
+  path_to_file = triarylam.decay.series.bin.path,
+  path_to_dsc_par = triarylam.decay.series.dsc.path
 )
 #
-# preview
+# preview of data frame
 head(triarylam.decay.dat$df)
+# + preview of time points for the indivudually
+# recorded EPR spectra
+triarylam.decay.dat$time
 
 ```
 
-Such "complex" loading and reading is required because the kinetic data is relatively large and therefore in a compressed form stored within the package. Otherwise, all one has to do is just to define the file path for both parameter as well as ASCII table files (see also documentation of the `readEPR_Exp_Specs_kin()`). Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df` -structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. Tidy data provides a standardized way how to link the structure of a dataset (the physical layout) with its semantics (meaning). If the data frame would possess the form of **"messy" data** (any other data form, different from "tidy"), each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
+Because the `triarylam.decay.dat` is list (see below), it consists of two components: the data frame `df` and the vector of corrected `time` at which the middle of CW EPR spectrum appears. It can be figured out that the `df`-structure actually inherits that of the original ASCII data file coming from the EPR spectrometer. Moreover, such structure corresponds to **"tidy" data** because each column represents a variable and each row represents an observation [@RfDSWickham2023; @tidyWickham2014]. Tidy data provides a standardized way how to link the structure of a dataset (the physical layout) with its semantics (meaning). If the data frame would possess the form of **"messy" data** (any other data form, different from "tidy"), each spectrum (its `dIepr_over_dB` intensity), at a certain time, would correspond to one column. As an example of "messy" dataset we may transform the above-mentioned "tidy" one using the `tidyr::pivot_wider()` :
 
 ```{r messy-data-pivot-wider}
 
@@ -726,7 +722,7 @@ time.span <-
 #
 # 2. Create the string vector 
 # of the corresponding column names.
-# This is to be performed by loop.
+# This is to be performed by the loop/cycle operation.
 time.string.vec <- 
   sapply(time.span, function(s) paste0("time_s_",s))
 #
@@ -782,6 +778,7 @@ triarylam.decay.dat.filter.long <-
     names_to = "time_s",
     values_to = "dIepr_over_dB"
   ) %>%
+  # time in ascending order
   arrange(time_s)
 #
 # tidy data frame (long form) preview

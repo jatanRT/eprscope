@@ -102,32 +102,32 @@
 #' triarylamine.decay.series.dsc.path <-
 #' load_data_example(file =
 #'         "Triarylamine_radCat_decay_series.DSC")
-#' triarylamine.decay.series.asc.path <-
+#' triarylamine.decay.series.dta.path <-
 #' load_data_example(file =
-#'         "Triarylamine_radCat_decay_series.zip")
-#' unzip(triarylamine.decay.series.asc.path,
-#'       exdir = tempdir()
-#'       )
+#'         "Triarylamine_radCat_decay_series.DTA")
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
-#'   readEPR_Exp_Specs_kin(name.root =
-#'                           "Triarylamine_radCat_decay_series",
-#'                         dir_ASC = tempdir(),
-#'                         dir_dsc_par =
-#'                           system.file("extdata",
-#'                                       package = "eprscope")
-#'                         )
+#'   readEPR_Exp_Specs_kin(
+#'        path_to_file =
+#'          triarylamine.decay.series.dta.path,
+#'        path_to_dsc_par =
+#'          triarylamine.decay.series.dsc.path
+#'      )
 #' #
 #' ## plot basics `surface` plot (with default arguments)
 #' ## and the `Jet` color scheme including
 #' ## Intensity contour labels
-#' plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
+#' plot_EPR_Specs3D_interact(
+#'   triarylamine.decay.series.data$df,
 #'   contour.labels = TRUE,
-#'   scheme.color = "Jet")
+#'   scheme.color = "Jet"
+#'   )
 #' #
 #' ## plot basic `contour` plot (with default arguments)
-#' plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
-#'   plot.type = "contour")
+#' plot_EPR_Specs3D_interact(
+#'   triarylamine.decay.series.data$df,
+#'   plot.type = "contour"
+#'   )
 #' #
 #' \dontrun{
 #' ## 3D surface plotting EPR spectra series (in the region
@@ -227,7 +227,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     message("There are more than 80 EPR spectra in the series.\n
             In order to to speed-up the graph rendering, the number\n
             of spectra was reduced to 1/2 of the original one\n
-            to create the plot.")
+            to create the plot (each 2nd spectrum is presented) !")
     #
   } else if (var2nd_select_len >= 160) {
     #
@@ -237,7 +237,7 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
     message("There are more than 160 EPR spectra in the series.\n
             In order to to speed-up the graph rendering, the number\n
             of spectra was reduced to 1/4 of the original one\n
-            to create the plot.")
+            to create the plot (each 4th spectrum is presented) !")
   } else {
     var2nd_select_df <- var2nd_select_df
   }
@@ -245,7 +245,9 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   ## Filtering, accordingly (only those `var2nd.series` values defined
   ## above in `data.spectra.series`)
   data.spectra.series <- data.spectra.series %>%
-    dplyr::filter(.data[[var2nd.series]] %in% var2nd_select_df[[var2nd.series]])
+    dplyr::filter(
+      .data[[var2nd.series]] %in% var2nd_select_df[[var2nd.series]]
+    )
   #
   ## select NEW!!!UPDATED!!! `var2nd.series` !!! data frame
   ## values for `yaxis` within 3D plot

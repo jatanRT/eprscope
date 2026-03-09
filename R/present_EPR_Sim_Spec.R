@@ -81,10 +81,9 @@
 #'   load_data_example(file =
 #'     "TMPD_specelchem_accu_b.asc")
 #' data.spectrum.expr <-
-#'   readEPR_Exp_Specs(path_to_file =
-#'              data.file.path,
-#'     col.names = c("B_G",
-#'     "dIepr_over_dB"),
+#'   readEPR_Exp_Specs(
+#'     path_to_file = data.file.path,
+#'     col.names = c("B_G","dIepr_over_dB"),
 #'     qValue = 3500,
 #'     origin = "winepr"
 #'    )
@@ -98,7 +97,8 @@
 #' ## simulation of the TMPD radical cation
 #' ## EPR spectrum
 #' data.spectrum.sim <-
-#'   eval_sim_EPR_iso(g.iso = 2.00303,
+#'   eval_sim_EPR_iso(
+#'     g.iso = 2.00303,
 #'     instrum.params = NULL,
 #'     path_to_dsc_par = tmpd.params.file,
 #'     origin = "winepr",
@@ -245,7 +245,7 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   # condition for corresponding EPR spectrum color
   if (line.color.expr == line.color.sim) {
     message(" Experimental and simulated spectrum possess the same `line.color`.\n
-            Use different colors to distinguish both EPR spectra !! ")
+            Use different colors to distinguish between both EPR spectra !! ")
   }
   #
   ## plot variable:

@@ -97,20 +97,16 @@
 #' triarylamine.decay.series.dsc.path <-
 #' load_data_example(file =
 #'         "Triarylamine_radCat_decay_series.DSC")
-#' triarylamine.decay.series.asc.path <-
+#' triarylamine.decay.series.bin.path <-
 #' load_data_example(file =
-#'         "Triarylamine_radCat_decay_series.zip")
-#' unzip(triarylamine.decay.series.asc.path,
-#'       exdir = tempdir()
-#'       )
+#'         "Triarylamine_radCat_decay_series.DTA")
 #' ## loading the kinetics:
 #' triarylamine.decay.series.data <-
-#'   readEPR_Exp_Specs_kin(name.root =
-#'     "Triarylamine_radCat_decay_series",
-#'     dir_ASC = tempdir(),
-#'     dir_dsc_par =
-#'       system.file("extdata",
-#'                   package = "eprscope")
+#'   readEPR_Exp_Specs_kin(
+#'     path_to_file =
+#'       triarylamine.decay.series.bin.path,
+#'     path_to_dsc_par =
+#'       triarylamine.decay.series.dsc.path
 #'    )
 #' #
 #' ## select the first spectrum
@@ -224,9 +220,11 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
     ) +
     labs(color = NULL,
          x = bquote(italic(B)~~"("~.(B.unit)~")"),
-         y = switch(2-deriv.form.cond,
-                    bquote(d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")"),
-                    bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")"))
+         y = switch(
+           2-deriv.form.cond,
+           bquote(d*italic(I)[EPR]~~"/"~~d*italic(B)~~~"("~p.d.u.~")"),
+           bquote(italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+         )
          ) +
     plot_theme_In_ticks() +
     theme(legend.text = element_text(size = 13),
@@ -237,15 +235,20 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
     results <- list(
       df = data.spectr,
       plot = plot.expr.smoothed,
-      rss = smooth.epr.spec.list$pen.crit, ## (weighted) sum of residual squares
-      degs.freedom = smooth.epr.spec.list$df, ## corresponding degrees of freedom
-      fit = smooth.epr.spec.list$fit, ## list with fit characteristics
-      ra.sd = smooth.epr.spec.list$sigma, ## estimated residual/error standard deviation.
+      ## (weighted) sum of residual squares:
+      rss = smooth.epr.spec.list$pen.crit,
+      ## corresponding degrees of freedom:
+      degs.freedom = smooth.epr.spec.list$df,
+      ## list with fit characteristics:
+      fit = smooth.epr.spec.list$fit,
+      ## estimated residual/error standard deviation:
+      ra.sd = smooth.epr.spec.list$sigma,
       ## see https://bradleyboehmke.github.io/HOML/linear-regression.html
       ## Akaike's Information Criterion (if method is AIC)
       ## Bayesian Information Criterion (if method is BIC)
       abic = c(smooth.epr.spec.list$aic,smooth.epr.spec.list$bic),
-      log.lik = smooth.epr.spec.list$logLik ## log-likelihood (if method is REML or ML)
+      ## log-likelihood (if method is REML or ML):
+      log.lik = smooth.epr.spec.list$logLik
     )
   } else {
     results <- data.spectr$smoothed

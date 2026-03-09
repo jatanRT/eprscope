@@ -286,10 +286,12 @@ In order to guess the intensity multiplication constant (please, refer to the \c
 ## loading built-in example dataset which is simple
 ## EPR spectrum of the aminoxyl radical:
 aminoxyl.data.path <-
-  load_data_example(file = "Aminoxyl_radical_a.txt")
+  load_data_example(file = "Aminoxyl_radical_a.DTA")
 aminoxyl.data <-
-  readEPR_Exp_Specs(aminoxyl.data.path,
-                    qValue = 2100)
+  readEPR_Exp_Specs(
+    path_to_file = aminoxyl.data.path,
+    qValue = 2100
+ )
 #
 ## EPR spectrum simulation fit with "Nelder-Mead"
 ## optimization method with `check.fit.plot = FALSE`:

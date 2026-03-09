@@ -2,10 +2,12 @@
 % Please edit documentation in R/readEPR_Exp_Specs.R
 \name{readEPR_Exp_Specs}
 \alias{readEPR_Exp_Specs}
-\title{Read the Experimental ASCII or other Text-Based EPR Data.}
+\title{Reading of the Experimental ASCII or Binary EPR Spectra/Data.}
 \usage{
 readEPR_Exp_Specs(
-  path_to_ASC,
+  path_to_file,
+  path_to_dsc_par = NULL,
+  path_to_ygf = NULL,
   sep = "auto",
   skip = 1,
   header = FALSE,
@@ -13,7 +15,7 @@ readEPR_Exp_Specs(
   x.id = 2,
   x.unit = "G",
   Intensity.id = 3,
-  time.series.id = NULL,
+  var2nd.series.id = NULL,
   convertB.unit = TRUE,
   qValue = NULL,
   norm.vec.add = NULL,
@@ -23,58 +25,93 @@ readEPR_Exp_Specs(
 )
 }
 \arguments{
-\item{path_to_ASC}{Character string, path to ASCII file/table (e.g. in \code{.txt}, \code{.csv}
-or \code{.asc} format) with the spectral data (\eqn{Intensity} vs \eqn{B}, Field) including additional
-\code{index} and/or \code{time} variables). The path can be also defined by the \code{\link[base]{file.path}} function.}
+\item{path_to_file}{Character string, path to any spectrometer/instrumental file,
+having one the following extensions: \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA} or \code{.spc},
+including the 1D- (e.g. \eqn{Intensity} vs \eqn{B}, Field) or 2D-experimental
+(e.g. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
+by the \code{\link[base]{file.path}} function.}
 
-\item{sep}{ The separator between columns. Defaults to the character in the set \code{[,\\t |;:]} that separates the sample of rows into the most number of lines with the same number of fields. Use \code{NULL} or \code{""} to specify no separator; i.e. each line a single character column like \code{base::readLines} does.}
+\item{path_to_dsc_par}{Character string, path (can be also provided by the \code{\link[base]{file.path}})
+to \code{.DSC/.dsc} (\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"})
+ASCII \code{text} file, including instrumental parameters of the recorded spectra provided by the EPR machine.
+\strong{Default}: \code{path_to_dsc_par = NULL}. The latter assignment actually means that the argument
+automatically inherits the \code{path_to_file}, however with the appropriate extension
+(\code{.DSC/.dsc} or \code{.par}). In other words, the function is looking for the same
+filename like the \code{path_to_file} in the working directory. If the file does not exist, it will ask
+to provide/define the right file path.}
 
-\item{skip}{ If 0 (default) start on the first line and from there finds the first row with a consistent number of columns. This automatically avoids irregular header information before the column names row. \code{skip>0} means ignore the first \code{skip} rows manually. \code{skip="string"} searches for \code{"string"} in the file (e.g. a substring of the column names row) and starts on that line (inspired by read.xls in package gdata). }
+\item{path_to_ygf}{Character string, path (can be also provided by the \code{\link[base]{file.path}})
+to binary \code{.YGF} file (\code{origin = "xenon"}/\code{origin = "magnettech"}), storing the values of the 2nd
+independent variable in the spectral series like time, temperature, microwave power, ...etc (different from magnetic
+flux density and EPR intensity, see also \code{Details} and/or the \code{var2nd.series.id} argument description
+for 2D experiments). \strong{Default}: \code{path_to_ygf = NULL}. The latter assignment actually means that
+the argument automatically inherits the \code{path_to_file}, however with the appropriate extension \code{.YGF}.
+In other words, the function is looking for the same file name like the \code{path_to_file} in the working directory.
+If the file does not exist, it automatically grabs those values based on the information provided by the \code{.DSC/.dsc}
+(\code{origin = "xenon"}/\code{origin = "magnettech"}) or \code{.par} (\code{origin = "winepr"}) files (see the argument
+\code{path_to_dsc_par} description). In order to read individual \code{.YGF} files just apply
+the \code{\link[base]{readBin}} function with the following arguments \code{con = path_to_file} ,\code{what = "numeric"},
+\code{size = 8}, \code{n = file_length / 8}, \code{signed = TRUE}, \code{endian = "big"}/\code{endian = "little"},
+the latter depending on the origin xenon/magnettech, respectively. The \code{file_length} can be calculated by
+\code{readBin(con = path_to_file,what = "raw",n = 1e+4) \%>\% length()}.}
 
-\item{header}{ Does the first data line contain column names? Defaults according to whether every non-empty field on the first data line is type character. If so, or TRUE is supplied, any empty column names are given a default name. }
+\item{sep}{Character string. The separator between columns/variables in the original ASCII text file.
+\strong{Default}: \code{sep = "auto"}, pointing to automatic recognition of the separator. If required, additional
+separators like \code{sep = "\t"} ("tab") or \code{sep = "\s+"} ("more white space") can be applied as well.
+Use \code{sep = NULL} or \code{sep = ""} to specify no separator. For any details, please consult
+the \code{\link[data.table]{fread}} documentation.}
 
-\item{col.names}{Character string vector, inherited from the \code{\link[data.table]{fread}}, corresponding to
-column/variable names. A safe rule of thumb is to use column names incl. physical quantity notation
-with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
-to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
-For spectral time series \code{col.names} must include \code{"T(t)ime"} or \code{"S(s)lice"} character
-string in order to identify the corresponding time column/variable in the original ASCII file.
-The default (for the original \code{\link[data.table]{fread}}) is to use the header column
-if present or detected. If not, the name is denoted as \code{"V"} followed by the column number.}
+\item{skip}{Numeric value, referring to the number of rows, at the beginning of ASCII text file, to be skipped
+(not included by loading into the data frame). \strong{Default}: \code{skip = 1}, corresponding to skip the first
+line in the \code{origin = "Xenon"} text file.}
 
-\item{x.id}{Numeric index related to \code{col.names} vector pointing to independent variable, which corresponds
-to \eqn{x}-axis in the spectra or other plots. \strong{Default}: \code{x.id = 2} (for \emph{Xenon}).}
+\item{header}{Logical. Does the first data line, in the original ASCII file, contain column names? Defaults according
+to whether every non-empty field on the first data line is character type. If so, or TRUE is supplied, any empty column
+names are given by a default name. \strong{Default}: \code{header = FALSE}.}
+
+\item{col.names}{Character string vector, corresponding to desired column/variable names/headers of the returned
+data frame/table. A safe rule of thumb is to use column names incl. physical quantity notation
+with its unit, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"} or \code{"Bsim_mT"} (e.g. pointing
+to simulated EPR spectrum \eqn{x}-axis). \strong{Default}: \code{col.names = c("index","B_G",dIepr_over_dB)}.
+For the spectral 2D-series \code{col.names} must include character string (such as \code{"time_s"} or \code{"T_K"})
+in order to identify the corresponding quantity for the series in the original file (please refer also
+to the \code{var2nd.series.id} and \code{Details}). Additional \code{\link[data.table]{fread}} documentation may
+be helpful to read the ASCII text files.}
+
+\item{x.id}{Numeric index related to \code{col.names} vector, pointing to the independent variable, which corresponds
+to \eqn{x}-axis in the spectra or other plots (e.g. \eqn{B} or \eqn{\nu_{\text{RF}}}).
+\strong{Default}: \code{x.id = 2} (for \emph{Xenon}).}
 
 \item{x.unit}{Character string, corresponding to original \code{x} variable/column unit, such as \code{"G"},
 \code{"mT"} or \code{"MHz"}.}
 
-\item{Intensity.id}{Numeric index related to \code{col.names} vector, pointing to \code{general} intensity,
+\item{Intensity.id}{Numeric index related to \code{col.names} vector, pointing to general intensity of EPR spectrum,
 like derivative intensity (\code{dIepr_over_dB}), integral one (e.g. \code{single_Integ}), double or sigmoid
-integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented like
+integral (e.g. \code{Area})...etc. This corresponds to column/vector which should be presented on the
 \eqn{y}-axis in the EPR spectra or other plots. \strong{Default}: \code{Intensity.id = 3} (for \emph{Xenon}).}
 
-\item{time.series.id}{Numeric index related to \code{col.names} vector and pointing to \code{time} column for time series
-EPR spectra. If data contains simple relation like \eqn{Area} vs \eqn{time},
-use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}). This argument is dedicated
-to kinetic-like experiments. \strong{Default}: \code{time.series.id = NULL} (see also the \code{data.structure}
-argument).}
+\item{var2nd.series.id}{Numeric index related to \code{col.names} vector and pointing to column
+for the EPR spectral 2D-series variable like time, temperature or microwave power. If data contains simple relation
+like \eqn{Area} vs \eqn{time}, use the \code{x} and \code{x.unit} parameters/arguments instead (see also \code{Examples}).
+This argument is dedicated to kinetic-like experiments. \strong{Default}: \code{var2nd.series.id = NULL}
+(for 1D experiments), see also the \code{data.structure} argument.}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
-\eqn{B} in \code{mT}/\code{G} is created.}
+\eqn{B} in \code{mT}/\code{G} is created, accordingly.}
 
 \item{qValue}{Numeric, Q value (quality factor, number) displayed at specific \code{dB} by the spectrometer,
 in case of \emph{Xenon} or \emph{new Magnettech} software the parameter is included in \code{.DSC}/\code{.dsc} file,
 \strong{default}: \code{qValue = NULL}, which actually corresponds to value \code{1}.}
 
-\item{norm.vec.add}{Numeric vector. Additional normalization constant in the form of vector, including
+\item{norm.vec.add}{Numeric vector. Additional normalization constants in the form of vector, including
 all (in addition to \code{qValue}) normalization(s) like concentration, powder sample
 weight, number of scans, ...etc. (e.g. \code{norm.vec.add = c(2000,0.5,2)}). \strong{Default}:
 \code{norm.vec.add = NULL}, which actually corresponds to value \code{1}. If \code{qValue = NULL},
 the Q-factor/value might be also included in the \code{norm.vec.add}.}
 
-\item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the
-most common spectrometers (from which the data are loaded automatically using the default parameters).
+\item{origin}{Character string, corresponding to \strong{origin} of the data and related to EPR acquisition software
+at the spectrometer (from which the data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
@@ -83,16 +120,16 @@ Options are summarized in the following table (any other specific \code{origin} 
 "magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
-\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
+\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{must be configured accordingly}. \cr
 }}
 
 \item{data.structure}{Character string, referring to structure of the ASCII data. Common spectral data files
-with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including the spectral
-time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For more complex
+with \eqn{Intensity} vs. \eqn{x(B,g,RF(\text{MHz}))} and/or \eqn{time} columns (including spectral
+time series) correspond to \code{data.structure = "spectra"} (\strong{default}). For the more complex
 ASCII data structure (such as spectral series processed by the acquisition spectrometer software,
 see \code{Examples}, or any other data) put \code{data.structure = "others"}. \strong{In such case, all the arguments for}
 the \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. The \code{data.structure} argument
-(assuming \code{time.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
+(assuming \code{var2nd.series.id = NULL}) is helping to simplify the reading of \code{"spectra"} by the predefined
 \code{origin} argument.}
 
 \item{...}{additional arguments specified (see also the \code{\link[data.table]{fread}} function).}
@@ -103,101 +140,166 @@ Data frame/table consisting of the magnetic flux density
   or unitless \code{g-factor} and of the derivative intensity column (\code{dIepr_over_dB}) or any other
   intensities (like integrated spectral form) in \code{procedure defined unit}
   (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
-  which is normalized by the above-described parameters
-  and finally the \code{index} and/or a \code{time} (in the case of time series experiment) columns
-  are displayed as well.
+  which is normalized by the above-described parameters/function arguments.
+  For 2D experiments (spectral series) an additional column with the 2nd independent variable (like time, temperature
+  or microwave power, ...etc. ) is created. In such case the actual data frame is return
+  in the \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}.
 }
 \description{
-This function is based on the \code{\link[data.table]{fread}} with the purpose to read
-  the experimental EPR/ENDOR spectra or other original (pre-processed) data, from the EPR spectrometers,
-  in tabular ASCII format (such as \code{.txt}, \code{.csv} or \code{.asc}). Default argument values correspond
-  to data reading from \emph{Xenon} files (see the argument \code{origin}).
+Based on the \code{\link[data.table]{fread}} or \code{\link[base]{readBin}} R functions,
+  the experimental EPR/ENDOR spectra (referred to as 1D- or 2D-Experiments) or other original (pre-processed)
+  data from the EPR spectrometers are transformed into data frames (tables). The function can read several data formats
+  such as \code{.txt}, \code{.csv}, \code{.asc}, \code{.DTA}, \code{.spc} as well as \code{.YGF}
+  with the latter three extensions, corresponding to binary files (function automatically recognizes which type of data,
+  ASCII or binary, are loaded). Reading of such data requires information (instrumental parameters
+  of the acquired spectra/data) provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively
+  (see the \code{path_to_dsc_par} as well as \code{path_to_ygf} arguments description). Because the original
+  file structure depends on the EPR spectrometer acquisition software or data processing, the \code{origin} argument
+  is necessary to specify the data/file source. Default function arguments are related to \code{origin ="xenon"}.
 }
 \details{
-ASCII data are transformed into \emph{R} data frames, which can be then easily processed by the actual or other
-  R packages, e.g. \href{https://dplyr.tidyverse.org/}{dplyr}), afterwards. Spectral intensities are automatically
-  normalized by the common experimental parameters like Q-factor, concentration, weight...etc.
-  These are defined by the two arguments:
+Right after the instrumental or pre-processed data/files are transformed into data frames,
+  they can be easily handled by the actual or additional R packages, e.g. by \href{https://dplyr.tidyverse.org/}{dplyr}),
+  afterwards. Spectral intensities are normalized by the common experimental parameters like Q-factor, concentration,
+  weight...etc. These are defined by the two arguments:
   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
-  quantities represented by the vector. If \code{qValue = NULL} (actually corresponding to \code{1}),
-  the Q-value can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
+  quantities represented by the vector. If \code{qValue = NULL} (it actually equals to \code{1}),
+  it can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
   is calculated by the following expression (depending on the \code{qValue} and/or \code{norm.vec.add}):
   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
   or
   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue) \, \prod_{k} 1/(norm.vec.add[k])}
-  where \eqn{k} is iterating through all components of the \code{norm.vec.add}.
-  The structure of ASCII files/tables depends on the origin/software used to acquire the EPR spectra.
-  This is mirrored mainly by the \code{origin} and \code{data.structure} arguments. Default arguments
+  or
+  \deqn{dI_{EPR} / dB = Original~Intensity \, \prod_{k} 1/(norm.vec.add[k])}
+  where the \eqn{k} is iterating through all components of the \code{norm.vec.add}.
+  The structure of files depends on the origin/software used to acquire the EPR spectra.
+  This is mainly mirrored by the \code{origin} and \code{data.structure} arguments. Default arguments
   are set to read the data from \emph{Xenon} acquisition/processing software. However, additional
-  \code{origins} can be set like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
-  any arbitrary string e.g. \code{origin = "csv"} (see also the \code{origin} argument). For the latter,
-  all arguments must be set accordingly, as already demonstrated in \code{Examples}.
-  Time series (time evolution of EPR spectra/kinetics) is defined by the \code{time.series.id} argument.
-  In such case the ASCII data table also contains additional column either with recorded
-  time (see also \code{\link{correct_time_Exp_Specs}}) or with slice number for each spectrum.
+  \code{origins} can be configured like \code{origin = "winepr"} or \code{origin = "magnettech"} or even
+  any arbitrary string e.g. \code{origin = "csv"} (see also description of the \code{origin} argument).
+  For the latter, all arguments must be defined accordingly, as already demonstrated in \code{Examples}.
+  When reading the spectrometer files, any 2D-experiment (e.g. time/temperature/microwave power series)
+  can be loaded as well. This must be activated by the \code{var2nd.series.id} argument
+  (which is \code{NULL} by default to load the 1D-experiments), pointing to \code{col.names} element
+  index in order to define relevant column of the returned data frame. For example, if the second
+  variable series corresponds to time (in seconds) column:
+  e.g. \code{col.names = c("index","B_G","time_s","dIepr_over_dB")}, the \code{id}
+  must be defined as \code{var2nd.series.id = 3}.
 }
 \examples{
-## simple EPR spectrum acquired by "xenon"
+## simple ASCII EPR spectrum acquired by "xenon"
 ## and with `B` conversion "G" <=> "mT"
 ## Loading the data
-aminoxyl.data.path <-
+aminoxyl.ascii.data.path <-
   load_data_example(file = "Aminoxyl_radical_a.txt")
 aminoxyl.data.01 <-
-  readEPR_Exp_Specs(aminoxyl.data.path,
-                    qValue = 2100)
+  readEPR_Exp_Specs(
+    aminoxyl.ascii.data.path,
+    qValue = 2100
+  )
 ## preview
 head(aminoxyl.data.01)
 #
+## the same EPR spectrum data, reading from
+## the original `.DTA` binary (+ `.DSC` text) file(s)
+## Loading the data
+aminoxyl.bin.data.path <-
+  load_data_example(file = "Aminoxyl_radical_a.DTA")
+aminoxyl.data.02 <-
+  readEPR_Exp_Specs(
+    aminoxyl.bin.data.path,
+    qValue = 2100
+  )
+## preview
+head(aminoxyl.data.02)
+#
 # simple EPR spectrum acquired by "xenon"
 ## and without `B` conversion "G" <=> "mT"
-aminoxyl.data.02 <-
-  readEPR_Exp_Specs(aminoxyl.data.path,
+aminoxyl.data.03 <-
+  readEPR_Exp_Specs(aminoxyl.bin.data.path,
                     convertB.unit = FALSE,
                     qValue = 2100)
 ## preview
-head(aminoxyl.data.02)
+head(aminoxyl.data.03)
 #
 ## the simple spectrum acquired by "winepr"
 ## (and 20 scans) on a 1 mM sample concentration:
 ## Loading the data
-TMPD.data.path <-
+TMPD.ascii.data.path <-
   load_data_example(file = "TMPD_specelchem_accu_b.asc")
-TMPD.data <-
-  readEPR_Exp_Specs(TMPD.data.path,
-                    col.names = c("B_G","dIepr_over_dB"),
-                    qValue = 3500,
-                    norm.vec.add = c(20,0.001),
-                    origin = "winepr")
+TMPD.data.01 <-
+  readEPR_Exp_Specs(
+    TMPD.ascii.data.path,
+    col.names = c("B_G","dIepr_over_dB"),
+    qValue = 3500,
+    norm.vec.add = c(20,0.001),
+    origin = "winepr"
+  )
 ## preview
-head(TMPD.data)
+head(TMPD.data.01)
+#
+## the same EPR spectrum data, reading from
+## the original `.spc` binary (+ `.par` text) file(s)
+## Loading the data
+TMPD.bin.data.path <-
+  load_data_example(file = "TMPD_specelchem_accu_b.spc")
+TMPD.data.02 <-
+  readEPR_Exp_Specs(
+    path_to_file = TMPD.bin.data.path,
+    col.names = c("B_G","dIepr_over_dB"),
+    qValue = 3500,
+    norm.vec.add = c(20,0.001),
+    origin = "winepr"
+  )
+## preview
+head(TMPD.data.02)
 #
 ## the ENDOR spectrum recorded by "xenon"
-## and 8 accumulation sweeps
+## and 8 accumulation sweeps (ASCII data)
 ## loading the data
-PNT.ENDOR.data.path <-
+PNT.ENDOR.ascii.data.path <-
   load_data_example(file = "PNT_ENDOR_a.txt")
-PNT.ENDOR.data <-
-  readEPR_Exp_Specs(PNT.ENDOR.data.path,
-                    col.names = c("index",
-                                  "RF_MHz",
-                                  "dIepr_over_dB"),
-                    x.unit = "MHz",
-                    norm.vec.add = 8)
+PNT.ENDOR.data.01 <-
+  readEPR_Exp_Specs(
+    PNT.ENDOR.ascii.data.path,
+    col.names = c("index",
+                  "RF_MHz",
+                  "dIepr_over_dB"),
+    x.unit = "MHz",
+    norm.vec.add = 8
+  )
 ## preview
-head(PNT.ENDOR.data)
+head(PNT.ENDOR.data.01)
 #
-## reading the (pre-processed) data file
-## (data.structure = "mixed") from (by) the "Xenon" software
-## corresponding to kinetics with `Area` and `time`
-## columns/variables , these two have to be selected
-## from several others + normalize `Area`
-## against the `qValue` (first of all load the path
-## of package example file)
+## previous ENDOR spectrum data, reading from
+## the original `.DTA` binary (+ `.DSC` text) file(s)
+## Loading the data
+PNT.ENDOR.bin.data.path <-
+  load_data_example(file = "PNT_ENDOR_a.DTA")
+PNT.ENDOR.data.02 <-
+  readEPR_Exp_Specs(
+    PNT.ENDOR.bin.data.path,
+    col.names = c("index",
+                  "RF_MHz",
+                  "dIepr_over_dB"),
+    x.unit = "MHz",
+    norm.vec.add = 8
+  )
+## preview
+head(PNT.ENDOR.data.02)
+#
+## reading the (pre-processed) ASCII
+## data file (data.structure = "others") from (by)
+## the "Xenon" software corresponding to kinetics with
+## `Area` and `time` columns/variables , these
+## two have to be selected from several
+## others + normalize `Area` by the `qValue`
+## (first of all load the path of package example file)
 triarylamine.rc.decay.path <-
   load_data_example("Triarylamine_radCat_decay_a.txt")
 ## data
 triarylamine.rc.decay.data <-
-  readEPR_Exp_Specs(path_to_ASC = triarylamine.rc.decay.path,
+  readEPR_Exp_Specs(path_to_file = triarylamine.rc.decay.path,
                     header = TRUE,
                     fill = TRUE,
                     select = c(3,7),
@@ -221,36 +323,103 @@ acridineRad.data <-
         files = c("AcridineDeriv_Irrad_365nm.csv"),
         exdir = tempdir())
 ## reading "magnettech"
-acridineRad.data <-
+acridineRad.data.01 <-
   readEPR_Exp_Specs(acridineRad.data,
                     col.names = c("B_mT","dIepr_over_dB"),
                     x.unit = "mT",
+                    qValue = 1829,
                     origin = "magnettech")
 ## preview
-head(acridineRad.data)
+head(acridineRad.data.01)
+#
+## previous acridine EPR spectrum data, reading from
+## the original `.DTA` binary (+ `.dsc` text) file(s)
+## Loading the data
+acridineRad.bin.data.path <-
+  load_data_example("AcridineDeriv_Irrad_365nm.DTA")
+acridineRad.data.02 <-
+  readEPR_Exp_Specs(
+    path_to_file = acridineRad.bin.data.path,
+    origin = "magnetech",
+    qValue = 1829
+  )
+#
+## preview
+head(acridineRad.data.02)
+#
+## EPR time series (2D Experiment) acquired
+## by the "Winepr"/"WinEpr", reading the original
+## `.spc` binary (+ `.par` text) file(s)
+## Loading the data
+TMPD.se.bin.data.2D.path <-
+  load_data_example("TMPD_specelchem_CV_b.spc")
+TMPD.se.data.2D <-
+  readEPR_Exp_Specs(
+    path_to_file = TMPD.se.bin.data.2D.path,
+    col.names = c(
+      "B_G",
+      "Slice",
+      "dIepr_over_dB"
+    ),
+    var2nd.series.id = 2,
+    origin = "winepr"
+  )
+#
+## preview
+head(TMPD.se.data.2D)
+#
+## EPR time series (2D experiment) acquired
+## by the "Xenon", reading the original
+## `.DTA` binary (+ `.DSC` text) file(s)
+## Loading the data
+triarylamine.rc.decay.series.path <-
+  load_data_example("Triarylamine_radCat_decay_series.DTA")
+triarylamine.rc.decay.series.data <-
+  readEPR_Exp_Specs(
+    path_to_file = triarylamine.rc.decay.series.path,
+    col.names = c(
+      "index",
+      "B_G",
+      "time_s",
+      "dIepr_over_dB"
+    ),
+    var2nd.series.id = 3,
+    qValue = 1700
+  )
+#
+## preview
+head(triarylamine.rc.decay.series.data)
+#
+## reading of the individual `.YGF` file (Xenon)
+## into vector
+tam.rc.decay.series.ygf.path <-
+  load_data_example("Triarylamine_radCat_decay_series.YGF")
+#
+## file length
+tam.rc.decay.series.ygf.len <-
+  readBin(
+    con = tam.rc.decay.series.ygf.path,
+    what = "raw",
+    n = 1e+4
+  ) \%>\% length()
+#
+## `.YGF` file reading
+tam.rc.decay.series.ygf <-
+  readBin(
+    con = tam.rc.decay.series.ygf.path,
+    what = "numeric",
+    size = 8, ## Xenon
+    n = tam.rc.decay.series.ygf.len / 8, ## Xenon
+    signed = TRUE,
+    endian = "big" ## Xenon
+  )
+#
+## preview of the first 10 values (time in s)
+tam.rc.decay.series.ygf[1:10]
 #
 \dontrun{
-## EPR time series acquired by "Winepr"/"WinEpr"
-readEPR_Exp_Specs(path_to_ASC,
-                  col.names = c("B_G",
-                                "Slice",
-                                "dIepr_over_dB"),
-                  origin = "Winepr")
-#
-## example for "xenon" time series experiment
-## (evolution of EPR spectra in time, e.g. in case of
-## EPR spectroelectrochemistry or photochemistry):
-## together with `B` conversion "G" <=> mT
-## and intensity normalized against `qValue`
-readEPR_Exp_Specs(path_to_ASC,
-                  col.names = c("index",
-                                "B_G",
-                                "time_s",
-                                "dIepr_over_dB"),
-                  qValue = 2800)
-#
-## read `.csv` file which is an output from online
-## converter:
+## read the `.csv` file which is an output
+## from the online converter:
 ## https://www.spectra.tools/bin/controller.pl?body=Xepr2gfac
 readEPR_Exp_Specs("data.csv",
                   skip = 0,

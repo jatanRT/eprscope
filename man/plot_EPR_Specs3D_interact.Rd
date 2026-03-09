@@ -151,32 +151,32 @@ Depending on \code{output.matrix.df}, function returns either interactive plot o
 triarylamine.decay.series.dsc.path <-
 load_data_example(file =
         "Triarylamine_radCat_decay_series.DSC")
-triarylamine.decay.series.asc.path <-
+triarylamine.decay.series.dta.path <-
 load_data_example(file =
-        "Triarylamine_radCat_decay_series.zip")
-unzip(triarylamine.decay.series.asc.path,
-      exdir = tempdir()
-      )
+        "Triarylamine_radCat_decay_series.DTA")
 ## loading the kinetics:
 triarylamine.decay.series.data <-
-  readEPR_Exp_Specs_kin(name.root =
-                          "Triarylamine_radCat_decay_series",
-                        dir_ASC = tempdir(),
-                        dir_dsc_par =
-                          system.file("extdata",
-                                      package = "eprscope")
-                        )
+  readEPR_Exp_Specs_kin(
+       path_to_file =
+         triarylamine.decay.series.dta.path,
+       path_to_dsc_par =
+         triarylamine.decay.series.dsc.path
+     )
 #
 ## plot basics `surface` plot (with default arguments)
 ## and the `Jet` color scheme including
 ## Intensity contour labels
-plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
+plot_EPR_Specs3D_interact(
+  triarylamine.decay.series.data$df,
   contour.labels = TRUE,
-  scheme.color = "Jet")
+  scheme.color = "Jet"
+  )
 #
 ## plot basic `contour` plot (with default arguments)
-plot_EPR_Specs3D_interact(triarylamine.decay.series.data$df,
-  plot.type = "contour")
+plot_EPR_Specs3D_interact(
+  triarylamine.decay.series.data$df,
+  plot.type = "contour"
+  )
 #
 \dontrun{
 ## 3D surface plotting EPR spectra series (in the region

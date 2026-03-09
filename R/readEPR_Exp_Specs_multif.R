@@ -301,8 +301,9 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   ## winepr
   if (origin.cond.all(origin = origin) == 0) {
     ## to define `QValues` run the following
-    qValues.from.files <- qValues %>% `if`(is.null(qValues),
-                                           rep(1,times = length(names)), .)
+    qValues.from.files <- qValues %>%
+      `if`(is.null(qValues),
+           rep(1,times = length(names)), .)
     ## to obtain microwave frequencies `MWFQ` (from all `.par` files),
     ## required for g value calculations
     mwfq.string <- "MW"
@@ -325,9 +326,10 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   }
   #
   ## `norm.list.add` definition
-  norm.list.add <- norm.list.add %>% `if`(is.null(norm.list.add),
-                                          lapply(rep(1,times = length(names)),
-                                                 function(g) g), .)
+  norm.list.add <- norm.list.add %>%
+    `if`(is.null(norm.list.add),
+         lapply(rep(1,times = length(names)),
+                function(g) g), .)
   #
   ## =========================== SPECTRAL DATA READING ==========================
   #
@@ -422,7 +424,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
                             ...
           )
         },
-        files.asc,
+        files.specs,
         switch(2 - binary.cond,files.params,NULL),
         qValues.from.files,
         norm.list.add

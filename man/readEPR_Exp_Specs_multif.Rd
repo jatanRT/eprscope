@@ -6,8 +6,9 @@
 \usage{
 readEPR_Exp_Specs_multif(
   name.pattern,
-  dir_ASC,
+  dir_asc_bin,
   dir_dsc_par,
+  read.ascii = TRUE,
   col.names = c("index", "B_G", "dIepr_over_dB"),
   x.unit = "G",
   convertB.unit = TRUE,
@@ -23,42 +24,48 @@ readEPR_Exp_Specs_multif(
 }
 \arguments{
 \item{name.pattern}{Character string ('specimen'), inherited from \code{\link[base]{list.files}}. A pattern
-from file name which might not necessarily appear at the beginning of the file name. One might also consult
+from file name which may not necessarily appear at the beginning of the file name. One might also consult
 how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}. THE SAME NAME AND \code{name.pattern}
 MUST BE USED FOR ALL FILE NAMES WITHIN THE SERIES.}
 
-\item{dir_ASC}{Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
-the \code{ASCII} files are stored.}
+\item{dir_asc_bin}{Path (defined by \code{\link[base]{file.path}} or by character string) to directory where
+the \code{ASCII} or \code{binary} (\code{.DTA} or \code{.spc}) files are stored. If both ASCII and binary files
+are located in the same directory, please refer to the \code{read.ascii} argument below.}
 
 \item{dir_dsc_par}{Path (defined by \code{\link[base]{file.path}} or by character string) to directory
-where the \code{.DSC}/\code{.dsc} or \code{.par} files,including instrumental parameters, are stored.}
+where the \code{.DSC}/\code{.dsc} or \code{.par} files,including instrumental parameters, are stored.
+They can be also stored/located within the same \code{dir_asc_bin}.}
 
-\item{col.names}{Character string vector, corresponding to column/variable names \strong{for individual file}
-(see also \code{\link{readEPR_Exp_Specs}}). A safe rule of thumb is to use column names including the physical
-quantity notation with its units, \code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
+\item{read.ascii}{Logical, whether to read the ASCII EPR data files with the extensions \code{.csv}, \code{.txt}
+or \code{.asc} (\code{read.ascii = TRUE}, \strong{default}) or binary files like \code{.DTA} and \code{.spc}
+(\code{read.ascii = FALSE}).}
+
+\item{col.names}{Character string vector, inherited from \code{\link[data.table]{fread}}, corresponding to
+column/variable names \strong{for individual file} (see also \code{\link{readEPR_Exp_Specs}}).
+A safe rule of thumb is to use column names including the physical quantity notation with its units,
+\code{Quantity_Unit} like \code{"B_G"}, \code{"RF_MHz"}, \code{"Bsim_mT"} (e.g. pointing
 to simulated EPR spectrum \eqn{x}-axis)...etc, \strong{default}: \code{col.names = c("index","B_G",dIepr_over_dB)}
 referring to column names coming from \emph{Xenon} software.}
 
-\item{x.unit}{Character string pointing to unit of quantity (coming from the original ASCII data, see also
+\item{x.unit}{Character string pointing to unit of quantity (coming from the original data, see also
 \code{col.names} argument) which is to be presented on \eqn{x}-axis of the EPR spectrum.
 Units like \code{"G"} ("Gauss"), \code{"mT"} ("millitesla"), \code{"MHz"} ("megahertz" in case of ENDOR spectra)
 or \code{"Unitless"} in case of \eqn{g}-values can be used. \strong{Default}: \code{x.unit = "G"}.}
 
 \item{convertB.unit}{Logical (\strong{default}: \code{convertB.unit = TRUE}), whether upon reading, an automatic
 conversion between \code{G} and \code{mT} should be performed. If default is chosen, a new column/variable
-\eqn{B} in \code{mT}/\code{G} is created.}
+\eqn{B} in \code{mT}/\code{G} is created, accordingly.}
 
-\item{qValues}{Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either automatically loaded
-from the instrumental parameter files (\code{.DSC} or \code{.par}) or specified by the user.
-Therefore, \code{qValues = NULL} (\strong{default}), actually corresponding to vector with all elements equal to \code{1}.
-In case of the \code{origin = "winepr"}, the elements of \code{qValues} have to be provided by the spectrometer operator.}
+\item{qValues}{Numeric vector of Q-values (sensitivity factors to normalize EPR intensities) either loaded from
+the instrumental parameters (\code{.DSC} or \code{.par}), therefore \code{qValues = NULL} (\strong{default}),
+or in case of the \code{origin = "winepr"}, they have to be provided by the spectrometer operator.}
 
 \item{norm.list.add}{Numeric list of vectors. Additional normalization constants in the form of vectors involving
 all (i.e. in addition to \code{qValue}) normalization(s) like e.g. concentration, powder sample
 weight, number of scans, ...etc (e.g. \code{norm.list.add = list(c(2000,0.5,2),c(1500,1,3))}). \strong{Default}:
-\code{norm.list.add = NULL}, corresponding to values of \code{1}.}
+\code{norm.list.add = NULL}.}
 
-\item{names}{Character string vector, corresponding either to values of \strong{additional quantity}
+\item{names}{Character string vector, corresponding either to values of \strong{additional - 2nd variable/quantity}
 (e.g. temperature,microwave power...etc, \code{c("240","250","260","270")}) or to \strong{general sample coding}
 by alpha character (e.g. \code{c("a","b","c","d")}) being varied by the individual experiments.}
 
@@ -66,7 +73,7 @@ by alpha character (e.g. \code{c("a","b","c","d")}) being varied by the individu
 \strong{default}: \code{tidy = FALSE}.}
 
 \item{var2nd.series}{Character string, if \code{tidy = TRUE} (see also the \code{tidy} argument)
-it is referred to name of the variable/quantity (such as "time","Temperature","Electrochemical Potential",
+it is referred to name of the 2nd variable/quantity (such as "time","Temperature","Electrochemical Potential",
 "Microwave Power"...etc) altered during individual experiments as a second variable series (\code{var2nd.series})
 and related to the spectral data.}
 
@@ -74,8 +81,8 @@ and related to the spectral data.}
 for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
 to visualize EPR spectra by \code{plot}-functions.}
 
-\item{origin}{Character string, corresponding to \strong{origin} of the ASCII data, like from the
-most common spectrometers (from which the data are loaded automatically using the default parameters).
+\item{origin}{Character string, corresponding to \strong{origin} of the data and related to EPR acquisition software
+at the spectrometer (from which the data are loaded automatically using the default parameters).
 Options are summarized in the following table (any other specific \code{origin} may be added later) =>
 \tabular{rl}{
 \strong{String} \tab \strong{Description} \cr
@@ -84,7 +91,7 @@ Options are summarized in the following table (any other specific \code{origin} 
 "magnettech" \tab automatically loads data from the new "Magnettech" software (ESR5000 [11-0422]). \cr
 "other" (arbitrary string, e.g. "csv") \tab general, loads any other original
 data like \code{csv}, \code{txt}, \code{asc} incl. also data from other instrumental/spectrometer software.
-\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{have to be set up accordingly}. \cr
+\strong{In such case, all the arguments for} \code{readEPR_Exp_Specs} \strong{must be configured accordingly}. \cr
 }}
 
 \item{...}{additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
@@ -96,9 +103,10 @@ List of Data Frames (or long table \code{tidy} format) corresponding
   is automatically calculated during the processing and it is included in the data frame list/database as well.
 }
 \description{
-Loading the EPR spectra from several/multiple \code{text} files (including the instrumental
+Loading the EPR spectra from several/multiple files (including the instrumental
   parameters in \code{.DSC}/\code{.dsc} or \code{.par} format) at once. Finally, the data are transformed
-  either into a list of data frames or into a \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}.
+  either into a list of data frames (individual spectra) or into
+  a \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}.
   According to experimental quantity (e.g. temperature, microwave power, recording time...etc),
   \code{names} and \code{var2nd.series} (in the case of \code{tidy = TRUE}) arguments have to be specified.
 }
@@ -106,8 +114,8 @@ Loading the EPR spectra from several/multiple \code{text} files (including the i
 \dontrun{
 ## multiple ENDOR spectra at different temperatures recorded
 ## by `Xenon` software read and transformed into `longtable`,
-## ready to plot the overlay
-## EPR spectra => `var2nd.series.factor = FALSE` (default).
+## ready to plot the overlay EPR spectra
+## => `var2nd.series.factor = FALSE` (default).
 readEPR_Exp_Specs_multif(
   name.pattern = "^.*_sample_VT_",
   file.path(".","ASCII_data_dir"),
@@ -119,7 +127,7 @@ readEPR_Exp_Specs_multif(
   names = c("210","220","230","240"),
   tidy = TRUE,
   var2nd.series = "Temperature_K"
-  )
+)
 #
 ## multiple EPR spectra recorded at different temperatures
 ## by `WinEPR` software, experiments performed with a powder
@@ -128,46 +136,79 @@ readEPR_Exp_Specs_multif(
 ## corresponds to list of data frames
 readEPR_Exp_Specs_multif(
   "^Sample_VT_",
-  file.path(".","ASCII_data_dir"),
-  file.path(".","DSC_data_dir"),
+  dir_asc_bin = "./RAW_EPR_data_dir",
+  dir_dsc_par = "./DSC_EPR_data_dir",
+  read.ascii = FALSE,
   col.names = c("B_G","dIepr_over_dB"),
   x.unit = "G",
   names = c("210","220","230","240"),
   qValues = c(3400,3501,3600,2800),
   norm.list.add = rep(list(c(10,7)),times = 4),
   origin = "winepr"
-  )
+ )
 #
 ## multiple `Xenon` EPR spectra related to one powder
 ## sample (m = 8 mg) where several instrumental parameters
 ## are changed at once, the file names (files are stored
 ## in the actual directory) start with the "R5228_AV_powder_",
-## function returns all spectral data in `tidy` (long) table
-## format
+## function returns all spectral data in `tidy` (long)
+## table format
 readEPR_Exp_Specs_multif(
   name.pattern = "R5228_AV_powder_",
-  dir_ASC = ".",
+  dir_asc_bin = ".",
   dir_dsc_par = ".",
   names = c("a","b","c","d"),
   tidy = TRUE,
   var2nd.series = "sample",
-  norm.list.add = rep(list(8),4)
-  )
+  norm.list.add = rep(list(8),4))
 #
-## multiple `Magnettech` EPR spectra (in `.csv` ASCII format)
-## recorded at different times
+## time series coming from `Magnettech` as individual EPR spectra
+## (represented by binary files `.DTA`) recorded at different
+## time in seconds -> see `names` argument
 readEPR_Exp_Specs_multif(
-  name.pattern = "Kinetics_Magnettech_",
-  dir_ASC = ".",
-  dir_dsc_par = ".",
-  col.names = c("B_mT","dIepr_over_dB"),
-  x.unit = "mT",
-  names = c("20","30","40","50","60"), ## in seconds
+  name.pattern = "Kinetics_EPR_Spectra_",
+  dir_asc_bin = "./Input_EPR_Data",
+  dir_dsc_par = "./Input_EPR_Data",
+  read.ascii = FALSE,
+  names = c("20","40","60","80","100","120"),
   tidy = TRUE,
   var2nd.series = "time_s",
-  qValues = c(1829,1922.325,1891.25,1835,1850.327),
-  origin = "magnetech"
+  origin = "magnettech"
 )
+#
+## time series coming from `Magnettech` as individual EPR spectra
+## (represented by ASCII files `.csv`) recorded at different
+## time in seconds -> see `names` argument
+data.time.series.mngtech <-
+  readEPR_Exp_Specs_multif(
+    name.pattern = "Kinetics_EPR_Spectra_",
+    dir_asc_bin = "./Input_EPR_Data",
+    dir_dsc_par = "./Input_EPR_Data",
+    col.names = c("B_mT","dIepr_over_dB"),
+    x.unit = "mT",
+    names = as.character(c(1:12)), # total number of spectra: 12
+    tidy = TRUE,
+    var2nd.series = "Slice",
+    origin = "magnettech"
+  )
+#
+## convert the `Slice` column (of the previous data) into `time_s`,
+## using the `dplyr` package, time interval between recording
+## of the two consecutive Slices/EPR spectra corresponds to 32 s:
+data.time.series.mngtech <-
+  data.time.series.mngtech \%>\%
+    mutate(time_s = (Slice - 1) * 32) # 32 s time interval
+## correct time, if the middle of an individual spectrum
+## appears at the sweep time half
+data.time.series.mngtech$time_s <-
+  correct_time_Exp_Specs(
+    time.s = data.time.series.mngtech$time_s,
+    # how many accumulations per individual EPR spectrum ? :
+    Nscans = 1,
+    # experimental sweep time (for one EPR spectrum) in seconds:
+    sweep.time.s = 26
+   )
+#
 }
 
 

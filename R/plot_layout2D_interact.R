@@ -79,20 +79,23 @@
 #' ## read the PNT CW ENDOR data without intensity
 #' ## normalization
 #' pnt.endor.data <-
-#'   readEPR_Exp_Specs(pnt.file.path,
-#'                     col.names = c("index",
-#'                                   "RF_MHz",
-#'                                   "dIepr_over_dB"),
-#'                     x.unit = "MHz")
+#'   readEPR_Exp_Specs(
+#'     pnt.file.path,
+#'     col.names = c("index",
+#'                   "RF_MHz",
+#'                   "dIepr_over_dB"),
+#'     x.unit = "MHz"
+#'    )
 #' ## plotting ENDOR spectrum
-#' plot_EPR_Specs2D_interact(data.spectra = pnt.endor.data,
+#' plot_EPR_Specs2D_interact(
+#'   data.spectra = pnt.endor.data,
 #'   x = "RF_MHz",
 #'   x.unit = "MHz",
 #'   line.colors = "darkgreen",
 #'   bg.color = "cornsilk",
 #'   grid.color = "darkgrey") %>%
-#'     plot_layout2D_interact(xlab =
-#'                      "<i>&#957;</i><sub>RF</sub> (MHz)",
+#'     plot_layout2D_interact(
+#'       xlab = "<i>&#957;</i><sub>RF</sub> (MHz)",
 #'       axis.title.x.family = "Times New Roman",
 #'       axis.title.y.family = "Times New Roman",
 #'       border.line.color = "blue",

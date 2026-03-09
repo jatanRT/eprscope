@@ -22,7 +22,7 @@
 #'   including the 2D-experimental (i.e. \eqn{Intensity} vs \eqn{B} vs \eqn{time}) EPR data. The path can be also defined
 #'   by the \code{\link[base]{file.path}} function.
 #' @param time.unit Character string, specifying the \code{"s"},\code{"min"}, \code{"h"}
-#'   or \code{time.unit = "unitless"} (if \code{time.delta.slice.s} is different from \code{NULL}).
+#'   or \code{time.unit = "unitless"} (if \code{time.delta.slice} is different from \code{NULL}).
 #'   \strong{Default}: \code{time.unit = "s"}
 #' @param time.delta.slice Numeric, time interval in \code{time.unit} between \code{slices},
 #'   in the case of \code{origin = "winepr"}. \strong{Default}: \code{time.delta.slice = NULL} (actually,
@@ -56,22 +56,17 @@
 #' triarylam.decay.series.ygf.path <-
 #'   load_data_example(file =
 #'     "Triarylamine_radCat_decay_series.YGF")
-#' triarylam.decay.series.asc.path <-
+#' triarylam.decay.series.dta.path <-
 #'   load_data_example(file =
-#'     "Triarylamine_radCat_decay_series.zip")
-#' unzip(triarylam.decay.series.asc.path,exdir = tempdir())
+#'     "Triarylamine_radCat_decay_series.DTA")
 #' #
 #' ## loading the kinetics:
 #' triarylam.decay.series.data <-
-#'   readEPR_Exp_Specs_kin(path_to_file = paste0(
-#'                           tempdir(),
-#'                           "/Triarylamine_radCat_decay_series.txt"
-#'                         ),
-#'                         path_to_dsc_par =
-#'                           triarylam.decay.series.dsc.path,
-#'                         path_to_ygf =
-#'                           triarylam.decay.series.ygf.path
-#'                        )
+#'   readEPR_Exp_Specs_kin(
+#'     path_to_file = triarylam.decay.series.dta.path,
+#'     path_to_dsc_par = triarylam.decay.series.dsc.path,
+#'     path_to_ygf = triarylam.decay.series.ygf.path
+#'  )
 #' #
 #' ## data preview
 #' head(triarylam.decay.series.data$df)
@@ -85,7 +80,7 @@
 #' tmpd.se.cv.b.bin.path <-
 #'   load_data_example("TMPD_specelchem_CV_b.spc")
 #' tmpd.se.cv.b.par.path <-
-#'   load_ddata_example("TMPD_specelchem_CV_b.par")
+#'   load_data_example("TMPD_specelchem_CV_b.par")
 #' tmpd.se.cv.b.dat <-
 #'   readEPR_Exp_Specs_kin(
 #'     path_to_file = tmpd.se.cv.b.bin.path,
@@ -170,41 +165,12 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   #
   ## checking the path string, whether it points to ASCII or BINARY
   ## + checking the corresponding origin
-  # ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
-  # binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
-  # if (grepl(".*\\.spc$",path_to_file)) {
-  #   if (origin.cond.all(origin = origin) == 2 ||
-  #       origin.cond.all(origin = origin) == 1) {
-  #     stop(" Reading of the '.spc' file requires origin = 'winepr' !! ")
-  #   }
-  # }
-  # if (grepl(".*\\.DTA$",path_to_file)) {
-  #   if (origin.cond.all(origin = origin) == 0) {
-  #     stop(" Reading of the '.DTA' file requires\n
-  #          origin = 'xenon' or origin = 'magnettech' !! ")
-  #   }
-  # }
+  ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
+  binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
   #
   # ------------------------- XENON & MAGNETTECH -----------------------------
   if (origin.cond.all(origin = origin) == 2 ||
       origin.cond.all(origin = origin) == 1) {
-    #
-    ## expecting that the `.DSC`/`.dsc` file is in the same folder
-    ## as the `.DTA` one and possesses the same name
-    path.to.dsc <- gsub(
-      "\\.DTA$",
-      switch(2 - xen.magnet.cond(origin = origin),".dsc",".DSC"),
-      path_to_file
-    )
-    #
-    ## check the existence of this previous file in the current working dir.
-    if (!file.exists(path.to.dsc)) {
-      stop(" Please provide the file path for the `.DSC`/`.dsc` file,\n
-             refer to definition of the `path_to_dsc_par` argument !! ")
-    } else {
-      path_to_dsc_par <-
-        path_to_dsc_par %>% `if`(is.null(path_to_dsc_par), path.to.dsc, .)
-    }
     #
     ## Qvalue
     qValue.obtain <-
@@ -218,29 +184,12 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     if (is.null(qValue.obtain) || is.na(qValue.obtain)) {
       qValue.obtain <- qValue %>% `if`(is.null(qValue), 1, .)
       warning("Sensitivity factor or Q-Value WAS NOT FOUND in the `.DSC`/`.dsc`\n
-              file !! It is automatically switched to `1`, unless you won't define\n
+              file !! It is automatically switched to `1`, unless you define\n
               the `qValue` argument !! ")
     }
   }
   #  ------------------------ WINEPR --------------------------
   if (origin.cond.all(origin = origin) == 0) {
-    #
-    ## expecting that the `.par` file is in the same folder
-    ## as the `.spc` one and possesses the same name
-    path.to.par <- gsub(
-      "\\.spc$",
-      ".par",
-      path_to_file
-    )
-    #
-    ## check the existence of this previous file in the current working dir.
-    if (!file.exists(path.to.par)) {
-      stop(" Please provide the file path for the `.par` file,\n
-             refer to definition of the `path_to_dsc_par` argument !! ")
-    } else {
-      path_to_dsc_par <-
-        path_to_dsc_par %>% `if`(is.null(path_to_dsc_par), path.to.par, .)
-    }
     #
     ## Qvalue definition
     if (is.null(qValue) || is.na(qValue)) {
@@ -350,7 +299,8 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       `if`(is.null(time.delta.slice),1, .)
   }
   #
-  if (time.unit == "s" || time.unit == "unitless" || time.unit == "Unitless") {
+  if (time.unit == "s" || time.unit == "unitless" ||
+      time.unit == "Unitless") {
     times <- times
     #
     if (origin.cond.all(origin = origin) == 0){
@@ -360,7 +310,9 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   if (time.unit == "min") {
     times <- times * 60
     ## rename column
-    colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
+    colnames(data.spectra.time)[
+      colnames(data.spectra.time) == timeString
+    ] <- "time_s"
     #
     ## time interval
     if (origin.cond.all(origin = origin) == 0){
@@ -370,7 +322,9 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   if (time.unit == "h") {
     times <- times * 3600
     ## rename column
-    colnames(data.spectra.time)[colnames(data.spectra.time) == timeString] <- "time_s"
+    colnames(data.spectra.time)[
+      colnames(data.spectra.time) == timeString
+    ] <- "time_s"
     #
     ## time interval
     if (origin.cond.all(origin = origin) == 0){
@@ -380,7 +334,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   ## Re-definition for `time.delta.slice`
   if (origin.cond.all(origin = origin) == 0){
     #
-    times <- times * time.delta.slice.s
+    times <- times * time.delta.slice
     #
   }
   #

@@ -124,7 +124,7 @@ data.file.path <-
   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 ## spectrum recorded as accumulation of 20 scans
 data.epr <-
-  readEPR_Exp_Specs(path_to_ASC = data.file.path,
+  readEPR_Exp_Specs(path_to_file = data.file.path,
                     col.names = c("B_G", "dIepr_over_dB"),
                     qValue = 3500,
                     norm.vec.add = 20,
@@ -134,7 +134,7 @@ plot_EPR_Specs2D_interact(data.spectra = data.epr)
 #
 ## loading the built-in CW ENDOR spectrum
 ## of perinaphthenyl (PNT)
-pnt.file.path <- load_data_example("PNT_ENDOR_a.txt")
+pnt.file.path <- load_data_example("PNT_ENDOR_a.DTA")
 ## read the PNT CW ENDOR data without intensity
 ## normalization
 pnt.endor.data <-

@@ -10,6 +10,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R-CMD-check](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jatanRT/eprscope/actions/workflows/R-CMD-check.yaml)
 [![eprscope status
 badge](https://jatanrt.r-universe.dev/badges/eprscope)](https://jatanrt.r-universe.dev/eprscope)
+[![GitHub last
+commit](https://img.shields.io/github/last-commit/jatanRT/eprscope.svg)](https://github.com/jatanRT/eprscope/commits)
 
 <!-- badges: end -->
 
@@ -70,8 +72,8 @@ is required** and summarized into the following steps:
     follow instructions at the official site of [British Columbia
     Institute of
     Technology](https://kb.bcit.ca/faculty-staff/download-and-install-openjdk-on-windows10-3395/).
-    On *macOS,* this package is available via Homebrew repository (see
-    below) by `brew install openjdk` and finally, by verifying the
+    On *macOS,* this package is available via the Homebrew repository
+    (see below) by `brew install openjdk` and finally, by verifying the
     installation: `java –version`. *Linux* (ubuntu) users are advised to
     check out the repositories (+ update, if needed): `sudo apt update`.
     Then search for the `openjdk` by the following command:
@@ -85,11 +87,11 @@ is required** and summarized into the following steps:
     procedure](https://cran.rstudio.com/). *Linux* and *macOS* users may
     also update where the
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="12" />
-    expects to find various *Java* files by `sudo R CMD javareconf` (in
-    terminal, not in the R console), afterwards. If one gets an error
-    about `jni.h` not being found, then try:
+    expects to find various *Java* files by `sudo R CMD javareconf`
+    (**in terminal, not in the R console !**), afterwards. If one gets
+    an error about `jni.h` not being found, then try:
     `sudo R CMD javareconf JAVA_HOME=/usr/lib/jvm/java-XX-openjdk-amd64/`
-    (find your path for the *Java* files).
+    (find your exact path for the *Java* files).
 
 3.  Download and install [*RStudio
     IDE*](https://posit.co/download/rstudio-desktop/) (Integrated
@@ -182,6 +184,12 @@ system** [Quarto](https://quarto.org/) together with the
 required for sharing the results coming from `{eprscope}` in desired
 formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be
 found in the `create_qmdReport_proj()` documentation).
+
+**Note:** On modern *Windows* systems (10/11), all the pre- and
+post-installation (*Quarto*, *Pandoc* and *LaTeX/Typst*) software
+packages can be easily managed either by
+[*Winget*](https://winstall.app/) *or by the
+[Chocolatey](https://chocolatey.org/)* systems.
 
 ## Updates
 
@@ -301,7 +309,7 @@ triarylamine_rc_decay_txt <-
   load_data_example(file = "Triarylamine_radCat_decay_a.txt")
 triarylamine_rc_decay_data <-
   readEPR_Exp_Specs(
-    path_to_ASC = triarylamine_rc_decay_txt,
+    path_to_file = triarylamine_rc_decay_txt,
     header = TRUE,
     fill = TRUE,
     select = c(3, 7),
