@@ -16,7 +16,7 @@ Description: Processing, analysis and plottting of
              characteristics like g-factor, linewidth, maximum 
              of derivative or integral intensities and single/double 
              integrals. This is especially important in spectral (time) 
-             series consisting of many EPR spectra like during variable 
+             series, consisting of many EPR spectra like during variable 
              temperature experiments, electrochemical or photochemical 
              radical generation and/or decay. Therefore, processing of 
              data/spectra for the analytical (quantitative) purposes

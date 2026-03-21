@@ -21,8 +21,9 @@ List containing:
   \describe{
   \item{Nscans}{Number of scans.}
   \item{swTime}{Sweep time in \code{s} required for time correction during the \code{2D_Field_Delay}
-  (time series EPR experiment).}
-  \item{Npoints}{Number of points (spectral resolution).}
+  (time series EPR experiment).Refer to the \code{\link{correct_time_Exp_Specs}} as well as to the
+  \code{\link{readEPR_Exp_Specs_kin}} functions.}
+  \item{Npoints}{Number of points (resolution of an EPR spectrum).}
   }
 }
 \description{

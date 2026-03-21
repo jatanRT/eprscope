@@ -1,12 +1,12 @@
 # eprscope 0.1.16
 
-## 2026-03-X
+## 2026-03-22
 
 ### Bug Fixes/Critical Updates
 
 * right now the reading of EPR spectrometer binary files (`.DTA`, `.YGF` & `.spc`) 
-  is fully supported throughout the package, however it requires the presence 
-  of `.DSC`/`.dsc` and `.par` files (with instrumental parameters), respectively;
+  is fully supported throughout the package, however it requires presence 
+  of the `.DSC`/`.dsc` and `.par` files (with instrumental parameters), respectively;
   please refer to the documentation and examples of the main reading functions
   like `readEPR_Exp_Specs`, `readEPR_Exp_Specs_kin` and `readEPR_Exp_Specs_multif`,
   as well as to `Basic Functionality` vignette/article
@@ -23,13 +23,13 @@
 * several fixes and/or updates in documentation (functions, including
   `Examples` + vignettes)  
   
-* now, reading of multiple files, using the `readEPR_Exp_Specs_multif`,
+* now, reading of multiple files, by using the `readEPR_Exp_Specs_multif`,
   can differentiate between the true "numeric" values and those containing 
   "alpha" (character string) in the `names` argument elements,
   which was not possible by now and induced errors
   
-* fixed bug in the `rearrange_aAiso_QCHorgau` function where by reading 
-  of the `ORCA` files, the hyperfine couplings/splittings (A/a) could 
+* fixed bug in the `rearrange_aAiso_QCHorgau` function, while reading 
+  the `ORCA` files, the hyperfine couplings/splittings (A/a) could 
   not be extracted and `NA` "values" occurred + removed the `N.nuclei` argument,
   which is now directly obtained from the corresponding text outputs
   (`Gaussian` as well as `ORCA`)
@@ -45,6 +45,19 @@
   simulation panel/plot displays an error when no interacting nuclei were specified
   in the corresponding input panel, the actual message is shown to ask
   for the system of interacting nuclei to be defined by the user
+  
+* conversion time (`convTime`) returned by the `readEPR_params_slct_kin`, 
+  for the case of `winepr` original data/instrumental parameters, is now correctly 
+  converted into seconds, where `ms` has been used so far
+  
+* now, the option to fix one or several parameters (which won't be optimized) 
+  for EPR simulation fit (so that it matches the experimental spectrum) is built into 
+  the essential `optim_for_EPR_fitness` function and therefore can be propagated 
+  into related ones like `eval_sim_EPR_isoFit`, `eval_sim_EPR_isoFit_space`
+  or `quantify_EPR_sim_series`, this was redesigned mainly due to the fact that
+  "particle swarm" as well as "controlled random search" algorithms depend
+  on the length of parameter vector, which is actually shorter when parameters 
+  are fixed
 
 ### Updates
 
@@ -68,14 +81,14 @@
   the main reading functions (please, refer to the `Package Datasets` vignette/article)
   
 * there is a new function `plot_eval_EPRtheo_mltiplet` (including the corresponding 
-  test for that function) which can be applied to quickly check the expected 
+  test for the function) which can be applied to quickly check the expected 
   EPR intensity pattern (without considering a hyperfine coupling) for a group 
   of equivalent nuclei (e.g. 2 x <sup>14</sup>N) in order to predict intensities 
   of simulated isotropic EPR spectra
   
 * in order to transform several data frame objects/variables into the one (having
-  a tidy form) in the R (local/Global) environment, a new function
-  `transform_dfs_2tidyDF` was created; such function can be really handy if one wants
+  a tidy form) in the R (local/Global) environment, the new function
+  `transform_dfs_2tidyDF` was created; such function can be handy if one wants
   to quickly compare several plots/EPR spectra in one interactive/static panel graph
 
 # eprscope 0.1.15

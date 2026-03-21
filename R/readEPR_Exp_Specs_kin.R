@@ -91,12 +91,15 @@
 #'       "dIepr_over_dB"
 #'      ),
 #'   var2nd.series.id = 2,
-#'   time.delta.slice = 18,
+#'   time.delta.slice = 18, # 18 seconds
 #'   origin = "winepr"
 #'   )
 #' #
 #' ## data preview
-#' head(tmpd.se.cv.b.dat)
+#' head(tmpd.se.cv.b.dat$df)
+#' #
+#' ## time preview
+#' tmpd.se.cv.b.dat$time
 #'
 #'
 #' @export
@@ -150,27 +153,20 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     }
   }
   #
-  ## condition for switching between xenon and magnettech
-  if (origin.cond.all(origin = origin) == 2 ||
-      origin.cond.all(origin = origin) == 1) {
-    xen.magnet.cond <- function(origin){
-      if (any(grepl(paste(xenon.string,collapse = "|"),origin))){
-        return(0)
-      }
-      if (any(grepl(paste(magnettech.string,collapse = "|"),origin))){
-        return(1)
-      }
-    }
-  }
-  #
   ## checking the path string, whether it points to ASCII or BINARY
   ## + checking the corresponding origin
   ascii.cond <- grepl(".*\\.(txt|asc|csv)$",path_to_file)
   binary.cond <- grepl(".*\\.(DTA|spc)$",path_to_file)
   #
   # ------------------------- XENON & MAGNETTECH -----------------------------
-  if (origin.cond.all(origin = origin) == 2 ||
-      origin.cond.all(origin = origin) == 1) {
+  #
+  if (origin.cond.all(origin = origin) == 1) {
+    stop(" For the recorded series of EPR spectra on `Magnettech`\n
+             please use the `readEPR_Exp_Specs_multif` function, instead.\n
+             Spectra are saved/stored individually on such machine !! ")
+  }
+  #
+  if (origin.cond.all(origin = origin) == 2) {
     #
     ## Qvalue
     qValue.obtain <-
@@ -194,7 +190,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     ## Qvalue definition
     if (is.null(qValue) || is.na(qValue)) {
       warning("Sensitivity factor or Q-Value WAS NOT DEFINED !!\n
-              It is automatically switched to `1`, unless you won't define\n
+              It is automatically switched to `1`, unless you define\n
               the `qValue` argument !! ")
     }
     qValue.obtain <- qValue %>% `if`(is.null(qValue), 1, .)
@@ -213,7 +209,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       3 - origin.cond.all(origin = origin),
       x.id %>% `if`(x.id != 2, 2, .), ## check xenon
       x.id %>% `if`(x.id != 1 || x.id != 2,
-                    switch(2 - binary.cond, 2, 1), .), ## magnettech
+                    switch(2 - binary.cond, 2, 1), .), ## magnettech (maybe for future?:-))
       x.id %>% `if`(x.id != 1, 1, .) ## check winepr
     )
   } else {
@@ -235,7 +231,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
     Intensity.id <- switch(
       3 - origin.cond.all(origin = origin),
       Intensity.id %>% `if`(Intensity.id != 4, 4, .), ## check xenon
-      switch(2 - binary.cond, 4, Intensity.id), ## magnettech
+      switch(2 - binary.cond, 4, Intensity.id), ## magnettech (maybe for future?:-))
       Intensity.id %>% `if`(Intensity.id != 3, 3, .) ## check winepr
     )
   } else {
@@ -309,10 +305,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   }
   if (time.unit == "min") {
     times <- times * 60
-    ## rename column
-    colnames(data.spectra.time)[
-      colnames(data.spectra.time) == timeString
-    ] <- "time_s"
+    ## rename column (see below at the end)
     #
     ## time interval
     if (origin.cond.all(origin = origin) == 0){
@@ -321,10 +314,7 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   }
   if (time.unit == "h") {
     times <- times * 3600
-    ## rename column
-    colnames(data.spectra.time)[
-      colnames(data.spectra.time) == timeString
-    ] <- "time_s"
+    ## rename column (see below at the end)
     #
     ## time interval
     if (origin.cond.all(origin = origin) == 0){
@@ -345,13 +335,19 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       sweep.time.s = instrument.params.kinet$swTime
     )
   #
+  ## redefinition of time column name, because according
+  ## to previous operations is now everything is seconds:
+  colnames(data.spectra.time)[
+    colnames(data.spectra.time) == timeString
+  ] <- "time_s"
+  #
   ## corrected time df
   time.corrected <- data.spectra.time %>%
-    dplyr::group_by(.data[[timeString]]) %>%
+    dplyr::group_by(.data[["time_s"]]) %>%
     dplyr::group_keys()
   #
   data.all.spectra <-
-    list(df = data.spectra.time, time = time.corrected[[timeString]])
+    list(df = data.spectra.time, time = time.corrected[["time_s"]])
   #
   return(data.all.spectra)
   #

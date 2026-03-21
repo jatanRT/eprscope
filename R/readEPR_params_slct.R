@@ -329,8 +329,9 @@ readEPR_param_slct <- function(path_to_dsc_par,
 #'   \describe{
 #'   \item{Nscans}{Number of scans.}
 #'   \item{swTime}{Sweep time in \code{s} required for time correction during the \code{2D_Field_Delay}
-#'   (time series EPR experiment).}
-#'   \item{Npoints}{Number of points (spectral resolution).}
+#'   (time series EPR experiment).Refer to the \code{\link{correct_time_Exp_Specs}} as well as to the
+#'   \code{\link{readEPR_Exp_Specs_kin}} functions.}
+#'   \item{Npoints}{Number of points (resolution of an EPR spectrum).}
 #'   }
 #'
 #'
@@ -385,7 +386,7 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
       path_to_dsc_par,
       string = "SPTP",
       origin = origin
-    )
+    ) ## conversion time in seconds
     #
     NScans <- readEPR_param_slct(
       path_to_dsc_par,
@@ -413,7 +414,9 @@ readEPR_params_slct_kin <- function(path_to_dsc_par, origin = "xenon") {
       path_to_dsc_par,
       string = "RCT",
       origin = origin
-    )
+    ) * 0.001 ## =>
+    ## "RCT" conversion time in milliseconds at the beginning,
+    ## however must be in seconds
     #
     NScans <- readEPR_param_slct(
       path_to_dsc_par,

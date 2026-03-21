@@ -150,12 +150,15 @@ tmpd.se.cv.b.dat <-
       "dIepr_over_dB"
      ),
   var2nd.series.id = 2,
-  time.delta.slice = 18,
+  time.delta.slice = 18, # 18 seconds
   origin = "winepr"
   )
 #
 ## data preview
-head(tmpd.se.cv.b.dat)
+head(tmpd.se.cv.b.dat$df)
+#
+## time preview
+tmpd.se.cv.b.dat$time
 
 
 }

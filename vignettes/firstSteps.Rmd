@@ -661,7 +661,7 @@ triarylam.decay.series.dsc.path <-
     file = "Triarylamine_radCat_decay_series.DSC"
   )
 #
-# table in binary form of `.DTA` file
+# EPR intensity in binary form of `.DTA` file
 triarylam.decay.series.bin.path <-
   load_data_example(
     file = "Triarylamine_radCat_decay_series.DTA"

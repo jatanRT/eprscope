@@ -14,7 +14,7 @@
 #'   of the acquired spectra/data) provided by the \code{.DSC}/\code{.dsc} or \code{.par} files, respectively
 #'   (see the \code{path_to_dsc_par} as well as \code{path_to_ygf} arguments description). Because the original
 #'   file structure depends on the EPR spectrometer acquisition software or data processing, the \code{origin} argument
-#'   is necessary to specify the data/file source. Default function arguments are related to \code{origin ="xenon"}.
+#'   is necessary to specify the data/file source. Default function arguments are pre-configured for \code{origin ="xenon"}.
 #'
 #'
 #' @details
@@ -24,7 +24,7 @@
 #'   weight...etc. These are defined by the two arguments:
 #'   \code{qValue} and \code{norm.vec.add}. The latter actually corresponds to values of the above-mentioned
 #'   quantities represented by the vector. If \code{qValue = NULL} (it actually equals to \code{1}),
-#'   it can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized intensity
+#'   it can be also defined as a component of the \code{norm.vec.add}. Finally, the normalized (derivative) intensity
 #'   is calculated by the following expression (depending on the \code{qValue} and/or \code{norm.vec.add}):
 #'   \deqn{dI_{EPR} / dB = Original~Intensity \, (1/qValue)}
 #'   or
@@ -619,8 +619,9 @@ readEPR_Exp_Specs <- function(path_to_file,
         path_to_file
       )
       #
-      ## check the existence of this previous file in the working dir.
-      if (!file.exists(path.to.dsc)) {
+      ## check the existence of this previous file in the working dir,
+      ## it requires the combination with `path_to_dsc_par` check !!
+      if (!file.exists(path.to.dsc) & is.null(path_to_dsc_par)) {
         stop(" Please provide the file path for the `.DSC`/`.dsc` file,\n
              refer to definition of the `path_to_dsc_par` argument !! ")
       } else {
@@ -667,8 +668,9 @@ readEPR_Exp_Specs <- function(path_to_file,
         ## as the `.DTA` one and possesses the same name
         path.to.ygf <- gsub("\\.DTA$",".YGF",path_to_file)
         #
-        ## check the existence of this previous file in the working dir.
-        if (!file.exists(path.to.ygf)) {
+        ## check the existence of this previous file in the working dir,
+        ## it requires the combination with `path_to_ygf` check !!
+        if (!file.exists(path.to.ygf) & is.null(path_to_ygf)) {
           #
           ## we need additional info
           spectr.Yparams <- readEPR_param_slct(
@@ -803,8 +805,9 @@ readEPR_Exp_Specs <- function(path_to_file,
         path_to_file
       )
       #
-      ## check the existence of this previous file in the working dir.
-      if (!file.exists(path.to.par)) {
+      ## check the existence of this previous file in the working dir,
+      ## it requires the combination with `path_to_dsc_par` check !!
+      if (!file.exists(path.to.par) & is.null(path_to_dsc_par)) {
         stop(" Please provide the file path for the `.par` file,\n
              refer to definition of the `path_to_dsc_par` argument !! ")
       } else {

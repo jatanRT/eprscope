@@ -12,25 +12,47 @@ library(openxlsx)
 server <- function(input, output, session) {
   #
   ## redefinition of `norm.vec.add`
-  norm_vec <- reactiveValues(val = NULL)
+  norm_vec <- reactiveValues(val = 1)
   observe({
     if (isTRUE(input$normVec)){
-      norm_vec$val <- as.numeric(unlist(strsplit(input$vecNorm,",")))
-    } else {
-      norm_vec$val <- NULL
-    }
+        norm_vec$val <- as.numeric(
+          unlist(strsplit(input$vecNorm,","))
+        )
+      } else {
+        norm_vec$val <- 1
+      }
   })
   #
   ## conditions to read either ASCII or binary files
   ## from EPR spectrometer
-  ascii.cond <- reactiveValues(val = NULL)
-  observe({
-    if (grepl(".*\\.(txt|asc|csv)$",input$SpectrumFile$datapath)) {
-      ascii.cond$val <- 1
-    }
-    if (grepl(".*\\.(DTA|spc)$",input$SpectrumFile$datapath)) {
-      ascii.cond$val <- 0
-    }
+  ascii.cond <- reactive({
+    #
+    ## if `input$SpectrumFile` is NULL (no file yet), execution stops silently
+    ## here — no error, no downstream cascade.
+    shiny::req(input$SpectrumFile)
+    #
+    ## extension definition
+    file.extens <-
+      tolower(tools::file_ext(input$SpectrumFile$name))
+    #
+    ## function and condition for `file.extens`
+    extens.map.vec <- c(
+      txt = 1,
+      asc = 1,
+      csv = 1,
+      dta = 0,
+      spc = 0
+    )
+    #
+    ## ...if the extension is not recognized
+    validate(
+      need(file.extens %in% names(extens.map.vec),
+         paste0("Unrecognised extension: '.", file.extens,
+                "' of EPR data. Accepted: .txt, .csv, .asc, .DTA or .spc"))
+    )
+    #
+    extens.map.vec[[file.extens]]
+    #
   })
   #
   ## Load experimental spectrum data frame
@@ -39,16 +61,21 @@ server <- function(input, output, session) {
     shiny::req(input$ParamsFile)
     shiny::req(input$SpectrumFile)
     #
+    ## this is required. otherwise the `bin` files
+    ## cannot be loaded (the `ascii` will load anyway)
+    ascii.params.path <- input$ParamsFile$datapath
+    file.spec.path <- input$SpectrumFile$datapath
+    #
     spectr.data <-
       readEPR_Exp_Specs(
-        path_to_file = input$SpectrumFile$datapath,
-        path_to_dsc_par = switch(2 - ascii.cond,NULL,input$ParamsFile$datapath),
+        path_to_file = file.spec.path,
+        path_to_dsc_par = switch(2 - ascii.cond(),NULL,ascii.params.path),
         col.names = switch(
           3 - origin.cond(orig = input$origin),
           c("index","B_G", "dIepr_over_dB"),
           c("B_G", "dIepr_over_dB"),
           switch(
-            2 - ascii.cond,
+            2 - ascii.cond(),
             c("B_mT","dIepr_over_dB"),
             c("index","B_G", "dIepr_over_dB")
           )
@@ -57,7 +84,7 @@ server <- function(input, output, session) {
           3 - origin.cond(orig = input$origin),
           "G",
           "G",
-          switch(2 - ascii.cond,"mT","G") ## `.csv` file with "mT", while binary with "G"
+          switch(2 - ascii.cond(),"mT","G") ## `.csv` file with "mT", while binary with "G"
         ),
         qValue = input$qValue,
         origin = input$origin,
@@ -541,6 +568,13 @@ server <- function(input, output, session) {
     R.text.code.for.sim <-
       paste0(
         "# \n",
+        "# R SCRIPT/CODE SNIPPET TO FIT THE EPR SPECTRUM BY SIMULATIONS",
+        "# \n",
+        "# Required packages/libraries:",
+        "library(tidyverse) \n",
+        "library(eprscope) \n",
+        "# \n",
+        "# Load the experimental EPR spectrum/data: \n",
         "epr.spectrum.data <- \n",
         "  readEPR_Exp_Specs( \n",
         "    path_to_file = file.choose(), # select the path to EPR spectrum data by file explorer \n",
@@ -551,7 +585,7 @@ server <- function(input, output, session) {
           "c('index','B_G', 'dIepr_over_dB')",
           "c('B_G', 'dIepr_over_dB')",
           switch(
-            2 - ascii.cond,
+            2 - ascii.cond(),
             "c('B_mT','dIepr_over_dB')",
             "c('index','B_G', 'dIepr_over_dB')"
           )
@@ -561,14 +595,15 @@ server <- function(input, output, session) {
           3 - origin.cond(orig = input$origin),
           "'G'",
           "'G'",
-          switch(2 - ascii.cond,"'mT'","'G'")
+          switch(2 - ascii.cond(),"'mT'","'G'")
         ),", \n",
         "    qValue = ",input$qValue,", \n",
         "    norm.vec.add = c(",paste(norm_vec$val,collapse = ","),"), \n",
         "    origin = '",input$origin,"' \n",
         "  ) \n",
         "# \n",
-        "# arguments of the `eval_sim_EPR_isoFit()` may be varied accordingly (please, refer to documentation) \n",
+        "# Function to fit the EPR spectrum by simulations: \n",
+        "# arguments of the `eval_sim_EPR_isoFit()` may be varied accordingly (please, refer to the documentation) \n",
         "epr.spectrum.sim.fit <- \n",
         "  eval_sim_EPR_isoFit( \n",
         "    data.spectr.expr = epr.spectrum.data, \n",
@@ -628,33 +663,32 @@ server <- function(input, output, session) {
       paste(input$tabfilename,input$tabformat,sep = ".")
     },
     content = function(file) {
+      #
+      # Call present_EPR_Sim_Spec() exactly once and pull out the data frame
+      # immediately — both export branches consume the same object.
+      sim_df <- present_EPR_Sim_Spec(
+        data.spectr.expr = expr_data(),
+        data.spectr.sim  = sim_data(),
+        Blim = input$Brange,
+        B.unit = input$Bunit,
+        output.df = TRUE
+      )$df
+      #
       if (input$tabformat == "csv") {
         utils::write.csv(
-          present_EPR_Sim_Spec(
-            data.spectr.expr = expr_data(),
-            data.spectr.sim = sim_data(),
-            Blim = input$Brange,
-            B.unit = input$Bunit,
-            output.df = TRUE
-          )$df,
+          sim_df,
           file = file,
           row.names = FALSE
         )
       } else if (input$tabformat == "xlsx") {
         if (requireNamespace("openxlsx", quietly = TRUE)) {
           openxlsx::write.xlsx(
-            present_EPR_Sim_Spec(
-              data.spectr.expr = expr_data(),
-              data.spectr.sim = sim_data(),
-              Blim = input$Brange,
-              B.unit = input$Bunit,
-              output.df = TRUE
-            )$df,
+            sim_df,
             file = file
           )
         } else {
           stop(" The `{openxlsx}` package is required\n
-               to export table in `.xlsx` format !! ")
+               to export table(s) in `.xlsx` format !! ")
         }
       }
     }

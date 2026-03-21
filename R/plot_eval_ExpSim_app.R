@@ -48,43 +48,90 @@
 #' ## this is an examples of the raw
 #' ## shiny R code to run the app,
 #' ## code example from the `SERVER` part:
-#' server <- function(input, output,session) {
-#' ## redefinition of `norm.vec.add`
-#' norm_vec <- reactiveValues(val = NULL)
-#' observe({
-#'  if (isTRUE(input$normVec)){
-#'    norm_vec$val <- as.numeric(unlist(strsplit(input$vecNorm,",")))
-#'  } else {
-#'    norm_vec$val <- NULL
-#'  }
-#' })
-#' #
-#' ## Load experimental spectrum data frame
-#' expr_data <- reactive({
-#' #
-#' req(input$ASCIIfile)
-#' #
-#'  spectr.data <-
-#'    readEPR_Exp_Specs(
-#'      path_to_ASC = input$ASCIIfile$datapath,
-#'      col.names = switch(
-#'        3-origin.cond(orig = input$origin),
-#'        c("index","B_G", "dIepr_over_dB"),
-#'        c("B_G", "dIepr_over_dB"),
-#'        c("B_mT","dIepr_over_dB")
-#'      ),
-#'      x.unit = switch(
-#'        3-origin.cond(orig = input$origin),
-#'        "G",
-#'        "G",
-#'        "mT"
-#'      ),
-#'      qValue = input$qValue,
-#'      origin = input$origin,
-#'      norm.vec.add = norm_vec$val
-#'    )
-#'  spectr.data
-#' })
+#' server <- function(input, output, session) {
+#'   #
+#'   ## redefinition of `norm.vec.add`
+#'   norm_vec <- reactiveValues(val = 1)
+#'   observe({
+#'     if (isTRUE(input$normVec)){
+#'       norm_vec$val <- as.numeric(
+#'         unlist(strsplit(input$vecNorm,","))
+#'       )
+#'     } else {
+#'       norm_vec$val <- 1
+#'     }
+#'   })
+#'   #
+#'   ## conditions to read either ASCII or binary files
+#'   ## from EPR spectrometer
+#'   ascii.cond <- reactive({
+#'     #
+#'     ## if `input$SpectrumFile` is NULL (no file yet), execution stops silently
+#'     ## here — no error, no downstream cascade.
+#'     shiny::req(input$SpectrumFile)
+#'     #
+#'     ## extension definition
+#'     file.extens <-
+#'       tolower(tools::file_ext(input$SpectrumFile$name))
+#'     #
+#'     ## function and condition for `file.extens`
+#'     extens.map.vec <- c(
+#'       txt = 1,
+#'       asc = 1,
+#'       csv = 1,
+#'       dta = 0,
+#'       spc = 0
+#'     )
+#'     #
+#'     ## ...if the extension is not recognized
+#'     validate(
+#'       need(file.extens %in% names(extens.map.vec),
+#'            paste0("Unrecognised extension: '.", file.extens,
+#'                   "' of EPR data. Accepted: .txt, .csv, .asc, .DTA or .spc"))
+#'     )
+#'     #
+#'     extens.map.vec[[file.extens]]
+#'     #
+#'   })
+#'   #
+#'   ## Load experimental spectrum data frame
+#'   expr_data <- reactive({
+#'     #
+#'     shiny::req(input$ParamsFile)
+#'     shiny::req(input$SpectrumFile)
+#'     #
+#'     ## this is required. otherwise the `bin` files
+#'     ## cannot be loaded (the `ascii` will load anyway)
+#'     ascii.params.path <- input$ParamsFile$datapath
+#'     file.spec.path <- input$SpectrumFile$datapath
+#'     #
+#'     spectr.data <-
+#'       readEPR_Exp_Specs(
+#'         path_to_file = file.spec.path,
+#'         path_to_dsc_par = switch(2 - ascii.cond(),NULL,ascii.params.path),
+#'         col.names = switch(
+#'           3 - origin.cond(orig = input$origin),
+#'           c("index","B_G", "dIepr_over_dB"),
+#'           c("B_G", "dIepr_over_dB"),
+#'           switch(
+#'             2 - ascii.cond(),
+#'             c("B_mT","dIepr_over_dB"),
+#'             c("index","B_G", "dIepr_over_dB")
+#'           )
+#'         ),
+#'         x.unit = switch(
+#'           3 - origin.cond(orig = input$origin),
+#'           "G",
+#'           "G",
+#'           ## `.csv` file with "mT", while binary with "G"
+#'           switch(2 - ascii.cond(),"mT","G")
+#'         ),
+#'         qValue = input$qValue,
+#'         origin = input$origin,
+#'         norm.vec.add = norm_vec$val
+#'       )
+#'     spectr.data
+#'   })
 #' #
 #' # -------------------- INTERACTIVE SPECTRUM ---------------------
 #' #
