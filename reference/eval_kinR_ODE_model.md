@@ -380,14 +380,13 @@ triaryl_radCat_data <-
   na.omit()
 ## data preview
 head(triaryl_radCat_data)
-#>    time_s        Area
-#>     <num>       <num>
-#> 1:   0.00 0.018741176
-#> 2:  15.17 0.018117647
-#> 3:  30.01 0.017617647
-#> 4:  44.82 0.017194118
-#> 5:  59.66 0.016511765
-#> 6:  74.52 0.016347059
+#>   time_s        Area
+#> 1   0.00 0.018741176
+#> 2  15.17 0.018117647
+#> 3  30.01 0.017617647
+#> 4  44.82 0.017194118
+#> 5  59.66 0.016511765
+#> 6  74.52 0.016347059
 #
 ## comparison of the kinetic model with the experimental
 ## data `triaryl_radCat_data`, kinetic parameters were estimated

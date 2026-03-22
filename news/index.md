@@ -1,5 +1,110 @@
 # Changelog
 
+## eprscope 0.1.16
+
+### 2026-03-22
+
+#### Bug Fixes/Critical Updates
+
+- right now the reading of EPR spectrometer binary files (`.DTA`, `.YGF`
+  & `.spc`) is fully supported throughout the package, however it
+  requires presence of the `.DSC`/`.dsc` and `.par` files (with
+  instrumental parameters), respectively; please refer to the
+  documentation and examples of the main reading functions like
+  `readEPR_Exp_Specs`, `readEPR_Exp_Specs_kin` and
+  `readEPR_Exp_Specs_multif`, as well as to `Basic Functionality`
+  vignette/article
+
+- package dependencies were updated in order to clearly distinguish
+  between the required packages (`Imports`) and the ‘suggested’ ones,
+  see also the “Installation” section in the `README` file as well as
+  `DESCRIPTION`
+
+- fixed bug, where the column header for the simulated intensity of the
+  integrated EPR spectrum was defined as “dIepr_over_dB”, which actually
+  corresponds to derivative EPR intensity, therefore it was replaced by
+  the “Intensity_Sim”
+
+- several fixes and/or updates in documentation (functions, including
+  `Examples` + vignettes)
+
+- now, reading of multiple files, by using the
+  `readEPR_Exp_Specs_multif`, can differentiate between the true
+  “numeric” values and those containing “alpha” (character string) in
+  the `names` argument elements, which was not possible by now and
+  induced errors
+
+- fixed bug in the `rearrange_aAiso_QCHorgau` function, while reading
+  the `ORCA` files, the hyperfine couplings/splittings (A/a) could not
+  be extracted and `NA` “values” occurred + removed the `N.nuclei`
+  argument, which is now directly obtained from the corresponding text
+  outputs (`Gaussian` as well as `ORCA`)
+
+- the `qq-plot` returned by the `plot_eval_RA_forFit` doesn’t require
+  the [qqplotr](https://github.com/aloy/qqplotr) anymore, rather it was
+  built completely from scratch, similarly like in the [`{qqplotr}`
+  package](https://github.com/aloy/qqplotr/tree/master/R), and right now
+  acts as a function, having the parameters/arguments like residuals
+  distribution, confidence level as well as degrees of freedom in the
+  case of Student’s t-distribution (see documentation of the
+  `plot_eval_RA_forFit`)
+
+- fixed bug in the `shinyApp01` (`plot_eval_ExpSim_app`), where the main
+  simulation panel/plot displays an error when no interacting nuclei
+  were specified in the corresponding input panel, the actual message is
+  shown to ask for the system of interacting nuclei to be defined by the
+  user
+
+- conversion time (`convTime`) returned by the
+  `readEPR_params_slct_kin`, for the case of `winepr` original
+  data/instrumental parameters, is now correctly converted into seconds,
+  where `ms` has been used so far
+
+- now, the option to fix one or several parameters (which won’t be
+  optimized) for EPR simulation fit (so that it matches the experimental
+  spectrum) is built into the essential `optim_for_EPR_fitness` function
+  and therefore can be propagated into related ones like
+  `eval_sim_EPR_isoFit`, `eval_sim_EPR_isoFit_space` or
+  `quantify_EPR_sim_series`, this was redesigned mainly due to the fact
+  that “particle swarm” as well as “controlled random search” algorithms
+  depend on the length of parameter vector, which is actually shorter
+  when parameters are fixed
+
+#### Updates
+
+- *Cauchy* distribution and *Kolmogorov-Smirnov* test were added to the
+  `eval_ABIC_forFit` in order to be more flexible and reliable to
+  estimate the residuals distribution in the combination with the
+  `plot_eval_RA_forFit` function
+
+- autocorrelation of residuals diagnostics was added to EPR time
+  series/kinetics (please, refer to the `eval_kinR_EPR_modelFit`) in
+  order to trust or exclude the kinetic model fit (based on residuals
+  lag) of the EPR time series experiment (*quantitative variable*,
+  `qvar` *vs* time) + now, the `time.unit` argument has an additional
+  option to analyze faster radical kinetics (in “ms”/milliseconds)
+
+- code in several functions → cleaned up in order to be more readable
+
+#### New Functions/Files/Vignettes
+
+- due to the extended reading of spectrometer binaries, several
+  corresponding `.DTA` (+ `.YGF`) as well as `.spc` files were added to
+  demonstrate and test the main reading functions (please, refer to the
+  `Package Datasets` vignette/article)
+
+- there is a new function `plot_eval_EPRtheo_mltiplet` (including the
+  corresponding test for the function) which can be applied to quickly
+  check the expected EPR intensity pattern (without considering a
+  hyperfine coupling) for a group of equivalent nuclei (e.g. 2 x ¹⁴N) in
+  order to predict intensities of simulated isotropic EPR spectra
+
+- in order to transform several data frame objects/variables into the
+  one (having a tidy form) in the R (local/Global) environment, the new
+  function `transform_dfs_2tidyDF` was created; such function can be
+  handy if one wants to quickly compare several plots/EPR spectra in one
+  interactive/static panel graph
+
 ## eprscope 0.1.15
 
 ### 2025-08-11

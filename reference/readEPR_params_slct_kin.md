@@ -39,11 +39,15 @@ List containing:
 - swTime:
 
   Sweep time in `s` required for time correction during the
-  `2D_Field_Delay` (time series EPR experiment).
+  `2D_Field_Delay` (time series EPR experiment).Refer to the
+  [`correct_time_Exp_Specs`](https://jatanrt.github.io/eprscope/reference/correct_time_Exp_Specs.md)
+  as well as to the
+  [`readEPR_Exp_Specs_kin`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs_kin.md)
+  functions.
 
 - Npoints:
 
-  Number of points (spectral resolution).
+  Number of points (resolution of an EPR spectrum).
 
 ## See also
 

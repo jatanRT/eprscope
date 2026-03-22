@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -249,20 +249,18 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 <span class="r-in"><span><span class="va">triarylamine.decay.series.dsc.path</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
 <span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.DSC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">triarylamine.decay.series.asc.path</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="va">triarylamine.decay.series.bin.path</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
-<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.zip"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">triarylamine.decay.series.asc.path</span>,</span></span>
-<span class="r-in"><span>      exdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.DTA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">triarylamine.decay.series.ygf.path</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
+<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.YGF"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## loading the kinetics:</span></span></span>
 <span class="r-in"><span><span class="va">triarylamine.decay.series.data</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span>name.root <span class="op">=</span></span></span>
-<span class="r-in"><span>    <span class="st">"Triarylamine_radCat_decay_series"</span>,</span></span>
-<span class="r-in"><span>    dir_ASC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    dir_dsc_par <span class="op">=</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span></span>
-<span class="r-in"><span>                  package <span class="op">=</span> <span class="st">"eprscope"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    path_to_file <span class="op">=</span> <span class="va">triarylamine.decay.series.bin.path</span>,</span></span>
+<span class="r-in"><span>    path_to_dsc_par <span class="op">=</span> <span class="va">triarylamine.decay.series.dsc.path</span>,</span></span>
+<span class="r-in"><span>    path_to_ygf <span class="op">=</span> <span class="va">triarylamine.decay.series.ygf.path</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## select the first spectrum</span></span></span>
@@ -277,16 +275,15 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## data frame preview</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triarylamine.decay.data1st.integ01</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          B_G time_s  dIepr_over_dB      B_mT  single_Integ</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;  &lt;num&gt;          &lt;num&gt;     &lt;num&gt;         &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 3390.0000      6  1.3629316e-05 339.00000 1.0353596e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 3390.0833      6 -1.0134169e-06 339.00833 1.0406162e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 3390.1667      6 -1.9794802e-05 339.01667 1.0319461e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 3390.2500      6 -2.9826537e-05 339.02500 1.0112706e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 3390.3333      6 -1.6870754e-05 339.03333 9.9181337e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 3390.4167      6  2.5629187e-06 339.04167 9.8585177e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         B_G time_s  dIepr_over_dB      B_mT  single_Integ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3390.0000      6  1.3629316e-05 339.00000 1.0353596e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3390.0833      6 -1.0134169e-06 339.00833 1.0406162e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3390.1667      6 -1.9794802e-05 339.01667 1.0319461e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3390.2500      6 -2.9826537e-05 339.02500 1.0112706e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 3390.3333      6 -1.6870754e-05 339.03333 9.9181337e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 3390.4167      6  2.5629187e-06 339.04167 9.8585177e-05</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## integration (including baseline correction)</span></span></span>
+<span class="r-in"><span><span class="co">## integration (2nd integ.,including baseline correction)</span></span></span>
 <span class="r-in"><span><span class="co">## of the 1st spectrum from the series</span></span></span>
 <span class="r-in"><span><span class="va">triarylamine.decay.data1st.integ02</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">eval_integ_EPR_Spec</span><span class="op">(</span><span class="va">triarylamine.decay.series.data1st</span>,</span></span>
@@ -303,12 +300,12 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     B_G time_s dIepr_over_dB  B_mT single_Integ baseline_Integ_fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">3</span>425       6   -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">016</span><span style="color: #BB0000;">0</span>   342.    0.000<span style="text-decoration: underline;">032</span>6          0.000<span style="text-decoration: underline;">022</span>7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">3</span>425.      6   -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">016</span><span style="color: #BB0000;">0</span>   343.    0.000<span style="text-decoration: underline;">032</span>6          0.000<span style="text-decoration: underline;">022</span>7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="text-decoration: underline;">3</span>425.      6   -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">003</span><span style="color: #BB0000;">38</span>  343.    0.000<span style="text-decoration: underline;">031</span>7          0.000<span style="text-decoration: underline;">022</span>7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">3</span>425.      6    0.000<span style="text-decoration: underline;">017</span>3   343.    0.000<span style="text-decoration: underline;">032</span>3          0.000<span style="text-decoration: underline;">022</span>6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> <span style="text-decoration: underline;">3</span>425.      6    0.000<span style="text-decoration: underline;">017</span>3   343.    0.000<span style="text-decoration: underline;">032</span>3          0.000<span style="text-decoration: underline;">022</span>7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> <span style="text-decoration: underline;">3</span>425.      6    0.000<span style="text-decoration: underline;">015</span>7   343.    0.000<span style="text-decoration: underline;">033</span>7          0.000<span style="text-decoration: underline;">022</span>6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> <span style="text-decoration: underline;">3</span>425.      6   -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">027</span><span style="color: #BB0000;">1</span>   343.    0.000<span style="text-decoration: underline;">033</span>2          0.000<span style="text-decoration: underline;">022</span>6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">3</span>425.      6    0.000<span style="text-decoration: underline;">001</span>28  343.    0.000<span style="text-decoration: underline;">032</span>2          0.000<span style="text-decoration: underline;">022</span>5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> <span style="text-decoration: underline;">3</span>425.      6    0.000<span style="text-decoration: underline;">001</span>28  343.    0.000<span style="text-decoration: underline;">032</span>2          0.000<span style="text-decoration: underline;">022</span>6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: single_Integ_correct &lt;dbl&gt;, sigmoid_Integ &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## plot the single integrated EPR spectrum,</span></span></span>
@@ -362,8 +359,9 @@ additional processing of spectral data series by <a href="https://dplyr.tidyvers
 <span class="r-in"><span>                        output.vecs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">sigmoid</span></span></span>
 <span class="r-in"><span>                       <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>Area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">sigmoid_Integ</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,</span></span></span>
-<span class="r-in"><span><span class="co">## the `Blim = NULL` and `dplyr::between()` must be set !!!</span></span></span>
+<span class="r-in"><span><span class="co">## in such case `Blim` range is not defined by</span></span></span>
+<span class="r-in"><span><span class="co">## the `eval_integ_EPR_Spec`, however the `Blim = NULL`</span></span></span>
+<span class="r-in"><span><span class="co">## as well as the `dplyr::between()` must be set !!!</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## preview of the final data frame</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triarylamine.decay.data.integs</span><span class="op">)</span></span></span>

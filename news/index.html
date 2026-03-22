@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,37 @@
       <small>Source: <a href="https://github.com/jatanrt/eprscope/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.16" id="eprscope-0116">eprscope 0.1.16<a class="anchor" aria-label="anchor" href="#eprscope-0116"></a></h2>
+<div class="section level3">
+<h3 id="id_2026-0-1-16">2026-03-22<a class="anchor" aria-label="anchor" href="#id_2026-0-1-16"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-16">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-16"></a></h4>
+<ul><li><p>right now the reading of EPR spectrometer binary files (<code>.DTA</code>, <code>.YGF</code> &amp; <code>.spc</code>) is fully supported throughout the package, however it requires presence of the <code>.DSC</code>/<code>.dsc</code> and <code>.par</code> files (with instrumental parameters), respectively; please refer to the documentation and examples of the main reading functions like <code>readEPR_Exp_Specs</code>, <code>readEPR_Exp_Specs_kin</code> and <code>readEPR_Exp_Specs_multif</code>, as well as to <code>Basic Functionality</code> vignette/article</p></li>
+<li><p>package dependencies were updated in order to clearly distinguish between the required packages (<code>Imports</code>) and the ‘suggested’ ones, see also the “Installation” section in the <code>README</code> file as well as <code>DESCRIPTION</code></p></li>
+<li><p>fixed bug, where the column header for the simulated intensity of the integrated EPR spectrum was defined as “dIepr_over_dB”, which actually corresponds to derivative EPR intensity, therefore it was replaced by the “Intensity_Sim”</p></li>
+<li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
+<li><p>now, reading of multiple files, by using the <code>readEPR_Exp_Specs_multif</code>, can differentiate between the true “numeric” values and those containing “alpha” (character string) in the <code>names</code> argument elements, which was not possible by now and induced errors</p></li>
+<li><p>fixed bug in the <code>rearrange_aAiso_QCHorgau</code> function, while reading the <code>ORCA</code> files, the hyperfine couplings/splittings (A/a) could not be extracted and <code>NA</code> “values” occurred + removed the <code>N.nuclei</code> argument, which is now directly obtained from the corresponding text outputs (<code>Gaussian</code> as well as <code>ORCA</code>)</p></li>
+<li><p>the <code>qq-plot</code> returned by the <code>plot_eval_RA_forFit</code> doesn’t require the <a href="https://github.com/aloy/qqplotr" class="external-link">qqplotr</a> anymore, rather it was built completely from scratch, similarly like in the <a href="https://github.com/aloy/qqplotr/tree/master/R" class="external-link"><code>{qqplotr}</code> package</a>, and right now acts as a function, having the parameters/arguments like residuals distribution, confidence level as well as degrees of freedom in the case of Student’s t-distribution (see documentation of the <code>plot_eval_RA_forFit</code>)</p></li>
+<li><p>fixed bug in the <code>shinyApp01</code> (<code>plot_eval_ExpSim_app</code>), where the main simulation panel/plot displays an error when no interacting nuclei were specified in the corresponding input panel, the actual message is shown to ask for the system of interacting nuclei to be defined by the user</p></li>
+<li><p>conversion time (<code>convTime</code>) returned by the <code>readEPR_params_slct_kin</code>, for the case of <code>winepr</code> original data/instrumental parameters, is now correctly converted into seconds, where <code>ms</code> has been used so far</p></li>
+<li><p>now, the option to fix one or several parameters (which won’t be optimized) for EPR simulation fit (so that it matches the experimental spectrum) is built into the essential <code>optim_for_EPR_fitness</code> function and therefore can be propagated into related ones like <code>eval_sim_EPR_isoFit</code>, <code>eval_sim_EPR_isoFit_space</code> or <code>quantify_EPR_sim_series</code>, this was redesigned mainly due to the fact that “particle swarm” as well as “controlled random search” algorithms depend on the length of parameter vector, which is actually shorter when parameters are fixed</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-16">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-16"></a></h4>
+<ul><li><p><em>Cauchy</em> distribution and <em>Kolmogorov-Smirnov</em> test were added to the <code>eval_ABIC_forFit</code> in order to be more flexible and reliable to estimate the residuals distribution in the combination with the <code>plot_eval_RA_forFit</code> function</p></li>
+<li><p>autocorrelation of residuals diagnostics was added to EPR time series/kinetics (please, refer to the <code>eval_kinR_EPR_modelFit</code>) in order to trust or exclude the kinetic model fit (based on residuals lag) of the EPR time series experiment (<em>quantitative variable</em>, <code>qvar</code> <em>vs</em> time) + now, the <code>time.unit</code> argument has an additional option to analyze faster radical kinetics (in “ms”/milliseconds)</p></li>
+<li><p>code in several functions → cleaned up in order to be more readable</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="new-functionsfilesvignettes-0-1-16">New Functions/Files/Vignettes<a class="anchor" aria-label="anchor" href="#new-functionsfilesvignettes-0-1-16"></a></h4>
+<ul><li><p>due to the extended reading of spectrometer binaries, several corresponding <code>.DTA</code> (+ <code>.YGF</code>) as well as <code>.spc</code> files were added to demonstrate and test the main reading functions (please, refer to the <code>Package Datasets</code> vignette/article)</p></li>
+<li><p>there is a new function <code>plot_eval_EPRtheo_mltiplet</code> (including the corresponding test for the function) which can be applied to quickly check the expected EPR intensity pattern (without considering a hyperfine coupling) for a group of equivalent nuclei (e.g. 2 x <sup>14</sup>N) in order to predict intensities of simulated isotropic EPR spectra</p></li>
+<li><p>in order to transform several data frame objects/variables into the one (having a tidy form) in the R (local/Global) environment, the new function <code>transform_dfs_2tidyDF</code> was created; such function can be handy if one wants to quickly compare several plots/EPR spectra in one interactive/static panel graph</p></li>
+</ul></div>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.15" id="eprscope-0115">eprscope 0.1.15<a class="anchor" aria-label="anchor" href="#eprscope-0115"></a></h2>
 <div class="section level3">

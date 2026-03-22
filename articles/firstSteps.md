@@ -392,7 +392,7 @@ function from [eprscope](https://jatanrt.github.io/eprscope/) 📦:
 # read the EPR spectrum from the already 
 # defined path `tmpd.data.file`
 df.example.01 <- readEPR_Exp_Specs(
-  tmpd.data.file,
+  path_to_file = tmpd.data.file,
   col.names = c("B_G","dIepr_over_dB"),
   qValue = Q_value, # defined above
   # instrumental EPR origin:
@@ -401,14 +401,13 @@ df.example.01 <- readEPR_Exp_Specs(
 #
 # preview (first 6 rows)
 head(df.example.01)
-#>          B_G dIepr_over_dB      B_mT
-#>        <num>         <num>     <num>
-#> 1: 3439.1699 -56.047361607 343.91699
-#> 2: 3439.2200 -30.506506697 343.92200
-#> 3: 3439.2700 -38.522218750 343.92700
-#> 4: 3439.3201   0.039208426 343.93201
-#> 5: 3439.3701 -92.620223214 343.93701
-#> 6: 3439.4199 -71.915075893 343.94199
+#>         B_G dIepr_over_dB      B_mT
+#> 1 3439.1699 -56.047361607 343.91699
+#> 2 3439.2200 -30.506506697 343.92200
+#> 3 3439.2700 -38.522218750 343.92700
+#> 4 3439.3201   0.039208426 343.93201
+#> 5 3439.3701 -92.620223214 343.93701
+#> 6 3439.4199 -71.915075893 343.94199
 ```
 
 The previous data frame consists of the following columns/variables
@@ -441,11 +440,10 @@ One can preview the **str**ucture of a data frame by the
 ``` r
 
 str(df.example.01)
-#> Classes 'data.table' and 'data.frame':   2401 obs. of  3 variables:
+#> 'data.frame':    2401 obs. of  3 variables:
 #>  $ B_G          : num  3439 3439 3439 3439 3439 ...
 #>  $ dIepr_over_dB: num  -56.0474 -30.5065 -38.5222 0.0392 -92.6202 ...
 #>  $ B_mT         : num  344 344 344 344 344 ...
-#>  - attr(*, ".internal.selfref")=<externalptr>
 ```
 
 ### 4.1 Operations with Columns and Rows
@@ -496,9 +494,8 @@ names (if the named vector is not desired):
 
 # first row of data frame
 df.example.01[1, ]
-#>          B_G dIepr_over_dB      B_mT
-#>        <num>         <num>     <num>
-#> 1: 3439.1699    -56.047362 343.91699
+#>         B_G dIepr_over_dB      B_mT
+#> 1 3439.1699    -56.047362 343.91699
 #
 # convert the row data frame 
 # into the vector
@@ -518,14 +515,7 @@ code:
 # select the first column,
 # resulting in data frame
 head(df.example.01[ ,1])
-#>          B_G
-#>        <num>
-#> 1: 3439.1699
-#> 2: 3439.2200
-#> 3: 3439.2700
-#> 4: 3439.3201
-#> 5: 3439.3701
-#> 6: 3439.4199
+#> [1] 3439.1699 3439.2200 3439.2700 3439.3201 3439.3701 3439.4199
 #
 # select the 4th row of the original
 # data frame and extract the `B_mT` value
@@ -536,25 +526,23 @@ df.example.01[4, ][["B_mT"]]
 # with magnetic flux density `B_G` <= `Bcf`,
 # which is the central field (or `median(B_G)`)
 head(df.example.01[df.example.01$B_G <= median(df.example.01$B_G), ])
-#>          B_G dIepr_over_dB      B_mT
-#>        <num>         <num>     <num>
-#> 1: 3439.1699 -56.047361607 343.91699
-#> 2: 3439.2200 -30.506506697 343.92200
-#> 3: 3439.2700 -38.522218750 343.92700
-#> 4: 3439.3201   0.039208426 343.93201
-#> 5: 3439.3701 -92.620223214 343.93701
-#> 6: 3439.4199 -71.915075893 343.94199
+#>         B_G dIepr_over_dB      B_mT
+#> 1 3439.1699 -56.047361607 343.91699
+#> 2 3439.2200 -30.506506697 343.92200
+#> 3 3439.2700 -38.522218750 343.92700
+#> 4 3439.3201   0.039208426 343.93201
+#> 5 3439.3701 -92.620223214 343.93701
+#> 6 3439.4199 -71.915075893 343.94199
 #
 # the same with `subset()`
 head(subset(df.example.01,B_G <= median(B_G)))
-#>          B_G dIepr_over_dB      B_mT
-#>        <num>         <num>     <num>
-#> 1: 3439.1699 -56.047361607 343.91699
-#> 2: 3439.2200 -30.506506697 343.92200
-#> 3: 3439.2700 -38.522218750 343.92700
-#> 4: 3439.3201   0.039208426 343.93201
-#> 5: 3439.3701 -92.620223214 343.93701
-#> 6: 3439.4199 -71.915075893 343.94199
+#>         B_G dIepr_over_dB      B_mT
+#> 1 3439.1699 -56.047361607 343.91699
+#> 2 3439.2200 -30.506506697 343.92200
+#> 3 3439.2700 -38.522218750 343.92700
+#> 4 3439.3201   0.039208426 343.93201
+#> 5 3439.3701 -92.620223214 343.93701
+#> 6 3439.4199 -71.915075893 343.94199
 ```
 
 To create or delete a column/variable one may use:
@@ -578,14 +566,13 @@ df.example.01$B_mT <- NULL
 #
 # data frame preview
 head(df.example.01)
-#>          B_G dIepr_over_dB   g_Val
-#>        <num>         <num>   <num>
-#> 1: 3439.1699 -56.047361607 2.05515
-#> 2: 3439.2200 -30.506506697 2.05512
-#> 3: 3439.2700 -38.522218750 2.05509
-#> 4: 3439.3201   0.039208426 2.05506
-#> 5: 3439.3701 -92.620223214 2.05503
-#> 6: 3439.4199 -71.915075893 2.05500
+#>         B_G dIepr_over_dB   g_Val
+#> 1 3439.1699 -56.047361607 2.05515
+#> 2 3439.2200 -30.506506697 2.05512
+#> 3 3439.2700 -38.522218750 2.05509
+#> 4 3439.3201   0.039208426 2.05506
+#> 5 3439.3701 -92.620223214 2.05503
+#> 6 3439.4199 -71.915075893 2.05500
 ```
 
 A data frame can be also created, by the definition (see above), using
@@ -879,14 +866,13 @@ df.example.02 <- df.example.01 %>%
 #
 # preview
 head(df.example.02)
-#>          B_G dIepr_over_dB   g_Val      B_mT        B_T
-#>        <num>         <num>   <num>     <num>      <num>
-#> 1: 3439.1699 -56.047361607 2.05515 343.91699 0.34391699
-#> 2: 3439.2200 -30.506506697 2.05512 343.92200 0.34392200
-#> 3: 3439.2700 -38.522218750 2.05509 343.92700 0.34392700
-#> 4: 3439.3201   0.039208426 2.05506 343.93201 0.34393201
-#> 5: 3439.3701 -92.620223214 2.05503 343.93701 0.34393701
-#> 6: 3439.4199 -71.915075893 2.05500 343.94199 0.34394199
+#>         B_G dIepr_over_dB   g_Val      B_mT        B_T
+#> 1 3439.1699 -56.047361607 2.05515 343.91699 0.34391699
+#> 2 3439.2200 -30.506506697 2.05512 343.92200 0.34392200
+#> 3 3439.2700 -38.522218750 2.05509 343.92700 0.34392700
+#> 4 3439.3201   0.039208426 2.05506 343.93201 0.34393201
+#> 5 3439.3701 -92.620223214 2.05503 343.93701 0.34393701
+#> 6 3439.4199 -71.915075893 2.05500 343.94199 0.34394199
 ```
 
 Basic filtering by the
@@ -901,20 +887,14 @@ df.example.03 <- df.example.02 |>
   dplyr::filter(B_G <= median(B_G))
 #
 # preview
-df.example.03
-#>             B_G  dIepr_over_dB   g_Val      B_mT        B_T
-#>           <num>          <num>   <num>     <num>      <num>
-#>    1: 3439.1699 -5.6047362e+01 2.05515 343.91699 0.34391699
-#>    2: 3439.2200 -3.0506507e+01 2.05512 343.92200 0.34392200
-#>    3: 3439.2700 -3.8522219e+01 2.05509 343.92700 0.34392700
-#>    4: 3439.3201  3.9208426e-02 2.05506 343.93201 0.34393201
-#>    5: 3439.3701 -9.2620223e+01 2.05503 343.93701 0.34393701
-#>   ---                                                      
-#> 1197: 3498.9700 -3.0236329e+04 2.02002 349.89700 0.34989700
-#> 1198: 3499.0200 -2.8497177e+04 2.01999 349.90200 0.34990200
-#> 1199: 3499.0701 -2.6060546e+04 2.01997 349.90701 0.34990701
-#> 1200: 3499.1201 -2.3374619e+04 2.01994 349.91201 0.34991201
-#> 1201: 3499.1699 -1.9964416e+04 2.01991 349.91699 0.34991699
+head(df.example.03)
+#>         B_G dIepr_over_dB   g_Val      B_mT        B_T
+#> 1 3439.1699 -56.047361607 2.05515 343.91699 0.34391699
+#> 2 3439.2200 -30.506506697 2.05512 343.92200 0.34392200
+#> 3 3439.2700 -38.522218750 2.05509 343.92700 0.34392700
+#> 4 3439.3201   0.039208426 2.05506 343.93201 0.34393201
+#> 5 3439.3701 -92.620223214 2.05503 343.93701 0.34393701
+#> 6 3439.4199 -71.915075893 2.05500 343.94199 0.34394199
 #
 # find the `B_mT` corresponding
 # to the maximum of `dIepr_over_dB` intensity
@@ -937,15 +917,14 @@ df.example.04 <- df.example.03 %>%
 #
 # preview
 df.example.04
-#>          B_G dIepr_over_dB   g_Fac      B_mT        B_T
-#>        <num>         <num>   <num>     <num>      <num>
-#> 1: 3439.4199    -71.915076 2.05500 343.94199 0.34394199
-#> 2: 3439.4700    -91.175652 2.05497 343.94700 0.34394700
-#> 3: 3439.5200   -123.382795 2.05494 343.95200 0.34395200
-#> 4: 3439.5701    -17.007363 2.05491 343.95701 0.34395701
-#> 5: 3439.6201    110.252063 2.05488 343.96201 0.34396201
-#> 6: 3439.6699    155.386643 2.05485 343.96699 0.34396699
-#> 7: 3439.7200     12.876637 2.05482 343.97200 0.34397200
+#>         B_G dIepr_over_dB   g_Fac      B_mT        B_T
+#> 1 3439.4199    -71.915076 2.05500 343.94199 0.34394199
+#> 2 3439.4700    -91.175652 2.05497 343.94700 0.34394700
+#> 3 3439.5200   -123.382795 2.05494 343.95200 0.34395200
+#> 4 3439.5701    -17.007363 2.05491 343.95701 0.34395701
+#> 5 3439.6201    110.252063 2.05488 343.96201 0.34396201
+#> 6 3439.6699    155.386643 2.05485 343.96699 0.34396699
+#> 7 3439.7200     12.876637 2.05482 343.97200 0.34397200
 ```
 
 ### 4.4 Tidy and Messy Data
@@ -953,7 +932,7 @@ df.example.04
 Last example of data handling (see below), using the
 [dplyr](https://dplyr.tidyverse.org) and the pipe operator, will show
 the processing and analysis of EPR time series (kinetics). In the first
-step, the “kinetic” data must be loaded from the `.zip` file :
+step, the “kinetic” data must be loaded:
 
 ``` r
 
@@ -965,17 +944,11 @@ triarylam.decay.series.dsc.path <-
     file = "Triarylamine_radCat_decay_series.DSC"
   )
 #
-# ascii table in the form of `.zip`
-triarylam.decay.series.asc.path <-
+# EPR intensity in binary form of `.DTA` file
+triarylam.decay.series.bin.path <-
   load_data_example(
-    file = "Triarylamine_radCat_decay_series.zip"
+    file = "Triarylamine_radCat_decay_series.DTA"
   )
-#
-# unzip the data
-unzip(
-  triarylam.decay.series.asc.path,
-  exdir = tempdir()
-)
 ```
 
 Finally, the data is transformed into the data frame by the
@@ -987,33 +960,35 @@ function:
 # reading the data and correcting
 # the recording time for each CW EPR spectrum
 triarylam.decay.dat <- readEPR_Exp_Specs_kin(
-  name.root = "Triarylamine_radCat_decay_series",
-  dir_ASC = tempdir(),
-  dir_dsc_par = system.file("extdata",package = "eprscope")
+  path_to_file = triarylam.decay.series.bin.path,
+  path_to_dsc_par = triarylam.decay.series.dsc.path
 )
 #
-# preview
+# preview of data frame
 head(triarylam.decay.dat$df)
-#>    index       B_G time_s  dIepr_over_dB      B_mT
-#>    <int>     <num>  <num>          <num>     <num>
-#> 1:     1 3390.0000      6  1.3629316e-05 339.00000
-#> 2:     2 3390.0833      6 -1.0134169e-06 339.00833
-#> 3:     3 3390.1667      6 -1.9794802e-05 339.01667
-#> 4:     4 3390.2500      6 -2.9826537e-05 339.02500
-#> 5:     5 3390.3333      6 -1.6870754e-05 339.03333
-#> 6:     6 3390.4167      6  2.5629187e-06 339.04167
+#>   index       B_G time_s  dIepr_over_dB      B_mT
+#> 1     1 3390.0000      6  1.3629316e-05 339.00000
+#> 2     2 3390.0833      6 -1.0134169e-06 339.00833
+#> 3     3 3390.1667      6 -1.9794802e-05 339.01667
+#> 4     4 3390.2500      6 -2.9826537e-05 339.02500
+#> 5     5 3390.3333      6 -1.6870754e-05 339.03333
+#> 6     6 3390.4167      6  2.5629187e-06 339.04167
+# + preview of time points for the indivudually
+# recorded EPR spectra
+triarylam.decay.dat$time
+#>   [1]    6   21   36   51   66   81   95  110  125  140  155  170  184  199  214
+#>  [16]  229  244  259  274  288  303  318  333  348  363  378  392  407  422  437
+#>  [31]  452  467  482  496  511  526  541  556  571  586  600  615  630  645  660
+#>  [46]  675  690  705  719  734  749  764  779  794  809  824  838  853  868  883
+#>  [61]  898  913  927  942  957  972  987 1002 1016 1031 1046 1061 1076 1091 1106
+#>  [76] 1120 1135 1150 1165 1180 1195 1210 1225 1239 1254 1269 1284 1299 1314 1329
+#>  [91] 1344 1358 1373 1388 1403 1418 1433 1448 1463 1477
 ```
 
-Such “complex” loading and reading is required because the kinetic data
-is relatively large and therefore in a compressed form stored within the
-package. Otherwise, all one has to do is just to define the file path
-for both parameter as well as ASCII table files (see also documentation
-of the
-[`readEPR_Exp_Specs_kin()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs_kin.md)).
 Because the `triarylam.decay.dat` is list (see below), it consists of
 two components: the data frame `df` and the vector of corrected `time`
 at which the middle of CW EPR spectrum appears. It can be figured out
-that the `df` -structure actually inherits that of the original ASCII
+that the `df`-structure actually inherits that of the original ASCII
 data file coming from the EPR spectrometer. Moreover, such structure
 corresponds to **“tidy” data** because each column represents a variable
 and each row represents an observation ([10](#ref-RfDSWickham2023),
@@ -1081,7 +1056,7 @@ time.span <-
 #
 # 2. Create the string vector 
 # of the corresponding column names.
-# This is to be performed by loop.
+# This is to be performed by the loop/cycle operation.
 time.string.vec <- 
   sapply(time.span, function(s) paste0("time_s_",s))
 #
@@ -1104,7 +1079,7 @@ triarylam.decay.filter.df.wide
 #>  4 3390.  339.   -3.15e-6    8.90e-6   -8.47e-8    4.15e-6    1.67e-5   -2.28e-6
 #>  5 3390.  339.   -1.93e-5    9.59e-6    2.63e-5    2.33e-5   -1.16e-5    1.38e-5
 #>  6 3390.  339.   -2.48e-5   -1.87e-5    2.37e-5    3.21e-6    1.62e-6    1.81e-5
-#>  7 3390.  339.   -1.68e-5    8.09e-6    1.26e-5   -2.05e-5    8.50e-6   -1.62e-5
+#>  7 3391.  339.   -1.68e-5    8.09e-6    1.26e-5   -2.05e-5    8.50e-6   -1.62e-5
 #>  8 3391.  339.    1.73e-6   -1.95e-5    2.05e-5   -9.21e-6    2.79e-6   -3.27e-6
 #>  9 3391.  339.   -1.46e-5    3.66e-6    5.74e-6   -2.80e-5    4.04e-7   -2.71e-6
 #> 10 3391.  339.    4.70e-6    3.12e-5    4.59e-6   -1.71e-5    7.41e-7   -9.68e-6
@@ -1159,6 +1134,7 @@ triarylam.decay.dat.filter.long <-
     names_to = "time_s",
     values_to = "dIepr_over_dB"
   ) %>%
+  # time in ascending order
   arrange(time_s)
 #
 # tidy data frame (long form) preview
@@ -1172,7 +1148,7 @@ triarylam.decay.dat.filter.long
 #>  4 3390.  339. time_s_214   -0.00000315
 #>  5 3390.  339. time_s_214   -0.0000193 
 #>  6 3390.  339. time_s_214   -0.0000248 
-#>  7 3390.  339. time_s_214   -0.0000168 
+#>  7 3391.  339. time_s_214   -0.0000168 
 #>  8 3391.  339. time_s_214    0.00000173
 #>  9 3391.  339. time_s_214   -0.0000146 
 #> 10 3391.  339. time_s_214    0.00000470
@@ -1302,8 +1278,8 @@ dimer.kinetics.01$plot
 # kinetic parameters with statistical measures
 dimer.kinetics.01$df.coeff
 #>           Estimate    Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.019632415 0.00038462151 51.043466 2.0857741e-72
-#> k1     0.019214877 0.00093830049 20.478383 3.4983998e-37
+#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425903e-72
+#> k1     0.019220829 0.00093856979 20.478849 3.4920627e-37
 ```
 
 Obviously, according to statistical measures of non-linear
@@ -1329,11 +1305,11 @@ kinetic model fit) :
 
 # residual sample variance
 var(dimer.kinetics.01$ra$df$residuals)
-#> [1] 1.7942713e-06
+#> [1] 1.7955341e-06
 #
 # residuals sd
 dimer.kinetics.01$ra$sd
-#> [1] 0.0013532749
+#> [1] 0.0013537513
 ```
 
 This is likely due to the noisy baseline in the EPR spectra as shown in
@@ -1406,14 +1382,14 @@ corresponding to residual sum of squares at each iteration/evaluation
 
 # select the element by `$` operator
 dimer.kinetics.01$N.converg
-#> [1] 0.00086936985 0.00019847996 0.00017771000 0.00017764128 0.00017764123
-#> [6] 0.00017764123
+#> [1] 0.00086935454 0.00019862125 0.00017783532 0.00017776637 0.00017776632
+#> [6] 0.00017776632
 #
 # ...or select the same by 
 # double-square brackets
 dimer.kinetics.01[["N.converg"]]
-#> [1] 0.00086936985 0.00019847996 0.00017771000 0.00017764128 0.00017764123
-#> [6] 0.00017764123
+#> [1] 0.00086935454 0.00019862125 0.00017783532 0.00017776637 0.00017776632
+#> [6] 0.00017776632
 ```
 
 To **select the** `N.converg` **component by the** `$` **operator, we do
@@ -1433,8 +1409,8 @@ like:
 
 dimer.kinetics.01["N.converg"]
 #> $N.converg
-#> [1] 0.00086936985 0.00019847996 0.00017771000 0.00017764128 0.00017764123
-#> [6] 0.00017764123
+#> [1] 0.00086935454 0.00019862125 0.00017783532 0.00017776637 0.00017776632
+#> [6] 0.00017776632
 
 # What does the previous command/variable correspond to ?
 class(dimer.kinetics.01["N.converg"])
@@ -1448,16 +1424,16 @@ square sum), we can actually apply the following commands:
 
 # the last residual square sum
 dimer.kinetics.01$N.converg[length(dimer.kinetics.01$N.converg)]
-#> [1] 0.00017764123
+#> [1] 0.00017776632
 #
 # ...or by
 dimer.kinetics.01[["N.converg"]][length(dimer.kinetics.01$N.converg)]
-#> [1] 0.00017764123
+#> [1] 0.00017776632
 #
 # compare the previous one with residual analysis (`$ra`)
 # of the `dimer.kinetics.01`
 sum((dimer.kinetics.01$ra$df$residuals)^2)
-#> [1] 0.00017764123
+#> [1] 0.00017776632
 ```
 
 In terms of the previous definitions and list selections, creation of

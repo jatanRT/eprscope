@@ -38,7 +38,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,6 +99,7 @@
 <span>  pswarm.diameter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pswarm.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  eval.optim.progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  fix.optim.x.0.id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -151,9 +152,11 @@ See also <code><a href="https://rdrr.io/pkg/pso/man/psoptim.html" class="externa
 <dt id="arg-pswarm-size">pswarm.size<a class="anchor" aria-label="anchor" href="#arg-pswarm-size"></a></dt>
 <dd><p>Numeric value, which equals to particle swarm size (i.e. number of particles),
 if <code>method = "pswarm"</code>. The <strong>default</strong> value (<code>pswarm.size = NULL</code>) actually
-corresponds to <code>floor(10+2*sqrt(length(x.0)))</code> (for <code>SPSO2007</code>, see the <code>pswarm.type</code>
-argument), e.g. to optimize 8 parameters, number of particles = 15. For the <code>SPSO2011</code>
-the default number of particles equals to <code>40</code>.</p></dd>
+corresponds to <code>floor(10+2*sqrt(length(Np)))</code> (for <code>SPSO2007</code>, see the <code>pswarm.type</code>
+argument), e.g. to optimize 8 parameters, number of particles = 15. The <code>length(Np)</code> corresponds
+either to <code>length(x.0)</code> or to difference between the <code>length(x.0)</code> and number of parameters,
+for which <code>(upper - lower) == 0</code> (i.e. those <code>x.0</code> parameters are actually fixed/won't be optimized).
+For the <code>SPSO2011</code> the default number of particles equals to <code>40</code>.</p></dd>
 
 
 <dt id="arg-pswarm-diameter">pswarm.diameter<a class="anchor" aria-label="anchor" href="#arg-pswarm-diameter"></a></dt>
@@ -183,10 +186,21 @@ because higher number of evaluations/iterations might result in several tens or 
 with the information, depending on the applied <code>method</code>. In the case of <code>{nloptr}</code> methods/functions
 as well as <code>method = "pswarm"</code> it displays the iteration number (each 10-th iteration per particle
 shown for <code>pswarm</code>) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
-Additionally, <code>pswarm</code> method shows the possible shrinking of the particle swarm diameter by the convergence.
+Additionally, <code>pswarm</code> method shows possible shrinking of the particle swarm diameter by the convergence.
 For the <code>method = "levenmarq"</code> it shows the iteration/evaluation number, sum of residual squares (RSS)
-and the corresponding parameter (Par.) values. In the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>
+and the relevant parameter (Par.) value. In the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>
 and <code><a href="quantify_EPR_Sim_series.html">quantify_EPR_Sim_series</a></code> this argument can be combined with the <code>msg.optim.progress</code>.</p></dd>
+
+
+<dt id="arg-fix-optim-x-id">fix.optim.x.0.id<a class="anchor" aria-label="anchor" href="#arg-fix-optim-x-id"></a></dt>
+<dd><p>Numeric value/vector of the <code>x.0</code> indices, corresponding to <code>x.0</code> elements that
+will be fixed during the optimization/fitting, i.e. they won't be optimized because their <code>lower</code>
+and <code>upper</code> limits equal to related elements of the initial <code>x.0</code>. For example, if the 1st and the 3rd
+parameter/element of the <code>x.0</code> are supposed to be fixed, put <code>fix.optim.x.0.id = c(1,3)</code>.
+<strong>Default</strong>: <code>fix.optim.x.0.id = NULL</code>, i.e. none of the <code>x.0</code> elements is fixed and all
+parameters will be optimized as required (see also <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>). However, even
+in the case if <code>fix.optim.x.0.id = NULL</code>, the parameters can be fixed by adjustment of the corresponding
+<code>lower</code> and <code>upper</code> arguments.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

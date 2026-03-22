@@ -205,20 +205,16 @@ Other Simulations and Optimization:
 triarylamine.decay.series.dsc.path <-
 load_data_example(file =
         "Triarylamine_radCat_decay_series.DSC")
-triarylamine.decay.series.asc.path <-
+triarylamine.decay.series.bin.path <-
 load_data_example(file =
-        "Triarylamine_radCat_decay_series.zip")
-unzip(triarylamine.decay.series.asc.path,
-      exdir = tempdir()
-      )
+        "Triarylamine_radCat_decay_series.DTA")
 ## loading the kinetics:
 triarylamine.decay.series.data <-
-  readEPR_Exp_Specs_kin(name.root =
-    "Triarylamine_radCat_decay_series",
-    dir_ASC = tempdir(),
-    dir_dsc_par =
-      system.file("extdata",
-                  package = "eprscope")
+  readEPR_Exp_Specs_kin(
+    path_to_file =
+      triarylamine.decay.series.bin.path,
+    path_to_dsc_par =
+      triarylamine.decay.series.dsc.path
    )
 #
 ## select the first spectrum
@@ -244,7 +240,7 @@ triarylamine.1st.spec.smooth$rss
 #
 ## estimated standard deviation
 triarylamine.1st.spec.smooth$ra.sd
-#> [1] 1.5366455e-05
+#> [1] 1.5366456e-05
 #
 ## Bayesian information criterion (BIC)
 triarylamine.1st.spec.smooth$abic
@@ -272,7 +268,7 @@ head(triarylamine.all.spec.smooth)
 #> 1     1 3390        6  0.000013629  339    -0.0000037400
 #> 2     2 3390.1      6 -0.0000010134 339.01 -0.0000038701
 #> 3     3 3390.2      6 -0.000019795  339.02 -0.0000040017
-#> 4     4 3390.2      6 -0.000029827  339.02 -0.0000041361
+#> 4     4 3390.3      6 -0.000029827  339.03 -0.0000041361
 #> 5     5 3390.3      6 -0.000016871  339.03 -0.0000042745
 #> 6     6 3390.4      6  0.0000025629 339.04 -0.0000044176
 #

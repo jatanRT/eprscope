@@ -73,24 +73,68 @@ or by loading a **S**tructure **D**ata **F**ile (`.sdf`)
 
 ## 3 Reading Files and Writing Data Frames
 
-The [eprscope](https://jatanrt.github.io/eprscope/) reads and converts
-pure (except the `.mat` format) text files. Therefore, to read the
-instrumental data files, recorded EPR spectra must be first converted
-into the ASCII format at the spectrometer. If the conversion option is
-not available, one can also try a free online converter by *Leland B.
-Gee* ([7](#ref-xepr2gfac2023)). To process the EPR spectral data, it is
-important not only to read the files with *Intensity vs. B* (usually in
-`.asc`, `.txt`, `.csv` format) but also associated files like those
-containing the instrumental parameters used to record the EPR spectra
-(usually in `.DSC` , `.dsc` or `.par` format). The information including
-in these files is required to e.g. normalize the Intensity (like
-\\\small \mathrm{d}I\_{\mathrm{EPR}}~/~\mathrm{d}B\\ in the derivative
-spectral form) or to evaluate the \\g\\-factor (position of the
-spectrum) as well as for simulations of the EPR spectra and to evaluate
-the kinetic parameters of the radical reactions.
+The [eprscope](https://jatanrt.github.io/eprscope/) can handle different
+original file formats:
+
+1.  `.asc`, `.txt`, `.csv` , `.DTA` and `.spc` to read spectra from the
+    EPR instrument/spectrometer, where the latter two correspond to
+    binary file formats (the remaining three are ASCII text-based
+    formats), which also require presence of the following files (see
+    the “2.” below) in order to load those spectra. For the series of
+    EPR spectra (2D-Experiments), the 📦 can also read/handle the binary
+    `.YGF` files, containing information about the second
+    dimension/variable like time, temperature, microwave power, …etc.
+
+2.  `.DSC`/`.dsc`, `.par`, an ASCII text, containing information about
+    the experiment, by collecting all the instrumental parameters
+    applied to set up the EPR measurement
+
+3.  `.mat` coming from *Maltab* with all the parameters and variables
+    related to simulated EPR spectrum returned from the
+    [*EasySpin*](https://easyspin.org/) *toolbox*
+
+4.  `.out`, `.log` ASCII text outputs returned either form
+    [*Gaussian*](https://gaussian.com/gaussian16/) or from
+    [*Orca*](https://www.faccts.de/docs/orca/6.1/tutorials/spec/EPR.html)
+    quantum chemical packages, containing the computed EPR parameters
+    such as hyperfine coupling/splitting constants (*A*/*a*, see below)
+    and g-values.
+
+All the above-listed data formats are used as examples to demonstrate
+the functionality of package and these are summarized in the [Package
+Datasets](https://jatanrt.github.io/eprscope/articles/datasets.html)
+vignette.
+
+The original EPR spectra are saved as a combination of binaries (`.DTA`
+or `.spc`) and ASCII text (`.DSC` / `.dsc` or `.par`). So, for each
+spectrum (or series of spectra) there are two or three files, having the
+same name and different extension. In order to return the EPR
+spectrum/spectra as ASCII tables (`.txt` ,`.asc` or `.csv`), the
+original “binary” spectra must be converted by the user. Usually, such
+conversion is directly available at the spectrometer (you may follow the
+`File` ➝ `Export ASCII`) within the acquisition/processing software or
+one can also try a free online converter by *Leland B. Gee*
+([7](#ref-xepr2gfac2023)) (see also an example in the
+[`readEPR_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
+documentation). The structure of both binary as well as ASCII texts
+depends on the spectrometer acquisition/processing software and
+therefore the key functions to read those spectra/files contain the
+`origin` argument (see vide infra or refer to the documentation of
+e.g. [`readEPR_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
+or
+[`readEPR_param_slct()`](https://jatanrt.github.io/eprscope/reference/readEPR_param_slct.md)).
+As stated above, to read the binary files or to process the EPR data,
+the associated files, like those containing the instrumental parameters
+used to record the EPR spectra (usually in `.DSC` , `.dsc` or `.par`
+format), are quite important. The information included in those files is
+required to e.g. normalize the Intensity (like \\\small
+\mathrm{d}I\_{\mathrm{EPR}}~/~\mathrm{d}B\\ in the derivative spectral
+form) or to evaluate the \\g\\-factor (position of the spectrum) as well
+as for the simulations of EPR spectra and to evaluate the kinetic
+parameters of the radical reactions.
 
 Reading of the instrumental parameters from `.DSC` / `.dsc` or `.par`
-files (corresponding to acquisition software “xenon”/“magnetech” or
+files (corresponding to acquisition software “xenon”/“magnettech” or
 “winepr”, respectively) is provided by several functions for different
 purposes e.g. for kinetic measurements or simulations. The general
 function
@@ -156,21 +200,20 @@ be performed by the
 [`readEPR_params_tabs()`](https://jatanrt.github.io/eprscope/reference/readEPR_params_tabs.md)
 function with the argument `interact = "params"` .
 
-The `origin` argument in reading functions reflects the differences in
-ASCII text file structure depending on the acquisition software.
-Moreover, while the intensity can be automatically normalized upon
-spectrum recording within “xenon”/“magnetech” software, the “winepr”
-intensity has to be normalized after the measurement if one wants to
-compare the intensities of two or several EPR spectra. The reading of
-the \\\small \ce{TMPD^{.+}}\\ spectral data by
+While the EPR intensity can be automatically normalized upon spectrum
+recording within “xenon”/“magnetech” software, the “winepr” intensity
+has to be normalized after the measurement if one wants to compare the
+intensities of two or several EPR spectra. The reading of the \\\small
+\ce{TMPD^{.+}}\\ spectral data by
 [`readEPR_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
 proceeds as follows with the output having the form of the universal
 `data frame` format ➨
 
 ``` r
 
-# loading package built-in example file => "TMPD_specelchem_accu_b.asc"
-tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
+# loading package built-in example binary 
+# `.spc` file => "TMPD_specelchem_accu_b.spc"
+tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.spc")
 
 # intensity is normalized by the Q value (sensitivity factor)
 # and the number of scans (`Nscans`). From the previous 
@@ -178,7 +221,8 @@ tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.asc")
 # data frame), Nscans = 20 (from `tmpd.params$params` 
 # in the 5th row and the 2nd column)
 tmpd.data.norm.01 <- readEPR_Exp_Specs(
-  path_to_ASC = tmpd.data.file,
+  path_to_file = tmpd.data.file,
+  path_to_dsc_par = tmpd.params.file,
   col.names = c("B_G", "dIepr_over_dB"),
   qValue = 3500,
   norm.vec.add = tmpd.params$params[5,2],
@@ -187,19 +231,18 @@ tmpd.data.norm.01 <- readEPR_Exp_Specs(
 #
 # preview of the first six rows
 head(tmpd.data.norm.01)
-#>          B_G dIepr_over_dB      B_mT
-#>        <num>         <num>     <num>
-#> 1: 3439.1699 -2.8023680804 343.91699
-#> 2: 3439.2200 -1.5253253348 343.92200
-#> 3: 3439.2700 -1.9261109375 343.92700
-#> 4: 3439.3201  0.0019604213 343.93201
-#> 5: 3439.3701 -4.6310111607 343.93701
-#> 6: 3439.4199 -3.5957537946 343.94199
+#>       B_G dIepr_over_dB    B_mT
+#> 1 3439.17 -2.8023680804 343.917
+#> 2 3439.22 -1.5253253348 343.922
+#> 3 3439.27 -1.9261109375 343.927
+#> 4 3439.32  0.0019604213 343.932
+#> 5 3439.37 -4.6310111607 343.937
+#> 6 3439.42 -3.5957537946 343.942
 ```
 
 An arbitrary character string may be chosen for the column name (see
 `col.names` argument)[¹](#fn1). However, a safe rule of thumb is to use
-notation like “quantity_unit” as already shown above in the case of
+notation like “quantity_unit”, as already shown above, in the case of
 magnetic flux density \\\small B\\. The name for the intensity column
 reads `dIepr_over_dB` (without units) because it reflects the derivative
 mode \\\small \mathrm{d}I\_{\mathrm{EPR}}/\mathrm{d}B\\ in CW
@@ -207,13 +250,14 @@ mode \\\small \mathrm{d}I\_{\mathrm{EPR}}/\mathrm{d}B\\ in CW
 as well. The above described function
 [`readEPR_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
 can automatically convert \\\small B\\ values by the argument
-`convertB.unit=TRUE` (or `FALSE`) depending on the original units “G” or
-“mT”. The reason is, that both units are quite often used to display the
-EPR spectra as well as to calculate the additional related quantities
-like \\\small \Delta B\\, \\g\\ or hyperfine splitting constants \\a\\.
-If the `Intensity` has to be normalized also by additional instrumental
-parameters, like *conversion time* and *receiver gain* (automatically
-performed within “Xenon” software)*,* one should use the
+`convertB.unit = TRUE` (or `FALSE`) depending on the original units “G”
+or “mT”. The reason is, that both units are quite often used to display
+the EPR spectra as well as to calculate the additional related
+quantities like \\\small \Delta B\\, \\g\\ or hyperfine splitting
+constants \\a\\. Additionally, if the `Intensity` has to be normalized
+by other instrumental parameters, like *conversion time* and *receiver
+gain* (automatically performed within “Xenon” software)*,* one should
+use the
 [`quantify_EPR_Norm_const()`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Norm_const.md)
 function from the `Evaluations and Quantification` family ➨
 
@@ -228,7 +272,7 @@ function from the `Evaluations and Quantification` family ➨
 #
 # following parameters are required (`req.params`) =>
 # conversion time (RCT) in milliseconds, receiver gain (RRG) 
-# unitless, sweep with (HSW) in Gauss, number of points (RES) 
+# unitless, sweep width (HSW) in Gauss, number of points (RES) 
 # and number of scans/accumulations (JSD).
 #
 req.params <-
@@ -249,7 +293,8 @@ adv.norm.constant <- quantify_EPR_Norm_const(
 # therefore, the reading of the experimental
 # data file =>
 tmpd.data.norm.02 <- readEPR_Exp_Specs(
-  path_to_ASC = tmpd.data.file,
+  path_to_file = tmpd.data.file,
+  path_to_dsc_par = tmpd.params.file,
   col.names = c("B_G", "dIepr_over_dB"),
   qValue = 3500,
   norm.vec.add = adv.norm.constant,
@@ -258,20 +303,20 @@ tmpd.data.norm.02 <- readEPR_Exp_Specs(
 #
 # data frame preview
 head(tmpd.data.norm.02)
-#>          B_G  dIepr_over_dB      B_mT
-#>        <num>          <num>     <num>
-#> 1: 3439.1699 -4.3890968e-07 343.91699
-#> 2: 3439.2200 -2.3889797e-07 343.92200
-#> 3: 3439.2700 -3.0166941e-07 343.92700
-#> 4: 3439.3201  3.0704314e-10 343.93201
-#> 5: 3439.3701 -7.2531358e-07 343.93701
-#> 6: 3439.4199 -5.6317054e-07 343.94199
+#>       B_G  dIepr_over_dB    B_mT
+#> 1 3439.17 -4.3890968e-07 343.917
+#> 2 3439.22 -2.3889797e-07 343.922
+#> 3 3439.27 -3.0166941e-07 343.927
+#> 4 3439.32  3.0704314e-10 343.932
+#> 5 3439.37 -7.2531358e-07 343.937
+#> 6 3439.42 -5.6317054e-07 343.942
 ```
 
 Moreover, the `norm.vec.add` argument can involve additional
 normalization quantities like sample weight, concentration, number of
-scans (if not normalized by the spectrometer)…etc. If needed, all such
-quantities can be defined at once within the `norm.vec.add` .
+scans (if not normalized by the spectrometer)…etc. If needed, all
+quantities can be defined at once within the `norm.vec.add` function
+argument.
 
 Visualization and/or conversion of data frames (tables) into several
 formats like `.html` , `.pdf` , `.docx` or `.pptx`. can be provided by
@@ -294,23 +339,23 @@ the following example.
 tinytable::tt(head(tmpd.data.norm.02, n = 10))
 ```
 
-| B_G       | dIepr_over_dB  | B_mT      |
-|-----------|----------------|-----------|
-| 3439.1699 | -4.3890968e-07 | 343.91699 |
-| 3439.2200 | -2.3889797e-07 | 343.92200 |
-| 3439.2700 | -3.0166941e-07 | 343.92700 |
-| 3439.3201 | 3.0704314e-10  | 343.93201 |
-| 3439.3701 | -7.2531358e-07 | 343.93701 |
-| 3439.4199 | -5.6317054e-07 | 343.94199 |
-| 3439.4700 | -7.1400107e-07 | 343.94700 |
-| 3439.5200 | -9.6621681e-07 | 343.95200 |
-| 3439.5701 | -1.3318550e-07 | 343.95701 |
-| 3439.6201 | 8.6338939e-07  | 343.96201 |
+| B_G     | dIepr_over_dB  | B_mT    |
+|---------|----------------|---------|
+| 3439.17 | -4.3890968e-07 | 343.917 |
+| 3439.22 | -2.3889797e-07 | 343.922 |
+| 3439.27 | -3.0166941e-07 | 343.927 |
+| 3439.32 | 3.0704314e-10  | 343.932 |
+| 3439.37 | -7.2531358e-07 | 343.937 |
+| 3439.42 | -5.6317054e-07 | 343.942 |
+| 3439.47 | -7.1400107e-07 | 343.947 |
+| 3439.52 | -9.6621681e-07 | 343.952 |
+| 3439.57 | -1.3318550e-07 | 343.957 |
+| 3439.62 | 8.6338939e-07  | 343.962 |
 
 In order to process data frames by other software tools, different from
 ![](RcoreLogo.png) (e.g. in excel-like sheet format), they might be
-exported into universal `.csv` table format like by the
-`base::write.csv()` function ➨
+exported into universal `.csv` (“comma separated values”) table format
+by the `base::write.csv()` function ➨
 
 ``` r
 
@@ -323,7 +368,7 @@ write.csv(tmpd.data.norm.02,
 ## 4 Visualizations of Spectral Data
 
 All the data related to EPR spectroscopy can be visualized by the
-[{ggplot2}](https://ggplot2.tidyverse.org/) 📦 and its
+[{ggplot2}](https://ggplot2.tidyverse.org/) 📦, its
 [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by
 the interactive [{plotly}](https://plotly.com/r/) graphing library.
 While the first library/package (based on the “Grammar of
@@ -340,9 +385,9 @@ visualize the data in electron paramagnetic resonance spectroscopy.
 
 The
 [`plot_EPR_Specs()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs.md)
-is the essential function for plotting individual EPR spectra as well as
-those within series (e.g. time series \\\equiv\\ kinetic measurements).
-Now, by means of this function and by the
+is the essential function for plotting of the individual EPR spectra as
+well as of those within series (e.g. time series \\\equiv\\ kinetic
+measurements). Now, by means of this function and by the
 [{patchwork}](https://patchwork.data-imaginist.com/) 📦 , we can compare
 the EPR spectra with the basic and “advanced” normalization ➨
 
@@ -381,7 +426,7 @@ tmpd.plot.norm.02 <-
   plot_EPR_Specs(data.spectra = tmpd.data.norm.02) +
   ggplot2::ggtitle("Advanced Normalization")
 #
-# both spectra together side-by-side by `{patchwork}` package,
+# both spectra together side-by-side by `{patchwork}` 📦,
 # see https://patchwork.data-imaginist.com/articles/guides/layout.html
 tmpd.plot.norm.0102 <-
   tmpd.plot.norm.01 +
@@ -403,9 +448,9 @@ Figure 4.2: Comparison of \\\small \ce{TMPD^{.+}}\\ EPR spectra with
 different intensity normalization.
 
 If one wants to save the previous Figure
-[4.2](#fig:spectral-data-norm0102-visual), the function
+[4.2](#fig:spectral-data-norm0102-visual), the
 [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
-can be applied ➨
+function can be applied ➨
 
 ``` r
 
@@ -425,8 +470,8 @@ ggplot2::ggsave("TMPD_EPR_Norm_compar.png",
 
 ### 4.2 Interactive Plots by `{plotly}`
 
-In order to explore the EPR spectrum in details (to read values, zoom or
-save the spectrum), functions like
+In order to quickly explore the EPR spectrum in details (to read values,
+zoom or save the spectrum), functions like
 [`plot_EPR_Specs2D_interact()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs2D_interact.md)
 or
 [`plot_eval_ExpSim_app()`](https://jatanrt.github.io/eprscope/reference/plot_eval_ExpSim_app.md)
@@ -477,8 +522,9 @@ constants, respectively. Therefore, it is determined only by the
 microwave frequency (\\\nu\\) and the magnetic flux density (\\\small
 B_0\\) of the spectrum mid-point where \\\small
 \mathrm{d}I\_{\mathrm{EPR}}/\mathrm{d}B = 0\\ (in the case of CW EPR
-spectra, see also function
-[`eval_gFactor_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_gFactor_Spec.md)).
+spectra, refer also to the
+[`eval_gFactor_Spec()`](https://jatanrt.github.io/eprscope/reference/eval_gFactor_Spec.md)
+function).
 
 ``` r
 
@@ -514,7 +560,7 @@ If the **“Microwave frequency (GHz)”** is available (the function
 automatically reads the right frequency by loading the “parameter” file
 with `.par` or `.dsc`/ `.DSC` extensions), by activating the **“Show
 g-Values”**. Immediately after that, the EPR spectrum abscissa is
-automatically converted from *B* into *g* (see Figure
+automatically converted from *B* into *g* scale (see Figure
 [5.1](#fig:g-value-shiny-app)).
 
 ![Screenshot of the interactive Shiny app, showing how to display
@@ -531,9 +577,8 @@ by PBE0/EPR-II/CPCM-DMSO//B3LYP/6-31+G(d,p) (see also [Gaussian DFT
 Methods](https://gaussian.com/dft/) and [Basis
 Sets](https://gaussian.com/basissets/)). The extraction of
 \\g\_{\mathrm{iso}}\\-value from the *Gaussian* (or from the [ORCA
-quantum chemical
-package](https://www.orcasoftware.de/tutorials_orca/index.html)) output
-file is provided by the
+quantum chemical package](https://www.faccts.de/orca/)) output file is
+provided by the
 “[`eval_gFactor_QCHcomp()`](https://jatanrt.github.io/eprscope/reference/eval_gFactor_QCHcomp.md)
 function ➨
 
@@ -679,10 +724,10 @@ numbering inherited from the Gaussian 16 output file.
 In order to compare the theoretical and experimental HFCCs, the function
 [`rearrange_aAiso_QCHorgau()`](https://jatanrt.github.io/eprscope/reference/rearrange_aAiso_QCHorgau.md)
 extracts the \\\small A\\ values from the Gaussian or
-[ORCA](https://www.orcasoftware.de/tutorials_orca/index.html) output
-files and calculates the mean values corresponding to selected groups of
-equivalent nuclei which are defined by the `nuclei.list.slct` argument.
-Therefore, according to numbering shown in Figure
+[ORCA](https://www.faccts.de/docs/orca/6.1/tutorials/spec/EPR.html)
+output files and calculates the mean values corresponding to selected
+groups of equivalent nuclei which are defined by the `nuclei.list.slct`
+argument. Therefore, according to numbering shown in Figure
 [5.2](#fig:dft-tmpd-structure) ➨
 
 ``` r
@@ -778,7 +823,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.102   0.000   0.102
+#>   0.095   0.004   0.100
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -844,9 +889,9 @@ differences. Therefore, the fitting/optimization functions like
 and/or
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md)
 can be applied to get a more accurate simulated spectrum. Particularly,
-the latter can explore a broad range of initial simulation parameters in
-order to fit and analyze an isotropic EPR spectrum, like the \\\small
-\ce{TMPD^{.+}}\\ one, described in the following example.
+the second function can explore a broad range of initial simulation
+parameters in order to fit and analyze an isotropic EPR spectrum, like
+the \\\small \ce{TMPD^{.+}}\\ one, described in the following example.
 
 ``` r
 
@@ -970,14 +1015,13 @@ tmpd.data.norm.02.integ <-
 #
 # preview
 head(tmpd.data.norm.02.integ)
-#>          B_G  dIepr_over_dB      B_mT  single_Integ sigmoid_Integ
-#>        <num>          <num>     <num>         <num>         <num>
-#> 1: 3439.1699 -4.3890968e-07 343.91699 2.0128171e-06 0.0000000e+00
-#> 2: 3439.2200 -2.3889797e-07 343.92200 1.9958553e-06 1.0031502e-07
-#> 3: 3439.2700 -3.0166941e-07 343.92700 1.9823278e-06 1.9986707e-07
-#> 4: 3439.3201  3.0704314e-10 343.93201 1.9747866e-06 2.9888990e-07
-#> 5: 3439.3701 -7.2531358e-07 343.93701 1.9566436e-06 3.9727197e-07
-#> 6: 3439.4199 -5.6317054e-07 343.94199 1.9245572e-06 4.9392357e-07
+#>       B_G  dIepr_over_dB    B_mT  single_Integ sigmoid_Integ
+#> 1 3439.17 -4.3890968e-07 343.917 2.0142410e-06 0.0000000e+00
+#> 2 3439.22 -2.3889797e-07 343.922 1.9972958e-06 1.0028842e-07
+#> 3 3439.27 -3.0166941e-07 343.927 1.9837816e-06 1.9981535e-07
+#> 4 3439.32  3.0704314e-10 343.932 1.9762475e-06 2.9881608e-07
+#> 5 3439.37 -7.2531358e-07 343.937 1.9581224e-06 3.9717533e-07
+#> 6 3439.42 -5.6317054e-07 343.942 1.9259103e-06 4.9427614e-07
 ```
 
 Both integrals, within the entire \\\small B\\-range, can be visualized

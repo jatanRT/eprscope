@@ -1,6 +1,6 @@
 # Read the Selected EPR Instrumental Parameters and Information
 
-Taking selected instrumental parameters or information from the
+Extracting selected instrumental parameters or information from the
 `.DSC/.dsc` or `.par` file of an EPR spectrum (written by the
 `Xenon`/`Magnettech` or `WinEpr` software, respectively).
 
@@ -14,8 +14,10 @@ readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
 
 - path_to_dsc_par:
 
-  Character string, path to `.DSC/.dsc` or `.par` file including the
-  instrumental parameters provided by the EPR machine. File path can be
+  Character string, path to `.DSC/.dsc`
+  (`origin = "xenon"`/`origin = "magnettech"`) or `.par`
+  (`orogin = "winepr"`) file, including the instrumental parameters of
+  the recorded spectra and provided by the EPR machine. File path can be
   also defined by the
   [`file.path`](https://rdrr.io/r/base/file.path.html) function.
 

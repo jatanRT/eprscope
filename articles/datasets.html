@@ -42,7 +42,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,19 +107,21 @@ double-resonance (ENDOR) and EPR spectroelectrochemical experiments.</p>
 <div class="section level3">
 <h3 id="nuclear-isotope-data-frame">Nuclear Isotope Data Frame<a class="anchor" aria-label="anchor" href="#nuclear-isotope-data-frame"></a>
 </h3>
-<p>This dataset was taken from the open source <a href="https://easyspin.org/easyspin/documentation/isotopetable.html" class="external-link">EasySpin</a>
+<p>This dataset was taken from the open source <a href="https://easyspin.org/easyspin/documentation/isotopetable.html" class="external-link"><em>EasySpin</em></a>
 package, reformatted and column of Larmor-frequencies in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">H</mi><mi mathvariant="normal">z</mi></mrow><annotation encoding="application/x-tex">\mathrm{MHz}</annotation></semantics></math>
 at
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.35</mn><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">T</mi></mrow></mrow><annotation encoding="application/x-tex">0.35\,\mathrm{mT}</annotation></semantics></math>
-were added for better orientation in double-resonance ENDOR spectra, see
+was added for better orientation in double-resonance ENDOR spectra, see
 the details in <code><a href="../reference/isotopes_ds.html">?isotopes_ds</a></code> documentation as well as <a href="https://github.com/jatanRT/eprscope/blob/master/data-raw/isotopes_ds.R" class="external-link">R
 file in `data-raw` folder</a>. The data frame is not only used to
-analyze the ENDOR spectra however, it is also essential for the
+analyze the ENDOR spectra, however it is also essential for the
 simulations of EPR spectra and their fitting onto the experimental ones.
 See the documentation of the <code><a href="../reference/eval_sim_EPR_iso.html">eval_sim_EPR_iso()</a></code>,
-<code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> as well as
-<code><a href="../reference/eval_nu_ENDOR.html">eval_nu_ENDOR()</a></code>.</p>
+<code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code> ,
+<code><a href="../reference/plot_eval_EPRtheo_mltiplet.html">plot_eval_EPRtheo_mltiplet()</a></code> as well as
+<code><a href="../reference/eval_nu_ENDOR.html">eval_nu_ENDOR()</a></code> and
+<code><a href="../reference/eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space()</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># interactive data frame by `{DT}` package with option to select columns</span></span>
@@ -154,9 +156,9 @@ solvents, such as acetonitrile or dimethyl sulfoxide, either capillary
 ) or special <a href="https://sp-wilmadlabglass.com/product/standard-te102-aqueous-cells/" class="external-link">quartz
 flat cell</a> ( with a flat-part thickness
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.3</mn><mo>−</mo><mn>0.6</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">m</mi></mrow></mrow><annotation encoding="application/x-tex">\approx (0.3-0.6)\,\mathrm{mm}</annotation></semantics></math>)
-must be used. While for non-polar solvents or those with lower polarity,
-e.g. toluene, chloroform or tetrahydrofuran, a sample can be analyzed
-within any kind of cell including <a href="https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/" class="external-link">common
+must be used. Whereas for the non-polar solvents, or those with lower
+polarity, e.g. toluene, chloroform or tetrahydrofuran, a sample can be
+analyzed within any kind of cell including <a href="https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/" class="external-link">common
 EPR quartz-tubes</a> with
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>.</mi><mi>d</mi><mi>.</mi><mo>≈</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">m</mi></mrow></mrow><annotation encoding="application/x-tex">i.d. \approx (2-4)\,\mathrm{mm}</annotation></semantics></math>.
 Additionally, the solvent properties like melting/boiling point as well
@@ -191,8 +193,10 @@ by the specialized <code><a href="../reference/readEPR_solvent_props.html">readE
 <h2 id="datasets-for-examples-and-tests">Datasets for Examples and Tests<a class="anchor" aria-label="anchor" href="#datasets-for-examples-and-tests"></a>
 </h2>
 <p>These involve the <a href="https://www.computerhope.com/jargon/a/ascii.htm" class="external-link">ASCII text</a>
-data (with the extensions like <code>.txt</code> , <code>.asc</code> ,
-<code>.csv</code> ), coming from EPR spectrometers and correspond either
+and <a href="https://www.computerhope.com/jargon/b/binary.htm" class="external-link">binary
+data</a> (with the extensions like <code>.txt</code> , <code>.asc</code>
+, <code>.csv</code> , <code>.DTA</code> and <code>.spc</code> or
+<code>.YGF</code>) coming from EPR spectrometers and correspond either
 to an EPR spectrum data frame<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Usually the following variables/columns are included in
 the ASCII tables of the corresponding EPR spectra:
 “&lt;strong&gt;index&lt;/strong&gt;”, “&lt;strong&gt;Field [G]&lt;/strong&gt;”/“&lt;strong&gt;X
@@ -200,12 +204,14 @@ the ASCII tables of the corresponding EPR spectra:
 []&lt;/strong&gt;”/“&lt;strong&gt;Intensity&lt;/strong&gt;”&lt;/p&gt;"><sup>1</sup></a> or accompanying ASCII text files with the
 (instrumental) parameters (having the <code>.par</code> or
 <code>.DSC</code> / <code>.dsc</code> extensions) used to record the
-corresponding spectra. While the files containing parameters are
-generated automatically during the data saving, the tabular ones,
-related to an EPR spectrum, must be generated by the instrument operator
-(usually by <code>File</code> ➝ <code>Export ASCII</code> workflow).
-Some of these files are compressed (as <code>.zip</code>) in order to
-save storage space within the package. Additionally, the
+corresponding spectra (see also the
+<code><a href="../articles/functionality.html">vignette("functionality")</a></code> vignette/article). While the
+binary files and those containing parameters are generated automatically
+during the data saving, text data files must be generated by the
+instrument operator (usually by <code>File</code> ➝
+<code>Export ASCII</code> workflow) within the acquisition/processing
+software. Some of these files are compressed (as <code>.zip</code>) in
+order to save storage space within the package. Additionally, the
 <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦 contains <code>.mat</code> (<em>Matlab</em>)
 file from the <em>EasySpin</em> simulation as well as output from DFT
 quantum chemical computation or related structural data either with
@@ -224,10 +230,10 @@ All these file types are summarized within the following table.</p>
 <tr class="odd">
 <td>
 <p><code>Aminoxyl_radical_a.txt</code></p>
-<p>ASCII <strong>text table file</strong> corresponding to EPR spectrum
-of an aminoxyl/nitroxyl radical derivative measured in deionized
-H<sub>2</sub>O and recorded by the <em>Xenon</em> acquisition
-software.</p>
+<p>ASCII <strong>text table file</strong> (with magnetic flux density, B
+and EPR intensity) corresponding to EPR spectrum of an aminoxyl/nitroxyl
+radical derivative measured in deionized H<sub>2</sub>O and recorded by
+the <em>Xenon</em> acquisition software.</p>
 </td>
 <td>
 <p><code><a href="../reference/eval_DeltaXpp_Spec.html">eval_DeltaXpp_Spec()</a></code></p>
@@ -236,7 +242,9 @@ software.</p>
 <p><code><a href="../reference/plot_theme_In_ticks.html">plot_theme_In_ticks()</a></code></p>
 <p><code><a href="../reference/plot_theme_NoY_ticks.html">plot_theme_NoY_ticks()</a></code></p>
 <p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
+<p><code><a href="../reference/transform_dfs_2tidyDF.html">transform_dfs_2tidyDF()</a></code></p>
 <p><code>test-eval_sim_EPR_iso</code></p>
+<p><code>test-readEPR_Exp_Specs</code></p>
 <p><code>test-eval_sim_EPR_isoFit</code></p>
 </td>
 </tr>
@@ -252,10 +260,28 @@ measurement data saving.</p>
 <td>
 <p><code><a href="../reference/readEPR_params_slct_quant.html">readEPR_params_slct_quant()</a></code></p>
 <p><code>test-eval_sim_EPR_iso</code></p>
+<p><code>test-redEPR_Exp_Specs</code></p>
 <p><code>test-eval_sim_EPR_isoFit</code></p>
 </td>
 </tr>
 <tr class="odd">
+<td>
+<p><code>Aminoxyl_radical_a.DTA</code></p>
+<p><strong>Binary data file</strong>, including the EPR spectrum
+derivative intensity of an aminoxyl/nitroxyl radical. The file was
+automatically generated by the <em>Xenon</em> acquisition software upon
+measurement data saving and is related to
+<code>Aminoxyl_radical_a.DSC</code> as well as to
+<code>Aminoxyl_radical_a.txt</code> .</p>
+</td>
+<td>
+<p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
+<p><code><a href="../reference/plot_theme_NoY_ticks.html">plot_theme_NoY_ticks()</a></code></p>
+<p><code><a href="../reference/eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code></p>
+<p><code>test-readEPR_Exp_Specs</code></p>
+</td>
+</tr>
+<tr class="even">
 <td>
 <p><code>Aminoxyl_radical_a.mat</code></p>
 <p><strong>Matlab/EasySpin output file</strong> containing all
@@ -266,7 +292,7 @@ reproduce the experimental spectrum saved in the above-listed
 </td>
 <td><code><a href="../reference/readMAT_params_file.html">readMAT_params_file()</a></code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>
 <p><code>TMPD.sdf</code></p>
 <p><strong>Structured data file</strong> (MOL-file-based format)
@@ -276,9 +302,9 @@ Density Functional Theory (DFT).</p>
 </td>
 <td><code><a href="../reference/draw_molecule_by_rcdk.html">draw_molecule_by_rcdk()</a></code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>
-<p><code>TMPDAradCatEPRa.inp.log.zip</code></p>
+<p><code>TMPDradCatEPRa.inp.log.zip</code></p>
 <p><strong>Compressed output file from <em>Gaussian</em> quantum
 chemical package</strong> software (v. G16). Standard <em>Gaussian</em>
 output from DFT calculations of EPR parameters (<em>g</em> and
@@ -288,14 +314,15 @@ output from DFT calculations of EPR parameters (<em>g</em> and
 <td>
 <p><code><a href="../reference/eval_gFactor_QCHcomp.html">eval_gFactor_QCHcomp()</a></code></p>
 <p><code><a href="../reference/rearrange_aAiso_QCHorgau.html">rearrange_aAiso_QCHorgau()</a></code></p>
+<p><code>test-rearrange_aAiso_QCHorgau</code></p>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>
-<p><code>TMPDA_specelchem_accu_b.asc</code></p>
-<p>ASCII <strong>text table file</strong> corresponding to EPR spectrum
-of electrochemically generated TMPD<sup>.+</sup> by the potentiostatic
-electrolysis of
+<p><code>TMPD_specelchem_accu_b.asc</code></p>
+<p>ASCII <strong>text table file</strong> (with magnetic flux density, B
+and EPR intensity) corresponding to EPR spectrum of electrochemically
+generated TMPD<sup>.+</sup> by the potentiostatic electrolysis of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">M</mi></mrow></mrow><annotation encoding="application/x-tex">1\,\mathrm{mM}</annotation></semantics></math>
 TMPD solution in
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.3</mn><mspace width="0.167em"></mspace><mi mathvariant="normal">M</mi></mrow><annotation encoding="application/x-tex">0.3\,\mathrm{M}</annotation></semantics></math>
@@ -310,13 +337,14 @@ TBAPF<sub>6</sub>/DMSO at
 <p><code><a href="../reference/plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact()</a></code></p>
 <p><code><a href="../reference/plot_theme_Out_ticks.html">plot_theme_Out_ticks()</a></code></p>
 <p><code><a href="../reference/plot_EPR_Specs_integ.html">plot_EPR_Specs_integ()</a></code></p>
+<p><code><a href="../reference/transform_dfs_2tidyDF.html">transform_dfs_2tidyDF()</a></code></p>
 <p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
 <p><code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code></p>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>
-<p><code>TMPDA_specelchem_accu_b.par</code></p>
+<p><code>TMPD_specelchem_accu_b.par</code></p>
 <p>ASCII <strong>text file including parameters</strong> to record the
 EPR spectrum of electrochemically generated TMPD<sup>.+</sup>
 corresponding to the above-listed
@@ -331,15 +359,67 @@ saving.</p>
 <p><code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code></p>
 </td>
 </tr>
+<tr class="odd">
+<td>
+<p><code>TMPD_specelchem_accu_b.spc</code></p>
+<p><strong>Binary data file</strong>, including the EPR spectrum
+derivative intensity of electrochemically generated TMPD<sup>.+</sup>
+corresponding to the above-listed
+<code>TMPDA_specelechem_accu_b.par</code> as well as to
+<code>TMPDA_specelechem_accu_b.txt</code> . The file was automatically
+created by the <em>WinEpr</em> acquisition software upon data
+saving.</p>
+</td>
+<td><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></td>
+</tr>
 <tr class="even">
-<td></td>
-<td></td>
+<td>
+<p><code>TMPD_specelchem_CV_b.spc</code></p>
+<p><strong>Binary data file</strong>, including the EPR derivative
+intensities of electrochemically generated TMPD<sup>.+</sup>. The
+radical cation was formed during cyclic voltammetry (CV) experiment
+acquired simultaneously with the EPR in order to follow the
+TMPD<sup>.+</sup> concentration changes in real time. The combined
+CV-EPR experiment was performed in 0.3 M TBAPF<sub>6</sub>/DMSO solution
+by application of -0.1 V ⟶ +0.45 V ⟶ -0.1 V potential ramp (vs
+Ag-quasiref. electrode) and by the scan rate of 3 mV/s. Sample was
+measured in a special quartz EPR flat cell, enabling EPR experiments in
+highly polar media. Those files, named as
+<code>TMPD_specelchem_accu_b</code>, are related to the actual one. This
+file was automatically created by the <em>WinEpr</em> acquisition
+software upon data saving.</p>
+</td>
+<td><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></td>
+</tr>
+<tr class="odd">
+<td>
+<p><code>TMPD_specelchem_CV_b.par</code></p>
+<p>ASCII <strong>text file including parameters</strong> to record the
+EPR spectra during oxidation and re-reduction (CV) of TMPD as already
+described for the corresponding <code>TMPD_specelechem_CV_b.spc</code> .
+The file was automatically created by the <em>WinEpr</em> acquisition
+software upon data saving.</p>
+</td>
+<td>
+<p><code><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin()</a></code></p>
+<p><code>test-readEPR_Exp_Specs</code></p>
+</td>
+</tr>
+<tr class="even">
+<td>
+<p><code>TMPD_specelchem_CV_b.asc</code></p>
+<p>ASCII <strong>text data file/table</strong> (including B, slices and
+individual EPR intensities), corresponding to
+<code>TMPD_specelchem_CV_b.spc</code> , recorded during the
+spectroelectrochemical experiment.</p>
+</td>
+<td><code>test-readEPR_Exp_Specs</code></td>
 </tr>
 <tr class="odd">
 <td>
 <p><code>PNT_ENDOR_a.txt</code></p>
-<p>ASCII <strong>text table file</strong> corresponding to CW EPR ENDOR
-spectrum of phenalenyl
+<p>ASCII <strong>text table file</strong> (with radio-frequency in MHZ
+and EPR intensity) corresponding to CW EPR ENDOR spectrum of phenalenyl
 (<strong>p</strong>eri<strong>n</strong>aph<strong>t</strong>henyl)
 radical, commonly used as a standard for the CW ENDOR experiments.
 Spectrum recorded by the <em>Xenon</em> acquisition software.</p>
@@ -347,7 +427,6 @@ Spectrum recorded by the <em>Xenon</em> acquisition software.</p>
 <td>
 <p><code><a href="../reference/eval_DeltaXpp_Spec.html">eval_DeltaXpp_Spec()</a></code></p>
 <p><code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code></p>
-<p><code><a href="../reference/plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact()</a></code></p>
 <p><code><a href="../reference/plot_layout2D_interact.html">plot_layout2D_interact()</a></code></p>
 <p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
 </td>
@@ -361,9 +440,27 @@ above-listed <code>PNT_ENDOR_a.txt</code> . This file was automatically
 generated by the <em>Xenon</em> acquisition software upon data
 saving.</p>
 </td>
-<td><code><a href="../reference/readEPR_param_slct.html">readEPR_param_slct()</a></code></td>
+<td>
+<p><code><a href="../reference/readEPR_param_slct.html">readEPR_param_slct()</a></code></p>
+<p><code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code></p>
+</td>
 </tr>
 <tr class="odd">
+<td>
+<p><code>PNT_ENDOR_a.DTA</code></p>
+<p><strong>Binary data file</strong>, including the CW ENDOR spectrum
+derivative intensity of phenalenyl radical and corresponding to the
+above-listed <code>PNT_ENDOR_a.txt</code> as well as to
+<code>PNT_ENDOR_a.DSC</code> . This file was automatically generated by
+the <em>Xenon</em> acquisition software upon data saving.</p>
+</td>
+<td>
+<p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
+<p><code><a href="../reference/plot_EPR_Specs2D_interact.html">plot_EPR_Specs2D_interact()</a></code></p>
+<p><code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code></p>
+</td>
+</tr>
+<tr class="even">
 <td>
 <p><code>Triarylamine_radCat_decay_a.txt</code></p>
 <p>ASCII <strong>text table file including double integrals (Area)
@@ -371,12 +468,12 @@ vs. time</strong> and additional parameters like g-value, linewidth,
 lineshape of each CW EPR spectrum of a triarylamine radical cation,
 recorded right after its electrochemical oxidative generation and
 disconnecting the potentiostat. File was created by the <em>Xenon</em>
-acquisition software, where the integration of the simulated and fitted
-EPR spectra, of the experimental ones, were performed. Potentiostatic
-electrolysis (at 0.49 V vs Fc/Fc<sup>+</sup>) and EPR measurements were
-carried out in 0.2 M TBAPF<sub>6</sub>/CH<sub>3</sub>CN triarylamine
-solution. The individual spectral data are stored in
-<code>Triarylamine_radCat_decay_series.zip</code> .</p>
+acquisition software, where the integration of the simulated as well as
+fitted EPR spectra was carried out. Potentiostatic electrolysis (at 0.49
+V vs Fc/Fc<sup>+</sup>) and EPR measurements were done in 0.2 M
+TBAPF<sub>6</sub>/CH<sub>3</sub>CN triarylamine solution. The individual
+spectral data are stored in
+<code>Triarylamine_radCat_decay_series.DTA</code> .</p>
 </td>
 <td>
 <p><code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code></p>
@@ -386,32 +483,15 @@ solution. The individual spectral data are stored in
 <p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>
 <p><code>Triarylamine_radCat_decay_a.DSC</code></p>
-<p>This file is identical with
+<p>This file is identical with the
 <code>Triarylamine_radCat_decay_series.DSC</code> .</p>
 </td>
 <td>
 <p><code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code></p>
 <p><code><a href="../reference/readEPR_param_slct.html">readEPR_param_slct()</a></code></p>
-</td>
-</tr>
-<tr class="odd">
-<td>
-<p><code>Triarylamine_radCat_decay_series.zip</code></p>
-<p><strong>Compressed ASCII text table file containing 100 EPR CW
-spectral data</strong> recorded as time series upon checking the
-stability of a triarylamine radical cation. Details of the EPR
-spectroelectrochemical experiment are listed in description of the
-<code>Triarylamine_radCat_decay_a.txt</code> file.</p>
-</td>
-<td>
-<p><code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code></p>
-<p><code><a href="../reference/plot_EPR_Specs3D_interact.html">plot_EPR_Specs3D_interact()</a></code></p>
-<p><code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code></p>
-<p><code><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin()</a></code></p>
-<p><code><a href="../reference/smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg()</a></code></p>
 </td>
 </tr>
 <tr class="even">
@@ -431,6 +511,40 @@ data saving.</p>
 <p><code><a href="../reference/smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg()</a></code></p>
 <p><code><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin()</a></code></p>
 <p><code><a href="../reference/readEPR_params_slct_kin.html">readEPR_params_slct_kin()</a></code></p>
+</td>
+</tr>
+<tr class="odd">
+<td>
+<p><code>Triarylamine_radCat_decay_series.DTA</code></p>
+<p><strong>Binary file (recorded by Xenon software), containing the
+intensities of 100 CW EPR spectra</strong> upon checking the stability
+of an electrochemically generated triarylamine radical cation, related
+to <code>Triarylamine_radCat_decay_series.DSC</code>. Details of the EPR
+spectroelectrochemical experiment are listed in description of the
+<code>Triarylamine_radCat_decay_a.txt</code> file.</p>
+</td>
+<td>
+<p><code><a href="../reference/plot_EPR_Specs.html">plot_EPR_Specs()</a></code></p>
+<p><code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code></p>
+<p><code><a href="../reference/plot_EPR_Specs3D_interact.html">plot_EPR_Specs3D_interact()</a></code></p>
+<p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
+<p><code><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin()</a></code></p>
+<p><code><a href="../reference/smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg()</a></code></p>
+</td>
+</tr>
+<tr class="even">
+<td>
+<p><code>Triarylamine_radCat_decay_series.YGF</code></p>
+<p><strong>Binary file (also recorded by Xenon software), containing
+starting times</strong> at which the EPR spectra (see the previous
+descriptions above) were recorded. This is related to
+<code>Triarylamine_radCat_decay_series.DSC</code>,
+<code>Triarylamine_radCat_decay_series.DTA</code> .</p>
+</td>
+<td>
+<p><code><a href="../reference/eval_integ_EPR_Spec.html">eval_integ_EPR_Spec()</a></code></p>
+<p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
+<p><code><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin()</a></code></p>
 </td>
 </tr>
 <tr class="odd">
@@ -456,9 +570,24 @@ software upon data saving.</p>
 <td>
 <p><code><a href="../reference/readEPR_params_slct_sim.html">readEPR_params_slct_sim()</a></code></p>
 <p><code><a href="../reference/readEPR_params_tabs.html">readEPR_params_tabs()</a></code></p>
+<p><code>test-readEPR_Exp_Specs</code></p>
 </td>
 </tr>
 <tr class="odd">
+<td>
+<p><code>AcridineDeriv_Irrad_365nm.DTA</code></p>
+<p><strong>Binary data, corresponding to EPR intensities of an
+acridine-derivative EPR spectrum</strong> (recorded on
+<em>Magnettech</em> ESR5000 [11-0422] EPR spectrometer). This file is
+related to <code>AcridineDeriv_Irrad_365nm.csv.zip</code> as well as to
+<code>AcridineDeriv_Irrad_365nm.dsc</code>.</p>
+</td>
+<td>
+<p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
+<p><code>test-readEPR_Exp_Specs</code></p>
+</td>
+</tr>
+<tr class="even">
 <td>
 <p><code>Triarylamine_ECh_CV_ivium.txt</code></p>
 <p><strong>ASCII text file table consisting of potential, time, current

@@ -1,10 +1,10 @@
 # Read the EPR Instrumental Parameters and Information for Tabular Outputs
 
-Taking the instrumental parameters from the `.DSC/.dsc` or `.par` files,
-applied to record the EPR Spectra, and transferring them into list of
-`Tables/Data Frames`. They include either parameter values and their
-units or character/string information about the measurement, see also
-the
+Extraction of the instrumental parameters from the `.DSC/.dsc` or `.par`
+files, applied to record the EPR Spectra, and transferring them into
+list of `Tables/Data Frames`. They include either parameter values and
+their units or character/string information about the measurement, see
+also the
 [`readEPR_param_slct`](https://jatanrt.github.io/eprscope/reference/readEPR_param_slct.md)
 function.
 
@@ -20,8 +20,10 @@ readEPR_params_tabs(path_to_dsc_par, origin = "xenon", interact = NULL)
 
   Character string, path (also provided by
   [`file.path`](https://rdrr.io/r/base/file.path.html)) to `.DSC/.dsc`
-  or `.par` (depending on `origin` parameter) `text` files, including
-  instrumental parameters and provided by the EPR machine.
+  or `.par` (either related to
+  `origin = "xenon"`/`origin = "magnettech"` or to `origin = "winepr"`,
+  respectively) `text` files, including instrumental parameters of the
+  recorded spectra and provided by the EPR machine.
 
 - origin:
 

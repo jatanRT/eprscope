@@ -23,10 +23,10 @@
 ## Data Reading
 
 - [`readEPR_Exp_Specs()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs.md)
-  : Read the Experimental ASCII or other Text-Based EPR Data.
+  : Reading of the Experimental ASCII or Binary EPR Spectra/Data.
 
 - [`readEPR_Exp_Specs_kin()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs_kin.md)
-  : Read and Process Spectral Data of Time Dependent CW EPR Experiments
+  : Read and Process CW EPR Time Series Experiments
 
 - [`readEPR_Exp_Specs_multif()`](https://jatanrt.github.io/eprscope/reference/readEPR_Exp_Specs_multif.md)
   : Load Several/Multiple EPR Data/Spectra Files Simultaneously

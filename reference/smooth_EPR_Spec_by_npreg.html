@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -218,20 +218,16 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 <span class="r-in"><span><span class="va">triarylamine.decay.series.dsc.path</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
 <span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.DSC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">triarylamine.decay.series.asc.path</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="va">triarylamine.decay.series.bin.path</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
-<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.zip"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">triarylamine.decay.series.asc.path</span>,</span></span>
-<span class="r-in"><span>      exdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.DTA"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## loading the kinetics:</span></span></span>
 <span class="r-in"><span><span class="va">triarylamine.decay.series.data</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span>name.root <span class="op">=</span></span></span>
-<span class="r-in"><span>    <span class="st">"Triarylamine_radCat_decay_series"</span>,</span></span>
-<span class="r-in"><span>    dir_ASC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    dir_dsc_par <span class="op">=</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span></span>
-<span class="r-in"><span>                  package <span class="op">=</span> <span class="st">"eprscope"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    path_to_file <span class="op">=</span></span></span>
+<span class="r-in"><span>      <span class="va">triarylamine.decay.series.bin.path</span>,</span></span>
+<span class="r-in"><span>    path_to_dsc_par <span class="op">=</span></span></span>
+<span class="r-in"><span>      <span class="va">triarylamine.decay.series.dsc.path</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## select the first spectrum</span></span></span>
@@ -257,7 +253,7 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## estimated standard deviation</span></span></span>
 <span class="r-in"><span><span class="va">triarylamine.1st.spec.smooth</span><span class="op">$</span><span class="va">ra.sd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.5366455e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.5366456e-05</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Bayesian information criterion (BIC)</span></span></span>
 <span class="r-in"><span><span class="va">triarylamine.1st.spec.smooth</span><span class="op">$</span><span class="va">abic</span></span></span>
@@ -285,7 +281,7 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 <span style="text-decoration: underline;">3</span>390        6  0.000<span style="text-decoration: underline;">013</span>629  339    -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">003</span><span style="color: #BB0000;">740</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 <span style="text-decoration: underline;">3</span>390.1      6 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">001</span><span style="color: #BB0000;">013</span><span style="color: #BB0000; text-decoration: underline;">4</span> 339.01 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">003</span><span style="color: #BB0000;">870</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 <span style="text-decoration: underline;">3</span>390.2      6 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">019</span><span style="color: #BB0000;">795</span>  339.02 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">004</span><span style="color: #BB0000;">001</span><span style="color: #BB0000; text-decoration: underline;">7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 <span style="text-decoration: underline;">3</span>390.2      6 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">029</span><span style="color: #BB0000;">827</span>  339.02 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">004</span><span style="color: #BB0000;">136</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 <span style="text-decoration: underline;">3</span>390.3      6 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">029</span><span style="color: #BB0000;">827</span>  339.03 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">004</span><span style="color: #BB0000;">136</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     5 <span style="text-decoration: underline;">3</span>390.3      6 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">016</span><span style="color: #BB0000;">871</span>  339.03 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">004</span><span style="color: #BB0000;">274</span><span style="color: #BB0000; text-decoration: underline;">5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>     6 <span style="text-decoration: underline;">3</span>390.4      6  0.000<span style="text-decoration: underline;">002</span>562<span style="text-decoration: underline;">9</span> 339.04 -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">004</span><span style="color: #BB0000;">417</span><span style="color: #BB0000; text-decoration: underline;">6</span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>

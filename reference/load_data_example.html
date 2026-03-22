@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,24 +84,32 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## list of all files within the "extdata" directory =&gt;</span></span></span>
 <span class="r-in"><span><span class="fu">load_data_example</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "AcridineDeriv_Irrad_365nm.csv.zip"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "AcridineDeriv_Irrad_365nm.dsc"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Aminoxyl_radical_a.DSC"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Aminoxyl_radical_a.mat"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Aminoxyl_radical_a.txt"              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "PNT_ENDOR_a.DSC"                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "PNT_ENDOR_a.txt"                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "TMPD.sdf"                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "TMPDAradCatEPRa.inp.log.zip"         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "TMPD_specelchem_accu_b.asc"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "TMPD_specelchem_accu_b.par"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "Triarylamine_ECh_CV_ivium.txt"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "Triarylamine_radCat_decay_a.DSC"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "Triarylamine_radCat_decay_a.txt"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Triarylamine_radCat_decay_series.DSC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "Triarylamine_radCat_decay_series.zip"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "_extensions"                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "isotopes_DS.txt"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "AcridineDeriv_Irrad_365nm.DTA"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "AcridineDeriv_Irrad_365nm.csv.zip"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "AcridineDeriv_Irrad_365nm.dsc"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Aminoxyl_radical_a.DSC"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Aminoxyl_radical_a.DTA"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Aminoxyl_radical_a.mat"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Aminoxyl_radical_a.txt"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "PNT_ENDOR_a.DSC"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "PNT_ENDOR_a.DTA"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "PNT_ENDOR_a.txt"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "TMPD.sdf"                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "TMPDAradCatEPRa.inp.log.zip"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "TMPD_specelchem_CV_b.asc"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "TMPD_specelchem_CV_b.par"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "TMPD_specelchem_CV_b.spc"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "TMPD_specelchem_accu_b.asc"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "TMPD_specelchem_accu_b.par"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "TMPD_specelchem_accu_b.spc"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "Triarylamine_ECh_CV_ivium.txt"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "Triarylamine_radCat_decay_a.DSC"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "Triarylamine_radCat_decay_a.txt"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Triarylamine_radCat_decay_series.DSC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "Triarylamine_radCat_decay_series.DTA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [24] "Triarylamine_radCat_decay_series.YGF"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "_extensions"                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [26] "isotopes_DS.txt"                     </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## additionally, you may refer to several function examples</span></span></span>
 <span class="r-in"><span></span></span>

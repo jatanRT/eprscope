@@ -33,6 +33,7 @@ optim_for_EPR_fitness(
   pswarm.diameter = NULL,
   pswarm.type = NULL,
   eval.optim.progress = FALSE,
+  fix.optim.x.0.id = NULL,
   ...
 )
 ```
@@ -93,9 +94,13 @@ optim_for_EPR_fitness(
   Numeric value, which equals to particle swarm size (i.e. number of
   particles), if `method = "pswarm"`. The **default** value
   (`pswarm.size = NULL`) actually corresponds to
-  `floor(10+2*sqrt(length(x.0)))` (for `SPSO2007`, see the `pswarm.type`
+  `floor(10+2*sqrt(length(Np)))` (for `SPSO2007`, see the `pswarm.type`
   argument), e.g. to optimize 8 parameters, number of particles = 15.
-  For the `SPSO2011` the default number of particles equals to `40`.
+  The `length(Np)` corresponds either to `length(x.0)` or to difference
+  between the `length(x.0)` and number of parameters, for which
+  `(upper - lower) == 0` (i.e. those `x.0` parameters are actually
+  fixed/won't be optimized). For the `SPSO2011` the default number of
+  particles equals to `40`.
 
 - pswarm.diameter:
 
@@ -131,14 +136,29 @@ optim_for_EPR_fitness(
   displays the iteration number (each 10-th iteration per particle shown
   for `pswarm`) and the value of the objective/fitness function (e.g.
   least-square minimization or RSS). Additionally, `pswarm` method shows
-  the possible shrinking of the particle swarm diameter by the
-  convergence. For the `method = "levenmarq"` it shows the
-  iteration/evaluation number, sum of residual squares (RSS) and the
-  corresponding parameter (Par.) values. In the
+  possible shrinking of the particle swarm diameter by the convergence.
+  For the `method = "levenmarq"` it shows the iteration/evaluation
+  number, sum of residual squares (RSS) and the relevant parameter
+  (Par.) value. In the
   [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
   and
   [`quantify_EPR_Sim_series`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Sim_series.md)
   this argument can be combined with the `msg.optim.progress`.
+
+- fix.optim.x.0.id:
+
+  Numeric value/vector of the `x.0` indices, corresponding to `x.0`
+  elements that will be fixed during the optimization/fitting, i.e. they
+  won't be optimized because their `lower` and `upper` limits equal to
+  related elements of the initial `x.0`. For example, if the 1st and the
+  3rd parameter/element of the `x.0` are supposed to be fixed, put
+  `fix.optim.x.0.id = c(1,3)`. **Default**: `fix.optim.x.0.id = NULL`,
+  i.e. none of the `x.0` elements is fixed and all parameters will be
+  optimized as required (see also
+  [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)).
+  However, even in the case if `fix.optim.x.0.id = NULL`, the parameters
+  can be fixed by adjustment of the corresponding `lower` and `upper`
+  arguments.
 
 - ...:
 

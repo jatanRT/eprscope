@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -360,15 +360,18 @@ actually corresponding to 11/11pt.</p></dd>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## loading the built-in CW ENDOR spectrum</span></span></span>
 <span class="r-in"><span><span class="co">## of perinaphthenyl (PNT)</span></span></span>
-<span class="r-in"><span><span class="va">pnt.file.path</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span><span class="st">"PNT_ENDOR_a.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pnt.bin.file.path</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span><span class="st">"PNT_ENDOR_a.DTA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pnt.pars.file.path</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span><span class="st">"PNT_ENDOR_a.DSC"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## read the PNT CW ENDOR data without intensity</span></span></span>
 <span class="r-in"><span><span class="co">## normalization</span></span></span>
 <span class="r-in"><span><span class="va">pnt.endor.data</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></span><span class="op">(</span><span class="va">pnt.file.path</span>,</span></span>
-<span class="r-in"><span>                    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"index"</span>,</span></span>
-<span class="r-in"><span>                                  <span class="st">"RF_MHz"</span>,</span></span>
-<span class="r-in"><span>                                  <span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                    x.unit <span class="op">=</span> <span class="st">"MHz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    path_to_file <span class="op">=</span> <span class="va">pnt.bin.file.path</span>,</span></span>
+<span class="r-in"><span>    path_to_dsc_par <span class="op">=</span> <span class="va">pnt.pars.file.path</span>,</span></span>
+<span class="r-in"><span>    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"index"</span>,</span></span>
+<span class="r-in"><span>                  <span class="st">"RF_MHz"</span>,</span></span>
+<span class="r-in"><span>                  <span class="st">"dIepr_over_dB"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    x.unit <span class="op">=</span> <span class="st">"MHz"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## plotting the previous ENDOR data spectrum</span></span></span>
 <span class="r-in"><span><span class="co">## in derivative form with `darkred` linecolor</span></span></span>
 <span class="r-in"><span><span class="co">## and 1.2 mm linewidth:</span></span></span>
@@ -384,21 +387,17 @@ actually corresponding to 11/11pt.</p></dd>
 <span class="r-in"><span><span class="va">triarylamine.decay.series.dsc.path</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
 <span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.DSC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">triarylamine.decay.series.asc.path</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span><span class="va">triarylamine.decay.series.bin.path</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
-<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.zip"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">triarylamine.decay.series.asc.path</span>,</span></span>
-<span class="r-in"><span>      exdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="st">"Triarylamine_radCat_decay_series.DTA"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## loading the kinetics:</span></span></span>
 <span class="r-in"><span><span class="va">triarylamine.decay.series.data</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span>name.root <span class="op">=</span></span></span>
-<span class="r-in"><span>    <span class="st">"Triarylamine_radCat_decay_series"</span>,</span></span>
-<span class="r-in"><span>  dir_ASC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  dir_dsc_par <span class="op">=</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span></span>
-<span class="r-in"><span>                package <span class="op">=</span> <span class="st">"eprscope"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    path_to_file <span class="op">=</span></span></span>
+<span class="r-in"><span>      <span class="va">triarylamine.decay.series.bin.path</span>,</span></span>
+<span class="r-in"><span>    path_to_dsc_par <span class="op">=</span></span></span>
+<span class="r-in"><span>      <span class="va">triarylamine.decay.series.dsc.path</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## plot with the CONTINUOUS COLORSCALE (see argument</span></span></span>
 <span class="r-in"><span><span class="co">## `line.colors` and color definitions `1.`):</span></span></span>

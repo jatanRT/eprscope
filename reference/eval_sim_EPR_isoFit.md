@@ -182,9 +182,9 @@ eval_sim_EPR_isoFit(
   `optim.params.init` is fixed, i.e. all parameters are optimized within
   their default/defined boundaries (see the `optim.params.lower` and the
   `optim.params.upper`). Alternatively, the parameter value(s) can be
-  also fixed by assigning the `optim.params.init` +
-  `optim.params.lower` + `optim.params.upper` to equal value as
-  demonstrated in the `Examples`.
+  also adjusted by assigning the `optim.params.init` +
+  `optim.params.lower` + `optim.params.upper` elements to the same
+  value, as already demonstrated in the `Examples`.
 
 - optim.params.lower:
 
@@ -468,10 +468,12 @@ Other Simulations and Optimization:
 ## loading built-in example dataset which is simple
 ## EPR spectrum of the aminoxyl radical:
 aminoxyl.data.path <-
-  load_data_example(file = "Aminoxyl_radical_a.txt")
+  load_data_example(file = "Aminoxyl_radical_a.DTA")
 aminoxyl.data <-
-  readEPR_Exp_Specs(aminoxyl.data.path,
-                    qValue = 2100)
+  readEPR_Exp_Specs(
+    path_to_file = aminoxyl.data.path,
+    qValue = 2100
+ )
 #
 ## EPR spectrum simulation fit with "Nelder-Mead"
 ## optimization method with `check.fit.plot = FALSE`:
@@ -530,14 +532,13 @@ tempo.test.sim.fit.a$N.converg
 #
 ## preview of data frame including all EPR spectra:
 head(tempo.test.sim.fit.a$df)
-#>          B_G     Experiment     Simulation     Residuals Simulation_NoBasLin
-#>        <num>          <num>          <num>         <num>               <num>
-#> 1: 3332.7000 -1.7738564e-06 -4.1290221e-06 2.3551657e-06       6.5629077e-09
-#> 2: 3332.9005  1.2209461e-07 -4.1235480e-06 4.2456426e-06       6.5756338e-09
-#> 3: 3333.1009 -1.8403788e-07 -4.1180464e-06 3.9340085e-06       6.6158641e-09
-#> 4: 3333.3014 -7.1641412e-08 -4.1125720e-06 4.0409306e-06       6.6288572e-09
-#> 5: 3333.5019 -1.7361444e-06 -4.1070702e-06 2.3709258e-06       6.6693576e-09
-#> 6: 3333.7023 -5.1531169e-07 -4.1015956e-06 3.5862839e-06       6.6826214e-09
+#>         B_G     Experiment     Simulation     Residuals Simulation_NoBasLin
+#> 1 3332.7000 -1.7738564e-06 -4.1290221e-06 2.3551657e-06       6.5629077e-09
+#> 2 3332.9005  1.2209461e-07 -4.1235480e-06 4.2456426e-06       6.5756338e-09
+#> 3 3333.1009 -1.8403788e-07 -4.1180464e-06 3.9340085e-06       6.6158641e-09
+#> 4 3333.3014 -7.1641412e-08 -4.1125720e-06 4.0409306e-06       6.6288572e-09
+#> 5 3333.5019 -1.7361444e-06 -4.1070702e-06 2.3709258e-06       6.6693576e-09
+#> 6 3333.7023 -5.1531169e-07 -4.1015956e-06 3.5862839e-06       6.6826214e-09
 #
 ## similar EPR spectrum simulation fit with "particle swarm"
 ## optimization algorithm and `check.fit.plot = TRUE` option
@@ -560,23 +561,23 @@ tempo.test.sim.fit.b <-
 #>  EPR simulation parameters are currently being optimized by   PSWARM ;  method   1   of   1 ... 
 #> S=14, K=6, p=0.359, w0=0.7213, w1=0.7213, c.p=1.193, c.g=1.193
 #> v.max=NA, d=0.5658, vectorize=FALSE, hybrid=off
-#> It 10: fitness=3.689e-08, swarm diam.=0.3786
-#> It 20: fitness=1.547e-08, swarm diam.=0.1343
-#> It 30: fitness=1.512e-08, swarm diam.=0.02264
+#> It 10: fitness=3.395e-08, swarm diam.=0.2458
+#> It 20: fitness=1.88e-08, swarm diam.=0.1672
+#> It 30: fitness=1.507e-08, swarm diam.=0.05766
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  11.725  s 
+#>  Done!  ( 100  %)    elapsed time  12.241  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
 #> [[1]]
-#> [1] 1.5111436e-08
+#> [1] 1.4847253e-08
 #> 
 #
 ## check and compare the previous value
 ## by residual analysis (`ra`)
 sum((tempo.test.sim.fit.b$ra$df$Residuals)^2)
-#> [1] 1.5111436e-08
+#> [1] 1.4847253e-08
 #
 ## number of evaluations / iterations:
 tempo.test.sim.fit.b$N.evals
@@ -588,16 +589,16 @@ tempo.test.sim.fit.b$N.evals
 ## best fit parameters:
 tempo.test.sim.fit.b$best.fit.params
 #> [[1]]
-#> [1]  2.0053180e+00  5.0000000e+00  4.6040587e+00 -1.2496262e-08  1.2755818e-02
-#> [6]  5.2680000e+01
+#> [1] 2.0053059e+00 4.9990459e+00 4.8001383e+00 1.2503903e-07 1.2912288e-02
+#> [6] 5.2680000e+01
 #> 
 #
 ## correlation matrix of the EPR simulation fit:
 tempo.test.sim.fit.b$cor.df
-#>            Experiment   Simulation    Residuals
-#> Experiment 1.00000000 0.9955977007 0.1027449140
-#> Simulation 0.99559770 1.0000000000 0.0090591452
-#> Residuals  0.10274491 0.0090591452 1.0000000000
+#>             Experiment   Simulation    Residuals
+#> Experiment 1.000000000  0.995689842  0.048364255
+#> Simulation 0.995689842  1.000000000 -0.044481227
+#> Residuals  0.048364255 -0.044481227  1.000000000
 #
 ## visualization of the previous matrix:
 tempo.test.sim.fit.b$cor.df %>%
@@ -617,13 +618,13 @@ tempo.test.sim.fit.b$plot
 tempo.test.sim.fit.b$ra$plot.histDens
 
 tempo.test.sim.fit.b$ra$sd
-#> [1] 3.1814343e-06
+#> [1] 3.1524467e-06
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
 ## + information about the residuals distribution
 tempo.test.sim.fit.b$abic
 #> $abic.vec
-#> [1] -33994.251 -33962.428
+#> [1] -34005.133 -33978.607
 #> 
 #> $message
 #> [1] "Information criteria evaluated using the"    
@@ -672,21 +673,21 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.758  s 
+#>  Done!  ( 50  %)    elapsed time  0.767  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  9.665  s 
+#>  Done!  ( 100  %)    elapsed time  12.157  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
 #> [[1]]
-#> [1]  2.0060000e+00  5.7600000e+00  5.7600000e+00 -8.8971218e-10  6.4310899e-03
+#> [1]  2.0060000e+00  5.7600000e+00  5.7600000e+00 -5.8292775e-10  6.4310899e-03
 #> [6]  4.9000000e+01
 #> 
 #> [[2]]
-#> [1]  2.0069998e+00  4.8414135e+00  3.8400904e+00 -7.6354747e-10  8.7499998e-03
-#> [6]  5.3612538e+01
+#> [1]  2.0069998e+00  4.8413252e+00  3.8400007e+00 -1.2521432e-09  8.7500000e-03
+#> [6]  5.3604374e+01
 #> 
 #
 ## compare the results with the example in the `readMAT_params_file`,
@@ -703,14 +704,14 @@ tempo.test.sim.fit.c$N.converg
 #> [1] 1.6573191e-06 1.5727024e-06 1.5529724e-06 1.5518805e-06 1.5518805e-06
 #> 
 #> [[2]]
-#> [1] 4
+#> [1] 5
 #> 
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
 ## + information about the residuals distribution
 tempo.test.sim.fit.c$abic
 #> $abic.vec
-#> [1] -27866.025 -27834.202
+#> [1] -27866.033 -27834.210
 #> 
 #> $message
 #> [1] "Information criteria evaluated using the"    

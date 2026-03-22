@@ -201,7 +201,9 @@ quantify_EPR_Sim_series(
   [`optim_for_EPR_fitness`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md),
   like `eval.optim.progress = TRUE` (which is `FALSE` by **default**),
   `pswarm.size`, `pswarm.diameter`, `pswarm.type`, `tol.step` +
-  `optim.method` depended additional arguments.
+  `optim.method` depended additional arguments as well as
+  `fix.optim.x.0.id` to fix one or several parameters defined by the
+  `optim.params.init` argument.
 
 ## Value
 

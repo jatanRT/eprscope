@@ -221,20 +221,18 @@ Other Evaluations and Quantification:
 triarylamine.decay.series.dsc.path <-
 load_data_example(file =
         "Triarylamine_radCat_decay_series.DSC")
-triarylamine.decay.series.asc.path <-
+triarylamine.decay.series.bin.path <-
 load_data_example(file =
-        "Triarylamine_radCat_decay_series.zip")
-unzip(triarylamine.decay.series.asc.path,
-      exdir = tempdir()
-      )
+        "Triarylamine_radCat_decay_series.DTA")
+triarylamine.decay.series.ygf.path <-
+load_data_example(file =
+        "Triarylamine_radCat_decay_series.YGF")
 ## loading the kinetics:
 triarylamine.decay.series.data <-
-  readEPR_Exp_Specs_kin(name.root =
-    "Triarylamine_radCat_decay_series",
-    dir_ASC = tempdir(),
-    dir_dsc_par =
-      system.file("extdata",
-                  package = "eprscope")
+  readEPR_Exp_Specs_kin(
+    path_to_file = triarylamine.decay.series.bin.path,
+    path_to_dsc_par = triarylamine.decay.series.dsc.path,
+    path_to_ygf = triarylamine.decay.series.ygf.path
    )
 #
 ## select the first spectrum
@@ -249,16 +247,15 @@ triarylamine.decay.data1st.integ01 <-
 #
 ## data frame preview
 head(triarylamine.decay.data1st.integ01)
-#>          B_G time_s  dIepr_over_dB      B_mT  single_Integ
-#>        <num>  <num>          <num>     <num>         <num>
-#> 1: 3390.0000      6  1.3629316e-05 339.00000 1.0353596e-04
-#> 2: 3390.0833      6 -1.0134169e-06 339.00833 1.0406162e-04
-#> 3: 3390.1667      6 -1.9794802e-05 339.01667 1.0319461e-04
-#> 4: 3390.2500      6 -2.9826537e-05 339.02500 1.0112706e-04
-#> 5: 3390.3333      6 -1.6870754e-05 339.03333 9.9181337e-05
-#> 6: 3390.4167      6  2.5629187e-06 339.04167 9.8585177e-05
+#>         B_G time_s  dIepr_over_dB      B_mT  single_Integ
+#> 1 3390.0000      6  1.3629316e-05 339.00000 1.0353596e-04
+#> 2 3390.0833      6 -1.0134169e-06 339.00833 1.0406162e-04
+#> 3 3390.1667      6 -1.9794802e-05 339.01667 1.0319461e-04
+#> 4 3390.2500      6 -2.9826537e-05 339.02500 1.0112706e-04
+#> 5 3390.3333      6 -1.6870754e-05 339.03333 9.9181337e-05
+#> 6 3390.4167      6  2.5629187e-06 339.04167 9.8585177e-05
 #
-## integration (including baseline correction)
+## integration (2nd integ.,including baseline correction)
 ## of the 1st spectrum from the series
 triarylamine.decay.data1st.integ02 <-
   eval_integ_EPR_Spec(triarylamine.decay.series.data1st,
@@ -275,12 +272,12 @@ head(triarylamine.decay.data1st.integ02)
 #> # A tibble: 6 × 8
 #>     B_G time_s dIepr_over_dB  B_mT single_Integ baseline_Integ_fit
 #>   <dbl>  <dbl>         <dbl> <dbl>        <dbl>              <dbl>
-#> 1 3425       6   -0.0000160   342.    0.0000326          0.0000227
+#> 1 3425.      6   -0.0000160   343.    0.0000326          0.0000227
 #> 2 3425.      6   -0.00000338  343.    0.0000317          0.0000227
-#> 3 3425.      6    0.0000173   343.    0.0000323          0.0000226
+#> 3 3425.      6    0.0000173   343.    0.0000323          0.0000227
 #> 4 3425.      6    0.0000157   343.    0.0000337          0.0000226
 #> 5 3425.      6   -0.0000271   343.    0.0000332          0.0000226
-#> 6 3425.      6    0.00000128  343.    0.0000322          0.0000225
+#> 6 3425.      6    0.00000128  343.    0.0000322          0.0000226
 #> # ℹ 2 more variables: single_Integ_correct <dbl>, sigmoid_Integ <dbl>
 #
 ## plot the single integrated EPR spectrum,
@@ -334,8 +331,9 @@ triarylamine.decay.data.integs <-
                         output.vecs = TRUE)$sigmoid
                        ) %>%
   dplyr::summarize(Area = max(sigmoid_Integ))
-## in such case `Blim` range is not defined by `eval_integ_EPR_Spec`,
-## the `Blim = NULL` and `dplyr::between()` must be set !!!
+## in such case `Blim` range is not defined by
+## the `eval_integ_EPR_Spec`, however the `Blim = NULL`
+## as well as the `dplyr::between()` must be set !!!
 #
 ## preview of the final data frame
 head(triarylamine.decay.data.integs)

@@ -13,7 +13,7 @@ excellent open source toolbox for EPR specialists
 ([1](#ref-Easyspin2025)) only working under proprietary *MATLAB*
 ([2](#ref-Matlab2025)). It can handle the raw files from the EPR
 machines process them and create reports in an interactive form
-([3](#ref-MatlabLE2025)) or in `.pdf`. There are, however, only a few
+([3](#ref-MatlabLE2025)) or in `.pdf`. There are, however, couple of
 examples of fully open source EPR packages, working under *Python*
 ![](python-logo-official.png)([4](#ref-FOSSspec2025)).
 
@@ -125,9 +125,9 @@ center. As can be seen in Figure [1](#fig:scheme-intro) **the**
 *Rmarkdown* ([23](#ref-RmarkdownBook2021)) **and/or the** *Quarto*
 **publishing system** ([22](#ref-Quarto2025)) **are capable** (**without
 living the** ![](RcoreLogo.png)**ecosystem**) **to process all the input
-data into suitable dissemination form** (e.g. report, presentation,
+data into suitable dissemination forms** (e.g. report, presentation,
 manuscript, webpage…etc.) and thus very effectively completing the last
-stage of the reproducible research workflow (please, refer to the
+stage of the reproducible research workflow (please, also refer to the
 [`create_qmdReport_proj()`](https://jatanrt.github.io/eprscope/reference/create_qmdReport_proj.md)
 function).
 
