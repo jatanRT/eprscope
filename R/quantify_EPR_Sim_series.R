@@ -104,7 +104,9 @@
 #'   table is returned, including all EPR spectra and their corresponding integrals.
 #' @param ... additional arguments specified, see also \code{\link{optim_for_EPR_fitness}},
 #'   like \code{eval.optim.progress = TRUE} (which is \code{FALSE} by \strong{default}), \code{pswarm.size},
-#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step} + \code{optim.method} depended additional arguments.
+#'   \code{pswarm.diameter}, \code{pswarm.type}, \code{tol.step} + \code{optim.method} depended additional arguments
+#'   as well as \code{fix.optim.x.0.id} to fix one or several parameters defined by the \code{optim.params.init}
+#'   argument.
 #'
 #'
 #' @return Function provides data frame object, depending on the \code{output.area.stat} argument,

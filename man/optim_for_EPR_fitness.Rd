@@ -17,6 +17,7 @@ optim_for_EPR_fitness(
   pswarm.diameter = NULL,
   pswarm.type = NULL,
   eval.optim.progress = FALSE,
+  fix.optim.x.0.id = NULL,
   ...
 )
 }
@@ -50,9 +51,11 @@ See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.}
 
 \item{pswarm.size}{Numeric value, which equals to particle swarm size (i.e. number of particles),
 if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-corresponds to \code{floor(10+2*sqrt(length(x.0)))} (for \code{SPSO2007}, see the \code{pswarm.type}
-argument), e.g. to optimize 8 parameters, number of particles = 15. For the \code{SPSO2011}
-the default number of particles equals to \code{40}.}
+corresponds to \code{floor(10+2*sqrt(length(Np)))} (for \code{SPSO2007}, see the \code{pswarm.type}
+argument), e.g. to optimize 8 parameters, number of particles = 15. The \code{length(Np)} corresponds
+either to \code{length(x.0)} or to difference between the \code{length(x.0)} and number of parameters,
+for which \code{(upper - lower) == 0} (i.e. those \code{x.0} parameters are actually fixed/won't be optimized).
+For the \code{SPSO2011} the default number of particles equals to \code{40}.}
 
 \item{pswarm.diameter}{Numeric value, corresponding to diameter of the particle swarm search space
 (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
@@ -76,10 +79,19 @@ because higher number of evaluations/iterations might result in several tens or 
 with the information, depending on the applied \code{method}. In the case of \code{{nloptr}} methods/functions
 as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration per particle
 shown for \code{pswarm}) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
-Additionally, \code{pswarm} method shows the possible shrinking of the particle swarm diameter by the convergence.
+Additionally, \code{pswarm} method shows possible shrinking of the particle swarm diameter by the convergence.
 For the \code{method = "levenmarq"} it shows the iteration/evaluation number, sum of residual squares (RSS)
-and the corresponding parameter (Par.) values. In the \code{\link{eval_sim_EPR_isoFit}}
+and the relevant parameter (Par.) value. In the \code{\link{eval_sim_EPR_isoFit}}
 and \code{\link{quantify_EPR_Sim_series}} this argument can be combined with the \code{msg.optim.progress}.}
+
+\item{fix.optim.x.0.id}{Numeric value/vector of the \code{x.0} indices, corresponding to \code{x.0} elements that
+will be fixed during the optimization/fitting, i.e. they won't be optimized because their \code{lower}
+and \code{upper} limits equal to related elements of the initial \code{x.0}. For example, if the 1st and the 3rd
+parameter/element of the \code{x.0} are supposed to be fixed, put \code{fix.optim.x.0.id = c(1,3)}.
+\strong{Default}: \code{fix.optim.x.0.id = NULL}, i.e. none of the \code{x.0} elements is fixed and all
+parameters will be optimized as required (see also \code{\link{eval_sim_EPR_isoFit}}). However, even
+in the case if \code{fix.optim.x.0.id = NULL}, the parameters can be fixed by adjustment of the corresponding
+\code{lower} and \code{upper} arguments.}
 
 \item{...}{additional arguments passed to the function.}
 }

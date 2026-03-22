@@ -119,8 +119,8 @@
 #'   for the simulation/optimized parameters order). \strong{Default}: \code{optim.params.fix.id = NULL}, indicating
 #'   that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
 #'   boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}). Alternatively, the parameter value(s)
-#'   can be also fixed by assigning the \code{optim.params.init} + \code{optim.params.lower} + \code{optim.params.upper}
-#'   to equal value as demonstrated in the \code{Examples}.
+#'   can be also adjusted by assigning the \code{optim.params.init} + \code{optim.params.lower} + \code{optim.params.upper}
+#'   elements to the same value, as already demonstrated in the \code{Examples}.
 #' @param optim.params.lower Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
@@ -431,6 +431,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## 'Temporary' processing variables
   . <- NULL
+  optim.params.length <- NULL
   Residuals <- NULL
   Simulation_NoBasLin <- NULL
   Spectrum <- NULL
@@ -489,18 +490,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   ## conditions for parameter guesses (initial parameters)
   if (!is.null(optim.params.fix.id) &
-      !is.null(optim.params.lower) &
-      !is.null(optim.params.upper)) {
+      any((optim.params.upper - optim.params.lower) == 0)) {
     stop(" All three `optim.params.fix.id/lower/upper` cannot be simultaneously defined !!\n
          In order to fix one or more simulation parameters during the optimization/fit,\n
          either use `optim.params.fix.id` or both `optim.params.lower/upper` !! ")
   }
   #
-  if (length(optim.params.init) == length(optim.params.fix.id)){
-    stop(" The vector `optim.params.init` has the same length like `optim.params.fix.id` !!\n
-         If all optimization/simulation parameters are fixed, the entire fitting procedure\n
-         cannot be performed, because none of the `optim.params.init.` are optimized !!\n
-         Please, check out the relevant function arguments.")
+  if (length(optim.params.init) <= length(optim.params.fix.id)){
+    stop(" The vector `optim.params.init` is greater or has the same length \n
+         like `optim.params.fix.id`. If all optimization/simulation parameters are fixed,\n
+         the entire fitting procedure cannot be performed, because none \n
+         of the `optim.params.init.` are optimized !! ")
   }
   #
   ## Define the length of `nuclear.system.noA` similarly as in simple simulation
@@ -520,9 +520,9 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     if (baseline.correct == "constant" || baseline.correct == "Constant"){
       return(0)
     } else if (baseline.correct == "linear" || baseline.correct == "Linear"){
-        return(1)
+      return(1)
     } else if(baseline.correct == "quadratic" || baseline.correct == "Quadratic"){
-        return(2)
+      return(2)
     }
   }
   #
@@ -575,7 +575,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
           sim_epr_iso_df_noNucs(GL.linewidth = list(NULL,lB.width.var),
                                 G.line.content = 0
           )
-       #
+        #
       } else if (lineG.content == 1 & lB.width.var == 0) {
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,NULL),
@@ -586,7 +586,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         sim.fit.df <-
           sim_epr_iso_df_noNucs(GL.linewidth = list(gB.width.var,lB.width.var),
                                 G.line.content = lineG.content
-         )
+          )
       }
       #
     } else {
@@ -611,7 +611,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                       par[8:(7+length(nucle_us_i))],
                       par[7:(6+length(nucle_us_i))],
                       par[6:(5+length(nucle_us_i))]
-                      )
+      )
       #
       nucs.system.new <- c()
       for (j in seq(nucs.system)) {
@@ -655,7 +655,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         sim.fit.df <-
           sim_epr_iso_df_Nucs(GL.linewidth = list(gB.width.var,lB.width.var),
                               G.line.content = lineG.content
-         )
+          )
       }
       #
     }
@@ -827,52 +827,31 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     #
   }
   #
-  # ====================== PARAMETER GUESSES =======================
+  # ====================== (DEFAULT) PARAMETER GUESSES =======================
   #
-  ## intial parameter boundaries also including condition
-  ## if one or more parameter have to be fixed
+  ## fixing parameters in the main optim. (`optim_fn()`) function below
   #
   ## initial parameter guesses for the optimization and definition
-  ## g values
-  if (any(grepl(1,optim.params.fix.id))) {
-    limits.params1a <- optim.params.init[1]
-    limits.params1b <- optim.params.init[1]
-  } else {
-    limits.params1a <- optim.params.init[1] - 0.001
-    limits.params1b <- optim.params.init[1] + 0.001
-  }
-  ## linewidths
-  if (any(grepl(2,optim.params.fix.id))) {
-    limits.params2a <- optim.params.init[2]
-    limits.params2b <- optim.params.init[2]
-  } else {
-    limits.params2a <- 0.8 * optim.params.init[2]
-    limits.params2b <- 1.2 * optim.params.init[2]
-  }
-  if (any(grepl(3,optim.params.fix.id))) {
-    limits.params3a <- optim.params.init[3]
-    limits.params3b <- optim.params.init[3]
-  } else {
-    limits.params3a <- 0.8 * optim.params.init[3]
-    limits.params3b <- 1.2 * optim.params.init[3]
-  }
-  ## constant/offset
-  if (any(grepl(4,optim.params.fix.id))) {
-    limits.params4a <- optim.params.init[4]
-    limits.params4b <- optim.params.init[4]
-  } else {
-    limits.params4a <- optim.params.init[4] - 0.001
-    limits.params4b <- optim.params.init[4] + 0.001
-  }
-  ## intensity multiplication coeff.
-  if (any(grepl(5,optim.params.fix.id))) {
-    limits.params5a <- optim.params.init[5]
-    limits.params5b <- optim.params.init[5]
-  } else {
-    limits.params5a <- 0.75 * optim.params.init[5]
-    limits.params5b <- 1.25 * optim.params.init[5]
-  }
+  ## 1. g values
+  limits.params1a <- optim.params.init[1] - 0.001
+  limits.params1b <- optim.params.init[1] + 0.001
   #
+  ## 2. linewidths
+  ## Gauss
+  limits.params2a <- 0.8 * optim.params.init[2]
+  limits.params2b <- 1.2 * optim.params.init[2]
+  ## Lorentz
+  limits.params3a <- 0.8 * optim.params.init[3]
+  limits.params3b <- 1.2 * optim.params.init[3]
+  #
+  ## 3. constant/offset
+  limits.params4a <- optim.params.init[4] - 0.001
+  limits.params4b <- optim.params.init[4] + 0.001
+  #
+  ## 4. intensity multiplication coeff.
+  limits.params5a <- 0.75 * optim.params.init[5]
+  limits.params5b <- 1.25 * optim.params.init[5]
+  ## lower together
   lower.limits <- c(
     limits.params1a, ## g lower
     limits.params2a, ## Delta BG lower
@@ -880,39 +859,15 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     limits.params4a, ## baseline constant/offset lower
     limits.params5a ## intensity multiplication lower
   )
-  ## condition/fixes for linear and/or quadratic baseline
-  if (baseline.correct == "linear" || baseline.correct == "Linear" ||
-      baseline.correct == "quadratic" || baseline.correct == "Quadratic") {
-    limit.lq.fix.cond.01 <- any(grepl(6,optim.params.fix.id))
-    limit.lq.fix.cond.02 <- any(grepl(7,optim.params.fix.id))
-  }
-
   #
+  ## condition for linear and/or quadratic baseline
   lower.limits <- switch(
     3 - baseline.cond.fn(baseline.correct = baseline.correct),
-    c(
-      lower.limits,
-      switch(
-        2 - limit.lq.fix.cond.01,
-        optim.params.fix.id[6],
-        -5
-      ),
-      switch(
-        2 - limit.lq.fix.cond.02,
-        optim.params.fix.id[7],
-        -5
-      )
-    ),
-    c(
-      lower.limits,
-      switch(
-        2 - limit.lq.fix.cond.01,
-        optim.params.fix.id[6],
-        -5
-      )
-    ),
+    c(lower.limits,-5,-5),
+    c(lower.limits,-5),
     lower.limits
   )
+  ## upper together
   upper.limits <- c(
     limits.params1b, ## g upper
     limits.params2b, ## Delta BG upper
@@ -922,30 +877,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   )
   upper.limits <- switch(
     3 - baseline.cond.fn(baseline.correct = baseline.correct),
-    c(
-      upper.limits,
-      switch(
-        2 - limit.lq.fix.cond.01,
-        optim.params.fix.id[6],
-        5
-      ),
-      switch(
-        2 - limit.lq.fix.cond.02,
-        optim.params.fix.id[7],
-        5
-      )
-    ),
-    c(
-      upper.limits,
-      switch(
-        2 - limit.lq.fix.cond.01,
-        optim.params.fix.id[6],
-        5
-      )
-    ),
+    c(upper.limits,5,5),
+    c(upper.limits,5),
     upper.limits
   )
   #
+  ## limits for A couplings
   if (is.null(nuclear.system.noA)){
     lower.limits <- lower.limits
     upper.limits <- upper.limits
@@ -953,14 +890,14 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## individual optimization limits for As
     ## + first of all => function for A - limits
     A.limits.fun <- function(id){
-      if (any(grepl(id,optim.params.fix.id))) {
-        A.lower.limits <- optim.params.init[id]
-        A.upper.limits <- optim.params.init[id]
-      } else {
-        A.lower.limits <- 0.875 * optim.params.init[id]
-        A.upper.limits <- 1.125 * optim.params.init[id]
-      }
-      return(list(lower = A.lower.limits,upper = A.upper.limits))
+      #
+      A.lower.limits <- 0.875 * optim.params.init[id]
+      A.upper.limits <- 1.125 * optim.params.init[id]
+      #
+      return(list(
+        lower = A.lower.limits,
+        upper = A.upper.limits
+      ))
     }
     #
     A.low.bounds <- c() ## initialize vectors
@@ -993,6 +930,22 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   optim.params.upper <- optim.params.upper %>%
     `if`(is.null(optim.params.upper), upper.limits, .)
   #
+  # ================== Redefinition of `optim.params.length` ===============
+  # ===================== in order to be more flexible =====================
+  ## ...difference between the upper and lower limits might be `0`
+  #
+  if (any((optim.params.upper - optim.params.lower) == 0)) {
+    if (is.null(optim.params.fix.id)) {
+      optim.params.length <-
+        length(optim.params.init) -
+        sum((optim.params.upper - optim.params.lower) == 0)
+    }
+  } else {
+    optim.params.length <- length(optim.params.init) -
+      length(optim.params.fix.id)
+    ## if `optim.params.fix.id = NULL` --> `length(optim.params.fix.id) = 0`
+  }
+  #
   # ================== GENERAL FUNCTION FOR OPTIMIZATION ====================
   #
   ## because it depends on method (`method`), function (`fun`)
@@ -1001,8 +954,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     optim.list <- optim_for_EPR_fitness(x.0 = x.0,
                                         fn = fun,
                                         method = method,
+                                        ## if fixed -> automatically switched to `x.0`:
                                         lower = optim.params.lower,
                                         upper = optim.params.upper,
+                                        ## fixing (no optim.) parameters/elements
+                                        ## for optimization:
+                                        fix.optim.x.0.id = optim.params.fix.id,
+                                        #
                                         data = data.spectr.expr,
                                         nucs.system = nuclear.system.noA,
                                         Intensity.sim = Intensity.sim,
@@ -1019,11 +977,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## =========== CONSECUTIVE METHODS DEPENDING on the `optim.method` ===============
   ## ============================== VECTOR LENGTH ==================================
   #
+  ## --------------------------- STARTING VALUES -----------------------------
   optimization.list <- c()
   best.fit.params <- c()
   optim.params.init.list <- list()
   optim.params.init.list[[1]] <- optim.params.init
   #
+  ## ------------------------------ MESSAGE ----------------------------------
   ## essential message pointing to calculation by the actual method,
   ## corresponding to progress of `optim.method` in the loop
   msg.base <- "EPR simulation parameters are currently being optimized by  "
@@ -1031,35 +991,35 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   # function to print message before/after the individual optimization method
   fun.msg.method.time <-
     function(
-        msg.show = msg.optim.progress,
-        msg.main = msg.base,
-        time = "before",
-        method.optim,
-        x ## number in seq. related to loop
-      ) {
+    msg.show = msg.optim.progress,
+    msg.main = msg.base,
+    time = "before",
+    method.optim,
+    x ## number in seq. related to loop
+    ) {
       if (isTRUE(msg.show)) {
         if (time == "before") {
           cat("\n") # or comment if using `message`
           cat("\r", # or replace by `message`
-                  msg.main,
-                  toupper(method.optim),
-                  ";  method  ",x,
-                  "  of  ",
-                  length(optim.method),
-                  rep("...",x),"\n"
+              msg.main,
+              toupper(method.optim),
+              ";  method  ",x,
+              "  of  ",
+              length(optim.method),
+              rep("...",x),"\n"
           )
           #
         } else if (time == "after") {
           #
           cat("\n") # or comment if using `message`
           cat("\r", # or replace by `message`
-                  "Done!"," (",
-                  round((x / length(optim.method)),digits = 2) * 100,
-                  " %)  ",
-                  " elapsed time ",
-                  round(as.numeric(
-                    difftime(time1 = end.tm, time2 = start.tm, units = "secs")
-                  ), 3), " s","\n"
+              "Done!"," (",
+              round((x / length(optim.method)),digits = 2) * 100,
+              " %)  ",
+              " elapsed time ",
+              round(as.numeric(
+                difftime(time1 = end.tm, time2 = start.tm, units = "secs")
+              ), 3), " s","\n"
           )
         }
       } else {
@@ -1067,7 +1027,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       }
     }
   #
-  ## --------- ALL METHODS ITERATIONS (LOOP): ----------
+  ## --------------------- ALL METHODS - ITERATIONS (LOOP): -----------------------
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
@@ -1080,13 +1040,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    B.unit,
                                    par){
         data[[Intensity.expr]] -
-                 fit_sim_params_par(data,
-                                    nucs.system,
-                                    Intensity.sim,
-                                    lineG.content,
-                                    baseline,
-                                    B.unit,
-                                    par)
+          fit_sim_params_par(data,
+                             nucs.system,
+                             Intensity.sim,
+                             lineG.content,
+                             baseline,
+                             B.unit,
+                             par)
       }
       #
       # message + time before optimization
@@ -1115,13 +1075,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    B.unit,
                                    par){
         sum((data[[Intensity.expr]] -
-                         fit_sim_params_par(data,
-                                            nucs.system,
-                                            Intensity.sim,
-                                            lineG.content,
-                                            baseline,
-                                            B.unit,
-                                            par))^2)
+               fit_sim_params_par(data,
+                                  nucs.system,
+                                  Intensity.sim,
+                                  lineG.content,
+                                  baseline,
+                                  B.unit,
+                                  par))^2)
       }
       #
       # message + time before optimization
@@ -1151,13 +1111,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    B.unit,
                                    x0){
         sum((data[[Intensity.expr]] -
-                         fit_sim_params_x0(data,
-                                           nucs.system,
-                                           Intensity.sim,
-                                           lineG.content,
-                                           baseline,
-                                           B.unit,
-                                           x0))^2)
+               fit_sim_params_x0(data,
+                                 nucs.system,
+                                 Intensity.sim,
+                                 lineG.content,
+                                 baseline,
+                                 B.unit,
+                                 x0))^2)
       }
       #
       # message + time before optimization
@@ -1176,7 +1136,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       #
     }
     #
-    ## best parameters as input (`optim.params.init.list`) for the next cycle
+    ## best parameters as input (`optim.params.init.list`) for the next loop
     ## if several subsequent `optim.method` applied
     best.fit.params[[m]] <- optimization.list[[m]]$par
     if (length(optim.method) > 1) {
@@ -1287,8 +1247,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                              .data$Simulation -
                                best.fit.params[[length(optim.method)]][4] -
                                (1.8 * Int.diff)
-                             )
-                      ) %>%
+                      )
+      ) %>%
       ## offset for clarity
       dplyr::mutate(
         !!rlang::quo_name("Simulation") := .data$Simulation - (0.9 * Int.diff)
@@ -1333,7 +1293,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       residuals = "Residuals",
       fitted = "Simulation",
       resid.xlab = "Simulated EPR Intensity",
-      k = length(optim.params.init)
+      k = optim.params.length ## actual number of optimized parameters
     )
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
@@ -1367,7 +1327,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     eval_ABIC_forFit(
       data.fit = data.sim.expr,
       residuals = "Residuals",
-      k = length(optim.params.init) ## number of parameters
+      k = optim.params.length ## number of parameters (actual) to be optimized
     )
   #
   #
@@ -1432,10 +1392,10 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     sim.df.init <- sim.df.init %>%
       dplyr::select(
         dplyr::all_of(c(paste0("Bsim_",B.unit),Intensity.expr))
-        ) %>%
+      ) %>%
       dplyr::rename_with(~ c(paste0("B_",B.unit)),
                          dplyr::all_of(c(paste0("Bsim_",B.unit)))
-    )
+      )
     #
     ## create a column "Spectrum" (repeat "Init_Sim")
     ## in order to `bind_rows` with `data.sim.expr.long` =>
@@ -1478,7 +1438,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                          labels = c("Experiment\n",
                                     "Best\nSimulation Fit\n",
                                     "Initial\nSimulation")
-                         ) +
+      ) +
       labs(title = "EPR Simulation Fit",
            color = NULL,
            x = NULL,
@@ -1486,29 +1446,29 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       coord_cartesian(xlim = Blim) +
       plot_theme_In_ticks() +
       theme(legend.text = element_text(size = 13))
-      #
-      plot.sim.expr.lower <- ggplot(data = data.sim.expr.resid) +
-        geom_line(aes(x = .data[[paste0("B_",B.unit)]],
-                      y = Residuals),
-                  color = "black",
-                  linewidth = 0.75,
-                  alpha = 0.75) +
-        labs(title = "Residuals (Experiment - Best Simulation Fit)",
-             x = bquote(italic(B)~~"("~.(B.unit)~")"),
-             y = switch(2-grepl("deriv|Deriv",lineSpecs.form),
-                        bquote(Diff. ~ ~ d*italic(I)[EPR]~ ~"/"~ ~d*italic(B) ~ ~ ~ "(" ~ p.d.u. ~ ")"),
-                        bquote(Diff. ~ ~ italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
-            )
-          ) +
-        coord_cartesian(xlim = Blim) +
-        plot_theme_In_ticks()
-      #
-      ## entire plot
-      plot.sim.expr <-
-        wrap_plots(plot.sim.expr.upper,
-                              plot.sim.expr.lower,
-                              ncol = 1)
-      #
+    #
+    plot.sim.expr.lower <- ggplot(data = data.sim.expr.resid) +
+      geom_line(aes(x = .data[[paste0("B_",B.unit)]],
+                    y = Residuals),
+                color = "black",
+                linewidth = 0.75,
+                alpha = 0.75) +
+      labs(title = "Residuals (Experiment - Best Simulation Fit)",
+           x = bquote(italic(B)~~"("~.(B.unit)~")"),
+           y = switch(2-grepl("deriv|Deriv",lineSpecs.form),
+                      bquote(Diff. ~ ~ d*italic(I)[EPR]~ ~"/"~ ~d*italic(B) ~ ~ ~ "(" ~ p.d.u. ~ ")"),
+                      bquote(Diff. ~ ~ italic(Intensity) ~ ~"(" ~ p.d.u. ~ ")")
+           )
+      ) +
+      coord_cartesian(xlim = Blim) +
+      plot_theme_In_ticks()
+    #
+    ## entire plot
+    plot.sim.expr <-
+      wrap_plots(plot.sim.expr.upper,
+                 plot.sim.expr.lower,
+                 ncol = 1)
+    #
   } else {
     plot.sim.expr <- ggplot(data = data.sim.expr.long) +
       geom_line(aes(x = .data[[paste0("B_",B.unit)]],
@@ -1546,17 +1506,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     if (optim.method[m] == "pswarm"){
       min.rss[[m]] <-
         optimization.list[[m]]$value ## The value of `fn` corresponding to best `par`.
-                                     ## because `fn` is sum of squares
+      ## because `fn` is sum of squares
       N.evals[[m]] <-
         optimization.list[[m]]$counts ## A three-element vector containing the number of function
-                                      ## evals., the number of iterations, and the number of restarts.
+      ## evals., the number of iterations, and the number of restarts.
       N.converg[[m]] <-
         optimization.list[[m]]$convergence ## An integer code. `0` indicates that the algorithm
-                                           ## terminated by reaching the absolute tolerance; otherwise:
-                                           ## `1` Maximum number of function evaluations reached.
-                                           ## `2` Maximum number of iterations reached.
-                                           ## `3` Maximum number of restarts reached.
-                                           ## `4` Maximum number of iterations without improvement reached.
+      ## terminated by reaching the absolute tolerance; otherwise:
+      ## `1` Maximum number of function evaluations reached.
+      ## `2` Maximum number of iterations reached.
+      ## `3` Maximum number of restarts reached.
+      ## `4` Maximum number of iterations without improvement reached.
 
     }
     if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
@@ -1564,12 +1524,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         optim.method[m] == "cobyla" || optim.method[m] == "lbfgs"){ ## with `else` it doesn't work
       min.rss[[m]] <-
         optimization.list[[m]]$value ## the function value corresponding to `par`.
-                                     ## because function is sum of squares
+      ## because function is sum of squares
       N.evals[[m]] <-
         optimization.list[[m]]$iter ## number of (outer) iterations, see `Nmax.evals`.
       N.converg[[m]] <-
         optimization.list[[m]]$convergence ## integer code indicating successful completion (> 0)
-                                           ## or a possible error number (< 0).
+      ## or a possible error number (< 0).
     }
   }
   #
@@ -1617,24 +1577,24 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     ## and/or add `df = result.df`
     #
   } else {
-      ## final list components (switching between `check.fit.plot` condition)
-      result <- list(
-        plot = plot.sim.expr,
-        ra = resid.anal.simple.list,
-        best.fit.params = best.fit.params,
-        df = switch(2-check.fit.plot,
-                    data.sim.expr.long,
-                    data.sim.expr),
-        min.rss = min.rss,
-        abic = AB.ic.list, ## list
-        ## covariance of "Experiment,Simulation,Residuals" data frame:
-        cov.df = df.cov,
-        ## correlation of "Experiment,Simulation,Residuals" data frame:
-        cor.df = df.cor,
-        N.evals = N.evals,
-        N.converg = N.converg
-      )
-    }
+    ## final list components (switching between `check.fit.plot` condition)
+    result <- list(
+      plot = plot.sim.expr,
+      ra = resid.anal.simple.list,
+      best.fit.params = best.fit.params,
+      df = switch(2-check.fit.plot,
+                  data.sim.expr.long,
+                  data.sim.expr),
+      min.rss = min.rss,
+      abic = AB.ic.list, ## list
+      ## covariance of "Experiment,Simulation,Residuals" data frame:
+      cov.df = df.cov,
+      ## correlation of "Experiment,Simulation,Residuals" data frame:
+      cor.df = df.cor,
+      N.evals = N.evals,
+      N.converg = N.converg
+    )
+  }
   #
   return(result)
   #

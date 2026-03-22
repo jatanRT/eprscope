@@ -99,9 +99,11 @@
 #'   See also \code{\link[pso]{psoptim}}. \strong{Default}: \code{tol.step = 5e-7}.
 #' @param pswarm.size Numeric value, which equals to particle swarm size (i.e. number of particles),
 #'   if \code{method = "pswarm"}. The \strong{default} value (\code{pswarm.size = NULL}) actually
-#'   corresponds to \code{floor(10+2*sqrt(length(x.0)))} (for \code{SPSO2007}, see the \code{pswarm.type}
-#'   argument), e.g. to optimize 8 parameters, number of particles = 15. For the \code{SPSO2011}
-#'   the default number of particles equals to \code{40}.
+#'   corresponds to \code{floor(10+2*sqrt(length(Np)))} (for \code{SPSO2007}, see the \code{pswarm.type}
+#'   argument), e.g. to optimize 8 parameters, number of particles = 15. The \code{length(Np)} corresponds
+#'   either to \code{length(x.0)} or to difference between the \code{length(x.0)} and number of parameters,
+#'   for which \code{(upper - lower) == 0} (i.e. those \code{x.0} parameters are actually fixed/won't be optimized).
+#'   For the \code{SPSO2011} the default number of particles equals to \code{40}.
 #' @param pswarm.diameter Numeric value, corresponding to diameter of the particle swarm search space
 #'   (in case \code{method = "pswarm"}). The \strong{default} value (\code{pswarm.diameter = NULL})
 #'   refers to the Euclidean distance, defined as:
@@ -122,10 +124,18 @@
 #'   with the information, depending on the applied \code{method}. In the case of \code{{nloptr}} methods/functions
 #'   as well as \code{method = "pswarm"} it displays the iteration number (each 10-th iteration per particle
 #'   shown for \code{pswarm}) and the value of the objective/fitness function (e.g. least-square minimization or RSS).
-#'   Additionally, \code{pswarm} method shows the possible shrinking of the particle swarm diameter by the convergence.
+#'   Additionally, \code{pswarm} method shows possible shrinking of the particle swarm diameter by the convergence.
 #'   For the \code{method = "levenmarq"} it shows the iteration/evaluation number, sum of residual squares (RSS)
-#'   and the corresponding parameter (Par.) values. In the \code{\link{eval_sim_EPR_isoFit}}
+#'   and the relevant parameter (Par.) value. In the \code{\link{eval_sim_EPR_isoFit}}
 #'   and \code{\link{quantify_EPR_Sim_series}} this argument can be combined with the \code{msg.optim.progress}.
+#' @param fix.optim.x.0.id Numeric value/vector of the \code{x.0} indices, corresponding to \code{x.0} elements that
+#'   will be fixed during the optimization/fitting, i.e. they won't be optimized because their \code{lower}
+#'   and \code{upper} limits equal to related elements of the initial \code{x.0}. For example, if the 1st and the 3rd
+#'   parameter/element of the \code{x.0} are supposed to be fixed, put \code{fix.optim.x.0.id = c(1,3)}.
+#'   \strong{Default}: \code{fix.optim.x.0.id = NULL}, i.e. none of the \code{x.0} elements is fixed and all
+#'   parameters will be optimized as required (see also \code{\link{eval_sim_EPR_isoFit}}). However, even
+#'   in the case if \code{fix.optim.x.0.id = NULL}, the parameters can be fixed by adjustment of the corresponding
+#'   \code{lower} and \code{upper} arguments.
 #'
 #'
 #' @return For all listed algorithms the function returns \code{list} with the elements like
@@ -277,11 +287,66 @@ optim_for_EPR_fitness <- function(method = "neldermead",
                                   pswarm.size = NULL,
                                   pswarm.diameter = NULL,
                                   pswarm.type = NULL,
-                                  eval.optim.progress = FALSE, ## print/show progress of fitting/optimization.
+                                  eval.optim.progress = FALSE, ## print/show progress of fitting/optimization
+                                  fix.optim.x.0.id = NULL,
                                   ...) {
   #
   ## 'Temporary' processing variables
   . <- NULL
+  optim.params.length <- NULL
+  #
+  ## conditions for `optim.params.length` + `upper` + `lower`
+  if (length(x.0) != length(lower) || length(x.0) != length(upper) ||
+      length(upper) != length(lower)) {
+    stop(" The number of lower/upper bound constraints do not correspond\n
+         to that of the initial fit parameters `x.0`. Please check\n
+         the length of all three vectors ! ")
+  }
+  #
+  ## conditions to define fixed parameters
+  if (!is.null(fix.optim.x.0.id) &
+      any((upper - lower) == 0)) {
+    stop(" All three `fix.optim.x.0.id/lower/upper` cannot be simultaneously defined !!\n
+         In order to fix one or more simulation parameters during the optimization/fit,\n
+         either use `fix.optim.x.0.id` or both `lower` and `upper` !! ")
+  }
+  #
+  ## adjust number of optimized parameters,
+  ## if some of them are fixed, accordingly
+  if (any((upper - lower) == 0)) {
+    if (is.null(fix.optim.x.0.id)) {
+      optim.params.length <-
+        length(x.0) - sum((upper - lower) == 0)
+    }
+  } else {
+    optim.params.length <- length(x.0) - length(fix.optim.x.0.id)
+    ## if `fix.optim.x.0.id = NULL` --> `length(fix.optim.x.0.id) = 0`
+  }
+  #
+  ## redefinition of `upper` & `lower` based on `fixed.optim.x.0.id`,
+  ## if fix.optim.x.0.id != NULL, the `lower` and `upper` elements
+  ## must equal to those of `x.0`
+  if (!is.null(fix.optim.x.0.id)) {
+    if (length(fix.optim.x.0.id) >= length(x.0)) {
+      stop(" The number of fixed paramaters (which won't be optimized)\n
+           CANNOT BE EQUAL OR HIGHER than that of the initial one `x.0`.\n
+           Please, check both the `x.0` as well as `fix.optim.x.0.id` vectors !! ")
+    } else {
+      lower <- replace(
+        lower,
+        fix.optim.x.0.id,
+        x.0[fix.optim.x.0.id]
+      )
+      upper <- replace(
+        upper,
+        fix.optim.x.0.id,
+        x.0[fix.optim.x.0.id]
+      )
+    }
+  } else {
+    lower <- lower
+    upper <- upper
+  }
   #
   ## if method defined by letter case - upper
   ## convert it automatically into lower
@@ -295,7 +360,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     list(maxeval = Nmax.evals,
          xtol_rel = tol.step,
          print_level = switch( ## showing progress (iterations) of the optim.
-           2-eval.optim.progress,1,0
+           2 - eval.optim.progress,1,0
          ))
   #
   ## Sequential (least-squares) quadratic programming
@@ -369,7 +434,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
       lower = lower,
       upper = upper,
       maxeval = Nmax.evals,
-      pop.size = 10 * (length(x.0) + 1),
+      pop.size = 10 * (optim.params.length + 1),
       xtol_rel = tol.step,
       nl.info = FALSE,
       data = data,
@@ -422,11 +487,11 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     pswarm.type <- pswarm.type %>% `if`(is.null(pswarm.type),"SPSO2007", .)
     #
     ## definition => size of particle swarm
-    ## `floor(10+2*sqrt(length(x.0)))` is the default one (for "SPSO2007")
+    ## `floor(10+2*sqrt(optim.params.length))` is the default one (for "SPSO2007")
     ## or 40 (for "SPSO2011")
     if (pswarm.type == "SPSO2007") {
       pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),
-                                          floor(10+2*sqrt(length(x.0))), .)
+                                          floor(10+2*sqrt(optim.params.length)), .)
       if (pswarm.size >= 40) {
         message(" Please, use the `pswarm.type = SPSO2011` for such high number of particles ! ")
       }
