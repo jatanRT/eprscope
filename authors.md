@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/jatanrt/eprscope/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/jatanrt/eprscope/blob/v0.1.16/inst/CITATION)
 
 Tarábek J (2024). *eprscope R package - Processing and Analysis of
 Electron Paramagnetic Resonance Data and Spectra in Chemistry*.
