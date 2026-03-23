@@ -383,7 +383,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
       Map(
         function(p, r, s, t, u) {
           readEPR_Exp_Specs(path_to_file = p,
-                            path_to_dsc_par = r,
+                            path_to_dsc_par = switch(2 - binary.cond,r,NULL),
                             col.names = col.names,
                             x.id = x.id,
                             x.unit = x.unit,
@@ -402,7 +402,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
             ))
         },
         files.specs,
-        switch(2 - binary.cond,files.params,NULL),
+        files.params,
         qValues.from.files,
         norm.list.add,
         mwfreq.from.files
@@ -412,7 +412,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
       Map(
         function(p, r, s, t) {
           readEPR_Exp_Specs(path_to_file = p,
-                            path_to_dsc_par = r,
+                            path_to_dsc_par = switch(2 - binary.cond,r,NULL),
                             col.names = col.names,
                             x.id = x.id,
                             x.unit = x.unit,
@@ -425,7 +425,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
           )
         },
         files.specs,
-        switch(2 - binary.cond,files.params,NULL),
+        files.params,
         qValues.from.files,
         norm.list.add
       )
