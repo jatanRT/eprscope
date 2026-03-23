@@ -823,7 +823,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.099   0.008   0.107
+#>   0.099   0.009   0.108
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
