@@ -16,7 +16,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
@@ -40,6 +40,12 @@
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/jatanrt/eprscope/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul></li>
       </ul></div>
 
 
@@ -65,7 +71,7 @@
 <li><p>now, reading of multiple files, by using the <code>readEPR_Exp_Specs_multif</code>, can differentiate between the true “numeric” values and those containing “alpha” (character string) in the <code>names</code> argument elements, which was not possible by now and induced errors</p></li>
 <li><p>fixed bug in the <code>rearrange_aAiso_QCHorgau</code> function, while reading the <code>ORCA</code> files, the hyperfine couplings/splittings (A/a) could not be extracted and <code>NA</code> “values” occurred + removed the <code>N.nuclei</code> argument, which is now directly obtained from the corresponding text outputs (<code>Gaussian</code> as well as <code>ORCA</code>)</p></li>
 <li><p>the <code>qq-plot</code> returned by the <code>plot_eval_RA_forFit</code> doesn’t require the <a href="https://github.com/aloy/qqplotr" class="external-link">qqplotr</a> anymore, rather it was built completely from scratch, similarly like in the <a href="https://github.com/aloy/qqplotr/tree/master/R" class="external-link"><code>{qqplotr}</code> package</a>, and right now acts as a function, having the parameters/arguments like residuals distribution, confidence level as well as degrees of freedom in the case of Student’s t-distribution (see documentation of the <code>plot_eval_RA_forFit</code>)</p></li>
-<li><p>fixed bug in the <code>shinyApp01</code> (<code>plot_eval_ExpSim_app</code>), where the main simulation panel/plot displays an error when no interacting nuclei were specified in the corresponding input panel, the actual message is shown to ask for the system of interacting nuclei to be defined by the user</p></li>
+<li><p>fixed bug in the <code>shinyApp01</code> (<code>plot_eval_ExpSim_app</code>), where the main simulation panel/plot showed an error, while no interacting nuclei were specified in the corresponding input panel, the actual displayed message asks for the system of interacting nuclei to be defined by the user</p></li>
 <li><p>conversion time (<code>convTime</code>) returned by the <code>readEPR_params_slct_kin</code>, for the case of <code>winepr</code> original data/instrumental parameters, is now correctly converted into seconds, where <code>ms</code> has been used so far</p></li>
 <li><p>now, the option to fix one or several parameters (which won’t be optimized) for EPR simulation fit (so that it matches the experimental spectrum) is built into the essential <code>optim_for_EPR_fitness</code> function and therefore can be propagated into related ones like <code>eval_sim_EPR_isoFit</code>, <code>eval_sim_EPR_isoFit_space</code> or <code>quantify_EPR_sim_series</code>, this was redesigned mainly due to the fact that “particle swarm” as well as “controlled random search” algorithms depend on the length of parameter vector, which is actually shorter when parameters are fixed</p></li>
 </ul></div>
