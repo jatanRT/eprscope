@@ -1,7 +1,9 @@
 url: https://jatanrt.github.io/eprscope/
 template:
   bootstrap: 5
-  bootswatch: cerulean
+  light-switch: true
+  theme: cerulean-light
+  theme-dark: cerulean-dark
 reference:
 - title: Built-In Datasets
   contents: has_concept("Built-In Datasets")

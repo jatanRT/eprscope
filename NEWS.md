@@ -42,8 +42,8 @@
   of Student's t-distribution (see documentation of the `plot_eval_RA_forFit`)
   
 * fixed bug in the `shinyApp01` (`plot_eval_ExpSim_app`), where the main
-  simulation panel/plot displays an error when no interacting nuclei were specified
-  in the corresponding input panel, the actual message is shown to ask
+  simulation panel/plot showed an error, while no interacting nuclei were specified
+  in the corresponding input panel, the actual displayed message asks
   for the system of interacting nuclei to be defined by the user
   
 * conversion time (`convTime`) returned by the `readEPR_params_slct_kin`, 

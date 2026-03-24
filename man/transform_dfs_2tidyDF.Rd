@@ -49,6 +49,11 @@ Taking several data frame objects/variables from the (local/Global) R environmen
   the \code{transform_dfs_2tidyDF} collects temporary processed/stored data frame objects/variables
   created meanwhile in the R environment.
 }
+\note{
+In order to compare \eqn{g_{\text{iso}}}-values of different EPR spectra, prior to own transformation
+  check that all data frame objects contain \code{g_Val(ue)} variable/column. If this is not case,
+  the user may create those columns by the \code{\link{eval_gFactor}} function.
+}
 \examples{
 ## compare TMPD*+ EPR spectrum with that of aminoxyl,
 ## first, define the path and variable for TMPD*+ data

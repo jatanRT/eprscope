@@ -378,22 +378,44 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   ## However prior to the operation above `x`/`B` has to be defined
   xString <- col.names[x.id]
   #
+  ## redefinition of the `...` ellipsis arguments,
+  ## first check the `names` like `x.id` & `Intensity.id`
+  list.argumns <- list(...)
+  if (any(c("x.id","Intensity.id") %in% names(list.argumns))) {
+    list.argumns[names(list.argumns) %in% c("x.id","Intensity.id")] <- NULL
+  } else {
+    list.argumns <- list.argumns
+  }
+  #
+  ## function for general list to apply it for `readEPR_Exp_Specs`
+  central.read.fn <- function(p, r, s, t) {
+    #
+    fun.base <- function(x = p, y = r, z = s, w = t,...) {
+      readEPR_Exp_Specs(
+        path_to_file = x,
+        path_to_dsc_par = switch(2 - binary.cond,y,NULL),
+        col.names = col.names,
+        x.id = x.id,
+        x.unit = x.unit,
+        Intensity.id = Intensity.id,
+        convertB.unit = convertB.unit,
+        qValue = z,
+        norm.vec.add = w,
+        origin = origin,
+        ...
+      )
+    }
+    #
+    return(
+      do.call(fun.base,list.argumns)
+    )
+  }
+  #
   if (x.unit == "G" || x.unit == "mT"){
     spectra.datab.from.files <-
       Map(
         function(p, r, s, t, u) {
-          readEPR_Exp_Specs(path_to_file = p,
-                            path_to_dsc_par = switch(2 - binary.cond,r,NULL),
-                            col.names = col.names,
-                            x.id = x.id,
-                            x.unit = x.unit,
-                            Intensity.id = Intensity.id,
-                            convertB.unit = convertB.unit,
-                            qValue = s,
-                            norm.vec.add = t,
-                            origin = origin,
-                            ...
-          ) %>%
+          do.call(central.read.fn,list(p, r, s, t)) %>%
             dplyr::mutate(g_Value = eval_gFactor(
               nu.val = u,
               nu.unit = "Hz",
@@ -411,18 +433,7 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
     spectra.datab.from.files <-
       Map(
         function(p, r, s, t) {
-          readEPR_Exp_Specs(path_to_file = p,
-                            path_to_dsc_par = switch(2 - binary.cond,r,NULL),
-                            col.names = col.names,
-                            x.id = x.id,
-                            x.unit = x.unit,
-                            Intensity.id = Intensity.id,
-                            convertB.unit = convertB.unit,
-                            qValue = s,
-                            norm.vec.add = t,
-                            origin = origin,
-                            ...
-          )
+          do.call(central.read.fn,list(p, r, s, t))
         },
         files.specs,
         files.params,
@@ -432,7 +443,12 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   }
   #
   ## rename spectra according to desired parameter/quantity/...etc. dependency
-  ## see params. above
+  ## see params. above, first of all, check the length
+  if (length(spectra.datab.from.files) != length(names)) {
+    stop(" The number of processed spectra/data does not correspond\n
+         to that of the `names` vector ! Please, check the corresponding\n
+         variables or argument. ")
+  }
   names(spectra.datab.from.files) <- names
   #
   ## Weather to create a long table format (`tidy`) or not

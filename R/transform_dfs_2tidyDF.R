@@ -12,6 +12,12 @@
 #'   created meanwhile in the R environment.
 #'
 #'
+#' @note
+#'   In order to compare \eqn{g_{\text{iso}}}-values of different EPR spectra, prior to own transformation
+#'   check that all data frame objects contain \code{g_Val(ue)} variable/column. If this is not case,
+#'   the user may create those columns by the \code{\link{eval_gFactor}} function.
+#'
+#'
 #' @param ... Data frame variable names (separated by comma \code{,}) to be transformed into long
 #'   table/tidy form in order to quickly compare plots/EPR spectra in one graph panel (see also \code{Examples}).
 #'   The number of data frame variables is not limited, however for the series of \eqn{\geq 10-12}

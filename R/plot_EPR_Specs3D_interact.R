@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'   \strong{When viewing the web page, please wait for the images to load.} Interactive plotting of EPR spectra
+#'   \strong{Please wait for the images to load, while rendering the web page.} Interactive plotting of EPR spectra
 #'   or their integrals based on \href{https://plotly.com/r/}{plotly} package.
 #'   The aim of this function is to nicely visualize the series of EPR spectra (or their corresponding integrals),
 #'   while checking out the EPR intensities upon e.g. kinetic (time series), variable temperature or simultaneous
