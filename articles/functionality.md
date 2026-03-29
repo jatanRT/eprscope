@@ -823,7 +823,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.091   0.005   0.095
+#>   0.103   0.006   0.109
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -1081,7 +1081,7 @@ tmpd.data.norm.02.integCorr <-
     sigmoid.integ = TRUE
   )
 #
-# preview of the integrals,
+# preview of both integrals (side-by-side),
 # data frame column of corrected integral
 # is denoted as `single_Integ_correct`
 plot_EPR_Specs_integ(

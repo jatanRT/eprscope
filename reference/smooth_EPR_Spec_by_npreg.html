@@ -72,7 +72,7 @@
 <span>  lineSpecs.form <span class="op">=</span> <span class="st">"derivative"</span>,</span>
 <span>  Intensity <span class="op">=</span> <span class="st">"dIepr_over_dB"</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"BIC"</span>,</span>
-<span>  output.vec <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  vectorize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -118,11 +118,11 @@ in <a href="http://users.stat.umn.edu/~helwig/notes/smooth-spline-notes.html" cl
 or additional information may be found in <code>References</code>) =&gt;</p><table class="table table"><tr><td><strong>Method</strong></td><td><strong>Short Description</strong></td></tr><tr><td>"GCV"</td><td>Generalized Cross-Validation</td></tr><tr><td>"OCV"</td><td>Ordinary Cross-Validation</td></tr><tr><td>"GACV"</td><td>Generalized Approximate Cross-Validation</td></tr><tr><td>"ACV"</td><td>Approximate Cross-Validation</td></tr><tr><td>"REML"</td><td>Restricted Maximum Likelihood</td></tr><tr><td>"ML"</td><td>Maximum Likelihood</td></tr><tr><td>"AIC"</td><td>Akaike’s Information Criterion</td></tr><tr><td>"BIC"</td><td>Bayesian Information Criterion (<strong>default</strong>)</td></tr></table></dd>
 
 
-<dt id="arg-output-vec">output.vec<a class="anchor" aria-label="anchor" href="#arg-output-vec"></a></dt>
+<dt id="arg-vectorize">vectorize<a class="anchor" aria-label="anchor" href="#arg-vectorize"></a></dt>
 <dd><p>Logical, whether the function output have to be vectorized, i.e. only the vector
 of smoothed EPR intensity is provided. This is especially useful for the EPR spectral (time) series,
 which can be handily processed by the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></code> using the
-<code>pipe</code> operators (<code>%&gt;%</code>). <strong>Default</strong>: <code>output.vec = FALSE</code>.</p></dd>
+<code>pipe</code> operators (<code>%&gt;%</code>). <strong>Default</strong>: <code>vectorize = FALSE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -131,10 +131,10 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If <code>output.vec = TRUE</code> the output corresponds to vector of the smoothed EPR intensity
+    <p>If <code>vectorize = TRUE</code> the output corresponds to vector of the smoothed EPR intensity
   (either derivative <code>lineSpecs.form = "derivative"</code> or integrated
   <code>lineSpecs.form = "integrated"/"absorption"</code>) with the length of the original <code>Intensity</code>.
-  Contrarily, if the <code>output.vec</code> is set to <code>FALSE</code> the following list is returned =&gt;</p><dl><dt>df</dt>
+  Contrarily, if the <code>vectorize</code> is set to <code>FALSE</code> the following list is returned =&gt;</p><dl><dt>df</dt>
 <dd><p>Original data frame with the addition column, corresponding to smoothed EPR intensity
   (derivative or integrated).</p></dd>
 
@@ -268,7 +268,7 @@ which can be handily processed by the <code><a href="https://dplyr.tidyverse.org
 <span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>smoothed <span class="op">=</span></span></span>
 <span class="r-in"><span>      <span class="fu">smooth_EPR_Spec_by_npreg</span><span class="op">(</span></span></span>
 <span class="r-in"><span>        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pick.html" class="external-link">pick</a></span><span class="op">(</span><span class="va">B_mT</span>,<span class="va">dIepr_over_dB</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>        output.vec <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>        vectorize <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>     <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>

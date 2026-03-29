@@ -1227,7 +1227,7 @@ triarylam.decay.integs.01 <-
           # provide double integrals:
           sigmoid.integ = TRUE,
           # ...in the vector form:
-          output.vecs = TRUE
+          vectorize = TRUE
         )$sigmoid
     ) |>
     # summarize the sigmoid integral max. values
@@ -1278,8 +1278,8 @@ dimer.kinetics.01$plot
 # kinetic parameters with statistical measures
 dimer.kinetics.01$df.coeff
 #>           Estimate    Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425903e-72
-#> k1     0.019220829 0.00093856979 20.478849 3.4920627e-37
+#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425897e-72
+#> k1     0.019220829 0.00093856978 20.478850 3.4920575e-37
 ```
 
 Obviously, according to statistical measures of non-linear

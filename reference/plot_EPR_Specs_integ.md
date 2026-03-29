@@ -33,7 +33,7 @@ plot_EPR_Specs_integ(
 
   Data frame object, inherited output from the
   [`eval_integ_EPR_Spec`](https://jatanrt.github.io/eprscope/reference/eval_integ_EPR_Spec.md),
-  if `output.vecs = FALSE` (argument from the latter), corresponding to
+  if `vectorize = FALSE` (argument from the latter), corresponding to
   data frame including the original EPR spectral data and the
   integral(s).
 

@@ -15,7 +15,7 @@ smooth_EPR_Spec_by_npreg(
   lineSpecs.form = "derivative",
   Intensity = "dIepr_over_dB",
   method = "BIC",
-  output.vec = FALSE,
+  vectorize = FALSE,
   ...
 )
 ```
@@ -78,14 +78,14 @@ smooth_EPR_Spec_by_npreg(
   | "AIC"      | Akaike’s Information Criterion               |
   | "BIC"      | Bayesian Information Criterion (**default**) |
 
-- output.vec:
+- vectorize:
 
   Logical, whether the function output have to be vectorized, i.e. only
   the vector of smoothed EPR intensity is provided. This is especially
   useful for the EPR spectral (time) series, which can be handily
   processed by the
   [`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)
-  using the `pipe` operators (`%>%`). **Default**: `output.vec = FALSE`.
+  using the `pipe` operators (`%>%`). **Default**: `vectorize = FALSE`.
 
 - ...:
 
@@ -94,10 +94,10 @@ smooth_EPR_Spec_by_npreg(
 
 ## Value
 
-If `output.vec = TRUE` the output corresponds to vector of the smoothed
+If `vectorize = TRUE` the output corresponds to vector of the smoothed
 EPR intensity (either derivative `lineSpecs.form = "derivative"` or
 integrated `lineSpecs.form = "integrated"/"absorption"`) with the length
-of the original `Intensity`. Contrarily, if the `output.vec` is set to
+of the original `Intensity`. Contrarily, if the `vectorize` is set to
 `FALSE` the following list is returned =\>
 
 - df:
@@ -255,7 +255,7 @@ triarylamine.all.spec.smooth <-
     dplyr::mutate(smoothed =
       smooth_EPR_Spec_by_npreg(
         dplyr::pick(B_mT,dIepr_over_dB),
-        output.vec = TRUE
+        vectorize = TRUE
      )
   )
 #

@@ -71,8 +71,8 @@ switching one, like =\> \$\$var = var0 + rate~ t \~~ \text{for} \~~ t
 \leq t\_{\text{switch}}\$\$ \$\$var = var\_{\text{switch}} - rate\\ (t -
 t\_{\text{switch}}) \~~ \text{for} \~~ t \geq t\_{\text{switch}}\$\$
 where the \\t\_{\text{switch}}\\, corresponding to
-\\var\_{\text{switch}}\\, are the quantities at the turning point( see
-also the `var.switch` argument).
+\\var\_{\text{switch}}\\, are quantities at the turning point( see also
+the `var.switch` argument).
 
 ## See also
 
@@ -85,10 +85,10 @@ Other Conversions and Corrections:
 ## Examples
 
 ``` r
-## calculate potential after 30 s, starting from 200 mV
+## calculate potential in `V` after 50 s, starting from 200 mV
 ## into cathodic direction (reduction) by 5 mV s^{-1}
-convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
-#> [1] 0.05
+convert_time2var(50,var0 = 0.2,var.rate = - 0.005)
+#> [1] -0.05
 #
 ## heating sample after 5 min starting from 293 K
 ## by the temperature rate of 4 K min^{-1}

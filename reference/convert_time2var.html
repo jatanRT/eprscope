@@ -122,7 +122,7 @@ by following strings <code>"s^{-1}"</code> \(\equiv \text{s}^{-1}\),
  like =&gt;
  $$var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}$$
  $$var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}$$
- where the \(t_{\text{switch}}\), corresponding to \(var_{\text{switch}}\), are the quantities
+ where the \(t_{\text{switch}}\), corresponding to \(var_{\text{switch}}\), are quantities
  at the turning point( see also the <code>var.switch</code> argument).</p>
     </div>
     <div class="section level2">
@@ -136,10 +136,10 @@ by following strings <code>"s^{-1}"</code> \(\equiv \text{s}^{-1}\),
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## calculate potential after 30 s, starting from 200 mV</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## calculate potential in `V` after 50 s, starting from 200 mV</span></span></span>
 <span class="r-in"><span><span class="co">## into cathodic direction (reduction) by 5 mV s^{-1}</span></span></span>
-<span class="r-in"><span><span class="fu">convert_time2var</span><span class="op">(</span><span class="fl">30</span>,var0 <span class="op">=</span> <span class="fl">0.2</span>,var.rate <span class="op">=</span> <span class="op">-</span> <span class="fl">0.005</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05</span>
+<span class="r-in"><span><span class="fu">convert_time2var</span><span class="op">(</span><span class="fl">50</span>,var0 <span class="op">=</span> <span class="fl">0.2</span>,var.rate <span class="op">=</span> <span class="op">-</span> <span class="fl">0.005</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.05</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## heating sample after 5 min starting from 293 K</span></span></span>
 <span class="r-in"><span><span class="co">## by the temperature rate of 4 K min^{-1}</span></span></span>
