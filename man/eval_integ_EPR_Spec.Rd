@@ -15,7 +15,7 @@ eval_integ_EPR_Spec(
   BpeaKlim = NULL,
   poly.degree = NULL,
   sigmoid.integ = FALSE,
-  output.vecs = FALSE
+  vectorize = FALSE
 )
 }
 \arguments{
@@ -59,16 +59,16 @@ integral (if the \code{data.spectr} and \code{Intesity} are already in single in
 in sigmoid shape, which is required for the quantitative analysis,
 \strong{default}: \code{sigmoid.integ = FALSE}.}
 
-\item{output.vecs}{Logical, whether the "integral" columns are presented within the original \code{data.spectr}
-data frame (\code{output.vecs = FALSE}, \strong{default}) or called as a vectors or list for
-additional processing of spectral data series by \href{https://dplyr.tidyverse.org/}{dplyr}
+\item{vectorize}{Logical, whether the integrals correspond to new columns within the original \code{data.spectr}
+data frame (\code{vectorize = FALSE}, \strong{default}) or individually called as vectors or list for
+the additional processing of spectral data series by \href{https://dplyr.tidyverse.org/}{dplyr}
 (see \code{Value} and \code{Examples}).}
 }
 \value{
 The integration results may be divided into following types, depending on the above-described
   arguments. Generally, they are either data frames, including the original data and the integrals
-  (\code{output.vecs = FALSE}) or vectors/vectors list, corresponding to individual baseline
-  corrected/uncorrected integrals (\code{output.vecs = TRUE}). This is especially useful
+  (\code{vectorize = FALSE}) or vectors/vectors list, corresponding to individual baseline
+  corrected/uncorrected integrals (\code{vectorize = TRUE}). This is especially useful
   for spectral (time) series EPR data, which can be handily processed
   by the \code{\link[dplyr]{group_by}} using the
   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}).
@@ -82,23 +82,24 @@ The integration results may be divided into following types, depending on the ab
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
   are related either to derivative or already integrated EPR spectra where corrected
   integral column header is denoted as \code{single_Integ_correct}. This is the case
-  if \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{output.vecs = FALSE}.
+  if \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{vectorize = FALSE}.
 
   \item Data frame with \code{single} and \code{double/sigmoid} integral column/variable
   (\code{sigmoid_Integ}), essential for the quantitative analysis. For such case it applies:
-  \code{output.vecs = FALSE} and \code{correct.integ = FALSE}.
+  \code{vectorize = FALSE} and \code{correct.integ = FALSE}.
 
   \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
-  and \code{output.vecs = FALSE}. It contains the original data frame columns + corrected
+  and \code{vectorize = FALSE}. It contains the original data frame columns + corrected
   single integral (\code{single_Integ_correct}) and double/sigmoid integral
   (\code{sigmoid_Integ}) which is evaluated from the baseline corrected single one.
   Therefore, such double/sigmoid integral is suitable for the accurate determination
   of radical (paramagnetic centers) amount.
 
   \item Numeric vector, corresponding to baseline uncorrected/corrected single integral
-  in case of \code{sigmoid.integ = FALSE} + \code{output.vecs = TRUE}.
+  in case of \code{sigmoid.integ = FALSE} + \code{vectorize = TRUE}.
 
-  \item List of numeric vectors (if \code{output.vecs = TRUE}) corresponding to:
+  \item List of numeric vectors (if \code{vectorize = TRUE} and \code{sigmoid.integ = TRUE})
+    corresponding to:
     \describe{
     \item{single}{Corrected or uncorrected single integral (in case of derivative form),
     depending on the \code{correct.integ} argument.}
@@ -109,10 +110,10 @@ The integration results may be divided into following types, depending on the ab
 }
 \description{
 Evaluates integrals of EPR spectra (based on the \code{\link[pracma:trapz]{pracma::cumtrapz}} function)
- depending on input data => either corresponding to \code{derivative}
+ depending on input data, either corresponding to \code{derivative}
  or single \code{integrated} EPR signal form, with the option to correct the single integral baseline
  by the polynomial fit of the \code{poly.degree} level. \strong{For EPR time/temperature/...etc spectral series},
- (data frame must be available in \href{https://r4ds.had.co.nz/tidy-data.html}{tidy/long table format}),
+ (data frame must be available in \href{https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data}{tidy/long table format}),
  there is an \strong{option to integrate all EPR spectra literally in one step} (see also \code{Examples}),
  similarly to function available in acquisition/processing software at EPR spectrometers.
 }
@@ -125,11 +126,11 @@ The relative error of the cumulative trapezoidal (\code{cumtrapz}) function is m
  and thus, the EPR spectrum has to be either simulated (see also \code{vignette("functionality")})
  or smoothed by the \code{\link{smooth_EPR_Spec_by_npreg}}, prior to integration. Afterwards,
  integrals are evaluated from the simulated or smoothed EPR spectra.
- For the purpose of quantitative analysis, the integrals are evaluated using the \code{B.units = "G"}
+ For the purpose of quantitative analysis, the integrals need \code{B.units = "G"}
  (see Arguments). Hence, depending on \eqn{B}-unit (\code{G} or \code{mT} or \code{T}) each resulting integral
  column have to be optionally (in case of \code{mT} or \code{T}) multiplied by the factor of \code{10} or \code{10000},
  respectively, because \eqn{1\,\text{mT}\equiv 10\,\text{G}} and \eqn{1\,\text{T}\equiv 10^4\,\text{G}}.
- Such corrections are already included in the function/script.
+ Such corrections are already included in the actual function.
  Instead of "double integral/integ." the term "sigmoid integral/integ." is used. "Double integral"
  \strong{in the case of originally single integrated EPR spectrum} (see \code{data.spectr}
  and \code{Intensity}) \strong{is confusing. In such case, the EPR spectrum is integrated just once.}
@@ -204,7 +205,7 @@ plot_EPR_Specs(triarylamine.decay.data1st.integ02,
 triarylamine.decay.data1st.integ03 <-
   eval_integ_EPR_Spec(triarylamine.decay.series.data1st,
                       sigmoid.integ = TRUE,
-                      output.vecs = TRUE)[["sigmoid"]]
+                      vectorize = TRUE)[["sigmoid"]]
 #
 ## preview of the first 6 values
 triarylamine.decay.data1st.integ03[1:6]
@@ -226,7 +227,7 @@ triarylamine.decay.data.integs <-
                         BpeaKlim = c(3471.5,3512.5),
                         poly.degree = 3,
                         sigmoid.integ = TRUE,
-                        output.vecs = TRUE)$sigmoid
+                        vectorize = TRUE)$sigmoid
                        ) \%>\%
   dplyr::summarize(Area = max(sigmoid_Integ))
 ## in such case `Blim` range is not defined by

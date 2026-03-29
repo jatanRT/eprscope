@@ -61,17 +61,17 @@
 #'   "AIC" \tab Akaike’s Information Criterion \cr
 #'   "BIC" \tab Bayesian Information Criterion (\strong{default}) \cr
 #'   }
-#' @param output.vec Logical, whether the function output have to be vectorized, i.e. only the vector
+#' @param vectorize Logical, whether the function output have to be vectorized, i.e. only the vector
 #'   of smoothed EPR intensity is provided. This is especially useful for the EPR spectral (time) series,
 #'   which can be handily processed by the \code{\link[dplyr]{group_by}} using the
-#'   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = FALSE}.
+#'   \code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{vectorize = FALSE}.
 #' @param ... additional arguments passed to the function (see also the \code{\link[npreg]{ss}}).
 #'
 #'
-#' @return If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR intensity
+#' @return If \code{vectorize = TRUE} the output corresponds to vector of the smoothed EPR intensity
 #'   (either derivative \code{lineSpecs.form = "derivative"} or integrated
 #'   \code{lineSpecs.form = "integrated"/"absorption"}) with the length of the original \code{Intensity}.
-#'   Contrarily, if the \code{output.vec} is set to \code{FALSE} the following list is returned =>
+#'   Contrarily, if the \code{vectorize} is set to \code{FALSE} the following list is returned =>
 #'   \describe{
 #'   \item{df}{Original data frame with the addition column, corresponding to smoothed EPR intensity
 #'   (derivative or integrated).}
@@ -143,7 +143,7 @@
 #'     dplyr::mutate(smoothed =
 #'       smooth_EPR_Spec_by_npreg(
 #'         dplyr::pick(B_mT,dIepr_over_dB),
-#'         output.vec = TRUE
+#'         vectorize = TRUE
 #'      )
 #'   )
 #' #
@@ -172,7 +172,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
                                      lineSpecs.form = "derivative",
                                      Intensity = "dIepr_over_dB",
                                      method = "BIC",
-                                     output.vec = FALSE,
+                                     vectorize = FALSE,
                                      ...){
   #
   ## 'Temporary' processing variables
@@ -231,7 +231,7 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
           legend.text.align = 0.5)
   #
   ## RESULTS
-  if (isFALSE(output.vec)){
+  if (isFALSE(vectorize)){
     results <- list(
       df = data.spectr,
       plot = plot.expr.smoothed,

@@ -245,7 +245,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
           Intensity = Intensity.sim,
           lineSpecs.form = lineSpecs.form,
           sigmoid.integ = TRUE,
-          output.vecs = TRUE
+          vectorize = TRUE
         )$sigmoid ## take the sigmoid integral from evaluation
     )
   #
@@ -279,7 +279,7 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
       Intensity = paste0(Intensity.sim,"_Sum"),
       lineSpecs.form = lineSpecs.form,
       sigmoid.integ = TRUE,
-      output.vecs = TRUE
+      vectorize = TRUE
     )$sigmoid
   ## delete/-select columns A,B,C,...etc
   df.systems.weighted.wide <-

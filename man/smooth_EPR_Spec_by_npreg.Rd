@@ -11,7 +11,7 @@ smooth_EPR_Spec_by_npreg(
   lineSpecs.form = "derivative",
   Intensity = "dIepr_over_dB",
   method = "BIC",
-  output.vec = FALSE,
+  vectorize = FALSE,
   ...
 )
 }
@@ -52,18 +52,18 @@ or additional information may be found in \code{References}) =>
 "BIC" \tab Bayesian Information Criterion (\strong{default}) \cr
 }}
 
-\item{output.vec}{Logical, whether the function output have to be vectorized, i.e. only the vector
+\item{vectorize}{Logical, whether the function output have to be vectorized, i.e. only the vector
 of smoothed EPR intensity is provided. This is especially useful for the EPR spectral (time) series,
 which can be handily processed by the \code{\link[dplyr]{group_by}} using the
-\code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{output.vec = FALSE}.}
+\code{pipe} operators (\code{\link[magrittr]{\%>\%}}). \strong{Default}: \code{vectorize = FALSE}.}
 
 \item{...}{additional arguments passed to the function (see also the \code{\link[npreg]{ss}}).}
 }
 \value{
-If \code{output.vec = TRUE} the output corresponds to vector of the smoothed EPR intensity
+If \code{vectorize = TRUE} the output corresponds to vector of the smoothed EPR intensity
   (either derivative \code{lineSpecs.form = "derivative"} or integrated
   \code{lineSpecs.form = "integrated"/"absorption"}) with the length of the original \code{Intensity}.
-  Contrarily, if the \code{output.vec} is set to \code{FALSE} the following list is returned =>
+  Contrarily, if the \code{vectorize} is set to \code{FALSE} the following list is returned =>
   \describe{
   \item{df}{Original data frame with the addition column, corresponding to smoothed EPR intensity
   (derivative or integrated).}
@@ -155,7 +155,7 @@ triarylamine.all.spec.smooth <-
     dplyr::mutate(smoothed =
       smooth_EPR_Spec_by_npreg(
         dplyr::pick(B_mT,dIepr_over_dB),
-        output.vec = TRUE
+        vectorize = TRUE
      )
   )
 #
