@@ -1,3 +1,6 @@
+#
+## ========================== EPR Intensity Multiplets Tests ============================
+#
 test_that("Theoretical evaluation of EPR intensity multiplets works.", {
   #
   ## let's assume one of the two 14N nuclei (2 x) groups

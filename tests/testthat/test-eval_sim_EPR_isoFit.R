@@ -1,4 +1,6 @@
 #
+## ========================== EPR Simulation Fit Tests ============================
+#
 ## For the scope of testing the simulation fit procedure, the same experimental
 ## EPR spectrum of the aminoxyl radical will be used as in the case
 ## of `test-eval_sim_EPR_iso`
@@ -130,8 +132,8 @@ test_that("The parameters determined from the expr. EPR spectrum
   g.iso.sim.fit <-
     aminoxyl.rad.data.simFit.a$best.fit.params[[1]][1]
   #
-  # ========= FITTING THE SIMULATED EPR SPECTRUM ONTO
-  #           THE EXPERIMENTAL ONE NICELY WORKS ==========
+  # -------- FITTING THE SIMULATED EPR SPECTRUM ONTO
+  #           THE EXPERIMENTAL ONE NICELY WORKS ----------
   #
   # Checking the values
   # parameter length

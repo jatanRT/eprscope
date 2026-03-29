@@ -1,9 +1,12 @@
+#
+## ========================== EPR Simulation Tests ============================
+#
 ## constants required for the calculations
 Planck.const <- constants::syms$h
 nuclear.mu <- constants::syms$mun ## Nuclear magneton
 Bohr.mu <- constants::syms$mub ## Bohr magneton
 #
-# ======================== EXPERIMENT ==========================
+# ------------------------------ EXPERIMENT -----------------------------------
 #
 ## Obtaining all three `B`s and `g`s for an experimental EPR spectrum
 ## of a nitroxide (aminoxyl radical) derivative. The `B.max` values,
@@ -86,9 +89,9 @@ instrum.params <- c(
 test_that("The `B` calculated by the 'Breit-Rabi' formula/function
           for an EPR simulation corresponds to experimental EPR spectrum.", {
   #
-  # ======================== SIMULATION ==========================
-  # ========= FIND THE CORRESPONDING `B`s by Breit-Rabi ==========
-  # ====== AFTERWARDS, THEY MUST EQUAL TO EXPERIMENTAL `B` ======
+  # ------------------------ SIMULATION ---------------------------
+  # --------- FIND THE CORRESPONDING `B`s by Breit-Rabi -----------
+  # ------ AFTERWARDS, THEY MUST EQUAL TO EXPERIMENTAL `B` --------
   #
   ## The following code is taken from the `eval_sim_EPR_iso()`
   ## in order to test whether the same `B` values are obtained
@@ -309,16 +312,16 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
     B.g.sim.df %>%
     dplyr::slice(near_row_for_m_spin_values1)
   #
-  # ====================== END OF `eval_sim_EPR_iso()` CODE ======================
+  # ---------------------- END OF `eval_sim_EPR_iso()` CODE ------------------------
   #
   #
-  # ========= COMPARISON BETWEEN BREIT-RABI and EXPERIMENTAL `B`,`g` =============
+  # ----------- COMPARISON BETWEEN BREIT-RABI and EXPERIMENTAL `B`,`g` -------------
   #
   expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 1e-2) ## `B` in mT
   expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 1e-4) ## `g`
 })
 #
-# ===================================================================================
+# -----------------------------------------------------------------------------------
 #
 ## additional tests linewidth (Delta_B) and A evaluation from the simulated spectrum
 #
@@ -410,7 +413,7 @@ test_that("The isotropic hyperfine coupling constants determined
   ## ...and the mean value
   mean.DeltaB.sim <- round(mean(DeltaB.sim), 2) ## the mean value equals to 0.560 mT
   #
-  # ====== COMPARISON BETWEEN SIMULATED and EXPERIMENTAL `DeltaB`,`A.iso` ======
+  # --------- COMPARISON BETWEEN SIMULATED and EXPERIMENTAL `DeltaB`,`A.iso` -----------
   #
   expect_equal(abs(mean.DeltaB.sim - mean.DeltaB.expr), 0.02, tolerance = 1e-2) # `B` diff. in mT
   expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 1e-1) ## `A.iso` in MHz
@@ -419,7 +422,7 @@ test_that("The isotropic hyperfine coupling constants determined
   ## see `test-eval_sim_EPR_isoFit`
 })
 #
-# ===================================================================================
+# --------------------------------------------------------------------------------------
 #
 ## Simulation of phenalenyl (or PNT) radical in order to check the simulation
 ## intensity pattern, the EPR spectrum can be also compared with that published
@@ -512,7 +515,7 @@ test_that("The isotropic intensity pattern for the simulated EPR spectrum
   pnt.rad.data.intCheck.sim.a <-
     abs(pnt.rad.data.intPattern.theo.a - pnt.rad.data.intPattern.sim.a)
   ##
-  # ===== THE DERIV. SIM. INTESITY PATTERN ALMOST MATCHES THE THEORETICAL ONE =======
+  # ----- THE DERIV. SIM. INTESITY PATTERN ALMOST MATCHES THE THEORETICAL ONE -----
   #
   ## Therefore, checking the max. residual value and the relative errors in '%' =>
   expect_true(all(pnt.rad.data.intCheck.sim.a < 0.706)) # residuals
@@ -566,7 +569,7 @@ test_that("The isotropic intensity pattern for the simulated EPR spectrum
   pnt.rad.data.intCheck.sim.b <-
     abs(pnt.rad.data.intPattern.theo.a - pnt.rad.data.intPattern.sim.b)
   #
-  # ===== THE INTEGRATED SIM. INTESITY PATTERN MATCHES THE THEORETICAL ONE =======
+  # ------- THE INTEGRATED SIM. INTESITY PATTERN MATCHES THE THEORETICAL ONE -------
   #
   ## all residuals are lower that 1.005e-3 and the highest relative error in '%' =>
   expect_true(all(pnt.rad.data.intCheck.sim.b < 1.005e-3)) # residuals
