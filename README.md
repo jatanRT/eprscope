@@ -130,9 +130,10 @@ is required** and summarized into the following steps:
     #
     # after the initial R environment setup it's always 
     # good to install essential collection of packages for data science 
-    install.packages("tidyverse",dependencies = TRUE)
+    if (!require(pak)) {install.packages("pak")}
+    pak::pkg_install("tidyverse",dependencies = TRUE)
     # ...+ additional required packages with dependencies
-    install.packages(
+    pak::pkg_install(
       c("bookdown","kableExtra","tinytable",
         "corrplot","animation","openxlsx","knitr",
         "shinythemes","numDeriv","htmlwidgets",
@@ -149,8 +150,8 @@ the**
 ``` r
 
 # from the GitHub repository:
-if (!require(devtools)) {install.packages("devtools")}
-devtools::install_github("jatanRT/eprscope")
+if (!require(pak)) {install.packages("pak")}
+pak::pkg_install("jatanRT/eprscope")
 ```
 
 or
@@ -200,7 +201,7 @@ console ➨
 
 ``` r
 
-devtools::install_github("jatanRT/eprscope")
+pak::pkg_install("jatanRT/eprscope",upgrade = TRUE)
 #
 # update package together with vignettes/articles:
 # devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
@@ -359,9 +360,9 @@ triarylamine_rc_decay_model$plot
 # fit and numeric solution of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>           Estimate    Std. Error    t value       Pr(>|t|)
-#> qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149
-#> k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19
-#> alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101
+#> qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149
+#> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
+#> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
 #
 # graphical representation of the correlation matrix,
 # corresponding to kinetic model fit

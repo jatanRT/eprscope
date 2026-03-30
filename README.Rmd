@@ -9,7 +9,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  webshot = "webshot",
+  # webshot = "webshot",
   fig.path = "man/figures/README-",
   fig.width = 7.2,
   fig.height = 4.8
@@ -46,9 +46,10 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
     #
     # after the initial R environment setup it's always 
     # good to install essential collection of packages for data science 
-    install.packages("tidyverse",dependencies = TRUE)
+    if (!require(pak)) {install.packages("pak")}
+    pak::pkg_install("tidyverse",dependencies = TRUE)
     # ...+ additional required packages with dependencies
-    install.packages(
+    pak::pkg_install(
       c("bookdown","kableExtra","tinytable",
         "corrplot","animation","openxlsx","knitr",
         "shinythemes","numDeriv","htmlwidgets",
@@ -63,8 +64,8 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
 ```{r install-eprscope-01-opt,eval = FALSE,echo = TRUE}
 
 # from the GitHub repository:
-if (!require(devtools)) {install.packages("devtools")}
-devtools::install_github("jatanRT/eprscope")
+if (!require(pak)) {install.packages("pak")}
+pak::pkg_install("jatanRT/eprscope")
 
 ```
 
@@ -104,7 +105,7 @@ To update the `{eprscope}` 📦, just run the following code (the same as for th
 
 ```{r update,eval=FALSE,echo=TRUE}
 
-devtools::install_github("jatanRT/eprscope")
+pak::pkg_install("jatanRT/eprscope",upgrade = TRUE)
 #
 # update package together with vignettes/articles:
 # devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
