@@ -1,3 +1,6 @@
+#
+## =================== B (Magnetic Flux Density) Conversion Tests ======================
+#
 test_that("Magnetic flux density (B) conversion works.", {
   #
   ## initial value =>

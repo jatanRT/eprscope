@@ -13,12 +13,12 @@ transform_dfs_2tidyDF(
 )
 }
 \arguments{
-\item{...}{Data frame variable names (separated by comma \code{,}) to be transformed into long
+\item{...}{Data frame object names (separated by comma \code{,}) to be transformed into long
 table/tidy form in order to quickly compare plots/EPR spectra in one graph panel (see also \code{Examples}).
-The number of data frame variables is not limited, however for the series of \eqn{\geq 10-12}
+The number of data frame vobjects is not limited, however for the series of \eqn{\geq 10-12}
 objects/spectra, the graph may look cluttered, depending on complexity of EPR spectra.}
 
-\item{df.names}{Character string vector (in the form of e.g. \code{c("Spectr_01","Spectr_02")}
+\item{df.names}{Character string vector of labels (in the form of e.g. \code{c("Spectr_01","Spectr_02")}
 or \code{c("283 K","273 K","263 K")}), describing the individual data frames/plots in the returned
 tidy/long table and corresponding to series of plots/spectra (be aware of the data frames order).}
 
@@ -28,7 +28,7 @@ presented on graph as \emph{y}-axis. \strong{Default}: \code{which.coly.norm = "
 derivative intensity in CW EPR spectra).}
 
 \item{norm.vec}{Numeric vector, consisting of (division) normalization constants (see also
-the \code{which.coly.norm} argument) for each of the data frame objects/variables defined by the ellipsis
+the \code{which.coly.norm} argument) for each of the data frame objects defined by the ellipsis
 \code{...} argument. \strong{Default}: \code{norm.vec = rep(1, times = length(df.names))}, i.e. all normalization
 constants equal to \code{1}. If needed, the vector may be redefined (please, be aware of the data frames order).}
 
@@ -37,11 +37,11 @@ for the series of \code{df.names} vector elements like \code{var2nd.series = "Te
 or \code{var2nd.series = "Spectrum"} (\strong{default}).}
 }
 \value{
-Tidy (long form) data frame/table object/variable, carrying all the individual inputs, defined by the \code{...}
+Tidy (long form) data frame/table object, carrying all the individual inputs, defined by the \code{...}
   argument and ready for the overlay/offset plot to compare the data in desired series.
 }
 \description{
-Taking several data frame objects/variables from the (local/Global) R environment and transforming them into
+Taking several data frame objects from the (local/Global) R environment and transforming them into
   one with the \href{https://r4ds.hadley.nz/data-tidy.html}{long table/tidy form}. This is especially handy
   if a quick comparison of similar plots/EPR spectra in one graph panel is required. Difference between
   the \code{\link{readEPR_Exp_Specs_multif}} and the actual function lies in the object input/origin.

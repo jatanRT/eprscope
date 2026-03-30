@@ -19,7 +19,7 @@
 #'  like =>
 #'  \deqn{var = var0 + rate~ t ~~ \text{for} ~~ t \leq t_{\text{switch}}}
 #'  \deqn{var = var_{\text{switch}} - rate\, (t - t_{\text{switch}}) ~~ \text{for} ~~ t \geq t_{\text{switch}}}
-#'  where the \eqn{t_{\text{switch}}}, corresponding to \eqn{var_{\text{switch}}}, are the quantities
+#'  where the \eqn{t_{\text{switch}}}, corresponding to \eqn{var_{\text{switch}}}, are quantities
 #'  at the turning point( see also the \code{var.switch} argument).
 #'
 #'
@@ -46,9 +46,9 @@
 #'
 #'
 #' @examples
-#' ## calculate potential after 30 s, starting from 200 mV
+#' ## calculate potential in `V` after 50 s, starting from 200 mV
 #' ## into cathodic direction (reduction) by 5 mV s^{-1}
-#' convert_time2var(30,var0 = 0.2,var.rate = - 0.005)
+#' convert_time2var(50,var0 = 0.2,var.rate = - 0.005)
 #' #
 #' ## heating sample after 5 min starting from 293 K
 #' ## by the temperature rate of 4 K min^{-1}

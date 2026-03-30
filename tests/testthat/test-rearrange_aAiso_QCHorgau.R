@@ -1,3 +1,6 @@
+#
+## ========================== Reading A/a DFT Outputs Tests ============================
+#
 test_that("Hyperfine Coupling(A)/Splitting(a) Constants, for the TMPD Radical Cation, Matches.", {
   #
   ## load the data
@@ -32,7 +35,7 @@ test_that("Hyperfine Coupling(A)/Splitting(a) Constants, for the TMPD Radical Ca
   )
   expect_equal(
     (nchar(symmetry.aAs.df$NuclearGroup[3]) - 12)/2, ## should be 4
-    length(nucs.slct[[2]]) ## shold be 4
+    length(nucs.slct[[2]]) ## should be 4
   )
   #
   ## check the columns of the `symmetry.aAs.df`

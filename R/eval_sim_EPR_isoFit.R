@@ -497,8 +497,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   }
   #
   if (length(optim.params.init) <= length(optim.params.fix.id)){
-    stop(" The vector `optim.params.init` is greater or has the same length \n
-         like `optim.params.fix.id`. If all optimization/simulation parameters are fixed,\n
+    stop(" The length of the `optim.params.init` vector is shorter or has the same length \n
+         like the `optim.params.fix.id`. If all optimization/simulation parameters are fixed,\n
          the entire fitting procedure cannot be performed, because none \n
          of the `optim.params.init.` are optimized !! ")
   }

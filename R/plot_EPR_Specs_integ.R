@@ -12,7 +12,7 @@
 #'
 #' @inheritParams plot_EPR_Specs
 #' @param data.spectra.integ Data frame object, inherited output from the \code{\link{eval_integ_EPR_Spec}},
-#'   if \code{output.vecs = FALSE} (argument from the latter), corresponding to data frame including the original
+#'   if \code{vectorize = FALSE} (argument from the latter), corresponding to data frame including the original
 #'   EPR spectral data and the integral(s).
 #' @param B Character string, pointing to magnetic flux density \code{column} of the original (\code{data.spectra.integ})
 #'   data frame, either in "millitesla" or in "gauss", that is \code{B = "B_G"} (\strong{default})

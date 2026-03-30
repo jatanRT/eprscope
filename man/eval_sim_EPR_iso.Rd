@@ -152,7 +152,7 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   Weil JA, Bolton JR (2007) and Stoll S (2024)).  The linear coefficients
   are defined by the \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
-  is speified individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
+  is specified individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
   The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
   taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups (please, also
   refer to the \code{\link{plot_eval_EPRtheo_mltiplet}}), as well as their natural abundance (if \code{natur.abund = TRUE}).
