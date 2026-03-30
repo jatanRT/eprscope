@@ -106,9 +106,10 @@
 <span><span class="co">#</span></span>
 <span><span class="co"># after the initial R environment setup it's always </span></span>
 <span><span class="co"># good to install essential collection of packages for data science </span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span>,dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://pak.r-lib.org/" class="external-link">pak</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"tidyverse"</span>,dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co"># ...+ additional required packages with dependencies</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bookdown"</span>,<span class="st">"kableExtra"</span>,<span class="st">"tinytable"</span>,</span>
 <span>    <span class="st">"corrplot"</span>,<span class="st">"animation"</span>,<span class="st">"openxlsx"</span>,<span class="st">"knitr"</span>,</span>
 <span>    <span class="st">"shinythemes"</span>,<span class="st">"numDeriv"</span>,<span class="st">"htmlwidgets"</span>,</span>
@@ -121,8 +122,8 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># from the GitHub repository:</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">}</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://pak.r-lib.org/" class="external-link">pak</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span></code></pre></div>
 <p>or</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -150,7 +151,7 @@
 <p>To update the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> 📦, just run the following code (the same as for the installation) in the <img src="https://www.r-project.org/Rlogo.png" width="16" height="16"> console ➨</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"jatanRT/eprscope"</span>,upgrade <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># update package together with vignettes/articles:</span></span>
 <span><span class="co"># devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)</span></span></code></pre></div>
@@ -304,9 +305,9 @@
 <span><span class="co"># fit and numeric solution of the Ordinary Differential Equations</span></span>
 <span><span class="va">triarylamine_rc_decay_model</span><span class="op">$</span><span class="va">df.coeffs</span></span>
 <span><span class="co">#&gt;           Estimate    Std. Error    t value       Pr(&gt;|t|)</span></span>
-<span><span class="co">#&gt; qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149</span></span>
-<span><span class="co">#&gt; k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19</span></span>
-<span><span class="co">#&gt; alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101</span></span>
+<span><span class="co">#&gt; qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149</span></span>
+<span><span class="co">#&gt; k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19</span></span>
+<span><span class="co">#&gt; alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># graphical representation of the correlation matrix,</span></span>
 <span><span class="co"># corresponding to kinetic model fit</span></span>
