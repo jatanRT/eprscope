@@ -149,6 +149,7 @@
 #'      name.pattern.sim = "DHMB0_1st_04_SimA",
 #'      optim.params.init = c(0,0.8),
 #'      output.area.stat = TRUE)
+#' ## progressbar - activated
 #' #
 #' ## similar example with two components
 #' ## (simulated spectra) and tidy data frame
@@ -165,6 +166,21 @@
 #'      output.area.stat = FALSE,
 #'      eval.optim.progress = TRUE
 #'      )
+#' ## progressbar - deactivated
+#' #
+#' ## to implement the `.csv` outputs
+#' ## from `plot_eval_ExpSim_app()`, the following
+#' ## arguments must be used:
+#' ##  origin.sim = "csv",
+#' ##  col.names.sim = c(
+#' ##    "Bsim_G", # or mT
+#' ##    "B_G", # or mT
+#' ##    "dIeprSim_over_dB",
+#' ##    "dIepr_over_dB",
+#' ##    "Norm_dIeprSim_over_dB"
+#' ##  ),
+#' ##  x.sim.id = 1,
+#' ##  Intensity.sim.id = 3
 #' #
 #' }
 #'
@@ -201,10 +217,32 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   N_evals <- NULL
   N_converg <- NULL
   #
+  # redefinition of `eval.optim.progress` from `...`
+  optim.progress <- list(...)[["eval.optim.progress"]]
+  if (is.null(optim.progress)) {
+    eval.optim.progress <- FALSE
+  } else {
+    eval.optim.progress <- optim.progress
+  }
+  #
+  ## =================== STARTING VARIABLES/DEFINITIONS/CONDITIONS ====================
+  #
   ## if method defined by letter case - upper
   ## convert it automatically into lower
   if (grepl("^[[:upper:]]+",optim.method)) {
     optim.method <- tolower(optim.method)
+  }
+  #
+  ## condition for the `nloptr` methods
+  optim.nloptr.method.cond <- function(optimize.method){
+    if (optimize.method == "slsqp" || optimize.method == "neldermead" ||
+        optimize.method == "crs2lm" || optimize.method == "sbplx" ||
+        optimize.method == "cobyla" || optimize.method == "lbfgs"){
+      #
+      return(TRUE)
+    } else {
+      return(FALSE)
+    }
   }
   #
   ## Reading simulated EPR spectra from MATLAB or other simulation sources
@@ -238,7 +276,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       length(data.specs.orig.sim) <= 10) {
         message(" Number of EPR simulation components is higher than 3 !!\n
                 Please, be aware of such a high number of corresponding radicals,\n
-                which must conform to chemical reality. Is the presence of all\n
+                which must conform to chemical reality. Is the presence of all those\n
                 components/radicals supported by any additional structural evidence ?\n
                 Do you have evidences by e.g. MS, NMR, IR, elemental analysis, ... ? ")
   }
@@ -288,11 +326,13 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     rm(data.spectra.series)
   }
   #
-  # ================== up to this point => everything OK ===================
+  # ----------------------- up to this point => everything OK -------------------------
+  #
+  # ================= PARAMETRIZATION FOR DIFFERENT OPTIM. METHODS ====================
   #
   ## parameterize and sum of all simulated spectral components (max = 10 !)
   ## `x0 \equiv par` depending on optimization method => AS a FITNESS FUNCTIONS
-  ## THEY MUST BE DEFINED SEPARATELY !!
+  ## THEY MUST BE DEFINED SEPARATELY !! OTHERWISE IT WON'T WORK
   fit_params_specs_par <- function(data,col.name.pattern,par){
     #
     ## select only simulation component columns (don't do it by `dplyr`!
@@ -400,6 +440,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     return(summa)
   }
   #
+  ## ==================== SEQUENCE AND (DEFAULT) PARAMETER GUESSES ====================
+  #
   ## `var2nd.series` sequence (e.g. time sequence)
   var2nd_df <- data.specs.sim %>%
     dplyr::group_by(.data[[var2nd.series]]) %>%
@@ -424,6 +466,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   optim.params.upper <- optim.params.upper %>%
     `if`(is.null(optim.params.upper), upper.limits, .)
   #
+  ## ====================== MAIN OPTIM. FUNCTIONS & PROGRESS-BAR ======================
+  #
   ## "general" function for optimization because it depends
   ## on only method (`method`) and function (`fun`)
   ## and initial params (`x.0`)
@@ -443,6 +487,39 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     return(optim.list)
   }
   #
+  ## switch progress-bar ON/OFF
+  if (isFALSE(eval.optim.progress)) {
+    handlers(global = TRUE)
+    handlers("progress")
+  }
+  #
+  ## function for optimization loop with/without progress-bar
+  ## depending on the
+  optim_progress_fn <- function(
+    seq, # sequence (data list)
+    method.opt = optim.method, # optimization algoritm/method
+    fn # function to get minimum residuals/errors
+    ) {
+    if (isFALSE(eval.optim.progress)){p <- progressor(along = 0:length(seq))}
+    lapply(
+      seq(seq), function(o) {
+        #
+        ## progressbar
+        if (isFALSE(eval.optim.progress)){
+          p(sprintf("x=%g", o))
+        }
+        #
+        optim_fn(
+          method = method.opt,
+          data = seq[[o]],
+          fun = fn
+        )
+      }
+    )
+  }
+  #
+  ## ===================== MAIN LOOP FOR OPTIMIZATION + MESSAGE =======================
+  #
   ## optimization list by `data.list` methods depending on the `optim.method`
   # min. function for optimization incl. `fit_params_specs()` based on method
   ## + optimization
@@ -456,7 +533,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     cat("\n") # or comment if using `message`
     cat("\r", # or replace by `message`
             msg.base,toupper(optim.method),"  method  ",
-            "(",length(data.specs.orig.sim)," Component(s))","......","\n"
+            "(",length(data.specs.orig.sim)," Component(s))","...","\n"
     )
     #
     ## start time
@@ -471,10 +548,11 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     }
     #
     optimization.list <-
-      lapply(seq(data.list),
-             function(o) optim_fn(method = optim.method,
-                                  data = data.list[[o]],
-                                  fun = min_residuals_lm))
+      optim_progress_fn(
+        seq = data.list,
+        fn = min_residuals_lm
+      )
+    #
   }
   if (optim.method == "pswarm"){
     min_residuals_ps <- function(data,col.name.pattern,par){
@@ -483,28 +561,50 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
     }
     #
     optimization.list <-
-      lapply(seq(data.list),
-             function(o) optim_fn(method = optim.method,
-                                  data = data.list[[o]],
-                                  fun = min_residuals_ps))
+      optim_progress_fn(
+        seq = data.list,
+        fn = min_residuals_ps
+      )
+    #
   }
-  if (optim.method == "slsqp" || optim.method == "neldermead" ||
-      optim.method == "crs2lm" || optim.method == "sbplx" ||
-      optim.method == "cobyla" || optim.method == "lbfgs"){
+  ## summarizing for all `nloptr` methods (condition)
+  if (isTRUE(optim.nloptr.method.cond(optimize.method = optim.method))){
     min_residuals_nl <- function(data,col.name.pattern,x0){
       sum((data[[Intensity.expr]] -
                        fit_params_specs_x0(data,col.name.pattern,x0))^2)
     }
     #
     optimization.list <-
-      lapply(seq(data.list),
-             function(o) optim_fn(method = optim.method,
-                                  data = data.list[[o]],
-                                  fun = min_residuals_nl))
+      optim_progress_fn(
+        seq = data.list,
+        fn = min_residuals_nl
+      )
+    #
   }
   #
+  #
+  ## end time
+  if (isTRUE(msg.optim.progress)) {
+    #
+    end.tm <- Sys.time() # stop watch time, after :-)
+    #
+    ## ...and the message, pointing to the optimization finish
+    cat("\n") # or comment if using "message"
+    cat("\r", # or replace by `message`
+        "Done!"," elapsed time ",
+        round(
+          as.numeric(difftime(
+            time1 = end.tm,
+            time2 = start.tm,
+            units = "secs"
+          )), 3
+        ), " s","\n"
+    )
+  }
   ## data.list is not needed anymore
   rm(data.list)
+  #
+  ## =================== OPTIMIZATION RESULTS (FROM  THE MAIN LIST) ===================
   #
   ## 1st constants/parameters (shared intercept for
   ## all sim. spectra) into vectors
@@ -552,9 +652,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       sapply(seq_along(optimization.list),
              function(l) optimization.list[[l]]$counts[1])
   }
-  if (optim.method == "slsqp" || optim.method == "neldermead" ||
-      optim.method == "crs2lm" || optim.method == "sbplx" ||
-      optim.method == "cobyla" || optim.method == "lbfgs"){
+  ## summarizing for all `nloptr` methods (condition)
+  if (isTRUE(optim.nloptr.method.cond(optimize.method = optim.method))){
     optim.vec.no.iter <-
       sapply(seq_along(optimization.list),
              function(l) optimization.list[[l]]$iter)
@@ -568,25 +667,6 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
            sapply(seq_along(optimization.list),
                   function(l) optimization.list[[l]]$convergence)
            )
-  #
-  ## end time
-  if (isTRUE(msg.optim.progress)) {
-  #
-  end.tm <- Sys.time() # stop watch time, after :-)
-  #
-  ## ...and the message, pointing to the optimization end
-    cat("\n") # or comment if using "message"
-    cat("\r", # or replace by `message`
-            "Done!"," elapsed time ",
-            round(
-              as.numeric(difftime(
-                time1 = end.tm,
-                time2 = start.tm,
-                units = "secs"
-              )), 3
-            ), " s","\n"
-    )
-  }
   #
   ## creating matrix (`mapply` is creating vectors) with modified
   ## ONLY 1st SIMULATION taking into account the coefficients
@@ -700,7 +780,8 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
         rowSums(dplyr::across(dplyr::matches("Sim.*_[[:upper:]]$"))))
   }
   #
-  ## -------------------------- INTEGRATION -----------------------------
+  ## ================================= INTEGRATIONS ===================================
+  #
   ## therefore function to distinguish between units =>
   fn_units <- function(unit){
     if (unit == "G"){
@@ -754,7 +835,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   rm(data.specs.sim)
   #
   #
-  ## ----------------------- AREAS AND RESULTS ------------------------
+  ## ========================== AREAS (INTEGRALS) AND RESULTS =========================
   #
   if (isFALSE(output.area.stat)){
     if (is.null(double.integ)){
