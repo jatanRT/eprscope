@@ -446,6 +446,19 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   if (any(grepl("^[[:upper:]]+",optim.method))) {
     optim.method <- tolower(optim.method)
   }
+  #
+  ## condition for the `nloptr` methods
+  optim.nloptr.method.cond <- function(optimize.method){
+    if (optimize.method == "slsqp" || optimize.method == "neldermead" ||
+        optimize.method == "crs2lm" || optimize.method == "sbplx" ||
+        optimize.method == "cobyla" || optimize.method == "lbfgs"){
+      #
+      return(TRUE)
+    } else {
+      return(FALSE)
+    }
+  }
+  #
   ## if `baseline.correct` defined by letter case - upper
   ## convert it automatically into lower
   if (grepl("^[[:upper:]]+",baseline.correct)) {
@@ -1099,9 +1112,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       fun.msg.method.time(time = "after",method.optim = optim.method[m],x = m)
       #
     }
-    if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
-        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
-        optim.method[m] == "cobyla" || optim.method[m] == "lbfgs") { ## with `else` it doesn't work
+    ## summarizing for all `nloptr` methods (condition)
+    if (isTRUE(optim.nloptr.method.cond(optimize.method = optim.method[m]))){
       ## LSQ FUNCTION
       min_residuals_nl <- function(data,
                                    nucs.system,
@@ -1169,9 +1181,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
         par = best.fit.params[[last.method]]
       )
   }
-  if (optim.method[last.method] == "slsqp" || optim.method[last.method] == "neldermead" ||
-      optim.method[last.method] == "crs2lm" || optim.method[last.method] == "sbplx" ||
-      optim.method[last.method] == "cobyla" || optim.method[last.method] == "lbfgs") {
+  ## summarizing for all `nloptr` methods (condition)
+  if (isTRUE(optim.nloptr.method.cond(optimize.method = optim.method[last.method]))){
     #
     # use function defined at the beginning of the script
     data.spectr.expr[[Intensity.sim]] <-
@@ -1519,9 +1530,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## `4` Maximum number of iterations without improvement reached.
 
     }
-    if (optim.method[m] == "slsqp" || optim.method[m] == "neldermead" ||
-        optim.method[m] == "crs2lm" || optim.method[m] == "sbplx" ||
-        optim.method[m] == "cobyla" || optim.method[m] == "lbfgs"){ ## with `else` it doesn't work
+    ## summarizing for all `nloptr` methods (condition)
+    if (isTRUE(optim.nloptr.method.cond(optimize.method = optim.method[m]))){
       min.rss[[m]] <-
         optimization.list[[m]]$value ## the function value corresponding to `par`.
       ## because function is sum of squares
