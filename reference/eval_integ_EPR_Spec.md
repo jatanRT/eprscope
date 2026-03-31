@@ -126,9 +126,9 @@ the `pipe` operators (`%>%`).
     a certain degree of polynomial baseline (fitted to experimental
     baseline without peak). Single integrals are related either to
     derivative or already integrated EPR spectra where corrected
-    integral column header is denoted as `single_Integ_correct`. This is
-    the case if `correct.integ = TRUE` and `sigmoid.integ = FALSE` +
-    `vectorize = FALSE`.
+    integral column header is denoted as `single_Integ_correct` or
+    `Intens_Integ_correct`. This is the case if `correct.integ = TRUE`
+    and `sigmoid.integ = FALSE` + `vectorize = FALSE`.
 
 3.  Data frame with `single` and `double/sigmoid` integral
     column/variable (`sigmoid_Integ`), essential for the quantitative
@@ -137,14 +137,15 @@ the `pipe` operators (`%>%`).
 
 4.  Data frame in case of `correct.integ = TRUE`, `sigmoid.integ = TRUE`
     and `vectorize = FALSE`. It contains the original data frame
-    columns + corrected single integral (`single_Integ_correct`) and
+    columns + corrected single integral (`single_Integ_correct` or
+    `Intens_Integ_correct` in case of integrated spectrum input) and
     double/sigmoid integral (`sigmoid_Integ`) which is evaluated from
     the baseline corrected single one. Therefore, such double/sigmoid
     integral is suitable for the accurate determination of radical
     (paramagnetic centers) amount.
 
 5.  Numeric vector, corresponding to baseline uncorrected/corrected
-    single integral in case of `sigmoid.integ = FALSE` +
+    single integral/intensity in case of `sigmoid.integ = FALSE` +
     `vectorize = TRUE`.
 
 6.  List of numeric vectors (if `vectorize = TRUE` and
@@ -376,5 +377,92 @@ triarylamine.decay.data.integs <-
  dplyr::mutate(sigmoid_Integ_correct =
    abs(min(sigmoid_Integ) - sigmoid_Integ))
 } # }
+#
+## integral of the PNT EPR spectrum in integrated form,
+## first generate the simulated spectrum/data
+pnt.sim.integ.iso <-
+  eval_sim_EPR_iso(g = 2.0027,
+    instrum.params = c(Bcf = 3500, # central field
+                       Bsw = 100, # sweep width
+                       Npoints = 4096,
+                       mwGHz = 9.8), # MW Freq. in GHz
+    B.unit = "G",
+    nuclear.system = list(
+      list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+      list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+     ),
+    lineSpecs.form = "integrated",
+    lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
+    Intensity.sim = "Integ_Intensity"
+  )
+## data frame preview
+head(pnt.sim.integ.iso$df)
+#>     Bsim_G  Bsim_mT    Bsim_T Integ_Intensity
+#> 1 3450.000 345.0000 0.3450000               0
+#> 2 3450.024 345.0024 0.3450024               0
+#> 3 3450.049 345.0049 0.3450049               0
+#> 4 3450.073 345.0073 0.3450073               0
+#> 5 3450.098 345.0098 0.3450098               0
+#> 6 3450.122 345.0122 0.3450122               0
+#
+## integrated EPR spectrum preview
+pnt.sim.integ.iso$plot
+
+#
+## no integration in case of integrated `lineSpecs.form`
+## if `sigmoid.integ = FALSE`
+intens.integ.NOcorrect.df <-
+  eval_integ_EPR_Spec(
+    data.spectr = pnt.sim.integ.iso$df,
+    B = "Bsim_G",
+    Intensity = "Integ_Intensity",
+    lineSpecs.form = "integrated"
+ )
+#> Warning:  If `sigmoid.integ = FALSE` the EPR spectrum won't be integrated,
+#> 
+#>               only the baseline correction can be performed.
+#> 
+#>               In order to evaluate the corresponding integral, please assign
+#> 
+#>               `sigmoid.integ = TRUE` ! 
+## data frame preview
+head(intens.integ.NOcorrect.df)
+#>     Bsim_G  Bsim_mT    Bsim_T Integ_Intensity
+#> 1 3450.000 345.0000 0.3450000               0
+#> 2 3450.024 345.0024 0.3450024               0
+#> 3 3450.049 345.0049 0.3450049               0
+#> 4 3450.073 345.0073 0.3450073               0
+#> 5 3450.098 345.0098 0.3450098               0
+#> 6 3450.122 345.0122 0.3450122               0
+#
+## in order to obtain sigmoid integral,
+## assign `sigmoid.integ = TRUE`
+sigmoid.integral.df <-
+  eval_integ_EPR_Spec(
+    data.spectr = pnt.sim.integ.iso$df,
+    B = "Bsim_G",
+    Intensity = "Integ_Intensity",
+    lineSpecs.form = "integrated",
+    sigmoid.integ = TRUE
+  )
+## data frame preview
+head(sigmoid.integral.df)
+#>     Bsim_G  Bsim_mT    Bsim_T Integ_Intensity sigmoid_Integ
+#> 1 3450.000 345.0000 0.3450000               0             0
+#> 2 3450.024 345.0024 0.3450024               0             0
+#> 3 3450.049 345.0049 0.3450049               0             0
+#> 4 3450.073 345.0073 0.3450073               0             0
+#> 5 3450.098 345.0098 0.3450098               0             0
+#> 6 3450.122 345.0122 0.3450122               0             0
+#
+## plot previous integral
+plot_EPR_Specs(
+  sigmoid.integral.df,
+  x = "Bsim_G",
+  x.unit = "G",
+  Intensity = "sigmoid_Integ",
+  lineSpecs.form = "integrated"
+)
+
 
 ```

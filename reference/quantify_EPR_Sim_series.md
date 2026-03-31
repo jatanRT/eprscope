@@ -282,6 +282,7 @@ quant.data.sim.test.a <-
      name.pattern.sim = "DHMB0_1st_04_SimA",
      optim.params.init = c(0,0.8),
      output.area.stat = TRUE)
+## progressbar - activated
 #
 ## similar example with two components
 ## (simulated spectra) and tidy data frame
@@ -298,6 +299,21 @@ quant.data.sim.test.b <-
      output.area.stat = FALSE,
      eval.optim.progress = TRUE
      )
+## progressbar - deactivated
+#
+## to implement the `.csv` outputs
+## from `plot_eval_ExpSim_app()`, the following
+## arguments must be used:
+##  origin.sim = "csv",
+##  col.names.sim = c(
+##    "Bsim_G", # or mT
+##    "B_G", # or mT
+##    "dIeprSim_over_dB",
+##    "dIepr_over_dB",
+##    "Norm_dIeprSim_over_dB"
+##  ),
+##  x.sim.id = 1,
+##  Intensity.sim.id = 3
 #
 } # }
 

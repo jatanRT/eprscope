@@ -178,18 +178,20 @@ the additional processing of spectral data series by <a href="https://dplyr.tidy
 <li><p>Data frame/table with single integral/intensity already corrected by a certain degree
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
   are related either to derivative or already integrated EPR spectra where corrected
-  integral column header is denoted as <code>single_Integ_correct</code>. This is the case
-  if <code>correct.integ = TRUE</code> and <code>sigmoid.integ = FALSE</code> + <code>vectorize = FALSE</code>.</p></li>
+  integral column header is denoted as <code>single_Integ_correct</code> or <code>Intens_Integ_correct</code>.
+  This is the case if <code>correct.integ = TRUE</code>
+  and <code>sigmoid.integ = FALSE</code> + <code>vectorize = FALSE</code>.</p></li>
 <li><p>Data frame with <code>single</code> and <code>double/sigmoid</code> integral column/variable
   (<code>sigmoid_Integ</code>), essential for the quantitative analysis. For such case it applies:
   <code>vectorize = FALSE</code> and <code>correct.integ = FALSE</code>.</p></li>
 <li><p>Data frame in case of <code>correct.integ = TRUE</code>, <code>sigmoid.integ = TRUE</code>
   and <code>vectorize = FALSE</code>. It contains the original data frame columns + corrected
-  single integral (<code>single_Integ_correct</code>) and double/sigmoid integral
+  single integral (<code>single_Integ_correct</code> or <code>Intens_Integ_correct</code> in case of integrated
+  spectrum input) and double/sigmoid integral
   (<code>sigmoid_Integ</code>) which is evaluated from the baseline corrected single one.
   Therefore, such double/sigmoid integral is suitable for the accurate determination
   of radical (paramagnetic centers) amount.</p></li>
-<li><p>Numeric vector, corresponding to baseline uncorrected/corrected single integral
+<li><p>Numeric vector, corresponding to baseline uncorrected/corrected single integral/intensity
   in case of <code>sigmoid.integ = FALSE</code> + <code>vectorize = TRUE</code>.</p></li>
 <li><p>List of numeric vectors (if <code>vectorize = TRUE</code> and <code>sigmoid.integ = TRUE</code>)
     corresponding to:</p><dl><dt>single</dt>
@@ -405,6 +407,93 @@ the additional processing of spectral data series by <a href="https://dplyr.tidy
 <span class="r-in"><span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sigmoid_Integ_correct <span class="op">=</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">sigmoid_Integ</span><span class="op">)</span> <span class="op">-</span> <span class="va">sigmoid_Integ</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## integral of the PNT EPR spectrum in integrated form,</span></span></span>
+<span class="r-in"><span><span class="co">## first generate the simulated spectrum/data</span></span></span>
+<span class="r-in"><span><span class="va">pnt.sim.integ.iso</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></span><span class="op">(</span>g <span class="op">=</span> <span class="fl">2.0027</span>,</span></span>
+<span class="r-in"><span>    instrum.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Bcf <span class="op">=</span> <span class="fl">3500</span>, <span class="co"># central field</span></span></span>
+<span class="r-in"><span>                       Bsw <span class="op">=</span> <span class="fl">100</span>, <span class="co"># sweep width</span></span></span>
+<span class="r-in"><span>                       Npoints <span class="op">=</span> <span class="fl">4096</span>,</span></span>
+<span class="r-in"><span>                       mwGHz <span class="op">=</span> <span class="fl">9.8</span><span class="op">)</span>, <span class="co"># MW Freq. in GHz</span></span></span>
+<span class="r-in"><span>    B.unit <span class="op">=</span> <span class="st">"G"</span>,</span></span>
+<span class="r-in"><span>    nuclear.system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>,<span class="fl">3</span>,<span class="fl">5.09</span><span class="op">)</span>, <span class="co"># 3 x A(1H) = 5.09 MHz</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>,<span class="fl">6</span>,<span class="fl">17.67</span><span class="op">)</span> <span class="co"># 6 x A(1H) = 17.67 MHz</span></span></span>
+<span class="r-in"><span>     <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    lineSpecs.form <span class="op">=</span> <span class="st">"integrated"</span>,</span></span>
+<span class="r-in"><span>    lineGL.DeltaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.54</span>,<span class="cn">NULL</span><span class="op">)</span>, <span class="co"># Gauss. FWHM in G</span></span></span>
+<span class="r-in"><span>    Intensity.sim <span class="op">=</span> <span class="st">"Integ_Intensity"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## data frame preview</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pnt.sim.integ.iso</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Bsim_G  Bsim_mT    Bsim_T Integ_Intensity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3450.000 345.0000 0.3450000               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3450.024 345.0024 0.3450024               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3450.049 345.0049 0.3450049               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3450.073 345.0073 0.3450073               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 3450.098 345.0098 0.3450098               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 3450.122 345.0122 0.3450122               0</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## integrated EPR spectrum preview</span></span></span>
+<span class="r-in"><span><span class="va">pnt.sim.integ.iso</span><span class="op">$</span><span class="va">plot</span></span></span>
+<span class="r-plt img"><img src="eval_integ_EPR_Spec-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## no integration in case of integrated `lineSpecs.form`</span></span></span>
+<span class="r-in"><span><span class="co">## if `sigmoid.integ = FALSE`</span></span></span>
+<span class="r-in"><span><span class="va">intens.integ.NOcorrect.df</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">eval_integ_EPR_Spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data.spectr <span class="op">=</span> <span class="va">pnt.sim.integ.iso</span><span class="op">$</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>    B <span class="op">=</span> <span class="st">"Bsim_G"</span>,</span></span>
+<span class="r-in"><span>    Intensity <span class="op">=</span> <span class="st">"Integ_Intensity"</span>,</span></span>
+<span class="r-in"><span>    lineSpecs.form <span class="op">=</span> <span class="st">"integrated"</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span> If `sigmoid.integ = FALSE` the EPR spectrum won't be integrated,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>               only the baseline correction can be performed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>               In order to evaluate the corresponding integral, please assign</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>               `sigmoid.integ = TRUE` ! </span>
+<span class="r-in"><span><span class="co">## data frame preview</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">intens.integ.NOcorrect.df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Bsim_G  Bsim_mT    Bsim_T Integ_Intensity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3450.000 345.0000 0.3450000               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3450.024 345.0024 0.3450024               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3450.049 345.0049 0.3450049               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3450.073 345.0073 0.3450073               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 3450.098 345.0098 0.3450098               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 3450.122 345.0122 0.3450122               0</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## in order to obtain sigmoid integral,</span></span></span>
+<span class="r-in"><span><span class="co">## assign `sigmoid.integ = TRUE`</span></span></span>
+<span class="r-in"><span><span class="va">sigmoid.integral.df</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">eval_integ_EPR_Spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data.spectr <span class="op">=</span> <span class="va">pnt.sim.integ.iso</span><span class="op">$</span><span class="va">df</span>,</span></span>
+<span class="r-in"><span>    B <span class="op">=</span> <span class="st">"Bsim_G"</span>,</span></span>
+<span class="r-in"><span>    Intensity <span class="op">=</span> <span class="st">"Integ_Intensity"</span>,</span></span>
+<span class="r-in"><span>    lineSpecs.form <span class="op">=</span> <span class="st">"integrated"</span>,</span></span>
+<span class="r-in"><span>    sigmoid.integ <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## data frame preview</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sigmoid.integral.df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Bsim_G  Bsim_mT    Bsim_T Integ_Intensity sigmoid_Integ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3450.000 345.0000 0.3450000               0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3450.024 345.0024 0.3450024               0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3450.049 345.0049 0.3450049               0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3450.073 345.0073 0.3450073               0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 3450.098 345.0098 0.3450098               0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 3450.122 345.0122 0.3450122               0             0</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## plot previous integral</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot_EPR_Specs.html">plot_EPR_Specs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">sigmoid.integral.df</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"Bsim_G"</span>,</span></span>
+<span class="r-in"><span>  x.unit <span class="op">=</span> <span class="st">"G"</span>,</span></span>
+<span class="r-in"><span>  Intensity <span class="op">=</span> <span class="st">"sigmoid_Integ"</span>,</span></span>
+<span class="r-in"><span>  lineSpecs.form <span class="op">=</span> <span class="st">"integrated"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="eval_integ_EPR_Spec-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
