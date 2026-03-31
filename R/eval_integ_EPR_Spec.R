@@ -102,8 +102,9 @@
 #'   \item Data frame/table with single integral/intensity already corrected by a certain degree
 #'   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
 #'   are related either to derivative or already integrated EPR spectra where corrected
-#'   integral column header is denoted as \code{single_Integ_correct}. This is the case
-#'   if \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{vectorize = FALSE}.
+#'   integral column header is denoted as \code{single_Integ_correct} or \code{Intens_Integ_correct}.
+#'   This is the case if \code{correct.integ = TRUE}
+#'   and \code{sigmoid.integ = FALSE} + \code{vectorize = FALSE}.
 #'
 #'   \item Data frame with \code{single} and \code{double/sigmoid} integral column/variable
 #'   (\code{sigmoid_Integ}), essential for the quantitative analysis. For such case it applies:
@@ -111,12 +112,13 @@
 #'
 #'   \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
 #'   and \code{vectorize = FALSE}. It contains the original data frame columns + corrected
-#'   single integral (\code{single_Integ_correct}) and double/sigmoid integral
+#'   single integral (\code{single_Integ_correct} or \code{Intens_Integ_correct} in case of integrated
+#'   spectrum input) and double/sigmoid integral
 #'   (\code{sigmoid_Integ}) which is evaluated from the baseline corrected single one.
 #'   Therefore, such double/sigmoid integral is suitable for the accurate determination
 #'   of radical (paramagnetic centers) amount.
 #'
-#'   \item Numeric vector, corresponding to baseline uncorrected/corrected single integral
+#'   \item Numeric vector, corresponding to baseline uncorrected/corrected single integral/intensity
 #'   in case of \code{sigmoid.integ = FALSE} + \code{vectorize = TRUE}.
 #'
 #'   \item List of numeric vectors (if \code{vectorize = TRUE} and \code{sigmoid.integ = TRUE})
@@ -260,6 +262,63 @@
 #'  dplyr::mutate(sigmoid_Integ_correct =
 #'    abs(min(sigmoid_Integ) - sigmoid_Integ))
 #' }
+#' #
+#' ## integral of the PNT EPR spectrum in integrated form,
+#' ## first generate the simulated spectrum/data
+#' pnt.sim.integ.iso <-
+#'   eval_sim_EPR_iso(g = 2.0027,
+#'     instrum.params = c(Bcf = 3500, # central field
+#'                        Bsw = 100, # sweep width
+#'                        Npoints = 4096,
+#'                        mwGHz = 9.8), # MW Freq. in GHz
+#'     B.unit = "G",
+#'     nuclear.system = list(
+#'       list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+#'       list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+#'      ),
+#'     lineSpecs.form = "integrated",
+#'     lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
+#'     Intensity.sim = "Integ_Intensity"
+#'   )
+#' ## data frame preview
+#' head(pnt.sim.integ.iso$df)
+#' #
+#' ## integrated EPR spectrum preview
+#' pnt.sim.integ.iso$plot
+#' #
+#' ## no integration in case of integrated `lineSpecs.form`
+#' ## if `sigmoid.integ = FALSE`
+#' intens.integ.NOcorrect.df <-
+#'   eval_integ_EPR_Spec(
+#'     data.spectr = pnt.sim.integ.iso$df,
+#'     B = "Bsim_G",
+#'     Intensity = "Integ_Intensity",
+#'     lineSpecs.form = "integrated"
+#'  )
+#' ## data frame preview
+#' head(intens.integ.NOcorrect.df)
+#' #
+#' ## in order to obtain sigmoid integral,
+#' ## assign `sigmoid.integ = TRUE`
+#' sigmoid.integral.df <-
+#'   eval_integ_EPR_Spec(
+#'     data.spectr = pnt.sim.integ.iso$df,
+#'     B = "Bsim_G",
+#'     Intensity = "Integ_Intensity",
+#'     lineSpecs.form = "integrated",
+#'     sigmoid.integ = TRUE
+#'   )
+#' ## data frame preview
+#' head(sigmoid.integral.df)
+#' #
+#' ## plot previous integral
+#' plot_EPR_Specs(
+#'   sigmoid.integral.df,
+#'   x = "Bsim_G",
+#'   x.unit = "G",
+#'   Intensity = "sigmoid_Integ",
+#'   lineSpecs.form = "integrated"
+#' )
 #'
 #'
 #' @export
@@ -348,6 +407,10 @@ eval_integ_EPR_Spec <- function(data.spectr,
     #
     ## integration depending on `B` unit
     if (isFALSE(sigmoid.integ)) {
+      warning(" If `sigmoid.integ = FALSE` the EPR spectrum won't be integrated,\n
+              only the baseline correction can be performed.\n
+              In order to evaluate the corresponding integral, please assign\n
+              `sigmoid.integ = TRUE` ! ")
       # scale integral/intensity simultaneously
       data.spectr <- data.spectr %>%
         dplyr::mutate(!!rlang::quo_name(Intensity) :=
@@ -379,7 +442,6 @@ eval_integ_EPR_Spec <- function(data.spectr,
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
         if (grepl("deriv|Deriv",lineSpecs.form)) {
           ## Polynomial baseline fit:
-          #
           ## convert B to variable in formula
           ## by `get(B)`/`eval(parse(text = B))` or `eval(str2lang(B))`
           integ.baseline.fit <-
@@ -425,19 +487,22 @@ eval_integ_EPR_Spec <- function(data.spectr,
               data = data.NoPeak
           )
           #
-          ## apply fit to data.spectr
+          ## apply fit to `data.spectr` (only Intensity for the integrated form)
           data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
             ## remove the .resid colum (which is not required),
-            dplyr::select(!all_of(c(".resid"))) %>%
+            `if`(
+              any(grepl(".resid", colnames(data.spectr))),
+              dplyr::select(!all_of(c(".resid"))), .
+            ) %>%
             ## rename column with fit
             dplyr::rename(all_of(c(baseline_Intens_fit = ".fitted"))) %>%
             ## subtract the baseline
-            dplyr::mutate(single_Integ_correct = .data[[Intensity]] - .data$baseline_Intens_fit)
+            dplyr::mutate(Intens_Integ_correct = .data[[Intensity]] - .data$baseline_Intens_fit)
             ##  keep `baseline_Intens_fit`
             ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
           data.spectr <- data.spectr %>%
-            dplyr::mutate(single_Integ_correct = abs(min(.data$single_Integ_correct) -
-                                                       .data$single_Integ_correct))
+            dplyr::mutate(Intens_Integ_correct = abs(min(.data$Intens_Integ_correct) -
+                                                       .data$Intens_Integ_correct))
           #
           ## integration depending on `B` unit
           if (isFALSE(sigmoid.integ)) {
@@ -449,7 +514,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
               )
           } else {
             data.spectr$sigmoid_Integ <-
-              fn_switch_integ(B = data.spectr[[B]],I = data.spectr$single_Integ_correct)
+              fn_switch_integ(B = data.spectr[[B]],I = data.spectr$Intens_Integ_correct)
           }
         }
         ## ----------- finally re-scale the integrals => from 0 to max -----------
@@ -490,10 +555,21 @@ eval_integ_EPR_Spec <- function(data.spectr,
       ## integrated <- FALSE
       ## a <- "Derivative Intensity", b <- "Integrated Intensity"
       ## switch(2-isFALSE(integrated),a,b) =>
-      integrate.results <- switch(2 - isFALSE(correct.integ),
-        data.spectr$single_Integ,
-        data.spectr$single_Integ_correct
-      )
+      if (grepl("deriv|Deriv",lineSpecs.form)) {
+        integrate.results <- switch(
+          2 - isFALSE(correct.integ),
+          data.spectr$single_Integ,
+          data.spectr$single_Integ_correct
+        )
+      }
+      if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
+        integrate.results <- switch(
+          2 - isFALSE(correct.integ),
+          data.spectr[[Intensity]],
+          data.spectr$Intens_Integ_correct
+        )
+      }
+      #
     } else {
       if (grepl("deriv|Deriv",lineSpecs.form)) {
         integrate.results <- list(
@@ -508,7 +584,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
         integrate.results <- list(
           single = switch(2 - isFALSE(correct.integ),
             data.spectr[[Intensity]],
-            data.spectr$single_Integ_correct
+            data.spectr$Intens_Integ_correct
           ),
           sigmoid = data.spectr$sigmoid_Integ
         )

@@ -81,8 +81,9 @@ The integration results may be divided into following types, depending on the ab
   \item Data frame/table with single integral/intensity already corrected by a certain degree
   of polynomial baseline (fitted to experimental baseline without peak). Single integrals
   are related either to derivative or already integrated EPR spectra where corrected
-  integral column header is denoted as \code{single_Integ_correct}. This is the case
-  if \code{correct.integ = TRUE} and \code{sigmoid.integ = FALSE} + \code{vectorize = FALSE}.
+  integral column header is denoted as \code{single_Integ_correct} or \code{Intens_Integ_correct}.
+  This is the case if \code{correct.integ = TRUE}
+  and \code{sigmoid.integ = FALSE} + \code{vectorize = FALSE}.
 
   \item Data frame with \code{single} and \code{double/sigmoid} integral column/variable
   (\code{sigmoid_Integ}), essential for the quantitative analysis. For such case it applies:
@@ -90,12 +91,13 @@ The integration results may be divided into following types, depending on the ab
 
   \item Data frame in case of \code{correct.integ = TRUE}, \code{sigmoid.integ = TRUE}
   and \code{vectorize = FALSE}. It contains the original data frame columns + corrected
-  single integral (\code{single_Integ_correct}) and double/sigmoid integral
+  single integral (\code{single_Integ_correct} or \code{Intens_Integ_correct} in case of integrated
+  spectrum input) and double/sigmoid integral
   (\code{sigmoid_Integ}) which is evaluated from the baseline corrected single one.
   Therefore, such double/sigmoid integral is suitable for the accurate determination
   of radical (paramagnetic centers) amount.
 
-  \item Numeric vector, corresponding to baseline uncorrected/corrected single integral
+  \item Numeric vector, corresponding to baseline uncorrected/corrected single integral/intensity
   in case of \code{sigmoid.integ = FALSE} + \code{vectorize = TRUE}.
 
   \item List of numeric vectors (if \code{vectorize = TRUE} and \code{sigmoid.integ = TRUE})
@@ -265,6 +267,63 @@ triarylamine.decay.data.integs <-
  dplyr::mutate(sigmoid_Integ_correct =
    abs(min(sigmoid_Integ) - sigmoid_Integ))
 }
+#
+## integral of the PNT EPR spectrum in integrated form,
+## first generate the simulated spectrum/data
+pnt.sim.integ.iso <-
+  eval_sim_EPR_iso(g = 2.0027,
+    instrum.params = c(Bcf = 3500, # central field
+                       Bsw = 100, # sweep width
+                       Npoints = 4096,
+                       mwGHz = 9.8), # MW Freq. in GHz
+    B.unit = "G",
+    nuclear.system = list(
+      list("1H",3,5.09), # 3 x A(1H) = 5.09 MHz
+      list("1H",6,17.67) # 6 x A(1H) = 17.67 MHz
+     ),
+    lineSpecs.form = "integrated",
+    lineGL.DeltaB = list(0.54,NULL), # Gauss. FWHM in G
+    Intensity.sim = "Integ_Intensity"
+  )
+## data frame preview
+head(pnt.sim.integ.iso$df)
+#
+## integrated EPR spectrum preview
+pnt.sim.integ.iso$plot
+#
+## no integration in case of integrated `lineSpecs.form`
+## if `sigmoid.integ = FALSE`
+intens.integ.NOcorrect.df <-
+  eval_integ_EPR_Spec(
+    data.spectr = pnt.sim.integ.iso$df,
+    B = "Bsim_G",
+    Intensity = "Integ_Intensity",
+    lineSpecs.form = "integrated"
+ )
+## data frame preview
+head(intens.integ.NOcorrect.df)
+#
+## in order to obtain sigmoid integral,
+## assign `sigmoid.integ = TRUE`
+sigmoid.integral.df <-
+  eval_integ_EPR_Spec(
+    data.spectr = pnt.sim.integ.iso$df,
+    B = "Bsim_G",
+    Intensity = "Integ_Intensity",
+    lineSpecs.form = "integrated",
+    sigmoid.integ = TRUE
+  )
+## data frame preview
+head(sigmoid.integral.df)
+#
+## plot previous integral
+plot_EPR_Specs(
+  sigmoid.integral.df,
+  x = "Bsim_G",
+  x.unit = "G",
+  Intensity = "sigmoid_Integ",
+  lineSpecs.form = "integrated"
+)
 
 
 }
