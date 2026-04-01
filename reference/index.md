@@ -164,7 +164,7 @@
   SMILES or SDF
 
 - [`plot_EPR_Specs()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs.md)
-  : Essential Plotting of EPR/ENDOR Spectrum/Spectra
+  : Essential Plots of EPR/ENDOR Spectrum/Spectra
 
 - [`plot_EPR_Specs2D_interact()`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs2D_interact.md)
   : Interactive Plot (incl. Zooming, Data Reading...etc) of EPR Spectra

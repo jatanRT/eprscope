@@ -1,4 +1,4 @@
-# Essential Plotting of EPR/ENDOR Spectrum/Spectra
+# Essential Plots of EPR/ENDOR Spectrum/Spectra
 
 Plot of EPR/ENDOR spectrum/spectra (overlay plot) based on the
 [ggplot2](https://ggplot2.tidyverse.org/)-functionality. Spectral data
