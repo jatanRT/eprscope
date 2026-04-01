@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_EPR_Specs.R
 \name{plot_EPR_Specs}
 \alias{plot_EPR_Specs}
-\title{Essential Plotting of EPR/ENDOR Spectrum/Spectra}
+\title{Essential Plots of EPR/ENDOR Spectrum/Spectra}
 \usage{
 plot_EPR_Specs(
   data.spectra,

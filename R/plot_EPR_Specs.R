@@ -1,5 +1,5 @@
 #
-#' Essential Plotting of EPR/ENDOR Spectrum/Spectra
+#' Essential Plots of EPR/ENDOR Spectrum/Spectra
 #'
 #'
 #' @family Visualizations and Graphics

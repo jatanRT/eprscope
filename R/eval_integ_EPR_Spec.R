@@ -326,7 +326,7 @@
 #'
 #' @importFrom pracma cumtrapz
 #' @importFrom broom augment
-#' @importFrom dplyr all_of
+#' @importFrom dplyr all_of any_of
 eval_integ_EPR_Spec <- function(data.spectr,
                                 B = "B_G",
                                 B.unit = "G",
@@ -453,7 +453,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           ## apply fit to data.spectr
           data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
             ## remove the .resid colum (which is not required),
-            dplyr::select(!all_of(c(".resid"))) %>%
+            dplyr::select(-any_of(c(".resid"))) %>% ## better than `all_of()`, no error thrown
             ## rename column with fit
             dplyr::rename(all_of(c(baseline_Integ_fit = ".fitted"))) %>%
             ## subtract the baseline
@@ -468,10 +468,8 @@ eval_integ_EPR_Spec <- function(data.spectr,
           if (isFALSE(sigmoid.integ)) {
             data.spectr <- data.spectr %>%
               ## remove previous double integral (if present)
-              `if`(
-                any(grepl("sigmoid_Integ", colnames(data.spectr))),
-                dplyr::select(!all_of(c("sigmoid_Integ"))), .
-              )
+              dplyr::select(-any_of(c("sigmoid_Integ")))
+            #
           } else {
             ## uncorrected double integral is `overwritten`
             data.spectr$sigmoid_Integ <-
@@ -490,10 +488,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           ## apply fit to `data.spectr` (only Intensity for the integrated form)
           data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
             ## remove the .resid colum (which is not required),
-            `if`(
-              any(grepl(".resid", colnames(data.spectr))),
-              dplyr::select(!all_of(c(".resid"))), .
-            ) %>%
+            dplyr::select(-any_of(c(".resid"))) %>% ## better than `all_of()`, no error thrown
             ## rename column with fit
             dplyr::rename(all_of(c(baseline_Intens_fit = ".fitted"))) %>%
             ## subtract the baseline
@@ -508,10 +503,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
           if (isFALSE(sigmoid.integ)) {
             data.spectr <- data.spectr %>%
               ## remove previous sigmoid integral (if present)
-              `if`(
-                any(grepl("sigmoid_Integ", colnames(data.spectr))),
-                dplyr::select(!all_of(c("sigmoid_Integ"))), .
-              )
+              dplyr::select(-any_of(c("sigmoid_Integ")))
           } else {
             data.spectr$sigmoid_Integ <-
               fn_switch_integ(B = data.spectr[[B]],I = data.spectr$Intens_Integ_correct)

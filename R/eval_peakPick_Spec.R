@@ -128,6 +128,7 @@
 #'     data.spectr = tmpd.data.file,
 #'     x = "B_G",
 #'     x.unit = "G",
+#'     min.peak.dist = 1,
 #'     min.peak.height =
 #'       0.15 * max(tmpd.data.file$dIepr_over_dB),
 #'     peak.text.angle = 60
