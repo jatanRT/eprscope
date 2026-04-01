@@ -430,21 +430,24 @@ server <- function(input, output, session) {
         bquote(
           italic(g)(iso) == .(input$giso)~~~Delta*italic(B)(Gau) ==
             0~~.(input$Bunit)~~
-            ~Delta*italic(B)(Lor) == .(DeltaBLpp$val)~~.(input$Bunit)
+            ~Delta*italic(B)(Lor) == .(DeltaBLpp$val)~~.(input$Bunit)~~
+            ~italic(content)(Gau) == .(input$Gcontent)
         )
     }
     if (is.null(DeltaBLpp$val)){
       char.caption <- bquote(
         italic(g)(iso) == .(input$giso)~~~Delta*italic(B)(Gau) ==
           .(DeltaBGpp$val)~~.(input$Bunit)~~
-          ~Delta*italic(B)(Lor) == 0~~.(input$Bunit)
+          ~Delta*italic(B)(Lor) == 0~~.(input$Bunit)~~
+          ~italic(content)(Gau) == .(input$Gcontent)
       )
     }
     if (!is.null(DeltaBGpp$val) & !is.null(DeltaBLpp$val)){
       char.caption <- bquote(
         italic(g)(iso) == .(input$giso)~~~Delta*italic(B)(Gau) ==
           .(DeltaBGpp$val)~~.(input$Bunit)~~
-          ~Delta*italic(B)(Lor) == .(DeltaBLpp$val)~~.(input$Bunit)
+          ~Delta*italic(B)(Lor) == .(DeltaBLpp$val)~~.(input$Bunit)~~
+          ~italic(content)(Gau) == .(input$Gcontent)
       )
     }
     #

@@ -1009,19 +1009,21 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
   if (is.null(lineGL.DeltaB[[1]])){
     char.caption <- bquote(
       italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == 0~~.(B.unit)~~
-        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[2]])~~.(B.unit)
+        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[2]])~~.(B.unit)~
+        ~~italic(content)[G] == .(lineG.content)
     )
   }
   if (is.null(lineGL.DeltaB[[2]])){
     char.caption <- bquote(
       italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == .(lineGL.DeltaB[[1]])~~.(B.unit)~~
-        ~Delta~italic(B)[L] == 0~~.(B.unit)
+        ~Delta~italic(B)[L] == 0~~.(B.unit)~~~italic(content)[G] == .(lineG.content)
     )
   }
   if (!is.null(lineGL.DeltaB[[1]]) & !is.null(lineGL.DeltaB[[2]])){
     char.caption <- bquote(
       italic(g)[iso] == .(g.iso)~~~Delta~italic(B)[G] == .(lineGL.DeltaB[[1]])~~.(B.unit)~~
-        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[2]])~~.(B.unit)
+        ~Delta~italic(B)[L] == .(lineGL.DeltaB[[2]])~~.(B.unit)~
+        ~~italic(content)[G] == .(lineG.content)
     )
   }
   #
