@@ -3,12 +3,12 @@
 Creating files and folders for the basic [Quarto](https://quarto.org/)
 project having the structure shown in `Details` and corresponding to
 reproducible report with processing and analysis of EPR data. The main
-`.qmd` ("quarto markdown") file, `wd.subdir.name.qmd`, is editable (so
-do the additional files as well) and used for rendering. The latter can
-be done directly within the [RStudio
-IDE](https://docs.posit.co/ide/user/) (by activating the `Render` button
-and selecting the desired output format like `.html`,`.pdf` or `.docx`).
-Alternatively, the rendering can be also performed in the
+`.qmd` ("quarto markdown") file, `wd.subdir.name.qmd`, is editable (the
+additional files as well) and used for rendering. The latter can be done
+directly within the [RStudio IDE](https://docs.posit.co/ide/user/) (by
+activating the `Render` button and selecting the desired output format
+like `.html`,`.pdf` or `.docx`). Alternatively, the rendering can be
+also performed in the
 [terminal](https://quarto.org/docs/computations/r.html) or [R
 console](https://quarto-dev.github.io/quarto-r/). The `.pdf` format
 requires one of the \\L^{A}T\_{E}X\\ distributions:
@@ -260,7 +260,8 @@ following commands step-by-step:
 
 1.  `git remote add origin https://<service>/<user>/<remote repo name>.git`,
     where the `url` address can be copied by the clicking on the
-    `< > Code` button, when viewing the repository via the web browser.
+    `< > Code` button when you're previewing the repository in the web
+    browser.
 
 2.  `git branch -M main`, which renames the local `master` branch in
     order to match the remote name, depending on the applied service.

@@ -24,7 +24,10 @@ operating system (OS) to dramatically speed-up the entire searching for
 the best fit. In addition to graphical outputs, function also provides
 an animated representation (using the
 [`{animation}`](https://yihui.org/animation/) package) of the procedure
-progress by showing the evaluated EPR spectra at each point.
+progress by showing the evaluated EPR spectra at each point (please also
+refer to the
+[`vignette("functionality")`](https://jatanrt.github.io/eprscope/articles/functionality.md)
+and "Hyperfine (HF) Structure and Simulations" subsection).
 
 ## Usage
 
