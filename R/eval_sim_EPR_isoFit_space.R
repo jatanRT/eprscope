@@ -21,7 +21,8 @@
 #'   regardless of the operating system (OS) to dramatically speed-up the entire searching for the best fit.
 #'   In addition to graphical outputs, function also provides an animated representation
 #'   (using the \href{https://yihui.org/animation/}{\code{{animation}}} package) of the procedure progress
-#'   by showing the evaluated EPR spectra at each point.
+#'   by showing the evaluated EPR spectra at each point (please also refer to the \code{vignette("functionality")}
+#'   and "Hyperfine (HF) Structure and Simulations" subsection).
 #'
 #'
 #'
@@ -226,7 +227,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
                                       lineG.content = 0.5,
                                       lineG.content.dvary = NULL, ## or value
                                       lineSpecs.form = "derivative",
-                                      optim.method = "neldermead", ## also two consecutive methods as vector
+                                      optim.method = "neldermead",
                                       optim.params.init,
                                       # optim.params.fix.id = NULL, ## into `...`
                                       optim.params.init.dvary = NULL, ## or vector
@@ -586,7 +587,10 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
           for (p in seq(sim.fit.vary.list.plots)) {
             print(
               sim.fit.vary.list.plots[[p]] +
-                patchwork::plot_annotation(title = paste0("Evaluation ",p))
+                patchwork::plot_annotation(
+                  title = paste0("Evaluation ",p),
+                  subtitle = paste0("by ",toupper(optim.method)," optimization")
+                )
             )
           }},
           interval = 0.32,
@@ -602,7 +606,10 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         for (p in seq(sim.fit.vary.list.plots)) {
           print(
             sim.fit.vary.list.plots[[p]] +
-              ggplot2::ggtitle(label = paste0("Evaluation ",p))
+              ggplot2::labs(
+                title = paste0("Evaluation ",p),
+                subtitle = paste0("by ",toupper(optim.method)," optimization")
+              )
           )
         }},
         interval = 0.32,
@@ -800,7 +807,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) +
     ggplot2::ggtitle(
       label = "Space for the Set of Optimized EPR Simulation Parameters",
-      subtitle = ""
+      subtitle = paste0("Evaluated by ",toupper(optim.method)," Optimization")
     )
   #
   ## Plot with initial parameter space

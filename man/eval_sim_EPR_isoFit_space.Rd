@@ -216,7 +216,8 @@ This is an extended version of the \code{\link{eval_sim_EPR_isoFit}}, providing 
   regardless of the operating system (OS) to dramatically speed-up the entire searching for the best fit.
   In addition to graphical outputs, function also provides an animated representation
   (using the \href{https://yihui.org/animation/}{\code{{animation}}} package) of the procedure progress
-  by showing the evaluated EPR spectra at each point.
+  by showing the evaluated EPR spectra at each point (please also refer to the \code{vignette("functionality")}
+  and "Hyperfine (HF) Structure and Simulations" subsection).
 }
 \note{
 In order to monitor and compare load of the hardware resources when running \code{processing = "parallel"}

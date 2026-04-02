@@ -6,7 +6,7 @@
 #'   Creating files and folders for the basic \href{https://quarto.org/}{Quarto} project having
 #'   the structure shown in \code{Details} and corresponding to reproducible report with processing and analysis of EPR data.
 #'   The main \code{.qmd} ("quarto markdown") file, \code{wd.subdir.name.qmd}, is editable
-#'   (so do the additional files as well) and used for rendering. The latter can be done directly within
+#'   (the additional files as well) and used for rendering. The latter can be done directly within
 #'   the \href{https://docs.posit.co/ide/user/}{RStudio IDE} (by activating
 #'   the \code{Render} button and selecting the desired output format
 #'   like \code{.html},\code{.pdf} or \code{.docx}).
@@ -142,7 +142,7 @@
 #'   the following commands step-by-step:
 #'   \enumerate{
 #'   \item \code{git remote add origin https://<service>/<user>/<remote repo name>.git}, where the \code{url} address
-#'   can be copied by the clicking on the \code{< > Code} button, when viewing the repository via the web browser.
+#'   can be copied by the clicking on the \code{< > Code} button when you're previewing the repository in the web browser.
 #'
 #'   \item \code{git branch -M main}, which renames the local \code{master} branch in order to match the remote name,
 #'   depending on the applied service. Please check the remote main/master branch name and adjust accordingly.
