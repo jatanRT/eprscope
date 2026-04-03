@@ -23,8 +23,8 @@ pkgdown:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 7.2,
-  fig.height = 4.8
+  fig.width = 7.0,
+  fig.height = 4.6
 )
 ```
 

@@ -382,6 +382,8 @@ readEPR_Exp_Specs_multif <- function(name.pattern,
   ## first check the `names` like `x.id` & `Intensity.id`
   list.argumns <- list(...)
   if (any(c("x.id","Intensity.id") %in% names(list.argumns))) {
+    ## because those variables are already defined above, therefore they
+    ## should be removed from the "ellipsis"
     list.argumns[names(list.argumns) %in% c("x.id","Intensity.id")] <- NULL
   } else {
     list.argumns <- list.argumns

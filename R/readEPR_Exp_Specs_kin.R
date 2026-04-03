@@ -268,8 +268,23 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   ## `time` variable string
   timeString <- col.names[var2nd.series.id]
   #
-  ## Load spectral data
-  data.spectra.time <-
+  ## redefinition of the `...` ellipsis arguments,
+  ## first check the `names` like `x.id` & `Intensity.id`
+  list.argumns <- list(...)
+  if (any(
+    c("x.id","Intensity.id","var2nd.series.id") %in% names(list.argumns)
+  )) {
+    ## because those variables are already defined above, therefore they
+    ## should be removed from the "ellipsis"
+    list.argumns[
+      names(list.argumns) %in% c("x.id","Intensity.id","var2nd.series.id")
+    ] <- NULL
+  } else {
+    list.argumns <- list.argumns
+  }
+  #
+  ## Load time series EPR spectra (function + data)
+  central.read.kin.fn <- function(...) {
     readEPR_Exp_Specs(
       path_to_file = path_to_file,
       path_to_dsc_par = path_to_dsc_par,
@@ -282,6 +297,9 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
       origin = origin,
       ...
    )
+  }
+  #
+  data.spectra.time <- do.call(central.read.kin.fn,list.argumns)
   #
   ## recalculate  the time
   ## time var for `data.spectra.time`
