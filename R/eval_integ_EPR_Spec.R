@@ -346,6 +346,7 @@ eval_integ_EPR_Spec <- function(data.spectr,
   baseline_Integ_fit <- NULL
   baseline_Intens_fit <- NULL
   single_Integ_correct <- NULL
+  Intens_Integ_correct <- NULL
   #
   ## Define limits if `Blim = NULL` take the entire data region
   ## otherwise use predefined vector
@@ -439,6 +440,52 @@ eval_integ_EPR_Spec <- function(data.spectr,
         stop("Degree of a polynomial to fit the baseline is not specified.\n
              Please, define the `poly.degree` ! ")
       } else {
+        #
+        ## central function for integral correction
+        central.correct.integ.fn <-
+          function(data.specs,var.integ.correct,var.integ) {
+          #
+          ## apply fit to data.spectr
+          data.specs <- augment(
+            integ.baseline.fit,
+            newdata = data.specs
+          ) %>%
+            ## remove the .resid colum (which is not required),
+            ## `any_of()` is better than `all_of()`, no error thrown:
+            dplyr::select(-any_of(c(".resid"))) %>%
+            ## rename column with fit
+            dplyr::rename(
+              all_of(c(baseline_Integ_fit = ".fitted"))
+            ) %>%
+            ## subtract the baseline
+            dplyr::mutate(
+              "{{var.integ.correct}}" := {{var.integ}} - .data$baseline_Integ_fit
+            )
+          ##  keep `baselin_integ_fit`
+          ## & shift the integral baseline up having
+          ## all the values > 0 (subtract its minimum)
+          data.specs <- data.specs %>%
+            dplyr::mutate("{{var.integ.correct}}" :=
+                            abs(min({{var.integ.correct}}) - {{var.integ.correct}}))
+          ## integration depending on `B` unit
+          if (isFALSE(sigmoid.integ)) {
+            data.specs <- data.specs %>%
+              ## remove previous double integral (if present)
+              dplyr::select(-any_of(c("sigmoid_Integ")))
+            #
+          } else {
+            ## uncorrected double integral is `overwritten`
+            data.specs$sigmoid_Integ <-
+              fn_switch_integ(
+                B = data.specs[[B]],
+                I = data.specs[[as.character(substitute(var.integ.correct))]]
+              )
+          }
+          #
+          return(data.specs)
+          #
+        }
+        #
         ## Polynomial baseline and integrate fit incl. derivative intensities =>
         if (grepl("deriv|Deriv",lineSpecs.form)) {
           ## Polynomial baseline fit:
@@ -450,31 +497,15 @@ eval_integ_EPR_Spec <- function(data.spectr,
               data = data.NoPeak
           )
           #
-          ## apply fit to data.spectr
-          data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
-            ## remove the .resid colum (which is not required),
-            dplyr::select(-any_of(c(".resid"))) %>% ## better than `all_of()`, no error thrown
-            ## rename column with fit
-            dplyr::rename(all_of(c(baseline_Integ_fit = ".fitted"))) %>%
-            ## subtract the baseline
-            dplyr::mutate(single_Integ_correct = .data$single_Integ - .data$baseline_Integ_fit)
-            ##  keep `baselin_integ_fit`
-            ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
-          data.spectr <- data.spectr %>%
-            dplyr::mutate(single_Integ_correct =
-                            abs(min(.data$single_Integ_correct) - .data$single_Integ_correct))
+          ## apply fit to data.spectr by the `central.correct.integ.fn`
+          ## function defined above
+          data.spectr <-
+            central.correct.integ.fn(
+              data.specs = data.spectr,
+              var.integ.correct = single_Integ_correct,
+              var.integ = single_Integ
+            )
           #
-          ## integration depending on `B` unit
-          if (isFALSE(sigmoid.integ)) {
-            data.spectr <- data.spectr %>%
-              ## remove previous double integral (if present)
-              dplyr::select(-any_of(c("sigmoid_Integ")))
-            #
-          } else {
-            ## uncorrected double integral is `overwritten`
-            data.spectr$sigmoid_Integ <-
-              fn_switch_integ(B = data.spectr[[B]],I = data.spectr$single_Integ_correct)
-          }
         }
         ## Polynomial baseline fit integrate incl. already single integrated intensities =>
         if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
@@ -485,29 +516,15 @@ eval_integ_EPR_Spec <- function(data.spectr,
               data = data.NoPeak
           )
           #
-          ## apply fit to `data.spectr` (only Intensity for the integrated form)
-          data.spectr <- augment(integ.baseline.fit, newdata = data.spectr) %>%
-            ## remove the .resid colum (which is not required),
-            dplyr::select(-any_of(c(".resid"))) %>% ## better than `all_of()`, no error thrown
-            ## rename column with fit
-            dplyr::rename(all_of(c(baseline_Intens_fit = ".fitted"))) %>%
-            ## subtract the baseline
-            dplyr::mutate(Intens_Integ_correct = .data[[Intensity]] - .data$baseline_Intens_fit)
-            ##  keep `baseline_Intens_fit`
-            ## & shift the integral baseline up having all the values > 0 (subtract its minimum)
-          data.spectr <- data.spectr %>%
-            dplyr::mutate(Intens_Integ_correct = abs(min(.data$Intens_Integ_correct) -
-                                                       .data$Intens_Integ_correct))
+          ## apply fit to data.spectr by the `central.correct.integ.fn`
+          ## function defined above
+          data.spectr <-
+            central.correct.integ.fn(
+              data.specs = data.spectr,
+              var.integ.correct = Intens_Integ_correct,
+              var.integ = Intensity
+            )
           #
-          ## integration depending on `B` unit
-          if (isFALSE(sigmoid.integ)) {
-            data.spectr <- data.spectr %>%
-              ## remove previous sigmoid integral (if present)
-              dplyr::select(-any_of(c("sigmoid_Integ")))
-          } else {
-            data.spectr$sigmoid_Integ <-
-              fn_switch_integ(B = data.spectr[[B]],I = data.spectr$Intens_Integ_correct)
-          }
         }
         ## ----------- finally re-scale the integrals => from 0 to max -----------
         if (isTRUE(sigmoid.integ)){
