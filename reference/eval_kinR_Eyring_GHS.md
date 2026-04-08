@@ -111,8 +111,8 @@ components is available:
 
 - plot:
 
-  Static ggplot2-based object/list, showing graphical representation of
-  the (non-)linear fit, together with the Eyring equation.
+  Static ggplot2-based object, showing graphical representation of the
+  (non-)linear fit, together with the Eyring equation.
 
 - ra:
 

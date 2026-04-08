@@ -107,8 +107,8 @@ of the original `Intensity`. Contrarily, if the `vectorize` is set to
 
 - plot:
 
-  Plot object (list) *EPR intensity* *vs.* *B* with the experimental
-  data and its corresponding smoothed relation performed by splines.
+  Plot object *EPR intensity* *vs.* *B* with the experimental data and
+  its corresponding smoothed relation performed by splines.
 
 - rss:
 

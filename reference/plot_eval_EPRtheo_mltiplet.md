@@ -59,8 +59,8 @@ A list consisting of:
 
 - plot:
 
-  GGplot2 object/list as a graphical representation of the
-  `intensity.vec` list component.
+  GGplot2 object - graphical representation of the `intensity.vec` list
+  component.
 
 ## See also
 

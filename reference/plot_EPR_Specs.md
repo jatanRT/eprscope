@@ -272,9 +272,10 @@ plot_EPR_Specs(
 
 ## Value
 
-EPR spectrum/spectra ('overlay') plot object (corresponding to list of
-plot components) using the `ggplot2` functionality, with the key
-parameter variations like line color, theme, grid...etc.
+EPR spectrum/spectra ('overlay') plot object (corresponding to a
+specific value structure of plot components) using the `ggplot2`
+functionality, with the key parameter variations like line color, theme,
+grid...etc.
 
 ## Details
 

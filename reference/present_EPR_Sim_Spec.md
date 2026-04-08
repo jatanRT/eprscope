@@ -138,11 +138,10 @@ present_EPR_Sim_Spec(
 
 ## Value
 
-Plot object (list) of the experimental and the simulated EPR (in
-derivative or integrated form) spectrum or `list` consisting of `plot`
-and the corresponding data frame `df`. Any output plot corresponds to
-simple `ggplot2` object and can be combined with a desired `theme` (e.g.
-with
+Plot object of the experimental and the simulated EPR (in derivative or
+integrated form) spectrum or `list` consisting of `plot` and the
+corresponding data frame `df`. Any output plot corresponds to simple
+`ggplot2` object and can be combined with a desired `theme` (e.g. with
 [`plot_theme_NoY_ticks`](https://jatanrt.github.io/eprscope/reference/plot_theme_NoY_ticks.md),
 see also `Examples`).
 

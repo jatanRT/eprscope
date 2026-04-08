@@ -292,13 +292,14 @@ of those bands can be controlled by the `level.cnfd` argument or by the
 `Value` output function `plot.rqq()` (and its `confidence` argument).
 
 All the above-mentioned violations of the residuals (normal)
-distribution can disfavor our considered model/fit. However, one has to
-perform different diagnostic methods and tests to analyze the residuals
-in order to compare several models/fits and select the "best" one. Even
-in such case, this should be a compromise between the fit accuracy
-(fitting the data as well as possible, including the physico-chemical
-reality of the system) and the parsimony (using a simple and replicable
-model/fit, Kabacoff RI (2022) in the `References`).
+distribution can disfavor our considered model/fit. However, **one has
+to perform different diagnostic methods and tests to analyze the
+residuals in order to compare several models/fits and select the "best"
+one. Even in such case, this should be a compromise between the fit
+accuracy (fitting the data as well as possible, including the
+physico-chemical reality of the system) and the parsimony** (using a
+simple and replicable model/fit, Kabacoff RI (2022) in the
+`References`).
 
 ## References
 

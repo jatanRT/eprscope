@@ -63,7 +63,7 @@
 - now, the option to fix one or several parameters (which won’t be
   optimized) for EPR simulation fit (so that it matches the experimental
   spectrum) is built into the essential `optim_for_EPR_fitness` function
-  and therefore can be propagated into related ones like
+  and therefore can be propagated into the related ones like
   `eval_sim_EPR_isoFit`, `eval_sim_EPR_isoFit_space` or
   `quantify_EPR_sim_series`, this was redesigned mainly due to the fact
   that “particle swarm” as well as “controlled random search” algorithms

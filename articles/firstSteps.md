@@ -64,7 +64,7 @@ data science packages called [{tidyverse}](https://www.tidyverse.org/):
 
 library(tidyverse)
 #> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-#> ✔ dplyr     1.2.0     ✔ readr     2.2.0
+#> ✔ dplyr     1.2.1     ✔ readr     2.2.0
 #> ✔ forcats   1.0.1     ✔ stringr   1.6.0
 #> ✔ lubridate 1.9.5     ✔ tibble    3.3.1
 #> ✔ purrr     1.2.1     ✔ tidyr     1.3.2
@@ -1364,9 +1364,9 @@ names(dimer.kinetics.01)
 They are described in details in documentation of the
 [`eval_kinR_EPR_modelFit()`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)
 function and in summary correspond to data frames (`df` + `df.coeffs`),
-plot object (`plot` , which is also a list) , additional lists (`ra` +
-`abic`), numeric values (`N.evals` + `min.rss`) , matrices (
-`cov.coeffs` , `cor.coeffs` , `cov.df` , `cor.df`) and numeric vector
+plot object (`plot` , with a specific `value` structure) , additional
+lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) , matrices
+( `cov.coeffs` , `cor.coeffs` , `cov.df` , `cor.df`) and numeric vector
 (`N.converg`). Many ![](RcoreLogo.png) package functions return value(s)
 in the form of list(s).
 

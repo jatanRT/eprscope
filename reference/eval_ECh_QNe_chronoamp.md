@@ -124,8 +124,8 @@ List containing the following elements, depending on `separate.plots`:
 
     - plot:
 
-      Side-by-side plot object (list) of \\N\_{\text{e}}\\ *vs* \\t,E\\
-      as well as \\Q\\ *vs* \\t,E\\.
+      Side-by-side plot object of \\N\_{\text{e}}\\ *vs* \\t,E\\ as well
+      as \\Q\\ *vs* \\t,E\\.
 
 2.  If `separate.plots = TRUE`
 
@@ -138,11 +138,11 @@ List containing the following elements, depending on `separate.plots`:
 
     - plot.Ne:
 
-      Plot object (list) of \\N\_{\text{e}}\\ *vs* \\t,E\\.
+      Plot object of \\N\_{\text{e}}\\ *vs* \\t,E\\.
 
     - plot.Q:
 
-      Plot object (list) of \\Q\\ *vs* \\t,E\\.
+      Plot object of \\Q\\ *vs* \\t,E\\.
 
 ## Details
 

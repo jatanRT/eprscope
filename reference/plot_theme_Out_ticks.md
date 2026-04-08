@@ -76,8 +76,8 @@ plot_theme_Out_ticks(
 
 ## Value
 
-Custom `ggplot2` `theme` (list) with `x,y-axis` ticks pointing outside
-of the graph/plot panel.
+Custom `ggplot2` `theme` with `x,y-axis` ticks pointing outside of the
+graph/plot panel.
 
 ## See also
 

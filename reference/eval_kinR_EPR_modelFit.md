@@ -239,20 +239,20 @@ List with the following components is available:
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
   The last element (`plot.acf`) is a diagnostic graph of the
   **a**uto**c**orrelation **f**unction
-  [`acf`](https://rdrr.io/r/stats/acf.html) (please, also refer to the
-  `References`). This can be considered as a primary "lie detector" test
-  for the time series/kinetic models and it is defined as a correlation
-  of residuals with its own past and future values vs their
-  corresponding lag. For a decent model, the ACF values (except the
-  first one \\\equiv\\ perfect self-correlation) usually lie within the
-  \\95\\\\\\ confidence band (the light blue area within the `plot.acf`)
-  for all lags. Hence, there is no obvious periodical or whatsoever
-  pattern and only a "white noise" is observed (a small and random ACF
-  distribution within the confidence band). If the user cannot be sure
-  about a lag exceeding the confidence band, please perform the
-  Ljung-Box test [`Box.test`](https://rdrr.io/r/stats/box.test.html) and
-  look for the `p.value`, whether the autocorrelation is less (\>\>
-  0.05) or highly probable (\<\< 0.05).
+  [`acf`](https://rdrr.io/r/stats/acf.html) (see also `References`).
+  This can be considered as a primary "lie detector" test for the time
+  series/kinetic models and it is defined as a correlation of residuals
+  with its own past and future values vs their corresponding lag. For a
+  decent model, the ACF values (except the first one \\\equiv\\ perfect
+  self-correlation) usually lie within the \\95\\\\\\ confidence band
+  (the light blue area within the `plot.acf`) for all lags. Hence, there
+  is no obvious periodical or whatsoever pattern and only a "white
+  noise" is observed (a small and random ACF distribution within the
+  confidence band). If the user cannot be sure about a lag exceeding the
+  confidence band, please perform the Ljung-Box test
+  [`Box.test`](https://rdrr.io/r/stats/box.test.html) and look for the
+  `p.value`, whether the autocorrelation is less (\>\> 0.05) or highly
+  probable (\<\< 0.05).
 
 - df.coeffs:
 
