@@ -55,7 +55,7 @@ As a result of the Eyring-relation fit, list with the following components is av
   \item{df.fit}{Data frame including temperature (in the same region like in the original \code{data.kvT},
   however with the resolution of 1024 points) and the corresponding \code{.fitted} \eqn{k}, according to
   Eyring model.}
-  \item{plot}{Static ggplot2-based object/list, showing graphical representation of the (non-)linear fit,
+  \item{plot}{Static ggplot2-based object, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding

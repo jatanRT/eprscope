@@ -334,7 +334,7 @@ plot_theme_NoY_ticks <- function(axis.text.size = 14,
 #' @inheritParams plot_theme_In_ticks
 #'
 #'
-#' @return Custom \code{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside of the graph/plot panel.
+#' @return Custom \code{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing outside of the graph/plot panel.
 #'
 #'
 #' @examples

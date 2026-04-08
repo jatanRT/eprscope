@@ -68,7 +68,7 @@
 #'   i.e. only graphical representation is shown.
 #'
 #'
-#' @return Plot object (list) of the experimental and the simulated EPR (in derivative or integrated form)
+#' @return Plot object of the experimental and the simulated EPR (in derivative or integrated form)
 #'   spectrum or \code{list} consisting of \code{plot} and the corresponding data frame \code{df}.
 #'   Any output plot corresponds to simple \code{ggplot2} object and can be combined with a desired \code{theme}
 #'   (e.g. with \code{\link{plot_theme_NoY_ticks}}, see also \code{Examples}).

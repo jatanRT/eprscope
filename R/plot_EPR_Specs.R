@@ -137,8 +137,8 @@
 #'   (the axis ticks as well as the text are present).
 #'
 #'
-#' @return EPR spectrum/spectra ('overlay') plot object (corresponding to list of plot components) using
-#'   the \code{ggplot2} functionality, with the key parameter variations like line color, theme, grid...etc.
+#' @return EPR spectrum/spectra ('overlay') plot object (corresponding to a specific value structure of plot components)
+#'   using the \code{ggplot2} functionality, with the key parameter variations like line color, theme, grid...etc.
 #'
 #'
 #' @examples

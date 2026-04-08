@@ -940,7 +940,7 @@ names(dimer.kinetics.01)
 
 ```
 
-They are described in details in documentation of the `eval_kinR_EPR_modelFit()` function and in summary correspond to data frames (`df` + `df.coeffs`), plot object (`plot` , which is also a list) , additional lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) , matrices ( `cov.coeffs` , `cor.coeffs` , `cov.df` , `cor.df`) and numeric vector (`N.converg`). Many ![](RcoreLogo.png){width="16" height="16"} package functions return value(s) in the form of list(s).
+They are described in details in documentation of the `eval_kinR_EPR_modelFit()` function and in summary correspond to data frames (`df` + `df.coeffs`), plot object (`plot` , with a specific `value` structure) , additional lists (`ra` + `abic`), numeric values (`N.evals` + `min.rss`) , matrices ( `cov.coeffs` , `cor.coeffs` , `cov.df` , `cor.df`) and numeric vector (`N.converg`). Many ![](RcoreLogo.png){width="16" height="16"} package functions return value(s) in the form of list(s).
 
 As shown above (see Section \@ref(data-frames)), to select/view a specific data frame column, one can use two types of operators: `$` (dollar sign) and `[]` or `[[]]` (square brackets). The same applies for the lists as it was depicted in several code snippets/code chunks above, using the `$` operator. For example to show/select the vector, corresponding to residual sum of squares at each iteration/evaluation (for the kinetic model fit), we apply:
 

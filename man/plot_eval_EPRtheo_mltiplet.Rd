@@ -28,7 +28,7 @@ A list consisting of:
   of isotropic EPR spectrum when the coupling between unpaired electron and the surrounding nuclei is present.
   Coefficient/Vector names correspond to total spin quantum numbers (e.g. for one \code{"14N"} nucleus, the names
   are represented by the \code{c("-1","0","1")} vector).}
-  \item{plot}{GGplot2 object/list as a graphical representation of the \code{intensity.vec} list component.}
+  \item{plot}{GGplot2 object - graphical representation of the \code{intensity.vec} list component.}
   }
 }
 \description{

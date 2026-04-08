@@ -589,7 +589,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
               sim.fit.vary.list.plots[[p]] +
                 patchwork::plot_annotation(
                   title = paste0("Evaluation ",p),
-                  subtitle = paste0("by ",toupper(optim.method)," optimization")
+                  subtitle = paste0(
+                    "by ",
+                    paste(toupper(optim.method),collapse = " and "),
+                    " optimization"
+                  )
                 )
             )
           }},
@@ -608,7 +612,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
             sim.fit.vary.list.plots[[p]] +
               ggplot2::labs(
                 title = paste0("Evaluation ",p),
-                subtitle = paste0("by ",toupper(optim.method)," optimization")
+                subtitle = paste0(
+                  "by ",
+                  paste(toupper(optim.method),collapse = " and "),
+                  " optimization"
+                )
               )
           )
         }},
@@ -807,7 +815,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     ) +
     ggplot2::ggtitle(
       label = "Space for the Set of Optimized EPR Simulation Parameters",
-      subtitle = paste0("Evaluated by ",toupper(optim.method)," Optimization")
+      subtitle = paste0(
+        "Evaluated by ",
+        paste(toupper(optim.method),collapse = " and "),
+        " Optimization"
+      )
     )
   #
   ## Plot with initial parameter space

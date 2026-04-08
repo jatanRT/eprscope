@@ -41,7 +41,7 @@ should be transparent, \strong{default}: \code{bg.transparent = FALSE}, i.e. no 
 \code{axis.line},...etc), which are not specified otherwise.}
 }
 \value{
-Custom \code{ggplot2} \code{theme} (list) with \code{x,y-axis} ticks pointing outside of the graph/plot panel.
+Custom \code{ggplot2} \code{theme} with \code{x,y-axis} ticks pointing outside of the graph/plot panel.
 }
 \description{
 Change the \href{https://ggplot2.tidyverse.org/}{ggplot2}-based theme in order to meet the needs

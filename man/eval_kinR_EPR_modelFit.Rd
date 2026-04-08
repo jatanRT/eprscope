@@ -146,7 +146,7 @@ List with the following components is available:
   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
   The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
-  \code{\link[stats]{acf}} (please, also refer to the \code{References}). This can be considered as a primary
+  \code{\link[stats]{acf}} (see also \code{References}). This can be considered as a primary
   "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals
   with its own past and future values vs their corresponding lag. For a decent model, the ACF values
   (except the first one \eqn{\equiv} perfect self-correlation) usually lie within

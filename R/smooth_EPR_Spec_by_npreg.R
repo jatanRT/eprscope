@@ -75,7 +75,7 @@
 #'   \describe{
 #'   \item{df}{Original data frame with the addition column, corresponding to smoothed EPR intensity
 #'   (derivative or integrated).}
-#'   \item{plot}{Plot object (list) \emph{EPR intensity} \emph{vs.} \emph{B} with the experimental
+#'   \item{plot}{Plot object \emph{EPR intensity} \emph{vs.} \emph{B} with the experimental
 #'   data and its corresponding smoothed relation performed by splines.}
 #'   \item{rss}{Weighted (if the optional parameter \code{w} is defined) sum of residual squares.}
 #'   \item{degs.freedom}{Equivalent degrees of freedom used.}

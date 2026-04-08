@@ -93,7 +93,7 @@
 #'     columns/variables: \code{Q_C} (charge in coulombs), \code{Q_mC} (charge in millicoulombs,
 #'     if the maximum charge \eqn{\leq 0.099\,\text{C}}) and \code{Ne} (number of transferred
 #'     electrons, if \code{Ne.output = TRUE}).}
-#'     \item{plot}{Side-by-side plot object (list) of \eqn{N_{\text{e}}} \emph{vs} \eqn{t,E}
+#'     \item{plot}{Side-by-side plot object of \eqn{N_{\text{e}}} \emph{vs} \eqn{t,E}
 #'     as well as \eqn{Q} \emph{vs} \eqn{t,E}.}
 #'     }
 #'
@@ -103,8 +103,8 @@
 #'     columns/variables: \code{Q_C} (charge in coulombs), \code{Q_mC} (charge in millicoulombs,
 #'     if the maximum charge \eqn{\leq 0.099\,\text{C}}) and \code{Ne} (number of transferred
 #'     electrons, if \code{Ne.output = TRUE}).}
-#'     \item{plot.Ne}{Plot object (list) of \eqn{N_{\text{e}}} \emph{vs} \eqn{t,E}.}
-#'     \item{plot.Q}{Plot object (list) of \eqn{Q} \emph{vs} \eqn{t,E}.}
+#'     \item{plot.Ne}{Plot object of \eqn{N_{\text{e}}} \emph{vs} \eqn{t,E}.}
+#'     \item{plot.Q}{Plot object of \eqn{Q} \emph{vs} \eqn{t,E}.}
 #'     }
 #'   }
 #'
