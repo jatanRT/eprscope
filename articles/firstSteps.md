@@ -67,7 +67,7 @@ library(tidyverse)
 #> ✔ dplyr     1.2.1     ✔ readr     2.2.0
 #> ✔ forcats   1.0.1     ✔ stringr   1.6.0
 #> ✔ lubridate 1.9.5     ✔ tibble    3.3.1
-#> ✔ purrr     1.2.1     ✔ tidyr     1.3.2
+#> ✔ purrr     1.2.2     ✔ tidyr     1.3.2
 #> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks plotly::filter(), stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()

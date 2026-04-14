@@ -177,12 +177,6 @@ Other Data Reading:
 ``` r
 ## loading the built-in package example to demonstrate
 ## the reading of time series EPR spectra/kinetics:
-triarylam.decay.series.dsc.path <-
-  load_data_example(file =
-    "Triarylamine_radCat_decay_series.DSC")
-triarylam.decay.series.ygf.path <-
-  load_data_example(file =
-    "Triarylamine_radCat_decay_series.YGF")
 triarylam.decay.series.dta.path <-
   load_data_example(file =
     "Triarylamine_radCat_decay_series.DTA")
@@ -190,9 +184,7 @@ triarylam.decay.series.dta.path <-
 ## loading the kinetics:
 triarylam.decay.series.data <-
   readEPR_Exp_Specs_kin(
-    path_to_file = triarylam.decay.series.dta.path,
-    path_to_dsc_par = triarylam.decay.series.dsc.path,
-    path_to_ygf = triarylam.decay.series.ygf.path
+    path_to_file = triarylam.decay.series.dta.path
  )
 #
 ## data preview
@@ -220,12 +212,9 @@ triarylam.decay.series.data$time
 ## returned by the "WinEPR" software
 tmpd.se.cv.b.bin.path <-
   load_data_example("TMPD_specelchem_CV_b.spc")
-tmpd.se.cv.b.par.path <-
-  load_data_example("TMPD_specelchem_CV_b.par")
 tmpd.se.cv.b.dat <-
   readEPR_Exp_Specs_kin(
     path_to_file = tmpd.se.cv.b.bin.path,
-    path_to_dsc_par = tmpd.se.cv.b.par.path,
     col.names = c(
       "B_G",
       "Slice",
