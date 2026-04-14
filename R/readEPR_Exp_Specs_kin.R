@@ -50,12 +50,6 @@
 #' @examples
 #' ## loading the built-in package example to demonstrate
 #' ## the reading of time series EPR spectra/kinetics:
-#' triarylam.decay.series.dsc.path <-
-#'   load_data_example(file =
-#'     "Triarylamine_radCat_decay_series.DSC")
-#' triarylam.decay.series.ygf.path <-
-#'   load_data_example(file =
-#'     "Triarylamine_radCat_decay_series.YGF")
 #' triarylam.decay.series.dta.path <-
 #'   load_data_example(file =
 #'     "Triarylamine_radCat_decay_series.DTA")
@@ -63,9 +57,7 @@
 #' ## loading the kinetics:
 #' triarylam.decay.series.data <-
 #'   readEPR_Exp_Specs_kin(
-#'     path_to_file = triarylam.decay.series.dta.path,
-#'     path_to_dsc_par = triarylam.decay.series.dsc.path,
-#'     path_to_ygf = triarylam.decay.series.ygf.path
+#'     path_to_file = triarylam.decay.series.dta.path
 #'  )
 #' #
 #' ## data preview
@@ -79,12 +71,9 @@
 #' ## returned by the "WinEPR" software
 #' tmpd.se.cv.b.bin.path <-
 #'   load_data_example("TMPD_specelchem_CV_b.spc")
-#' tmpd.se.cv.b.par.path <-
-#'   load_data_example("TMPD_specelchem_CV_b.par")
 #' tmpd.se.cv.b.dat <-
 #'   readEPR_Exp_Specs_kin(
 #'     path_to_file = tmpd.se.cv.b.bin.path,
-#'     path_to_dsc_par = tmpd.se.cv.b.par.path,
 #'     col.names = c(
 #'       "B_G",
 #'       "Slice",
@@ -168,6 +157,24 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   #
   if (origin.cond.all(origin = origin) == 2) {
     #
+    ## expecting that the `.DSC`/`.dsc` file is in the same folder
+    ## as the `.DTA` one and possesses the same name
+    path.to.dsc <- gsub(
+      "\\.DTA$",
+      ".DSC",
+      path_to_file
+    )
+    #
+    ## check the existence of this previous file in the working dir,
+    ## it requires the combination with `path_to_dsc_par` check !!
+    if (!file.exists(path.to.dsc) & is.null(path_to_dsc_par)) {
+      stop(" Please provide the file path for the `.DSC`/`.dsc` file,\n
+             refer to definition of the `path_to_dsc_par` argument !! ")
+    } else {
+      path_to_dsc_par <-
+        path_to_dsc_par %>% `if`(is.null(path_to_dsc_par), path.to.dsc, .)
+    }
+    #
     ## Qvalue
     qValue.obtain <-
       readEPR_param_slct(
@@ -186,6 +193,24 @@ readEPR_Exp_Specs_kin <- function(path_to_file,
   }
   #  ------------------------ WINEPR --------------------------
   if (origin.cond.all(origin = origin) == 0) {
+    #
+    ## expecting that the `.par` file is in the same folder
+    ## as the `.spc` one and possesses the same name
+    path.to.par <- gsub(
+      "\\.spc$",
+      ".par",
+      path_to_file
+    )
+    #
+    ## check the existence of this previous file in the working dir,
+    ## it requires the combination with `path_to_dsc_par` check !!
+    if (!file.exists(path.to.par) & is.null(path_to_dsc_par)) {
+      stop(" Please provide the file path for the `.par` file,\n
+             refer to definition of the `path_to_dsc_par` argument !! ")
+    } else {
+      path_to_dsc_par <-
+        path_to_dsc_par %>% `if`(is.null(path_to_dsc_par), path.to.par, .)
+    }
     #
     ## Qvalue definition
     if (is.null(qValue) || is.na(qValue)) {
