@@ -271,7 +271,7 @@ triarylamine.decay.data.integs <-
 ## integral of the PNT EPR spectrum in integrated form,
 ## first generate the simulated spectrum/data
 pnt.sim.integ.iso <-
-  eval_sim_EPR_iso(g = 2.0027,
+  eval_sim_EPR_iso(g.iso = 2.0027,
     instrum.params = c(Bcf = 3500, # central field
                        Bsw = 100, # sweep width
                        Npoints = 4096,

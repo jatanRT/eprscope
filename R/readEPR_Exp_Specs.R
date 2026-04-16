@@ -635,7 +635,7 @@ readEPR_Exp_Specs <- function(path_to_file,
         ## condition for 2nd variable series -->
         if (length(col.names) == 3) {
           stop(" In order to load the 'Xenon' experiment with\n
-               2nd var. series (e.g. time), the `col.names` arument\n
+               2nd var. series (e.g. time), the `col.names` argument\n
                must be defined like `c('index','B_G','time_s','dIepr_over_dB')`\n
                see `Examples` in the documentation !! ")
         }
