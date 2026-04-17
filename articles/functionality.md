@@ -547,7 +547,7 @@ tmpd.g.iso.spec <-
 #
 # value preview
 tmpd.g.iso.spec
-#> [1] 2.00304
+#> [1] 2.003
 ```
 
 Function
@@ -823,7 +823,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.098   0.005   0.103
+#>   0.076   0.007   0.083
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -832,12 +832,12 @@ sim.tmpd.iso <-
 # data frame preview
 head(sim.tmpd.iso$df)
 #>    Bsim_G Bsim_mT   Bsim_T dIeprSim_over_dB
-#> 1 3439.17 343.917 0.343917    9.6281321e-07
-#> 2 3439.22 343.922 0.343922    9.6721842e-07
-#> 3 3439.27 343.927 0.343927    9.7169711e-07
-#> 4 3439.32 343.932 0.343932    9.7625349e-07
-#> 5 3439.37 343.937 0.343937    9.8089217e-07
-#> 6 3439.42 343.942 0.343942    9.8561824e-07
+#> 1 3439.17 343.917 0.343917    9.5880715e-07
+#> 2 3439.22 343.922 0.343922    9.6314739e-07
+#> 3 3439.27 343.927 0.343927    9.6755734e-07
+#> 4 3439.32 343.932 0.343932    9.7204086e-07
+#> 5 3439.37 343.937 0.343937    9.7660216e-07
+#> 6 3439.42 343.942 0.343942    9.8124588e-07
 ```
 
 Afterwards, the simulated EPR spectrum can be presented/compared with

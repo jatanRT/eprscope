@@ -488,7 +488,7 @@ Figure 4.2: Comparison of <span class="math inline">\(\small \ce{TMPD^{.+}}\)</s
 <span><span class="co">#</span></span>
 <span><span class="co"># value preview</span></span>
 <span><span class="va">tmpd.g.iso.spec</span></span>
-<span><span class="co">#&gt; [1] 2.00304</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 2.003</span></span></code></pre></div>
 <p>Function <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> represents an alternative way how to figure out the <em>g</em>-value. Within a simple UI (<strong>u</strong>ser <strong>i</strong>nterface), based on <a href="https://shiny.posit.co/r/gallery/" class="external-link"><em>R</em> Shiny</a>, one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the <strong>“Microwave frequency (GHz)”</strong> is available (the function automatically reads the right frequency by loading the “parameter” file with <code>.par</code> or <code>.dsc</code>/ <code>.DSC</code> extensions), by activating the <strong>“Show g-Values”</strong>. Immediately after that, the EPR spectrum abscissa is automatically converted from <em>B</em> into <em>g</em> scale (see Figure <a href="#fig:g-value-shiny-app">5.1</a>).</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:g-value-shiny-app"></span>
@@ -711,7 +711,7 @@ aiso_mT
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.098   0.005   0.103</span></span>
+<span><span class="co">#&gt;   0.076   0.007   0.083</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>
@@ -720,12 +720,12 @@ aiso_mT
 <span><span class="co"># data frame preview</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sim.tmpd.iso</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    Bsim_G Bsim_mT   Bsim_T dIeprSim_over_dB</span></span>
-<span><span class="co">#&gt; 1 3439.17 343.917 0.343917    9.6281321e-07</span></span>
-<span><span class="co">#&gt; 2 3439.22 343.922 0.343922    9.6721842e-07</span></span>
-<span><span class="co">#&gt; 3 3439.27 343.927 0.343927    9.7169711e-07</span></span>
-<span><span class="co">#&gt; 4 3439.32 343.932 0.343932    9.7625349e-07</span></span>
-<span><span class="co">#&gt; 5 3439.37 343.937 0.343937    9.8089217e-07</span></span>
-<span><span class="co">#&gt; 6 3439.42 343.942 0.343942    9.8561824e-07</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 3439.17 343.917 0.343917    9.5880715e-07</span></span>
+<span><span class="co">#&gt; 2 3439.22 343.922 0.343922    9.6314739e-07</span></span>
+<span><span class="co">#&gt; 3 3439.27 343.927 0.343927    9.6755734e-07</span></span>
+<span><span class="co">#&gt; 4 3439.32 343.932 0.343932    9.7204086e-07</span></span>
+<span><span class="co">#&gt; 5 3439.37 343.937 0.343937    9.7660216e-07</span></span>
+<span><span class="co">#&gt; 6 3439.42 343.942 0.343942    9.8124588e-07</span></span></code></pre></div>
 <p>Afterwards, the simulated EPR spectrum can be presented/compared with the experimental one by the <code><a href="../reference/present_EPR_Sim_Spec.html">present_EPR_Sim_Spec()</a></code> function (Figure <a href="#fig:tmpd-radcat-sim-expr-compar">5.3</a>), which is essentially based on <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a> package and therefore can be combined with the <a href="https://ggplot2.tidyverse.org/reference/index.html" class="external-link">additional {ggplot2} functions</a> . Such simulation of the <span class="math inline">\(\small \ce{TMPD^{.+}}\)</span> EPR spectrum can be also performed by an interactive manner using the above-mentioned <code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code> . One can “play” with all the simulation parameters defined above and the simulated EPR spectrum is instantaneously updated and compared with the experimental one like depicted on Figure <a href="#fig:simulation-shiny-app">5.4</a>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>

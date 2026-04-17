@@ -3,13 +3,16 @@
 Calculation of g-value according to fundamental formula, see
 [`eval_gFactor`](https://jatanrt.github.io/eprscope/reference/eval_gFactor.md).
 \\g\\-related magnetic flux density (like \\B\_{\text{iso}}\\ or
-\\B\_{\text{center}}\\) is directly taken from the EPR spectrum. If
-positive and negative derivative intensities of the spectral line are
-similar and their distance from the middle point of the spectrum equals,
-the \\B\_{\text{iso}}\\ should be considered. Otherwise, the
+\\B\_{\text{center}}\\) is directly taken from the EPR spectrum by the
+[`eval_peakPick_Spec`](https://jatanrt.github.io/eprscope/reference/eval_peakPick_Spec.md).
+If positive and negative derivative intensities of the spectral line are
+similar and their distances from the middle point of the spectrum are
+close, the \\B\_{\text{iso}}\\ should be considered. Otherwise, the
 \\B\_{\text{center}}\\ must be taken into account. In case of integrated
-EPR spectrum/data, the \\B\_{\text{max}}\\ is used for the \\g\\-value
-calculation.
+EPR spectrum/data, the \\B\_{\text{max}}\\ is/are used for the
+\\g\\-value calculation. If instead of one central two
+\\B\\-values/lines appear, the function automatically calculates the
+middle point between both.
 
 ## Usage
 
@@ -82,7 +85,7 @@ eval_gFactor_Spec(
   corresponding to `dIepr_over_dB = 0` (close to zero, which is
   `iso = FALSE`). For the `lineSpecs.form = "integrated"` (or
   `absorptiion`), the `iso` is related to magnetic flux density with
-  `max.` intensity.
+  `max.` intensity(ies).
 
 ## Value
 
@@ -121,6 +124,6 @@ eval_gFactor_Spec(data.spectr = data.epr,
                   B.unit = "mT",
                   B = "B_mT",
                   Blim = c(349.677, 350.457))
-#> [1] 2.00304
+#> [1] 2.003
 
 ```
