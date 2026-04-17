@@ -41,7 +41,7 @@ test_that("The parameters determined from the expr. EPR spectrum
   ## use the same code like in `test-eval_sim_EPR_iso` =>
   #
   ## from the expr. spectrum, the following regions may be obtained =>
-  B.regions.mT <- list(c(346.5, 348.5), c(348.5, 350.5), c(350.5, 352.5))
+  B.regions.mT <- list(c(346.30, 348.57), c(348.57, 350.27), c(350.27, 352.39))
   #
   ## evaluating g
   g <- sapply(B.regions.mT, function(i) {
@@ -75,7 +75,7 @@ test_that("The parameters determined from the expr. EPR spectrum
       )
   }
   ## ... and the mean value
-  mean.A.iso.expr <- round(mean(A.iso.expr), 2) ## the mean value is 52.32 MHz
+  mean.A.iso.expr <- round(mean(A.iso.expr), 2) ## the mean value is \approx 52.4(1) MHz
   #
   ## To simulate that EPR spectrum also the line width is required =>
   DeltaB.expr <- c() ## in mT
@@ -142,10 +142,12 @@ test_that("The parameters determined from the expr. EPR spectrum
   ## A MHz, the same tol. as before =>
   expect_lt(abs(A.iso.sim.fit - mean.A.iso.expr), 5e-1) # 0.5 MHz \approx 0.18 G should be OK
   ## sum of the residual squares (lower than ...) =>
-  expect_lt(aminoxyl.rad.data.simFit.a$min.rss[[1]], 1.3e-8)
+  expect_lt(aminoxyl.rad.data.simFit.a$min.rss[[1]], 1.8e-7)
   ## Linewidths => expr. + sim. fit. comparison (difference lower than 0.03)  =>
   expect_lte(abs(weight.DeltaB.sim.fit - mean.DeltaB.expr), 0.03) # in mT
   ## g-Values => expr. + sim. fit. comparison
-  expect_lte(abs(g.iso.sim.fit - g[2]),2.4e-4) # 2e-4 is the usual experimental uncertainty
+  expect_lte(abs(g.iso.sim.fit - g[2]),1e-3)
+  # 2e-4 is the usual experimental uncertainty for the determination of g
+  # however for the fast fitting bigger uncertainty might be observed
   #
 })

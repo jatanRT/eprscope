@@ -81,11 +81,13 @@ eval_gFactor <- function(nu.val,
 #' @description
 #'   Calculation of g-value according to fundamental formula, see \code{\link{eval_gFactor}}.
 #'   \eqn{g}-related magnetic flux density (like \eqn{B_{\text{iso}}} or \eqn{B_{\text{center}}})
-#'   is directly taken from the EPR spectrum. If positive and negative derivative intensities of the spectral
-#'   line are similar and their distance from the middle point of the spectrum equals,
-#'   the \eqn{B_{\text{iso}}} should be considered. Otherwise, the \eqn{B_{\text{center}}} must be taken
-#'   into account. In case of integrated EPR spectrum/data, the \eqn{B_{\text{max}}} is used for
-#'   the \eqn{g}-value calculation.
+#'   is directly taken from the EPR spectrum by the \code{\link{eval_peakPick_Spec}}. If positive and negative
+#'   derivative intensities of the spectral line are similar and their distances from the middle
+#'   point of the spectrum are close, the \eqn{B_{\text{iso}}} should be considered.
+#'   Otherwise, the \eqn{B_{\text{center}}} must be taken
+#'   into account. In case of integrated EPR spectrum/data, the \eqn{B_{\text{max}}} is/are used for
+#'   the \eqn{g}-value calculation. If instead of one central two \eqn{B}-values/lines appear,
+#'   the function automatically calculates the middle point between both.
 #'
 #'
 #' @param data.spectr Spectrum data frame object where the magnetic flux density (in \code{mT} or \code{G}
@@ -112,7 +114,7 @@ eval_gFactor <- function(nu.val,
 #'   that is \eqn{g_{\text{iso}}} (this is the \strong{default} one: \code{iso = TRUE}), or by finding
 #'   the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close to zero, which is \code{iso = FALSE}).
 #'   For the \code{lineSpecs.form = "integrated"} (or \code{absorptiion}), the \code{iso} is related to magnetic
-#'   flux density with \code{max.} intensity.
+#'   flux density with \code{max.} intensity(ies).
 #'
 #'
 #' @return Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
@@ -164,37 +166,93 @@ eval_gFactor_Spec <- function(data.spectr,
   data.B.region <- c(min(data.spectr[[B]]), max(data.spectr[[B]]))
   Blim <- Blim %>% `if`(is.null(Blim), data.B.region, .)
   #
-  ## B minimum & maximum
-  B.min <- data.spectr %>%
-    dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2])) %>%
-    dplyr::filter(.data[[Intensity]] == min(.data[[Intensity]])) %>%
-    dplyr::pull(.data[[B]])
+  ## first of all filter the data frame
+  data.spectr.lim <- data.spectr %>%
+    dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2]))
   #
-  B.max <- data.spectr %>%
-    dplyr::filter(dplyr::between(.data[[B]], Blim[1], Blim[2])) %>%
-    dplyr::filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
-    dplyr::pull(.data[[B]])
-  ## B between minimum and maximum of dIepr_over_dB:
+  ## condition for the `lineSpecs.form`
+  LineSpecsForm_cond <- function(lineform) {
+    if (grepl("deriv|Deriv",lineform)) {
+      return(1)
+    }
+    if (grepl("integ|Integ|absorpt|Absorpt",lineform)) {
+      return(0)
+    }
+  }
+  #
+  ## function to detect the central B, based on
+  Bcentral_for_g_byPeakPick_fun <-
+    function(lineForm,maxIntensityPerc = 0.54) {
+      #
+      ## B maximum or minimum region with the help of peak-picking,
+      maxmin.peaks.df <-
+        eval_peakPick_Spec(
+          data.spectr = data.spectr.lim,
+          Intensity = Intensity,
+          x = B,
+          lineSpecs.form = lineForm,
+          min.peak.dist = 1,
+          only.peak.pn = switch(
+            2 - LineSpecsForm_cond(lineform = lineForm),
+            NULL,
+            "p"
+          ),
+          double.sided = switch(
+            2 - LineSpecsForm_cond(lineform = lineForm),
+            TRUE,
+            FALSE
+          ),
+          ## threshold 54% of the maximum intensity
+          min.peak.height = maxIntensityPerc *
+            max(data.spectr.lim[[Intensity]])
+        )$df
+      #
+      ## number of peak-pick points
+      maxmin.peaks.df.N <- nrow(maxmin.peaks.df)
+      #
+      ## detect central based on even or odd numbers within `maxmin.peaks.df`
+      if (maxmin.peaks.df.N %% 2 == 0) {
+        B.middle <- mean(
+          c(
+            maxmin.peaks.df[[B]][maxmin.peaks.df.N / 2],
+            maxmin.peaks.df[[B]][(maxmin.peaks.df.N / 2) + 1L]
+          )
+        )
+      } else {
+        B.middle <- maxmin.peaks.df[[B]][(maxmin.peaks.df.N + 1L) / 2]
+      }
+     #
+     return(B.middle)
+     #
+    }
+  #
   if (isTRUE(iso)) {
-    if (grepl("deriv|Deriv",lineSpecs.form)) {
-      B.center <- (B.min + B.max) / 2
-      ## B at dIepr_over_dB = 0 (near 0, see next comment on `B.center`):
-    }
-    if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
-      B.center <- B.max
-    }
+    #
+    B.center <- Bcentral_for_g_byPeakPick_fun(lineForm = lineSpecs.form)
+    #
   } else {
     if (grepl("deriv|Deriv",lineSpecs.form)) {
-      ## Find the value B, corresponding to Intensity very close to 0 (tolerance max(Intensity)/2)
-      B.center <- data.spectr %>%
-        dplyr::filter(dplyr::between(.data[[B]], B.max, B.min)) %>%
+      ## Find the value B, corresponding to Intensity very close
+      ## to 0 (tolerance max(Intensity)/2), fitering must be performed
+      ## prior to own evaluation
+      B.center <- data.spectr.lim %>%
         dplyr::mutate(AbsIntens = abs(.data[[Intensity]])) %>%
-        dplyr::filter(dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 2)) %>%
+        dplyr::filter(
+          dplyr::near(AbsIntens, 0, tol = max(.data[[Intensity]]) / 2)
+        ) %>%
         dplyr::filter(AbsIntens == min(AbsIntens)) %>%
         dplyr::pull(.data[[B]])
     }
     if (grepl("integ|Integ|absorpt|Absorpt",lineSpecs.form)) {
-      B.center <- B.max
+      #
+      B.center <- data.spectr.lim %>%
+        dplyr::filter(
+          dplyr::near(.data[[Intensity]],
+                      max(.data[[Intensity]]),
+                      tol = (3 * max(.data[[Intensity]])) / 4)
+        ) %>%
+        dplyr::filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
+        dplyr::pull(.data[[B]])
     }
   }
   ## g -value calculation:
@@ -213,7 +271,7 @@ eval_gFactor_Spec <- function(data.spectr,
     g <- g.precurs
   }
   #
-  return(round(g, digits = 5))
+  return(round(g, digits = 4))
   #
 }
 #

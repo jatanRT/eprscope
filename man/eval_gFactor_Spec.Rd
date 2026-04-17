@@ -47,7 +47,7 @@ that between the \code{min.} and \code{max.} derivative intensities (\code{dIepr
 that is \eqn{g_{\text{iso}}} (this is the \strong{default} one: \code{iso = TRUE}), or by finding
 the \eqn{B}-value corresponding to \code{dIepr_over_dB = 0} (close to zero, which is \code{iso = FALSE}).
 For the \code{lineSpecs.form = "integrated"} (or \code{absorptiion}), the \code{iso} is related to magnetic
-flux density with \code{max.} intensity.}
+flux density with \code{max.} intensity(ies).}
 }
 \value{
 Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center}}},
@@ -56,11 +56,13 @@ Numeric \eqn{g_{\text{iso}}}-value ('iso' = 'isotropic') or \eqn{g_{\text{center
 \description{
 Calculation of g-value according to fundamental formula, see \code{\link{eval_gFactor}}.
   \eqn{g}-related magnetic flux density (like \eqn{B_{\text{iso}}} or \eqn{B_{\text{center}}})
-  is directly taken from the EPR spectrum. If positive and negative derivative intensities of the spectral
-  line are similar and their distance from the middle point of the spectrum equals,
-  the \eqn{B_{\text{iso}}} should be considered. Otherwise, the \eqn{B_{\text{center}}} must be taken
-  into account. In case of integrated EPR spectrum/data, the \eqn{B_{\text{max}}} is used for
-  the \eqn{g}-value calculation.
+  is directly taken from the EPR spectrum by the \code{\link{eval_peakPick_Spec}}. If positive and negative
+  derivative intensities of the spectral line are similar and their distances from the middle
+  point of the spectrum are close, the \eqn{B_{\text{iso}}} should be considered.
+  Otherwise, the \eqn{B_{\text{center}}} must be taken
+  into account. In case of integrated EPR spectrum/data, the \eqn{B_{\text{max}}} is/are used for
+  the \eqn{g}-value calculation. If instead of one central two \eqn{B}-values/lines appear,
+  the function automatically calculates the middle point between both.
 }
 \examples{
 ## load package built-in EPR spectral data example:

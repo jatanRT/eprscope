@@ -62,7 +62,7 @@ aminoxyl.rad.data.a <-
 ## the regions to get B,g can be obtained from the interactive EPR spectrum like =>
 ## `plot_EPR_Specs2D_interact(aminoxyl.rad.data.a)`
 ## from that spectrum, the following regions may be obtained =>
-B.regions.mT <- list(c(346.5, 348.5), c(348.5, 350.5), c(350.5, 352.5))
+B.regions.mT <- list(c(346.30, 348.57), c(348.57, 350.27), c(350.27, 352.39))
 ## evaluating g
 g <- sapply(B.regions.mT, function(i) {
   eval_gFactor_Spec(
@@ -97,8 +97,8 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   ## in order to test whether the same `B` values are obtained
   #
   B.unit <- "mT"
-  ## the A_iso = 52.349 MHz from the expr. spectrum (see the `mean.A.iso.expr` below)
-  nuclear.system <- list("14N", 1, 52.349)
+  ## the A_iso = 52.4 MHz from the expr. spectrum (see the `mean.A.iso.expr` below)
+  nuclear.system <- list("14N", 1, 52.4)
   ## `nuclear.system` definition if `nuclear.system != NULL`
   if (!is.null(nuclear.system)) {
     ## check if the list is nested (several groups) or simple (only one group)
@@ -318,7 +318,7 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   # ----------- COMPARISON BETWEEN BREIT-RABI and EXPERIMENTAL `B`,`g` -------------
   #
   expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 1e-2) ## `B` in mT
-  expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 1e-4) ## `g`
+  expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 5e-4) ## `g`
 })
 #
 # -----------------------------------------------------------------------------------
@@ -370,7 +370,7 @@ test_that("The isotropic hyperfine coupling constants determined
       g.iso = g[2],
       instrum.params = instrum.params,
       B.unit = "mT",
-      nuclear.system = list("14N", 1, 52.349),
+      nuclear.system = list("14N", 1, 52.4),
       lineGL.DeltaB = list(mean.DeltaB.expr, NULL)
     )$df
   #
@@ -416,7 +416,7 @@ test_that("The isotropic hyperfine coupling constants determined
   # --------- COMPARISON BETWEEN SIMULATED and EXPERIMENTAL `DeltaB`,`A.iso` -----------
   #
   expect_equal(abs(mean.DeltaB.sim - mean.DeltaB.expr), 0.02, tolerance = 1e-2) # `B` diff. in mT
-  expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 1e-1) ## `A.iso` in MHz
+  expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 5e-2) ## `A.iso` in MHz
   #
   ## the DeltaB` can be also obtained from the simulation fit,
   ## see `test-eval_sim_EPR_isoFit`

@@ -173,12 +173,17 @@ eval_peakPick_Spec <- function(data.spectr,
   #
   ## Define limits for `y` (similarly like in case of `x` above)
   ## 20% of the `max` below the `min` and 10% above the `max`
+  ## only for visual representation
   data.y.region <-
     c(min(data.spectr[[Intensity]]),max(data.spectr[[Intensity]]))
   data.y.region.2 <-
     c(data.y.region[1]  - (data.y.region[2] * 0.2),data.y.region[2] * 1.2)
   Ilim <- Ilim %>% `if`(is.null(Ilim),data.y.region.2, .)
   #
+  ## Define limits if `xlim = NULL` take the entire data region
+  ## otherwise use predefined vector
+  data.x.region <- c(min(data.spectr[[x]]), max(data.spectr[[x]]))
+  xlim <- xlim %>% `if`(is.null(xlim), data.x.region, .)
   #
   ## ------------------- Calculations: --------------------
   #
@@ -206,13 +211,17 @@ eval_peakPick_Spec <- function(data.spectr,
     }
   }
   #
-  ## definition for `min.peak.height`/threshold
+  ## re-definition (filtering) of data frame `data.spectr`
+  data.spectr <- data.spectr %>%
+    dplyr::filter(dplyr::between(.data[[x]], xlim[1], xlim[2]))
+  #
+  ## definition for default `min.peak.height`/threshold
   min.peak.height <-
     min.peak.height %>%
     `if`(is.null(min.peak.height),
          0.2 * max(data.spectr[[Intensity]]), .)
   #
-  ## definition for `min.peak.dist`
+  ## definition for `min.peak.dist` - two consecutive points
   min.peak.dist <-
     min.peak.dist %>%
     `if` (is.null(min.peak.dist),
