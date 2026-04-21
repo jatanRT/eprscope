@@ -124,6 +124,6 @@ eval_gFactor_Spec(data.spectr = data.epr,
                   B.unit = "mT",
                   B = "B_mT",
                   Blim = c(349.677, 350.457))
-#> [1] 2.003
+#> [1] 2.00304
 
 ```

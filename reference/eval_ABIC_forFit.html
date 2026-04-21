@@ -164,7 +164,7 @@ distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)auss
   where \(k\) and \(N\) correspond to number of (model/fit) parameters and number of observations, respectively.
   The 3rd term in the \(AIC\) definition represents the correction for small sample/observation ensemble, which
   for high number of observations becomes very small (and can be neglected,
-  see e.g. Burnham and Anderson (2004) or Kumar (2023) in the <code>References</code>). For example, for EPR simulation
+  see e.g. Burnham and Anderson (2004) in the <code>References</code>). For example, for EPR simulation
   fit with 2048 points and 8 parameters it equals to \(16 \cdot 9\,/\,2039 \approx 0.0706\). However, for
   radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
   in \(6 \cdot 4\,/\,38 \approx 0.6316\).</p>
@@ -172,7 +172,7 @@ distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)auss
   impractical or even impossible to perform.</strong> To overcome this difficulty, the formulae for both criteria
   use a <strong>standard assumption that the model and the data residuals/errors are identically distributed.</strong>
   Therefore, <strong>the residuals/errors are applied as a proxy for the MLE/\(LL\)</strong> (see e.g. Rossi et al. (2020)
-  and Kumar (2023) in the <code>References</code>). Evaluation of the latter, in the actual function, proceeds via <code>sum</code>
+  in the <code>References</code>). Evaluation of the latter, in the actual function, proceeds via <code>sum</code>
   of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
   1. the <code><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">stats::dnorm</a></code> (for the normal/Gaussian distribution); 2. the <code><a href="https://rdrr.io/r/stats/TDist.html" class="external-link">stats::dt</a></code>
   (for the Student's t-distribution) and 3. the <code><a href="https://rdrr.io/r/stats/Cauchy.html" class="external-link">stats::dcauchy</a></code>,
@@ -214,8 +214,6 @@ distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)auss
 <p>Hyndman RJ, Athanasopoulos G (2021). <em>Forecasting: Principles and Practise</em>, 3rd edition,
   O Texts, ISBN 978-0-987-50713-6, <a href="https://otexts.com/fpp3/" class="external-link">https://otexts.com/fpp3/</a>.</p>
 <p>Hyndman RJ (2013). "Facts and Fallacies of the AIC", <a href="https://robjhyndman.com/hyndsight/aic/" class="external-link">https://robjhyndman.com/hyndsight/aic/</a>.</p>
-<p>Kumar A (2023). "AIC and BIC for Selecting Regression Models: Formula, Examples",
-  <a href="https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments" class="external-link">https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

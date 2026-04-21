@@ -124,11 +124,11 @@ and \\N\\ correspond to number of (model/fit) parameters and number of
 observations, respectively. The 3rd term in the \\AIC\\ definition
 represents the correction for small sample/observation ensemble, which
 for high number of observations becomes very small (and can be
-neglected, see e.g. Burnham and Anderson (2004) or Kumar (2023) in the
-`References`). For example, for EPR simulation fit with 2048 points and
-8 parameters it equals to \\16 \cdot 9\\/\\2039 \approx 0.0706\\.
-However, for radical kinetic measurements with 42 EPR spectra and 3
-parameters, the 3rd term results in \\6 \cdot 4\\/\\38 \approx 0.6316\\.
+neglected, see e.g. Burnham and Anderson (2004) in the `References`).
+For example, for EPR simulation fit with 2048 points and 8 parameters it
+equals to \\16 \cdot 9\\/\\2039 \approx 0.0706\\. However, for radical
+kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term
+results in \\6 \cdot 4\\/\\38 \approx 0.6316\\.
 
 **The original MLE/\\LL\\ calculation is based on the model.
 Nevertheless, such computation can be quite often impractical or even
@@ -136,10 +136,10 @@ impossible to perform.** To overcome this difficulty, the formulae for
 both criteria use a **standard assumption that the model and the data
 residuals/errors are identically distributed.** Therefore, **the
 residuals/errors are applied as a proxy for the MLE/\\LL\\** (see e.g.
-Rossi et al. (2020) and Kumar (2023) in the `References`). Evaluation of
-the latter, in the actual function, proceeds via `sum` of three main
-probability distributions for residuals (additional distributions may be
-added in the newer package versions): 1. the
+Rossi et al. (2020) in the `References`). Evaluation of the latter, in
+the actual function, proceeds via `sum` of three main probability
+distributions for residuals (additional distributions may be added in
+the newer package versions): 1. the
 [`stats::dnorm`](https://rdrr.io/r/stats/Normal.html) (for the
 normal/Gaussian distribution); 2. the
 [`stats::dt`](https://rdrr.io/r/stats/TDist.html) (for the Student's
@@ -211,10 +211,6 @@ Practise*, 3rd edition, O Texts, ISBN 978-0-987-50713-6,
 
 Hyndman RJ (2013). "Facts and Fallacies of the AIC",
 <https://robjhyndman.com/hyndsight/aic/>.
-
-Kumar A (2023). "AIC and BIC for Selecting Regression Models: Formula,
-Examples",
-<https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments>.
 
 ## See also
 
