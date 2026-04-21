@@ -29,7 +29,7 @@ test_that("g-Value of the derivative (simulated) EPR spectrum properly extracted
      )
   #
   ## comparison
-  expect_equal(g.val,g.deriv.single.line,tolerance = 1e-4)
+  expect_equal(g.val,g.deriv.single.line,tolerance = 1e-5)
   #
 })
 #
@@ -68,7 +68,7 @@ test_that("g-Value of the integrated (simulated) EPR spectrum (with HF structure
       lineSpecs.form = "absorption"
     )
   #
-  expect_equal(g.val.hf,g.integ.hf.spec,tolerance = 1e-4)
+  expect_equal(g.val.hf,g.integ.hf.spec,tolerance = 1e-5)
   #
 })
 #

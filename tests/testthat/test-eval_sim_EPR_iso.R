@@ -317,8 +317,9 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   #
   # ----------- COMPARISON BETWEEN BREIT-RABI and EXPERIMENTAL `B`,`g` -------------
   #
-  expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 1e-2) ## `B` in mT
-  expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 5e-4) ## `g`
+  expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 1e-3) ## `B` in mT
+  expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 4e-4) ## `g`
+  ## the g's of the simulated spectrum also depend on the A (MHz), see below
 })
 #
 # -----------------------------------------------------------------------------------
@@ -416,7 +417,7 @@ test_that("The isotropic hyperfine coupling constants determined
   # --------- COMPARISON BETWEEN SIMULATED and EXPERIMENTAL `DeltaB`,`A.iso` -----------
   #
   expect_equal(abs(mean.DeltaB.sim - mean.DeltaB.expr), 0.02, tolerance = 1e-2) # `B` diff. in mT
-  expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 5e-2) ## `A.iso` in MHz
+  expect_equal(mean.A.iso.sim,mean.A.iso.expr,tolerance = 2e-2) ## `A.iso` in MHz
   #
   ## the DeltaB` can be also obtained from the simulation fit,
   ## see `test-eval_sim_EPR_isoFit`

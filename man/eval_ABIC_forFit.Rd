@@ -78,7 +78,7 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   where \eqn{k} and \eqn{N} correspond to number of (model/fit) parameters and number of observations, respectively.
   The 3rd term in the \eqn{AIC} definition represents the correction for small sample/observation ensemble, which
   for high number of observations becomes very small (and can be neglected,
-  see e.g. Burnham and Anderson (2004) or Kumar (2023) in the \code{References}). For example, for EPR simulation
+  see e.g. Burnham and Anderson (2004) in the \code{References}). For example, for EPR simulation
   fit with 2048 points and 8 parameters it equals to \eqn{16 \cdot 9\,/\,2039 \approx 0.0706}. However, for
   radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
   in \eqn{6 \cdot 4\,/\,38 \approx 0.6316}.
@@ -87,7 +87,7 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   impractical or even impossible to perform.} To overcome this difficulty, the formulae for both criteria
   use a \strong{standard assumption that the model and the data residuals/errors are identically distributed.}
   Therefore, \strong{the residuals/errors are applied as a proxy for the MLE/\eqn{LL}} (see e.g. Rossi et al. (2020)
-  and Kumar (2023) in the \code{References}). Evaluation of the latter, in the actual function, proceeds via \code{sum}
+  in the \code{References}). Evaluation of the latter, in the actual function, proceeds via \code{sum}
   of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
   1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
@@ -172,9 +172,6 @@ Fabozzi FJ, Focardi FM, Rachev ST, Arshanapalli BG (2014). \emph{The Basics of F
   O Texts, ISBN 978-0-987-50713-6, \url{https://otexts.com/fpp3/}.
 
   Hyndman RJ (2013). "Facts and Fallacies of the AIC", \url{https://robjhyndman.com/hyndsight/aic/}.
-
-  Kumar A (2023). "AIC and BIC for Selecting Regression Models: Formula, Examples",
-  \url{https://vitalflux.com/aic-vs-bic-for-regression-models-formula-examples/#comments}.
 }
 \seealso{
 Other Simulations and Optimization: 

@@ -271,7 +271,7 @@ eval_gFactor_Spec <- function(data.spectr,
     g <- g.precurs
   }
   #
-  return(round(g, digits = 4))
+  return(round(g, digits = 5))
   #
 }
 #

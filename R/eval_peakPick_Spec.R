@@ -169,7 +169,7 @@ eval_peakPick_Spec <- function(data.spectr,
   xvar <- NULL
   #
   ## set up the decimal places/digits option
-  options(digits = 8)
+  options(digits = 9)
   #
   ## Define limits for `y` (similarly like in case of `x` above)
   ## 20% of the `max` below the `min` and 10% above the `max`
