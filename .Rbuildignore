@@ -10,3 +10,5 @@
 ^\.github$
 ^tests/testthat\.R$
 ^README\.Rmd$
+^\.positai$
+^\.claude$
