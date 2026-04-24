@@ -10,7 +10,8 @@
 #'   Launch this app in order to quickly check recorded individual EPR spectra with their instrumental parameters.
 #'   Additionally, you may try to interactively simulate the isotropic continuous wave (CW) EPR spectra
 #'   using the simple graphical user interface (GUI) based on the \href{https://shiny.posit.co/}{R Shiny} and several
-#'   functions from the package (see \code{Details}).
+#'   functions from the package (see \code{Details}). Screenshots of the app (e.g. visualization of g-Factor scale
+#'   as well as interactive simulation) you may find in the \code{vignette("functionality")}.
 #'
 #'
 #' @details

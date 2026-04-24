@@ -102,15 +102,16 @@ and not on the common integration of rate equations.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
-(\code{\link[deSolve]{lsoda}}, additional methods, see link for the \code{ode} function above).}
+(\code{\link[deSolve]{lsoda}}, additional methods (e.g. \code{"rk4"}, \code{"daspk"}, \code{"euler"}),
+see link for the \code{ode} function above).}
 
 \item{time.frame.model}{Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-between two consecutive points in \code{time.unit}. Therefore, the number of points is defined 
+between two consecutive points in \code{time.unit}. Therefore, the number of points is defined
 by the \code{time.interval.model} argument:
 \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 where the \eqn{Interval[2]}, \eqn{Interval[1]} equal to the 2nd and the 1st element of the \code{time.interval.model},
-respectively; and the \eqn{Frame} corresponds to \code{time.frame.model}. This argument is required to numerically 
-solve the kinetic differential equations by the \code{\link[deSolve]{ode}}. For the default interval mentioned 
+respectively; and the \eqn{Frame} corresponds to \code{time.frame.model}. This argument is required to numerically
+solve the kinetic differential equations by the \code{\link[deSolve]{ode}}. For the default interval mentioned
 above, the \strong{default} value reads \code{time.frame.model = 2} (in \code{time.unit}).}
 
 \item{time.correct}{Logical, if time of recorded series of the EPR spectra needs to be corrected.

@@ -10,7 +10,7 @@
 #'   as well as comparison with the experimental data for various predefined model reactions involving
 #'   radical(s) (labeled as "R"). Profiles are evaluated by numeric solution of the rate equations,
 #'   using the \strong{O}rdinary \strong{D}ifferential \strong{E}quations (ODE from
-#'   the \href{https://desolve.r-forge.r-project.org/index.html}{desolve R package}).
+#'   the \href{https://github.com/tpetzoldt/deSolve/}{desolve R package}).
 #'   This function is inspired by the
 #'   \href{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}{R-bloggers
 #'   article}.
@@ -38,7 +38,7 @@
 #'   for the reaction, corresponds to its stoichiometry, the reaction is described as the elementary
 #'   one. In EPR spectroscopy, the number of radicals is directly proportional to (double) integral
 #'   of the radical EPR spectrum (see also \code{\link{quantify_EPR_Abs}}). Therefore, for a quick evaluation
-#'   or and/or comparison of different kinetic data, one can also obtain the rate constant
+#'   and/or comparison of different kinetic data, one can also obtain the rate constant
 #'   from the area/integral \emph{vs} time fit onto the experimental EPR spectral time series outputs
 #'   (see also the \code{\link{eval_kinR_EPR_modelFit}}).
 #'   Accordingly, the "R" concentration (or number of radicals/V) can be replaced by the corresponding integral.
@@ -48,8 +48,8 @@
 #'   or \eqn{\text{d}(qvar)_{\text{R}}/\text{d}t} described above) are not evaluated
 #'   by the common "analytical" integration of the kinetic equations/rate laws, however by numeric solution of the Ordinary
 #'   Differential Equations, \href{https://desolve.r-forge.r-project.org/index.html}{ODE in \code{{desolve}} R package}.
-#'   Therefore, higher number of models might be available than for analytical equations, because for complex mechanisms 
-#'   it's quite often highly demanding to obtain the analytical solution by common integration. 
+#'   Therefore, higher number of models might be available than for analytical equations, because for complex mechanisms
+#'   it's quite often highly demanding to obtain the analytical solution by common integration.
 #'   \strong{Several kinetic models for radical reactions} in EPR spectroscopy
 #'   \strong{are predefined and summarized} below (see also the \code{model.react} function argument).
 #'   \tabular{ll}{
@@ -84,6 +84,9 @@
 #'
 #'  rdabbler (2013). “Learning R: Parameter Fitting for Models Involving Differential Equations”,
 #'  \url{https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/}.
+#'
+#'  Soetaert K, Petzoldt T, Setzer  RW (2010). "Solving Differential Equations in R: Package deSolve."
+#'  \emph{J. Stat. Softw.}, \strong{33}(9), 1-25, \url{https://doi.org/10.18637/jss.v033.i09}.
 #'
 #'
 #' @param model.react Character string, denoting a specific radical (\code{"R"}) reaction related to
@@ -166,16 +169,17 @@
 #' @param time.interval.model Numeric vector, including two values: starting and final time/termination
 #'   of the model reaction in \code{time.unit} (e.g. \code{c(0,1800)} in seconds, \strong{default}).
 #' @param time.frame.model Numeric value, corresponding to interval time resolution, i.e. the smallest time difference
-#'   between two consecutive points in \code{time.unit}. Therefore, the number of points is defined 
+#'   between two consecutive points in \code{time.unit}. Therefore, the number of points is defined
 #'   by the \code{time.interval.model} argument:
 #'   \deqn{((Interval[2] - Interval[1])\,/\,Frame) + 1}
 #'   where the \eqn{Interval[2]}, \eqn{Interval[1]} equal to the 2nd and the 1st element of the \code{time.interval.model},
-#'   respectively; and the \eqn{Frame} corresponds to \code{time.frame.model}. This argument is required to numerically 
-#'   solve the kinetic differential equations by the \code{\link[deSolve]{ode}}. For the default interval mentioned 
+#'   respectively; and the \eqn{Frame} corresponds to \code{time.frame.model}. This argument is required to numerically
+#'   solve the kinetic differential equations by the \code{\link[deSolve]{ode}}. For the default interval mentioned
 #'   above, the \strong{default} value reads \code{time.frame.model = 2} (in \code{time.unit}).
 #' @param solve.ode.method Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 #'   applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
-#'   (\code{\link[deSolve]{lsoda}}, additional methods, see link for the \code{ode} function above).
+#'   (\code{\link[deSolve]{lsoda}}, additional methods (e.g. \code{"rk4"}, \code{"daspk"}, \code{"euler"}),
+#'   see link for the \code{ode} function above).
 #' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under
 #'   the EPR spectra (calculated using the \strong{experimental data}) as well as time column. These two essential
 #'   column headers are described by the character strings like those below \code{time.expr} and \code{qvar.expr}.
@@ -215,19 +219,52 @@
 #' ## of the "euler" integrator (to solve ODE) method
 #' ##
 #' kin.test.01 <-
-#'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-#'                       kin.params = c(k1 = 0.012,
-#'                                      qvar0R = 0.08),
-#'                       solve.ode.method = "euler")
-#' ## preview
+#'   eval_kinR_ODE_model(
+#'     model.react = "(r=2)R --> [k1] B",
+#'     kin.params = c(k1 = 0.012,
+#'                    qvar0R = 0.08),
+#'    solve.ode.method = "euler"
+#'   )
+#' ## preview of data frame
 #' head(kin.test.01$df,n = 10)
+#' #
+#' ## half-life (t1/2) of the second-order from data frame
+#' t.half.01.a <- kin.test.01$df %>%
+#'   dplyr::filter(dplyr::near(R,(max(R) / 2),tol = (max(R) / 2400))) %>%
+#'   dplyr::pull(time)
+#' #
+#' ## theoretical (analytical expression) of half-life
+#' t.half.01.b <- 1 / (2 * 0.08 * 0.012)
+#' #
+#' t.half.01.a
+#' t.half.01.b
+#' #
+#' ## plot kinetic model profile with t1/2
+#' kin.test.01$plot +
+#'   ggplot2::geom_hline(
+#'     yintercept = 0.08/2,
+#'     linetype = "dashed",
+#'     color = "blue"
+#'   ) + ggplot2::geom_vline(
+#'     xintercept = t.half.01.a,
+#'     linetype = "dashed",
+#'     color = "blue"
+#'   ) + ggplot2::annotate(
+#'     geom = "text",
+#'     x = 640,
+#'     y = 0.045,
+#'     color = "blue",
+#'     size = 5.4,
+#'     label = "italic(t)[1/2]",
+#'     parse = TRUE
+#'   )
 #' #
 #' ## consecutive reactions and the corresponding plot
 #' ## (`model.react` character string without spaces)
 #' kin.test.02 <-
 #'  eval_kinR_ODE_model(
 #'    model.react = "(a=2)A<==>[k1][k4](r=2)R<==>[k2][k3](b=1)B",
-#'    kin.params = c(k1 = 0.1,
+#'    kin.params = c(k1 = 0.225,
 #'                   k2 = 0.1,
 #'                   k3 = 2e-4,
 #'                   k4 = 2e-5,
@@ -249,16 +286,17 @@
 #' ## corresponding data (double integrated
 #' ## EPR spectrum = `Area` vs `time`)
 #' triaryl_radCat_data <-
-#'   readEPR_Exp_Specs(triaryl_radCat_path,
-#'                     header = TRUE,
-#'                     fill = TRUE,
-#'                     select = c(3,7),
-#'                     col.names = c("time_s","Area"),
-#'                     x.unit = "s",
-#'                     x.id = 1,
-#'                     Intensity.id = 2,
-#'                     qValue = 1700,
-#'                     data.structure = "others") %>%
+#'   readEPR_Exp_Specs(
+#'     triaryl_radCat_path,
+#'     header = TRUE,
+#'     fill = TRUE,
+#'     select = c(3,7),
+#'     col.names = c("time_s","Area"),
+#'     x.unit = "s",
+#'     x.id = 1,
+#'     Intensity.id = 2,
+#'     qValue = 1700,
+#'     data.structure = "others") %>%
 #'   na.omit()
 #' ## data preview
 #' head(triaryl_radCat_data)
@@ -267,13 +305,15 @@
 #' ## data `triaryl_radCat_data`, kinetic parameters were estimated
 #' ## to be as close as possible to the latter.
 #' compar_model_expr_data_01 <-
-#'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-#'                       kin.params = c(qvar0R = 0.019,
-#'                                      k1 = 0.04),
-#'                       time.interval.model = c(0,1500),
-#'                       data.qt.expr = triaryl_radCat_data,
-#'                       qvar.expr = "Area",
-#'                       time.expr = "time_s")
+#'   eval_kinR_ODE_model(
+#'     model.react = "(r=2)R --> [k1] B",
+#'     kin.params = c(qvar0R = 0.019,
+#'                    k1 = 0.04),
+#'     time.interval.model = c(0,1500),
+#'     data.qt.expr = triaryl_radCat_data,
+#'     qvar.expr = "Area",
+#'     time.expr = "time_s"
+#'    )
 #' ## plot preview
 #' compar_model_expr_data_01$plot
 #' #
@@ -282,16 +322,18 @@
 #' ## In such case REACTION is NOT CONSIDERED
 #' ## as an ELEMENTARY one !
 #' compar_model_expr_data_02 <-
-#'   eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-#'                       elementary.react = FALSE,
-#'                       kin.params = c(qvar0R = 0.019,
-#'                                      k1 = 0.04,
-#'                                      alpha = 1.9
-#'                                     ),
-#'                       time.interval.model = c(0,1500),
-#'                       data.qt.expr = triaryl_radCat_data,
-#'                       qvar.expr = "Area",
-#'                       time.expr = "time_s")
+#'   eval_kinR_ODE_model(
+#'     model.react = "(r=2)R --> [k1] B",
+#'     elementary.react = FALSE,
+#'     kin.params = c(qvar0R = 0.019,
+#'                    k1 = 0.04,
+#'                    alpha = 1.9
+#'                    ),
+#'     time.interval.model = c(0,1500),
+#'     data.qt.expr = triaryl_radCat_data,
+#'     qvar.expr = "Area",
+#'     time.expr = "time_s"
+#'    )
 #' ## plot preview
 #' compar_model_expr_data_02$plot
 #'
@@ -317,7 +359,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                                 data.qt.expr = NULL,
                                 time.expr = NULL,
                                 qvar.expr = NULL,
-                                ...) {
+                                ...) { ## additional arguments for `deSolve::ode()`
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -369,7 +411,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     t <- seq(start.time, final.time, by = time.frame.model)
     #
     if (time.unit == "s") {
-      if (final.time > 256000) { 
+      if (final.time > 256000) {
         stop(" The hypothetical time interval for the model reaction >= 3 days.\n
                Please, consider the `time.unit` defined in minutes or hours ! ")
       }
