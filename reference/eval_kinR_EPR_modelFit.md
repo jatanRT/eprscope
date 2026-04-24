@@ -160,7 +160,8 @@ eval_kinR_EPR_modelFit(
   [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html)), applied to find
   the numeric solution of ODE. **Default**: `solve.ode.method = "lsoda"`
   ([`lsoda`](https://rdrr.io/pkg/deSolve/man/lsoda.html), additional
-  methods, see link for the `ode` function above).
+  methods (e.g. `"rk4"`, `"daspk"`, `"euler"`), see link for the `ode`
+  function above).
 
 - time.frame.model:
 

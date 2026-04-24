@@ -72,7 +72,7 @@
   as well as comparison with the experimental data for various predefined model reactions involving
   radical(s) (labeled as "R"). Profiles are evaluated by numeric solution of the rate equations,
   using the <strong>O</strong>rdinary <strong>D</strong>ifferential <strong>E</strong>quations (ODE from
-  the <a href="https://desolve.r-forge.r-project.org/index.html" class="external-link">desolve R package</a>).
+  the <a href="https://github.com/tpetzoldt/deSolve/" class="external-link">desolve R package</a>).
   This function is inspired by the
   <a href="https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/" class="external-link">R-bloggers
   article</a>.</p>
@@ -184,7 +184,8 @@ above, the <strong>default</strong> value reads <code>time.frame.model = 2</code
 <dt id="arg-solve-ode-method">solve.ode.method<a class="anchor" aria-label="anchor" href="#arg-solve-ode-method"></a></dt>
 <dd><p>Character string, setting up the integrator (the <code>method</code> argument in <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code>),
 applied to find the numeric solution of ODE. <strong>Default</strong>: <code>solve.ode.method = "lsoda"</code>
-(<code><a href="https://rdrr.io/pkg/deSolve/man/lsoda.html" class="external-link">lsoda</a></code>, additional methods, see link for the <code>ode</code> function above).</p></dd>
+(<code><a href="https://rdrr.io/pkg/deSolve/man/lsoda.html" class="external-link">lsoda</a></code>, additional methods (e.g. <code>"rk4"</code>, <code>"daspk"</code>, <code>"euler"</code>),
+see link for the <code>ode</code> function above).</p></dd>
 
 
 <dt id="arg-data-qt-expr">data.qt.expr<a class="anchor" aria-label="anchor" href="#arg-data-qt-expr"></a></dt>
@@ -256,7 +257,7 @@ data aren't taken into account).</p></dd>
   for the reaction, corresponds to its stoichiometry, the reaction is described as the elementary
   one. In EPR spectroscopy, the number of radicals is directly proportional to (double) integral
   of the radical EPR spectrum (see also <code><a href="quantify_EPR_Abs.html">quantify_EPR_Abs</a></code>). Therefore, for a quick evaluation
-  or and/or comparison of different kinetic data, one can also obtain the rate constant
+  and/or comparison of different kinetic data, one can also obtain the rate constant
   from the area/integral <em>vs</em> time fit onto the experimental EPR spectral time series outputs
   (see also the <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>).
   Accordingly, the "R" concentration (or number of radicals/V) can be replaced by the corresponding integral.
@@ -288,6 +289,8 @@ data aren't taken into account).</p></dd>
  <a href="https://books.google.cz/books/about/Physical_Chemistry.html?id=L5juAAAAMAAJ&amp;redir_esc=y" class="external-link">https://books.google.cz/books/about/Physical_Chemistry.html?id=L5juAAAAMAAJ&amp;redir_esc=y</a>.</p>
 <p>rdabbler (2013). “Learning R: Parameter Fitting for Models Involving Differential Equations”,
  <a href="https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/" class="external-link">https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/</a>.</p>
+<p>Soetaert K, Petzoldt T, Setzer  RW (2010). "Solving Differential Equations in R: Package deSolve."
+ <em>J. Stat. Softw.</em>, <strong>33</strong>(9), 1-25, <a href="https://doi.org/10.18637/jss.v033.i09" class="external-link">https://doi.org/10.18637/jss.v033.i09</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -305,11 +308,13 @@ data aren't taken into account).</p></dd>
 <span class="r-in"><span><span class="co">## of the "euler" integrator (to solve ODE) method</span></span></span>
 <span class="r-in"><span><span class="co">##</span></span></span>
 <span class="r-in"><span><span class="va">kin.test.01</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span>model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
-<span class="r-in"><span>                      kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.012</span>,</span></span>
-<span class="r-in"><span>                                     qvar0R <span class="op">=</span> <span class="fl">0.08</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      solve.ode.method <span class="op">=</span> <span class="st">"euler"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## preview</span></span></span>
+<span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
+<span class="r-in"><span>    kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.012</span>,</span></span>
+<span class="r-in"><span>                   qvar0R <span class="op">=</span> <span class="fl">0.08</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   solve.ode.method <span class="op">=</span> <span class="st">"euler"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## preview of data frame</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">kin.test.01</span><span class="op">$</span><span class="va">df</span>,n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    time           R</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     0 0.080000000</span>
@@ -323,12 +328,46 @@ data aren't taken into account).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9    16 0.077606850</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10   18 0.077317754</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## half-life (t1/2) of the second-order from data frame</span></span></span>
+<span class="r-in"><span><span class="va">t.half.01.a</span> <span class="op">&lt;-</span> <span class="va">kin.test.01</span><span class="op">$</span><span class="va">df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/near.html" class="external-link">near</a></span><span class="op">(</span><span class="va">R</span>,<span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,tol <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2400</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## theoretical (analytical expression) of half-life</span></span></span>
+<span class="r-in"><span><span class="va">t.half.01.b</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">0.08</span> <span class="op">*</span> <span class="fl">0.012</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="va">t.half.01.a</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 520</span>
+<span class="r-in"><span><span class="va">t.half.01.b</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 520.83333</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## plot kinetic model profile with t1/2</span></span></span>
+<span class="r-in"><span><span class="va">kin.test.01</span><span class="op">$</span><span class="va">plot</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    yintercept <span class="op">=</span> <span class="fl">0.08</span><span class="op">/</span><span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    linetype <span class="op">=</span> <span class="st">"dashed"</span>,</span></span>
+<span class="r-in"><span>    color <span class="op">=</span> <span class="st">"blue"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    xintercept <span class="op">=</span> <span class="va">t.half.01.a</span>,</span></span>
+<span class="r-in"><span>    linetype <span class="op">=</span> <span class="st">"dashed"</span>,</span></span>
+<span class="r-in"><span>    color <span class="op">=</span> <span class="st">"blue"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    geom <span class="op">=</span> <span class="st">"text"</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="fl">640</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="fl">0.045</span>,</span></span>
+<span class="r-in"><span>    color <span class="op">=</span> <span class="st">"blue"</span>,</span></span>
+<span class="r-in"><span>    size <span class="op">=</span> <span class="fl">5.4</span>,</span></span>
+<span class="r-in"><span>    label <span class="op">=</span> <span class="st">"italic(t)[1/2]"</span>,</span></span>
+<span class="r-in"><span>    parse <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-plt img"><img src="eval_kinR_ODE_model-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## consecutive reactions and the corresponding plot</span></span></span>
 <span class="r-in"><span><span class="co">## (`model.react` character string without spaces)</span></span></span>
 <span class="r-in"><span><span class="va">kin.test.02</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span> <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span></span></span>
 <span class="r-in"><span>   model.react <span class="op">=</span> <span class="st">"(a=2)A&lt;==&gt;[k1][k4](r=2)R&lt;==&gt;[k2][k3](b=1)B"</span>,</span></span>
-<span class="r-in"><span>   kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
+<span class="r-in"><span>   kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>k1 <span class="op">=</span> <span class="fl">0.225</span>,</span></span>
 <span class="r-in"><span>                  k2 <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
 <span class="r-in"><span>                  k3 <span class="op">=</span> <span class="fl">2e-4</span>,</span></span>
 <span class="r-in"><span>                  k4 <span class="op">=</span> <span class="fl">2e-5</span>,</span></span>
@@ -338,17 +377,17 @@ data aren't taken into account).</p></dd>
 <span class="r-in"><span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## plot preview</span></span></span>
 <span class="r-in"><span><span class="va">kin.test.02</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_ODE_model-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_ODE_model-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## data frame/table preview</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">kin.test.02</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   time           A            R             B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    0 0.020000000 0.0020000000 0.0000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 0.019841265 0.0021570046 8.6509396e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    4 0.019685030 0.0023112417 1.8639989e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    6 0.019531237 0.0024627557 3.0037259e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    8 0.019379835 0.0026115850 4.2900127e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   10 0.019230760 0.0027577797 5.7300903e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 0.019646311 0.0023517836 9.5289887e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    4 0.019304915 0.0026906259 2.2293018e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    6 0.018975184 0.0030170909 3.8623200e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    8 0.018656601 0.0033316443 5.8771481e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   10 0.018348515 0.0036348779 8.3036200e-06</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## loading example data (incl. `Area` and `time` variables)</span></span></span>
 <span class="r-in"><span><span class="co">## from Xenon software: decay of a triarylamine radical cation</span></span></span>
@@ -358,16 +397,17 @@ data aren't taken into account).</p></dd>
 <span class="r-in"><span><span class="co">## corresponding data (double integrated</span></span></span>
 <span class="r-in"><span><span class="co">## EPR spectrum = `Area` vs `time`)</span></span></span>
 <span class="r-in"><span><span class="va">triaryl_radCat_data</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></span><span class="op">(</span><span class="va">triaryl_radCat_path</span>,</span></span>
-<span class="r-in"><span>                    header <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                    fill <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>                    select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">7</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time_s"</span>,<span class="st">"Area"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                    x.unit <span class="op">=</span> <span class="st">"s"</span>,</span></span>
-<span class="r-in"><span>                    x.id <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>                    Intensity.id <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>                    qValue <span class="op">=</span> <span class="fl">1700</span>,</span></span>
-<span class="r-in"><span>                    data.structure <span class="op">=</span> <span class="st">"others"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="readEPR_Exp_Specs.html">readEPR_Exp_Specs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">triaryl_radCat_path</span>,</span></span>
+<span class="r-in"><span>    header <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    fill <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">7</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time_s"</span>,<span class="st">"Area"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    x.unit <span class="op">=</span> <span class="st">"s"</span>,</span></span>
+<span class="r-in"><span>    x.id <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    Intensity.id <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    qValue <span class="op">=</span> <span class="fl">1700</span>,</span></span>
+<span class="r-in"><span>    data.structure <span class="op">=</span> <span class="st">"others"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## data preview</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">triaryl_radCat_data</span><span class="op">)</span></span></span>
@@ -383,35 +423,39 @@ data aren't taken into account).</p></dd>
 <span class="r-in"><span><span class="co">## data `triaryl_radCat_data`, kinetic parameters were estimated</span></span></span>
 <span class="r-in"><span><span class="co">## to be as close as possible to the latter.</span></span></span>
 <span class="r-in"><span><span class="va">compar_model_expr_data_01</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span>model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
-<span class="r-in"><span>                      kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>qvar0R <span class="op">=</span> <span class="fl">0.019</span>,</span></span>
-<span class="r-in"><span>                                     k1 <span class="op">=</span> <span class="fl">0.04</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      data.qt.expr <span class="op">=</span> <span class="va">triaryl_radCat_data</span>,</span></span>
-<span class="r-in"><span>                      qvar.expr <span class="op">=</span> <span class="st">"Area"</span>,</span></span>
-<span class="r-in"><span>                      time.expr <span class="op">=</span> <span class="st">"time_s"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
+<span class="r-in"><span>    kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>qvar0R <span class="op">=</span> <span class="fl">0.019</span>,</span></span>
+<span class="r-in"><span>                   k1 <span class="op">=</span> <span class="fl">0.04</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    data.qt.expr <span class="op">=</span> <span class="va">triaryl_radCat_data</span>,</span></span>
+<span class="r-in"><span>    qvar.expr <span class="op">=</span> <span class="st">"Area"</span>,</span></span>
+<span class="r-in"><span>    time.expr <span class="op">=</span> <span class="st">"time_s"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## plot preview</span></span></span>
 <span class="r-in"><span><span class="va">compar_model_expr_data_01</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_ODE_model-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_ODE_model-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## previous kinetic model with partial reaction</span></span></span>
 <span class="r-in"><span><span class="co">## order ("alpha") corresponding to "R" (radical species).</span></span></span>
 <span class="r-in"><span><span class="co">## In such case REACTION is NOT CONSIDERED</span></span></span>
 <span class="r-in"><span><span class="co">## as an ELEMENTARY one !</span></span></span>
 <span class="r-in"><span><span class="va">compar_model_expr_data_02</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span>model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
-<span class="r-in"><span>                      elementary.react <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>                      kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>qvar0R <span class="op">=</span> <span class="fl">0.019</span>,</span></span>
-<span class="r-in"><span>                                     k1 <span class="op">=</span> <span class="fl">0.04</span>,</span></span>
-<span class="r-in"><span>                                     alpha <span class="op">=</span> <span class="fl">1.9</span></span></span>
-<span class="r-in"><span>                                    <span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                      data.qt.expr <span class="op">=</span> <span class="va">triaryl_radCat_data</span>,</span></span>
-<span class="r-in"><span>                      qvar.expr <span class="op">=</span> <span class="st">"Area"</span>,</span></span>
-<span class="r-in"><span>                      time.expr <span class="op">=</span> <span class="st">"time_s"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">eval_kinR_ODE_model</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    model.react <span class="op">=</span> <span class="st">"(r=2)R --&gt; [k1] B"</span>,</span></span>
+<span class="r-in"><span>    elementary.react <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>    kin.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>qvar0R <span class="op">=</span> <span class="fl">0.019</span>,</span></span>
+<span class="r-in"><span>                   k1 <span class="op">=</span> <span class="fl">0.04</span>,</span></span>
+<span class="r-in"><span>                   alpha <span class="op">=</span> <span class="fl">1.9</span></span></span>
+<span class="r-in"><span>                   <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    time.interval.model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1500</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    data.qt.expr <span class="op">=</span> <span class="va">triaryl_radCat_data</span>,</span></span>
+<span class="r-in"><span>    qvar.expr <span class="op">=</span> <span class="st">"Area"</span>,</span></span>
+<span class="r-in"><span>    time.expr <span class="op">=</span> <span class="st">"time_s"</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## plot preview</span></span></span>
 <span class="r-in"><span><span class="va">compar_model_expr_data_02</span><span class="op">$</span><span class="va">plot</span></span></span>
-<span class="r-plt img"><img src="eval_kinR_ODE_model-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="eval_kinR_ODE_model-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

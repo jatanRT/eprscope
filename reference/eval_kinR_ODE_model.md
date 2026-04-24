@@ -6,8 +6,8 @@ experimental data for various predefined model reactions involving
 radical(s) (labeled as "R"). Profiles are evaluated by numeric solution
 of the rate equations, using the **O**rdinary **D**ifferential
 **E**quations (ODE from the [desolve R
-package](https://desolve.r-forge.r-project.org/index.html)). This
-function is inspired by the [R-bloggers
+package](https://github.com/tpetzoldt/deSolve/)). This function is
+inspired by the [R-bloggers
 article](https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/).
 
 ## Usage
@@ -160,7 +160,8 @@ eval_kinR_ODE_model(
   [`ode`](https://rdrr.io/pkg/deSolve/man/ode.html)), applied to find
   the numeric solution of ODE. **Default**: `solve.ode.method = "lsoda"`
   ([`lsoda`](https://rdrr.io/pkg/deSolve/man/lsoda.html), additional
-  methods, see link for the `ode` function above).
+  methods (e.g. `"rk4"`, `"daspk"`, `"euler"`), see link for the `ode`
+  function above).
 
 - data.qt.expr:
 
@@ -247,10 +248,10 @@ the elementary one. In EPR spectroscopy, the number of radicals is
 directly proportional to (double) integral of the radical EPR spectrum
 (see also
 [`quantify_EPR_Abs`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Abs.md)).
-Therefore, for a quick evaluation or and/or comparison of different
-kinetic data, one can also obtain the rate constant from the
-area/integral *vs* time fit onto the experimental EPR spectral time
-series outputs (see also the
+Therefore, for a quick evaluation and/or comparison of different kinetic
+data, one can also obtain the rate constant from the area/integral *vs*
+time fit onto the experimental EPR spectral time series outputs (see
+also the
 [`eval_kinR_EPR_modelFit`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)).
 Accordingly, the "R" concentration (or number of radicals/V) can be
 replaced by the corresponding integral. For such a purpose a more
@@ -298,6 +299,10 @@ rdabbler (2013). “Learning R: Parameter Fitting for Models Involving
 Differential Equations”,
 <https://www.r-bloggers.com/2013/06/learning-r-parameter-fitting-for-models-involving-differential-equations/>.
 
+Soetaert K, Petzoldt T, Setzer RW (2010). "Solving Differential
+Equations in R: Package deSolve." *J. Stat. Softw.*, **33**(9), 1-25,
+<https://doi.org/10.18637/jss.v033.i09>.
+
 ## See also
 
 Other Evaluations and Quantification:
@@ -314,11 +319,13 @@ Other Evaluations and Quantification:
 ## of the "euler" integrator (to solve ODE) method
 ##
 kin.test.01 <-
-  eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-                      kin.params = c(k1 = 0.012,
-                                     qvar0R = 0.08),
-                      solve.ode.method = "euler")
-## preview
+  eval_kinR_ODE_model(
+    model.react = "(r=2)R --> [k1] B",
+    kin.params = c(k1 = 0.012,
+                   qvar0R = 0.08),
+   solve.ode.method = "euler"
+  )
+## preview of data frame
 head(kin.test.01$df,n = 10)
 #>    time           R
 #> 1     0 0.080000000
@@ -332,12 +339,46 @@ head(kin.test.01$df,n = 10)
 #> 9    16 0.077606850
 #> 10   18 0.077317754
 #
+## half-life (t1/2) of the second-order from data frame
+t.half.01.a <- kin.test.01$df %>%
+  dplyr::filter(dplyr::near(R,(max(R) / 2),tol = (max(R) / 2400))) %>%
+  dplyr::pull(time)
+#
+## theoretical (analytical expression) of half-life
+t.half.01.b <- 1 / (2 * 0.08 * 0.012)
+#
+t.half.01.a
+#> [1] 520
+t.half.01.b
+#> [1] 520.83333
+#
+## plot kinetic model profile with t1/2
+kin.test.01$plot +
+  ggplot2::geom_hline(
+    yintercept = 0.08/2,
+    linetype = "dashed",
+    color = "blue"
+  ) + ggplot2::geom_vline(
+    xintercept = t.half.01.a,
+    linetype = "dashed",
+    color = "blue"
+  ) + ggplot2::annotate(
+    geom = "text",
+    x = 640,
+    y = 0.045,
+    color = "blue",
+    size = 5.4,
+    label = "italic(t)[1/2]",
+    parse = TRUE
+  )
+
+#
 ## consecutive reactions and the corresponding plot
 ## (`model.react` character string without spaces)
 kin.test.02 <-
  eval_kinR_ODE_model(
    model.react = "(a=2)A<==>[k1][k4](r=2)R<==>[k2][k3](b=1)B",
-   kin.params = c(k1 = 0.1,
+   kin.params = c(k1 = 0.225,
                   k2 = 0.1,
                   k3 = 2e-4,
                   k4 = 2e-5,
@@ -353,11 +394,11 @@ kin.test.02$plot
 head(kin.test.02$df)
 #>   time           A            R             B
 #> 1    0 0.020000000 0.0020000000 0.0000000e+00
-#> 2    2 0.019841265 0.0021570046 8.6509396e-07
-#> 3    4 0.019685030 0.0023112417 1.8639989e-06
-#> 4    6 0.019531237 0.0024627557 3.0037259e-06
-#> 5    8 0.019379835 0.0026115850 4.2900127e-06
-#> 6   10 0.019230760 0.0027577797 5.7300903e-06
+#> 2    2 0.019646311 0.0023517836 9.5289887e-07
+#> 3    4 0.019304915 0.0026906259 2.2293018e-06
+#> 4    6 0.018975184 0.0030170909 3.8623200e-06
+#> 5    8 0.018656601 0.0033316443 5.8771481e-06
+#> 6   10 0.018348515 0.0036348779 8.3036200e-06
 #
 ## loading example data (incl. `Area` and `time` variables)
 ## from Xenon software: decay of a triarylamine radical cation
@@ -367,16 +408,17 @@ triaryl_radCat_path <-
 ## corresponding data (double integrated
 ## EPR spectrum = `Area` vs `time`)
 triaryl_radCat_data <-
-  readEPR_Exp_Specs(triaryl_radCat_path,
-                    header = TRUE,
-                    fill = TRUE,
-                    select = c(3,7),
-                    col.names = c("time_s","Area"),
-                    x.unit = "s",
-                    x.id = 1,
-                    Intensity.id = 2,
-                    qValue = 1700,
-                    data.structure = "others") %>%
+  readEPR_Exp_Specs(
+    triaryl_radCat_path,
+    header = TRUE,
+    fill = TRUE,
+    select = c(3,7),
+    col.names = c("time_s","Area"),
+    x.unit = "s",
+    x.id = 1,
+    Intensity.id = 2,
+    qValue = 1700,
+    data.structure = "others") %>%
   na.omit()
 ## data preview
 head(triaryl_radCat_data)
@@ -392,13 +434,15 @@ head(triaryl_radCat_data)
 ## data `triaryl_radCat_data`, kinetic parameters were estimated
 ## to be as close as possible to the latter.
 compar_model_expr_data_01 <-
-  eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-                      kin.params = c(qvar0R = 0.019,
-                                     k1 = 0.04),
-                      time.interval.model = c(0,1500),
-                      data.qt.expr = triaryl_radCat_data,
-                      qvar.expr = "Area",
-                      time.expr = "time_s")
+  eval_kinR_ODE_model(
+    model.react = "(r=2)R --> [k1] B",
+    kin.params = c(qvar0R = 0.019,
+                   k1 = 0.04),
+    time.interval.model = c(0,1500),
+    data.qt.expr = triaryl_radCat_data,
+    qvar.expr = "Area",
+    time.expr = "time_s"
+   )
 ## plot preview
 compar_model_expr_data_01$plot
 
@@ -408,16 +452,18 @@ compar_model_expr_data_01$plot
 ## In such case REACTION is NOT CONSIDERED
 ## as an ELEMENTARY one !
 compar_model_expr_data_02 <-
-  eval_kinR_ODE_model(model.react = "(r=2)R --> [k1] B",
-                      elementary.react = FALSE,
-                      kin.params = c(qvar0R = 0.019,
-                                     k1 = 0.04,
-                                     alpha = 1.9
-                                    ),
-                      time.interval.model = c(0,1500),
-                      data.qt.expr = triaryl_radCat_data,
-                      qvar.expr = "Area",
-                      time.expr = "time_s")
+  eval_kinR_ODE_model(
+    model.react = "(r=2)R --> [k1] B",
+    elementary.react = FALSE,
+    kin.params = c(qvar0R = 0.019,
+                   k1 = 0.04,
+                   alpha = 1.9
+                   ),
+    time.interval.model = c(0,1500),
+    data.qt.expr = triaryl_radCat_data,
+    qvar.expr = "Area",
+    time.expr = "time_s"
+   )
 ## plot preview
 compar_model_expr_data_02$plot
 
