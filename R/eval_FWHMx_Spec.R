@@ -64,12 +64,20 @@
 #' #
 #' ## interactive plot of the above-simulated
 #' ## EPR spectrum in order to check the values:
-#' plot_EPR_Specs2D_interact(pnt.sim.integ.iso$df,
+#' plot_EPR_Specs2D_interact(
+#'   pnt.sim.integ.iso$df,
 #'   x = "Bsim_G",
 #'   x.unit = "G",
 #'   Intensity = "single_Integ",
 #'   lineSpecs.form = "integrated"
+#'  ) %>% plotly::layout(
+#'    xaxis = list(range = c(3490,3500))
 #'  )
+#'  ## from the two central lines the following
+#'  ## values can be read out
+#'  3495.568 - 3495.031
+#'  3497.375 - 3496.838
+#'
 #'
 #'
 #' @export
@@ -89,28 +97,12 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
     c(min(data.spectr.integ[[x]]), max(data.spectr.integ[[x]]))
   xlim <- xlim %>% `if`(is.null(xlim), data.x.region, .)
   #
-  # ===== This is not required, however it's better =====
-  # ===== to select a narrow region at the beginning =====
-  #
-  ## see also `which.min` function below
-  ## Selecting `x region`
-  ## variable set as `xs.init` (data frame) +
-  ## Condition to find x values for near(max(`Intensity`)/2)
-  xs.init <- data.spectr.integ %>%
-    dplyr::filter(dplyr::between(
-      .data[[x]],
-      xlim[1], xlim[2]
-    )) %>%
-    dplyr::filter(dplyr::near(.data[[Intensity]],
-      max(.data[[Intensity]]) / 2,
-      tol = max(.data[[Intensity]]) / 4
-    ))
-  #
   # ====================================================================
   #
   ## calculate `x.max` corresponding to max(Intensity)
-  x.max <- data.spectr.integ %>%
-    dplyr::filter(dplyr::between(.data[[x]], xlim[1], xlim[2])) %>%
+  data.spectr.integ.lim <- data.spectr.integ %>%
+    dplyr::filter(dplyr::between(.data[[x]], xlim[1], xlim[2]))
+  x.max <- data.spectr.integ.lim %>%
     dplyr::filter(.data[[Intensity]] == max(.data[[Intensity]])) %>%
     dplyr::pull(.data[[x]])
   #
@@ -118,10 +110,10 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
   ## for x < `x.max` & x > `x.max`
   ## however individual values must be compared => create a loop
   ## for all `x` of the `xs.init`
-  for (p in seq(xs.init[[x]])) {
-    if (xs.init[[x]][p] < x.max) {
+  for (p in seq(data.spectr.integ.lim[[x]])) {
+    if (data.spectr.integ.lim[[x]][p] < x.max) {
       ## filter x values
-      x.init.low <- xs.init %>%
+      x.init.low <- data.spectr.integ.lim %>%
         dplyr::filter(.data[[x]] < x.max)
       ## intensity condition by `which.min` and results
       ## in indices (res. one line df) => it is just like
@@ -129,7 +121,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       Intens.cond.left <-
         which.min(
           abs(x.init.low[[Intensity]] -
-                (max(data.spectr.integ[[Intensity]]) / 2))
+                (max(data.spectr.integ.lim[[Intensity]]) / 2))
         )
       Intens.cond.left <-
         x.init.low[Intens.cond.left,] %>%
@@ -139,9 +131,9 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
         dplyr::filter(.data[[Intensity]] == Intens.cond.left) %>%
         dplyr::pull(.data[[x]])
     }
-    if (xs.init[[x]][p] > x.max) {
+    if (data.spectr.integ.lim[[x]][p] > x.max) {
       ## filter x values
-      x.init.high <- xs.init %>%
+      x.init.high <- data.spectr.integ.lim %>%
         dplyr::filter(.data[[x]] > x.max)
       ## intensity condition by `which.min` and results
       ## in indices (res. one line df) => it is just like
@@ -149,7 +141,7 @@ eval_FWHMx_Spec <- function(data.spectr.integ,
       Intens.cond.right <-
         which.min(
           abs(x.init.high[[Intensity]] -
-                (max(data.spectr.integ[[Intensity]]) / 2))
+                (max(data.spectr.integ.lim[[Intensity]]) / 2))
         )
       Intens.cond.right <-
         x.init.high[Intens.cond.right,] %>%
