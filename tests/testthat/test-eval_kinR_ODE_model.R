@@ -77,7 +77,7 @@ test_that("Stoichiometric coefficient of the elementar reaction do match ! ",{
 #
 ## ------------------- Analytical vs Numeric ODE Solution -----------------
 #
-test_that("Numeric ODE solution of 2nd-order kinetic model profile matches that of the analytical one !",{
+test_that("Numeric ODE solution of the 2nd-order kinetic model profile matches that of the analytical one !",{
   #
   ##
   kin.test.2nd.order <-

@@ -342,7 +342,7 @@ tmpd.g.iso.spec
 
 ```
 
-Function `plot_eval_ExpSim_app()` represents an alternative way how to figure out the *g*-value. Within a simple UI (**u**ser **i**nterface), based on [*R* Shiny](https://shiny.posit.co/r/gallery/), one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the **"Microwave frequency (GHz)"** is available (the function automatically reads the right frequency by loading the "parameter" file with `.par` or `.dsc`/ `.DSC` extensions), by activating the **"Show g-Values"**. Immediately after that, the EPR spectrum abscissa is automatically converted from *B* into *g* scale (see Figure \@ref(fig:g-value-shiny-app)).
+Function `plot_eval_ExpSim_app()` represents an alternative way how to figure out the *g*-value. Within a simple UI (**u**ser **i**nterface), based on [*R* Shiny](https://shiny.posit.co/r/gallery/), one can interactively display the EPR spectrum as well as its corresponding instrumental parameters. If the **"Microwave frequency (GHz)"** is available (the function automatically reads the right frequency by loading the "parameter" file with `.par` or `.dsc`/ `.DSC` extensions), by activating the **"Show g-Values"**. Immediately after that, the EPR spectrum abscissa is automatically converted from *B* into *g* scale (see Figure \@ref(fig:g-value-shiny-app)). This operation is also required for the interactive simulations of isotropic EPR spectra (vide infra).
 
 ```{r g-value-shiny-app,echo=FALSE,fig.align='center',fig.cap="Screenshot of the interactive Shiny app, showing how to display g-values for the $\\small \\ce{TMPD^{.+}}$ EPR spectrum."}
 
@@ -495,13 +495,13 @@ kableExtra::kbl(symmetry.As.df) %>%
 
 The previous analysis reveals that the highest HF-coupling/splitting constants are related to the interaction of unpaired electron with the nitrogen and methyl-proton nuclei. Therefore the highest spin density is located on the "periphery" of the $\small \ce{TMPD^{.+}}$ molecule. This may be also supported by the simulation (theoretical calculation) of the EPR spectrum (which is computed by the `eval_sim_EPR_iso()` function), taking into account the following parameters ➨
 
--   position of the EPR spectrum ($g_{\mathrm{iso}}$-value) ➨ `g.iso`
+- position of the EPR spectrum ($g_{\mathrm{iso}}$-value) ➨ `g.iso`
 
--   spectral linewidth corresponding to Gaussian and/or Lorentzian lineshape ➨ `lineGL.DeltaB`
+- spectral linewidth corresponding to Gaussian and/or Lorentzian lineshape ➨ `lineGL.DeltaB`
 
--   content of the Gaussian lineshape in the overall linear combination of both Gaussian and Lorenztian theoretical spectral forms (so called pseudo-Voigt lineshape) ➨ `lineG.content`
+- content of the Gaussian lineshape in the overall linear combination of both Gaussian and Lorenztian theoretical spectral forms (so called pseudo-Voigt lineshape) ➨ `lineG.content`
 
--   additional instrumental parameters like central field ➨ `Bcf`, sweep width ➨ `Bsw`, microwave frequency ➨ `mwGHz` and number of points (spectral resolution) ➨ `Npoints`.
+- additional instrumental parameters like central field ➨ `Bcf`, sweep width ➨ `Bsw`, microwave frequency ➨ `mwGHz` and number of points (spectral resolution) ➨ `Npoints`.
 
 Required arguments of the `eval_sim_EPR_iso()` function are presented after the arrows. The estimated linewidth `tmpd.delta.Bpp.mean` ($\small 0.5\,\mathrm{G}$, see above) as well as the HFCCs, either directly taken from the spectrum (`A.guess.MHz`) or from the quantum chemical calculations (`symmetry.As.df`) and/or from the literature [@GramppGpda2005], can be used to simulate the EPR spectrum of $\small \ce{TMPD^{.+}}$ as follows ➨
 
