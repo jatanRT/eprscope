@@ -1,3 +1,41 @@
+# eprscope 0.1.17
+
+## 2026-04-26
+
+### Bug Fixes/Critical Updates
+
+* from now on, obtaining FWHM ("full width at half-maximum") from the data 
+  of integrated EPR spectrum (provided by the `eval_FWHMx_Spec` function) works 
+  as expected, fixed bug related to filtering of the `xlim` region + test added
+  
+* to find out the *g*<sub>iso</sub> value from EPR spectral data,
+  by the `eval_gFactor_Spec` function, should work properly right now, 
+  fixed bug where the maximum intensity was not correctly detected based
+  on the hyperfine splitting pattern, now it uses the `eval_peakPick_Spec`
+  function + test added
+  
+* several fixes and/or updates in documentation (functions, including
+  `Examples` + vignettes)  
+  
+* 'ellipsis' arguments (`...`) in the `readEPR_Exp_Specs_kin` as well as 
+  `readEPR_Exp_Specs_multif` functions were re-defined in order work
+  with default ones like `x.id`, `Intensity.id` and `var2nd.series.id` +
+  reading the time series experiments (kinetics) is now simplified and in most
+  cases does not require corresponding `.DSC`/`.dsc` or `.par` or `.YGF` files,
+  the `readEPR_Exp_Specs_kin` function automatically searches for those files 
+  in the actual/working directory  
+  
+### Updates
+
+* progress bar added to the `quantify_EPR_Sim_series` function, 
+  which is automatically activated if the argument `eval.optim.progress` 
+  equals to `FALSE`
+
+* code in several functions &rarr; cleaned up in order to be more readable + 
+  tests for several functions added
+  
+* Gaussian content added to caption of the isotropic EPR simulation plots   
+
 # eprscope 0.1.16
 
 ## 2026-03-22
