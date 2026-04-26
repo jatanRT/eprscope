@@ -566,7 +566,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.507e-08, swarm diam.=0.05766
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  11.933  s 
+#>  Done!  ( 100  %)    elapsed time  12.644  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -673,21 +673,21 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.735  s 
+#>  Done!  ( 50  %)    elapsed time  0.791  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  11.564  s 
+#>  Done!  ( 100  %)    elapsed time  12.244  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
 #> [[1]]
-#> [1]  2.0060000e+00  5.7600000e+00  5.7600000e+00 -5.8292775e-10  6.4310899e-03
+#> [1]  2.0060000e+00  5.7600000e+00  5.7600000e+00 -4.9940834e-10  6.4310899e-03
 #> [6]  4.9000000e+01
 #> 
 #> [[2]]
-#> [1]  2.0069998e+00  4.8413252e+00  3.8400007e+00 -1.2521432e-09  8.7500000e-03
-#> [6]  5.3604374e+01
+#> [1]  2.0069998e+00  4.8414479e+00  3.8400101e+00 -1.7672999e-09  8.7499986e-03
+#> [6]  5.3612524e+01
 #> 
 #
 ## compare the results with the example in the `readMAT_params_file`,
@@ -701,7 +701,7 @@ tempo.test.sim.fit.c$best.fit.params
 ## as already stated above:
 tempo.test.sim.fit.c$N.converg
 #> [[1]]
-#> [1] 1.6573191e-06 1.5727024e-06 1.5529724e-06 1.5518805e-06 1.5518805e-06
+#> [1] 1.6573191e-06 1.5727024e-06 1.5529725e-06 1.5518805e-06 1.5518805e-06
 #> 
 #> [[2]]
 #> [1] 5
@@ -711,7 +711,7 @@ tempo.test.sim.fit.c$N.converg
 ## + information about the residuals distribution
 tempo.test.sim.fit.c$abic
 #> $abic.vec
-#> [1] -27866.033 -27834.210
+#> [1] -27866.027 -27834.204
 #> 
 #> $message
 #> [1] "Information criteria evaluated using the"    

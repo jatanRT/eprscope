@@ -561,7 +561,8 @@ automatically reads the right frequency by loading the “parameter” file
 with `.par` or `.dsc`/ `.DSC` extensions), by activating the **“Show
 g-Values”**. Immediately after that, the EPR spectrum abscissa is
 automatically converted from *B* into *g* scale (see Figure
-[5.1](#fig:g-value-shiny-app)).
+[5.1](#fig:g-value-shiny-app)). This operation is also required for the
+interactive simulations of isotropic EPR spectra (vide infra).
 
 ![Screenshot of the interactive Shiny app, showing how to display
 g-values for the \$\small \ce{TMPD^{.+}}\$ EPR
@@ -823,7 +824,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.099   0.013   0.112
+#>   0.102   0.013   0.115
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 

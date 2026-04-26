@@ -340,8 +340,9 @@ head(kin.test.01$df,n = 10)
 #> 10   18 0.077317754
 #
 ## half-life (t1/2) of the second-order from data frame
-t.half.01.a <- kin.test.01$df %>%
-  dplyr::filter(dplyr::near(R,(max(R) / 2),tol = (max(R) / 2400))) %>%
+## search for value/point which is close to 0.08/2
+t.half.01.a.idx <- which.min(abs(kin.test.01$df$R - 0.04))
+t.half.01.a <- kin.test.01$df[t.half.01.a.idx,] %>%
   dplyr::pull(time)
 #
 ## theoretical (analytical expression) of half-life

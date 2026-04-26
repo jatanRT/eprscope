@@ -236,7 +236,7 @@ triarylamine.1st.spec.smooth$plot
 #
 ## sum of residual squares preview
 triarylamine.1st.spec.smooth$rss
-#> [1] 5.2912784e-07
+#> [1] 5.2912785e-07
 #
 ## estimated standard deviation
 triarylamine.1st.spec.smooth$ra.sd

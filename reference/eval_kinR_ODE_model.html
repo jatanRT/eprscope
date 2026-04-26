@@ -34,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -329,8 +329,9 @@ data aren't taken into account).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10   18 0.077317754</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## half-life (t1/2) of the second-order from data frame</span></span></span>
-<span class="r-in"><span><span class="va">t.half.01.a</span> <span class="op">&lt;-</span> <span class="va">kin.test.01</span><span class="op">$</span><span class="va">df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/near.html" class="external-link">near</a></span><span class="op">(</span><span class="va">R</span>,<span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,tol <span class="op">=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2400</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="co">## search for value/point which is close to 0.08/2</span></span></span>
+<span class="r-in"><span><span class="va">t.half.01.a.idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">kin.test.01</span><span class="op">$</span><span class="va">df</span><span class="op">$</span><span class="va">R</span> <span class="op">-</span> <span class="fl">0.04</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">t.half.01.a</span> <span class="op">&lt;-</span> <span class="va">kin.test.01</span><span class="op">$</span><span class="va">df</span><span class="op">[</span><span class="va">t.half.01.a.idx</span>,<span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## theoretical (analytical expression) of half-life</span></span></span>

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.17</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,6 +52,25 @@
       <small>Source: <a href="https://github.com/jatanrt/eprscope/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.17" id="eprscope-0117">eprscope 0.1.17<a class="anchor" aria-label="anchor" href="#eprscope-0117"></a></h2>
+<div class="section level3">
+<h3 id="id_2026-0-1-17">2026-04-26<a class="anchor" aria-label="anchor" href="#id_2026-0-1-17"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-17">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-17"></a></h4>
+<ul><li><p>from now on, obtaining FWHM (“full width at half-maximum”) from the data of integrated EPR spectrum (provided by the <code>eval_FWHMx_Spec</code> function) works as expected, fixed bug related to filtering of the <code>xlim</code> region + test added</p></li>
+<li><p>to find out the <em>g</em><sub>iso</sub> value from EPR spectral data, by the <code>eval_gFactor_Spec</code> function, should work properly right now, fixed bug where the maximum intensity was not correctly detected based on the hyperfine splitting pattern, now it uses the <code>eval_peakPick_Spec</code> function + test added</p></li>
+<li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
+<li><p>‘ellipsis’ arguments (<code>...</code>) in the <code>readEPR_Exp_Specs_kin</code> as well as <code>readEPR_Exp_Specs_multif</code> functions were re-defined in order work with default ones like <code>x.id</code>, <code>Intensity.id</code> and <code>var2nd.series.id</code> + reading the time series experiments (kinetics) is now simplified and in most cases does not require corresponding <code>.DSC</code>/<code>.dsc</code> or <code>.par</code> or <code>.YGF</code> files, the <code>readEPR_Exp_Specs_kin</code> function automatically searches for those files in the actual/working directory</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-17">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-17"></a></h4>
+<ul><li><p>progress bar added to the <code>quantify_EPR_Sim_series</code> function, which is automatically activated if the argument <code>eval.optim.progress</code> equals to <code>FALSE</code></p></li>
+<li><p>code in several functions → cleaned up in order to be more readable + tests for several functions added</p></li>
+<li><p>Gaussian content added to caption of the isotropic EPR simulation plots</p></li>
+</ul></div>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.16" id="eprscope-0116">eprscope 0.1.16<a class="anchor" aria-label="anchor" href="#eprscope-0116"></a></h2>
 <div class="section level3">
