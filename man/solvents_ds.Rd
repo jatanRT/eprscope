@@ -54,7 +54,7 @@ The main properties were collected from the \href{https://organicchemistrydata.o
  See also \code{vignette("datasets")}.
 }
 \seealso{
-Other Built-In Datasets: 
+Other Built-In Datasets:
 \code{\link{isotopes_ds}}
 }
 \concept{Built-In Datasets}

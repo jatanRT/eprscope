@@ -72,8 +72,8 @@ knitr::kable(
 
 }
 \seealso{
-Other Evaluations and Quantum Chemistry: 
-\code{\link{eval_gFactor_QCHcomp}()},
-\code{\link{rearrange_aAiso_QCHcomp}()}
+Other Evaluations and Quantum Chemistry:
+\code{\link[=eval_gFactor_QCHcomp]{eval_gFactor_QCHcomp()}},
+\code{\link[=rearrange_aAiso_QCHcomp]{rearrange_aAiso_QCHcomp()}}
 }
 \concept{Evaluations and Quantum Chemistry}

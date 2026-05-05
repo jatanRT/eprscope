@@ -363,10 +363,10 @@ International Union of Pure and Applied Chemistry (IUPAC) (2019). “Rate of Rea
  \emph{J. Stat. Softw.}, \strong{33}(9), 1-25, \url{https://doi.org/10.18637/jss.v033.i09}.
 }
 \seealso{
-Other Evaluations and Quantification: 
-\code{\link{eval_integ_EPR_Spec}()},
-\code{\link{eval_kinR_EPR_modelFit}()},
-\code{\link{quantify_EPR_Abs}()},
-\code{\link{quantify_EPR_Norm_const}()}
+Other Evaluations and Quantification:
+\code{\link[=eval_integ_EPR_Spec]{eval_integ_EPR_Spec()}},
+\code{\link[=eval_kinR_EPR_modelFit]{eval_kinR_EPR_modelFit()}},
+\code{\link[=quantify_EPR_Abs]{quantify_EPR_Abs()}},
+\code{\link[=quantify_EPR_Norm_const]{quantify_EPR_Norm_const()}}
 }
 \concept{Evaluations and Quantification}

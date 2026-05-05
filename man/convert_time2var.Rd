@@ -85,10 +85,10 @@ as.matrix(E_V)
 
 }
 \seealso{
-Other Conversions and Corrections: 
-\code{\link{convert_A_MHz_2a}()},
-\code{\link{convert_B}()},
-\code{\link{convert_a_mT_2A}()},
-\code{\link{correct_time_Exp_Specs}()}
+Other Conversions and Corrections:
+\code{\link[=convert_A_MHz_2a]{convert_A_MHz_2a()}},
+\code{\link[=convert_B]{convert_B()}},
+\code{\link[=convert_a_mT_2A]{convert_a_mT_2A()}},
+\code{\link[=correct_time_Exp_Specs]{correct_time_Exp_Specs()}}
 }
 \concept{Conversions and Corrections}

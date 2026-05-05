@@ -40,8 +40,8 @@ eval_gFactor_QCHcomp(gauss.file)
 
 }
 \seealso{
-Other Evaluations and Quantum Chemistry: 
-\code{\link{rearrange_aAiso_QCHcomp}()},
-\code{\link{rearrange_aAiso_QCHorgau}()}
+Other Evaluations and Quantum Chemistry:
+\code{\link[=rearrange_aAiso_QCHcomp]{rearrange_aAiso_QCHcomp()}},
+\code{\link[=rearrange_aAiso_QCHorgau]{rearrange_aAiso_QCHorgau()}}
 }
 \concept{Evaluations and Quantum Chemistry}

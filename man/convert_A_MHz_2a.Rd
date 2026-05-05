@@ -37,10 +37,10 @@ convert_A_MHz_2a(4,g.val = 2.0036)
 
 }
 \seealso{
-Other Conversions and Corrections: 
-\code{\link{convert_B}()},
-\code{\link{convert_a_mT_2A}()},
-\code{\link{convert_time2var}()},
-\code{\link{correct_time_Exp_Specs}()}
+Other Conversions and Corrections:
+\code{\link[=convert_B]{convert_B()}},
+\code{\link[=convert_a_mT_2A]{convert_a_mT_2A()}},
+\code{\link[=convert_time2var]{convert_time2var()}},
+\code{\link[=correct_time_Exp_Specs]{correct_time_Exp_Specs()}}
 }
 \concept{Conversions and Corrections}

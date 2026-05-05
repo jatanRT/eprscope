@@ -197,10 +197,10 @@ Eaton GR, Eaton SS, Barr DP, Weber RT (2010). \emph{Quantitative EPR}. Springer 
   \url{https://doi.org/10.1016/0022-2364(77)90133-0}.
 }
 \seealso{
-Other Evaluations and Quantification: 
-\code{\link{eval_integ_EPR_Spec}()},
-\code{\link{eval_kinR_EPR_modelFit}()},
-\code{\link{eval_kinR_ODE_model}()},
-\code{\link{quantify_EPR_Norm_const}()}
+Other Evaluations and Quantification:
+\code{\link[=eval_integ_EPR_Spec]{eval_integ_EPR_Spec()}},
+\code{\link[=eval_kinR_EPR_modelFit]{eval_kinR_EPR_modelFit()}},
+\code{\link[=eval_kinR_ODE_model]{eval_kinR_ODE_model()}},
+\code{\link[=quantify_EPR_Norm_const]{quantify_EPR_Norm_const()}}
 }
 \concept{Evaluations and Quantification}

@@ -78,10 +78,10 @@ Weber RT (2011). \emph{Xenon User's Guide}. Bruker BioSpin Manual Version 1.3, S
  Bruker Biospin (2007). \emph{WIN-EPR User's Manual}.
 }
 \seealso{
-Other Evaluations and Quantification: 
-\code{\link{eval_integ_EPR_Spec}()},
-\code{\link{eval_kinR_EPR_modelFit}()},
-\code{\link{eval_kinR_ODE_model}()},
-\code{\link{quantify_EPR_Abs}()}
+Other Evaluations and Quantification:
+\code{\link[=eval_integ_EPR_Spec]{eval_integ_EPR_Spec()}},
+\code{\link[=eval_kinR_EPR_modelFit]{eval_kinR_EPR_modelFit()}},
+\code{\link[=eval_kinR_ODE_model]{eval_kinR_ODE_model()}},
+\code{\link[=quantify_EPR_Abs]{quantify_EPR_Abs()}}
 }
 \concept{Evaluations and Quantification}

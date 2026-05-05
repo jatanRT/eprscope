@@ -44,7 +44,7 @@ This dataset was taken form \href{https://easyspin.org/easyspin/documentation/is
  Please, consult the \code{vignette("datasets")} as well.
 }
 \seealso{
-Other Built-In Datasets: 
+Other Built-In Datasets:
 \code{\link{solvents_ds}}
 }
 \concept{Built-In Datasets}

@@ -315,14 +315,14 @@ Engel T, Reid P (2013). \emph{Physical Chemistry, 3rd Edition}, Pearson Educatio
   \url{https://doi.org/10.1021/j100412a098}.
 }
 \seealso{
-Other Evaluations: 
-\code{\link{eval_DeltaXpp_Spec}()},
-\code{\link{eval_FWHMx_Spec}()},
-\code{\link{eval_extremeX_Spec}()},
-\code{\link{eval_gFactor}()},
-\code{\link{eval_gFactor_Spec}()},
-\code{\link{eval_interval_cnfd_tVec}()},
-\code{\link{eval_nu_ENDOR}()},
-\code{\link{eval_peakPick_Spec}()}
+Other Evaluations:
+\code{\link[=eval_DeltaXpp_Spec]{eval_DeltaXpp_Spec()}},
+\code{\link[=eval_FWHMx_Spec]{eval_FWHMx_Spec()}},
+\code{\link[=eval_extremeX_Spec]{eval_extremeX_Spec()}},
+\code{\link[=eval_gFactor]{eval_gFactor()}},
+\code{\link[=eval_gFactor_Spec]{eval_gFactor_Spec()}},
+\code{\link[=eval_interval_cnfd_tVec]{eval_interval_cnfd_tVec()}},
+\code{\link[=eval_nu_ENDOR]{eval_nu_ENDOR()}},
+\code{\link[=eval_peakPick_Spec]{eval_peakPick_Spec()}}
 }
 \concept{Evaluations}

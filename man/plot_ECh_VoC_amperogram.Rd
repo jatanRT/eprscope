@@ -186,7 +186,7 @@ Bard AJ, Faulkner LR, White HS (2022). \emph{Electrochemical methods: Fundamenta
   \url{https://doi.org/10.1021/acs.jchemed.7b00361}.
 }
 \seealso{
-Other EPR Spectroelectrochemistry: 
-\code{\link{eval_ECh_QNe_chronoamp}()}
+Other EPR Spectroelectrochemistry:
+\code{\link[=eval_ECh_QNe_chronoamp]{eval_ECh_QNe_chronoamp()}}
 }
 \concept{EPR Spectroelectrochemistry}

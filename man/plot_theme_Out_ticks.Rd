@@ -81,17 +81,17 @@ ggplot2::ggplot(data = tmpd.data.file,
 
 }
 \seealso{
-Other Visualizations and Graphics: 
-\code{\link{draw_molecule_by_rcdk}()},
-\code{\link{plot_EPR_Specs}()},
-\code{\link{plot_EPR_Specs2D_interact}()},
-\code{\link{plot_EPR_Specs3D_interact}()},
-\code{\link{plot_EPR_Specs_integ}()},
-\code{\link{plot_EPR_present_interact}()},
-\code{\link{plot_labels_xyz}()},
-\code{\link{plot_layout2D_interact}()},
-\code{\link{plot_theme_In_ticks}()},
-\code{\link{plot_theme_NoY_ticks}()},
-\code{\link{present_EPR_Sim_Spec}()}
+Other Visualizations and Graphics:
+\code{\link[=draw_molecule_by_rcdk]{draw_molecule_by_rcdk()}},
+\code{\link[=plot_EPR_Specs]{plot_EPR_Specs()}},
+\code{\link[=plot_EPR_Specs2D_interact]{plot_EPR_Specs2D_interact()}},
+\code{\link[=plot_EPR_Specs3D_interact]{plot_EPR_Specs3D_interact()}},
+\code{\link[=plot_EPR_Specs_integ]{plot_EPR_Specs_integ()}},
+\code{\link[=plot_EPR_present_interact]{plot_EPR_present_interact()}},
+\code{\link[=plot_labels_xyz]{plot_labels_xyz()}},
+\code{\link[=plot_layout2D_interact]{plot_layout2D_interact()}},
+\code{\link[=plot_theme_In_ticks]{plot_theme_In_ticks()}},
+\code{\link[=plot_theme_NoY_ticks]{plot_theme_NoY_ticks()}},
+\code{\link[=present_EPR_Sim_Spec]{present_EPR_Sim_Spec()}}
 }
 \concept{Visualizations and Graphics}

@@ -83,14 +83,14 @@ Miller JN, Miller JC, Miller RD (2018). \emph{Statistics and Chemometrics for An
   John Wiley and Sons, Inc. ISBN 978-0-470-47354-2, \url{https://onlinelibrary.wiley.com/doi/book/10.1002/9781118135204}.
 }
 \seealso{
-Other Evaluations: 
-\code{\link{eval_DeltaXpp_Spec}()},
-\code{\link{eval_FWHMx_Spec}()},
-\code{\link{eval_extremeX_Spec}()},
-\code{\link{eval_gFactor}()},
-\code{\link{eval_gFactor_Spec}()},
-\code{\link{eval_kinR_Eyring_GHS}()},
-\code{\link{eval_nu_ENDOR}()},
-\code{\link{eval_peakPick_Spec}()}
+Other Evaluations:
+\code{\link[=eval_DeltaXpp_Spec]{eval_DeltaXpp_Spec()}},
+\code{\link[=eval_FWHMx_Spec]{eval_FWHMx_Spec()}},
+\code{\link[=eval_extremeX_Spec]{eval_extremeX_Spec()}},
+\code{\link[=eval_gFactor]{eval_gFactor()}},
+\code{\link[=eval_gFactor_Spec]{eval_gFactor_Spec()}},
+\code{\link[=eval_kinR_Eyring_GHS]{eval_kinR_Eyring_GHS()}},
+\code{\link[=eval_nu_ENDOR]{eval_nu_ENDOR()}},
+\code{\link[=eval_peakPick_Spec]{eval_peakPick_Spec()}}
 }
 \concept{Evaluations}

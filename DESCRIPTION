@@ -95,7 +95,7 @@ Suggests:
     quarto,
     tidyverse,
     testthat (>= 3.0.0),
-RoxygenNote: 7.3.3
+RoxygenNote: 8.0.0
 Depends: 
     R (>= 3.5)
 VignetteBuilder: knitr

@@ -343,10 +343,10 @@ Weber RT (2011). \emph{Xenon User's Guide}. Bruker BioSpin Manual Version 1.3, S
  ISBN 978-1-118-36759-9, \url{https://books.google.cz/books?id=310lAgAAQBAJ}.
 }
 \seealso{
-Other Evaluations and Quantification: 
-\code{\link{eval_kinR_EPR_modelFit}()},
-\code{\link{eval_kinR_ODE_model}()},
-\code{\link{quantify_EPR_Abs}()},
-\code{\link{quantify_EPR_Norm_const}()}
+Other Evaluations and Quantification:
+\code{\link[=eval_kinR_EPR_modelFit]{eval_kinR_EPR_modelFit()}},
+\code{\link[=eval_kinR_ODE_model]{eval_kinR_ODE_model()}},
+\code{\link[=quantify_EPR_Abs]{quantify_EPR_Abs()}},
+\code{\link[=quantify_EPR_Norm_const]{quantify_EPR_Norm_const()}}
 }
 \concept{Evaluations and Quantification}

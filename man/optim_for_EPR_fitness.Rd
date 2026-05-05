@@ -297,15 +297,15 @@ Johnson SG (2023). “The NLopt nonlinear-optimization package.” \url{https://
  \url{https://ieeexplore.ieee.org/document/6557848}.
 }
 \seealso{
-Other Simulations and Optimization: 
-\code{\link{eval_ABIC_forFit}()},
-\code{\link{eval_sim_EPR_iso}()},
-\code{\link{eval_sim_EPR_isoFit}()},
-\code{\link{eval_sim_EPR_isoFit_space}()},
-\code{\link{eval_sim_EPR_iso_combo}()},
-\code{\link{plot_eval_EPRtheo_mltiplet}()},
-\code{\link{plot_eval_RA_forFit}()},
-\code{\link{quantify_EPR_Sim_series}()},
-\code{\link{smooth_EPR_Spec_by_npreg}()}
+Other Simulations and Optimization:
+\code{\link[=eval_ABIC_forFit]{eval_ABIC_forFit()}},
+\code{\link[=eval_sim_EPR_iso]{eval_sim_EPR_iso()}},
+\code{\link[=eval_sim_EPR_isoFit]{eval_sim_EPR_isoFit()}},
+\code{\link[=eval_sim_EPR_isoFit_space]{eval_sim_EPR_isoFit_space()}},
+\code{\link[=eval_sim_EPR_iso_combo]{eval_sim_EPR_iso_combo()}},
+\code{\link[=plot_eval_EPRtheo_mltiplet]{plot_eval_EPRtheo_mltiplet()}},
+\code{\link[=plot_eval_RA_forFit]{plot_eval_RA_forFit()}},
+\code{\link[=quantify_EPR_Sim_series]{quantify_EPR_Sim_series()}},
+\code{\link[=smooth_EPR_Spec_by_npreg]{smooth_EPR_Spec_by_npreg()}}
 }
 \concept{Simulations and Optimization}

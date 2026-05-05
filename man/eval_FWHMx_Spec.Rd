@@ -89,14 +89,14 @@ plot_EPR_Specs2D_interact(
 
 }
 \seealso{
-Other Evaluations: 
-\code{\link{eval_DeltaXpp_Spec}()},
-\code{\link{eval_extremeX_Spec}()},
-\code{\link{eval_gFactor}()},
-\code{\link{eval_gFactor_Spec}()},
-\code{\link{eval_interval_cnfd_tVec}()},
-\code{\link{eval_kinR_Eyring_GHS}()},
-\code{\link{eval_nu_ENDOR}()},
-\code{\link{eval_peakPick_Spec}()}
+Other Evaluations:
+\code{\link[=eval_DeltaXpp_Spec]{eval_DeltaXpp_Spec()}},
+\code{\link[=eval_extremeX_Spec]{eval_extremeX_Spec()}},
+\code{\link[=eval_gFactor]{eval_gFactor()}},
+\code{\link[=eval_gFactor_Spec]{eval_gFactor_Spec()}},
+\code{\link[=eval_interval_cnfd_tVec]{eval_interval_cnfd_tVec()}},
+\code{\link[=eval_kinR_Eyring_GHS]{eval_kinR_Eyring_GHS()}},
+\code{\link[=eval_nu_ENDOR]{eval_nu_ENDOR()}},
+\code{\link[=eval_peakPick_Spec]{eval_peakPick_Spec()}}
 }
 \concept{Evaluations}

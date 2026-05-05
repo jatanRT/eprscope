@@ -171,7 +171,7 @@ Bard AJ, Faulkner LR, White HS (2022). \emph{Electrochemical methods: Fundamenta
   R package version 2.4.4, \url{https://cran.r-project.org/web/packages/pracma/index.html}.
 }
 \seealso{
-Other EPR Spectroelectrochemistry: 
-\code{\link{plot_ECh_VoC_amperogram}()}
+Other EPR Spectroelectrochemistry:
+\code{\link[=plot_ECh_VoC_amperogram]{plot_ECh_VoC_amperogram()}}
 }
 \concept{EPR Spectroelectrochemistry}
