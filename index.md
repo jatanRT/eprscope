@@ -7,7 +7,7 @@ The key objective of this open source
 functions corresponding to “everyday” data processing/analysis in the
 EPR ([Electron Paramagnetic
 Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)))
-spectroscopy mainly in chemistry. Similar
+spectroscopy mainly for chemists. Similar
 ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png)
 tools like [cwepr](https://www.cwepr.de/index) and the [related
 projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The
@@ -29,11 +29,10 @@ as well as several other software platforms like the *MS Office* and/or
 *Orgin/SigmaPlot/Igor* which are often applied in the EPR
 processing/analysis workflow. Therefore, the
 [eprscope](https://jatanrt.github.io/eprscope/) tries to reduce such
-many steps/programs if the above-mentioned software combination would be
-adopted. In order to achieve the goal it uses superior power of the open
-source ![](https://www.r-project.org/Rlogo.png) ecosystem that combines
-data processing, analysis and great scientific visualizations together
-with the extensive publishing capabilities by
+many steps/programs. In order to achieve the goal it uses superior power
+of the open source ![](https://www.r-project.org/Rlogo.png) ecosystem
+that combines data processing, analysis and great scientific
+visualizations together with the extensive publishing capabilities by
 [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
 [Quarto](https://quarto.org/). Everything at one place (see the [RStudio
 IDE](https://docs.posit.co/ide/user/) or
@@ -106,6 +105,7 @@ the following steps:
 
     ``` r
 
+
     # run code in the R console
     #
     # after the initial R environment setup it's always 
@@ -128,6 +128,7 @@ the following steps:
 
 ``` r
 
+
 # from the GitHub repository:
 if (!require(pak)) {install.packages("pak")}
 pak::pkg_install("jatanRT/eprscope")
@@ -136,6 +137,7 @@ pak::pkg_install("jatanRT/eprscope")
 or
 
 ``` r
+
 
 # from the R-Universe (https://r-universe.dev/search)
 # and CRAN (https://cran.r-project.org/) repositories:
@@ -153,6 +155,7 @@ vignettes/articles ➨
 
 ``` r
 
+
 # alternatively, install package together with all the vignettes/articles:
 if (!require(devtools)) {install.packages("devtools")}
 devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
@@ -168,8 +171,8 @@ required for sharing the results coming from
 documentation).
 
 **Note:** On modern *Windows* systems (10/11), all the pre- and
-post-installation (*Quarto*, *Pandoc* and *LaTeX/Typst*) software
-packages can be easily managed either by
+post-installation software packages (*OpenJDK*, *Quarto*, *Pandoc*,
+*LaTeX/Typst* and *CMake* or *Rtools*) can be easily managed either by
 [*Winget*](https://winstall.app/) *or by the
 [Chocolatey](https://chocolatey.org/)* systems.
 
@@ -181,6 +184,7 @@ run the following code (the same as for the installation) in the
 
 ``` r
 
+
 pak::pkg_install("jatanRT/eprscope",upgrade = TRUE)
 #
 # update package together with vignettes/articles:
@@ -191,11 +195,14 @@ pak::pkg_install("jatanRT/eprscope",upgrade = TRUE)
 
 In this section, couple of examples are shown in order to briefly
 demonstrate the package functionality. More detailed description can be
-found within the articles/vignettes or documentation examples.
+found within the articles/vignettes or in documentation of functions
+(see [Package
+index/Reference](https://jatanrt.github.io/eprscope/reference/index.html)).
 
 ### Reading Files with Instrumental Parameters
 
 ``` r
+
 
 # loading the package/library
 library(eprscope)
@@ -222,6 +229,7 @@ tmpd.params.dt
 
 ``` r
 
+
 # Phenalenyl (Perinaphthenyl or PNT) radical by `SMILES` code:
 # "C1([C.]23)=CC=CC2=CC=CC3=CC=C1"
 draw_molecule_by_rcdk(
@@ -237,6 +245,7 @@ draw_molecule_by_rcdk(
 ### Simulation of Isotropic EPR Spectra
 
 ``` r
+
 
 # simulation of the phenalenyl (perinaphthenyl or PNT) radical,
 # see also https://pubs.rsc.org/en/content/articlelanding/2006/CS/b500509b,
@@ -265,6 +274,7 @@ simulation.iso$plot +
 
 ``` r
 
+
 # just run the following command in R console
 plot_eval_ExpSim_app()
 ```
@@ -274,6 +284,7 @@ plot_eval_ExpSim_app()
 ### Radical Kinetic Model Fitted onto the Experimental Data
 
 ``` r
+
 
 # decay of a triarylamine radical cation right after 
 # its generation by electrochemical potentiostatic oxidation 
@@ -334,6 +345,7 @@ triarylamine_rc_decay_model$plot
 ![](reference/figures/README-kinetic-model-fit-1.png)
 
 ``` r
+
 #
 # data frame/table, showing the obtained kinetic parameters
 # (and their basic statistical measures) by the non-linear 
@@ -356,13 +368,15 @@ triarylamine_rc_decay_model$cor.df %>%
 
 There are several ways how to get help. If the users are already
 familiar with the [R statistical language](https://www.r-project.org/)
-please, follow either the individual package function documentation or
-the corresponding articles/vignettes. These might be also considered as
-a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png)
-knowledge resources (see also the “First Steps with R Language”
-vignette/article), particularly for students. **In case you are
-completely new to *R***, there are couple of great tutorials enabling a
-quite straightforward diving into
+please, follow either the individual [package function
+documentations](https://jatanrt.github.io/eprscope/reference/index.html)
+or the corresponding articles/vignettes. These might be also considered
+as a kind of EPR spectroscopy and
+![](https://www.r-project.org/Rlogo.png) knowledge resources. **In case
+you are completely new to *R***, there are couple of great tutorials
+(you may also consult the [“First Steps with R Language”
+vignette/article](https://jatanrt.github.io/eprscope/articles/firstSteps.html))
+enabling a quite straightforward diving into
 ![](https://www.r-project.org/Rlogo.png). **Please, refer to e.g.**
 
 - [R for Data Science (2e)](https://r4ds.hadley.nz/)

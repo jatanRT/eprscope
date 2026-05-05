@@ -43,16 +43,16 @@ eval_kinR_ODE_model(
   changes during the EPR time series experiment (the `r,a,b`
   stoichiometric coefficients may vary, see below).
 
-  |                                                                                                               |                                                        |
-  |---------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-  | **Reaction Scheme**                                                                                           | **model.react**                                        |
-  | \\(r=1)\text{R} \xrightarrow{k_1} \text{B}\\                                                                  | `"(r=1)R --> [k1] B"`                                  |
-  | \\(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}\\                                                             | `"(a=2)A --> [k1] (r=2)R"`                             |
+  |  |  |
+  |----|----|
+  | **Reaction Scheme** | **model.react** |
+  | \\(r=1)\text{R} \xrightarrow{k_1} \text{B}\\ | `"(r=1)R --> [k1] B"` |
+  | \\(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}\\ | `"(a=2)A --> [k1] (r=2)R"` |
   | \\(a=2)\text{A} \xrightleftharpoons\[k_4\]{k_1} (r=2)\text{R} \xrightleftharpoons\[k_3\]{k_2} (b=1)\text{B}\\ | `"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (b=1)B"` |
-  | \\(r=1)\text{R} \xrightleftharpoons\[k_2\]{k_1} (b=1)\text{B}\\                                               | `"(r=1)R <==> [k1] [k2] (b=1)B"`                       |
-  | \\(a=2)\text{A} \xrightleftharpoons\[k_2\]{k_1} (r=2)\text{R}\\                                               | `"(a=2)A <==> [k1] [k2] (r=2)R"`                       |
-  | \\(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\\                                             | `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    |
-  | \\(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\\                                                  | `"(a=1)A + (r=1)R --> [k1] B"`                         |
+  | \\(r=1)\text{R} \xrightleftharpoons\[k_2\]{k_1} (b=1)\text{B}\\ | `"(r=1)R <==> [k1] [k2] (b=1)B"` |
+  | \\(a=2)\text{A} \xrightleftharpoons\[k_2\]{k_1} (r=2)\text{R}\\ | `"(a=2)A <==> [k1] [k2] (r=2)R"` |
+  | \\(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\\ | `"(a=1)A + (b=1)B --> [k1] (r=1)R"` |
+  | \\(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\\ | `"(a=1)A + (r=1)R --> [k1] B"` |
 
   Couple of examples are also given in the `Details`. The function is
   relatively flexible and enables later addition of any other reaction
@@ -107,16 +107,16 @@ eval_kinR_ODE_model(
   `beta` and/or `gamma`) must be defined within the `kin.params` (see
   the examples below in the following table):
 
-  |                                                        |                                                                                  |
-  |--------------------------------------------------------|----------------------------------------------------------------------------------|
-  | **model.react**                                        | **Essential kin.params components**                                              |
-  | `"(r=1)R --> [k1] B"`                                  | `k1`, `qvar0R`, (`alpha`)                                                        |
-  | `"(a=1)A --> [k1] (r=1)R"`                             | `k1`, `qvar0A`, `qvar0R`, (`alpha`)                                              |
+  |  |  |
+  |----|----|
+  | **model.react** | **Essential kin.params components** |
+  | `"(r=1)R --> [k1] B"` | `k1`, `qvar0R`, (`alpha`) |
+  | `"(a=1)A --> [k1] (r=1)R"` | `k1`, `qvar0A`, `qvar0R`, (`alpha`) |
   | `"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B"` | `k1`, `k2`, `k3`, `k4`, `qvar0A`, `qvar0R`, `qvar0B`, (`alpha`, `beta`, `gamma`) |
-  | `"(r=1)R <==> [k1] [k2] (b=1)B"`                       | `k1`, `k2`, `qvar0R`, `qvar0B`, (`alpha`, `beta`)                                |
-  | `"(a=1)A <==> [k1] [k2] (r=1)R"`                       | `k1`, `k2`, `qvar0A`, `qvar0R`, (`alpha`, `beta`)                                |
-  | `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    | `k1`, `qvar0A`, `qvar0B`, `qvar0R`, (`alpha`,`beta`)                             |
-  | `"(a=1)A + (r=1)R --> [k1] B"`                         | `k1`, `qvar0A`, `qvar0R`, (`alpha`,`beta`)                                       |
+  | `"(r=1)R <==> [k1] [k2] (b=1)B"` | `k1`, `k2`, `qvar0R`, `qvar0B`, (`alpha`, `beta`) |
+  | `"(a=1)A <==> [k1] [k2] (r=1)R"` | `k1`, `k2`, `qvar0A`, `qvar0R`, (`alpha`, `beta`) |
+  | `"(a=1)A + (b=1)B --> [k1] (r=1)R"` | `k1`, `qvar0A`, `qvar0B`, `qvar0R`, (`alpha`,`beta`) |
+  | `"(a=1)A + (r=1)R --> [k1] B"` | `k1`, `qvar0A`, `qvar0R`, (`alpha`,`beta`) |
 
   The `k1`-unit is eventually expressed in terms of \\s^{-1}\\ as well
   as in units of the applied `qvar` (e.g. `c`, concentration) and
@@ -271,16 +271,16 @@ demanding to obtain the analytical solution by common integration.
 **are predefined and summarized** below (see also the `model.react`
 function argument).
 
-|                                                        |                                                                                                                                                                                                         |
-|--------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **model.react**                                        | **Short Description**                                                                                                                                                                                   |
-| `"(r=1)R --> [k1] B"`                                  | Basic forward reaction, e.g. irrev. dimerization (if `(r=2)`).                                                                                                                                          |
-| `"(a=1)A --> [k1] (r=1)R"`                             | Basic forward radical formation                                                                                                                                                                         |
-| `"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B"` | Consecutive reactions, e.g. considering comproportionation (for `(a=2)` and `(r=2)`) + follow-up reversible dimerization (`(b=1)`).                                                                     |
-| `"(r=1)R <==> [k1] [k2] (b=1)B"`                       | Basic reversible radical quenching, e.g. rev. \\\pi-\pi\\ dimerization for `(r=2)` and `(b=1)`.                                                                                                         |
-| `"(a=1)A <==> [k1] [k2] (r=1)R"`                       | Basic reversible radical formation, e.g. from rev. comproportionation of conjugated thiophene oligomers (\\\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}\\, for `(a=2)` and `(r=2)`). |
-| `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    | Radical formation by chemical reaction like oxidation, reduction or spin trapping (if the `A` refers to transient radical, which is not visible within the common EPR time scale).                      |
-| `"(a=1)A + (r=1)R --> [k1] B"`                         | General radical quenching by chemical reaction.                                                                                                                                                         |
+|  |  |
+|----|----|
+| **model.react** | **Short Description** |
+| `"(r=1)R --> [k1] B"` | Basic forward reaction, e.g. irrev. dimerization (if `(r=2)`). |
+| `"(a=1)A --> [k1] (r=1)R"` | Basic forward radical formation |
+| `"(a=1)A <==> [k1] [k4] (r=1)R <==> [k2] [k3] (b=1)B"` | Consecutive reactions, e.g. considering comproportionation (for `(a=2)` and `(r=2)`) + follow-up reversible dimerization (`(b=1)`). |
+| `"(r=1)R <==> [k1] [k2] (b=1)B"` | Basic reversible radical quenching, e.g. rev. \\\pi-\pi\\ dimerization for `(r=2)` and `(b=1)`. |
+| `"(a=1)A <==> [k1] [k2] (r=1)R"` | Basic reversible radical formation, e.g. from rev. comproportionation of conjugated thiophene oligomers (\\\text{A}^{++} + \text{A}^0 \xrightleftharpoons ~ 2\text{R}^{.+}\\, for `(a=2)` and `(r=2)`). |
+| `"(a=1)A + (b=1)B --> [k1] (r=1)R"` | Radical formation by chemical reaction like oxidation, reduction or spin trapping (if the `A` refers to transient radical, which is not visible within the common EPR time scale). |
+| `"(a=1)A + (r=1)R --> [k1] B"` | General radical quenching by chemical reaction. |
 
 ## References
 
@@ -340,12 +340,12 @@ head(kin.test.01$df,n = 10)
 #> 10   18 0.077317754
 #
 ## half-life (t1/2) of the second-order from data frame
-## search for value/point which is close to 0.08/2
+## search for the value/point which is close to 0.08/2
 t.half.01.a.idx <- which.min(abs(kin.test.01$df$R - 0.04))
 t.half.01.a <- kin.test.01$df[t.half.01.a.idx,] %>%
   dplyr::pull(time)
 #
-## theoretical (analytical expression) of half-life
+## theoretical (analytical) expression of half-life
 t.half.01.b <- 1 / (2 * 0.08 * 0.012)
 #
 t.half.01.a

@@ -207,17 +207,17 @@ optimization/fitting methods are summarized in the following table
 (please, consult the details in `References` or in the individual
 function documentation - links in the `Description`) =\>
 
-|                        |                |                                                                                                                                                                                                         |
-|------------------------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Method/Algorithm**   | **Package**    | **Short Description**                                                                                                                                                                                   |
-| `slsqp`                | `{nloptr}`     | Sequential quadratic programming method for non-linearly constrained, gradient-based optimization.                                                                                                      |
-| `cobyla`               | `{nloptr}`     | Constrained optimization by linear approximations, algorithm for derivative-free optimization with nonlinear inequality and equality constraints.                                                       |
-| `lbfgs`                | `{nloptr}`     | Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method. This is a quasi-Newton method well suited for the optimization problems with a large number of variables.                    |
-| `neldermead`           | `{nloptr}`     | Nelder-Mead ("N-M") simplex algorithm.                                                                                                                                                                  |
-| `crs2lm`               | `{nloptr}`     | Controlled Random Search (CRS) algorithm (and in particular, the CRS2 variant) with the \`local mutation' modification.                                                                                 |
-| `sbplx`                | `{nloptr}`     | Subplex algorithm, which is a variant of the "N-M" method on a sequence of sub-spaces.                                                                                                                  |
-| `nls.lm` (`levenmarq`) | `{minpack.lm}` | Modified Levenberg-Marquardt algorithm. It is a combination of gradient descent and Gauss-Newton method.                                                                                                |
-| `psoptim` (`pswarm`)   | `{pso}`        | Particle swarm optimization, which is a population-based stochastic optimization algorithm motivated by the intelligent collective behavior of some animals such as flocks of birds or schools of fish. |
+|  |  |  |
+|----|----|----|
+| **Method/Algorithm** | **Package** | **Short Description** |
+| `slsqp` | `{nloptr}` | Sequential quadratic programming method for non-linearly constrained, gradient-based optimization. |
+| `cobyla` | `{nloptr}` | Constrained optimization by linear approximations, algorithm for derivative-free optimization with nonlinear inequality and equality constraints. |
+| `lbfgs` | `{nloptr}` | Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method. This is a quasi-Newton method well suited for the optimization problems with a large number of variables. |
+| `neldermead` | `{nloptr}` | Nelder-Mead ("N-M") simplex algorithm. |
+| `crs2lm` | `{nloptr}` | Controlled Random Search (CRS) algorithm (and in particular, the CRS2 variant) with the \`local mutation' modification. |
+| `sbplx` | `{nloptr}` | Subplex algorithm, which is a variant of the "N-M" method on a sequence of sub-spaces. |
+| `nls.lm` (`levenmarq`) | `{minpack.lm}` | Modified Levenberg-Marquardt algorithm. It is a combination of gradient descent and Gauss-Newton method. |
+| `psoptim` (`pswarm`) | `{pso}` | Particle swarm optimization, which is a population-based stochastic optimization algorithm motivated by the intelligent collective behavior of some animals such as flocks of birds or schools of fish. |
 
 Not all `{nloptr}`-methods are implemented into the
 `optim_for_EPR_fitness`. Those summarized above were tested by the EPR

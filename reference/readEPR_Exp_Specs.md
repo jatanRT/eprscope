@@ -196,12 +196,12 @@ readEPR_Exp_Specs(
   summarized in the following table (any other specific `origin` may be
   added later) =\>
 
-  |                                        |                                                                                                                                                                                                                                |
-  |----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-  | **String**                             | **Description**                                                                                                                                                                                                                |
-  | "xenon"                                | **default** automatically loads data from the "Xenon" software with the default parameters.                                                                                                                                    |
-  | "winepr"                               | automatically loads data from the "WinEpr" software.                                                                                                                                                                           |
-  | "magnettech"                           | automatically loads data from the new "Magnettech" software (ESR5000 \[11-0422\]).                                                                                                                                             |
+  |  |  |
+  |----|----|
+  | **String** | **Description** |
+  | "xenon" | **default** automatically loads data from the "Xenon" software with the default parameters. |
+  | "winepr" | automatically loads data from the "WinEpr" software. |
+  | "magnettech" | automatically loads data from the new "Magnettech" software (ESR5000 \[11-0422\]). |
   | "other" (arbitrary string, e.g. "csv") | general, loads any other original data like `csv`, `txt`, `asc` incl. also data from other instrumental/spectrometer software. **In such case, all the arguments for** `readEPR_Exp_Specs` **must be configured accordingly**. |
 
 - data.structure:

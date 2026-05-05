@@ -40,12 +40,12 @@ eval_sim_EPR_iso_combo(
   Named numeric vector, containing instrumental parameters required for
   the simulation =\>
 
-  |           |                                                                                      |
-  |-----------|--------------------------------------------------------------------------------------|
-  | `Bcf`     | "central field" (magnetic flux density, \\B\_{\text{CF}}\\)                          |
-  | `Bsw`     | "sweep width" (magnetic flux density recording region, \\B\_{\text{SW}}\\)           |
-  | `Npoints` | number of spectral points (corresponding to resolution) within the "sweep width"     |
-  | `mwGHz`   | applied microwave frequency in `GHz` to record the continuous wave (CW) EPR spectrum |
+  |  |  |
+  |----|----|
+  | `Bcf` | "central field" (magnetic flux density, \\B\_{\text{CF}}\\) |
+  | `Bsw` | "sweep width" (magnetic flux density recording region, \\B\_{\text{SW}}\\) |
+  | `Npoints` | number of spectral points (corresponding to resolution) within the "sweep width" |
+  | `mwGHz` | applied microwave frequency in `GHz` to record the continuous wave (CW) EPR spectrum |
 
   **Default** values are chosen to cover the EPR spectra of common
   organic radicals. If `instrum.params = NULL` then parameters must be

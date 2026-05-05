@@ -28,6 +28,7 @@ hash symbol `#` like shown in the following code chunks.
 
 ``` r
 
+
 # Q value (EPR sensitivity instrumental factor) assignment:
 Q_value <- 3500
 #
@@ -62,6 +63,7 @@ data science packages called [{tidyverse}](https://www.tidyverse.org/):
 
 ``` r
 
+
 library(tidyverse)
 #> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 #> ✔ dplyr     1.2.1     ✔ readr     2.2.0
@@ -82,8 +84,8 @@ packages possess the same name
 (e.g. [`stats::filter()`](https://rdrr.io/r/stats/filter.html) and
 [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html) ,
 see also the message after [tidyverse](https://tidyverse.tidyverse.org)
-loading, above)[¹](#fn1). However, in most cases, one does not need to
-call each function like this and it is enough if
+loading, above)[^1]. However, in most cases, one does not need to call
+each function like this and it is enough if
 [`library(package)`](https://rdrr.io/r/base/library.html) command is
 executed at the beginning of the entire ![](RcoreLogo.png) script (which
 is also the case for the [eprscope](https://jatanrt.github.io/eprscope/)
@@ -97,6 +99,7 @@ object, which is created by the `c(...)` command/function (the “c”
 stands for “combine” or “concatenate”) like:
 
 ``` r
+
 
 # creating a vector of EPR intensity 
 # normalization constant names
@@ -117,6 +120,7 @@ components into character:
 
 ``` r
 
+
 # combination/concatenation of both
 # vectors created above
 comb.norm <- c(str.norm,value.norm)
@@ -134,6 +138,7 @@ number of vector components:
 
 ``` r
 
+
 # dermine the vector length (`comb.norm`)
 length(comb.norm)
 #> [1] 6
@@ -145,6 +150,7 @@ in ![](RcoreLogo.png) are 1 based indexing unlike the normal *C* or
 examples:
 
 ``` r
+
 
 # select the third element
 comb.norm[3]
@@ -177,6 +183,7 @@ The basic arithmetic operations on vectors are also performed
 element-wise:
 
 ``` r
+
 
 # create vector of 10 numeric values,
 # repeating `0.1` 10-times
@@ -240,6 +247,7 @@ function on the entire `B.central.vec` like:
 
 ``` r
 
+
 vec.g.iso.c <- eval_gFactor(
   nu.val = nu.GHz,
   B.val = B.central.vec,
@@ -255,6 +263,7 @@ Matrices can be created from vectors as demonstrated by the following
 example:
 
 ``` r
+
 
 # define vector (sequence) of hypothetical g-values
 mat.01.vec <- seq(2.001,2.009,length.out = 9)
@@ -307,6 +316,7 @@ second dimension:
 
 ``` r
 
+
 # select element in the 2nd row
 # and the 3rd column within `mat.01`
 mat.01[2,3]
@@ -323,6 +333,7 @@ mat.01[1:2,1:2]
 Transpose the `mat.01` matrix:
 
 ``` r
+
 
 # `mat.01` transposition
 mat.01.t <- t(mat.01)
@@ -341,6 +352,7 @@ function, where \\\small A^{-1}\\A = A\\A^{-1}\\=\mathrm{1}\\ (identity
 matrix):
 
 ``` r
+
 
 # a 3 x 3 matrix of magnetic flux density
 A <- matrix(B.central.vec[1:9],3,3)
@@ -368,6 +380,7 @@ The inverse matrix calculation requires following condition:
 
 ``` r
 
+
 # determinat of A matrix must be different from 0
 isFALSE(det(A) == 0)
 #> [1] TRUE
@@ -388,6 +401,7 @@ by the
 function from [eprscope](https://jatanrt.github.io/eprscope/) 📦:
 
 ``` r
+
 
 # read the EPR spectrum from the already 
 # defined path `tmpd.data.file`
@@ -415,6 +429,7 @@ represented by their headers:
 
 ``` r
 
+
 # headers for 2D schemes like matrices or data frames
 colnames(df.example.01)
 #> [1] "B_G"           "dIepr_over_dB" "B_mT"
@@ -439,6 +454,7 @@ One can preview the **str**ucture of a data frame by the
 
 ``` r
 
+
 str(df.example.01)
 #> 'data.frame':    2401 obs. of  3 variables:
 #>  $ B_G          : num  3439 3439 3439 3439 3439 ...
@@ -458,6 +474,7 @@ namely:
 
 ``` r
 
+
 # vector of magnetic flux density in Gauss
 vec.B.G.a <- df.example.01$B_G
 #
@@ -471,6 +488,7 @@ Similarly, the same vector/column can be also selected by double square
 brackets `[[]]` , like:
 
 ``` r
+
 
 vec.B.G.b <- df.example.01[[1]]
 # or
@@ -492,6 +510,7 @@ names (if the named vector is not desired):
 
 ``` r
 
+
 # first row of data frame
 df.example.01[1, ]
 #>         B_G dIepr_over_dB      B_mT
@@ -511,6 +530,7 @@ function from the `{base}` 📦. Both ways are documented by the following
 code:
 
 ``` r
+
 
 # select the first column,
 # resulting in data frame
@@ -549,6 +569,7 @@ To create or delete a column/variable one may use:
 
 ``` r
 
+
 # create g-value column (`g_Val`)
 df.example.01$g_Val <- # or `df.example.01[["g_Val"]] <-`
   eval_gFactor(
@@ -581,6 +602,7 @@ the equally long vectors (refer to the vector definitions in Section
 
 ``` r
 
+
 # create a data frame by the `data.frame()` base 
 # function using the vectors already defined above
 normalization.df <- data.frame(
@@ -604,6 +626,7 @@ command/function:
 
 ``` r
 
+
 summary(df.example.01)
 #>       B_G         dIepr_over_dB           g_Val       
 #>  Min.   :3439.2   Min.   :-41226.32   Min.   :1.9859  
@@ -622,6 +645,7 @@ and the [standard
 deviation](https://www.r-tutor.com/elementary-statistics/numerical-measures/standard-deviation):
 
 ``` r
+
 
 # variance (var) for each column 
 sapply(df.example.01, FUN = var)
@@ -647,6 +671,7 @@ first case, the covariance indicates the direction of the linear
 relationship:
 
 ``` r
+
 
 # covariance for the entire data frame
 cov(df.example.01)
@@ -674,6 +699,7 @@ which in addition to direction, provides the strength of the
 relationship:
 
 ``` r
+
 
 # correlation for the entire data frame
 cor(df.example.01)
@@ -735,7 +761,7 @@ creation of intermediate variables, makes the code easier to follow and
 finally also reduces the likelihood of a bug appearence.** The pipe
 operator is also well known in other programming languages (e.g. in
 *Python* or *Julia* ) and/or in the *Shell*/*Terminal*. However, it may
-possess a different syntax in comparison to ![](RcoreLogo.png)[²](#fn2).
+possess a different syntax in comparison to ![](RcoreLogo.png)[^2].
 
 For the simple cases, both `%>%` and `|>` (the latter also known as a
 native pipe operator) behave identically. However, they differ in the
@@ -754,6 +780,7 @@ origin as well as in a couple of situations:
     not:
 
 ``` r
+
 
 # take the `vec.B.G.b(c)` vector from above,
 # round it (for 2 decimal places) 
@@ -777,6 +804,7 @@ vec.B.G.c |> round(digits = 2) |> mean()
     below ):
 
 ``` r
+
 
 # recreate and add B in mT, i.e. `B_mT` column
 df.example.01 |> 
@@ -826,6 +854,7 @@ Create a vector from the column of a data frame:
 
 ``` r
 
+
 # selecting column (`B_G`) from data 
 # frame by pipe and `$` operators
 vec.B.G.d <- df.example.01 %>% .$B_G
@@ -860,6 +889,7 @@ function:
 
 ``` r
 
+
 # create a new `B_T` column
 df.example.02 <- df.example.01 %>% 
   dplyr::mutate(B_T = B_G * 1e-4)
@@ -880,6 +910,7 @@ Basic filtering by the
 where either `|>` or `%>%` can be applied:
 
 ``` r
+
 
 # filter the `B_G`/`B_mT` 
 # values <= central field
@@ -910,6 +941,7 @@ and **rename** the column:
 
 ``` r
 
+
 df.example.04 <- df.example.03 %>% 
   dplyr::filter(dplyr::between(g_Val,2.0548,2.0550)) %>% 
   # rename syntax: "new name = old name":
@@ -936,6 +968,7 @@ step, the “kinetic” data must be loaded:
 
 ``` r
 
+
 # loading the package built-in example file/data 
 # kinetics -> "Triarylamine_radCat_decay_series",
 # file with instrumental parameters
@@ -956,6 +989,7 @@ Finally, the data is transformed into the data frame by the
 function:
 
 ``` r
+
 
 # reading the data and correcting
 # the recording time for each CW EPR spectrum
@@ -1004,6 +1038,7 @@ transform the above-mentioned “tidy” one using the
 
 ``` r
 
+
 triarylam.decay.dat.wide <- 
   triarylam.decay.dat$df %>% 
   # remove `index` column
@@ -1044,10 +1079,11 @@ derivative EPR intensity `dIepr_over_dB` . Now, in order to filter, plot
 and/or analyze the EPR spectra at different times we would need a
 different strategies how to do it. For example, to filter/select and
 plot spectra in the time span of \\\small (200-300)\\\mathrm{s}\\, we
-must now the names of the corresponding columns[³](#fn3) ➨ we have to
+must now the names of the corresponding columns[^3] ➨ we have to
 filter/select the strings:
 
 ``` r
+
 
 # 1. Which "times" between 200-300 s ?
 time.vec <- triarylam.decay.dat$time # this is vector
@@ -1092,6 +1128,7 @@ functions, like:
 
 ``` r
 
+
 triarylam.decay.filter.df.wide |>
   # plot base:
   ggplot(aes(x = B_G)) +
@@ -1123,6 +1160,7 @@ complicated, even though we may transform the
 :
 
 ``` r
+
 
 triarylam.decay.dat.filter.long <-
   triarylam.decay.filter.df.wide %>%
@@ -1160,6 +1198,7 @@ applying the `color` argument :
 
 ``` r
 
+
 triarylam.decay.dat.filter.long |>
   ggplot(aes(x = B_G,y = dIepr_over_dB)) +
   geom_line(aes(color = time_s),linewidth = 0.75) +
@@ -1178,6 +1217,7 @@ can therefore nicely perform the filtering and plotting, literally in
 one “bigger” step (together with the application of pipe operator):
 
 ``` r
+
 
 triarylam.decay.dat$df |>
   # filtering/time span:
@@ -1208,6 +1248,7 @@ the entire series of EPR spectra in order to figure out the basic
 information about the kinetics of triaryalmine radical decay:
 
 ``` r
+
 
 triarylam.decay.integs.01 <- 
   triarylam.decay.dat$df |>
@@ -1254,9 +1295,10 @@ dimer (\\\small \mathrm{D}\\):
 
 one can try to fit the latter *Area (Double Integral) vs time* relation,
 by the above-mentioned kinetic model, to estimate the kinetic rate
-constant \\\small k_1\\ [⁴](#fn4):
+constant \\\small k_1\\ [^4]:
 
 ``` r
+
 
 dimer.kinetics.01 <- 
   eval_kinR_EPR_modelFit(
@@ -1274,12 +1316,13 @@ dimer.kinetics.01$plot
 ![](firstSteps_files/figure-html/kinetics-fit-01-1.png)
 
 ``` r
+
 #
 # kinetic parameters with statistical measures
 dimer.kinetics.01$df.coeff
 #>           Estimate    Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425903e-72
-#> k1     0.019220829 0.00093856979 20.478849 3.4920627e-37
+#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425897e-72
+#> k1     0.019220829 0.00093856978 20.478850 3.4920575e-37
 ```
 
 Obviously, according to statistical measures of non-linear
@@ -1292,6 +1335,7 @@ function documentation):
 
 ``` r
 
+
 dimer.kinetics.01$ra$plot.rqq()
 ```
 
@@ -1302,6 +1346,7 @@ deviation of residuals are slightly high along the time-axis (see the
 kinetic model fit) :
 
 ``` r
+
 
 # residual sample variance
 var(dimer.kinetics.01$ra$df$residuals)
@@ -1333,6 +1378,7 @@ previous `dimer.kinetics.01` variable:
 
 ``` r
 
+
 class(dimer.kinetics.01)
 #> [1] "list"
 #
@@ -1349,6 +1395,7 @@ is.list(dimer.kinetics.01) # is it a list ?
 The `dimer.kinetics.01` consists of the following components:
 
 ``` r
+
 
 # How many components ?
 length(dimer.kinetics.01)
@@ -1380,6 +1427,7 @@ corresponding to residual sum of squares at each iteration/evaluation
 
 ``` r
 
+
 # select the element by `$` operator
 dimer.kinetics.01$N.converg
 #> [1] 0.00086935454 0.00019862125 0.00017783532 0.00017776637 0.00017776632
@@ -1397,7 +1445,7 @@ not have to remember its name**. In most of the IDEs, by writing the
 commands/scripts, there is an automatic code completion. So, once you
 start to put `$` operator just behind the list variable name, all list
 elements appear in a popup window in order to select the desired
-one[⁵](#fn5).
+one[^5].
 
 In addition to double-square brackets, one may also choose single ones.
 However, this does not select the “pure” list element and instead, it
@@ -1406,6 +1454,7 @@ list, similarly to data frames with single-square bracket selection)
 like:
 
 ``` r
+
 
 dimer.kinetics.01["N.converg"]
 #> $N.converg
@@ -1421,6 +1470,7 @@ If we want to choose an element form `N.converg` (e.g. the last residual
 square sum), we can actually apply the following commands:
 
 ``` r
+
 
 # the last residual square sum
 dimer.kinetics.01$N.converg[length(dimer.kinetics.01$N.converg)]
@@ -1444,6 +1494,7 @@ nuclei, interacting with unpaired electron to simulate the \\\small
 :
 
 ``` r
+
 
 # the following nested list, without names, 
 # is a combination of strings and numbers
@@ -1472,6 +1523,7 @@ nuclei.system[[1]][[3]]
 …with the simulation:
 
 ``` r
+
 
 # simulation also returns a list
 tmpd.sim.list <-
@@ -1569,27 +1621,25 @@ WICKHAM, Hadley. Tidy data. *J. Stat. Soft.* \[online\]. 2014. Vol. 59,
 no. 10, p. 1–23. Available from:
 <https://www.jstatsoft.org/article/view/v059i10>
 
-------------------------------------------------------------------------
-
-1.  On the rare occasions you may also come across the triple colon
+[^1]: On the rare occasions you may also come across the triple colon
     `:::` which calls the “hidden” objects from the package
     (e.g. installation of several *L_(A)TeX* packages under the
     ![](RcoreLogo.png)`tinytex` distribution:
     `tinytex:::install_yihui_pkgs()` , see also
     <https://yihui.org/tinytex/>)
 
-2.  One may come across symbols like `.` , `>>` , `|>` , `&` or `|`
+[^2]: One may come across symbols like `.` , `>>` , `|>` , `&` or `|`
 
-3.  Instead of names like `time_s_...` with times in seconds, we might
+[^3]: Instead of names like `time_s_...` with times in seconds, we might
     use just numbers. However, in such case it is actually not clear
     what those values do correspond to. Additionally, column headers
     must be expressed by names/strings, not by values.
 
-4.  Because the double integral is directly proportional to the
+[^4]: Because the double integral is directly proportional to the
     concentration of radicals R for a quick preview (or comparison with
     other kinetic data) we can use such estimation based on
     integrals/areas. Consequently, the unit of the rate constant
     (corresponding to radical recombination) will be expressed in:
     \[*k*₁\] = (p.d.u.)⁻¹ s⁻¹.
 
-5.  The same actually applies for data frames and their columns.
+[^5]: The same actually applies for data frames and their columns.

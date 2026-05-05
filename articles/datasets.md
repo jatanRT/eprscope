@@ -14,9 +14,9 @@ spectroelectrochemical experiments.
 
 This dataset was taken from the open source
 [*EasySpin*](https://easyspin.org/easyspin/documentation/isotopetable.html)
-package, reformatted and column of Larmor-frequencies in $MHz$ at
-$0.35\,{mT}$ was added for better orientation in double-resonance ENDOR
-spectra, see the details in
+package, reformatted and column of Larmor-frequencies in
+$`\mathrm{MHz}`$ at $`0.35\,\mathrm{mT}`$ was added for better
+orientation in double-resonance ENDOR spectra, see the details in
 [`?isotopes_ds`](https://jatanrt.github.io/eprscope/reference/isotopes_ds.md)
 documentation as well as [R file in \`data-raw\`
 folder](https://github.com/jatanRT/eprscope/blob/master/data-raw/isotopes_ds.R).
@@ -33,6 +33,7 @@ and
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md).
 
 ``` r
+
 
 # interactive data frame by `{DT}` package with option to select columns
 # and to save table as `.csv`, `.pdf` or `.xlsx` format
@@ -59,18 +60,18 @@ When performing EPR experiments, especially the **X-band continuous wave
 Namely, prior to measurement one has to decide which type of cell will
 be applied depending on solvent polarity. For polar solvents, such as
 acetonitrile or dimethyl sulfoxide, either capillary (with
-$i.d. \leq 1\,{mm}$ ) or special [quartz flat
+$`i.d. \leq 1\,\mathrm{mm}`$ ) or special [quartz flat
 cell](https://sp-wilmadlabglass.com/product/standard-te102-aqueous-cells/)
-( with a flat-part thickness $\approx (0.3 - 0.6)\,{mm}$) must be used.
-Whereas for the non-polar solvents, or those with lower polarity,
+( with a flat-part thickness $`\approx (0.3-0.6)\,\mathrm{mm}`$) must be
+used. Whereas for the non-polar solvents, or those with lower polarity,
 e.g. toluene, chloroform or tetrahydrofuran, a sample can be analyzed
 within any kind of cell including [common EPR
 quartz-tubes](https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/)
-with $i.d. \approx (2 - 4)\,{mm}$. Additionally, the solvent properties
-like melting/boiling point as well as viscosity are essential for the
-variable temperature (VT) experiments and particularly for the CW ENDOR
-as well as for spectroelectrochemical ones. Table details can be found
-in the
+with $`i.d. \approx (2-4)\,\mathrm{mm}`$. Additionally, the solvent
+properties like melting/boiling point as well as viscosity are essential
+for the variable temperature (VT) experiments and particularly for the
+CW ENDOR as well as for spectroelectrochemical ones. Table details can
+be found in the
 [`?solvents_ds`](https://jatanrt.github.io/eprscope/reference/solvents_ds.md)
 documentation and in the [R file in \`data-raw\`
 folder](https://github.com/jatanRT/eprscope/blob/master/data-raw/solvents_ds.R).
@@ -79,6 +80,7 @@ Solvent properties can be also obtained by the specialized
 function.
 
 ``` r
+
 
 # similar interactive table like before
 DT::datatable(solvents_ds,
@@ -104,9 +106,9 @@ text](https://www.computerhope.com/jargon/a/ascii.htm) and [binary
 data](https://www.computerhope.com/jargon/b/binary.htm) (with the
 extensions like `.txt` , `.asc` , `.csv` , `.DTA` and `.spc` or `.YGF`)
 coming from EPR spectrometers and correspond either to an EPR spectrum
-data frame[¹](#fn1) or accompanying ASCII text files with the
-(instrumental) parameters (having the `.par` or `.DSC` / `.dsc`
-extensions) used to record the corresponding spectra (see also the
+data frame[^1] or accompanying ASCII text files with the (instrumental)
+parameters (having the `.par` or `.DSC` / `.dsc` extensions) used to
+record the corresponding spectra (see also the
 [`vignette("functionality")`](https://jatanrt.github.io/eprscope/articles/functionality.md)
 vignette/article). While the binary files and those containing
 parameters are generated automatically during the data saving, text data
@@ -122,9 +124,7 @@ are summarized within the following table.
 
 [TABLE]
 
-------------------------------------------------------------------------
-
-1.  Usually the following variables/columns are included in the ASCII
+[^1]: Usually the following variables/columns are included in the ASCII
     tables of the corresponding EPR spectra: “**index**”, “**Field
     \[G\]**”/“**X \[G\]**”/“**RF \[MHz\]**” and “**Intensity
     \[\]**”/“**Intensity**”

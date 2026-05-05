@@ -48,6 +48,7 @@ open source modular java library for chemoinformatics
 
 ``` r
 
+
 # radical cation Wuster's Reagent equivalent
 # to N,N,N',N'-tetramethyl-p-phenylenediamine (TMPD) radical cation
 # from 'SMILES' origin on "cob" ("color on black") canvas, without
@@ -145,6 +146,7 @@ converted into individual interactive tables by
 
 ``` r
 
+
 # package built-in example file => "TMPD_specelchem_accu_b.par"
 tmpd.params.file <- 
   load_data_example(file = "TMPD_specelchem_accu_b.par")
@@ -175,6 +177,7 @@ tmpd.params$info # or `tmpd.params[["info"]]`
 ```
 
 ``` r
+
 
 # and the second data frame is the "params",
 # containing parameters, their values and units
@@ -211,6 +214,7 @@ proceeds as follows with the output having the form of the universal
 
 ``` r
 
+
 # loading package built-in example binary 
 # `.spc` file => "TMPD_specelchem_accu_b.spc"
 tmpd.data.file <- load_data_example(file = "TMPD_specelchem_accu_b.spc")
@@ -241,7 +245,7 @@ head(tmpd.data.norm.01)
 ```
 
 An arbitrary character string may be chosen for the column name (see
-`col.names` argument)[¹](#fn1). However, a safe rule of thumb is to use
+`col.names` argument)[^1]. However, a safe rule of thumb is to use
 notation like “quantity_unit”, as already shown above, in the case of
 magnetic flux density \\\small B\\. The name for the intensity column
 reads `dIepr_over_dB` (without units) because it reflects the derivative
@@ -262,6 +266,7 @@ use the
 function from the `Evaluations and Quantification` family ➨
 
 ``` r
+
 
 # calculation of the advanced normalization constant
 # by selected parameters from the parameter list above,
@@ -335,6 +340,7 @@ the following example.
 
 ``` r
 
+
 # visualization of the first 10 rows by `{tinytable}` 
 tinytable::tt(head(tmpd.data.norm.02, n = 10))
 ```
@@ -359,6 +365,7 @@ by the `base::write.csv()` function ➨
 
 ``` r
 
+
 write.csv(tmpd.data.norm.02,
   file = "TMPD_EPR_Norm_data02.csv",
   row.names = FALSE
@@ -371,15 +378,15 @@ All the data related to EPR spectroscopy can be visualized by the
 [{ggplot2}](https://ggplot2.tidyverse.org/) 📦, its
 [extensions](https://exts.ggplot2.tidyverse.org/gallery/) as well as by
 the interactive [{plotly}](https://plotly.com/r/) graphing library.
-While the first library/package (based on the “Grammar of
-Graphics”[²](#fn2) , see also ([8](#ref-WilkinsonGG2005))) is one of the
-most comprehensive system for data visualization, the second one
-represents a valuable alternative to processing/acquisition software at
-EPR spectrometers. Namely, it includes tools like zooming, panning,
-data/values hovering and [much
-more](https://plotly.com/r/configuration-options/). Combination of both
-approaches actually represents literally endless possibilities how to
-visualize the data in electron paramagnetic resonance spectroscopy.
+While the first library/package (based on the “Grammar of Graphics”[^2]
+, see also ([8](#ref-WilkinsonGG2005))) is one of the most comprehensive
+system for data visualization, the second one represents a valuable
+alternative to processing/acquisition software at EPR spectrometers.
+Namely, it includes tools like zooming, panning, data/values hovering
+and [much more](https://plotly.com/r/configuration-options/).
+Combination of both approaches actually represents literally endless
+possibilities how to visualize the data in electron paramagnetic
+resonance spectroscopy.
 
 ### 4.1 Static Plots by `{ggplot2}` and `{patchwork}`
 
@@ -392,6 +399,7 @@ measurements). Now, by means of this function and by the
 the EPR spectra with the basic and “advanced” normalization ➨
 
 ``` r
+
 
 # plotting the spectrum with basic normalization,
 # the B-axis can be presented either 
@@ -420,6 +428,7 @@ normalized by number of scans, ‘Nscans’, and by sensitivity Q-factor,
 Comparison of both spectra with different normalization ➨
 
 ``` r
+
 
 # spectrum with the "advanced" normalization
 tmpd.plot.norm.02 <-
@@ -453,6 +462,7 @@ If one wants to save the previous Figure
 function can be applied ➨
 
 ``` r
+
 
 # to save the plot `tmpd.plot.norm.0102` with the size
 # of (7 x 5) inches and the resolution of dpi = 200
@@ -528,6 +538,7 @@ function).
 
 ``` r
 
+
 # reading the microwave frequency ("MF") from the `.par` file
 tmpd.mw.freq <-
   readEPR_param_slct(tmpd.params.file,
@@ -585,6 +596,7 @@ function ➨
 
 ``` r
 
+
 # package built-in example file => 
 # "TMPDAradCatEPRa.inp.log.zip"
 # which is a `.zip` of the Gaussian output file
@@ -635,6 +647,7 @@ function ➨
 
 ``` r
 
+
 # calculate Delta Bpp from several regions
 # => list of three selected elements/regions
 B.regions.mT <- list(
@@ -682,6 +695,7 @@ A\\, HFCCs) using the following relation (Equation [(5.2)](#eq:hfatoA))
 \tag{5.2} \end{equation}\\
 
 ``` r
+
 
 # two visible distances or HFSCs (a in mT)
 # from the interactive EPR spectrum above
@@ -732,6 +746,7 @@ argument. Therefore, according to numbering shown in Figure
 [5.2](#fig:dft-tmpd-structure) ➨
 
 ``` r
+
 
 # The same package built-in example file 
 # (`TMPDAradCatEPRa.inp.log.zip`)
@@ -800,6 +815,7 @@ EPR spectrum of \\\small \ce{TMPD^{.+}}\\ as follows ➨
 
 ``` r
 
+
 # isotropic simulation of the TMPD radical cation where
 # the instrumental parameters are taken from 
 # the corresponding `.par` file: `tmpd.params.file` :
@@ -824,7 +840,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.081   0.011   0.092
+#>   0.112   0.006   0.118
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -857,6 +873,7 @@ the experimental one like depicted on Figure
 [5.4](#fig:simulation-shiny-app).
 
 ``` r
+
 
 # intesinty of the simulated spectrum
 # is automatically scalled onto 
@@ -895,6 +912,7 @@ parameters in order to fit and analyze an isotropic EPR spectrum, like
 the \\\small \ce{TMPD^{.+}}\\ one, described in the following example.
 
 ``` r
+
 
 # runnig parallel processing 
 # to fit the EPR spectrum of the TMPD 
@@ -944,6 +962,7 @@ Animation corresponds to the following optimization of EPR simulation
 parameters:
 
 ``` r
+
 
 tmpd.epr.iso.fit$plot.optim.space
 #
@@ -1000,6 +1019,7 @@ spectrum is documented by the following scripts ➨
 
 ``` r
 
+
 # basic integration without baseline correction
 # during the first integration.
 tmpd.data.norm.02.integ <-
@@ -1031,6 +1051,7 @@ by the
 function from `Visualization and Graphics` family:
 
 ``` r
+
 
 # both integrals are presented separately
 # with their corresponding intensities automatically
@@ -1065,6 +1086,7 @@ its subtraction from the single integrated spectrum to evaluate the
 double/sigmoid integral more accurately ➨
 
 ``` r
+
 
 # correction of the TMPD^{.+} EPR spectrum single
 # integral by the 3rd degree polynomial
@@ -1202,13 +1224,11 @@ EPPERSON, J. F. *An introduction to numerical methods and analysis*
 \[online\]. Wiley & Sons, 2013. ISBN 9781118367599. Available from:
 <https://books.google.cz/books?id=310lAgAAQBAJ>
 
-------------------------------------------------------------------------
-
-1.  For such reason, there are arguments `x.id` and `Intensity.id` ,
+[^1]: For such reason, there are arguments `x.id` and `Intensity.id` ,
     pointing to original table column indices, in order to properly pick
     up the corresponding variables.
 
-2.  *The Grammar of Graphics* is a concept how the graphs/plots are
+[^2]: *The Grammar of Graphics* is a concept how the graphs/plots are
     built. It is based on the fact that graphs may consist of several
     components/layers (e.g. like data layer, geometry layer, aesthetic
     layer…etc) similarly to processing of a bitmap-image in a

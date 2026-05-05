@@ -32,7 +32,7 @@ been also very well established in chemistry and physics
 industry ([11](#ref-PositPharma2025), [12](#ref-Pharmaverse2025)) as
 well as in finance area ([13](#ref-Finance2025)). Unsurprisingly, many
 big companies, universities or financial and healthcare institutions
-rely on a very robust and multiplatform[¹](#fn1)
+rely on a very robust and multiplatform[^1]
 ![](RcoreLogo.png)([14](#ref-Rconsortium2025), [15](#ref-PositDS2025)).
 
 Because the ![](RcoreLogo.png) belongs to the **family of programming
@@ -53,7 +53,7 @@ strongly supported by the aforementioned features, even though the
 
 Moreover, **the entire** ![](RcoreLogo.png)**ecosystem with thousands of
 packages** ([5](#ref-Rmanual2025), [10](#ref-BiocondR2025),
-[25](#ref-Runiverse2025)) **and *RStudio* IDE**[²](#fn2)
+[25](#ref-Runiverse2025)) **and *RStudio* IDE**[^2]
 ([26](#ref-Rstudio2025)) **support workflows which are almost free from
 any other additional software/toolboxes** (see also explanation below).
 Therefore, **together with perfectly and uniformly structured**
@@ -117,10 +117,10 @@ processing of EPR spectra, the spectral analysis (which usually
 corresponds to determination of the hyperfine coupling/splitting
 constants and the *g*-factors) requires quantum chemical calculations on
 the high-performance computing servers and/or the above-mentioned
-simulations of EPR spectra done within the *MATLAB* by
-*EasySpin*[³](#fn3)*.* Therefore, one must combine diverse outputs in
-order to gather the entire structural information about the paramagnetic
-center. As can be seen in Figure [1](#fig:scheme-intro) **the**
+simulations of EPR spectra done within the *MATLAB* by *EasySpin*[^3]*.*
+Therefore, one must combine diverse outputs in order to gather the
+entire structural information about the paramagnetic center. As can be
+seen in Figure [1](#fig:scheme-intro) **the**
 [eprscope](https://jatanrt.github.io/eprscope/) **together with the**
 *Rmarkdown* ([23](#ref-RmarkdownBook2021)) **and/or the** *Quarto*
 **publishing system** ([22](#ref-Quarto2025)) **are capable** (**without
@@ -290,14 +290,12 @@ multi-spectroelectrochemistry. *J. Solid State Electrochem.* July 2011.
 Vol. 15, no. 7, p. 1631–1646.
 DOI [10.1007/s10008-011-1453-1](https://doi.org/10.1007/s10008-011-1453-1).
 
-------------------------------------------------------------------------
-
-1.  The ![](RcoreLogo.png) is available for all three main operating
+[^1]: The ![](RcoreLogo.png) is available for all three main operating
     systems ➨ `windows`, `macos`as well as `linux`
 
-2.  Integrated Development Environment
+[^2]: Integrated Development Environment
 
-3.  A simple simulation of isotropic EPR spectra of paramagnetic
+[^3]: A simple simulation of isotropic EPR spectra of paramagnetic
     centers/radicals is also included in the
     [eprscope](https://jatanrt.github.io/eprscope/) ![](RcoreLogo.png)
     📦 .

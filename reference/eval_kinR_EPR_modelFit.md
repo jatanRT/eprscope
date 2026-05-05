@@ -81,16 +81,16 @@ eval_kinR_EPR_modelFit(
   changes during the EPR time series experiment (the `r,a,b`
   stoichiometric coefficients may vary, see below).
 
-  |                                                                                                               |                                                        |
-  |---------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-  | **Reaction Scheme**                                                                                           | **model.react**                                        |
-  | \\(r=1)\text{R} \xrightarrow{k_1} \text{B}\\                                                                  | `"(r=1)R --> [k1] B"`                                  |
-  | \\(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}\\                                                             | `"(a=2)A --> [k1] (r=2)R"`                             |
+  |  |  |
+  |----|----|
+  | **Reaction Scheme** | **model.react** |
+  | \\(r=1)\text{R} \xrightarrow{k_1} \text{B}\\ | `"(r=1)R --> [k1] B"` |
+  | \\(a=2)\text{A} \xrightarrow{k_1} (r=2)\text{R}\\ | `"(a=2)A --> [k1] (r=2)R"` |
   | \\(a=2)\text{A} \xrightleftharpoons\[k_4\]{k_1} (r=2)\text{R} \xrightleftharpoons\[k_3\]{k_2} (b=1)\text{B}\\ | `"(a=2)A <==> [k1] [k4] (r=2)R <==> [k2] [k3] (b=1)B"` |
-  | \\(r=1)\text{R} \xrightleftharpoons\[k_2\]{k_1} (b=1)\text{B}\\                                               | `"(r=1)R <==> [k1] [k2] (b=1)B"`                       |
-  | \\(a=2)\text{A} \xrightleftharpoons\[k_2\]{k_1} (r=2)\text{R}\\                                               | `"(a=2)A <==> [k1] [k2] (r=2)R"`                       |
-  | \\(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\\                                             | `"(a=1)A + (b=1)B --> [k1] (r=1)R"`                    |
-  | \\(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\\                                                  | `"(a=1)A + (r=1)R --> [k1] B"`                         |
+  | \\(r=1)\text{R} \xrightleftharpoons\[k_2\]{k_1} (b=1)\text{B}\\ | `"(r=1)R <==> [k1] [k2] (b=1)B"` |
+  | \\(a=2)\text{A} \xrightleftharpoons\[k_2\]{k_1} (r=2)\text{R}\\ | `"(a=2)A <==> [k1] [k2] (r=2)R"` |
+  | \\(a=1)\text{A} + (b=1)\text{B} \xrightarrow{k_1} (r=1)\text{R}\\ | `"(a=1)A + (b=1)B --> [k1] (r=1)R"` |
+  | \\(a=1)\text{A} + (r=1)\text{R} \xrightarrow{k_1} \text{B}\\ | `"(a=1)A + (r=1)R --> [k1] B"` |
 
   Couple of examples are also given in the `Details`. The function is
   relatively flexible and enables later addition of any other reaction

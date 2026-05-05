@@ -224,12 +224,12 @@ argument, as listed below:
     These variables are presented for each `var2nd.series` (e.g. time)
     point like example for one EPR spectral component:
 
-    |            |                |                          |                     |              |             |               |
-    |------------|----------------|--------------------------|---------------------|--------------|-------------|---------------|
-    | **time_s** | **Area_Sim_A** | **Optim_CoeffInt_Sim_A** | **Optim_intercept** | **min_RSS**  | **N_evals** | **N_converg** |
-    | 6          | 0.020624473    | 0.052843937              | 5.508809e-10        | 2.289953e-07 | 198         | 4             |
-    | 21         | 0.020217930    | 0.051802287              | 5.401823e-10        | 2.438172e-07 | 177         | 4             |
-    | 36         | 0.018836579    | 0.048263010              | 5.029705e-10        | 2.662651e-07 | 201         | 4             |
+    |  |  |  |  |  |  |  |
+    |----|----|----|----|----|----|----|
+    | **time_s** | **Area_Sim_A** | **Optim_CoeffInt_Sim_A** | **Optim_intercept** | **min_RSS** | **N_evals** | **N_converg** |
+    | 6 | 0.020624473 | 0.052843937 | 5.508809e-10 | 2.289953e-07 | 198 | 4 |
+    | 21 | 0.020217930 | 0.051802287 | 5.401823e-10 | 2.438172e-07 | 177 | 4 |
+    | 36 | 0.018836579 | 0.048263010 | 5.029705e-10 | 2.662651e-07 | 201 | 4 |
 
 2.  If `output.area.stat = FALSE` Tidy/long table format of the original
     `data.spectra.series` with additional columns/variables (best fitted

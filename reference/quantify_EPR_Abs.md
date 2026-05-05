@@ -40,11 +40,11 @@ quantify_EPR_Abs(
   Named numeric vector, containing instrumental parameters required for
   the quantification =\>
 
-  |         |                                                                                      |
-  |---------|--------------------------------------------------------------------------------------|
-  | `PmW`   | power of the MW source in mW                                                         |
-  | `BmmT`  | modulation amplitude (magnetic flux density modulation, \\B\_{\text{m}}\\) in mT     |
-  | `TK`    | temperature in K                                                                     |
+  |  |  |
+  |----|----|
+  | `PmW` | power of the MW source in mW |
+  | `BmmT` | modulation amplitude (magnetic flux density modulation, \\B\_{\text{m}}\\) in mT |
+  | `TK` | temperature in K |
   | `mwGHz` | applied microwave frequency in `GHz` to record the continuous wave (CW) EPR spectrum |
 
   **Default**: `instrum.params = NULL` because they are primarily
@@ -169,19 +169,19 @@ I\_{\text{sigmoid}}\\/\\\[(c/f(B_1,B\_{\text{m}}))\\(G\_{\text{R}}\\t\_{\text{C}
 where the quantity notations possess the following meaning (parentheses
 denote whether it is an instrumental or sample dependent parameter):
 
-|                        |                                                                                                                              |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| **Quantity Symbol**    | **Meaning/Short Desription**                                                                                                 |
-| \\c\\                  | Point sample calibration factor (instrumental).                                                                              |
+|  |  |
+|----|----|
+| **Quantity Symbol** | **Meaning/Short Desription** |
+| \\c\\ | Point sample calibration factor (instrumental). |
 | \\f(B_1,B\_\text{m})\\ | Spatial distribution of the microwave \\B_1\\ and modulation amplitude within the cavity/probehead/resonator (instrumental). |
-| \\G\_{\text{R}}\\      | Receiver gain (commonly in \\\text{dB}\\ units (instrumental)).                                                              |
-| \\t\_{\text{C}}\\      | Conversion time (commonly in \\\text{ms}\\) which is an analogy to integration time in other spectroscopies (instrumental).  |
-| \\N\_{\text{Scans}}\\  | Number of scans/accumulations during the experiment (instrumental).                                                          |
-| \\P\_{\text{MW}}\\     | Microwave power (instrumental).                                                                                              |
-| \\B\_{\text{m}}\\      | Modulation amplitude (instrumental).                                                                                         |
-| \\Q\\                  | *Q*-Value or *Q*-Factor characterizing the resonator/cavity/probehead sensitivity (unitless and instrumental).               |
-| \\n\_{\text{B}}\\      | Boltzmann factor for temperature dependence (instrumental-sample).                                                           |
-| \\S\\                  | Total electronic spin quantum number (sample). Commonly, for radicals \\S = 1/2\\.                                           |
+| \\G\_{\text{R}}\\ | Receiver gain (commonly in \\\text{dB}\\ units (instrumental)). |
+| \\t\_{\text{C}}\\ | Conversion time (commonly in \\\text{ms}\\) which is an analogy to integration time in other spectroscopies (instrumental). |
+| \\N\_{\text{Scans}}\\ | Number of scans/accumulations during the experiment (instrumental). |
+| \\P\_{\text{MW}}\\ | Microwave power (instrumental). |
+| \\B\_{\text{m}}\\ | Modulation amplitude (instrumental). |
+| \\Q\\ | *Q*-Value or *Q*-Factor characterizing the resonator/cavity/probehead sensitivity (unitless and instrumental). |
+| \\n\_{\text{B}}\\ | Boltzmann factor for temperature dependence (instrumental-sample). |
+| \\S\\ | Total electronic spin quantum number (sample). Commonly, for radicals \\S = 1/2\\. |
 
 Almost all summarized quantities are instrument-dependent. Most of them
 correspond to the essential parameters for the experiment and can be

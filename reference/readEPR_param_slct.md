@@ -29,35 +29,35 @@ readEPR_param_slct(path_to_dsc_par, string, origin = "xenon")
   acquisition softwares described-above** (**in parenthesis for the
   "winepr" origin**):
 
-  |                             |                                                                                                                          |
-  |-----------------------------|--------------------------------------------------------------------------------------------------------------------------|
-  | **String**                  | **Instrumental Parameter**                                                                                               |
-  | "OPER" ("JON")              | operator (of the EPR instrument)                                                                                         |
-  | "CMNT" ("JCO")              | comment (in order to describe the measurement)                                                                           |
-  | "DATE" ("JDA")              | date (when the EPR spectrum was recorded)                                                                                |
-  | "TIME" ("JTM")              | time (when the EPR spectrum was recorded)                                                                                |
-  | "SAMP"                      | name/description of the sample, not available in "magnettech" `.dsc`                                                     |
-  | "TITL" ("JEX")              | experiment title                                                                                                         |
-  | "YNAM" ("JEY")              | name/title for the second variable/dimension of the experiment                                                           |
-  | "B0MF"                      | modulation frequency in `Hz`                                                                                             |
-  | "MWFQ" ("MF")               | microwave frequency in `Hz` (`GHz`)                                                                                      |
-  | "QValue"                    | recorded quality-Factor (required for intensity normalization) `unitless`                                                |
-  | "A1CT" ("HCF")              | central field (B) in `T` (`G`)                                                                                           |
-  | "A1SW" ("HSW")              | sweep width in `T` (`G`)                                                                                                 |
-  | "STMP" ("TE")               | temperature in `K`                                                                                                       |
-  | "B0MA" ("RMA")              | modulation amplitude in `T` (`G`)                                                                                        |
-  | "AVGS" ("JSD")              | number of accumulations for each spectrum                                                                                |
-  | "XPTS"/"A1RS" ("RES"/"SSX") | number of points/resolution                                                                                              |
-  | "XUNI" ("JUN"/"XXUN")       | spectrum abscissa unit                                                                                                   |
-  | "YUNI" ("XYUN")             | unit corresponding to second variable (e.g. time) in spectral series                                                     |
-  | "XMIN" ("GST"/"XXLB")       | actual *x*/*B* starting point (especially if teslameter in ON state)                                                     |
-  | "YPTS"/"A2RS" ("REY"/"SSY") | *y*-resolution, corresponding to second variable (e.g. time) in spectral series                                          |
-  | "XWID" ("GSI"/"XXWI")       | actual *x*/*B* width (entire range, especially if teslameter in ON state)                                                |
-  | "MWPW" ("MP")               | microwave power in `W` (`mW`)                                                                                            |
-  | "SPTP" ("RCT")              | conversion time in `s` (`ms`)                                                                                            |
-  | "RCTC" ("RTC")              | time constant in `s` (ms), not available in "magnettech" `.dsc`                                                          |
-  | "RCAG" ("RRG")              | signal receiver gain in `dB` (unitless), not available in "magnettech" `.dsc`                                            |
-  | "ConvFact"                  | conversion factor/instr. calibration constant for quantitative analysis `unitless`, not available in "magnettech" `.dsc` |
+  |  |  |
+  |----|----|
+  | **String** | **Instrumental Parameter** |
+  | "OPER" ("JON") | operator (of the EPR instrument) |
+  | "CMNT" ("JCO") | comment (in order to describe the measurement) |
+  | "DATE" ("JDA") | date (when the EPR spectrum was recorded) |
+  | "TIME" ("JTM") | time (when the EPR spectrum was recorded) |
+  | "SAMP" | name/description of the sample, not available in "magnettech" `.dsc` |
+  | "TITL" ("JEX") | experiment title |
+  | "YNAM" ("JEY") | name/title for the second variable/dimension of the experiment |
+  | "B0MF" | modulation frequency in `Hz` |
+  | "MWFQ" ("MF") | microwave frequency in `Hz` (`GHz`) |
+  | "QValue" | recorded quality-Factor (required for intensity normalization) `unitless` |
+  | "A1CT" ("HCF") | central field (B) in `T` (`G`) |
+  | "A1SW" ("HSW") | sweep width in `T` (`G`) |
+  | "STMP" ("TE") | temperature in `K` |
+  | "B0MA" ("RMA") | modulation amplitude in `T` (`G`) |
+  | "AVGS" ("JSD") | number of accumulations for each spectrum |
+  | "XPTS"/"A1RS" ("RES"/"SSX") | number of points/resolution |
+  | "XUNI" ("JUN"/"XXUN") | spectrum abscissa unit |
+  | "YUNI" ("XYUN") | unit corresponding to second variable (e.g. time) in spectral series |
+  | "XMIN" ("GST"/"XXLB") | actual *x*/*B* starting point (especially if teslameter in ON state) |
+  | "YPTS"/"A2RS" ("REY"/"SSY") | *y*-resolution, corresponding to second variable (e.g. time) in spectral series |
+  | "XWID" ("GSI"/"XXWI") | actual *x*/*B* width (entire range, especially if teslameter in ON state) |
+  | "MWPW" ("MP") | microwave power in `W` (`mW`) |
+  | "SPTP" ("RCT") | conversion time in `s` (`ms`) |
+  | "RCTC" ("RTC") | time constant in `s` (ms), not available in "magnettech" `.dsc` |
+  | "RCAG" ("RRG") | signal receiver gain in `dB` (unitless), not available in "magnettech" `.dsc` |
+  | "ConvFact" | conversion factor/instr. calibration constant for quantitative analysis `unitless`, not available in "magnettech" `.dsc` |
 
 - origin:
 
