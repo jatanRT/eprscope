@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 ## Overview <img src="man/figures/logo_new.png" align="right" height="104"/>
 
-The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly in chemistry. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The `{eprscope}`, as the first complex ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} **package** 📦 for EPR, **doesn't want to replace the latter nor the excellent and standard EPR simulation/processing** [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, **it may be considered like a complementary** 📦 **or toolbox with practical functions which have to be otherwise performed by several proprietary tools**. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing/analysis workflow. Therefore, the `{eprscope}` tries to reduce such many steps/programs if the above-mentioned software combination would be adopted. In order to achieve the goal it uses superior power of the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/). Everything at one place (see the [RStudio IDE](https://docs.posit.co/ide/user/) or [Positron](https://positron.posit.co/)) without the need to switch between or employ any other additional software.
+The key objective of this open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} package is to bring handy functions corresponding to "everyday" data processing/analysis in the EPR ([Electron Paramagnetic Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))) spectroscopy mainly for chemists. Similar ![](https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png){width="16" height="16"} tools like [cwepr](https://www.cwepr.de/index) and the [related projetcs](https://docs.cwepr.de/v0.5/) have been developed, so far. The `{eprscope}`, as the first complex ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} **package** 📦 for EPR, **doesn't want to replace the latter nor the excellent and standard EPR simulation/processing** [EasySpin Toolbox](https://www.easyspin.org/) for [MATLAB](https://www.mathworks.com/products/matlab.html) and its additional frameworks like [SpecProFi](https://www.radicals.uni-freiburg.de/de/software) or [CW EPR Scripts by Emilien Etienne](https://bip.cnrs.fr/epr-facility/software-and-scripts/). Rather, **it may be considered like a complementary** 📦 **or toolbox with practical functions which have to be otherwise performed by several proprietary tools**. For instance, like acquisition/processing software, supplied by the EPR spectrometer manufacturers (see e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments/epr-software.html)) as well as several other software platforms like the *MS Office* and/or *Orgin/SigmaPlot/Igor* which are often applied in the EPR processing/analysis workflow. Therefore, the `{eprscope}` tries to reduce such many steps/programs. In order to achieve the goal it uses superior power of the open source ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} ecosystem that combines data processing, analysis and great scientific visualizations together with the extensive publishing capabilities by [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and [Quarto](https://quarto.org/). Everything at one place (see the [RStudio IDE](https://docs.posit.co/ide/user/) or [Positron](https://positron.posit.co/)) without the need to switch between or employ any other additional software.
 
 ## Installation
 
@@ -97,7 +97,7 @@ devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 
 Additionally, **the open-source scientific and technical publishing system** [Quarto](https://quarto.org/) together with the [Pandoc](https://pandoc.org/), **a document converter system**, may be required for sharing the results coming from `{eprscope}` in desired formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be found in the `create_qmdReport_proj()` documentation).
 
-**Note:** On modern *Windows* systems (10/11), all the pre- and post-installation (*Quarto*, *Pandoc* and *LaTeX/Typst*) software packages can be easily managed either by [*Winget*](https://winstall.app/) *or by the [Chocolatey](https://chocolatey.org/)* systems.
+**Note:** On modern *Windows* systems (10/11), all the pre- and post-installation software packages (*OpenJDK*, *Quarto*, *Pandoc*, *LaTeX/Typst* and *CMake* or *Rtools*) can be easily managed either by [*Winget*](https://winstall.app/) *or by the [Chocolatey](https://chocolatey.org/)* systems.
 
 ## Updates
 
@@ -114,7 +114,7 @@ pak::pkg_install("jatanRT/eprscope",upgrade = TRUE)
 
 ## Usage
 
-In this section, couple of examples are shown in order to briefly demonstrate the package functionality. More detailed description can be found within the articles/vignettes or documentation examples.
+In this section, couple of examples are shown in order to briefly demonstrate the package functionality. More detailed description can be found within the articles/vignettes or in documentation of functions (see [Package index/Reference](https://jatanrt.github.io/eprscope/reference/index.html)).
 
 ### Reading Files with Instrumental Parameters
 
@@ -265,97 +265,97 @@ triarylamine_rc_decay_model$cor.df %>%
 
 ## Help, Questions and Contribution
 
-There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual package function documentation or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} knowledge resources (see also the "First Steps with R Language" vignette/article), particularly for students. **In case you are completely new to *R***, there are couple of great tutorials enabling a quite straightforward diving into ![](https://www.r-project.org/Rlogo.png){width="16" height="16"}. **Please, refer to e.g.**
+There are several ways how to get help. If the users are already familiar with the [R statistical language](https://www.r-project.org/) please, follow either the individual [package function documentations](https://jatanrt.github.io/eprscope/reference/index.html) or the corresponding articles/vignettes. These might be also considered as a kind of EPR spectroscopy and ![](https://www.r-project.org/Rlogo.png){width="16" height="16"} knowledge resources. **In case you are completely new to *R***, there are couple of great tutorials (you may also consult the ["First Steps with R Language" vignette/article](https://jatanrt.github.io/eprscope/articles/firstSteps.html)) enabling a quite straightforward diving into ![](https://www.r-project.org/Rlogo.png){width="16" height="16"}. **Please, refer to e.g.**
 
--   [R for Data Science (2e)](https://r4ds.hadley.nz/)
+- [R for Data Science (2e)](https://r4ds.hadley.nz/)
 
--   [ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org/)
+- [ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org/)
 
--   [Advanced R](https://adv-r.hadley.nz/)
+- [Advanced R](https://adv-r.hadley.nz/)
 
--   [POSIT Homepage](https://posit.co/)
+- [POSIT Homepage](https://posit.co/)
 
--   [R Crash Course](https://colauttilab.github.io/RCrashCourse/)
+- [R Crash Course](https://colauttilab.github.io/RCrashCourse/)
 
--   [Statology R Guides](https://www.statology.org/r-guides/)
+- [Statology R Guides](https://www.statology.org/r-guides/)
 
--   [An Introduction to R](https://intro2r.com/)
+- [An Introduction to R](https://intro2r.com/)
 
--   [R CODER](https://r-coder.com/)
+- [R CODER](https://r-coder.com/)
 
--   [Modern Statistics with R](https://www.modernstatisticswithr.com/)
+- [Modern Statistics with R](https://www.modernstatisticswithr.com/)
 
--   [Why should I use R ? (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
+- [Why should I use R ? (Series)](https://www.jumpingrivers.com/blog/comparing-r-excel-data-wrangling/)
 
--   [R to Python Data Wrangling](https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07)
+- [R to Python Data Wrangling](https://gist.github.com/conormm/fd8b1980c28dd21cfaf6975c86c74d07)
 
--   [Chemometrics and Spectroscopy Using R (Bryan Hanson Blog)](https://chemospec.org/)
+- [Chemometrics and Spectroscopy Using R (Bryan Hanson Blog)](https://chemospec.org/)
 
--   [Official Contributed Documentation of R](https://cran.r-project.org/other-docs.html)
+- [Official Contributed Documentation of R](https://cran.r-project.org/other-docs.html)
 
--   [An Introduction to Statistical Learning](https://www.statlearning.com/)
+- [An Introduction to Statistical Learning](https://www.statlearning.com/)
 
--   [R for the Rest of Us](https://book.rfortherestofus.com/)
+- [R for the Rest of Us](https://book.rfortherestofus.com/)
 
--   [The Big Book of R](https://www.bigbookofr.com/)
+- [The Big Book of R](https://www.bigbookofr.com/)
 
--   [Learn R Programming Language (Geeks for Geeks)](https://www.geeksforgeeks.org/r-tutorial/?ref=home-articlecards)
+- [Learn R Programming Language (Geeks for Geeks)](https://www.geeksforgeeks.org/r-tutorial/?ref=home-articlecards)
 
--   [R Packages and Related Links for Chemistry and Physics](https://cran.r-project.org/web/views/ChemPhys.html)
+- [R Packages and Related Links for Chemistry and Physics](https://cran.r-project.org/web/views/ChemPhys.html)
 
--   [R Packages and Related Links for Optimization and Mathematical Programming](https://cran.r-project.org/web/views/Optimization.html)
+- [R Packages and Related Links for Optimization and Mathematical Programming](https://cran.r-project.org/web/views/Optimization.html)
 
--   [Reproducible Research in R and Guides for the R-Cubed Courses](https://guides.rostools.org/)
+- [Reproducible Research in R and Guides for the R-Cubed Courses](https://guides.rostools.org/)
 
--   [Quarto - An Open Source Scientific and Technical Publishing System](https://quarto.org/docs/get-started/hello/rstudio.html)
+- [Quarto - An Open Source Scientific and Technical Publishing System](https://quarto.org/docs/get-started/hello/rstudio.html)
 
--   [R for Non-Programmers: A Guide for Social Scientists](https://r4np.com/)
+- [R for Non-Programmers: A Guide for Social Scientists](https://r4np.com/)
 
--   YouTube Video Tutorials ➨
+- YouTube Video Tutorials ➨
 
-    -   [Introduction to R Programming for Excel Users](https://www.youtube.com/watch?v=Ekp2mfxQSzw)
+  - [Introduction to R Programming for Excel Users](https://www.youtube.com/watch?v=Ekp2mfxQSzw)
 
-    -   [Bioinformatics and R Programming](https://www.youtube.com/@LiquidBrain)
+  - [Bioinformatics and R Programming](https://www.youtube.com/@LiquidBrain)
 
-    -   [R Programming 101](https://www.youtube.com/@RProgramming101)
+  - [R Programming 101](https://www.youtube.com/@RProgramming101)
 
-    -   [Equitable Equations](https://www.youtube.com/@EquitableEquations)
+  - [Equitable Equations](https://www.youtube.com/@EquitableEquations)
 
-    -   [R Programming Full Course 2023](https://www.youtube.com/watch?v=Q5g6lYUn6Q4)
+  - [R Programming Full Course 2023](https://www.youtube.com/watch?v=Q5g6lYUn6Q4)
 
-    -   [Plotting Anything with ggplot2](https://www.youtube.com/watch?v=h29g21z0a68)
+  - [Plotting Anything with ggplot2](https://www.youtube.com/watch?v=h29g21z0a68)
 
-    -   [Riffomonas Project](https://www.youtube.com/@Riffomonas)
+  - [Riffomonas Project](https://www.youtube.com/@Riffomonas)
 
-    -   [Introduction to R for Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
+  - [Introduction to R for Beginners](https://www.youtube.com/@DataSciencePursuit/playlists)
 
-    -   [Reproducible Research with R](https://www.youtube.com/watch?v=mg95lLyCpQA)
+  - [Reproducible Research with R](https://www.youtube.com/watch?v=mg95lLyCpQA)
 
-    -   [MarinStatsLectures-R Programming & Statistics](https://www.youtube.com/@marinstatlectures)
+  - [MarinStatsLectures-R Programming & Statistics](https://www.youtube.com/@marinstatlectures)
 
-    -   [Jeremy Balka's statistics channel](https://www.youtube.com/@jbstatistics)
+  - [Jeremy Balka's statistics channel](https://www.youtube.com/@jbstatistics)
 
-    -   [StatQuest with Josh Starmer](https://www.youtube.com/@statquest)
+  - [StatQuest with Josh Starmer](https://www.youtube.com/@statquest)
 
-    -   [R for Ecology](https://www.youtube.com/@RforEcology/videos)
+  - [R for Ecology](https://www.youtube.com/@RforEcology/videos)
 
-    -   [R Quarto](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df)
+  - [R Quarto](https://www.youtube.com/playlist?list=PL9HYL-VRX0oQI8fVioFxMTBrViFnRX_Df)
 
 Even though the **EPR spectroscopy** is a quite complex field there are some introductory on-line materials which may help to start with this special magnetic resonance method ➨
 
--   [EasySpin Documentation](https://easyspin.org/easyspin/documentation/) + [EasySpin Academy - YouTube (Video Series)](https://www.youtube.com/playlist?list=PLHgZIxCMfgeIPWRCGMBs5T3Mb0TwLpAy2)
+- [EasySpin Documentation](https://easyspin.org/easyspin/documentation/) + [EasySpin Academy - YouTube (Video Series)](https://www.youtube.com/playlist?list=PLHgZIxCMfgeIPWRCGMBs5T3Mb0TwLpAy2)
 
--   [EPR LibreTexts in Chemistry](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))
+- [EPR LibreTexts in Chemistry](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke))
 
--   [NMR Spectroscopy of Organic Compounds (Lesson 10)](https://nmr.group.uochb.cz/en/nmr-organic-compounds)
+- [NMR Spectroscopy of Organic Compounds (Lesson 10)](https://nmr.group.uochb.cz/en/nmr-organic-compounds)
 
--   [Bruker EPR Instruments](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments.html)
+- [Bruker EPR Instruments](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments.html)
 
--   [EPR Everywhere - Webpage](https://researchoutreach.org/articles/electron-paramagnetic-resonance-epr-everywhere/)
+- [EPR Everywhere - Webpage](https://researchoutreach.org/articles/electron-paramagnetic-resonance-epr-everywhere/)
 
--   [EPR Everywhere - Article](https://link.springer.com/article/10.1007/s00723-020-01304-z?fromPaywallRec=true)
+- [EPR Everywhere - Article](https://link.springer.com/article/10.1007/s00723-020-01304-z?fromPaywallRec=true)
 
--   [Basic Concepts of EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
+- [Basic Concepts of EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 
 Any additional questions, comments, remarks or issues can be addressed through several discussion channels like 📧 e-mail [jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on the github source page (see the [contributing guide](./.github/CONTRIBUTING.md)). In the future, there will be also a specialized [Discord](https://discord.com/) community channel to discuss the `{eprscope}` related topics. If somebody is able and interested in the package development, please refer to [contributing guide](./.github/CONTRIBUTING.md).
 

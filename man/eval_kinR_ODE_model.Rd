@@ -235,12 +235,12 @@ kin.test.01 <-
 head(kin.test.01$df,n = 10)
 #
 ## half-life (t1/2) of the second-order from data frame
-## search for value/point which is close to 0.08/2
+## search for the value/point which is close to 0.08/2
 t.half.01.a.idx <- which.min(abs(kin.test.01$df$R - 0.04))
 t.half.01.a <- kin.test.01$df[t.half.01.a.idx,] \%>\%
   dplyr::pull(time)
 #
-## theoretical (analytical expression) of half-life
+## theoretical (analytical) expression of half-life
 t.half.01.b <- 1 / (2 * 0.08 * 0.012)
 #
 t.half.01.a

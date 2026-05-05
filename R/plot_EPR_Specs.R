@@ -254,9 +254,7 @@
 #' @export
 #'
 #'
-#' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous
-#'   scale_color_manual scale_x_reverse waiver element_blank element_text element_rect dup_axis unit margin theme_bw
-#'   theme_light theme_gray theme_minimal theme_classic theme_linedraw scale_color_gradientn theme scale_color_viridis_d
+#' @importFrom ggplot2 ggplot geom_line theme aes labs coord_cartesian scale_x_continuous scale_y_continuous scale_color_manual scale_x_reverse waiver element_blank element_text element_rect dup_axis unit margin theme_bw theme_light theme_gray theme_minimal theme_classic theme_linedraw scale_color_gradientn theme scale_color_viridis_d
 plot_EPR_Specs <- function(data.spectra,
                            x = "B_mT",
                            x.unit = "mT",

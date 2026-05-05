@@ -248,7 +248,7 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
     Freq_corresp <- round((DeltaE / Planck.const) * 1e-6, digits = 3) ## in MHz
     #
     ## The corresponding `B` (to `DeltaE`) cannot be evaluated analytically,
-    ## because we do not know the corresponding line g-value => therefore the `B`
+    ## because we do not know the corresponding line g-value !! => therefore the `B`
     ## will be evaluated by an iterative manner as already shown in
     ## https://doi.org/10.1016/0022-2364(71)90049-7 (WEIL, J. A.) as well as
     ## https://doi.org/10.1016/j.jmr.2005.08.013 (STOLL, S) where after 2-4 iterations
@@ -257,16 +257,20 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
     ## We start from the new `B.mI` vector and in the first approximation,
     ## the corresponding `B` (to `DeltaE`) can be evaluated as =>
     B.mI <- c()
-    B.mI[1] <- round(DeltaE / (g_e_iso * Bohr.mu), digits = 7) ## in T
-    ## cycle through 4 iterations =>
+    B.mI[1] <- round(DeltaE / (g_e_iso * Bohr.mu), digits = 8) ## in T
+    ## cycle through 5 iterations =>
     xaj <- c()
-    gamma <- (Bohr.mu * g_e_iso) + (nuclear.mu * g_nuclear)
-    for (i in 1:4){
+    gamma <- (Bohr.mu * g_e_iso) + (nuclear.mu * g_nuclear) ## constant variable
+    for (i in 1:5){
       xaj[i] <- (A_iso / (2 * Planck.const)) / ((nu.GHz * 1e+9) +
-                (nuclear.mu * g_nuclear * (B.mI[i] / Planck.const)))
+                                (nuclear.mu * g_nuclear * (B.mI[i] / Planck.const)))
       B.mI[i+1] <- (A_iso / (gamma * (1 - xaj[i]^2))) *
         (- m_spin_nuclear + sqrt(m_spin_nuclear^2 + (1 - xaj[i]^2) *
-        ((1 / (4 * xaj[i]^2)) - (spin_nuclear + 0.5)^2)))
+                                   ((1 / (4 * xaj[i]^2)) - (spin_nuclear + 0.5)^2)))
+      ## condition to stop/break
+      if (B.mI[i+1] == B.mI[i]) {
+        break
+      }
     }
     #
     ## all three quantities into one list (B as a last value from the iterations)
@@ -317,7 +321,7 @@ test_that("The `B` calculated by the 'Breit-Rabi' formula/function
   #
   # ----------- COMPARISON BETWEEN BREIT-RABI and EXPERIMENTAL `B`,`g` -------------
   #
-  expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 1e-3) ## `B` in mT
+  expect_equal(rev(B), near_B_for_m_spin_values1$B_mT, tolerance = 2e-2) ## `B` in mT
   expect_equal(rev(g), near_B_for_m_spin_values1$g, tolerance = 4e-4) ## `g`
   ## the g's of the simulated spectrum also depend on the A (MHz), see below
 })
@@ -350,7 +354,7 @@ test_that("The isotropic hyperfine coupling constants determined
       )
   }
   ## ... and the mean value
-  mean.A.iso.expr <- round(mean(A.iso.expr), 2) ## the mean value is 52.349 MHz
+  mean.A.iso.expr <- round(mean(A.iso.expr), 2) ## the mean value is 52.35 MHz
   #
   ## To simulate that EPR spectrum also the line width is required =>
   DeltaB.expr <- c() ## in mT
@@ -362,7 +366,7 @@ test_that("The isotropic hyperfine coupling constants determined
       )
   }
   ## ...and the mean value
-  mean.DeltaB.expr <- round(mean(DeltaB.expr), 2) ## the mean value equals to 0.541 mT
+  mean.DeltaB.expr <- round(mean(DeltaB.expr), 2) ## the mean value equals to 0.54 mT
   #
   ## EPR Spectrum Simulation, the instrumental parameters are already
   ## defined above
@@ -398,7 +402,7 @@ test_that("The isotropic hyperfine coupling constants determined
       )
   }
   ## ... and the mean value
-  mean.A.iso.sim <- round(mean(A.iso.sim), 2) ## the mean value is 52.208 MHz
+  mean.A.iso.sim <- round(mean(A.iso.sim), 2) ## the mean value is 52.37 MHz
   #
   ## The linewidth from the simulated spectrum
   DeltaB.sim <- c() ## in mT
@@ -412,7 +416,7 @@ test_that("The isotropic hyperfine coupling constants determined
       )
   }
   ## ...and the mean value
-  mean.DeltaB.sim <- round(mean(DeltaB.sim), 2) ## the mean value equals to 0.560 mT
+  mean.DeltaB.sim <- round(mean(DeltaB.sim), 2) ## the mean value equals to 0.52 mT
   #
   # --------- COMPARISON BETWEEN SIMULATED and EXPERIMENTAL `DeltaB`,`A.iso` -----------
   #

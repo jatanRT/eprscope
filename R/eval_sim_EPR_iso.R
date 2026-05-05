@@ -458,16 +458,20 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       ## We start from the new `B.mI` vector and in the first approximation,
       ## the corresponding `B` (to `DeltaE`) can be evaluated as =>
       B.mI <- c()
-      B.mI[1] <- round(DeltaE / (g_e_iso * Bohr.mu), digits = 7) ## in T
-      ## cycle through 4 iterations =>
+      B.mI[1] <- round(DeltaE / (g_e_iso * Bohr.mu), digits = 8) ## in T
+      ## cycle through 5 iterations =>
       xaj <- c()
       gamma <- (Bohr.mu * g_e_iso) + (nuclear.mu * g_nuclear) ## constant variable
-      for (i in 1:4){
+      for (i in 1:5){
         xaj[i] <- (A_iso / (2 * Planck.const)) / ((nu.GHz * 1e+9) +
                   (nuclear.mu * g_nuclear * (B.mI[i] / Planck.const)))
         B.mI[i+1] <- (A_iso / (gamma * (1 - xaj[i]^2))) *
                      (- m_spin_nuclear + sqrt(m_spin_nuclear^2 + (1 - xaj[i]^2) *
                      ((1 / (4 * xaj[i]^2)) - (spin_nuclear + 0.5)^2)))
+        ## condition to stop/break
+        if (B.mI[i+1] == B.mI[i]) {
+          break
+        }
       }
       #
       ## all three quantities into one list (B as a last value from those iterations)

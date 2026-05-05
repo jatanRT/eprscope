@@ -22,7 +22,7 @@ The key objective of this open source
 package is to bring handy functions corresponding to “everyday” data
 processing/analysis in the EPR ([Electron Paramagnetic
 Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)))
-spectroscopy mainly in chemistry. Similar <img
+spectroscopy mainly for chemists. Similar <img
 src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png"
 width="16" height="16" /> tools like [cwepr](https://www.cwepr.de/index)
 and the [related projetcs](https://docs.cwepr.de/v0.5/) have been
@@ -44,8 +44,7 @@ e.g. [*Xenon/WinEPR*](https://www.bruker.com/en/products-and-solutions/mr/epr-i
 as well as several other software platforms like the *MS Office* and/or
 *Orgin/SigmaPlot/Igor* which are often applied in the EPR
 processing/analysis workflow. Therefore, the `{eprscope}` tries to
-reduce such many steps/programs if the above-mentioned software
-combination would be adopted. In order to achieve the goal it uses
+reduce such many steps/programs. In order to achieve the goal it uses
 superior power of the open source
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
 ecosystem that combines data processing, analysis and great scientific
@@ -187,8 +186,8 @@ formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be
 found in the `create_qmdReport_proj()` documentation).
 
 **Note:** On modern *Windows* systems (10/11), all the pre- and
-post-installation (*Quarto*, *Pandoc* and *LaTeX/Typst*) software
-packages can be easily managed either by
+post-installation software packages (*OpenJDK*, *Quarto*, *Pandoc*,
+*LaTeX/Typst* and *CMake* or *Rtools*) can be easily managed either by
 [*Winget*](https://winstall.app/) *or by the
 [Chocolatey](https://chocolatey.org/)* systems.
 
@@ -211,7 +210,9 @@ pak::pkg_install("jatanRT/eprscope",upgrade = TRUE)
 
 In this section, couple of examples are shown in order to briefly
 demonstrate the package functionality. More detailed description can be
-found within the articles/vignettes or documentation examples.
+found within the articles/vignettes or in documentation of functions
+(see [Package
+index/Reference](https://jatanrt.github.io/eprscope/reference/index.html)).
 
 ### Reading Files with Instrumental Parameters
 
@@ -376,14 +377,16 @@ triarylamine_rc_decay_model$cor.df %>%
 
 There are several ways how to get help. If the users are already
 familiar with the [R statistical language](https://www.r-project.org/)
-please, follow either the individual package function documentation or
-the corresponding articles/vignettes. These might be also considered as
-a kind of EPR spectroscopy and
+please, follow either the individual [package function
+documentations](https://jatanrt.github.io/eprscope/reference/index.html)
+or the corresponding articles/vignettes. These might be also considered
+as a kind of EPR spectroscopy and
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-knowledge resources (see also the “First Steps with R Language”
-vignette/article), particularly for students. **In case you are
-completely new to *R***, there are couple of great tutorials enabling a
-quite straightforward diving into
+knowledge resources. **In case you are completely new to *R***, there
+are couple of great tutorials (you may also consult the [“First Steps
+with R Language”
+vignette/article](https://jatanrt.github.io/eprscope/articles/firstSteps.html))
+enabling a quite straightforward diving into
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />.
 **Please, refer to e.g.**
 
