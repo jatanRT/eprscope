@@ -21,18 +21,20 @@ Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
 }
 \details{
 Conversion performed according to the following relation:
-  \deqn{A = (a\,g\,\mu_{\text{B}}) / h}
+  \deqn{A = (a\,g\,\mu_{\text{B}}\,10^{-3}) / h\,10^6}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
-  Both latter are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
+  Both constants are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
   using the \href{https://r-quantities.github.io/constants/}{constants} package (see \code{\link[constants]{syms}}).
-  Conversion is suitable for the EPR simulations and/or ENDOR.
+  The \eqn{10^{-3}\,/\,10^6} factor is introduced due to specific \eqn{[a] = \text{mT}} \eqn{\rightarrow}
+  \eqn{[A] = \text{MHz}} conversion. The latter is suitable for the EPR simulations and/or ENDOR.
 }
 \examples{
-convert_a_mT_2A(a.mT = 0.5)
+# all A (HFCCs) in MHz
+convert_a_mT_2A(a.mT = 0.5) # 5 G
 #
-convert_a_mT_2A(0.6,2.0059)
+convert_a_mT_2A(0.6,2.0059) # 6 G
 #
-convert_a_mT_2A(0.15,g.val = 2.00036)
+convert_a_mT_2A(0.15,g.val = 2.00036) # 1.5 G
 
 
 }

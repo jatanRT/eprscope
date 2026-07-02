@@ -420,7 +420,7 @@ tmpd.delta.Bpp.mean
 The **HF** structure represents one of the most important characteristic of EPR spectra because it reflects the distribution of unpaired electron density within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants ($a$, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by the `convert_a_mT_2A()` into hyperfine coupling constants in $\mathrm{\small{MH}z}$ ($\small A$, HFCCs) using the following relation (Equation \@ref(eq:hfatoA)) ➨
 
 \begin{equation}
- \small A = \frac{a\,g\,\mu_{\mathrm{B}}}{h}
+ \small A = \frac{a\,g\,\mu_{\mathrm{B}}\,10^{-3}}{h\,10^{6}}
  (\#eq:hfatoA)
  \end{equation}
 

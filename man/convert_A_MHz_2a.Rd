@@ -21,18 +21,20 @@ Converting hyperfine coupling constants (HFCCs, \eqn{A} values in \code{MHz})
 }
 \details{
 Conversion performed according to the following relation:
-  \deqn{a = A\,h / (g\,\mu_{\text{B}})}
+  \deqn{a = A\,h\,10^6 / (g\,\mu_{\text{B}}\,10^{-3})}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
-  Both latter are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
+  Both constants are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
   using the \href{https://r-quantities.github.io/constants/}{constants} package (see \code{\link[constants]{syms}}).
-  Conversion is suitable for the EPR simulations and/or ENDOR.
+  The \eqn{10^6\,/\,10^{-3}} factor is introduced due to specific \eqn{[A] = \text{MHz}} \eqn{\rightarrow}
+  \eqn{[a] = \text{mT}} conversion. The latter is suitable for the EPR simulations and/or ENDOR.
 }
 \examples{
+# all a (HFSCs) in mT
 convert_A_MHz_2a(A.MHz = 16)
 #
-convert_A_MHz_2a(20,2.0059)
+convert_A_MHz_2a(20,2.0059) # 20 MHz
 #
-convert_A_MHz_2a(4,g.val = 2.0036)
+convert_A_MHz_2a(4,g.val = 2.0036) # 4 MHz
 
 
 }
