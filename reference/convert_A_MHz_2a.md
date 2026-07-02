@@ -27,13 +27,16 @@ Numeric value/vector corresponding to HFSCs (\\a\\) in `mT`.
 
 ## Details
 
-Conversion performed according to the following relation: \$\$a = A\\h /
-(g\\\mu\_{\text{B}})\$\$ where \\h\\ corresponds to Planck's constant
-and \\\mu\_{\text{B}}\\ to Bohr's magneton. Both latter are obtained by
-the `constans::syms$h` and `constants::syms$mub`, respectively, using
-the [constants](https://r-quantities.github.io/constants/) package (see
-[`syms`](https://rdrr.io/pkg/constants/man/syms.html)). Conversion is
-suitable for the EPR simulations and/or ENDOR.
+Conversion performed according to the following relation: \$\$a =
+A\\h\\10^6 / (g\\\mu\_{\text{B}}\\10^{-3})\$\$ where \\h\\ corresponds
+to Planck's constant and \\\mu\_{\text{B}}\\ to Bohr's magneton. Both
+constants are obtained by the `constans::syms$h` and
+`constants::syms$mub`, respectively, using the
+[constants](https://r-quantities.github.io/constants/) package (see
+[`syms`](https://rdrr.io/pkg/constants/man/syms.html)). The
+\\10^6\\/\\10^{-3}\\ factor is introduced due to specific \\\[A\] =
+\text{MHz}\\ \\\rightarrow\\ \\\[a\] = \text{mT}\\ conversion. The
+latter is suitable for the EPR simulations and/or ENDOR.
 
 ## See also
 
@@ -46,13 +49,14 @@ Other Conversions and Corrections:
 ## Examples
 
 ``` r
+# all a (HFSCs) in mT
 convert_A_MHz_2a(A.MHz = 16)
 #> [1] 0.57
 #
-convert_A_MHz_2a(20,2.0059)
+convert_A_MHz_2a(20,2.0059) # 20 MHz
 #> [1] 0.71
 #
-convert_A_MHz_2a(4,g.val = 2.0036)
+convert_A_MHz_2a(4,g.val = 2.0036) # 4 MHz
 #> [1] 0.14
 
 ```
