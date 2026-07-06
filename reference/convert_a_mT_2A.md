@@ -29,7 +29,7 @@ Numeric value/vector corresponding to HFCCs (\\A\\) in `MHz`.
 ## Details
 
 Conversion performed according to the following relation: \$\$A =
-(a\\g\\\mu\_{\text{B}}\\10^{-3}) / h\\10^6\$\$ where \\h\\ corresponds
+(a\\g\\\mu\_{\text{B}}\\10^{-3})/h\\10^{6}\$\$ where \\h\\ corresponds
 to Planck's constant and \\\mu\_{\text{B}}\\ to Bohr's magneton. Both
 constants are obtained by the `constans::syms$h` and
 `constants::syms$mub`, respectively, using the

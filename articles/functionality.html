@@ -565,7 +565,7 @@ Figure 5.1: Screenshot of the interactive Shiny app, showing how to display g-va
 </h3>
 <p>The <strong>HF</strong> structure represents one of the most important characteristic of EPR spectra because it reflects the distribution of unpaired electron density within the radical/paramagnetic molecule. At least some of the hyperfine splitting constants (<span class="math inline">\(a\)</span>, HFSCs, distance between the main lines within the pattern) may be estimated from the interactive EPR spectrum above. For the subsequent simulation of the EPR spectrum these are simply converted by the <code><a href="../reference/convert_a_mT_2A.html">convert_a_mT_2A()</a></code> into hyperfine coupling constants in <span class="math inline">\(\mathrm{\small{MH}z}\)</span> (<span class="math inline">\(\small A\)</span>, HFCCs) using the following relation (Equation <a href="#eq:hfatoA">(5.2)</a>) ➨</p>
 <p><span class="math display" id="eq:hfatoA">\[\begin{equation}
-\small A = \frac{a\,g\,\mu_{\mathrm{B}}\,10^{-3}}{h\,10^{6}}
+{\small A = \frac{a\,g\,\mu_{\mathrm{B}}\,10^{-3}}{h\,10^{6}}}
 \tag{5.2}
 \end{equation}\]</span></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -711,7 +711,7 @@ aiso_mT
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.112   0.008   0.120</span></span>
+<span><span class="co">#&gt;   0.106   0.010   0.115</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># output is either interactive spectrum plot</span></span>
 <span><span class="co"># or list of plot and the simulated </span></span>

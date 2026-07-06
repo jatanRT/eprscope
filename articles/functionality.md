@@ -691,8 +691,8 @@ into hyperfine coupling constants in \\\mathrm{\small{MH}z}\\ (\\\small
 A\\, HFCCs) using the following relation (Equation [(5.2)](#eq:hfatoA))
 ➨
 
-\\\begin{equation} \small A =
-\frac{a\\g\\\mu\_{\mathrm{B}}\\10^{-3}}{h\\10^{6}} \tag{5.2}
+\\\begin{equation} {\small A =
+\frac{a\\g\\\mu\_{\mathrm{B}}\\10^{-3}}{h\\10^{6}}} \tag{5.2}
 \end{equation}\\
 
 ``` r
@@ -841,7 +841,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.112   0.008   0.120
+#>   0.106   0.010   0.115
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
