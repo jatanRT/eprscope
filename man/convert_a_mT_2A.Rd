@@ -21,7 +21,7 @@ Converting hyperfine splitting constants (HFSCs, \eqn{a} values in \code{mT})
 }
 \details{
 Conversion performed according to the following relation:
-  \deqn{A = (a\,g\,\mu_{\text{B}}\,10^{-3}) / h\,10^6}
+  \deqn{A = (a\,g\,\mu_{\text{B}}\,10^{-3})/h\,10^{6}}
   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
   Both constants are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
   using the \href{https://r-quantities.github.io/constants/}{constants} package (see \code{\link[constants]{syms}}).

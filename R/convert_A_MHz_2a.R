@@ -11,11 +11,11 @@
 #'
 #' @details
 #'   Conversion performed according to the following relation:
-#'   \deqn{a = A\,h\,10^6 / (g\,\mu_{\text{B}}\,10^{-3})}
+#'   \deqn{a = A\,h\,10^{6}/(g\,\mu_{\text{B}}\,10^{-3})}
 #'   where \eqn{h} corresponds to Planck's constant and \eqn{\mu_{\text{B}}} to Bohr's magneton.
 #'   Both constants are obtained by the \code{constans::syms$h} and \code{constants::syms$mub}, respectively,
 #'   using the \href{https://r-quantities.github.io/constants/}{constants} package (see \code{\link[constants]{syms}}).
-#'   The \eqn{10^6\,/\,10^{-3}} factor is introduced due to specific \eqn{[A] = \text{MHz}} \eqn{\rightarrow}
+#'   The \eqn{10^{6}\,/\,10^{-3}} factor is introduced due to specific \eqn{[A] = \text{MHz}} \eqn{\rightarrow}
 #'   \eqn{[a] = \text{mT}} conversion. The latter is suitable for the EPR simulations and/or ENDOR.
 #'
 #'
