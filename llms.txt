@@ -83,7 +83,7 @@ the following steps:
     ![](https://www.r-project.org/Rlogo.png) installation either
     available at [Posit Cloud](https://docs.posit.co/cloud/get_started/)
     or at [CoCalc (Collaborative Calculation and Data
-    Science)](https://cocalc.com/features). Any other
+    Science)](https://cocalc.ai/features). Any other
     ![](https://www.r-project.org/Rlogo.png) compatible environment like
     [VS Code](https://code.visualstudio.com/) or
     [Positron](https://positron.posit.co/) may be installed as well.

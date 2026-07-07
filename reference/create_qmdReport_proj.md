@@ -21,7 +21,7 @@ Live](https://tug.org/texlive/) or
 documentation](https://quarto.org/docs/output-formats/typst.html). The
 complete, above-described R-environmental setup is also available at
 [Posit Cloud](https://posit.cloud/) or at
-[CoCalc](https://cocalc.com/features), which a is platform for
+[CoCalc](https://cocalc.ai/features), which a is platform for
 collaborative calculations and data science.
 
 ## Usage

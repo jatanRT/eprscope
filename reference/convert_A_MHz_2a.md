@@ -28,14 +28,14 @@ Numeric value/vector corresponding to HFSCs (\\a\\) in `mT`.
 ## Details
 
 Conversion performed according to the following relation: \$\$a =
-A\\h\\10^{6}/(g\\\mu\_{\text{B}}\\10^{-3})\$\$ where \\h\\ corresponds
-to Planck's constant and \\\mu\_{\text{B}}\\ to Bohr's magneton. Both
-constants are obtained by the `constans::syms$h` and
+(A\\h\\10^{6})\\/\\(g\\\mu\_{\text{B}}\\10^{-3})\$\$ where \\h\\
+corresponds to Planck's constant and \\\mu\_{\text{B}}\\ to Bohr's
+magneton. Both constants are obtained by the `constans::syms$h` and
 `constants::syms$mub`, respectively, using the
 [constants](https://r-quantities.github.io/constants/) package (see
 [`syms`](https://rdrr.io/pkg/constants/man/syms.html)). The
-\\10^{6}\\/\\10^{-3}\\ factor is introduced due to specific \\\[A\] =
-\text{MHz}\\ \\\rightarrow\\ \\\[a\] = \text{mT}\\ conversion. The
+\\10^{6}\\/\\10^{-3}\\ factor is introduced due to the specific \\\[A\]
+= \text{MHz}\\ \\\rightarrow\\ \\\[a\] = \text{mT}\\ conversion. The
 latter is suitable for the EPR simulations and/or ENDOR.
 
 ## See also

@@ -29,13 +29,13 @@ Numeric value/vector corresponding to HFCCs (\\A\\) in `MHz`.
 ## Details
 
 Conversion performed according to the following relation: \$\$A =
-(a\\g\\\mu\_{\text{B}}\\10^{-3})/h\\10^{6}\$\$ where \\h\\ corresponds
-to Planck's constant and \\\mu\_{\text{B}}\\ to Bohr's magneton. Both
-constants are obtained by the `constans::syms$h` and
+(a\\g\\\mu\_{\text{B}}\\10^{-3})\\/\\(h\\10^{6})\$\$ where \\h\\
+corresponds to Planck's constant and \\\mu\_{\text{B}}\\ to Bohr's
+magneton. Both constants are obtained by the `constans::syms$h` and
 `constants::syms$mub`, respectively, using the
 [constants](https://r-quantities.github.io/constants/) package (see
 [`syms`](https://rdrr.io/pkg/constants/man/syms.html)). The
-\\10^{-3}\\/\\10^6\\ factor is introduced due to specific \\\[a\] =
+\\10^{-3}\\/\\10^6\\ factor is introduced due to the specific \\\[a\] =
 \text{mT}\\ \\\rightarrow\\ \\\[A\] = \text{MHz}\\ conversion. The
 latter is suitable for the EPR simulations and/or ENDOR.
 
