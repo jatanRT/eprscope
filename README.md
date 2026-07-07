@@ -100,7 +100,7 @@ is required** and summarized into the following steps:
     installation either available at [Posit
     Cloud](https://docs.posit.co/cloud/get_started/) or at [CoCalc
     (Collaborative Calculation and Data
-    Science)](https://cocalc.com/features). Any other
+    Science)](https://cocalc.ai/features). Any other
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
     compatible environment like [VS
     Code](https://code.visualstudio.com/) or

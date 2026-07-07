@@ -77,7 +77,7 @@ Creating files and folders for the basic \href{https://quarto.org/}{Quarto} proj
   in combination with the \href{https://typst.app/}{Typst markup language} (written in \href{https://rust-lang.org/}{Rust}).
   Please, refer to the \href{https://quarto.org/docs/output-formats/typst.html}{Typst-Quarto documentation}.
   The complete, above-described R-environmental setup is also available
-  at \href{https://posit.cloud/}{Posit Cloud} or at \href{https://cocalc.com/features}{CoCalc},
+  at \href{https://posit.cloud/}{Posit Cloud} or at \href{https://cocalc.ai/features}{CoCalc},
   which a is platform for collaborative calculations and data science.
 }
 \details{
