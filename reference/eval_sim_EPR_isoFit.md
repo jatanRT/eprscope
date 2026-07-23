@@ -1,13 +1,13 @@
 # Least-Squares Fitting of Isotropic EPR Spectra by Simulations
 
-Fitting of the simulated spectrum onto the experimental one represents
-an important step in the analysis of EPR spectra. Parameters of the
-simulated spectrum like \\g\_{\text{iso}}\\; coupling constants (in
-`MHz`) \\A\_{\text{iso}}\\ for each group of equivalent nuclei;
-linewidth (either \\\Delta B\_{\text{pp}}\\ or \\FWHM\\ depending on the
-`lineSpecs.form` argument); spectral baseline (see the
-`baseline.correct` argument) and finally the intensity (multiplication
-coefficient) are optimized by the methods listed in
+Ordinary least-squares fitting of the simulated spectrum onto the
+experimental one represents an important step in the analysis of EPR
+spectra. Parameters of the simulated spectrum like \\g\_{\text{iso}}\\;
+coupling constants (in `MHz`) \\A\_{\text{iso}}\\ for each group of
+equivalent nuclei; linewidth (either \\\Delta B\_{\text{pp}}\\ or
+\\FWHM\\ depending on the `lineSpecs.form` argument); spectral baseline
+(see the `baseline.correct` argument) and finally the intensity
+(multiplication coefficient) are optimized by methods listed in the
 [`optim_for_EPR_fitness`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md).
 The `lineG.content` corresponding parameter is the only one, which needs
 to be varied "manually". For an extended version of this function
@@ -408,10 +408,10 @@ depending on the `check.fit.plot` and `output...` arguments.
 
 ## Note
 
-In order to guess the intensity multiplication constant (please, refer
-to the `optim.params.init` argument), one might compare the intensities
-of the experimental (`expr`) and simulated (`sim`) EPR spectrum by one
-of the interactive or static plot functions (e.g.
+In order to guess suitable intensity multiplication constant (please,
+refer to the `optim.params.init` argument), one might compare the
+intensities of the experimental (`expr`) and simulated (`sim`) EPR
+spectrum by one of the interactive or static plot functions (e.g.
 [`plot_EPR_Specs`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs.md)
 or
 [`plot_EPR_Specs2D_interact`](https://jatanrt.github.io/eprscope/reference/plot_EPR_Specs2D_interact.md))
@@ -419,9 +419,9 @@ as well as by the
 [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md).
 Accordingly, **the initial intensity multiplication constant** can be
 estimated as the ratio **max(`expr` intensity)/max(`sim` intensity) \*
-0.25**. The coefficient `0.25(1/4)` is introduced in order to be sure
-that both of the experimental and initially simulated EPR spectra, in
-the graphical output (see the `Value`), are clearly visible if
+0.25**. The coefficient `0.25(1/4)` is selected in order to be sure that
+both of the experimental and initially simulated EPR spectra, in the
+graphical output (see the `Value`), are clearly visible if
 `check.fit.plot = TRUE`. Otherwise, the spectra may overlay and it will
 be difficult to differentiate between them. Of course, any intensity
 multiplication coefficient, close to the experimental EPR intensity, can
@@ -437,17 +437,18 @@ selection of a non-optimized/fixed simulation parameter can be also done
 by using the `optim.params.fix.id` argument, which can be also applied
 to fix the simulation parameters when searching for the best fit by the
 [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md).
-Therefore, the latter function argument just selects an element of the
-`optim.params.init` (by its corresponding index) and accordingly, the
-selected simulation parameter value won't be optimized.
+Therefore, the `optim.params.fix.id` argument just selects an element of
+the `optim.params.init` (by its corresponding index) and accordingly,
+the selected simulation parameter value won't be optimized.
 
 A simple EPR spectrum analysis by interactive simulation using the
 [`plot_eval_ExpSim_app`](https://jatanrt.github.io/eprscope/reference/plot_eval_ExpSim_app.md)
 may return an `.R` script/code snippet for the **initial** simulation
 **fit** and therefore the user does not have to write (or remember) the
-code required to run the `eval_sim_EPR_isoFit`. Rather, she/he can
-instantly and seamlessly analyze an isotropic EPR spectrum by optimizing
-the simulation parameters.
+entire code required to run the `eval_sim_EPR_isoFit`. Rather, she/he
+can instantly and seamlessly analyze an isotropic EPR spectrum by
+optimizing the simulation parameters, right after saving and then
+subsequently running of the above-mentioned script.
 
 ## See also
 
@@ -543,7 +544,7 @@ head(tempo.test.sim.fit.a$df)
 ## similar EPR spectrum simulation fit with "particle swarm"
 ## optimization algorithm and `check.fit.plot = TRUE` option
 ## as well as user defined bound constraints, including
-## fixed A(1 x 14N) = 52.6 MHz:
+## fixed A(1 x 14N) = 52.68 MHz:
 tempo.test.sim.fit.b <-
   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
     nu.GHz = 9.806769,
@@ -566,7 +567,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.507e-08, swarm diam.=0.05766
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.273  s 
+#>  Done!  ( 100  %)    elapsed time  9.46  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -673,11 +674,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.793  s 
+#>  Done!  ( 50  %)    elapsed time  0.607  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.227  s 
+#>  Done!  ( 100  %)    elapsed time  9.52  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

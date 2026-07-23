@@ -240,17 +240,17 @@ i.e. only graphical representation is shown.</p></dd>
 <span class="r-in"><span><span class="co">## EPR spectrum</span></span></span>
 <span class="r-in"><span><span class="va">data.spectrum.sim</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    g.iso <span class="op">=</span> <span class="fl">2.00303</span>,</span></span>
+<span class="r-in"><span>    g.iso <span class="op">=</span> <span class="fl">2.00304</span>,</span></span>
 <span class="r-in"><span>    instrum.params <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>    path_to_dsc_par <span class="op">=</span> <span class="va">tmpd.params.file</span>,</span></span>
 <span class="r-in"><span>    origin <span class="op">=</span> <span class="st">"winepr"</span>,</span></span>
 <span class="r-in"><span>    nuclear.system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"14N"</span>, <span class="fl">2</span>, <span class="fl">19.29</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">4</span>, <span class="fl">5.49</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">12</span>, <span class="fl">19.66</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"14N"</span>, <span class="fl">2</span>, <span class="fl">19.625</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">4</span>, <span class="fl">5.496</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1H"</span>, <span class="fl">12</span>, <span class="fl">19.496</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  lineGL.DeltaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.48</span>, <span class="fl">0.32</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  lineG.content <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
+<span class="r-in"><span>  lineGL.DeltaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0.53</span>, <span class="fl">0.50</span><span class="op">)</span>, <span class="co"># in G</span></span></span>
+<span class="r-in"><span>  lineG.content <span class="op">=</span> <span class="fl">0.4</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## comparison of both spectra</span></span></span>
@@ -275,6 +275,67 @@ i.e. only graphical representation is shown.</p></dd>
 <span class="r-in"><span>           <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span></span>
 <span class="r-in"><span>           <span class="op">)</span></span></span>
 <span class="r-plt img"><img src="present_EPR_Sim_Spec-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## returned simulated (+ fitted) TMPD radical</span></span></span>
+<span class="r-in"><span><span class="co">## cation spectrum by MATLAB-EasySpin,</span></span></span>
+<span class="r-in"><span><span class="co">## loading simulation parameters</span></span></span>
+<span class="r-in"><span><span class="va">path.mat.tmpd.easyspin</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="load_data_example.html">load_data_example</a></span><span class="op">(</span>file <span class="op">=</span></span></span>
+<span class="r-in"><span>    <span class="st">"TMPD_specelchem_accu_b.mat"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## generating data frame using</span></span></span>
+<span class="r-in"><span><span class="co">## the `.mat` file</span></span></span>
+<span class="r-in"><span><span class="va">df.sim.tmpd.easyspin</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    Bsim_G <span class="op">=</span> <span class="fu"><a href="readMAT_params_file.html">readMAT_params_file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">path.mat.tmpd.easyspin</span>,</span></span>
+<span class="r-in"><span>      str.var <span class="op">=</span> <span class="st">"B"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    dIeprSim_over_dB <span class="op">=</span> <span class="fu"><a href="readMAT_params_file.html">readMAT_params_file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="va">path.mat.tmpd.easyspin</span>,</span></span>
+<span class="r-in"><span>      str.var <span class="op">=</span> <span class="st">"fit1"</span>,</span></span>
+<span class="r-in"><span>      field.var <span class="op">=</span> <span class="st">"fit"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Bsim_mT <span class="op">=</span> <span class="va">Bsim_G</span> <span class="op">*</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## comparison of EasySpin simulated/fitted</span></span></span>
+<span class="r-in"><span><span class="co">## and experimental spectrum</span></span></span>
+<span class="r-in"><span><span class="va">present.easyspin</span> <span class="op">&lt;-</span> <span class="fu">present_EPR_Sim_Spec</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data.spectr.expr <span class="op">=</span> <span class="va">data.spectrum.expr</span>,</span></span>
+<span class="r-in"><span>  data.spectr.sim <span class="op">=</span> <span class="va">df.sim.tmpd.easyspin</span>,</span></span>
+<span class="r-in"><span>  Blim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3450</span>,<span class="fl">3550</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  output.df <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## corresponding plot</span></span></span>
+<span class="r-in"><span><span class="va">present.easyspin</span><span class="op">$</span><span class="va">plot</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"EasySpin EPR Spectrum Fit"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="plot_theme_NoY_ticks.html">plot_theme_NoY_ticks</a></span><span class="op">(</span>legend.text <span class="op">=</span></span></span>
+<span class="r-in"><span>           <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span></span>
+<span class="r-in"><span>           <span class="op">)</span></span></span>
+<span class="r-plt img"><img src="present_EPR_Sim_Spec-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## preview of the corresponding data frame</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">present.easyspin</span><span class="op">$</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Bsim_G       B_G dIeprSim_over_dB dIepr_over_dB Norm_dIeprSim_over_dB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3450.02 3450.0200       -36.066902   193.0129286            -70575.338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 3450.07 3450.0701       -49.215254    72.3140670            -70587.693</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3450.12 3450.1201       -57.745662    39.9360670            -70595.709</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3450.17 3450.1699       -61.348076    22.6754933            -70599.094</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 3450.22 3450.2200       -60.422857    -6.3619347            -70598.225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 3450.27 3450.2700       -55.887019   -60.6279330            -70593.962</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## parameters for the EasySpin</span></span></span>
+<span class="r-in"><span><span class="co">## simulated/fitted EPR spectrum</span></span></span>
+<span class="r-in"><span><span class="va">data.sim.tmpd.easyspin</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="readMAT_params_file.html">readMAT_params_file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">path.mat.tmpd.easyspin</span>,</span></span>
+<span class="r-in"><span>    str.var <span class="op">=</span> <span class="st">"fit1"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="va">data.sim.tmpd.easyspin</span><span class="op">$</span><span class="va">pfit.full</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.003005686 19.528664889  5.495946669 19.541467190  0.034971964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  0.015990064</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -288,7 +349,7 @@ i.e. only graphical representation is shown.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

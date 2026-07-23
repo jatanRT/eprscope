@@ -629,14 +629,15 @@ theoretically (`2.00317`) and the experimentally (`2.00304`) determined
 \\g\_{\mathrm{e}}\approx \small 2.00232\\ is a consequence of
 [spin-orbit coupling
 (SOC)](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Electron_Paramagnetic_Resonance_(Jenschke)/03%3A_Electron_Zeeman_Interaction/3.01%3A_Physical_origin_of_the_(g)_shift)
-of the unpaired electron within the radical cation. Namely, it tells how
-the individual atomic orbitals contribute to single occupied molecular
-orbital (SOMO), i.e. the orbital characterizing the unpaired electronic
-state. Therefore, for \\\small \ce{TMPD^{.+}}\\ the SOC is not so
-pronounced because of the small difference from \\g\_{\mathrm{e}}\\.
-However, for heavy atoms (e.g. central atoms in metal complexes) the
-difference is often large and indicates larger SOC than for organic
-radicals like for the one mentioned above ([9](#ref-Weilepr2007)).
+of the unpaired electron within the radical cation. Simply speaking, it
+tells how the individual atomic orbitals contribute to single occupied
+molecular orbital (SOMO), i.e. the orbital characterizing the unpaired
+electronic state. Therefore, for \\\small \ce{TMPD^{.+}}\\ the SOC is
+not so pronounced because of the small difference from
+\\g\_{\mathrm{e}}\\. However, for heavy atoms (e.g. central atoms in
+metal complexes) the difference is often large and indicates larger SOC
+than for organic radicals like for the one mentioned above
+([9](#ref-Weilepr2007)).
 
 ### 5.2 Linewidth, 𝚫*B*_(pp) Determination
 
@@ -841,7 +842,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.107   0.013   0.120
+#>   0.078   0.008   0.086
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
