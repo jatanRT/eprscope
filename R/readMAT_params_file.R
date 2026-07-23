@@ -6,23 +6,25 @@
 #'
 #'
 #' @description
-#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the reading of a \code{.mat}
-#'   simulation file content from \emph{EasySpin} MATLAB, including structures/variables and fields.
+#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the reading of a \code{.mat} (MATLAB workspace)
+#'   simulation (+ fitting) file content from \emph{EasySpin}, including structures/variables and fields.
 #'   It can be also used to read and store simulated EPR spectrum in the form of R data frame (see \code{Examples}).
+#'   In order to present the simulated/fitted spectra, represented by such a data frame, please refer
+#'   to the \code{\link{present_EPR_Sim_Spec}} function.
 #'
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in MATLAB workspace.
 #'   The file path can be also defined by the \code{\link[base]{file.path}}.
 #' @param str.var Character string, denoting structure/variable, which may contain \code{fields}, such as \code{Sys}
-#'   and \code{g} => \strong{Sys}.g, respectively. \strong{Default}: \code{str.var = NULL}.
+#'   and \code{g} \eqn{\Rightarrow} \strong{Sys}.g, respectively. \strong{Default}: \code{str.var = NULL}.
 #' @param field.var Character string, corresponding to field variable after 'dot', which is available only for certain
 #'   structures/variables, see e.g. example above (Sys.\strong{g}). Therefore,
 #'   the \strong{default} value is \code{NULL} and the \code{string} \strong{is applied only for structures with fields}.
 #'
 #'
-#' @return Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} with the all original
-#'   parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character \code{vector/value}
-#'   or list depending on \code{class} of the original parameter/field variable.
+#' @return Unless the \code{str.var} and/or \code{field.var} are not specified, the output is \code{list} consisting
+#'   of all original parameters/structures from MATLAB file. Otherwise, the function returns either numeric/character
+#'   \code{vector/value} or list depending on \code{class} of the original parameter/field variable.
 #'
 #'
 #' @examples
@@ -49,8 +51,8 @@
 #' ## function (look at the corresponding examples)
 #' #
 #' ## alternatively the `Sim1` (its dimension > 2)
-#' ## can be also read by the following command
-#' ## however, the returned output has a complex
+#' ## can be also read by the following command,
+#' ## however the returned output has a complex
 #' ## array-list structure
 #' aminoxyl.mat.list$Sim1[, , 1]
 #' #
@@ -75,7 +77,7 @@
 #' ## preview of the first 6 values
 #' aminoxyl.B.G[1:6]
 #' #
-#' ## reading the intensity related to simulated
+#' ## reading the intensity related to simulated/fitted
 #' ## EPR spectrum
 #' aminoxyl.sim.fitSpec <-
 #'   readMAT_params_file(aminoxyl.mat.file,
@@ -87,20 +89,60 @@
 #' ## or "fitraw", corresponding to scaled and raw intensity
 #' ## of the simulated EPR spectrum, please refer also
 #' ## to the EasySpin documentantion:
-#' ## https://easyspin.org/easyspin/documentation/esfit.html
+#' ## https://easyspin.org/easyspin/documentation/esfit.html,
+#' ## or to the example below
 #' #
 #' ## preview of the first 6 values
 #' aminoxyl.sim.fitSpec[1:6]
 #' #
-#' ## The last two examples can be used
-#' ## to load the simulated EPR spectrum
-#' ## by the `EasySpin` from `mat` file =>
+#' ## In the following example load
+#' ## the simulated/fitted EPR spectrum
+#' ## by the EasySpin from `mat` workspace file =>
 #' simulation.aminoxyl.spectr.df <-
 #'   data.frame(Bsim_G = aminoxyl.B.G,
-#'              dIeprSim_over_dB = aminoxyl.sim.fitSpec)
+#'              dIeprSim_over_dB = aminoxyl.sim.fitSpec) %>%
+#'              dplyr::mutate(Bsim_mT = Bsim_G * 0.1)
 #' #
 #' ## preview
 #' head(simulation.aminoxyl.spectr.df)
+#' #
+#' ## load newer EasySpin (> 6.0.0) workspace file
+#' ## related to TMPD radical cation
+#' tmpd.easyspin6.path <-
+#'   load_data_example(file = "TMPD_specelchem_accu_b.mat")
+#' #
+#' ## create a vector of scaled intensity
+#' ## of the simulated/fitted EPR spectrum
+#' tmpd.easyspin6.fit <-
+#'   readMAT_params_file(
+#'     tmpd.easyspin6.path,
+#'     str.var = "fit1",
+#'     field.var = "fit"
+#'   )
+#' #
+#' ## preview of the first 6 values
+#' tmpd.easyspin6.fit[1:6]
+#' #
+#' ## load all simulation fitted arguments from
+#' ## the `.mat` workspace
+#' tmpd.easyspin6.argsfit <-
+#'   readMAT_params_file(
+#'     tmpd.easyspin6.path,
+#'     str.var = "fit1",
+#'     field.var = "argsfit"
+#'   )
+#' #
+#' ## create a list (temporary variable)
+#' list.argsfit <- tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+#' #
+#' ## convert it into nicely structured list with
+#' ## all arguments/parameters
+#' list.argsfit.final <-
+#'   lapply(list.argsfit, function(x) c(x))
+#' #
+#' ## final list preview
+#' list.argsfit.final
+#'
 #'
 #'
 #' @export

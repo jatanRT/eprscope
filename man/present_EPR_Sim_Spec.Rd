@@ -124,17 +124,17 @@ tmpd.params.file <-
 ## EPR spectrum
 data.spectrum.sim <-
   eval_sim_EPR_iso(
-    g.iso = 2.00303,
+    g.iso = 2.00304,
     instrum.params = NULL,
     path_to_dsc_par = tmpd.params.file,
     origin = "winepr",
     nuclear.system = list(
-      list("14N", 2, 19.29),
-      list("1H", 4, 5.49),
-      list("1H", 12, 19.66)
+      list("14N", 2, 19.625),
+      list("1H", 4, 5.496),
+      list("1H", 12, 19.496)
     ),
-  lineGL.DeltaB = list(0.48, 0.32),
-  lineG.content = 0.5,
+  lineGL.DeltaB = list(0.53, 0.50), # in G
+  lineG.content = 0.4,
 )
 #
 ## comparison of both spectra
@@ -157,6 +157,57 @@ present_EPR_Sim_Spec(
 ) + plot_theme_NoY_ticks(legend.text =
            ggplot2::element_text(size = 13)
            )
+#
+## returned simulated (+ fitted) TMPD radical
+## cation spectrum by MATLAB-EasySpin,
+## loading simulation parameters
+path.mat.tmpd.easyspin <-
+  load_data_example(file =
+    "TMPD_specelchem_accu_b.mat")
+#
+## generating data frame using
+## the `.mat` file
+df.sim.tmpd.easyspin <-
+  data.frame(
+    Bsim_G = readMAT_params_file(
+      path.mat.tmpd.easyspin,
+      str.var = "B"
+    ),
+    dIeprSim_over_dB = readMAT_params_file(
+      path.mat.tmpd.easyspin,
+      str.var = "fit1",
+      field.var = "fit"
+    )
+  ) \%>\% dplyr::mutate(Bsim_mT = Bsim_G * 0.1)
+#
+## comparison of EasySpin simulated/fitted
+## and experimental spectrum
+present.easyspin <- present_EPR_Sim_Spec(
+  data.spectr.expr = data.spectrum.expr,
+  data.spectr.sim = df.sim.tmpd.easyspin,
+  Blim = c(3450,3550),
+  output.df = TRUE
+)
+#
+## corresponding plot
+present.easyspin$plot +
+  ggplot2::labs(title = "EasySpin EPR Spectrum Fit") +
+  plot_theme_NoY_ticks(legend.text =
+           ggplot2::element_text(size = 13)
+           )
+#
+## preview of the corresponding data frame
+head(present.easyspin$df)
+#
+## parameters for the EasySpin
+## simulated/fitted EPR spectrum
+data.sim.tmpd.easyspin <-
+  readMAT_params_file(
+    path.mat.tmpd.easyspin,
+    str.var = "fit1"
+  )
+#
+data.sim.tmpd.easyspin$pfit.full
 
 
 }

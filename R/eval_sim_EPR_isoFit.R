@@ -6,25 +6,25 @@
 #'
 #'
 #' @description
-#'   Fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
+#'   Ordinary least-squares fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
 #'   of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
 #'   (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
 #'   (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on the \code{lineSpecs.form} argument);
 #'   spectral baseline (see the \code{baseline.correct} argument) and finally the intensity (multiplication coefficient)
-#'   are optimized by the methods listed in \code{\link{optim_for_EPR_fitness}}.
+#'   are optimized by methods listed in the \code{\link{optim_for_EPR_fitness}}.
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". For an extended version of this function
 #'   (including automatic \code{lineG.content} variations), please refer to the \code{\link{eval_sim_EPR_isoFit_space}}.
 #'
 #'
 #' @note
-#'   In order to guess the intensity multiplication constant (please, refer to the \code{optim.params.init}
+#'   In order to guess suitable intensity multiplication constant (please, refer to the \code{optim.params.init}
 #'   argument), one might compare the intensities of the experimental (\code{expr}) and simulated (\code{sim})
 #'   EPR spectrum by one of the interactive or static plot functions (e.g. \code{\link{plot_EPR_Specs}}
 #'   or \code{\link{plot_EPR_Specs2D_interact}}) as well as by the \code{\link{eval_sim_EPR_iso}}. Accordingly,
 #'   \strong{the initial intensity multiplication constant} can be estimated as the ratio
 #'   \strong{max(\code{expr} intensity)/max(\code{sim} intensity) * 0.25}. The coefficient \code{0.25(1/4)} is
-#'   introduced in order to be sure that both of the experimental and initially simulated EPR spectra,
+#'   selected in order to be sure that both of the experimental and initially simulated EPR spectra,
 #'   in the graphical output (see the \code{Value}), are clearly visible if \code{check.fit.plot = TRUE}.
 #'   Otherwise, the spectra may overlay and it will be difficult to differentiate between them. Of course,
 #'   any intensity multiplication coefficient, close to the experimental EPR intensity, can be applied as a starting
@@ -36,14 +36,15 @@
 #'   for the simulation fit of aminoxyl radical EPR spectrum with bound constraints and fixed A(1 x 14N).
 #'   An alternative selection of a non-optimized/fixed simulation parameter can be also done by using
 #'   the \code{optim.params.fix.id} argument, which can be also applied to fix the simulation parameters when searching
-#'   for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}. Therefore, the latter function argument just selects
-#'   an element of the \code{optim.params.init} (by its corresponding index) and accordingly, the selected simulation
-#'   parameter value won't be optimized.
+#'   for the best fit by the \code{\link{eval_sim_EPR_isoFit_space}}. Therefore, the \code{optim.params.fix.id} argument
+#'   just selects an element of the \code{optim.params.init} (by its corresponding index) and accordingly,
+#'   the selected simulation parameter value won't be optimized.
 #'
 #'   A simple EPR spectrum analysis by interactive simulation using the \code{\link{plot_eval_ExpSim_app}}
 #'   may return an \code{.R} script/code snippet for the \strong{initial} simulation \strong{fit} and therefore
-#'   the user does not have to write (or remember) the code required to run the \code{eval_sim_EPR_isoFit}.
-#'   Rather, she/he can instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters.
+#'   the user does not have to write (or remember) the entire code required to run the \code{eval_sim_EPR_isoFit}.
+#'   Rather, she/he can instantly and seamlessly analyze an isotropic EPR spectrum by optimizing the simulation parameters,
+#'   right after saving and then subsequently running of the above-mentioned script.
 #'
 #'
 #'
@@ -300,7 +301,7 @@
 #' ## similar EPR spectrum simulation fit with "particle swarm"
 #' ## optimization algorithm and `check.fit.plot = TRUE` option
 #' ## as well as user defined bound constraints, including
-#' ## fixed A(1 x 14N) = 52.6 MHz:
+#' ## fixed A(1 x 14N) = 52.68 MHz:
 #' tempo.test.sim.fit.b <-
 #'   eval_sim_EPR_isoFit(data.spectr.expr = aminoxyl.data,
 #'     nu.GHz = 9.806769,

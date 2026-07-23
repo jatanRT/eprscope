@@ -2,7 +2,7 @@
 #
 ## ============ Tests Radical (R) Kinetic Models using ODE by `deSolve` 📦 ===============
 #
-## ------------------ Consrvation of mass for the consecutive reactions ------------------
+## ------------------ Conservation of mass for the consecutive reactions ------------------
 #
 test_that("Conservation of mass for the consecutive reactions does work !", {
   #
@@ -27,7 +27,7 @@ test_that("Conservation of mass for the consecutive reactions does work !", {
   #
   ## for all time points conservation of mass must be fulfilled
   ## A0 + R0 = A + R + B in the case of 1:1:1 stoichiometry,
-  ## at first create vector of total concentration/quantitative variable
+  ## at first, create the vector of total concentration/quantitative variable
   vec.total.qvar.init <-
     rep(
       (qvar.init.A + qvar.init.R),

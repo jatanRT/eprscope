@@ -73,8 +73,13 @@ line EPR spectrum is expected.}
 
 \item{natur.abund}{Logical, whether the natural abundance of the interacting nuclei
 is taken into the calculation of intensity pattern of the simulated EPR spectrum.
+If the interacting group consists of \eqn{\geq 2} equivalent nuclei \eqn{\Rightarrow} the probability
+that they'll all show up at once, together, corresponds to a product of the individual abundances.
 \strong{Default}: \code{natur.abund = TRUE}. For a single-line
-EPR spectrum without hyperfine splitting(HFS) it is automatically switched to \code{natur.abund = FALSE}.}
+EPR spectrum without hyperfine splitting(HFS) it is automatically switched to \code{natur.abund = FALSE}.
+In case, if one needs to simulate the EPR pattern, mirroring the natural abundance/combination
+of 2 or several isotopes (e.g. 35Cl + 37Cl), please use the \code{\link{eval_sim_EPR_iso_combo}}
+function instead.}
 
 \item{lineSpecs.form}{Character string, describing either \code{"derivative"} (\strong{default})
 or \code{"integrated"} (i.e. \code{"absorption"} which can be used as well) line form
@@ -131,7 +136,7 @@ EPR spectra often display hyperfine structure, where the spectral lines split in
 Theoretical predictions or computations of a spectrum (and its comparison with the experiment) represent
   an important step in the analysis of EPR spectra. However, such step requires an iterative process with modelling
   the above-described \strong{electron-nuclear system} followed by a numerical simulations of EPR spectra
-  to match the experimental ones (see also \code{\link{eval_sim_EPR_isoFit}}). Commonly, quantum chemical calculations
+  to match the experimental ones (see also the \code{\link{eval_sim_EPR_isoFit}}). Commonly, quantum chemical calculations
   (usually DFT, see also \code{vignette("functionality")} are involved in this process.
   EPR simulations in the isotropic regime assume that the molecules tumble/move extremely fast causing a total averaging
   of any anisotropic properties out. An EPR spectrum corresponding to the latter consists of a series of symmetric
@@ -144,8 +149,8 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   by the \code{instrum.params} argument or can be directly acquired from the parameter file, using
   the \code{path_to_dsc_par} argument. Position of the spectrum (within the desired \eqn{B}-region)
   as well as those of HFS-lines are evaluated by the resonance condition (see also the \code{\link{eval_gFactor}})
-  and by the Breit-Rabi analytical expression for energy levels of the interacting nuclei.
-  The related \eqn{B}s are computed by the fixed-point iterations,
+  and by the Breit-Rabi analytical expression (refer to Weil JA (1971) in the References) for energy levels
+  of the interacting nuclei. The related \eqn{B}s are computed by the fixed-point iterations,
   because the corresponding \eqn{g}-value for each of the HFS-lines is not known (Weil JA (1971)
   and Stoll A, Schweiger A (2006)). The shape of spectral lines are calculated by the analytical formula
   of linear combination of the Gaussian and the Lorentzian line-shapes (also referred to as pseudo-Voigt,
@@ -153,9 +158,10 @@ Theoretical predictions or computations of a spectrum (and its comparison with t
   are defined by the \code{lineG.content} argument, actually, corresponding to Gaussian line content (the Lorentzian one
   is computed as 1-\code{lineG.content}, accordingly). The linewidth, from that linear combination,
   is specified individually for the Gaussian and the Lorentzian (please, refer to the \code{lineGL.DeltaB} argument).
-  The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients
-  taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups (please, also
-  refer to the \code{\link{plot_eval_EPRtheo_mltiplet}}), as well as their natural abundance (if \code{natur.abund = TRUE}).
+  The multiplicities (relative intensity ratios) are computed by the binomial/multinomial coefficients,
+  taking into account the spin quantum numbers of the interacting nuclei, in each of the equivalent groups
+  (please, also refer to the \code{\link{plot_eval_EPRtheo_mltiplet}} function), as well as their natural
+  abundance (if \code{natur.abund = TRUE}, see the detailed description of the \code{natur.abund} function argument).
 }
 \examples{
 ## simulation of simple EPR spectrum (without hyperfine

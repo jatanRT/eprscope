@@ -148,6 +148,6 @@ test_that("The parameters determined from the expr. EPR spectrum
   ## g-Values => expr. + sim. fit. comparison
   expect_lte(abs(g.iso.sim.fit - g[2]),1e-3)
   # 2e-4 is the usual experimental uncertainty for the determination of g
-  # however for the fast fitting bigger uncertainty might be observed
+  # however for the fast fitting, the bigger uncertainty might be observed
   #
 })

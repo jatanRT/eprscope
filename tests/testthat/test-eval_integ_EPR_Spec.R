@@ -37,7 +37,7 @@ test_that("Single integration works regardless of the applied method ! ", {
     dplyr::group_by(Slice) %>%
     eval_integ_EPR_Spec()
   #
-  # are both data frames same
+  # Do both data frames match ?
   df.comparison <-
     identical(
       integs.1st.tmpd.specelchem.a,
