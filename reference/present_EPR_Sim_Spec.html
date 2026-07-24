@@ -336,6 +336,36 @@ i.e. only graphical representation is shown.</p></dd>
 <span class="r-in"><span><span class="va">data.sim.tmpd.easyspin</span><span class="op">$</span><span class="va">pfit.full</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.003005686 19.528664889  5.495946669 19.541467190  0.034971964</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  0.015990064</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## differences between As (in MHz) and gs</span></span></span>
+<span class="r-in"><span><span class="co">## (EasySpin - eprscope)</span></span></span>
+<span class="r-in"><span><span class="co">## diff(g-value)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data.sim.tmpd.easyspin</span><span class="op">$</span><span class="va">pfit.full</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>  <span class="fl">2.00304</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.4314105e-05</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## diff(A(2 x 14N, MHz))</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data.sim.tmpd.easyspin</span><span class="op">$</span><span class="va">pfit.full</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>  <span class="fl">19.625</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.096335111</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## diff(A(4 x 1H, MHz))</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data.sim.tmpd.easyspin</span><span class="op">$</span><span class="va">pfit.full</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>  <span class="fl">5.496</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.3331205e-05</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## diff(A(12 x 1H, MHz))</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data.sim.tmpd.easyspin</span><span class="op">$</span><span class="va">pfit.full</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>  <span class="fl">19.496</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.04546719</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -567,7 +567,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.507e-08, swarm diam.=0.05766
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  9.46  s 
+#>  Done!  ( 100  %)    elapsed time  12.987  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -674,11 +674,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.607  s 
+#>  Done!  ( 50  %)    elapsed time  0.823  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  9.52  s 
+#>  Done!  ( 100  %)    elapsed time  13.032  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

@@ -740,8 +740,8 @@ documentation).
 **Pipe Operator(s) `%>%` (or `|>`) in** ![](RcoreLogo.png)**Programming
 Language**
 
-In order to understand where does these operators come from and why they
-are used, we may start with a brief historical background
+In order to understand where does this operator come from and why we use
+it, one may start with a brief historical background
 ([8](#ref-dataCamp2022pipe)). The basic principle can be actually found
 in mathematics. If two functions (e.g. \\\small f : B \rightarrow C\\
 and \\\small g : A\rightarrow B\\) are linked together into an
@@ -1321,8 +1321,8 @@ dimer.kinetics.01$plot
 # kinetic parameters with statistical measures
 dimer.kinetics.01$df.coeff
 #>           Estimate    Std. Error   t value      Pr(>|t|)
-#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425903e-72
-#> k1     0.019220829 0.00093856979 20.478849 3.4920627e-37
+#> qvar0R 0.019636250 0.00038480608 51.028949 2.1425897e-72
+#> k1     0.019220829 0.00093856978 20.478850 3.4920575e-37
 ```
 
 Obviously, according to statistical measures of non-linear

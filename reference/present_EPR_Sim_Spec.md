@@ -282,5 +282,35 @@ data.sim.tmpd.easyspin <-
 data.sim.tmpd.easyspin$pfit.full
 #> [1]  2.003005686 19.528664889  5.495946669 19.541467190  0.034971964
 #> [6]  0.015990064
+#
+## differences between As (in MHz) and gs
+## (EasySpin - eprscope)
+## diff(g-value)
+abs(
+  data.sim.tmpd.easyspin$pfit.full[1] -
+  2.00304
+)
+#> [1] 3.4314105e-05
+#
+## diff(A(2 x 14N, MHz))
+abs(
+  data.sim.tmpd.easyspin$pfit.full[2] -
+  19.625
+)
+#> [1] 0.096335111
+#
+## diff(A(4 x 1H, MHz))
+abs(
+  data.sim.tmpd.easyspin$pfit.full[3] -
+  5.496
+)
+#> [1] 5.3331205e-05
+#
+## diff(A(12 x 1H, MHz))
+abs(
+  data.sim.tmpd.easyspin$pfit.full[4] -
+  19.496
+)
+#> [1] 0.04546719
 
 ```
