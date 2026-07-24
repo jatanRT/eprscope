@@ -1,5 +1,5 @@
 #
-#' Transformation of Several Data Frame Objects/Variables into one Tidy (Long Table) Form
+#' Transformation of Several Data Frame Objects into one Tidy (Long Table) Form
 #'
 #'
 #' @description
@@ -20,11 +20,11 @@
 #'
 #' @param ... Data frame object names (separated by comma \code{,}) to be transformed into long
 #'   table/tidy form in order to quickly compare plots/EPR spectra in one graph panel (see also \code{Examples}).
-#'   The number of data frame vobjects is not limited, however for the series of \eqn{\geq 10-12}
-#'   objects/spectra, the graph may look cluttered, depending on complexity of EPR spectra.
+#'   The number of data frame objects is not limited, however for the series of \eqn{\geq 10-12}
+#'   objects/spectra, the graph may look cluttered, depending on the complexity of EPR spectra.
 #' @param df.names Character string vector of labels (in the form of e.g. \code{c("Spectr_01","Spectr_02")}
 #'   or \code{c("283 K","273 K","263 K")}), describing the individual data frames/plots in the returned
-#'   tidy/long table and corresponding to series of plots/spectra (be aware of the data frames order).
+#'   tidy/long table and corresponding to series of plots/spectra (be aware of the nemes order).
 #' @param which.coly.norm Character string, pointing to name of the column (in all data frame
 #'   objects) to be normalized, by the \code{norm.vec} vector. This column actually corresponds to quantity/variable
 #'   presented on graph as \emph{y}-axis. \strong{Default}: \code{which.coly.norm = "dIepr_over_dB"} (that is the
@@ -32,7 +32,8 @@
 #' @param norm.vec Numeric vector, consisting of (division) normalization constants (see also
 #'   the \code{which.coly.norm} argument) for each of the data frame objects defined by the ellipsis
 #'   \code{...} argument. \strong{Default}: \code{norm.vec = rep(1, times = length(df.names))}, i.e. all normalization
-#'   constants equal to \code{1}. If needed, the vector may be redefined (please, be aware of the data frames order).
+#'   constants equal to \code{1}. If needed, the vector may be redefined (please, be aware of the vector elements order,
+#'   see also the \code{df.names} argument).
 #' @param var2nd.series Character string, pointing to name of the second variable which is "common denominator"
 #'   for the series of \code{df.names} vector elements like \code{var2nd.series = "Temperature"}
 #'   or \code{var2nd.series = "Spectrum"} (\strong{default}).
@@ -40,7 +41,7 @@
 #'
 #' @returns
 #'   Tidy (long form) data frame/table object, carrying all the individual inputs, defined by the \code{...}
-#'   argument and ready for the overlay/offset plot to compare the data in desired series.
+#'   argument and ready for the overlay/offset plot to compare the data in the desired series.
 #'
 #'
 #' @examples
@@ -92,14 +93,14 @@
 #'   var2nd.series = "Radical",
 #'   var2nd.series.slct.by = 1,
 #'   xlim = c(3400,3600),
-#'   line.colors = c("darkorange","blue2"),
+#'   line.colors = c("blue2","darkorange"),
 #'   legend.title = "Radical"
 #' )
 #' #
 #' ## ...and the interactive preview (B in mT)
 #' plot_EPR_Specs2D_interact(
 #'   data.spectra = spectra.data.tidy.df,
-#'   line.colors = c("darkorange","blue2"),
+#'   line.colors = c("blue2","darkorange"),
 #'   var2nd.series = "Radical",
 #'   legend.title = "Radical"
 #' )
@@ -165,8 +166,15 @@ transform_dfs_2tidyDF <- function(..., ## all data frame variable names separate
   ## previous list is not required anymore
   rm(argumn.dfs.list)
   #
-  ## create tidy data frame
-  tidy.df <- dplyr::bind_rows(argumn.dfs.list.new,.id = var2nd.series)
+  ## create tidy data frame and factorize to preserve the order
+  tidy.df <- dplyr::bind_rows(
+    argumn.dfs.list.new,
+    .id = var2nd.series
+  )
+  ## factorize (levels must be specified)
+  tidy.df[[var2nd.series]] <-
+    factor(tidy.df[[var2nd.series]],levels = df.names)
+  #
   ## remove index column if present
   if (any(grepl("index",colnames(tidy.df)))){
     tidy.df$index <- NULL

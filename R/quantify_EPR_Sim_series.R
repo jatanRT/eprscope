@@ -149,7 +149,7 @@
 #'      name.pattern.sim = "DHMB0_1st_04_SimA",
 #'      optim.params.init = c(0,0.8),
 #'      output.area.stat = TRUE)
-#' ## progressbar - activated
+#' ## progress bar - activated
 #' #
 #' ## similar example with two components
 #' ## (simulated spectra) and tidy data frame
@@ -166,7 +166,7 @@
 #'      output.area.stat = FALSE,
 #'      eval.optim.progress = TRUE
 #'      )
-#' ## progressbar - deactivated
+#' ## progress bar - deactivated
 #' #
 #' ## to implement the `.csv` outputs
 #' ## from `plot_eval_ExpSim_app()`, the following
