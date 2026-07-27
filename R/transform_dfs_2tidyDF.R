@@ -24,7 +24,8 @@
 #'   objects/spectra, the graph may look cluttered, depending on the complexity of EPR spectra.
 #' @param df.names Character string vector of labels (in the form of e.g. \code{c("Spectr_01","Spectr_02")}
 #'   or \code{c("283 K","273 K","263 K")}), describing the individual data frames/plots in the returned
-#'   tidy/long table and corresponding to series of plots/spectra (be aware of the nemes order).
+#'   tidy/long table and corresponding to series of plots/spectra (be aware of the names order,
+#'   see also the \code{norm.vec} argument).
 #' @param which.coly.norm Character string, pointing to name of the column (in all data frame
 #'   objects) to be normalized, by the \code{norm.vec} vector. This column actually corresponds to quantity/variable
 #'   presented on graph as \emph{y}-axis. \strong{Default}: \code{which.coly.norm = "dIepr_over_dB"} (that is the

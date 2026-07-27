@@ -12,7 +12,7 @@
 #'    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
 #'    is provided by the differential Levenberg-Marquardt method, \code{\link[minpack.lm]{nls.lm}}.
 #'    Because the radical concentration is directly proportional to the EPR spectrum (double)
-#'    integral (see the \code{\link{quantify_EPR_Abs}}), for a quick evaluation and/or comparison of different
+#'    integral (see the \code{\link{quantify_EPR_Abs}}), for a quick evaluation and/or comparison of various
 #'    kinetic data, it is possible to obtain the rate constants \eqn{k} by the integrals/areas \emph{vs} time fit.
 #'    Therefore, the unit of \eqn{k} might be expressed in terms of \eqn{\text{s}^{-1}} including units of integrals/areas,
 #'    e.g. \code{procedure defined unit} (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/}{p.d.u.}),
@@ -34,6 +34,10 @@
 #'
 #'  Hanck C, Arnold M, Gerber A, Schmelzer M (2025). \emph{Introduction to Econometrics with R}.
 #'  University of Duisburg-Essen, \url{https://www.econometrics-with-r.org/}.
+#'
+#'  Kuzmič P, Lorenz T, Reinstein J (2009). "Analysis of Residuals from Enzyme Kinetic and Protein Folding
+#'  Experiments in the Presence of Correlated Experimental Noise", \emph{Anal. Biochem.}, \strong{395}(1),
+#'  1-7, \url{https://doi.org/10.1016/j.ab.2009.05.051}.
 #'
 #'
 #' @inheritParams eval_kinR_ODE_model
@@ -87,7 +91,7 @@
 #'   related to the \code{qvarR} argument.}
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
-#'   \item{ra}{Simple residual analysis - a list consisting of 5 elements: diagnostic plots
+#'   \item{ra}{Residual analysis - a list consisting of 5 elements: diagnostic plots
 #'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
 #'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
 #'   The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
@@ -97,9 +101,15 @@
 #'   (except the first one \eqn{\equiv} perfect self-correlation) usually lie within
 #'   the \eqn{95\,\%} confidence band (the light blue area within the \code{plot.acf}) for all lags.
 #'   Hence, there is no obvious periodical or whatsoever pattern and only a "white noise" is observed (a small and random
-#'   ACF distribution within the confidence band). If the user cannot be sure about a lag exceeding the confidence band,
-#'   please perform the Ljung-Box test \code{\link[stats]{Box.test}} and look for the \code{p.value}, whether
-#'   the autocorrelation is less (>> 0.05) or highly probable (<< 0.05).}
+#'   ACF distribution within the confidence band sometimes with one or two spikes exceeding the band).
+#'   Otherwise the model might need a revision for example taking into account an intermediate, an induction period,
+#'   mass-transfer effects, or an error structure with correlated noise (see also below).
+#'   In addition, the autocorrelation can be also usually checked by the Ljung-Box test, \code{\link[stats]{Box.test}}.
+#'   For the chemical kinetics the ACF may also reflect dense sampling in time, when the nearby points
+#'   can be correlated even if the kinetic model is correct (see also Kuzmič P et al. (2009) in the \code{References}).
+#'   Therefore, the ACF is not just a fit-quality measure but also a check on whether the assumption of independent
+#'   errors is reasonable. The above mentioned Ljung-Box test is best treated as a diagnostics for the correlated errors,
+#'   not as a standalone proof that the kinetic mechanism is wrong.}
 #'   \item{df.coeffs}{Data frame object containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values}.}
 #'   \item{cov.coeffs}{Covariance \code{matrix}, consisting of fitted/optimized kinetic parameters/coefficients

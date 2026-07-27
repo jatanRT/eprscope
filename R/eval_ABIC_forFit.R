@@ -58,7 +58,7 @@
 #'   Consequently, the function may automatically (see the argument \code{residuals.distro}) decide which distribution
 #'   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
 #'   (\code{\link[stats]{shapiro.test}}) as well as by the Kolmogorov-Smirnov (\code{\link[stats]{ks.test}}) tests,
-#'   providing the information whether the residuals distribution is normal
+#'   providing the information whether the residuals distribution can be considered as normal
 #'   (or not at all). \strong{It is recommended to evaluate/apply both information criteria}.
 #'   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
 #'   the BIC is in favor of simpler models because it possesses a stronger penalty (\eqn{k\,ln(N)}) for complex models
@@ -112,7 +112,7 @@
 #'   the best to residuals/errors based on the implemented
 #'   AIC and BIC calculations. Additionally, the fit can be supported by the Shapiro-Wilk
 #'   (see \code{\link[stats]{shapiro.test}}) and/or Kolmogorov-Smirnov (see \code{\link[stats]{ks.test}}) tests.
-#'   This is particularly suitable for the situation when residual analysis detects
+#'   This is particularly suitable for the situation when the residual analysis detects
 #'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
 #'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
 #'   distributions like: \code{residuals.distro = "N(n)ormal"}, \code{"G(g)aussian"}, \code{"S(s)tudent"} or

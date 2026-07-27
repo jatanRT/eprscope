@@ -237,6 +237,7 @@
 #' ## theoretical (analytical) expression of half-life
 #' t.half.01.b <- 1 / (2 * 0.08 * 0.012)
 #' #
+#' ## comparison of both values
 #' t.half.01.a
 #' t.half.01.b
 #' #
