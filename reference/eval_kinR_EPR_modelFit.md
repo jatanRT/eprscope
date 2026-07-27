@@ -12,10 +12,10 @@ Levenberg-Marquardt method,
 radical concentration is directly proportional to the EPR spectrum
 (double) integral (see the
 [`quantify_EPR_Abs`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Abs.md)),
-for a quick evaluation and/or comparison of different kinetic data, it
-is possible to obtain the rate constants \\k\\ by the integrals/areas
-*vs* time fit. Therefore, the unit of \\k\\ might be expressed in terms
-of \\\text{s}^{-1}\\ including units of integrals/areas, e.g.
+for a quick evaluation and/or comparison of various kinetic data, it is
+possible to obtain the rate constants \\k\\ by the integrals/areas *vs*
+time fit. Therefore, the unit of \\k\\ might be expressed in terms of
+\\\text{s}^{-1}\\ including units of integrals/areas, e.g.
 `procedure defined unit` (see
 [p.d.u.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6803776/)),
 depending on the order of reaction (see the `params.guess` argument).
@@ -233,10 +233,10 @@ List with the following components is available:
 
 - ra:
 
-  Simple residual analysis - a list consisting of 5 elements: diagnostic
-  plots `plot.rqq()` function, `plot.histDens`; original data frame
-  (`df`) with residuals and their corresponding standard deviation
-  (`sd`). For details, please refer to the
+  Residual analysis - a list consisting of 5 elements: diagnostic plots
+  `plot.rqq()` function, `plot.histDens`; original data frame (`df`)
+  with residuals and their corresponding standard deviation (`sd`). For
+  details, please refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
   The last element (`plot.acf`) is a diagnostic graph of the
   **a**uto**c**orrelation **f**unction
@@ -249,11 +249,20 @@ List with the following components is available:
   (the light blue area within the `plot.acf`) for all lags. Hence, there
   is no obvious periodical or whatsoever pattern and only a "white
   noise" is observed (a small and random ACF distribution within the
-  confidence band). If the user cannot be sure about a lag exceeding the
-  confidence band, please perform the Ljung-Box test
-  [`Box.test`](https://rdrr.io/r/stats/box.test.html) and look for the
-  `p.value`, whether the autocorrelation is less (\>\> 0.05) or highly
-  probable (\<\< 0.05).
+  confidence band sometimes with one or two spikes exceeding the band).
+  Otherwise the model might need a revision for example taking into
+  account an intermediate, an induction period, mass-transfer effects,
+  or an error structure with correlated noise (see also below). In
+  addition, the autocorrelation can be also usually checked by the
+  Ljung-Box test, [`Box.test`](https://rdrr.io/r/stats/box.test.html).
+  For the chemical kinetics the ACF may also reflect dense sampling in
+  time, when the nearby points can be correlated even if the kinetic
+  model is correct (see also Kuzmič P et al. (2009) in the
+  `References`). Therefore, the ACF is not just a fit-quality measure
+  but also a check on whether the assumption of independent errors is
+  reasonable. The above mentioned Ljung-Box test is best treated as a
+  diagnostics for the correlated errors, not as a standalone proof that
+  the kinetic mechanism is wrong.
 
 - df.coeffs:
 
@@ -357,6 +366,11 @@ in R?",
 Hanck C, Arnold M, Gerber A, Schmelzer M (2025). *Introduction to
 Econometrics with R*. University of Duisburg-Essen,
 <https://www.econometrics-with-r.org/>.
+
+Kuzmič P, Lorenz T, Reinstein J (2009). "Analysis of Residuals from
+Enzyme Kinetic and Protein Folding Experiments in the Presence of
+Correlated Experimental Noise", *Anal. Biochem.*, **395**(1), 1-7,
+<https://doi.org/10.1016/j.ab.2009.05.051>.
 
 ## See also
 

@@ -348,6 +348,7 @@ t.half.01.a <- kin.test.01$df[t.half.01.a.idx,] %>%
 ## theoretical (analytical) expression of half-life
 t.half.01.b <- 1 / (2 * 0.08 * 0.012)
 #
+## comparison of both values
 t.half.01.a
 #> [1] 520
 t.half.01.b

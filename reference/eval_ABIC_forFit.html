@@ -118,7 +118,7 @@ it automatically decides which distribution (Normal/Gaussian, Student's t-distri
 the best to residuals/errors based on the implemented
 AIC and BIC calculations. Additionally, the fit can be supported by the Shapiro-Wilk
 (see <code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>) and/or Kolmogorov-Smirnov (see <code><a href="https://rdrr.io/r/stats/ks.test.html" class="external-link">ks.test</a></code>) tests.
-This is particularly suitable for the situation when residual analysis detects
+This is particularly suitable for the situation when the residual analysis detects
 heavier tails (see e.g. <code>Example</code> in <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>) and one is not quite
 sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
 distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)aussian"</code>, <code>"S(s)tudent"</code> or
@@ -186,7 +186,7 @@ distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)auss
   Consequently, the function may automatically (see the argument <code>residuals.distro</code>) decide which distribution
   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
   (<code><a href="https://rdrr.io/r/stats/shapiro.test.html" class="external-link">shapiro.test</a></code>) as well as by the Kolmogorov-Smirnov (<code><a href="https://rdrr.io/r/stats/ks.test.html" class="external-link">ks.test</a></code>) tests,
-  providing the information whether the residuals distribution is normal
+  providing the information whether the residuals distribution can be considered as normal
   (or not at all). <strong>It is recommended to evaluate/apply both information criteria</strong>.
   The AIC tends to favor a more complex model (over a simpler one) and thus suggests to "overfit" the data, whereas
   the BIC is in favor of simpler models because it possesses a stronger penalty (\(k\,ln(N)\)) for complex models

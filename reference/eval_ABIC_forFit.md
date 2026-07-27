@@ -63,8 +63,8 @@ eval_ABIC_forFit(data.fit, residuals = NULL, k, residuals.distro = "auto")
   [`shapiro.test`](https://rdrr.io/r/stats/shapiro.test.html)) and/or
   Kolmogorov-Smirnov (see
   [`ks.test`](https://rdrr.io/r/stats/ks.test.html)) tests. This is
-  particularly suitable for the situation when residual analysis detects
-  heavier tails (see e.g. `Example` in
+  particularly suitable for the situation when the residual analysis
+  detects heavier tails (see e.g. `Example` in
   [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md))
   and one is not quite sure of the corresponding probability
   distribution. Otherwise, the argument may also specify individual
@@ -163,13 +163,13 @@ supported by the Shapiro-Wilk
 ([`shapiro.test`](https://rdrr.io/r/stats/shapiro.test.html)) as well as
 by the Kolmogorov-Smirnov
 ([`ks.test`](https://rdrr.io/r/stats/ks.test.html)) tests, providing the
-information whether the residuals distribution is normal (or not at
-all). **It is recommended to evaluate/apply both information criteria**.
-The AIC tends to favor a more complex model (over a simpler one) and
-thus suggests to "overfit" the data, whereas the BIC is in favor of
-simpler models because it possesses a stronger penalty (\\k\\ln(N)\\)
-for complex models than AIC (\\2\\k\\,see e.g. Fabozzi et al. (2014) and
-Zhang Y, Meng G (2023) in the `References`).
+information whether the residuals distribution can be considered as
+normal (or not at all). **It is recommended to evaluate/apply both
+information criteria**. The AIC tends to favor a more complex model
+(over a simpler one) and thus suggests to "overfit" the data, whereas
+the BIC is in favor of simpler models because it possesses a stronger
+penalty (\\k\\ln(N)\\) for complex models than AIC (\\2\\k\\,see e.g.
+Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the `References`).
 
 ## References
 
