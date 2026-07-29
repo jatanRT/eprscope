@@ -323,7 +323,12 @@ aminoxyl.file.path <-
 load_data_example("Aminoxyl_radical_a.txt")
 ## read the aminoxyl radical spectrum without intensity
 ## normalization
-aminoxyl.data <- readEPR_Exp_Specs(aminoxyl.file.path)
+aminoxyl.data <-
+  readEPR_Exp_Specs(aminoxyl.file.path) %>%
+    # calculate also g-values
+    dplyr::mutate(
+      g_value = eval_gFactor(nu.val = 9.806665,B.val = B_mT)
+    )
 #
 ## simple plot of an EPR spectrum with B in `mT`
 ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity)
@@ -336,6 +341,18 @@ plot_EPR_Specs(data.spectra = aminoxyl.data,
                x = "B_G",
                x.unit = "G",
                theme.basic = "theme_bw")
+
+#
+## the same spectrum in g-scale and without
+## panel background
+plot_EPR_Specs(
+  data.spectra = aminoxyl.data,
+  x = "g_value",
+  x.unit = "unitless",
+  xlim = c(1.95,2.075)
+) + ggplot2::theme(
+  panel.background = ggplot2::element_blank()
+)
 
 #
 ## single integration (without baseline correction)

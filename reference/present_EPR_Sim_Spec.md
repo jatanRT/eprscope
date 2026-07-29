@@ -8,8 +8,8 @@ to figure out differences between the experimental and the simulated EPR
 spectrum by such manner (the details can be "hidden" in overlays).
 Therefore, there is also an option to offset the EPR simulated spectrum
 underneath the experimental one, see argument `Intensity.shift.ratio`.
-For the sake of presentation, the maximum-minimum intensity difference,
-of the simulated spectrum, is automatically scaled onto the experimental
+For better presentation, the maximum-minimum intensity difference, of
+the simulated spectrum, is automatically scaled onto the experimental
 one.
 
 ## Usage

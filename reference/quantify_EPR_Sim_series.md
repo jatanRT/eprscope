@@ -1,7 +1,7 @@
 # Quantify EPR Simulated Spectral Components in the Experimental Series
 
 Evaluating the linear combination of spectral intensities of components
-(loaded as ASCII text files corresponding to simulated spectra). The
+(loaded as ASCII text files corresponding to simulated EPR spectra). The
 related intensity multiplication coefficients (please, refer to the
 `optim.params.init` argument) are optimized by methods gathered in the
 [`optim_for_EPR_fitness`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md).
