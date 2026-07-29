@@ -7,7 +7,7 @@
 #'
 #' @description
 #'   Evaluating the linear combination of spectral intensities of components (loaded as ASCII text files corresponding
-#'   to simulated spectra). The related intensity multiplication coefficients
+#'   to simulated EPR spectra). The related intensity multiplication coefficients
 #'   (please, refer to the \code{optim.params.init} argument) are optimized by methods gathered in the
 #'   \code{\link{optim_for_EPR_fitness}}. The goal is to fit the sum of the simulated components
 #'   onto each experimental spectrum within series. The maximum number of components is set to 10.

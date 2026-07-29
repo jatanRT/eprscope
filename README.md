@@ -25,8 +25,9 @@ Resonance](https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chem
 spectroscopy mainly for chemists. Similar <img
 src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/community/logos/python-logo-only.png"
 width="16" height="16" /> tools like [cwepr](https://www.cwepr.de/index)
-and the [related projetcs](https://docs.cwepr.de/v0.5/) have been
-developed, so far. The `{eprscope}`, as the first complex
+and the [related projetcs](https://docs.cwepr.de/v0.5/) (see also [*FOSS
+for Spectroscopy*](https://bryanhanson.github.io/FOSS4Spectroscopy/))
+have been developed, so far. The `{eprscope}`, as the first complex
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
 **package** 📦 for EPR, **doesn’t want to replace the latter nor the
 excellent and standard EPR simulation/processing** [EasySpin
@@ -45,10 +46,10 @@ as well as several other software platforms like the *MS Office* and/or
 *Orgin/SigmaPlot/Igor* which are often applied in the EPR
 processing/analysis workflow. Therefore, the `{eprscope}` tries to
 reduce such many steps/programs. In order to achieve the goal it uses
-superior power of the open source
+superior power of **the open source**
 <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-ecosystem that combines data processing, analysis and great scientific
-visualizations together with the extensive publishing capabilities by
+**ecosystem that combines data processing, analysis and great scientific
+visualizations together with the extensive publishing capabilities** by
 [Rmarkdown](https://rmarkdown.rstudio.com/index.html) and
 [Quarto](https://quarto.org/). Everything at one place (see the [RStudio
 IDE](https://docs.posit.co/ide/user/) or
@@ -73,14 +74,14 @@ is required** and summarized into the following steps:
     Technology](https://kb.bcit.ca/faculty-staff/download-and-install-openjdk-on-windows10-3395/).
     On *macOS,* this package is available via the Homebrew repository
     (see below) by `brew install openjdk` and finally, by verifying the
-    installation: `java –version`. *Linux* (ubuntu) users are advised to
-    check out the repositories (+ update, if needed): `sudo apt update`.
-    Then search for the `openjdk` by the following command:
-    `apt search openjdk` (it should return list with the newest/stable
-    version like `openjdk-XX-jdk`, “XX” stands for the highest number),
-    and finally install it by `sudo apt install openjdk-XX-jdk -y`.
-    After successful installation one may check the version
-    (`java -version`) .
+    installation: `java –version`. *Linux* (*Ubuntu*) users are advised
+    to check out the repositories (+ update, if needed):
+    `sudo apt update`. Then search for the `openjdk` by the following
+    command: `apt search openjdk` (it should return list with the
+    newest/stable version like `openjdk-XX-jdk`, “XX” stands for the
+    highest number), and finally install it by
+    `sudo apt install openjdk-XX-jdk -y`. After successful installation
+    one may check the version (`java -version`) .
 
 2.  Please, follow the instructions for the [the R installation
     procedure](https://cran.rstudio.com/). *Linux* and *macOS* users may
@@ -97,14 +98,14 @@ is required** and summarized into the following steps:
     Development Environment). Alternatively, one may also try the
     corresponding cloud version without the need for an
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-    installation either available at [Posit
+    installation, either available at [Posit
     Cloud](https://docs.posit.co/cloud/get_started/) or at [CoCalc
     (Collaborative Calculation and Data
-    Science)](https://cocalc.ai/features). Any other
+    Science)](https://cocalc.ai/features). If the [VS
+    Code](https://code.visualstudio.com/) (or
+    [Positron](https://positron.posit.co/)) belongs to your favorite
     <img src="https://www.r-project.org/Rlogo.png" width="16" height="16" />
-    compatible environment like [VS
-    Code](https://code.visualstudio.com/) or
-    [Positron](https://positron.posit.co/) may be installed as well.
+    compatible environments, you may install it as well.
 
 4.  Download and install the latest release of [*Rtools* (WINDOWS
     only)](https://cran.r-project.org/bin/windows/Rtools/) or on
@@ -180,15 +181,15 @@ devtools::install_github("jatanRT/eprscope",build_vignettes = TRUE)
 
 Additionally, **the open-source scientific and technical publishing
 system** [Quarto](https://quarto.org/) together with the
-[Pandoc](https://pandoc.org/), **a document converter system**, may be
-required for sharing the results coming from `{eprscope}` in desired
-formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details may be
-found in the `create_qmdReport_proj()` documentation).
+[Pandoc](https://pandoc.org/), **a document converter system**, might be
+necessary for sharing all the results coming from `{eprscope}` in
+desired formats like `pdf` , `html` , `docx` , `pptx` or `tex` (details
+may be found in the `create_qmdReport_proj()` documentation).
 
 **Note:** On modern *Windows* systems (10/11), all the pre- and
 post-installation software packages (*OpenJDK*, *Quarto*, *Pandoc*,
-*LaTeX/Typst* and *CMake* or *Rtools*) can be easily managed either by
-[*Winget*](https://winstall.app/) *or by the
+*LaTeX/Typst* and *CMake* or *Rtools, Rstudio* as well as *R*) can be
+easily managed either by [*Winget*](https://winstall.app/) *or by the
 [Chocolatey](https://chocolatey.org/)* systems.
 
 ## Updates

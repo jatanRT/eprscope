@@ -147,7 +147,12 @@
 #' load_data_example("Aminoxyl_radical_a.txt")
 #' ## read the aminoxyl radical spectrum without intensity
 #' ## normalization
-#' aminoxyl.data <- readEPR_Exp_Specs(aminoxyl.file.path)
+#' aminoxyl.data <-
+#'   readEPR_Exp_Specs(aminoxyl.file.path) %>%
+#'     # calculate also g-values
+#'     dplyr::mutate(
+#'       g_value = eval_gFactor(nu.val = 9.806665,B.val = B_mT)
+#'     )
 #' #
 #' ## simple plot of an EPR spectrum with B in `mT`
 #' ## and dIepr_over_dB_Sim in `p.d.u.` (derivative intensity)
@@ -159,6 +164,17 @@
 #'                x = "B_G",
 #'                x.unit = "G",
 #'                theme.basic = "theme_bw")
+#' #
+#' ## the same spectrum in g-scale and without
+#' ## panel background
+#' plot_EPR_Specs(
+#'   data.spectra = aminoxyl.data,
+#'   x = "g_value",
+#'   x.unit = "unitless",
+#'   xlim = c(1.95,2.075)
+#' ) + ggplot2::theme(
+#'   panel.background = ggplot2::element_blank()
+#' )
 #' #
 #' ## single integration (without baseline correction)
 #' ## of the previous spectrum by the `eval_integ_EPR_Spec`
@@ -682,10 +698,9 @@ plot_EPR_Specs <- function(data.spectra,
         theme(
           legend.title = element_text(size = legend.title.size.def),
           legend.text = element_text(size = legend.text.size.def)
-        ) + coord_cartesian(ylim = Ilim) +
+        ) + coord_cartesian(xlim = c(x.end,x.start),ylim = Ilim) +
         scale_x_continuous(
           transform = "reverse",
-          limits = c(x.end,x.start),
           sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),waiver())
         )
     } else {
@@ -698,10 +713,9 @@ plot_EPR_Specs <- function(data.spectra,
     #
   } else {
     if (isTRUE(g.factor.cond)) {
-      p.fin <- p + coord_cartesian(ylim = Ilim) +
+      p.fin <- p + coord_cartesian(xlim = c(x.end,x.start),ylim = Ilim) +
         scale_x_continuous(
           transform = "reverse",
-          limits = c(x.end,x.start),
           sec.axis = switch(2-isFALSE(yTicks),dup_axis(name = "",labels = NULL),waiver())
         )
     } else {
