@@ -366,8 +366,67 @@ ui <- fluidPage(
           align = "right"
         )
       )
+    ),
+    tabPanel(
+      title = "Simulation Fit",
+      #
+      #  --------------------- SIDEBAR SIMIULATION FIT --------------------------
+      #
+      sidebarPanel(
+        # INPUTS UI
+        shiny::tags$h4("Fit Settings"),
+        fluidRow(
+          column(
+            width = 6,
+            selectInput(
+              inputId = "fitTotalIter",
+              label = "Total Number of Iters.",
+              choices = c(480,640,720,800,960,1280,1600,1920,2400,2880),
+              selected = 720
+            )
+          ),
+          column(
+            width = 6,
+            selectInput(
+              inputId = "fitMethod",
+              label = "Fit Algorithm",
+              choices = c("neldermead","cobyla","lbfgs"),
+              selected = "neldermead"
+            )
+          )
+        ),
+        shiny::tags$h4("Initial Simulation Fit Parameters"),
+        fluidRow(
+          column(
+            width = 6,
+            numericInput(
+              inputId = "gvalFitInit",
+              label = shiny::HTML("Initial <i>g</i>(iso)"),
+              value = input$giso,
+              min = 0.5,
+              max = 7.5
+            )
+          ),
+          column(
+            width = 6,
+            numericInput(
+              inputId = "GcontentFitInit",
+              label = shiny::HTML("Initial <i>Gauss</i> Content"),
+              value = input$Gcontent,
+              min = 0,
+              max = 1
+            )
+          )
+        ),
+        selectInput(
+          inputId = "baselinFitCorrect",
+          label = "Baseline Correction",
+          choices = c("constant","linear","quadratic"),
+          selected = "constant"
+        )
+      )
+      ## here, just go ahead by the `tabpanel` for Simulation Fit
     )
-    ## here, just go ahead by the `tabpanel` for Simulation Fit
   )
 )
 #
