@@ -373,16 +373,35 @@ ui <- fluidPage(
       #  --------------------- SIDEBAR SIMIULATION FIT --------------------------
       #
       sidebarPanel(
+        # ACTION BUTTONS
+        fluidRow(
+          column(
+            width = 6,
+            actionButton(
+              inputId = "start",
+              label = "Start/Restart"
+            )
+          ),
+          column(
+            width = 6,
+            actionButton(
+              inputId = "stop",
+              label = "Stop"
+            )
+          )
+        ),
         # INPUTS UI
         shiny::tags$h4("Fit Settings"),
         fluidRow(
           column(
             width = 6,
-            selectInput(
+            numericInput(
               inputId = "fitTotalIter",
               label = "Total Number of Iters.",
-              choices = c(480,640,720,800,960,1280,1600,1920,2400,2880),
-              selected = 720
+              value = 720,
+              min = 480, # 6 cycles/loops (see step below)
+              max = 2880, # 36 cycles/loops (see step below)
+              step = 80 ## best option to run cycles/loops for the methods below
             )
           ),
           column(
@@ -401,7 +420,7 @@ ui <- fluidPage(
             width = 6,
             numericInput(
               inputId = "gvalFitInit",
-              label = shiny::HTML("Initial <i>g</i>(iso)"),
+              label = shiny::HTML("<i>g</i>(iso) Guess"),
               value = input$giso,
               min = 0.5,
               max = 7.5
@@ -411,10 +430,32 @@ ui <- fluidPage(
             width = 6,
             numericInput(
               inputId = "GcontentFitInit",
-              label = shiny::HTML("Initial <i>Gauss</i> Content"),
+              label = shiny::HTML("<i>Gauss</i> Content"),
               value = input$Gcontent,
               min = 0,
               max = 1
+            )
+          )
+        ),
+        fluidRow(
+          column(
+            width = 6,
+            numericInput(
+              inputId = "GDeltaBfit",
+              label = shiny::HTML("<i>Gaussian</i> Linewidth"),
+              value = DeltaBGpp$val,
+              min = 0,
+              max = 10
+            )
+          ),
+          column(
+            width = 6,
+            numericInput(
+              inputId = "LDeltaBfit",
+              label = shiny::HTML("<i>Lorentzian</i> Linewidth"),
+              value = DeltaBLpp$val,
+              min = 0,
+              max = 10
             )
           )
         ),
