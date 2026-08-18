@@ -199,7 +199,7 @@ In order to support reproducible research workflow (see \code{References}) in EP
   the following commands step-by-step:
   \enumerate{
   \item \code{git remote add origin https://<service>/<user>/<remote repo name>.git}, where the \code{url} address
-  can be copied by the clicking on the \code{< > Code} button when you're previewing the repository in the web browser.
+  can be copied by the clicking on the \code{< > Code} button while previewing the repository in a web browser.
 
   \item \code{git branch -M main}, which renames the local \code{master} branch in order to match the remote name,
   depending on the applied service. Please check the remote main/master branch name and adjust accordingly.

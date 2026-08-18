@@ -59,7 +59,9 @@ When comparing different (simulation) fits for the same experimental data (see
   \href{https://www.modernstatisticswithr.com/mlchapter.html}{Predictive Modelling and Machine Learning} or
   \href{https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05}{Error Estimation and Model Selection}).
   As described in details, both metrics depends on maximum logarithmic likelihood (based on residuals calculation)
-  to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}
+  to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}. Such indicators
+  can help to detect
+  \href{https://sesen.ai/blog/aic-bic-model-selection-information-criteria}{optimal model without under- or overfitting}.
 }
 \details{
 Estimation of model errors, that model/fit makes in respect to our (experimental) data, becomes
@@ -87,11 +89,12 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   impractical or even impossible to perform.} To overcome this difficulty, the formulae for both criteria
   use a \strong{standard assumption that the model and the data residuals/errors are identically distributed.}
   Therefore, \strong{the residuals/errors are applied as a proxy for the MLE/\eqn{LL}} (see e.g. Rossi et al. (2020)
-  in the \code{References}). Evaluation of the latter, in the actual function, proceeds via \code{sum}
+  or Sesen et al. (2026) in the \code{References}). Evaluation of the latter, in the actual function, proceeds via \code{sum}
   of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
   1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
-  using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu} and the \code{scale}
+  using the \code{log = TRUE} option. The location parameter of every distribution is fixed at \code{0} (due to residuals).
+  For t-distribution the \code{df}/\eqn{\nu} and the \code{scale}
   parameters are unknown, therefore it is optimized by the above-described \eqn{LL}
   as well as by the \code{\link[stats]{optimize}}/\code{\link[stats]{optim}} (the same applies to Cauchy
   and the \code{scale} parameter) functions. Even though the Student's distribution
@@ -115,7 +118,8 @@ set.seed(42)
 res <- stats::rt(200, df = 4) * 1.3 ## heavy-tailed resids.
 res.data.df <- data.frame(Residuals = res)
 #
-## evaluate the `ABIC_forFit`
+## evaluate the `ABIC_forFit` by setting
+## the `residuals.distro = "auto"` (default)
 list.abic <- eval_ABIC_forFit(
   data.fit = res.data.df,
   residuals = "Residuals",
@@ -125,41 +129,43 @@ list.abic <- eval_ABIC_forFit(
 ## AIC and BIC vvector
 list.abic$abic.vec
 #
-## Message in order to prove the distribution (fit)
+## Message in order to fit and prove the distribution
+## with the degrees of freedom 5-6
 list.abic$message
 #
-\dontrun{
-## to decide which probability distribution fits
-## the best to residuals/errors
-calc.abic.list.01 <-
-  eval_ABIC_forFit(
-    data.fit = triaryl_model_kin_fit_01$df,
-    residuals = "residuals",
-    k = 2,
-    residuals.distro = "auto"
- )
+## generate data frame with residuals
+## defined by the Normal/Gaussian distribution
+res.norm <- stats::rnorm(200,mean = 0,sd = 0.5)
+res.norm.data.df <- data.frame(Residuals = res.norm)
 #
-## AIC and BIC values
-calc.abic.list.01$abic.vec
+## evaluate the `ABIC_forFit` by setting
+## the `residuals.distro = "auto"` (default)
+list.norm.abic <- eval_ABIC_forFit(
+  data.fit = res.norm.data.df,
+  residuals = "Residuals",
+  k = 3 ## hypothetical number of model parameters
+)
 #
-## ...and the corresponding message
-calc.abic.list.01$message
+## the entire list for the distribution fit
+list.norm.abic
 #
-## calculation of AIC and BIC, taking into
-## account the Student's t-distribution:
-calc.abic.list.01 <-
-  eval_ABIC_forFit(
-    data.fit = best.sim.fit.df,
-    residuals = "Errors",
-    k = 8,
-    residuals.distro = "t-distro"
-  )
+## check, if the Student's t-distribution fit
+## gives higher AIC/BIC + no clear support
+## by the Kolmogorov-Smirnov
+## and/or by the Shapiro-Wilk tests,
+## the number of degrees of freedom should be relatively high
+list.stud.abic <- eval_ABIC_forFit(
+  data.fit = res.norm.data.df,
+  residuals = "Residuals",
+  residuals.distro = "t-dist",
+  k = 3
+)
+list.stud.abic
 #
-## for additional applications please,
+## for additional applications, please
 ## refer to the Examples in `eval_sim_EPR_isoFit()`
 ## or `eval_kinR_EPR_modelFit()`
 #
-}
 
 
 }
@@ -192,6 +198,9 @@ Fabozzi FJ, Focardi FM, Rachev ST, Arshanapalli BG (2014). \emph{The Basics of F
   O Texts, ISBN 978-0-987-50713-6, \url{https://otexts.com/fpp3/}.
 
   Hyndman RJ (2013). "Facts and Fallacies of the AIC", \url{https://robjhyndman.com/hyndsight/aic/}.
+
+  Sesen B et al. (2026). "AIC and BIC: Choosing the Right Model Without Overfitting",
+  \url{https://sesen.ai/blog/aic-bic-model-selection-information-criteria}.
 }
 \seealso{
 Other Simulations and Optimization:
