@@ -515,20 +515,6 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       k = length(params.guess) ## number of parameters
     )
   #
-  ## THE FOLLOWING REPLACED BY `AB.ic.list` and `eval_ABIC_forFit`
-  # negativ.2fold.loglike <-
-  #   nrow(new.predict.df) *
-  #   (1 + log(2 * pi) + log(residsq.react.kin.fit / nrow(new.predict.df)))
-  # #
-  # ## ...=> both criteria:
-  # A.ic <-
-  #   negativ.2fold.loglike + (2 * length(params.guess)) +
-  #   (2 * length(params.guess) * (length(params.guess) + 1) /
-  #      (nrow(new.predict.df) - length(params.guess) - 1))
-  # #
-  # B.ic <-
-  #   negativ.2fold.loglike + (log(nrow(new.predict.df)) * length(params.guess))
-  #
   ## ====================== EXPERIMENT-FIT PLOT ============================
   #
   ## create plot

@@ -359,10 +359,10 @@
 #' #
 #' ## residual & Q-Q plots for the proposed Student's
 #' ## distribution of residuals with degrees of freedom
-#' ## df = 6 (see the "$message" right above)
+#' ## df = 2.1 (see the "$message" right above)
 #' tempo.test.sim.fit.b$ra$plot.rqq(
 #'   residuals.distro = "t",
-#'   df = 6
+#'   df = 2.1
 #' )
 #' #
 #' ## fitting of the aminoxyl EPR spectrum
@@ -475,7 +475,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## settings. If the Teslameter is in ON state the measured values are automatically
   ## written into the text ASCII file. Therefore, to properly compare the simulated
   ## and experimental spectrum these parameters must be extracted form
-  ## the original experimental ASCII (`.txt` or `.asc`) ASCII data file =>
+  ## the original experimental ASCII (`.txt` or `.asc`) data file =>
   B.cf <- stats::median(data.spectr.expr[[paste0("B_",B.unit)]])
   B.sw <- max(data.spectr.expr[[paste0("B_",B.unit)]]) -
     min(data.spectr.expr[[paste0("B_",B.unit)]])

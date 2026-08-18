@@ -91,12 +91,13 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
   1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
-  using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu}
-  parameter is unknown, therefore it is optimized by the above-described \eqn{LL}
-  as well as by the \code{\link[stats]{optimize}} functions. Even though the Student's distribution approaches the normal
-  one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations can be modeled
-  by t-distribution with lower \code{df}. All probability distributions are included in the function because not always
-  the residuals/errors follow the normal one. Particularly, if heavier tails
+  using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu} and the \code{scale}
+  parameters are unknown, therefore it is optimized by the above-described \eqn{LL}
+  as well as by the \code{\link[stats]{optimize}}/\code{\link[stats]{optim}} (the same applies to Cauchy
+  and the \code{scale} parameter) functions. Even though the Student's distribution
+  may approach the normal one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations
+  can be modeled by t-distribution with lower \code{df}. All probability distributions are included in the function because
+  not always the residuals/errors follow the normal one. Particularly, if heavier tails
   appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
   Consequently, the function may automatically (see the argument \code{residuals.distro}) decide which distribution
   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
@@ -108,6 +109,25 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   than AIC (\eqn{2\,k},see e.g. Fabozzi et al. (2014) and Zhang Y, Meng G (2023) in the \code{References}).
 }
 \examples{
+## generate data frame with residuals,
+## defined by the Student's t-distribution
+set.seed(42)
+res <- stats::rt(200, df = 4) * 1.3 ## heavy-tailed resids.
+res.data.df <- data.frame(Residuals = res)
+#
+## evaluate the `ABIC_forFit`
+list.abic <- eval_ABIC_forFit(
+  data.fit = res.data.df,
+  residuals = "Residuals",
+  k = 5 ## hypothetical number of model parameters
+)
+#
+## AIC and BIC vvector
+list.abic$abic.vec
+#
+## Message in order to prove the distribution (fit)
+list.abic$message
+#
 \dontrun{
 ## to decide which probability distribution fits
 ## the best to residuals/errors

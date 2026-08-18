@@ -48,12 +48,13 @@
 #'   of three main probability distributions for residuals (additional distributions may be added in the newer package versions):
 #'   1. the \code{\link[stats:Normal]{stats::dnorm}} (for the normal/Gaussian distribution); 2. the \code{\link[stats:TDist]{stats::dt}}
 #'   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
-#'   using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu}
-#'   parameter is unknown, therefore it is optimized by the above-described \eqn{LL}
-#'   as well as by the \code{\link[stats]{optimize}} functions. Even though the Student's distribution approaches the normal
-#'   one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations can be modeled
-#'   by t-distribution with lower \code{df}. All probability distributions are included in the function because not always
-#'   the residuals/errors follow the normal one. Particularly, if heavier tails
+#'   using the \code{log = TRUE} option. For t-distribution the \code{df}/\eqn{\nu} and the \code{scale}
+#'   parameters are unknown, therefore it is optimized by the above-described \eqn{LL}
+#'   as well as by the \code{\link[stats]{optimize}}/\code{\link[stats]{optim}} (the same applies to Cauchy
+#'   and the \code{scale} parameter) functions. Even though the Student's distribution
+#'   may approach the normal one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations
+#'   can be modeled by t-distribution with lower \code{df}. All probability distributions are included in the function because
+#'   not always the residuals/errors follow the normal one. Particularly, if heavier tails
 #'   appear, e.g. for EPR simulation fits (please, refer to the \code{Examples} in the \code{\link{eval_sim_EPR_isoFit}}).
 #'   Consequently, the function may automatically (see the argument \code{residuals.distro}) decide which distribution
 #'   fits the residuals/errors the best, based on the lowest AIC, BIC values. This is additionally supported by the Shapiro-Wilk
@@ -138,6 +139,25 @@
 #'
 #'
 #' @examples
+#' ## generate data frame with residuals,
+#' ## defined by the Student's t-distribution
+#' set.seed(42)
+#' res <- stats::rt(200, df = 4) * 1.3 ## heavy-tailed resids.
+#' res.data.df <- data.frame(Residuals = res)
+#' #
+#' ## evaluate the `ABIC_forFit`
+#' list.abic <- eval_ABIC_forFit(
+#'   data.fit = res.data.df,
+#'   residuals = "Residuals",
+#'   k = 5 ## hypothetical number of model parameters
+#' )
+#' #
+#' ## AIC and BIC vvector
+#' list.abic$abic.vec
+#' #
+#' ## Message in order to prove the distribution (fit)
+#' list.abic$message
+#' #
 #' \dontrun{
 #' ## to decide which probability distribution fits
 #' ## the best to residuals/errors
@@ -175,7 +195,7 @@
 #' @export
 #'
 #'
-eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and experimental values
+eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
                              residuals = NULL, # string for column name
                              k, # number of params for the model/fit
                              residuals.distro = "auto") { ## or "t-","(S)student's",
@@ -221,7 +241,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     sum(
       stats::dnorm(
         resids,
-        mean = mean(resids),
+        mean = 0,
         sd = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
         ## because the MaxLikelihood uses `/n` and not sd `/n-1`
         log = TRUE
@@ -232,49 +252,79 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
   #
   ## ...as a function in order to be more robust (optimize parameter(s),
   ## because they are (it is) unknown)
-  log_likehood_t_fun <- function(nu) { ## only nu = df (degrees of freedom) optimization
-    scale <- sqrt(sum(resids^2) / Nobs) ## estimation of scale
+  log_likehood_t_fun <- function(tpars,res) {
+    ## `tpars` -> `nu` = df (degrees of freedom) and `scale` optimization
+    ## `res` -> residuals = `resids`
     #
-    return(sum(stats::dt(resids/scale, df = nu, log = TRUE) - log(scale)))
+    scale = exp(tpars[1])
+    nu = exp(tpars[2])
+    #
+    return(-sum(stats::dt(res/scale, df = nu, log = TRUE) - log(scale)))
   }
   #
-  ## now optimize the previous function in order to get `nu`
+  ## now optimize the previous function in order to get `nu` and `scale`
   ## and max. likelihood
   opt_logLik_t <-
-    stats::optimize(
-      log_likehood_t_fun,
-      interval = c(1, 100),
-      maximum = TRUE
+    stats::optim(
+      ## initial/starting parameters
+      par = c(log(stats::sd(resids)),log(5)),
+      fn = log_likehood_t_fun,
+      res = resids,
+      method = "BFGS"
     )
   #
-  ## final logLik for t-Distro:
-  log_likehood_t <- opt_logLik_t$objective
-  ## ...and the optimized df (degree of freedom parameter)
-  log_likehood_t_nu <- round(opt_logLik_t$maximum)
+  ## final params and logLik for t-Distro:
+  log_likehood_t <- -opt_logLik_t$value ## negative because `optim` minimizes
+  ## ...and the optimized nu = df (degree of freedom parameter)
+  log_likehood_t_nu <- round(exp(opt_logLik_t$par[2]),1)
   #
   ## ----------------------- Cauchy distro (`dcauchy()`) --------------------------
   #
-  log_likehood_cauchy <-
-    sum(
-      stats::dcauchy(
-        resids,
-        location = mean(resids),
-        scale = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
-        ## because the MaxLikelihood uses `/n` and not sd `/n-1`
-        log = TRUE
-      )
+  ## ...as a function in order to be more robust (optimize parameter(s),
+  ## because they are (it is) unknown)
+  log_likehood_cauchy_fun <- function(cpar,res) {
+    ## `cpars` scale optimization
+    #
+    scalec = exp(cpar)
+    #
+    return(-sum(stats::dcauchy(res,location = 0,scale = scalec,log = TRUE)))
+  }
+  #
+  ## now optimize the previous function in order to get `scalec`
+  ## and max. likelihood (use `optimize` for only one parameter i.e. scale)
+  opt_logLik_cauchy <-
+    stats::optimize(
+      f = log_likehood_cauchy_fun,
+      res = resids,
+      interval = c(-100,100)
     )
   #
+  log_likehood_cauchy <- -opt_logLik_cauchy$objective
   #
-  ## compare likelihoods, if the same => set automatically to "normal"
+  #
+  ## compare likelihoods (for Gaussian and Student's),
+  ## if the same => set automatically to "normal"
   ## t-distribution reaches normal for N >= 30
   if (log_likehood_norm == log_likehood_t) {
     residuals.distro <- "normal"
   }
   #
+  ## ----------------------- Strings for Residuals distributions --------------------------
+  #
+  ## the recalculation -> due to maximizing the LogLik
+  #
+  ## strings for normal/Gaussian (...as well as for the calculations below)
+  norm.string.vec <- c("norm","gauss")
+  #
+  ## strings for t-Distro (Student, ...as well as for the calculations below)
+  t.string.vec <- c("t-dist","student")
+  #
+  ## string for cauchy (...as well as for the calculations below)
+  cauchy.string.vec <- c("cauch")
+  #
   ## =========================== CALCULATION OF AIC and BIC ==============================
   #
-  abic_fun <- function(N.params = k,N.obs = Nobs,logLik) {
+  abic_fun <- function(N.params,N.obs = Nobs,logLik) {
     #
     ## ...also taking into account the correction for small `N.obs` (AIC),
     ## where this third term can be neglected for higher `N.obs` (is very small)
@@ -286,22 +336,15 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     return(c(AIC,BIC))
   }
   #
-  ## -------------------------- Conditions for calculations -------------------------------
+  ## --------------------- Conditions for calculations AIC/BIC ---------------------------
   #
-  ## strings for normal/Gaussian
-  norm.string.vec <- c("norm","gauss")
-  #
-  ## strings for t-Distro (Student)
-  t.string.vec <- c("t-dist","student")
-  #
-  ## string for cauchy
-  cauchy.string.vec <- c("cauch")
-  #
+  ## AIC and BIC based on `residuals.distro`
   if (any(grepl(paste(norm.string.vec,collapse = "|"),residuals.distro)) ||
       grepl("auto",residuals.distro)) {
     #
     norm.abic.vec <- stats::setNames(
       abic_fun(
+        N.params = k + 1, ## model parameter + param. of the residual distro (sd)
         logLik = log_likehood_norm
       ), c("normaic","normbic")
     )
@@ -312,6 +355,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     #
     t.abic.vec <- stats::setNames(
       abic_fun(
+        N.params = k + 2, ## model + (nu = df) + scale
         logLik = log_likehood_t
       ), c("taic","tbic")
     )
@@ -322,6 +366,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
     #
     cauch.abic.vec <- stats::setNames(
       abic_fun(
+        N.params = k + 1, ## model + scale
         logLik = log_likehood_cauchy
       ), c("cauchaic","cauchbic")
     )
@@ -390,7 +435,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
       return(
         paste0(
           "the Student's t-distribution of residuals ",
-          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          sprintf("with %.1f degrees of freedom.",log_likehood_t_nu),
           " Additionally supported by the Shapiro-Wilk",
           " as well as by the Kolmogorov-Smirnov tests."
         )
@@ -421,7 +466,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
       return(
         paste0(
           "the Student's t-distribution of residuals ",
-          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          sprintf("with %.1f degrees of freedom.",log_likehood_t_nu),
           " Additionally supported by the Shapiro-Wilk test."
         )
       )
@@ -443,7 +488,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
       return(
         paste0(
           "the Student's t-distribution of residuals ",
-          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          sprintf("with %.1f degrees of freedom.",log_likehood_t_nu),
           " Additionally supported by the Kolmogorov-Smirnov test."
         )
       )
@@ -459,7 +504,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least predicted and 
       return(
         paste0(
           "the Student's t-distribution of residuals ",
-          sprintf("with %d degrees of freedom.",log_likehood_t_nu),
+          sprintf("with %.1f degrees of freedom.",log_likehood_t_nu),
           " No clear support by the Shapiro-Wilk and/or",
           " by the Kolmogorov-Smirnov tests. p.value in <0.01,0.05>."
         )
