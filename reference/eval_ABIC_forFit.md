@@ -292,7 +292,9 @@ list.norm.abic
 ## gives higher AIC/BIC + no clear support
 ## by the Kolmogorov-Smirnov
 ## and/or by the Shapiro-Wilk tests,
-## the number of degrees of freedom should be relatively high
+## the number of degrees of freedom (`df`) should be
+## relatively high, because with such an extreme `df`
+## Student's distro -> Normal/Gaussian distro
 list.stud.abic <- eval_ABIC_forFit(
   data.fit = res.norm.data.df,
   residuals = "Residuals",

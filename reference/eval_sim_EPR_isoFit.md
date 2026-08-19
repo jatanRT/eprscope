@@ -567,7 +567,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.469e-08, swarm diam.=0.2971
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  9.236  s 
+#>  Done!  ( 100  %)    elapsed time  10.837  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -674,11 +674,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.641  s 
+#>  Done!  ( 50  %)    elapsed time  0.738  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  9.498  s 
+#>  Done!  ( 100  %)    elapsed time  10.932  s 
 #> Warning: NaNs produced
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
@@ -713,14 +713,14 @@ tempo.test.sim.fit.c$N.converg
 ## + information about the residuals distribution
 tempo.test.sim.fit.c$abic
 #> $abic.vec
-#> [1] -31800.037 -31757.628
+#> [1] -26131.120 -26094.002
 #> 
 #> $message
-#> [1] "Information criteria evaluated using the"   
-#> [2] "Student's t-distribution of residuals with" 
-#> [3] "0.7 degrees of freedom. Additionally"       
-#> [4] "supported by the Shapiro-Wilk as well as by"
-#> [5] "the Kolmogorov-Smirnov tests."              
+#> [1] "Information criteria evaluated using the"  
+#> [2] "Cauchy distribution of residuals,"         
+#> [3] "additionally supported by the Shapiro-Wilk"
+#> [4] "test as well as by the Kolmogorov-Smirnov" 
+#> [5] "tests."                                    
 #> 
 
 
