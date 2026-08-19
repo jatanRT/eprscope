@@ -562,23 +562,23 @@ tempo.test.sim.fit.b <-
 #>  EPR simulation parameters are currently being optimized by   PSWARM ;  method   1   of   1 ... 
 #> S=14, K=6, p=0.359, w0=0.7213, w1=0.7213, c.p=1.193, c.g=1.193
 #> v.max=NA, d=0.5658, vectorize=FALSE, hybrid=off
-#> It 10: fitness=3.395e-08, swarm diam.=0.2458
-#> It 20: fitness=1.88e-08, swarm diam.=0.1672
-#> It 30: fitness=1.507e-08, swarm diam.=0.05766
+#> It 10: fitness=4.106e-08, swarm diam.=0.4041
+#> It 20: fitness=1.919e-08, swarm diam.=0.3021
+#> It 30: fitness=1.469e-08, swarm diam.=0.2971
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.407  s 
+#>  Done!  ( 100  %)    elapsed time  9.236  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
 #> [[1]]
-#> [1] 1.4847253e-08
+#> [1] 1.4619762e-08
 #> 
 #
 ## check and compare the previous value
 ## by residual analysis (`ra`)
 sum((tempo.test.sim.fit.b$ra$df$Residuals)^2)
-#> [1] 1.4847253e-08
+#> [1] 1.4619762e-08
 #
 ## number of evaluations / iterations:
 tempo.test.sim.fit.b$N.evals
@@ -590,16 +590,16 @@ tempo.test.sim.fit.b$N.evals
 ## best fit parameters:
 tempo.test.sim.fit.b$best.fit.params
 #> [[1]]
-#> [1] 2.0053059e+00 4.9990459e+00 4.8001383e+00 1.2503903e-07 1.2912288e-02
-#> [6] 5.2680000e+01
+#> [1]  2.0053616e+00  4.9976118e+00  4.9974497e+00 -1.3990731e-07  1.2986755e-02
+#> [6]  5.2680000e+01
 #> 
 #
 ## correlation matrix of the EPR simulation fit:
 tempo.test.sim.fit.b$cor.df
 #>             Experiment   Simulation    Residuals
-#> Experiment 1.000000000  0.995689842  0.048364255
-#> Simulation 0.995689842  1.000000000 -0.044481227
-#> Residuals  0.048364255 -0.044481227  1.000000000
+#> Experiment 1.000000000  0.995755047  0.055642805
+#> Simulation 0.995755047  1.000000000 -0.036493644
+#> Residuals  0.055642805 -0.036493644  1.000000000
 #
 ## visualization of the previous matrix:
 tempo.test.sim.fit.b$cor.df %>%
@@ -619,20 +619,20 @@ tempo.test.sim.fit.b$plot
 tempo.test.sim.fit.b$ra$plot.histDens
 
 tempo.test.sim.fit.b$ra$sd
-#> [1] 3.1524467e-06
+#> [1] 3.1282025e-06
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
 ## + information about the residuals distribution
 tempo.test.sim.fit.b$abic
 #> $abic.vec
-#> [1] -34005.133 -33978.607
+#> [1] -34553.246 -34516.129
 #> 
 #> $message
-#> [1] "Information criteria evaluated using the"    
-#> [2] "Student's t-distribution of residuals with 6"
-#> [3] "degrees of freedom. Additionally supported"  
-#> [4] "by the Shapiro-Wilk as well as by the"       
-#> [5] "Kolmogorov-Smirnov tests."                   
+#> [1] "Information criteria evaluated using the"   
+#> [2] "Student's t-distribution of residuals with" 
+#> [3] "2.1 degrees of freedom. Additionally"       
+#> [4] "supported by the Shapiro-Wilk as well as by"
+#> [5] "the Kolmogorov-Smirnov tests."              
 #> 
 #
 ## residual & Q-Q plots for the proposed normal
@@ -644,10 +644,10 @@ tempo.test.sim.fit.b$ra$plot.rqq(confidence = 0.99)
 #
 ## residual & Q-Q plots for the proposed Student's
 ## distribution of residuals with degrees of freedom
-## df = 6 (see the "$message" right above)
+## df = 2.1 (see the "$message" right above)
 tempo.test.sim.fit.b$ra$plot.rqq(
   residuals.distro = "t",
-  df = 6
+  df = 2.1
 )
 #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
@@ -674,11 +674,12 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.808  s 
+#>  Done!  ( 50  %)    elapsed time  0.641  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.878  s 
+#>  Done!  ( 100  %)    elapsed time  9.498  s 
+#> Warning: NaNs produced
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
@@ -712,14 +713,14 @@ tempo.test.sim.fit.c$N.converg
 ## + information about the residuals distribution
 tempo.test.sim.fit.c$abic
 #> $abic.vec
-#> [1] -27866.027 -27834.204
+#> [1] -31800.037 -31757.628
 #> 
 #> $message
-#> [1] "Information criteria evaluated using the"    
-#> [2] "Student's t-distribution of residuals with 4"
-#> [3] "degrees of freedom. Additionally supported"  
-#> [4] "by the Shapiro-Wilk as well as by the"       
-#> [5] "Kolmogorov-Smirnov tests."                   
+#> [1] "Information criteria evaluated using the"   
+#> [2] "Student's t-distribution of residuals with" 
+#> [3] "0.7 degrees of freedom. Additionally"       
+#> [4] "supported by the Shapiro-Wilk as well as by"
+#> [5] "the Kolmogorov-Smirnov tests."              
 #> 
 
 

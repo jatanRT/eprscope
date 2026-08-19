@@ -476,7 +476,7 @@ triaryl_model_kin_fit_01$ra$sd
 ##  + information about the residuals distribution
 triaryl_model_kin_fit_01$abic
 #> $abic.vec
-#> [1] -1522.9038 -1517.8172
+#> [1] -1520.7472 -1513.1817
 #> 
 #> $message
 #> [1] "Information criteria evaluated using the"   
@@ -528,7 +528,7 @@ triaryl_model_kin_fit_02$ra$sd
 ## + information about the residuals distribution
 triaryl_model_kin_fit_02$abic
 #> $abic.vec
-#> [1] -1187.8203 -1182.7336
+#> [1] -1185.2623 -1177.6968
 #> 
 #> $message
 #> [1] "Information criteria evaluated using the"

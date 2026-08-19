@@ -260,8 +260,7 @@ following commands step-by-step:
 
 1.  `git remote add origin https://<service>/<user>/<remote repo name>.git`,
     where the `url` address can be copied by the clicking on the
-    `< > Code` button when you're previewing the repository in the web
-    browser.
+    `< > Code` button while previewing the repository in a web browser.
 
 2.  `git branch -M main`, which renames the local `master` branch in
     order to match the remote name, depending on the applied service.

@@ -19,7 +19,9 @@ Learning](https://www.modernstatisticswithr.com/mlchapter.html) or
 Selection](https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05)).
 As described in details, both metrics depends on maximum logarithmic
 likelihood (based on residuals calculation) to the same data. **The
-smaller the (negative) AIC or BIC, the better the model/fit.**
+smaller the (negative) AIC or BIC, the better the model/fit.**. Such
+indicators can help to detect [optimal model without under- or
+overfitting](https://sesen.ai/blog/aic-bic-model-selection-information-criteria).
 
 ## Usage
 
@@ -136,19 +138,22 @@ impossible to perform.** To overcome this difficulty, the formulae for
 both criteria use a **standard assumption that the model and the data
 residuals/errors are identically distributed.** Therefore, **the
 residuals/errors are applied as a proxy for the MLE/\\LL\\** (see e.g.
-Rossi et al. (2020) in the `References`). Evaluation of the latter, in
-the actual function, proceeds via `sum` of three main probability
-distributions for residuals (additional distributions may be added in
-the newer package versions): 1. the
+Rossi et al. (2020) or Sesen et al. (2026) in the `References`).
+Evaluation of the latter, in the actual function, proceeds via `sum` of
+three main probability distributions for residuals (additional
+distributions may be added in the newer package versions): 1. the
 [`stats::dnorm`](https://rdrr.io/r/stats/Normal.html) (for the
 normal/Gaussian distribution); 2. the
 [`stats::dt`](https://rdrr.io/r/stats/TDist.html) (for the Student's
 t-distribution) and 3. the
 [`stats::dcauchy`](https://rdrr.io/r/stats/Cauchy.html), using the
-`log = TRUE` option. For t-distribution the `df`/\\\nu\\ parameter is
-unknown, therefore it is optimized by the above-described \\LL\\ as well
-as by the [`optimize`](https://rdrr.io/r/stats/optimize.html) functions.
-Even though the Student's distribution approaches the normal one at
+`log = TRUE` option. The location parameter of every distribution is
+fixed at `0` (due to residuals). For t-distribution the `df`/\\\nu\\ and
+the `scale` parameters are unknown, therefore it is optimized by the
+above-described \\LL\\ as well as by the
+[`optimize`](https://rdrr.io/r/stats/optimize.html)/[`optim`](https://rdrr.io/r/stats/optim.html)
+(the same applies to Cauchy and the `scale` parameter) functions. Even
+though the Student's distribution may approach the normal one at
 `df > 29`, sometimes the heavy tails of residuals for high number of
 observations can be modeled by t-distribution with lower `df`. All
 probability distributions are included in the function because not
@@ -212,6 +217,10 @@ Practise*, 3rd edition, O Texts, ISBN 978-0-987-50713-6,
 Hyndman RJ (2013). "Facts and Fallacies of the AIC",
 <https://robjhyndman.com/hyndsight/aic/>.
 
+Sesen B et al. (2026). "AIC and BIC: Choosing the Right Model Without
+Overfitting",
+<https://sesen.ai/blog/aic-bic-model-selection-information-criteria>.
+
 ## See also
 
 Other Simulations and Optimization:
@@ -228,37 +237,84 @@ Other Simulations and Optimization:
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-## to decide which probability distribution fits
-## the best to residuals/errors
-calc.abic.list.01 <-
-  eval_ABIC_forFit(
-    data.fit = triaryl_model_kin_fit_01$df,
-    residuals = "residuals",
-    k = 2,
-    residuals.distro = "auto"
- )
+## generate data frame with residuals,
+## defined by the Student's t-distribution
+set.seed(42)
+res <- stats::rt(200, df = 4) * 1.3 ## heavy-tailed resids.
+res.data.df <- data.frame(Residuals = res)
 #
-## AIC and BIC values
-calc.abic.list.01$abic.vec
+## evaluate the `ABIC_forFit` by setting
+## the `residuals.distro = "auto"` (default)
+list.abic <- eval_ABIC_forFit(
+  data.fit = res.data.df,
+  residuals = "Residuals",
+  k = 5 ## hypothetical number of model parameters
+)
 #
-## ...and the corresponding message
-calc.abic.list.01$message
+## AIC and BIC vvector
+list.abic$abic.vec
+#> [1] 799.9209 822.4258
 #
-## calculation of AIC and BIC, taking into
-## account the Student's t-distribution:
-calc.abic.list.01 <-
-  eval_ABIC_forFit(
-    data.fit = best.sim.fit.df,
-    residuals = "Errors",
-    k = 8,
-    residuals.distro = "t-distro"
-  )
+## Message in order to fit and prove the distribution
+## with the degrees of freedom 5-6
+list.abic$message
+#> [1] "Information criteria evaluated using the"  
+#> [2] "Student's t-distribution of residuals with"
+#> [3] "5.6 degrees of freedom. Additionally"      
+#> [4] "supported by the Shapiro-Wilk test."       
 #
-## for additional applications please,
+## generate data frame with residuals
+## defined by the Normal/Gaussian distribution
+res.norm <- stats::rnorm(200,mean = 0,sd = 0.5)
+res.norm.data.df <- data.frame(Residuals = res.norm)
+#
+## evaluate the `ABIC_forFit` by setting
+## the `residuals.distro = "auto"` (default)
+list.norm.abic <- eval_ABIC_forFit(
+  data.fit = res.norm.data.df,
+  residuals = "Residuals",
+  k = 3 ## hypothetical number of model parameters
+)
+#
+## the entire list for the distribution fit
+list.norm.abic
+#> $abic.vec
+#> [1] 301.3228 314.3109
+#> 
+#> $message
+#> [1] "Information criteria evaluated using the"   
+#> [2] "normal distribution of residuals,"          
+#> [3] "additionally supported by the Shapiro-Wilk" 
+#> [4] "as well as by the Kolmogorov-Smirnov tests."
+#> 
+#
+## check, if the Student's t-distribution fit
+## gives higher AIC/BIC + no clear support
+## by the Kolmogorov-Smirnov
+## and/or by the Shapiro-Wilk tests,
+## the number of degrees of freedom should be relatively high
+list.stud.abic <- eval_ABIC_forFit(
+  data.fit = res.norm.data.df,
+  residuals = "Residuals",
+  residuals.distro = "t-dist",
+  k = 3
+)
+list.stud.abic
+#> $abic.vec
+#> [1] 303.4252 319.6075
+#> 
+#> $message
+#> [1] "Information criteria evaluated using the"   
+#> [2] "Student's t-distribution of residuals with" 
+#> [3] "3509.6 degrees of freedom. No clear support"
+#> [4] "by the Shapiro-Wilk and/or by the"          
+#> [5] "Kolmogorov-Smirnov tests. p.value in"       
+#> [6] "<0.01,0.05>."                               
+#> 
+#
+## for additional applications, please
 ## refer to the Examples in `eval_sim_EPR_isoFit()`
 ## or `eval_kinR_EPR_modelFit()`
 #
-} # }
 
 ```

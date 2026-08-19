@@ -1,6 +1,6 @@
 # Basic Functionality
 
-\\\require{mhchem}\\
+\\\require{mhchem}\\\$\require{mhchem}\$
 
 ## 1 Introduction
 
@@ -842,7 +842,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.104   0.010   0.114
+#>   0.077   0.014   0.091
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -937,7 +937,7 @@ tmpd.epr.iso.fit <-
     optim.params.init.dvary = 
       c(0.0002,0.1,0.1,0,
         2e3,2,1,2), # or NULL
-    # Nmax.evals = 256, 
+    # Nmax.evals = 256, ## for one cycle/evaluation
     # default number of evaluations:
     # N.points.space = 16,
     # total number of iterations: 256 x 16 = 4096

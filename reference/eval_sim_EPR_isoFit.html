@@ -508,23 +508,23 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   PSWARM ;  method   1   of   1 ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> S=14, K=6, p=0.359, w0=0.7213, w1=0.7213, c.p=1.193, c.g=1.193</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> v.max=NA, d=0.5658, vectorize=FALSE, hybrid=off</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> It 10: fitness=3.395e-08, swarm diam.=0.2458</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> It 20: fitness=1.88e-08, swarm diam.=0.1672</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.507e-08, swarm diam.=0.05766</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It 10: fitness=4.106e-08, swarm diam.=0.4041</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It 20: fitness=1.919e-08, swarm diam.=0.3021</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.469e-08, swarm diam.=0.2971</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.407  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  9.236  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.4847253e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.4619762e-08</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## check and compare the previous value</span></span></span>
 <span class="r-in"><span><span class="co">## by residual analysis (`ra`)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">df</span><span class="op">$</span><span class="va">Residuals</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.4847253e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.4619762e-08</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## number of evaluations / iterations:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">N.evals</span></span></span>
@@ -536,16 +536,16 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.0053059e+00 4.9990459e+00 4.8001383e+00 1.2503903e-07 1.2912288e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] 5.2680000e+01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0053616e+00  4.9976118e+00  4.9974497e+00 -1.3990731e-07  1.2986755e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.2680000e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## correlation matrix of the EPR simulation fit:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">cor.df</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Experiment   Simulation    Residuals</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Experiment 1.000000000  0.995689842  0.048364255</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation 0.995689842  1.000000000 -0.044481227</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals  0.048364255 -0.044481227  1.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Experiment 1.000000000  0.995755047  0.055642805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation 0.995755047  1.000000000 -0.036493644</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residuals  0.055642805 -0.036493644  1.000000000</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## visualization of the previous matrix:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">cor.df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
@@ -565,20 +565,20 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.histDens</span></span></span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.1524467e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.1282025e-06</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
 <span class="r-in"><span><span class="co">## + information about the residuals distribution</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -34005.133 -33978.607</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -34553.246 -34516.129</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Student's t-distribution of residuals with 6"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "degrees of freedom. Additionally supported"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "by the Shapiro-Wilk as well as by the"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Kolmogorov-Smirnov tests."                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Student's t-distribution of residuals with" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "2.1 degrees of freedom. Additionally"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "supported by the Shapiro-Wilk as well as by"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "the Kolmogorov-Smirnov tests."              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## residual &amp; Q-Q plots for the proposed normal</span></span></span>
@@ -590,10 +590,10 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## residual &amp; Q-Q plots for the proposed Student's</span></span></span>
 <span class="r-in"><span><span class="co">## distribution of residuals with degrees of freedom</span></span></span>
-<span class="r-in"><span><span class="co">## df = 6 (see the "$message" right above)</span></span></span>
+<span class="r-in"><span><span class="co">## df = 2.1 (see the "$message" right above)</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="fu">plot.rqq</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  residuals.distro <span class="op">=</span> <span class="st">"t"</span>,</span></span>
-<span class="r-in"><span>  df <span class="op">=</span> <span class="fl">6</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fl">2.1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-6.png" alt="" width="700" height="433"></span>
@@ -620,11 +620,12 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.808  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.641  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.878  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  9.498  s </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -658,14 +659,14 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## + information about the residuals distribution</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -27866.027 -27834.204</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -31800.037 -31757.628</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Student's t-distribution of residuals with 4"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "degrees of freedom. Additionally supported"  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "by the Shapiro-Wilk as well as by the"       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Kolmogorov-Smirnov tests."                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Student's t-distribution of residuals with" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "0.7 degrees of freedom. Additionally"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "supported by the Shapiro-Wilk as well as by"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "the Kolmogorov-Smirnov tests."              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
