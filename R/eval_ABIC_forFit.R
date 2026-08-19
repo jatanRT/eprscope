@@ -186,7 +186,9 @@
 #' ## gives higher AIC/BIC + no clear support
 #' ## by the Kolmogorov-Smirnov
 #' ## and/or by the Shapiro-Wilk tests,
-#' ## the number of degrees of freedom should be relatively high
+#' ## the number of degrees of freedom (`df`) should be
+#' ## relatively high, because with such an extreme `df`
+#' ## Student's distro -> Normal/Gaussian distro
 #' list.stud.abic <- eval_ABIC_forFit(
 #'   data.fit = res.norm.data.df,
 #'   residuals = "Residuals",
@@ -243,84 +245,9 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     Nobs <- length(resids)
   }
   #
-  ## ======================= Calculation of the log likelihood =======================
-  #
-  ## --------------------------- Gaussian/Normal (`dnorm()`) ------------------------
-  log_likehood_norm <-
-    sum(
-      stats::dnorm(
-        resids,
-        mean = 0,
-        sd = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
-        ## because the MaxLikelihood uses `/n` and not sd `/n-1`
-        log = TRUE
-      )
-    )
-  #
-  ## ------------------------- t-Student's distro (`dt()`) ------------------------
-  #
-  ## ...as a function in order to be more robust (optimize parameter(s),
-  ## because they are (it is) unknown)
-  log_likehood_t_fun <- function(tpars,res) {
-    ## `tpars` -> `nu` = df (degrees of freedom) and `scale` optimization
-    ## `res` -> residuals = `resids`
-    #
-    scale = exp(tpars[1]) ## it ensures that it is positive
-    nu = exp(tpars[2]) ## it ensures that it is positive
-    #
-    return(-sum(stats::dt(res/scale, df = nu, log = TRUE) - log(scale)))
-  }
-  #
-  ## now optimize the previous function in order to get `nu` and `scale`
-  ## and max. likelihood
-  opt_logLik_t <-
-    stats::optim(
-      ## initial/starting parameters
-      par = c(log(stats::sd(resids)),log(5)),
-      fn = log_likehood_t_fun,
-      res = resids,
-      method = "BFGS"
-    )
-  #
-  ## final params and logLik for t-Distro:
-  log_likehood_t <- -opt_logLik_t$value ## negative because `optim` minimizes
-  ## ...and the optimized nu = df (degree of freedom parameter)
-  log_likehood_t_nu <- round(exp(opt_logLik_t$par[2]),1)
-  #
-  ## ----------------------- Cauchy distro (`dcauchy()`) --------------------------
-  #
-  ## ...as a function in order to be more robust (optimize parameter(s),
-  ## because they are (it is) unknown)
-  log_likehood_cauchy_fun <- function(cpar,res) {
-    ## `cpars` scale optimization
-    #
-    scalec = exp(cpar) ## it ensures that it is positive
-    #
-    return(-sum(stats::dcauchy(res,location = 0,scale = scalec,log = TRUE)))
-  }
-  #
-  ## now optimize the previous function in order to get `scalec`
-  ## and max. likelihood (use `optimize` for only one parameter i.e. scale)
-  opt_logLik_cauchy <-
-    stats::optimize(
-      f = log_likehood_cauchy_fun,
-      res = resids,
-      interval = c(-10,10)
-    )
-  #
-  log_likehood_cauchy <- -opt_logLik_cauchy$objective
-  #
-  #
-  ## compare likelihoods (for Gaussian and Student's),
-  ## if the same => set automatically to "normal"
-  ## t-distribution reaches normal for N >= 30
-  if (log_likehood_norm == log_likehood_t) {
-    residuals.distro <- "normal"
-  }
-  #
   ## ----------------------- Strings for Residuals distributions --------------------------
   #
-  ## the recalculation -> due to maximizing the LogLik
+  ## the recalculation -> due to maximizing the LogLik and other parameters
   #
   ## strings for normal/Gaussian (...as well as for the calculations below)
   norm.string.vec <- residuals.distro.string.vec[c(1,4)]
@@ -330,6 +257,102 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
   #
   ## string for cauchy (...as well as for the calculations below)
   cauchy.string.vec <- c("cauch")
+  #
+  ## ======================= Calculation of the log likelihood =======================
+  #
+  if (any(grepl(paste(norm.string.vec,collapse = "|"),residuals.distro)) ||
+      grepl("auto",residuals.distro)) {
+    #
+    ## --------------------------- Gaussian/Normal (`dnorm()`) ------------------------
+    log_likehood_norm <-
+      sum(
+        stats::dnorm(
+          resids,
+          mean = 0,
+          sd = (stats::sd(resids) * sqrt((Nobs - 1)/Nobs)),
+          ## because the MaxLikelihood uses `/n` and not sd `/n-1`
+          log = TRUE
+        )
+      )
+  }
+  #
+  if (any(grepl(paste(t.string.vec,collapse = "|"),residuals.distro)) ||
+      grepl("auto",residuals.distro)) {
+    #
+    ## ------------------------- t-Student's distro (`dt()`) ------------------------
+    #
+    ## ...as a function in order to be more robust (optimize parameter(s),
+    ## because they are (it is) unknown)
+    log_likehood_t_fun <- function(tpars,res) {
+      ## `tpars` -> `nu` = df (degrees of freedom) and `scale` optimization
+      ## `res` -> residuals = `resids`
+      #
+      scale = exp(tpars[1]) ## it ensures that it is positive
+      nu = exp(tpars[2]) ## it ensures that it is positive
+      #
+      return(-sum(stats::dt(res/scale, df = nu, log = TRUE) - log(scale)))
+    }
+    #
+    ## now optimize the previous function in order to get `nu` and `scale`
+    ## and max. likelihood
+    opt_logLik_t <-
+      stats::optim(
+        ## initial/starting parameters
+        par = c(log(stats::sd(resids)),log(5)),
+        fn = log_likehood_t_fun,
+        res = resids,
+        method = "BFGS"
+      )
+    #
+    ## final params and logLik for t-Distro:
+    log_likehood_t <- -opt_logLik_t$value ## negative because `optim` minimizes
+    ## ...and the optimized nu = df (degree of freedom parameter)
+    log_likehood_t_nu <- round(exp(opt_logLik_t$par[2]),1)
+  }
+  #
+  if (any(grepl(paste(cauchy.string.vec,collapse = "|"),residuals.distro)) ||
+      grepl("auto",residuals.distro)) {
+    #
+    ## ----------------------- Cauchy distro (`dcauchy()`) --------------------------
+    #
+    ## ...as a function in order to be more robust (optimize parameter(s),
+    ## because they are (it is) unknown)
+    log_likehood_cauchy_fun <- function(cpar,res) {
+      ## `cpars` scale optimization
+      #
+      scalec = exp(cpar) ## it ensures that it is positive
+      #
+      return(-sum(stats::dcauchy(res,location = 0,scale = scalec,log = TRUE)))
+    }
+    #
+    ## now optimize the previous function in order to get `scalec`
+    ## and max. likelihood (use `optimize` for only one parameter i.e. scale)
+    opt_logLik_cauchy <-
+      stats::optimize(
+        f = log_likehood_cauchy_fun,
+        res = resids,
+        interval = c(-10,10)
+      )
+    #
+    log_likehood_cauchy <- -opt_logLik_cauchy$objective
+  }
+  #
+  ## checking the distributions
+  if (grepl("auto",residuals.distro)) {
+    ## compare likelihoods (for Gaussian and Student's),
+    ## if the same => set automatically to "normal"
+    ## t-distribution can reach normal for N >= 30
+    if (log_likehood_norm == log_likehood_t) {
+      residuals.distro <- "normal"
+    }
+    ## compare `log_likehood_t_nu`
+    ## Cauchy is a special case of the Student's distro
+    ## with degrees of freedom `1` the usual error is `2`,
+    ## therefore
+    if (log_likehood_t_nu <= 2) {
+      residuals.distro <- "cauchy"
+    }
+  }
   #
   ## =========================== CALCULATION OF AIC and BIC ==============================
   #
@@ -407,17 +430,36 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     b.ic.min.idx <- which.min(unname(b.ic.compar.vec))
     #
     ## check if names comes from the same series => test
+    ## and select model based on `log_likehood_t_nu`
     if (a.ic.min.idx != b.ic.min.idx) {
-      stop('The indices for both AIC and BIC minimal values\n
-           do not correspond. No decision can be made !!\n
-           Please, specify the `residuals.distro` argument accordingly.\n
-           No "automatic" can be used !! ')
+      message(
+        "The minimal AIC/BIC criteria disagree (i.e. do not come from\n
+         the same distribution) ! Decision is based on degrees of freedom\n
+         for the Student's t-distribution.\n
+         "
+      )
+      ## decision based on t-distribution degrees of freedom
+      if (log_likehood_t_nu >= 32) {
+        ## redefine names
+        a.ic.min.name <- "normaic"
+        b.ic.min.name <- "normbic"
+      } else {
+        if (log_likehood_t_nu <= 2) {
+          ## redefine names
+          a.ic.min.name <- "cauchaic"
+          b.ic.min.name <- "cauchbic"
+        } else {
+          ## redefine names
+          a.ic.min.name <- "taic"
+          b.ic.min.name <- "tbic"
+        }
+      }
+    } else {
+      #
+      ## take the names of that elements
+      a.ic.min.name <- names(a.ic.compar.vec)[a.ic.min.idx]
+      b.ic.min.name <- names(b.ic.compar.vec)[b.ic.min.idx]
     }
-    #
-    ## take the names of that elements
-    a.ic.min.name <- names(a.ic.compar.vec)[a.ic.min.idx]
-    b.ic.min.name <- names(b.ic.compar.vec)[b.ic.min.idx]
-    #
   }
   #
   ## Shapiro-Wilk and Kolmogorov-Smirnov tests for comparison
@@ -549,8 +591,8 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     result.list <-
       list(
         abic.vec = c(
-          unname(a.ic.compar.vec[a.ic.min.idx]),
-          unname(b.ic.compar.vec[b.ic.min.idx])
+          a.ic.compar.vec[[a.ic.min.name]],
+          b.ic.compar.vec[[b.ic.min.name]]
         ),
         message = strwrap(
           paste0(root.msg,abic_name_msg_fun(name = a.ic.min.name)),
