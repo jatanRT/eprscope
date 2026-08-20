@@ -27,7 +27,8 @@ AIC and BIC calculations. Additionally, the fit can be supported by the Shapiro-
 (see \code{\link[stats]{shapiro.test}}) and/or Kolmogorov-Smirnov (see \code{\link[stats]{ks.test}}) tests.
 This is particularly suitable for the situation when the residual analysis detects
 heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
-sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
+sure of the corresponding probability distribution (such situation is best described by the Cauchy or t-distrubution).
+Otherwise, the argument may also specify individual
 distributions like: \code{residuals.distro = "N(n)ormal"}, \code{"G(g)aussian"}, \code{"S(s)tudent"} or
 \code{"t-distribution"} (\code{"t-distro"}) as well as \code{"(C)cauchy"}.}
 }
@@ -50,18 +51,18 @@ Function returns a list with the following components:
   }
 }
 \description{
-When comparing different (simulation) fits for the same experimental data (see
+In order to compare different (simulation) fits for the same experimental data (see
   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}},
-  \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), they can be scored/ranked by different
+  \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), we can score/rank them by different
   metrics (e.g. by the minimum sum of residual squares or standard deviation of residuals), including
   Akaike and Bayesian Information Criteria (\code{\link[stats]{AIC}} and BIC, respectively).
   These are also applied for the best model selection in machine learning (refer to e.g.
   \href{https://www.modernstatisticswithr.com/mlchapter.html}{Predictive Modelling and Machine Learning} or
-  \href{https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05}{Error Estimation and Model Selection}).
+  \href{https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05}{Error Estimation and Model Selection}),
+  because those criteria can help to detect
+  \href{https://sesen.ai/blog/aic-bic-model-selection-information-criteria}{the optimal model without under- or overfitting}.
   As described in details, both metrics depends on maximum logarithmic likelihood (based on residuals calculation)
-  to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}. Such indicators
-  can help to detect
-  \href{https://sesen.ai/blog/aic-bic-model-selection-information-criteria}{optimal model without under- or overfitting}.
+  to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}
 }
 \details{
 Estimation of model errors, that model/fit makes in respect to our (experimental) data, becomes
@@ -82,7 +83,7 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   for high number of observations becomes very small (and can be neglected,
   see e.g. Burnham and Anderson (2004) in the \code{References}). For example, for EPR simulation
   fit with 2048 points and 8 parameters it equals to \eqn{16 \cdot 9\,/\,2039 \approx 0.0706}. However, for
-  radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
+  the radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
   in \eqn{6 \cdot 4\,/\,38 \approx 0.6316}.
 
   \strong{The original MLE/\eqn{LL} calculation is based on the model. Nevertheless, such computation can be quite often
@@ -95,9 +96,9 @@ Estimation of model errors, that model/fit makes in respect to our (experimental
   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
   using the \code{log = TRUE} option. The location parameter of every distribution is fixed at \code{0} (due to residuals).
   For t-distribution the \code{df}/\eqn{\nu} and the \code{scale}
-  parameters are unknown, therefore it is optimized by the above-described \eqn{LL}
-  as well as by the \code{\link[stats]{optimize}}/\code{\link[stats]{optim}} (the same applies to Cauchy
-  and the \code{scale} parameter) functions. Even though the Student's distribution
+  parameters are unknown, therefore it is optimized by the above-described \eqn{LL} (in order to find the minimum a negative
+  value is considered) as well as by the \code{\link[stats]{nlminb}} function (the same applies to Cauchy "distro"
+  and the \code{scale} parameter). Even though the Student's distribution
   may approach the normal one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations
   can be modeled by t-distribution with lower \code{df}. All probability distributions are included in the function because
   not always the residuals/errors follow the normal one. Particularly, if heavier tails
@@ -155,7 +156,7 @@ list.norm.abic
 ## and/or by the Shapiro-Wilk tests,
 ## the number of degrees of freedom (`df`) should be
 ## relatively high, because with such an extreme `df`
-## Student's distro -> Normal/Gaussian distro
+## Student's distro -> Normal/Gaussian one
 list.stud.abic <- eval_ABIC_forFit(
   data.fit = res.norm.data.df,
   residuals = "Residuals",

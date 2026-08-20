@@ -221,7 +221,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   }
 
   \item If \code{output.list.forFitSp = TRUE}, the function exclusively returns list with the two components,
-  which is to be applied for the \code{\link{eval_sim_EPR_isoFit_space}}.
+  which is to be applied for the \code{\link{eval_sim_EPR_isoFit_space}} or similar functions.
   \describe{
   \item{params}{A vector, containing the following elements:
   \enumerate{
@@ -399,10 +399,10 @@ tempo.test.sim.fit.b$ra$plot.rqq(confidence = 0.99)
 #
 ## residual & Q-Q plots for the proposed Student's
 ## distribution of residuals with degrees of freedom
-## df = 2.1 (see the "$message" right above)
+## df = 2.2 (see the "$message" right above)
 tempo.test.sim.fit.b$ra$plot.rqq(
   residuals.distro = "t",
-  df = 2.1
+  df = 2.2
 )
 #
 ## fitting of the aminoxyl EPR spectrum

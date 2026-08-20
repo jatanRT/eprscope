@@ -6,18 +6,18 @@
 #'
 #'
 #' @description
-#'   When comparing different (simulation) fits for the same experimental data (see
+#'   In order to compare different (simulation) fits for the same experimental data (see
 #'   \code{\link{eval_sim_EPR_isoFit}}, \code{\link{eval_kinR_EPR_modelFit}}, \code{\link{eval_kinR_Eyring_GHS}},
-#'   \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), they can be scored/ranked by different
+#'   \code{\link{smooth_EPR_Spec_by_npreg}} or \code{\link{eval_sim_EPR_isoFit_space}}), we can score/rank them by different
 #'   metrics (e.g. by the minimum sum of residual squares or standard deviation of residuals), including
 #'   Akaike and Bayesian Information Criteria (\code{\link[stats]{AIC}} and BIC, respectively).
 #'   These are also applied for the best model selection in machine learning (refer to e.g.
 #'   \href{https://www.modernstatisticswithr.com/mlchapter.html}{Predictive Modelling and Machine Learning} or
-#'   \href{https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05}{Error Estimation and Model Selection}).
+#'   \href{https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05}{Error Estimation and Model Selection}),
+#'   because those criteria can help to detect
+#'   \href{https://sesen.ai/blog/aic-bic-model-selection-information-criteria}{the optimal model without under- or overfitting}.
 #'   As described in details, both metrics depends on maximum logarithmic likelihood (based on residuals calculation)
-#'   to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}. Such indicators
-#'   can help to detect
-#'   \href{https://sesen.ai/blog/aic-bic-model-selection-information-criteria}{optimal model without under- or overfitting}.
+#'   to the same data. \strong{The smaller the (negative) AIC or BIC, the better the model/fit.}
 #'
 #'
 #' @details
@@ -39,7 +39,7 @@
 #'   for high number of observations becomes very small (and can be neglected,
 #'   see e.g. Burnham and Anderson (2004) in the \code{References}). For example, for EPR simulation
 #'   fit with 2048 points and 8 parameters it equals to \eqn{16 \cdot 9\,/\,2039 \approx 0.0706}. However, for
-#'   radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
+#'   the radical kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term results
 #'   in \eqn{6 \cdot 4\,/\,38 \approx 0.6316}.
 #'
 #'   \strong{The original MLE/\eqn{LL} calculation is based on the model. Nevertheless, such computation can be quite often
@@ -52,9 +52,9 @@
 #'   (for the Student's t-distribution) and 3. the \code{\link[stats:Cauchy]{stats::dcauchy}},
 #'   using the \code{log = TRUE} option. The location parameter of every distribution is fixed at \code{0} (due to residuals).
 #'   For t-distribution the \code{df}/\eqn{\nu} and the \code{scale}
-#'   parameters are unknown, therefore it is optimized by the above-described \eqn{LL}
-#'   as well as by the \code{\link[stats]{optimize}}/\code{\link[stats]{optim}} (the same applies to Cauchy
-#'   and the \code{scale} parameter) functions. Even though the Student's distribution
+#'   parameters are unknown, therefore it is optimized by the above-described \eqn{LL} (in order to find the minimum a negative
+#'   value is considered) as well as by the \code{\link[stats]{nlminb}} function (the same applies to Cauchy "distro"
+#'   and the \code{scale} parameter). Even though the Student's distribution
 #'   may approach the normal one at \code{df > 29}, sometimes the heavy tails of residuals for high number of observations
 #'   can be modeled by t-distribution with lower \code{df}. All probability distributions are included in the function because
 #'   not always the residuals/errors follow the normal one. Particularly, if heavier tails
@@ -121,7 +121,8 @@
 #'   (see \code{\link[stats]{shapiro.test}}) and/or Kolmogorov-Smirnov (see \code{\link[stats]{ks.test}}) tests.
 #'   This is particularly suitable for the situation when the residual analysis detects
 #'   heavier tails (see e.g. \code{Example} in \code{\link{eval_sim_EPR_isoFit}}) and one is not quite
-#'   sure of the corresponding probability distribution. Otherwise, the argument may also specify individual
+#'   sure of the corresponding probability distribution (such situation is best described by the Cauchy or t-distrubution).
+#'   Otherwise, the argument may also specify individual
 #'   distributions like: \code{residuals.distro = "N(n)ormal"}, \code{"G(g)aussian"}, \code{"S(s)tudent"} or
 #'   \code{"t-distribution"} (\code{"t-distro"}) as well as \code{"(C)cauchy"}.
 #'
@@ -188,7 +189,7 @@
 #' ## and/or by the Shapiro-Wilk tests,
 #' ## the number of degrees of freedom (`df`) should be
 #' ## relatively high, because with such an extreme `df`
-#' ## Student's distro -> Normal/Gaussian distro
+#' ## Student's distro -> Normal/Gaussian one
 #' list.stud.abic <- eval_ABIC_forFit(
 #'   data.fit = res.norm.data.df,
 #'   residuals = "Residuals",
@@ -296,16 +297,16 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     ## now optimize the previous function in order to get `nu` and `scale`
     ## and max. likelihood
     opt_logLik_t <-
-      stats::optim(
+      stats::nlminb(
         ## initial/starting parameters
-        par = c(log(stats::sd(resids)),log(5)),
-        fn = log_likehood_t_fun,
-        res = resids,
-        method = "BFGS"
+        ## use more robust MAD - more sensitive to heavy tails
+        start = c(log(stats::mad(resids)),log(5)),
+        objective = log_likehood_t_fun,
+        res = resids
       )
     #
     ## final params and logLik for t-Distro:
-    log_likehood_t <- -opt_logLik_t$value ## negative because `optim` minimizes
+    log_likehood_t <- -opt_logLik_t$objective ## negative because `optim` minimizes
     ## ...and the optimized nu = df (degree of freedom parameter)
     log_likehood_t_nu <- round(exp(opt_logLik_t$par[2]),1)
   }
@@ -328,10 +329,12 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     ## now optimize the previous function in order to get `scalec`
     ## and max. likelihood (use `optimize` for only one parameter i.e. scale)
     opt_logLik_cauchy <-
-      stats::optimize(
-        f = log_likehood_cauchy_fun,
-        res = resids,
-        interval = c(-10,10)
+      stats::nlminb(
+        ## initial/starting parameters
+        ## use more robust MAD - more sensitive to heavy tails
+        start = c(log(stats::mad(resids))),
+        objective = log_likehood_cauchy_fun,
+        res = resids
       )
     #
     log_likehood_cauchy <- -opt_logLik_cauchy$objective
@@ -429,22 +432,22 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     a.ic.min.idx <- which.min(unname(a.ic.compar.vec))
     b.ic.min.idx <- which.min(unname(b.ic.compar.vec))
     #
-    ## check if names comes from the same series => test
+    ## check if names come from the same series => test
     ## and select model based on `log_likehood_t_nu`
     if (a.ic.min.idx != b.ic.min.idx) {
       message(
-        "The minimal AIC/BIC criteria disagree (i.e. do not come from\n
+        "The minimal AIC/BIC criteria disagree (i.e. they do not come from\n
          the same distribution) ! Decision is based on degrees of freedom\n
          for the Student's t-distribution.\n
          "
       )
       ## decision based on t-distribution degrees of freedom
-      if (log_likehood_t_nu >= 32) {
+      if (log_likehood_t_nu >= 32) { ## a slightly higher restrictions for the normal distro
         ## redefine names
         a.ic.min.name <- "normaic"
         b.ic.min.name <- "normbic"
       } else {
-        if (log_likehood_t_nu <= 2) {
+        if (log_likehood_t_nu <= 2) { ## restrictions for the Cauchy distro
           ## redefine names
           a.ic.min.name <- "cauchaic"
           b.ic.min.name <- "cauchbic"
@@ -456,13 +459,14 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
       }
     } else {
       #
-      ## take the names of that elements
+      ## take the names of those elements
       a.ic.min.name <- names(a.ic.compar.vec)[a.ic.min.idx]
       b.ic.min.name <- names(b.ic.compar.vec)[b.ic.min.idx]
     }
   }
   #
   ## Shapiro-Wilk and Kolmogorov-Smirnov tests for comparison
+  ## as an additional evidence
   sw.test <- stats::shapiro.test(resids)$p.value
   ks.test <- stats::ks.test(
     resids,

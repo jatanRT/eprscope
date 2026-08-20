@@ -257,7 +257,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## both cannot be NULL !!
   if (is.null(lineG.content.dvary) &
       is.null(optim.params.init.dvary)) {
-    message(" Both `dvary` arguments have `NULL` assignment !!
+    message(" Both `dvary` arguments have `NULL` assignment !!\n
             The fitting procedure will be just repeated for the initial\n
             set of parameters `N.points.space`-times !! ")
   }
