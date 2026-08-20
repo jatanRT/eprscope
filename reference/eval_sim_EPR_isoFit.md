@@ -375,7 +375,8 @@ depending on the `check.fit.plot` and `output...` arguments.
 
 2.  If `output.list.forFitSp = TRUE`, the function exclusively returns
     list with the two components, which is to be applied for the
-    [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md).
+    [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md)
+    or similar functions.
 
     - params:
 
@@ -567,7 +568,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.469e-08, swarm diam.=0.2971
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  10.837  s 
+#>  Done!  ( 100  %)    elapsed time  11.94  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -644,10 +645,10 @@ tempo.test.sim.fit.b$ra$plot.rqq(confidence = 0.99)
 #
 ## residual & Q-Q plots for the proposed Student's
 ## distribution of residuals with degrees of freedom
-## df = 2.1 (see the "$message" right above)
+## df = 2.2 (see the "$message" right above)
 tempo.test.sim.fit.b$ra$plot.rqq(
   residuals.distro = "t",
-  df = 2.1
+  df = 2.2
 )
 #> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
@@ -674,12 +675,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.738  s 
+#>  Done!  ( 50  %)    elapsed time  0.826  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  10.932  s 
-#> Warning: NaNs produced
+#>  Done!  ( 100  %)    elapsed time  11.637  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
@@ -713,7 +713,7 @@ tempo.test.sim.fit.c$N.converg
 ## + information about the residuals distribution
 tempo.test.sim.fit.c$abic
 #> $abic.vec
-#> [1] -26131.120 -26094.002
+#> [1] -31704.731 -31667.614
 #> 
 #> $message
 #> [1] "Information criteria evaluated using the"  

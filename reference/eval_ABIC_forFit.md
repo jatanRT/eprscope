@@ -1,27 +1,28 @@
 # General Ranking of Models/Fits Using the AIC and BIC Metrics
 
-When comparing different (simulation) fits for the same experimental
-data (see
+In order to compare different (simulation) fits for the same
+experimental data (see
 [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md),
 [`eval_kinR_EPR_modelFit`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md),
 [`eval_kinR_Eyring_GHS`](https://jatanrt.github.io/eprscope/reference/eval_kinR_Eyring_GHS.md),
 [`smooth_EPR_Spec_by_npreg`](https://jatanrt.github.io/eprscope/reference/smooth_EPR_Spec_by_npreg.md)
 or
 [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md)),
-they can be scored/ranked by different metrics (e.g. by the minimum sum
-of residual squares or standard deviation of residuals), including
-Akaike and Bayesian Information Criteria
+we can score/rank them by different metrics (e.g. by the minimum sum of
+residual squares or standard deviation of residuals), including Akaike
+and Bayesian Information Criteria
 ([`AIC`](https://rdrr.io/r/stats/AIC.html) and BIC, respectively). These
 are also applied for the best model selection in machine learning (refer
 to e.g. [Predictive Modelling and Machine
 Learning](https://www.modernstatisticswithr.com/mlchapter.html) or
 [Error Estimation and Model
-Selection](https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05)).
+Selection](https://www.louisaslett.com/StatML/notes/error-estimation-and-model-selection.html#ref-yang05)),
+because those criteria can help to detect [the optimal model without
+under- or
+overfitting](https://sesen.ai/blog/aic-bic-model-selection-information-criteria).
 As described in details, both metrics depends on maximum logarithmic
 likelihood (based on residuals calculation) to the same data. **The
-smaller the (negative) AIC or BIC, the better the model/fit.**. Such
-indicators can help to detect [optimal model without under- or
-overfitting](https://sesen.ai/blog/aic-bic-model-selection-information-criteria).
+smaller the (negative) AIC or BIC, the better the model/fit.**
 
 ## Usage
 
@@ -69,7 +70,8 @@ eval_ABIC_forFit(data.fit, residuals = NULL, k, residuals.distro = "auto")
   detects heavier tails (see e.g. `Example` in
   [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md))
   and one is not quite sure of the corresponding probability
-  distribution. Otherwise, the argument may also specify individual
+  distribution (such situation is best described by the Cauchy or
+  t-distrubution). Otherwise, the argument may also specify individual
   distributions like: `residuals.distro = "N(n)ormal"`, `"G(g)aussian"`,
   `"S(s)tudent"` or `"t-distribution"` (`"t-distro"`) as well as
   `"(C)cauchy"`.
@@ -128,9 +130,9 @@ represents the correction for small sample/observation ensemble, which
 for high number of observations becomes very small (and can be
 neglected, see e.g. Burnham and Anderson (2004) in the `References`).
 For example, for EPR simulation fit with 2048 points and 8 parameters it
-equals to \\16 \cdot 9\\/\\2039 \approx 0.0706\\. However, for radical
-kinetic measurements with 42 EPR spectra and 3 parameters, the 3rd term
-results in \\6 \cdot 4\\/\\38 \approx 0.6316\\.
+equals to \\16 \cdot 9\\/\\2039 \approx 0.0706\\. However, for the
+radical kinetic measurements with 42 EPR spectra and 3 parameters, the
+3rd term results in \\6 \cdot 4\\/\\38 \approx 0.6316\\.
 
 **The original MLE/\\LL\\ calculation is based on the model.
 Nevertheless, such computation can be quite often impractical or even
@@ -150,16 +152,17 @@ t-distribution) and 3. the
 `log = TRUE` option. The location parameter of every distribution is
 fixed at `0` (due to residuals). For t-distribution the `df`/\\\nu\\ and
 the `scale` parameters are unknown, therefore it is optimized by the
-above-described \\LL\\ as well as by the
-[`optimize`](https://rdrr.io/r/stats/optimize.html)/[`optim`](https://rdrr.io/r/stats/optim.html)
-(the same applies to Cauchy and the `scale` parameter) functions. Even
-though the Student's distribution may approach the normal one at
-`df > 29`, sometimes the heavy tails of residuals for high number of
-observations can be modeled by t-distribution with lower `df`. All
-probability distributions are included in the function because not
-always the residuals/errors follow the normal one. Particularly, if
-heavier tails appear, e.g. for EPR simulation fits (please, refer to the
-`Examples` in the
+above-described \\LL\\ (in order to find the minimum a negative value is
+considered) as well as by the
+[`nlminb`](https://rdrr.io/r/stats/nlminb.html) function (the same
+applies to Cauchy "distro" and the `scale` parameter). Even though the
+Student's distribution may approach the normal one at `df > 29`,
+sometimes the heavy tails of residuals for high number of observations
+can be modeled by t-distribution with lower `df`. All probability
+distributions are included in the function because not always the
+residuals/errors follow the normal one. Particularly, if heavier tails
+appear, e.g. for EPR simulation fits (please, refer to the `Examples` in
+the
 [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)).
 Consequently, the function may automatically (see the argument
 `residuals.distro`) decide which distribution fits the residuals/errors
@@ -294,7 +297,7 @@ list.norm.abic
 ## and/or by the Shapiro-Wilk tests,
 ## the number of degrees of freedom (`df`) should be
 ## relatively high, because with such an extreme `df`
-## Student's distro -> Normal/Gaussian distro
+## Student's distro -> Normal/Gaussian one
 list.stud.abic <- eval_ABIC_forFit(
   data.fit = res.norm.data.df,
   residuals = "Residuals",
@@ -303,15 +306,15 @@ list.stud.abic <- eval_ABIC_forFit(
 )
 list.stud.abic
 #> $abic.vec
-#> [1] 303.4252 319.6075
+#> [1] 303.4228 319.6051
 #> 
 #> $message
-#> [1] "Information criteria evaluated using the"   
-#> [2] "Student's t-distribution of residuals with" 
-#> [3] "3509.6 degrees of freedom. No clear support"
-#> [4] "by the Shapiro-Wilk and/or by the"          
-#> [5] "Kolmogorov-Smirnov tests. p.value in"       
-#> [6] "<0.01,0.05>."                               
+#> [1] "Information criteria evaluated using the"  
+#> [2] "Student's t-distribution of residuals with"
+#> [3] "384894505.2 degrees of freedom. No clear"  
+#> [4] "support by the Shapiro-Wilk and/or by the" 
+#> [5] "Kolmogorov-Smirnov tests. p.value in"      
+#> [6] "<0.01,0.05>."                              
 #> 
 #
 ## for additional applications, please

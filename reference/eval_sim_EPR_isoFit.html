@@ -350,7 +350,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 
 </dl></li>
 <li><p>If <code>output.list.forFitSp = TRUE</code>, the function exclusively returns list with the two components,
-  which is to be applied for the <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space</a></code>.</p><dl><dt>params</dt>
+  which is to be applied for the <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space</a></code> or similar functions.</p><dl><dt>params</dt>
 <dd><p>A vector, containing the following elements:</p><ol><li><p>The best fitting (optimized) parameters (related to the <code>optim.params.init</code> argument).</p></li>
 <li><p>Minimum sum of residual squares (corresponding to previous item).</p></li>
 <li><p>Standard deviation of residuals, after the (final) <code>optim.method</code> procedure.</p></li>
@@ -513,7 +513,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.469e-08, swarm diam.=0.2971</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  10.837  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  11.94  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -590,10 +590,10 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## residual &amp; Q-Q plots for the proposed Student's</span></span></span>
 <span class="r-in"><span><span class="co">## distribution of residuals with degrees of freedom</span></span></span>
-<span class="r-in"><span><span class="co">## df = 2.1 (see the "$message" right above)</span></span></span>
+<span class="r-in"><span><span class="co">## df = 2.2 (see the "$message" right above)</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="fu">plot.rqq</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  residuals.distro <span class="op">=</span> <span class="st">"t"</span>,</span></span>
-<span class="r-in"><span>  df <span class="op">=</span> <span class="fl">2.1</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="fl">2.2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-6.png" alt="" width="700" height="433"></span>
@@ -620,12 +620,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.738  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.826  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  10.932  s </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  11.637  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
@@ -659,7 +658,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span><span class="co">## + information about the residuals distribution</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">abic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $abic.vec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -26131.120 -26094.002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -31704.731 -31667.614</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"  </span>
