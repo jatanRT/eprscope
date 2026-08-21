@@ -268,6 +268,16 @@ distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)auss
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "5.6 degrees of freedom. Additionally"      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4] "supported by the Shapiro-Wilk test."       </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## compare the degrees of freedom with</span></span></span>
+<span class="r-in"><span><span class="co">## robust statistics by `MASS::fitdistr()`</span></span></span>
+<span class="r-in"><span><span class="va">mass.pkg.fit.t</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/fitdistr.html" class="external-link">fitdistr</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">res.data.df</span><span class="op">$</span><span class="va">Residuals</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"t"</span>, <span class="co">## Student's distro</span></span></span>
+<span class="r-in"><span>  lower <span class="op">=</span> <span class="fl">1e-4</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mass.pkg.fit.t</span><span class="op">$</span><span class="va">estimate</span><span class="op">[[</span><span class="st">"df"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.550807</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## generate data frame with residuals</span></span></span>
 <span class="r-in"><span><span class="co">## defined by the Normal/Gaussian distribution</span></span></span>
 <span class="r-in"><span><span class="va">res.norm</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>,mean <span class="op">=</span> <span class="fl">0</span>,sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
@@ -318,6 +328,39 @@ distributions like: <code>residuals.distro = "N(n)ormal"</code>, <code>"G(g)auss
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "Kolmogorov-Smirnov tests. p.value in"      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "&lt;0.01,0.05&gt;."                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## generate data frame with residuals</span></span></span>
+<span class="r-in"><span><span class="co">## defined by the Cauchy distribution</span></span></span>
+<span class="r-in"><span><span class="va">res.cauchy</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Cauchy.html" class="external-link">rcauchy</a></span><span class="op">(</span><span class="fl">2401</span>,location <span class="op">=</span> <span class="fl">24.06</span>,scale <span class="op">=</span> <span class="fl">241.43</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res.cauchy.data.df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Residuals <span class="op">=</span> <span class="va">res.cauchy</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## automatic decision</span></span></span>
+<span class="r-in"><span><span class="va">list.cauchy.abic</span> <span class="op">&lt;-</span> <span class="fu">eval_ABIC_forFit</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data.fit <span class="op">=</span> <span class="va">res.cauchy.data.df</span>,</span></span>
+<span class="r-in"><span>  residuals <span class="op">=</span> <span class="st">"Residuals"</span>,</span></span>
+<span class="r-in"><span>  k <span class="op">=</span> <span class="fl">3</span> <span class="co">## hypothetical number of model parameters</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## message</span></span></span>
+<span class="r-in"><span><span class="va">list.cauchy.abic</span><span class="op">$</span><span class="va">message</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Information criteria evaluated using the"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Cauchy distribution of residuals,"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "additionally supported by the Shapiro-Wilk"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "test as well as by the Kolmogorov-Smirnov" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "tests."                                    </span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## Cauchy probability/residuals distribution can be considered</span></span></span>
+<span class="r-in"><span><span class="co">## as a special case of Student's t-distro with df(nu) = 1,</span></span></span>
+<span class="r-in"><span><span class="co">## therefore check by robust statistics:</span></span></span>
+<span class="r-in"><span><span class="va">mass.pkg.fit.tcauchy</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/fitdistr.html" class="external-link">fitdistr</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">res.cauchy.data.df</span><span class="op">$</span><span class="va">Residuals</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"t"</span>,</span></span>
+<span class="r-in"><span>    lower <span class="op">=</span> <span class="fl">1e-4</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mass.pkg.fit.tcauchy</span><span class="op">$</span><span class="va">estimate</span><span class="op">[[</span><span class="st">"df"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9731462</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## for additional applications, please</span></span></span>
 <span class="r-in"><span><span class="co">## refer to the Examples in `eval_sim_EPR_isoFit()`</span></span></span>

@@ -266,6 +266,16 @@ list.abic$message
 #> [3] "5.6 degrees of freedom. Additionally"      
 #> [4] "supported by the Shapiro-Wilk test."       
 #
+## compare the degrees of freedom with
+## robust statistics by `MASS::fitdistr()`
+mass.pkg.fit.t <- MASS::fitdistr(
+  res.data.df$Residuals,
+  "t", ## Student's distro
+  lower = 1e-4
+)
+mass.pkg.fit.t$estimate[["df"]]
+#> [1] 5.550807
+#
 ## generate data frame with residuals
 ## defined by the Normal/Gaussian distribution
 res.norm <- stats::rnorm(200,mean = 0,sd = 0.5)
@@ -316,6 +326,39 @@ list.stud.abic
 #> [5] "Kolmogorov-Smirnov tests. p.value in"      
 #> [6] "<0.01,0.05>."                              
 #> 
+#
+## generate data frame with residuals
+## defined by the Cauchy distribution
+res.cauchy <-
+  stats::rcauchy(2401,location = 24.06,scale = 241.43)
+res.cauchy.data.df <- data.frame(Residuals = res.cauchy)
+#
+## automatic decision
+list.cauchy.abic <- eval_ABIC_forFit(
+  data.fit = res.cauchy.data.df,
+  residuals = "Residuals",
+  k = 3 ## hypothetical number of model parameters
+)
+#
+## message
+list.cauchy.abic$message
+#> [1] "Information criteria evaluated using the"  
+#> [2] "Cauchy distribution of residuals,"         
+#> [3] "additionally supported by the Shapiro-Wilk"
+#> [4] "test as well as by the Kolmogorov-Smirnov" 
+#> [5] "tests."                                    
+#
+## Cauchy probability/residuals distribution can be considered
+## as a special case of Student's t-distro with df(nu) = 1,
+## therefore check by robust statistics:
+mass.pkg.fit.tcauchy <-
+  MASS::fitdistr(
+    res.cauchy.data.df$Residuals,
+    "t",
+    lower = 1e-4
+  )
+mass.pkg.fit.tcauchy$estimate[["df"]]
+#> [1] 0.9731462
 #
 ## for additional applications, please
 ## refer to the Examples in `eval_sim_EPR_isoFit()`
