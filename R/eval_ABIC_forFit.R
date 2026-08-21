@@ -167,6 +167,15 @@
 #' ## with the degrees of freedom 5-6
 #' list.abic$message
 #' #
+#' ## compare the degrees of freedom with
+#' ## robust statistics by `MASS::fitdistr()`
+#' mass.pkg.fit.t <- MASS::fitdistr(
+#'   res.data.df$Residuals,
+#'   "t", ## Student's distro
+#'   lower = 1e-4
+#' )
+#' mass.pkg.fit.t$estimate[["df"]]
+#' #
 #' ## generate data frame with residuals
 #' ## defined by the Normal/Gaussian distribution
 #' res.norm <- stats::rnorm(200,mean = 0,sd = 0.5)
@@ -197,6 +206,33 @@
 #'   k = 3
 #' )
 #' list.stud.abic
+#' #
+#' ## generate data frame with residuals
+#' ## defined by the Cauchy distribution
+#' res.cauchy <-
+#'   stats::rcauchy(2401,location = 24.06,scale = 241.43)
+#' res.cauchy.data.df <- data.frame(Residuals = res.cauchy)
+#' #
+#' ## automatic decision
+#' list.cauchy.abic <- eval_ABIC_forFit(
+#'   data.fit = res.cauchy.data.df,
+#'   residuals = "Residuals",
+#'   k = 3 ## hypothetical number of model parameters
+#' )
+#' #
+#' ## message
+#' list.cauchy.abic$message
+#' #
+#' ## Cauchy probability/residuals distribution can be considered
+#' ## as a special case of Student's t-distro with df(nu) = 1,
+#' ## therefore check by robust statistics:
+#' mass.pkg.fit.tcauchy <-
+#'   MASS::fitdistr(
+#'     res.cauchy.data.df$Residuals,
+#'     "t",
+#'     lower = 1e-4
+#'   )
+#' mass.pkg.fit.tcauchy$estimate[["df"]]
 #' #
 #' ## for additional applications, please
 #' ## refer to the Examples in `eval_sim_EPR_isoFit()`
@@ -292,6 +328,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
       nu = exp(tpars[2]) ## it ensures that it is positive
       #
       return(-sum(stats::dt(res/scale, df = nu, log = TRUE) - log(scale)))
+      ## the negative value -> due to minimization by `stats::nlminb()`, see below
     }
     #
     ## now optimize the previous function in order to get `nu` and `scale`
@@ -299,7 +336,10 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     opt_logLik_t <-
       stats::nlminb(
         ## initial/starting parameters
-        ## use more robust MAD - more sensitive to heavy tails
+        ## use more robust MAD - NOT SENSITIVE TO HEAVY TAILS
+        ## Unlike sd, which is highly sensitive to outliers,
+        ## MAD provides a resilient measure of spread that remains accurate
+        ## even when your data contains extreme values.
         start = c(log(stats::mad(resids)),log(5)),
         objective = log_likehood_t_fun,
         res = resids
@@ -331,7 +371,9 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
     opt_logLik_cauchy <-
       stats::nlminb(
         ## initial/starting parameters
-        ## use more robust MAD - more sensitive to heavy tails
+        ## use more robust MAD - NOT SENSITIVE TO HEAVY TAILS
+        ## Unlike sd, which is highly sensitive to outliers,
+        ## MAD provides a resilient measure of spread that remains accurate
         start = c(log(stats::mad(resids))),
         objective = log_likehood_cauchy_fun,
         res = resids

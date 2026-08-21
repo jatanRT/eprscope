@@ -134,6 +134,15 @@ list.abic$abic.vec
 ## with the degrees of freedom 5-6
 list.abic$message
 #
+## compare the degrees of freedom with
+## robust statistics by `MASS::fitdistr()`
+mass.pkg.fit.t <- MASS::fitdistr(
+  res.data.df$Residuals,
+  "t", ## Student's distro
+  lower = 1e-4
+)
+mass.pkg.fit.t$estimate[["df"]]
+#
 ## generate data frame with residuals
 ## defined by the Normal/Gaussian distribution
 res.norm <- stats::rnorm(200,mean = 0,sd = 0.5)
@@ -164,6 +173,33 @@ list.stud.abic <- eval_ABIC_forFit(
   k = 3
 )
 list.stud.abic
+#
+## generate data frame with residuals
+## defined by the Cauchy distribution
+res.cauchy <-
+  stats::rcauchy(2401,location = 24.06,scale = 241.43)
+res.cauchy.data.df <- data.frame(Residuals = res.cauchy)
+#
+## automatic decision
+list.cauchy.abic <- eval_ABIC_forFit(
+  data.fit = res.cauchy.data.df,
+  residuals = "Residuals",
+  k = 3 ## hypothetical number of model parameters
+)
+#
+## message
+list.cauchy.abic$message
+#
+## Cauchy probability/residuals distribution can be considered
+## as a special case of Student's t-distro with df(nu) = 1,
+## therefore check by robust statistics:
+mass.pkg.fit.tcauchy <-
+  MASS::fitdistr(
+    res.cauchy.data.df$Residuals,
+    "t",
+    lower = 1e-4
+  )
+mass.pkg.fit.tcauchy$estimate[["df"]]
 #
 ## for additional applications, please
 ## refer to the Examples in `eval_sim_EPR_isoFit()`
