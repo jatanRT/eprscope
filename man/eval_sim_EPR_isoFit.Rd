@@ -183,6 +183,7 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
+  \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
   the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
   (if \code{check.fit.plot = TRUE}), or wide data frame with the following variables / columns
@@ -202,9 +203,10 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   and the best fit), with the value close to \code{1}, indicates that simulation best fit nicely follows
   the experimental spectrum. Contrary, no clear correlation between the residuals and the experimental/fitted
   EPR intensities must be visible. Therefore, such correlation should be ideally close to \code{0}.}
-  \item{abic}{A list consisting of Akaike and Bayesian information criteria (AIC & BIC) vector (\code{abic.vec})
+  \item{abic}{Final (refer to the \code{optim.method} argument) list, consisting of Akaike and Bayesian
+  information criteria (AIC & BIC) vector (\code{abic.vec})
   and \code{message}, denoting the residuals/errors distribution, applied to evaluate
-  those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
+  those criteria. To be used while comparing different simulation fits. The lower the (negative) values,
   the better the fit. Please, refer to the \code{\link{eval_ABIC_forFit}}.}
   \item{N.evals}{Number of iterations/function evaluations completed before termination.
   If the \code{pswarm} optimization algorithm is included in \code{optim.method}, the \code{N.evals}
@@ -315,8 +317,9 @@ tempo.test.sim.fit.a <-
     msg.optim.progress = FALSE
   )
 ## OUTPUTS:
-## best fit parameters:
+## best fit parameters and their names:
 tempo.test.sim.fit.a$best.fit.params
+tempo.test.sim.fit.a$best.fit.par.names
 #
 ## spectrum plot with experimental spectrum,
 ## simulated one with the linear baseline fit
@@ -366,7 +369,7 @@ sum((tempo.test.sim.fit.b$ra$df$Residuals)^2)
 ## number of evaluations / iterations:
 tempo.test.sim.fit.b$N.evals
 #
-## best fit parameters:
+## best fit parameters and their names:
 tempo.test.sim.fit.b$best.fit.params
 #
 ## correlation matrix of the EPR simulation fit:

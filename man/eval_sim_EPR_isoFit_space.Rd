@@ -190,8 +190,8 @@ If the \code{animation} argument is different from \code{NULL}, the function wil
   in the \code{\link[ggplot2]{geom_smooth}} in order to show the trend and the \eqn{95\,\%} confidence interval
   of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{AIC} and \code{BIC},
   as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
-  \item{best.fit.params}{Vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
-  by the green line) and related to the \code{optim.params.init} argument.}
+  \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
+  by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
   If \code{lineG.content.dvary = NULL}  it corresponds to the original/initial value (\code{lineG.content}).
   Otherwise, a value from the corresponding vector, defined by the \code{lineG.content} + \code{lineG.content.dvary}

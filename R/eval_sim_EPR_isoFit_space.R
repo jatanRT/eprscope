@@ -127,8 +127,8 @@
 #'   in the \code{\link[ggplot2]{geom_smooth}} in order to show the trend and the \eqn{95\,\%} confidence interval
 #'   of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{AIC} and \code{BIC},
 #'   as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
-#'   \item{best.fit.params}{Vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
-#'   by the green line) and related to the \code{optim.params.init} argument.}
+#'   \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
+#'   by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
 #'   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
 #'   If \code{lineG.content.dvary = NULL}  it corresponds to the original/initial value (\code{lineG.content}).
 #'   Otherwise, a value from the corresponding vector, defined by the \code{lineG.content} + \code{lineG.content.dvary}
@@ -303,9 +303,6 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## ================ CREATING SEQUENCES OF PARAMETERS =================
   #
-  ## what is the length of the list (how many nuclear groups)
-  N_nucle_us_i <- length(nuclear.system.noA)
-  #
   ## creating sequences based on `Nmax.eval.dvary`
   ## corresponding to creation of space for initial
   ## parameters
@@ -342,14 +339,34 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## names depending on baseline correction and number of As
   names.start <- c(
-    "g",
+    "g_iso",
     paste0("DeltaBG_",B.unit),
     paste0("DeltaBL_",B.unit),
     "const_BaselinCoeff",
     "Intensity_MultiplCoeff"
   )
-  names.A <-
-    sapply(1:N_nucle_us_i, function(n) paste0("A",n,"_MHz"))
+  if (is.null(nuclear.system.noA)) {
+    names.A <- NULL
+  } else {
+    ## check the length of `nuclear.system.noA`
+    nested_list <- any(sapply(nuclear.system.noA, is.list))
+    if (isFALSE(nested_list)) {
+      nuclear.system.noA <- list(nuclear.system.noA)
+    } else {
+      nuclear.system.noA <- nuclear.system.noA
+    }
+    ## what is the length of the list (how many nuclear groups)
+    nucle_us_i <- sapply(
+      1:length(nuclear.system.noA),
+      function(e) { nuclear.system.noA[[e]][[1]] }
+    )
+    ## names for A(s)
+    names.A <-
+      sapply(
+        1:length(nucle_us_i),
+        function(n) { paste0("A",n,"_MHz") }
+      )
+  }
   names.baseline <-
     switch( ## lin. + quadrat. coeffs. for baseline
       3-baseline.cond.fn(baseline.correct = baseline.correct),
@@ -486,7 +503,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         'Due to the limited hardware resources of your system\n
         NO PARALLEL COMPUTATION (no speed-up) CAN BE APPLIED to obtain\n
         the fit of EPR spectrum. Processing automatically \n
-        SWITCHED to "SEQUENTIAL" !! '
+        SWITCHED to "SEQUENTIAL" ! '
       )
     } else if (total.cores > 2) {
       ## round values up to nearest integer:
@@ -650,6 +667,11 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   sim.fit.vary.list.params.df$Evaluation <-
     1:nrow(sim.fit.vary.list.params.df)
   #
+  ## Iteration as a the first column
+  sim.fit.vary.list.params.df <-
+    sim.fit.vary.list.params.df[,c(ncol(sim.fit.vary.list.params.df),
+                                   1:(ncol(sim.fit.vary.list.params.df) - 1))]
+  #
   ## previous data frame into long table (tidy) format
   ## in order to work with `{ggplot2}`
   ## `facet_grid()` to visualize individual parameter changes:
@@ -682,14 +704,14 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   # best.df.index.BIC <-
   #   which.min(sim.fit.vary.list.params.df$BIC)
   #
-  # the best params with minum RSS vector:
+  # the best params with minum RSS vector (with their names):
   best.params.from.space <-
     sim.fit.vary.list.params.df %>%
     dplyr::filter(RSS == min(RSS)) %>%
     dplyr::select(!dplyr::all_of(
       c("RSS","Evaluation","residualSD","AIC","BIC")
     )) %>%
-    unlist() %>% unname()
+    unlist()
   #
   # initial data frame into long format in order to plot
   # by `facet_wrap`
