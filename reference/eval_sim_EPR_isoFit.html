@@ -298,6 +298,9 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <dd><p>Vector of the best (final) fitting (optimized) parameters, for each corresponding
   <code>optim.method</code>, to simulate the experimental EPR spectrum, see also description of the <code>optim.params.init</code>.</p></dd>
 
+  <dt>best.fit.par.names</dt>
+<dd><p>Character string vector corresponding to names of the <code>best.fit.params</code>.</p></dd>
+
   <dt>df</dt>
 <dd><p>Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
   the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
@@ -326,9 +329,10 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   EPR intensities must be visible. Therefore, such correlation should be ideally close to <code>0</code>.</p></dd>
 
   <dt>abic</dt>
-<dd><p>A list consisting of Akaike and Bayesian information criteria (AIC &amp; BIC) vector (<code>abic.vec</code>)
+<dd><p>Final (refer to the <code>optim.method</code> argument) list, consisting of Akaike and Bayesian
+  information criteria (AIC &amp; BIC) vector (<code>abic.vec</code>)
   and <code>message</code>, denoting the residuals/errors distribution, applied to evaluate
-  those criteria. To be used when comparing different simulation fits. The lower the (negative) values,
+  those criteria. To be used while comparing different simulation fits. The lower the (negative) values,
   the better the fit. Please, refer to the <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>.</p></dd>
 
   <dt>N.evals</dt>
@@ -443,12 +447,16 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-in"><span>    msg.optim.progress <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
-<span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
+<span class="r-in"><span><span class="co">## best fit parameters and their names:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0059448e+00  5.4974114e+00  5.1862704e+00 -9.4929049e-05  1.8070618e-02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  2.7243216e-08  5.1351972e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.a</span><span class="op">$</span><span class="va">best.fit.par.names</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "g_iso"                  "DeltaBG_G"              "DeltaBL_G"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "const_BaselinCoeff"     "Intensity_MultiplCoeff" "lin_BaselinCoeff"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "A1_MHz"                </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## spectrum plot with experimental spectrum,</span></span></span>
 <span class="r-in"><span><span class="co">## simulated one with the linear baseline fit</span></span></span>
@@ -513,7 +521,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.582e-08, swarm diam.=0.1247</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.495  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.962  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -533,7 +541,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span>       512        37         0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
+<span class="r-in"><span><span class="co">## best fit parameters and their names:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0053629e+00  4.9758828e+00  4.8434993e+00 -4.9152324e-08  1.2819874e-02</span>
@@ -620,11 +628,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.809  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.878  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.776  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  13.785  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>

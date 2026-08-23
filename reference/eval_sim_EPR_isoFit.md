@@ -299,6 +299,11 @@ depending on the `check.fit.plot` and `output...` arguments.
       each corresponding `optim.method`, to simulate the experimental
       EPR spectrum, see also description of the `optim.params.init`.
 
+    - best.fit.par.names:
+
+      Character string vector corresponding to names of the
+      `best.fit.params`.
+
     - df:
 
       Tidy data frame (table) with the magnetic flux density and
@@ -344,11 +349,12 @@ depending on the `check.fit.plot` and `output...` arguments.
 
     - abic:
 
-      A list consisting of Akaike and Bayesian information criteria (AIC
-      & BIC) vector (`abic.vec`) and `message`, denoting the
-      residuals/errors distribution, applied to evaluate those criteria.
-      To be used when comparing different simulation fits. The lower the
-      (negative) values, the better the fit. Please, refer to the
+      Final (refer to the `optim.method` argument) list, consisting of
+      Akaike and Bayesian information criteria (AIC & BIC) vector
+      (`abic.vec`) and `message`, denoting the residuals/errors
+      distribution, applied to evaluate those criteria. To be used while
+      comparing different simulation fits. The lower the (negative)
+      values, the better the fit. Please, refer to the
       [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md).
 
     - N.evals:
@@ -498,12 +504,16 @@ tempo.test.sim.fit.a <-
     msg.optim.progress = FALSE
   )
 ## OUTPUTS:
-## best fit parameters:
+## best fit parameters and their names:
 tempo.test.sim.fit.a$best.fit.params
 #> [[1]]
 #> [1]  2.0059448e+00  5.4974114e+00  5.1862704e+00 -9.4929049e-05  1.8070618e-02
 #> [6]  2.7243216e-08  5.1351972e+01
 #> 
+tempo.test.sim.fit.a$best.fit.par.names
+#> [1] "g_iso"                  "DeltaBG_G"              "DeltaBL_G"             
+#> [4] "const_BaselinCoeff"     "Intensity_MultiplCoeff" "lin_BaselinCoeff"      
+#> [7] "A1_MHz"                
 #
 ## spectrum plot with experimental spectrum,
 ## simulated one with the linear baseline fit
@@ -568,7 +578,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.495  s 
+#>  Done!  ( 100  %)    elapsed time  12.962  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -588,7 +598,7 @@ tempo.test.sim.fit.b$N.evals
 #>       512        37         0 
 #> 
 #
-## best fit parameters:
+## best fit parameters and their names:
 tempo.test.sim.fit.b$best.fit.params
 #> [[1]]
 #> [1]  2.0053629e+00  4.9758828e+00  4.8434993e+00 -4.9152324e-08  1.2819874e-02
@@ -675,11 +685,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.809  s 
+#>  Done!  ( 50  %)    elapsed time  0.878  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.776  s 
+#>  Done!  ( 100  %)    elapsed time  13.785  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

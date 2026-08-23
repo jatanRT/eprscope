@@ -334,9 +334,9 @@ a list with the following elements is provided:
 
 - best.fit.params:
 
-  Vector of the best final fitting (optimized) parameters (in the
+  Named vector of the best final fitting (optimized) parameters (in the
   `plot.optim.space` distinguished by the green line) and related to the
-  `optim.params.init` argument.
+  minimum RSS and `optim.params.init` argument.
 
 - best.lineG.content:
 

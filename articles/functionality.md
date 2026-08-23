@@ -842,7 +842,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.108   0.008   0.116
+#>   0.099   0.018   0.117
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -937,7 +937,7 @@ tmpd.epr.iso.fit <-
     optim.params.init.dvary = 
       c(0.0002,0.1,0.1,0,
         2e3,2,1,2), # or NULL
-    # Nmax.evals = 256, ## for one cycle/evaluation
+    # Nmax.evals = 256, ## per one cycle/evaluation
     # default number of evaluations:
     # N.points.space = 16,
     # total number of iterations: 256 x 16 = 4096
