@@ -2,7 +2,7 @@
 title: "Package Datasets"
 output: 
   rmarkdown::html_vignette:
-    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
     self_contained: TRUE
 toc: FALSE
 number_sections: FALSE

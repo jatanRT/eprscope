@@ -4,7 +4,7 @@ subtitle: "R Statistical Language for EPR - A Comprehensive Rationale"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
-    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
 toc: FALSE    
 number_sections: FALSE
 fig_caption: TRUE
