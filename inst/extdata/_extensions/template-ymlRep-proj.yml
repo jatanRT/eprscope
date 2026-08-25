@@ -40,7 +40,6 @@ format:
     title-block-banner: "#00205b"
     html-math-method:
       method: mathjax
-      url: "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
     code-line-numbers: true
     code-overflow: wrap
     keep-md: true

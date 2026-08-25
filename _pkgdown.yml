@@ -2,6 +2,15 @@ url: https://jatanrt.github.io/eprscope/
 template:
   bootstrap: 5
   bootswatch: cerulean
+  math-rendering: mathjax
+  includes:
+    in_header: |
+      <script>
+        window.MathJax = {
+          loader: { load: ['[tex]/mhchem'] },
+          tex: { packages: { '[+]': ['mhchem'] } }
+        };
+      </script>
 reference:
 - title: Built-In Datasets
   contents: has_concept("Built-In Datasets")

@@ -3,7 +3,6 @@ title: "First Steps with R Language"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
-    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
     self_contained: TRUE
 number_sections: TRUE
 fig_caption: TRUE
@@ -30,8 +29,6 @@ options(
   rmarkdown.html_vignette.check_title = FALSE
 )
 ```
-
-$\require{mhchem}$
 
 ```{r setup, include = FALSE}
 library(eprscope)
