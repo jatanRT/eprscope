@@ -1,7 +1,5 @@
 # First Steps with R Language
 
-\\\require{mhchem}\\
-
 This article/vignette deals with essential syntax and/or basic commands
 to run the [eprscope](https://jatanrt.github.io/eprscope/) functions.
 For details or more advanced programming experience, please refer to the

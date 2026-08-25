@@ -15,7 +15,7 @@ spectroelectrochemical experiments.
 This dataset was taken from the open source
 [*EasySpin*](https://easyspin.org/easyspin/documentation/isotopetable.html)
 package, reformatted and column of Larmor-frequencies in
-$`\mathrm{MHz}`$ at $`0.35\,\mathrm{mT}`$ was added for better
+\\\mathrm{MHz}\\ at \\0.35\\\mathrm{mT}\\ was added for better
 orientation in double-resonance ENDOR spectra, see the details in
 [`?isotopes_ds`](https://jatanrt.github.io/eprscope/reference/isotopes_ds.md)
 documentation as well as [R file in \`data-raw\`
@@ -59,15 +59,15 @@ When performing EPR experiments, especially the **X-band continuous wave
 (CW) spectroscopy in solution**, solvent plays an important role.
 Namely, prior to measurement one has to decide which type of cell will
 be applied depending on solvent polarity. For polar solvents, such as
-acetonitrile or dimethyl sulfoxide, either capillary (with
-$`i.d. \leq 1\,\mathrm{mm}`$ ) or special [quartz flat
+acetonitrile or dimethyl sulfoxide, either capillary (with \\i.d. \leq
+1\\\mathrm{mm}\\ ) or special [quartz flat
 cell](https://sp-wilmadlabglass.com/product/standard-te102-aqueous-cells/)
-( with a flat-part thickness $`\approx (0.3-0.6)\,\mathrm{mm}`$) must be
+( with a flat-part thickness \\\approx (0.3-0.6)\\\mathrm{mm}\\) must be
 used. Whereas for the non-polar solvents, or those with lower polarity,
 e.g. toluene, chloroform or tetrahydrofuran, a sample can be analyzed
 within any kind of cell including [common EPR
 quartz-tubes](https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/)
-with $`i.d. \approx (2-4)\,\mathrm{mm}`$. Additionally, the solvent
+with \\i.d. \approx (2-4)\\\mathrm{mm}\\. Additionally, the solvent
 properties like melting/boiling point as well as viscosity are essential
 for the variable temperature (VT) experiments and particularly for the
 CW ENDOR as well as for spectroelectrochemical ones. Table details can

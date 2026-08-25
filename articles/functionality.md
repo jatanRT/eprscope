@@ -1,7 +1,5 @@
 # Basic Functionality
 
-\\\require{mhchem}\\\$\require{mhchem}\$
-
 ## 1 Introduction
 
 The *Wuster’s* reagent got its name according to *C. Wuster* who
@@ -842,7 +840,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.099   0.018   0.117
+#>   0.103   0.013   0.116
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 

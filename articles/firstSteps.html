@@ -32,7 +32,12 @@
 --><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><script>
+  window.MathJax = {
+    loader: { load: ['[tex]/mhchem'] },
+    tex: { packages: { '[+]': ['mhchem'] } }
+  };
+</script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -88,7 +93,6 @@
 
     
     
-<p><span class="math inline">\(\require{mhchem}\)</span></p>
 <p>This article/vignette deals with essential syntax and/or basic commands to run the <a href="https://jatanrt.github.io/eprscope/">eprscope</a> functions. For details or more advanced programming experience, please refer to the resources in <a href="https://jatanrt.github.io/eprscope/index.html"><em>README</em> file/Homepage</a>. Sections, discussing the basics of plotting (several plots are already presented) and operations with strings will be added in the upcoming package versions.</p>
 <div class="section level2" number="1">
 <h2 id="variablefunction-names-and-assignment">

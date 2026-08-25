@@ -32,7 +32,12 @@
 --><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><script>
+  window.MathJax = {
+    loader: { load: ['[tex]/mhchem'] },
+    tex: { packages: { '[+]': ['mhchem'] } }
+  };
+</script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -108,12 +113,9 @@ double-resonance (ENDOR) and EPR spectroelectrochemical experiments.</p>
 <h3 id="nuclear-isotope-data-frame">Nuclear Isotope Data Frame<a class="anchor" aria-label="anchor" href="#nuclear-isotope-data-frame"></a>
 </h3>
 <p>This dataset was taken from the open source <a href="https://easyspin.org/easyspin/documentation/isotopetable.html" class="external-link"><em>EasySpin</em></a>
-package, reformatted and column of Larmor-frequencies in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">H</mi><mi mathvariant="normal">z</mi></mrow><annotation encoding="application/x-tex">\mathrm{MHz}</annotation></semantics></math>
-at
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.35</mn><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">T</mi></mrow></mrow><annotation encoding="application/x-tex">0.35\,\mathrm{mT}</annotation></semantics></math>
-was added for better orientation in double-resonance ENDOR spectra, see
-the details in <code><a href="../reference/isotopes_ds.html">?isotopes_ds</a></code> documentation as well as <a href="https://github.com/jatanRT/eprscope/blob/master/data-raw/isotopes_ds.R" class="external-link">R
+package, reformatted and column of Larmor-frequencies in <span class="math inline">\(\mathrm{MHz}\)</span> at <span class="math inline">\(0.35\,\mathrm{mT}\)</span> was added for better
+orientation in double-resonance ENDOR spectra, see the details in
+<code><a href="../reference/isotopes_ds.html">?isotopes_ds</a></code> documentation as well as <a href="https://github.com/jatanRT/eprscope/blob/master/data-raw/isotopes_ds.R" class="external-link">R
 file in `data-raw` folder</a>. The data frame is not only used to
 analyze the ENDOR spectra, however it is also essential for the
 simulations of EPR spectra and their fitting onto the experimental ones.
@@ -151,21 +153,18 @@ continuous wave (CW) spectroscopy in solution</strong>, solvent plays an
 important role. Namely, prior to measurement one has to decide which
 type of cell will be applied depending on solvent polarity. For polar
 solvents, such as acetonitrile or dimethyl sulfoxide, either capillary
-(with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>.</mi><mi>d</mi><mi>.</mi><mo>≤</mo><mn>1</mn><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">m</mi></mrow></mrow><annotation encoding="application/x-tex">i.d. \leq 1\,\mathrm{mm}</annotation></semantics></math>
-) or special <a href="https://sp-wilmadlabglass.com/product/standard-te102-aqueous-cells/" class="external-link">quartz
-flat cell</a> ( with a flat-part thickness
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mo stretchy="false" form="prefix">(</mo><mn>0.3</mn><mo>−</mo><mn>0.6</mn><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">m</mi></mrow></mrow><annotation encoding="application/x-tex">\approx (0.3-0.6)\,\mathrm{mm}</annotation></semantics></math>)
-must be used. Whereas for the non-polar solvents, or those with lower
-polarity, e.g. toluene, chloroform or tetrahydrofuran, a sample can be
-analyzed within any kind of cell including <a href="https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/" class="external-link">common
-EPR quartz-tubes</a> with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>.</mi><mi>d</mi><mi>.</mi><mo>≈</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">m</mi></mrow></mrow><annotation encoding="application/x-tex">i.d. \approx (2-4)\,\mathrm{mm}</annotation></semantics></math>.
-Additionally, the solvent properties like melting/boiling point as well
-as viscosity are essential for the variable temperature (VT) experiments
-and particularly for the CW ENDOR as well as for spectroelectrochemical
-ones. Table details can be found in the <code><a href="../reference/solvents_ds.html">?solvents_ds</a></code>
-documentation and in the <a href="https://github.com/jatanRT/eprscope/blob/master/data-raw/solvents_ds.R" class="external-link">R
+(with <span class="math inline">\(i.d. \leq 1\,\mathrm{mm}\)</span> ) or
+special <a href="https://sp-wilmadlabglass.com/product/standard-te102-aqueous-cells/" class="external-link">quartz
+flat cell</a> ( with a flat-part thickness <span class="math inline">\(\approx (0.3-0.6)\,\mathrm{mm}\)</span>) must be
+used. Whereas for the non-polar solvents, or those with lower polarity,
+e.g. toluene, chloroform or tetrahydrofuran, a sample can be analyzed
+within any kind of cell including <a href="https://sp-wilmadlabglass.com/product/4-mm-thin-wall-quartz-epr-sample-tube-250-mm-l/" class="external-link">common
+EPR quartz-tubes</a> with <span class="math inline">\(i.d. \approx
+(2-4)\,\mathrm{mm}\)</span>. Additionally, the solvent properties like
+melting/boiling point as well as viscosity are essential for the
+variable temperature (VT) experiments and particularly for the CW ENDOR
+as well as for spectroelectrochemical ones. Table details can be found
+in the <code><a href="../reference/solvents_ds.html">?solvents_ds</a></code> documentation and in the <a href="https://github.com/jatanRT/eprscope/blob/master/data-raw/solvents_ds.R" class="external-link">R
 file in `data-raw` folder</a>. Solvent properties can be also obtained
 by the specialized <code><a href="../reference/readEPR_solvent_props.html">readEPR_solvent_props()</a></code> function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -325,12 +324,9 @@ output from DFT calculations of EPR parameters (<em>g</em> and
 <p><code>TMPD_specelchem_accu_b.asc</code></p>
 <p>ASCII <strong>text table file</strong> (with magnetic flux density, B
 and EPR intensity) corresponding to EPR spectrum of electrochemically
-generated TMPD<sup>.+</sup> by the potentiostatic electrolysis of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">M</mi></mrow></mrow><annotation encoding="application/x-tex">1\,\mathrm{mM}</annotation></semantics></math>
-TMPD solution in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.3</mn><mspace width="0.167em"></mspace><mi mathvariant="normal">M</mi></mrow><annotation encoding="application/x-tex">0.3\,\mathrm{M}</annotation></semantics></math>
-TBAPF<sub>6</sub>/DMSO at
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.308</mn><mspace width="0.167em"></mspace><mi mathvariant="normal">V</mi></mrow><annotation encoding="application/x-tex">0.308\,\mathrm{V}</annotation></semantics></math><em>vs</em> Ag-quasiref. electrode. Spectral data were recorded by the
+generated TMPD<sup>.+</sup> by the potentiostatic electrolysis of <span class="math inline">\(1\,\mathrm{mM}\)</span> TMPD solution in <span class="math inline">\(0.3\,\mathrm{M}\)</span> TBAPF<sub>6</sub>/DMSO at
+<span class="math inline">\(0.308\,\mathrm{V}\)</span> <em>vs</em>
+Ag-quasiref. electrode. Spectral data were recorded by the
 <em>WinEpr</em> acquisition software.</p>
 </td>
 <td>
