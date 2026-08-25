@@ -4,8 +4,9 @@ subtitle: "Processing and Analysis of the Wuster's Blue EPR Spectrum"
 output: 
   bookdown::html_document2:
     base_format: rmarkdown::html_vignette
-    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"
     self_contained: TRUE
+    extra-dependencies: ["mhchem"]
 number_sections: TRUE
 fig_caption: TRUE
 link-citations: TRUE
@@ -31,8 +32,6 @@ options(
   rmarkdown.html_vignette.check_title = FALSE
 )
 ```
-
-$\require{mhchem}$\$\\require{mhchem}\$
 
 ```{r setup, include = FALSE}
 library(eprscope)
