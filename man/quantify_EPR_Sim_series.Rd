@@ -188,7 +188,7 @@ quant.data.sim.test.a <-
      name.pattern.sim = "DHMB0_1st_04_SimA",
      optim.params.init = c(0,0.8),
      output.area.stat = TRUE)
-## progress bar - activated
+## progress bar - automatically activated
 #
 ## similar example with two components
 ## (simulated spectra) and tidy data frame
@@ -205,7 +205,9 @@ quant.data.sim.test.b <-
      output.area.stat = FALSE,
      eval.optim.progress = TRUE
      )
-## progress bar - deactivated
+## progress bar - automatically deactivated,
+## because `eval.optim.progress = TRUE`, otherwise
+## both messages 'collide' in the output
 #
 ## to implement the `.csv` outputs
 ## from `plot_eval_ExpSim_app()`, the following
