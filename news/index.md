@@ -1,5 +1,59 @@
 # Changelog
 
+## eprscope 0.1.18
+
+### 2026-08-29
+
+#### Bug Fixes/Critical Updates
+
+- implementation to fit the isotropic EPR spectra by simulations into
+  the essential `shinyApp01` (`plot_eval_ExpSim_app`) is currently under
+  development (please, follow the commits at
+  [feat/shinyApp01_SimFit](https://github.com/jatanRT/eprscope/tree/feat/shinyApp01_SimFit))
+
+- fixed bugs in `eval_ABIC_forFit` where the function did not correctly
+  detect the **df**/ν (**nu**, degrees of freedom) of the Student’s
+  t-distribution, as well as the Cauchy one, now to fit residuals, the
+  function uses the
+  [`stats:nlminb`](https://rdrr.io/r/stats/nlminb.html) and for the
+  t-“distro”, both the **df**/ν(**nu**) as well as the **scale**
+  parameters are optimized (the same applies for the **scale** of the
+  Cauchy distribution) + the actual function automatically switches from
+  the t-“distro” to Cauchy one, if **df**/ν(**nu**) ≤ 2, check out
+  several `Examples` for the `eval_ABIC_forFit` in order to compare the
+  corresponding `Values` with those provided by the standard
+  [`MASS::fitdistr`](https://rdrr.io/cran/MASS/man/fitdistr.html)
+
+- several small fixes and/or updates in documentation (functions,
+  including Examples + vignettes)
+
+- now, the order in the series of displayed EPR spectra using the
+  `transform_dfs_2tidyDF` matches those of the `df.names` and `norm.vec`
+  vector arguments
+
+- fixed bug in `plot_EPR_Specs` where the activation of *g*-value
+  abscissa limits (i.e. zooming the *x*-range by the `xlim` argument)
+  induced a warning message that the data were removed, right now an EPR
+  spectrum with *g*-scale is properly displayed without any ‘data loss’
+  as expected for any other zooming done by
+  [`ggplot2::coord_cartesian`](https://rdrr.io/cran/ggplot2/man/coord_cartesian.html) +
+  `Example` added in order to verify the functionality
+
+#### Updates
+
+- added tests for the `readMAT_params_file` as well as
+  `readEPR_solvent_props` functions
+
+- names of the best fit parameters were added to `Values` (output list
+  components) of the `eval_sim_EPR_isoFit` and
+  `eval_sim_EPR_isoFit_space` functions
+
+- code in several functions → cleaned up in order to be more readable
+
+- now, the rendering of package articles/vignettes automatically uses
+  the `mhchem` LaTeX package defined in `_pkgdown.yml` as well as the
+  compatible version of [MathJax](https://www.mathjax.org/)
+
 ## eprscope 0.1.17
 
 ### 2026-04-26
@@ -24,9 +78,10 @@
   `readEPR_Exp_Specs_multif` functions were re-defined in order work
   with default ones like `x.id`, `Intensity.id` and `var2nd.series.id` +
   reading the time series experiments (kinetics) is now simplified and
-  in most cases does not require corresponding `.DSC`/`.dsc` or `.par`
-  or `.YGF` files, the `readEPR_Exp_Specs_kin` function automatically
-  searches for those files in the actual/working directory
+  in most cases does not require corresponding the auxiliary arguments
+  related to `.DSC`/`.dsc` or `.par` or `.YGF` files, instead, the
+  `readEPR_Exp_Specs_kin` function automatically searches for those
+  files in the actual/working directory
 
 #### Updates
 

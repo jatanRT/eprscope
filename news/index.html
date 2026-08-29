@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">eprscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.17</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.18</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,6 +58,27 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.18" id="eprscope-0118">eprscope 0.1.18<a class="anchor" aria-label="anchor" href="#eprscope-0118"></a></h2>
+<div class="section level3">
+<h3 id="id_2026-0-1-18">2026-08-29<a class="anchor" aria-label="anchor" href="#id_2026-0-1-18"></a></h3>
+<div class="section level4">
+<h4 id="bug-fixescritical-updates-0-1-18">Bug Fixes/Critical Updates<a class="anchor" aria-label="anchor" href="#bug-fixescritical-updates-0-1-18"></a></h4>
+<ul><li><p>implementation to fit the isotropic EPR spectra by simulations into the essential <code>shinyApp01</code> (<code>plot_eval_ExpSim_app</code>) is currently under development (please, follow the commits at <a href="https://github.com/jatanRT/eprscope/tree/feat/shinyApp01_SimFit" class="external-link">feat/shinyApp01_SimFit</a>)</p></li>
+<li><p>fixed bugs in <code>eval_ABIC_forFit</code> where the function did not correctly detect the <strong>df</strong>/ν (<strong>nu</strong>, degrees of freedom) of the Student’s t-distribution, as well as the Cauchy one, now to fit residuals, the function uses the <a href="https://rdrr.io/r/stats/nlminb.html" class="external-link"><code>stats:nlminb</code></a> and for the t-“distro”, both the <strong>df</strong>/ν(<strong>nu</strong>) as well as the <strong>scale</strong> parameters are optimized (the same applies for the <strong>scale</strong> of the Cauchy distribution) + the actual function automatically switches from the t-“distro” to Cauchy one, if <strong>df</strong>/ν(<strong>nu</strong>) ≤ 2, check out several <code>Examples</code> for the <code>eval_ABIC_forFit</code> in order to compare the corresponding <code>Values</code> with those provided by the standard <a href="https://rdrr.io/cran/MASS/man/fitdistr.html" class="external-link"><code>MASS::fitdistr</code></a></p></li>
+<li><p>several small fixes and/or updates in documentation (functions, including Examples + vignettes)</p></li>
+<li><p>now, the order in the series of displayed EPR spectra using the <code>transform_dfs_2tidyDF</code> matches those of the <code>df.names</code> and <code>norm.vec</code> vector arguments</p></li>
+<li><p>fixed bug in <code>plot_EPR_Specs</code> where the activation of <em>g</em>-value abscissa limits (i.e. zooming the <em>x</em>-range by the <code>xlim</code> argument) induced a warning message that the data were removed, right now an EPR spectrum with <em>g</em>-scale is properly displayed without any ‘data loss’ as expected for any other zooming done by <a href="https://rdrr.io/cran/ggplot2/man/coord_cartesian.html" class="external-link"><code>ggplot2::coord_cartesian</code></a> + <code>Example</code> added in order to verify the functionality</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="updates-0-1-18">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-18"></a></h4>
+<ul><li><p>added tests for the <code>readMAT_params_file</code> as well as <code>readEPR_solvent_props</code> functions</p></li>
+<li><p>names of the best fit parameters were added to <code>Values</code> (output list components) of the <code>eval_sim_EPR_isoFit</code> and <code>eval_sim_EPR_isoFit_space</code> functions</p></li>
+<li><p>code in several functions → cleaned up in order to be more readable</p></li>
+<li><p>now, the rendering of package articles/vignettes automatically uses the <code>mhchem</code> LaTeX package defined in <code>_pkgdown.yml</code> as well as the compatible version of <a href="https://www.mathjax.org/" class="external-link">MathJax</a></p></li>
+</ul></div>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.17" id="eprscope-0117">eprscope 0.1.17<a class="anchor" aria-label="anchor" href="#eprscope-0117"></a></h2>
 <div class="section level3">
 <h3 id="id_2026-0-1-17">2026-04-26<a class="anchor" aria-label="anchor" href="#id_2026-0-1-17"></a></h3>
@@ -66,7 +87,7 @@
 <ul><li><p>from now on, obtaining FWHM (“full width at half-maximum”) from the data of integrated EPR spectrum (provided by the <code>eval_FWHMx_Spec</code> function) works as expected, fixed bug related to filtering of the <code>xlim</code> region + test added</p></li>
 <li><p>to find out the <em>g</em><sub>iso</sub> value from EPR spectral data, by the <code>eval_gFactor_Spec</code> function, should work properly right now, fixed bug where the maximum intensity was not correctly detected based on the hyperfine splitting pattern, now it uses the <code>eval_peakPick_Spec</code> function + test added</p></li>
 <li><p>several fixes and/or updates in documentation (functions, including <code>Examples</code> + vignettes)</p></li>
-<li><p>‘ellipsis’ arguments (<code>...</code>) in the <code>readEPR_Exp_Specs_kin</code> as well as <code>readEPR_Exp_Specs_multif</code> functions were re-defined in order work with default ones like <code>x.id</code>, <code>Intensity.id</code> and <code>var2nd.series.id</code> + reading the time series experiments (kinetics) is now simplified and in most cases does not require corresponding <code>.DSC</code>/<code>.dsc</code> or <code>.par</code> or <code>.YGF</code> files, the <code>readEPR_Exp_Specs_kin</code> function automatically searches for those files in the actual/working directory</p></li>
+<li><p>‘ellipsis’ arguments (<code>...</code>) in the <code>readEPR_Exp_Specs_kin</code> as well as <code>readEPR_Exp_Specs_multif</code> functions were re-defined in order work with default ones like <code>x.id</code>, <code>Intensity.id</code> and <code>var2nd.series.id</code> + reading the time series experiments (kinetics) is now simplified and in most cases does not require corresponding the auxiliary arguments related to <code>.DSC</code>/<code>.dsc</code> or <code>.par</code> or <code>.YGF</code> files, instead, the <code>readEPR_Exp_Specs_kin</code> function automatically searches for those files in the actual/working directory</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="updates-0-1-17">Updates<a class="anchor" aria-label="anchor" href="#updates-0-1-17"></a></h4>
