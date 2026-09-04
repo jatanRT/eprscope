@@ -346,7 +346,7 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
       )
     #
     ## final params and logLik for t-Distro:
-    log_likehood_t <- -opt_logLik_t$objective ## negative because `optim` minimizes
+    log_likehood_t <- -opt_logLik_t$objective ## negative because `nlminb` minimizes
     ## ...and the optimized nu = df (degree of freedom parameter)
     log_likehood_t_nu <- round(exp(opt_logLik_t$par[2]),1)
   }

@@ -366,9 +366,9 @@ triarylamine_rc_decay_model$df.coeffs
 #> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
 #> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
 #
-# graphical representation of the correlation matrix,
+# graphical representation of the ("Pearson") correlation matrix,
 # corresponding to kinetic model fit
-triarylamine_rc_decay_model$cor.df %>% 
+triarylamine_rc_decay_model$cor.df() %>% 
   corrplot::corrplot(addCoef.col = "#c2c2c2")
 ```
 

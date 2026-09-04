@@ -139,13 +139,17 @@
 #'   the kinetic model fit and residuals should be ideally close to \code{0}, indicating no systematic relationship.
 #'   However, the covariance is scale-depended and must be "normalized". Therefore, for such a purpose, the correlation
 #'   is defined as shown below.}
-#'   \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of \code{qvarR} (e.g. double integral/Area - experiment),
+#'   \item{cor.df}{Function to evaluate correlation \code{matrix} of a data frame, consisting
+#'   of \code{qvarR} (e.g. double integral/Area - experiment),
 #'   \code{fitted} (kinetic model fit) and the corresponding residuals as columns/variables.
 #'   Such matrix can be additionally nicely visualized by a correlation \code{plot} created
 #'   by the \code{\link[corrplot]{corrplot}} function. A higher positive correlation
 #'   (between the integrals and the kinetic model fit), with the value close to \code{1}, indicates that the kinetic model
 #'   fit nicely follows the integral(s) \emph{vs} time relation. Contrary, no clear correlation between the residuals
-#'   and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to \code{0}.}
+#'   and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to \code{0}.
+#'   Three \code{methods} are available: \code{"pearson"} (\strong{default}), \code{"spearman"} (captures monotonic relationships)
+#'   and \code{"kendall"} (see also \code{\link[stats]{cor}}). A non-"pearson" method is suitable for data/residuals
+#'   which are hardly described by the normal/Gaussian distribution.}
 #'   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
 #'   }
 #'
@@ -450,7 +454,17 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     )
   #
   df.cov <- stats::cov(df.for.cov.cor)
-  df.cor <- stats::cor(df.for.cov.cor)
+  #
+  ## fuction to select either "Pearson" | "Spearman"
+  ## correlation coefficient
+  df.cor.fn <-  function(method = c("pearson","spearman","kendall")) {
+    #
+    method <- tolower(method)
+    ## redefinition
+    method <- method %>% `if`(length(method) > 1,"pearson", .)
+    #
+    return(stats::cor(df.for.cov.cor,method = method))
+  }
   #
   ## -------------------- Crating the ACF vs. LAG graph ----------------------
   ## -------------------------- of the residuals ------------------------------
@@ -612,7 +626,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     ## covariance of "qvarR,fitted,residuals" data frame:
     cov.df = df.cov,
     ## correlation of "qvarR,fitted,residuals" data frame:
-    cor.df = df.cor,
+    cor.df = df.cor.fn, ## function based on "method": c("pearson","spearman","kendall")
     N.converg = converg.react.kin.fit
   )
   #

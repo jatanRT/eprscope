@@ -195,13 +195,16 @@
 #'   for a decent fit. Contrary, the \code{cov} between the simulation and residuals should be ideally close to \code{0},
 #'   indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized". Therefore,
 #'   for such a purpose, the correlation is defined as shown below.}
-#'   \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of EPR experimental,
+#'   \item{cor.df}{Function to evaluate correlation \code{matrix} of a data frame, consisting of EPR experimental,
 #'   simulated (best fit) and residual intensities as columns/variables. Such matrix can be additionally nicely visualized
 #'   by a correlation \code{plot} created by the \code{\link[corrplot]{corrplot}} function.
 #'   A higher positive correlation (between the experiment
 #'   and the best fit), with the value close to \code{1}, indicates that simulation best fit nicely follows
 #'   the experimental spectrum. Contrary, no clear correlation between the residuals and the experimental/fitted
-#'   EPR intensities must be visible. Therefore, such correlation should be ideally close to \code{0}.}
+#'   EPR intensities must be visible. Therefore, such correlation should be ideally close to \code{0}.
+#'   Three \code{methods} are available: \code{"pearson"} (\strong{default}), \code{"spearman"} (captures monotonic relationships)
+#'   and \code{"kendall"} (see also \code{\link[stats]{cor}}). A non-"pearson" method is suitable for data/residuals which are hardly
+#'   described by the normal/Gaussian distribution.}
 #'   \item{abic}{Final (refer to the \code{optim.method} argument) list, consisting of Akaike and Bayesian
 #'   information criteria (AIC & BIC) vector (\code{abic.vec})
 #'   and \code{message}, denoting the residuals/errors distribution, applied to evaluate
@@ -332,11 +335,11 @@
 #' ## best fit parameters and their names:
 #' tempo.test.sim.fit.b$best.fit.params
 #' #
-#' ## correlation matrix of the EPR simulation fit:
-#' tempo.test.sim.fit.b$cor.df
+#' ## "Pearson" correlation matrix of the EPR simulation fit:
+#' tempo.test.sim.fit.b$cor.df()
 #' #
 #' ## visualization of the previous matrix:
-#' tempo.test.sim.fit.b$cor.df %>%
+#' tempo.test.sim.fit.b$cor.df() %>%
 #'   corrplot::corrplot(addCoef.col = "#c2c2c2")
 #' #
 #' ## quick simulation check by plotting the both
@@ -1326,7 +1329,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     )
   #
   df.cov <- stats::cov(df.for.cov.cor)
-  df.cor <- stats::cor(df.for.cov.cor)
+  #
+  ## fuction to select either "Pearson" | "Spearman"
+  ## correlation coefficient
+  df.cor.fn <-  function(method = c("pearson","spearman","kendall")) {
+    #
+    method <- tolower(method)
+    ## redefinition
+    method <- method %>% `if`(length(method) > 1,"pearson", .)
+    #
+    return(stats::cor(df.for.cov.cor,method = method))
+  }
   #
   ## --------------- AIC and BIC (Akaike and Bayesian) Metrics ----------------
   #
@@ -1638,7 +1651,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       ## covariance of "Experiment,Simulation,Residuals" data frame:
       cov.df = df.cov,
       ## correlation of "Experiment,Simulation,Residuals" data frame:
-      cor.df = df.cor,
+      cor.df = df.cor.fn, ## function based on "method": c("pearson","spearman","kendall")
       N.evals = N.evals,
       N.converg = N.converg
     )

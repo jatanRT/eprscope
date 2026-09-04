@@ -256,9 +256,9 @@ triarylamine_rc_decay_model$plot
 # fit and numeric solution of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #
-# graphical representation of the correlation matrix,
+# graphical representation of the ("Pearson") correlation matrix,
 # corresponding to kinetic model fit
-triarylamine_rc_decay_model$cor.df %>% 
+triarylamine_rc_decay_model$cor.df() %>% 
   corrplot::corrplot(addCoef.col = "#c2c2c2")
 
 ```

@@ -172,7 +172,7 @@
 #'   and strong for a decent fit. Contrary, the \code{cov} between the Eyring fit and residuals should be ideally close to \code{0},
 #'   indicating no systematic relationship. However, the covariance is scale-depended and must be "normalized".
 #'   Therefore, for such a purpose, the correlation is defined as shown below.}
-#'   \item{cor.df}{Correlation \code{matrix} of a data frame, consisting of rate constant (\eqn{k} or \eqn{ln\,(k)\,/\,T},
+#'   \item{cor.df}{Function to evaluate correlation \code{matrix} of a data frame, consisting of rate constant (\eqn{k} or \eqn{ln\,(k)\,/\,T},
 #'   depending on the \code{fit.method} argument),
 #'   \code{fitted} (Eyring fit) and the corresponding residuals as columns/variables.
 #'   Such matrix can be additionally nicely visualized by a correlation \code{plot} created
@@ -180,7 +180,10 @@
 #'   (between the \eqn{k} \emph{vs} \eqn{T} or \eqn{ln\,(k)\,/\,T} \emph{vs} \eqn{1\,/\,T} and the Eyring fit),
 #'   with the value close to \code{1}, indicates that the Eyring fit nicely follows the \eqn{k}-temperature dependence.
 #'   Contrary, no clear correlation between the residuals and the experiment and/or the "Eyring" must be visible.
-#'   Therefore, such correlation should be ideally close to \code{0}.}
+#'   Therefore, such correlation should be ideally close to \code{0}. Three \code{methods} are available: \code{"pearson"}
+#'   (\strong{default}), \code{"spearman"} (captures monotonic relationships) and \code{"kendall"}
+#'   (see also \code{\link[stats]{cor}}). A non-"pearson" method is suitable for data/residuals which are hardly
+#'   described by the normal/Gaussian distribution.}
 #'   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
 #'   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
 #'   is performed by the error propagation, implemented
@@ -237,9 +240,9 @@
 #' ## ...and the corresponding analysis of residuals
 #' activ.kinet.test01.data$ra$plot.histDens
 #' #
-#' ## graphical representation the correlation matrix
-#' ## corresponding to Eyring fit
-#' activ.kinet.test01.data$cor.df %>%
+#' ## graphical representation the "Pearson" correlation
+#' ## matrix corresponding to Eyring fit
+#' activ.kinet.test01.data$cor.df() %>%
 #'   corrplot::corrplot(addCoef.col = "#c2c2c2")
 #' #
 #' ## preview of the convergence
@@ -318,6 +321,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  ## "plinear" (Golub-Pereyra) and "port" (all from `nls`) or "linear" ("lm")
   #
   ## 'Temporary' processing variables
+  . <- NULL
   T_K <- NULL
   DeltaG_active_kJ_per_mol <- NULL
   fitted <- NULL
@@ -507,7 +511,17 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     )
   #
   df.cov <- stats::cov(df.for.cov.cor)
-  df.cor <- stats::cor(df.for.cov.cor)
+  #
+  ## fuction to select either "Pearson" | "Spearman" | "Kendall"
+  ## correlation coefficient
+  df.cor.fn <-  function(method = c("pearson", "kendall", "spearman")) {
+    #
+    method <- tolower(method)
+    ## redefinition
+    method <- method %>% `if`(length(method) > 1,"pearson", .)
+    #
+    return(stats::cor(df.for.cov.cor,method = method))
+  }
   #
   ## the third plot (histogram-density) is plotted
   ## individually, because of clear graphic outcomes,
@@ -614,7 +628,7 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     ## covariance of "qvarR,fitted,residuals" data frame:
     cov.df = df.cov,
     ## correlation of "qvarR,fitted,residuals" data frame:
-    cor.df = df.cor,
+    cor.df = df.cor.fn, ## function based on "method": c("pearson","spearman","kendall")
     vec.HS.uncert = c(DeltaH_active_with_un,DeltaS_active_with_un) ## both in SI (J / (mol (K)) )
   )
   #
