@@ -74,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Radical Kinetic Models Fitted onto Experimental Data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.18/R/eval_kinR_EPR_modelFit.R" class="external-link"><code>R/eval_kinR_EPR_modelFit.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/R/eval_kinR_EPR_modelFit.R" class="external-link"><code>R/eval_kinR_EPR_modelFit.R</code></a></small>
       <div class="d-none name"><code>eval_kinR_EPR_modelFit.Rd</code></div>
     </div>
 
@@ -321,13 +321,17 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   is defined as shown below.</p></dd>
 
   <dt>cor.df</dt>
-<dd><p>Correlation <code>matrix</code> of a data frame, consisting of <code>qvarR</code> (e.g. double integral/Area - experiment),
+<dd><p>Function to evaluate correlation <code>matrix</code> of a data frame, consisting
+  of <code>qvarR</code> (e.g. double integral/Area - experiment),
   <code>fitted</code> (kinetic model fit) and the corresponding residuals as columns/variables.
   Such matrix can be additionally nicely visualized by a correlation <code>plot</code> created
   by the <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code> function. A higher positive correlation
   (between the integrals and the kinetic model fit), with the value close to <code>1</code>, indicates that the kinetic model
   fit nicely follows the integral(s) <em>vs</em> time relation. Contrary, no clear correlation between the residuals
-  and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to <code>0</code>.</p></dd>
+  and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to <code>0</code>.
+  Three <code>methods</code> are available: <code>"pearson"</code> (<strong>default</strong>), <code>"spearman"</code> (captures monotonic relationships)
+  and <code>"kendall"</code> (see also <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></code>). A non-"pearson" method is suitable for data/residuals
+  which are hardly described by the normal/Gaussian distribution.</p></dd>
 
   <dt>N.converg</dt>
 <dd><p>Vector, corresponding to residual sum of squares at each iteration/evaluation.</p></dd>

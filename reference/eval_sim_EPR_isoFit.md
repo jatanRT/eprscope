@@ -335,17 +335,22 @@ depending on the `check.fit.plot` and `output...` arguments.
 
     - cor.df:
 
-      Correlation `matrix` of a data frame, consisting of EPR
-      experimental, simulated (best fit) and residual intensities as
-      columns/variables. Such matrix can be additionally nicely
-      visualized by a correlation `plot` created by the
+      Function to evaluate correlation `matrix` of a data frame,
+      consisting of EPR experimental, simulated (best fit) and residual
+      intensities as columns/variables. Such matrix can be additionally
+      nicely visualized by a correlation `plot` created by the
       [`corrplot`](https://rdrr.io/pkg/corrplot/man/corrplot.html)
       function. A higher positive correlation (between the experiment
       and the best fit), with the value close to `1`, indicates that
       simulation best fit nicely follows the experimental spectrum.
       Contrary, no clear correlation between the residuals and the
       experimental/fitted EPR intensities must be visible. Therefore,
-      such correlation should be ideally close to `0`.
+      such correlation should be ideally close to `0`. Three `methods`
+      are available: `"pearson"` (**default**), `"spearman"` (captures
+      monotonic relationships) and `"kendall"` (see also
+      [`cor`](https://rdrr.io/r/stats/cor.html)). A non-"pearson" method
+      is suitable for data/residuals which are hardly described by the
+      normal/Gaussian distribution.
 
     - abic:
 
@@ -578,7 +583,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  11.146  s 
+#>  Done!  ( 100  %)    elapsed time  12.022  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -605,15 +610,15 @@ tempo.test.sim.fit.b$best.fit.params
 #> [6]  5.2680000e+01
 #> 
 #
-## correlation matrix of the EPR simulation fit:
-tempo.test.sim.fit.b$cor.df
+## "Pearson" correlation matrix of the EPR simulation fit:
+tempo.test.sim.fit.b$cor.df()
 #>             Experiment   Simulation    Residuals
 #> Experiment 1.000000000  0.995554544  0.075536927
 #> Simulation 0.995554544  1.000000000 -0.018716558
 #> Residuals  0.075536927 -0.018716558  1.000000000
 #
 ## visualization of the previous matrix:
-tempo.test.sim.fit.b$cor.df %>%
+tempo.test.sim.fit.b$cor.df() %>%
   corrplot::corrplot(addCoef.col = "#c2c2c2")
 
 #
@@ -685,11 +690,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.762  s 
+#>  Done!  ( 50  %)    elapsed time  0.77  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  11.765  s 
+#>  Done!  ( 100  %)    elapsed time  12.134  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

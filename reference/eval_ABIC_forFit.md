@@ -321,7 +321,7 @@ list.stud.abic
 #> $message
 #> [1] "Information criteria evaluated using the"  
 #> [2] "Student's t-distribution of residuals with"
-#> [3] "381990983.2 degrees of freedom. No clear"  
+#> [3] "384894505.2 degrees of freedom. No clear"  
 #> [4] "support by the Shapiro-Wilk and/or by the" 
 #> [5] "Kolmogorov-Smirnov tests. p.value in"      
 #> [6] "<0.01,0.05>."                              

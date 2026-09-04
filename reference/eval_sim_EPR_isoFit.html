@@ -70,7 +70,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Least-Squares Fitting of Isotropic EPR Spectra by Simulations</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/v0.1.18/R/eval_sim_EPR_isoFit.R" class="external-link"><code>R/eval_sim_EPR_isoFit.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/R/eval_sim_EPR_isoFit.R" class="external-link"><code>R/eval_sim_EPR_isoFit.R</code></a></small>
       <div class="d-none name"><code>eval_sim_EPR_isoFit.Rd</code></div>
     </div>
 
@@ -325,13 +325,16 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   for such a purpose, the correlation is defined as shown below.</p></dd>
 
   <dt>cor.df</dt>
-<dd><p>Correlation <code>matrix</code> of a data frame, consisting of EPR experimental,
+<dd><p>Function to evaluate correlation <code>matrix</code> of a data frame, consisting of EPR experimental,
   simulated (best fit) and residual intensities as columns/variables. Such matrix can be additionally nicely visualized
   by a correlation <code>plot</code> created by the <code><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></code> function.
   A higher positive correlation (between the experiment
   and the best fit), with the value close to <code>1</code>, indicates that simulation best fit nicely follows
   the experimental spectrum. Contrary, no clear correlation between the residuals and the experimental/fitted
-  EPR intensities must be visible. Therefore, such correlation should be ideally close to <code>0</code>.</p></dd>
+  EPR intensities must be visible. Therefore, such correlation should be ideally close to <code>0</code>.
+  Three <code>methods</code> are available: <code>"pearson"</code> (<strong>default</strong>), <code>"spearman"</code> (captures monotonic relationships)
+  and <code>"kendall"</code> (see also <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></code>). A non-"pearson" method is suitable for data/residuals which are hardly
+  described by the normal/Gaussian distribution.</p></dd>
 
   <dt>abic</dt>
 <dd><p>Final (refer to the <code>optim.method</code> argument) list, consisting of Akaike and Bayesian
@@ -526,7 +529,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.582e-08, swarm diam.=0.1247</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  11.146  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.022  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -553,15 +556,15 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6]  5.2680000e+01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## correlation matrix of the EPR simulation fit:</span></span></span>
-<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">cor.df</span></span></span>
+<span class="r-in"><span><span class="co">## "Pearson" correlation matrix of the EPR simulation fit:</span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="fu">cor.df</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Experiment   Simulation    Residuals</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Experiment 1.000000000  0.995554544  0.075536927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation 0.995554544  1.000000000 -0.018716558</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residuals  0.075536927 -0.018716558  1.000000000</span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## visualization of the previous matrix:</span></span></span>
-<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">cor.df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="fu">cor.df</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">corrplot</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span>addCoef.col <span class="op">=</span> <span class="st">"#c2c2c2"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
@@ -633,11 +636,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.762  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.77  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  11.765  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.134  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>

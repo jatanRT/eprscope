@@ -328,17 +328,22 @@ List with the following components is available:
 
 - cor.df:
 
-  Correlation `matrix` of a data frame, consisting of `qvarR` (e.g.
-  double integral/Area - experiment), `fitted` (kinetic model fit) and
-  the corresponding residuals as columns/variables. Such matrix can be
-  additionally nicely visualized by a correlation `plot` created by the
+  Function to evaluate correlation `matrix` of a data frame, consisting
+  of `qvarR` (e.g. double integral/Area - experiment), `fitted` (kinetic
+  model fit) and the corresponding residuals as columns/variables. Such
+  matrix can be additionally nicely visualized by a correlation `plot`
+  created by the
   [`corrplot`](https://rdrr.io/pkg/corrplot/man/corrplot.html) function.
   A higher positive correlation (between the integrals and the kinetic
   model fit), with the value close to `1`, indicates that the kinetic
   model fit nicely follows the integral(s) *vs* time relation. Contrary,
   no clear correlation between the residuals and the experiment and/or
   kinetic model must be visible. Therefore, such correlation should be
-  ideally close to `0`.
+  ideally close to `0`. Three `methods` are available: `"pearson"`
+  (**default**), `"spearman"` (captures monotonic relationships) and
+  `"kendall"` (see also [`cor`](https://rdrr.io/r/stats/cor.html)). A
+  non-"pearson" method is suitable for data/residuals which are hardly
+  described by the normal/Gaussian distribution.
 
 - N.converg:
 
