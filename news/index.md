@@ -15,7 +15,7 @@
   detect the **df**/ν (**nu**, degrees of freedom) of the Student’s
   t-distribution, as well as the Cauchy one, now to fit residuals, the
   function uses the
-  [`stats:nlminb`](https://rdrr.io/r/stats/nlminb.html) and for the
+  [`stats::nlminb`](https://rdrr.io/r/stats/nlminb.html) and for the
   t-“distro”, both the **df**/ν(**nu**) as well as the **scale**
   parameters are optimized (the same applies for the **scale** of the
   Cauchy distribution) + the actual function automatically switches from
@@ -78,10 +78,11 @@
   `readEPR_Exp_Specs_multif` functions were re-defined in order work
   with default ones like `x.id`, `Intensity.id` and `var2nd.series.id` +
   reading the time series experiments (kinetics) is now simplified and
-  in most cases does not require corresponding the auxiliary arguments
+  in most cases does not require the corresponding auxiliary arguments
   related to `.DSC`/`.dsc` or `.par` or `.YGF` files, instead, the
   `readEPR_Exp_Specs_kin` function automatically searches for those
-  files in the actual/working directory
+  files in the actual/working directory, if not found, the user will be
+  asked to provide the correct path(s)
 
 #### Updates
 

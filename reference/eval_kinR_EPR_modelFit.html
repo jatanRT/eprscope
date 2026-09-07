@@ -330,7 +330,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   fit nicely follows the integral(s) <em>vs</em> time relation. Contrary, no clear correlation between the residuals
   and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to <code>0</code>.
   Three <code>methods</code> are available: <code>"pearson"</code> (<strong>default</strong>), <code>"spearman"</code> (captures monotonic relationships)
-  and <code>"kendall"</code> (see also <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></code>). A non-"pearson" method is suitable for data/residuals
+  and <code>"kendall"</code> (for small data ensembles), see also <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></code>. A non-"pearson" method is suitable for data/residuals
   which are hardly described by the normal/Gaussian distribution.</p></dd>
 
   <dt>N.converg</dt>

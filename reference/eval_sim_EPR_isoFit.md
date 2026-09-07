@@ -347,10 +347,16 @@ depending on the `check.fit.plot` and `output...` arguments.
       experimental/fitted EPR intensities must be visible. Therefore,
       such correlation should be ideally close to `0`. Three `methods`
       are available: `"pearson"` (**default**), `"spearman"` (captures
-      monotonic relationships) and `"kendall"` (see also
-      [`cor`](https://rdrr.io/r/stats/cor.html)). A non-"pearson" method
-      is suitable for data/residuals which are hardly described by the
-      normal/Gaussian distribution.
+      monotonic relationships) and `"kendall"` (for small data
+      ensembles), see also [`cor`](https://rdrr.io/r/stats/cor.html). A
+      non-"pearson" method is suitable for data/residuals which are
+      hardly described by the normal/Gaussian distribution. However,
+      even in such case, the "Pearson" corr. coefficient can still serve
+      as a descriptive similarity measure to compare the experimental
+      and fitted spectral shapes. In order to figure out whether the
+      spectral intensities of the experimental spectrum can be
+      reproduced by the simulation fit, one can also use the "Lin's"
+      Concordance Correlation Coefficient, `CCC`.
 
     - abic:
 
@@ -583,7 +589,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.022  s 
+#>  Done!  ( 100  %)    elapsed time  12.205  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -690,11 +696,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.77  s 
+#>  Done!  ( 50  %)    elapsed time  0.789  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.134  s 
+#>  Done!  ( 100  %)    elapsed time  12.239  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

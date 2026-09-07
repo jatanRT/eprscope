@@ -341,9 +341,10 @@ List with the following components is available:
   kinetic model must be visible. Therefore, such correlation should be
   ideally close to `0`. Three `methods` are available: `"pearson"`
   (**default**), `"spearman"` (captures monotonic relationships) and
-  `"kendall"` (see also [`cor`](https://rdrr.io/r/stats/cor.html)). A
-  non-"pearson" method is suitable for data/residuals which are hardly
-  described by the normal/Gaussian distribution.
+  `"kendall"` (for small data ensembles), see also
+  [`cor`](https://rdrr.io/r/stats/cor.html). A non-"pearson" method is
+  suitable for data/residuals which are hardly described by the
+  normal/Gaussian distribution.
 
 - N.converg:
 
