@@ -200,7 +200,7 @@ List with the following components is available:
   fit nicely follows the integral(s) \emph{vs} time relation. Contrary, no clear correlation between the residuals
   and the experiment and/or kinetic model must be visible. Therefore, such correlation should be ideally close to \code{0}.
   Three \code{methods} are available: \code{"pearson"} (\strong{default}), \code{"spearman"} (captures monotonic relationships)
-  and \code{"kendall"} (see also \code{\link[stats]{cor}}). A non-"pearson" method is suitable for data/residuals
+  and \code{"kendall"} (for small data ensembles), see also \code{\link[stats]{cor}}. A non-"pearson" method is suitable for data/residuals
   which are hardly described by the normal/Gaussian distribution.}
   \item{N.converg}{Vector, corresponding to residual sum of squares at each iteration/evaluation.}
   }

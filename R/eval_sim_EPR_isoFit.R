@@ -203,8 +203,12 @@
 #'   the experimental spectrum. Contrary, no clear correlation between the residuals and the experimental/fitted
 #'   EPR intensities must be visible. Therefore, such correlation should be ideally close to \code{0}.
 #'   Three \code{methods} are available: \code{"pearson"} (\strong{default}), \code{"spearman"} (captures monotonic relationships)
-#'   and \code{"kendall"} (see also \code{\link[stats]{cor}}). A non-"pearson" method is suitable for data/residuals which are hardly
-#'   described by the normal/Gaussian distribution.}
+#'   and \code{"kendall"} (for small data ensembles), see also \code{\link[stats]{cor}}. A non-"pearson" method is suitable for data/residuals
+#'   which are hardly described by the normal/Gaussian distribution. However, even in such case,
+#'   the "Pearson" corr. coefficient can still serve as a descriptive similarity measure to compare the experimental
+#'   and fitted spectral shapes. In order to figure out whether the spectral intensities of the experimental spectrum
+#'   can be reproduced by the simulation fit, one can also use the "Lin's" Concordance Correlation Coefficient,
+#'   \code{\link[DescTools]{CCC}}.}
 #'   \item{abic}{Final (refer to the \code{optim.method} argument) list, consisting of Akaike and Bayesian
 #'   information criteria (AIC & BIC) vector (\code{abic.vec})
 #'   and \code{message}, denoting the residuals/errors distribution, applied to evaluate

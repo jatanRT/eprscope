@@ -181,9 +181,9 @@
 #'   with the value close to \code{1}, indicates that the Eyring fit nicely follows the \eqn{k}-temperature dependence.
 #'   Contrary, no clear correlation between the residuals and the experiment and/or the "Eyring" must be visible.
 #'   Therefore, such correlation should be ideally close to \code{0}. Three \code{methods} are available: \code{"pearson"}
-#'   (\strong{default}), \code{"spearman"} (captures monotonic relationships) and \code{"kendall"}
-#'   (see also \code{\link[stats]{cor}}). A non-"pearson" method is suitable for data/residuals which are hardly
-#'   described by the normal/Gaussian distribution.}
+#'   (\strong{default}), \code{"spearman"} (captures monotonic relationships)
+#'   and \code{"kendall"} (for small data ensembles), see also \code{\link[stats]{cor}}. A non-"pearson" method is suitable
+#'   for data/residuals which are hardly described by the normal/Gaussian distribution.}
 #'   \item{vec.HS.uncert}{Numeric vector, consisting of \eqn{\Delta^{\ddagger} S^o} as well as \eqn{\Delta^{\ddagger} H^o},
 #'   together with their uncertainties, all in SI units like J / (mol(* K)). Calculation of uncertainties for linear model
 #'   is performed by the error propagation, implemented
