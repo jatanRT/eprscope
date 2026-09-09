@@ -7,7 +7,8 @@
 #'
 #' @description
 #'   Three visual diagnostic tools (based on the \href{https://ggplot2.tidyverse.org/}{\code{{ggplot2}}}
-#'   package) and one metric (standard deviation of residuals) are applied to evaluate the appropriateness as well as to compare
+#'   package) and several measures in a vector form (standard deviation of residuals, mean and median values
+#'   as well as excess kurtosis and median absolute deviation) are applied to evaluate the appropriateness as well as to compare
 #'   different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated Values relation.
 #'   For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
 #'   variance over all predicted/fitted values. 2. \emph{Sample Quantiles (Residuals) vs Theoretical Quantiles} (Q-Q plot)
@@ -166,6 +167,10 @@
 #'
 #'   Frost J (2025). "Statistics by Jim: Making Statistics Intuitive", \url{https://statisticsbyjim.com/}.
 #'
+#'   Joanes DN, Gill CA (1998). "Comparing Measures of Sample Skewness and Kurtosis",
+#'   \emph{J. R. Stat. Soc., Series D(The Statistician)}, \strong{47}(1), 183-189, \url{https://www.jstor.org/stable/2988433}.
+#'
+#'
 #'   Kross S (2016). "A Q-Q Plot Dissection Kit", \url{https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html}.
 #'
 #'   Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should we prefer it ?",
@@ -212,12 +217,26 @@
 #'   \item{plot.histDens}{Ggplot2 object, showing the \strong{hist}ogram
 #'   and the scaled probability \strong{dens}ity function for residuals. The corresponding residuals
 #'   mean value and the median are identified by vertical lines.}
-#'   \item{sd}{\strong{S}tandard \strong{d}eviation of residuals (or residual standard error (RSE))
-#'   for the model/fit defined as:
+#'   \item{measures}{This is a named vector composed of the following values:
+#'   \enumerate{
+#'   \item \code{mean} or \code{bias}, whether and how the mean value is different from \code{0}
+#'
+#'   \item \code{median}
+#'
+#'   \item \code{mad}, which is a \strong{m}edian \strong{a}bsolute \strong{d}eviation, defined
+#'   by the \eqn{median(|e_i - median(e)|)} expression, where \eqn{e_i} is the \eqn{i-th} residual
+#'   and \eqn{e} is the entire vector of residuals
+#'
+#'   \item \code{sd}, \strong{s}tandard \strong{d}eviation of residuals (or residual standard error (RSE)),
+#'   defined as
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k - 1)}}
 #'   where \eqn{N} is the number of observations/points (see the \code{data.fit} argument) and \eqn{k}
 #'   is the number of optimized parameters (see the argument \code{k}). Therefore, the smaller
-#'   the \code{sd}, the better the fit, when comparing different models/fits.}
+#'   the \code{sd}, the better the fit, when comparing different models/fits.
+#'
+#'   \item \code{kurt.excess}, excess kurtosis
+#'     }
+#'    }
 #'   }
 #'
 #'
@@ -593,7 +612,13 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     df = data.fit,
     plot.rqq = plots.qq.resid,
     plot.histDens = plot.hist.dens.03,
-    sd = ra.sd.model
+    measures = c(
+      bias = mean(resids.sorted),
+      median = stats::median(resids.sorted),
+      mad = stats::mad(resids.sorted),
+      sd = ra.sd.model,
+      kurt.excess =
+    )
   )
   #
   return(result.list)
