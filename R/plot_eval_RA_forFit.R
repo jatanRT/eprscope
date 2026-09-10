@@ -7,10 +7,10 @@
 #'
 #' @description
 #'   Three visual diagnostic tools (based on the \href{https://ggplot2.tidyverse.org/}{\code{{ggplot2}}}
-#'   package) and several measures in a vector form (standard deviation of residuals, mean and median values
-#'   as well as excess kurtosis and median absolute deviation) are applied to evaluate the appropriateness as well as to compare
-#'   different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated Values relation.
-#'   For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
+#'   package) and several measures of residuals in a vector form (standard deviation of residuals, mean and median values
+#'   as well as excess kurtosis, skewness and median absolute deviation) are applied to evaluate the appropriateness
+#'   as well as to compare different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated
+#'   Values relation. For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
 #'   variance over all predicted/fitted values. 2. \emph{Sample Quantiles (Residuals) vs Theoretical Quantiles} (Q-Q plot)
 #'   shows, whether the appearance of residuals can be described by the three probability distributions:
 #'   \code{c("norm","t","cauchy")} (i.e. Normal or Student's t or Cauchy, see also the \code{\link{eval_ABIC_forFit}} function).
@@ -221,22 +221,34 @@
 #'   \enumerate{
 #'   \item \code{mean} or \code{bias}, whether and how the mean value is different from \code{0}
 #'
-#'   \item \code{median}
+#'   \item \code{median}, central measure alternative to \code{mean} (\code{bias})
 #'
 #'   \item \code{mad}, which is a \strong{m}edian \strong{a}bsolute \strong{d}eviation, defined
 #'   by the \eqn{median(|e_i - median(e)|)} expression, where \eqn{e_i} is the \eqn{i-th} residual
-#'   and \eqn{e} is the entire vector of residuals
+#'   and \eqn{e} is the entire vector of residuals,the benefit of \code{mad} over \code{sd} (see below) lies
+#'   in the lower sensitivity to extreme values (outliers) so that it provides a resilient measure
+#'   of spread that remains accurate even when the data contains extreme values
 #'
 #'   \item \code{sd}, \strong{s}tandard \strong{d}eviation of residuals (or residual standard error (RSE)),
 #'   defined as
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k - 1)}}
 #'   where \eqn{N} is the number of observations/points (see the \code{data.fit} argument) and \eqn{k}
 #'   is the number of optimized parameters (see the argument \code{k}). Therefore, the smaller
-#'   the \code{sd}, the better the fit, when comparing different models/fits.
+#'   the \code{sd}, the better the fit, when comparing different models/fits
 #'
-#'   \item \code{kurt.excess}, excess kurtosis
-#'     }
-#'    }
+#'   \item \code{kurtosis.excess} tells whether the residuals posses more or fewer extremes (i.e. how heavier
+#'   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
+#'   is above or below the normal-distribution benchmark), if \code{kurtosis.excess} > 0, residuals have heavier,
+#'   tails and unusually extreme observations are more common, if \code{kurtosis.excess} < 0, residuals
+#'   do have lighter tails and unusually extreme observations are less common; and finally
+#'   a value \code{kurtosis.excess} \eqn{\approx} 0 suggests normal-like tail behavior, but it does not prove
+#'   that the residuals are normally distributed (this can be nicely correlated with the information/message
+#'   provided by the \code{\link{eval_ABIC_forFit}})
+#'
+#'   \item \code{skewness} describes how asymmetric are residuals, i.e. it may indicate whether the model
+#'
+#'      }
+#'    .}
 #'   }
 #'
 #'
@@ -302,6 +314,15 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   ## 'Temporary' processing variables
   . <- NULL
   count <- NULL
+  # m2 <- NULL
+  # m3 <- NULL
+  # m4 <- NULL
+  # g1 <- NULL
+  # g2 <- NULL
+  # G1 <- NULL
+  # G2 <- NULL
+  #
+  ## ============================== GENERAL & MEASURES ===============================
   #
   ## check column of `data.fit` like "residuals":
   if (is.null(residuals) || is.null(fitted)) {
@@ -314,10 +335,70 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   ## number of observations
   Nobs <- nrow(data.fit)
   #
+  ## condition for the number of observation
+  if (Nobs < 4) {
+    stop(" The number of observations/residuals is too small (< 4)\n
+         for any meaningfull/detailed analysis ! Furter 'experiments'\n
+         are needed to preceed !")
+  }
+  ## main residual vector
+  resids.vec <- data.fit[[residuals]]
+  #
+  ## check if the residual vector is finite and filter out (e.g. NA, Inf)
+  resids.ok <- is.finite(resids.vec)
+  resids.vec <- resids.vec[resids.ok]
+  #
   ## standard deviation (sometimes as standard error)
   ## of residuals for the model
   ra.sd.model <-
-    sqrt(sum(data.fit[[residuals]]^2)) / sqrt(Nobs - k - 1)
+    sqrt(sum(resids.vec^2)) / sqrt(Nobs - k - 1)
+  #
+  ## --------------------------- Calculation of the Excess Kurtosis ---------------------
+  ## ------------------------------- as well as the Skewness ----------------------------
+  #
+  ## ...see also documentation of `e1071::kurtosis` & `e1071::skewness`
+  ## https://cran.r-project.org/web/packages/e1071/refman/e1071.html#kurtosis,
+  ## https://cran.r-project.org/web/packages/e1071/refman/e1071.html#skewness
+  ## and the article in References: https://www.jstor.org/stable/2988433
+  #
+  ## sample moments (`m2`, `m3`, `m4`) and calculations
+  m2 <- sum((resids.vec - mean(resids.vec))^2) / Nobs %>% round(digits = 8)
+  if (m2 == 0) {
+    warning(" Kurtosis and/or Skewness are undefined because the residual variance is zero ! ")
+    G2 <- NULL
+    G1 <- NULL
+  } else {
+    ## ------------------- Kurtosis -------------------
+    m4 <- sum((resids.vec - mean(resids.vec))^4) / Nobs
+    #
+    ## 1st marginal kurtosis
+    g2 <- (m4 / (m2^2)) - 3 ## `3` kurtosis of the normal/Gaussian distribution
+    #
+    ## overall kurtosis
+    G2 <- ((Nobs - 1) / ((Nobs - 2) * (Nobs - 3))) * ((Nobs + 1) * g2 + 6)
+    #
+    ## ------------------- Skewness --------------------
+    m3 <- sum((resids.vec - mean(resids.vec))^3) / Nobs
+    #
+    ## 1st marginal skewness
+    g1 <- (m3 / (m2^(3 / 2)))
+    #
+    ## overall skewness
+    G1 <- g1 * sqrt(Nobs * (Nobs - 1)) / (Nobs - 2)
+  }
+  #
+  ## =========================== PLOTS ===============================
+  #
+  ##  -------------- Complex function for q-q plot with confidence bands -------------
+  ## ------------------ Pointwise Confidence Bands for the Q-Q -------------------
+  ## ------ also the residual plot (`plot.resids`) included to vary confidence -------
+  #
+  ## qq-plot built from scratch, inspired by:
+  ## `{qqplotr}`: https://github.com/aloy/qqplotr/blob/master/R/stat_qq_band.R ,
+  ## https://github.com/aloy/qqplotr/blob/master/R/stat_qq_line.R
+  ## as well as by:
+  ## https://slowkow.com/notes/ggplot2-qqplot/ and
+  ## https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it
   #
   ## condition for the `resid.method.smooth` and formula
   ## see also documentation for `?ggplot2::geom_smooth`
@@ -354,21 +435,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     )
   }
   #
-  ## =========================== PLOTS ===============================
-  #
-  ##  -------------- Complex function for q-q plot with confidence bands -------------
-  ## ------------------ Pointwise Confidence Bands for the Q-Q -------------------
-  ## ------ also the residual plot (`plot.resids`) included to vary confidence -------
-  #
-  ## qq-plot built from scratch, inspired by:
-  ## `{qqplotr}`: https://github.com/aloy/qqplotr/blob/master/R/stat_qq_band.R ,
-  ## https://github.com/aloy/qqplotr/blob/master/R/stat_qq_line.R
-  ## as well as by:
-  ## https://slowkow.com/notes/ggplot2-qqplot/ and
-  ## https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it
-  #
   ## sorted residuals
-  resids.sorted <- sort(data.fit[[residuals]])
+  resids.sorted <- sort(resids.vec)
   #
   ## `ppoints` function/variable/vector
   ## returns a vector of points equally spaced between 0 and 1
@@ -567,12 +635,12 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       alpha = 0.32
     ) +
     geom_vline( ## showing mean value
-      xintercept = mean(data.fit[[residuals]]),
+      xintercept = mean(resids.vec),
       color = "darkblue",
       linewidth = 0.75
     ) +
     geom_vline(
-      xintercept = stats::median(data.fit[[residuals]]),
+      xintercept = stats::median(resids.vec),
       color = "darkred",
       linewidth = 0.75
     ) +
@@ -589,7 +657,7 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     plot.hist.dens.02 +
     annotate(
       geom = "text",
-      x = c(mean(data.fit[[residuals]]),stats::median(data.fit[[residuals]])),
+      x = c(mean(resids.vec),stats::median(resids.vec)),
       y = c(
         0.5 * max(ggplot_build(plot.hist.dens.02)$data[[1]]$count),
         0.6 * max(ggplot_build(plot.hist.dens.02)$data[[1]]$count)
@@ -607,7 +675,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       # )
     )
   #
-  ## results
+  ## ============================ LIST OF RESULTS ================================
+  #
   result.list <- list(
     df = data.fit,
     plot.rqq = plots.qq.resid,
@@ -617,7 +686,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       median = stats::median(resids.sorted),
       mad = stats::mad(resids.sorted),
       sd = ra.sd.model,
-      kurt.excess =
+      kurtosis.excess = G2,
+      skewness = G1
     )
   )
   #
