@@ -38,6 +38,9 @@
 #' aminoxyl.mat.list <-
 #'   readMAT_params_file(aminoxyl.mat.file)
 #' #
+#' ## structure of the `fit1`
+#' str(aminoxyl.mat.list$fit1)
+#' #
 #' ## read the `Sim1` structure/variable content into list
 #' aminoxyl.mat.sim1 <-
 #'   readMAT_params_file(aminoxyl.mat.file,
@@ -132,15 +135,20 @@
 #'     field.var = "argsfit"
 #'   )
 #' #
-#' ## create a list (temporary variable)
-#' list.argsfit <- tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+#' ## create lists (temporary variables)
+#' list.argsfit.a <- tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+#' list.argsfit.b <- tmpd.easyspin6.argsfit[[2]][[1]][ , , 1]
 #' #
-#' ## convert it into nicely structured list with
+#' ## final list
+#' list.argsfit.final <-
+#'   do.call(c,list(list.argsfit.a,list.argsfit.b))
+#' #
+#' ## convert it into nicely structured lists with
 #' ## all arguments/parameters
 #' list.argsfit.final <-
-#'   lapply(list.argsfit, function(x) c(x))
+#'   lapply(list.argsfit.final, c)
 #' #
-#' ## final list preview
+#' ## preview
 #' list.argsfit.final
 #'
 #'
@@ -152,7 +160,7 @@
 readMAT_params_file <- function(path_to_MAT,
                                 str.var = NULL,
                                 field.var = NULL) {
-  if (is.null(str.var)){
+  if (is.null(str.var) & is.null(field.var)){
     ## list
     data.params <- readMat(path_to_MAT)
     return(data.params)
@@ -176,7 +184,7 @@ readMAT_params_file <- function(path_to_MAT,
           params <- c(params)
         }
         #
-      } else{
+      } else {
         params <- params
       }
       #

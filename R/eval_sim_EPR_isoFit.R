@@ -207,8 +207,8 @@
 #'   which are hardly described by the normal/Gaussian distribution. However, even in such case,
 #'   the "Pearson" corr. coefficient can still serve as a descriptive similarity measure to compare the experimental
 #'   and fitted spectral shapes. In order to figure out whether the spectral intensities of the experimental spectrum
-#'   can be reproduced by the simulation fit, one can also use the "Lin's" Concordance Correlation Coefficient,
-#'   \code{\link[DescTools]{CCC}}.}
+#'   can be reproduced by the simulation fit, one can also use the "Lin's"
+#'   \href{https://search.r-project.org/CRAN/refmans/DescTools/html/CCC.html}{Concordance Correlation Coefficient}.}
 #'   \item{abic}{Final (refer to the \code{optim.method} argument) list, consisting of Akaike and Bayesian
 #'   information criteria (AIC & BIC) vector (\code{abic.vec})
 #'   and \code{message}, denoting the residuals/errors distribution, applied to evaluate
