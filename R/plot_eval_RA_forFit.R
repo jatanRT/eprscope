@@ -16,7 +16,7 @@
 #'   \code{c("norm","t","cauchy")} (i.e. Normal or Student's t or Cauchy, see also the \code{\link{eval_ABIC_forFit}} function).
 #'   3. The latter is combined with a more detailed information about the distribution of residuals by the \strong{histogram}
 #'   (\code{\link[ggplot2]{geom_histogram}}) as well as by the \strong{probability density} (\code{\link[ggplot2]{geom_density}},
-#'   including the residuals \code{mean} value, and \code{median} which in ideal case equal to \code{0}).
+#'   including the residuals \code{mean} value, and \code{median}, which are, in an ideal case, very close to \code{0}).
 #'
 #'
 #' @details
@@ -34,10 +34,10 @@
 #'
 #'   In addition to the original "raw" residuals defined above, one may come across other types,
 #'   like \href{https://bookdown.org/mike/data_analysis/generalized-linear-models.html}{"Pearson" (or "scaled")},
-#'   \strong{"standardized" or "studentized"}. \strong{The latter two are helpful to identify outliers},
+#'   \strong{"standardized" or "studentized"}. \strong{The latter are helpful to identify outliers},
 #'   which are the data points that are significantly different from the rest of the data
-#'   (though, they can be also identified by the Q-Q plot and histogram-probability density).
-#'   For such reason the "raw" residuals (\eqn{e_i}) are divided by their standard
+#'   (though, they can be also identified by the Q-Q plot and histogram-probability density, see below).
+#'   For such a reason the "raw" residuals (\eqn{e_i}) are divided by their standard
 #'   deviation (\eqn{sd} see the \code{Value} below), including the the effect of leverage.
 #'   Thus, the formula for standardized residual reads: \eqn{r_i = e_i\,/\,(sd\,\sqrt{1 - h_{ii}})},
 #'   where the \eqn{h_{ii}} stands for the diagonal element of the "leverage" \eqn{\hat{H}} matrix
@@ -54,7 +54,7 @@
 #'   and \code{\link[stats:influence.measures]{stats::rstudent}}. A very detailed analysis for linear models is provided
 #'   by the \href{https://goodekat.github.io/ggResidpanel/}{\code{{ggResidpanel}}} package. Additionally, a series
 #'   of diagnostic plots can be also created in the base \emph{R}, just by \code{plot(var)}, where the \code{var}
-#'   represents the variable/object of the linear model. On the other hand, \strong{all these diagnostics are not
+#'   represents the variable/object of the linear model fit. On the other hand, \strong{all these diagnostics are not
 #'   available for non-linear models} like \code{\link[stats]{nls}}. Accordingly, \strong{such type of calculations
 #'   can be provided by other packages}
 #'   (see e.g. \href{https://cran.r-project.org/web/packages/nlstools/vignettes/vignetteJSS.pdf}{\code{{nlstools}}})
@@ -69,7 +69,7 @@
 #'   no clear pattern, like they are randomly scattered around the \code{0} with no systematic increase or decrease
 #'   in variance, we may trust our fit with the optimized parameters. Such pattern is \strong{homoscedastic}.
 #'   However, if one recognizes curved ((inverted-)U shape, see e.g. \code{Examples}
-#'   in the \code{\link{eval_kinR_EPR_modelFit}}), wave or systematic increase (so called "fanning")
+#'   in the \code{\link{eval_kinR_EPR_modelFit}}), wave or systematic variance increase (so called "fanning")
 #'   or decrease ("funelling"), the model/fit is untrustworthy and one would probably search for a different (better) one.
 #'   In particular, the curved pattern in the residual plot may indicate that a model does a poor job of fitting
 #'   and likely, we need additional parameter(s) to describe our data properly. In the case if residuals suffer
@@ -227,7 +227,7 @@
 #'   by the \eqn{median(|e_i - median(e)|)} expression, where \eqn{e_i} is the \eqn{i-th} residual
 #'   and \eqn{e} is the entire vector of residuals,the benefit of \code{mad} over \code{sd} (see below) lies
 #'   in the lower sensitivity to extreme values (outliers) so that it provides a resilient measure
-#'   of spread that remains accurate even when the data contains extreme values
+#'   of spread, that remains accurate even when the data contains extreme values
 #'
 #'   \item \code{sd}, \strong{s}tandard \strong{d}eviation of residuals (or residual standard error (RSE)),
 #'   defined as
@@ -238,12 +238,12 @@
 #'
 #'   \item \code{kurtosis.excess} tells whether the residuals posses more or fewer extremes (i.e. how heavier
 #'   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
-#'   is above or below the normal-distribution benchmark), if \code{kurtosis.excess} > 0, residuals have heavier,
+#'   is above or below the normal-distribution benchmark), if \code{kurtosis.excess} > 0, residuals have heavier
 #'   tails and unusually extreme observations are more common, if \code{kurtosis.excess} < 0, residuals
-#'   do have lighter tails and unusually extreme observations are less common; and finally
-#'   a value \code{kurtosis.excess} \eqn{\approx} 0 suggests normal-like tail behavior, but it does not prove
-#'   that the residuals are normally distributed (this can be nicely correlated with the information/message
-#'   provided by the \code{\link{eval_ABIC_forFit}})
+#'   do have lighter tails and unusually extreme observations are less common; finally
+#'   a value of \code{kurtosis.excess} close to \code{0} suggests normal-like tail behavior, but it does not prove
+#'   that the residuals are normally distributed. This can be additionally correlated with the information/message
+#'   provided by the \code{\link{eval_ABIC_forFit}}.
 #'
 #'   \item \code{skewness} describes how asymmetric are residuals, i.e. it may indicate whether the model
 #'
@@ -383,7 +383,7 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     ## 1st marginal skewness
     g1 <- (m3 / (m2^(3 / 2)))
     #
-    ## overall skewness
+    ## overall skewness (bias-adjusted Fisher–Pearson skewness value)
     G1 <- g1 * sqrt(Nobs * (Nobs - 1)) / (Nobs - 2)
   }
   #
