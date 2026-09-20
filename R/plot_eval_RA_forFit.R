@@ -338,8 +338,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   ## condition for the number of observation
   if (Nobs < 4) {
     stop(" The number of observations/residuals is too small (< 4)\n
-         for any meaningfull/detailed analysis ! Furter 'experiments'\n
-         are needed to preceed !")
+         for any meaningfull/detailed analysis ! Additional 'experiments'\n
+         are needed to proceed !")
   }
   ## main residual vector
   resids.vec <- data.fit[[residuals]]
