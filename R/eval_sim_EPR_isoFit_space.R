@@ -110,23 +110,24 @@
 #'   \item{df.init.space}{A data frame object representing hyperspace of the initial EPR simulation fitting parameters
 #'   corresponding to \code{optim.params.init} and \code{optim.params.init.dvary}. Each variable/column corresponds
 #'   to EPR simulation parameter to be optimized and each observation/row is related to one \code{N.points.space},
-#'   dividing the range for each parameter defined by the \code{optim.params.init.dvary}. The fitting/optimization
+#'   dividing the range for each parameter, defined by the \code{optim.params.init.dvary}. The fitting/optimization
 #'   is performed for each row of the \code{init.space.df}.}
 #'   \item{df.optim.space}{Data frame object similar to \code{init.space.df}, however with optimized EPR simulation
 #'   parameters (after the fitting procedure). In addition, the \code{optim.space.df} contains the following metrics
 #'   of the optimization/fitting as variables/columns: sum of the residual squares \code{RSS},
-#'   standard deviation of residuals \code{residualSD}, Akaike information criterion \code{AIC} and Bayesian information
-#'   criterion \code{BIC}. These four parameters are actually related to optimization/fitting path
+#'   standard deviation of residuals \code{residualSD}, median absolute deviation of residuals \code{residualMAD},
+#'   Akaike information criterion \code{AIC} and Bayesian information
+#'   criterion \code{BIC}. These parameters are actually related to optimization/fitting path
 #'   (see the \code{plot.optim.space} below).}
-#'   \item{plot.init.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{init.space.df}
+#'   \item{plot.init.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{df.init.space}
 #'   created by the \code{\link[ggplot2]{facet_wrap}}.}
-#'   \item{plot.optim.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{optim.space.df}
+#'   \item{plot.optim.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{df.optim.space}
 #'   created by the \code{\link[ggplot2]{facet_wrap}}. One can also easily recognize the best fit/optimized parameter set,
 #'   because the \code{Evaluation} with those parameters is highlighted by the green line. Additionally, each optimized parameter
 #'   \emph{vs} evaluation relation is fitted by the \code{\link[stats]{loess}} function implemented
 #'   in the \code{\link[ggplot2]{geom_smooth}} in order to show the trend and the \eqn{95\,\%} confidence interval
-#'   of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{AIC} and \code{BIC},
-#'   as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
+#'   of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{residualMAD},
+#'   \code{AIC} and \code{BIC}, as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
 #'   \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
 #'   by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
 #'   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
@@ -265,15 +266,15 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   ## checking the number `Nmax.evals`
   if (Nmax.evals > 1024) {
     warning(" The max. number of least square function evaluations\n
-            for each point in the  `N.points.space` > 1024. \n
-            Please, be aware of long computational time. ")
+            for each point in the  `N.points.space` > 1024, \n
+           be aware of longer computational time. ")
   }
   #
   ## Checking the high number of space points
   if (N.points.space > 64) {
     warning(
       "The number of points in the initial parameter hyperspace\n
-      is higher than 64. Please, be aware of long computational time."
+      is higher than 64, be aware of longer computational time."
     )
   }
   #
@@ -480,7 +481,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   handlers(list(
     handler_progress(
       format = " [:bar] :percent ",
-      width = 104
+      width = 104 ## text/message width
     )
   ))
   #
@@ -503,7 +504,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         'Due to the limited hardware resources of your system\n
         NO PARALLEL COMPUTATION (no speed-up) CAN BE APPLIED to obtain\n
         the fit of EPR spectrum. Processing automatically \n
-        SWITCHED to "SEQUENTIAL" ! '
+        SWITCHED to "SEQUENTIAL" (slower evaluation) ! '
       )
     } else if (total.cores > 2) {
       ## round values up to nearest integer:
@@ -659,6 +660,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       names.A,
       "RSS", ## minimum sum of residual squares
       "residualSD", ## standard deviation of residuals
+      "residualMAD", ## median absolute deviation of residuals
       "AIC", ## Akaike information criterium
       "BIC" ## Bayesian information criterium
     )
@@ -692,24 +694,12 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   best.lineGcont <-
     lineG.content.vary[best.df.index.minRSS]
   #
-  ## find index for the best fit (raSD)
-  # best.df.index.raSD <-
-  #   which.min(sim.fit.vary.list.params.df$raSD)
-  #
-  ## find index for the best fit (AIC)
-  # best.df.index.AIC <-
-  #   which.min(sim.fit.vary.list.params.df$AIC)
-  #
-  ## find index for the best fit (BIC)
-  # best.df.index.BIC <-
-  #   which.min(sim.fit.vary.list.params.df$BIC)
-  #
   # the best params with minum RSS vector (with their names):
   best.params.from.space <-
     sim.fit.vary.list.params.df %>%
     dplyr::filter(RSS == min(RSS)) %>%
     dplyr::select(!dplyr::all_of(
-      c("RSS","Evaluation","residualSD","AIC","BIC")
+      c("RSS","Evaluation","residualSD","residualMAD","AIC","BIC")
     )) %>%
     unlist()
   #
@@ -776,7 +766,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       span = 1,
       data = subset(
         sim.fit.vary.list.params.df.long,
-        subset = !(Parameter %in% c("RSS","residualSD","AIC","BIC"))
+        subset = !(Parameter %in% c("RSS","residualSD","residualMAD","AIC","BIC"))
       ),
       color = "magenta",
       se = TRUE,
@@ -793,7 +783,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       span = 0.5,
       data = subset(
         sim.fit.vary.list.params.df.long,
-        subset = Parameter %in% c("RSS","residualSD","AIC","BIC")
+        subset = Parameter %in% c("RSS","residualSD","residualMAD","AIC","BIC")
       ),
       color = "blue3",
       ## also  "cyan" 2,3, "royalblue", "green2", "greenyellow"
@@ -836,7 +826,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       plot.caption = element_text(color = "#129001",face = "bold",size = 12)
     ) +
     ggplot2::ggtitle(
-      label = "Space for the Set of Optimized EPR Simulation Parameters",
+      label = "Space for the Set of Optimized EPR Simulation Parameters & Fit Metrics",
       subtitle = paste0(
         "Evaluated by ",
         paste(toupper(optim.method),collapse = " and "),

@@ -101,11 +101,12 @@
 #'   A Q-Q plot may exhibit several basic
 #'   \href{https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03\%3A_One-Way_ANOVA/3.04\%3A_ANOVA_model_diagnostics_including_QQ-plots}{deviations}.
 #'   It can display a U-shaped pattern, which actually mirrors
-#'   the situation with the right skewed (or positively skewed, mean > median) PDF. Therefore, we find the extreme
+#'   the situation with the right-skewed (or positively skewed, mean > median) PDF. Therefore, we find the extreme
 #'   values far from the peak on the high end more frequently than on the lower one (see e.g. \code{Example} in
-#'   \code{\link{eval_kinR_Eyring_GHS}}). Contrary, if the Q-Q plot shows
+#'   \code{\link{eval_kinR_Eyring_GHS}} and description of skewness in the \code{Values}). Contrary, if the Q-Q plot shows
 #'   "hill" shape, the opposite situation is observed and the extreme values (outliers) far from the peak
-#'   on the low end appear more frequently than on the higher one (PDF is left skewed, mean < median).
+#'   on the low end appear more frequently than on the higher one (PDF is left-skewed, mean < median, see also
+#'   description of skewness in the \code{Values}).
 #'   Often, the heavy-tailed Q-Q plot with extreme residuals below and above minima and maxima of the diagonal line,
 #'   respectively, may appear and is somewhat problematic for e.g. normal distributions of residuals with outliers on both sides.
 #'   On the other hand, such kind of normality violation can be successfully described by Student's t-distribution
@@ -238,15 +239,23 @@
 #'
 #'   \item \code{kurtosis.excess} tells whether the residuals posses more or fewer extremes (i.e. how heavier
 #'   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
-#'   is above or below the normal-distribution benchmark), if \code{kurtosis.excess} > 0, residuals have heavier
-#'   tails and unusually extreme observations are more common, if \code{kurtosis.excess} < 0, residuals
+#'   is above or below the normal-distribution benchmark). If \code{kurtosis.excess} > 0, residuals have heavier
+#'   tails and unusually extreme observations are more common. If \code{kurtosis.excess} < 0, residuals
 #'   do have lighter tails and unusually extreme observations are less common; finally
-#'   a value of \code{kurtosis.excess} close to \code{0} suggests normal-like tail behavior, but it does not prove
+#'   a value of \code{kurtosis.excess} close to \code{0} suggests normal-like tail behavior. However, it does not prove
 #'   that the residuals are normally distributed. This can be additionally correlated with the information/message
 #'   provided by the \code{\link{eval_ABIC_forFit}}.
 #'
-#'   \item \code{skewness} describes how asymmetric are residuals, i.e. it may indicate whether the model
-#'
+#'   \item \code{skewness} describes how (a)symmetric are residuals, i.e. it may indicate whether the model
+#'   makes unusually large errors more often in one direction than in the other. If \code{skewness} < -1,
+#'   the residuals are substantially left-skewed (mean < median,with longer negative tails).
+#'   If -1 \eqn{\leq} \code{skewness} < -0.5, residuals are moderately left-skewed (with noticeable negative tail).
+#'   If -0.5 \eqn{\leq} \code{skewness} \eqn{\leq} 0.5, the distribution is approximately symmetric. On the other hand,
+#'   if  0.5 < \code{skewness} \eqn{\leq} 1 or  1 < \code{skewness}, the residuals are either moderately
+#'   right-skewed (with noticeable positive tails) or substantially right-skewed (mean > median, with longer positive tails),
+#'   respectively. Even though the \code{skewness} and \code{kurtosis} look similar, they provide different information:
+#'   the skewness measures asymmetry, while the kurtosis measures tail weights relative to the normal distribution, independently
+#'   whether it is symmetric or not.
 #'      }
 #'    .}
 #'   }

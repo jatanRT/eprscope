@@ -237,7 +237,9 @@
 #'
 #'   \item Minimum sum of residual squares (corresponding to previous item).
 #'
-#'   \item Standard deviation of residuals, after the (final) \code{optim.method} procedure.
+#'   \item \strong{S}tandard \strong{d}eviation (SD) of residuals, after the (final) \code{optim.method} procedure.
+#'
+#'   \item \strong{M}edian \strong{a}bsolute \strong{d}eviation (MAD) after the (final) \code{optim.method} procedure.
 #'
 #'   \item Akaike Information Criterion/AIC metric (refer to \code{\link{eval_ABIC_forFit}}),
 #'   after the (final) \code{optim.method}.
@@ -354,9 +356,10 @@
 #' tempo.test.sim.fit.b$plot
 #' #
 #' ## simple residual density plot
-#' ## together with standard deviation
+#' ## together with characteristic measures for residuals
+#' ## (in the named vector form)
 #' tempo.test.sim.fit.b$ra$plot.histDens
-#' tempo.test.sim.fit.b$ra$sd
+#' tempo.test.sim.fit.b$ra$measures
 #' #
 #' ## Akaike and Bayesian Criteria (AIC & BIC)
 #' ## + information about the residuals distribution
@@ -1587,7 +1590,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]],
-      resid.anal.simple.list$sd, ## residual sd
+      resid.anal.simple.list$measures$sd, ## residual sd
+      resid.anal.simple.list$measures$mad, ## MAD
       AB.ic.list$abic.vec[1], ## AIC
       AB.ic.list$abic.vec[2] ## BIC
     )
