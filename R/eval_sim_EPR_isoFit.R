@@ -179,7 +179,7 @@
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
 #'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-#'   standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+#'   statistical \code{measures} list. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
@@ -237,7 +237,9 @@
 #'
 #'   \item Minimum sum of residual squares (corresponding to previous item).
 #'
-#'   \item Standard deviation of residuals, after the (final) \code{optim.method} procedure.
+#'   \item \strong{S}tandard \strong{d}eviation (SD) of residuals, after the (final) \code{optim.method} procedure.
+#'
+#'   \item \strong{M}edian \strong{a}bsolute \strong{d}eviation (MAD) after the (final) \code{optim.method} procedure.
 #'
 #'   \item Akaike Information Criterion/AIC metric (refer to \code{\link{eval_ABIC_forFit}}),
 #'   after the (final) \code{optim.method}.
@@ -354,9 +356,10 @@
 #' tempo.test.sim.fit.b$plot
 #' #
 #' ## simple residual density plot
-#' ## together with standard deviation
+#' ## together with characteristic measures for residuals
+#' ## (in the named vector form)
 #' tempo.test.sim.fit.b$ra$plot.histDens
-#' tempo.test.sim.fit.b$ra$sd
+#' tempo.test.sim.fit.b$ra$measures
 #' #
 #' ## Akaike and Bayesian Criteria (AIC & BIC)
 #' ## + information about the residuals distribution
@@ -1587,7 +1590,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]],
-      resid.anal.simple.list$sd, ## residual sd
+      resid.anal.simple.list$measures$sd, ## residual sd
+      resid.anal.simple.list$measures$mad, ## MAD
       AB.ic.list$abic.vec[1], ## AIC
       AB.ic.list$abic.vec[2] ## BIC
     )

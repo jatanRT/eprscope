@@ -7,15 +7,16 @@
 #'
 #' @description
 #'   Three visual diagnostic tools (based on the \href{https://ggplot2.tidyverse.org/}{\code{{ggplot2}}}
-#'   package) and one metric (standard deviation of residuals) are applied to evaluate the appropriateness as well as to compare
-#'   different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated Values relation.
-#'   For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
+#'   package) and several measures of residuals in a vector form (standard deviation of residuals, mean and median values
+#'   as well as excess kurtosis, skewness and median absolute deviation) are applied to evaluate the appropriateness
+#'   as well as to compare different models/fits. 1. The first plot represents the Residuals \emph{vs} Fitted/Simulated
+#'   Values relation. For a decent model/fit, it will exhibit randomly scattered values around \code{0} and displays a similar
 #'   variance over all predicted/fitted values. 2. \emph{Sample Quantiles (Residuals) vs Theoretical Quantiles} (Q-Q plot)
 #'   shows, whether the appearance of residuals can be described by the three probability distributions:
 #'   \code{c("norm","t","cauchy")} (i.e. Normal or Student's t or Cauchy, see also the \code{\link{eval_ABIC_forFit}} function).
 #'   3. The latter is combined with a more detailed information about the distribution of residuals by the \strong{histogram}
 #'   (\code{\link[ggplot2]{geom_histogram}}) as well as by the \strong{probability density} (\code{\link[ggplot2]{geom_density}},
-#'   including the residuals \code{mean} value, and \code{median} which in ideal case equal to \code{0}).
+#'   including the residuals \code{mean} value, and \code{median}, which are, in an ideal case, very close to \code{0}).
 #'
 #'
 #' @details
@@ -33,10 +34,10 @@
 #'
 #'   In addition to the original "raw" residuals defined above, one may come across other types,
 #'   like \href{https://bookdown.org/mike/data_analysis/generalized-linear-models.html}{"Pearson" (or "scaled")},
-#'   \strong{"standardized" or "studentized"}. \strong{The latter two are helpful to identify outliers},
+#'   \strong{"standardized" or "studentized"}. \strong{The latter are helpful to identify outliers},
 #'   which are the data points that are significantly different from the rest of the data
-#'   (though, they can be also identified by the Q-Q plot and histogram-probability density).
-#'   For such reason the "raw" residuals (\eqn{e_i}) are divided by their standard
+#'   (though, they can be also identified by the Q-Q plot and histogram-probability density, see below).
+#'   For such a reason the "raw" residuals (\eqn{e_i}) are divided by their standard
 #'   deviation (\eqn{sd} see the \code{Value} below), including the the effect of leverage.
 #'   Thus, the formula for standardized residual reads: \eqn{r_i = e_i\,/\,(sd\,\sqrt{1 - h_{ii}})},
 #'   where the \eqn{h_{ii}} stands for the diagonal element of the "leverage" \eqn{\hat{H}} matrix
@@ -53,7 +54,7 @@
 #'   and \code{\link[stats:influence.measures]{stats::rstudent}}. A very detailed analysis for linear models is provided
 #'   by the \href{https://goodekat.github.io/ggResidpanel/}{\code{{ggResidpanel}}} package. Additionally, a series
 #'   of diagnostic plots can be also created in the base \emph{R}, just by \code{plot(var)}, where the \code{var}
-#'   represents the variable/object of the linear model. On the other hand, \strong{all these diagnostics are not
+#'   represents the variable/object of the linear model fit. On the other hand, \strong{all these diagnostics are not
 #'   available for non-linear models} like \code{\link[stats]{nls}}. Accordingly, \strong{such type of calculations
 #'   can be provided by other packages}
 #'   (see e.g. \href{https://cran.r-project.org/web/packages/nlstools/vignettes/vignetteJSS.pdf}{\code{{nlstools}}})
@@ -68,7 +69,7 @@
 #'   no clear pattern, like they are randomly scattered around the \code{0} with no systematic increase or decrease
 #'   in variance, we may trust our fit with the optimized parameters. Such pattern is \strong{homoscedastic}.
 #'   However, if one recognizes curved ((inverted-)U shape, see e.g. \code{Examples}
-#'   in the \code{\link{eval_kinR_EPR_modelFit}}), wave or systematic increase (so called "fanning")
+#'   in the \code{\link{eval_kinR_EPR_modelFit}}), wave or systematic variance increase (so called "fanning")
 #'   or decrease ("funelling"), the model/fit is untrustworthy and one would probably search for a different (better) one.
 #'   In particular, the curved pattern in the residual plot may indicate that a model does a poor job of fitting
 #'   and likely, we need additional parameter(s) to describe our data properly. In the case if residuals suffer
@@ -100,11 +101,12 @@
 #'   A Q-Q plot may exhibit several basic
 #'   \href{https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03\%3A_One-Way_ANOVA/3.04\%3A_ANOVA_model_diagnostics_including_QQ-plots}{deviations}.
 #'   It can display a U-shaped pattern, which actually mirrors
-#'   the situation with the right skewed (or positively skewed, mean > median) PDF. Therefore, we find the extreme
+#'   the situation with the right-skewed (or positively skewed, mean > median) PDF. Therefore, we find the extreme
 #'   values far from the peak on the high end more frequently than on the lower one (see e.g. \code{Example} in
-#'   \code{\link{eval_kinR_Eyring_GHS}}). Contrary, if the Q-Q plot shows
+#'   \code{\link{eval_kinR_Eyring_GHS}} and description of skewness in the \code{Values}). Contrary, if the Q-Q plot shows
 #'   "hill" shape, the opposite situation is observed and the extreme values (outliers) far from the peak
-#'   on the low end appear more frequently than on the higher one (PDF is left skewed, mean < median).
+#'   on the low end appear more frequently than on the higher one (PDF is left-skewed, mean < median, see also
+#'   description of skewness in the \code{Values}).
 #'   Often, the heavy-tailed Q-Q plot with extreme residuals below and above minima and maxima of the diagonal line,
 #'   respectively, may appear and is somewhat problematic for e.g. normal distributions of residuals with outliers on both sides.
 #'   On the other hand, such kind of normality violation can be successfully described by Student's t-distribution
@@ -166,6 +168,10 @@
 #'
 #'   Frost J (2025). "Statistics by Jim: Making Statistics Intuitive", \url{https://statisticsbyjim.com/}.
 #'
+#'   Joanes DN, Gill CA (1998). "Comparing Measures of Sample Skewness and Kurtosis",
+#'   \emph{J. R. Stat. Soc., Series D(The Statistician)}, \strong{47}(1), 183-189, \url{https://www.jstor.org/stable/2988433}.
+#'
+#'
 #'   Kross S (2016). "A Q-Q Plot Dissection Kit", \url{https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html}.
 #'
 #'   Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should we prefer it ?",
@@ -212,12 +218,46 @@
 #'   \item{plot.histDens}{Ggplot2 object, showing the \strong{hist}ogram
 #'   and the scaled probability \strong{dens}ity function for residuals. The corresponding residuals
 #'   mean value and the median are identified by vertical lines.}
-#'   \item{sd}{\strong{S}tandard \strong{d}eviation of residuals (or residual standard error (RSE))
-#'   for the model/fit defined as:
+#'   \item{measures}{This is a named vector composed of the following values:
+#'   \enumerate{
+#'   \item \code{mean} or \code{bias}, whether and how the mean value is different from \code{0}
+#'
+#'   \item \code{median}, central measure alternative to \code{mean} (\code{bias})
+#'
+#'   \item \code{mad}, which is a \strong{m}edian \strong{a}bsolute \strong{d}eviation, defined
+#'   by the \eqn{median(|e_i - median(e)|)} expression, where \eqn{e_i} is the \eqn{i-th} residual
+#'   and \eqn{e} is the entire vector of residuals,the benefit of \code{mad} over \code{sd} (see below) lies
+#'   in the lower sensitivity to extreme values (outliers) so that it provides a resilient measure
+#'   of spread, that remains accurate even when the data contains extreme values
+#'
+#'   \item \code{sd}, \strong{s}tandard \strong{d}eviation of residuals (or residual standard error (RSE)),
+#'   defined as
 #'   \deqn{\sqrt{\sum_i (y_i - y_{i,\text{fit/model}})^2\,/\,(N - k - 1)}}
 #'   where \eqn{N} is the number of observations/points (see the \code{data.fit} argument) and \eqn{k}
 #'   is the number of optimized parameters (see the argument \code{k}). Therefore, the smaller
-#'   the \code{sd}, the better the fit, when comparing different models/fits.}
+#'   the \code{sd}, the better the fit, when comparing different models/fits
+#'
+#'   \item \code{kurtosis.excess} tells whether the residuals posses more or fewer extremes (i.e. how heavier
+#'   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
+#'   is above or below the normal-distribution benchmark). If \code{kurtosis.excess} > 0, residuals have heavier
+#'   tails and unusually extreme observations are more common. If \code{kurtosis.excess} < 0, residuals
+#'   do have lighter tails and unusually extreme observations are less common; finally
+#'   a value of \code{kurtosis.excess} close to \code{0} suggests normal-like tail behavior. However, it does not prove
+#'   that the residuals are normally distributed. This can be additionally correlated with the information/message
+#'   provided by the \code{\link{eval_ABIC_forFit}}.
+#'
+#'   \item \code{skewness} describes how (a)symmetric are residuals, i.e. it may indicate whether the model
+#'   makes unusually large errors more often in one direction than in the other. If \code{skewness} < -1,
+#'   the residuals are substantially left-skewed (mean < median,with longer negative tails).
+#'   If -1 \eqn{\leq} \code{skewness} < -0.5, residuals are moderately left-skewed (with noticeable negative tail).
+#'   If -0.5 \eqn{\leq} \code{skewness} \eqn{\leq} 0.5, the distribution is approximately symmetric. On the other hand,
+#'   if  0.5 < \code{skewness} \eqn{\leq} 1 or  1 < \code{skewness}, the residuals are either moderately
+#'   right-skewed (with noticeable positive tails) or substantially right-skewed (mean > median, with longer positive tails),
+#'   respectively. Even though the \code{skewness} and \code{kurtosis} look similar, they provide different information:
+#'   the skewness measures asymmetry, while the kurtosis measures tail weights relative to the normal distribution, independently
+#'   whether it is symmetric or not.
+#'      }
+#'    .}
 #'   }
 #'
 #'
@@ -283,6 +323,15 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   ## 'Temporary' processing variables
   . <- NULL
   count <- NULL
+  # m2 <- NULL
+  # m3 <- NULL
+  # m4 <- NULL
+  # g1 <- NULL
+  # g2 <- NULL
+  # G1 <- NULL
+  # G2 <- NULL
+  #
+  ## ============================== GENERAL & MEASURES ===============================
   #
   ## check column of `data.fit` like "residuals":
   if (is.null(residuals) || is.null(fitted)) {
@@ -295,10 +344,70 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   ## number of observations
   Nobs <- nrow(data.fit)
   #
+  ## condition for the number of observation
+  if (Nobs < 4) {
+    stop(" The number of observations/residuals is too small (< 4)\n
+         for any meaningfull/detailed analysis ! Additional 'experiments'\n
+         are needed to proceed !")
+  }
+  ## main residual vector
+  resids.vec <- data.fit[[residuals]]
+  #
+  ## check if the residual vector is finite and filter out (e.g. NA, Inf)
+  resids.ok <- is.finite(resids.vec)
+  resids.vec <- resids.vec[resids.ok]
+  #
   ## standard deviation (sometimes as standard error)
   ## of residuals for the model
   ra.sd.model <-
-    sqrt(sum(data.fit[[residuals]]^2)) / sqrt(Nobs - k - 1)
+    sqrt(sum(resids.vec^2)) / sqrt(Nobs - k - 1)
+  #
+  ## --------------------------- Calculation of the Excess Kurtosis ---------------------
+  ## ------------------------------- as well as the Skewness ----------------------------
+  #
+  ## ...see also documentation of `e1071::kurtosis` & `e1071::skewness`
+  ## https://cran.r-project.org/web/packages/e1071/refman/e1071.html#kurtosis,
+  ## https://cran.r-project.org/web/packages/e1071/refman/e1071.html#skewness
+  ## and the article in References: https://www.jstor.org/stable/2988433
+  #
+  ## sample moments (`m2`, `m3`, `m4`) and calculations
+  m2 <- sum((resids.vec - mean(resids.vec))^2) / Nobs %>% round(digits = 8)
+  if (m2 == 0) {
+    warning(" Kurtosis and/or Skewness are undefined because the residual variance is zero ! ")
+    G2 <- NULL
+    G1 <- NULL
+  } else {
+    ## ------------------- Kurtosis -------------------
+    m4 <- sum((resids.vec - mean(resids.vec))^4) / Nobs
+    #
+    ## 1st marginal kurtosis
+    g2 <- (m4 / (m2^2)) - 3 ## `3` kurtosis of the normal/Gaussian distribution
+    #
+    ## overall kurtosis
+    G2 <- ((Nobs - 1) / ((Nobs - 2) * (Nobs - 3))) * ((Nobs + 1) * g2 + 6)
+    #
+    ## ------------------- Skewness --------------------
+    m3 <- sum((resids.vec - mean(resids.vec))^3) / Nobs
+    #
+    ## 1st marginal skewness
+    g1 <- (m3 / (m2^(3 / 2)))
+    #
+    ## overall skewness (bias-adjusted Fisher–Pearson skewness value)
+    G1 <- g1 * sqrt(Nobs * (Nobs - 1)) / (Nobs - 2)
+  }
+  #
+  ## =========================== PLOTS ===============================
+  #
+  ##  -------------- Complex function for q-q plot with confidence bands -------------
+  ## ------------------ Pointwise Confidence Bands for the Q-Q -------------------
+  ## ------ also the residual plot (`plot.resids`) included to vary confidence -------
+  #
+  ## qq-plot built from scratch, inspired by:
+  ## `{qqplotr}`: https://github.com/aloy/qqplotr/blob/master/R/stat_qq_band.R ,
+  ## https://github.com/aloy/qqplotr/blob/master/R/stat_qq_line.R
+  ## as well as by:
+  ## https://slowkow.com/notes/ggplot2-qqplot/ and
+  ## https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it
   #
   ## condition for the `resid.method.smooth` and formula
   ## see also documentation for `?ggplot2::geom_smooth`
@@ -335,21 +444,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     )
   }
   #
-  ## =========================== PLOTS ===============================
-  #
-  ##  -------------- Complex function for q-q plot with confidence bands -------------
-  ## ------------------ Pointwise Confidence Bands for the Q-Q -------------------
-  ## ------ also the residual plot (`plot.resids`) included to vary confidence -------
-  #
-  ## qq-plot built from scratch, inspired by:
-  ## `{qqplotr}`: https://github.com/aloy/qqplotr/blob/master/R/stat_qq_band.R ,
-  ## https://github.com/aloy/qqplotr/blob/master/R/stat_qq_line.R
-  ## as well as by:
-  ## https://slowkow.com/notes/ggplot2-qqplot/ and
-  ## https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it
-  #
   ## sorted residuals
-  resids.sorted <- sort(data.fit[[residuals]])
+  resids.sorted <- sort(resids.vec)
   #
   ## `ppoints` function/variable/vector
   ## returns a vector of points equally spaced between 0 and 1
@@ -548,12 +644,12 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       alpha = 0.32
     ) +
     geom_vline( ## showing mean value
-      xintercept = mean(data.fit[[residuals]]),
+      xintercept = mean(resids.vec),
       color = "darkblue",
       linewidth = 0.75
     ) +
     geom_vline(
-      xintercept = stats::median(data.fit[[residuals]]),
+      xintercept = stats::median(resids.vec),
       color = "darkred",
       linewidth = 0.75
     ) +
@@ -570,7 +666,7 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     plot.hist.dens.02 +
     annotate(
       geom = "text",
-      x = c(mean(data.fit[[residuals]]),stats::median(data.fit[[residuals]])),
+      x = c(mean(resids.vec),stats::median(resids.vec)),
       y = c(
         0.5 * max(ggplot_build(plot.hist.dens.02)$data[[1]]$count),
         0.6 * max(ggplot_build(plot.hist.dens.02)$data[[1]]$count)
@@ -588,12 +684,20 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       # )
     )
   #
-  ## results
+  ## ============================ LIST OF RESULTS ================================
+  #
   result.list <- list(
     df = data.fit,
     plot.rqq = plots.qq.resid,
     plot.histDens = plot.hist.dens.03,
-    sd = ra.sd.model
+    measures = c(
+      bias = mean(resids.sorted),
+      median = stats::median(resids.sorted),
+      mad = stats::mad(resids.sorted),
+      sd = ra.sd.model,
+      kurtosis.excess = G2,
+      skewness = G1
+    )
   )
   #
   return(result.list)
