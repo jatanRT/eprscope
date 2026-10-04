@@ -173,23 +173,24 @@ If the \code{animation} argument is different from \code{NULL}, the function wil
   \item{df.init.space}{A data frame object representing hyperspace of the initial EPR simulation fitting parameters
   corresponding to \code{optim.params.init} and \code{optim.params.init.dvary}. Each variable/column corresponds
   to EPR simulation parameter to be optimized and each observation/row is related to one \code{N.points.space},
-  dividing the range for each parameter defined by the \code{optim.params.init.dvary}. The fitting/optimization
+  dividing the range for each parameter, defined by the \code{optim.params.init.dvary}. The fitting/optimization
   is performed for each row of the \code{init.space.df}.}
   \item{df.optim.space}{Data frame object similar to \code{init.space.df}, however with optimized EPR simulation
   parameters (after the fitting procedure). In addition, the \code{optim.space.df} contains the following metrics
   of the optimization/fitting as variables/columns: sum of the residual squares \code{RSS},
-  standard deviation of residuals \code{residualSD}, Akaike information criterion \code{AIC} and Bayesian information
-  criterion \code{BIC}. These four parameters are actually related to optimization/fitting path
+  standard deviation of residuals \code{residualSD}, median absolute deviation of residuals \code{residualMAD},
+  Akaike information criterion \code{AIC} and Bayesian information
+  criterion \code{BIC}. These parameters are actually related to optimization/fitting path
   (see the \code{plot.optim.space} below).}
-  \item{plot.init.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{init.space.df}
+  \item{plot.init.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{df.init.space}
   created by the \code{\link[ggplot2]{facet_wrap}}.}
-  \item{plot.optim.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{optim.space.df}
+  \item{plot.optim.space}{A \code{ggplot2} object, corresponding to graphical representation of the \code{df.optim.space}
   created by the \code{\link[ggplot2]{facet_wrap}}. One can also easily recognize the best fit/optimized parameter set,
   because the \code{Evaluation} with those parameters is highlighted by the green line. Additionally, each optimized parameter
   \emph{vs} evaluation relation is fitted by the \code{\link[stats]{loess}} function implemented
   in the \code{\link[ggplot2]{geom_smooth}} in order to show the trend and the \eqn{95\,\%} confidence interval
-  of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{AIC} and \code{BIC},
-  as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
+  of the parameter optimization. This is especially important for the \code{RSS}, \code{residualSD}, \code{residualMAD},
+  \code{AIC} and \code{BIC}, as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
   \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
   by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.

@@ -179,7 +179,7 @@
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
 #'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-#'   statistical \code{measures} list. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+#'   statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
@@ -338,7 +338,7 @@
 #' ## number of evaluations / iterations:
 #' tempo.test.sim.fit.b$N.evals
 #' #
-#' ## best fit parameters and their names:
+#' ## best fit parameters:
 #' tempo.test.sim.fit.b$best.fit.params
 #' #
 #' ## "Pearson" correlation matrix of the EPR simulation fit:
@@ -1590,8 +1590,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     result.vec <- c(
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]],
-      resid.anal.simple.list$measures$sd, ## residual sd
-      resid.anal.simple.list$measures$mad, ## MAD
+      resid.anal.simple.list$measures[["sd"]], ## residual sd
+      resid.anal.simple.list$measures[["mad"]], ## MAD
       AB.ic.list$abic.vec[1], ## AIC
       AB.ic.list$abic.vec[2] ## BIC
     )

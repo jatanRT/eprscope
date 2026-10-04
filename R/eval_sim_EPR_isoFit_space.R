@@ -826,7 +826,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       plot.caption = element_text(color = "#129001",face = "bold",size = 12)
     ) +
     ggplot2::ggtitle(
-      label = "Space for the Set of Optimized EPR Simulation Parameters & Fit Metrics",
+      label = "Space for the Set of Optimized EPR Simulation Parameters\nFit Metrics: RSS, residualSD, residualMAD, AIC, BIC",
       subtitle = paste0(
         "Evaluated by ",
         paste(toupper(optim.method),collapse = " and "),

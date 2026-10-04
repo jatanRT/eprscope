@@ -93,7 +93,7 @@
 #'   data and the corresponding fit.}
 #'   \item{ra}{Residual analysis - a list consisting of 5 elements: diagnostic plots
 #'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-#'   \code{measures} list. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+#'   \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
 #'   The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
 #'   \code{\link[stats]{acf}} (see also \code{References}). This can be considered as a primary
 #'   "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals

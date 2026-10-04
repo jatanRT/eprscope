@@ -155,118 +155,98 @@
 #'   to sum of the residual squares at each iteration.
 #'
 #'   \item A descriptive message/character string, giving the additional information about the optimization
-#'   procedure/termination. \strong{By default}, this is however \strong{"turned off"}, for the sake of simplicity,
+#'   procedure/termination. \strong{By default} (e.g. within the \code{\link{eval_sim_EPR_isoFit}}),
+#'   this is however \strong{"turned off"}, for the sake of simplicity,
 #'   because most of the information can be found in the previous convergence list element
 #'   or can be activated by the \code{eval.optim.progress} argument.
 #'   }
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## following code snippets were taken from
-#' ## the `quantify_EPR_Sim_series` function
+#' ## generate Gaussian peak UV-Vis spectrum
+#' set.seed(42)
+#' wl <- seq(400, 600, by = 2) ## Wavelength
+#' y  <- 2 * exp(- (wl - 500)^2/(2 * 15^2)) +
+#'   rnorm(length(wl), sd = 0.05) ## Intensity
 #' #
-#' ## if an EPR spectrum consists of several
-#' ## components or several radical spectra partly overlay,
-#' ## following simple function, taking the linear
-#' ## combination of max. 6 EPR simulated intensities,
-#' ## can be applied in order to fit the sum of the individual
-#' ## simulations onto the experimental EPR spectrum
-#' ## envelope, the input parameters therefore correspond
-#' ## to zero-point/intercept(par[1]) and coefficients
-#' ## of the linear combinations(par[2]...par[7]),
-#' ## equal to individual intensity multiplications:
-#' fit_params_specs_par <- function(data,
-#'                                  col.name.pattern,
-#'                                  par){
-#'   #
-#'   # data contains variables/columns of simulated
-#'   # intensities with the headers characterized
-#'   # by the `col.name.patter`
-#'   #
-#'   data <- data[,grep(col.name.pattern,
-#'                      colnames(data),
-#'                      value = TRUE)]
-#'   #
-#'   ## create a sum for all columns/simulated spectra
-#'   if (ncol(data) == 1){
-#'     summa <- par[1] + (par[2] * data[[1]])
-#'   }
-#'   if (ncol(data) == 2){
-#'       summa <- par[1] + (par[2] * data[[1]]) +
-#'       (par[3] * data[[2]])
-#'   }
-#'   if (ncol(data) == 3){
-#'     summa <- par[1] + (par[2] * data[[1]]) +
-#'       (par[3] * data[[2]]) +
-#'       (par[4] * data[[3]])
-#'   }
-#'   if (ncol(data) == 4){
-#'     summa <- par[1] + (par[2] * data[[1]]) +
-#'       (par[3] * data[[2]]) +
-#'       (par[4] * data[[3]]) +
-#'       (par[5] * data[[4]])
-#'   }
-#'   if (ncol(data) == 5){
-#'     summa <- par[1] + (par[2] * data[[1]]) +
-#'       (par[3] * data[[2]]) +
-#'       (par[4] * data[[3]]) +
-#'       (par[5] * data[[4]]) +
-#'       (par[6] * data[[5]])
-#'   }
-#'   if (ncol(data) == 6){
-#'     summa <- par[1] + (par[2] * data[[1]]) +
-#'       (par[3] * data[[2]]) +
-#'       (par[4] * data[[3]]) +
-#'       (par[5] * data[[4]]) +
-#'       (par[6] * data[[5]]) +
-#'       (par[7] * data[[6]])
-#'   }
-#'   #
-#'  return(summa)
-#'  }
-#'  #
-#'  ## following function is applied to vary only
-#'  ## `method`, `function` and `data`
-#' optim_fn <- function(fun,method,data){
-#'   optim.list <-
-#'     optim_for_EPR_fitness(x.0 = optim.params.init,
-#'                           method = method,
-#'                           fn = fun,
-#'                           lower = optim.params.lower,
-#'                           upper = optim.params.upper,
-#'                           Nmax.evals = Nmax.evals,
-#'                           tol.step = tol.step,
-#'                           pswarm.size = pswarm.size,
-#'                           pswarm.diameter = pswarm.diameter,
-#'                           data = data,
-#'                           col.name.pattern =
-#'                           "Sim.*_[[:upper:]]$"
-#'     )
-#'   #
-#'   return(optim.list)
-#'  }
+#' ## data frame
+#' df.model.expr <- data.frame(
+#'   Wavelength_nm = wl,
+#'   Intensity = y
+#' )
 #' #
-#' ## finally, the following function is to be minimized:
-#' min_residuals_ps <- function(data,col.name.pattern,par){
-#'   sum((data[[Intensity.expr]] -
-#'     fit_params_specs_par(data,col.name.pattern,par))^2)
-#'   }
+#' ## parametrize the fitting function
+#' ## `x` and `Intensity.fit` are column headers
+#' Gaussian_Fit_x0 <-
+#'   function(data,x,Intensity.fit,x0) {
+#'   data[[Intensity.fit]] <-
+#'     x0[1] * exp(- (data[[x]] - x0[2])^2 / (2 * x0[3]^2))
+#'   return(data[[Intensity.fit]])
+#' }
 #' #
-#' ## therefore, the final `optimization` list may look like
-#' optimization.list <-
-#'   lapply(seq(data.list),
-#'          function(o) {
-#'          optim_fn(method = optim.method,
-#'          data = data.list[[o]],
-#'          fun = min_residuals_ps)
-#'        }
-#'     )
-#' ## where `data.list` represents the list of data frames
-#' ## including all individual simulated spectra
-#' ## (one data frame for each spectrum + original
-#' ## experimental spectrum intensity column)
+#' ## fitness function
+#' min_residuals_x0 <-
+#'   function(data,x,Intensity.fit,x0) {
+#'   sum(
+#'     ## `"Intensity"`, see `df.model.expr`:
+#'     (data[["Intensity"]] -
+#'        Gaussian_Fit_x0(data,x,Intensity.fit,x0))^2
+#'   )
+#' }
 #' #
+#' ## own optimization
+#' optim.fit.list <-
+#'   optim_for_EPR_fitness(
+#'     method = "neldermead",
+#'     x.0 = c(1.4,480,17), ## initial params. guess
+#'     fn = min_residuals_x0,
+#'     lower = c(1.3,470,13), ## lower bound for `x.0`
+#'     upper = c(2.2,520,18), ## upper bound for `x.0`
+#'     data = df.model.expr,
+#'     x = "Wavelength_nm",
+#'     Intensity.fit = "Fit",
+#'     Nmax.evals = 256
+#'   )
+#' #
+#' ## best optimized parameters
+#' optim.fit.list$par
+#' #
+#' ## min RSS (corresponding to `fn`)
+#' optim.fit.list$value
+#' #
+#' ## number of iterations/evaluations
+#' optim.fit.list$iter
+#' #
+#' ## message + convergence (must be > 0)
+#' optim.fit.list$message
+#' optim.fit.list$convergence
+#' #
+#' ## best fit ("Fit" column) into data frame
+#' df.model.expr[["Fit"]] <-
+#'   Gaussian_Fit_x0(
+#'     data = df.model.expr,
+#'     x = "Wavelength_nm",
+#'     Intensity.fit = "Fit",
+#'     x0 = optim.fit.list$par
+#'   )
+#' #
+#' ## plot experimental + best fit
+#' df.model.expr %>% {
+#'   graphics::plot(
+#'     .$Wavelength_nm,
+#'     .$Intensity,
+#'     xlab = bquote(italic(Wavelength)~~"("~nm~")"),
+#'     ylab = bquote(italic(Intensity)~~~"("~p.d.u.~")"),
+#'     col = "darkcyan",
+#'     pch = 16,
+#'     cex = 1.2
+#'   )
+#'   graphics::lines(
+#'     .$Wavelength_nm,
+#'     .$Fit,
+#'     col = "magenta",
+#'     lwd = 2.4
+#'   )
 #' }
 #'
 #'
@@ -502,8 +482,9 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     #
     ## definition => particle swarm diameter
     ## `sqrt(sum((upper - lower)^2))` ("Euclidean Distance") is the default one
-    pswarm.diameter <- pswarm.diameter %>% `if`(is.null(pswarm.diameter),
-                                                sqrt(sum((upper - lower)^2)), .)
+    pswarm.diameter <- pswarm.diameter %>%
+      `if`(is.null(pswarm.diameter),
+           sqrt(sum((upper - lower)^2)), .)
     #
     ## control of the PSO function
     contrl.list.pso <-
@@ -519,7 +500,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
            ## Can take the value of “SPSO2007” or “SPSO2011”. Defaults to “SPSO2007”.
            vectorize = FALSE, ## Particles are processed in a vectorized manner,
            ## more time efficient for cheap function evaluations.
-           trace = switch(2-eval.optim.progress,1,0) ## showing progress (iterations) of the optim.,
+           trace = switch(2 - eval.optim.progress,1,0) ## showing progress (iterations) of the optim.,
            ## the frequency of tracing is set to `10`,
            ## otherwise can be changed by `REPORT = ...` (20 or 50 or 100 or ...)
       )

@@ -59,7 +59,7 @@ As a result of the Eyring-relation fit, list with the following components is av
   together with the Eyring equation.}
   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-  standard deviation (\code{sd}). For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+  statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like the AIC and BIC,
@@ -287,9 +287,8 @@ activ.kinet.test02.data$vec.HS.uncert
 activ.kinet.test02.data$df.model.HS
 #
 ## corresponding analysis of residuals
-## with residual standard deviation
 activ.kinet.test02.data$ra$plot.rqq()
-activ.kinet.test02.data$ra$sd
+activ.kinet.test02.data$ra$measures
 
 
 

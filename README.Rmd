@@ -260,6 +260,9 @@ triarylamine_rc_decay_model$df.coeffs
 # corresponding to kinetic model fit
 triarylamine_rc_decay_model$cor.df() %>% 
   corrplot::corrplot(addCoef.col = "#c2c2c2")
+#
+## statistical measures of residuals
+triarylamine_rc_decay_model$ra$measures
 
 ```
 

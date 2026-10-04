@@ -257,56 +257,86 @@
 #'   the skewness measures asymmetry, while the kurtosis measures tail weights relative to the normal distribution, independently
 #'   whether it is symmetric or not.
 #'      }
-#'    .}
+#'    }
 #'   }
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## application example for an EPR simulation fit
-#' list.test <-
-#'   plot_eval_RA_forFit(
-#'     data.fit = data.sim.expr,
-#'     residuals = "Residuals",
-#'     fitted = "Simulation",
-#'     resid.xlab = "Simulation",
-#'     k = length(optim.params.init),
-#'     level.cnfd = 0.99
-#'  )
+#' ## generate Gaussian peak UV-Vis spectrum
+#' set.seed(42)
+#' wl <- seq(400, 600, by = 2) ## Wavelength
+#' y  <- 2 * exp(-(wl - 500)^2/(2 * 15^2)) +
+#'   rnorm(length(wl), sd = 0.05) ## Intensity
 #' #
-#' ## residual and the normal Q-Q plot
-#' list.test$plot.rqq()
-#' #
-#' ## residual and Q-Q plot for the Student's t distro
-#' ## with 4 degrees of freedom
-#' list.test$plot.rqq(residuals.distro = "t",df = 4)
-#' #
-#' ## histogram and probability density
-#' list.test$plot.histDens
-#' #
-#' ## standard deviation of residuals
-#' list.test$sd
-#' #
-#' ## from the data, quickly create the residuals vs
-#' ## observation order plot (assuming there
-#' ## is no index column in the data frame)
-#' dataframe <- list.test$df
-#' dataframe[["index"]] <- 1:nrow(dataframe)
-#' plot(
-#'   dataframe$index,
-#'   dataframe$Residuals,
-#'   xlab = "Observation Order",
-#'   ylab = "Residuals"
+#' ## fit
+#' fit <- stats::nls(
+#'   y ~ A * exp(-(wl - mu)^2/(2 * sig^2)),
+#'   start = list(A = 1.5, mu = 490, sig = 20)
 #' )
 #' #
-#' ## for additional examples, please,
-#' ## refer to the `eval_sim_EPR_isoFit`
-#' ## or `eval_kinR_EPR_modelFit`
+#' ## residuals
+#' e <- stats::residuals(fit)
 #' #
+#' ## overall data frame
+#' df.model.expr <- data.frame(
+#'   Wavelength_nm = wl,
+#'   Intensity = y,
+#'   Fit = stats::predict(fit),
+#'   Residuals = e
+#' )
+#' #
+#' ## plot spectrum and fit
+#' df.model.expr %>% {
+#'   graphics::plot(
+#'     .$Wavelength_nm,
+#'     .$Intensity,
+#'     xlab = bquote(italic(Wavelength)~~"("~nm~")"),
+#'     ylab = bquote(italic(Intensity)~~~"("~p.d.u.~")"),
+#'     col = "darkcyan",
+#'     pch = 16,
+#'     cex = 1.2
+#'   )
+#'   graphics::lines(
+#'     .$Wavelength_nm,
+#'     .$Fit,
+#'     col = "magenta",
+#'     lwd = 2.4
+#'   )
+#' }
+#' #
+#' ra.spectrum.list <-
+#'   plot_eval_RA_forFit(
+#'     data.fit = df.model.expr,
+#'     residuals = "Residuals",
+#'     fitted = "Fit",
+#'     resid.xlab = "Spectrum Fit",
+#'     k = 3
+#'   )
+#' #
+#' ## residual and q-q plot
+#' ## considering default normal
+#' ## distribution of residuals
+#' ra.spectrum.list$plot.rqq()
+#' #
+#' ## residual measures (named vector)
+#' ra.spectrum.list$measures
+#' #
+#' ## check the residuals vs observation
+#' ## order, first off all create an `index`
+#' ## variable/column
+#' df.model.expr[["index"]] <- 1:nrow(df.model.expr)
+#' df.model.expr %>% {
+#'   graphics::plot(
+#'     .$index,
+#'     .$Residuals,
+#'     xlab = bquote(italic(Observation~~Order)),
+#'     ylab = bquote(italic(Residuals))
+#'   )
 #' }
 #'
 #'
 #' @export
+#'
 #'
 #' @importFrom ggplot2 annotate ggplot_build
 #' @importFrom MASS rlm
@@ -323,13 +353,6 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   ## 'Temporary' processing variables
   . <- NULL
   count <- NULL
-  # m2 <- NULL
-  # m3 <- NULL
-  # m4 <- NULL
-  # g1 <- NULL
-  # g2 <- NULL
-  # G1 <- NULL
-  # G2 <- NULL
   #
   ## ============================== GENERAL & MEASURES ===============================
   #
@@ -337,12 +360,25 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
   if (is.null(residuals) || is.null(fitted)) {
     stop(' Does your data frame already contain a column header(s),\n
          pointing to "residuals" and/or "fitted"/"predicted" values?\n
-         If yes, please, provide it ! Refer to the corresponding arguments.\n
-         If it is not the case, calculate the column(s) within the `data.fit` !! ')
+         If yes, please specify ! Refer to the corresponding arguments.\n
+         If it is not the case, calculate the relevant column(s)\n
+         within the `data.fit` !! ')
   }
   #
   ## number of observations
-  Nobs <- nrow(data.fit)
+  ## define later after filtering,
+  ## see below
+  # Nobs <- nrow(data.fit)
+  #
+  ## main residual vector
+  resids.vec <- data.fit[[residuals]]
+  #
+  ## check if the residual vector is finite and filter out (e.g. NA, Inf)
+  resids.ok <- is.finite(resids.vec)
+  resids.vec <- resids.vec[resids.ok]
+  #
+  ## redefine `Nobs`
+  Nobs <- length(resids.vec)
   #
   ## condition for the number of observation
   if (Nobs < 4) {
@@ -350,12 +386,6 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
          for any meaningfull/detailed analysis ! Additional 'experiments'\n
          are needed to proceed !")
   }
-  ## main residual vector
-  resids.vec <- data.fit[[residuals]]
-  #
-  ## check if the residual vector is finite and filter out (e.g. NA, Inf)
-  resids.ok <- is.finite(resids.vec)
-  resids.vec <- resids.vec[resids.ok]
   #
   ## standard deviation (sometimes as standard error)
   ## of residuals for the model
@@ -486,9 +516,9 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       df <- list(...)[["df"]]
       if (is.null(df)) {
         stop(" Please specify the degrees of freedom (df) for the t/Student's\n
-             distribution !! See the definition of `...` argument\n
-             in the `plot.rqq()` function within the output list !! \n
-             To figure out the `df`, please run `list$abic` for your\n
+             distribution ! See the definition of `...` argument\n
+             in the `plot.rqq()` function within the output list ! \n
+             To figure out the `df`, please run the `list$abic` for your\n
              specific fit output `list`.")
       } else {
         degree.free <- df ## for the graph title
