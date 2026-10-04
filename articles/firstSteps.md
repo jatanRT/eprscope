@@ -1350,8 +1350,8 @@ var(dimer.kinetics.01$ra$df$residuals)
 #> [1] 1.7955341e-06
 #
 # residuals sd
-dimer.kinetics.01$ra$sd
-#> NULL
+dimer.kinetics.01$ra$measures[["sd"]]
+#> [1] 0.0013537513
 ```
 
 This is likely due to the noisy baseline in the EPR spectra as shown in

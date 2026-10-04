@@ -1025,8 +1025,8 @@ Figure 4.1: Pipe operator setup within the Rstudio Options.
 <span><span class="co">#&gt; [1] 1.7955341e-06</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># residuals sd</span></span>
-<span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span><span class="va">dimer.kinetics.01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">measures</span><span class="op">[[</span><span class="st">"sd"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 0.0013537513</span></span></code></pre></div>
 <p>This is likely due to the noisy baseline in the EPR spectra as shown in the Section <a href="#sec-tidy-and-messy-data">4.4</a> and the subsequent integration. However, by the simulation and fitting of each simulated spectrum onto the experimental one in the entire kinetic series, we can obtain much better results as shown by <code>Examples</code> in the <code><a href="../reference/eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit()</a></code> function documentation.</p>
 </div>
 </div>
