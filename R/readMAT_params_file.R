@@ -6,11 +6,12 @@
 #'
 #'
 #' @description
-#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides the reading of a \code{.mat} (MATLAB workspace)
+#'   Function is based on the \code{\link[R.matlab]{readMat}} and provides reading of a \code{.mat} (MATLAB workspace)
 #'   simulation (+ fitting) file content from \emph{EasySpin}, including structures/variables and fields.
-#'   It can be also used to read and store simulated EPR spectrum in the form of R data frame (see \code{Examples}).
-#'   In order to present the simulated/fitted spectra, represented by such a data frame, please refer
-#'   to the \code{\link{present_EPR_Sim_Spec}} function.
+#'   It enables reading and storing of \emph{EasySpin} simulated EPR spectrum
+#'   in the form of R data frame (see \code{Examples}). In order to visualize the simulated/fitted spectra,
+#'   represented by such a data frame, please refer to the \code{\link{present_EPR_Sim_Spec}} function
+#'   and the corresponding \code{Examples}.
 #'
 #'
 #' @param path_to_MAT Character string, path to \code{.mat} MATLAB file with all variables saved in MATLAB workspace.
@@ -136,12 +137,14 @@
 #'   )
 #' #
 #' ## create lists (temporary variables)
-#' list.argsfit.a <- tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
-#' list.argsfit.b <- tmpd.easyspin6.argsfit[[2]][[1]][ , , 1]
+#' list.argsfit.a <-
+#'   tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+#' list.argsfit.b <-
+#'   tmpd.easyspin6.argsfit[[2]][[1]][ , , 1]
 #' #
 #' ## final list
 #' list.argsfit.final <-
-#'   do.call(c,list(list.argsfit.a,list.argsfit.b))
+#'   append(list.argsfit.a,list.argsfit.b)
 #' #
 #' ## convert it into nicely structured lists with
 #' ## all arguments/parameters
@@ -160,12 +163,14 @@
 readMAT_params_file <- function(path_to_MAT,
                                 str.var = NULL,
                                 field.var = NULL) {
+  #
+  ## entire list
+  data.params <- R.matlab::readMat(path_to_MAT)
+  #
   if (is.null(str.var) & is.null(field.var)){
-    ## list
-    data.params <- readMat(path_to_MAT)
     return(data.params)
-  } else{
-    data.params <- readMat(path_to_MAT)
+  } else {
+    #
     if (is.null(field.var)) {
       params <- data.params[[str.var]]
       ## dimension (required fro additional processing) of `params`
@@ -189,20 +194,25 @@ readMAT_params_file <- function(path_to_MAT,
       }
       #
     } else {
-      params <- data.params[[str.var]][, , 1][[field.var]]
-      #
-      ## dimension and the condition
-      params.dim <- dim(params)
-      if (length(params.dim) > 2){
-        ## convert it into list
-        params <- params[, ,1]
-        ## convert all its components into vectors
-        params <- lapply(params, function(x) c(x))
+      if (is.null(str.var)) {
+        stop("  Structure variable string (the 1st component in the heirarchy)\n
+              must be defined ! Please specify the `str.var`.  ")
+      } else {
+        params <- data.params[[str.var]][, , 1][[field.var]]
+        #
+        ## dimension and the condition
+        params.dim <- dim(params)
+        if (length(params.dim) > 2) {
+          ## convert it into list
+          params <- params[, ,1]
+          ## convert all its components into vectors
+          params <- lapply(params, function(x) c(x))
+        }
+        if (length(params.dim) <= 2)
+          ## convert it into vector
+          params <- c(params)
+        #
       }
-      if (length(params.dim) <= 2)
-      ## convert it into vector
-      params <- c(params)
-      #
     }
     #
     return(params)

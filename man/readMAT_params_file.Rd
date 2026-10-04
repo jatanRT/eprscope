@@ -23,11 +23,12 @@ Unless the \code{str.var} and/or \code{field.var} are not specified, the output 
   \code{vector/value} or list depending on \code{class} of the original parameter/field variable.
 }
 \description{
-Function is based on the \code{\link[R.matlab]{readMat}} and provides the reading of a \code{.mat} (MATLAB workspace)
+Function is based on the \code{\link[R.matlab]{readMat}} and provides reading of a \code{.mat} (MATLAB workspace)
   simulation (+ fitting) file content from \emph{EasySpin}, including structures/variables and fields.
-  It can be also used to read and store simulated EPR spectrum in the form of R data frame (see \code{Examples}).
-  In order to present the simulated/fitted spectra, represented by such a data frame, please refer
-  to the \code{\link{present_EPR_Sim_Spec}} function.
+  It enables reading and storing of \emph{EasySpin} simulated EPR spectrum
+  in the form of R data frame (see \code{Examples}). In order to visualize the simulated/fitted spectra,
+  represented by such a data frame, please refer to the \code{\link{present_EPR_Sim_Spec}} function
+  and the corresponding \code{Examples}.
 }
 \examples{
 ## loading the package built-in
@@ -138,12 +139,14 @@ tmpd.easyspin6.argsfit <-
   )
 #
 ## create lists (temporary variables)
-list.argsfit.a <- tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
-list.argsfit.b <- tmpd.easyspin6.argsfit[[2]][[1]][ , , 1]
+list.argsfit.a <-
+  tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+list.argsfit.b <-
+  tmpd.easyspin6.argsfit[[2]][[1]][ , , 1]
 #
 ## final list
 list.argsfit.final <-
-  do.call(c,list(list.argsfit.a,list.argsfit.b))
+  append(list.argsfit.a,list.argsfit.b)
 #
 ## convert it into nicely structured lists with
 ## all arguments/parameters

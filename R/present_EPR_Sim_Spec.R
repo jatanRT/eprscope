@@ -283,16 +283,15 @@ present_EPR_Sim_Spec <- function(data.spectr.expr,
   ## New data frame with both spectra
   ## (select only required columns/variables)
   both.spectr.data <- both.spectr.data %>%
-    dplyr::select(dplyr::all_of(c(paste0("Bsim_", B.unit),
-                                  paste0("B_",B.unit),
-                                  Intensity.sim,
-                                  Intensity.expr,
-                                  paste0("Norm_",Intensity.sim))))
-    # dplyr::select(.data[[paste0("Bsim_", B.unit)]],
-    #               .data[[paste0("B_",B.unit)]],
-    #               .data[[Intensity.sim]],
-    #               .data[[Intensity.expr]],
-    #               .data[[paste0("Norm_",Intensity.sim)]])
+    dplyr::select(
+      dplyr::all_of(
+        c(paste0("Bsim_", B.unit),
+          paste0("B_",B.unit),
+          Intensity.sim,
+          Intensity.expr,
+          paste0("Norm_",Intensity.sim))
+      )
+    )
   #
   ## for Blim check the min and max of both B variables (columns)
   Bmin.sim <- min(both.spectr.data[[paste0("Bsim_", B.unit)]])
