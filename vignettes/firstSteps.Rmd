@@ -902,7 +902,7 @@ However, it is evident that its dispersion ➨ variance and the standard deviati
 var(dimer.kinetics.01$ra$df$residuals)
 #
 # residuals sd
-dimer.kinetics.01$ra$sd
+dimer.kinetics.01$ra$measures[["sd"]]
 
 ```
 

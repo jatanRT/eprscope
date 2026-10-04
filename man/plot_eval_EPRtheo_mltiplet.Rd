@@ -71,6 +71,7 @@ Other Simulations and Optimization:
 \code{\link[=eval_sim_EPR_iso]{eval_sim_EPR_iso()}},
 \code{\link[=eval_sim_EPR_isoFit]{eval_sim_EPR_isoFit()}},
 \code{\link[=eval_sim_EPR_isoFit_space]{eval_sim_EPR_isoFit_space()}},
+\code{\link[=eval_sim_EPR_isoFitb]{eval_sim_EPR_isoFitb()}},
 \code{\link[=eval_sim_EPR_iso_combo]{eval_sim_EPR_iso_combo()}},
 \code{\link[=optim_for_EPR_fitness]{optim_for_EPR_fitness()}},
 \code{\link[=plot_eval_RA_forFit]{plot_eval_RA_forFit()}},
