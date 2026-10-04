@@ -356,9 +356,9 @@ triarylamine_rc_decay_model$plot
 # fit and numeric solution of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>           Estimate    Std. Error    t value       Pr(>|t|)
-#> qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149
-#> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
-#> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
+#> qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149
+#> k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19
+#> alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101
 #
 # graphical representation of the ("Pearson") correlation matrix,
 # corresponding to kinetic model fit
@@ -367,6 +367,17 @@ triarylamine_rc_decay_model$cor.df() %>%
 ```
 
 ![](reference/figures/README-kinetic-model-fit-2.png)
+
+``` r
+
+#
+## statistical measures of residuals
+triarylamine_rc_decay_model$ra$measures
+#>            bias          median             mad              sd kurtosis.excess 
+#>  -6.7357810e-07   8.6160773e-06   1.2593114e-04   1.1715059e-04  -4.5285275e-01 
+#>        skewness 
+#>  -2.9758913e-01
+```
 
 ## Help, Questions and Contribution
 

@@ -294,9 +294,9 @@ a list with the following elements is provided:
   simulation fitting parameters corresponding to `optim.params.init` and
   `optim.params.init.dvary`. Each variable/column corresponds to EPR
   simulation parameter to be optimized and each observation/row is
-  related to one `N.points.space`, dividing the range for each parameter
-  defined by the `optim.params.init.dvary`. The fitting/optimization is
-  performed for each row of the `init.space.df`.
+  related to one `N.points.space`, dividing the range for each
+  parameter, defined by the `optim.params.init.dvary`. The
+  fitting/optimization is performed for each row of the `init.space.df`.
 
 - df.optim.space:
 
@@ -304,21 +304,22 @@ a list with the following elements is provided:
   EPR simulation parameters (after the fitting procedure). In addition,
   the `optim.space.df` contains the following metrics of the
   optimization/fitting as variables/columns: sum of the residual squares
-  `RSS`, standard deviation of residuals `residualSD`, Akaike
-  information criterion `AIC` and Bayesian information criterion `BIC`.
-  These four parameters are actually related to optimization/fitting
-  path (see the `plot.optim.space` below).
+  `RSS`, standard deviation of residuals `residualSD`, median absolute
+  deviation of residuals `residualMAD`, Akaike information criterion
+  `AIC` and Bayesian information criterion `BIC`. These parameters are
+  actually related to optimization/fitting path (see the
+  `plot.optim.space` below).
 
 - plot.init.space:
 
   A `ggplot2` object, corresponding to graphical representation of the
-  `init.space.df` created by the
+  `df.init.space` created by the
   [`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html).
 
 - plot.optim.space:
 
   A `ggplot2` object, corresponding to graphical representation of the
-  `optim.space.df` created by the
+  `df.optim.space` created by the
   [`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html).
   One can also easily recognize the best fit/optimized parameter set,
   because the `Evaluation` with those parameters is highlighted by the
@@ -329,8 +330,9 @@ a list with the following elements is provided:
   [`geom_smooth`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
   in order to show the trend and the \\95\\\\\\ confidence interval of
   the parameter optimization. This is especially important for the
-  `RSS`, `residualSD`, `AIC` and `BIC`, as they represent "hills" and
-  "valleys" of the optimization/fitting path to identify the minima.
+  `RSS`, `residualSD`, `residualMAD`, `AIC` and `BIC`, as they represent
+  "hills" and "valleys" of the optimization/fitting path to identify the
+  minima.
 
 - best.fit.params:
 

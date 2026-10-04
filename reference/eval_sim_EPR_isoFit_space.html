@@ -305,29 +305,30 @@ like <code>tol.step</code>, <code>pswarm</code> arguments (if <code>optim.method
 <dd><p>A data frame object representing hyperspace of the initial EPR simulation fitting parameters
   corresponding to <code>optim.params.init</code> and <code>optim.params.init.dvary</code>. Each variable/column corresponds
   to EPR simulation parameter to be optimized and each observation/row is related to one <code>N.points.space</code>,
-  dividing the range for each parameter defined by the <code>optim.params.init.dvary</code>. The fitting/optimization
+  dividing the range for each parameter, defined by the <code>optim.params.init.dvary</code>. The fitting/optimization
   is performed for each row of the <code>init.space.df</code>.</p></dd>
 
   <dt>df.optim.space</dt>
 <dd><p>Data frame object similar to <code>init.space.df</code>, however with optimized EPR simulation
   parameters (after the fitting procedure). In addition, the <code>optim.space.df</code> contains the following metrics
   of the optimization/fitting as variables/columns: sum of the residual squares <code>RSS</code>,
-  standard deviation of residuals <code>residualSD</code>, Akaike information criterion <code>AIC</code> and Bayesian information
-  criterion <code>BIC</code>. These four parameters are actually related to optimization/fitting path
+  standard deviation of residuals <code>residualSD</code>, median absolute deviation of residuals <code>residualMAD</code>,
+  Akaike information criterion <code>AIC</code> and Bayesian information
+  criterion <code>BIC</code>. These parameters are actually related to optimization/fitting path
   (see the <code>plot.optim.space</code> below).</p></dd>
 
   <dt>plot.init.space</dt>
-<dd><p>A <code>ggplot2</code> object, corresponding to graphical representation of the <code>init.space.df</code>
+<dd><p>A <code>ggplot2</code> object, corresponding to graphical representation of the <code>df.init.space</code>
   created by the <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></code>.</p></dd>
 
   <dt>plot.optim.space</dt>
-<dd><p>A <code>ggplot2</code> object, corresponding to graphical representation of the <code>optim.space.df</code>
+<dd><p>A <code>ggplot2</code> object, corresponding to graphical representation of the <code>df.optim.space</code>
   created by the <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></code>. One can also easily recognize the best fit/optimized parameter set,
   because the <code>Evaluation</code> with those parameters is highlighted by the green line. Additionally, each optimized parameter
   <em>vs</em> evaluation relation is fitted by the <code><a href="https://rdrr.io/r/stats/loess.html" class="external-link">loess</a></code> function implemented
   in the <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></code> in order to show the trend and the \(95\,\%\) confidence interval
-  of the parameter optimization. This is especially important for the <code>RSS</code>, <code>residualSD</code>, <code>AIC</code> and <code>BIC</code>,
-  as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.</p></dd>
+  of the parameter optimization. This is especially important for the <code>RSS</code>, <code>residualSD</code>, <code>residualMAD</code>,
+  <code>AIC</code> and <code>BIC</code>, as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.</p></dd>
 
   <dt>best.fit.params</dt>
 <dd><p>Named vector of the best final fitting (optimized) parameters (in the <code>plot.optim.space</code> distinguished

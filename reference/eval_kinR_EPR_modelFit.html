@@ -259,7 +259,7 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
   <dt>ra</dt>
 <dd><p>Residual analysis - a list consisting of 5 elements: diagnostic plots
   <code>plot.rqq()</code> function, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
-  standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.
+  <code>measures</code> vector. For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.
   The last element (<code>plot.acf</code>) is a diagnostic graph of the <strong>a</strong>uto<strong>c</strong>orrelation <strong>f</strong>unction
   <code><a href="https://rdrr.io/r/stats/acf.html" class="external-link">acf</a></code> (see also <code>References</code>). This can be considered as a primary
   "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals
@@ -450,9 +450,12 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.acf</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_EPR_modelFit-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## standard deviation of residuals</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00011872565</span>
+<span class="r-in"><span><span class="co">## statistical measures of residuals</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_01</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">measures</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            bias          median             mad              sd kurtosis.excess </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2.0354647e-06   8.0183779e-06   1.2431322e-04   1.1872565e-04  -2.8895693e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        skewness </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -3.5338673e-01 </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
 <span class="r-in"><span><span class="co">##  + information about the residuals distribution</span></span></span>
@@ -502,9 +505,12 @@ by the <code>control = minpack.lm::nls.lm.control()</code>.</p></dd>
 <span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.acf</span></span></span>
 <span class="r-plt img"><img src="eval_kinR_EPR_modelFit-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## standard deviation of residuals</span></span></span>
-<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.00063538776</span>
+<span class="r-in"><span><span class="co">## statistical measures of residuals</span></span></span>
+<span class="r-in"><span><span class="va">triaryl_model_kin_fit_02</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">measures</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            bias          median             mad              sd kurtosis.excess </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.1027040e-05  -5.2872112e-05   7.7078819e-04   6.3538776e-04   5.2910779e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        skewness </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   7.6604997e-01 </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC) +</span></span></span>
 <span class="r-in"><span><span class="co">## + information about the residuals distribution</span></span></span>

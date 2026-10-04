@@ -225,7 +225,8 @@ in the case if <code>fix.optim.x.0.id = NULL</code>, the parameters can be fixed
   of <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, it returns a vector with the values equal
   to sum of the residual squares at each iteration.</p></li>
 <li><p>A descriptive message/character string, giving the additional information about the optimization
-  procedure/termination. <strong>By default</strong>, this is however <strong>"turned off"</strong>, for the sake of simplicity,
+  procedure/termination. <strong>By default</strong> (e.g. within the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>),
+  this is however <strong>"turned off"</strong>, for the sake of simplicity,
   because most of the information can be found in the previous convergence list element
   or can be activated by the <code>eval.optim.progress</code> argument.</p></li>
 </ol></div>
@@ -284,112 +285,97 @@ in the case if <code>fix.optim.x.0.id = NULL</code>, the parameters can be fixed
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co">## following code snippets were taken from</span></span></span>
-<span class="r-in"><span><span class="co">## the `quantify_EPR_Sim_series` function</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## generate Gaussian peak UV-Vis spectrum</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">wl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">600</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co">## Wavelength</span></span></span>
+<span class="r-in"><span><span class="va">y</span>  <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span> <span class="op">(</span><span class="va">wl</span> <span class="op">-</span> <span class="fl">500</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">/</span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">15</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">wl</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="co">## Intensity</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## if an EPR spectrum consists of several</span></span></span>
-<span class="r-in"><span><span class="co">## components or several radical spectra partly overlay,</span></span></span>
-<span class="r-in"><span><span class="co">## following simple function, taking the linear</span></span></span>
-<span class="r-in"><span><span class="co">## combination of max. 6 EPR simulated intensities,</span></span></span>
-<span class="r-in"><span><span class="co">## can be applied in order to fit the sum of the individual</span></span></span>
-<span class="r-in"><span><span class="co">## simulations onto the experimental EPR spectrum</span></span></span>
-<span class="r-in"><span><span class="co">## envelope, the input parameters therefore correspond</span></span></span>
-<span class="r-in"><span><span class="co">## to zero-point/intercept(par[1]) and coefficients</span></span></span>
-<span class="r-in"><span><span class="co">## of the linear combinations(par[2]...par[7]),</span></span></span>
-<span class="r-in"><span><span class="co">## equal to individual intensity multiplications:</span></span></span>
-<span class="r-in"><span><span class="va">fit_params_specs_par</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,</span></span>
-<span class="r-in"><span>                                 <span class="va">col.name.pattern</span>,</span></span>
-<span class="r-in"><span>                                 <span class="va">par</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="co">#</span></span></span>
-<span class="r-in"><span>  <span class="co"># data contains variables/columns of simulated</span></span></span>
-<span class="r-in"><span>  <span class="co"># intensities with the headers characterized</span></span></span>
-<span class="r-in"><span>  <span class="co"># by the `col.name.patter`</span></span></span>
-<span class="r-in"><span>  <span class="co">#</span></span></span>
-<span class="r-in"><span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="va">col.name.pattern</span>,</span></span>
-<span class="r-in"><span>                     <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                     value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="co">#</span></span></span>
-<span class="r-in"><span>  <span class="co">## create a sum for all columns/simulated spectra</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">summa</span> <span class="op">&lt;-</span> <span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>      <span class="va">summa</span> <span class="op">&lt;-</span> <span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">summa</span> <span class="op">&lt;-</span> <span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">summa</span> <span class="op">&lt;-</span> <span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">5</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">summa</span> <span class="op">&lt;-</span> <span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">summa</span> <span class="op">&lt;-</span> <span class="va">par</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>      <span class="op">(</span><span class="va">par</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span> <span class="op">*</span> <span class="va">data</span><span class="op">[[</span><span class="fl">6</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
-<span class="r-in"><span>  <span class="co">#</span></span></span>
-<span class="r-in"><span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">summa</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">}</span></span></span>
-<span class="r-in"><span> <span class="co">#</span></span></span>
-<span class="r-in"><span> <span class="co">## following function is applied to vary only</span></span></span>
-<span class="r-in"><span> <span class="co">## `method`, `function` and `data`</span></span></span>
-<span class="r-in"><span><span class="va">optim_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fun</span>,<span class="va">method</span>,<span class="va">data</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">optim.list</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>    <span class="fu">optim_for_EPR_fitness</span><span class="op">(</span>x.0 <span class="op">=</span> <span class="va">optim.params.init</span>,</span></span>
-<span class="r-in"><span>                          method <span class="op">=</span> <span class="va">method</span>,</span></span>
-<span class="r-in"><span>                          fn <span class="op">=</span> <span class="va">fun</span>,</span></span>
-<span class="r-in"><span>                          lower <span class="op">=</span> <span class="va">optim.params.lower</span>,</span></span>
-<span class="r-in"><span>                          upper <span class="op">=</span> <span class="va">optim.params.upper</span>,</span></span>
-<span class="r-in"><span>                          Nmax.evals <span class="op">=</span> <span class="va">Nmax.evals</span>,</span></span>
-<span class="r-in"><span>                          tol.step <span class="op">=</span> <span class="va">tol.step</span>,</span></span>
-<span class="r-in"><span>                          pswarm.size <span class="op">=</span> <span class="va">pswarm.size</span>,</span></span>
-<span class="r-in"><span>                          pswarm.diameter <span class="op">=</span> <span class="va">pswarm.diameter</span>,</span></span>
-<span class="r-in"><span>                          data <span class="op">=</span> <span class="va">data</span>,</span></span>
-<span class="r-in"><span>                          col.name.pattern <span class="op">=</span></span></span>
-<span class="r-in"><span>                          <span class="st">"Sim.*_[[:upper:]]$"</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="co">#</span></span></span>
-<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">optim.list</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co">## data frame</span></span></span>
+<span class="r-in"><span><span class="va">df.model.expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  Wavelength_nm <span class="op">=</span> <span class="va">wl</span>,</span></span>
+<span class="r-in"><span>  Intensity <span class="op">=</span> <span class="va">y</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## finally, the following function is to be minimized:</span></span></span>
-<span class="r-in"><span><span class="va">min_residuals_ps</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,<span class="va">col.name.pattern</span>,<span class="va">par</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="va">Intensity.expr</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span></span></span>
-<span class="r-in"><span>    <span class="fu">fit_params_specs_par</span><span class="op">(</span><span class="va">data</span>,<span class="va">col.name.pattern</span>,<span class="va">par</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co">## parametrize the fitting function</span></span></span>
+<span class="r-in"><span><span class="co">## `x` and `Intensity.fit` are column headers</span></span></span>
+<span class="r-in"><span><span class="va">Gaussian_Fit_x0</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,<span class="va">x</span>,<span class="va">Intensity.fit</span>,<span class="va">x0</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span><span class="op">[[</span><span class="va">Intensity.fit</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>    <span class="va">x0</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span> <span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">x0</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">x0</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="va">Intensity.fit</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## therefore, the final `optimization` list may look like</span></span></span>
-<span class="r-in"><span><span class="va">optimization.list</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">data.list</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>         <span class="kw">function</span><span class="op">(</span><span class="va">o</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>         <span class="fu">optim_fn</span><span class="op">(</span>method <span class="op">=</span> <span class="va">optim.method</span>,</span></span>
-<span class="r-in"><span>         data <span class="op">=</span> <span class="va">data.list</span><span class="op">[[</span><span class="va">o</span><span class="op">]</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>         fun <span class="op">=</span> <span class="va">min_residuals_ps</span><span class="op">)</span></span></span>
-<span class="r-in"><span>       <span class="op">}</span></span></span>
-<span class="r-in"><span>    <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">## where `data.list` represents the list of data frames</span></span></span>
-<span class="r-in"><span><span class="co">## including all individual simulated spectra</span></span></span>
-<span class="r-in"><span><span class="co">## (one data frame for each spectrum + original</span></span></span>
-<span class="r-in"><span><span class="co">## experimental spectrum intensity column)</span></span></span>
+<span class="r-in"><span><span class="co">## fitness function</span></span></span>
+<span class="r-in"><span><span class="va">min_residuals_x0</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,<span class="va">x</span>,<span class="va">Intensity.fit</span>,<span class="va">x0</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="co">## `"Intensity"`, see `df.model.expr`:</span></span></span>
+<span class="r-in"><span>    <span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="st">"Intensity"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span>       <span class="fu">Gaussian_Fit_x0</span><span class="op">(</span><span class="va">data</span>,<span class="va">x</span>,<span class="va">Intensity.fit</span>,<span class="va">x0</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co">## own optimization</span></span></span>
+<span class="r-in"><span><span class="va">optim.fit.list</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">optim_for_EPR_fitness</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"neldermead"</span>,</span></span>
+<span class="r-in"><span>    x.0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.4</span>,<span class="fl">480</span>,<span class="fl">17</span><span class="op">)</span>, <span class="co">## initial params. guess</span></span></span>
+<span class="r-in"><span>    fn <span class="op">=</span> <span class="va">min_residuals_x0</span>,</span></span>
+<span class="r-in"><span>    lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.3</span>,<span class="fl">470</span>,<span class="fl">13</span><span class="op">)</span>, <span class="co">## lower bound for `x.0`</span></span></span>
+<span class="r-in"><span>    upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2</span>,<span class="fl">520</span>,<span class="fl">18</span><span class="op">)</span>, <span class="co">## upper bound for `x.0`</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">df.model.expr</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"Wavelength_nm"</span>,</span></span>
+<span class="r-in"><span>    Intensity.fit <span class="op">=</span> <span class="st">"Fit"</span>,</span></span>
+<span class="r-in"><span>    Nmax.evals <span class="op">=</span> <span class="fl">256</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## best optimized parameters</span></span></span>
+<span class="r-in"><span><span class="va">optim.fit.list</span><span class="op">$</span><span class="va">par</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]   2.0124565 500.1720983  14.8447207</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## min RSS (corresponding to `fn`)</span></span></span>
+<span class="r-in"><span><span class="va">optim.fit.list</span><span class="op">$</span><span class="va">value</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.26573924</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## number of iterations/evaluations</span></span></span>
+<span class="r-in"><span><span class="va">optim.fit.list</span><span class="op">$</span><span class="va">iter</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 184</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## message + convergence (must be &gt; 0)</span></span></span>
+<span class="r-in"><span><span class="va">optim.fit.list</span><span class="op">$</span><span class="va">message</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NLOPT_XTOL_REACHED: Optimization stopped because xtol_rel or xtol_abs (above) was reached."</span>
+<span class="r-in"><span><span class="va">optim.fit.list</span><span class="op">$</span><span class="va">convergence</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## best fit ("Fit" column) into data frame</span></span></span>
+<span class="r-in"><span><span class="va">df.model.expr</span><span class="op">[[</span><span class="st">"Fit"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">Gaussian_Fit_x0</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">df.model.expr</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"Wavelength_nm"</span>,</span></span>
+<span class="r-in"><span>    Intensity.fit <span class="op">=</span> <span class="st">"Fit"</span>,</span></span>
+<span class="r-in"><span>    x0 <span class="op">=</span> <span class="va">optim.fit.list</span><span class="op">$</span><span class="va">par</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## plot experimental + best fit</span></span></span>
+<span class="r-in"><span><span class="va">df.model.expr</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">.</span><span class="op">$</span><span class="va">Wavelength_nm</span>,</span></span>
+<span class="r-in"><span>    <span class="va">.</span><span class="op">$</span><span class="va">Intensity</span>,</span></span>
+<span class="r-in"><span>    xlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="fu">italic</span><span class="op">(</span><span class="va">Wavelength</span><span class="op">)</span><span class="op">~</span><span class="op">~</span><span class="st">"("</span><span class="op">~</span><span class="va">nm</span><span class="op">~</span><span class="st">")"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    ylab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="fu">italic</span><span class="op">(</span><span class="va">Intensity</span><span class="op">)</span><span class="op">~</span><span class="op">~</span><span class="op">~</span><span class="st">"("</span><span class="op">~</span><span class="va">p.d.u.</span><span class="op">~</span><span class="st">")"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    col <span class="op">=</span> <span class="st">"darkcyan"</span>,</span></span>
+<span class="r-in"><span>    pch <span class="op">=</span> <span class="fl">16</span>,</span></span>
+<span class="r-in"><span>    cex <span class="op">=</span> <span class="fl">1.2</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">.</span><span class="op">$</span><span class="va">Wavelength_nm</span>,</span></span>
+<span class="r-in"><span>    <span class="va">.</span><span class="op">$</span><span class="va">Fit</span>,</span></span>
+<span class="r-in"><span>    col <span class="op">=</span> <span class="st">"magenta"</span>,</span></span>
+<span class="r-in"><span>    lwd <span class="op">=</span> <span class="fl">2.4</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="optim_for_EPR_fitness-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

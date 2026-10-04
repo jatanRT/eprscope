@@ -4,10 +4,9 @@ This article/vignette deals with essential syntax and/or basic commands
 to run the [eprscope](https://jatanrt.github.io/eprscope/) functions.
 For details or more advanced programming experience, please refer to the
 resources in [*README*
-file/Homepage](https://jatanrt.github.io/eprscope/index.html). Sections,
-discussing the basics of plotting (several plots are already presented)
-and operations with strings will be added in the upcoming package
-versions.
+file/Homepage](https://jatanrt.github.io/eprscope/index.html). Section,
+discussing the basics of string operations will be added in the upcoming
+package versions.
 
 ## 1 Variable/Function Names and Assignment
 
@@ -1352,7 +1351,7 @@ var(dimer.kinetics.01$ra$df$residuals)
 #
 # residuals sd
 dimer.kinetics.01$ra$sd
-#> [1] 0.0013537513
+#> NULL
 ```
 
 This is likely due to the noisy baseline in the EPR spectra as shown in

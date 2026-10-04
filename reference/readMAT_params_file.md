@@ -2,13 +2,14 @@
 
 Function is based on the
 [`readMat`](https://rdrr.io/pkg/R.matlab/man/readMat.html) and provides
-the reading of a `.mat` (MATLAB workspace) simulation (+ fitting) file
+reading of a `.mat` (MATLAB workspace) simulation (+ fitting) file
 content from *EasySpin*, including structures/variables and fields. It
-can be also used to read and store simulated EPR spectrum in the form of
-R data frame (see `Examples`). In order to present the simulated/fitted
-spectra, represented by such a data frame, please refer to the
+enables reading and storing of *EasySpin* simulated EPR spectrum in the
+form of R data frame (see `Examples`). In order to visualize the
+simulated/fitted spectra, represented by such a data frame, please refer
+to the
 [`present_EPR_Sim_Spec`](https://jatanrt.github.io/eprscope/reference/present_EPR_Sim_Spec.md)
-function.
+function and the corresponding `Examples`.
 
 ## Usage
 
@@ -71,6 +72,34 @@ aminoxyl.mat.file <-
 ## and assign variable
 aminoxyl.mat.list <-
   readMAT_params_file(aminoxyl.mat.file)
+#
+## structure of the `fit1`
+str(aminoxyl.mat.list$fit1)
+#> List of 8
+#>  $ : num [1, 1] 0.0189
+#>  $ : num [1, 1:1500] 0.000682 0.000666 0.000477 0.000157 0.0002 ...
+#>  $ : num [1:1500, 1] -0.012543 0.000863 -0.001301 -0.000507 -0.012276 ...
+#>  $ : num [1, 1:1500] 0.013224 -0.000197 0.001778 0.000664 0.012477 ...
+#>  $ : num [1, 1:4] 2.007 52.324 0.44 0.101
+#>  $ : chr [1, 1] "fcn"
+#>  $ :List of 6
+#>   ..$ : num [1, 1] 2.01
+#>   ..$ : chr [1, 1] "14N"
+#>   ..$ : num [1, 1] 1
+#>   ..$ : num [1, 1] 52.3
+#>   ..$ : num [1, 1:2] 0.44 0.101
+#>   ..$ : num [1, 1] 1
+#>   ..- attr(*, "dim")= int [1:3] 6 1 1
+#>   ..- attr(*, "dimnames")=List of 3
+#>   .. ..$ : chr [1:6] "g" "Nucs" "n" "A" ...
+#>   .. ..$ : NULL
+#>   .. ..$ : NULL
+#>  $ : num [1, 1] 1
+#>  - attr(*, "dim")= int [1:3] 8 1 1
+#>  - attr(*, "dimnames")=List of 3
+#>   ..$ : chr [1:8] "rmsd" "fitSpec" "expSpec" "residuals" ...
+#>   ..$ : NULL
+#>   ..$ : NULL
 #
 ## read the `Sim1` structure/variable content into list
 aminoxyl.mat.sim1 <-
@@ -213,15 +242,22 @@ tmpd.easyspin6.argsfit <-
     field.var = "argsfit"
   )
 #
-## create a list (temporary variable)
-list.argsfit <- tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+## create lists (temporary variables)
+list.argsfit.a <-
+  tmpd.easyspin6.argsfit[[1]][[1]][ , , 1]
+list.argsfit.b <-
+  tmpd.easyspin6.argsfit[[2]][[1]][ , , 1]
 #
-## convert it into nicely structured list with
+## final list
+list.argsfit.final <-
+  append(list.argsfit.a,list.argsfit.b)
+#
+## convert it into nicely structured lists with
 ## all arguments/parameters
 list.argsfit.final <-
-  lapply(list.argsfit, function(x) c(x))
+  lapply(list.argsfit.final, c)
 #
-## final list preview
+## preview
 list.argsfit.final
 #> $g
 #> [1] 2.0030057
@@ -237,6 +273,21 @@ list.argsfit.final
 #> 
 #> $lwpp
 #> [1] 0.034971964 0.015990064
+#> 
+#> $CenterSweep
+#> [1] 349.917  12.000
+#> 
+#> $mwFreq
+#> [1] 9.814155
+#> 
+#> $ModAmp
+#> [1] 0.05
+#> 
+#> $nPoints
+#> [1] 2401
+#> 
+#> $Temperature
+#> [1] 295.06834
 #> 
 
 

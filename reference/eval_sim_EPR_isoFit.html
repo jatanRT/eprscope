@@ -297,7 +297,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   <dt>ra</dt>
 <dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
   <code>plot.rqq()</code> function, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
-  standard deviation (<code>sd</code>). For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
+  statistical <code>measures</code> vector. For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
 
   <dt>best.fit.params</dt>
 <dd><p>Vector of the best (final) fitting (optimized) parameters, for each corresponding
@@ -337,8 +337,8 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   which are hardly described by the normal/Gaussian distribution. However, even in such case,
   the "Pearson" corr. coefficient can still serve as a descriptive similarity measure to compare the experimental
   and fitted spectral shapes. In order to figure out whether the spectral intensities of the experimental spectrum
-  can be reproduced by the simulation fit, one can also use the "Lin's" Concordance Correlation Coefficient,
-  <code>CCC</code>.</p></dd>
+  can be reproduced by the simulation fit, one can also use the "Lin's"
+  <a href="https://search.r-project.org/CRAN/refmans/DescTools/html/CCC.html" class="external-link">Concordance Correlation Coefficient</a>.</p></dd>
 
   <dt>abic</dt>
 <dd><p>Final (refer to the <code>optim.method</code> argument) list, consisting of Akaike and Bayesian
@@ -369,7 +369,8 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
   which is to be applied for the <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space</a></code> or similar functions.</p><dl><dt>params</dt>
 <dd><p>A vector, containing the following elements:</p><ol><li><p>The best fitting (optimized) parameters (related to the <code>optim.params.init</code> argument).</p></li>
 <li><p>Minimum sum of residual squares (corresponding to previous item).</p></li>
-<li><p>Standard deviation of residuals, after the (final) <code>optim.method</code> procedure.</p></li>
+<li><p><strong>S</strong>tandard <strong>d</strong>eviation (SD) of residuals, after the (final) <code>optim.method</code> procedure.</p></li>
+<li><p><strong>M</strong>edian <strong>a</strong>bsolute <strong>d</strong>eviation (MAD) after the (final) <code>optim.method</code> procedure.</p></li>
 <li><p>Akaike Information Criterion/AIC metric (refer to <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>),
   after the (final) <code>optim.method</code>.</p></li>
 <li><p>Bayesian Information Criterion/BIC metric (refer to <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>),
@@ -533,7 +534,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.582e-08, swarm diam.=0.1247</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.205  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  9.563  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -553,7 +554,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span>       512        37         0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">## best fit parameters and their names:</span></span></span>
+<span class="r-in"><span><span class="co">## best fit parameters:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0053629e+00  4.9758828e+00  4.8434993e+00 -4.9152324e-08  1.2819874e-02</span>
@@ -581,11 +582,15 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## simple residual density plot</span></span></span>
-<span class="r-in"><span><span class="co">## together with standard deviation</span></span></span>
+<span class="r-in"><span><span class="co">## together with characteristic measures for residuals</span></span></span>
+<span class="r-in"><span><span class="co">## (in the named vector form)</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">plot.histDens</span></span></span>
 <span class="r-plt img"><img src="eval_sim_EPR_isoFit-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">sd</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.1966667e-06</span>
+<span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">ra</span><span class="op">$</span><span class="va">measures</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            bias          median             mad              sd kurtosis.excess </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.8951818e-08  -8.2322720e-08   1.7489021e-06   3.1966667e-06   1.0946607e+01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        skewness </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   8.5003902e-03 </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Akaike and Bayesian Criteria (AIC &amp; BIC)</span></span></span>
 <span class="r-in"><span><span class="co">## + information about the residuals distribution</span></span></span>
@@ -640,11 +645,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.789  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.598  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.239  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  9.773  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>

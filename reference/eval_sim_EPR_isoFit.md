@@ -289,8 +289,8 @@ depending on the `check.fit.plot` and `output...` arguments.
 
       Simple residual analysis - a list consisting of 4 elements:
       diagnostic plots `plot.rqq()` function, `plot.histDens`; original
-      data frame (`df`) with residuals and their corresponding standard
-      deviation (`sd`). For details, please refer to the
+      data frame (`df`) with residuals and their corresponding
+      statistical `measures` vector. For details, please refer to the
       [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
 
     - best.fit.params:
@@ -356,7 +356,8 @@ depending on the `check.fit.plot` and `output...` arguments.
       and fitted spectral shapes. In order to figure out whether the
       spectral intensities of the experimental spectrum can be
       reproduced by the simulation fit, one can also use the "Lin's"
-      Concordance Correlation Coefficient, `CCC`.
+      [Concordance Correlation
+      Coefficient](https://search.r-project.org/CRAN/refmans/DescTools/html/CCC.html).
 
     - abic:
 
@@ -405,14 +406,17 @@ depending on the `check.fit.plot` and `output...` arguments.
       2.  Minimum sum of residual squares (corresponding to previous
           item).
 
-      3.  Standard deviation of residuals, after the (final)
+      3.  **S**tandard **d**eviation (SD) of residuals, after the
+          (final) `optim.method` procedure.
+
+      4.  **M**edian **a**bsolute **d**eviation (MAD) after the (final)
           `optim.method` procedure.
 
-      4.  Akaike Information Criterion/AIC metric (refer to
+      5.  Akaike Information Criterion/AIC metric (refer to
           [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md)),
           after the (final) `optim.method`.
 
-      5.  Bayesian Information Criterion/BIC metric (refer to
+      6.  Bayesian Information Criterion/BIC metric (refer to
           [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md)),
           after the (final) `optim.method`.
 
@@ -589,7 +593,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.205  s 
+#>  Done!  ( 100  %)    elapsed time  9.563  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -609,7 +613,7 @@ tempo.test.sim.fit.b$N.evals
 #>       512        37         0 
 #> 
 #
-## best fit parameters and their names:
+## best fit parameters:
 tempo.test.sim.fit.b$best.fit.params
 #> [[1]]
 #> [1]  2.0053629e+00  4.9758828e+00  4.8434993e+00 -4.9152324e-08  1.2819874e-02
@@ -637,11 +641,15 @@ tempo.test.sim.fit.b$plot
 
 #
 ## simple residual density plot
-## together with standard deviation
+## together with characteristic measures for residuals
+## (in the named vector form)
 tempo.test.sim.fit.b$ra$plot.histDens
 
-tempo.test.sim.fit.b$ra$sd
-#> [1] 3.1966667e-06
+tempo.test.sim.fit.b$ra$measures
+#>            bias          median             mad              sd kurtosis.excess 
+#>   4.8951818e-08  -8.2322720e-08   1.7489021e-06   3.1966667e-06   1.0946607e+01 
+#>        skewness 
+#>   8.5003902e-03 
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
 ## + information about the residuals distribution
@@ -696,11 +704,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.789  s 
+#>  Done!  ( 50  %)    elapsed time  0.598  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.239  s 
+#>  Done!  ( 100  %)    elapsed time  9.773  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

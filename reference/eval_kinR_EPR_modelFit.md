@@ -235,8 +235,8 @@ List with the following components is available:
 
   Residual analysis - a list consisting of 5 elements: diagnostic plots
   `plot.rqq()` function, `plot.histDens`; original data frame (`df`)
-  with residuals and their corresponding standard deviation (`sd`). For
-  details, please refer to the
+  with residuals and their corresponding `measures` vector. For details,
+  please refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
   The last element (`plot.acf`) is a diagnostic graph of the
   **a**uto**c**orrelation **f**unction
@@ -474,9 +474,12 @@ triaryl_model_kin_fit_01$ra$plot.histDens
 triaryl_model_kin_fit_01$ra$plot.acf
 
 #
-## standard deviation of residuals
-triaryl_model_kin_fit_01$ra$sd
-#> [1] 0.00011872565
+## statistical measures of residuals
+triaryl_model_kin_fit_01$ra$measures
+#>            bias          median             mad              sd kurtosis.excess 
+#>   2.0354647e-06   8.0183779e-06   1.2431322e-04   1.1872565e-04  -2.8895693e-01 
+#>        skewness 
+#>  -3.5338673e-01 
 #
 ## Akaike and Bayesian Criteria (AIC & BIC)
 ##  + information about the residuals distribution
@@ -526,9 +529,12 @@ triaryl_model_kin_fit_02$ra$plot.rqq()
 triaryl_model_kin_fit_02$ra$plot.acf
 
 #
-## standard deviation of residuals
-triaryl_model_kin_fit_02$ra$sd
-#> [1] 0.00063538776
+## statistical measures of residuals
+triaryl_model_kin_fit_02$ra$measures
+#>            bias          median             mad              sd kurtosis.excess 
+#>   4.1027040e-05  -5.2872112e-05   7.7078819e-04   6.3538776e-04   5.2910779e-01 
+#>        skewness 
+#>   7.6604997e-01 
 #
 ## Akaike and Bayesian Criteria (AIC & BIC) +
 ## + information about the residuals distribution

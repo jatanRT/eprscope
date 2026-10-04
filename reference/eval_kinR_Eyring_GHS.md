@@ -118,8 +118,8 @@ components is available:
 
   Simple residual analysis - a list consisting of 4 elements: diagnostic
   plots `plot.rqq()` function, `plot.histDens`; original data frame
-  (`df`) with residuals and their corresponding standard deviation
-  (`sd`). For details, please refer to the
+  (`df`) with residuals and their corresponding statistical `measures`
+  vector. For details, please refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
 
 - df.coeffs.HS:
@@ -513,11 +513,13 @@ activ.kinet.test02.data$df.model.HS
 #> # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 #
 ## corresponding analysis of residuals
-## with residual standard deviation
 activ.kinet.test02.data$ra$plot.rqq()
 
-activ.kinet.test02.data$ra$sd
-#> [1] 0.0065568073
+activ.kinet.test02.data$ra$measures
+#>            bias          median             mad              sd kurtosis.excess 
+#>   9.2232476e-21  -9.9954603e-05   5.0782840e-03   6.5568073e-03   1.4863908e-01 
+#>        skewness 
+#>  -4.8613559e-01 
 
 
 ```

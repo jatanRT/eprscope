@@ -1,25 +1,26 @@
 # General Diagnostics for Models/Fits by Simple Residual Analysis
 
 Three visual diagnostic tools (based on the
-[`{ggplot2}`](https://ggplot2.tidyverse.org/) package) and one metric
-(standard deviation of residuals) are applied to evaluate the
-appropriateness as well as to compare different models/fits. 1. The
-first plot represents the Residuals *vs* Fitted/Simulated Values
-relation. For a decent model/fit, it will exhibit randomly scattered
-values around `0` and displays a similar variance over all
-predicted/fitted values. 2. *Sample Quantiles (Residuals) vs Theoretical
-Quantiles* (Q-Q plot) shows, whether the appearance of residuals can be
-described by the three probability distributions:
-`c("norm","t","cauchy")` (i.e. Normal or Student's t or Cauchy, see also
-the
+[`{ggplot2}`](https://ggplot2.tidyverse.org/) package) and several
+measures of residuals in a vector form (standard deviation of residuals,
+mean and median values as well as excess kurtosis, skewness and median
+absolute deviation) are applied to evaluate the appropriateness as well
+as to compare different models/fits. 1. The first plot represents the
+Residuals *vs* Fitted/Simulated Values relation. For a decent model/fit,
+it will exhibit randomly scattered values around `0` and displays a
+similar variance over all predicted/fitted values. 2. *Sample Quantiles
+(Residuals) vs Theoretical Quantiles* (Q-Q plot) shows, whether the
+appearance of residuals can be described by the three probability
+distributions: `c("norm","t","cauchy")` (i.e. Normal or Student's t or
+Cauchy, see also the
 [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md)
 function). 3. The latter is combined with a more detailed information
 about the distribution of residuals by the **histogram**
 ([`geom_histogram`](https://ggplot2.tidyverse.org/reference/geom_histogram.html))
 as well as by the **probability density**
 ([`geom_density`](https://ggplot2.tidyverse.org/reference/geom_density.html),
-including the residuals `mean` value, and `median` which in ideal case
-equal to `0`).
+including the residuals `mean` value, and `median`, which are, in an
+ideal case, very close to `0`).
 
 ## Usage
 
@@ -127,15 +128,61 @@ A List, consisting of the following elements is returned:
   **dens**ity function for residuals. The corresponding residuals mean
   value and the median are identified by vertical lines.
 
-- sd:
+- measures:
 
-  **S**tandard **d**eviation of residuals (or residual standard error
-  (RSE)) for the model/fit defined as: \$\$\sqrt{\sum_i (y_i -
-  y\_{i,\text{fit/model}})^2\\/\\(N - k - 1)}\$\$ where \\N\\ is the
-  number of observations/points (see the `data.fit` argument) and \\k\\
-  is the number of optimized parameters (see the argument `k`).
-  Therefore, the smaller the `sd`, the better the fit, when comparing
-  different models/fits.
+  This is a named vector composed of the following values:
+
+  1.  `mean` or `bias`, whether and how the mean value is different from
+      `0`
+
+  2.  `median`, central measure alternative to `mean` (`bias`)
+
+  3.  `mad`, which is a **m**edian **a**bsolute **d**eviation, defined
+      by the \\median(\|e_i - median(e)\|)\\ expression, where \\e_i\\
+      is the \\i-th\\ residual and \\e\\ is the entire vector of
+      residuals,the benefit of `mad` over `sd` (see below) lies in the
+      lower sensitivity to extreme values (outliers) so that it provides
+      a resilient measure of spread, that remains accurate even when the
+      data contains extreme values
+
+  4.  `sd`, **s**tandard **d**eviation of residuals (or residual
+      standard error (RSE)), defined as \$\$\sqrt{\sum_i (y_i -
+      y\_{i,\text{fit/model}})^2\\/\\(N - k - 1)}\$\$ where \\N\\ is the
+      number of observations/points (see the `data.fit` argument) and
+      \\k\\ is the number of optimized parameters (see the argument
+      `k`). Therefore, the smaller the `sd`, the better the fit, when
+      comparing different models/fits
+
+  5.  `kurtosis.excess` tells whether the residuals posses more or fewer
+      extremes (i.e. how heavier are the corresponding tails) in
+      comparison to normal distribution (the excess means how much
+      kurtosis is above or below the normal-distribution benchmark). If
+      `kurtosis.excess` \> 0, residuals have heavier tails and unusually
+      extreme observations are more common. If `kurtosis.excess` \< 0,
+      residuals do have lighter tails and unusually extreme observations
+      are less common; finally a value of `kurtosis.excess` close to `0`
+      suggests normal-like tail behavior. However, it does not prove
+      that the residuals are normally distributed. This can be
+      additionally correlated with the information/message provided by
+      the
+      [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md).
+
+  6.  `skewness` describes how (a)symmetric are residuals, i.e. it may
+      indicate whether the model makes unusually large errors more often
+      in one direction than in the other. If `skewness` \< -1, the
+      residuals are substantially left-skewed (mean \< median,with
+      longer negative tails). If -1 \\\leq\\ `skewness` \< -0.5,
+      residuals are moderately left-skewed (with noticeable negative
+      tail). If -0.5 \\\leq\\ `skewness` \\\leq\\ 0.5, the distribution
+      is approximately symmetric. On the other hand, if 0.5 \<
+      `skewness` \\\leq\\ 1 or 1 \< `skewness`, the residuals are either
+      moderately right-skewed (with noticeable positive tails) or
+      substantially right-skewed (mean \> median, with longer positive
+      tails), respectively. Even though the `skewness` and `kurtosis`
+      look similar, they provide different information: the skewness
+      measures asymmetry, while the kurtosis measures tail weights
+      relative to the normal distribution, independently whether it is
+      symmetric or not.
 
 ## Details
 
@@ -161,13 +208,13 @@ or
 In addition to the original "raw" residuals defined above, one may come
 across other types, like ["Pearson" (or
 "scaled")](https://bookdown.org/mike/data_analysis/generalized-linear-models.html),
-**"standardized" or "studentized"**. **The latter two are helpful to
+**"standardized" or "studentized"**. **The latter are helpful to
 identify outliers**, which are the data points that are significantly
 different from the rest of the data (though, they can be also identified
-by the Q-Q plot and histogram-probability density). For such reason the
-"raw" residuals (\\e_i\\) are divided by their standard deviation
-(\\sd\\ see the `Value` below), including the the effect of leverage.
-Thus, the formula for standardized residual reads: \\r_i =
+by the Q-Q plot and histogram-probability density, see below). For such
+a reason the "raw" residuals (\\e_i\\) are divided by their standard
+deviation (\\sd\\ see the `Value` below), including the the effect of
+leverage. Thus, the formula for standardized residual reads: \\r_i =
 e_i\\/\\(sd\\\sqrt{1 - h\_{ii}})\\, where the \\h\_{ii}\\ stands for the
 diagonal element of the "leverage" \\\hat{H}\\ matrix (see e.g.
 `References` 11-13). The simple explanation of the leverage phenomenon
@@ -190,7 +237,7 @@ very detailed analysis for linear models is provided by the
 [`{ggResidpanel}`](https://goodekat.github.io/ggResidpanel/) package.
 Additionally, a series of diagnostic plots can be also created in the
 base *R*, just by `plot(var)`, where the `var` represents the
-variable/object of the linear model. On the other hand, **all these
+variable/object of the linear model fit. On the other hand, **all these
 diagnostics are not available for non-linear models** like
 [`nls`](https://rdrr.io/r/stats/nls.html). Accordingly, **such type of
 calculations can be provided by other packages** (see e.g.
@@ -212,7 +259,7 @@ decrease in variance, we may trust our fit with the optimized
 parameters. Such pattern is **homoscedastic**. However, if one
 recognizes curved ((inverted-)U shape, see e.g. `Examples` in the
 [`eval_kinR_EPR_modelFit`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)),
-wave or systematic increase (so called "fanning") or decrease
+wave or systematic variance increase (so called "fanning") or decrease
 ("funelling"), the model/fit is untrustworthy and one would probably
 search for a different (better) one. In particular, the curved pattern
 in the residual plot may indicate that a model does a poor job of
@@ -262,19 +309,21 @@ with "extremely" high number of bins, having "extremely" small widths. A
 Q-Q plot may exhibit several basic
 [deviations](https://stats.libretexts.org/Bookshelves/Advanced_Statistics/Intermediate_Statistics_with_R_(Greenwood)/03%3A_One-Way_ANOVA/3.04%3A_ANOVA_model_diagnostics_including_QQ-plots).
 It can display a U-shaped pattern, which actually mirrors the situation
-with the right skewed (or positively skewed, mean \> median) PDF.
+with the right-skewed (or positively skewed, mean \> median) PDF.
 Therefore, we find the extreme values far from the peak on the high end
 more frequently than on the lower one (see e.g. `Example` in
-[`eval_kinR_Eyring_GHS`](https://jatanrt.github.io/eprscope/reference/eval_kinR_Eyring_GHS.md)).
-Contrary, if the Q-Q plot shows "hill" shape, the opposite situation is
-observed and the extreme values (outliers) far from the peak on the low
-end appear more frequently than on the higher one (PDF is left skewed,
-mean \< median). Often, the heavy-tailed Q-Q plot with extreme residuals
-below and above minima and maxima of the diagonal line, respectively,
-may appear and is somewhat problematic for e.g. normal distributions of
-residuals with outliers on both sides. On the other hand, such kind of
-normality violation can be successfully described by Student's
-t-distribution with lower degrees of freedom (see e.g. `Examples` in the
+[`eval_kinR_Eyring_GHS`](https://jatanrt.github.io/eprscope/reference/eval_kinR_Eyring_GHS.md)
+and description of skewness in the `Values`). Contrary, if the Q-Q plot
+shows "hill" shape, the opposite situation is observed and the extreme
+values (outliers) far from the peak on the low end appear more
+frequently than on the higher one (PDF is left-skewed, mean \< median,
+see also description of skewness in the `Values`). Often, the
+heavy-tailed Q-Q plot with extreme residuals below and above minima and
+maxima of the diagonal line, respectively, may appear and is somewhat
+problematic for e.g. normal distributions of residuals with outliers on
+both sides. On the other hand, such kind of normality violation can be
+successfully described by Student's t-distribution with lower degrees of
+freedom (see e.g. `Examples` in the
 [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md).
 Nevertheless, if the residuals, in the latter case, do not exhibit
 heteroscedasticity, such model/fit is not necessarily untrustworthy. In
@@ -349,6 +398,10 @@ Internally Studentized Residuals in Regression Analysis", *Am. Stat.*,
 Frost J (2025). "Statistics by Jim: Making Statistics Intuitive",
 <https://statisticsbyjim.com/>.
 
+Joanes DN, Gill CA (1998). "Comparing Measures of Sample Skewness and
+Kurtosis", *J. R. Stat. Soc., Series D(The Statistician)*, **47**(1),
+183-189, <https://www.jstor.org/stable/2988433>.
+
 Kross S (2016). "A Q-Q Plot Dissection Kit",
 <https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html>.
 
@@ -372,47 +425,83 @@ Other Simulations and Optimization:
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-## application example for an EPR simulation fit
-list.test <-
-  plot_eval_RA_forFit(
-    data.fit = data.sim.expr,
-    residuals = "Residuals",
-    fitted = "Simulation",
-    resid.xlab = "Simulation",
-    k = length(optim.params.init),
-    level.cnfd = 0.99
- )
+## generate Gaussian peak UV-Vis spectrum
+set.seed(42)
+wl <- seq(400, 600, by = 2) ## Wavelength
+y  <- 2 * exp(-(wl - 500)^2/(2 * 15^2)) +
+  rnorm(length(wl), sd = 0.05) ## Intensity
 #
-## residual and the normal Q-Q plot
-list.test$plot.rqq()
-#
-## residual and Q-Q plot for the Student's t distro
-## with 4 degrees of freedom
-list.test$plot.rqq(residuals.distro = "t",df = 4)
-#
-## histogram and probability density
-list.test$plot.histDens
-#
-## standard deviation of residuals
-list.test$sd
-#
-## from the data, quickly create the residuals vs
-## observation order plot (assuming there
-## is no index column in the data frame)
-dataframe <- list.test$df
-dataframe[["index"]] <- 1:nrow(dataframe)
-plot(
-  dataframe$index,
-  dataframe$Residuals,
-  xlab = "Observation Order",
-  ylab = "Residuals"
+## fit
+fit <- stats::nls(
+  y ~ A * exp(-(wl - mu)^2/(2 * sig^2)),
+  start = list(A = 1.5, mu = 490, sig = 20)
 )
 #
-## for additional examples, please,
-## refer to the `eval_sim_EPR_isoFit`
-## or `eval_kinR_EPR_modelFit`
+## residuals
+e <- stats::residuals(fit)
 #
-} # }
+## overall data frame
+df.model.expr <- data.frame(
+  Wavelength_nm = wl,
+  Intensity = y,
+  Fit = stats::predict(fit),
+  Residuals = e
+)
+#
+## plot spectrum and fit
+df.model.expr %>% {
+  graphics::plot(
+    .$Wavelength_nm,
+    .$Intensity,
+    xlab = bquote(italic(Wavelength)~~"("~nm~")"),
+    ylab = bquote(italic(Intensity)~~~"("~p.d.u.~")"),
+    col = "darkcyan",
+    pch = 16,
+    cex = 1.2
+  )
+  graphics::lines(
+    .$Wavelength_nm,
+    .$Fit,
+    col = "magenta",
+    lwd = 2.4
+  )
+}
+
+#
+ra.spectrum.list <-
+  plot_eval_RA_forFit(
+    data.fit = df.model.expr,
+    residuals = "Residuals",
+    fitted = "Fit",
+    resid.xlab = "Spectrum Fit",
+    k = 3
+  )
+#
+## residual and q-q plot
+## considering default normal
+## distribution of residuals
+ra.spectrum.list$plot.rqq()
+
+#
+## residual measures (named vector)
+ra.spectrum.list$measures
+#>            bias          median             mad              sd kurtosis.excess 
+#>    0.0037644750    0.0041484629    0.0446330414    0.0523409956    0.4310118943 
+#>        skewness 
+#>   -0.5212033158 
+#
+## check the residuals vs observation
+## order, first off all create an `index`
+## variable/column
+df.model.expr[["index"]] <- 1:nrow(df.model.expr)
+df.model.expr %>% {
+  graphics::plot(
+    .$index,
+    .$Residuals,
+    xlab = bquote(italic(Observation~~Order)),
+    ylab = bquote(italic(Residuals))
+  )
+}
+
 
 ```
