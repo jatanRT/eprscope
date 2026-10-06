@@ -198,6 +198,12 @@ like (please, refer to e.g. `Value` in
     convergence list element or can be activated by the
     `eval.optim.progress` argument.
 
+6.  Additional objects (lists/vectors/values), providing information
+    about the fitting/optimization process and depending on the `method`
+    argument. It may or may not be returned by the specific function(s)
+    (e.g. by the
+    [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)).
+
 ## Details
 
 All algorithms are based on the least-square minimization however, the
@@ -329,6 +335,20 @@ optim.fit.list <-
 optim.fit.list$par
 #> [1]   2.0124565 500.1720983  14.8447207
 #
+## compare these parameters with those
+## returned by the `stats::nls()` function,
+## which by default, applies `Gauss-Newton`
+## optim. algorithm
+optim.fit.nls <-
+  stats::nls(
+    Intensity ~ A * exp(- (Wavelength_nm - mu)^2/(2 * sigma^2)),
+    data = df.model.expr,
+    start = list(A = 1.4, mu = 480, sigma = 17)
+  )
+unname(coef(optim.fit.nls))
+#> [1]   2.0124576 500.1721898  14.8446668
+#
+## additional returned objects by `optim.fit.list`
 ## min RSS (corresponding to `fn`)
 optim.fit.list$value
 #> [1] 0.26573924

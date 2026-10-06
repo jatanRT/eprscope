@@ -840,7 +840,7 @@ sim.tmpd.iso <-
   )
 })
 #>    user  system elapsed 
-#>   0.097   0.009   0.105
+#>   0.067   0.005   0.072
 #
 # output is either interactive spectrum plot
 # or list of plot and the simulated 
@@ -906,6 +906,8 @@ differences. Therefore, the fitting/optimization functions like
 [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
 and/or
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md)
+and/or
+[`eval_sim_EPR_isoFitb()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFitb.md)
 can be applied to get a more accurate simulated spectrum. Particularly,
 the second function can explore a broad range of initial simulation
 parameters in order to fit and analyze an isotropic EPR spectrum, like

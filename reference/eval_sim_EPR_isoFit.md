@@ -13,6 +13,8 @@ The `lineG.content` corresponding parameter is the only one, which needs
 to be varied "manually". For an extended version of this function
 (including automatic `lineG.content` variations), please refer to the
 [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md).
+An interactive form of the actual function is represented by the
+[`eval_sim_EPR_isoFitb`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFitb.md).
 
 ## Usage
 
@@ -594,7 +596,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.375  s 
+#>  Done!  ( 100  %)    elapsed time  8.301  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -705,11 +707,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.814  s 
+#>  Done!  ( 50  %)    elapsed time  0.561  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.78  s 
+#>  Done!  ( 100  %)    elapsed time  8.614  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
