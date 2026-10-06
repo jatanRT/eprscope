@@ -561,7 +561,7 @@ knitr::include_graphics("TMPD_EPR_Sim_interact_App.png",dpi = 200)
 
 ```
 
-Even though the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like `eval_sim_EPR_isoFit()` and/or `eval_sim_EPR_isoFit_space()` can be applied to get a more accurate simulated spectrum. Particularly, the second function can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the $\small \ce{TMPD^{.+}}$ one, described in the following example.
+Even though the simulated $\small \ce{TMPD^{.+}}$ EPR spectrum is quite close to the experimental one, there are still some apparent differences. Therefore, the fitting/optimization functions like `eval_sim_EPR_isoFit()` and/or `eval_sim_EPR_isoFit_space()` and/or `eval_sim_EPR_isoFitb()` can be applied to get a more accurate simulated spectrum. Particularly, the second function can explore a broad range of initial simulation parameters in order to fit and analyze an isotropic EPR spectrum, like the $\small \ce{TMPD^{.+}}$ one, described in the following example.
 
 ```{r tmpd-isoFit-space, eval=FALSE,echo=TRUE}
 

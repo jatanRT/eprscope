@@ -15,6 +15,7 @@
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". For an extended version of this function
 #'   (including automatic \code{lineG.content} variations), please refer to the \code{\link{eval_sim_EPR_isoFit_space}}.
+#'   An interactive form of the actual function is represented by the \code{\link{eval_sim_EPR_isoFitb}}.
 #'
 #'
 #' @note

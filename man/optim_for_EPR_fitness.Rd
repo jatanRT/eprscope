@@ -117,6 +117,10 @@ For all listed algorithms the function returns \code{list} with the elements lik
   this is however \strong{"turned off"}, for the sake of simplicity,
   because most of the information can be found in the previous convergence list element
   or can be activated by the \code{eval.optim.progress} argument.
+
+  \item Additional objects (lists/vectors/values), providing information about the fitting/optimization
+  process and depending on the \code{method} argument. It may or may not be returned by the specific
+  function(s) (e.g. by the \code{\link{eval_sim_EPR_isoFit}}).
   }
 }
 \description{
@@ -211,6 +215,19 @@ optim.fit.list <-
 ## best optimized parameters
 optim.fit.list$par
 #
+## compare these parameters with those
+## returned by the `stats::nls()` function,
+## which by default, applies `Gauss-Newton`
+## optim. algorithm
+optim.fit.nls <-
+  stats::nls(
+    Intensity ~ A * exp(- (Wavelength_nm - mu)^2/(2 * sigma^2)),
+    data = df.model.expr,
+    start = list(A = 1.4, mu = 480, sigma = 17)
+  )
+unname(coef(optim.fit.nls))
+#
+## additional returned objects by `optim.fit.list`
 ## min RSS (corresponding to `fn`)
 optim.fit.list$value
 #
