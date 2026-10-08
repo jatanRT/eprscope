@@ -11,7 +11,8 @@
 #'   it represents a more interactive version of the \code{\link{eval_sim_EPR_isoFit}}.
 #'   Namely, it provides \code{{ggplot2}} objects (graphs, see the \code{Value} and the \code{plot.fit} description)
 #'   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-#'   (refer to the \code{Nevals} argument). The actual function was built because during the parallel processing
+#'   (refer to the \code{Nevals} argument). In addition, it also shows the actual values of all fitting parameters
+#'   in the \emph{R} console. The actual function was built because during the parallel processing
 #'   (see the \code{\link{eval_sim_EPR_isoFit_space}}) it is not possible to display the actual
 #'   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
 #'   into the \code{\link{plot_eval_ExpSim_app}}.
@@ -22,6 +23,18 @@
 #'   is defined as a vector, \code{optim.method = c("neldermead","cobyla","lbfgs")}, only one method from those three
 #'   can be selected. For example \code{optim.method = "neldermead"} (\strong{default}). For additional information
 #'   to all three available methods, please refer to the \code{\link{optim_for_EPR_fitness}}.
+#' @param optim.params.lower Numeric vector (with the same element order like \code{optim.params.init})
+#'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
+#'   corresponds to relative default limits (refer to the \code{\link{eval_sim_EPR_isoFit}} arguments)
+#'   of all fitted/optimized parameters for the actual evaluation. If specified
+#'   (e.g. \code{optim.params.lower = c(2.004,0.3,0.3,-1e-3,0.001,46)}),
+#'   it represents the general lower boundaries for the entire optimization/fitting procedure.
+#' @param optim.params.upper Numeric vector (with the same element order like \code{optim.params.init})
+#'   with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
+#'   corresponds to relative default limits (refer to the \code{\link{eval_sim_EPR_isoFit}} arguments)
+#'   of all fitted/optimized parameters for the actual evaluation. If specified
+#'   (e.g. \code{optim.params.upper = c(2.007,0.5,0.5,1e-3,0.004,48)}),
+#'   it represents the general upper boundaries for the entire optimization/fitting procedure.
 #' @param Niters.per.eval Numeric value, equal to the number of iterations per one the \code{Nevals} (see the related \code{Nevals}
 #'   argument description). \strong{Default}: \code{Niters.per.eval = 128}. This argument, among other things,
 #'   depends on the complexity of the \code{nuclear.system} (\code{nuclear.system.noA}). For example, if an aminoxyl
@@ -45,7 +58,7 @@
 #'   criteria vs iteration. Even though it represents the final status of those four dependencies, the actual version,
 #'   appears at each of the \code{Nevals} (see the \code{Arguments}) in order to follow the progress of the fitting procedure
 #'   interactively.}
-#'   \item{best.params.optim}{Named vector of the optimized (best fitting) simulation parameters, corresponding
+#'   \item{best.fit.params}{Named vector of the optimized (best fitting) simulation parameters, corresponding
 #'   to minimum \code{RSS}. The actual values also appear at each of the \code{Nevals} (see the \code{Arguments}),
 #'   interactively during the fitting procedure.}
 #'   \item{df.params.optim}{A data frame object of all simulation parameters + \code{RSS} (residual sum of squares)
@@ -113,6 +126,8 @@ eval_sim_EPR_isoFitb <- function(data.spectr.expr,
                                  lineSpecs.form = "derivative",
                                  optim.method = c("neldermead","cobyla","lbfgs"),
                                  optim.params.init,
+                                 optim.params.lower = NULL,
+                                 optim.params.upper = NULL,
                                  optim.params.fix.id = NULL, ## related to `optim.params.init`
                                  Niters.per.eval = 128, ## how many iterations per cycle/evaluation
                                  Nevals = 16 ## total number of evaluations
@@ -227,6 +242,8 @@ eval_sim_EPR_isoFitb <- function(data.spectr.expr,
         baseline.correct = baseline.correct, # or linear (with constant it is better)
         optim.method = optim.method, ## only neldermead, cobyla and lbfgs
         optim.params.init = params.init[[i]],
+        optim.params.lower = optim.params.lower,
+        optim.params.upper = optim.params.upper,
         optim.params.fix.id = optim.params.fix.id,
         Nmax.evals = Niters.per.eval,
         msg.optim.progress = FALSE
@@ -386,7 +403,7 @@ eval_sim_EPR_isoFitb <- function(data.spectr.expr,
     nuclear.system.A <- NULL
   }
   #
-  ## ========================== Simulation output ===============================
+  ## ================== Publication ready + Interactive simulation output ====================
   #
   ## create simulation `df`
   final.sim.df <-
@@ -441,7 +458,7 @@ eval_sim_EPR_isoFitb <- function(data.spectr.expr,
   result.list <- list(
     plot.fit = partial.plot.spectrum.RSS,
     ## named vector:
-    best.params.optim = final.best.params,
+    best.fit.params = final.best.params,
     ## all parameters with fit metrics:
     df.params.optim = params.best.df,
     ## system of interacting nuclei, all with A:

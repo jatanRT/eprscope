@@ -330,7 +330,10 @@
 #'     .$index,
 #'     .$Residuals,
 #'     xlab = bquote(italic(Observation~~Order)),
-#'     ylab = bquote(italic(Residuals))
+#'     ylab = bquote(italic(Residuals)),
+#'     col = "darkcyan",
+#'     pch = 16,
+#'     cex = 1.2
 #'   )
 #' }
 #'

@@ -115,7 +115,7 @@ for the simulation/optimized parameters order). \strong{Default}: \code{optim.pa
 that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
 boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}). Alternatively, the parameter value(s)
 can be also adjusted by assigning the \code{optim.params.init} + \code{optim.params.lower} + \code{optim.params.upper}
-elements to the same value, as already demonstrated in the \code{Examples}.}
+elements to the same value.}
 
 \item{optim.params.lower}{Numeric vector (with the same element order like \code{optim.params.init})
 with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually

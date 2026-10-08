@@ -847,8 +847,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
                  which.min(abs(B.g.sim.df$B_T - B_for_m_spin_values1[l])))
       ## selecting rows based on previous indices
       near_B_for_m_spin_values1 <-
-        B.g.sim.df %>%
-        dplyr::slice(near_row_for_m_spin_values1)
+        B.g.sim.df[near_row_for_m_spin_values1, ]
       #
       ## Spectral line intensity in `B.unit`s depending on natur. abund
       abund_nuclear1 <- combin.abund.coeff.intens[[1]] * intensity_pattern_nuclei[[1]]
@@ -918,8 +917,7 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
           unlist(near_row_for_m_spin_values[[n]], use.names = FALSE)
         ## selecting the rows based on previous indices
         near_B_for_m_spin_values[[n]] <-
-          B.g.sim.df %>%
-          dplyr::slice(near_row_for_m_spin_values[[n]])
+          B.g.sim.df[near_row_for_m_spin_values[[n]], ]
         #
       }
       #

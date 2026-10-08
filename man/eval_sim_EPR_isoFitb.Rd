@@ -17,6 +17,8 @@ eval_sim_EPR_isoFitb(
   lineSpecs.form = "derivative",
   optim.method = c("neldermead", "cobyla", "lbfgs"),
   optim.params.init,
+  optim.params.lower = NULL,
+  optim.params.upper = NULL,
   optim.params.fix.id = NULL,
   Niters.per.eval = 128,
   Nevals = 16
@@ -101,6 +103,20 @@ to all three available methods, please refer to the \code{\link{optim_for_EPR_fi
   DO NOT PUT ANY OF THESE PARAMETERS to \code{NULL}. If the lineshape is expected to be pure
   \strong{L}orentzian or pure \strong{G}aussian then put the corresponding vector element to \code{0}.}
 
+\item{optim.params.lower}{Numeric vector (with the same element order like \code{optim.params.init})
+with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
+corresponds to relative default limits (refer to the \code{\link{eval_sim_EPR_isoFit}} arguments)
+of all fitted/optimized parameters for the actual evaluation. If specified
+(e.g. \code{optim.params.lower = c(2.004,0.3,0.3,-1e-3,0.001,46)}),
+it represents the general lower boundaries for the entire optimization/fitting procedure.}
+
+\item{optim.params.upper}{Numeric vector (with the same element order like \code{optim.params.init})
+with the upper bound constraints. \strong{Default}: \code{optim.params.upper = NULL} which actually
+corresponds to relative default limits (refer to the \code{\link{eval_sim_EPR_isoFit}} arguments)
+of all fitted/optimized parameters for the actual evaluation. If specified
+(e.g. \code{optim.params.upper = c(2.007,0.5,0.5,1e-3,0.004,48)}),
+it represents the general upper boundaries for the entire optimization/fitting procedure.}
+
 \item{optim.params.fix.id}{Numeric value/vector of index/indices of the \code{optim.params.init}, corresponding
 to optimization/simulation parameter(s) to be fixed. For example, if the g-Value and the (intensity) multiplication
 constant should not be optimized (their values should be fixed during the procedure), the argument must be defined
@@ -109,7 +125,7 @@ for the simulation/optimized parameters order). \strong{Default}: \code{optim.pa
 that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
 boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}). Alternatively, the parameter value(s)
 can be also adjusted by assigning the \code{optim.params.init} + \code{optim.params.lower} + \code{optim.params.upper}
-elements to the same value, as already demonstrated in the \code{Examples}.}
+elements to the same value.}
 
 \item{Niters.per.eval}{Numeric value, equal to the number of iterations per one the \code{Nevals} (see the related \code{Nevals}
 argument description). \strong{Default}: \code{Niters.per.eval = 128}. This argument, among other things,
@@ -135,7 +151,7 @@ List with the following elements:
   criteria vs iteration. Even though it represents the final status of those four dependencies, the actual version,
   appears at each of the \code{Nevals} (see the \code{Arguments}) in order to follow the progress of the fitting procedure
   interactively.}
-  \item{best.params.optim}{Named vector of the optimized (best fitting) simulation parameters, corresponding
+  \item{best.fit.params}{Named vector of the optimized (best fitting) simulation parameters, corresponding
   to minimum \code{RSS}. The actual values also appear at each of the \code{Nevals} (see the \code{Arguments}),
   interactively during the fitting procedure.}
   \item{df.params.optim}{A data frame object of all simulation parameters + \code{RSS} (residual sum of squares)
@@ -167,7 +183,8 @@ Ordinary least-squares fitting of the isotropic EPR spectra by simulation iterat
   it represents a more interactive version of the \code{\link{eval_sim_EPR_isoFit}}.
   Namely, it provides \code{{ggplot2}} objects (graphs, see the \code{Value} and the \code{plot.fit} description)
   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-  (refer to the \code{Nevals} argument). The actual function was built because during the parallel processing
+  (refer to the \code{Nevals} argument). In addition, it also shows the actual values of all fitting parameters
+  in the \emph{R} console. The actual function was built because during the parallel processing
   (see the \code{\link{eval_sim_EPR_isoFit_space}}) it is not possible to display the actual
   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
   into the \code{\link{plot_eval_ExpSim_app}}.

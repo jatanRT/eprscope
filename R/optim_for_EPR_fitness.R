@@ -247,7 +247,7 @@
 #'     x0 = optim.fit.list$par
 #'   )
 #' #
-#' ## plot experimental + best fit
+#' ## plot the spectrum + best fit
 #' df.model.expr %>% {
 #'   graphics::plot(
 #'     .$Wavelength_nm,
@@ -305,7 +305,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
       any((upper - lower) == 0)) {
     stop(" All three `fix.optim.x.0.id/lower/upper` cannot be simultaneously defined !!\n
          In order to fix one or more simulation parameters during the optimization/fit,\n
-         either use `fix.optim.x.0.id` or both `lower` and `upper` !! ")
+         either use `fix.optim.x.0.id` or both `lower` and `upper` ! ")
   }
   #
   ## adjust number of optimized parameters,
@@ -327,7 +327,7 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     if (length(fix.optim.x.0.id) >= length(x.0)) {
       stop(" The number of fixed paramaters (which won't be optimized)\n
            CANNOT BE EQUAL OR HIGHER than that of the initial one `x.0`.\n
-           Please, check both the `x.0` as well as `fix.optim.x.0.id` vectors !! ")
+           Please, check both the `x.0` as well as `fix.optim.x.0.id` vectors ! ")
     } else {
       lower <- replace(
         lower,

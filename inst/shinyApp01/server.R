@@ -571,7 +571,9 @@ server <- function(input, output, session) {
     R.text.code.for.sim <-
       paste0(
         "# \n",
-        "# R SCRIPT/CODE SNIPPET TO FIT THE EPR SPECTRUM BY SIMULATIONS",
+        "# ============================================================= \n",
+        "# R SCRIPT/CODE SNIPPET TO FIT THE EPR SPECTRUM BY SIMULATIONS \n",
+        "# ============================================================= \n",
         "# \n",
         "# Required packages/libraries: \n",
         "library(tidyverse) \n",
@@ -580,7 +582,8 @@ server <- function(input, output, session) {
         "# Load the experimental EPR spectrum/data: \n",
         "epr.spectrum.data <- \n",
         "  readEPR_Exp_Specs( \n",
-        "    path_to_file = file.choose(), # select the path to EPR data by the file explorer \n",
+        "    # select the EPR data/spectrum path by file explorer: \n",
+        "    path_to_file = file.choose(), \n",
         "    col.names = ",
         switch(
           3 - origin.cond(orig = input$origin),
@@ -605,7 +608,8 @@ server <- function(input, output, session) {
         "  ) \n",
         "# \n",
         "# Function to fit the EPR spectrum by simulations: \n",
-        "# arguments of the `eval_sim_EPR_isoFit()` may be varied accordingly (please, refer to the documentation) \n",
+        "# arguments of the `eval_sim_EPR_isoFit()` may be varied accordingly, \n",
+        "# please, refer to the documentation \n",
         "epr.spectrum.sim.fit <- \n",
         "  eval_sim_EPR_isoFit( \n",
         "    data.spectr.expr = epr.spectrum.data, \n",

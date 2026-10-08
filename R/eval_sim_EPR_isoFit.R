@@ -122,7 +122,7 @@
 #'   that none of the \code{optim.params.init} is fixed, i.e. all parameters are optimized within their default/defined
 #'   boundaries (see the \code{optim.params.lower} and the \code{optim.params.upper}). Alternatively, the parameter value(s)
 #'   can be also adjusted by assigning the \code{optim.params.init} + \code{optim.params.lower} + \code{optim.params.upper}
-#'   elements to the same value, as already demonstrated in the \code{Examples}.
+#'   elements to the same value.
 #' @param optim.params.lower Numeric vector (with the same element order like \code{optim.params.init})
 #'   with the lower bound constraints. \strong{Default}: \code{optim.params.lower = NULL} which actually
 #'   equals to \eqn{g_{\text{init}} - 0.001}, \eqn{0.8\,\Delta B_{\text{G,init}}},
@@ -517,18 +517,27 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
          linewidth (`optim.params.init[3]`) must be DIFFERENT FROM `0` ! ")
   }
   ## conditions for parameter guesses (initial parameters)
-  if (!is.null(optim.params.fix.id) &
-      any((optim.params.upper - optim.params.lower) == 0)) {
-    stop(" All three `optim.params.fix.id/lower/upper` cannot be simultaneously defined !!\n
+  if (!is.null(optim.params.lower) & !is.null(optim.params.upper)) {
+    if (!is.null(optim.params.fix.id) &
+        any((optim.params.upper - optim.params.lower) == 0)) {
+      stop(" All three `optim.params.fix.id/lower/upper` cannot be simultaneously defined !!\n
          In order to fix one or more simulation parameters during the optimization/fit,\n
          either use `optim.params.fix.id` or both `optim.params.lower/upper` !! ")
+    }
+    if ((length(optim.params.init) != length(optim.params.lower)) ||
+        (length(optim.params.upper) != length(optim.params.init)) ||
+        (length(optim.params.upper) != length(optim.params.lower))) {
+      stop("The lengths of `optim.params.init`, `optim.params.lower`,\n
+           and `optim.params.upper` are not all equal.\n
+           Check the length of all three vectors ! ")
+    }
   }
   #
   if (length(optim.params.init) <= length(optim.params.fix.id)){
     stop(" The length of the `optim.params.init` vector is shorter or has the same length \n
          like the `optim.params.fix.id`. If all optimization/simulation parameters are fixed,\n
          the entire fitting procedure cannot be performed, because none \n
-         of the `optim.params.init.` are optimized !! ")
+         of the `optim.params.init.` are optimized ! ")
   }
   #
   ## Define the length of `nuclear.system.noA` similarly as in simple simulation
@@ -1059,7 +1068,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   for (m in seq(optim.method)) {
     if (optim.method[m] == "levenmarq"){
       ## LSQ or DIFF. FUNCTIONS
-      ## "levelnmarq" is defined by residuals, NOT by sum of the residual squares !!
+      ## "levenmarq" is defined by residuals, NOT by sum of the residual squares !!
       min_residuals_lm <- function(data,
                                    nucs.system,
                                    Intensity.sim,

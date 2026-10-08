@@ -205,7 +205,7 @@ test_that("Optimized parameters of the Gaussian UV-Vis spectrum peak correspond 
 #
 ## ------------------- Checking the returned valuescorresp. to min. RSS ----------------------
 #
-test_that("Returned list `values`, upon Uv-Vis spectrum fitting, correspond to minimal RSS ! ",{
+test_that("Returned list `values`, upon UV-Vis spectrum fitting, correspond to minimal RSS ! ",{
   #
   ## function fit values for the `{nloptr}` methods
   nloptr.all.best.values <- lapply(
@@ -236,9 +236,9 @@ test_that("Returned list `values`, upon Uv-Vis spectrum fitting, correspond to m
   #
 })
 #
-##
+## ------------------------- Checking the returned message -------------------------------
 #
-test_that(" Returned `message`, upon Uv-Vis spectrum fitting by `NLOPTR`,
+test_that(" Returned `message`, upon UV-Vis spectrum fitting by `NLOPTR`,
           contains strings characteristic for the succesful fitting
           process termination ! ",{
   #
