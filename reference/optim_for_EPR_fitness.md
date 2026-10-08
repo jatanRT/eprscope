@@ -372,7 +372,7 @@ df.model.expr[["Fit"]] <-
     x0 = optim.fit.list$par
   )
 #
-## plot experimental + best fit
+## plot the spectrum + best fit
 df.model.expr %>% {
   graphics::plot(
     .$Wavelength_nm,

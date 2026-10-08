@@ -9,8 +9,9 @@ however, it represents a more interactive version of the
 Namely, it provides `{ggplot2}` objects (graphs, see the `Value` and the
 `plot.fit` description) in order to simultaneously check/explore the
 optimization/fitting process at each of the evaluations (refer to the
-`Nevals` argument). The actual function was built because during the
-parallel processing (see the
+`Nevals` argument). In addition, it also shows the actual values of all
+fitting parameters in the *R* console. The actual function was built
+because during the parallel processing (see the
 [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md))
 it is not possible to display the actual EPR spectra during the
 optimization/fitting procedure. In the upcoming package updates, it will
@@ -33,6 +34,8 @@ eval_sim_EPR_isoFitb(
   lineSpecs.form = "derivative",
   optim.method = c("neldermead", "cobyla", "lbfgs"),
   optim.params.init,
+  optim.params.lower = NULL,
+  optim.params.upper = NULL,
   optim.params.fix.id = NULL,
   Niters.per.eval = 128,
   Nevals = 16
@@ -165,6 +168,32 @@ eval_sim_EPR_isoFitb(
   expected to be pure **L**orentzian or pure **G**aussian then put the
   corresponding vector element to `0`.
 
+- optim.params.lower:
+
+  Numeric vector (with the same element order like `optim.params.init`)
+  with the lower bound constraints. **Default**:
+  `optim.params.lower = NULL` which actually corresponds to relative
+  default limits (refer to the
+  [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
+  arguments) of all fitted/optimized parameters for the actual
+  evaluation. If specified (e.g.
+  `optim.params.lower = c(2.004,0.3,0.3,-1e-3,0.001,46)`), it represents
+  the general lower boundaries for the entire optimization/fitting
+  procedure.
+
+- optim.params.upper:
+
+  Numeric vector (with the same element order like `optim.params.init`)
+  with the upper bound constraints. **Default**:
+  `optim.params.upper = NULL` which actually corresponds to relative
+  default limits (refer to the
+  [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
+  arguments) of all fitted/optimized parameters for the actual
+  evaluation. If specified (e.g.
+  `optim.params.upper = c(2.007,0.5,0.5,1e-3,0.004,48)`), it represents
+  the general upper boundaries for the entire optimization/fitting
+  procedure.
+
 - optim.params.fix.id:
 
   Numeric value/vector of index/indices of the `optim.params.init`,
@@ -180,7 +209,7 @@ eval_sim_EPR_isoFitb(
   `optim.params.upper`). Alternatively, the parameter value(s) can be
   also adjusted by assigning the `optim.params.init` +
   `optim.params.lower` + `optim.params.upper` elements to the same
-  value, as already demonstrated in the `Examples`.
+  value.
 
 - Niters.per.eval:
 
@@ -223,7 +252,7 @@ List with the following elements:
   of the `Nevals` (see the `Arguments`) in order to follow the progress
   of the fitting procedure interactively.
 
-- best.params.optim:
+- best.fit.params:
 
   Named vector of the optimized (best fitting) simulation parameters,
   corresponding to minimum `RSS`. The actual values also appear at each

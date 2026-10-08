@@ -186,7 +186,7 @@ eval_sim_EPR_isoFit(
   `optim.params.upper`). Alternatively, the parameter value(s) can be
   also adjusted by assigning the `optim.params.init` +
   `optim.params.lower` + `optim.params.upper` elements to the same
-  value, as already demonstrated in the `Examples`.
+  value.
 
 - optim.params.lower:
 
@@ -596,7 +596,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  8.301  s 
+#>  Done!  ( 100  %)    elapsed time  7.38  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -707,11 +707,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.561  s 
+#>  Done!  ( 50  %)    elapsed time  0.486  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  8.614  s 
+#>  Done!  ( 100  %)    elapsed time  7.804  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

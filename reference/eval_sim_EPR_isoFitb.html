@@ -4,7 +4,8 @@
   it represents a more interactive version of the eval_sim_EPR_isoFit.
   Namely, it provides {ggplot2} objects (graphs, see the Value and the plot.fit description)
   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-  (refer to the Nevals argument). The actual function was built because during the parallel processing
+  (refer to the Nevals argument). In addition, it also shows the actual values of all fitting parameters
+  in the R console. The actual function was built because during the parallel processing
   (see the eval_sim_EPR_isoFit_space) it is not possible to display the actual
   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
   into the plot_eval_ExpSim_app."><title>Interactive Least-Squares Fitting of Isotropic EPR Spectra by Simulation Iteratioins/Evaulations — eval_sim_EPR_isoFitb • eprscope</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><script src="../extra.js"></script><meta property="og:title" content="Interactive Least-Squares Fitting of Isotropic EPR Spectra by Simulation Iteratioins/Evaulations — eval_sim_EPR_isoFitb"><meta property="og:description" content="Ordinary least-squares fitting of the isotropic EPR spectra by simulation iterations/evaluations.
@@ -12,7 +13,8 @@
   it represents a more interactive version of the eval_sim_EPR_isoFit.
   Namely, it provides {ggplot2} objects (graphs, see the Value and the plot.fit description)
   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-  (refer to the Nevals argument). The actual function was built because during the parallel processing
+  (refer to the Nevals argument). In addition, it also shows the actual values of all fitting parameters
+  in the R console. The actual function was built because during the parallel processing
   (see the eval_sim_EPR_isoFit_space) it is not possible to display the actual
   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
   into the plot_eval_ExpSim_app."><!-- mathjax --><script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js">
@@ -80,7 +82,8 @@
   it represents a more interactive version of the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>.
   Namely, it provides <code>{ggplot2}</code> objects (graphs, see the <code>Value</code> and the <code>plot.fit</code> description)
   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-  (refer to the <code>Nevals</code> argument). The actual function was built because during the parallel processing
+  (refer to the <code>Nevals</code> argument). In addition, it also shows the actual values of all fitting parameters
+  in the <em>R</em> console. The actual function was built because during the parallel processing
   (see the <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space</a></code>) it is not possible to display the actual
   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
   into the <code><a href="plot_eval_ExpSim_app.html">plot_eval_ExpSim_app</a></code>.</p>
@@ -101,6 +104,8 @@
 <span>  lineSpecs.form <span class="op">=</span> <span class="st">"derivative"</span>,</span>
 <span>  optim.method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neldermead"</span>, <span class="st">"cobyla"</span>, <span class="st">"lbfgs"</span><span class="op">)</span>,</span>
 <span>  <span class="va">optim.params.init</span>,</span>
+<span>  optim.params.lower <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  optim.params.upper <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  optim.params.fix.id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Niters.per.eval <span class="op">=</span> <span class="fl">128</span>,</span>
 <span>  Nevals <span class="op">=</span> <span class="fl">16</span></span>
@@ -202,6 +207,24 @@ to all three available methods, please refer to the <code><a href="optim_for_EPR
   <strong>L</strong>orentzian or pure <strong>G</strong>aussian then put the corresponding vector element to <code>0</code>.</p></dd>
 
 
+<dt id="arg-optim-params-lower">optim.params.lower<a class="anchor" aria-label="anchor" href="#arg-optim-params-lower"></a></dt>
+<dd><p>Numeric vector (with the same element order like <code>optim.params.init</code>)
+with the lower bound constraints. <strong>Default</strong>: <code>optim.params.lower = NULL</code> which actually
+corresponds to relative default limits (refer to the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code> arguments)
+of all fitted/optimized parameters for the actual evaluation. If specified
+(e.g. <code>optim.params.lower = c(2.004,0.3,0.3,-1e-3,0.001,46)</code>),
+it represents the general lower boundaries for the entire optimization/fitting procedure.</p></dd>
+
+
+<dt id="arg-optim-params-upper">optim.params.upper<a class="anchor" aria-label="anchor" href="#arg-optim-params-upper"></a></dt>
+<dd><p>Numeric vector (with the same element order like <code>optim.params.init</code>)
+with the upper bound constraints. <strong>Default</strong>: <code>optim.params.upper = NULL</code> which actually
+corresponds to relative default limits (refer to the <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code> arguments)
+of all fitted/optimized parameters for the actual evaluation. If specified
+(e.g. <code>optim.params.upper = c(2.007,0.5,0.5,1e-3,0.004,48)</code>),
+it represents the general upper boundaries for the entire optimization/fitting procedure.</p></dd>
+
+
 <dt id="arg-optim-params-fix-id">optim.params.fix.id<a class="anchor" aria-label="anchor" href="#arg-optim-params-fix-id"></a></dt>
 <dd><p>Numeric value/vector of index/indices of the <code>optim.params.init</code>, corresponding
 to optimization/simulation parameter(s) to be fixed. For example, if the g-Value and the (intensity) multiplication
@@ -211,7 +234,7 @@ for the simulation/optimized parameters order). <strong>Default</strong>: <code>
 that none of the <code>optim.params.init</code> is fixed, i.e. all parameters are optimized within their default/defined
 boundaries (see the <code>optim.params.lower</code> and the <code>optim.params.upper</code>). Alternatively, the parameter value(s)
 can be also adjusted by assigning the <code>optim.params.init</code> + <code>optim.params.lower</code> + <code>optim.params.upper</code>
-elements to the same value, as already demonstrated in the <code>Examples</code>.</p></dd>
+elements to the same value.</p></dd>
 
 
 <dt id="arg-niters-per-eval">Niters.per.eval<a class="anchor" aria-label="anchor" href="#arg-niters-per-eval"></a></dt>
@@ -243,7 +266,7 @@ the optimization/fitting procedure) no parallel computing is supported
   appears at each of the <code>Nevals</code> (see the <code>Arguments</code>) in order to follow the progress of the fitting procedure
   interactively.</p></dd>
 
-  <dt>best.params.optim</dt>
+  <dt>best.fit.params</dt>
 <dd><p>Named vector of the optimized (best fitting) simulation parameters, corresponding
   to minimum <code>RSS</code>. The actual values also appear at each of the <code>Nevals</code> (see the <code>Arguments</code>),
   interactively during the fitting procedure.</p></dd>
