@@ -131,7 +131,10 @@
 #'   \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
 #'   by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
 #'   \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
-#'   constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+#'   constants \eqn{A} in MHz, which may be used for additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+#'   \item{spec.expr.params}{Named numeric vector of parameters to record the experimental EPR spectrum,
+#'   equal to \code{instrum.params} argument from the \code{\link{eval_sim_EPR_iso}}.
+#'   To be used for additional simulations.}
 #'   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
 #'   If \code{lineG.content.dvary = NULL}  it corresponds to the original/initial value (\code{lineG.content}).
 #'   Otherwise, a value from the corresponding vector, defined by the \code{lineG.content} + \code{lineG.content.dvary}
@@ -303,6 +306,16 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       return(2)
     }
   }
+  #
+  ## parameters for the additional simulation (experimental spectrum + mwGHz)
+  B.cf <- stats::median(data.spectr.expr[[paste0("B_",B.unit)]])
+  B.sw <- max(data.spectr.expr[[paste0("B_",B.unit)]]) -
+    min(data.spectr.expr[[paste0("B_",B.unit)]])
+  N.points <- nrow(data.spectr.expr)
+  mw.GHz <- nu.GHz
+  ## therefore => the named vector
+  instrum.params <-
+    c(Bcf = B.cf,Bsw = B.sw,Npoints = N.points,mwGHz = mw.GHz)
   #
   ## ================ CREATING SEQUENCES OF PARAMETERS =================
   #
@@ -902,6 +915,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       plot.optim.space = plot.facet.optim.space,
       best.fit.params = best.params.from.space,
       nuclear.system = nuclear.system.A,
+      spec.expr.params = instrum.params,
       best.lineG.content = best.lineGcont,
       plots.fit.EPRspec = sim.fit.vary.list.plots
     )

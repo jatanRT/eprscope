@@ -159,7 +159,10 @@ List with the following elements:
   evaluated during the fitting process at corresponding actual iteration. Visual progress of all those variables
   may be nicely followed by the \code{\link[esquisse]{esquisser}} or other \emph{R} plotting/visualization function.}
   \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
-  constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+  constants \eqn{A} in MHz, which may be used for additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+  \item{spec.expr.params}{Named numeric vector of parameters to record the experimental EPR spectrum,
+  equal to \code{instrum.params} argument from the \code{\link{eval_sim_EPR_iso}}.
+  To be used for additional simulations.}
   \item{ra}{Final (related to the minimum of \code{RSS}) \strong{r}esidual \strong{a}nalysis list
   (refer to the \code{\link{plot_eval_RA_forFit}} and/or to \code{\link{eval_sim_EPR_isoFit}}) extended by the \code{message}
   which distribution (Normal/Gaussian, Student's t-distribution or Cauchy) fits the residuals at best and was actually

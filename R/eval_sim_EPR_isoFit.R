@@ -185,7 +185,10 @@
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
 #'   \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
-#'   constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+#'   constants \eqn{A} in MHz, which may be used for additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+#'   \item{spec.expr.params}{Named numeric vector of parameters to record the experimental EPR spectrum,
+#'   equal to \code{instrum.params} argument from the \code{\link{eval_sim_EPR_iso}}.
+#'   To be used for additional simulations.}
 #'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
 #'   the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
 #'   (if \code{check.fit.plot = TRUE}), or wide data frame with the following variables / columns
@@ -1691,6 +1694,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       best.fit.params = best.fit.params,
       best.fit.par.names = names.best.fit.pars,
       nuclear.system = nuclear.system.A,
+      spec.expr.params = instrum.params,
       df = switch(2-check.fit.plot,
                   data.sim.expr.long,
                   data.sim.expr),
