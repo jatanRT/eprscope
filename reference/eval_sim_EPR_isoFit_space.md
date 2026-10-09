@@ -340,6 +340,13 @@ a list with the following elements is provided:
   `plot.optim.space` distinguished by the green line) and related to the
   minimum RSS and `optim.params.init` argument.
 
+- nuclear.system:
+
+  List consisting of all considered nuclei, and their optimized (best
+  fitted) coupling constants \\A\\ in MHz, which may be used in any
+  other additional EPR simulation (see the
+  [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md)).
+
 - best.lineG.content:
 
   Numeric value of the Gaussian line content of the simulated EPR

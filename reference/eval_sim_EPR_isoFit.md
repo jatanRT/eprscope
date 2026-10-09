@@ -306,6 +306,13 @@ depending on the `check.fit.plot` and `output...` arguments.
       Character string vector corresponding to names of the
       `best.fit.params`.
 
+    - nuclear.system:
+
+      List consisting of all considered nuclei, and their optimized
+      (best fitted) coupling constants \\A\\ in MHz, which may be used
+      in any other additional EPR simulation (see the
+      [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md)).
+
     - df:
 
       Tidy data frame (table) with the magnetic flux density and
@@ -596,7 +603,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  7.38  s 
+#>  Done!  ( 100  %)    elapsed time  6.479  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -707,11 +714,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.486  s 
+#>  Done!  ( 50  %)    elapsed time  0.433  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  7.804  s 
+#>  Done!  ( 100  %)    elapsed time  6.619  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
@@ -722,6 +729,21 @@ tempo.test.sim.fit.c$best.fit.params
 #> [[2]]
 #> [1]  2.0069998e+00  4.8414479e+00  3.8400101e+00 -1.7672999e-09  8.7499986e-03
 #> [6]  5.3612524e+01
+#> 
+#
+## list - system of interacting nuclei with the best/optimized
+## hyperfine couplings in MHz
+tempo.test.sim.fit.c$nuclear.system
+#> [[1]]
+#> [[1]][[1]]
+#> [1] "14N"
+#> 
+#> [[1]][[2]]
+#> [1] 1
+#> 
+#> [[1]][[3]]
+#> [1] 53.612524
+#> 
 #> 
 #
 ## compare the results with the example in the `readMAT_params_file`,
