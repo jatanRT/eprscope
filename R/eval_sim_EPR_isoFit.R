@@ -184,6 +184,8 @@
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
+#'   \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
+#'   constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
 #'   \item{df}{Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
 #'   the best simulated/fitted, as well as the initially simulated EPR spectrum and residuals
 #'   (if \code{check.fit.plot = TRUE}), or wide data frame with the following variables / columns
@@ -401,6 +403,10 @@
 #' ## OUTPUTS:
 #' ## best fit parameters for both procedures within a list:
 #' tempo.test.sim.fit.c$best.fit.params
+#' #
+#' ## list - system of interacting nuclei with the best/optimized
+#' ## hyperfine couplings in MHz
+#' tempo.test.sim.fit.c$nuclear.system
 #' #
 #' ## compare the results with the example in the `readMAT_params_file`,
 #' ## corresponding to the best fit from `Easyspin`
@@ -1601,7 +1607,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       best.fit.params[[length(optim.method)]],
       min.rss[[length(optim.method)]],
       resid.anal.simple.list$measures[["sd"]], ## residual sd
-      resid.anal.simple.list$measures[["mad"]], ## MAD
+      resid.anal.simple.list$measures[["mad"]], ## residual MAD
       AB.ic.list$abic.vec[1], ## AIC
       AB.ic.list$abic.vec[2] ## BIC
     )
@@ -1621,20 +1627,43 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       "Intensity_MultiplCoeff"
     )
     if (is.null(nuclear.system.noA)) {
+      #
+      ## ---------------- As names ---------------
       names.A <- NULL
+      #
+      ## ---------- list with best/optimized As ----------
+      nuclear.system.A <- NULL
+      #
     } else {
       ## what is the length of the list (how many nuclear groups)
       nucle_us_i <- sapply(
         1:length(nuclear.system.noA),
         function(e) { nuclear.system.noA[[e]][[1]] }
       )
-      ## names for A(s)
+      #
+      ##  --------------- As names -------------------
+      #
       names.A <-
         sapply(
           1:length(nucle_us_i),
           function(n) { paste0("A",n,"_MHz") }
         )
+      #
+      ## ---------- list with best/optimized As ----------
+      A.best.vec <-
+        best.fit.params[[last.method]][
+          ((length(best.fit.params[[last.method]]) -
+              length(nucle_us_i) + 1):length(best.fit.params[[last.method]]))
+        ]
+      #
+      nuclear.system.A <- c()
+      for (j in seq(nuclear.system.noA)) {
+        nuclear.system.A[[j]] <- c(nuclear.system.noA[[j]],A.best.vec[j])
+        nuclear.system.A[[j]] <- as.list(nuclear.system.A[[j]])
+      }
+      #
     }
+    ## --------------------------- Additional names --------------------------
     names.baseline <-
       switch( ## lin. + quadrat. coeffs. for baseline
         3-baseline.cond.fn(baseline.correct = baseline.correct),
@@ -1655,12 +1684,13 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
               The length must be ",length(optim.params.init)," !")
     }
     #
-    ## final list components (switching between `check.fit.plot` condition)
+    ## --------- final list components (switching between `check.fit.plot` condition) --------
     result <- list(
       plot = plot.sim.expr,
       ra = resid.anal.simple.list,
       best.fit.params = best.fit.params,
       best.fit.par.names = names.best.fit.pars,
+      nuclear.system = nuclear.system.A,
       df = switch(2-check.fit.plot,
                   data.sim.expr.long,
                   data.sim.expr),

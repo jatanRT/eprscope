@@ -193,6 +193,8 @@ If the \code{animation} argument is different from \code{NULL}, the function wil
   \code{AIC} and \code{BIC}, as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
   \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
   by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
+  \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
+  constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
   If \code{lineG.content.dvary = NULL}  it corresponds to the original/initial value (\code{lineG.content}).
   Otherwise, a value from the corresponding vector, defined by the \code{lineG.content} + \code{lineG.content.dvary}

@@ -159,7 +159,7 @@ List with the following elements:
   evaluated during the fitting process at corresponding actual iteration. Visual progress of all those variables
   may be nicely followed by the \code{\link[esquisse]{esquisser}} or other \emph{R} plotting/visualization function.}
   \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
-  constants \eqn{A} in MHz, which may be used in any additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
+  constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
   \item{ra}{Final (related to the minimum of \code{RSS}) \strong{r}esidual \strong{a}nalysis list
   (refer to the \code{\link{plot_eval_RA_forFit}} and/or to \code{\link{eval_sim_EPR_isoFit}}) extended by the \code{message}
   which distribution (Normal/Gaussian, Student's t-distribution or Cauchy) fits the residuals at best and was actually
@@ -183,8 +183,8 @@ Ordinary least-squares fitting of the isotropic EPR spectra by simulation iterat
   it represents a more interactive version of the \code{\link{eval_sim_EPR_isoFit}}.
   Namely, it provides \code{{ggplot2}} objects (graphs, see the \code{Value} and the \code{plot.fit} description)
   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-  (refer to the \code{Nevals} argument). In addition, it also shows the actual values of all fitting parameters
-  in the \emph{R} console. The actual function was built because during the parallel processing
+  (refer to the \code{Nevals} argument). In addition, it also simultaneously shows current values
+  of all the fitting parameters in the \emph{R} console. The function was built, because during the parallel processing
   (see the \code{\link{eval_sim_EPR_isoFit_space}}) it is not possible to display the actual
   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
   into the \code{\link{plot_eval_ExpSim_app}}.
@@ -208,10 +208,38 @@ test.list <- eval_sim_EPR_isoFitb(
     3.2e5, ## intensity multiplication coeff.
     19.5, 5.5, 19.5 ## required As in MHz
   ),
-  Niters.per.eval = 128, ## number of iterations per evaluation
+  ## number of iterations per evaluation
+  Niters.per.eval = 128,
   Nevals = 17 ## total number of evaluations
-  ## total number of iterations = Niters.per.eval * Nevals
+  ## total number of iterations =
+  ## = Niters.per.eval * Nevals
 )
+#
+## simulation fit with the lower and upper
+## bound constraints
+epr.spectrum.sim.fit <-
+  eval_sim_EPR_isoFitb(
+    data.spectr.expr = epr.spectrum.data,
+    nu.GHz = 9.793116,
+    B.unit = 'G',
+    Blim = c(3435,3537),
+    lineG.content = 0.93,
+    optim.method = 'neldermead',
+    optim.params.init = c(
+      2.00581,0.57,0.77,0,0.0006,41.1,7.94,2.84
+    ),
+    optim.params.lower = c(
+      2.0055,0.3,0.45,-1e-4,5e-4,40,6,1
+    ),
+    optim.params.upper = c(
+      2.0059,0.7,1.2,1e-4,1e-3,42,9,4
+    ),
+    nuclear.system.noA =
+      list(list('14N',1),list('1H',1),list('1H',1)),
+    baseline.correct = 'constant',
+    Nevals = 32,
+    Niters.per.eval = 116
+ )
 }
 
 

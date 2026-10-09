@@ -130,6 +130,8 @@
 #'   \code{AIC} and \code{BIC}, as they represent "hills" and "valleys" of the optimization/fitting path to identify the minima.}
 #'   \item{best.fit.params}{Named vector of the best final fitting (optimized) parameters (in the \code{plot.optim.space} distinguished
 #'   by the green line) and related to the minimum RSS and \code{optim.params.init} argument.}
+#'   \item{nuclear.system}{List consisting of all considered nuclei, and their optimized (best fitted) coupling
+#'   constants \eqn{A} in MHz, which may be used in any other additional EPR simulation (see the \code{\link{eval_sim_EPR_iso}}).}
 #'   \item{best.lineG.content}{Numeric value of the Gaussian line content of the simulated EPR spectrum.
 #'   If \code{lineG.content.dvary = NULL}  it corresponds to the original/initial value (\code{lineG.content}).
 #'   Otherwise, a value from the corresponding vector, defined by the \code{lineG.content} + \code{lineG.content.dvary}
@@ -722,6 +724,27 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     sim.fit.vary.list,
     sim.fit.vary.list.params
   )
+  ## --------------- NUCLEAR SYSTEMS with BEST As for ADDITIONAL SIM/FIT -------------
+  if (is.null(nuclear.system.noA)) {
+    #
+    nuclear.system.A <- NULL
+    #
+  } else {
+    #
+    best.params.space <- unname(best.params.from.space)
+    #
+    A.best.vec <-
+      best.params.space[
+        ((length(best.params.space) -
+            length(nuclear.system.noA) + 1):length(best.params.space))
+      ]
+    nuclear.system.A <- c()
+    for (j in seq(nuclear.system.noA)) {
+      nuclear.system.A[[j]] <- c(nuclear.system.noA[[j]],A.best.vec[j])
+      nuclear.system.A[[j]] <- as.list(nuclear.system.A[[j]])
+    }
+    #
+  }
   #
   ## ------------------------ PARAMETER ANALYSIS (LATER) -----------------------------
   #
@@ -878,6 +901,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
       plot.init.space = plot.facet.init.space,
       plot.optim.space = plot.facet.optim.space,
       best.fit.params = best.params.from.space,
+      nuclear.system = nuclear.system.A,
       best.lineG.content = best.lineGcont,
       plots.fit.EPRspec = sim.fit.vary.list.plots
     )
