@@ -279,7 +279,12 @@ the optimization/fitting procedure) no parallel computing is supported
 
   <dt>nuclear.system</dt>
 <dd><p>List consisting of all considered nuclei, and their optimized (best fitted) coupling
-  constants \(A\) in MHz, which may be used in any other additional EPR simulation (see the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>).</p></dd>
+  constants \(A\) in MHz, which may be used for additional EPR simulation (see the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>).</p></dd>
+
+  <dt>spec.expr.params</dt>
+<dd><p>Named numeric vector of parameters to record the experimental EPR spectrum,
+  equal to <code>instrum.params</code> argument from the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>.
+  To be used for additional simulations.</p></dd>
 
   <dt>ra</dt>
 <dd><p>Final (related to the minimum of <code>RSS</code>) <strong>r</strong>esidual <strong>a</strong>nalysis list

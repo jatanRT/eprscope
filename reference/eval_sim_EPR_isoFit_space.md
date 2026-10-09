@@ -343,9 +343,16 @@ a list with the following elements is provided:
 - nuclear.system:
 
   List consisting of all considered nuclei, and their optimized (best
-  fitted) coupling constants \\A\\ in MHz, which may be used in any
-  other additional EPR simulation (see the
+  fitted) coupling constants \\A\\ in MHz, which may be used for
+  additional EPR simulation (see the
   [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md)).
+
+- spec.expr.params:
+
+  Named numeric vector of parameters to record the experimental EPR
+  spectrum, equal to `instrum.params` argument from the
+  [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md).
+  To be used for additional simulations.
 
 - best.lineG.content:
 

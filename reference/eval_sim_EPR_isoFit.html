@@ -311,7 +311,12 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 
   <dt>nuclear.system</dt>
 <dd><p>List consisting of all considered nuclei, and their optimized (best fitted) coupling
-  constants \(A\) in MHz, which may be used in any other additional EPR simulation (see the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>).</p></dd>
+  constants \(A\) in MHz, which may be used for additional EPR simulation (see the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>).</p></dd>
+
+  <dt>spec.expr.params</dt>
+<dd><p>Named numeric vector of parameters to record the experimental EPR spectrum,
+  equal to <code>instrum.params</code> argument from the <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso</a></code>.
+  To be used for additional simulations.</p></dd>
 
   <dt>df</dt>
 <dd><p>Tidy data frame (table) with the magnetic flux density and intensities of the experimental,
@@ -542,7 +547,7 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-msg co"><span class="r-pr">#&gt;</span> It 30: fitness=1.582e-08, swarm diam.=0.1247</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Maximal number of function evaluations reached</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.479  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.112  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## minimum sum of residual squares:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.b</span><span class="op">$</span><span class="va">min.rss</span></span></span>
@@ -653,11 +658,11 @@ like <code>eval.optim.progress = TRUE</code> (which is <code>FALSE</code> by <st
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.433  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 50  %)    elapsed time  0.782  s </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  6.619  s </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Done!  ( 100  %)    elapsed time  12.092  s </span>
 <span class="r-in"><span><span class="co">## OUTPUTS:</span></span></span>
 <span class="r-in"><span><span class="co">## best fit parameters for both procedures within a list:</span></span></span>
 <span class="r-in"><span><span class="va">tempo.test.sim.fit.c</span><span class="op">$</span><span class="va">best.fit.params</span></span></span>

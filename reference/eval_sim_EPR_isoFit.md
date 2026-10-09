@@ -310,8 +310,15 @@ depending on the `check.fit.plot` and `output...` arguments.
 
       List consisting of all considered nuclei, and their optimized
       (best fitted) coupling constants \\A\\ in MHz, which may be used
-      in any other additional EPR simulation (see the
+      for additional EPR simulation (see the
       [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md)).
+
+    - spec.expr.params:
+
+      Named numeric vector of parameters to record the experimental EPR
+      spectrum, equal to `instrum.params` argument from the
+      [`eval_sim_EPR_iso`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md).
+      To be used for additional simulations.
 
     - df:
 
@@ -603,7 +610,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  6.479  s 
+#>  Done!  ( 100  %)    elapsed time  12.112  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -714,11 +721,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.433  s 
+#>  Done!  ( 50  %)    elapsed time  0.782  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  6.619  s 
+#>  Done!  ( 100  %)    elapsed time  12.092  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
