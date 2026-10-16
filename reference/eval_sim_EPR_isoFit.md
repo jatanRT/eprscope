@@ -610,7 +610,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.112  s 
+#>  Done!  ( 100  %)    elapsed time  7.364  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -686,7 +686,6 @@ tempo.test.sim.fit.b$abic
 ## distribution of residuals and confidence level 99%
 ## (default: 95%/0.95)
 tempo.test.sim.fit.b$ra$plot.rqq(confidence = 0.99)
-#> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
 #
 ## residual & Q-Q plots for the proposed Student's
@@ -696,7 +695,6 @@ tempo.test.sim.fit.b$ra$plot.rqq(
   residuals.distro = "t",
   df = 2.2
 )
-#> `geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
 
 #
 ## fitting of the aminoxyl EPR spectrum
@@ -721,11 +719,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.782  s 
+#>  Done!  ( 50  %)    elapsed time  0.497  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.092  s 
+#>  Done!  ( 100  %)    elapsed time  7.579  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

@@ -32,7 +32,8 @@ plot_eval_RA_forFit(
   resid.method.smooth = "loess",
   resid.xlab = NULL,
   k,
-  level.cnfd = 0.95
+  level.cnfd = 0.95,
+  weighted.fit = FALSE
 )
 ```
 
@@ -92,6 +93,14 @@ plot_eval_RA_forFit(
 
   Numeric value, identical with level of the applied confidence interval
   (see also the `se` argument). **Default**: `level.cnfd = 0.95`.
+
+- weighted.fit:
+
+  Logical, whether the residuals are calculated using an ordinary
+  (**O**, `weighted.fit = FALSE`, **default**) or weighted
+  (**W**,`weighted.fit = TRUE`) least-squares fit. Both situations are
+  **indicated by the plot title** within the residual as well as
+  histogram-scaled probability density plots (see `Value`).
 
 ## Value
 
@@ -153,10 +162,11 @@ A List, consisting of the following elements is returned:
       `k`). Therefore, the smaller the `sd`, the better the fit, when
       comparing different models/fits
 
-  5.  `kurtosis.excess` tells whether the residuals posses more or fewer
-      extremes (i.e. how heavier are the corresponding tails) in
-      comparison to normal distribution (the excess means how much
-      kurtosis is above or below the normal-distribution benchmark). If
+  5.  [`kurtosis.excess`](https://www.geeksforgeeks.org/r-language/kurtosis-in-r-programming/)
+      tells whether the residuals posses more or fewer extremes (i.e.
+      how heavier are the corresponding tails) in comparison to normal
+      distribution (the excess means how much kurtosis is above or below
+      the normal-distribution benchmark, which is 3). If
       `kurtosis.excess` \> 0, residuals have heavier tails and unusually
       extreme observations are more common. If `kurtosis.excess` \< 0,
       residuals do have lighter tails and unusually extreme observations
@@ -167,22 +177,23 @@ A List, consisting of the following elements is returned:
       the
       [`eval_ABIC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md).
 
-  6.  `skewness` describes how (a)symmetric are residuals, i.e. it may
-      indicate whether the model makes unusually large errors more often
-      in one direction than in the other. If `skewness` \< -1, the
-      residuals are substantially left-skewed (mean \< median,with
-      longer negative tails). If -1 \\\leq\\ `skewness` \< -0.5,
-      residuals are moderately left-skewed (with noticeable negative
-      tail). If -0.5 \\\leq\\ `skewness` \\\leq\\ 0.5, the distribution
-      is approximately symmetric. On the other hand, if 0.5 \<
-      `skewness` \\\leq\\ 1 or 1 \< `skewness`, the residuals are either
-      moderately right-skewed (with noticeable positive tails) or
-      substantially right-skewed (mean \> median, with longer positive
-      tails), respectively. Even though the `skewness` and `kurtosis`
-      look similar, they provide different information: the skewness
-      measures asymmetry, while the kurtosis measures tail weights
-      relative to the normal distribution, independently whether it is
-      symmetric or not.
+  6.  [`skewness`](https://www.geeksforgeeks.org/r-language/skewness-and-kurtosis-in-r-programming/)
+      describes how (a)symmetric are residuals, i.e. it may indicate
+      whether the model makes unusually large errors more often in one
+      direction than in the other. If `skewness` \< -1, the residuals
+      are substantially left-skewed (mean \< median,with longer negative
+      tails). If -1 \\\leq\\ `skewness` \< -0.5, residuals are
+      moderately left-skewed (with noticeable negative tail). If -0.5
+      \\\leq\\ `skewness` \\\leq\\ 0.5, the distribution is
+      approximately symmetric. On the other hand, if 0.5 \< `skewness`
+      \\\leq\\ 1 or 1 \< `skewness`, the residuals are either moderately
+      right-skewed (with noticeable positive tails) or substantially
+      right-skewed (mean \> median, with longer positive tails),
+      respectively. Even though the `skewness` and `kurtosis` look
+      similar, they provide different information: the skewness measures
+      (a)symmetry, while the kurtosis measures tail weights (in
+      difference to the normal distribution), independently whether it
+      is symmetric or not.
 
 ## Details
 
@@ -408,6 +419,9 @@ Kross S (2016). "A Q-Q Plot Dissection Kit",
 Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should
 we prefer it ?",
 <https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it>.
+
+Brown S (2022). "Measures of Shape: Skewness and Kurtosis",
+<https://brownmath.com/stat/shape.htm>.
 
 ## See also
 

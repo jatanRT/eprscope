@@ -101,7 +101,8 @@
 <span>  resid.method.smooth <span class="op">=</span> <span class="st">"loess"</span>,</span>
 <span>  resid.xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">k</span>,</span>
-<span>  level.cnfd <span class="op">=</span> <span class="fl">0.95</span></span>
+<span>  level.cnfd <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  weighted.fit <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -153,6 +154,12 @@ or <code>"Quantity (unit)"</code> can be applied as well.</p></dd>
 <dd><p>Numeric value, identical with level of the applied confidence interval
 (see also the <code>se</code> argument). <strong>Default</strong>: <code>level.cnfd = 0.95</code>.</p></dd>
 
+
+<dt id="arg-weighted-fit">weighted.fit<a class="anchor" aria-label="anchor" href="#arg-weighted-fit"></a></dt>
+<dd><p>Logical, whether the residuals are calculated using an ordinary (<strong>O</strong>, <code>weighted.fit = FALSE</code>,
+<strong>default</strong>) or weighted (<strong>W</strong>,<code>weighted.fit = TRUE</code>) least-squares fit. Both situations are <strong>indicated
+by the plot title</strong> within the residual as well as histogram-scaled probability density plots (see <code>Value</code>).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -191,15 +198,17 @@ or <code>"Quantity (unit)"</code> can be applied as well.</p></dd>
   where \(N\) is the number of observations/points (see the <code>data.fit</code> argument) and \(k\)
   is the number of optimized parameters (see the argument <code>k</code>). Therefore, the smaller
   the <code>sd</code>, the better the fit, when comparing different models/fits</p></li>
-<li><p><code>kurtosis.excess</code> tells whether the residuals posses more or fewer extremes (i.e. how heavier
+<li><p><a href="https://www.geeksforgeeks.org/r-language/kurtosis-in-r-programming/" class="external-link"><code>kurtosis.excess</code></a>
+  tells whether the residuals posses more or fewer extremes (i.e. how heavier
   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
-  is above or below the normal-distribution benchmark). If <code>kurtosis.excess</code> &gt; 0, residuals have heavier
+  is above or below the normal-distribution benchmark, which is 3). If <code>kurtosis.excess</code> &gt; 0, residuals have heavier
   tails and unusually extreme observations are more common. If <code>kurtosis.excess</code> &lt; 0, residuals
   do have lighter tails and unusually extreme observations are less common; finally
   a value of <code>kurtosis.excess</code> close to <code>0</code> suggests normal-like tail behavior. However, it does not prove
   that the residuals are normally distributed. This can be additionally correlated with the information/message
   provided by the <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit</a></code>.</p></li>
-<li><p><code>skewness</code> describes how (a)symmetric are residuals, i.e. it may indicate whether the model
+<li><p><a href="https://www.geeksforgeeks.org/r-language/skewness-and-kurtosis-in-r-programming/" class="external-link"><code>skewness</code></a>
+  describes how (a)symmetric are residuals, i.e. it may indicate whether the model
   makes unusually large errors more often in one direction than in the other. If <code>skewness</code> &lt; -1,
   the residuals are substantially left-skewed (mean &lt; median,with longer negative tails).
   If -1 \(\leq\) <code>skewness</code> &lt; -0.5, residuals are moderately left-skewed (with noticeable negative tail).
@@ -207,8 +216,8 @@ or <code>"Quantity (unit)"</code> can be applied as well.</p></dd>
   if  0.5 &lt; <code>skewness</code> \(\leq\) 1 or  1 &lt; <code>skewness</code>, the residuals are either moderately
   right-skewed (with noticeable positive tails) or substantially right-skewed (mean &gt; median, with longer positive tails),
   respectively. Even though the <code>skewness</code> and <code>kurtosis</code> look similar, they provide different information:
-  the skewness measures asymmetry, while the kurtosis measures tail weights relative to the normal distribution, independently
-  whether it is symmetric or not.</p></li>
+  the skewness measures (a)symmetry, while the kurtosis measures tail weights (in difference to the normal distribution),
+  independently whether it is symmetric or not.</p></li>
 </ol><p></p></dd>
 
 
@@ -352,6 +361,7 @@ or <code>"Quantity (unit)"</code> can be applied as well.</p></dd>
 <p>Kross S (2016). "A Q-Q Plot Dissection Kit", <a href="https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html" class="external-link">https://seankross.com/2016/02/29/A-Q-Q-Plot-Dissection-Kit.html</a>.</p>
 <p>Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should we prefer it ?",
   <a href="https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it" class="external-link">https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it</a>.</p>
+<p>Brown S (2022). "Measures of Shape: Skewness and Kurtosis", <a href="https://brownmath.com/stat/shape.htm" class="external-link">https://brownmath.com/stat/shape.htm</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

@@ -378,6 +378,9 @@ Enzyme Kinetic and Protein Folding Experiments in the Presence of
 Correlated Experimental Noise", *Anal. Biochem.*, **395**(1), 1-7,
 <https://doi.org/10.1016/j.ab.2009.05.051>.
 
+Svetunkov I (2022). *Statistics for Business Analytics*, Version 2025,
+<https://openforecast.org/sba/>.
+
 ## See also
 
 Other Evaluations and Quantification:
