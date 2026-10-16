@@ -177,6 +177,8 @@
 #'   Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should we prefer it ?",
 #'   \url{https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it}.
 #'
+#'   Brown S (2022). "Measures of Shape: Skewness and Kurtosis", \url{https://brownmath.com/stat/shape.htm}.
+#'
 #'
 #' @inheritParams eval_ABIC_forFit
 #' @param fitted Character string, pointing to variable/column header with (model) fitted/predicted values, depending
@@ -194,6 +196,9 @@
 #'   or \code{"Quantity (unit)"} can be applied as well.
 #' @param level.cnfd Numeric value, identical with level of the applied confidence interval
 #'   (see also the \code{se} argument). \strong{Default}: \code{level.cnfd = 0.95}.
+#' @param weighted.fit Logical, whether the residuals are calculated using an ordinary (\strong{O}, \code{weighted.fit = FALSE},
+#'   \strong{default}) or weighted (\strong{W},\code{weighted.fit = TRUE}) least-squares fit. Both situations are \strong{indicated
+#'   by the plot title} within the residual as well as histogram-scaled probability density plots (see \code{Value}).
 #'
 #'
 #' @returns A List, consisting of the following elements is returned:
@@ -237,16 +242,18 @@
 #'   is the number of optimized parameters (see the argument \code{k}). Therefore, the smaller
 #'   the \code{sd}, the better the fit, when comparing different models/fits
 #'
-#'   \item \code{kurtosis.excess} tells whether the residuals posses more or fewer extremes (i.e. how heavier
+#'   \item \href{https://www.geeksforgeeks.org/r-language/kurtosis-in-r-programming/}{\code{kurtosis.excess}}
+#'   tells whether the residuals posses more or fewer extremes (i.e. how heavier
 #'   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
-#'   is above or below the normal-distribution benchmark). If \code{kurtosis.excess} > 0, residuals have heavier
+#'   is above or below the normal-distribution benchmark, which is 3). If \code{kurtosis.excess} > 0, residuals have heavier
 #'   tails and unusually extreme observations are more common. If \code{kurtosis.excess} < 0, residuals
 #'   do have lighter tails and unusually extreme observations are less common; finally
 #'   a value of \code{kurtosis.excess} close to \code{0} suggests normal-like tail behavior. However, it does not prove
 #'   that the residuals are normally distributed. This can be additionally correlated with the information/message
 #'   provided by the \code{\link{eval_ABIC_forFit}}.
 #'
-#'   \item \code{skewness} describes how (a)symmetric are residuals, i.e. it may indicate whether the model
+#'   \item \href{https://www.geeksforgeeks.org/r-language/skewness-and-kurtosis-in-r-programming/}{\code{skewness}}
+#'   describes how (a)symmetric are residuals, i.e. it may indicate whether the model
 #'   makes unusually large errors more often in one direction than in the other. If \code{skewness} < -1,
 #'   the residuals are substantially left-skewed (mean < median,with longer negative tails).
 #'   If -1 \eqn{\leq} \code{skewness} < -0.5, residuals are moderately left-skewed (with noticeable negative tail).
@@ -254,8 +261,8 @@
 #'   if  0.5 < \code{skewness} \eqn{\leq} 1 or  1 < \code{skewness}, the residuals are either moderately
 #'   right-skewed (with noticeable positive tails) or substantially right-skewed (mean > median, with longer positive tails),
 #'   respectively. Even though the \code{skewness} and \code{kurtosis} look similar, they provide different information:
-#'   the skewness measures asymmetry, while the kurtosis measures tail weights relative to the normal distribution, independently
-#'   whether it is symmetric or not.
+#'   the skewness measures (a)symmetry, while the kurtosis measures tail weights (in difference to the normal distribution),
+#'   independently whether it is symmetric or not.
 #'      }
 #'    }
 #'   }
@@ -350,7 +357,8 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
                                 resid.xlab = NULL, ## label for x axis # character strings like "Kinetic Model Fit"
                                 ## also like `parse(text = resid.xlab)[[1]]`
                                 k, # number of parameters
-                                level.cnfd = 0.950 ## confidence level, or 0.999...etc.
+                                level.cnfd = 0.950, ## confidence level, or 0.999...etc.
+                                weighted.fit = FALSE ## if the residuals were obtained by OLS or WLS Fit
 ) {
   #
   ## 'Temporary' processing variables
@@ -367,11 +375,6 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
          If it is not the case, calculate the relevant column(s)\n
          within the `data.fit` !! ')
   }
-  #
-  ## number of observations
-  ## define later after filtering,
-  ## see below
-  # Nobs <- nrow(data.fit)
   #
   ## main residual vector
   resids.vec <- data.fit[[residuals]]
@@ -428,6 +431,11 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     ## overall skewness (bias-adjusted Fisher–Pearson skewness value)
     G1 <- g1 * sqrt(Nobs * (Nobs - 1)) / (Nobs - 2)
   }
+  #
+  ## ---------------- Strings for the ordinary / weighted fit -------------------
+  #
+  fit.abbrev.string <- switch(2 - weighted.fit,"WLS","OLS")
+  fit.string <- switch(2 - weighted.fit,"Weighted","Ordinary")
   #
   ## =========================== PLOTS ===============================
   #
@@ -507,13 +515,13 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     alpha.cnfd <- 1 - confidence
     #
     ## z-critical value for `alpha.cnfd` to create confidence bands
-    z_crit <- stats::qnorm(1 - alpha.cnfd/2)
+    z_crit <- stats::qnorm(1 - alpha.cnfd / 2)
     #
     ## redefinition of `residuals.distro`
     residuals.distro <-
       residuals.distro %>% `if`(length(residuals.distro) > 1,"norm", .)
     #
-    ## condition for student's t dgrees of freedom
+    ## condition for student's t degrees of freedom
     if (residuals.distro == "t") {
       ## check the degrees of freedom for the Student't t-distro
       df <- list(...)[["df"]]
@@ -601,7 +609,12 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
           "% Confidence Bands"
         ),
         subtitle = paste0("Distribution: ", distro.title.fun()),
-        caption = "Residuals = Sample Quantiles"
+        caption = paste0(
+          "Residuals = Sample Quantiles, ",
+          fit.abbrev.string," = ",
+          fit.string,
+          " Least-Squares"
+        )
       ) +
       plot_theme_In_ticks()
     #
@@ -629,7 +642,7 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       labs(
         x = xlabel,
         y = bquote(italic(Residuals)),
-        title = "Residual Plot"
+        title = paste0("Residual Plot for the ",fit.abbrev.string," Fit")
       ) +
       plot_theme_In_ticks()
     #
@@ -642,7 +655,7 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       ) # +
     # patchwork::plot_layout(axis_titles = "collect",heights = c(0.75,0.75))
     #
-    return(plot.ra)
+    suppressMessages(print(plot.ra)) ## in order to get rid of a message
     #
   }
   #
@@ -689,7 +702,11 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
     labs(
       x = bquote(italic(Residuals)),
       y = bquote(italic(Counts)),
-      title = "Histogram and Scaled Probability Density" #,
+      title = paste0(
+        "Histogram and Scaled Probability Density of Residuals for the ",
+        fit.abbrev.string,
+        " Fit"
+      )
       # caption = "\u2013 Residuals mean value"
     )
   #
@@ -709,6 +726,9 @@ plot_eval_RA_forFit <- function(data.fit, ## data frame with at least predicted 
       color = c("darkblue","darkred"),
       size = 5,
       fontface = "bold"
+    ) +
+    labs(
+      caption = paste0(fit.abbrev.string," = ",fit.string," Least-Squares")
     ) +
     plot_theme_In_ticks(
       # plot.caption = element_text(

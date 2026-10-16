@@ -11,7 +11,8 @@ plot_eval_RA_forFit(
   resid.method.smooth = "loess",
   resid.xlab = NULL,
   k,
-  level.cnfd = 0.95
+  level.cnfd = 0.95,
+  weighted.fit = FALSE
 )
 }
 \arguments{
@@ -45,6 +46,10 @@ or \code{"Quantity (unit)"} can be applied as well.}
 
 \item{level.cnfd}{Numeric value, identical with level of the applied confidence interval
 (see also the \code{se} argument). \strong{Default}: \code{level.cnfd = 0.95}.}
+
+\item{weighted.fit}{Logical, whether the residuals are calculated using an ordinary (\strong{O}, \code{weighted.fit = FALSE},
+\strong{default}) or weighted (\strong{W},\code{weighted.fit = TRUE}) least-squares fit. Both situations are \strong{indicated
+by the plot title} within the residual as well as histogram-scaled probability density plots (see \code{Value}).}
 }
 \value{
 A List, consisting of the following elements is returned:
@@ -88,16 +93,18 @@ A List, consisting of the following elements is returned:
   is the number of optimized parameters (see the argument \code{k}). Therefore, the smaller
   the \code{sd}, the better the fit, when comparing different models/fits
 
-  \item \code{kurtosis.excess} tells whether the residuals posses more or fewer extremes (i.e. how heavier
+  \item \href{https://www.geeksforgeeks.org/r-language/kurtosis-in-r-programming/}{\code{kurtosis.excess}}
+  tells whether the residuals posses more or fewer extremes (i.e. how heavier
   are the corresponding tails) in comparison to normal distribution (the excess means how much kurtosis
-  is above or below the normal-distribution benchmark). If \code{kurtosis.excess} > 0, residuals have heavier
+  is above or below the normal-distribution benchmark, which is 3). If \code{kurtosis.excess} > 0, residuals have heavier
   tails and unusually extreme observations are more common. If \code{kurtosis.excess} < 0, residuals
   do have lighter tails and unusually extreme observations are less common; finally
   a value of \code{kurtosis.excess} close to \code{0} suggests normal-like tail behavior. However, it does not prove
   that the residuals are normally distributed. This can be additionally correlated with the information/message
   provided by the \code{\link{eval_ABIC_forFit}}.
 
-  \item \code{skewness} describes how (a)symmetric are residuals, i.e. it may indicate whether the model
+  \item \href{https://www.geeksforgeeks.org/r-language/skewness-and-kurtosis-in-r-programming/}{\code{skewness}}
+  describes how (a)symmetric are residuals, i.e. it may indicate whether the model
   makes unusually large errors more often in one direction than in the other. If \code{skewness} < -1,
   the residuals are substantially left-skewed (mean < median,with longer negative tails).
   If -1 \eqn{\leq} \code{skewness} < -0.5, residuals are moderately left-skewed (with noticeable negative tail).
@@ -105,8 +112,8 @@ A List, consisting of the following elements is returned:
   if  0.5 < \code{skewness} \eqn{\leq} 1 or  1 < \code{skewness}, the residuals are either moderately
   right-skewed (with noticeable positive tails) or substantially right-skewed (mean > median, with longer positive tails),
   respectively. Even though the \code{skewness} and \code{kurtosis} look similar, they provide different information:
-  the skewness measures asymmetry, while the kurtosis measures tail weights relative to the normal distribution, independently
-  whether it is symmetric or not.
+  the skewness measures (a)symmetry, while the kurtosis measures tail weights (in difference to the normal distribution),
+  independently whether it is symmetric or not.
      }
    }
   }
@@ -358,6 +365,8 @@ Kabacoff RI (2022). \emph{R in Action}, 3rd edition, Manning Publications Co., I
 
   Walker JA (2020). "Normal Q-Q Plots - what is the robust Line and should we prefer it ?",
   \url{https://rdoodles.rbind.io/posts-biocstyle/2020-10-15-normal-q-q-plots-what-is-the-robust-line-and-should-we-prefer-it}.
+
+  Brown S (2022). "Measures of Shape: Skewness and Kurtosis", \url{https://brownmath.com/stat/shape.htm}.
 }
 \seealso{
 Other Simulations and Optimization:

@@ -346,6 +346,9 @@ Mullen KM, Elzhov TV, Spiess A, Bolker B (2023). “minpack.lm.” \url{https://
  Kuzmič P, Lorenz T, Reinstein J (2009). "Analysis of Residuals from Enzyme Kinetic and Protein Folding
  Experiments in the Presence of Correlated Experimental Noise", \emph{Anal. Biochem.}, \strong{395}(1),
  1-7, \url{https://doi.org/10.1016/j.ab.2009.05.051}.
+
+ Svetunkov I (2022). \emph{Statistics for Business Analytics}, Version 2025,
+ \url{https://openforecast.org/sba/}.
 }
 \seealso{
 Other Evaluations and Quantification:

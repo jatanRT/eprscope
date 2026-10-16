@@ -1336,7 +1336,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       data.fit = data.sim.expr,
       residuals = "Residuals",
       fitted = "Simulation",
-      resid.xlab = "Simulated EPR Intensity",
+      resid.xlab = "Simulated EPR Intensity Fit",
       k = optim.params.length ## actual number of optimized parameters
     )
   #
