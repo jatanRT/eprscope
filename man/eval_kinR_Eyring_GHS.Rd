@@ -11,7 +11,8 @@ eval_kinR_Eyring_GHS(
   Temp,
   Temp.unit = "K",
   transmiss.coeff = 1,
-  fit.method = "default"
+  fit.method = "default",
+  ...
 )
 }
 \arguments{
@@ -44,6 +45,9 @@ or non-linear methods (available by the \code{\link[stats]{nls}} function) are a
 \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
 or \code{"port"}
 (\href{https://ms.mcmaster.ca/\%7Ebolker/misc/port.pdf}{Fortran PORT, "portable" library for numerical computation}).}
+
+\item{...}{additional arguments passed to the function, e.g. \code{weights}, \code{subset}, \code{model}, \code{na.action},
+...etc. Refer to the documentation of \code{\link[stats]{lm}} and \code{\link[stats]{nls}}.}
 }
 \value{
 As a result of the Eyring-relation fit, list with the following components is available:

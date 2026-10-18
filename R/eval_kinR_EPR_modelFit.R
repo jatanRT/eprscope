@@ -39,6 +39,9 @@
 #'  Experiments in the Presence of Correlated Experimental Noise", \emph{Anal. Biochem.}, \strong{395}(1),
 #'  1-7, \url{https://doi.org/10.1016/j.ab.2009.05.051}.
 #'
+#'  Svetunkov I (2022). \emph{Statistics for Business Analytics}, Version 2025,
+#'  \url{https://openforecast.org/sba/}.
+#'
 #'
 #' @inheritParams eval_kinR_ODE_model
 #' @param data.qt.expr A data frame object, containing the concentrations/integral intensities/areas under

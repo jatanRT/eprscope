@@ -100,4 +100,4 @@ Depends:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://jatanrt.github.io/eprscope/, https://github.com/jatanrt/eprscope
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1

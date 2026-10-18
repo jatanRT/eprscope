@@ -145,6 +145,8 @@
 #'   \href{https://geo-ant.github.io/blog/2020/variable-projection-part-1-fundamentals/}{Golub-Pereyra} algorithm
 #'   or \code{"port"}
 #'   (\href{https://ms.mcmaster.ca/\%7Ebolker/misc/port.pdf}{Fortran PORT, "portable" library for numerical computation}).
+#' @param ... additional arguments passed to the function, e.g. \code{weights}, \code{subset}, \code{model}, \code{na.action},
+#'   ...etc. Refer to the documentation of \code{\link[stats]{lm}} and \code{\link[stats]{nls}}.
 #'
 #'
 #' @return As a result of the Eyring-relation fit, list with the following components is available:
@@ -316,8 +318,10 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
                                  Temp,
                                  Temp.unit = "K", ## "K" or "oC" or "oF"
                                  transmiss.coeff = 1, ## kappa
-                                 fit.method = "default"){ ## "Gauss-Newton" +
+                                 fit.method = "default", ## "Gauss-Newton" +
                                  ## "plinear" (Golub-Pereyra) and "port" (all from `nls`) or "linear" ("lm")
+                                 ...){ ## additional arguments like `weights` or `subset`,
+                                       ## `model` or `na.action` for both `lm()` and `nls()`
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -397,14 +401,16 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   ## model to calculate H, S
   if (fit.method == "linear" || fit.method == "lm") {
     Eyring.model.HS <-
-      stats::lm(linear.Eyring.formula.HS,
-                 data = data.kvT)
+      stats::lm(formula = linear.Eyring.formula.HS,
+                 data = data.kvT,
+                ...)
   } else {
     Eyring.model.HS <-
-      stats::nls(origin.Eyring.formula.HS,
+      stats::nls(formula = origin.Eyring.formula.HS,
                  data = data.kvT,
                  start = c(dS = 1,dH = 1),
-                 algorithm = fit.method)
+                 algorithm = fit.method,
+                 ...)
   }
   #
   ## parameters related to the model =>
@@ -477,13 +483,25 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   data.kvT$fitted <- stats::fitted(Eyring.model.HS)
   data.kvT$residuals <- stats::residuals(Eyring.model.HS)
   #
+  ##  -------------- check the `weights` for the fit ---------------------
+  #
+  ws <- list(...)[["weights"]]
+
+  #
+  ## ---------------------------------------------------------------------
+  #
   resid.anal.simple.list <-
     plot_eval_RA_forFit(
       data.fit = data.kvT,
       residuals = "residuals",
       fitted = "fitted",
       resid.xlab = "Eyring Model Fit",
-      k = nrow(df.dSH.coeffs)
+      k = nrow(df.dSH.coeffs),
+      weighted.fit = switch(
+        2 - is.null(ws),
+        FALSE,
+        TRUE
+      )
     )
   #
   ## condition for method
@@ -521,17 +539,6 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     #
     return(stats::cor(df.for.cov.cor,method = method))
   }
-  #
-  ## the third plot (histogram-density) is plotted
-  ## individually, because of clear graphic outcomes,
-  ## otherwise all three graphs in one figure
-  ## would be hard to read
-  #
-  ## standard deviation (sometimes as standard error)
-  ## of residuals for the model
-  # ra.sd.model <-
-  #   sqrt(sum(data.kvT$residuals^2)) / sqrt(nrow(data.kvT) - nrow(df.dSH.coeffs) - 1)
-  ## OR ra.sd.model = summary(Eyring.model.HS)$sigma
   #
   ## ===================== EYRING PLOT (GGPLOT2) ===========================
   #
