@@ -92,8 +92,10 @@
 #'   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
 #'   data and the corresponding fit.}
 #'   \item{ra}{Residual analysis - a list consisting of 5 elements: diagnostic plots
-#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
+#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals
+#'   (+ additional weighted residuals if \code{fit.weights} is not \code{NULL}) and their corresponding
 #'   \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+#'   Also run the latter with \code{"weighted_residuals"} if \code{fit.weights} is not \code{NULL}.
 #'   The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
 #'   \code{\link[stats]{acf}} (see also \code{References}). This can be considered as a primary
 #'   "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals
@@ -280,6 +282,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
                                    params.guess.lower = NULL, ## automatic by `nls.lm()` see below
                                    params.guess.upper = NULL, ## automatic by `nls.lm()` see below
                                    fit.kin.method = "diff-levenmarq",
+                                   fit.weights = NULL,
                                    solve.ode.method = "lsoda",
                                    time.frame.model = 2,
                                    time.correct = FALSE,
@@ -335,7 +338,8 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     } else {
       #
       ## instrumental parameters for time series EPR spectra
-      instrum.params.kin <- readEPR_params_slct_kin(path_to_dsc_par, origin = origin)
+      instrum.params.kin <-
+        readEPR_params_slct_kin(path_to_dsc_par, origin = origin)
       #
       ## correct time
       data.qt.expr[[time]] <- correct_time_Exp_Specs(
@@ -364,11 +368,12 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       upper = params.guess.upper, ## `nls.lm()` -> automatically `+Inf` if `upper = NULL`
       fn = eval_kinR_ODE_model, ## fn. from this package (see docu. of `eval_kinR_ODE_model`)
       model.react = model.react,
-      model.expr.diff = TRUE,
+      model.expr.diff = TRUE, ## MUST BE TRUE
       elementary.react = elementary.react,
       time.interval.model = timeLim.model,
       time.frame.model = time.frame.model,
       solve.ode.method = solve.ode.method,
+      fit.weights = fit.weights,
       data.qt.expr = data.qt.expr,
       time.expr = time,
       qvar.expr = qvarR,
@@ -434,6 +439,12 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   ## add residuals to `new.predict.df`
   new.predict.df$residuals <- stats::residuals(model.react.kin.fit)
   #
+  ## add weighted residuals to `data.fit` / `new.predict.df`
+  if (!is.null(fit.weights)) {
+    new.predict.df$weighted_residuals <-
+      sqrt(fit.weights) * new.predict.df$residuals ## √fit.wights x residuals
+  }
+  #
   resid.anal.simple.list <-
     plot_eval_RA_forFit(
       data.fit = new.predict.df,
@@ -444,12 +455,19 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
     )
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
-  ## the 'experiment,fitted,residuals' data frame
+  ## the 'experiment,fitted,residuals' data frame (also depending
+  ## `fit.wights`)
+  vec.slct.cor.cov <-
+    switch(
+      2 - is.null(fit.weights),
+      c(qvarR,"fitted","residuals"),
+      c(qvarR,"fitted","residuals","weighted_residuals")
+    )
   df.for.cov.cor <-
     resid.anal.simple.list$df %>%
     dplyr::select(
       dplyr::all_of(
-        c(qvarR,"fitted","residuals")
+        vec.slct.cor.cov
       )
     )
   #

@@ -2,7 +2,7 @@
 % Please edit documentation in R/optim_for_EPR_fitness.R
 \name{optim_for_EPR_fitness}
 \alias{optim_for_EPR_fitness}
-\title{General Function for Non-Linear Optimization/Fitting of EPR Parameters/Data}
+\title{General Function for Non-Linear Optimization/Fitting of Parameters/Data}
 \usage{
 optim_for_EPR_fitness(
   method = "neldermead",
@@ -215,7 +215,7 @@ optim.fit.list <-
 ## best optimized parameters
 optim.fit.list$par
 #
-## compare these parameters with those
+## compare previous parameters with those
 ## returned by the `stats::nls()` function,
 ## which by default, applies `Gauss-Newton`
 ## optim. algorithm

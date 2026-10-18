@@ -144,6 +144,15 @@
 #'   \code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
 #'   time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
 #'   method requires at least the default or even higher values.
+#' @param fit.weights Numeric vector, weights for the simulation fit. \strong{Default}: \code{fit.weights = NULL}.
+#'   (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
+#'   for all of the experimental points. If the variance is not known, the vector can be estimated from
+#'   the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
+#'   also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
+#'   of \code{1 / fitted(abs(residual))^2} from that auxiliary relation.
+#'   Finally, use those weights for the simulation fit again. Such procedure can be repeated several
+#'   times (in a loop). The argument is ONLY ACTIVATED IF the residual analysis
+#'   between the experimental data and the simulation fit exhibits heteroscedasticity.
 #' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
 #'   fit + experimental spectrum (including residuals in the lower part of the plot,
 #'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
@@ -179,8 +188,10 @@
 #'   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
 #'   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-#'   statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals
+#'   (+ additional weighted residuals if \code{fit.weights} is not \code{NULL}) and their corresponding
+#'   statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+#'   Also run the latter with \code{"Weighted_Residuals"} if \code{fit.weights} is not \code{NULL}.}
 #'   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
 #'   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
 #'   \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
@@ -448,6 +459,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                 optim.params.lower = NULL,
                                 optim.params.upper = NULL,
                                 Nmax.evals = 512,
+                                fit.weights = NULL,
                                 check.fit.plot = TRUE,
                                 msg.optim.progress = TRUE,
                                 output.list.forFitSp = FALSE,
@@ -1029,6 +1041,23 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   optim.params.init.list <- list()
   optim.params.init.list[[1]] <- optim.params.init
   #
+  ## -------------------------- FITTING WEIGHTS -----------------------------
+  # redefinition of `fit.weights`
+  fit.weights <-
+    fit.weights %>%
+    `if`(is.null(fit.weights),rep(1,times = nrow(data.spectr.expr)), .)
+  #
+  ## conditions for `fit.weights`
+  if (any(fit.weights <= 0)) {
+    stop(" All `fit.weights` elements must be non-zero and positive !
+           Check your weights for any values <= 0 .")
+  }
+  if (length(fit.weights) != nrow(data.spectr.expr)) {
+    stop(" The length of `fit.weights` does not match\n
+           that of the `data.spectr.expr` (number of points) ! \n
+           They must equal ! ")
+  }
+  #
   ## ------------------------------ MESSAGE ----------------------------------
   ## essential message pointing to calculation by the actual method,
   ## corresponding to progress of `optim.method` in the loop
@@ -1084,15 +1113,17 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    lineG.content,
                                    baseline,
                                    B.unit,
-                                   par){
-        data[[Intensity.expr]] -
+                                   par,w = fit.weights){
+        sqrt(w) * (data[[Intensity.expr]] -
           fit_sim_params_par(data,
                              nucs.system,
                              Intensity.sim,
                              lineG.content,
                              baseline,
                              B.unit,
-                             par)
+                             par))
+        ## `sqrt()` because the whole expression is squared
+        ## and summed up for `minpack.lm::nls.lm()`
       }
       #
       # message + time before optimization
@@ -1119,8 +1150,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    lineG.content,
                                    baseline,
                                    B.unit,
-                                   par){
-        sum((data[[Intensity.expr]] -
+                                   par,w = fit.weights){
+        sum(w * (data[[Intensity.expr]] -
                fit_sim_params_par(data,
                                   nucs.system,
                                   Intensity.sim,
@@ -1154,8 +1185,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
                                    lineG.content,
                                    baseline,
                                    B.unit,
-                                   x0){
-        sum((data[[Intensity.expr]] -
+                                   x0,w = fit.weights){
+        sum(w * (data[[Intensity.expr]] -
                fit_sim_params_x0(data,
                                  nucs.system,
                                  Intensity.sim,
@@ -1331,6 +1362,12 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   ## CONSIDER DATA => `data.sim.expr`
   #
+  ## add weighted residuals to `data.fit` / `data.sim.expr`
+  if (!is.null(fit.weights)) {
+    data.sim.expr$Weighted_Residuals <-
+      sqrt(fit.weights) * data.sim.expr$Residuals ## √fit.weights x Residuals
+  }
+  #
   resid.anal.simple.list <-
     plot_eval_RA_forFit(
       data.fit = data.sim.expr,
@@ -1341,16 +1378,19 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     )
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
-  ## the 'Experiment,Simulation,Residuals' data frame
+  ## the 'Experiment,Simulation,Residuals' data frame (also depending
+  ## `fit.wights`)
+  vec.slct.cor.cov <-
+    switch(
+      2 - is.null(fit.weights),
+      c("Experiment","Simulation","Residuals"),
+      c("Experiment","Simulation","Residuals","Weighted_Residuals")
+    )
   df.for.cov.cor <-
     resid.anal.simple.list$df %>%
     dplyr::select(
       dplyr::all_of(
-        c(
-          "Experiment",
-          "Simulation",
-          "Residuals"
-        )
+        vec.slct.cor.cov
       )
     )
   #

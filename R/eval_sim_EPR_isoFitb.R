@@ -160,6 +160,7 @@ eval_sim_EPR_isoFitb <- function(data.spectr.expr,
                                  optim.params.lower = NULL,
                                  optim.params.upper = NULL,
                                  optim.params.fix.id = NULL, ## related to `optim.params.init`
+                                 fit.weights = NULL, ## weights for WLS
                                  Niters.per.eval = 128, ## how many iterations per cycle/evaluation
                                  Nevals = 16 ## total number of evaluations
                                  ## total number of iterations = Niters.per.eval * Nevals
@@ -276,6 +277,7 @@ eval_sim_EPR_isoFitb <- function(data.spectr.expr,
         optim.params.lower = optim.params.lower,
         optim.params.upper = optim.params.upper,
         optim.params.fix.id = optim.params.fix.id,
+        fit.weights = fit.weights,
         Nmax.evals = Niters.per.eval,
         msg.optim.progress = FALSE
       )

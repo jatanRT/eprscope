@@ -193,6 +193,16 @@
 #' @param qvar.expr Character string, pointing to \code{qvar} column/variable name in the original
 #'   \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 #'   data aren't taken into account).
+#' @param fit.weights Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
+#'   (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
+#'   for all of the experimental points. If the variance is not known, the vector can be estimated from
+#'   the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
+#'   also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
+#'   of \code{1 / fitted(abs(residual))^2} from that auxiliary relation.
+#'   Finally, use those weights for the kinetic model fit again. Such procedure can be repeated several
+#'   times (in a loop). The argument is ONLY ACTIVATED IF \code{model.expr.diff = TRUE}
+#'   and the residual analysis between the experimental data and the kinetic model fit exhibits
+#'   heteroscedasticity.
 #' @param ... additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).
 #'
 #'
@@ -361,6 +371,7 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
                                 data.qt.expr = NULL,
                                 time.expr = NULL,
                                 qvar.expr = NULL,
+                                fit.weights = NULL,
                                 ...) { ## additional arguments for `deSolve::ode()`
   #
   ## 'Temporary' processing variables
@@ -934,11 +945,34 @@ eval_kinR_ODE_model <- function(model.react = "(r=1)R --> [k1] B", ## e.g. r = 1
     result.df <- result.df %>%
       dplyr::filter(.data$time %in% data.qt.expr[[time.expr]]) %>%
       ## add `qvar.expr`
-      dplyr::mutate(!!quo_name(paste0(qvar.expr,"_expr")) := data.qt.expr[[qvar.expr]])
+      dplyr::mutate(!!quo_name(paste0(qvar.expr,"_expr")) :=
+                      data.qt.expr[[qvar.expr]])
+    #
   }
   if (!is.null(data.qt.expr) & isTRUE(model.expr.diff)) {
-    ## difference
-    diff.model.expr <- result.df[[paste0(qvar.expr,"_expr")]] - result.df[["R"]]
+    #
+    ## redefinition of `fit.weights`
+    fit.weights <-
+      fit.weights %>%
+        `if`(is.null(fit.weights),rep(1,times = nrow(data.qt.expr)), .)
+    #
+    ## conditions for `fit.weights`
+    if (any(fit.weights <= 0)) {
+      stop(" All `fit.weights` elements must be non-zero and positive !
+           Check your weights for any values <= 0 .")
+    }
+    if (length(fit.weights) != nrow(data.qt.expr)) {
+      stop(" The length of `fit.weights` does not match\n
+           that of the `data.qt.expr` (number of points) ! \n
+           They must equal ! ")
+    }
+    #
+    ## difference, this must be defined including the square root
+    ## `fit.weights`, because the whole expression is squared
+    ## and summed up for `minpack.lm::nls.lm()`
+    diff.model.expr <-
+     sqrt(fit.weights) *
+      (result.df[[paste0(qvar.expr,"_expr")]] - result.df[["R"]])
   }
   #
   if (grepl("^\\(r=.*R(.*|?!\\s)-->(.*|?!\\s)\\[k1\\](.*|?!\\s)B$", model.react)) {

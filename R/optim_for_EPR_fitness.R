@@ -1,6 +1,6 @@
 #'
 #'
-#' General Function for Non-Linear Optimization/Fitting of EPR Parameters/Data
+#' General Function for Non-Linear Optimization/Fitting of Parameters/Data
 #'
 #'
 #' @family Simulations and Optimization
@@ -215,7 +215,7 @@
 #' ## best optimized parameters
 #' optim.fit.list$par
 #' #
-#' ## compare these parameters with those
+#' ## compare previous parameters with those
 #' ## returned by the `stats::nls()` function,
 #' ## which by default, applies `Gauss-Newton`
 #' ## optim. algorithm

@@ -15,6 +15,7 @@ eval_kinR_EPR_modelFit(
   params.guess.lower = NULL,
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
+  fit.weights = NULL,
   solve.ode.method = "lsoda",
   time.frame.model = 2,
   time.correct = FALSE,
@@ -99,6 +100,16 @@ the default one (\code{fit.kin.method = "diff-levenmarq"}) is exclusively used (
 are planned). It corresponds to differential Levenberg-Marquardt (see also \code{\link[minpack.lm]{nls.lm}})
 because it is based on the numeric solution of the ordinary differential equations
 and not on the common integration of rate equations.}
+
+\item{fit.weights}{Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
+(corresponding to weights of \code{1}). Their general form can be represented by the \eqn{1 / variance}
+for all of the experimental points. If the variance is not known, the vector can be estimated from
+the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
+also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
+of \code{1 / fitted(abs(residual))^2} from that auxiliarly relation.
+Finally, use those weights for the kinetic model fit again. ONLY ACTIVATE IF \code{model.expr.diff = TRUE}
+and the residual analysis between the experimental data and the kinetic model fit exhibits
+apparent heteroscedasticity.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}

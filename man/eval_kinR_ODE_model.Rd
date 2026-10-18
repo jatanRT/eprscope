@@ -16,6 +16,7 @@ eval_kinR_ODE_model(
   data.qt.expr = NULL,
   time.expr = NULL,
   qvar.expr = NULL,
+  fit.weights = NULL,
   ...
 )
 }
@@ -134,6 +135,16 @@ please use \code{\link{correct_time_Exp_Specs}} function prior to kinetic evalua
 \item{qvar.expr}{Character string, pointing to \code{qvar} column/variable name in the original
 \code{data.qt.expr} data frame. \strong{Default}: \code{qvar.expr = NULL} (when the experimental
 data aren't taken into account).}
+
+\item{fit.weights}{Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
+(corresponding to weights of \code{1}). Their general form can be represented by the \eqn{1 / variance}
+for all of the experimental points. If the variance is not known, the vector can be estimated from
+the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
+also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
+of \code{1 / fitted(abs(residual))^2} from that auxiliarly relation.
+Finally, use those weights for the kinetic model fit again. ONLY ACTIVATE IF \code{model.expr.diff = TRUE}
+and the residual analysis between the experimental data and the kinetic model fit exhibits
+apparent heteroscedasticity.}
 
 \item{...}{additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).}
 }
