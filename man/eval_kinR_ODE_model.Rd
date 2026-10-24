@@ -137,14 +137,16 @@ please use \code{\link{correct_time_Exp_Specs}} function prior to kinetic evalua
 data aren't taken into account).}
 
 \item{fit.weights}{Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
-(corresponding to weights of \code{1}). Their general form can be represented by the \eqn{1 / variance}
-for all of the experimental points. If the variance is not known, the vector can be estimated from
-the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
-also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
-of \code{1 / fitted(abs(residual))^2} from that auxiliarly relation.
-Finally, use those weights for the kinetic model fit again. ONLY ACTIVATE IF \code{model.expr.diff = TRUE}
+(corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
+for all of the observations/points. If the variance is not known, the vector can be estimated from
+the linear regression of the auxiliary residual plot (i.e.
+\code{lin.fit <- lm(abs(residuals) ~ \code{fitted})} values,
+also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
+of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
+Finally, use those weights for the kinetic model fit again. Such procedure can be repeated several
+times (in a loop). The argument is ONLY ACTIVATED IF \code{model.expr.diff = TRUE}
 and the residual analysis between the experimental data and the kinetic model fit exhibits
-apparent heteroscedasticity.}
+heteroscedasticity.}
 
 \item{...}{additional arguments passed to the ODE (see also \code{\link[deSolve]{ode}}).}
 }

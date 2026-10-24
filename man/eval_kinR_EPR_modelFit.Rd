@@ -102,14 +102,16 @@ because it is based on the numeric solution of the ordinary differential equatio
 and not on the common integration of rate equations.}
 
 \item{fit.weights}{Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
-(corresponding to weights of \code{1}). Their general form can be represented by the \eqn{1 / variance}
-for all of the experimental points. If the variance is not known, the vector can be estimated from
-the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
-also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
-of \code{1 / fitted(abs(residual))^2} from that auxiliarly relation.
-Finally, use those weights for the kinetic model fit again. ONLY ACTIVATE IF \code{model.expr.diff = TRUE}
+(corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
+for all of the observations/points. If the variance is not known, the vector can be estimated from
+the linear regression of the auxiliary residual plot (i.e.
+\code{lin.fit <- lm(abs(residuals) ~ \code{fitted})} values,
+also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
+of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
+Finally, use those weights for the kinetic model fit again. Such procedure can be repeated several
+times (in a loop). The argument is ONLY ACTIVATED IF \code{model.expr.diff = TRUE}
 and the residual analysis between the experimental data and the kinetic model fit exhibits
-apparent heteroscedasticity.}
+heteroscedasticity.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}
@@ -155,8 +157,10 @@ List with the following components is available:
   \item{plot}{Plot object \emph{Quantitative variable} \emph{vs} \emph{Time} with the experimental
   data and the corresponding fit.}
   \item{ra}{Residual analysis - a list consisting of 5 elements: diagnostic plots
-  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
+  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals
+  (+ additional weighted residuals if \code{fit.weights} is not \code{NULL}) and their corresponding
   \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+  Also run the latter with \code{"weighted_residuals"} if \code{fit.weights} is not \code{NULL}.
   The last element (\code{plot.acf}) is a diagnostic graph of the \strong{a}uto\strong{c}orrelation \strong{f}unction
   \code{\link[stats]{acf}} (see also \code{References}). This can be considered as a primary
   "lie detector" test for the time series/kinetic models and it is defined as a correlation of residuals
@@ -217,7 +221,7 @@ List with the following components is available:
   }
 }
 \description{
-Fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
+OLS or WLS fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
    or by integration of the EPR spectral time series) in order to find the kinetic parameters
    (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting

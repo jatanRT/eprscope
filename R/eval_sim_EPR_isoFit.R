@@ -6,9 +6,9 @@
 #'
 #'
 #' @description
-#'   Ordinary least-squares fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
-#'   of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
-#'   (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
+#'   Least-squares (OLS or WLS) fitting of the simulated spectrum onto the experimental one represents an important
+#'   step in the analysis of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}};
+#'   coupling constants (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
 #'   (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on the \code{lineSpecs.form} argument);
 #'   spectral baseline (see the \code{baseline.correct} argument) and finally the intensity (multiplication coefficient)
 #'   are optimized by methods listed in the \code{\link{optim_for_EPR_fitness}}.
@@ -146,10 +146,11 @@
 #'   method requires at least the default or even higher values.
 #' @param fit.weights Numeric vector, weights for the simulation fit. \strong{Default}: \code{fit.weights = NULL}.
 #'   (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
-#'   for all of the experimental points. If the variance is not known, the vector can be estimated from
-#'   the linear regression of the auxiliary residual plot (i.e. \code{abs(residuals)} vs \code{fitted} values,
-#'   also refer to the \code{\link{plot_eval_RA_forFit}}), without weights, and by the evaluation
-#'   of \code{1 / fitted(abs(residual))^2} from that auxiliary relation.
+#'   for all of the observations/points. If the variance is not known, the vector can be estimated from
+#'   the linear regression of the auxiliary residual plot
+#'   (i.e. \code{lin.fit <- lm(abs(residuals) ~ \code{fitted})} values,
+#'   also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
+#'   of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
 #'   Finally, use those weights for the simulation fit again. Such procedure can be repeated several
 #'   times (in a loop). The argument is ONLY ACTIVATED IF the residual analysis
 #'   between the experimental data and the simulation fit exhibits heteroscedasticity.
@@ -589,7 +590,8 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## ....... by arguments/parameters
   ## based on `optim.method` and the corresponding argument
   ## therefore => AS a FITNESS FUNCTIONS THEY MUST BE DEFINED SEPARATELY !!
-  ## OTHERWISE THE OPTIMIZATION WON'T WORK
+  ## for `par` as well as for `x0` OTHERWISE THE OPTIMIZATION WON'T WORK
+  ## ----------------- function with `par` -----------------
   fit_sim_params_par <- function(data,
                                  nucs.system,
                                  Intensity.sim,
@@ -737,7 +739,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
     #
   }
   #
-  ## the second function with `x0`
+  ## --------- the second function with `x0` -----------------
   fit_sim_params_x0 <- function(data,
                                 nucs.system,
                                 Intensity.sim,
@@ -1363,7 +1365,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   ## CONSIDER DATA => `data.sim.expr`
   #
   ## add weighted residuals to `data.fit` / `data.sim.expr`
-  if (!is.null(fit.weights)) {
+  if (!all(fit.weights == 1)) { ## because the weights are re-defined (see above)
     data.sim.expr$Weighted_Residuals <-
       sqrt(fit.weights) * data.sim.expr$Residuals ## √fit.weights x Residuals
   }
@@ -1374,15 +1376,20 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
       residuals = "Residuals",
       fitted = "Simulation",
       resid.xlab = "Simulated EPR Intensity Fit",
-      k = optim.params.length ## actual number of optimized parameters
+      k = optim.params.length, ## actual number of optimized parameters
+      weighted.fit = switch(
+        2 - all(fit.weights == 1),
+        FALSE,
+        TRUE
+      )
     )
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
   ## the 'Experiment,Simulation,Residuals' data frame (also depending
-  ## `fit.wights`)
+  ## on`fit.wights`)
   vec.slct.cor.cov <-
     switch(
-      2 - is.null(fit.weights),
+      2 - all(fit.weights == 1),
       c("Experiment","Simulation","Residuals"),
       c("Experiment","Simulation","Residuals","Weighted_Residuals")
     )
@@ -1396,7 +1403,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   df.cov <- stats::cov(df.for.cov.cor)
   #
-  ## fuction to select either "Pearson" | "Spearman"
+  ## fuction to select either "Pearson" | "Spearman" | "Kendall"
   ## correlation coefficient
   df.cor.fn <-  function(method = c("pearson","spearman","kendall")) {
     #
@@ -1427,7 +1434,7 @@ eval_sim_EPR_isoFit <- function(data.spectr.expr,
   #
   # ---------------- add initial simulation only if `check.fit.plot = TRUE` ------------------
   #
-  ## Add initial (corresponding to `optim.params.init`) simulation to spectra
+  ## Add INITIAL (corresponding to `optim.params.init`) SIMULATION to spectra
   #
   ## ...first of all, create initial `nuclear.system` =>
   if (isTRUE(check.fit.plot)) {

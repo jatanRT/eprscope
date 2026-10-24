@@ -21,6 +21,7 @@ eval_sim_EPR_isoFit(
   optim.params.lower = NULL,
   optim.params.upper = NULL,
   Nmax.evals = 512,
+  fit.weights = NULL,
   check.fit.plot = TRUE,
   msg.optim.progress = TRUE,
   output.list.forFitSp = FALSE,
@@ -141,6 +142,17 @@ The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm
 time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
 method requires at least the default or even higher values.}
 
+\item{fit.weights}{Numeric vector, weights for the simulation fit. \strong{Default}: \code{fit.weights = NULL}.
+(corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
+for all of the observations/points. If the variance is not known, the vector can be estimated from
+the linear regression of the auxiliary residual plot
+(i.e. \code{lin.fit <- lm(abs(residuals) ~ \code{fitted})} values,
+also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
+of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
+Finally, use those weights for the simulation fit again. Such procedure can be repeated several
+times (in a loop). The argument is ONLY ACTIVATED IF the residual analysis
+between the experimental data and the simulation fit exhibits heteroscedasticity.}
+
 \item{check.fit.plot}{Logical, whether to return overlay plot with the initial simulation + the best simulation
 fit + experimental spectrum (including residuals in the lower part of the plot,
 \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra
@@ -179,8 +191,10 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   following three spectra are available: 1. experimental, 2. the best simulated one with the baseline fit
   and 3. the best simulated spectrum with the baseline fit subtracted. The latter two are offset for clarity.}
   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-  statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals
+  (+ additional weighted residuals if \code{fit.weights} is not \code{NULL}) and their corresponding
+  statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+  Also run the latter with \code{"Weighted_Residuals"} if \code{fit.weights} is not \code{NULL}.}
   \item{best.fit.params}{Vector of the best (final) fitting (optimized) parameters, for each corresponding
   \code{optim.method}, to simulate the experimental EPR spectrum, see also description of the \code{optim.params.init}.}
   \item{best.fit.par.names}{Character string vector corresponding to names of the \code{best.fit.params}.}
@@ -260,9 +274,9 @@ Optimization/Fitting procedure results in vector or data frame or list depending
   }
 }
 \description{
-Ordinary least-squares fitting of the simulated spectrum onto the experimental one represents an important step in the analysis
-  of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}}; coupling constants
-  (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
+Least-squares (OLS or WLS) fitting of the simulated spectrum onto the experimental one represents an important
+  step in the analysis of EPR spectra. Parameters of the simulated spectrum like \eqn{g_{\text{iso}}};
+  coupling constants (in \code{MHz}) \eqn{A_{\text{iso}}} for each group of equivalent nuclei; linewidth
   (either \eqn{\Delta B_{\text{pp}}} or \eqn{FWHM} depending on the \code{lineSpecs.form} argument);
   spectral baseline (see the \code{baseline.correct} argument) and finally the intensity (multiplication coefficient)
   are optimized by methods listed in the \code{\link{optim_for_EPR_fitness}}.

@@ -62,8 +62,10 @@ As a result of the Eyring-relation fit, list with the following components is av
   \item{plot}{Static ggplot2-based object, showing graphical representation of the (non-)linear fit,
   together with the Eyring equation.}
   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-  statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+  \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals
+  (+ additional weighted residuals if \code{weights} are defined) and their corresponding
+  statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+  Also run the latter with \code{"weighted_residuals"} if \code{weights} are defined.}
   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like the AIC and BIC,

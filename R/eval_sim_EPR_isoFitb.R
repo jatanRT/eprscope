@@ -1,21 +1,21 @@
 #'
-#' Interactive Least-Squares Fitting of Isotropic EPR Spectra by Simulation Iteratioins/Evaulations
+#' Real-Time Visualization of the Least-Squares Fitting of Isotropic EPR Spectra
 #'
 #'
 #' @family Simulations and Optimization
 #'
 #'
 #' @description
-#'   Ordinary least-squares fitting of the isotropic EPR spectra by simulation iterations/evaluations.
+#'   Least-squares fitting of the isotropic EPR spectra by simulation iterations/evaluations.
 #'   In principle, this function is based on the \code{\link{eval_sim_EPR_isoFit}} however,
-#'   it represents a more interactive version of the \code{\link{eval_sim_EPR_isoFit}}.
-#'   Namely, it provides \code{{ggplot2}} objects (graphs, see the \code{Value} and the \code{plot.fit} description)
-#'   in order to simultaneously check/explore the optimization/fitting process at each of the evaluations
-#'   (refer to the \code{Nevals} argument). In addition, it also simultaneously shows current values
-#'   of all the fitting parameters in the \emph{R} console. The function was built, because during the parallel processing
-#'   (see the \code{\link{eval_sim_EPR_isoFit_space}}) it is not possible to display the actual
-#'   EPR spectra during the optimization/fitting procedure. In the upcoming package updates, it will be also implemented
-#'   into the \code{\link{plot_eval_ExpSim_app}}.
+#'   it represents a more interactive/visual version of the \code{\link{eval_sim_EPR_isoFit}}.
+#'   Namely, in the real-time, it displays \code{{ggplot2}} objects (graphs, see the \code{Value}
+#'   and the \code{plot.fit} description) in order to simultaneously check/explore the optimization/fitting
+#'   process at each of the evaluations (refer to the \code{Nevals} argument). In addition, it also simultaneously
+#'   shows current values of all the fitting parameters in the \emph{R} console. The function was built,
+#'   because during the parallel processing (see the \code{\link{eval_sim_EPR_isoFit_space}}) it is not possible
+#'   to display the actual EPR spectra during the optimization/fitting procedure. In the upcoming package updates,
+#'   it will be also implemented into the shiny \code{\link{plot_eval_ExpSim_app}}.
 #'
 #'
 #' @inheritParams eval_sim_EPR_isoFit

@@ -6,7 +6,7 @@
 #'
 #'
 #' @description
-#'    Fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
+#'    OLS or WLS fitting of the integrals/areas/concentration/...etc. \emph{vs} time relation (either from experiment
 #'    or by integration of the EPR spectral time series) in order to find the kinetic parameters
 #'    (like rate constant, \eqn{k} as well as (partial) reaction order(s)) of proposed radical reaction.
 #'    Reaction model is taken from the \code{\link{eval_kinR_ODE_model}}, while the optimization/fitting
@@ -445,7 +445,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   ## add weighted residuals to `data.fit` / `new.predict.df`
   if (!is.null(fit.weights)) {
     new.predict.df$weighted_residuals <-
-      sqrt(fit.weights) * new.predict.df$residuals ## √fit.wights x residuals
+      sqrt(fit.weights) * new.predict.df$residuals ## √fit.weights x residuals
   }
   #
   resid.anal.simple.list <-
@@ -454,7 +454,12 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
       residuals = "residuals",
       fitted = "fitted",
       resid.xlab = "Kinetic Model Fit",
-      k = length(params.guess)
+      k = length(params.guess),
+      weighted.fit = switch(
+        2 - is.null(fit.weights),
+        FALSE,
+        TRUE
+      )
     )
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
@@ -476,7 +481,7 @@ eval_kinR_EPR_modelFit <- function(data.qt.expr,
   #
   df.cov <- stats::cov(df.for.cov.cor)
   #
-  ## fuction to select either "Pearson" | "Spearman"
+  ## function to select either "Pearson" | "Spearman" | "Kendall"
   ## correlation coefficient
   df.cor.fn <-  function(method = c("pearson","spearman","kendall")) {
     #

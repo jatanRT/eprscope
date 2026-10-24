@@ -284,7 +284,8 @@ optim_for_EPR_fitness <- function(method = "neldermead",
                                   pswarm.size = NULL,
                                   pswarm.diameter = NULL,
                                   pswarm.type = NULL,
-                                  eval.optim.progress = FALSE, ## print/show progress of fitting/optimization
+                                  ## print/show progress of fitting/optimization:
+                                  eval.optim.progress = FALSE,
                                   fix.optim.x.0.id = NULL,
                                   ...) {
   #
@@ -487,8 +488,8 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     ## `floor(10+2*sqrt(optim.params.length))` is the default one (for "SPSO2007")
     ## or 40 (for "SPSO2011")
     if (pswarm.type == "SPSO2007") {
-      pswarm.size <- pswarm.size %>% `if`(is.null(pswarm.size),
-                                          floor(10+2*sqrt(optim.params.length)), .)
+      pswarm.size <- pswarm.size %>%
+        `if`(is.null(pswarm.size),floor(10+2*sqrt(optim.params.length)), .)
       if (pswarm.size >= 40) {
         message(" Please, use the `pswarm.type = SPSO2011` for such high number of particles ! ")
       }
@@ -533,5 +534,5 @@ optim_for_EPR_fitness <- function(method = "neldermead",
     ))
   }
   #
-  ## all other parameters take the default values
+  ## all other parameters take their default values
 }

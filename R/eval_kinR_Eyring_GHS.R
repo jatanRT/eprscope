@@ -161,8 +161,10 @@
 #'   \item{plot}{Static ggplot2-based object, showing graphical representation of the (non-)linear fit,
 #'   together with the Eyring equation.}
 #'   \item{ra}{Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals and their corresponding
-#'   statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.}
+#'   \code{plot.rqq()} function, \code{plot.histDens}; original data frame (\code{df}) with residuals
+#'   (+ additional weighted residuals if \code{weights} are defined) and their corresponding
+#'   statistical \code{measures} vector. For details, please refer to the \code{\link{plot_eval_RA_forFit}}.
+#'   Also run the latter with \code{"weighted_residuals"} if \code{weights} are defined.}
 #'   \item{df.coeffs.HS}{Data frame object, containing the optimized (best fit) parameter values (\code{Estimates}),
 #'   their corresponding \code{standard errors}, \code{t-} as well as \code{p-values} for the corresponding Eyring model.}
 #'   \item{df.model.HS}{Data frame object, containing model characteristics (including information criteria like the AIC and BIC,
@@ -364,7 +366,9 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
     #
   } else if (Temp.unit == "oF") { ## Fahrenheit
     data.kvT <- data.kvT %>%
-      dplyr::mutate(!!quo_name(Temp) := ((.data[[Temp]] - 32) * (5/9)) + 273.15)
+      dplyr::mutate(
+        !!quo_name(Temp) := ((.data[[Temp]] - 32) * (5/9)) + 273.15
+      )
     ## rename column afterwards
     colnames(data.kvT)[colnames(data.kvT) == Temp] <- "T_K"
   }
@@ -490,6 +494,11 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   #
   ## ---------------------------------------------------------------------
   #
+  if (!is.null(ws)) {
+    data.kvT$weighted_residuals <-
+      sqrt(ws) * data.kvT$residuals ## √fit.weights x residuals
+  }
+  #
   resid.anal.simple.list <-
     plot_eval_RA_forFit(
       data.fit = data.kvT,
@@ -514,16 +523,28 @@ eval_kinR_Eyring_GHS <- function(data.kvT,
   }
   #
   ## calculate `cov()` and `cor()` (covariance + corr. matrices) using
-  ## the 'experiment,fitted,residuals' data frame
+  ## the 'experiment,fitted,residuals' data frame (also depending
+  ## on `weights`)
+  vec.slct.cor.cov <-
+    switch(
+      2 - is.null(ws),
+      c(
+        switch(2 - method.cond.for.cov.cor(),rate.const,"lnk_per_T"),
+        "fitted",
+        "residuals"
+      ),
+      c(
+        switch(2 - method.cond.for.cov.cor(),rate.const,"lnk_per_T"),
+        "fitted",
+        "residuals",
+        "weighted_residuals"
+      )
+    )
   df.for.cov.cor <-
     resid.anal.simple.list$df %>%
     dplyr::select(
       dplyr::all_of(
-        c(
-          switch(2 - method.cond.for.cov.cor(),rate.const,"lnk_per_T"),
-          "fitted",
-          "residuals"
-        )
+        vec.slct.cor.cov
       )
     )
   #

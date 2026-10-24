@@ -352,6 +352,8 @@ Even though the **EPR spectroscopy** is a quite complex field there are some int
 
 - [NMR Spectroscopy of Organic Compounds (Lesson 10)](https://nmr.group.uochb.cz/en/nmr-organic-compounds)
 
+- [EPR spectroscopy 80 years after its discovery - Article](https://www.science.org/doi/10.1126/sciadv.aeg0169)
+
 - [Bruker EPR Instruments](https://www.bruker.com/en/products-and-solutions/mr/epr-instruments.html)
 
 - [EPR Everywhere - Webpage](https://researchoutreach.org/articles/electron-paramagnetic-resonance-epr-everywhere/)
@@ -360,7 +362,7 @@ Even though the **EPR spectroscopy** is a quite complex field there are some int
 
 - [Basic Concepts of EPR](https://epr.ethz.ch/education/basic-concepts-of-epr.html)
 
-Any additional questions, comments, remarks or issues can be addressed through several discussion channels like 📧 e-mail [jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on the github source page (see the [contributing guide](./.github/CONTRIBUTING.md)). In the future, there will be also a specialized [Discord](https://discord.com/) community channel to discuss the `{eprscope}` related topics. If somebody is able and interested in the package development, please refer to [contributing guide](./.github/CONTRIBUTING.md).
+Any additional questions, comments, remarks or issues can be addressed through several discussion channels like 📧 e-mail [jantar40\@protonmail.com](mailto:jantar40@protonmail.com){.email} or github ![](https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png){width="16"} issues on the github source page (see the [contributing guide](./.github/CONTRIBUTING.md)). A specialized community channel in [Zulip](https://zulip.com/for/open-source/) network, to discuss the `{eprscope}` related topics, is planned for the future. If somebody is able and interested in the package development, please refer to [contributing guide](./.github/CONTRIBUTING.md).
 
 ## Acknowledgements
 

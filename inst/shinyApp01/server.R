@@ -617,7 +617,7 @@ server <- function(input, output, session) {
         "    B.unit = '",input$Bunit,"', \n",
         "    Blim = c(",paste(input$Brange,collapse = ","),"), \n",
         "    lineG.content = ",input$Gcontent,", \n",
-        "    optim.method = c('pswarm','levenmarq'), \n",
+        "    optim.method = c('pswarm','neldermead'), \n",
         "    nuclear.system.noA = ",
         switch(2 - isFALSE(input$splitCond),"NULL, \n",
                paste0(list.nucs.text,", \n")),
