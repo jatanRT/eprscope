@@ -531,5 +531,132 @@ df.model.expr %>% {
   )
 }
 
+#
+## Michaelis-Menten Kinetics - Example:
+## y = Vmax * x / (Km + x)
+n <- 80
+x <- seq(0.5, 20, length.out = n)
+Vmax_true <- 50.0
+Km_true   <- 3.0
+mu_true   <- (Vmax_true * x) / (Km_true + x)
+
+## Heteroscedastic error: SD increases
+## as a power of the mean
+## (sigma_i = 0.08 * mu_i^1.15)
+sigma_true <- 0.08 * (mu_true^1.15)
+y <- mu_true +
+    rnorm(n, mean = 0, sd = sigma_true)
+dat <- data.frame(x = x, y = y)
+
+## Step 0: Initial Unweighted NLS Fit (OLS)
+ctrl <-
+    stats::nls.control(
+        maxiter = 200,
+        tol = 1e-6,
+        warnOnly = TRUE
+    )
+fit_ols <-
+    stats::nls(
+        y ~ Vmax * x / (Km + x),
+        data = dat,
+        start = list(Vmax = 45, Km = 2.5),
+        control = ctrl
+    )
+#
+## parameters from `fit_ols`
+stats::coef(fit_ols)
+#>       Vmax         Km 
+#> 51.0867582  3.4776028 
+#
+## Extract raw non-weighted residuals
+## and fitted values from initial OLS fit
+dat$e_ols    <- dat$y - fitted(fit_ols)
+dat$yhat_ols <- fitted(fit_ols)
+#
+## residual analysis for OLS
+list.ols.resids <-
+    plot_eval_RA_forFit(
+        data.fit = dat,
+        residuals = "e_ols",
+        fitted = "yhat_ols",
+        k = 2
+    )
+#
+## residual and qq-plot
+list.ols.resids$plot.rqq()
+
+#
+## estimated weights and WLS
+var_mod_lin <- lm(
+    abs(e_ols) ~ yhat_ols,data = dat
+)
+pred_abs_e  <- fitted(var_mod_lin)
+#
+## Apply positivity floor (5% of median |e|)
+## to prevent zero/negative SD predictions
+floor_val   <- 0.05 * median(abs(dat$e_ols))
+sigma_hat_2step <-
+    pmax(pred_abs_e, floor_val)
+#
+## weights
+w_2step <- 1 / (sigma_hat_2step^2)
+#
+## refit with WLS
+fit_wls <-
+    stats::nls(
+        y ~ Vmax * x / (Km + x),
+       data = dat,
+       start = as.list(stats::coef(fit_ols)),
+       weights = w_2step,
+       control = ctrl
+    )
+#
+## parameters from the `fit_wls`
+stats::coef(fit_wls)
+#>       Vmax         Km 
+#> 49.2901344  3.0190358 
+#
+# Extract raw weighted residuals
+## and fitted values from WLS fit
+dat$e_wls    <- dat$y - fitted(fit_wls)
+dat$yhat_wls <- fitted(fit_wls)
+#
+## plot OLS fit
+dat %>% {
+  graphics::plot(
+    .$x,
+    .$y,
+    xlab = bquote(italic(Substrate~~Concentration)),
+    ylab = bquote(italic(Reaction~~~Rate)),
+    col = "darkcyan",
+    pch = 16,
+    cex = 1.2
+  )
+  graphics::lines(
+    .$x,
+    .$yhat_wls,
+    col = "magenta",
+    lwd = 2.4
+  )
+}
+
+#
+## add weighted residuals
+dat$e_wls_weighted <-
+    sqrt(w_2step) * dat$e_wls
+#
+## residual analysis for WLS
+list.wls.resids <-
+    plot_eval_RA_forFit(
+        data.fit = dat,
+        residuals = "e_wls_weighted",
+        fitted = "yhat_wls",
+        k = 2,
+        weighted.fit = TRUE
+    )
+#
+## residual and qq-plot
+list.wls.resids$plot.rqq()
+
 
 ```

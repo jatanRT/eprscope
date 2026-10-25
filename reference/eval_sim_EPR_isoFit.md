@@ -235,8 +235,7 @@ eval_sim_EPR_isoFit(
   form can be expressed by the \\1 / variance\\ for all of the
   observations/points. If the variance is not known, the vector can be
   estimated from the linear regression of the auxiliary residual plot
-  (i.e. `lin.fit <- lm(abs(residuals) ~ ``fitted``)` values, also refer
-  to the
+  (i.e. `lin.fit <- lm(abs(residuals) \~ fitted)`, also refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
   and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
   relation. Finally, use those weights for the simulation fit again.
@@ -630,7 +629,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  7.768  s 
+#>  Done!  ( 100  %)    elapsed time  12.328  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -739,11 +738,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.528  s 
+#>  Done!  ( 50  %)    elapsed time  0.832  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  8.409  s 
+#>  Done!  ( 100  %)    elapsed time  13.053  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
