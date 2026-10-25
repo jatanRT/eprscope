@@ -100,7 +100,9 @@ plot_eval_RA_forFit(
   (**O**, `weighted.fit = FALSE`, **default**) or weighted
   (**W**,`weighted.fit = TRUE`) least-squares fit. Both situations are
   **indicated by the plot title** within the residual as well as
-  histogram-scaled probability density plots (see `Value`).
+  histogram-scaled probability density plots (see `Value`). Additional
+  column `weighted_residuals` is created within the `data.fit` (see also
+  `Value` and `df`.)
 
 ## Value
 
@@ -111,7 +113,11 @@ A List, consisting of the following elements is returned:
   Original `data.fit` data frame object, if additional
   processing/analysis is required (see the `Details` or to perform
   Residuals *vs* Observation Order to verify the assumption that the
-  residuals are independent from one another).
+  residuals are independent from one another). In case of weighted fits,
+  additional `weighted_residuals` column/variable is created, see e.g.
+  [`eval_kinR_EPR_modelFit`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)
+  as well as
+  [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md).
 
 - plot.rqq():
 
@@ -205,13 +211,18 @@ The \\i\\-th residual/error (in the series) is defined as the difference
 between the \\i\\-th observed response value (\\y_i\\) and that of the
 predicted/fitted by the model (\\\hat{y}\_i\\ or
 \\y\_{\text{fit/model}}\\): \$\$e_i = y_i - \hat{y}\_i = y_i -
-y\_{\text{fit/model}}\$\$ One might think of residuals as "leftovers",
-i.e. these are the issues/items which are unexplained, after the
-model/fit has been applied. The residual analysis therefore helps us to
-to determine whether our model/fit missed an important pattern or not at
-all (see Chugani (2025) in the `References`). Residuals are also used in
-least square fitting/optimization procedures where the sum of their
-squares is to be minimized throughout the iterations (see e.g.
+y\_{\text{fit/model}}\$\$ or in the weighted form: \$\$\sqrt{w_i}\\e_i =
+\sqrt{w_i}\\(y_i - \hat{y}\_i) = \sqrt{w_i}\\(y_i -
+y\_{\text{fit/model}})\$\$ where \\w_i\\ corresponds to weight of the
+i-th residual. It applies to datasets with unequal observation
+variances, displaying the heteroscedasticity (see below). One might
+think of residuals as "leftovers", i.e. these are the issues/items which
+are unexplained, after the model/fit has been applied. The residual
+analysis therefore helps us to to determine whether our model/fit missed
+an important pattern or not at all (see Chugani (2025) in the
+`References`). Residuals are also used in least square
+fitting/optimization procedures where the sum of their squares is to be
+minimized throughout the iterations (see e.g.
 [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
 or
 [`eval_kinR_EPR_modelFit`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)).
@@ -374,8 +385,8 @@ Hyndman RJ, Athanasopoulos G (2021). *Forecasting: Principles and
 Practise*, 3rd edition, O Texts, ISBN 978-0-987-50713-6,
 <https://otexts.com/fpp3/>.
 
-Chugani V (2025). "The Concise Guide to Residual Analysis",
-<https://www.statology.org/concise-guide-residual-analysis/>.
+Godfrey J (2026). "Compiled Lectures for Regression Modelling",
+<https://r-resources.massey.ac.nz/161251/lectures/index.html>.
 
 Boehmke B, Greenwell B (2020). *Hand on Machine Learning with R*, 1st
 edition, Chapman and Hall/CRC, ISBN 978-1-138-49568-5,
@@ -395,9 +406,8 @@ Speegle D, Clair B (2021). *Probability, Statistics and Data: A Fresh
 Approach Using R*, 1st edition (Version 2024), Chapman and Hall/CRC,
 ISBN 978-0-367-43667-4, <https://probstatsdata.com/>.
 
-The Pennsylvania State University (2018). "STAT 462 Applied Regression
-Analysis, Lesson 9: Influential Points",
-<https://online.stat.psu.edu/stat462/node/87/>.
+The Pennsylvania State University (2018). "Welcome to STAT 462 Applied
+Regression Analysis", <https://online.stat.psu.edu/stat462/>.
 
 Nguyen M (2020). "A Guide on Data Analysis",
 <https://bookdown.org/mike/data_analysis/>.

@@ -1,4 +1,4 @@
-# General Function for Non-Linear Optimization/Fitting of EPR Parameters/Data
+# General Function for Non-Linear Optimization/Fitting of Parameters/Data
 
 General-purpose optimization of the objective `fn` function (also called
 "fitness") which is to be minimized in order to fit theoretical models
@@ -335,7 +335,7 @@ optim.fit.list <-
 optim.fit.list$par
 #> [1]   2.0124565 500.1720983  14.8447207
 #
-## compare these parameters with those
+## compare previous parameters with those
 ## returned by the `stats::nls()` function,
 ## which by default, applies `Gauss-Newton`
 ## optim. algorithm

@@ -140,12 +140,12 @@
   : Explore the Hyperspace of Initial EPR Simulation Parameters
   (Searching for the Best Fit)
 - [`eval_sim_EPR_isoFitb()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFitb.md)
-  : Interactive Least-Squares Fitting of Isotropic EPR Spectra by
-  Simulation Iteratioins/Evaulations
+  : Real-Time Visualization of the Least-Squares Fitting of Isotropic
+  EPR Spectra
 - [`eval_sim_EPR_iso_combo()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso_combo.md)
   : Simulation of Isotropic EPR Spectra Consisting of Several Components
 - [`optim_for_EPR_fitness()`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md)
-  : General Function for Non-Linear Optimization/Fitting of EPR
+  : General Function for Non-Linear Optimization/Fitting of
   Parameters/Data
 - [`plot_eval_EPRtheo_mltiplet()`](https://jatanrt.github.io/eprscope/reference/plot_eval_EPRtheo_mltiplet.md)
   : EPR Intensity Multiplet Prediction for Interactions of Electron with

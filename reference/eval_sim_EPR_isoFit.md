@@ -1,6 +1,6 @@
 # Least-Squares Fitting of Isotropic EPR Spectra by Simulations
 
-Ordinary least-squares fitting of the simulated spectrum onto the
+Least-squares (OLS or WLS) fitting of the simulated spectrum onto the
 experimental one represents an important step in the analysis of EPR
 spectra. Parameters of the simulated spectrum like \\g\_{\text{iso}}\\;
 coupling constants (in `MHz`) \\A\_{\text{iso}}\\ for each group of
@@ -36,6 +36,7 @@ eval_sim_EPR_isoFit(
   optim.params.lower = NULL,
   optim.params.upper = NULL,
   Nmax.evals = 512,
+  fit.weights = NULL,
   check.fit.plot = TRUE,
   msg.optim.progress = TRUE,
   output.list.forFitSp = FALSE,
@@ -227,6 +228,22 @@ eval_sim_EPR_isoFit(
   `Nmax.evals = 512`. However, the `"pswarm"` method requires at least
   the default or even higher values.
 
+- fit.weights:
+
+  Numeric vector, weights for the simulation fit. **Default**:
+  `fit.weights = NULL`. (corresponding to weights of `1`). Their general
+  form can be expressed by the \\1 / variance\\ for all of the
+  observations/points. If the variance is not known, the vector can be
+  estimated from the linear regression of the auxiliary residual plot
+  (i.e. `lin.fit <- lm(abs(residuals) ~ ``fitted``)` values, also refer
+  to the
+  [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
+  and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
+  relation. Finally, use those weights for the simulation fit again.
+  Such procedure can be repeated several times (in a loop). The argument
+  is ONLY ACTIVATED IF the residual analysis between the experimental
+  data and the simulation fit exhibits heteroscedasticity.
+
 - check.fit.plot:
 
   Logical, whether to return overlay plot with the initial simulation +
@@ -291,9 +308,12 @@ depending on the `check.fit.plot` and `output...` arguments.
 
       Simple residual analysis - a list consisting of 4 elements:
       diagnostic plots `plot.rqq()` function, `plot.histDens`; original
-      data frame (`df`) with residuals and their corresponding
+      data frame (`df`) with residuals (+ additional weighted residuals
+      if `fit.weights` is not `NULL`) and their corresponding
       statistical `measures` vector. For details, please refer to the
       [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
+      Also run the latter with `"Weighted_Residuals"` if `fit.weights`
+      is not `NULL`.
 
     - best.fit.params:
 
@@ -610,7 +630,7 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  7.364  s 
+#>  Done!  ( 100  %)    elapsed time  7.768  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -719,11 +739,11 @@ tempo.test.sim.fit.c <-
 #> 
 #>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.497  s 
+#>  Done!  ( 50  %)    elapsed time  0.528  s 
 #> 
 #>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  7.579  s 
+#>  Done!  ( 100  %)    elapsed time  8.409  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params

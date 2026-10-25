@@ -126,9 +126,12 @@ components is available:
 
   Simple residual analysis - a list consisting of 4 elements: diagnostic
   plots `plot.rqq()` function, `plot.histDens`; original data frame
-  (`df`) with residuals and their corresponding statistical `measures`
-  vector. For details, please refer to the
+  (`df`) with residuals (+ additional weighted residuals if `weights`
+  are defined) and their corresponding statistical `measures` vector.
+  For details, please refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
+  Also run the latter with `"weighted_residuals"` if `weights` are
+  defined.
 
 - df.coeffs.HS:
 

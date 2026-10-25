@@ -97,6 +97,7 @@
 <span>  data.qt.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  time.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  qvar.expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fit.weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -213,6 +214,20 @@ please use <code><a href="correct_time_Exp_Specs.html">correct_time_Exp_Specs</a
 <dd><p>Character string, pointing to <code>qvar</code> column/variable name in the original
 <code>data.qt.expr</code> data frame. <strong>Default</strong>: <code>qvar.expr = NULL</code> (when the experimental
 data aren't taken into account).</p></dd>
+
+
+<dt id="arg-fit-weights">fit.weights<a class="anchor" aria-label="anchor" href="#arg-fit-weights"></a></dt>
+<dd><p>Numeric vector, weights for the kinetic model fit. <strong>Default</strong>: <code>fit.weights = NULL</code>.
+(corresponding to weights of <code>1</code>). Their general form can be expressed by the \(1 / variance\)
+for all of the observations/points. If the variance is not known, the vector can be estimated from
+the linear regression of the auxiliary residual plot (i.e.
+<code>lin.fit &lt;- lm(abs(residuals) ~ <code>fitted</code>)</code> values,
+also refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>), and by the evaluation
+of <code>1 / fitted(lin.fit)^2</code> from that auxiliary relation.
+Finally, use those weights for the kinetic model fit again. Such procedure can be repeated several
+times (in a loop). The argument is ONLY ACTIVATED IF <code>model.expr.diff = TRUE</code>
+and the residual analysis between the experimental data and the kinetic model fit exhibits
+heteroscedasticity.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

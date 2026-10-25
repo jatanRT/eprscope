@@ -1,10 +1,10 @@
 # Radical Kinetic Models Fitted onto Experimental Data
 
-Fitting of the integrals/areas/concentration/...etc. *vs* time relation
-(either from experiment or by integration of the EPR spectral time
-series) in order to find the kinetic parameters (like rate constant,
-\\k\\ as well as (partial) reaction order(s)) of proposed radical
-reaction. Reaction model is taken from the
+OLS or WLS fitting of the integrals/areas/concentration/...etc. *vs*
+time relation (either from experiment or by integration of the EPR
+spectral time series) in order to find the kinetic parameters (like rate
+constant, \\k\\ as well as (partial) reaction order(s)) of proposed
+radical reaction. Reaction model is taken from the
 [`eval_kinR_ODE_model`](https://jatanrt.github.io/eprscope/reference/eval_kinR_ODE_model.md),
 while the optimization/fitting is provided by the differential
 Levenberg-Marquardt method,
@@ -34,6 +34,7 @@ eval_kinR_EPR_modelFit(
   params.guess.lower = NULL,
   params.guess.upper = NULL,
   fit.kin.method = "diff-levenmarq",
+  fit.weights = NULL,
   solve.ode.method = "lsoda",
   time.frame.model = 2,
   time.correct = FALSE,
@@ -154,6 +155,23 @@ eval_kinR_EPR_modelFit(
   is based on the numeric solution of the ordinary differential
   equations and not on the common integration of rate equations.
 
+- fit.weights:
+
+  Numeric vector, weights for the kinetic model fit. **Default**:
+  `fit.weights = NULL`. (corresponding to weights of `1`). Their general
+  form can be expressed by the \\1 / variance\\ for all of the
+  observations/points. If the variance is not known, the vector can be
+  estimated from the linear regression of the auxiliary residual plot
+  (i.e. `lin.fit <- lm(abs(residuals) ~ ``fitted``)` values, also refer
+  to the
+  [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
+  and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
+  relation. Finally, use those weights for the kinetic model fit again.
+  Such procedure can be repeated several times (in a loop). The argument
+  is ONLY ACTIVATED IF `model.expr.diff = TRUE` and the residual
+  analysis between the experimental data and the kinetic model fit
+  exhibits heteroscedasticity.
+
 - solve.ode.method:
 
   Character string, setting up the integrator (the `method` argument in
@@ -235,10 +253,12 @@ List with the following components is available:
 
   Residual analysis - a list consisting of 5 elements: diagnostic plots
   `plot.rqq()` function, `plot.histDens`; original data frame (`df`)
-  with residuals and their corresponding `measures` vector. For details,
+  with residuals (+ additional weighted residuals if `fit.weights` is
+  not `NULL`) and their corresponding `measures` vector. For details,
   please refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md).
-  The last element (`plot.acf`) is a diagnostic graph of the
+  Also run the latter with `"weighted_residuals"` if `fit.weights` is
+  not `NULL`. The last element (`plot.acf`) is a diagnostic graph of the
   **a**uto**c**orrelation **f**unction
   [`acf`](https://rdrr.io/r/stats/acf.html) (see also `References`).
   This can be considered as a primary "lie detector" test for the time

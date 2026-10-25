@@ -169,8 +169,10 @@ or <code>"port"</code>
 
   <dt>ra</dt>
 <dd><p>Simple residual analysis - a list consisting of 4 elements: diagnostic plots
-  <code>plot.rqq()</code> function, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals and their corresponding
-  statistical <code>measures</code> vector. For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.</p></dd>
+  <code>plot.rqq()</code> function, <code>plot.histDens</code>; original data frame (<code>df</code>) with residuals
+  (+ additional weighted residuals if <code>weights</code> are defined) and their corresponding
+  statistical <code>measures</code> vector. For details, please refer to the <code><a href="plot_eval_RA_forFit.html">plot_eval_RA_forFit</a></code>.
+  Also run the latter with <code>"weighted_residuals"</code> if <code>weights</code> are defined.</p></dd>
 
   <dt>df.coeffs.HS</dt>
 <dd><p>Data frame object, containing the optimized (best fit) parameter values (<code>Estimates</code>),

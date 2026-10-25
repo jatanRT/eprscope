@@ -1,21 +1,21 @@
-# Interactive Least-Squares Fitting of Isotropic EPR Spectra by Simulation Iteratioins/Evaulations
+# Real-Time Visualization of the Least-Squares Fitting of Isotropic EPR Spectra
 
-Ordinary least-squares fitting of the isotropic EPR spectra by
-simulation iterations/evaluations. In principle, this function is based
-on the
+Least-squares fitting of the isotropic EPR spectra by simulation
+iterations/evaluations. In principle, this function is based on the
 [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
-however, it represents a more interactive version of the
+however, it represents a more interactive/visual version of the
 [`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md).
-Namely, it provides `{ggplot2}` objects (graphs, see the `Value` and the
-`plot.fit` description) in order to simultaneously check/explore the
-optimization/fitting process at each of the evaluations (refer to the
-`Nevals` argument). In addition, it also simultaneously shows current
-values of all the fitting parameters in the *R* console. The function
-was built, because during the parallel processing (see the
+Namely, in the real-time, it displays `{ggplot2}` objects (graphs, see
+the `Value` and the `plot.fit` description) in order to simultaneously
+check/explore the optimization/fitting process at each of the
+evaluations (refer to the `Nevals` argument). In addition, it also
+simultaneously shows current values of all the fitting parameters in the
+*R* console. The function was built, because during the parallel
+processing (see the
 [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md))
 it is not possible to display the actual EPR spectra during the
 optimization/fitting procedure. In the upcoming package updates, it will
-be also implemented into the
+be also implemented into the shiny
 [`plot_eval_ExpSim_app`](https://jatanrt.github.io/eprscope/reference/plot_eval_ExpSim_app.md).
 
 ## Usage
@@ -37,6 +37,7 @@ eval_sim_EPR_isoFitb(
   optim.params.lower = NULL,
   optim.params.upper = NULL,
   optim.params.fix.id = NULL,
+  fit.weights = NULL,
   Niters.per.eval = 128,
   Nevals = 16
 )
@@ -210,6 +211,22 @@ eval_sim_EPR_isoFitb(
   also adjusted by assigning the `optim.params.init` +
   `optim.params.lower` + `optim.params.upper` elements to the same
   value.
+
+- fit.weights:
+
+  Numeric vector, weights for the simulation fit. **Default**:
+  `fit.weights = NULL`. (corresponding to weights of `1`). Their general
+  form can be expressed by the \\1 / variance\\ for all of the
+  observations/points. If the variance is not known, the vector can be
+  estimated from the linear regression of the auxiliary residual plot
+  (i.e. `lin.fit <- lm(abs(residuals) ~ ``fitted``)` values, also refer
+  to the
+  [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
+  and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
+  relation. Finally, use those weights for the simulation fit again.
+  Such procedure can be repeated several times (in a loop). The argument
+  is ONLY ACTIVATED IF the residual analysis between the experimental
+  data and the simulation fit exhibits heteroscedasticity.
 
 - Niters.per.eval:
 

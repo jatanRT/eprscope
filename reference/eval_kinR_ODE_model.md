@@ -25,6 +25,7 @@ eval_kinR_ODE_model(
   data.qt.expr = NULL,
   time.expr = NULL,
   qvar.expr = NULL,
+  fit.weights = NULL,
   ...
 )
 ```
@@ -188,6 +189,23 @@ eval_kinR_ODE_model(
   Character string, pointing to `qvar` column/variable name in the
   original `data.qt.expr` data frame. **Default**: `qvar.expr = NULL`
   (when the experimental data aren't taken into account).
+
+- fit.weights:
+
+  Numeric vector, weights for the kinetic model fit. **Default**:
+  `fit.weights = NULL`. (corresponding to weights of `1`). Their general
+  form can be expressed by the \\1 / variance\\ for all of the
+  observations/points. If the variance is not known, the vector can be
+  estimated from the linear regression of the auxiliary residual plot
+  (i.e. `lin.fit <- lm(abs(residuals) ~ ``fitted``)` values, also refer
+  to the
+  [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
+  and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
+  relation. Finally, use those weights for the kinetic model fit again.
+  Such procedure can be repeated several times (in a loop). The argument
+  is ONLY ACTIVATED IF `model.expr.diff = TRUE` and the residual
+  analysis between the experimental data and the kinetic model fit
+  exhibits heteroscedasticity.
 
 - ...:
 

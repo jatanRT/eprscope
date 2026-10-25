@@ -158,7 +158,8 @@ or <code>"Quantity (unit)"</code> can be applied as well.</p></dd>
 <dt id="arg-weighted-fit">weighted.fit<a class="anchor" aria-label="anchor" href="#arg-weighted-fit"></a></dt>
 <dd><p>Logical, whether the residuals are calculated using an ordinary (<strong>O</strong>, <code>weighted.fit = FALSE</code>,
 <strong>default</strong>) or weighted (<strong>W</strong>,<code>weighted.fit = TRUE</code>) least-squares fit. Both situations are <strong>indicated
-by the plot title</strong> within the residual as well as histogram-scaled probability density plots (see <code>Value</code>).</p></dd>
+by the plot title</strong> within the residual as well as histogram-scaled probability density plots (see <code>Value</code>).
+Additional column <code>weighted_residuals</code> is created within the <code>data.fit</code> (see also <code>Value</code> and <code>df</code>.)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -166,7 +167,9 @@ by the plot title</strong> within the residual as well as histogram-scaled proba
     <p>A List, consisting of the following elements is returned:</p><dl><dt>df</dt>
 <dd><p>Original <code>data.fit</code> data frame object, if additional processing/analysis
   is required (see the <code>Details</code> or to perform Residuals <em>vs</em> Observation Order to verify
-  the assumption that the residuals are independent from one another).</p></dd>
+  the assumption that the residuals are independent from one another). In case of weighted fits,
+  additional <code>weighted_residuals</code> column/variable is created, see e.g. <code><a href="eval_kinR_EPR_modelFit.html">eval_kinR_EPR_modelFit</a></code>
+  as well as <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit</a></code>.</p></dd>
 
   <dt>plot.rqq()</dt>
 <dd><p>Function, related to visual <strong>r</strong>esidual
@@ -229,6 +232,10 @@ by the plot title</strong> within the residual as well as histogram-scaled proba
   The \(i\)-th residual/error (in the series) is defined as the difference between the \(i\)-th observed response
   value (\(y_i\)) and that of the predicted/fitted by the model (\(\hat{y}_i\) or \(y_{\text{fit/model}}\)):
   $$e_i = y_i - \hat{y}_i = y_i - y_{\text{fit/model}}$$
+  or in the weighted form:
+  $$\sqrt{w_i}\,e_i = \sqrt{w_i}\,(y_i - \hat{y}_i) = \sqrt{w_i}\,(y_i - y_{\text{fit/model}})$$
+  where \(w_i\) corresponds to weight of the i-th residual. It applies to datasets with
+  unequal observation variances, displaying the heteroscedasticity (see below).
   One might think of residuals as "leftovers", i.e. these are the issues/items which are unexplained,
   after the model/fit has been applied. The residual analysis therefore helps us to to determine whether
   our model/fit missed an important pattern or not at all (see Chugani (2025) in the <code>References</code>).
@@ -336,8 +343,8 @@ by the plot title</strong> within the residual as well as histogram-scaled proba
   <a href="https://openforecast.org/sba/" class="external-link">https://openforecast.org/sba/</a>.</p>
 <p>Hyndman RJ, Athanasopoulos G (2021). <em>Forecasting: Principles and Practise</em>, 3rd edition,
   O Texts, ISBN 978-0-987-50713-6, <a href="https://otexts.com/fpp3/" class="external-link">https://otexts.com/fpp3/</a>.</p>
-<p>Chugani V (2025). "The Concise Guide to Residual Analysis",
-  <a href="https://www.statology.org/concise-guide-residual-analysis/" class="external-link">https://www.statology.org/concise-guide-residual-analysis/</a>.</p>
+<p>Godfrey J (2026). "Compiled Lectures for Regression Modelling",
+  <a href="https://r-resources.massey.ac.nz/161251/lectures/index.html" class="external-link">https://r-resources.massey.ac.nz/161251/lectures/index.html</a>.</p>
 <p>Boehmke B, Greenwell B (2020). <em>Hand on Machine Learning with R</em>, 1st edition, Chapman and Hall/CRC,
   ISBN 978-1-138-49568-5, <a href="https://bradleyboehmke.github.io/HOML/" class="external-link">https://bradleyboehmke.github.io/HOML/</a>.</p>
 <p>Kuhn M, Silge J (2023). <em>Tidy Modelling with R</em>, 1st edition (Version 1.0.0), O'Reilly Media,
@@ -349,8 +356,8 @@ by the plot title</strong> within the residual as well as histogram-scaled proba
 <p>Speegle D, Clair B (2021). <em>Probability, Statistics and Data: A Fresh Approach Using R</em>,
   1st edition (Version 2024), Chapman and Hall/CRC, ISBN 978-0-367-43667-4,
   <a href="https://probstatsdata.com/" class="external-link">https://probstatsdata.com/</a>.</p>
-<p>The Pennsylvania State University (2018). "STAT 462 Applied Regression Analysis, Lesson 9: Influential Points",
-  <a href="https://online.stat.psu.edu/stat462/node/87/" class="external-link">https://online.stat.psu.edu/stat462/node/87/</a>.</p>
+<p>The Pennsylvania State University (2018). "Welcome to STAT 462 Applied Regression Analysis",
+  <a href="https://online.stat.psu.edu/stat462/" class="external-link">https://online.stat.psu.edu/stat462/</a>.</p>
 <p>Nguyen M (2020). "A Guide on Data Analysis", <a href="https://bookdown.org/mike/data_analysis/" class="external-link">https://bookdown.org/mike/data_analysis/</a>.</p>
 <p>Gray JB, Woodal WH (1994). "The Maximum Size of Standardized and Internally Studentized Residuals in Regression Analysis",
   <em>Am. Stat.</em>, <strong>48</strong>(2), 111-113, <a href="https://www.jstor.org/stable/2684258" class="external-link">https://www.jstor.org/stable/2684258</a>.</p>
