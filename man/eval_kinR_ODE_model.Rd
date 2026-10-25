@@ -139,8 +139,7 @@ data aren't taken into account).}
 \item{fit.weights}{Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
 (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
 for all of the observations/points. If the variance is not known, the vector can be estimated from
-the linear regression of the auxiliary residual plot (i.e.
-\code{lin.fit <- lm(abs(residuals) ~ \code{fitted})} values,
+the linear regression of the auxiliary residual plot (i.e. \code{lin.fit <- lm(abs(residuals) \~ fitted)},
 also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
 of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
 Finally, use those weights for the kinetic model fit again. Such procedure can be repeated several
