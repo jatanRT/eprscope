@@ -162,14 +162,15 @@ eval_kinR_EPR_modelFit(
   form can be expressed by the \\1 / variance\\ for all of the
   observations/points. If the variance is not known, the vector can be
   estimated from the linear regression of the auxiliary residual plot
-  (i.e. `lin.fit <- lm(abs(residuals) \~ fitted)`, also refer to the
+  (i.e. \`lin.fit \<- lm(abs(residuals) ~ fitted)\`, also refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
-  and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
+  and by the evaluation of \`1 / fitted(lin.fit)^2\` from that auxiliary
   relation. Finally, use those weights for the kinetic model fit again.
-  Such procedure can be repeated several times (in a loop). The argument
-  is ONLY ACTIVATED IF `model.expr.diff = TRUE` and the residual
-  analysis between the experimental data and the kinetic model fit
-  exhibits heteroscedasticity.
+  Such procedure can be repeated several times (in a loop) until the
+  fitting parameters do not change. The argument is ONLY ACTIVATED IF
+  `model.expr.diff = TRUE` and the residual analysis between the
+  experimental data and the kinetic model fit exhibits
+  heteroscedasticity.
 
 - solve.ode.method:
 

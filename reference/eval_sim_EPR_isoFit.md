@@ -13,7 +13,7 @@ The `lineG.content` corresponding parameter is the only one, which needs
 to be varied "manually". For an extended version of this function
 (including automatic `lineG.content` variations), please refer to the
 [`eval_sim_EPR_isoFit_space`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md).
-An interactive form of the actual function is represented by the
+A more visual form of the actual function is represented by the
 [`eval_sim_EPR_isoFitb`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFitb.md).
 
 ## Usage
@@ -235,13 +235,14 @@ eval_sim_EPR_isoFit(
   form can be expressed by the \\1 / variance\\ for all of the
   observations/points. If the variance is not known, the vector can be
   estimated from the linear regression of the auxiliary residual plot
-  (i.e. `lin.fit <- lm(abs(residuals) \~ fitted)`, also refer to the
+  (i.e. \`lin.fit \<- lm(abs(residuals) ~ fitted)\`, also refer to the
   [`plot_eval_RA_forFit`](https://jatanrt.github.io/eprscope/reference/plot_eval_RA_forFit.md)),
-  and by the evaluation of `1 / fitted(lin.fit)^2` from that auxiliary
+  and by the evaluation of \`1 / fitted(lin.fit)^2\` from that auxiliary
   relation. Finally, use those weights for the simulation fit again.
-  Such procedure can be repeated several times (in a loop). The argument
-  is ONLY ACTIVATED IF the residual analysis between the experimental
-  data and the simulation fit exhibits heteroscedasticity.
+  Such procedure can be repeated several times (in a loop) until the
+  fitting parameters do not change. The argument is ONLY ACTIVATED IF
+  the residual analysis between the experimental data and the simulation
+  fit exhibits heteroscedasticity.
 
 - check.fit.plot:
 
@@ -621,7 +622,8 @@ tempo.test.sim.fit.b <-
     eval.optim.progress = TRUE ## iterations, progress
   )
 #> 
-#>  EPR simulation parameters are currently being optimized by   PSWARM ;  method   1   of   1 ... 
+#> 
+ EPR simulation parameters are currently being optimized by   PSWARM ;  method   1   of   1 ... 
 #> S=14, K=6, p=0.359, w0=0.7213, w1=0.7213, c.p=1.193, c.g=1.193
 #> v.max=NA, d=0.5658, vectorize=FALSE, hybrid=off
 #> It 10: fitness=2.293e-08, swarm diam.=0.2021
@@ -629,7 +631,8 @@ tempo.test.sim.fit.b <-
 #> It 30: fitness=1.582e-08, swarm diam.=0.1247
 #> Maximal number of function evaluations reached
 #> 
-#>  Done!  ( 100  %)    elapsed time  12.328  s 
+#> 
+ Done!  ( 100  %)    elapsed time  12.031  s 
 ## OUTPUTS:
 ## minimum sum of residual squares:
 tempo.test.sim.fit.b$min.rss
@@ -736,13 +739,17 @@ tempo.test.sim.fit.c <-
                       check.fit.plot = FALSE
                     )
 #> 
-#>  EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  Done!  ( 50  %)    elapsed time  0.832  s 
+ EPR simulation parameters are currently being optimized by   LEVENMARQ ;  method   1   of   2 ... 
 #> 
-#>  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
 #> 
-#>  Done!  ( 100  %)    elapsed time  13.053  s 
+ Done!  ( 50  %)    elapsed time  0.786  s 
+#> 
+#> 
+ EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   2   of   2 ... ... 
+#> 
+#> 
+ Done!  ( 100  %)    elapsed time  12.144  s 
 ## OUTPUTS:
 ## best fit parameters for both procedures within a list:
 tempo.test.sim.fit.c$best.fit.params
