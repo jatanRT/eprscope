@@ -104,13 +104,13 @@ and not on the common integration of rate equations.}
 \item{fit.weights}{Numeric vector, weights for the kinetic model fit. \strong{Default}: \code{fit.weights = NULL}.
 (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
 for all of the observations/points. If the variance is not known, the vector can be estimated from
-the linear regression of the auxiliary residual plot (i.e. \code{lin.fit <- lm(abs(residuals) \~ fitted)},
+the linear regression of the auxiliary residual plot (i.e. `lin.fit <- lm(abs(residuals) ~ fitted)`,
 also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
-of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
+of `1 / fitted(lin.fit)^2` from that auxiliary relation.
 Finally, use those weights for the kinetic model fit again. Such procedure can be repeated several
-times (in a loop). The argument is ONLY ACTIVATED IF \code{model.expr.diff = TRUE}
-and the residual analysis between the experimental data and the kinetic model fit exhibits
-heteroscedasticity.}
+times (in a loop) until the fitting parameters do not change. The argument is ONLY ACTIVATED
+IF \code{model.expr.diff = TRUE} and the residual analysis between the experimental data
+and the kinetic model fit exhibits heteroscedasticity.}
 
 \item{solve.ode.method}{Character string, setting up the integrator (the \code{method} argument in \code{\link[deSolve]{ode}}),
 applied to find the numeric solution of ODE. \strong{Default}: \code{solve.ode.method = "lsoda"}

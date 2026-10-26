@@ -15,7 +15,7 @@
 #'   The \code{lineG.content} corresponding parameter is the only one,
 #'   which needs to be varied "manually". For an extended version of this function
 #'   (including automatic \code{lineG.content} variations), please refer to the \code{\link{eval_sim_EPR_isoFit_space}}.
-#'   An interactive form of the actual function is represented by the \code{\link{eval_sim_EPR_isoFitb}}.
+#'   A more visual form of the actual function is represented by the \code{\link{eval_sim_EPR_isoFitb}}.
 #'
 #'
 #' @note
@@ -147,12 +147,12 @@
 #' @param fit.weights Numeric vector, weights for the simulation fit. \strong{Default}: \code{fit.weights = NULL}.
 #'   (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
 #'   for all of the observations/points. If the variance is not known, the vector can be estimated from
-#'   the linear regression of the auxiliary residual plot (i.e. \code{lin.fit <- lm(abs(residuals) \~ fitted)},
+#'   the linear regression of the auxiliary residual plot (i.e. `lin.fit <- lm(abs(residuals) ~ fitted)`,
 #'   also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
-#'   of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
-#'   Finally, use those weights for the simulation fit again. Such procedure can be repeated several
-#'   times (in a loop). The argument is ONLY ACTIVATED IF the residual analysis
-#'   between the experimental data and the simulation fit exhibits heteroscedasticity.
+#'   of `1 / fitted(lin.fit)^2` from that auxiliary relation. Finally, use those weights for the simulation
+#'   fit again. Such procedure can be repeated several times (in a loop) until the fitting parameters do not change.
+#'   The argument is ONLY ACTIVATED IF the residual analysis between the experimental data
+#'   and the simulation fit exhibits heteroscedasticity.
 #' @param check.fit.plot Logical, whether to return overlay plot with the initial simulation + the best simulation
 #'   fit + experimental spectrum (including residuals in the lower part of the plot,
 #'   \code{check.fit.plot = TRUE}, \strong{default}) or with the following three spectra

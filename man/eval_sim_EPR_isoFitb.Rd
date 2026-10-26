@@ -131,12 +131,12 @@ elements to the same value.}
 \item{fit.weights}{Numeric vector, weights for the simulation fit. \strong{Default}: \code{fit.weights = NULL}.
 (corresponding to weights of \code{1}). Their general form can be expressed by the \eqn{1 / variance}
 for all of the observations/points. If the variance is not known, the vector can be estimated from
-the linear regression of the auxiliary residual plot (i.e. \code{lin.fit <- lm(abs(residuals) \~ fitted)},
+the linear regression of the auxiliary residual plot (i.e. `lin.fit <- lm(abs(residuals) ~ fitted)`,
 also refer to the \code{\link{plot_eval_RA_forFit}}), and by the evaluation
-of \code{1 / fitted(lin.fit)^2} from that auxiliary relation.
-Finally, use those weights for the simulation fit again. Such procedure can be repeated several
-times (in a loop). The argument is ONLY ACTIVATED IF the residual analysis
-between the experimental data and the simulation fit exhibits heteroscedasticity.}
+of `1 / fitted(lin.fit)^2` from that auxiliary relation. Finally, use those weights for the simulation
+fit again. Such procedure can be repeated several times (in a loop) until the fitting parameters do not change.
+The argument is ONLY ACTIVATED IF the residual analysis between the experimental data
+and the simulation fit exhibits heteroscedasticity.}
 
 \item{Niters.per.eval}{Numeric value, equal to the number of iterations per one the \code{Nevals} (see the related \code{Nevals}
 argument description). \strong{Default}: \code{Niters.per.eval = 128}. This argument, among other things,

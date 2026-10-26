@@ -435,7 +435,7 @@
 #' dat$e_wls    <- dat$y - fitted(fit_wls)
 #' dat$yhat_wls <- fitted(fit_wls)
 #' #
-#' ## plot OLS fit
+#' ## plot WLS fit
 #' dat %>% {
 #'   graphics::plot(
 #'     .$x,
