@@ -12,6 +12,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 badge](https://jatanrt.r-universe.dev/badges/eprscope)](https://jatanrt.r-universe.dev/eprscope)
 [![GitHub last
 commit](https://img.shields.io/github/last-commit/jatanRT/eprscope.svg)](https://github.com/jatanRT/eprscope/commits)
+[![Codecov test
+coverage](https://codecov.io/gh/jatanRT/eprscope/graph/badge.svg)](https://app.codecov.io/gh/jatanRT/eprscope)
 
 <!-- badges: end -->
 
