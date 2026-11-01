@@ -185,7 +185,7 @@ project/repository
 ` `\|` `\|` `\|  
 ` `\|` `\|` `\|—–...folder intended for all raw files from EPR
 spectrometer,  
-` `\|` `\|` `` `like `.dsc/.DSC/.par`, `.DTA`, `.YGF`  
+` `\|` `\|` `` `like `.dsc/.DSC/.par`, `.DTA/.spc`, `.YGF`  
 ` `\|` `\|  
 ` `\|` `\|  
 ` `\|` `\|—– `EPR_ASCII`  

@@ -64,7 +64,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/jatanrt/eprscope/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/jatanRT/eprscope/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -74,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>General Diagnostics for Models/Fits by Simple Residual Analysis</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/R/plot_eval_RA_forFit.R" class="external-link"><code>R/plot_eval_RA_forFit.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanRT/eprscope/blob/master/R/plot_eval_RA_forFit.R" class="external-link"><code>R/plot_eval_RA_forFit.R</code></a></small>
       <div class="d-none name"><code>plot_eval_RA_forFit.Rd</code></div>
     </div>
 
@@ -151,8 +151,9 @@ or <code>"Quantity (unit)"</code> can be applied as well.</p></dd>
 
 
 <dt id="arg-level-cnfd">level.cnfd<a class="anchor" aria-label="anchor" href="#arg-level-cnfd"></a></dt>
-<dd><p>Numeric value, identical with level of the applied confidence interval
-(see also the <code>se</code> argument). <strong>Default</strong>: <code>level.cnfd = 0.95</code>.</p></dd>
+<dd><p>Numeric value, identical with level of the applied confidence interval for the graphical <code>{ggplot2}</code>
+representations (see also the <a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link"><code>se</code></a> argument).
+<strong>Default</strong>: <code>level.cnfd = 0.95</code>.</p></dd>
 
 
 <dt id="arg-weighted-fit">weighted.fit<a class="anchor" aria-label="anchor" href="#arg-weighted-fit"></a></dt>
@@ -330,10 +331,11 @@ Additional column <code>weighted_residuals</code> is created within the <code>da
   The confidence level of those bands can be controlled by the <code>level.cnfd</code> argument
   or by the <code>Value</code> output function <code>plot.rqq()</code> (and its <code>confidence</code> argument).</p>
 <p>All the above-mentioned violations of the residuals (normal) distribution can disfavor our considered model/fit.
-  However, <strong>one has to perform different diagnostic methods and tests to analyze the residuals in order to compare
-  several models/fits and select the "best" one. Even in such case, this should be a compromise between
-  the fit accuracy (fitting the data as well as possible, including the physico-chemical reality of the system)
-  and the parsimony</strong> (using a simple and replicable model/fit, Kabacoff RI (2022) in the <code>References</code>).</p>
+  However, <strong>one has to perform different diagnostic methods (see also <code><a href="eval_CCC_forFit.html">eval_CCC_forFit</a></code>)
+  and tests to compare several models/fits and select the "best" one. Even in such case,
+  this should be a compromise between the fit accuracy (fitting the data as well as possible,
+  including the physico-chemical reality of the system) and the parsimony</strong>
+  (using a simple and replicable model/fit, Kabacoff RI (2022) in the <code>References</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -374,6 +376,7 @@ Additional column <code>weighted_residuals</code> is created within the <code>da
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Simulations and Optimization:
 <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit()</a></code>,
+<code><a href="eval_CCC_forFit.html">eval_CCC_forFit()</a></code>,
 <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso()</a></code>,
 <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code>,
 <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space()</a></code>,
@@ -503,7 +506,7 @@ Additional column <code>weighted_residuals</code> is created within the <code>da
 <span class="r-in"><span><span class="co">## parameters from `fit_ols`</span></span></span>
 <span class="r-in"><span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit_ols</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Vmax         Km </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51.0867582  3.4776028 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51.0867580  3.4776027 </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co">## Extract raw non-weighted residuals</span></span></span>
 <span class="r-in"><span><span class="co">## and fitted values from initial OLS fit</span></span></span>
@@ -551,7 +554,7 @@ Additional column <code>weighted_residuals</code> is created within the <code>da
 <span class="r-in"><span><span class="co">## parameters from the `fit_wls`</span></span></span>
 <span class="r-in"><span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit_wls</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Vmax         Km </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49.2901344  3.0190358 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49.2901343  3.0190358 </span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co"># Extract raw weighted residuals</span></span></span>
 <span class="r-in"><span><span class="co">## and fitted values from WLS fit</span></span></span>

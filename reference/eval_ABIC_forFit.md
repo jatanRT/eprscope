@@ -227,6 +227,7 @@ Overfitting",
 ## See also
 
 Other Simulations and Optimization:
+[`eval_CCC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_CCC_forFit.md),
 [`eval_sim_EPR_iso()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md),
 [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md),
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md),
@@ -322,7 +323,7 @@ list.stud.abic
 #> $message
 #> [1] "Information criteria evaluated using the"  
 #> [2] "Student's t-distribution of residuals with"
-#> [3] "381996000.9 degrees of freedom. No clear"  
+#> [3] "384892298.9 degrees of freedom. No clear"  
 #> [4] "support by the Shapiro-Wilk and/or by the" 
 #> [5] "Kolmogorov-Smirnov tests. p.value in"      
 #> [6] "<0.01,0.05>."                              

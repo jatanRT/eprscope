@@ -92,7 +92,9 @@ plot_eval_RA_forFit(
 - level.cnfd:
 
   Numeric value, identical with level of the applied confidence interval
-  (see also the `se` argument). **Default**: `level.cnfd = 0.95`.
+  for the graphical `{ggplot2}` representations (see also the
+  [`se`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+  argument). **Default**: `level.cnfd = 0.95`.
 
 - weighted.fit:
 
@@ -364,13 +366,13 @@ of those bands can be controlled by the `level.cnfd` argument or by the
 
 All the above-mentioned violations of the residuals (normal)
 distribution can disfavor our considered model/fit. However, **one has
-to perform different diagnostic methods and tests to analyze the
-residuals in order to compare several models/fits and select the "best"
-one. Even in such case, this should be a compromise between the fit
-accuracy (fitting the data as well as possible, including the
-physico-chemical reality of the system) and the parsimony** (using a
-simple and replicable model/fit, Kabacoff RI (2022) in the
-`References`).
+to perform different diagnostic methods (see also
+[`eval_CCC_forFit`](https://jatanrt.github.io/eprscope/reference/eval_CCC_forFit.md))
+and tests to compare several models/fits and select the "best" one. Even
+in such case, this should be a compromise between the fit accuracy
+(fitting the data as well as possible, including the physico-chemical
+reality of the system) and the parsimony** (using a simple and
+replicable model/fit, Kabacoff RI (2022) in the `References`).
 
 ## References
 
@@ -437,6 +439,7 @@ Brown S (2022). "Measures of Shape: Skewness and Kurtosis",
 
 Other Simulations and Optimization:
 [`eval_ABIC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md),
+[`eval_CCC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_CCC_forFit.md),
 [`eval_sim_EPR_iso()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md),
 [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md),
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md),
@@ -566,7 +569,7 @@ fit_ols <-
 ## parameters from `fit_ols`
 stats::coef(fit_ols)
 #>       Vmax         Km 
-#> 51.0867582  3.4776028 
+#> 51.0867580  3.4776027 
 #
 ## Extract raw non-weighted residuals
 ## and fitted values from initial OLS fit
@@ -614,7 +617,7 @@ fit_wls <-
 ## parameters from the `fit_wls`
 stats::coef(fit_wls)
 #>       Vmax         Km 
-#> 49.2901344  3.0190358 
+#> 49.2901343  3.0190358 
 #
 # Extract raw weighted residuals
 ## and fitted values from WLS fit

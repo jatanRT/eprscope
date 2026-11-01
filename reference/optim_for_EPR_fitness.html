@@ -62,7 +62,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/jatanrt/eprscope/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/jatanRT/eprscope/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -72,7 +72,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>General Function for Non-Linear Optimization/Fitting of Parameters/Data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/jatanrt/eprscope/blob/master/R/optim_for_EPR_fitness.R" class="external-link"><code>R/optim_for_EPR_fitness.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jatanRT/eprscope/blob/master/R/optim_for_EPR_fitness.R" class="external-link"><code>R/optim_for_EPR_fitness.R</code></a></small>
       <div class="d-none name"><code>optim_for_EPR_fitness.Rd</code></div>
     </div>
 
@@ -276,6 +276,7 @@ in the case if <code>fix.optim.x.0.id = NULL</code>, the parameters can be fixed
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Simulations and Optimization:
 <code><a href="eval_ABIC_forFit.html">eval_ABIC_forFit()</a></code>,
+<code><a href="eval_CCC_forFit.html">eval_CCC_forFit()</a></code>,
 <code><a href="eval_sim_EPR_iso.html">eval_sim_EPR_iso()</a></code>,
 <code><a href="eval_sim_EPR_isoFit.html">eval_sim_EPR_isoFit()</a></code>,
 <code><a href="eval_sim_EPR_isoFit_space.html">eval_sim_EPR_isoFit_space()</a></code>,
@@ -394,6 +395,24 @@ in the case if <code>fix.optim.x.0.id = NULL</code>, the parameters can be fixed
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-plt img"><img src="optim_for_EPR_fitness-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## list of concordance coefficients and plot</span></span></span>
+<span class="r-in"><span><span class="va">list.concord</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="eval_CCC_forFit.html">eval_CCC_forFit</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">df.model.expr</span><span class="op">$</span><span class="va">Intensity</span>,</span></span>
+<span class="r-in"><span>    <span class="va">df.model.expr</span><span class="op">$</span><span class="va">Fit</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## concordance coefficients</span></span></span>
+<span class="r-in"><span><span class="va">list.concord</span><span class="op">$</span><span class="va">df.ccc</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   King's exponent δ = 1 King's exponent δ = 1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           0.929667492             0.984661175</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   King's exponent δ = 2 (Approaches Lin's CCC)   Lin's CCC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                  0.996627024 0.996627024</span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co">## ...and the corresponding plot</span></span></span>
+<span class="r-in"><span><span class="va">list.concord</span><span class="op">$</span><span class="fu">plot.cc</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="optim_for_EPR_fitness-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

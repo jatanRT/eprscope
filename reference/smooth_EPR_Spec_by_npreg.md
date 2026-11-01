@@ -188,6 +188,7 @@ package version 1.0-9,
 
 Other Simulations and Optimization:
 [`eval_ABIC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md),
+[`eval_CCC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_CCC_forFit.md),
 [`eval_sim_EPR_iso()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md),
 [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md),
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md),
@@ -237,7 +238,7 @@ triarylamine.1st.spec.smooth$plot
 #
 ## sum of residual squares preview
 triarylamine.1st.spec.smooth$rss
-#> [1] 5.2912785e-07
+#> [1] 5.2912786e-07
 #
 ## estimated standard deviation
 triarylamine.1st.spec.smooth$ra.sd

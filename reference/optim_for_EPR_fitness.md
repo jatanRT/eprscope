@@ -273,6 +273,7 @@ improvements." *2013 IEEE Congress on Evolutionary Computation*,
 
 Other Simulations and Optimization:
 [`eval_ABIC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md),
+[`eval_CCC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_CCC_forFit.md),
 [`eval_sim_EPR_iso()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md),
 [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md),
 [`eval_sim_EPR_isoFit_space()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit_space.md),
@@ -390,6 +391,24 @@ df.model.expr %>% {
     lwd = 2.4
   )
 }
+
+#
+## list of concordance coefficients and plot
+list.concord <-
+  eval_CCC_forFit(
+    df.model.expr$Intensity,
+    df.model.expr$Fit
+  )
+#
+## concordance coefficients
+list.concord$df.ccc
+#>   King's exponent δ = 1 King's exponent δ = 1.5
+#> 1           0.929667492             0.984661175
+#>   King's exponent δ = 2 (Approaches Lin's CCC)   Lin's CCC
+#> 1                                  0.996627024 0.996627024
+#
+## ...and the corresponding plot
+list.concord$plot.cc()
 
 
 ```

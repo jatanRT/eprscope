@@ -132,6 +132,9 @@
 
 - [`eval_ABIC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_ABIC_forFit.md)
   : General Ranking of Models/Fits Using the AIC and BIC Metrics
+- [`eval_CCC_forFit()`](https://jatanrt.github.io/eprscope/reference/eval_CCC_forFit.md)
+  : General Ranking of Models/Fits by Concordance Correlation
+  Coefficients and Plot
 - [`eval_sim_EPR_iso()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso.md)
   : Simulation of Isotropic EPR Spectra
 - [`eval_sim_EPR_isoFit()`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
