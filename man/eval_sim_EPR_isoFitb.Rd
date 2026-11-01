@@ -261,6 +261,7 @@ epr.spectrum.sim.fit <-
 \seealso{
 Other Simulations and Optimization:
 \code{\link[=eval_ABIC_forFit]{eval_ABIC_forFit()}},
+\code{\link[=eval_CCC_forFit]{eval_CCC_forFit()}},
 \code{\link[=eval_sim_EPR_iso]{eval_sim_EPR_iso()}},
 \code{\link[=eval_sim_EPR_isoFit]{eval_sim_EPR_isoFit()}},
 \code{\link[=eval_sim_EPR_isoFit_space]{eval_sim_EPR_isoFit_space()}},

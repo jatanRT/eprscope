@@ -265,6 +265,19 @@ df.model.expr \%>\% {
     lwd = 2.4
   )
 }
+#
+## list of concordance coefficients and plot
+list.concord <-
+  eval_CCC_forFit(
+    df.model.expr$Intensity,
+    df.model.expr$Fit
+  )
+#
+## concordance coefficients
+list.concord$df.ccc
+#
+## ...and the corresponding plot
+list.concord$plot.cc()
 
 
 }
@@ -296,6 +309,7 @@ Johnson SG (2023). “The NLopt nonlinear-optimization package.” \url{https://
 \seealso{
 Other Simulations and Optimization:
 \code{\link[=eval_ABIC_forFit]{eval_ABIC_forFit()}},
+\code{\link[=eval_CCC_forFit]{eval_CCC_forFit()}},
 \code{\link[=eval_sim_EPR_iso]{eval_sim_EPR_iso()}},
 \code{\link[=eval_sim_EPR_isoFit]{eval_sim_EPR_isoFit()}},
 \code{\link[=eval_sim_EPR_isoFit_space]{eval_sim_EPR_isoFit_space()}},

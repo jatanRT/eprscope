@@ -9,6 +9,7 @@ export(correct_time_Exp_Specs)
 export(create_qmdReport_proj)
 export(draw_molecule_by_rcdk)
 export(eval_ABIC_forFit)
+export(eval_CCC_forFit)
 export(eval_DeltaXpp_Spec)
 export(eval_ECh_QNe_chronoamp)
 export(eval_FWHMx_Spec)
@@ -102,6 +103,7 @@ importFrom(ggplot2,
   element_rect,
   element_text,
   facet_wrap,
+  geom_abline,
   geom_bar,
   geom_density,
   geom_histogram,

@@ -265,6 +265,19 @@
 #'     lwd = 2.4
 #'   )
 #' }
+#' #
+#' ## list of concordance coefficients and plot
+#' list.concord <-
+#'   eval_CCC_forFit(
+#'     df.model.expr$Intensity,
+#'     df.model.expr$Fit
+#'   )
+#' #
+#' ## concordance coefficients
+#' list.concord$df.ccc
+#' #
+#' ## ...and the corresponding plot
+#' list.concord$plot.cc()
 #'
 #'
 #' @export

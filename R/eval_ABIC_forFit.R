@@ -249,9 +249,6 @@ eval_ABIC_forFit <- function(data.fit, # data frame with at least residuals
                              residuals.distro = "auto") { ## or "t-","(S)student's",
                              ## or "normal", or "automatic", "gauss"
   #
-  ## 'Temporary' processing variables
-  #
-  #
   ## if `residuals.distro` defined by letter case - upper
   ## convert it automatically into lower:
   if (grepl("^[[:upper:]]+",residuals.distro)) {

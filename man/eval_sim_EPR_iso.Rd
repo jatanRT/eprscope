@@ -294,6 +294,7 @@ Weil JA, Bolton JR (2007). \emph{Electron paramagnetic resonance: elementary the
 \seealso{
 Other Simulations and Optimization:
 \code{\link[=eval_ABIC_forFit]{eval_ABIC_forFit()}},
+\code{\link[=eval_CCC_forFit]{eval_CCC_forFit()}},
 \code{\link[=eval_sim_EPR_isoFit]{eval_sim_EPR_isoFit()}},
 \code{\link[=eval_sim_EPR_isoFit_space]{eval_sim_EPR_isoFit_space()}},
 \code{\link[=eval_sim_EPR_isoFitb]{eval_sim_EPR_isoFitb()}},

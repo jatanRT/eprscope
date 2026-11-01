@@ -84,7 +84,7 @@
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|\verb{    }|-----...folder intended for all raw files from EPR spectrometer, \cr
-#'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.dsc/.DSC/.par}, \code{.DTA}, \code{.YGF} \cr
+#'   \verb{    }|\verb{    }|\verb{    }\verb{    }like \code{.dsc/.DSC/.par}, \code{.DTA/.spc}, \code{.YGF} \cr
 #'   \verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }| \cr
 #'   \verb{    }|\verb{    }|----- \code{EPR_ASCII} \cr

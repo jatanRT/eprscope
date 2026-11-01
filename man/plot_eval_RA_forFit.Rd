@@ -44,8 +44,9 @@ or \code{"Quantity (unit)"} can be applied as well.}
 \item{k}{Numeric value identical to number of parameters used for the model/fit
 (see e.g. \code{Examples} in the \code{\link{eval_kinR_EPR_modelFit}} where \code{k = 2}).}
 
-\item{level.cnfd}{Numeric value, identical with level of the applied confidence interval
-(see also the \code{se} argument). \strong{Default}: \code{level.cnfd = 0.95}.}
+\item{level.cnfd}{Numeric value, identical with level of the applied confidence interval for the graphical \code{{ggplot2}}
+representations (see also the \href{https://ggplot2.tidyverse.org/reference/geom_smooth.html}{\code{se}} argument).
+\strong{Default}: \code{level.cnfd = 0.95}.}
 
 \item{weighted.fit}{Logical, whether the residuals are calculated using an ordinary (\strong{O}, \code{weighted.fit = FALSE},
 \strong{default}) or weighted (\strong{W},\code{weighted.fit = TRUE}) least-squares fit. Both situations are \strong{indicated
@@ -242,10 +243,11 @@ Analysis of residuals is a powerful statistical technique to check whether the m
   or by the \code{Value} output function \code{plot.rqq()} (and its \code{confidence} argument).
 
   All the above-mentioned violations of the residuals (normal) distribution can disfavor our considered model/fit.
-  However, \strong{one has to perform different diagnostic methods and tests to analyze the residuals in order to compare
-  several models/fits and select the "best" one. Even in such case, this should be a compromise between
-  the fit accuracy (fitting the data as well as possible, including the physico-chemical reality of the system)
-  and the parsimony} (using a simple and replicable model/fit, Kabacoff RI (2022) in the \code{References}).
+  However, \strong{one has to perform different diagnostic methods (see also \code{\link{eval_CCC_forFit}})
+  and tests to compare several models/fits and select the "best" one. Even in such case,
+  this should be a compromise between the fit accuracy (fitting the data as well as possible,
+  including the physico-chemical reality of the system) and the parsimony}
+  (using a simple and replicable model/fit, Kabacoff RI (2022) in the \code{References}).
 }
 \examples{
 ## generate Gaussian peak UV-Vis spectrum
@@ -498,6 +500,7 @@ Kabacoff RI (2022). \emph{R in Action}, 3rd edition, Manning Publications Co., I
 \seealso{
 Other Simulations and Optimization:
 \code{\link[=eval_ABIC_forFit]{eval_ABIC_forFit()}},
+\code{\link[=eval_CCC_forFit]{eval_CCC_forFit()}},
 \code{\link[=eval_sim_EPR_iso]{eval_sim_EPR_iso()}},
 \code{\link[=eval_sim_EPR_isoFit]{eval_sim_EPR_isoFit()}},
 \code{\link[=eval_sim_EPR_isoFit_space]{eval_sim_EPR_isoFit_space()}},

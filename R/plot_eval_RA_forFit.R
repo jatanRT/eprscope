@@ -127,10 +127,11 @@
 #'   or by the \code{Value} output function \code{plot.rqq()} (and its \code{confidence} argument).
 #'
 #'   All the above-mentioned violations of the residuals (normal) distribution can disfavor our considered model/fit.
-#'   However, \strong{one has to perform different diagnostic methods and tests to analyze the residuals in order to compare
-#'   several models/fits and select the "best" one. Even in such case, this should be a compromise between
-#'   the fit accuracy (fitting the data as well as possible, including the physico-chemical reality of the system)
-#'   and the parsimony} (using a simple and replicable model/fit, Kabacoff RI (2022) in the \code{References}).
+#'   However, \strong{one has to perform different diagnostic methods (see also \code{\link{eval_CCC_forFit}})
+#'   and tests to compare several models/fits and select the "best" one. Even in such case,
+#'   this should be a compromise between the fit accuracy (fitting the data as well as possible,
+#'   including the physico-chemical reality of the system) and the parsimony}
+#'   (using a simple and replicable model/fit, Kabacoff RI (2022) in the \code{References}).
 #'
 #'
 #' @references
@@ -198,8 +199,9 @@
 #'   (Residuals \emph{vs} Fitted/Predicted values). \strong{Default}: \code{resid.xlab = NULL}, actually
 #'   corresponding to \code{"Fitted or Simulated Values"}. Customized labels like \code{"Kinetic Model Fit (qvar)"}
 #'   or \code{"Quantity (unit)"} can be applied as well.
-#' @param level.cnfd Numeric value, identical with level of the applied confidence interval
-#'   (see also the \code{se} argument). \strong{Default}: \code{level.cnfd = 0.95}.
+#' @param level.cnfd Numeric value, identical with level of the applied confidence interval for the graphical \code{{ggplot2}}
+#'   representations (see also the \href{https://ggplot2.tidyverse.org/reference/geom_smooth.html}{\code{se}} argument).
+#'   \strong{Default}: \code{level.cnfd = 0.95}.
 #' @param weighted.fit Logical, whether the residuals are calculated using an ordinary (\strong{O}, \code{weighted.fit = FALSE},
 #'   \strong{default}) or weighted (\strong{W},\code{weighted.fit = TRUE}) least-squares fit. Both situations are \strong{indicated
 #'   by the plot title} within the residual as well as histogram-scaled probability density plots (see \code{Value}).
