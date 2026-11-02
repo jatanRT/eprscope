@@ -147,16 +147,17 @@ that the best performing \\\delta\\ (in terms of robustness) are
 original Lin's CCC). Such concordance correlation coefficient can be
 expressed as follows (proposed by Valleyos RO (2026) see `References`):
 \$\$\hat{\rho} = 1 - ((1/n)\\\sum\_{i=1}^n \|X_i -
-Y_i\|^{\delta})\\/\\((1/n^2)\\\sum\_{i=1}^n \|X_i - Y_j\|^{\delta})\$\$
-The denominator is the mean distance over all \\n^2\\ cross-pairs
-(disagreement under independence); the numerator is the mean distance
-over matched pairs. Setting \\\delta = 2\\ recovers Lin's CCC; \\\delta
-= 1\\ gives the robust, outlier-resistant version. The cross pairs are
-calculated using [`outer`](https://rdrr.io/r/base/outer.html) and the
-coefficients are evaluated for all three \\\delta = 1\\, \\\delta =
-1.5\\ and \\\delta = 2\\. McBride GB (2005) (see the `References`)
-suggests the following descriptive scale for values of the concordance
-correlation coefficient (for continuous variables):
+Y_i\|^{\delta})\\/\\((1/n^2)\\\sum\_{i=1}^n\sum\_{j=1}^n \|X_i -
+Y_j\|^{\delta})\$\$ The denominator is the mean distance (\\g(z)\\)
+across the all \\X,Y\\ matrix elements (expectation under independence);
+the numerator is the mean distance over matched pairs. Setting \\\delta
+= 2\\ recovers the Lin's CCC; \\\delta = 1\\ gives the robust,
+outlier-resistant version. The cross pairs are calculated using
+[`outer`](https://rdrr.io/r/base/outer.html) and the coefficients are
+evaluated for all three \\\delta = 1\\, \\\delta = 1.5\\ and \\\delta =
+2\\. McBride GB (2005) (see the `References`) suggested the following
+descriptive scale for values of the concordance correlation coefficient
+(for continuous variables):
 
 |                 |                           |
 |-----------------|---------------------------|
@@ -266,7 +267,7 @@ sim.fit.tmpd.spec <- eval_sim_EPR_isoFit(
  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   1   of   1 ... 
 #> 
 #> 
- Done!  ( 100  %)    elapsed time  4.817  s 
+ Done!  ( 100  %)    elapsed time  5.862  s 
 #
 ## EPR spectra comparison
 sim.fit.tmpd.spec$plot
