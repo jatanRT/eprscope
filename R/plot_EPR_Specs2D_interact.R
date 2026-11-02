@@ -79,6 +79,10 @@
 #'   \strong{default}: \code{axis.title.size = 15}.
 #' @param axis.text.size Numeric, text size (in \code{px}) for the axis unit values/descriptions,
 #'   \strong{default}: \code{axis.text.size = 14}.
+#' @param add.draw.buttons Logical, if \code{TRUE} extended series of buttons appears in the right upper part
+#'   of the interactive graph panel
+#'   \href{https://plotly.com/r/configuration-options/}{to draw/erase lines and shapes inside the graph}.
+#'   \strong{Default}: \code{add.draw.buttons = FALSE}.
 #'
 #'
 #' @return Interactive plot object of EPR spectrum/spectra based on \pkg{{plotly}} package.
@@ -150,7 +154,8 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
                                       legend.title = NULL,
                                       legend.title.size = NULL,
                                       axis.title.size = 15,
-                                      axis.text.size = 14) {
+                                      axis.text.size = 14,
+                                      add.draw.buttons = FALSE) {
   #
   ## 'Temporary' processing variables
   . <- NULL
@@ -223,39 +228,29 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
         color = .data[[var2nd.series]]
       )) +
         geom_line(linewidth = line.width) +
-        {if(g.factor.cond)scale_x_reverse()} +
+        # {if(g.factor.cond)scale_x_reverse()} +
         scale_color_manual(values = plot.vector.colors)
       #
   } else {
-    ## g factor condition
-    if (isTRUE(g.factor.cond)){
-      simplePlot <- ggplot(data.spectra,
-                           aes(x = .data[[x]],
-                               y = .data[[Intensity]])) +
-        geom_line(linewidth = line.width,
-                  linetype = line.type,
-                  color = line.colors) +
-        scale_x_reverse()
-    } else {
-      simplePlot <- ggplot(data.spectra,
-                           aes(x = .data[[x]],
-                               y = .data[[Intensity]])) +
-        geom_line(linewidth = line.width,
-                  linetype = line.type,
-                  color = line.colors)
-    }
+
+    simplePlot <- ggplot(data.spectra,
+                         aes(x = .data[[x]],
+                             y = .data[[Intensity]])) +
+      geom_line(linewidth = line.width,
+                linetype = line.type,
+                color = line.colors)
     #
   }
   ## final plot with layout
   if (!is.null(var2nd.series)) {
     if (is.null(legend.title)){
       stop(" `legend.title` is not specified. Please, define ! ")
-    } else{
+    } else {
       ## Legend title
       legend.title.size <-
         legend.title.size %>% `if`(is.null(legend.title.size),13, .)
       #
-      final_plot <- ggplotly(simplePlot) %>%
+      final_plot <- ggplotly(simplePlot,dynamicTicks = TRUE) %>%
         layout(
           plot_bgcolor = bg.color,
           xaxis = list(
@@ -268,7 +263,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
             linecolor = toRGB(border.line.color),
             linewidth = border.line.width,
             showline = TRUE,
-            mirror = TRUE
+            mirror = TRUE,
+            ## g factor condition
+            autorange = switch(2 - g.factor.cond,"reversed",TRUE)
           ),
           yaxis = list(
             title = list(
@@ -289,7 +286,7 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
         )
     }
   } else {
-    final_plot <- ggplotly(simplePlot) %>%
+    final_plot <- ggplotly(simplePlot,dynamicTicks = TRUE) %>%
       layout(
         plot_bgcolor = bg.color,
         xaxis = list(
@@ -302,7 +299,9 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
           linecolor = toRGB(border.line.color),
           linewidth = border.line.width,
           showline = TRUE,
-          mirror = TRUE
+          mirror = TRUE,
+          ## g factor condition
+          autorange = switch(2 - g.factor.cond,"reversed",TRUE)
         ),
         yaxis = list(
           title = list(
@@ -319,6 +318,22 @@ plot_EPR_Specs2D_interact <- function(data.spectra,
       )
   }
   #
-  return(final_plot)
+  ## add buttons to to draw lines and shapes
+  if (isFALSE(add.draw.buttons)) {
+    return(final_plot)
+  } else {
+    final_plot <- final_plot %>%
+      plotly::config(modeBarButtonsToAdd = c(
+        'drawline',
+        'drawopenpath',
+        'drawclosedpath',
+        'drawcircle',
+        'drawrect',
+        'eraseshape'
+      )
+    )
+    #
+    return(final_plot)
+  }
   #
 }

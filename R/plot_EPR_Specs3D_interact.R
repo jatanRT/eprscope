@@ -294,7 +294,12 @@ plot_EPR_Specs3D_interact <- function(data.spectra.series,
   #     as.matrix(
   #       dplyr::bind_cols(
   #         intensity.list,
-  #         .name_repair = ~ vctrs::vec_as_names(..., repair = "unique", quiet = TRUE)
+  #         .name_repair =
+  #           ~ vctrs::vec_as_names(
+  #             ...,
+  #             repair = "unique",
+  #             quiet = TRUE
+  #         )
   #       )
   #     )
   # } else {
@@ -339,6 +344,7 @@ Intensity_matrix <- t(Intensity_matrix)
         colorscale = scheme.color
       )
     }
+    #
     final_plot <- base_plot %>%
       layout(
         scene = list(
@@ -353,7 +359,9 @@ Intensity_matrix <- t(Intensity_matrix)
             backgroundcolor = bg.x.color,
             ## automatic set up of `xlim` within the ploty 3D surface
             range = xlim,
-            autorange = g.factor.cond(range = xlim,x_axis = x)
+            autorange = g.factor.cond(range = xlim,x_axis = x) #,
+            # tickmode = "auto", ## Default; ensures ticks are not locked to an array
+            # nticks = 6 ## Maximum number of dynamic ticks to generate
           ),
           yaxis = list(
             title = list(
@@ -363,7 +371,9 @@ Intensity_matrix <- t(Intensity_matrix)
             tickfont = list(size = axis.text.size),
             gridcolor = grid.y.color,
             showbackground = TRUE,
-            backgroundcolor = bg.y.color
+            backgroundcolor = bg.y.color #,
+            # tickmode = "auto",
+            # nticks = 6
           ),
           zaxis = list(
             title = list(
@@ -374,7 +384,9 @@ Intensity_matrix <- t(Intensity_matrix)
             gridcolor = grid.z.color,
             showbackground = TRUE,
             backgroundcolor = bg.z.color,
-            tickformat = ".1e"
+            tickformat = ".1e" #,
+            # tickmode = "auto",
+            # nticks = 6
           )
         )
       ) %>%
@@ -401,6 +413,15 @@ Intensity_matrix <- t(Intensity_matrix)
       )
     )
     final_plot <- base_plot %>%
+      ## add all draw buttons
+      plotly::config(modeBarButtonsToAdd = c(
+        'drawline',
+        'drawopenpath',
+        'drawclosedpath',
+        'drawcircle',
+        'drawrect',
+        'eraseshape'
+      )) %>%
       layout(
         xaxis = list(
           title = list(
@@ -409,14 +430,18 @@ Intensity_matrix <- t(Intensity_matrix)
           ),
           tickfont = list(size = axis.text.size),
           range = xlim,
-          autorange = g.factor.cond(range = xlim,x_axis = x)
+          autorange = g.factor.cond(range = xlim,x_axis = x) #,
+          # tickmode = "auto",
+          # nticks = 6
         ),
         yaxis = list(
           title = list(
             text = ylab,
             font = list(size = axis.title.size)
           ),
-          tickfont = list(size = axis.text.size)
+          tickfont = list(size = axis.text.size) #,
+          # tickmode = "auto",
+          # nticks = 6
         )
       ) %>%
       colorbar(

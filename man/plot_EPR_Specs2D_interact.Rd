@@ -21,7 +21,8 @@ plot_EPR_Specs2D_interact(
   legend.title = NULL,
   legend.title.size = NULL,
   axis.title.size = 15,
-  axis.text.size = 14
+  axis.text.size = 14,
+  add.draw.buttons = FALSE
 )
 }
 \arguments{
@@ -103,6 +104,11 @@ e.g. \href{https://plotly.com/r/LaTeX/}{LaTeX Plotly Tepesetting}.
 
 \item{axis.text.size}{Numeric, text size (in \code{px}) for the axis unit values/descriptions,
 \strong{default}: \code{axis.text.size = 14}.}
+
+\item{add.draw.buttons}{Logical, if \code{TRUE} extended series of buttons appears in the right upper part
+of the interactive graph panel
+\href{https://plotly.com/r/configuration-options/}{to draw/erase lines and shapes inside the graph}.
+\strong{Default}: \code{add.draw.buttons = FALSE}.}
 }
 \value{
 Interactive plot object of EPR spectrum/spectra based on \pkg{{plotly}} package.

@@ -148,14 +148,16 @@ server <- function(input, output, session) {
         expr_data(),
         x = paste0("B_",input$Bunit),
         x.unit = input$Bunit,
-        line.colors = input$specColor
+        line.colors = input$specColor,
+        add.draw.buttons = TRUE
       )
     } else {
       plot_EPR_Specs2D_interact(
         expr_data_g,
         x = "g_Value",
         x.unit = "Unitless",
-        line.colors = input$specColor
+        line.colors = input$specColor,
+        add.draw.buttons = TRUE
       )
     }
     #
@@ -623,7 +625,7 @@ server <- function(input, output, session) {
         switch(2 - isFALSE(input$splitCond),"NULL, \n",
                paste0(list.nucs.text,", \n")),
         "    baseline.correct = 'constant', \n",
-        "    Nmax.evals = 1024, \n",
+        "    Nmax.evals = 1536, \n",
         "    optim.params.init = c(",input$giso,",",DeltaBGpp$val,
         ",",DeltaBLpp$val,",","0",",",
         round(
