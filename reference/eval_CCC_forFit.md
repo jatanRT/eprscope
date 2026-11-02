@@ -267,7 +267,7 @@ sim.fit.tmpd.spec <- eval_sim_EPR_isoFit(
  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   1   of   1 ... 
 #> 
 #> 
- Done!  ( 100  %)    elapsed time  5.862  s 
+ Done!  ( 100  %)    elapsed time  6.7  s 
 #
 ## EPR spectra comparison
 sim.fit.tmpd.spec$plot
