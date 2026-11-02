@@ -47,13 +47,13 @@
 #'   that the best performing \eqn{\delta} (in terms of robustness) are \eqn{\delta = 1} and \eqn{\delta = 1.5}
 #'   (with \eqn{\delta = 2} approaching the original Lin's CCC). Such concordance correlation coefficient
 #'   can be expressed as follows (proposed by Valleyos RO (2026) see \code{References}):
-#'   \deqn{\hat{\rho} = 1 - ((1/n)\,\sum_{i=1}^n |X_i - Y_i|^{\delta})\,/\,((1/n^2)\,\sum_{i=1}^n |X_i - Y_j|^{\delta})}
-#'   The denominator is the mean distance over all \eqn{n^2} cross-pairs (disagreement under independence);
-#'   the numerator is the mean distance over matched pairs. Setting \eqn{\delta = 2} recovers Lin's CCC;
+#'   \deqn{\hat{\rho} = 1 - ((1/n)\,\sum_{i=1}^n |X_i - Y_i|^{\delta})\,/\,((1/n^2)\,\sum_{i=1}^n\sum_{j=1}^n |X_i - Y_j|^{\delta})}
+#'   The denominator is the mean distance (\eqn{g(z)}) across the all \eqn{X,Y} matrix elements (expectation under independence);
+#'   the numerator is the mean distance over matched pairs. Setting \eqn{\delta = 2} recovers the Lin's CCC;
 #'   \eqn{\delta = 1} gives the robust, outlier-resistant version. The cross pairs are calculated using
 #'   \code{\link[base]{outer}} and the coefficients are evaluated for all three \eqn{\delta = 1},
 #'   \eqn{\delta = 1.5} and \eqn{\delta = 2}.
-#'   McBride GB (2005) (see the \code{References}) suggests the following descriptive scale for values of the concordance correlation
+#'   McBride GB (2005) (see the \code{References}) suggested the following descriptive scale for values of the concordance correlation
 #'   coefficient (for continuous variables):
 #'   \tabular{lc}{
 #'   \strong{CCC Value} \tab \strong{Strength of Agreement} \cr

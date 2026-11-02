@@ -364,9 +364,9 @@ triarylamine_rc_decay_model$plot
 # fit and numeric solution of the Ordinary Differential Equations
 triarylamine_rc_decay_model$df.coeffs
 #>           Estimate    Std. Error    t value       Pr(>|t|)
-#> qvar0R 0.018570037 5.7203097e-05 324.633415 4.3806568e-149
-#> k1     0.060438033 5.4514524e-03  11.086593  6.1612510e-19
-#> alpha  2.038205995 1.9676180e-02 103.587485 3.9212086e-101
+#> qvar0R 0.018570037 5.7203136e-05 324.633198 4.3809413e-149
+#> k1     0.060438055 5.4514583e-03  11.086585  6.1614969e-19
+#> alpha  2.038206072 1.9676205e-02 103.587358 3.9216714e-101
 #
 # graphical representation of the ("Pearson") correlation matrix,
 # corresponding to kinetic model fit
@@ -381,9 +381,9 @@ triarylamine_rc_decay_model$cor.df() %>%
 ## statistical measures of residuals
 triarylamine_rc_decay_model$ra$measures
 #>            bias          median             mad              sd kurtosis.excess 
-#>  -6.7357810e-07   8.6160773e-06   1.2593114e-04   1.1715059e-04  -4.5285275e-01 
+#>  -6.7358337e-07   8.6160955e-06   1.2593119e-04   1.1715059e-04  -4.5285287e-01 
 #>        skewness 
-#>  -2.9758913e-01
+#>  -2.9758899e-01
 ```
 
 ## Help, Questions and Contribution
@@ -543,8 +543,8 @@ able and interested in the package development, please refer to
 
 I would like to express a deep gratitude to my colleagues from the [NMR
 Spectroscopy Group](https://nmr.group.uochb.cz/en) of the [Institute of
-Organic Chemistry and Biochemistry](https://www.uochb.cz/en) especially,
-[Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X)
+Organic Chemistry and Biochemistry](https://www.uochb.cz/en) (IOCB)
+especially, [Dr. Radek Pohl](https://orcid.org/0000-0001-7898-946X)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg" width="16" height="16"/>,
 [Dr. Ondřej Socha](https://orcid.org/0000-0002-7218-9119)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
@@ -556,4 +556,6 @@ wouldn’t be possible to develop such a project like this. Also, I’d like
 to give a special thanks to my brother [Dr. Peter
 Tarábek](https://orcid.org/0000-0002-7181-7136)
 <img src="https://orcid.org/assets/vectors/orcid.logo.icon.svg"
-width="16" /> for his valuable comments and remarks.
+width="16" /> for his valuable comments/remarks and [the group of Tomáš
+Slanina from IOCB](https://slanina.group.uochb.cz/en) for providing the
+samples of triarylamines.
