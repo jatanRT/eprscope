@@ -487,7 +487,7 @@ plot_ECh_VoC_amperogram <- function(data.vat,
   ## Conditions for interactive/static plots
   if (isTRUE(plot.interact)){
     plot.iv.it.interact <-
-      ggplotly(basic.voltammogram) %>%
+      ggplotly(basic.voltammogram,dynamicTicks = TRUE) %>%
         layout(
           plot_bgcolor = "#e5ecf6",
           xaxis = list(
@@ -514,6 +514,20 @@ plot_ECh_VoC_amperogram <- function(data.vat,
             linewidth = 1.2, showline = TRUE, mirror = TRUE
           )
         )
+    #
+    ## add buttons for drawing
+    plot.iv.it.interact <-
+      plot.iv.it.interact %>%
+      plotly::config(
+        modeBarButtonsToAdd = c(
+          'drawline',
+          'drawopenpath',
+          'drawclosedpath',
+          'drawcircle',
+          'drawrect',
+          'eraseshape'
+      )
+    )
     #
     ## the entire interactive (`plotly`)
     return(plot.iv.it.interact)

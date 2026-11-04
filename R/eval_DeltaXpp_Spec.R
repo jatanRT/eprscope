@@ -43,7 +43,14 @@
 #'                    xlim = c(348.345,350.450))
 #' #
 #' ## plot interactive spectrum
-#' plot_EPR_Specs2D_interact(aminoxyl.data)
+#' plot_EPR_Specs2D_interact(aminoxyl.data) %>%
+#'   plotly::layout(
+#'     xaxis = list(
+#'       autorange = FALSE,
+#'       range = c(348, 350.5),
+#'       rangeslider = list(visible = TRUE)
+#'     )
+#'   )
 #' #
 #' ## the linewidth ∆Bpp (in `mT`) may be directly
 #' ## checked from the interactive spectrum above
@@ -55,11 +62,13 @@
 #' pnt.endor.data.path <-
 #'   load_data_example(file = "PNT_ENDOR_a.txt")
 #' pnt.endor.data <-
-#'   readEPR_Exp_Specs(pnt.endor.data.path,
-#'                     col.names = c("index",
-#'                                   "RF_MHz",
-#'                                   "dIepr_over_dB"),
-#'                    x.unit = "MHz")
+#'   readEPR_Exp_Specs(
+#'     pnt.endor.data.path,
+#'     col.names = c("index",
+#'                   "RF_MHz",
+#'                   "dIepr_over_dB"),
+#'     x.unit = "MHz"
+#'  )
 #' #
 #' ## evaluation of the fourth linewidth (∆freq.(pp)
 #' ## in `MHz`) in the ENDOR spectrum:
@@ -69,9 +78,19 @@
 #'                   )
 #' #
 #' ## plot interactive ENDOR spectrum:
-#' plot_EPR_Specs2D_interact(pnt.endor.data,
-#'                           x = "RF_MHz",
-#'                           x.unit = "MHz")
+#' plot_EPR_Specs2D_interact(
+#'   pnt.endor.data,
+#'   x = "RF_MHz",
+#'   x.unit = "MHz"
+#'  ) %>% plotly::layout(
+#'    xaxis = list(
+#'      ## cancel dynamic range, otherwise
+#'      ## the entire range is displayed:
+#'      autorange = FALSE,
+#'      range = c(20, 27) ,
+#'      rangeslider = list(visible = TRUE)
+#'    )
+#'  )
 #' #
 #' ## the linewidth (∆freq.(pp) in `MHz`) may be
 #' ## directly checked from the previous interactive

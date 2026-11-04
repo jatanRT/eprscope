@@ -1073,7 +1073,8 @@ eval_sim_EPR_iso <- function(g.iso = 2.00232,
       x = paste0("B_", B.unit),
       x.unit = B.unit,
       Intensity = Intensity.sim,
-      lineSpecs.form = lineSpecs.form
+      lineSpecs.form = lineSpecs.form,
+      add.draw.buttons = TRUE
       )
     )
   }

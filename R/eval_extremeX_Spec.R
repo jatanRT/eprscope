@@ -26,23 +26,35 @@
 #'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' ## reading data:
 #' tmpd.data.file <-
-#'   readEPR_Exp_Specs(path_to_file = tmpd.data.file.path,
-#'                     col.names = c("B_G",
-#'                                   "dIepr_over_dB"),
-#'                     qValue = 3500,
-#'                     norm.vec.add = 20,
-#'                     origin = "winepr")
+#'   readEPR_Exp_Specs(
+#'     path_to_file = tmpd.data.file.path,
+#'     col.names = c("B_G","dIepr_over_dB"),
+#'     qValue = 3500,
+#'     norm.vec.add = 20,
+#'     origin = "winepr"
+#'  )
 #' #
 #' ## finding maximum and minimum `B` within the entire
 #' ## spectral (`B`) range:
 #' eval_extremeX_Spec(data.spectr = tmpd.data.file)
 #' #
-#' eval_extremeX_Spec(data.spectr = tmpd.data.file,
-#'                    extreme = "min")
+#' eval_extremeX_Spec(
+#'   data.spectr = tmpd.data.file,
+#'   extreme = "min"
+#'   )
 #' #
 #' ## both values can be checked by the interactive
 #' ## spectrum:
-#' plot_EPR_Specs2D_interact(tmpd.data.file)
+#' plot_EPR_Specs2D_interact(tmpd.data.file) %>%
+#'    plotly::layout(
+#'      xaxis = list(
+#'      ## cancel dynamic range, otherwise
+#'      ## the entire range is displayed:
+#'      autorange = FALSE,
+#'      range = c(349.7, 350.5) ,
+#'      rangeslider = list(visible = TRUE)
+#'    )
+#'  )
 #'
 #'
 #' @export

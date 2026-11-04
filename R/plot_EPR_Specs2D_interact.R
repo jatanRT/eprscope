@@ -94,11 +94,13 @@
 #'   load_data_example(file = "TMPD_specelchem_accu_b.asc")
 #' ## spectrum recorded as accumulation of 20 scans
 #' data.epr <-
-#'   readEPR_Exp_Specs(path_to_file = data.file.path,
-#'                     col.names = c("B_G", "dIepr_over_dB"),
-#'                     qValue = 3500,
-#'                     norm.vec.add = 20,
-#'                     origin = "winepr")
+#'   readEPR_Exp_Specs(
+#'     path_to_file = data.file.path,
+#'     col.names = c("B_G", "dIepr_over_dB"),
+#'     qValue = 3500,
+#'     norm.vec.add = 20,
+#'     origin = "winepr"
+#'   )
 #' ## interactive plot or screenshot
 #' plot_EPR_Specs2D_interact(data.spectra = data.epr)
 #' #
@@ -108,29 +110,36 @@
 #' ## read the PNT CW ENDOR data without intensity
 #' ## normalization
 #' pnt.endor.data <-
-#'   readEPR_Exp_Specs(pnt.file.path,
-#'                     col.names = c("index",
-#'                                   "RF_MHz",
-#'                                   "dIepr_over_dB"),
-#'                     x.unit = "MHz")
-#' ## plotting ENDOR spectrum
-#' plot_EPR_Specs2D_interact(data.spectra = pnt.endor.data,
-#'                           x = "RF_MHz",
-#'                           x.unit = "MHz",
-#'                           line.colors = "darkgreen",
-#'                           bg.color = "cornsilk",
-#'                           grid.color = "darkgrey")
+#'   readEPR_Exp_Specs(
+#'     pnt.file.path,
+#'     col.names = c("index",
+#'                   "RF_MHz",
+#'                   "dIepr_over_dB"),
+#'     x.unit = "MHz"
+#'   )
+#' ## plotting ENDOR spectrum with additional
+#' ## buttons for drawing
+#' plot_EPR_Specs2D_interact(
+#'   data.spectra = pnt.endor.data,
+#'   x = "RF_MHz",
+#'   x.unit = "MHz",
+#'   line.colors = "darkgreen",
+#'   bg.color = "cornsilk",
+#'   grid.color = "darkgrey",
+#'   add.draw.buttons = TRUE
+#' )
 #' #
 #' \dontrun{
 #' ## plot time series EPR spectra = verdazyl radical
 #' ## oxidation kinetics (`verdazylRad.kinet.spectr`)
-#' plot_EPR_Specs2D_interact(verdazylRad.kinet.spectr,
+#' plot_EPR_Specs2D_interact(
+#'   verdazylRad.kinet.spectr,
 #'   x = "B_G",
 #'   x.unit = "G",
 #'   var2nd.series = "time_s",
 #'   legend.title = "<i>Time</i> (s)",
 #'   line.colors = c("darkorange","darkblue")
-#'   )
+#'  )
 #' }
 #'
 #'

@@ -70,7 +70,8 @@ eval_FWHMx_Spec(pnt.sim.integ.iso$df,
                 )
 #
 ## interactive plot of the above-simulated
-## EPR spectrum in order to check the values:
+## EPR spectrum in order to check the values
+## between 3490 and 3500 G:
 plot_EPR_Specs2D_interact(
   pnt.sim.integ.iso$df,
   x = "Bsim_G",
@@ -78,7 +79,13 @@ plot_EPR_Specs2D_interact(
   Intensity = "single_Integ",
   lineSpecs.form = "integrated"
  ) \%>\% plotly::layout(
-   xaxis = list(range = c(3490,3500))
+   xaxis = list(
+     ## cancel dynamic range, otherwise
+     ## the entire range is displayed:
+     autorange = FALSE,
+     range = c(3490, 3500) ,
+     rangeslider = list(visible = TRUE)
+   )
  )
  ## from the two central lines the following
  ## values can be read out
