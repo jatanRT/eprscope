@@ -121,7 +121,7 @@ the following steps:
       c("bookdown","kableExtra","tinytable",
         "corrplot","animation","openxlsx","knitr",
         "shinythemes","numDeriv","htmlwidgets",
-        "esquisse","nlstools","webshot2"),
+        "esquisse","nlstools","webshot2","npreg"),
       dependencies = TRUE
     )
     ```
@@ -264,7 +264,7 @@ simulation.iso <-
       list("1H", 3, 5.09), # 3 x A(1H) = 5.09 MHz
       list("1H", 6, 17.67) # 6 x A(1H) = 17.67 MHz
     ),
-    lineGL.DeltaB = list(0.24, NULL) # linewidth in G
+    lineGL.DeltaB = list(0.24, NULL) # linewidth in G (only Gaussian)
   )
 #
 # simulated spectrum preview, in the region from 3470 G to 3522 G
