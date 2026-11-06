@@ -581,10 +581,10 @@ server <- function(input, output, session) {
         "library(tidyverse) \n",
         "library(eprscope) \n",
         "# \n",
-        "# Load the experimental EPR spectrum/data: \n",
+        "# Load the experimental EPR spectrum/data = ",input$SpectrumFile$name,": \n",
         "epr.spectrum.data <- \n",
         "  readEPR_Exp_Specs( \n",
-        "    # select the EPR data/spectrum path by file explorer: \n",
+        "    # select the EPR data/spectrum path for ",input$SpectrumFile$name," by file explorer: \n",
         "    path_to_file = file.choose(), \n",
         "    col.names = ",
         switch(
@@ -630,7 +630,7 @@ server <- function(input, output, session) {
         ",",DeltaBLpp$val,",","0",",",
         round(
           (max(expr_data()[["dIepr_over_dB"]]) /
-             max(sim_data()[["dIeprSim_over_dB"]])) * 0.54,
+             max(sim_data()[["dIeprSim_over_dB"]])) * 0.68,
           digits = 7
         ),
         switch(
@@ -667,7 +667,7 @@ server <- function(input, output, session) {
         ",",DeltaBLpp$val,",","0",",",
         round(
           (max(expr_data()[["dIepr_over_dB"]]) /
-             max(sim_data()[["dIeprSim_over_dB"]])) * 0.54,
+             max(sim_data()[["dIeprSim_over_dB"]])) * 0.68,
           digits = 7
         ),
         switch(
