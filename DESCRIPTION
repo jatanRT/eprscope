@@ -71,10 +71,10 @@ Imports:
     shiny,
     progressr,
     future,
-    future.apply,
-    npreg
+    future.apply
 Suggests: 
     knitr,
+    npreg,
     htmlwidgets,
     webshot2,
     numDeriv,

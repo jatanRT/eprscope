@@ -165,7 +165,7 @@
 #'
 #' @export
 #'
-#' @importFrom npreg ss
+#'
 smooth_EPR_Spec_by_npreg <- function(data.spectr,
                                      B = "B_mT",
                                      B.unit = "mT",
@@ -179,12 +179,16 @@ smooth_EPR_Spec_by_npreg <- function(data.spectr,
   y <- NULL
   smoothed <- NULL
   #
-  ## smooth EPR spectrum data
-  smooth.epr.spec.list <-
-    ss(x = data.spectr[[B]],
-              y = data.spectr[[Intensity]],
-              method = method,
-              ...)
+  ## smooth EPR spectrum data (conditional namespace for `npreg::ss()`)
+  if (requireNamespace("npreg", quietly = TRUE)) {
+    smooth.epr.spec.list <-
+      npreg::ss(x = data.spectr[[B]],
+         y = data.spectr[[Intensity]],
+         method = method,
+         ...)
+  } else {
+    stop(" For non-parametric smoothing of spectra/curves, the `{npreg}` package is required ! ")
+  }
   #
   ## new column with smoothed Intensity
   data.spectr[["smoothed"]] <- smooth.epr.spec.list$y
