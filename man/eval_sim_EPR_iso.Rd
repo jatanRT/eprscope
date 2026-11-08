@@ -107,7 +107,7 @@ with the coefficients 0.5 and 0.5) of both line forms ➨ so called \emph{pseudo
 data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.}
 
 \item{plot.sim.interact}{Logical, whether to display the simulated spectrum by interactive \code{plotly} graph
-(see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{dafault}),
+(see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{default}),
 then the output contains the data frame as well as \code{ggplot2} based plot of the simulated EPR spectrum
 within a list.}
 }

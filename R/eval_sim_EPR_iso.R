@@ -146,7 +146,7 @@
 #' @param Intensity.sim Character string, pointing to column of simulated EPR intensity within the related output
 #'   data frame. \strong{Default}: \code{Intensity.sim = "dIeprSim_over_dB"}.
 #' @param plot.sim.interact Logical, whether to display the simulated spectrum by interactive \code{plotly} graph
-#'   (see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{dafault}),
+#'   (see also \code{\link{plot_EPR_Specs2D_interact}}). If \code{plot.sim.interact = FALSE} (\strong{default}),
 #'   then the output contains the data frame as well as \code{ggplot2} based plot of the simulated EPR spectrum
 #'   within a list.
 #'

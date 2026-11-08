@@ -22,7 +22,8 @@
 #'   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
 #'   combination of the spectral intensities of components (simulated spectra) and optimizes
 #'   the related multiplication coefficients. Additional analysis, where the positions of spectral
-#'   components (simulated spectra) are not fixed and can be optimized as well, is under development.
+#'   components (simulated spectra) are not fixed and can be optimized as well, will be developed
+#'   for higher package version.
 #'
 #'
 #' @param data.spectra.series Spectrum data frame/table object containing magnetic flux density
