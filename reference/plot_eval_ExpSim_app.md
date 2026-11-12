@@ -47,13 +47,16 @@ The result of the isotropic simulation (with the actual parameters) can
 be additionally exported as an `.R` code snippet/script to eventually
 fit the simulated spectrum (optimize simulation parameters) onto the
 experimental one by the
-[`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md).
-By saving the script in the working directory, the isotropic simulation
-fit can be performed right after closing the shiny app (window) in order
-to fine tune the simulation parameters and thus to speed up the analysis
-of the EPR spectrum. If the shiny application is running within the web
-browser, the user may also print/save the entire "dashboard" in the
-`.pdf` format to share/present results with/to students or colleagues.
+[`eval_sim_EPR_isoFit`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFit.md)
+or by the
+[`eval_sim_EPR_isoFitb`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_isoFitb.md).
+While saving the script in the working directory, the isotropic
+simulation fit can be performed right after closing the shiny app
+(window) in order to fine tune the simulation parameters and thus to
+speed up the analysis of the EPR spectrum. If the shiny application is
+running within the web browser, the user may also print/save the entire
+"dashboard" in the `.pdf` format to share/present results with/to
+students or colleagues.
 
 ## Examples
 

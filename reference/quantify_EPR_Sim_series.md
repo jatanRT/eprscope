@@ -1,12 +1,15 @@
 # Quantify EPR Simulated Spectral Components in the Experimental Series
 
+**Please wait for the images to load, while rendering the web page.**
 Evaluating the linear combination of spectral intensities of components
-(loaded as ASCII text files corresponding to simulated EPR spectra). The
-related intensity multiplication coefficients (please, refer to the
-`optim.params.init` argument) are optimized by methods gathered in the
+(loaded as ASCII text files corresponding to individual simulated EPR
+spectra) of the overall spectral response. The related intensity
+multiplication coefficients (please, refer to the `optim.params.init`
+argument) are optimized by methods gathered in the
 [`optim_for_EPR_fitness`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md).
 The goal is to fit the sum of the simulated components onto each
-experimental spectrum within series. The maximum number of components is
+experimental spectrum within the (time) series in order to quantify each
+individual EPR (radical) spectrum. The maximum number of components is
 set to 10.
 
 ## Usage
@@ -20,6 +23,7 @@ quantify_EPR_Sim_series(
   var2nd.series = "time_s",
   B.unit = "G",
   col.names.sim = c("Bsim_G", "dIeprSim_over_dB"),
+  col.name.pattern.sim = "Sim.*_[[:upper:]]$",
   x.sim.id = 1,
   Intensity.sim.id = 2,
   Intensity.expr = "dIepr_over_dB",
@@ -66,8 +70,10 @@ quantify_EPR_Sim_series(
 
 - name.pattern.sim:
 
-  Character string pattern from file names related to simulated EPR
-  spectral data like `name.pattern.sim = "DHMB0_1st_04_SimA"` or
+  Character string pattern ([regular
+  expression](https://r4ds.hadley.nz/regexps)) from file names related
+  to simulated EPR spectral data like
+  `name.pattern.sim = "DHMB0_1st_04_SimA"` or
   `name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]"` (for the file names
   `..._SimA`, `..._SimB`,...etc). It assumes, those files must have
   similar names and this pattern appears at the beginning of the file
@@ -104,6 +110,15 @@ quantify_EPR_Sim_series(
   function). **Default**:
   `col.names.sim = c("Bsim_G","dIeprSim_over_dB")`, corresponding to the
   `origin.sim = "easyspin"`.
+
+- col.name.pattern.sim:
+
+  Character string ([regular
+  expression](https://r4ds.hadley.nz/regexps)), pointing to columns with
+  simulated EPR intensity (within the newly generated tidy data frame),
+  which are fitted onto the experimental spectra in the time series. A
+  good rule of thumb is that it follows the structure the
+  `name.pattern.sim` argument.
 
 - x.sim.id:
 
@@ -222,7 +237,8 @@ argument, as listed below:
     information/number (`N_converg`, like already described in the
     [`optim_for_EPR_fitness`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md)).
     These variables are presented for each `var2nd.series` (e.g. time)
-    point like example for one EPR spectral component:
+    point like example for one EPR spectral component (see also
+    `Examples`):
 
     |  |  |  |  |  |  |  |
     |----|----|----|----|----|----|----|
@@ -240,18 +256,18 @@ argument, as listed below:
 
 Analyzed EPR spectra may consists of several components (see also the
 [`eval_sim_EPR_iso_combo`](https://jatanrt.github.io/eprscope/reference/eval_sim_EPR_iso_combo.md)
-function), like the overlapped EPR spectra of several radicals. In order
-to follow the concentration/amount variations of each individual radical
-during the kinetic/temperature/...series, one must figure out, how those
-individual spectral components are actually changed. In the first
-approximation, it means to follow the corresponding EPR
+function), like the superimposed EPR spectra of several radicals. In
+order to follow the concentration/amount variations of each individual
+radical, during the kinetic/temperature/...series, one must figure out,
+how those individual spectral components are actually changed. In the
+first approximation, it means to follow the corresponding EPR
 intensities/integrals, whereas the component positions (\\g\\-values)
 are assumed to be fixed (or those changes can be neglected). Therefore,
 the actual function takes the linear combination of the spectral
 intensities of components (simulated spectra) and optimizes the related
-multiplication coefficients. Additional analysis, where the positions of
-spectral components (simulated spectra) are not fixed and can be
-optimized as well, will be developed for higher package version.
+intensity multiplication coefficients. Additional analysis, where the
+positions of spectral components (simulated spectra) are not fixed and
+can be optimized as well, will be developed for higher package version.
 
 ## See also
 
@@ -271,54 +287,206 @@ Other Simulations and Optimization:
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-## example with default arguments corresponding
-## to one simulated spectral component,
-## `optim.params.init` has the length
-## of => number of components + 1,
-## because of included intercept/baseline constant
-quant.data.sim.test.a <-
-  quantify_EPR_Sim_series(data.spectra.series,
-     dir_ASC_sim = "./",
-     optim.method = "pswarm",
-     name.pattern.sim = "DHMB0_1st_04_SimA",
-     optim.params.init = c(0,0.8),
-     output.area.stat = TRUE)
-## progress bar - automatically activated
+## quantify noisy EPR spectra of triarylamine
+## radical cation time series (only 1 component),
+## first of all, load the entire series
+triarylamine.decay.series.bin.path <-
+load_data_example(file =
+        "Triarylamine_radCat_decay_series.DTA")
+## loading the kinetics:
+triarylamine.decay.series.data <-
+  readEPR_Exp_Specs_kin(
+    path_to_file =
+      triarylamine.decay.series.bin.path
+   )
 #
-## similar example with two components
-## (simulated spectra) and tidy data frame
-## output (not the summarized one) with all spectra
-## and their corresponding integrals, additionally,
-## display of the iteration progress for each EPR
-## spectrum within the series is activated
-quant.data.sim.test.b <-
-  quantify_EPR_Sim_series(data.spectra.series,
-     dir_ASC_sim = "./",
-     optim.method = "sbplx",
-     name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]",
-     optim.params.init = c(0,0.8,0.2),
-     output.area.stat = FALSE,
-     eval.optim.progress = TRUE
-     )
-## progress bar - automatically deactivated,
-## because `eval.optim.progress = TRUE`, otherwise
-## both messages 'collide' in the output
+## quantitative information as a data frame,
+## if `output.area.stat = TRUE`
+quant.sim.triarylamine.df <-
+ quantify_EPR_Sim_series(
+    data.spectra.series =
+      triarylamine.decay.series.data$df,
+    # this is an `{eprscope}` pkg. dir:
+    dir_ASC_sim = system.file(
+      "extdata",
+      package = "eprscope",
+      mustWork = TRUE
+    ),
+    optim.method = "sbplx",
+    # name pattern for `csv` EPR sim. data:
+    name.pattern.sim =
+      "Triarylamine_radCat_decay_9thSpec",
+    col.names.sim = c(
+      "Bsim_G",
+      "B_G",
+      "dIeprSim_over_dB",
+      "dIepr_over_dB",
+      "Norm_dIeprSim_over_dB"
+    ),
+    x.sim.id = 1,
+    Intensity.sim.id = 3,
+    optim.params.init = c(0,0.8),
+    output.area.stat = TRUE,
+    msg.optim.progress = FALSE
+)
+## if `msg.optim.progress = TRUE` the progress
+## bar is displayed together with elapsed time
+## for the entire fitting process,
+## if additional `eval.optim.progress = TRUE`
+## (see the `...` argument) is activated, the
+## iteration process is displayed in the console,
+## however without the progress bar
 #
-## to implement the `.csv` outputs
-## from `plot_eval_ExpSim_app()`, the following
-## arguments must be used:
-##  origin.sim = "csv",
-##  col.names.sim = c(
-##    "Bsim_G", # or mT
-##    "B_G", # or mT
-##    "dIeprSim_over_dB",
-##    "dIepr_over_dB",
-##    "Norm_dIeprSim_over_dB"
-##  ),
-##  x.sim.id = 1,
-##  Intensity.sim.id = 3
+## data frame preview
+quant.sim.triarylamine.df %>% head(n = 10)
+#>    time_s  Area_Sim_A Optim_coeffInt_Sim_A Optim_intercept       min_RSS
+#> 1       6 0.016555782          0.016924688   3.0913633e-10 7.6343589e-07
+#> 2      21 0.016071703          0.016429822   3.0011773e-10 7.0784394e-07
+#> 3      36 0.015599617          0.015947217   2.9131257e-10 6.8111566e-07
+#> 4      51 0.015142568          0.015479985   2.8272424e-10 7.0771503e-07
+#> 5      66 0.014660566          0.014987242   2.7371385e-10 6.7191227e-07
+#> 6      81 0.014345326          0.014664976   2.6790890e-10 6.8113214e-07
+#> 7      95 0.013978944          0.014290432   2.6101361e-10 6.8733420e-07
+#> 8     110 0.013495567          0.013796283   2.5202880e-10 6.8857790e-07
+#> 9     125 0.013320680          0.013617499   2.4874822e-10 7.1659238e-07
+#> 10    140 0.012972439          0.013261498   2.4222224e-10 7.0110203e-07
+#>    N_evals N_converg
+#> 1      205         4
+#> 2      216         4
+#> 3      195         4
+#> 4      212         4
+#> 5      181         4
+#> 6      196         4
+#> 7      188         4
+#> 8      192         4
+#> 9      188         4
+#> 10     197         4
 #
-} # }
+## plot double integral (`Area_Sim_A`) vs time
+ggplot2::ggplot(
+  data = quant.sim.triarylamine.df,
+  ggplot2::aes(x = time_s)
+) +
+ggplot2::geom_point(
+  ggplot2::aes(y = Area_Sim_A),
+  size = 3.2,
+  color = "darkorange"
+) +
+ggplot2::labs(
+  x = plot_labels_xyz(time,s),
+  y = plot_labels_xyz(Double~~Integral,p.d.u.)
+) + plot_theme_In_ticks()
+
+#
+## plot minimum sum of residual squares vs time
+ggplot2::ggplot(
+  data = quant.sim.triarylamine.df,
+  ggplot2::aes(x = time_s)
+) +
+ggplot2::geom_point(
+  ggplot2::aes(y = min_RSS),
+  size = 3.2,
+  color = "darkblue"
+) +
+ggplot2::labs(
+  x = plot_labels_xyz(time,s),
+  y = bquote(italic(RSS))
+) + plot_theme_In_ticks()
+
+#
+## plot number of evaluations/iterations
+## for each time point
+ggplot2::ggplot(
+  data = quant.sim.triarylamine.df,
+  ggplot2::aes(x = time_s)
+) +
+ggplot2::geom_point(
+  ggplot2::aes(y = N_evals),
+  size = 3.2,
+  color = "darkgreen"
+) +
+ggplot2::labs(
+  x = plot_labels_xyz(time,s),
+  y = bquote(italic(Number~~of~~Evaluations))
+) + plot_theme_In_ticks()
+
+#
+#
+## the same time series fitting, now with all
+## EPR spectra and integrals,
+## i.e. `output.area.stat = FALSE`
+spectra.sim.triarylamine.df <-
+ quantify_EPR_Sim_series(
+    data.spectra.series =
+      triarylamine.decay.series.data$df,
+    # this is an `{eprscope}` pkg. dir:
+    dir_ASC_sim = system.file(
+      "extdata",
+      package = "eprscope",
+      mustWork = TRUE
+    ),
+    optim.method = "sbplx",
+    # name pattern for `csv` EPR sim. data:
+    name.pattern.sim =
+      "Triarylamine_radCat_decay_9thSpec",
+    col.names.sim = c(
+      "Bsim_G",
+      "B_G",
+      "dIeprSim_over_dB",
+      "dIepr_over_dB",
+      "Norm_dIeprSim_over_dB"
+    ),
+    x.sim.id = 1,
+    Intensity.sim.id = 3,
+    optim.params.init = c(0,0.8),
+    output.area.stat = FALSE,
+    msg.optim.progress = FALSE
+)
+#
+## data frame preview
+spectra.sim.triarylamine.df %>% head(n = 10)
+#> # A tibble: 10 × 7
+#> # Groups:   time_s [1]
+#>       B_G time_s dIepr_over_dB   B_mT dIeprSim_over_dB_A single_IntegSim_A
+#>     <dbl>  <dbl>         <dbl>  <dbl>              <dbl>             <dbl>
+#>  1 3390        6  0.000013629  339             1.6861e-8         0        
+#>  2 3390.1      6 -0.0000010134 339.01          1.6904e-8         1.4068e-9
+#>  3 3390.2      6 -0.000019795  339.02          1.6947e-8         2.8173e-9
+#>  4 3390.3      6 -0.000029827  339.03          1.6990e-8         4.2313e-9
+#>  5 3390.3      6 -0.000016871  339.03          1.7033e-8         5.6490e-9
+#>  6 3390.4      6  0.0000025629 339.04          1.7077e-8         7.0703e-9
+#>  7 3390.5      6  0.000011223  339.05          1.7121e-8         8.4952e-9
+#>  8 3390.6      6  0.000014956  339.06          1.7165e-8         9.9238e-9
+#>  9 3390.7      6 -0.000016646  339.07          1.7209e-8         1.1356e-8
+#> 10 3390.8      6  0.0000082986 339.08          1.7253e-8         1.2792e-8
+#> # ℹ 1 more variable: double_IntegSim_A <dbl>
+#
+## plot simulated SINGLE INTEGRATED EPR spectra
+## (fitted, with optimized intensities)
+plot_EPR_Specs(
+  data.spectra = spectra.sim.triarylamine.df,
+  x = "B_G",
+  x.unit = "G",
+  Intensity = "single_IntegSim_A",
+  var2nd.series = "time_s",
+  legend.title = "Time (s)",
+  line.colors = c("darkred", "blue", "green"),
+  lineSpecs.form = "integrated"
+)
+
+#
+## plot simulated DOUBLE INTEGRATED EPR spectra
+## ## (fitted, with optimized intensities)
+plot_EPR_Specs(
+  data.spectra = spectra.sim.triarylamine.df,
+  x = "B_G",
+  x.unit = "G",
+  Intensity = "double_IntegSim_A",
+  var2nd.series = "time_s",
+  legend.title = "Time (s)",
+  line.colors = c("darkred", "blue", "green"),
+  lineSpecs.form = "integrated"
+)
+
 
 ```

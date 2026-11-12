@@ -561,6 +561,7 @@ spectroelectrochemical experiment are listed in description of the
 <p><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></p>
 <p><code><a href="../reference/readEPR_Exp_Specs_kin.html">readEPR_Exp_Specs_kin()</a></code></p>
 <p><code><a href="../reference/smooth_EPR_Spec_by_npreg.html">smooth_EPR_Spec_by_npreg()</a></code></p>
+<p><code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code></p>
 <p><code>test-correct_time_Exp_Specs</code></p>
 </td>
 </tr>
@@ -582,16 +583,32 @@ descriptions above) were recorded. This is related to
 </tr>
 <tr class="even">
 <td>
+<p><code>Triarylamine_radCat_decay_9thSpec_Sim.csv</code></p>
+<p><strong>ASCII text table file (in <code>.csv</code> format)</strong>.
+Simulated 9th EPR spectrum from the time series, related to
+<code>Triarylamine_radCat_decay_series</code> (see above) which is
+stability exploration of the electrochemically generated triarylamine
+radical cation. This file was returned as an output using the
+<code>shinyApp01</code> (<code><a href="../reference/plot_eval_ExpSim_app.html">plot_eval_ExpSim_app()</a></code>) within the
+<a href="https://jatanrt.github.io/eprscope/">eprscope</a> package.</p>
+</td>
+<td>
+<p><code><a href="../reference/readEPR_Sim_Spec.html">readEPR_Sim_Spec()</a></code></p>
+<p><code><a href="../reference/quantify_EPR_Sim_series.html">quantify_EPR_Sim_series()</a></code></p>
+</td>
+</tr>
+<tr class="odd">
+<td>
 <p><code>AcridineDeriv_Irrad_365nm.csv.zip</code></p>
 <p><strong>Compressed ASCII text table file (in <code>.csv</code>
-format)</strong> corresponding to CW EPR spectrum of an acridine
+format)</strong>, corresponding to CW EPR spectrum of an acridine
 derivative radical irradiated by 365 nm LED to form the corresponding
 acridinium (+) redox state. Spectrum recorded on <em>Magnettech</em>
 ESR5000 [11-0422].</p>
 </td>
 <td><code><a href="../reference/readEPR_Exp_Specs.html">readEPR_Exp_Specs()</a></code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>
 <p><code>AcridineDeriv_Irrad_365nm.dsc</code></p>
 <p><strong>ASCII text file including parameters to record the CW EPR
@@ -606,7 +623,7 @@ software upon data saving.</p>
 <p><code>test-readEPR_Exp_Specs</code></p>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>
 <p><code>AcridineDeriv_Irrad_365nm.DTA</code></p>
 <p><strong>Binary data, corresponding to EPR intensities of an
@@ -620,7 +637,7 @@ related to <code>AcridineDeriv_Irrad_365nm.csv.zip</code> as well as to
 <p><code>test-readEPR_Exp_Specs</code></p>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>
 <p><code>Triarylamine_ECh_CV_ivium.txt</code></p>
 <p><strong>ASCII text file table consisting of potential, time, current

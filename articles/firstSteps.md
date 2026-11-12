@@ -1360,7 +1360,9 @@ integration. However, by the simulation and fitting of each simulated
 spectrum onto the experimental one in the entire kinetic series, we can
 obtain much better results as shown by `Examples` in the
 [`eval_kinR_EPR_modelFit()`](https://jatanrt.github.io/eprscope/reference/eval_kinR_EPR_modelFit.md)
-function documentation.
+or
+[`quantify_EPR_Sim_series()`](https://jatanrt.github.io/eprscope/reference/quantify_EPR_Sim_series.md)
+function documentations.
 
 ## 5 Lists
 
