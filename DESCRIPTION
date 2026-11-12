@@ -69,6 +69,7 @@ Imports:
     pso,
     MASS,
     shiny,
+    shinythemes,
     progressr,
     future,
     future.apply
@@ -78,7 +79,6 @@ Suggests:
     htmlwidgets,
     webshot2,
     numDeriv,
-    shinythemes,
     animation,
     usethis,
     R.utils,

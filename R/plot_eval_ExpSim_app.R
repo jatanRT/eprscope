@@ -32,8 +32,9 @@
 #'
 #'   The result of the isotropic simulation (with the actual parameters)
 #'   can be additionally exported as an \code{.R} code snippet/script to eventually fit the simulated spectrum
-#'   (optimize simulation parameters) onto the experimental one by the \code{\link{eval_sim_EPR_isoFit}}.
-#'   By saving the script in the working directory, the isotropic simulation fit can be performed right after closing
+#'   (optimize simulation parameters) onto the experimental one by the \code{\link{eval_sim_EPR_isoFit}}
+#'   or by the \code{\link{eval_sim_EPR_isoFitb}}.
+#'   While saving the script in the working directory, the isotropic simulation fit can be performed right after closing
 #'   the shiny app (window) in order to fine tune the simulation parameters and thus to speed up the analysis
 #'   of the EPR spectrum. If the shiny application is running within the web browser, the user may also print/save
 #'   the entire "dashboard" in the \code{.pdf} format to share/present results with/to students or colleagues.
@@ -156,6 +157,7 @@
 #'
 #'
 #' @importFrom shiny runApp
+#' @importFrom shinythemes shinytheme
 plot_eval_ExpSim_app <- function() {
   #
   appDir <-

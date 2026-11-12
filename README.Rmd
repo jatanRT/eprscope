@@ -52,8 +52,8 @@ The key objective of this open source ![](https://www.r-project.org/Rlogo.png){w
     pak::pkg_install(
       c("bookdown","kableExtra","tinytable",
         "corrplot","animation","openxlsx","knitr",
-        "shinythemes","numDeriv","htmlwidgets",
-        "esquisse","nlstools","webshot2","npreg"),
+        "numDeriv","htmlwidgets","esquisse",
+        "nlstools","webshot2","npreg"),
       dependencies = TRUE
     )
 

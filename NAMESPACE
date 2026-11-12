@@ -164,7 +164,6 @@ importFrom(plotly,
 importFrom(pracma,cumtrapz)
 importFrom(progressr,
   handler_progress,
-  handlers,
   progressor,
   with_progress
 )
@@ -182,6 +181,7 @@ importFrom(rlang,
   quo_name
 )
 importFrom(shiny,runApp)
+importFrom(shinythemes,shinytheme)
 importFrom(stats,na.omit)
 importFrom(stringr,
   regex,
