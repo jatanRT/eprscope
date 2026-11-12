@@ -6,22 +6,23 @@
 #'
 #'
 #' @description
-#'   Evaluating the linear combination of spectral intensities of components (loaded as ASCII text files corresponding
-#'   to simulated EPR spectra). The related intensity multiplication coefficients
-#'   (please, refer to the \code{optim.params.init} argument) are optimized by methods gathered in the
-#'   \code{\link{optim_for_EPR_fitness}}. The goal is to fit the sum of the simulated components
-#'   onto each experimental spectrum within series. The maximum number of components is set to 10.
+#'   \strong{Please wait for the images to load, while rendering the web page.} Evaluating the linear combination of spectral
+#'   intensities of components (loaded as ASCII text files corresponding to individual simulated EPR spectra) of the overall
+#'   spectral response. The related intensity multiplication coefficients (please, refer to the \code{optim.params.init} argument)
+#'   are optimized by methods gathered in the \code{\link{optim_for_EPR_fitness}}. The goal is to fit the sum of the simulated components
+#'   onto each experimental spectrum within the (time) series in order to quantify each individual EPR (radical) spectrum.
+#'   The maximum number of components is set to 10.
 #'
 #'
 #' @details
 #'   Analyzed EPR spectra may consists of several components (see also the \code{\link{eval_sim_EPR_iso_combo}}
-#'   function), like the overlapped EPR spectra of several radicals. In order to follow the concentration/amount
-#'   variations of each individual radical during the kinetic/temperature/...series, one must figure out,
+#'   function), like the superimposed EPR spectra of several radicals. In order to follow the concentration/amount
+#'   variations of each individual radical, during the kinetic/temperature/...series, one must figure out,
 #'   how those individual spectral components are actually changed. In the first approximation, it means
 #'   to follow the corresponding EPR intensities/integrals, whereas the component positions (\eqn{g}-values)
 #'   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
 #'   combination of the spectral intensities of components (simulated spectra) and optimizes
-#'   the related multiplication coefficients. Additional analysis, where the positions of spectral
+#'   the related intensity multiplication coefficients. Additional analysis, where the positions of spectral
 #'   components (simulated spectra) are not fixed and can be optimized as well, will be developed
 #'   for higher package version.
 #'
@@ -39,11 +40,11 @@
 #'   by the \code{\link{readEPR_Exp_Specs_kin}} or the \code{\link{readEPR_Exp_Specs_multif}} function.
 #' @param dir_ASC_sim Character string, pointing to folder where the simulated EPR spectra (data files) of all
 #'   components are stored. Path can be alternatively specified by the \code{\link[base]{file.path}} function.
-#' @param name.pattern.sim Character string pattern from file names related to simulated EPR spectral data
-#'   like \code{name.pattern.sim = "DHMB0_1st_04_SimA"}
-#'   or \code{name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]"} (for the file names \code{..._SimA},
-#'   \code{..._SimB},...etc). It assumes, those files must have similar names and this pattern appears
-#'   at the beginning of the file name. One may also consult
+#' @param name.pattern.sim Character string pattern (\href{https://r4ds.hadley.nz/regexps}{regular expression})
+#'   from file names related to simulated EPR spectral data
+#'   like \code{name.pattern.sim = "DHMB0_1st_04_SimA"} or \code{name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]"}
+#'   (for the file names \code{..._SimA}, \code{..._SimB},...etc). It assumes, those files must have similar names
+#'   and this pattern appears at the beginning of the file name. One may also consult
 #'   how to \href{https://r4ds.hadley.nz/regexps}{use regular expressions in R}.
 #' @param origin.sim Character string, referring to "origin" of the simulated ASCII data.
 #'   There are four possibilities \eqn{\Rightarrow} \code{sim.orimgin = "easyspin"} (\strong{default}),
@@ -60,6 +61,9 @@
 #'   series (refer also to the \code{\link{readEPR_Sim_Spec}} function).
 #'   \strong{Default}: \code{col.names.sim = c("Bsim_G","dIeprSim_over_dB")},
 #'   corresponding to the \code{origin.sim = "easyspin"}.
+#' @param col.name.pattern.sim Character string (\href{https://r4ds.hadley.nz/regexps}{regular expression}), pointing to columns
+#'   with simulated EPR intensity (within the newly generated tidy data frame), which are fitted onto the experimental
+#'   spectra in the time series. A good rule of thumb is that it follows the structure the \code{name.pattern.sim} argument.
 #' @param x.sim.id Numeric index related to the \code{col.names.sim} vector pointing to independent variable (like "B" or "Bsim"
 #'   - magnetic flux density), which corresponds to \eqn{x}-axis in the simulated spectra (refer also to the original ASCII data
 #'   of the simulated spectrum). \strong{Default}: \code{x.sim.id = 1} (see also default of the \code{col.names.sim}).
@@ -121,7 +125,7 @@
 #'   \code{Optim_intercept}); minimum sum of residual squares (\code{min_RSS}); number
 #'   of evaluations/iterations (\code{N_evals}) and finally convergence information/number (\code{N_converg},
 #'   like already described in the \code{\link{optim_for_EPR_fitness}}). These variables are presented for each
-#'   \code{var2nd.series} (e.g. time) point like example for one EPR spectral component:
+#'   \code{var2nd.series} (e.g. time) point like example for one EPR spectral component (see also \code{Examples}):
 #'   \tabular{lcccccc}{
 #'   \strong{time_s} \tab \strong{Area_Sim_A} \tab \strong{Optim_CoeffInt_Sim_A} \tab \strong{Optim_intercept} \tab
 #'   \strong{min_RSS} \tab \strong{N_evals} \tab \strong{N_converg} \cr
@@ -137,61 +141,172 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' ## example with default arguments corresponding
-#' ## to one simulated spectral component,
-#' ## `optim.params.init` has the length
-#' ## of => number of components + 1,
-#' ## because of included intercept/baseline constant
-#' quant.data.sim.test.a <-
-#'   quantify_EPR_Sim_series(data.spectra.series,
-#'      dir_ASC_sim = "./",
-#'      optim.method = "pswarm",
-#'      name.pattern.sim = "DHMB0_1st_04_SimA",
-#'      optim.params.init = c(0,0.8),
-#'      output.area.stat = TRUE)
-#' ## progress bar - automatically activated
+#' ## quantify noisy EPR spectra of triarylamine
+#' ## radical cation time series (only 1 component),
+#' ## first of all, load the entire series
+#' triarylamine.decay.series.bin.path <-
+#' load_data_example(file =
+#'         "Triarylamine_radCat_decay_series.DTA")
+#' ## loading the kinetics:
+#' triarylamine.decay.series.data <-
+#'   readEPR_Exp_Specs_kin(
+#'     path_to_file =
+#'       triarylamine.decay.series.bin.path
+#'    )
 #' #
-#' ## similar example with two components
-#' ## (simulated spectra) and tidy data frame
-#' ## output (not the summarized one) with all spectra
-#' ## and their corresponding integrals, additionally,
-#' ## display of the iteration progress for each EPR
-#' ## spectrum within the series is activated
-#' quant.data.sim.test.b <-
-#'   quantify_EPR_Sim_series(data.spectra.series,
-#'      dir_ASC_sim = "./",
-#'      optim.method = "sbplx",
-#'      name.pattern.sim = "DHMB0_1st_04_Sim[[:upper:]]",
-#'      optim.params.init = c(0,0.8,0.2),
-#'      output.area.stat = FALSE,
-#'      eval.optim.progress = TRUE
-#'      )
-#' ## progress bar - automatically deactivated,
-#' ## because `eval.optim.progress = TRUE`, otherwise
-#' ## both messages 'collide' in the output
+#' ## quantitative information as a data frame,
+#' ## if `output.area.stat = TRUE`
+#' quant.sim.triarylamine.df <-
+#'  quantify_EPR_Sim_series(
+#'     data.spectra.series =
+#'       triarylamine.decay.series.data$df,
+#'     # this is an `{eprscope}` pkg. dir:
+#'     dir_ASC_sim = system.file(
+#'       "extdata",
+#'       package = "eprscope",
+#'       mustWork = TRUE
+#'     ),
+#'     optim.method = "sbplx",
+#'     # name pattern for `csv` EPR sim. data:
+#'     name.pattern.sim =
+#'       "Triarylamine_radCat_decay_9thSpec",
+#'     col.names.sim = c(
+#'       "Bsim_G",
+#'       "B_G",
+#'       "dIeprSim_over_dB",
+#'       "dIepr_over_dB",
+#'       "Norm_dIeprSim_over_dB"
+#'     ),
+#'     x.sim.id = 1,
+#'     Intensity.sim.id = 3,
+#'     optim.params.init = c(0,0.8),
+#'     output.area.stat = TRUE,
+#'     msg.optim.progress = FALSE
+#' )
+#' ## if `msg.optim.progress = TRUE` the progress
+#' ## bar is displayed together with elapsed time
+#' ## for the entire fitting process,
+#' ## if additional `eval.optim.progress = TRUE`
+#' ## (see the `...` argument) is activated, the
+#' ## iteration process is displayed in the console,
+#' ## however without the progress bar
 #' #
-#' ## to implement the `.csv` outputs
-#' ## from `plot_eval_ExpSim_app()`, the following
-#' ## arguments must be used:
-#' ##  origin.sim = "csv",
-#' ##  col.names.sim = c(
-#' ##    "Bsim_G", # or mT
-#' ##    "B_G", # or mT
-#' ##    "dIeprSim_over_dB",
-#' ##    "dIepr_over_dB",
-#' ##    "Norm_dIeprSim_over_dB"
-#' ##  ),
-#' ##  x.sim.id = 1,
-#' ##  Intensity.sim.id = 3
+#' ## data frame preview
+#' quant.sim.triarylamine.df %>% head(n = 10)
 #' #
-#' }
+#' ## plot double integral (`Area_Sim_A`) vs time
+#' ggplot2::ggplot(
+#'   data = quant.sim.triarylamine.df,
+#'   ggplot2::aes(x = time_s)
+#' ) +
+#' ggplot2::geom_point(
+#'   ggplot2::aes(y = Area_Sim_A),
+#'   size = 3.2,
+#'   color = "darkorange"
+#' ) +
+#' ggplot2::labs(
+#'   x = plot_labels_xyz(time,s),
+#'   y = plot_labels_xyz(Double~~Integral,p.d.u.)
+#' ) + plot_theme_In_ticks()
+#' #
+#' ## plot minimum sum of residual squares vs time
+#' ggplot2::ggplot(
+#'   data = quant.sim.triarylamine.df,
+#'   ggplot2::aes(x = time_s)
+#' ) +
+#' ggplot2::geom_point(
+#'   ggplot2::aes(y = min_RSS),
+#'   size = 3.2,
+#'   color = "darkblue"
+#' ) +
+#' ggplot2::labs(
+#'   x = plot_labels_xyz(time,s),
+#'   y = bquote(italic(RSS))
+#' ) + plot_theme_In_ticks()
+#' #
+#' ## plot number of evaluations/iterations
+#' ## for each time point
+#' ggplot2::ggplot(
+#'   data = quant.sim.triarylamine.df,
+#'   ggplot2::aes(x = time_s)
+#' ) +
+#' ggplot2::geom_point(
+#'   ggplot2::aes(y = N_evals),
+#'   size = 3.2,
+#'   color = "darkgreen"
+#' ) +
+#' ggplot2::labs(
+#'   x = plot_labels_xyz(time,s),
+#'   y = bquote(italic(Number~~of~~Evaluations))
+#' ) + plot_theme_In_ticks()
+#' #
+#' #
+#' ## the same time series fitting, now with all
+#' ## EPR spectra and integrals,
+#' ## i.e. `output.area.stat = FALSE`
+#' spectra.sim.triarylamine.df <-
+#'  quantify_EPR_Sim_series(
+#'     data.spectra.series =
+#'       triarylamine.decay.series.data$df,
+#'     # this is an `{eprscope}` pkg. dir:
+#'     dir_ASC_sim = system.file(
+#'       "extdata",
+#'       package = "eprscope",
+#'       mustWork = TRUE
+#'     ),
+#'     optim.method = "sbplx",
+#'     # name pattern for `csv` EPR sim. data:
+#'     name.pattern.sim =
+#'       "Triarylamine_radCat_decay_9thSpec",
+#'     col.names.sim = c(
+#'       "Bsim_G",
+#'       "B_G",
+#'       "dIeprSim_over_dB",
+#'       "dIepr_over_dB",
+#'       "Norm_dIeprSim_over_dB"
+#'     ),
+#'     x.sim.id = 1,
+#'     Intensity.sim.id = 3,
+#'     optim.params.init = c(0,0.8),
+#'     output.area.stat = FALSE,
+#'     msg.optim.progress = FALSE
+#' )
+#' #
+#' ## data frame preview
+#' spectra.sim.triarylamine.df %>% head(n = 10)
+#' #
+#' ## plot simulated SINGLE INTEGRATED EPR spectra
+#' ## (fitted, with optimized intensities)
+#' plot_EPR_Specs(
+#'   data.spectra = spectra.sim.triarylamine.df,
+#'   x = "B_G",
+#'   x.unit = "G",
+#'   Intensity = "single_IntegSim_A",
+#'   var2nd.series = "time_s",
+#'   legend.title = "Time (s)",
+#'   line.colors = c("darkred", "blue", "green"),
+#'   lineSpecs.form = "integrated"
+#' )
+#' #
+#' ## plot simulated DOUBLE INTEGRATED EPR spectra
+#' ## ## (fitted, with optimized intensities)
+#' plot_EPR_Specs(
+#'   data.spectra = spectra.sim.triarylamine.df,
+#'   x = "B_G",
+#'   x.unit = "G",
+#'   Intensity = "double_IntegSim_A",
+#'   var2nd.series = "time_s",
+#'   legend.title = "Time (s)",
+#'   line.colors = c("darkred", "blue", "green"),
+#'   lineSpecs.form = "integrated"
+#' )
 #'
 #'
 #' @export
 #'
 #'
 #' @importFrom dplyr arrange matches across
+#' @importFrom progressr with_progress progressor handler_progress
 quantify_EPR_Sim_series <- function(data.spectra.series,
                                     dir_ASC_sim,
                                     name.pattern.sim,
@@ -199,6 +314,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
                                     var2nd.series = "time_s",
                                     B.unit = "G",
                                     col.names.sim = c("Bsim_G","dIeprSim_over_dB"),
+                                    col.name.pattern.sim = "Sim.*_[[:upper:]]$",
                                     x.sim.id = 1,
                                     Intensity.sim.id = 2,
                                     Intensity.expr = "dIepr_over_dB",
@@ -222,7 +338,7 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   # redefinition of `eval.optim.progress` from `...`
   optim.progress <- list(...)[["eval.optim.progress"]]
-  if (is.null(optim.progress)) {
+  if (is.null(optim.progress) || isFALSE(optim.progress)) {
     eval.optim.progress <- FALSE
   } else {
     eval.optim.progress <- optim.progress
@@ -445,6 +561,11 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
   #
   ## ==================== SEQUENCE AND (DEFAULT) PARAMETER GUESSES ====================
   #
+  ## delete index column if present
+  if (any(grepl("index", colnames(data.specs.sim)))) {
+    data.specs.sim$index <- NULL
+  }
+  #
   ## `var2nd.series` sequence (e.g. time sequence)
   var2nd_df <- data.specs.sim %>%
     dplyr::group_by(.data[[var2nd.series]]) %>%
@@ -483,42 +604,51 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
           upper = optim.params.upper,
           Nmax.evals = Nmax.evals,
           data = data,
-          col.name.pattern = "Sim.*_[[:upper:]]$",
+          col.name.pattern = col.name.pattern.sim,
           ...
       )
     #
     return(optim.list)
   }
   #
-  ## switch progress-bar ON/OFF
-  if (isFALSE(eval.optim.progress)) {
-    handlers(global = TRUE)
-    handlers("progress")
-  }
-  #
-  ## function for optimization loop with/without progress-bar
-  ## depending on the
+  ## function for optimization loop with/without progress-bar,
+  ## progress-bar is scoped by `with_progress()` instead of
+  ## `handlers(global = TRUE)`, which fails whenever called
+  ## with condition handlers on the stack (e.g. `example()`, `tryCatch()`)
   optim_progress_fn <- function(
     seq, # sequence (data list)
     method.opt = optim.method, # optimization algoritm/method
     fn # function to get minimum residuals/errors
     ) {
-    if (isFALSE(eval.optim.progress)){p <- progressor(along = 0:length(seq))}
-    lapply(
-      seq(seq), function(o) {
-        #
-        ## progressbar
-        if (isFALSE(eval.optim.progress)){
-          p(sprintf("x=%g", o))
+    optim_loop <- function(p = NULL) {
+      lapply(
+        seq(seq), function(o) {
+          #
+          ## progressbar
+          if (!is.null(p)) {
+            p(sprintf("x=%g", o))
+          }
+          #
+          optim_fn(
+            method = method.opt,
+            data = seq[[o]],
+            fun = fn
+          )
         }
-        #
-        optim_fn(
-          method = method.opt,
-          data = seq[[o]],
-          fun = fn
-        )
-      }
-    )
+      )
+    }
+    #
+    if (isFALSE(eval.optim.progress) & isTRUE(msg.optim.progress)) {
+      with_progress(
+        {
+          p <- progressor(along = seq)
+          optim_loop(p = p)
+        },
+        handlers = handler_progress()
+      )
+    } else {
+      optim_loop()
+    }
   }
   #
   ## ===================== MAIN LOOP FOR OPTIMIZATION + MESSAGE =======================
@@ -584,7 +714,6 @@ quantify_EPR_Sim_series <- function(data.spectra.series,
       )
     #
   }
-  #
   #
   ## end time
   if (isTRUE(msg.optim.progress)) {

@@ -219,7 +219,7 @@
 #' @export
 #'
 #' @importFrom ggplot2 ggtitle
-#' @importFrom progressr handlers handler_progress with_progress progressor
+#' @importFrom progressr handler_progress with_progress progressor
 #' @importFrom future plan
 #' @importFrom future.apply future_Map
 eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
@@ -487,18 +487,13 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
   #
   ## ------------------------- PROGRESS BAR SETUP -------------------------
   #
-  ## setup the progress bar, this is required
-  ## in order to synchronize the time, see
-  ## https://progressr.futureverse.org/
-  handlers("debug") ## !!! IMPORTANT
-  # progressr::handlers("debug")
-  # progressr::handlers("progress")
-  handlers(list(
-    handler_progress(
-      format = " [:bar] :percent ",
-      width = 104 ## text/message width
-    )
-  ))
+  ## progress bar handler, passed directly to `with_progress()` (below)
+  ## instead of `handlers()`, so that the user's global `{progressr}`
+  ## settings are not modified, see https://progressr.futureverse.org/
+  progress.handler <- handler_progress(
+    format = " [:bar] :percent ",
+    width = 104 ## text/message width
+  )
   #
   ## ------------------------ PARALLEL PROCESS CONDITION ---------------------
   #
@@ -570,7 +565,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
         as.numeric(1:nrow(optim.params.init.vary.df)),
         future.seed = NULL
       )
-  })
+  }, handlers = progress.handler)
   ## end time
   end.tm <- Sys.time()
   #
@@ -738,6 +733,7 @@ eval_sim_EPR_isoFit_space <- function(data.spectr.expr,
     sim.fit.vary.list.params
   )
   ## --------------- NUCLEAR SYSTEMS with BEST As for ADDITIONAL SIM/FIT -------------
+  #
   if (is.null(nuclear.system.noA)) {
     #
     nuclear.system.A <- NULL

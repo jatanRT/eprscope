@@ -163,6 +163,14 @@ eval_sim_EPR_iso_combo <- function(g.iso.vec, ## e.g. c(2.0027,1.9999,2.0059)
   Sim_sigmoid_Integs <- NULL
   weighted_Sim_areas <- NULL
   #
+  if (length(nuclear.system) > 3) {
+    message(" Number of EPR simulation components is higher than 3 !!\n
+                Please, be aware of such a high number of corresponding radicals,\n
+                which must conform to chemical reality. Is the presence of all those\n
+                components/radicals supported by any additional structural evidence ?\n
+                Do you have evidences by e.g. MS, NMR, IR, elemental analysis, ... ? ")
+  }
+  #
   ## all data frames of simulated spectra
   ## corresponding to each nuclear group in one list:
   df.systems <-
