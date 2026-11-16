@@ -152,12 +152,12 @@ Y_j\|^{\delta})\$\$ The denominator is the mean distance (\\g(z)\\)
 across the all \\X,Y\\ matrix elements (expectation under independence);
 the numerator is the mean distance over matched pairs. Setting \\\delta
 = 2\\ recovers the Lin's CCC; \\\delta = 1\\ gives the robust,
-outlier-resistant version. The cross pairs are calculated using
-[`outer`](https://rdrr.io/r/base/outer.html) and the coefficients are
-evaluated for all three \\\delta = 1\\, \\\delta = 1.5\\ and \\\delta =
-2\\. McBride GB (2005) (see the `References`) suggested the following
-descriptive scale for values of the concordance correlation coefficient
-(for continuous variables):
+outlier-resistant version. The cross pairs are calculated using the
+[`outer`](https://rdrr.io/r/base/outer.html) function and the
+coefficients are evaluated for all three \\\delta = 1\\, \\\delta =
+1.5\\ and \\\delta = 2\\. McBride GB (2005) (see the `References`)
+suggested the following descriptive scale for values of the concordance
+correlation coefficient (for continuous variables):
 
 |                 |                           |
 |-----------------|---------------------------|
@@ -267,7 +267,7 @@ sim.fit.tmpd.spec <- eval_sim_EPR_isoFit(
  EPR simulation parameters are currently being optimized by   NELDERMEAD ;  method   1   of   1 ... 
 #> 
 #> 
- Done!  ( 100  %)    elapsed time  6.707  s 
+ Done!  ( 100  %)    elapsed time  6.124  s 
 #
 ## EPR spectra comparison
 sim.fit.tmpd.spec$plot

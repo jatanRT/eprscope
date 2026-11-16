@@ -569,7 +569,7 @@ fit_ols <-
 ## parameters from `fit_ols`
 stats::coef(fit_ols)
 #>       Vmax         Km 
-#> 51.0867582  3.4776028 
+#> 51.0867580  3.4776027 
 #
 ## Extract raw non-weighted residuals
 ## and fitted values from initial OLS fit
@@ -617,7 +617,7 @@ fit_wls <-
 ## parameters from the `fit_wls`
 stats::coef(fit_wls)
 #>       Vmax         Km 
-#> 49.2901344  3.0190358 
+#> 49.2901343  3.0190358 
 #
 # Extract raw weighted residuals
 ## and fitted values from WLS fit

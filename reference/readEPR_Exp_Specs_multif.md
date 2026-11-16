@@ -134,9 +134,10 @@ readEPR_Exp_Specs_multif(
 - var2nd.series.factor:
 
   Logical, whether to factorize `var2nd.series` column vector which is
-  useful for plotting the spectra in overlay form. **Default**:
-  `var2nd.series.factor = FALSE`, which is the case to visualize EPR
-  spectra by `plot`-functions.
+  useful for plotting the spectra in overlay form (using a `{ggplot2}`
+  functions in general). **Default**: `var2nd.series.factor = FALSE`,
+  which is the case to visualize EPR spectra by most of the `{eprscope}`
+  `plot`-functions, where the factorization is already implemented.
 
 - origin:
 

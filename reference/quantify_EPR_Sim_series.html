@@ -166,7 +166,7 @@ corresponding to the <code>origin.sim = "easyspin"</code>.</p></dd>
 <dt id="arg-col-name-pattern-sim">col.name.pattern.sim<a class="anchor" aria-label="anchor" href="#arg-col-name-pattern-sim"></a></dt>
 <dd><p>Character string (<a href="https://r4ds.hadley.nz/regexps" class="external-link">regular expression</a>), pointing to columns
 with simulated EPR intensity (within the newly generated tidy data frame), which are fitted onto the experimental
-spectra in the time series. A good rule of thumb is that it follows the structure the <code>name.pattern.sim</code> argument.</p></dd>
+spectra in the time series. A good rule of thumb is to follow the structure the <code>name.pattern.sim</code> argument.</p></dd>
 
 
 <dt id="arg-x-sim-id">x.sim.id<a class="anchor" aria-label="anchor" href="#arg-x-sim-id"></a></dt>
@@ -190,7 +190,9 @@ the original <code>data.spectra.series</code>. <strong>Default</strong>: <code>d
 <dd><p>Character string, pointing to applied optimization method/algorithm.
 One may choose <strong>one</strong> from those listed in <code><a href="optim_for_EPR_fitness.html">optim_for_EPR_fitness</a></code>, <strong>default</strong>:
 <code>method = "sbplx"</code>, setting up
-the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex" class="external-link">"Subplex" method</a>.</p></dd>
+the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex" class="external-link">"Subplex" method</a>.
+If the user wants to apply the <code>pswarm</code> (particle swarm) method, the <code>Nmax.evals</code> argument
+must be set to a value greater than 512.</p></dd>
 
 
 <dt id="arg-optim-params-init">optim.params.init<a class="anchor" aria-label="anchor" href="#arg-optim-params-init"></a></dt>
@@ -213,8 +215,8 @@ to vector with all <code>0.9</code> value elements.</p></dd>
 
 <dt id="arg-nmax-evals">Nmax.evals<a class="anchor" aria-label="anchor" href="#arg-nmax-evals"></a></dt>
 <dd><p>Numeric value, maximum number of function evaluations and/or iterations.
-The only one method, limited by this argument, is <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
-<code>Nmax.evals = 1024</code>. Higher <code>Nmax.evals</code> may extremely extend the optimization
+The only one method, limited by this argument, is the <code><a href="https://rdrr.io/pkg/minpack.lm/man/nls.lm.html" class="external-link">nls.lm</a></code>, where
+<code>Nmax.evals = 1024</code>. Higher <code>Nmax.evals</code> may extend the optimization
 time, therefore the <strong>default</strong> value reads <code>Nmax.evals = 512</code>. However, the <code>"pswarm"</code>
 method requires at least the default or even higher values.</p></dd>
 
@@ -243,7 +245,7 @@ is displayed. This argument can be combined with the optional <code>eval.optim.p
 
 <dt id="arg-output-area-stat">output.area.stat<a class="anchor" aria-label="anchor" href="#arg-output-area-stat"></a></dt>
 <dd><p>Logical, whether to summarize all fitted EPR spectral components, in columns,
-for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
+for each time/temperature/...etc. point in row. Additional optimization metrics are presented as well
 (see <code>Value</code>).<strong>Default</strong>: <code>output.area.stat = TRUE</code>. Otherwise, tidy/long format
 table is returned, including all EPR spectra and their corresponding integrals.</p></dd>
 
@@ -280,7 +282,7 @@ argument.</p></dd>
   how those individual spectral components are actually changed. In the first approximation, it means
   to follow the corresponding EPR intensities/integrals, whereas the component positions (\(g\)-values)
   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
-  combination of the spectral intensities of components (simulated spectra) and optimizes
+  combination of the component spectral intensities (simulated spectra) and optimizes
   the related intensity multiplication coefficients. Additional analysis, where the positions of spectral
   components (simulated spectra) are not fixed and can be optimized as well, will be developed
   for higher package version.</p>

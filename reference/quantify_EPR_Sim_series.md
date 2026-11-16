@@ -117,8 +117,8 @@ quantify_EPR_Sim_series(
   expression](https://r4ds.hadley.nz/regexps)), pointing to columns with
   simulated EPR intensity (within the newly generated tidy data frame),
   which are fitted onto the experimental spectra in the time series. A
-  good rule of thumb is that it follows the structure the
-  `name.pattern.sim` argument.
+  good rule of thumb is to follow the structure the `name.pattern.sim`
+  argument.
 
 - x.sim.id:
 
@@ -147,6 +147,8 @@ quantify_EPR_Sim_series(
   [`optim_for_EPR_fitness`](https://jatanrt.github.io/eprscope/reference/optim_for_EPR_fitness.md),
   **default**: `method = "sbplx"`, setting up the ["Subplex"
   method](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex).
+  If the user wants to apply the `pswarm` (particle swarm) method, the
+  `Nmax.evals` argument must be set to a value greater than 512.
 
 - optim.params.init:
 
@@ -170,12 +172,12 @@ quantify_EPR_Sim_series(
 - Nmax.evals:
 
   Numeric value, maximum number of function evaluations and/or
-  iterations. The only one method, limited by this argument, is
+  iterations. The only one method, limited by this argument, is the
   [`nls.lm`](https://rdrr.io/pkg/minpack.lm/man/nls.lm.html), where
-  `Nmax.evals = 1024`. Higher `Nmax.evals` may extremely extend the
-  optimization time, therefore the **default** value reads
-  `Nmax.evals = 512`. However, the `"pswarm"` method requires at least
-  the default or even higher values.
+  `Nmax.evals = 1024`. Higher `Nmax.evals` may extend the optimization
+  time, therefore the **default** value reads `Nmax.evals = 512`.
+  However, the `"pswarm"` method requires at least the default or even
+  higher values.
 
 - single.integ:
 
@@ -206,7 +208,7 @@ quantify_EPR_Sim_series(
 
   Logical, whether to summarize all fitted EPR spectral components, in
   columns, for each time/temperature/...etc. point in row. Additional
-  optimization measures are presented as well (see `Value`).**Default**:
+  optimization metrics are presented as well (see `Value`).**Default**:
   `output.area.stat = TRUE`. Otherwise, tidy/long format table is
   returned, including all EPR spectra and their corresponding integrals.
 
@@ -263,8 +265,8 @@ how those individual spectral components are actually changed. In the
 first approximation, it means to follow the corresponding EPR
 intensities/integrals, whereas the component positions (\\g\\-values)
 are assumed to be fixed (or those changes can be neglected). Therefore,
-the actual function takes the linear combination of the spectral
-intensities of components (simulated spectra) and optimizes the related
+the actual function takes the linear combination of the component
+spectral intensities (simulated spectra) and optimizes the related
 intensity multiplication coefficients. Additional analysis, where the
 positions of spectral components (simulated spectra) are not fixed and
 can be optimized as well, will be developed for higher package version.
