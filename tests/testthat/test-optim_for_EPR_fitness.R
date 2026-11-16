@@ -35,7 +35,7 @@ df.model.expr <- data.frame(
 ## While `{nloptr}` methods use `x0` parameter, `levenmarq` and the `pswarm`
 ## use the `par` parameter vector
 #
-## parametrize the fitting function
+## parameterize the fitting function
 ## `x` and `Intensity.fit` are column headers
 Gaussian_Fit_x0 <- ## for the `x0` parameter vector
   function(data,x,Intensity.fit,x0) {

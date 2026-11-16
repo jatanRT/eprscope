@@ -170,13 +170,21 @@ if (B.unit == "mT" & !any(grepl("G",col.names.sim))) {
   spectrum.data <- spectrum.data %>%
     dplyr::mutate(Bsim_G = .data[[x.col.string]] * 10) %>%
     ## reordering columns
-    dplyr::select(Bsim_G, .data[[x.col.string]], .data[[y.col.string]])
+    dplyr::select(
+      Bsim_G,
+      dplyr::all_of(x.col.string),
+      dplyr::all_of(y.col.string)
+    )
 }
 if (B.unit == "G" & !any(grepl("mT",col.names.sim))) {
   spectrum.data <- spectrum.data %>%
     dplyr::mutate(Bsim_mT = .data[[x.col.string]] / 10) %>%
     ## reordering columns
-    dplyr::select(Bsim_mT, .data[[x.col.string]], .data[[y.col.string]])
+    dplyr::select(
+      Bsim_mT,
+      dplyr::all_of(x.col.string),
+      dplyr::all_of(y.col.string)
+    )
 }
 #
 return(spectrum.data)

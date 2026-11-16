@@ -51,7 +51,7 @@
 #'   The denominator is the mean distance (\eqn{g(z)}) across the all \eqn{X,Y} matrix elements (expectation under independence);
 #'   the numerator is the mean distance over matched pairs. Setting \eqn{\delta = 2} recovers the Lin's CCC;
 #'   \eqn{\delta = 1} gives the robust, outlier-resistant version. The cross pairs are calculated using
-#'   \code{\link[base]{outer}} and the coefficients are evaluated for all three \eqn{\delta = 1},
+#'   the \code{\link[base]{outer}} function and the coefficients are evaluated for all three \eqn{\delta = 1},
 #'   \eqn{\delta = 1.5} and \eqn{\delta = 2}.
 #'   McBride GB (2005) (see the \code{References}) suggested the following descriptive scale for values of the concordance correlation
 #'   coefficient (for continuous variables):

@@ -78,8 +78,10 @@ it is referred to name of the 2nd variable/quantity (such as "time","Temperature
 and related to the spectral data.}
 
 \item{var2nd.series.factor}{Logical, whether to factorize \code{var2nd.series} column vector which is useful
-for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
-to visualize EPR spectra by \code{plot}-functions.}
+for plotting the spectra in overlay form (using a \code{{ggplot2}} functions in general).
+\strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
+to visualize EPR spectra by most of the \code{{eprscope}} \code{plot}-functions, where the factorization
+is already implemented.}
 
 \item{origin}{Character string, corresponding to \strong{origin} of the data and related to EPR acquisition software
 at the spectrometer (from which the data are loaded automatically using the default parameters).

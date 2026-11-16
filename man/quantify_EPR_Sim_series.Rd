@@ -72,7 +72,7 @@ corresponding to the \code{origin.sim = "easyspin"}.}
 
 \item{col.name.pattern.sim}{Character string (\href{https://r4ds.hadley.nz/regexps}{regular expression}), pointing to columns
 with simulated EPR intensity (within the newly generated tidy data frame), which are fitted onto the experimental
-spectra in the time series. A good rule of thumb is that it follows the structure the \code{name.pattern.sim} argument.}
+spectra in the time series. A good rule of thumb is to follow the structure the \code{name.pattern.sim} argument.}
 
 \item{x.sim.id}{Numeric index related to the \code{col.names.sim} vector pointing to independent variable (like "B" or "Bsim"
 - magnetic flux density), which corresponds to \eqn{x}-axis in the simulated spectra (refer also to the original ASCII data
@@ -88,7 +88,9 @@ the original \code{data.spectra.series}. \strong{Default}: \code{dIepr_over_dB}.
 \item{optim.method}{Character string, pointing to applied optimization method/algorithm.
 One may choose \strong{one} from those listed in \code{\link{optim_for_EPR_fitness}}, \strong{default}:
 \code{method = "sbplx"}, setting up
-the \href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex}{"Subplex" method}.}
+the \href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#sbplx-based-on-subplex}{"Subplex" method}.
+If the user wants to apply the \code{pswarm} (particle swarm) method, the \code{Nmax.evals} argument
+must be set to a value greater than 512.}
 
 \item{optim.params.init}{Numeric vector with the elements: baseline constant/intercept
 followed by simulated intensity multiplication coefficient for each EPR spectral component.
@@ -103,8 +105,8 @@ bound constraints. \strong{Default}: \code{optim.params.init = NULL}, actually c
 to vector with all \code{0.9} value elements.}
 
 \item{Nmax.evals}{Numeric value, maximum number of function evaluations and/or iterations.
-The only one method, limited by this argument, is \code{\link[minpack.lm]{nls.lm}}, where
-\code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extremely extend the optimization
+The only one method, limited by this argument, is the \code{\link[minpack.lm]{nls.lm}}, where
+\code{Nmax.evals = 1024}. Higher \code{Nmax.evals} may extend the optimization
 time, therefore the \strong{default} value reads \code{Nmax.evals = 512}. However, the \code{"pswarm"}
 method requires at least the default or even higher values.}
 
@@ -125,7 +127,7 @@ is displayed. This argument can be combined with the optional \code{eval.optim.p
 (see below or described in the \code{\link{optim_for_EPR_fitness}}).}
 
 \item{output.area.stat}{Logical, whether to summarize all fitted EPR spectral components, in columns,
-for each time/temperature/...etc. point in row. Additional optimization measures are presented as well
+for each time/temperature/...etc. point in row. Additional optimization metrics are presented as well
 (see \code{Value}).\strong{Default}: \code{output.area.stat = TRUE}. Otherwise, tidy/long format
 table is returned, including all EPR spectra and their corresponding integrals.}
 
@@ -176,7 +178,7 @@ Analyzed EPR spectra may consists of several components (see also the \code{\lin
   how those individual spectral components are actually changed. In the first approximation, it means
   to follow the corresponding EPR intensities/integrals, whereas the component positions (\eqn{g}-values)
   are assumed to be fixed (or those changes can be neglected). Therefore, the actual function takes the linear
-  combination of the spectral intensities of components (simulated spectra) and optimizes
+  combination of the component spectral intensities (simulated spectra) and optimizes
   the related intensity multiplication coefficients. Additional analysis, where the positions of spectral
   components (simulated spectra) are not fixed and can be optimized as well, will be developed
   for higher package version.

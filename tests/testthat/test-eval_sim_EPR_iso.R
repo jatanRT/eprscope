@@ -459,7 +459,7 @@ test_that("The isotropic intensity pattern for the simulated EPR spectrum
       lineGL.DeltaB = list(0.42, NULL)
     )$df
   #
-  ## Similarly like in the case of nitroxide => the following `B` regions
+  ## Similarly like in the case of aminoxyl => the following `B` regions
   ## for individual lines are selected (from the interactive spectrum plot),
   ## corresponding to first three patterns from the intensity scheme above =>
   B.regions.pnt.G <-

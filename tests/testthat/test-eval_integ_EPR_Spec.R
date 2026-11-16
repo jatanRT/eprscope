@@ -168,7 +168,7 @@ test_that(" 'Sigmoid' integration works regardless of the applied method !",{
     all.equal(
       integs.2nd.tmpd.specelchem.max.a$Max_sigmoid,
       integs.2nd.tmpd.specelchem.max.b$Max_sigmoid,
-      tolerance = 0.16 # Sigmoid integrals are in the order of 1e+7
+      tolerance = 0.16 # Sigmoid integrals are in the order of 1e+7, this is an extremely small error
     )
   #
   expect_true(compar.double.integs)

@@ -1,7 +1,7 @@
 #
 ## ========================== Reading A/a DFT Outputs Tests ============================
 #
-test_that("Hyperfine Coupling(A)/Splitting(a) Constants, for the TMPD Radical Cation, Matches.", {
+test_that("Hyperfine coupling(A)/splitting(a) constants, for the TMPD radical cation, matches.", {
   #
   ## load the data
   gauss.file.path <-

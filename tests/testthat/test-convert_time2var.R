@@ -16,8 +16,8 @@ TMPD.2D.data.slice <- readEPR_Exp_Specs(
 #
 test_that("0.352 V is the potential with max. EPR intensity !", {
   #
-  # time correction -- 18 seconds betwween
-  # 2 recordings of EPR spectra
+  # time correction -- 18 seconds between
+  # recordings of 2 EPR spectra
   TMPD.2D.data.slice$time_s <-
     TMPD.2D.data.slice$Slice * 18
   #

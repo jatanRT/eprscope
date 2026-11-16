@@ -54,8 +54,10 @@
 #'   "Microwave Power"...etc) altered during individual experiments as a second variable series (\code{var2nd.series})
 #'   and related to the spectral data.
 #' @param var2nd.series.factor Logical, whether to factorize \code{var2nd.series} column vector which is useful
-#'   for plotting the spectra in overlay form. \strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
-#'   to visualize EPR spectra by \code{plot}-functions.
+#'   for plotting the spectra in overlay form (using a \code{{ggplot2}} functions in general).
+#'   \strong{Default}: \code{var2nd.series.factor = FALSE}, which is the case
+#'   to visualize EPR spectra by most of the \code{{eprscope}} \code{plot}-functions, where the factorization
+#'   is already implemented.
 #' @param ... additional arguments specified, see also\code{\link{readEPR_Exp_Specs}}
 #'   and \code{\link[data.table]{fread}}.
 #'

@@ -1,5 +1,5 @@
 #
-## ========================== Test Transformation of Data Frame Objests to a Tidy one ============================
+## =================== Test Transformation of Data Frame Objects to a Tidy one =====================
 #
 ## load TMPD*+ EPR spectrum
 tmpd.data.path <-
